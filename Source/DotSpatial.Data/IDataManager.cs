@@ -17,9 +17,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IDataManager
-    /// </summary>
     public interface IDataManager
     {
         #region Methods
@@ -150,8 +147,8 @@ namespace DotSpatial.Data
         /// <param name="progHandler">A Progress handler</param>
         /// <param name="bandType">The color band type.</param>
         /// <returns>An IImageData interface allowing access to image data</returns>
-        ///
-        IImageData CreateImage(string fileName, int numRows, int numColumns, bool inRam, IProgressHandler progHandler, ImageBandType bandType);
+        IImageData CreateImage(string fileName, int numRows, int numColumns, bool inRam, IProgressHandler progHandler,
+            ImageBandType bandType);
 
         /// <summary>
         /// Creates a new class of vector that matches the given fileName.
@@ -182,7 +179,8 @@ namespace DotSpatial.Data
         /// <param name="dataType">The data type for the raster</param>
         /// <param name="options">Any additional, driver specific options for creation</param>
         /// <returns>An IRaster representing the created raster.</returns>
-        IRaster CreateRaster(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options);
+        IRaster CreateRaster(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType,
+            string[] options);
 
         #endregion
 
@@ -193,91 +191,53 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the list of IDataProviders that should be used in the project.
         /// </summary>
-        IEnumerable<IDataProvider> DataProviders
-        {
-            get;
-        }
+        IEnumerable<IDataProvider> DataProviders { get; }
 
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files.
         /// </summary>
-        string DialogReadFilter
-        {
-            get;
-        }
+        string DialogReadFilter { get; }
 
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving data files.
         /// </summary>
-        string DialogWriteFilter
-        {
-            get;
-            set;
-        }
+        string DialogWriteFilter { get; set; }
 
         /// <summary>
         /// Sets the default condition for how this data manager should try to load layers.
         /// This will be overridden if the inRam property is specified as a parameter.
         /// </summary>
-        bool LoadInRam
-        {
-            get;
-            set;
-        }
+        bool LoadInRam { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files that are specifically raster formats.
         /// </summary>
-        string RasterReadFilter
-        {
-            get;
-            set;
-        }
+        string RasterReadFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving raster files.
         /// </summary>
-        string RasterWriteFilter
-        {
-            get;
-            set;
-        }
+        string RasterWriteFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening vector files.
         /// </summary>
-        string VectorReadFilter
-        {
-            get;
-            set;
-        }
+        string VectorReadFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving vector files.
         /// </summary>
-        string VectorWriteFilter
-        {
-            get;
-            set;
-        }
+        string VectorWriteFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening image files.
         /// </summary>
-        string ImageReadFilter
-        {
-            get;
-            set;
-        }
+        string ImageReadFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving image files.
         /// </summary>
-        string ImageWriteFilter
-        {
-            get;
-            set;
-        }
+        string ImageWriteFilter { get; set; }
 
         /// <summary>
         /// Gets or sets a dictionary of IDataProviders keyed by the extension.  The
@@ -285,21 +245,13 @@ namespace DotSpatial.Data
         /// fails, then it will check the list of dataProviders, and finally, if that fails,
         /// it will check the plugin Data Providers in directories.
         /// </summary>
-        Dictionary<string, IDataProvider> PreferredProviders
-        {
-            get;
-            set;
-        }
+        Dictionary<string, IDataProvider> PreferredProviders { get; set; }
 
         /// <summary>
         /// Gets or sets a progress handler for any open operations that are intiated by this
         /// DataManager.
         /// </summary>
-        IProgressHandler ProgressHandler
-        {
-            get;
-            set;
-        }
+        IProgressHandler ProgressHandler { get; set; }
 
         #endregion
 

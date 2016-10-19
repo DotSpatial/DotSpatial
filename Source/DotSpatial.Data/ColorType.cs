@@ -13,10 +13,7 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// ColorType
-    /// </summary>
-    public enum ColorType : byte
+   public enum ColorType : byte
     {
         /// <summary>
         /// Each pixel is a greyscale sample

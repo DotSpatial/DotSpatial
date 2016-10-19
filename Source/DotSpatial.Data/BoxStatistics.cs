@@ -13,8 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    //This is the testing comment by Jiri Kadlec
-
     /// <summary>
     /// Box-plot: Tukey 1977
     /// Basically it is like subdividing the data into 4 quartiles,

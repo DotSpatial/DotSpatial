@@ -17,9 +17,6 @@ using System.Data;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// DataTableStatisticsEM
-    /// </summary>
     public static class DataTableStatisticsExt
     {
         /// <summary>

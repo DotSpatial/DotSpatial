@@ -71,33 +71,12 @@ namespace DotSpatial.Projections
 
             return affineResult;
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="xy">The xy array should be in interleaved set of xy coordinates like [x1, y1, x2, y2, ... xn, yn]</param>
-        /// <param name="z">The z array is the array of all the z values</param>
-        /// <param name="source"></param>
-        /// <param name="dest"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="numPoints"></param>
+        
         public static void ReprojectPoints(double[] xy, double[] z, ProjectionInfo source, ProjectionInfo dest, int startIndex, int numPoints)
         {
             ReprojectPoints(xy, z, source, 1.0, dest, 1.0, null, startIndex, numPoints);
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="xy">The xy array should be in interleaved set of xy coordinates like [x1, y1, x2, y2, ... xn, yn]</param>
-        /// <param name="z">The z array is the array of all the z values</param>
-        /// <param name="source"></param>
-        /// <param name="srcZtoMeter"></param>
-        /// <param name="dest"></param>
-        /// <param name="dstZtoMeter"></param>
-        /// <param name="idt"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="numPoints"></param>
+        
         public static void ReprojectPoints(double[] xy, double[] z, ProjectionInfo source, double srcZtoMeter, ProjectionInfo dest, double dstZtoMeter, IDatumTransform idt, int startIndex, int numPoints)
         {
             double toMeter = source.Unit.Meters;

@@ -115,13 +115,13 @@
     <Compile Include="LasLosNadTable.cs" />
     <Compile Include="LlaNadTable.cs" />
     <Compile Include="ICloneableExtensions.cs" />
-    <Compile Include="IDescriptor.cs" />
+    <Compile Include="IProjDescriptor.cs" />
     <Compile Include="IMatchable.cs" />
     <Compile Include="IRandomizable.cs" />
     <Compile Include="IProjMatchableExtensions.cs" />
     <Compile Include="AngularUnit.cs" />
     <Compile Include="CoordinateSystemCategory.cs" />
-    <Compile Include="CopyBase.cs" />
+    <Compile Include="ProjCopyBase.cs" />
     <Compile Include="Datum.cs" />
     <Compile Include="DatumType.cs" />
     <Compile Include="Descriptor.cs" />
@@ -142,8 +142,6 @@
     <Compile Include="GeographicSystems.cs" />
     <Compile Include="GridShift.cs" />
     <Compile Include="IEsriString.cs" />
-    <Compile Include="IProjectionCategory.cs" />
-    <Compile Include="IReproject.cs" />
     <Compile Include="KnownCoordinateSystems.cs" />
     <Compile Include="LinearUnit.cs" />
     <Compile Include="Meridian.cs" />
@@ -286,7 +284,7 @@
     <Compile Include="Transforms\WinkelTripel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\MemberInfoExtensions.cs" />
-    <Compile Include="ShallowCopy.cs" />
+    <Compile Include="ProjShallowCopy.cs" />
     <EmbeddedResource Include="Nad\GridShiftsBundled\FL.ds.lla" />
     <None Include="Nad\GridShiftsBundled\Readme.md" />
     <EmbeddedResource Include="Nad\GridShiftsBundled\MD.ds.lla" />

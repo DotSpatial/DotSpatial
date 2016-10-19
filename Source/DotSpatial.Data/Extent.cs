@@ -23,7 +23,7 @@ namespace DotSpatial.Data
     /// only works in 2D and has no events.
     /// </summary>
     [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
-    public class Extent : ICloneable, IExtent//, IRectangle
+    public class Extent : ICloneable, IExtent
     {
         /// <summary>
         /// Creates a new instance of Extent. This introduces no error checking and assumes
@@ -633,10 +633,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// This reads the string and attempts to derive values from the text.
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="result"></param>
-        /// <param name="nameFailed"></param>
-        /// <returns></returns>
         public static bool TryParse(string text, out Extent result, out string nameFailed)
         {
             double xmin, xmax, ymin, ymax, mmin, mmax;
@@ -682,10 +678,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// This centers the X and Y aspect of the extent on the specified center location.
         /// </summary>
-        /// <param name="centerX"></param>
-        /// <param name="centerY"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
         public void SetCenter(double centerX, double centerY, double width, double height)
         {
             MinX = centerX - width / 2;
@@ -822,7 +814,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// This method converts the X and Y text into two doubles.
         /// </summary>
-        /// <returns></returns>
         private static bool TryParseExtremes(string numeric, out double min, out double max)
         {
             string[] res = numeric.Split('|');

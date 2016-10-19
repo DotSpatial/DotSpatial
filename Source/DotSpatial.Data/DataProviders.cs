@@ -17,9 +17,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// DataProviders
-    /// </summary>
     public class DataProviderEventArgs : EventArgs
     {
         #region Private Variables

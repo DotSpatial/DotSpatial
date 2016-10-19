@@ -16,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// DoutherlandHodgmanClipper
-    /// </summary>
     public class SoutherlandHodgman
     {
         const int BOUND_RIGHT = 0;

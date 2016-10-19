@@ -91,7 +91,7 @@
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PackageManager.cs" />
-    <Compile Include="ShowExtensionsDialog.cs" />
+    <Compile Include="ShowExtensionsDialogMode.cs" />
     <Compile Include="AppManager.cs">
       <SubType>Component</SubType>
     </Compile>

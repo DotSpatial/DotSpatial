@@ -21,9 +21,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// DataSet
-    /// </summary>
     public class DataSet : DisposeBase, IDataSet
     {
         #region Fields

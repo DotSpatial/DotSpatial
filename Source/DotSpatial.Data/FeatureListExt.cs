@@ -18,9 +18,6 @@ using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// FeatureListEm
-    /// </summary>
     public static class FeatureListExt
     {
         #region Methods

@@ -107,7 +107,7 @@
     <Compile Include="OpenFileElement.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RasterFormExt.cs" />
+    <Compile Include="RasterExt.cs" />
     <Compile Include="ScrollingControl.cs">
       <SubType>Component</SubType>
     </Compile>

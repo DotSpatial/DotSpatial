@@ -31,11 +31,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the list of tiles.
         /// </summary>
-        List<IImageData> Images
-        {
-            get;
-            set;
-        }
+        List<IImageData> Images { get; set; }
 
         #endregion
     }

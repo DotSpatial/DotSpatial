@@ -26,18 +26,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// The Rectangle representation of the geographic extents in image coordinates
         /// </summary>
-        Rectangle ImageRectangle
-        {
-            get;
-        }
+        Rectangle ImageRectangle { get; }
 
         /// <summary>
         /// The geographic extents used for projection.
         /// </summary>
-        Extent GeographicExtents
-        {
-            get;
-        }
+        Extent GeographicExtents { get; }
 
         #endregion
     }

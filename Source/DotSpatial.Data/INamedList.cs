@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// INamedList
-    /// </summary>
     public interface INamedList
     {
         #region Methods
@@ -75,18 +72,11 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the base name to use for naming items
         /// </summary>
-        string BaseName
-        {
-            get;
-            set;
-        }
+        string BaseName { get; set; }
 
         /// <summary>
         /// Gets the count of the items in the list.
         /// </summary>
-        int Count
-        {
-            get;
-        }
+        int Count { get; }
     }
 }

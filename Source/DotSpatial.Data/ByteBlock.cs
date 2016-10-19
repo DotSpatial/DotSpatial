@@ -17,9 +17,6 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// ByteBlock
-    /// </summary>
     public class ByteBlock
     {
         #region Private Variables

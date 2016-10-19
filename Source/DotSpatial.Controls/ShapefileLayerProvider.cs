@@ -17,9 +17,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// ShapefileLayerProvider
-    /// </summary>
     public class ShapefileLayerProvider : IVectorLayerProvider
     {
         #region Private Variables

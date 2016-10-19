@@ -20,24 +20,18 @@ namespace DotSpatial.Data
     /// </summary>
     public class ExtentArgs : EventArgs
     {
-        private Extent _extent;
-
         /// <summary>
         /// Initializes a new instance of the ExtentArgs class.
         /// </summary>
         /// <param name="value">The value for this event.</param>
         public ExtentArgs(Extent value)
         {
-            _extent = value;
+            Extent = value;
         }
 
         /// <summary>
         /// Gets or sets the Extents for this event.
         /// </summary>
-        public Extent Extent
-        {
-            get { return _extent; }
-            protected set { _extent = value; }
-        }
+        public Extent Extent { get; protected set; }
     }
 }

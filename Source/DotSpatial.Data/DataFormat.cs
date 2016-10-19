@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// DataFormats
-    /// </summary>
     public enum DataFormat
     {
         /// <summary>

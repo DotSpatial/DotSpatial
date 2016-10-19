@@ -146,9 +146,6 @@ namespace DotSpatial.Controls
         /// for doing vector drawing on much larger pages.  The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="targetRectangle"></param>
-        /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
         void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope);
 
         /// <summary>
@@ -240,16 +237,6 @@ namespace DotSpatial.Controls
         /// gets or sets the rectangle in pixel coordinates that will be drawn to the entire screen.
         /// </summary>
         Rectangle View { get; set; }
-
-        ///// <summary>
-        ///// This instructs the MapFrame to abort any current efforts to update the back-buffer so that
-        ///// actions like zooming can work unfettered.
-        ///// </summary>
-        //bool SuspendRefresh
-        //{
-        //    get;
-        //    set;
-        //}
 
         #endregion
     }

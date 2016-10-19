@@ -3,9 +3,6 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    ///
-    /// </summary>
     public static class BinaryReaderWriterExtensions
     {
         /// <summary>

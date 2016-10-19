@@ -62,28 +62,18 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets whether or not the events have been suspended
         /// </summary>
-        bool EventsSuspended
-        {
-            get;
-        }
+        bool EventsSuspended { get; }
 
         /// <summary>
         /// If this is false, then features will be added to the list without copying over attribute Table information.
         /// This will allow the attributes to be loaded in a more on-demand later.
         /// </summary>
-        bool IncludeAttributes
-        {
-            get;
-            set;
-        }
+        bool IncludeAttributes { get; set; }
 
         /// <summary>
         /// Gets the parent featureset for this list.
         /// </summary>
-        IFeatureSet Parent
-        {
-            get;
-        }
+        IFeatureSet Parent { get; }
 
         #endregion
     }

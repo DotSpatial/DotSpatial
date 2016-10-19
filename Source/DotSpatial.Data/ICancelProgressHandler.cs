@@ -22,9 +22,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns true if the progress handler has been notified that the running process should be cancelled
         /// </summary>
-        bool Cancel
-        {
-            get;
-        }
+        bool Cancel { get; }
     }
 }

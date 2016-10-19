@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// CoordinateTypes
-    /// </summary>
     public enum CoordinateType
     {
         /// <summary>
