@@ -176,8 +176,6 @@ namespace DotSpatial.Data
                 int fieldLength = _columns[column].Length;
                 int columnOffset = GetColumnOffset(column);
 
-                char[] characterContent = new char[fieldLength];
-
                 object[] result = new object[rowsPerPage];
                 int outRow = 0;
                 byte[] byteContent = new byte[fieldLength];
@@ -186,9 +184,14 @@ namespace DotSpatial.Data
                     if (row > maxRawRow) break;
                     long offset = _headerLength + 1 + _recordLength * GetFileIndex(row) + columnOffset;
                     myStream.Seek(offset, SeekOrigin.Begin);
-                    myStream.Read(byteContent, 0, fieldLength);
-                    _encoding.GetChars(byteContent, 0, fieldLength, characterContent, 0);
-                    result[outRow++] = ParseColumn(field, row, characterContent, null);
+
+                    int current = 0;
+                    while (current < fieldLength)
+                    {
+                        current += myStream.Read(byteContent, current, fieldLength - current);
+                    }                    
+
+                    result[outRow++] = ParseColumn(field, row, byteContent, 0, fieldLength, null);
                 }
                 return result;
             }
@@ -220,20 +223,20 @@ namespace DotSpatial.Data
                 var fields = new Field[numFields];
                 var result = new object[rowsPerPage, numFields];
                 var outRow = 0;
-                var byteContent = new byte[numFields][];
-                var characterContent = new char[numFields][];
+                int largestField = 0;
                 var columnOffsets = new int[numFields];
                 var columnList = new List<KeyValuePair<int, int>>();
                 for (var fieldNumber = 0; fieldNumber < numFields; fieldNumber++)
                 {
                     var field = _columns[_dataTable.Columns[fieldNamesArray[fieldNumber]].Ordinal];
                     fields[fieldNumber] = field;
-                    byteContent[fieldNumber] = new byte[field.Length];
-                    characterContent[fieldNumber] = new char[field.Length];
+                    if (field.Length > largestField)
+                        largestField = field.Length;
                     var column = _dataTable.Columns[fieldNamesArray[fieldNumber]].Ordinal;
                     columnList.Add(new KeyValuePair<int, int>(column, fieldNumber));
                     columnOffsets[fieldNumber] = GetColumnOffset(column);
                 }
+                var byteContent = new byte[largestField]; // We reuse the byte storage for every single field.
                 columnList.Sort(CompareKvpByKey); // We want to read the attributes in order for each row because it is faster.
 
                 for (var row = lowerPageBoundary; row < lowerPageBoundary + rowsPerPage; row++)
@@ -254,9 +257,13 @@ namespace DotSpatial.Data
                         long offset = _headerLength + 1 + _recordLength * fileIndex + columnOffsets[fieldNumber];
                         myStream.Seek(offset, SeekOrigin.Begin);
                         var field = fields[fieldNumber];
-                        myStream.Read(byteContent[fieldNumber], 0, field.Length);
-                        _encoding.GetChars(byteContent[fieldNumber], 0, field.Length, characterContent[fieldNumber], 0);
-                        result[outRow, fieldNumber] = ParseColumn(field, row, characterContent[fieldNumber], null);
+
+                        int current = 0;
+                        while (current < field.Length)
+                        {
+                            current += myStream.Read(byteContent, current, field.Length - current);
+                        }
+                        result[outRow, fieldNumber] = ParseColumn(field, row, byteContent, 0, field.Length, null);
                     }
                     outRow++;
                 }
@@ -702,14 +709,10 @@ namespace DotSpatial.Data
                 {
                     len = byteContent.Length - start;
                 }
-                if (len < 0) return result;
-                char[] cBuffer = _encoding.GetChars(byteContent, start, len);
+                if (len <= 0) return result;
 
+                result[currentField.ColumnName] = ParseColumn(currentField, currentRow, byteContent, start, len, table);
                 start += currentField.Length;
-
-                if (IsNull(cBuffer)) continue;
-
-                result[currentField.ColumnName] = ParseColumn(currentField, currentRow, cBuffer, table);
             }
 
             return result;
@@ -1243,11 +1246,6 @@ namespace DotSpatial.Data
             writer.Write((byte)0x0D);
         }
 
-        private static bool IsNull(IEnumerable<char> charArray)
-        {
-            return charArray.All(t => t == ' ' || t == '\0');
-        }
-
         private static int CompareKvpByKey(KeyValuePair<int, int> x, KeyValuePair<int, int> y)
         {
             return x.Key - y.Key;
@@ -1268,17 +1266,116 @@ namespace DotSpatial.Data
                 start = _offsets[currentRow];
 
             myReader.BaseStream.Seek(_headerLength + 1 + start, SeekOrigin.Begin);
+
+            byte[] byteBuffer = null;
             for (int col = 0; col < _dataTable.Columns.Count; col++)
             {
                 // find the length of the field.
                 var currentField = _columns[col];
 
-                // read the data.
-                var byteBuffer = myReader.ReadBytes(currentField.Length);
-                char[] cBuffer = _encoding.GetChars(byteBuffer);// Modified on 20 Aug. by Andy
-                if (IsNull(cBuffer)) continue;
+                // reusing the byte buffer, no need to spam the GC
+                if (byteBuffer == null || byteBuffer.Length < currentField.Length)
+                    byteBuffer = new byte[currentField.Length];
 
-                result[currentField.ColumnName] = ParseColumn(currentField, currentRow, cBuffer, _dataTable);
+                // read the data.
+                int current = 0;
+                while (current < currentField.Length)
+                {
+                    current += myReader.Read(byteBuffer, current, currentField.Length - current);
+                }
+
+                result[currentField.ColumnName] = ParseColumn(currentField, currentRow, byteBuffer, 0, currentField.Length, _dataTable);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// This function is the main entry point of parsing the columns.
+        /// </summary>
+        /// <returns>The parsed value of the field or <see cref="DBNull.Value"/>.</returns>
+        private object ParseColumn(Field field, int currentRow, byte[] bBuffer, int startIndex, int length, DataTable table)
+        {
+            Debug.Assert(startIndex >= 0);
+            Debug.Assert(length > 0);
+            Debug.Assert(startIndex + length <= bBuffer.Length);
+
+            object result = DBNull.Value;
+            switch (field.TypeCharacter)
+            {
+                case 'B': // Binary
+                case 'C': // Character
+                case 'D': // Date
+                case 'N': // Numeric
+                case 'L': // Logical
+                case 'M': // Memo
+                case 'G': // OLE
+                case 'F': // Float
+                    // It is a character based column.
+                    char[] cBuffer = _encoding.GetChars(bBuffer, startIndex, length);
+                    result = ParseCharacterColumn(field, currentRow, cBuffer, table);
+                    break;
+                case '@': // Timestamp
+                    // 8 bytes - two longs, first for date, second for time. 
+                    // The date is the number of days since 01/01/4713 BC. 
+                    // Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+                    // So the time are actually milliseconds
+                    if (length >= 8)
+                    {
+                        try
+                        {
+                            int julianDays = 0;
+                            int time = 0;
+                            if (!BitConverter.IsLittleEndian)
+                            {
+                                Array.Reverse(bBuffer, startIndex, 4);
+                                Array.Reverse(bBuffer, startIndex + 4, 4);
+                            }
+                            julianDays = BitConverter.ToInt32(bBuffer, startIndex);
+                            time = BitConverter.ToInt32(bBuffer, startIndex + 4);
+
+                            // now some magic numbers to calculate the actual time.
+                            // got it from Wikipedia
+                            // https://en.wikipedia.org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
+                            int f = julianDays + 1401;
+                            int e = 4 * f * 3;
+                            int g = (e % 1461) / 4;
+                            int h = 5 * g * 2;
+                            int day = (h % 153) / 5 + 1;
+                            int month = ((h / 153 + 2) % 12) + 1;
+                            int year = (e / 1461) - 4716 + (12 + 2 - month) / 12;
+                            DateTime actualDate = new DateTime(year, day, month, new JulianCalendar());
+                            actualDate.AddMilliseconds(time);
+                            result = actualDate;
+                        }
+                        catch (Exception)
+                        {
+                            // Decoding this *** failed. No just return a null value
+                        }
+                    }
+                    break;
+                case 'I': // Long
+                case '+': // Long (Autoincrement)
+                    // The documentation of dBase states:
+                    // 4 bytes. Leftmost bit used to indicate sign, 0 negative.
+                    // Something about this is very off. It makes no sense at all to encode values like this.
+                    if (length >= 4)
+                    {
+                        if (!BitConverter.IsLittleEndian)
+                            Array.Reverse(bBuffer, startIndex, 4);
+                        result = BitConverter.ToInt32(bBuffer, startIndex);
+                    }
+                    break;
+                case 'O': // Double
+                    if (length >= 8)
+                    {
+                        if (!BitConverter.IsLittleEndian)
+                            Array.Reverse(bBuffer, startIndex, 8);
+                        result = BitConverter.ToDouble(bBuffer, startIndex);
+                    }
+                    break;
+                default:
+                    throw new NotSupportedException("Do not know how to parse Field type " + field.TypeCharacter);
             }
 
             return result;
@@ -1292,7 +1389,7 @@ namespace DotSpatial.Data
         /// <param name="cBuffer"></param>
         /// <param name="table"></param>
         /// <returns></returns>
-        private object ParseColumn(Field field, int currentRow, char[] cBuffer, DataTable table)
+        private object ParseCharacterColumn(Field field, int currentRow, char[] cBuffer, DataTable table)
         {
             // If table is null, an exception will be thrown rather than attempting to upgrade the column when a parse error occurs.
             const string parseErrString =
@@ -1303,22 +1400,48 @@ namespace DotSpatial.Data
             switch (field.TypeCharacter)
             {
                 case 'L': // logical data type, one character (T, t, F, f, Y, y, N, n)
+                    // Symbol | Data Type | Description
+                    // -------+-----------+-------------------------------------------------------
+                    //   L    |   Logical | 1 byte - initialized to 0x20 (space) otherwise T or F.
 
                     char tempChar = cBuffer[0];
-                    if ((tempChar == 'T') || (tempChar == 't') || (tempChar == 'Y') || (tempChar == 'y'))
-                        tempObject = true;
-                    else tempObject = false;
+                    switch (tempChar)
+                    {
+                        case ' ': // 0x20
+                            break; // remains DBNull
+                        case 'T':
+                        case 't':
+                        case 'Y': // non-standard
+                        case 'y': // non-standard
+                            tempObject = true;
+                            break;
+                        default:
+                            tempObject = false;
+                            break;
+
+                    }
                     break;
 
                 case 'C': // character record.
+                    // Symbol | Data Type | Description
+                    // -------+-----------+----------------------------------------------------------------------------
+                    //   C    | Character | All OEM code page characters - padded with blanks to the width of the field.
+                    
+                    for (var i = cBuffer.Length - 1; i >= 0; --i)
+                    {
+                        if (cBuffer[i] != ' ')
+                        {
+                            tempObject = new string(cBuffer, 0, i + 1);
+                            break;
+                        }
 
-                    tempObject = new string(cBuffer).Replace("\0", string.Empty).Trim();
+                    }
                     break;
 
-                case 'T':
-                    throw new NotSupportedException();
-
                 case 'D': // date data type.
+                    // Symbol | Data Type | Description
+                    // -------+-----------+----------------------------------------------------------
+                    //   D    |      Date | 8 bytes - date stored as a string in the format YYYYMMDD.
 
                     string tempString = new string(cBuffer, 0, 4);
                     int year;
@@ -1337,14 +1460,25 @@ namespace DotSpatial.Data
                     catch (ArgumentOutOfRangeException)
                     {
                         // Ignore invalid or out of range dates
-                        tempObject = DBNull.Value;
                     }
 
                     break;
 
-                case 'F':
                 case 'B':
+                case 'F':
+                case 'G':
+                case 'M':
                 case 'N': // number - ESRI uses N for doubles and floats
+                    // Symbol | Data Type | Description
+                    // -------+-----------+----------------------------------------------------------
+                    //   B    |    Binary | 10 digits representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
+                    //   F    |     Float | Number stored as a string, right justified, and padded with blanks to the width of the field.
+                    //   G    |       OLE | 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
+                    //   M    |      Memo | 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
+                    //   N    |   Numeric | Number stored as a string, right justified, and padded with blanks to the width of the field.
+
+                    // The Binary, Memo and OLE Fields actually contain pointers to a DBT File. But these files are
+                    // currently not suppoted, so we just load theses fields as numbers.
 
                     tempObject = ParseNumericColumn(field, currentRow, cBuffer, table, parseErrString);
                     break;
@@ -1355,17 +1489,45 @@ namespace DotSpatial.Data
             return tempObject;
         }
 
+        /// <summary>
+        /// Parses numeric columns that contain the numbers stored as numeric values astrings, right justified and
+        /// padded with blanks. Each field is expected to start with a space or a astrisk indicating if the value is
+        /// valid or <c>null</c>.
+        /// </summary>
         private object ParseNumericColumn(Field field, int currentRow, char[] cBuffer, DataTable table, string parseErrString)
         {
-            string tempStr = new string(cBuffer);
+            // Data records are preceded by one byte, that is, a space (0x20) if the record is not deleted, an asterisk (0x2A)
+            // By this reference, some application (e.g. quantum GIS) fill fields like this that are a null value with
+            // asterisk characters. To handle cases like this, the fields with * values are filtered. Doing to like
+            // this has no negative impact on handling the numbers, since number fields should never start with a
+            // asterisk under normal conditions.
+            if (cBuffer[0] == '*')
+            {
+                return DBNull.Value;
+            }
+
+            string tempStr = null;
+            for (var i = 0; i < cBuffer.Length; ++i)
+            {
+                if (cBuffer[i] != ' ')
+                {
+                    tempStr = new string(cBuffer, i, cBuffer.Length - i);
+                    break;
+                }
+            }
+            if (tempStr == null) // Removing the padding yielded remaining string. This column is empty.
+            {
+                return DBNull.Value;
+            }
+            
             object tempObject = DBNull.Value;
             Type t = field.DataType;
-            var errorMessage = new Lazy<string>(() => String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t));
+            var errorMessage = new Lazy<string>(() => string.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t));
 
             if (t == typeof(byte))
             {
                 byte temp;
-                if (byte.TryParse(tempStr.Trim(), out temp))
+                if (byte.TryParse(tempStr, out temp))
                     tempObject = temp;
                 else
                 {
@@ -1375,7 +1537,7 @@ namespace DotSpatial.Data
                     if (null == table)
                         throw new InvalidDataException(errorMessage.Value);
                     short upTest;
-                    if (short.TryParse(tempStr.Trim(), out upTest))
+                    if (short.TryParse(tempStr, out upTest))
                     {
                         // Since we were successful, we should upgrade the field to storing short values instead of byte values.
                         UpgradeColumn(field, typeof(short), currentRow, field.Ordinal, table);
@@ -1391,14 +1553,14 @@ namespace DotSpatial.Data
             else if (t == typeof(short))
             {
                 short temp;
-                if (short.TryParse(tempStr.Trim(), out temp))
+                if (short.TryParse(tempStr, out temp))
                     tempObject = temp;
                 else
                 {
                     if (null == table)
                         throw new InvalidDataException(errorMessage.Value);
                     int upTest;
-                    if (int.TryParse(tempStr.Trim(), out upTest))
+                    if (int.TryParse(tempStr, out upTest))
                     {
                         UpgradeColumn(field, typeof(int), currentRow, field.Ordinal, table);
                         tempObject = upTest;
@@ -1413,14 +1575,14 @@ namespace DotSpatial.Data
             else if (t == typeof(int))
             {
                 int temp;
-                if (int.TryParse(tempStr.Trim(), out temp))
+                if (int.TryParse(tempStr, out temp))
                     tempObject = temp;
                 else
                 {
                     if (null == table)
                         throw new InvalidDataException(errorMessage.Value);
                     long upTest;
-                    if (long.TryParse(tempStr.Trim(), out upTest))
+                    if (long.TryParse(tempStr, out upTest))
                     {
                         UpgradeColumn(field, typeof(long), currentRow, field.Ordinal, table);
                         tempObject = upTest;
@@ -1435,7 +1597,7 @@ namespace DotSpatial.Data
             else if (t == typeof(long))
             {
                 long temp;
-                if (long.TryParse(tempStr.Trim(), out temp))
+                if (long.TryParse(tempStr, out temp))
                     tempObject = temp;
                 else
                 {
