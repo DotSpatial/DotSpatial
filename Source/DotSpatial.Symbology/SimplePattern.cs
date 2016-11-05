@@ -18,9 +18,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SimplePattern
-    /// </summary>
     public class SimplePattern : Pattern, ISimplePattern
     {
         #region Private Variables

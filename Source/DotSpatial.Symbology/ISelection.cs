@@ -11,14 +11,40 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using DotSpatial.Data;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    public interface ISelection : IChangeable, IAttributeSource
+    public interface ISelection : IAttributeSource
     {
+          /// <summary>
+        /// Occurs when members are added to or removed from this collection.  If SuspendChanges
+        /// is called, this will temporarilly prevent this event from firing, until ResumeEvents
+        /// has been called.
+        /// </summary>
+        event EventHandler Changed;
+
+        /// <summary>
+        /// Resumes the events.  If any changes occured during the period of time when
+        /// the events were suspended, this will automatically fire the chnaged event.
+        /// </summary>
+        void ResumeChanges();
+
+        /// <summary>
+        /// Causes this filter collection to suspend the Changed event, so that
+        /// it will only be fired once after a series of updates.
+        /// </summary>
+        void SuspendChanges();
+
+        /// <summary>
+        /// To suspend events, call SuspendChanges.  Then to resume events, call ResumeEvents.  If the
+        /// suspension is greater than 0, then events are suspended.
+        /// </summary>
+        bool ChangesSuspended { get; }
+
         /// <summary>
         /// Gets the integer count of the members in the collection
         /// </summary>

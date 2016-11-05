@@ -18,9 +18,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// AffineTransform
-    /// </summary>
     public class AffineTransform
     {
         #region Private Variables

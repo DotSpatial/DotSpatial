@@ -15,17 +15,8 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// TiledImageLayer
-    /// </summary>
-    public class TiledImageLayer : Layer, ITiledImageLayer
+    public class TiledImageLayer : Layer
     {
-        #region Private Variables
-
-        private ITiledImage _dataSet;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -33,12 +24,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         public TiledImageLayer(ITiledImage dataset)
         {
-            _dataSet = dataset;
+            DataSet = dataset;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -49,20 +36,13 @@ namespace DotSpatial.Symbology
         /// </summary>
         public override Extent Extent
         {
-            get
-            {
-                return _dataSet.Extent;
-            }
+            get { return DataSet.Extent; }
         }
 
         /// <summary>
         /// The tiled image dataset
         /// </summary>
-        public new ITiledImage DataSet
-        {
-            get { return _dataSet; }
-            set { _dataSet = value; }
-        }
+        public new ITiledImage DataSet { get; set; }
 
         #endregion
     }

@@ -15,15 +15,8 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// UnspecifiedFeaturetypeException
-    /// </summary>
     public class UnspecifiedFeaturetypeException : ApplicationException
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -33,14 +26,6 @@ namespace DotSpatial.Data
             : base(DataStrings.FeaturetypeUnspecified)
         {
         }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SymbolTypes
-    /// </summary>
     public enum SymbolType
     {
         /// <summary>
