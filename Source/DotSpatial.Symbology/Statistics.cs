@@ -16,9 +16,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Statistics
-    /// </summary>
     public class Statistics
     {
         #region Private Variables

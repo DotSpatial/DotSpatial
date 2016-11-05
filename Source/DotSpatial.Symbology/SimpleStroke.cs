@@ -19,11 +19,7 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SimpleStroke
-    /// </summary>
-    [Serializable,
-    XmlRoot("SimpleStroke")]
+    [Serializable, XmlRoot("SimpleStroke")]
     public class SimpleStroke : Stroke, ISimpleStroke
     {
         #region Private Variables

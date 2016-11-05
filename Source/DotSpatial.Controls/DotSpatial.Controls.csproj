@@ -138,7 +138,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="IMapView.cs" />
     <Compile Include="LayoutBitmap.cs" />
     <Compile Include="LayoutControl.cs">
       <SubType>UserControl</SubType>

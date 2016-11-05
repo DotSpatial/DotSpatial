@@ -19,9 +19,6 @@ using System.Text;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// BgdRaster
-    /// </summary>
     public class BgdRaster<T> : Raster<T> where T : IComparable<T>, IEquatable<T>
     {
         #region Constructors

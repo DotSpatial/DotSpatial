@@ -17,7 +17,7 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    public class ShapefileLayerProvider : IVectorLayerProvider
+    public class ShapefileLayerProvider : ILayerProvider
     {
         #region Private Variables
 
@@ -30,19 +30,21 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Not Implemented yet
+        /// This create new method implies that this provider has the priority for creating a new file.
+        /// An instance of the dataset should be created and then returned.  By this time, the fileName
+        /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="featureType"></param>
-        /// <param name="inRam"></param>
-        /// <param name="container"></param>
-        /// <param name="progressHandler"></param>
-        /// <returns></returns>
+        /// <param name="fileName">The string fileName for the new instance</param>
+        /// <param name="featureType">Point, Line, Polygon etc.  Sometimes this will be specified, sometimes it will be "Unspecified"</param>
+        /// <param name="inRam">Boolean, true if the dataset should attempt to store data entirely in ram</param>
+        ///<param name="container">The container for this layer.  This can be null.</param>
+        /// <param name="progressHandler">An IProgressHandler for status messages.</param>
+        /// <returns>An IRaster</returns>
         public IFeatureLayer CreateNew(string fileName, FeatureType featureType, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             ShapefileDataProvider dp = new ShapefileDataProvider();
-            IFeatureSet fs = dp.CreateNew(fileName, featureType, inRam, progressHandler);
             if (progressHandler == null) progressHandler = LayerManager.DefaultLayerManager.ProgressHandler;
+            IFeatureSet fs = dp.CreateNew(fileName, featureType, inRam, progressHandler);
 
             if (fs.FeatureType == FeatureType.Line)
             {

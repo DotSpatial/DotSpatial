@@ -15,9 +15,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SelectionEM
-    /// </summary>
     public static class SelectionEM
     {
         #region Methods
