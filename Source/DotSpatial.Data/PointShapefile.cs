@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
+using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -226,17 +227,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves the shapefile to a different fileName, but still as a shapefile.  This method does not support saving to
-        /// any other file format.
+        /// update header with correct shape type, returns associated word size
         /// </summary>
-        /// <param name="fileName">The string fileName to save as</param>
-        /// <param name="overwrite">A boolean that is true if the file should be overwritten</param>
-        public override void SaveAs(string fileName, bool overwrite)
+        /// <returns>wordsize : bytes requied for each shape</returns>
+        internal int SetHeaderTypeAndWordSize()
         {
-            EnsureValidFileToSave(fileName, overwrite);
-            Filename = fileName;
-
-            // Set Header.ShapeType before setting extent.
             // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
             int wordSize = 14; // 3 int(2) and 2 double(4)
             if (CoordinateType == CoordinateType.Regular)
@@ -253,10 +248,55 @@ namespace DotSpatial.Data
                 Header.ShapeType = ShapeType.PointZ;
                 wordSize = 22; // 3 int(2), 4 double (4)
             }
+            return wordSize;
+        }
+
+        /// <summary>
+        /// Saves the shapefile to a different fileName, but still as a shapefile.  This method does not support saving to
+        /// any other file format.
+        /// </summary>
+        /// <param name="fileName">The string fileName to save as</param>
+        /// <param name="overwrite">A boolean that is true if the file should be overwritten</param>
+        public override void SaveAs(string fileName, bool overwrite)
+        {
+            EnsureValidFileToSave(fileName, overwrite);
+            Filename = fileName;
+
+            // Set Header.ShapeType before setting extent.
+            int wordSize = SetHeaderTypeAndWordSize();
 
             InvalidateEnvelope();
             Header.SetExtent(Extent);
+            SetHeaderFileLengths(wordSize);
 
+            Header.SaveAs(Filename);
+            using (var shpStream = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000))
+            {
+                using (var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000))
+                {
+
+                    // Special slightly faster writing for index mode
+                    if (IndexMode)
+                    {
+                        PopulateShpAndShxStreamsIndexed(wordSize, shpStream, shxStream);
+                    }
+                    else
+                    {
+                        PopulateShpAndShxStreamsNotIndexed(wordSize, shpStream, shxStream);
+                    }
+                }
+            }
+
+            UpdateAttributes();
+            SaveProjection();
+        }
+
+        /// <summary>
+        /// Calculates expected fie size and updates header object
+        /// </summary>
+        /// <param name="wordSize">size in bytes of each shape</param>
+        private void SetHeaderFileLengths(int wordSize)
+        {
             if (IndexMode)
             {
                 Header.ShxLength = ShapeIndices.Count * 4 + 50;
@@ -267,61 +307,103 @@ namespace DotSpatial.Data
                 Header.ShxLength = Features.Count * 4 + 50;
                 Header.FileLength = Features.Count * wordSize + 50;
             }
+        }
 
-            Header.SaveAs(Filename);
-            var shpStream = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
-            var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
+        /// <summary>
+        /// write contents of shp and shx files to streams NONINDEX MODE
+        /// </summary>
+        /// <param name="wordSize">sixze in bytes of each shape</param>
+        /// <param name="shpStream">stream representation of shape file </param>
+        /// <param name="shxStream">stream representation of shx file </param>
+        private void PopulateShpAndShxStreamsNotIndexed(int wordSize, Stream shpStream, Stream shxStream)
+        {
+            int fid = 0;
+            foreach (IFeature f in Features)
+            {
+                Coordinate c = f.Geometry.Coordinates[0];
+                shpStream.WriteBe(fid + 1);
+                shpStream.WriteBe(wordSize - 4);
+                shxStream.WriteBe(50 + fid * wordSize);
+                shxStream.WriteBe(wordSize - 4);
+                shpStream.WriteLe((int)Header.ShapeType);
+                if (Header.ShapeType == ShapeType.NullShape)
+                {
+                    continue;
+                }
+                shpStream.WriteLe(c.X);
+                shpStream.WriteLe(c.Y);
+                if (Header.ShapeType == ShapeType.PointZ)
+                {
+                    shpStream.WriteLe(c.Z);
+                }
+                if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
+                {
+                    shpStream.WriteLe(c.M);
+                }
+                fid++;
+            }
+        }
 
+        /// <summary>
+        /// write contents of shp and shx files to streams INDEX MODE/// 
+        /// </summary>
+        /// <param name="wordSize">sixze in bytes of each shape</param>
+        /// <param name="shpStream">stream representation of shape file </param>
+        /// <param name="shxStream">stream representation of shx file </param>
+        private void PopulateShpAndShxStreamsIndexed(int wordSize, Stream shpStream, Stream shxStream)
+        {
+            for (int shp = 0; shp < ShapeIndices.Count; shp++)
+            {
+                shpStream.WriteBe(shp + 1);
+                shpStream.WriteBe(wordSize - 4); // shape word size without 4 shapeHeader words.
+                shxStream.WriteBe(50 + shp * wordSize);
+                shxStream.WriteBe(wordSize - 4);
+                shpStream.WriteLe((int)Header.ShapeType);
+                shpStream.WriteLe(Vertex[shp * 2]);
+                shpStream.WriteLe(Vertex[shp * 2 + 1]);
+                if (Z != null) shpStream.WriteLe(Z[shp]);
+                if (M != null) shpStream.WriteLe(M[shp]);
+            }
+        }
+
+        /// <summary>
+        /// exports current shapefile as a zip archive in memory
+        /// </summary>
+        /// <param name="shapefilename"></param>
+        /// <returns></returns>
+        public override ZipFile ExportZipFile(string shapefilename)
+        {
+            // Set Header.ShapeType before setting extent.
+            // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
+            int wordSize = SetHeaderTypeAndWordSize();
+
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
+
+            SetHeaderFileLengths(wordSize);
+
+            ZipFile package = null;
+
+            // get the streams with headers 
+
+            var shpStream = Header.ExportSHPToStream();
+
+            var shxStream = Header.ExportSHXToStream();
             // Special slightly faster writing for index mode
             if (IndexMode)
             {
-                for (int shp = 0; shp < ShapeIndices.Count; shp++)
-                {
-                    shpStream.WriteBe(shp + 1);
-                    shpStream.WriteBe(wordSize - 4); // shape word size without 4 shapeHeader words.
-                    shxStream.WriteBe(50 + shp * wordSize);
-                    shxStream.WriteBe(wordSize - 4);
-                    shpStream.WriteLe((int)Header.ShapeType);
-                    shpStream.WriteLe(Vertex[shp * 2]);
-                    shpStream.WriteLe(Vertex[shp * 2 + 1]);
-                    if (Z != null) shpStream.WriteLe(Z[shp]);
-                    if (M != null) shpStream.WriteLe(M[shp]);
-                }
+                PopulateShpAndShxStreamsIndexed(wordSize, shpStream, shxStream);
             }
             else
             {
-                int fid = 0;
-                foreach (IFeature f in Features)
-                {
-                    Coordinate c = f.Geometry.Coordinates[0];
-                    shpStream.WriteBe(fid + 1);
-                    shpStream.WriteBe(wordSize - 4);
-                    shxStream.WriteBe(50 + fid * wordSize);
-                    shxStream.WriteBe(wordSize - 4);
-                    shpStream.WriteLe((int)Header.ShapeType);
-                    if (Header.ShapeType == ShapeType.NullShape)
-                    {
-                        continue;
-                    }
-                    shpStream.WriteLe(c.X);
-                    shpStream.WriteLe(c.Y);
-                    if (Header.ShapeType == ShapeType.PointZ)
-                    {
-                        shpStream.WriteLe(c.Z);
-                    }
-                    if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
-                    {
-                        shpStream.WriteLe(c.M);
-                    }
-                    fid++;
-                }
+                PopulateShpAndShxStreamsNotIndexed(wordSize, shpStream, shxStream);
             }
 
-            shpStream.Close();
-            shxStream.Close();
-
+            // remove this call to update attributes //?
             UpdateAttributes();
-            SaveProjection();
+
+            package = PackageZipOuter(shapefilename, shpStream, shxStream);
+            return package; 
         }
     }
 }

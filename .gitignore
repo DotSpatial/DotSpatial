@@ -190,3 +190,5 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+/Source/poly.playlist
+/Source/DotSpatial.Data/ClassDiagram1.cd

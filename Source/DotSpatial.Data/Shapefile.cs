@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
+using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -435,7 +436,29 @@ namespace DotSpatial.Data
                 bw.Write(headerData);
             }
         }
+        /// <summary>
+        /// Operates on abritrary stream.
+        /// This doesn't rewrite the entire header or erase the existing content.  This simply replaces the file length
+        /// in the file with the new file length.  This is generally because we want to write the header first,
+        /// but don't know the total length of a new file until cycling through the entire file.  It is easier, therefore
+        /// to update the length after editing.
+        /// Note: performs seek
+        /// </summary>
+        /// <param name="stream">stream to edit</param>
+        /// <param name="length">The integer length of the file in 16-bit words</param>
+        public static void WriteFileLength (Stream stream , int length)
+        {
+            stream.Seek(0, SeekOrigin.Begin);
+            byte[] headerData = new byte[28];
 
+            WriteBytes(headerData, 0, 9994, false);          //  Byte 0          File Code       9994        Integer     Big
+            // Bytes 4 - 20 are unused
+            WriteBytes(headerData, 24, length, false);       //  Byte 24         File Length     File Length Integer     Big
+            var bw = new BinaryWriter(stream);
+            // no using to avoid closing the stream 
+            // Actually write our byte array to the file
+            bw.Write(headerData);
+        }
         /// <summary>
         /// Reads 4 bytes from the specified byte array starting with offset.
         /// If IsBigEndian = true, then this flips the order of the byte values.
@@ -617,7 +640,34 @@ namespace DotSpatial.Data
                     return;
                 }
             }
+            //System.Data.DataRow drtemp = Attributes.Table.Rows[0];
+            VerifyOrCreateAttributes();
+            if (Attributes != null) Attributes.SaveAs(Path.ChangeExtension(Filename, "dbf"), true);
+        }
+        
+        /// <summary>
+        /// returns the current state as a DBF formated stream
+        /// </summary>
+        /// <returns></returns>
+        protected Stream ExportAttributesDBFToStream()
+        {
+            VerifyOrCreateAttributes();
+            //System.Data.DataRow drtemp = Attributes.Table.Rows[0];
+            if (Attributes != null)
+            {
+                return Attributes.ExportDBFToStream();
+            }
+            else
+            {
+                return null; 
+            }
+        }
 
+        /// <summary>
+        /// creates attributes table if it does not already exist
+        /// </summary>
+        private void VerifyOrCreateAttributes()
+        {
             if (Attributes != null && Attributes.Table != null && Attributes.Table.Columns.Count > 0)
             {
                 // The attributes have been loaded and will now replace the ones in the file.
@@ -626,22 +676,18 @@ namespace DotSpatial.Data
             {
                 // Only add an FID field if there are no attributes at all.
                 DataTable newTable = new DataTable();
-                newTable.Columns.Add("FID");
+        newTable.Columns.Add("FID");
                 //for (int i = 0; i < Features.Count; i++)
                 //Added by JamesP@esdm.co.uk - Index mode has no attributes and no features - so Features.count is Null and so was not adding any rows and failing
                 int iNumRows = IndexMode ? ShapeIndices.Count : Features.Count;
-                for (int i = 0; i < iNumRows; i++)
+                for (int i = 0; i<iNumRows; i++)
                 {
                     DataRow dr = newTable.NewRow();
-                    dr["FID"] = i;
+        dr["FID"] = i;
                     newTable.Rows.Add(dr);
                 }
                 if (Attributes != null) Attributes.Table = newTable;
             }
-
-            //System.Data.DataRow drtemp = Attributes.Table.Rows[0];
-
-            if (Attributes != null) Attributes.SaveAs(Path.ChangeExtension(Filename, "dbf"), true);
         }
 
         /// <summary>
@@ -772,6 +818,84 @@ namespace DotSpatial.Data
             Header.SetExtent(Extent);
             Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
             Header.SaveAs(fileName);
+        }
+
+        protected ZipFile PackageZipOuter(string shp_name, Stream shpStream, Stream shxStream)
+        {
+            if (!string.Equals(Path.GetExtension(shp_name), ".shp", StringComparison.InvariantCultureIgnoreCase))
+            {
+                shp_name = Path.Combine(shp_name, ".shp");
+            }
+            string shx_name = Path.ChangeExtension(shp_name, "shx");
+            string proj_name = Path.ChangeExtension(shp_name, "proj");
+            string dbf_name = Path.ChangeExtension(shp_name, "dbf");
+
+            Stream dbf_stream = ExportAttributesDBFToStream();
+
+            Stream proj_stream = null;
+            //SaveProjection();
+            if (Projection != null)
+            {
+                proj_stream = new MemoryStream();
+                StreamWriter proj_writer = new StreamWriter(proj_stream);
+                proj_writer.WriteLine(Projection.ToEsriString());
+                proj_writer.Flush();
+
+            }
+
+            ZipFile z = null;
+            if (proj_stream == null)
+            {
+
+                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
+                new NamedStream { Name = shx_name, Stream = shxStream },
+                new NamedStream { Name = dbf_name, Stream = dbf_stream }
+                );
+            }
+            else
+            {
+                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
+                new NamedStream { Name = shx_name, Stream = shxStream },
+                new NamedStream { Name = dbf_name, Stream = dbf_stream },
+                new NamedStream { Name = proj_name, Stream = proj_stream }
+                );
+            }
+            return z;
+        }
+
+        /// <summary>
+        /// package a number of named streams into a zip archive with matching files
+        /// </summary>
+        /// <param name="streams"></param>
+        /// <returns></returns>
+        internal static ZipFile PackageZip(params NamedStream[] streams)
+        {
+            ZipFile output = new ZipFile();
+            foreach (NamedStream file in streams)
+            {
+                file.Stream.Seek(0, SeekOrigin.Begin);
+                output.AddEntry(file.Name, file.Stream);
+            }
+            return output;
+        }
+        /// <summary>
+        /// Used for creating files within the zip archive 
+        /// </summary>
+        internal class NamedStream
+        {
+            /// <summary>
+            /// name of file to create within the archive 
+            /// </summary>
+            public string Name { get; set; }
+            /// <summary>
+            /// contents of the file 
+            /// </summary>
+            public Stream Stream { get; set; }
+        }
+        internal class StreamLengthPair
+        {
+            internal int ShpLength { get; set; }
+            internal int ShxLength { get; set; }
         }
     }
 }

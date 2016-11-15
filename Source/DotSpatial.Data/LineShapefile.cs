@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using GeoAPI.Geometries;
+using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -386,17 +387,11 @@ namespace DotSpatial.Data
 
             progressMeter.Reset();
         }
-
         /// <summary>
-        /// Saves the file to a new location
+        /// update header with correct shape type, returns associated word size
         /// </summary>
-        /// <param name="fileName">The fileName to save</param>
-        /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
-        public override void SaveAs(string fileName, bool overwrite)
+        internal void SetHeaderShapeType()
         {
-            EnsureValidFileToSave(fileName, overwrite);
-            Filename = fileName;
-
             // Set ShapeType before setting header.
             if (CoordinateType == CoordinateType.Regular)
             {
@@ -410,18 +405,61 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.PolyLineZ;
             }
+        }
+
+        /// <summary>
+        /// Saves the file to a new location
+        /// </summary>
+        /// <param name="fileName">The fileName to save</param>
+        /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
+        public override void SaveAs(string fileName, bool overwrite)
+        {
+            EnsureValidFileToSave(fileName, overwrite);
+            Filename = fileName;
+
+            SetHeaderShapeType(); 
+
             HeaderSaveAs(fileName);
 
             if (IndexMode)
             {
-                SaveAsIndexed(Filename);
-                return;
-            }
+                FileStream shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
+                FileStream shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
 
-            var bbWriter = new BufferedBinaryWriter(Filename);
-            var indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
+                var streamLengthPair = PopulateShpAndShxStreamsIndexed(shpStream, shxStream);
+
+                shpStream.Close();
+                shxStream.Close();
+                //offset += 4;
+                WriteFileLength(fileName, streamLengthPair.ShpLength);
+                WriteFileLength(Header.ShxFilename, streamLengthPair.ShxLength);
+                UpdateAttributes();
+                SaveProjection();
+            }
+            else
+            {
+                var shpWriter = new BufferedBinaryWriter(Filename);
+                var shxWriter = new BufferedBinaryWriter(Header.ShxFilename);
+                var streamLengthPair = PopulateShpAndShxStreamsNotIndexed(shpWriter, shxWriter);
+                shpWriter.Close();
+                shxWriter.Close();
+                WriteFileLength(Filename, streamLengthPair.ShpLength);
+                WriteFileLength(Header.ShxFilename, streamLengthPair.ShxLength);
+                UpdateAttributes();
+                SaveProjection();
+            }
+        }
+
+        /// <summary>
+        /// populates shp and shx file via buffered binary writers for NONINDEXed mode
+        /// </summary>
+        /// <param name="shpWriter"></param>
+        /// <param name="shxWriter"></param>
+        /// <returns>lengths of streams in bytes</returns>
+        private StreamLengthPair PopulateShpAndShxStreamsNotIndexed(BufferedBinaryWriter bbWriter, BufferedBinaryWriter indexWriter)
+        {
             int fid = 0;
-            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
+            int offset = 50;
             int contentLength = 0;
 
             foreach (IFeature f in Features)
@@ -479,7 +517,7 @@ namespace DotSpatial.Data
                 bbWriter.Write(env.MaxY);            // Byte 36   Ymax          Double      1           Little
                 bbWriter.Write(parts.Count);              // Byte 44   NumParts      Integer     1           Little
                 bbWriter.Write(points.Count);             // Byte 48   NumPoints     Integer     1           Little
-                // Byte 52   Parts         Integer     NumParts    Little
+                                                          // Byte 52   Parts         Integer     NumParts    Little
                 foreach (int iPart in parts)
                 {
                     bbWriter.Write(iPart);
@@ -533,23 +571,21 @@ namespace DotSpatial.Data
                 offset += 4; // header bytes
             }
 
-            bbWriter.Close();
-            indexWriter.Close();
-
             offset += contentLength;
             //offset += 4;
-            WriteFileLength(Filename, offset);
-            WriteFileLength(Header.ShxFilename, 50 + fid * 4);
-            UpdateAttributes();
-            SaveProjection();
+            return new StreamLengthPair() { ShpLength = offset, ShxLength = 50 + fid * 4 };
         }
-
-        private void SaveAsIndexed(string fileName)
+        
+        /// <summary>
+        /// populate shp and shx streams for INDEXED mode
+        /// </summary>
+        /// <param name="shpStream">ShpStream</param>
+        /// <param name="shxStream">ShxStream</param>
+        /// <returns>lengths of streams in bytes</returns>
+        private StreamLengthPair PopulateShpAndShxStreamsIndexed(Stream shpStream, Stream shxStream )
         {
-            FileStream shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
-            FileStream shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
             int fid = 0;
-            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
+            int offset = 50;
             int contentLength = 0;
 
             foreach (ShapeRange shape in ShapeIndices)
@@ -591,62 +627,90 @@ namespace DotSpatial.Data
                 shpStream.WriteBe(fid + 1);                     // Byte 0       Record Number       Integer     1           Big
                 shpStream.WriteBe(contentLength);               // Byte 4       Content Length      Integer     1           Big
                 shpStream.WriteLe((int)shape.ShapeType);        // Byte 8       Shape Type 3        Integer     1           Little
-                if (shape.ShapeType == ShapeType.NullShape)
+                if (shape.ShapeType != ShapeType.NullShape)
                 {
-                    goto fin;
-                }
-
-                shpStream.WriteLe(shape.Extent.MinX);             // Byte 12      Xmin                Double      1           Little
-                shpStream.WriteLe(shape.Extent.MinY);             // Byte 20      Ymin                Double      1           Little
-                shpStream.WriteLe(shape.Extent.MaxX);             // Byte 28      Xmax                Double      1           Little
-                shpStream.WriteLe(shape.Extent.MaxY);             // Byte 36      Ymax                Double      1           Little
-                shpStream.WriteLe(shape.NumParts);                 // Byte 44      NumParts            Integer     1           Little
-                shpStream.WriteLe(shape.NumPoints);                // Byte 48      NumPoints           Integer     1           Little
-                // Byte 52      Parts               Integer     NumParts    Little
-                foreach (PartRange part in shape.Parts)
-                {
-                    shpStream.WriteLe(part.PartOffset);
-                }
-                int start = shape.StartIndex;
-                int count = shape.NumPoints;
-                shpStream.WriteLe(Vertex, start * 2, count * 2);            // Byte X       Points              Point       NumPoints   Little
-
-                if (Header.ShapeType == ShapeType.PolyLineZ)
-                {
-                    double[] shapeZ = new double[count];
-                    Array.Copy(Z, start, shapeZ, 0, count);
-                    shpStream.WriteLe(shapeZ.Min());
-                    shpStream.WriteLe(shapeZ.Max());
-                    shpStream.WriteLe(Z, start, count);
-                }
-
-                if (Header.ShapeType == ShapeType.PolyLineM || Header.ShapeType == ShapeType.PolyLineZ)
-                {
-                    if (M != null && M.Length >= start + count)
+                    shpStream.WriteLe(shape.Extent.MinX);             // Byte 12      Xmin                Double      1           Little
+                    shpStream.WriteLe(shape.Extent.MinY);             // Byte 20      Ymin                Double      1           Little
+                    shpStream.WriteLe(shape.Extent.MaxX);             // Byte 28      Xmax                Double      1           Little
+                    shpStream.WriteLe(shape.Extent.MaxY);             // Byte 36      Ymax                Double      1           Little
+                    shpStream.WriteLe(shape.NumParts);                 // Byte 44      NumParts            Integer     1           Little
+                    shpStream.WriteLe(shape.NumPoints);                // Byte 48      NumPoints           Integer     1           Little
+                                                                       // Byte 52      Parts               Integer     NumParts    Little
+                    foreach (PartRange part in shape.Parts)
                     {
-                        double[] shapeM = new double[count];
-                        Array.Copy(M, start, shapeM, 0, count);
-                        shpStream.WriteLe(shapeM.Min());
-                        shpStream.WriteLe(shapeM.Max());
-                        shpStream.WriteLe(M, start, count);
+                        shpStream.WriteLe(part.PartOffset);
+                    }
+                    int start = shape.StartIndex;
+                    int count = shape.NumPoints;
+                    shpStream.WriteLe(Vertex, start * 2, count * 2);            // Byte X       Points              Point       NumPoints   Little
+
+                    if (Header.ShapeType == ShapeType.PolyLineZ)
+                    {
+                        double[] shapeZ = new double[count];
+                        Array.Copy(Z, start, shapeZ, 0, count);
+                        shpStream.WriteLe(shapeZ.Min());
+                        shpStream.WriteLe(shapeZ.Max());
+                        shpStream.WriteLe(Z, start, count);
+                    }
+
+                    if (Header.ShapeType == ShapeType.PolyLineM || Header.ShapeType == ShapeType.PolyLineZ)
+                    {
+                        if (M != null && M.Length >= start + count)
+                        {
+                            double[] shapeM = new double[count];
+                            Array.Copy(M, start, shapeM, 0, count);
+                            shpStream.WriteLe(shapeM.Min());
+                            shpStream.WriteLe(shapeM.Max());
+                            shpStream.WriteLe(M, start, count);
+                        }
                     }
                 }
-
-            fin:
 
                 fid++;
                 offset += 4; // header bytes
             }
 
-            shpStream.Close();
-            shxStream.Close();
-
             offset += contentLength;
-            //offset += 4;
-            WriteFileLength(fileName, offset);
-            WriteFileLength(Header.ShxFilename, 50 + fid * 4);
-            UpdateAttributes();
-            SaveProjection();
+
+            return new StreamLengthPair() { ShpLength = offset, ShxLength = 50 + fid * 4 };
         }
+
+        /// <summary>
+        /// Exports current shapefile as a zip archive in memory
+        /// </summary>
+        /// <param name="shapefilename"></param>
+        /// <returns></returns>
+        public override ZipFile ExportZipFile(string shapefilename)
+        {
+            SetHeaderShapeType();
+
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
+            Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
+
+            // get the streams with headers 
+            Stream shpStream = Header.ExportSHPToStream();
+            Stream shxStream = Header.ExportSHXToStream();
+
+            if (IndexMode)
+            {
+                var streamLengthPair = PopulateShpAndShxStreamsIndexed(shpStream, shxStream);
+                // write file length 
+                WriteFileLength(shpStream, streamLengthPair.ShpLength);
+                WriteFileLength(shxStream, streamLengthPair.ShxLength);
+            }
+            else
+            {
+                var shpWriter = new BufferedBinaryWriter(shpStream);
+                var shxWriter = new BufferedBinaryWriter(shxStream);
+                var streamLengthPair = PopulateShpAndShxStreamsNotIndexed(shpWriter, shxWriter);
+                // write file length 
+                WriteFileLength(shpStream, streamLengthPair.ShpLength);
+                WriteFileLength(shxStream, streamLengthPair.ShxLength);
+            }
+
+            return PackageZipOuter(shapefilename, shpStream, shxStream);
+        }
+
     }
 }

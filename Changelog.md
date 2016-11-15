@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - "Add layer to Map"-checkbox to the ToolDialog (#147)
 - CopySubset overloads with withAttributes parameters
 - Jenks Natural Breaks support in categories binning.
+- Constructing Shapefiles in memory as single zip archives (#885)
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11

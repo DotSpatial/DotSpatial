@@ -68,6 +68,11 @@ namespace DotSpatial.Data
         /// Indicates that the Fill methode is called from inside itself.
         /// </summary>
         private bool _isFilling;
+        /// <summary>
+        /// set true to make _writer operate on _inMemoryStream
+        /// </summary>
+        private bool _inMemoryMode = false;
+        private Stream _inMemoryStream = null;
         #endregion
 
         #region Constructors
@@ -284,9 +289,25 @@ namespace DotSpatial.Data
             }
         }
 
+        /// <summary>
+        /// returns Binary writer on _filename, unless _inMemoryMode in which case returns binary writer on _inMemoryStream
+        /// _inMemoryMode is used by zip file export
+        /// </summary>
+        /// <returns></returns>
         private BinaryWriter GetBinaryWriter()
         {
-            return new BinaryWriter(new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1000000));
+            if (_inMemoryMode)
+            {
+                if (_inMemoryStream == null )
+                {
+                    _inMemoryStream = new MemoryStream(); 
+                }
+                return new BinaryWriter(_inMemoryStream); 
+            }
+            else
+            {
+                return new BinaryWriter(new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1000000));
+            }
         }
 
         private BinaryReader GetBinaryReader()
@@ -882,6 +903,36 @@ namespace DotSpatial.Data
             _attributesPopulated = true;
             OnAttributesFilled();
             _isFilling = false;
+        }
+        /// <summary>
+        /// Gets DBF file as a memory stream for use in zip export
+        /// </summary>
+        /// <returns></returns>
+        public Stream ExportDBFToStream()
+        {
+            MemoryStream DBFStream = new MemoryStream(); 
+            UpdateSchema();
+            // switch the usual file writer for a memory stream writer, using this technique as GetBinaryWriter is called from many places
+            try
+            {
+                _inMemoryMode = true;
+                _inMemoryStream = null; 
+                // GetBinaryWriter will return a writer on _in_memory_stream if _in_memory_stream == true, otherwise writer attached to a filestream 
+                _writer = GetBinaryWriter();
+                WriteHeader(_writer);
+                WriteTable();
+                _inMemoryStream.Seek(0, SeekOrigin.Begin);
+                _inMemoryStream.CopyTo(DBFStream);
+                _writer.Close();
+            }
+            finally
+            {
+                // make sure this is called 
+                _inMemoryMode = false;
+                // dont want to hold this in ram indefinately 
+                _inMemoryStream = null;
+            }
+            return DBFStream;
         }
 
         /// <summary>
