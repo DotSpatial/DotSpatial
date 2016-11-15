@@ -202,38 +202,85 @@ namespace DotSpatial.Data
                 }
             //if (File.Exists(destFilename)) File.Delete(destFilename);
 
-            FileStream fs = new FileStream(destFilename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            // file that will be written to 
+            using (FileStream fs = new FileStream(destFilename, FileMode.Append, FileAccess.Write, FileShare.None))
+            {
 
-            fs.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
+                // Write everything to memory first 
+                using (Stream memorystream = WriteToStream(destFileLength))
+                {
+                    // rewind the stream before writing it to the file
+                    memorystream.Seek(0, SeekOrigin.Begin);
+
+                    // copy into the file stream 
+                    memorystream.CopyTo(fs);
+
+                    // tidy up 
+                    memorystream.Close();
+                }
+                fs.Close();
+            }
+        }
+
+        /// <summary>
+        /// export SHP file to stream instead of disk
+        /// </summary>
+        /// <returns></returns>
+        public Stream ExportSHPToStream()
+        {
+            Stream shp_stream = WriteToStream(_fileLength);
+            return shp_stream;
+        }
+
+        /// <summary>
+        /// export SHP file to stream instead of disk
+        /// </summary>
+        /// <returns></returns>
+        public Stream ExportSHXToStream()
+        {
+
+            Stream shp_stream = WriteToStream(_shxLength);
+            return shp_stream;
+        }
+
+        // donogst // put into a memory stream to remove dependence on hard disk for webservers etc
+        /// <summary>
+        /// write the current content to a memorystream 
+        /// </summary>
+        /// <param name="destFileLength">The only difference between the shp header and the
+        ///  shx header is the file length parameter.</param>
+        /// <returns></returns>
+        private Stream WriteToStream(int destFileLength)
+        {
+            Stream ms = new MemoryStream(); 
+
+            ms.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
 
             byte[] bt = new byte[20];
-            fs.Write(bt, 0, 20);         //  Bytes 4 - 20 are unused
+            ms.Write(bt, 0, 20);         //  Bytes 4 - 20 are unused
 
-            fs.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
+            ms.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
 
-            fs.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
+            ms.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
 
-            fs.WriteLe((int)_shapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
+            ms.WriteLe((int)_shapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
 
-            fs.WriteLe(_xMin);           //  Byte 36         Bounding Box    Xmin        Double      Little
+            ms.WriteLe(_xMin);           //  Byte 36         Bounding Box    Xmin        Double      Little
 
-            fs.WriteLe(_yMin);           //  Byte 44         Bounding Box    Ymin        Double      Little
+            ms.WriteLe(_yMin);           //  Byte 44         Bounding Box    Ymin        Double      Little
 
-            fs.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
+            ms.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
 
-            fs.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
+            ms.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
 
-            fs.WriteLe(_zMin);           //  Byte 68         Bounding Box    Zmin        Double      Little
+            ms.WriteLe(_zMin);           //  Byte 68         Bounding Box    Zmin        Double      Little
 
-            fs.WriteLe(_zMax);           //  Byte 76         Bounding Box    Zmax        Double      Little
+            ms.WriteLe(_zMax);           //  Byte 76         Bounding Box    Zmax        Double      Little
 
-            fs.WriteLe(_mMin);           //  Byte 84         Bounding Box    Mmin        Double      Little
+            ms.WriteLe(_mMin);           //  Byte 84         Bounding Box    Mmin        Double      Little
 
-            fs.WriteLe(_mMax);           //  Byte 92         Bounding Box    Mmax        Double      Little
-
-            // ------------ WRITE TO SHP FILE -------------------------
-
-            fs.Close();
+            ms.WriteLe(_mMax);           //  Byte 92         Bounding Box    Mmax        Double      Little
+            return ms;
         }
 
         #endregion

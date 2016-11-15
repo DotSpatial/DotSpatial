@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using GeoAPI.Geometries;
+using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -647,6 +648,301 @@ namespace DotSpatial.Data
             WriteFileLength(Header.ShxFilename, 50 + fid * 4);
             UpdateAttributes();
             SaveProjection();
+        }
+
+        /// <summary>
+        /// Exports current shapefile as a zip archive in memory
+        /// </summary>
+        /// <param name="shapefilename"></param>
+        /// <returns></returns>
+        public override ZipFile ExportZipFile(string shapefilename)
+        {
+            string shp_name = shapefilename;
+            if (!string.Equals(Path.GetExtension(shapefilename), ".shp", StringComparison.InvariantCultureIgnoreCase))
+            {
+                shp_name = Path.Combine(shp_name, ".shp");
+            }
+            string shx_name = Path.ChangeExtension(shp_name, "shx");
+            string proj_name = Path.ChangeExtension(shp_name, "proj");
+            string dbf_name = Path.ChangeExtension(shp_name, "dbf");
+
+            // Set ShapeType before setting header.
+            if (CoordinateType == CoordinateType.Regular)
+            {
+                Header.ShapeType = ShapeType.PolyLine;
+            }
+            if (CoordinateType == CoordinateType.M)
+            {
+                Header.ShapeType = ShapeType.PolyLineM;
+            }
+            if (CoordinateType == CoordinateType.Z)
+            {
+                Header.ShapeType = ShapeType.PolyLineZ;
+            }
+
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
+            Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
+
+            // get the streams with headers 
+            Stream shpStream = Header.ExportSHPToStream();
+            Stream shxStream = Header.ExportSHXToStream();
+            Stream dbf_stream = null; 
+            Stream proj_stream = null;
+
+            if (IndexMode)
+            {
+                int fid = 0;
+                int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
+                int contentLength = 0;
+
+                foreach (ShapeRange shape in ShapeIndices)
+                {
+                    offset += contentLength; // adding the previous content length from each loop calculates the word offset
+
+                    contentLength = 22;
+                    contentLength += 2 * shape.Parts.Count;
+
+                    switch (shape.ShapeType)
+                    {
+                        case ShapeType.PolyLine:
+                            contentLength += shape.NumPoints * 8; // x, y
+                            break;
+                        case ShapeType.PolyLineM:
+                            contentLength += 8; // mmin mmax
+                            contentLength += shape.NumPoints * 12; // x, y, m
+                            break;
+                        case ShapeType.PolyLineZ:
+                            contentLength += 16; // mmin, mmax, zmin, zmax
+                            contentLength += shape.NumPoints * 16; // x, y, z, m
+                            break;
+                        case ShapeType.NullShape:
+                            contentLength = 2;
+                            break;
+                    }
+
+                    //                                              Index File
+                    //                                              ---------------------------------------------------------
+                    //                                              Position     Value               Type        Number      Byte Order
+                    //                                              ---------------------------------------------------------
+                    shxStream.WriteBe(offset);                     // Byte 0     Offset             Integer     1           Big
+                    shxStream.WriteBe(contentLength);              // Byte 4     Content Length     Integer     1           Big
+
+                    //                                              X Y Poly Lines
+                    //                                              ---------------------------------------------------------
+                    //                                              Position     Value               Type        Number      Byte Order
+                    //                                              ---------------------------------------------------------
+                    shpStream.WriteBe(fid + 1);                     // Byte 0       Record Number       Integer     1           Big
+                    shpStream.WriteBe(contentLength);               // Byte 4       Content Length      Integer     1           Big
+                    shpStream.WriteLe((int)shape.ShapeType);        // Byte 8       Shape Type 3        Integer     1           Little
+                    if (shape.ShapeType == ShapeType.NullShape)
+                    {
+                        goto fin;
+                    }
+
+                    shpStream.WriteLe(shape.Extent.MinX);             // Byte 12      Xmin                Double      1           Little
+                    shpStream.WriteLe(shape.Extent.MinY);             // Byte 20      Ymin                Double      1           Little
+                    shpStream.WriteLe(shape.Extent.MaxX);             // Byte 28      Xmax                Double      1           Little
+                    shpStream.WriteLe(shape.Extent.MaxY);             // Byte 36      Ymax                Double      1           Little
+                    shpStream.WriteLe(shape.NumParts);                 // Byte 44      NumParts            Integer     1           Little
+                    shpStream.WriteLe(shape.NumPoints);                // Byte 48      NumPoints           Integer     1           Little
+                                                                       // Byte 52      Parts               Integer     NumParts    Little
+                    foreach (PartRange part in shape.Parts)
+                    {
+                        shpStream.WriteLe(part.PartOffset);
+                    }
+                    int start = shape.StartIndex;
+                    int count = shape.NumPoints;
+                    shpStream.WriteLe(Vertex, start * 2, count * 2);            // Byte X       Points              Point       NumPoints   Little
+
+                    if (Header.ShapeType == ShapeType.PolyLineZ)
+                    {
+                        double[] shapeZ = new double[count];
+                        Array.Copy(Z, start, shapeZ, 0, count);
+                        shpStream.WriteLe(shapeZ.Min());
+                        shpStream.WriteLe(shapeZ.Max());
+                        shpStream.WriteLe(Z, start, count);
+                    }
+
+                    if (Header.ShapeType == ShapeType.PolyLineM || Header.ShapeType == ShapeType.PolyLineZ)
+                    {
+                        if (M != null && M.Length >= start + count)
+                        {
+                            double[] shapeM = new double[count];
+                            Array.Copy(M, start, shapeM, 0, count);
+                            shpStream.WriteLe(shapeM.Min());
+                            shpStream.WriteLe(shapeM.Max());
+                            shpStream.WriteLe(M, start, count);
+                        }
+                    }
+
+                    fin:
+
+                    fid++;
+                    offset += 4; // header bytes
+                }
+
+                offset += contentLength;
+                // write file length 
+                WriteFileLength(shpStream, offset);
+                WriteFileLength(shxStream, 50 + fid * 4);
+            }
+            else
+            {
+                var bbWriter = new BufferedBinaryWriter(shpStream);
+                var indexWriter = new BufferedBinaryWriter(shxStream);
+                
+                int fid = 0;
+                int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
+                int contentLength = 0;
+
+                foreach (IFeature f in Features)
+                {
+                    List<int> parts = new List<int>();
+                    offset += contentLength; // adding the previous content length from each loop calculates the word offset
+                    List<Coordinate> points = new List<Coordinate>();
+                    contentLength = 22;
+                    for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
+                    {
+                        parts.Add(points.Count);
+                        ILineString bl = f.Geometry.GetGeometryN(iPart) as ILineString;
+                        if (bl == null) continue;
+                        points.AddRange(bl.Coordinates);
+                    }
+                    contentLength += 2 * parts.Count;
+
+                    if (Header.ShapeType == ShapeType.PolyLine)
+                    {
+                        contentLength += points.Count * 8; // x, y
+                    }
+                    if (Header.ShapeType == ShapeType.PolyLineM)
+                    {
+                        contentLength += 8; // mmin mmax
+                        contentLength += points.Count * 12; // x, y, m
+                    }
+                    if (Header.ShapeType == ShapeType.PolyLineZ)
+                    {
+                        contentLength += 16; // mmin, mmax, zmin, zmax
+                        contentLength += points.Count * 16; // x, y, z, m
+                    }
+
+                    //                                        Index File
+                    //                                        ---------------------------------------------------------
+                    //                                        Position     Value          Type       Number  Byte Order
+                    //                                        ---------------------------------------------------------
+                    indexWriter.Write(offset, false);        // Byte 0     Offset         Integer     1      Big
+                    indexWriter.Write(contentLength, false); // Byte 4     Content Length Integer     1      Big
+
+                    //                                         X Y Poly Lines
+                    //                                         ---------------------------------------------------------
+                    //                                        Position     Value         Type        Number      Byte Order
+                    //                                              -------------------------------------------------------
+                    bbWriter.Write(fid + 1, false);             // Byte 0   Record Number  Integer     1           Big
+                    bbWriter.Write(contentLength, false);     // Byte 4   Content Length Integer     1           Big
+                    bbWriter.Write((int)Header.ShapeType);    // Byte 8   Shape Type 3   Integer     1           Little
+                    if (Header.ShapeType == ShapeType.NullShape)
+                    {
+                        continue;
+                    }
+                    Envelope env = f.Geometry.EnvelopeInternal ?? new Envelope();
+                    bbWriter.Write(env.MinX);            // Byte 12   Xmin          Double      1           Little
+                    bbWriter.Write(env.MinY);            // Byte 20   Ymin          Double      1           Little
+                    bbWriter.Write(env.MaxX);            // Byte 28   Xmax          Double      1           Little
+                    bbWriter.Write(env.MaxY);            // Byte 36   Ymax          Double      1           Little
+                    bbWriter.Write(parts.Count);              // Byte 44   NumParts      Integer     1           Little
+                    bbWriter.Write(points.Count);             // Byte 48   NumPoints     Integer     1           Little
+                                                              // Byte 52   Parts         Integer     NumParts    Little
+                    foreach (int iPart in parts)
+                    {
+                        bbWriter.Write(iPart);
+                    }
+
+                    double[] xyVals = new double[points.Count * 2];
+                    for (int ipoint = 0; ipoint < points.Count; ipoint++)
+                    {
+                        //double[] c = points[ipoint];
+                        xyVals[ipoint * 2] = points[ipoint][Ordinate.X];
+                        xyVals[ipoint * 2 + 1] = points[ipoint][Ordinate.Y];
+                    }
+                    bbWriter.Write(xyVals);
+                    if (Header.ShapeType == ShapeType.PolyLineZ)
+                    {
+                        if (f.Geometry.EnvelopeInternal != null)
+                        {
+                            bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.Z);
+                            bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.Z);
+                        }
+                        double[] zVals = new double[points.Count];
+                        for (int ipoint = 0; ipoint < points.Count; ipoint++)
+                        {
+                            zVals[ipoint] = points[ipoint].Z;
+                        }
+                        bbWriter.Write(zVals);
+                    }
+
+                    if (Header.ShapeType == ShapeType.PolyLineM || Header.ShapeType == ShapeType.PolyLineZ)
+                    {
+                        if (f.Geometry.EnvelopeInternal == null)
+                        {
+                            bbWriter.Write(0.0);
+                            bbWriter.Write(0.0);
+                        }
+                        else
+                        {
+                            bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.M);
+                            bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.M);
+                        }
+
+                        double[] mVals = new double[points.Count];
+                        for (int ipoint = 0; ipoint < points.Count; ipoint++)
+                        {
+                            mVals[ipoint] = points[ipoint].M;
+                        }
+                        bbWriter.Write(mVals);
+                    }
+
+                    fid++;
+                    offset += 4; // header bytes
+                }
+
+                offset += contentLength;
+                // write file length 
+                WriteFileLength(shpStream, offset);
+                WriteFileLength(shxStream, 50 + fid * 4);
+            }
+            
+            // create the DBF file 
+            dbf_stream = ExportAttributesDBFToStream();
+
+            // create the PROJ file
+            proj_stream = null;
+            if (Projection != null)
+            {
+                proj_stream = new MemoryStream();
+                StreamWriter proj_writer = new StreamWriter(proj_stream);
+                proj_writer.WriteLine(Projection.ToEsriString());
+                proj_writer.Flush();
+            }
+
+            // package the zip
+            ZipFile z = null;
+            if (proj_stream == null)
+            {
+
+                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
+                new NamedStream { Name = shx_name, Stream = shxStream },
+                new NamedStream { Name = dbf_name, Stream = dbf_stream }
+                );
+            }
+            else
+            {
+                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
+                new NamedStream { Name = shx_name, Stream = shxStream },
+                new NamedStream { Name = dbf_name, Stream = dbf_stream },
+                new NamedStream { Name = proj_name, Stream = proj_stream }
+                );
+            }
+            return z;
         }
     }
 }
