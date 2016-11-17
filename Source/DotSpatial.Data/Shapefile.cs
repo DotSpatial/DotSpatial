@@ -820,6 +820,49 @@ namespace DotSpatial.Data
             Header.SaveAs(fileName);
         }
 
+        protected ZipFile PackageZipOuter(string shp_name, Stream shpStream, Stream shxStream)
+        {
+            if (!string.Equals(Path.GetExtension(shp_name), ".shp", StringComparison.InvariantCultureIgnoreCase))
+            {
+                shp_name = Path.Combine(shp_name, ".shp");
+            }
+            string shx_name = Path.ChangeExtension(shp_name, "shx");
+            string proj_name = Path.ChangeExtension(shp_name, "proj");
+            string dbf_name = Path.ChangeExtension(shp_name, "dbf");
+
+            Stream dbf_stream = ExportAttributesDBFToStream();
+
+            Stream proj_stream = null;
+            //SaveProjection();
+            if (Projection != null)
+            {
+                proj_stream = new MemoryStream();
+                StreamWriter proj_writer = new StreamWriter(proj_stream);
+                proj_writer.WriteLine(Projection.ToEsriString());
+                proj_writer.Flush();
+
+            }
+
+            ZipFile z = null;
+            if (proj_stream == null)
+            {
+
+                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
+                new NamedStream { Name = shx_name, Stream = shxStream },
+                new NamedStream { Name = dbf_name, Stream = dbf_stream }
+                );
+            }
+            else
+            {
+                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
+                new NamedStream { Name = shx_name, Stream = shxStream },
+                new NamedStream { Name = dbf_name, Stream = dbf_stream },
+                new NamedStream { Name = proj_name, Stream = proj_stream }
+                );
+            }
+            return z;
+        }
+
         /// <summary>
         /// package a number of named streams into a zip archive with matching files
         /// </summary>
@@ -831,8 +874,7 @@ namespace DotSpatial.Data
             foreach (NamedStream file in streams)
             {
                 file.Stream.Seek(0, SeekOrigin.Begin);
-                var ebtry = output.AddEntry(file.Name, file.Stream);
-
+                output.AddEntry(file.Name, file.Stream);
             }
             return output;
         }
@@ -849,6 +891,11 @@ namespace DotSpatial.Data
             /// contents of the file 
             /// </summary>
             public Stream Stream { get; set; }
+        }
+        internal class StreamLengthPair
+        {
+            internal int ShpLength { get; set; }
+            internal int ShxLength { get; set; }
         }
     }
 }
