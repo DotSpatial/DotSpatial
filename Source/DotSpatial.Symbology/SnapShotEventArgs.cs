@@ -16,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SnapShotEventArgs
-    /// </summary>
     public class SnapShotEventArgs : EventArgs
     {
         #region Private Variables

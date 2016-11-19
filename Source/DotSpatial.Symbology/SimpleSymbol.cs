@@ -20,9 +20,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SimpleSymbol
-    /// </summary>
     public class SimpleSymbol : OutlinedSymbol, ISimpleSymbol
     {
         #region Private Variables

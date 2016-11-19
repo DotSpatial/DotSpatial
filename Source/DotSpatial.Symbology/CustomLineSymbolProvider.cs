@@ -24,7 +24,7 @@ namespace DotSpatial.Symbology
     /// In the current implementation the symbolizers are 'hard-coded'.
     /// In other implementations they will be loaded from a xml resource file.
     /// </summary>
-    public class CustomLineSymbolProvider : ICustomLineSymbolProvider
+    public class CustomLineSymbolProvider
     {
         #region Private Variables
 
@@ -181,28 +181,14 @@ namespace DotSpatial.Symbology
         }
 
         #endregion
-
-        #region ICustomLineSymbolProvider Members
-
-        /// <summary>
-        /// Loads a list of custom line symbolizers from a binary serialized file
-        /// </summary>
-        /// <param name="fileName">The serialized binary file</param>
-        /// <returns>The list of custom line symbolizers</returns>
-        public IEnumerable<CustomLineSymbolizer> Load(string fileName)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /// <summary>
         /// Saves
         /// </summary>
-        /// <param name="fileName"></param>
         public void Save(string fileName)
         {
             _list.Save(fileName);
         }
-
-        #endregion
+        
     }
 }

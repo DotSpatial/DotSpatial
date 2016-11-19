@@ -17,9 +17,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Size2D
-    /// </summary>
     [Serializable, TypeConverter(typeof(Size2DConverter))]
     public class Size2D : Descriptor
     {
@@ -101,9 +98,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Determines if the height and width are both equal
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
         public static bool operator ==(Size2D a, Size2D b)
         {
             if (((object)a) == null && ((object)b) == null) return true;
@@ -115,9 +109,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Determiens if the height and width are not equal
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
         public static bool operator !=(Size2D a, Size2D b)
         {
             if (((object)a) == null && ((object)b) == null) return false;

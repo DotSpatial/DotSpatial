@@ -17,9 +17,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// RenderableLegendItem
-    /// </summary>
     public class RenderableLegendItem : LegendItem, IRenderableLegendItem
     {
         #region Events

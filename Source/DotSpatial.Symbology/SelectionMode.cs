@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SelectionModes
-    /// </summary>
     public enum SelectionMode
     {
         /// <summary>

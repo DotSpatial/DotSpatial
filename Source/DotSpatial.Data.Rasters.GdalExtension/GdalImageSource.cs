@@ -33,7 +33,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
     /// <summary>
     /// GDAL Image Source
     /// </summary>
-    public class GdalImageSource : IImageSource
+    public class GdalImageSource
     {
         #region Private Variables
 
@@ -88,10 +88,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         public int NumRows
         {
-            get
-            {
-                return _bounds != null ? _bounds.NumRows : 0;
-            }
+            get { return _bounds != null ? _bounds.NumRows : 0; }
         }
 
         /// <summary>
@@ -99,10 +96,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         public int NumColumns
         {
-            get
-            {
-                return _bounds != null ? _bounds.NumColumns : 0;
-            }
+            get { return _bounds != null ? _bounds.NumColumns : 0; }
         }
 
         #endregion

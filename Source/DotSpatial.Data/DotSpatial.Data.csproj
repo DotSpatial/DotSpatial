@@ -154,7 +154,6 @@
     <Compile Include="IFeatureRow.cs" />
     <Compile Include="IGetBitmap.cs" />
     <Compile Include="Endian.cs" />
-    <Compile Include="IFeatureSource.cs" />
     <Compile Include="ImageBandType.cs" />
     <Compile Include="InRamImage.cs" />
     <Compile Include="IProj.cs" />
@@ -179,7 +178,7 @@
     <Compile Include="PolygonShapefileFeatureSource.cs" />
     <Compile Include="PolygonShapefileShapeSource.cs" />
     <Compile Include="ProgressMeter.cs" />
-    <Compile Include="ProjExt.cs" />
+    <Compile Include="IProjExtensions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -218,7 +217,6 @@
     <Compile Include="IImageCoverage.cs" />
     <Compile Include="IImageData.cs" />
     <Compile Include="IImageSet.cs" />
-    <Compile Include="IImageSource.cs" />
     <Compile Include="ImageCoverage.cs" />
     <Compile Include="ImageData.cs" />
     <Compile Include="ITiledImage.cs" />
@@ -331,7 +329,6 @@
     <Compile Include="EventList.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="ICancelProgressHandler.cs" />
-    <Compile Include="ISuspendEvents.cs" />
     <Compile Include="IChangeEventList.cs" />
     <Compile Include="IChangeItem.cs" />
     <Compile Include="IEventList.cs" />

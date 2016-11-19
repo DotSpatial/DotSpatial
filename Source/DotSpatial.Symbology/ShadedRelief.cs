@@ -19,9 +19,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ShadedRelief
-    /// </summary>
     public class ShadedRelief : Descriptor, IShadedRelief
     {
         #region Events

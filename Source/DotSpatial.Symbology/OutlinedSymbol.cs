@@ -20,9 +20,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// OutlinedSymbol
-    /// </summary>
     public class OutlinedSymbol : Symbol, IOutlinedSymbol
     {
         #region Private Variables
