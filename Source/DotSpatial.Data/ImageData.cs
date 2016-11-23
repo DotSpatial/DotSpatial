@@ -21,10 +21,6 @@ namespace DotSpatial.Data
     /// </summary>
     public class ImageData : RasterBoundDataSet, IImageData
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -56,14 +52,6 @@ namespace DotSpatial.Data
         public virtual Bitmap GetBitmap()
         {
             return null;
-        }
-
-        /// <summary>
-        /// Sets the bitmap being used for this dataset
-        /// </summary>
-        /// <param name="image"></param>
-        public virtual void SetBitmap(Bitmap image)
-        {
         }
 
         /// <summary>
