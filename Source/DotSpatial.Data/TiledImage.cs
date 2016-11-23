@@ -271,15 +271,7 @@ namespace DotSpatial.Data
                 throw new NotImplementedException();
             }
         }
-
-        /// <summary>
-        /// Not Implemented
-        /// </summary>
-        /// <param name="image"></param>
-        public void SetBitmap(Bitmap image)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         /// <summary>
         /// Not Implemented.
