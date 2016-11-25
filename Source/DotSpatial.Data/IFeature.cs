@@ -3,13 +3,6 @@
 // Description:  The data access libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is DotSpatial.dll for the DotSpatial project
 //
@@ -40,43 +33,18 @@ namespace DotSpatial.Data
         /// This will be enough geometry information to cast into a full fledged geometry
         /// that can be used in coordination with DotSpatial.Analysis
         /// </summary>
-        IGeometry Geometry
-        {
-            get;
-            set;
-        }
+        IGeometry Geometry { get; set; }
 
         /// <summary>
         /// Gets or sets the content length.  If the geometry for this shape was loaded from a file, this contains the size
         /// of this shape in 16-bit words as per the Esri Shapefile specification.
         /// </summary>
-        int ContentLength
-        {
-            get;
-            set;
-        }
+        int ContentLength { get; set; }
 
         /// <summary>
         /// Gets the datarow containing all the attributes related to this geometry
         /// </summary>
-        DataRow DataRow
-        {
-            get;
-            set;
-        }
-
-        ///// <summary>
-        ///// Gets or sets a DotSpatial.Data.CacheTypes enumeration specifying whether the Envelope property
-        ///// returns a cached value in this object or is retrieved directly from the geometry.  The
-        ///// initial case for Shapefiles is to use a cache.  Setting the envelope assumes that you
-        ///// are going to use a cached value and will set this to Cached.  Setting this to Dynamic
-        ///// will cause the Envelope property to reference the geometry.
-        ///// </summary>
-        //CacheTypes EnvelopeSource
-        //{
-        //    get;
-        //    set;
-        //}
+        DataRow DataRow { get; set; }
 
         /// <summary>
         /// Returns the FeatureType of the feature. This can either be Point, Multipoint, Line, Polygon or Unspecified if the feature has no geometry.
@@ -87,48 +55,29 @@ namespace DotSpatial.Data
         /// Gets the key that is associated with this feature. This returns -1 if
         /// this feature is not a member of a feature layer.
         /// </summary>
-        int Fid
-        {
-            get;
-        }
+        int Fid { get; }
 
         /// <summary>
         /// Gets a reference to the IFeatureLayer that contains this item.
         /// </summary>
-        IFeatureSet ParentFeatureSet
-        {
-            get;
-            set;
-        }
+        IFeatureSet ParentFeatureSet { get; set; }
 
         /// <summary>
         /// An index value that is saved in some file formats.
         /// </summary>
-        int RecordNumber
-        {
-            get;
-            set;
-        }
+        int RecordNumber { get; set; }
 
         /// <summary>
         /// This is simply a quick access to the Vertices list for this specific
         /// feature.  If the Vertices have not yet been defined, this will be null.
         /// </summary>
-        ShapeRange ShapeIndex
-        {
-            get;
-            set;
-        }
+        ShapeRange ShapeIndex { get; set; }
 
         /// <summary>
         /// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
         /// and whether or not the shape is null.
         /// </summary>
-        ShapeType ShapeType
-        {
-            get;
-            set;
-        }
+        ShapeType ShapeType { get; set; }
 
         #endregion
 

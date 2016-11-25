@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from http://gps3.codeplex.com/ version 3.0
 //
@@ -112,7 +105,43 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// The fix is being simulated.
         /// </summary>
-        Simulated
+        Simulated,
+        /// <summary>
+        /// Trimble. The fix is based on Differential GPS but applies to wide area (WAAS/EGNOS and MSAS). 
+        /// </summary>
+        SatelliteBasedAugmentationSystem,
+        /// <summary>
+        /// Trimble. RTK float or Location RTK mode 3D Network.
+        /// </summary>
+        Network3DFloatRealTimeKinematic,
+        /// <summary>
+        /// Trimble. RTK fixed 3D Network.
+        /// </summary>
+        Network3DFixedRealTimeKinematic,
+        /// <summary>
+        /// Trimble. RTK float or Location RTK mode 2D Network.
+        /// </summary>
+        Network2DFloatRealTimeKinematic,
+        /// <summary>
+        /// Trimble. RTK fixed 2D Network.
+        /// </summary>
+        Network2DFixedRealTimeKinematic,
+        /// <summary>
+        /// Trimble. The fix utilizes a global satellite monitoring network. Omnistar with XP is accurate in 3D to better than 30cm.
+        /// </summary>
+        HPXPOmniStar,
+        /// <summary>
+        /// Trimble. A fix is obtained using "sub-meter" level of service.
+        /// </summary>
+        VbsOmniStar,
+        /// <summary>
+        /// Trimble. A fix is obtained using Location RTK mode. Horizontal accuracy of 10cm. Vertical accuracy of 2cm.
+        /// </summary>
+        LocationRealTimeKinematic,
+        /// <summary>
+        /// Trimble. Beacon DGPS.
+        /// </summary>
+        BeaconDifferentialGpsFix
     }
 
     /// <summary>

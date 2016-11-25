@@ -1,7 +1,7 @@
 // *******************************************************************************************************
 // Product:  DotSpatial.Symbology.IFeatureLayerActions
 // Description:  Contains methods which can be used in FeatureLayer (e.g. in ContextMenu)
-// Copyright & License: See www.DotSpatial.org.
+
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
 //--------------------------------------------------------------------------------------------------------
@@ -54,5 +54,11 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="e">Feature layer</param>
         void ExportData(IFeatureLayer e);
+
+        /// <summary>
+        /// Shows select by attributes dialog
+        /// </summary>
+        /// <param name="featureLayer">Feature layer</param>
+        void SelectByAttributes(FeatureLayer featureLayer);
     }
 }

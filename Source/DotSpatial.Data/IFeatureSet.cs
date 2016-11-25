@@ -3,13 +3,6 @@
 // Description:  The data access libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is DotSpatial.dll for the DotSpatial project
 //
@@ -250,123 +243,73 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets whether or not the attributes have all been loaded into the data table.
         /// </summary>
-        bool AttributesPopulated
-        {
-            get;
-            set;
-        }
+        bool AttributesPopulated { get; set; }
 
         /// <summary>
         /// Gets or sets the coordinate type across the entire featureset.
         /// </summary>
-        CoordinateType CoordinateType
-        {
-            get;
-            set;
-        }
+        CoordinateType CoordinateType { get; set; }
 
         /// <summary>
         /// Gets the DataTable associated with this specific feature.
         /// </summary>
-        DataTable DataTable
-        {
-            get;
-            set;
-        }
+        DataTable DataTable { get; set; }
 
         /// <summary>
         /// Gets the list of all the features that are included in this layer.
         /// </summary>
-        IFeatureList Features
-        {
-            get;
-            set;
-        }
+        IFeatureList Features { get; set; }
 
         /// <summary>
         /// This is an optional GeometryFactory that can be set to control how the geometries on features are
         /// created.  if this is not specified, the default from DotSptaial.Topology is used.
         /// </summary>
-        IGeometryFactory FeatureGeometryFactory
-        {
-            get;
-            set;
-        }
+        IGeometryFactory FeatureGeometryFactory { get; set; }
 
         /// <summary>
         /// Gets the feature lookup Table itself.
         /// </summary>
-        Dictionary<DataRow, IFeature> FeatureLookup
-        {
-            get;
-        }
+        Dictionary<DataRow, IFeature> FeatureLookup { get; }
 
         /// <summary>
         /// Gets an enumeration indicating the type of feature represented in this dataset, if any.
         /// </summary>
-        FeatureType FeatureType
-        {
-            get;
-            set;
-        }
+        FeatureType FeatureType { get; set; }
 
         /// <summary>
         /// These specifically allow the user to make sense of the Vertices array.  These are
         /// fast acting sealed classes and are not meant to be overridden or support clever
         /// new implementations.
         /// </summary>
-        List<ShapeRange> ShapeIndices
-        {
-            get;
-            set;
-        }
+        List<ShapeRange> ShapeIndices { get; set; }
 
         /// <summary>
         /// If this is true, then the ShapeIndices and Vertex values are used,
         /// and features are created on demand.  Otherwise the list of Features
         /// is used directly.
         /// </summary>
-        bool IndexMode
-        {
-            get;
-            set;
-        }
+        bool IndexMode { get; set; }
 
         /// <summary>
         /// Gets an array of Vertex structures with X and Y coordinates
         /// </summary>
-        double[] Vertex
-        {
-            get;
-            set;
-        }
+        double[] Vertex { get; set; }
 
         /// <summary>
         /// Z coordinates
         /// </summary>
-        double[] Z
-        {
-            get;
-            set;
-        }
+        double[] Z { get; set; }
 
         /// <summary>
         /// M coordinates
         /// </summary>
-        double[] M
-        {
-            get;
-            set;
-        }
+        double[] M { get; set; }
 
         /// <summary>
         /// Gets a boolean that indicates whether or not the InvalidateVertices has been called
         /// more recently than the cached vertex array has been built.
         /// </summary>
-        bool VerticesAreValid
-        {
-            get;
-        }
+        bool VerticesAreValid { get; }
 
         /// <summary>
         /// Skips the features themselves and uses the shapeindicies instead.

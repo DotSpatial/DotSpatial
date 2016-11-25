@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Data.dll
 // Description:  The data access libraries for the DotSpatial project.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -30,7 +23,7 @@ namespace DotSpatial.Data
     /// only works in 2D and has no events.
     /// </summary>
     [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
-    public class Extent : ICloneable, IExtent//, IRectangle
+    public class Extent : ICloneable, IExtent
     {
         /// <summary>
         /// Creates a new instance of Extent. This introduces no error checking and assumes
@@ -640,10 +633,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// This reads the string and attempts to derive values from the text.
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="result"></param>
-        /// <param name="nameFailed"></param>
-        /// <returns></returns>
         public static bool TryParse(string text, out Extent result, out string nameFailed)
         {
             double xmin, xmax, ymin, ymax, mmin, mmax;
@@ -689,10 +678,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// This centers the X and Y aspect of the extent on the specified center location.
         /// </summary>
-        /// <param name="centerX"></param>
-        /// <param name="centerY"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
         public void SetCenter(double centerX, double centerY, double width, double height)
         {
             MinX = centerX - width / 2;
@@ -829,7 +814,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// This method converts the X and Y text into two doubles.
         /// </summary>
-        /// <returns></returns>
         private static bool TryParseExtremes(string numeric, out double min, out double max)
         {
             string[] res = numeric.Split('|');

@@ -263,4 +263,7 @@
   <data name="Expression_Empty" xml:space="preserve">
     <value>The expression is empty.</value>
   </data>
+  <data name="FeatureLayer_SelectByAttributes" xml:space="preserve">
+    <value>Select By Attributes</value>
+  </data>
 </root>

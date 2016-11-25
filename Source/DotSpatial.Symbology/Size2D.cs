@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -24,9 +17,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Size2D
-    /// </summary>
     [Serializable, TypeConverter(typeof(Size2DConverter))]
     public class Size2D : Descriptor
     {
@@ -108,9 +98,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Determines if the height and width are both equal
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
         public static bool operator ==(Size2D a, Size2D b)
         {
             if (((object)a) == null && ((object)b) == null) return true;
@@ -122,9 +109,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Determiens if the height and width are not equal
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
         public static bool operator !=(Size2D a, Size2D b)
         {
             if (((object)a) == null && ((object)b) == null) return false;

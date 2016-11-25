@@ -5,8 +5,8 @@
     <version>$version$</version>
     <authors>$author$</authors>
     <owners />
-    <licenseUrl>http://dotspatial.codeplex.com/license</licenseUrl>
-    <projectUrl>http://dotspatial.codeplex.com/</projectUrl>
+    <licenseUrl>https://github.com/DotSpatial/DotSpatial/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/DotSpatial/DotSpatial/</projectUrl>
     <iconUrl>http://www.mapwindow.org/downloads/documentation/dotspatial-package-icons/DotSpatial.Plugins.ExtensionManager.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>

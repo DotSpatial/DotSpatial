@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -24,9 +17,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Group
-    /// </summary>
     public interface IGroup : ILayer, IList<ILayer>
     {
         #region Events
@@ -86,47 +76,29 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets whether or not the events are suspended on the layer collection
         /// </summary>
-        bool EventsSuspended
-        {
-            get;
-        }
+        bool EventsSuspended { get; }
 
         /// <summary>
         /// Gets the integer handle for this group
         /// </summary>
-        int Handle
-        {
-            get;
-        }
+        int Handle { get; }
 
         /// <summary>
         /// Gets or sets the icon
         /// </summary>
-        Image Icon
-        {
-            get;
-            set;
-        }
+        Image Icon { get; set; }
 
         /// <summary>
         /// Gets the integer count of layers.  This can also be accessed through Layers.Count.
         /// </summary>
-        int LayerCount
-        {
-            get;
-        }
+        int LayerCount { get; }
 
         /// <summary>
         /// Gets or sets the visibility of the layers within this group.
         /// Note: When reading this property, it returns true if any layer is visible within
         /// this group
         /// </summary>
-        bool LayersVisible
-        {
-            get;
-
-            set;
-        }
+        bool LayersVisible { get; set; }
 
         ///// <summary>
         ///// Gets the legend that this group belongs to... regardless of how deep the item is.
@@ -139,20 +111,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the parent group of this group.
         /// </summary>
-        IGroup ParentGroup
-        {
-            get;
-        }
+        IGroup ParentGroup { get; }
 
         /// <summary>
         /// gets or sets the locked property, which prevents the user from changing the visual state
         /// except layer by layer
         /// </summary>
-        bool StateLocked
-        {
-            get;
-            set;
-        }
+        bool StateLocked { get; set; }
 
         /// <summary>
         /// Gets the layer handle of the specified layer

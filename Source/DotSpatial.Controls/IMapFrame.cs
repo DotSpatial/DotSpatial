@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Controls.dll
 // Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -28,9 +21,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IMapFrame
-    /// </summary>
     public interface IMapFrame : IFrame, IMapGroup, IProj
     {
         #region Events
@@ -156,9 +146,6 @@ namespace DotSpatial.Controls
         /// for doing vector drawing on much larger pages.  The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="targetRectangle"></param>
-        /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
         void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope);
 
         /// <summary>
@@ -200,57 +187,34 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the buffered image.  Mess with this at your own risk.
         /// </summary>
-        Image BufferImage
-        {
-            get;
-            set;
-        }
+        Image BufferImage { get; set; }
 
         /// <summary>
         /// Gets a rectangle indicating the size of the map frame image
         /// </summary>
-        Rectangle ClientRectangle
-        {
-            get;
-        }
+        Rectangle ClientRectangle { get; }
 
         /// <summary>
         /// Gets or sets the integer that specifies the chunk that is actively being drawn
         /// </summary>
-        int CurrentChunk
-        {
-            get;
-            set;
-        }
+        int CurrentChunk { get; set; }
 
         /// <summary>
         /// Gets or sets whether this map frame should define its buffer
         /// region to be the same size as the client, or three times larger.
         /// </summary>
-        bool ExtendBuffer
-        {
-            get;
-            set;
-        }
+        bool ExtendBuffer { get; set; }
 
         /// <summary>
         /// Gets or sets whether this map frame is currently in the process of redrawing the
         /// stencils after a pan operation.  Drawing should not take place if this is true.
         /// </summary>
-        bool IsPanning
-        {
-            get;
-            set;
-        }
+        bool IsPanning { get; set; }
 
         /// <summary>
         /// Gets or sets the parent control for this map frame.
         /// </summary>
-        Control Parent
-        {
-            get;
-            set;
-        }
+        Control Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the PromptMode that determines how to warn users when attempting to add a layer with
@@ -267,30 +231,12 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the layers
         /// </summary>
-        new IMapLayerCollection Layers
-        {
-            get;
-            set;
-        }
+        new IMapLayerCollection Layers { get; set; }
 
         /// <summary>
         /// gets or sets the rectangle in pixel coordinates that will be drawn to the entire screen.
         /// </summary>
-        Rectangle View
-        {
-            get;
-            set;
-        }
-
-        ///// <summary>
-        ///// This instructs the MapFrame to abort any current efforts to update the back-buffer so that
-        ///// actions like zooming can work unfettered.
-        ///// </summary>
-        //bool SuspendRefresh
-        //{
-        //    get;
-        //    set;
-        //}
+        Rectangle View { get; set; }
 
         #endregion
     }

@@ -3,13 +3,6 @@
 // Description:  The core libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is DotSpatial.dll for the DotSpatial project
 //
@@ -74,84 +67,51 @@ namespace DotSpatial.Symbology
         /// These are in addition to any that are supported by default.
         /// Handlers should be added to this list before it is retrieved.
         /// </summary>
-        List<SymbologyMenuItem> ContextMenuItems
-        {
-            get;
-            set;
-        }
+        List<SymbologyMenuItem> ContextMenuItems { get; set; }
 
         /// <summary>
         /// Gets or sets whether or not this legend item should be visible.
         /// This will not be altered unless the LegendSymbolMode is set
         /// to CheckBox.
         /// </summary>
-        bool Checked
-        {
-            get;
-            set;
-        }
+        bool Checked { get; set; }
 
         /// <summary>
         /// Gets or sets whether this legend item is expanded.
         /// </summary>
-        bool IsExpanded
-        {
-            get;
-            set;
-        }
+        bool IsExpanded { get; set; }
 
         /// <summary>
         /// Gets or sets whether this legend item is currently selected (and therefore drawn differently)
         /// </summary>
-        bool IsSelected
-        {
-            get;
-            set;
-        }
+        bool IsSelected { get; set; }
 
         /// <summary>
         /// Gets whatever the child collection is and returns it as an IEnumerable set of legend items
         /// in order to make it easier to cycle through those values.
         /// </summary>
-        IEnumerable<ILegendItem> LegendItems
-        {
-            get;
-        }
+        IEnumerable<ILegendItem> LegendItems { get; }
 
         /// <summary>
         /// Gets or sets a boolean, that if false will prevent this item, or any of its child items
         /// from appearing in the legend when the legend is drawn.
         /// </summary>
-        bool LegendItemVisible
-        {
-            get;
-            set;
-        }
+        bool LegendItemVisible { get; set; }
 
         /// <summary>
         /// Gets the symbol mode for this legend item.
         /// </summary>
-        SymbolMode LegendSymbolMode
-        {
-            get;
-        }
+        SymbolMode LegendSymbolMode { get; }
 
         /// <summary>
         /// The text that will appear in the legend
         /// </summary>
-        string LegendText
-        {
-            get;
-            set;
-        }
+        string LegendText { get; set; }
 
         /// <summary>
         /// Gets or sets a pre-defined behavior in the legend when referring to drag and drop functionality.
         /// </summary>
-        LegendType LegendType
-        {
-            get;
-        }
+        LegendType LegendType { get; }
 
         #endregion
     }

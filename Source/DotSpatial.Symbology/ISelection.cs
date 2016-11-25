@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -18,32 +11,49 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using DotSpatial.Data;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ISelection
-    /// </summary>
-    public interface ISelection : IChangeable, IAttributeSource
+    public interface ISelection : IAttributeSource
     {
+          /// <summary>
+        /// Occurs when members are added to or removed from this collection.  If SuspendChanges
+        /// is called, this will temporarilly prevent this event from firing, until ResumeEvents
+        /// has been called.
+        /// </summary>
+        event EventHandler Changed;
+
+        /// <summary>
+        /// Resumes the events.  If any changes occured during the period of time when
+        /// the events were suspended, this will automatically fire the chnaged event.
+        /// </summary>
+        void ResumeChanges();
+
+        /// <summary>
+        /// Causes this filter collection to suspend the Changed event, so that
+        /// it will only be fired once after a series of updates.
+        /// </summary>
+        void SuspendChanges();
+
+        /// <summary>
+        /// To suspend events, call SuspendChanges.  Then to resume events, call ResumeEvents.  If the
+        /// suspension is greater than 0, then events are suspended.
+        /// </summary>
+        bool ChangesSuspended { get; }
+
         /// <summary>
         /// Gets the integer count of the members in the collection
         /// </summary>
-        int Count
-        {
-            get;
-        }
+        int Count { get; }
 
         /// <summary>
         /// Calculates the envelope of this collection
         /// </summary>
-        Envelope Envelope
-        {
-            get;
-        }
+        Envelope Envelope { get; }
 
         /// <summary>
         /// Gets or sets the handler to use for progress messages during selection.
@@ -53,31 +63,19 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Selection Mode controls how envelopes are treated when working with geometries.
         /// </summary>
-        SelectionMode SelectionMode
-        {
-            get;
-            set;
-        }
+        SelectionMode SelectionMode { get; set; }
 
         /// <summary>
         /// Gets or sets whether this should work as "Selected" indices (true) or
         /// "UnSelected" indices (false).
         /// </summary>
-        bool SelectionState
-        {
-            get;
-            set;
-        }
+        bool SelectionState { get; set; }
 
         /// <summary>
         /// Setting this to a specific category will only allow selection by
         /// region to affect the features that are within the specified category.
         /// </summary>
-        IFeatureCategory RegionCategory
-        {
-            get;
-            set;
-        }
+        IFeatureCategory RegionCategory { get; set; }
 
         /// <summary>
         /// Clears the selection

@@ -3,13 +3,6 @@
 // Description:  The data access libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is DotSpatial.dll for the DotSpatial project
 //
@@ -25,9 +18,6 @@ using System.Drawing;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// A general
-    /// </summary>
     public interface IRaster : IRasterBoundDataSet, ICloneable
     {
         #region Methods
@@ -125,291 +115,182 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the integer size of each data member of the raster in bytes.
         /// </summary>
-        int ByteSize
-        {
-            get;
-        }
+        int ByteSize { get; }
 
         /// <summary>
         /// Gets or sets the list of bands, which are in turn rasters.  The rasters
         /// contain only one band each, instead of the list of all the bands like the
         /// parent raster.
         /// </summary>
-        IList<IRaster> Bands
-        {
-            get;
-            set;
-        }
+        IList<IRaster> Bands { get; set; }
 
         /// <summary>
         /// The geographic height of a cell the projected units.  Setting this will
         /// automatically adjust the affine coefficient to a negative value.
         /// </summary>
-        double CellHeight
-        {
-            get;
-            set;
-        }
+        double CellHeight { get; set; }
 
         /// <summary>
         /// The geographic width of a cell in the projected units
         /// </summary>
-        double CellWidth
-        {
-            get;
-            set;
-        }
+        double CellWidth { get; set; }
 
         /// <summary>
         /// This provides a zero-based integer band index that specifies which of the internal bands
         /// is currently being used for requests for data.
         /// </summary>
-        int CurrentBand
-        {
-            get;
-        }
+        int CurrentBand { get; }
 
         /// <summary>
         /// This does nothing unless the FileType property is set to custom.
         /// In such a case, this string allows new file types to be managed.
         /// </summary>
-        string CustomFileType
-        {
-            get;
-        }
+        string CustomFileType { get; }
 
         /// <summary>
         /// This reveals the underlying data type
         /// </summary>
-        Type DataType
-        {
-            get;
-            set;
-        }
+        Type DataType { get; set; }
 
         /// <summary>
         /// Gets or sets a short string to identify which driver to use.  This is primarilly used by GDAL rasters.
         /// </summary>
-        string DriverCode
-        {
-            get;
-            set;
-        }
+        string DriverCode { get; set; }
 
         /// <summary>
         /// The integer column index for the right column of this raster.  Most of the time this will
         /// be NumColumns - 1.  However, if this raster is a window taken from a larger raster, then
         /// it will be the index of the endColumn from the window.
         /// </summary>
-        int EndColumn
-        {
-            get;
-        }
+        int EndColumn { get; }
 
         /// <summary>
         /// The integer row index for the end row of this raster.  Most of the time this will
         /// be numRows - 1.  However, if this raster is a window taken from a larger raster, then
         /// it will be the index of the endRow from the window.
         /// </summary>
-        int EndRow
-        {
-            get;
-        }
+        int EndRow { get; }
 
         /// <summary>
         /// Gets the file type of this grid.
         /// </summary>
-        RasterFileType FileType
-        {
-            get;
-            set;
-        }
+        RasterFileType FileType { get; set; }
 
         /// <summary>
         /// Gets a boolean that is true if the data for this raster is in memory.
         /// </summary>
-        bool IsInRam
-        {
-            get;
-        }
+        bool IsInRam { get; }
 
         /// <summary>
         /// Gets the maximum data value, not counting no-data values in the grid.
         /// </summary>
-        double Maximum
-        {
-            get;
-        }
+        double Maximum { get; }
 
         /// <summary>
         /// Gets the mean of the non-NoData values in this grid.  If the data is not InRam, then
         /// the GetStatistics method must be called before these values will be correct.
         /// </summary>
-        double Mean
-        {
-            get;
-        }
+        double Mean { get; }
 
         /// <summary>
         /// Gets the minimum data value that is not classified as a no data value in this raster.
         /// </summary>
-        double Minimum
-        {
-            get;
-        }
+        double Minimum { get; }
 
         /// <summary>
         /// A float showing the no-data values
         /// </summary>
-        double NoDataValue
-        {
-            get;
-            set;
-        }
+        double NoDataValue { get; set; }
 
         /// <summary>
         /// For binary rasters this will get cut to only 256 characters.
         /// </summary>
-        string Notes
-        {
-            get;
-            set;
-        }
+        string Notes { get; set; }
 
         /// <summary>
         /// Gets the number of bands.  In most traditional grid formats, this is 1.  For RGB images,
         /// this would be 3.  Some formats may have many bands.
         /// </summary>
-        int NumBands
-        {
-            get;
-        }
+        int NumBands { get; }
 
         /// <summary>
         /// Gets the horizontal count of the cells in the raster.
         /// </summary>
-        int NumColumns
-        {
-            get;
-        }
+        int NumColumns { get; }
 
         /// <summary>
         /// Gets the integer count of columns in the file, as opposed to the
         /// number represented by this raster, which might just represent a window.
         /// </summary>
-        int NumColumnsInFile
-        {
-            get;
-        }
+        int NumColumnsInFile { get; }
 
         /// <summary>
         /// Gets the vertical count of the cells in the raster.
         /// </summary>
-        int NumRows
-        {
-            get;
-        }
+        int NumRows { get; }
 
         /// <summary>
         /// Gets the number of rows in the source file, as opposed to the number
         /// represented by this raster, which might just represent part of a file.
         /// </summary>
-        int NumRowsInFile
-        {
-            get;
-        }
+        int NumRowsInFile { get; }
 
         /// <summary>
         /// Gets the count of the cells that are not no-data.  If the data is not InRam, then
         /// you will have to first call the GetStatistics() method to gain meaningul values.
         /// </summary>
-        long NumValueCells
-        {
-            get;
-        }
+        long NumValueCells { get; }
 
         /// <summary>
         /// Gets or sets the string array of options to use when saving this raster.
         /// </summary>
-        string[] Options
-        {
-            get;
-            set;
-        }
+        string[] Options { get; set; }
 
         /// <summary>
         /// Gets a list of the rows in this raster that can be accessed independantly.
         /// </summary>
-        List<IValueRow> Rows
-        {
-            get;
-        }
+        List<IValueRow> Rows { get; }
 
         /// <summary>
         /// The integer column index for the left column of this raster.  Most of the time this will
         /// be 0.  However, if this raster is a window taken from a file, then
         /// it will be the row index in the file for the top row of this raster.
         /// </summary>
-        int StartColumn
-        {
-            get;
-        }
+        int StartColumn { get; }
 
         /// <summary>
         /// The integer row index for the top row of this raster.  Most of the time this will
         /// be 0.  However, if this raster is a window taken from a file, then
         /// it will be the row index in the file for the left row of this raster.
         /// </summary>
-        int StartRow
-        {
-            get;
-        }
+        int StartRow { get; }
 
         /// <summary>
         /// Gets the standard deviation of all the Non-nodata cells.  If the data is not InRam,
         /// then you will have to first call the GetStatistics() method to get meaningful values.
         /// </summary>
-        double StdDeviation
-        {
-            get;
-        }
+        double StdDeviation { get; }
 
         /// <summary>
         /// This is provided for future developers to link this raster to other entities.
         /// It has no function internally, so it can be manipulated safely.
         /// </summary>
-        object Tag
-        {
-            get;
-            set;
-        }
+        object Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the value on the CurrentBand given a row and column undex
         /// </summary>
-        IValueGrid Value
-        {
-            get;
-            set;
-        }
+        IValueGrid Value { get; set; }
 
         /// <summary>
         /// The horizontal or longitude coordinate for the lower left cell in the grid
         /// </summary>
-        double Xllcenter
-        {
-            get;
-            set;
-        }
+        double Xllcenter { get; set; }
 
         /// <summary>
         /// The vertical or latitude coordinate for the lower left cell in the grid
         /// </summary>
-        double Yllcenter
-        {
-            get;
-            set;
-        }
+        double Yllcenter { get; set; }
 
         /// <summary>
         /// This doesn't perform calculations, but is simply a place holder where sample

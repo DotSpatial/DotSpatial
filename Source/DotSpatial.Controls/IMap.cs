@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Controls.dll
 // Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -223,81 +216,47 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Properties
-
-        /// <summary>
-        ///
-        /// </summary>
-        bool CollectAfterDraw
-        {
-            get;
-            set;
-        }
+        
+        bool CollectAfterDraw { get; set; }
 
         /// <summary>
         /// Gets or sets the Cursor.  This will be changed as the cursor mode changes.
         /// </summary>
-        Cursor Cursor
-        {
-            get;
-            set;
-        }
+        Cursor Cursor { get; set; }
 
         /// <summary>
         /// Gets or sets the dictionary of tools built into this project
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        List<IMapFunction> MapFunctions
-        {
-            get;
-            set;
-        }
+        List<IMapFunction> MapFunctions { get; set; }
 
         /// <summary>
         /// If this is true, then point layers in the map will only draw points that are
         /// more than 50% revealed.  This should increase drawing speed for layers that have
         /// a large number of points.
         /// </summary>
-        bool CollisionDetection
-        {
-            get;
-            set;
-        }
+        bool CollisionDetection { get; set; }
 
         /// <summary>
         /// Returns a MapFrame
         /// </summary>
-        new IMapFrame MapFrame
-        {
-            get;
-            set;
-        }
+        new IMapFrame MapFrame { get; set; }
 
         /// <summary>
         /// The layers for this map
         /// </summary>
-        IMapLayerCollection Layers
-        {
-            get;
-        }
+        IMapLayerCollection Layers { get; }
 
         /// <summary>
         /// Gets or sets the progress handler for this component.
         /// </summary>
-        IProgressHandler ProgressHandler
-        {
-            get;
-            set;
-        }
+        IProgressHandler ProgressHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the projection.  This should reflect the projection of the first data layer loaded.
         /// Loading subsequent, but non-matching projections should throw an alert, and allow reprojection.
         /// </summary>
-        ProjectionInfo Projection
-        {
-            get;
-            set;
-        }
+        ProjectionInfo Projection { get; set; }
 
         #endregion
     }

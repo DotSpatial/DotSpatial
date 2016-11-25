@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Controls.dll
 // Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -117,29 +110,19 @@ namespace DotSpatial.Controls
         /// This controls the cursor that this tool uses, unless the action has been cancelled by attempting
         /// to use the tool outside the bounds of the image.
         /// </summary>
-        Bitmap CursorBitmap
-        {
-            get;
-            set;
-        }
+        Bitmap CursorBitmap { get; set; }
 
         /// <summary>
         /// If this is false, then the typical contents from the map's back buffer are drawn first,
         /// followed by the contents of this tool.
         /// </summary>
-        bool PreventBackBuffer
-        {
-            get;
-        }
+        bool PreventBackBuffer { get; }
 
         /// <summary>
         /// Gets or sets a boolean that is true if this tool should be active.  If it is false,
         /// then this tool will not be sent mouse movement information.
         /// </summary>
-        bool Enabled
-        {
-            get;
-        }
+        bool Enabled { get; }
 
         /// <summary>
         /// Different Pathways that allow functions to deactivate if another function that uses
@@ -162,31 +145,20 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Describes a button image
         /// </summary>
-        Image ButtonImage
-        {
-            get;
-        }
+        Image ButtonImage { get; }
 
         /// <summary>
         /// Gets or sets the basic map that this tool interacts with.  This can alternately be set using
         /// the Init method.
         /// </summary>
-        IMap Map
-        {
-            get;
-            set;
-        }
+        IMap Map { get; set; }
 
         /// <summary>
         /// Gets or sets the name that attempts to identify this plugin uniquely.  If the
         /// name is already in the tools list, this will modify the name set here by
         /// appending a number.
         /// </summary>
-        string Name
-        {
-            get;
-            set;
-        }
+        string Name { get; set; }
 
         #endregion
     }

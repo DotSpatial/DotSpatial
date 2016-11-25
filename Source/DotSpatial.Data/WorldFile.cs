@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Data.dll
 // Description:  The data access libraries for the DotSpatial project.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -118,15 +111,16 @@ namespace DotSpatial.Data
         {
             if (File.Exists(_fileName))
             {
-                StreamReader sr = new StreamReader(_fileName);
-                _affine = new double[6];
-                _affine[1] = NextValue(sr); // Dx
-                _affine[2] = NextValue(sr); // Skew X
-                _affine[4] = NextValue(sr); // Skew Y
-                _affine[5] = NextValue(sr); // Dy
-                _affine[0] = NextValue(sr); // Top Left X
-                _affine[3] = NextValue(sr); // Top Left Y
-                sr.Close();
+                using (var sr = new StreamReader(_fileName))
+                {
+                    _affine = new double[6];
+                    _affine[1] = NextValue(sr); // Dx
+                    _affine[2] = NextValue(sr); // Skew X
+                    _affine[4] = NextValue(sr); // Skew Y
+                    _affine[5] = NextValue(sr); // Dy
+                    _affine[0] = NextValue(sr); // Top Left X
+                    _affine[3] = NextValue(sr); // Top Left Y
+                }
             }
         }
 

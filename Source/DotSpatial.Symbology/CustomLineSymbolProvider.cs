@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Drawing.PredefinedSymbols.dll Alpha
 // Description:  The basic module for DotSpatial.Drawing.PredefinedSymbols version 6.0
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from DotSpatial.Drawing.PredefinedSymbols.dll version 6.0
 //
@@ -31,7 +24,7 @@ namespace DotSpatial.Symbology
     /// In the current implementation the symbolizers are 'hard-coded'.
     /// In other implementations they will be loaded from a xml resource file.
     /// </summary>
-    public class CustomLineSymbolProvider : ICustomLineSymbolProvider
+    public class CustomLineSymbolProvider
     {
         #region Private Variables
 
@@ -188,28 +181,14 @@ namespace DotSpatial.Symbology
         }
 
         #endregion
-
-        #region ICustomLineSymbolProvider Members
-
-        /// <summary>
-        /// Loads a list of custom line symbolizers from a binary serialized file
-        /// </summary>
-        /// <param name="fileName">The serialized binary file</param>
-        /// <returns>The list of custom line symbolizers</returns>
-        public IEnumerable<CustomLineSymbolizer> Load(string fileName)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /// <summary>
         /// Saves
         /// </summary>
-        /// <param name="fileName"></param>
         public void Save(string fileName)
         {
             _list.Save(fileName);
         }
-
-        #endregion
+        
     }
 }

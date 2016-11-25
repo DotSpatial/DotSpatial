@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="WrapIProgressHandler.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace DotSpatial.Data
+﻿namespace DotSpatial.Data
 {
     /// <summary>
     /// This class converts an IProgressHandler to an ICancelProgressHandler. It wraps the IProgressHandler so that
@@ -12,7 +6,7 @@ namespace DotSpatial.Data
     /// </summary>
     public class MockICancelProgressHandler : ICancelProgressHandler
     {
-        private IProgressHandler _ProgressHandler;
+        private readonly IProgressHandler _ProgressHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MockICancelProgressHandler"/> class.

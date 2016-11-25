@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Data.dll
 // Description:  The data access libraries for the DotSpatial project.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -23,20 +16,8 @@ using System.Runtime.Serialization;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    ///
-    /// </summary>
     public class ExtentParseException : Exception
     {
-        /// <summary>
-        /// The string template that should be used.  M and Z are optional.  Do use a comma to
-        /// delimit terms, but the space doesn't matter.  Do use square brackets to enclose
-        /// numbers, and do use the | separator to separate min from max.  Do place min
-        /// before max in each term.  The order of the terms doesn't matter.  Use periods
-        /// for decimals and an invariant culture.
-        /// </summary>
-        public const string EXTENT_TEXT_TEMPLATE = "X[-180|180], Y[-90|90], M[0|1], Z[0|1]";
-
         /// <summary>
         /// Initializes a new instance of the ExtentParseException
         /// </summary>

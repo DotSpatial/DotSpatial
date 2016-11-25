@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Renamed IntervalMethod.Quantile to IntervalMethod.EqualFrequency for better consistency.
 - IHeaderControl.Add() now returns object which represents added GUI item.
 - Added authority and authority code as optional parameters to method ProjectionInfo.FromProj4String.
+- Update proj4 strings to EPSG db 8.9 (#870)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -71,3 +72,7 @@ All notable changes to this project will be documented in this file.
 - Map Frame Dragging (#772)
 - Fixed reprojection errors between RT90 and SWEREF99, caused by missing TOWGS parameters in transformation attributes (#861)
 - Incorrect reprojection between RT90 2,5 gon V and WGS84 (#618)
+- SelectByAttributes - Unhandled Exception (#253)
+- AttributeTable.Columns.Add (#303)
+- Spheroid International_1924 in EuropeanDatum1950UTMZone30N coordinate system (#623)
+- AttributeTable - Can't handle all field types, fails to handle null values properly (#880)

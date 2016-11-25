@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Controls.dll
 // Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -23,15 +16,44 @@ using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IBasicMap
-    /// </summary>
-    public interface IBasicMap : IMapView, ISelectable
+    public interface IBasicMap : ISelectable
     {
         #region Methods
+
+        /// <summary>
+        /// Converts a single point location into an equivalent geographic coordinate
+        /// </summary>
+        /// <param name="position">The client coordinate relative to the map control</param>
+        /// <returns>The geographic ICoordinate interface</returns>
+        Coordinate PixelToProj(Point position);
+
+        /// <summary>
+        /// Converts a rectangle in pixel coordinates relative to the map control into
+        /// a geographic envelope.
+        /// </summary>
+        /// <param name="rect">The rectangle to convert</param>
+        /// <returns>An Envelope interface</returns>
+        Extent PixelToProj(Rectangle rect);
+
+        /// <summary>
+        /// Converts a single geographic location into the equivalent point on the
+        /// screen relative to the top left corner of the map.
+        /// </summary>
+        /// <param name="location">The geographic position to transform</param>
+        /// <returns>A Point with the new location.</returns>
+        Point ProjToPixel(Coordinate location);
+
+        /// <summary>
+        /// Converts a single geographic envelope into an equivalent Rectangle
+        /// as it would be drawn on the screen.
+        /// </summary>
+        /// <param name="env">The geographic Envelope</param>
+        /// <returns>A Rectangle</returns>
+        Rectangle ProjToPixel(Extent env);
 
         /// <summary>
         /// Adds a new layer to the map using an open file dialog.
@@ -90,28 +112,24 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
+        /// Gets or sets the geographic extents to show in the view.
+        /// </summary>
+        Extent ViewExtents { get; set; }
+
+        /// <summary>
         /// Gets the bounding rectangle representing this map in screen coordinates
         /// </summary>
-        Rectangle Bounds
-        {
-            get;
-        }
+        Rectangle Bounds { get; }
 
         /// <summary>
         /// Gets an image that has been buffered
         /// </summary>
-        Image BufferedImage
-        {
-            get;
-        }
+        Image BufferedImage { get; }
 
         /// <summary>
         /// Gets the client rectangle of the map control
         /// </summary>
-        Rectangle ClientRectangle
-        {
-            get;
-        }
+        Rectangle ClientRectangle { get; }
 
         /// <summary>
         /// Gets or sets the current tool mode.  This rapidly enables or disables specific tools to give
@@ -119,27 +137,17 @@ namespace DotSpatial.Controls
         /// enabled manually by enabling the specific tool in the GeoTools dictionary.
         /// </summary>
         [Category("Behavior"), Description("Gets or sets which tool or combination of tools are enabled on the map.")]
-        FunctionMode FunctionMode
-        {
-            get;
-            set;
-        }
+        FunctionMode FunctionMode { get; set; }
 
         /// <summary>
         /// Gets the geographic bounds of all of the different data layers currently visible on the map.
         /// </summary>
-        Extent Extent
-        {
-            get;
-        }
+        Extent Extent { get; }
 
         /// <summary>
         /// Gets the height of the control
         /// </summary>
-        int Height
-        {
-            get;
-        }
+        int Height { get; }
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether a map-function is currently interacting with the map.
@@ -147,62 +155,38 @@ namespace DotSpatial.Controls
         /// should suspend themselves to prevent conflict.  Setting this actually increments an internal integer,
         /// so when that integer is 0, the map is "Not" busy, but multiple busy processes can work independently.
         /// </summary>
-        bool IsBusy
-        {
-            get;
-            set;
-        }
+        bool IsBusy { get; set; }
 
         /// <summary>
         /// Indicates whether the Map is Zoomed out to full extent or not.
         /// Added 1/3/2013 by Eric Hullinger
         /// </summary>
-        bool IsZoomedToMaxExtent
-        {
-            get;
-            set;
-        }
+        bool IsZoomedToMaxExtent { get; set; }
 
         /// <summary>
         /// Gets the screen coordinates of the
         /// </summary>
-        int Left
-        {
-            get;
-        }
+        int Left { get; }
 
         /// <summary>
         /// Gets the legend, if any, associated with this map control.
         /// </summary>
-        ILegend Legend
-        {
-            get;
-            set;
-        }
+        ILegend Legend { get; set; }
 
         /// <summary>
         /// A MapFrame
         /// </summary>
-        IFrame MapFrame
-        {
-            get;
-        }
+        IFrame MapFrame { get; }
 
         /// <summary>
         /// Gets the screen coordinates of the top of this control
         /// </summary>
-        int Top
-        {
-            get;
-        }
+        int Top { get; }
 
         /// <summary>
         /// Gets the width of the control
         /// </summary>
-        int Width
-        {
-            get;
-        }
+        int Width { get; }
 
         /// <summary>
         /// Instructs the map to clear the layers.

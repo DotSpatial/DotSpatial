@@ -2,12 +2,7 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  The core libraries for the DotSpatial project.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
+//
 // The Original Code is DotSpatial.dll for the DotSpatial project
 // The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
@@ -239,6 +234,7 @@ namespace DotSpatial.Symbology
                                                           SelectionZoomClick));
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Create_Layer_From_Selected_Features, SymbologyImages.Copy,
                                                           SelectionToLayerClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectByAttributes, SelectByAtributesClick));
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectAll, SymbologyImages.select_all, SelectAllClick));
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_UnselectAll, SymbologyImages.deselect_16x16, UnselectAllClick));
 
@@ -265,6 +261,15 @@ namespace DotSpatial.Symbology
             _selection.Changed += SelectedFeaturesChanged;
 
             _drawnStatesNeeded = false;
+        }
+
+        private void SelectByAtributesClick(object sender, EventArgs e)
+        {
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.SelectByAttributes(this);
+            }
         }
 
         private void DataSetVerticesInvalidated(object sender, EventArgs e)

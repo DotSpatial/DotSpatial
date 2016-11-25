@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -23,9 +16,6 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// LineDecoration
-    /// </summary>
     public interface ILineDecoration : IDescriptor
     {
         #region Methods
@@ -51,30 +41,18 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the decorative symbol
         /// </summary>
-        IPointSymbolizer Symbol
-        {
-            get;
-            set;
-        }
+        IPointSymbolizer Symbol { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that, if true, flips the first symbol in relation
         /// to the direction of the line.
         /// </summary>
-        bool FlipFirst
-        {
-            get;
-            set;
-        }
+        bool FlipFirst { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that, if true, reverses all of the symbols
         /// </summary>
-        bool FlipAll
-        {
-            get;
-            set;
-        }
+        bool FlipAll { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that, if true, will cause the symbol to
@@ -82,39 +60,23 @@ namespace DotSpatial.Symbology
         /// at the ends, for instance, will point along the direction of
         /// the line, regardless of the direction of the line.
         /// </summary>
-        bool RotateWithLine
-        {
-            get;
-            set;
-        }
+        bool RotateWithLine { get; set; }
 
         /// <summary>
         /// Gets or sets the number of symbols that should be drawn on each
         /// line.  (not each segment).
         /// </summary>
-        int NumSymbols
-        {
-            get;
-            set;
-        }
+        int NumSymbols { get; set; }
 
         /// <summary>
         /// Gets or sets the percentual position between line start and end at which the single decoration gets drawn.
         /// </summary>
-        int PercentualPosition
-        {
-            get;
-            set;
-        }
+        int PercentualPosition { get; set; }
 
         /// <summary>
         /// Gets or sets the offset distance measured to the left of the line in pixels.
         /// </summary>
-        double Offset
-        {
-            get;
-            set;
-        }
+        double Offset { get; set; }
 
         #endregion
     }

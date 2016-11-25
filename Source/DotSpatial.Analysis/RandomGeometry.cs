@@ -2,7 +2,7 @@
 // Product: DotSpatial.Analysis.RandomGeometry.cs
 // Description: Class for random data generation. Put other random geometry functions here such as new
 // methods for random point generation in a polygon, random points in a raster, etc. 
-// Copyright & License: See www.DotSpatial.org.
+
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 

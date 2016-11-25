@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -22,9 +15,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IColorScheme
-    /// </summary>
     public interface IColorScheme : IScheme
     {
         #region Methods
@@ -58,29 +48,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the floating point value for the opacity
         /// </summary>
-        float Opacity
-        {
-            get;
-            set;
-        }
+        float Opacity { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of color scheme categories to use.
         /// </summary>
-        ColorCategoryCollection Categories
-        {
-            get;
-            set;
-        }
+        ColorCategoryCollection Categories { get; set; }
 
         /// <summary>
         /// gets or sets the editor settings for controls that affect the color scheme.
         /// </summary>
-        new RasterEditorSettings EditorSettings
-        {
-            get;
-            set;
-        }
+        new RasterEditorSettings EditorSettings { get; set; }
 
         #endregion
     }

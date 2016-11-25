@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -23,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IFeatureCategory
-    /// </summary>
     public interface IFeatureCategory : ICategory
     {
         /// <summary>
@@ -73,29 +63,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolizer used for this category.
         /// </summary>
-        IFeatureSymbolizer Symbolizer
-        {
-            get;
-            set;
-        }
+        IFeatureSymbolizer Symbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the symbolizer used for this category
         /// </summary>
-        IFeatureSymbolizer SelectionSymbolizer
-        {
-            get;
-            set;
-        }
+        IFeatureSymbolizer SelectionSymbolizer { get; set; }
 
         /// <summary>
         /// Gets or set the filter expression that is used to add members to generate a category based on this scheme.
         /// </summary>
-        string FilterExpression
-        {
-            get;
-            set;
-        }
+        string FilterExpression { get; set; }
 
         #endregion
     }

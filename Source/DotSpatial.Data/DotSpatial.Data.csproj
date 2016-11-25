@@ -103,7 +103,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +134,6 @@
     <Compile Include="IFeatureRow.cs" />
     <Compile Include="IGetBitmap.cs" />
     <Compile Include="Endian.cs" />
-    <Compile Include="IFeatureSource.cs" />
     <Compile Include="ImageBandType.cs" />
     <Compile Include="InRamImage.cs" />
     <Compile Include="IProj.cs" />
@@ -148,6 +146,7 @@
     <Compile Include="MiscUtil\ExpressionUtil.cs" />
     <Compile Include="MiscUtil\NullOp.cs" />
     <Compile Include="MiscUtil\Operator.cs" />
+    <Compile Include="FilePathUtils.cs" />
     <Compile Include="PointShape.cs" />
     <Compile Include="PointShapefileFeatureSource.cs" />
     <Compile Include="PointShapefileShapeSource.cs" />
@@ -156,11 +155,10 @@
     <Compile Include="DataManager.cs" />
     <Compile Include="DataProviders.cs" />
     <Compile Include="Extent.cs" />
-    <Compile Include="FileMode.cs" />
     <Compile Include="PolygonShapefileFeatureSource.cs" />
     <Compile Include="PolygonShapefileShapeSource.cs" />
     <Compile Include="ProgressMeter.cs" />
-    <Compile Include="ProjExt.cs" />
+    <Compile Include="IProjExtensions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -179,7 +177,6 @@
     <Compile Include="BufferedBinaryReader.cs" />
     <Compile Include="BufferedBinaryWriter.cs" />
     <Compile Include="IDataManager.cs" />
-    <Compile Include="ILog.cs" />
     <Compile Include="DataStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -200,7 +197,6 @@
     <Compile Include="IImageCoverage.cs" />
     <Compile Include="IImageData.cs" />
     <Compile Include="IImageSet.cs" />
-    <Compile Include="IImageSource.cs" />
     <Compile Include="ImageCoverage.cs" />
     <Compile Include="ImageData.cs" />
     <Compile Include="ITiledImage.cs" />
@@ -223,31 +219,19 @@
     <Compile Include="TileCollection.cs" />
     <Compile Include="TiledImage.cs" />
     <Compile Include="WorldFile.cs" />
-    <Compile Include="HfaCoordinate.cs" />
-    <Compile Include="HfaDatum.cs" />
-    <Compile Include="HfaDatumType.cs" />
-    <Compile Include="HfaEPRJ.cs" />
     <Compile Include="HfaEPT.cs" />
     <Compile Include="HfaExt.cs" />
     <Compile Include="Hfa.cs" />
     <Compile Include="HfaAccess.cs" />
-    <Compile Include="HfaCompress.cs" />
     <Compile Include="HfaDictionary.cs" />
     <Compile Include="HfaEntry.cs" />
     <Compile Include="HfaEnumerationNotFoundException.cs" />
     <Compile Include="HfaField.cs" />
     <Compile Include="HfaInfo.cs" />
     <Compile Include="HfaInvalidCountException.cs" />
-    <Compile Include="HfaNotCompressedException.cs" />
     <Compile Include="HfaPointerInsertNotSupportedException.cs" />
     <Compile Include="HfaType.cs" />
     <Compile Include="HfaTypeException.cs" />
-    <Compile Include="HfaMapInfo.cs" />
-    <Compile Include="HfaNAD.cs" />
-    <Compile Include="HfaProParameters.cs" />
-    <Compile Include="HfaProType.cs" />
-    <Compile Include="HfaSize.cs" />
-    <Compile Include="HfaSpheroid.cs" />
     <Compile Include="AffineTransform.cs" />
     <Compile Include="BinaryRasterProvider.cs" />
     <Compile Include="RasterBoundsExt.cs" />
@@ -325,11 +309,10 @@
     <Compile Include="EventList.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="ICancelProgressHandler.cs" />
-    <Compile Include="ISuspendEvents.cs" />
     <Compile Include="IChangeEventList.cs" />
     <Compile Include="IChangeItem.cs" />
     <Compile Include="IEventList.cs" />
-    <Compile Include="IListEM.cs" />
+    <Compile Include="IListExtensions.cs" />
     <Compile Include="INamedList.cs" />
     <Compile Include="IndividualEventArgs.cs" />
     <Compile Include="IndividualCancelEventArgs.cs" />

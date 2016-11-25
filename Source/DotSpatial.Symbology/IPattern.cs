@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -25,9 +18,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IPattern
-    /// </summary>
     public interface IPattern : ICloneable, IChangeItem
     {
         #region Methods
@@ -75,37 +65,22 @@ namespace DotSpatial.Symbology
         /// Gets or sets the rectangular bounds.  This controls how the gradient is drawn, and
         /// should be set to the envelope of the entire layer being drawn
         /// </summary>
-        RectangleF Bounds
-        {
-            get;
-            set;
-        }
+        RectangleF Bounds { get; set; }
 
         /// <summary>
         /// Gets or sets the line symbolizer that is the outline for this pattern.
         /// </summary>
-        ILineSymbolizer Outline
-        {
-            get;
-            set;
-        }
+        ILineSymbolizer Outline { get; set; }
 
         /// <summary>
         /// Gets the pattern type of this pattern.
         /// </summary>
-        PatternType PatternType
-        {
-            get;
-        }
+        PatternType PatternType { get; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not the pattern should use the outline symbolizer.
         /// </summary>
-        bool UseOutline
-        {
-            get;
-            set;
-        }
+        bool UseOutline { get; set; }
 
         #endregion
     }

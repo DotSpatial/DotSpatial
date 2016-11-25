@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.RandomGeometry
 // Description:  Tool that clips a raster layer with a polygon.
-// Copyright & License: See www.DotSpatial.org.
+
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
 //--------------------------------------------------------------------------------------------------------

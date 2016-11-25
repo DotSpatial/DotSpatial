@@ -2,7 +2,7 @@
 // Product: DotSpatial.Analysis.Border.cs
 // Description:  Simple struct for holding a line segment. May be redundant with segments defined in 
 // DotSpatial.Topology. 
-// Copyright & License: See www.DotSpatial.org.
+
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 

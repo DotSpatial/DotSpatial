@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Analysis.ResampleCells.cs
 // Description: Class simple resampling of a raster to a new cell size.
-// Copyright & License: See www.DotSpatial.org.
+
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 

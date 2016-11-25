@@ -3,13 +3,6 @@
 // Description:  The core libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is DotSpatial.dll for the DotSpatial project
 //
@@ -30,7 +23,8 @@ namespace DotSpatial.Symbology
     /// It is recommended to create derived classes that inherit from an
     /// abstract layer that implements the majority of this shared functionality
     /// </summary>
-    public interface ILayer : ILegendItem, IRenderable, ISelectable, IDynamicVisibility, IDisposable, IDisposeLock, IReproject
+    public interface ILayer : ILegendItem, IRenderable, ISelectable, IDynamicVisibility, IDisposable, IDisposeLock,
+        IReproject
     {
         #region Events
 
@@ -87,37 +81,22 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the core dataset for this layer.
         /// </summary>
-        IDataSet DataSet
-        {
-            get;
-            set;
-        }
+        IDataSet DataSet { get; set; }
 
         /// <summary>
         /// Gets the currently invalidated region.
         /// </summary>
-        Extent InvalidRegion
-        {
-            get;
-        }
+        Extent InvalidRegion { get; }
 
         /// <summary>
         /// Gets the MapFrame that contains this layer.
         /// </summary>
-        IFrame MapFrame
-        {
-            get;
-            set;
-        }
+        IFrame MapFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the progress handler
         /// </summary>
-        IProgressHandler ProgressHandler
-        {
-            get;
-            set;
-        }
+        IProgressHandler ProgressHandler { get; set; }
 
         #endregion
     }

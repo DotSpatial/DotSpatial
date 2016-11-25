@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Controls.dll
 // Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -24,9 +17,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IGeoLayerCollection
-    /// </summary>
     public interface IMapLayerCollection : ILayerEventList<IMapLayer>
     {
         #region Events
@@ -95,39 +85,23 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the map frame that this belongs to.  These are designed to only work with one map frame at a time.
         /// </summary>
-        IMapFrame MapFrame
-        {
-            get;
-            set;
-        }
+        IMapFrame MapFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the ParentGroup for this layer collection, even if that parent group
         /// is not actually a map frame.
         /// </summary>
-        IMapGroup ParentGroup
-        {
-            get;
-            set;
-        }
+        IMapGroup ParentGroup { get; set; }
 
         /// <summary>
         /// Gets or sets the progress handler to report progress for time consuming actions.
         /// </summary>
-        IProgressHandler ProgressHandler
-        {
-            get;
-            set;
-        }
+        IProgressHandler ProgressHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the currently active layer.
         /// </summary>
-        IMapLayer SelectedLayer
-        {
-            get;
-            set;
-        }
+        IMapLayer SelectedLayer { get; set; }
 
         /// <summary>
         /// Given a base name, this increments a number for appending

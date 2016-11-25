@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Controls.dll
 // Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -27,9 +20,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoImageLayer
-    /// </summary>
     public interface IMapRasterLayer : IRasterLayer, IMapLayer
     {
         #region Events
@@ -74,50 +64,30 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
-        Image BackBuffer
-        {
-            get;
-            set;
-        }
+        Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
-        Image Buffer
-        {
-            get;
-            set;
-        }
+        Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
-        Envelope BufferEnvelope
-        {
-            get;
-            set;
-        }
+        Envelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
-        Rectangle BufferRectangle
-        {
-            get;
-            set;
-        }
+        Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// Gets or sets whether the image layer is initialized
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        new bool IsInitialized
-        {
-            get;
-            set;
-        }
+        new bool IsInitialized { get; set; }
 
         #endregion
     }

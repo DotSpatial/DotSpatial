@@ -70,7 +70,7 @@
     <Compile Include="BitmapFormatException.cs" />
     <Compile Include="JenksBreaksCalcuation.cs" />
     <Compile Include="Expression.cs" />
-    <Compile Include="ExtentExtcs.cs" />
+    <Compile Include="ExtentExt.cs" />
     <Compile Include="IColorCategoryActions.cs" />
     <Compile Include="IDynamicVisibility.cs" />
     <Compile Include="IFeatureLayerActions.cs" />
@@ -102,8 +102,7 @@
     <Compile Include="GraphicsPathExt.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="ICategory.cs" />
-    <Compile Include="IChangeable.cs" />
-    <Compile Include="IDescriptora.cs" />
+    <Compile Include="IDescriptor.cs" />
     <Compile Include="IFrame.cs" />
     <Compile Include="IGroup.cs" />
     <Compile Include="ILayer.cs" />
@@ -122,12 +121,11 @@
     <Compile Include="IImageSymbolizer.cs" />
     <Compile Include="ImageLayer.cs" />
     <Compile Include="ImageSymbolizer.cs" />
-    <Compile Include="ITiledImageLayer.cs" />
     <Compile Include="TiledImageLayer.cs" />
-    <Compile Include="IMatchablea.cs" />
+    <Compile Include="IMatchable.cs" />
     <Compile Include="IParentItem.cs" />
     <Compile Include="IPropertyDialogProvider.cs" />
-    <Compile Include="IRandomizablea.cs" />
+    <Compile Include="IRandomizable.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="IRenderableLegendItem.cs" />
     <Compile Include="IScheme.cs" />
@@ -165,7 +163,6 @@
     <Compile Include="Opp.cs" />
     <Compile Include="ILayerProvider.cs" />
     <Compile Include="IRasterLayerProvider.cs" />
-    <Compile Include="IVectorLayerProvider.cs" />
     <Compile Include="Position2D.cs" />
     <Compile Include="CustomLineSymbolizer.cs" />
     <Compile Include="CustomLineSymbolProvider.cs" />
@@ -174,7 +171,6 @@
     <Compile Include="CustomSymbolizer.cs" />
     <Compile Include="CustomSymbolizerCollectionExt.cs" />
     <Compile Include="CustomSymbolProvider.cs" />
-    <Compile Include="ICustomLineSymbolProvider.cs" />
     <Compile Include="ICustomSymbolizer.cs" />
     <Compile Include="SymbolizerType.cs" />
     <Compile Include="MemberInfoExtensions.cs" />
@@ -272,7 +268,6 @@
     <Compile Include="CharacterSymbol.cs" />
     <Compile Include="ICharacterSymbol.cs" />
     <Compile Include="IColorable.cs" />
-    <Compile Include="IOutlined.cs" />
     <Compile Include="IOutlinedSymbol.cs" />
     <Compile Include="IPictureSymbol.cs" />
     <Compile Include="ISimpleSymbol.cs" />

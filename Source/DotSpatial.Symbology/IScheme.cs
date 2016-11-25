@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Symbology.dll
 // Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -23,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IScheme
-    /// </summary>
     public interface IScheme : ILegendItem
     {
         #region Methods
@@ -115,30 +105,20 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the editor settings that control how this scheme operates.
         /// </summary>
-        EditorSettings EditorSettings
-        {
-            get;
-            set;
-        }
+        EditorSettings EditorSettings { get; set; }
 
         /// <summary>
         /// This is cached until a GetValues call is made, at which time the statistics will
         /// be re-calculated from the values.
         /// </summary>
-        Statistics Statistics
-        {
-            get;
-        }
+        Statistics Statistics { get; }
 
         /// <summary>
         /// Gets the current list of values calculated in the case of numeric breaks.
         /// This includes only members that are not excluded by the exclude expression,
         /// and have a valid numeric value.
         /// </summary>
-        List<double> Values
-        {
-            get;
-        }
+        List<double> Values { get; }
 
         #endregion
     }

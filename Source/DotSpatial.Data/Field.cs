@@ -3,13 +3,6 @@
 // Description:  The data access libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is DotSpatial.dll for the DotSpatial project
 //
@@ -110,21 +103,24 @@ namespace DotSpatial.Data
         }
 
         /*
-         * Field type:
-            C   –   Character
-            Y   –   Currency
-            N   –   Numeric
-            F   –   Float
-            D   –   Date
-            T   –   DateTime
-            B   –   Double
-            I   –   Integer
-            L   –   Logical
-            M   –   Memo
-            G   –   General
-            C   –   Character (binary)
-            M   –   Memo (binary)
-            P   –   Picture
+         * Field Types Specified by the dBASE Format Specifications
+         * 
+         * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
+         * 
+         * Symbol |  Data  Type  | Description
+         * -------+--------------+-------------------------------------------------------------------------------------
+         *   B    |       Binary | 10 digits representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
+         *   C    |    Character | All OEM code page characters - padded with blanks to the width of the field.
+         *   D    |         Date | 8 bytes - date stored as a string in the format YYYYMMDD.
+         *   N    |      Numeric | Number stored as a string, right justified, and padded with blanks to the width of the field. 
+         *   L    |      Logical | 1 byte - initialized to 0x20 (space) otherwise T or F.
+         *   M    |         Memo | 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
+         *   @    |    Timestamp | 8 bytes - two longs, first for date, second for time.  The date is the number of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+         *   I    |         Long | 4 bytes. Leftmost bit used to indicate sign, 0 negative.
+         *   +    |Autoincrement | Same as a Long
+         *   F    |        Float | Number stored as a string, right justified, and padded with blanks to the width of the field. 
+         *   O    |       Double | 8 bytes - no conversions, stored as a double.
+         *   G    |          OLE | 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
          */
 
         /// <summary>
@@ -140,16 +136,10 @@ namespace DotSpatial.Data
             Length = length;
             ColumnName = columnName;
             DecimalCount = decimalCount;
-            // Date
-            if (typeCode == 'D')
+            // Date or Timestamp
+            if (typeCode == 'D' || typeCode == '@')
             {
                 // date
-                DataType = typeof(DateTime);
-                return;
-            }
-            if (typeCode == 'T')
-            {
-                // date time
                 DataType = typeof(DateTime);
                 return;
             }
@@ -158,17 +148,18 @@ namespace DotSpatial.Data
                 DataType = typeof(bool);
                 return;
             }
-            if (typeCode == 'B')
+            // Long or AutoIncrement
+            if (typeCode == 'I' || typeCode == '+')
             {
-                DataType = typeof(byte[]);
+                DataType = typeof(int);
                 return;
             }
-            if (typeCode == 'F')
+            if (typeCode == 'O')
             {
-                DataType = typeof(float);
+                DataType = typeof(double);
                 return;
             }
-            if (typeCode == 'N')
+            if (typeCode == 'N' || typeCode == 'B' || typeCode == 'M' || typeCode == 'F' || typeCode == 'G')
             {
                 // The strategy here is to assign the smallest type that we KNOW will be large enough
                 // to hold any value with the length (in digits) and characters.
@@ -210,6 +201,8 @@ namespace DotSpatial.Data
                 {
                     // we know this has too many significant digits to fit in a double.
                     DataType = typeof(string);
+                    MaxLength = length;
+                    return;
                 }
 
                 // Singles  -3.402823E+38 to 3.402823E+38
@@ -221,14 +214,13 @@ namespace DotSpatial.Data
                 // preferable to have a numeric type in 99% of cases, and double is the easiest.
 
                 DataType = typeof(double);
-                Length = length;
 
                 return;
             }
             // Type code is either C or not recognized, in which case we will just end up with a string
             // representation of whatever the characters are.
 
-            DataType = typeof(String);
+            DataType = typeof(string);
             MaxLength = length;
         }
 
@@ -248,10 +240,12 @@ namespace DotSpatial.Data
             {
                 if (DataType == typeof(bool)) return 'L';
                 if (DataType == typeof(DateTime)) return 'D';
-                if (DataType == typeof(float)) return 'F';
+
+                // We are using numeric in most cases here, because that is the format most compatible with other
+                // Applications
+                if (DataType == typeof(float)) return 'N';
                 if (DataType == typeof(double)) return 'N';
                 if (DataType == typeof(decimal)) return 'N';
-
                 if (DataType == typeof(byte)) return 'N';
                 if (DataType == typeof(short)) return 'N';
                 if (DataType == typeof(int)) return 'N';
@@ -334,8 +328,8 @@ namespace DotSpatial.Data
             }
             if (DataType == typeof(decimal))
             {
-                _decimalCount = 9; // Decimals -79228162514264337593543950335 to 79228162514264337593543950335
                 _length = 18;
+                _decimalCount = 9; // Decimals -79228162514264337593543950335 to 79228162514264337593543950335
                 return;
             }
             if (DataType == typeof(byte))
@@ -348,22 +342,22 @@ namespace DotSpatial.Data
             if (DataType == typeof(short))
             {
                 // -32768 to 32767
-                _decimalCount = 0;
                 _length = 6;
+                _decimalCount = 0;
                 return;
             }
             if (DataType == typeof(int))
             {
                 // -2147483648 to 2147483647
-                _decimalCount = 0;
                 _length = 11;
+                _decimalCount = 0;
                 return;
             }
             if (DataType == typeof(long))
             {
                 // -9223372036854775808 to -9223372036854775807
-                _decimalCount = 0;
                 _length = 20;
+                _decimalCount = 0;
                 return;
             }
         }

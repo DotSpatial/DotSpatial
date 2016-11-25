@@ -2,13 +2,6 @@
 // Product Name: DotSpatial.Projection
 // Description:  The basic module for MapWindow version 6.0
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
@@ -24,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Reproject
-    /// </summary>
     public static class Reproject
     {
         #region Private Variables
@@ -81,33 +71,12 @@ namespace DotSpatial.Projections
 
             return affineResult;
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="xy">The xy array should be in interleaved set of xy coordinates like [x1, y1, x2, y2, ... xn, yn]</param>
-        /// <param name="z">The z array is the array of all the z values</param>
-        /// <param name="source"></param>
-        /// <param name="dest"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="numPoints"></param>
+        
         public static void ReprojectPoints(double[] xy, double[] z, ProjectionInfo source, ProjectionInfo dest, int startIndex, int numPoints)
         {
             ReprojectPoints(xy, z, source, 1.0, dest, 1.0, null, startIndex, numPoints);
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="xy">The xy array should be in interleaved set of xy coordinates like [x1, y1, x2, y2, ... xn, yn]</param>
-        /// <param name="z">The z array is the array of all the z values</param>
-        /// <param name="source"></param>
-        /// <param name="srcZtoMeter"></param>
-        /// <param name="dest"></param>
-        /// <param name="dstZtoMeter"></param>
-        /// <param name="idt"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="numPoints"></param>
+        
         public static void ReprojectPoints(double[] xy, double[] z, ProjectionInfo source, double srcZtoMeter, ProjectionInfo dest, double dstZtoMeter, IDatumTransform idt, int startIndex, int numPoints)
         {
             double toMeter = source.Unit.Meters;

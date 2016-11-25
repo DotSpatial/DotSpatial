@@ -1,8 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Contains extension methods for <see cref="IFeatureLayer"/>
+    /// </summary>
     public static class IFeatureLayerExtensions
     {
         /// <summary>
@@ -15,8 +19,10 @@ namespace DotSpatial.Controls
         /// [Name]</param>
         /// <param name="font">The font to use for these labels</param>
         /// <param name="fontColor">The color for the labels</param>
+        /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void AddLabels(this IFeatureLayer featureLayer, string expression, Font font, Color fontColor)
         {
+            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
             featureLayer.ShowLabels = true;
 
             var ll = new MapLabelLayer();
@@ -45,9 +51,11 @@ namespace DotSpatial.Controls
         /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this
         /// category.</param>
         /// <param name="name">The name of the category.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression,
                               ILabelSymbolizer symbolizer, string name)
         {
+            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
             if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
             featureLayer.ShowLabels = true;
             ILabelCategory lc = new LabelCategory
@@ -73,9 +81,11 @@ namespace DotSpatial.Controls
         ///  category.</param>
         /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than
         /// this value, labels should appear.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression,
                               ILabelSymbolizer symbolizer, double width)
         {
+            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
             if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
             featureLayer.ShowLabels = true;
             ILabelCategory lc = new LabelCategory
@@ -93,8 +103,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Removes any existing label categories
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void ClearLabels(this IFeatureLayer featureLayer)
         {
+            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
             featureLayer.ShowLabels = false;
         }
     }

@@ -3,13 +3,6 @@
 // Description:  The core libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
 //
 // The Original Code is DotSpatial.dll for the DotSpatial project
 //
@@ -63,18 +56,12 @@ namespace DotSpatial.Symbology
         /// Obtains an Envelope in world coordinates that contains this object
         /// </summary>
         /// <returns></returns>
-        Extent Extent
-        {
-            get;
-        }
+        Extent Extent { get; }
 
         /// <summary>
         /// Gets whether or not the unmanaged drawing structures have been created for this item
         /// </summary>
-        bool IsInitialized
-        {
-            get;
-        }
+        bool IsInitialized { get; }
 
         /// <summary>
         /// If this is false, then the drawing function will not render anything.
@@ -82,11 +69,7 @@ namespace DotSpatial.Symbology
         /// as part of the drawing methods and will also abort the drawing methods of any
         /// sub-members to this IRenderable.
         /// </summary>
-        bool IsVisible
-        {
-            get;
-            set;
-        }
+        bool IsVisible { get; set; }
 
         #endregion
     }

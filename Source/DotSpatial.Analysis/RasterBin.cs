@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Analysis.RasterBin.cs
 // Description: Class for binning raster data, for example into a histogram of values.
-// Copyright & License: See www.DotSpatial.org.
+
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 

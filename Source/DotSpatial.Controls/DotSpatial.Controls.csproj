@@ -91,7 +91,7 @@
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PackageManager.cs" />
-    <Compile Include="ShowExtensionsDialog.cs" />
+    <Compile Include="ShowExtensionsDialogMode.cs" />
     <Compile Include="AppManager.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -138,7 +138,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="IMapView.cs" />
     <Compile Include="LayoutBitmap.cs" />
     <Compile Include="LayoutControl.cs">
       <SubType>UserControl</SubType>
