@@ -197,9 +197,10 @@ namespace DotSpatial.Data
                     }
                 }
 
-                if (decimalCount > 14)
+                if (decimalCount > 15)
                 {
-                    // we know this has too many significant digits to fit in a double.
+                    // we know this has too many significant digits to fit in a double:
+                    // a double can hold 15-16 significant digits: https://msdn.microsoft.com/en-us/library/678hzkk9.aspx
                     DataType = typeof(string);
                     MaxLength = length;
                     return;
