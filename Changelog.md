@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - IHeaderControl.Add() now returns object which represents added GUI item.
 - Added authority and authority code as optional parameters to method ProjectionInfo.FromProj4String.
 - Update proj4 strings to EPSG db 8.9 (#870)
+- ShapeFile Numeric columns now loaded into double instead of string for up to 15 decimal digits (#893)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
