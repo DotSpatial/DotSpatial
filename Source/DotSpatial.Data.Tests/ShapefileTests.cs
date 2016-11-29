@@ -23,5 +23,19 @@ namespace DotSpatial.Data.Tests
             var features = shapeFile.SelectIndexByAttribute("[NAME]='Great Salt Lake'");
             Assert.AreEqual(1, features.Count);
         }
+
+        /// <summary>
+        /// This test checks that Shapefiles with Numeric columns using up to 15 decimal digits precision 
+        /// are loaded as double instead of as string.
+        /// </summary>
+        /// <remarks>
+        /// Issue: https://github.com/DotSpatial/DotSpatial/issues/893
+        /// </remarks>
+        [Test]
+        public void NumericColumnAsDoubleTest()
+        {
+            var shapeFile = Shapefile.OpenFile(Path.Combine(_shapefiles, @"OGR-numeric\ogr-numeric.shp"));
+            Assert.AreEqual("System.Double", shapeFile.DataTable.Columns[2].DataType.FullName);
+        }
     }
 }
