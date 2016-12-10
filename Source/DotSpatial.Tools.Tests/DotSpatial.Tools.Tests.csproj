@@ -70,6 +70,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ClipPolygonWithLineTests.cs" />
+    <Compile Include="ClipPolygonWithPolygonTests.cs" />
     <Compile Include="KdTreeExTests.cs" />
     <Compile Include="RasterMagicTests.cs" />
     <Compile Include="RasterToPolygonTests.cs" />

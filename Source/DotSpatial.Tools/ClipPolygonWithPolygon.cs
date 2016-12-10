@@ -137,6 +137,11 @@ namespace DotSpatial.Tools
                 output.Features.Add(fe);
             }
 
+            // Setting the AttributesPopulated to true here means the output shapefile will get attribute columns copied from
+            // the source file. This problem occurs when using the ClipPolygonWithPolygon tool due to how the input/output files
+            // are loaded. https://github.com/DotSpatial/DotSpatial/issues/892
+            output.AttributesPopulated = true;
+
             output.SaveAs(output.Filename, true);
             return true;
         }
