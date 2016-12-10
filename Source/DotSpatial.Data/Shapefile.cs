@@ -558,9 +558,9 @@ namespace DotSpatial.Data
                 throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
             }
 
-            if (File.Exists(shxFilename) == false)
+            if (!File.Exists(shxFilename))
             {
-                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
+                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", shxFilename));
             }
 
             var fileLen = new FileInfo(shxFilename).Length;
