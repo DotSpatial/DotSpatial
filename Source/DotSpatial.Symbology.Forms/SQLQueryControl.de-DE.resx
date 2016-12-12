@@ -199,4 +199,25 @@
   <data name="btnNotNull.Text" xml:space="preserve">
     <value>Ist nicht Null</value>
   </data>
+  <data name="btnValidate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 23</value>
+  </data>
+  <data name="btnValidate.Text" xml:space="preserve">
+    <value>Überprüfen</value>
+  </data>
+  <data name="lblResult.Location" type="System.Drawing.Point, System.Drawing">
+    <value>134, 338</value>
+  </data>
+  <data name="lblResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 31</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>77, 338</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Ergebnis:</value>
+  </data>
 </root>
