@@ -258,4 +258,10 @@
   <data name="LabelSetup_OneCategoryNeededErrCaption" xml:space="preserve">
     <value>Unable to delete category</value>
   </data>
+  <data name="SQLQueryControl_MoreThan10000UniqueValues" xml:space="preserve">
+    <value>There are more than 10, 000 unique values. Do you wish to show all of them?</value>
+  </data>
+  <data name="SQLQueryControl_LargeNumberOfUniqueValues" xml:space="preserve">
+    <value>Large Number of Unique Values</value>
+  </data>
 </root>
