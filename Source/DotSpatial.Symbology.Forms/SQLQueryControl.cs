@@ -24,11 +24,11 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// Creates a new instance of the SQLQueryControl
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public partial class SQLQueryControl : UserControl
     {
         #region Fields
 
-        private readonly Expression _exp;
         private IAttributeSource _attributeSource;
         private DataTable _table;
 
@@ -42,7 +42,6 @@ namespace DotSpatial.Symbology.Forms
         public SQLQueryControl()
         {
             InitializeComponent();
-            _exp = new Expression();
         }
 
         #endregion
@@ -329,8 +328,6 @@ namespace DotSpatial.Symbology.Forms
 
         private void UpdateFields()
         {
-            bool hasFid = false;
-            _exp.ClearFields();
             lbxFields.SuspendLayout();
             lbxFields.Items.Clear();
             if (_attributeSource != null)
@@ -338,55 +335,41 @@ namespace DotSpatial.Symbology.Forms
                 DataColumn[] columns = _attributeSource.GetColumns();
                 foreach (DataColumn dc in columns)
                 {
-                    _exp.AddField(dc);
                     lbxFields.Items.Add(dc.ColumnName);
-                    if (dc.ColumnName.ToLower() == "fid") hasFid = true;
                 }
             }
             else if (_table != null)
             {
                 foreach (DataColumn dc in _table.Columns)
                 {
-                    _exp.AddField(dc);
                     lbxFields.Items.Add(dc.ColumnName);
-                    if (dc.ColumnName.ToLower() == "fid") hasFid = true;
                 }
             }
-
-            if (!hasFid)
-                lbxFields.Items.Add("FID");
             lbxFields.ResumeLayout();
         }
 
         /// <summary>
-        /// Validates the Expression including syntax and operations.
+        /// Validates the expression.
         /// </summary>
         /// <returns>True, if Expression is valid.</returns>
         public bool ValidateExpression()
         {
-            if (string.IsNullOrWhiteSpace(rtbFilterText.Text))
+            try
             {
-                lblResult.Text = "";
-                return true;
+                if (_attributeSource != null)
+                    _attributeSource.GetCounts(new[] { rtbFilterText.Text }, null, 1);
+                else if (_table != null)
+                    _table.Select(rtbFilterText.Text);
             }
-            var res = _exp.ParseExpression(rtbFilterText.Text);
-            if (!res)
+            catch (Exception e)
             {
-                lblResult.Text = _exp.ErrorMessage;
+                lblResult.Text = e.Message;
                 lblResult.ForeColor = Color.Red;
                 return false;
             }
-
-            string retVal = "";
-            if (_exp.IsValidOperation(ref retVal, _table.Rows.Count > 0 ? _table.Rows[0] : null))// calculate with real values if possible else use temporary values
-            {
-                lblResult.Text = retVal;
-                lblResult.ForeColor = Color.Black;
-                return true;
-            }
-            lblResult.Text = _exp.ErrorMessage;
-            lblResult.ForeColor = Color.Red;
-            return false;
+            lblResult.Text = SymbologyFormsMessageStrings.SQLQueryControl_ExpressionIsValid;
+            lblResult.ForeColor = Color.Black;
+            return true;
         }
 
         #endregion

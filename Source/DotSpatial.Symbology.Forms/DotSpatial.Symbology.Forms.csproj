@@ -178,6 +178,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LegendItemActionsBase.cs" />
+    <Compile Include="SQLExpressionDialog.Designer.cs">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="SQLQueryControl.Designer.cs">
       <DependentUpon>SQLQueryControl.cs</DependentUpon>
     </Compile>
