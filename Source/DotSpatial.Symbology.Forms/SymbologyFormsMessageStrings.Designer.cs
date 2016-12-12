@@ -259,11 +259,38 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified combination of font family, style, or size is unsupported..
+        /// </summary>
+        internal static string LabelSetup_TheSpecifiedCombinationOfFontFamilyStyleOrSizeIsUnsupported {
+            get {
+                return ResourceManager.GetString("LabelSetup_TheSpecifiedCombinationOfFontFamilyStyleOrSizeIsUnsupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This shows a preview of the font..
+        /// </summary>
+        internal static string LabelSetup_ThisShowsAPreviewOfTheFont {
+            get {
+                return ResourceManager.GetString("LabelSetup_ThisShowsAPreviewOfTheFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This feature is not yet supported for tables with more than 50, 000 rows..
         /// </summary>
         internal static string LargeEditsNotSupported {
             get {
                 return ResourceManager.GetString("LargeEditsNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        internal static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
             }
         }
         
@@ -501,6 +528,15 @@ namespace DotSpatial.Symbology.Forms {
         internal static string TableEditorControl_SelectedRowCountStringFormat {
             get {
                 return ResourceManager.GetString("TableEditorControl_SelectedRowCountStringFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported!.
+        /// </summary>
+        internal static string Unsupported {
+            get {
+                return ResourceManager.GetString("Unsupported", resourceCulture);
             }
         }
     }

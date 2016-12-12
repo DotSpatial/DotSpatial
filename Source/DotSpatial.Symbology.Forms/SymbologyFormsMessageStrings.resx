@@ -264,4 +264,16 @@
   <data name="SQLQueryControl_LargeNumberOfUniqueValues" xml:space="preserve">
     <value>Large Number of Unique Values</value>
   </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="LabelSetup_ThisShowsAPreviewOfTheFont" xml:space="preserve">
+    <value>This shows a preview of the font.</value>
+  </data>
+  <data name="Unsupported" xml:space="preserve">
+    <value>Unsupported!</value>
+  </data>
+  <data name="LabelSetup_TheSpecifiedCombinationOfFontFamilyStyleOrSizeIsUnsupported" xml:space="preserve">
+    <value>The specified combination of font family, style, or size is unsupported.</value>
+  </data>
 </root>
