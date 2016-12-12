@@ -80,3 +80,4 @@ All notable changes to this project will be documented in this file.
 - AttributeTable - Can't handle all field types, fails to handle null values properly (#880)
 - Attributes now preserved from input to output when performing ClipPolygonWithPolygon tool (#892)
 - FeatureSet.Open(".shp") throws wrong error if .shx is missing (#903)
+- Wrong Expression at Expression Editor mess up Layer Feature Set. (#904)
