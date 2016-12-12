@@ -179,8 +179,8 @@ namespace DotSpatial.Symbology.Forms
                         lst.Add(dr[fieldName]);
                     }
                     if (lst.Count <= 10000 || useAll) continue;
-                    if (MessageBox.Show("There are more than 10, 000 unique values... do you wish to show all of them?",
-                                        "Large Number of Unique Values", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show(SymbologyFormsMessageStrings.SQLQueryControl_MoreThan10000UniqueValues,
+                                        SymbologyFormsMessageStrings.SQLQueryControl_LargeNumberOfUniqueValues, MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         useAll = true;
                     }
