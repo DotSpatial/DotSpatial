@@ -295,6 +295,15 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expression is valid..
+        /// </summary>
+        internal static string SQLQueryControl_ExpressionIsValid {
+            get {
+                return ResourceManager.GetString("SQLQueryControl_ExpressionIsValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Large Number of Unique Values.
         /// </summary>
         internal static string SQLQueryControl_LargeNumberOfUniqueValues {

@@ -276,4 +276,7 @@
   <data name="LabelSetup_TheSpecifiedCombinationOfFontFamilyStyleOrSizeIsUnsupported" xml:space="preserve">
     <value>The specified combination of font family, style, or size is unsupported.</value>
   </data>
+  <data name="SQLQueryControl_ExpressionIsValid" xml:space="preserve">
+    <value>Expression is valid.</value>
+  </data>
 </root>
