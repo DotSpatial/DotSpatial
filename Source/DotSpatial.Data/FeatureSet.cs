@@ -1768,7 +1768,7 @@ namespace DotSpatial.Data
 
                 foreach (IFeature feature in Features)
                 {
-                    feature.Geometry.UpdateEnvelope();
+                    feature.Geometry.GeometryChanged();
                     MyExtent.ExpandToInclude(new Extent(feature.Geometry.EnvelopeInternal));
                 }
             }
