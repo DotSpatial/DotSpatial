@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - IHeaderControl.Add() now returns object which represents added GUI item.
 - Added authority and authority code as optional parameters to method ProjectionInfo.FromProj4String.
 - Update proj4 strings to EPSG db 8.9 (#870)
+- ShapeFile Numeric columns now loaded into double instead of string for up to 15 decimal digits (#893)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -77,3 +78,8 @@ All notable changes to this project will be documented in this file.
 - AttributeTable.Columns.Add (#303)
 - Spheroid International_1924 in EuropeanDatum1950UTMZone30N coordinate system (#623)
 - AttributeTable - Can't handle all field types, fails to handle null values properly (#880)
+- Attributes now preserved from input to output when performing ClipPolygonWithPolygon tool (#892)
+- FeatureSet.Open(".shp") throws wrong error if .shx is missing (#903)
+- Wrong Expression at Expression Editor mess up Layer Feature Set. (#904)
+- Incorrect selection of polygons with Holes (#905)
+

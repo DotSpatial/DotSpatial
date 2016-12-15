@@ -27,24 +27,33 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public partial class ExpressionControl : UserControl
     {
-        private DataTable _table;
+        #region Fields
+
+        private readonly Expression _exp;
         private IAttributeSource _attributeSource;
-        private Expression exp;
-        
+        private DataTable _table;
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         /// Control to edit and validate expressions that can be used to label features.
         /// </summary>
         public ExpressionControl()
         {
             InitializeComponent();
-            exp = new Expression();
+            _exp = new Expression();
         }
 
+        #endregion
+
         #region Properties
+
         /// <summary>
         /// Gets/Sets whether empty expressions are valid.
         /// </summary>
-        public Boolean AllowEmptyExpression { get; set; }
+        public bool AllowEmptyExpression { get; set; }
 
         /// <summary>
         /// Setting this is an alternative to specifying the table.  This allows the
@@ -57,20 +66,6 @@ namespace DotSpatial.Symbology.Forms
             set
             {
                 _attributeSource = value;
-                UpdateFields();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the data Table for this control. Setting this will
-        /// automatically update the fields shown in the list.
-        /// </summary>
-        public DataTable Table
-        {
-            get { return _table; }
-            set
-            {
-                _table = value;
                 UpdateFields();
             }
         }
@@ -89,9 +84,25 @@ namespace DotSpatial.Symbology.Forms
                 rtbExpression.Text = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the data Table for this control. Setting this will
+        /// automatically update the fields shown in the list.
+        /// </summary>
+        public DataTable Table
+        {
+            get { return _table; }
+            set
+            {
+                _table = value;
+                UpdateFields();
+            }
+        }
+
         #endregion
 
-        #region EventHandlers
+        #region Methods
+
         /// <summary>
         /// Adds a new line.
         /// </summary>
@@ -114,7 +125,7 @@ namespace DotSpatial.Symbology.Forms
         private void dgvFields_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex > dgvFields.Rows.Count - 1) return;
-            rtbExpression.SelectedText = "[" + dgvFields.Rows[e.RowIndex].Cells[dgvcName.Name].Value.ToString() + "]";
+            rtbExpression.SelectedText = "[" + dgvFields.Rows[e.RowIndex].Cells[dgvcName.Name].Value + "]";
         }
 
         /// <summary>
@@ -128,7 +139,41 @@ namespace DotSpatial.Symbology.Forms
                 e.SuppressKeyPress = true;
             }
         }
-        #endregion
+
+        /// <summary>
+        /// Replaces the expression fields by the columns of the current _attributeSource or _table.
+        /// </summary>
+        private void UpdateFields()
+        {
+            bool hasFid = false;
+            _exp.ClearFields();
+            dgvFields.SuspendLayout();
+            dgvFields.Rows.Clear();
+            if (_attributeSource != null)
+            {
+                DataColumn[] columns = _attributeSource.GetColumns();
+                foreach (DataColumn dc in columns)
+                {
+                    _exp.AddField(dc);
+                    dgvFields.Rows.Add(dc.ColumnName, dc.DataType.ToString().Replace("System.", ""));
+                    if (dc.ColumnName.ToLower() == "fid")
+                        hasFid = true;
+                }
+            }
+            else if (_table != null)
+            {
+                foreach (DataColumn dc in _table.Columns)
+                {
+                    _exp.AddField(dc);
+                    dgvFields.Rows.Add(dc.ColumnName, dc.DataType.ToString().Replace("System.", ""));
+                    if (dc.ColumnName.ToLower() == "fid")
+                        hasFid = true;
+                }
+            }
+            if (!hasFid)
+                dgvFields.Rows.Add("FID", typeof(int).ToString().Replace("System.", ""));
+            dgvFields.ResumeLayout();
+        }
 
         /// <summary>
         /// Validates the Expression including syntax and operations.
@@ -143,69 +188,30 @@ namespace DotSpatial.Symbology.Forms
                     lblResult.Text = "";
                     return true;
                 }
-                else
-                {
-                    lblResult.Text = SymbologyFormsMessageStrings.ExpressionControl_EmptyExpression;
-                    lblResult.ForeColor = Color.Red;
-                    return false;
-                }
+                lblResult.Text = SymbologyFormsMessageStrings.ExpressionControl_EmptyExpression;
+                lblResult.ForeColor = Color.Red;
+                return false;
             }
-            var res = exp.ParseExpression(rtbExpression.Text);
+            var res = _exp.ParseExpression(rtbExpression.Text);
             if (!res)
             {
-                lblResult.Text = exp.ErrorMessage;
+                lblResult.Text = _exp.ErrorMessage;
                 lblResult.ForeColor = Color.Red;
                 return false;
             }
 
             string retVal = "";
-            if (exp.IsValidOperation(ref retVal, _table.Rows.Count > 0 ? _table.Rows[0] : null))// calculate with real values if possible else use temporary values
+            if (_exp.IsValidOperation(ref retVal, _table.Rows.Count > 0 ? _table.Rows[0] : null))// calculate with real values if possible else use temporary values
             {
                 lblResult.Text = retVal;
                 lblResult.ForeColor = Color.Black;
                 return true;
             }
-            else
-            {
-                lblResult.Text = exp.ErrorMessage;
-                lblResult.ForeColor = Color.Red;
-                return false;
-            }
+            lblResult.Text = _exp.ErrorMessage;
+            lblResult.ForeColor = Color.Red;
+            return false;
         }
 
-        /// <summary>
-        /// Replaces the expression fields by the columns of the current _attributeSource or _table.
-        /// </summary>
-        private void UpdateFields()
-        {
-            bool hasFID = false;
-            exp.ClearFields();
-            dgvFields.SuspendLayout();
-            dgvFields.Rows.Clear();
-            if (_attributeSource != null)
-            {
-                DataColumn[] columns = _attributeSource.GetColumns();
-                foreach (DataColumn dc in columns)
-                {
-                    exp.AddField(dc);
-                    dgvFields.Rows.Add(dc.ColumnName, dc.DataType.ToString().Replace("System.", ""));
-                    if (dc.ColumnName.ToLower() == "fid")
-                        hasFID = true;
-                }
-            }
-            else if (_table != null)
-            {
-                foreach (DataColumn dc in _table.Columns)
-                {
-                    exp.AddField(dc);
-                    dgvFields.Rows.Add(dc.ColumnName, dc.DataType.ToString().Replace("System.", ""));
-                    if (dc.ColumnName.ToLower() == "fid")
-                        hasFID = true;
-                }
-            }
-            if (!hasFID)
-                dgvFields.Rows.Add("FID", typeof(int).ToString().Replace("System.", ""));
-            dgvFields.ResumeLayout();
-        }
+        #endregion
     }
 }

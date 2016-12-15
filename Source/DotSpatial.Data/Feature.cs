@@ -428,7 +428,7 @@ namespace DotSpatial.Data
         public void UpdateEnvelope()
         {
             if (_basicGeometry == null) return;
-            _basicGeometry.UpdateEnvelope();
+            _basicGeometry.GeometryChanged();
             if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
