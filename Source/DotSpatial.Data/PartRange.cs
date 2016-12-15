@@ -92,8 +92,8 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    x2 = Vertices[StartIndex];
-                    y2 = Vertices[StartIndex + 1];
+                    x2 = Vertices[StartIndex * 2];
+                    y2 = Vertices[StartIndex * 2 + 1];
                 }
                 double trapArea = (x1 * y2) - (x2 * y1);
                 area += trapArea;
