@@ -75,13 +75,6 @@ namespace DotSpatial.Data
         void SaveAs(string fileName);
 
         /// <summary>
-        /// Sets the bitmap being used for this dataset
-        /// </summary>
-        /// <param name="image">
-        /// </param>
-        void SetBitmap(Bitmap image);
-
-        /// <summary>
         /// This is only used in the palette indexed band type.
         /// </summary>
         IEnumerable<Color> GetColorPalette();

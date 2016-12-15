@@ -111,15 +111,16 @@ namespace DotSpatial.Data
         {
             if (File.Exists(_fileName))
             {
-                StreamReader sr = new StreamReader(_fileName);
-                _affine = new double[6];
-                _affine[1] = NextValue(sr); // Dx
-                _affine[2] = NextValue(sr); // Skew X
-                _affine[4] = NextValue(sr); // Skew Y
-                _affine[5] = NextValue(sr); // Dy
-                _affine[0] = NextValue(sr); // Top Left X
-                _affine[3] = NextValue(sr); // Top Left Y
-                sr.Close();
+                using (var sr = new StreamReader(_fileName))
+                {
+                    _affine = new double[6];
+                    _affine[1] = NextValue(sr); // Dx
+                    _affine[2] = NextValue(sr); // Skew X
+                    _affine[4] = NextValue(sr); // Skew Y
+                    _affine[5] = NextValue(sr); // Dy
+                    _affine[0] = NextValue(sr); // Top Left X
+                    _affine[3] = NextValue(sr); // Top Left Y
+                }
             }
         }
 

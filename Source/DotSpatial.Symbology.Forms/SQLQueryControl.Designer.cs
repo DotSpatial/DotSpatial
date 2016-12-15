@@ -57,6 +57,9 @@ namespace DotSpatial.Symbology.Forms
             this.lbxFields = new System.Windows.Forms.ListBox();
             this.btnNull = new System.Windows.Forms.Button();
             this.btnNotNull = new System.Windows.Forms.Button();
+            this.btnValidate = new System.Windows.Forms.Button();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblMax
@@ -227,9 +230,29 @@ namespace DotSpatial.Symbology.Forms
             this.btnNotNull.UseVisualStyleBackColor = true;
             this.btnNotNull.Click += new System.EventHandler(this.btnNotNull_Click);
             // 
+            // btnValidate
+            // 
+            resources.ApplyResources(this.btnValidate, "btnValidate");
+            this.btnValidate.Name = "btnValidate";
+            this.btnValidate.UseVisualStyleBackColor = true;
+            this.btnValidate.Click += new System.EventHandler(this.btnValidate_Click);
+            // 
+            // lblResult
+            // 
+            resources.ApplyResources(this.lblResult, "lblResult");
+            this.lblResult.Name = "lblResult";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
             // SQLQueryControl
             // 
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblResult);
+            this.Controls.Add(this.btnValidate);
             this.Controls.Add(this.btnNotNull);
             this.Controls.Add(this.btnNull);
             this.Controls.Add(this.lblMax);
@@ -288,5 +311,8 @@ namespace DotSpatial.Symbology.Forms
         private ListBox lbxFields;
         private ListBox lbxUniqueValues;
         private RichTextBox rtbFilterText;
+        private Button btnValidate;
+        private Label lblResult;
+        private Label label3;
     }
 }
