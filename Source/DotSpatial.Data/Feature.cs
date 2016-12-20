@@ -30,7 +30,7 @@ namespace DotSpatial.Data
     [ToolboxItem(false)]
     public class Feature : IFeature
     {
-        #region Private Variables
+        #region Fields
 
         /// <summary>
         /// Gets or sets the column to use when sorting lists of features.
@@ -41,11 +41,11 @@ namespace DotSpatial.Data
         /// </summary>
         public static string ComparisonField;
 
-        private IGeometry _basicGeometry;
+        private IGeometry _geometry;
         private DataRow _dataRow;
-        private int _numParts;
-        private IFeatureSet _parentFeatureSet;
         private FeatureType _featureType;
+        private IFeatureSet _parentFeatureSet;
+
         #endregion
 
         #region Constructors
@@ -64,7 +64,7 @@ namespace DotSpatial.Data
                 Coordinate c = new Coordinate(shape.Vertices[0], shape.Vertices[1]);
                 if (shape.Z != null) c.Z = shape.Z[0];
                 if (shape.M != null) c.M = shape.M[0];
-                _basicGeometry = new Point(c);
+                _geometry = new Point(c);
                 _featureType = FeatureType.Point;
             }
             if (shape.Range.FeatureType == FeatureType.MultiPoint)
@@ -80,7 +80,7 @@ namespace DotSpatial.Data
                         coords.Add(c);
                     }
                 }
-                _basicGeometry = new MultiPoint(coords.CastToPointArray());
+                _geometry = new MultiPoint(coords.CastToPointArray());
                 _featureType = FeatureType.MultiPoint;
             }
 
@@ -101,11 +101,11 @@ namespace DotSpatial.Data
                 }
                 if (strings.Count > 1)
                 {
-                    _basicGeometry = new MultiLineString(strings.ToArray());
+                    _geometry = new MultiLineString(strings.ToArray());
                 }
                 else if (strings.Count == 1)
                 {
-                    _basicGeometry = strings[0];
+                    _geometry = strings[0];
                 }
                 _featureType = FeatureType.Line;
             }
@@ -121,18 +121,14 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="point">The vertex</param>
         public Feature(Vertex point)
-            : this(new Point(point.X, point.Y))
-        {
-        }
+            : this(new Point(point.X, point.Y)) { }
 
         /// <summary>
         /// Creates a single point feature from a new point.
         /// </summary>
         /// <param name="c"></param>
         public Feature(Coordinate c)
-            : this(new Point(c))
-        {
-        }
+            : this(new Point(c)) { }
 
         /// <summary>
         /// Creates a feature from a geometry
@@ -140,7 +136,7 @@ namespace DotSpatial.Data
         /// <param name="geometry">The geometry to turn into a feature</param>
         public Feature(IGeometry geometry)
         {
-            _basicGeometry = geometry;
+            _geometry = geometry;
             _featureType = FeatureTypeFromGeometryType(geometry);
             _dataRow = null;
         }
@@ -153,7 +149,7 @@ namespace DotSpatial.Data
         /// <param name="parent">The IFeatureSet to add this feature to.</param>
         public Feature(IGeometry geometry, IFeatureSet parent)
         {
-            _basicGeometry = geometry;
+            _geometry = geometry;
             _featureType = FeatureTypeFromGeometryType(geometry);
             _dataRow = parent.DataTable.NewRow();
             parent.Features.Add(this);
@@ -165,9 +161,8 @@ namespace DotSpatial.Data
         public Feature()
         {
             _dataRow = null;
-            _basicGeometry = null;
+            _geometry = null;
             _featureType = FeatureType.Unspecified;
-            //_envelopSource = CacheTypes.Cached;
         }
 
         /// <summary>
@@ -182,26 +177,122 @@ namespace DotSpatial.Data
             {
                 case FeatureType.Line:
                     _dataRow = null;
-                    _basicGeometry = new LineString(coordinates.ToArray());
-                    //_envelopSource = CacheTypes.Dynamic;
+                    _geometry = new LineString(coordinates.ToArray());
                     break;
                 case FeatureType.MultiPoint:
                     _dataRow = null;
-                    _basicGeometry = new MultiPoint(coordinates.CastToPointArray());
-                    //_envelopSource = CacheTypes.Dynamic;
+                    _geometry = new MultiPoint(coordinates.CastToPointArray());
                     break;
                 case FeatureType.Point:
                     _dataRow = null;
-                    _basicGeometry = new Point(coordinates.First());
-                    //_envelopSource = CacheTypes.Dynamic;
+                    _geometry = new Point(coordinates.First());
                     break;
                 case FeatureType.Polygon:
                     _dataRow = null;
-                    _basicGeometry = new Polygon(new LinearRing(coordinates.ToArray()));
-                    //_envelopSource = CacheTypes.Dynamic;
+                    _geometry = new Polygon(new LinearRing(coordinates.ToArray()));
                     break;
             }
             _featureType = featureType;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the datarow containing all the attributes related to this geometry.
+        /// This will query the parent feature layer's data Table by FID and then
+        /// cache the value locally.  If no parent feature layer exists, then
+        /// this is meaningless.  You should create a new Feature by doing
+        /// FeatureLayer.Features.Add(), which will return a new Feature.
+        /// </summary>
+        public virtual DataRow DataRow
+        {
+            get
+            {
+                return _dataRow;
+            }
+            set
+            {
+                _dataRow = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns either Point, Polygon or Line.
+        /// </summary>
+        public FeatureType FeatureType
+        {
+            get
+            {
+                return _geometry == null ? FeatureType.Unspecified : _featureType;
+            }
+            private set { _featureType = value; }
+        }
+
+        /// <summary>
+        /// Gets the key that is associated with this feature.  This returns -1 if
+        /// this feature is not a member of a feature layer.
+        /// </summary>
+        public virtual int Fid
+        {
+            get
+            {
+                if (_parentFeatureSet.IndexMode || !_parentFeatureSet.AttributesPopulated)
+                {
+                    return ShapeIndex != null ? ShapeIndex.RecordNumber - 1 : -2;  // -1 because RecordNumber for shapefiles is 1-based.
+                    // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
+                }
+                return _parentFeatureSet.Features.IndexOf(this);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a valid IGeometry associated with the data elements of this feature.
+        /// This will be enough geometry information to cast into a full fledged geometry
+        /// that can be used in coordination with DotSpatial.Analysis
+        /// </summary>
+        public virtual IGeometry Geometry
+        {
+            get
+            {
+                return _geometry;
+            }
+            set
+            {
+                _geometry = value;
+                FeatureType = FeatureTypeFromGeometryType(_geometry);
+            }
+        }
+
+        /// <summary>
+        /// Gets a reference to the IFeatureLayer that contains this item.
+        /// </summary>
+        public virtual IFeatureSet ParentFeatureSet
+        {
+            get { return _parentFeatureSet; }
+            set { _parentFeatureSet = value; }
+        }
+
+        /// <summary>
+        /// This is simply a quick access to the Vertices list for this specific
+        /// feature. If the Vertices have not yet been defined, this will be null.
+        /// </summary>
+        public ShapeRange ShapeIndex { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Creates a deep copy of this feature.
+        /// </summary>
+        /// <returns>Returns a deep copy of this feature as an object</returns>
+        object ICloneable.Clone()
+        {
+            Feature clone = (Feature)MemberwiseClone();
+            OnCopy(clone);
+            return clone;
         }
 
         /// <summary>
@@ -236,13 +327,108 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This returns itself as the first geometry
+        /// Copies this feature, creating an independant, but identical feature.
         /// </summary>
-        /// <returns>An IBasicGeometry interface</returns>
-        /// <exception cref="IndexOutOfRangeException">Index cannot be less than 0 or greater than 1</exception>
-        public IGeometry GetBasicGeometryN(int index)
+        /// <returns></returns>
+        public Feature Copy()
         {
-            return _basicGeometry.GetGeometryN(index);
+            Feature clone = (Feature)MemberwiseClone();
+            clone.Geometry = Geometry.Copy();
+            if (ParentFeatureSet != null && ParentFeatureSet.DataTable != null)
+            {
+                DataTable table = ParentFeatureSet.DataTable;
+                clone._dataRow = table.NewRow();
+                if (DataRow != null)
+                {
+                    for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
+                    {
+                        clone._dataRow[i] = DataRow[i];
+                    }
+                }
+            }
+
+            return clone;
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this feature.
+        /// </summary>
+        /// <returns>Returns a deep copy of this feature as an IFeature</returns>
+        IFeature IFeature.Copy()
+        {
+            return Copy();
+        }
+
+        /// <summary>
+        /// This uses the field names to copy attribute values from the source to this feature.
+        /// Even if columns are missing or if there are extra columns, this method should work.
+        /// </summary>
+        /// <param name="source">The IFeature source to copy attributes from.</param>
+        public void CopyAttributes(IFeature source)
+        {
+            if (source.DataRow == null) return;
+            for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
+            {
+                string name = ParentFeatureSet.DataTable.Columns[i].ColumnName;
+                if (source.ParentFeatureSet.DataTable.Columns.Contains(name))
+                {
+                    _dataRow[i] = source.DataRow[name];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines the FeatureType of this feature based on the given geometry.
+        /// </summary>
+        /// <param name="geometry">Geometry that is used to determine the FeatureType.</param>
+        /// <returns>Unspecified if the geometry was null otherwise the FeatureType that corresponds to the geometries OgcGeometryType.</returns>
+        private static FeatureType FeatureTypeFromGeometryType(IGeometry geometry)
+        {
+            FeatureType featureType = FeatureType.Unspecified;
+            if (geometry == null) return featureType;
+
+            switch (geometry.OgcGeometryType)
+            {
+                case OgcGeometryType.Point:
+                    featureType = FeatureType.Point;
+                    break;
+                case OgcGeometryType.LineString:
+                case OgcGeometryType.MultiLineString:
+                    featureType = FeatureType.Line;
+                    break;
+                case OgcGeometryType.Polygon:
+                case OgcGeometryType.MultiPolygon:
+                    featureType = FeatureType.Polygon;
+                    break;
+                case OgcGeometryType.MultiPoint:
+                    featureType = FeatureType.MultiPoint;
+                    break;
+            }
+            return featureType;
+        }
+
+        /// <summary>
+        /// Occurs during the cloning process and this method also duplicates the envelope and basic geometry.
+        /// </summary>
+        /// <param name="copy">The feature being copied</param>
+        protected virtual void OnCopy(Feature copy)
+        {
+            copy.Geometry = _geometry.Copy();
+            // This provides an overrideable interface for modifying the copy behavior.
+        }
+
+        /// <summary>
+        /// Test if a point is in a list of coordinates.
+        /// </summary>
+        /// <param name="testPoint">TestPoint the point to test for.</param>
+        /// <param name="pointList">PointList the list of points to look through.</param>
+        /// <returns>true if testPoint is a point in the pointList list.</returns>
+        private static bool PointInList(Coordinate testPoint, IEnumerable<Coordinate> pointList)
+        {
+            foreach (Coordinate p in pointList)
+                if (p.Equals2D(testPoint))
+                    return true;
+            return false;
         }
 
         private void ReadPolygonShape(Shape shape)
@@ -325,132 +511,14 @@ namespace DotSpatial.Data
 
             if (polygons.Length == 1)
             {
-                _basicGeometry = polygons[0];
+                _geometry = polygons[0];
             }
             else
             {
                 // It's a multi part
-                _basicGeometry = new MultiPolygon(polygons);
+                _geometry = new MultiPolygon(polygons);
             }
             _featureType = FeatureType.Polygon;
-        }
-
-        /// <summary>
-        /// Test if a point is in a list of coordinates.
-        /// </summary>
-        /// <param name="testPoint">TestPoint the point to test for.</param>
-        /// <param name="pointList">PointList the list of points to look through.</param>
-        /// <returns>true if testPoint is a point in the pointList list.</returns>
-        private static bool PointInList(Coordinate testPoint, IEnumerable<Coordinate> pointList)
-        {
-            foreach (Coordinate p in pointList)
-                if (p.Equals2D(testPoint))
-                    return true;
-            return false;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Determines the FeatureType of this feature based on the given geometry.
-        /// </summary>
-        /// <param name="geometry">Geometry that is used to determine the FeatureType.</param>
-        /// <returns>Unspecified if the geometry was null otherwise the FeatureType that corresponds to the geometries OgcGeometryType.</returns>
-        private FeatureType FeatureTypeFromGeometryType(IGeometry geometry)
-        {
-            FeatureType featureType = FeatureType.Unspecified;
-            if (geometry == null) return featureType;
-
-            switch (geometry.OgcGeometryType)
-            {
-                case OgcGeometryType.Point:
-                    featureType = FeatureType.Point;
-                    break;
-                case OgcGeometryType.LineString:
-                case OgcGeometryType.MultiLineString:
-                    featureType = FeatureType.Line;
-                    break;
-                case OgcGeometryType.Polygon:
-                case OgcGeometryType.MultiPolygon:
-                    featureType = FeatureType.Polygon;
-                    break;
-                case OgcGeometryType.MultiPoint:
-                    featureType = FeatureType.MultiPoint;
-                    break;
-            }
-            return featureType;
-        }
-
-
-        #region Methods
-
-        /// <summary>
-        /// Creates a deep copy of this feature.
-        /// </summary>
-        /// <returns>Returns a deep copy of this feature as an IFeature</returns>
-        IFeature IFeature.Copy()
-        {
-            return Copy();
-        }
-
-        /// <summary>
-        /// This uses the field names to copy attribute values from the source to this feature.
-        /// Even if columns are missing or if there are extra columns, this method should work.
-        /// </summary>
-        /// <param name="source">The IFeature source to copy attributes from.</param>
-        public void CopyAttributes(IFeature source)
-        {
-            if (source.DataRow == null) return;
-            for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
-            {
-                string name = ParentFeatureSet.DataTable.Columns[i].ColumnName;
-                if (source.ParentFeatureSet.DataTable.Columns.Contains(name))
-                {
-                    _dataRow[i] = source.DataRow[name];
-                }
-            }
-        }
-
-        /// <summary>
-        /// Creates a deep copy of this feature.
-        /// </summary>
-        /// <returns>Returns a deep copy of this feature as an object</returns>
-        object ICloneable.Clone()
-        {
-            Feature clone = (Feature)MemberwiseClone();
-            OnCopy(clone);
-            return clone;
-        }
-
-        /// <summary>
-        /// Forces the geometry to update its envelope, and then updates the cached envelope of the feature.
-        /// </summary>
-        public void UpdateEnvelope()
-        {
-            if (_basicGeometry == null) return;
-            _basicGeometry.GeometryChanged();
-            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
-        }
-
-        /// <summary>
-        /// Creates a new GML string describing the location of this point
-        /// </summary>
-        /// <returns>A String representing the Geographic Markup Language version of this point</returns>
-        public virtual string ExportToGml()
-        {
-            var geo = (_basicGeometry as Geometry);
-            return (geo == null) ? "" : geo.ToGMLFeature().ToString();
-        }
-
-        /// <summary>
-        /// Returns the Well-known Binary representation of this <c>Geometry</c>.
-        /// For a definition of the Well-known Binary format, see the OpenGIS Simple
-        /// Features Specification.
-        /// </summary>
-        /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
-        public virtual byte[] ToBinary()
-        {
-            return _basicGeometry.AsBinary();
         }
 
         /// <summary>
@@ -463,252 +531,14 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Copies this feature, creating an independant, but identical feature.
+        /// Forces the geometry to update its envelope, and then updates the cached envelope of the feature.
         /// </summary>
-        /// <returns></returns>
-        public Feature Copy()
+        public void UpdateEnvelope()
         {
-            Feature clone = (Feature)MemberwiseClone();
-            clone.Geometry = Geometry.Copy();
-            if (ParentFeatureSet != null && ParentFeatureSet.DataTable != null)
-            {
-                DataTable table = ParentFeatureSet.DataTable;
-                clone._dataRow = table.NewRow();
-                if (DataRow != null)
-                {
-                    for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
-                    {
-                        clone._dataRow[i] = DataRow[i];
-                    }
-                }
-            }
-
-            return clone;
+            if (_geometry == null) return;
+            _geometry.GeometryChanged();
+            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
-
-        /// <summary>
-        /// Occurs during the cloning process and this method also duplicates the envelope and basic geometry.
-        /// </summary>
-        /// <param name="copy">The feature being copied</param>
-        protected virtual void OnCopy(Feature copy)
-        {
-            copy.Geometry = _basicGeometry.Copy();
-            // This provides an overrideable interface for modifying the copy behavior.
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Gets or sets the integer number of parts associated with this feature.
-        /// Setting this will set a cached value on the feature that is separate
-        /// from the geometry and set the NumParts to Cached.
-        /// </summary>
-        public int NumParts
-        {
-            get
-            {
-                if (NumPartsSource == CacheTypes.Cached)
-                {
-                    return _numParts;
-                }
-                int count = 0;
-
-                if (FeatureType != FeatureType.Polygon)
-                    return _basicGeometry.NumGeometries;
-                IPolygon p = _basicGeometry as IPolygon;
-                if (p == null)
-                {
-                    // we have a multi-polygon situation
-                    for (int i = 0; i < _basicGeometry.NumGeometries; i++)
-                    {
-                        p = _basicGeometry.GetGeometryN(i) as IPolygon;
-                        if (p == null) continue;
-                        count += 1; // Shell
-                        count += p.NumInteriorRings; // Holes
-                    }
-                }
-                else
-                {
-                    // The feature is a polygon, not a multi-polygon
-                    count += 1; // Shell
-                    count += p.NumInteriorRings; // Holes
-                }
-                return count;
-            }
-            set
-            {
-                _numParts = value;
-                NumPartsSource = CacheTypes.Cached;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a DotSpatial.Data.CacheTypes enumeration.  If the value
-        /// is dynamic, then NumParts will be read from the geometry on this feature.
-        /// If it is cached, then the value is separate from the geometry.
-        /// </summary>
-        public CacheTypes NumPartsSource { get; set; }
-
-        #region IFeature Members
-
-        /// <summary>
-        /// Gets or sets a valid IGeometry associated with the data elements of this feature.
-        /// This will be enough geometry information to cast into a full fledged geometry
-        /// that can be used in coordination with DotSpatial.Analysis
-        /// </summary>
-        public virtual IGeometry Geometry
-        {
-            get
-            {
-                return _basicGeometry;
-            }
-            set
-            {
-                _basicGeometry = value;
-                FeatureType = FeatureTypeFromGeometryType(_basicGeometry);
-                //EnvelopeSource = CacheTypes.Cached;
-            }
-        }
-
-        /// <summary>
-        /// If the geometry for this shape was loaded from a file, this contains the size
-        /// of this shape in 16-bit words as per the Esri Shapefile specification.
-        /// </summary>
-        public int ContentLength
-        {
-            get { return ShapeIndex != null ? ShapeIndex.ContentLength : 0; }
-            set
-            {
-                // nothing
-            }
-        }
-
-        /// <summary>
-        /// Gets the datarow containing all the attributes related to this geometry.
-        /// This will query the parent feature layer's data Table by FID and then
-        /// cache the value locally.  If no parent feature layer exists, then
-        /// this is meaningless.  You should create a new Feature by doing
-        /// FeatureLayer.Features.Add(), which will return a new Feature.
-        /// </summary>
-        public virtual DataRow DataRow
-        {
-            get
-            {
-                return _dataRow;
-            }
-            set
-            {
-                _dataRow = value;
-            }
-        }
-
-        /// <summary>
-        /// Returns either Point, Polygon or Line.
-        /// </summary>
-        public FeatureType FeatureType
-        {
-            get
-            {
-                return _basicGeometry == null ? FeatureType.Unspecified : _featureType;
-            }
-            private set { _featureType = value; }
-        }
-
-        /// <summary>
-        /// Gets the key that is associated with this feature.  This returns -1 if
-        /// this feature is not a member of a feature layer.
-        /// </summary>
-        public virtual int Fid
-        {
-            get
-            {
-                if (_parentFeatureSet.IndexMode || !_parentFeatureSet.AttributesPopulated)
-                {
-                    return RecordNumber - 1; // -1 because RecordNumber for shapefiles is 1-based.
-                    // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
-                }
-                return _parentFeatureSet.Features.IndexOf(this);
-            }
-        }
-
-        /// <summary>
-        /// Shows the type of geometry for this feature
-        /// </summary>
-        public virtual string GeometryType
-        {
-            get
-            {
-                if (_basicGeometry == null) return string.Empty;
-                return _basicGeometry.GeometryType;
-            }
-        }
-
-        /// <summary>
-        /// Returns the NumGeometries in the BasicGeometry of this feature
-        /// </summary>
-        public virtual int NumGeometries
-        {
-            get
-            {
-                if (_basicGeometry == null) return 0;
-                return _basicGeometry.NumGeometries;
-            }
-        }
-
-        /// <summary>
-        /// Gets the integer number of points associated with features.
-        /// </summary>
-        public virtual int NumPoints
-        {
-            get
-            {
-                if (_basicGeometry == null) return 0;
-                return _basicGeometry.NumPoints;
-            }
-        }
-
-        /// <summary>
-        /// An index value that is saved in some file formats.
-        /// </summary>
-        public int RecordNumber
-        {
-            get { return ShapeIndex != null ? ShapeIndex.RecordNumber : -1; }
-            set
-            {
-                // nothing
-            }
-        }
-
-        /// <summary>
-        /// Gets a reference to the IFeatureLayer that contains this item.
-        /// </summary>
-        public virtual IFeatureSet ParentFeatureSet
-        {
-            get { return _parentFeatureSet; }
-            set { _parentFeatureSet = value; }
-        }
-
-        /// <summary>
-        /// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
-        /// and whether or not the shape is null.
-        /// </summary>
-        public ShapeType ShapeType
-        {
-            get { return ShapeIndex != null ? ShapeIndex.ShapeType : ShapeType.NullShape; }
-            set
-            {
-                // nothing
-
-                // todo: Remove setters for ShapeType/RecordNumber/ContentLength from public interface
-                // They all must be available only through ShapeIndex property.
-            }
-        }
-
-        /// <summary>
-        /// This is simply a quick access to the Vertices list for this specific
-        /// feature. If the Vertices have not yet been defined, this will be null.
-        /// </summary>
-        public ShapeRange ShapeIndex { get; set; }
 
         #endregion
     }

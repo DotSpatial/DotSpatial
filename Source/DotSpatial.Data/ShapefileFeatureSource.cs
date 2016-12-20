@@ -199,8 +199,6 @@ namespace DotSpatial.Data
 
             AppendBasicGeometry(header, feature.Geometry, numFeatures);
 
-            feature.RecordNumber = numFeatures;
-
             if (null != Quadtree)
                 Quadtree.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
         }
@@ -316,8 +314,6 @@ namespace DotSpatial.Data
                 }
 
                 AppendBasicGeometry(header, feature.Geometry, numFeatures);
-
-                feature.RecordNumber = numFeatures;
 
                 if (null != Quadtree)
                     Quadtree.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
@@ -554,7 +550,8 @@ namespace DotSpatial.Data
                         schemaDefined = true;
                         result.CopyTableSchema(td);
                     }
-                    var f = new Feature(pair.Value) { RecordNumber = pair.Key + 1, DataRow = td.Rows[0] };
+                    IFeature f = new Feature(pair.Value) { DataRow = td.Rows[0] };
+                    
                     result.Features.Add(f);
                     f.UpdateEnvelope();
                 }
