@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Update proj4 strings to EPSG db 8.9 (#870)
 - ShapeFile Numeric columns now loaded into double instead of string for up to 15 decimal digits (#893)
 - DS Feature refactorings (#906)
+- LegendText ReadOnly (#750)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
