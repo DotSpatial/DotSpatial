@@ -57,6 +57,7 @@ namespace DotSpatial.Symbology
         private SymbolMode _legendSymbolMode;
         private Size _legendSymbolSize;
         private string _legendText;
+        private bool _legendTextReadInly;
         private LegendType _legendType;
         private List<SymbologyMenuItem> _menuItems;
         private ILegendItem _parentLegendItem;
@@ -179,7 +180,6 @@ namespace DotSpatial.Symbology
 
             b.Dispose();
         }
-       
 
         /// <summary>
         /// Handles updating event handlers during a copy process
@@ -312,7 +312,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean that indicates whether or not the legend should draw the child LegendItems for this category.
         /// </summary>
-        [Serialize("IsExpanded")] 
+        [Serialize("IsExpanded")]
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool IsExpanded
         {
@@ -372,11 +372,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the text for this category to appear in the legend.  This might be a category name,
+        /// Gets or sets the text for this category to appear in the legend. This might be a category name,
         /// or a range of values.
         /// </summary>
         [Description("Gets or sets the text for this category to appear in the legend.")]
-        [Serialize("LegendText")]
+        [Browsable(false), Serialize("LegendText")]
         public virtual string LegendText
         {
             get
@@ -387,6 +387,25 @@ namespace DotSpatial.Symbology
             {
                 if (value == _legendText) return;
                 _legendText = value;
+                OnItemChanged(this);
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether the user can change the legend text in GUI.
+        /// </summary>
+        [Description("Indicates whether the user can change the legend text in GUI.")]
+        [Browsable(false), Serialize("LegendTextReadOnly")]
+        public virtual bool LegendTextReadOnly
+        {
+            get
+            {
+                return _legendTextReadInly;
+            }
+            set
+            {
+                if (value == _legendTextReadInly) return;
+                _legendTextReadInly = value;
                 OnItemChanged(this);
             }
         }
