@@ -119,6 +119,9 @@
     <Compile Include="DetailedLineSymbolControl.Designer.cs">
       <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DetailedPolygonSymbolControl.Designer.cs">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExpressionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
