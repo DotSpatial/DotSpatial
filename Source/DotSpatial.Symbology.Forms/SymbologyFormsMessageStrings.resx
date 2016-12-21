@@ -279,4 +279,25 @@
   <data name="SQLQueryControl_ExpressionIsValid" xml:space="preserve">
     <value>Expression is valid.</value>
   </data>
+  <data name="DetailedPolygonSymbolControl_ChangeScaleMode" xml:space="preserve">
+    <value>Change Scale Mode?</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_SwitchToGeographicScaleMode" xml:space="preserve">
+    <value>Chosing this option will force the drawing to use a Geographic ScaleMode. Do you wish to continue?</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_SwitchToSymbolicScaleMode" xml:space="preserve">
+    <value>Chosing this option will force the drawing to use a Symbolic ScaleMode. Do you wish to continue?</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_StartColor" xml:space="preserve">
+    <value>Start Color</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_EndColor" xml:space="preserve">
+    <value>End Color</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_SurroundColor" xml:space="preserve">
+    <value>Surround Color</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_CenterColor" xml:space="preserve">
+    <value>Center Color</value>
+  </data>
 </root>
