@@ -84,4 +84,5 @@ All notable changes to this project will be documented in this file.
 - Wrong Expression at Expression Editor mess up Layer Feature Set. (#904)
 - Incorrect selection of polygons with Holes (#905)
 - Polygon Hatch Style is not displayed (#851)
+- Is this a bug in DotSpatial.WebControls? (#496)
 

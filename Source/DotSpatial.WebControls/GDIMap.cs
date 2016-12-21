@@ -15,32 +15,72 @@ namespace DotSpatial.WebControls
     [Serializable()]
     public class GDIMap
     {
+        #region Fields
+
         private GDIMapFrame _gdiMapFrame;
 
-        Size _size;
-        public Size Size
+        private Size _size;
+
+        #endregion
+
+        #region Constructors
+
+        public GDIMap()
         {
-            get
+
+            MapFrame = new GDIMapFrame();
+
+            Size = new Size(800, 600);
+
+            if (DataSet.ProjectionSupported())
             {
-                return _size;
-            }
-            set
-            {
-                _size = value;
-                _gdiMapFrame.View = new Rectangle(0, 0, _size.Width, _size.Height);
+                Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
             }
         }
 
-       
-        public Extent ViewExtents
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// The envelope that contains all of the layers for this data frame.  Essentially this would be
+        /// the extents to use if you want to zoom to the world view.
+        /// </summary>
+        public Extent Extent
         {
             get
             {
-                return MapFrame.ViewExtents;
+                Extent ext = null;
+                IList<ILayer> layers = GetLayers();
+
+                if (layers != null)
+                {
+                    foreach (ILayer layer in layers)
+                    {
+                        if (layer.Extent != null)
+                        {
+                            if (ext == null)
+                            {
+                                ext = (Extent)layer.Extent.Clone();
+                            }
+                            else
+                            {
+                                ext.ExpandToInclude(layer.Extent);
+                            }
+                        }
+                    }
+                }
+
+                return ext;
             }
-            set
+        }
+
+        public IMapLayerCollection Layers
+        {
+            get
             {
-                MapFrame.ViewExtents = value;
+                if (_gdiMapFrame != null) return _gdiMapFrame.Layers;
+                return null;
             }
         }
 
@@ -56,15 +96,15 @@ namespace DotSpatial.WebControls
             }
         }
 
-        public IMapLayerCollection Layers
+        [Serialize("MapFrame")]
+        public GDIMapFrame MapFrame
         {
-            get
+            get { return _gdiMapFrame; }
+            set
             {
-                if (_gdiMapFrame != null) return _gdiMapFrame.Layers;
-                return null;
+                _gdiMapFrame = value;
             }
         }
-
 
         /// <summary>
         /// Gets or sets the projection.  This should reflect the projection of the first data layer loaded.
@@ -111,28 +151,35 @@ namespace DotSpatial.WebControls
                 }
             }
         }
-        [Serialize("MapFrame")]
-        public GDIMapFrame MapFrame
+
+        public Size Size
         {
-            get { return _gdiMapFrame; }
+            get
+            {
+                return _size;
+            }
             set
             {
-                _gdiMapFrame = value;
+                _size = value;
+                _gdiMapFrame.View = new Rectangle(0, 0, _size.Width, _size.Height);
             }
         }
 
-        public GDIMap()
+        public Extent ViewExtents
         {
-            
-            MapFrame = new GDIMapFrame();
-
-            Size = new Size(800, 600);
-
-            if (DataSet.ProjectionSupported())
+            get
             {
-                Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
+                return MapFrame.ViewExtents;
+            }
+            set
+            {
+                MapFrame.ViewExtents = value;
             }
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Adds the fileName as a new layer to the map, returning the new layer.
@@ -143,14 +190,13 @@ namespace DotSpatial.WebControls
         {
             IDataSet dataSet = DataManager.DefaultDataManager.OpenFile(fileName);
 
-            if (dataSet.Projection != Projection)
+            if (!dataSet.Projection.Equals(Projection))
             {
                 dataSet.Reproject(Projection);
             }
 
             return Layers.Add(dataSet);
         }
-
 
         public Bitmap Draw()
         {
@@ -169,83 +215,6 @@ namespace DotSpatial.WebControls
         public IList<ILayer> GetLayers()
         {
             return Layers.Cast<ILayer>().ToList();
-        }
-
-        /// <summary>
-        /// The envelope that contains all of the layers for this data frame.  Essentially this would be
-        /// the extents to use if you want to zoom to the world view.
-        /// </summary>
-        public Extent Extent
-        {
-            get
-            {
-                Extent ext = null;
-                IList<ILayer> layers = GetLayers();
-
-                if (layers != null)
-                {
-                    foreach (ILayer layer in layers)
-                    {
-                        if (layer.Extent != null)
-                        {
-                            if (ext == null)
-                            {
-                                ext = (Extent)layer.Extent.Clone();
-                            }
-                            else
-                            {
-                                ext.ExpandToInclude(layer.Extent);
-                            }
-                        }
-                    }
-                }
-
-                return ext;
-            }
-        }
-
-        /// <summary>
-        /// Instructs the map to change the perspective to include the entire drawing content, and
-        /// in the case of 3D maps, changes the perspective to look from directly overhead.
-        /// </summary>
-        public void ZoomToMaxExtent()
-        {
-            
-            if (MapExtents != null)
-            {
-                ViewExtents = Extent;
-            }
-            else
-            {
-                // to prevent exception when zoom to map with one layer with one point
-                double eps = 1e-7;
-                if (Extent.Width < eps || Extent.Height < eps)
-                {
-                    Extent newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-                    ViewExtents = newExtent;
-                }
-                else
-                {
-                    ViewExtents = Extent;
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Zooms in one notch, so that the scale becomes larger and the features become larger.
-        /// </summary>
-        public void ZoomIn()
-        {
-            _gdiMapFrame.ZoomIn();
-        }
-
-        /// <summary>
-        /// Zooms out one notch so that the scale becomes smaller and the features become smaller.
-        /// </summary>
-        public void ZoomOut()
-        {
-            _gdiMapFrame.ZoomOut();
         }
 
         /// <summary>
@@ -301,6 +270,50 @@ namespace DotSpatial.WebControls
             return _gdiMapFrame.ProjToPixel(env);
         }
 
+        /// <summary>
+        /// Zooms in one notch, so that the scale becomes larger and the features become larger.
+        /// </summary>
+        public void ZoomIn()
+        {
+            _gdiMapFrame.ZoomIn();
+        }
 
+        /// <summary>
+        /// Zooms out one notch so that the scale becomes smaller and the features become smaller.
+        /// </summary>
+        public void ZoomOut()
+        {
+            _gdiMapFrame.ZoomOut();
+        }
+
+        /// <summary>
+        /// Instructs the map to change the perspective to include the entire drawing content, and
+        /// in the case of 3D maps, changes the perspective to look from directly overhead.
+        /// </summary>
+        public void ZoomToMaxExtent()
+        {
+
+            if (MapExtents != null)
+            {
+                ViewExtents = Extent;
+            }
+            else
+            {
+                // to prevent exception when zoom to map with one layer with one point
+                double eps = 1e-7;
+                if (Extent.Width < eps || Extent.Height < eps)
+                {
+                    Extent newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
+                    ViewExtents = newExtent;
+                }
+                else
+                {
+                    ViewExtents = Extent;
+                }
+            }
+
+        }
+
+        #endregion
     }
 }
