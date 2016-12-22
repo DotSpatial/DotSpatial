@@ -845,29 +845,26 @@ namespace DotSpatial.Controls
             Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             if (e.Button == MouseButtons.Left)
             {
-                if (e.ItemBox.Item.LegendSymbolMode == SymbolMode.Checkbox)
+                if (e.ItemBox.Item.LegendSymbolMode == SymbolMode.Checkbox && e.ItemBox.CheckBox.Contains(loc))
                 {
-                    if (e.ItemBox.CheckBox.Contains(loc))
+                    IRenderableLegendItem rendItem = e.ItemBox.Item as IRenderableLegendItem;
+                    if (rendItem != null)
                     {
-                        IRenderableLegendItem rendItem = e.ItemBox.Item as IRenderableLegendItem;
-                        if (rendItem != null)
-                        {
-                            // force a re-draw in the case where we are talking about layers.
-                            rendItem.IsVisible = !rendItem.IsVisible;
-                        }
-                        else
-                        {
-                            e.ItemBox.Item.Checked = !e.ItemBox.Item.Checked;
-                        }
-                        if (CheckBoxMouseUp != null) CheckBoxMouseUp(this, e);
-                        RefreshNodes();
+                        // force a re-draw in the case where we are talking about layers.
+                        rendItem.IsVisible = !rendItem.IsVisible;
                     }
-                }
-                if (e.ItemBox.Textbox.Contains(loc))
-                {
-                    if (e.ItemBox == _previousMouseDown)
+                    else
                     {
-                        _isDragging = false;
+                        e.ItemBox.Item.Checked = !e.ItemBox.Item.Checked;
+                    }
+                    if (CheckBoxMouseUp != null) CheckBoxMouseUp(this, e);
+                    RefreshNodes();
+                }
+                if (e.ItemBox.Textbox.Contains(loc) && e.ItemBox == _previousMouseDown)
+                {
+                    _isDragging = false;
+                    if (!e.ItemBox.Item.LegendTextReadOnly)
+                    {
                         // Edit via text box
                         _editBox.Left = e.ItemBox.Textbox.Left;
                         _editBox.Width = e.ItemBox.Textbox.Width + 10;
@@ -879,7 +876,7 @@ namespace DotSpatial.Controls
                     }
                 }
             }
-            if (e.Button == MouseButtons.Right)
+            else if (e.Button == MouseButtons.Right)
             {
                 if (e.ItemBox.Item.ContextMenuItems == null) return;
                 _contextMenu.MenuItems.Clear();
