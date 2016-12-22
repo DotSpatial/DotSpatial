@@ -81,4 +81,5 @@ All notable changes to this project will be documented in this file.
 - FeatureSet.Open(".shp") throws wrong error if .shx is missing (#903)
 - Wrong Expression at Expression Editor mess up Layer Feature Set. (#904)
 - Incorrect selection of polygons with Holes (#905)
+- ExtendBuffer Map property fixed (#661)
 
