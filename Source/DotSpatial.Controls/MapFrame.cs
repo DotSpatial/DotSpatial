@@ -479,8 +479,8 @@ namespace DotSpatial.Controls
             {
                 _backView.X = _width;
                 _backView.Y = _height;
-                _width = _width * 3;
-                _height = _height * 3;
+                _width = _width * ExtendBufferCoeff;
+                _height = _height * ExtendBufferCoeff;
             }
 
             return new Bitmap(_width, _height);
@@ -739,27 +739,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the geographic extents to be drawn to a buffer.
-        /// If "ExtendBuffer" is true, then these extents are larger
-        /// than the geographic extents of the parent client,
-        /// and care should be taken when using PixelToProj,
-        /// as it will work differently.
-        /// </summary>
-        public Extent BufferExtents
-        {
-            get
-            {
-                if (_extendBuffer)
-                {
-                    Extent ext = CloneableEM.Copy(ViewExtents);
-                    ext.ExpandBy(ext.Width, ext.Height);
-                    return ext;
-                }
-                return ViewExtents;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the height
         /// </summary>
         public int Height
@@ -825,7 +804,19 @@ namespace DotSpatial.Controls
         public bool ExtendBuffer
         {
             get { return _extendBuffer; }
-            set { _extendBuffer = value; }
+            set { 
+                    _extendBuffer = value;
+                    IProjExtensions.ExtendBuffer = value;
+                }
+        }
+
+        /// <summary>
+        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// </summary>
+        public int ExtendBufferCoeff
+        {
+            get { return IProjExtensions.ExtendBufferCoeff; }
+            set { IProjExtensions.ExtendBufferCoeff = value; }
         }
 
         /// <summary>
@@ -1041,7 +1032,7 @@ namespace DotSpatial.Controls
         /// <returns>An ICoordinate describing the geographic position</returns>
         public Coordinate BufferToProj(Point position)
         {
-            Envelope view = BufferExtents.ToEnvelope();
+            Envelope view = ViewExtents.ToEnvelope();
             if (base.ViewExtents == null) return new Coordinate(0, 0);
             double x = Convert.ToDouble(position.X);
             double y = Convert.ToDouble(position.Y);
@@ -1058,8 +1049,15 @@ namespace DotSpatial.Controls
         /// <returns>An Envelope interface</returns>
         public Extent BufferToProj(Rectangle rect)
         {
+            if (ExtendBuffer)
+            {
+                rect = rect.ExpandBy(rect.Width, rect.Height);
+            }
+
             Point tl = new Point(rect.X, rect.Y);
             Point br = new Point(rect.Right, rect.Bottom);
+
+
             Coordinate topLeft = BufferToProj(tl);
             Coordinate bottomRight = BufferToProj(br);
             return new Extent(topLeft.X, bottomRight.Y, bottomRight.X, topLeft.Y);
@@ -1073,7 +1071,7 @@ namespace DotSpatial.Controls
         /// <returns>A Point with the new location.</returns>
         public Point ProjToBuffer(Coordinate location)
         {
-            Envelope view = BufferExtents.ToEnvelope();
+            Envelope view = ViewExtents.ToEnvelope();
             if (_width == 0 || _height == 0) return new Point(0, 0);
             int x = Convert.ToInt32((location.X - view.MinX) * (_width / view.Width));
             int y = Convert.ToInt32((view.MaxY - location.Y) * (_height / view.Height));
@@ -1132,7 +1130,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                if (_extendBuffer) return new Rectangle(_width / 3, _height / 3, _width / 3, _height / 3);
+                if (_extendBuffer) return new Rectangle(_width / ExtendBufferCoeff, _height / ExtendBufferCoeff, _width / ExtendBufferCoeff, _height / ExtendBufferCoeff);
                 return new Rectangle(0, 0, _width, _height);
             }
         }
@@ -1268,6 +1266,8 @@ namespace DotSpatial.Controls
                         if (desired.Height > 0 && desired.Height < 1E300)
                         {
                             Extent env = CloneableEM.Copy(desired);
+
+                            if (ExtendBuffer) env.ExpandBy(env.Width, env.Height);
                             env.ExpandBy(env.Width / 10, env.Height / 10); // Work item #84
                             ViewExtents = env;
                         }

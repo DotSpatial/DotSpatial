@@ -409,6 +409,12 @@ namespace DotSpatial.Controls
         {
             const double eps = 1e-7;
             Envelope layerEnvelope = layerToZoom.Extent.ToEnvelope();
+
+            if (App.Map.MapFrame.ExtendBuffer)
+            {
+                layerEnvelope.ExpandBy(layerEnvelope.Width, layerEnvelope.Height);
+            }
+
             if (layerEnvelope.Width > eps && layerEnvelope.Height > eps)
             {
                 layerEnvelope.ExpandBy(layerEnvelope.Width / 10, layerEnvelope.Height / 10); // work item #84

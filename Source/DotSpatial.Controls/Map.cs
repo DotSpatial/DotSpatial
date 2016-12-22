@@ -602,6 +602,8 @@ namespace DotSpatial.Controls
                 ? new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps)
                 : Extent;
 
+            if (ExtendBuffer) maxExtent.ExpandBy(maxExtent.Width, maxExtent.Height);
+
             if (expand) maxExtent.ExpandBy(maxExtent.Width / 10, maxExtent.Height / 10); // work item #84 (Expand target envelope by 10%)
 
             return maxExtent;

@@ -49,7 +49,15 @@ namespace DotSpatial.Controls
 
             Name = "Map";
             _mapControl = mapControl;
-            _envelope = _mapControl.ViewExtents.ToEnvelope();
+
+            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+            if (_mapControl.ExtendBuffer)
+            {
+                // if ExtendBuffer, Envelope must be three times smaller
+                viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
+            }
+            _envelope = viewExtentEnvelope;
+
             ResizeStyle = ResizeStyle.NoScaling;
         }
 
@@ -151,7 +159,9 @@ namespace DotSpatial.Controls
             {
                 //If the size has never been set before we set the maps extent to that of the map
                 if (_oldRectangle.Width == 0 && _oldRectangle.Height == 0)
-                    Envelope = MapControl.ViewExtents.ToEnvelope();
+                {
+                    ZoomViewExtent();
+                }
                 else
                 {
                     double dx = Envelope.Width / _oldRectangle.Width;
@@ -191,7 +201,14 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ZoomViewExtent()
         {
-            Envelope = _mapControl.ViewExtents.ToEnvelope();
+            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+            if (_mapControl.ExtendBuffer)
+            {
+                // if ExtendBuffer, Envelope must be three times smaller
+                viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
+            }
+            Envelope = viewExtentEnvelope;
+
         }
 
         /// <summary>
