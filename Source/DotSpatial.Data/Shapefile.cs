@@ -21,7 +21,6 @@ using System.IO;
 using System.Linq;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
-using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -820,15 +819,10 @@ namespace DotSpatial.Data
             Header.SaveAs(fileName);
         }
 
-        protected ZipFile PackageZipOuter(string shp_name, Stream shpStream, Stream shxStream)
+        protected ShapefilePackage PackageStreams(Stream shpStream, Stream shxStream)
         {
-            if (!string.Equals(Path.GetExtension(shp_name), ".shp", StringComparison.InvariantCultureIgnoreCase))
-            {
-                shp_name = Path.Combine(shp_name, ".shp");
-            }
-            string shx_name = Path.ChangeExtension(shp_name, "shx");
-            string proj_name = Path.ChangeExtension(shp_name, "proj");
-            string dbf_name = Path.ChangeExtension(shp_name, "dbf");
+
+            ShapefilePackage package = new ShapefilePackage();
 
             Stream dbf_stream = ExportAttributesDBFToStream();
 
@@ -840,57 +834,14 @@ namespace DotSpatial.Data
                 StreamWriter proj_writer = new StreamWriter(proj_stream);
                 proj_writer.WriteLine(Projection.ToEsriString());
                 proj_writer.Flush();
-
             }
+            proj_stream.Seek(0, SeekOrigin.Begin);
 
-            ZipFile z = null;
-            if (proj_stream == null)
-            {
-
-                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
-                new NamedStream { Name = shx_name, Stream = shxStream },
-                new NamedStream { Name = dbf_name, Stream = dbf_stream }
-                );
-            }
-            else
-            {
-                z = PackageZip(new NamedStream { Name = shp_name, Stream = shpStream },
-                new NamedStream { Name = shx_name, Stream = shxStream },
-                new NamedStream { Name = dbf_name, Stream = dbf_stream },
-                new NamedStream { Name = proj_name, Stream = proj_stream }
-                );
-            }
-            return z;
-        }
-
-        /// <summary>
-        /// package a number of named streams into a zip archive with matching files
-        /// </summary>
-        /// <param name="streams"></param>
-        /// <returns></returns>
-        internal static ZipFile PackageZip(params NamedStream[] streams)
-        {
-            ZipFile output = new ZipFile();
-            foreach (NamedStream file in streams)
-            {
-                file.Stream.Seek(0, SeekOrigin.Begin);
-                output.AddEntry(file.Name, file.Stream);
-            }
-            return output;
-        }
-        /// <summary>
-        /// Used for creating files within the zip archive 
-        /// </summary>
-        internal class NamedStream
-        {
-            /// <summary>
-            /// name of file to create within the archive 
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// contents of the file 
-            /// </summary>
-            public Stream Stream { get; set; }
+            package.ShpFile = shpStream;
+            package.ShxFile = shxStream;
+            package.DbfFile = dbf_stream;
+            package.PrjFile = proj_stream;
+            return package;
         }
         internal class StreamLengthPair
         {

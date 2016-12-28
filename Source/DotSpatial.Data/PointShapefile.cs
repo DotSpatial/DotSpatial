@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
-using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -371,7 +370,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="shapefilename"></param>
         /// <returns></returns>
-        public override ZipFile ExportZipFile(string shapefilename)
+        public override ShapefilePackage ExportShapefilePackage()
         {
             // Set Header.ShapeType before setting extent.
             // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
@@ -381,9 +380,7 @@ namespace DotSpatial.Data
             Header.SetExtent(Extent);
 
             SetHeaderFileLengths(wordSize);
-
-            ZipFile package = null;
-
+            
             // get the streams with headers 
 
             var shpStream = Header.ExportSHPToStream();
@@ -399,11 +396,13 @@ namespace DotSpatial.Data
                 PopulateShpAndShxStreamsNotIndexed(wordSize, shpStream, shxStream);
             }
 
+            shpStream.Seek(0, SeekOrigin.Begin);
+            shxStream.Seek(0, SeekOrigin.Begin);
+
             // remove this call to update attributes //?
             UpdateAttributes();
 
-            package = PackageZipOuter(shapefilename, shpStream, shxStream);
-            return package; 
+            return PackageStreams(shpStream, shxStream);
         }
         /// <summary>
         /// exports current shapefile as a zip archive in memory

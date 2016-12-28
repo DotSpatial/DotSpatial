@@ -934,6 +934,7 @@ namespace DotSpatial.Data
                 _inMemoryMode = false;
                 // dont want to hold this in ram indefinately 
                 _inMemoryStream = null;
+                DBFStream.Seek(0, SeekOrigin.Begin);
             }
             return DBFStream;
         }
