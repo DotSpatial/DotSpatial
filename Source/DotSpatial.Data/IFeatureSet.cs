@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using GeoAPI.Geometries;
-using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -322,11 +321,11 @@ namespace DotSpatial.Data
         #endregion
 
         /// <summary>
-        /// Exports the current Shapefile into a zip file contaning the shaperfiles named as ShapefileName.xxx
+        /// Exports the current Shapefile as a dictionary of filename, stream
         /// </summary>
-        /// <param name="ShapefileName"></param>
-        /// <returns></returns>
-        ZipFile ExportZipFile(string ShapefileName);
+        /// <param name="ShapefileName">base filename</param>
+        /// <returns>Dictionary filename and contents </returns>
+        ShapefilePackage ExportShapefilePackage();
 
         /// <summary>
         /// Saves the information in the Layers provided by this datasource onto its existing file location

@@ -18,7 +18,6 @@ using System.IO;
 using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -472,7 +471,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="shapefilename"></param>
         /// <returns></returns>
-        public override ZipFile ExportZipFile(string shapefilename)
+        public override ShapefilePackage ExportShapefilePackage()
         {
             SetHeaderShapeType();
 
@@ -499,8 +498,9 @@ namespace DotSpatial.Data
                 WriteFileLength(shpStream, streamlengths.ShpLength);
                 WriteFileLength(shxStream, streamlengths.ShxLength);
             }
-
-            return PackageZipOuter(shapefilename, shpStream, shxStream);
+            shxStream.Seek(0, SeekOrigin.Begin);
+            shpStream.Seek(0, SeekOrigin.Begin);
+            return PackageStreams(shpStream, shxStream);
         }
 
     }

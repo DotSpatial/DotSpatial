@@ -21,7 +21,6 @@ using DotSpatial.Serialization;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using Ionic.Zip;
 
 namespace DotSpatial.Data
 {
@@ -751,10 +750,10 @@ namespace DotSpatial.Data
             if (!AttributesPopulated) FillAttributes();
             SaveAs(Filename, true);
         }
-
-        public virtual ZipFile ExportZipFile(string ShapefileName)
+        /// <inheritdoc/>
+        public virtual ShapefilePackage ExportShapefilePackage()
         {
-            throw new NotImplementedException("Zipfile export has not been implemented for this type of Shapefile");
+            throw new NotImplementedException("ExportStreamPackage export has not been implemented for this type of Shapefile");
         }
 
         /// <inheritdoc/>
