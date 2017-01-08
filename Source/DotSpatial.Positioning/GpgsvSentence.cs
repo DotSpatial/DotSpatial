@@ -148,15 +148,15 @@ namespace DotSpatial.Positioning
             // Example (signal acquired): $GPGSV, 3, 1, 10, 20, 78, 331, 45, 01, 59, 235, 47, 22, 41, 069, ,13, 32, 252, 45*70
 
             // Get the total message count
-            if (wordCount > 1 && words[1].Length != 0)
+            if (wordCount > 0 && words[0].Length != 0)
                 TotalMessageCount = int.Parse(words[0], NmeaCultureInfo);
 
             // Get the current message number
-            if (wordCount > 2 && words[2].Length != 0)
+            if (wordCount > 1 && words[1].Length != 0)
                 CurrentMessageNumber = int.Parse(words[1], NmeaCultureInfo);
 
             // Get the total message count
-            if (wordCount > 3 && words[3].Length != 0)
+            if (wordCount > 2 && words[2].Length != 0)
                 SatellitesInView = int.Parse(words[2], NmeaCultureInfo);
 
             // Make a new list of satellites
