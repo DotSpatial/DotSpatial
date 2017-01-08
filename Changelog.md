@@ -89,3 +89,4 @@ All notable changes to this project will be documented in this file.
 - NmeaSentence.ParseDilution produces an exception when an nmea string with dilution of precision not greater than 0 is used. (#909)
 - Errors in SetPropertiesFromSentence functions of GpggkSentence, GpgsvSentence, GprmcSentence
 
+
