@@ -17,6 +17,7 @@ using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
 using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 
 namespace DotSpatial.Data
@@ -26,17 +27,6 @@ namespace DotSpatial.Data
     /// </summary>
     public static class FeatureExt
     {
-        ///// <summary>
-        ///// Calculates the area of the geometric portion of this feature.  This is 0 unless the feature
-        ///// is a polygon, or multi-polygon.
-        ///// </summary>
-        ///// <param name="self">The feature to test</param>
-        ///// <returns>The double valued area</returns>
-        //public static double Area(this IFeature self)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).Area;
-        //}
-
         /// <summary>
         /// Generates a new feature from the buffer of this feature.  The DataRow of
         /// the new feature will be null.
@@ -193,37 +183,14 @@ namespace DotSpatial.Data
             return f;
         }
 
-        ///// <summary>
-        ///// Returns a feature constructed from the centroid of this feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <returns>An IFeature that is also a point geometry</returns>
-        //public static IFeature Centroid(this IFeature self)
-        //{
-        //    return new Feature(Geometry.FromBasicGeometry(self.Geometry).Centroid);
-        //}
-
-        ///// <summary>
-        ///// Gets a boolean that is true if this feature contains the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The other feature to test</param>
-        ///// <returns>Boolean, true if this feature contains the other feature</returns>
-        //public static bool Contains(this IFeature self, IFeature other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).Contains(Geometry.FromBasicGeometry(other.Geometry));
-        //}
-
-        ///// <summary>
-        ///// Gets a boolean that is true if this feature contains the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The other feature to test</param>
-        ///// <returns>Boolean, true if this feature contains the other feature</returns>
-        //public static bool Contains(this IFeature self, IGeometry other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).Contains(other);
-        //}
+        /// <summary>
+        /// If the geometry for this shape was loaded from a file, this contains the size
+        /// of this shape in 16-bit words as per the Esri Shapefile specification.
+        /// </summary>
+        public static int ContentLength(this IFeature self)
+        {
+            return self.ShapeIndex != null ? self.ShapeIndex.ContentLength : 0;
+        }
 
         /// <summary>
         /// Calculates a new feature that has a geometry that is the convex hull of this feature.
@@ -257,93 +224,6 @@ namespace DotSpatial.Data
             return f;
         }
 
-        ///// <summary>
-        ///// Gets a boolean that is true if the geometry of this feature is covered by the geometry
-        ///// of the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The feature to compare this feature to</param>
-        ///// <returns>Boolean, true if this feature is covered by the specified feature</returns>
-        //public static bool CoveredBy(this IFeature self, IFeature other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).CoveredBy(Geometry.FromBasicGeometry(other));
-        //}
-
-        ///// <summary>
-        ///// Gets a boolean that is true if the geometry of this feature is covered by the geometry
-        ///// of the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The feature to compare this feature to</param>
-        ///// <returns>Boolean, true if this feature is covered by the specified feature</returns>
-        //public static bool CoveredBy(this IFeature self, IGeometry other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).CoveredBy((other));
-        //}
-
-        ///// <summary>
-        ///// Gets a boolean that is true if the geometry of this feature covers the geometry
-        ///// of the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The feature to compare this feature to</param>
-        ///// <returns>Boolean, true if this feature covers the specified feature</returns>
-        //public static bool Covers(this IFeature self, IFeature other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).Covers(Geometry.FromBasicGeometry(other));
-        //}
-
-        ///// <summary>
-        ///// Gets a boolean that is true if the geometry of this feature covers the geometry
-        ///// of the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The feature to compare this feature to</param>
-        ///// <returns>Boolean, true if this feature covers the specified feature</returns>
-        //public static bool Covers(this IFeature self, IGeometry other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).Covers(other);
-        //}
-
-        ///// <summary>
-        ///// Gets a boolean that is true if the geometry of this feature crosses the geometry
-        ///// of the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The feature to compare this feature to</param>
-        ///// <returns>Boolean, true if this feature crosses the specified feature</returns>
-        //public static bool Crosses(this IFeature self, IFeature other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).Crosses(Geometry.FromBasicGeometry(other));
-        //}
-
-        ///// <summary>
-        ///// Gets a boolean that is true if the geometry of this feature crosses the geometry
-        ///// of the specified feature
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The feature to compare this feature to</param>
-        ///// <returns>Boolean, true if this feature crosses the specified feature</returns>
-        //public static bool Crosses(this IFeature self, IGeometry other)
-        //{
-        //    return Geometry.FromBasicGeometry(self.Geometry).Crosses(other);
-        //}
-
-        ///// <summary>
-        ///// Creates a new Feature that has a geometry that is the difference between this feature and the specified feature.
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The other feature to compare to.</param>
-        ///// <returns>A new feature that is the geometric difference between this feature and the specified feature.</returns>
-        //public static IFeature Difference(this IFeature self, IFeature other)
-        //{
-        //    if (other == null) return self.Copy();
-        //    IGeometry g = Geometry.FromBasicGeometry(self.Geometry).Difference(Geometry.FromBasicGeometry(other.Geometry));
-        //    if (g == null) return null;
-        //    if (g.IsEmpty) return null;
-        //    return new Feature(g);
-        //}
-
         /// <summary>
         /// Creates a new Feature that has a geometry that is the difference between this feature and the specified feature.
         /// </summary>
@@ -376,6 +256,16 @@ namespace DotSpatial.Data
                 UpdateFields(self, other, f, destinationFeatureSet, joinType);
             }
             return f;
+        }
+
+        /// <summary>
+        /// Creates a new GML string describing the location of this point
+        /// </summary>
+        /// <returns>A String representing the Geographic Markup Language version of this point</returns>
+        public static string ExportToGml(this IFeature self)
+        {
+            var geo = self.Geometry as Geometry;
+            return (geo == null) ? "" : geo.ToGMLFeature().ToString();
         }
 
         // This handles the slightly complex business of attribute outputs.
@@ -537,111 +427,35 @@ namespace DotSpatial.Data
             return f;
         }
 
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature intersects the other feature.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if the two IFeatures intersect</returns>
-        // public static bool Intersects(this IFeature self, IFeature other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Intersects(Geometry.FromBasicGeometry(other.Geometry));
-        // }
+        /// <summary>
+        /// Gets the integer number of parts associated with this feature.
+        /// </summary>
+        public static int NumParts(this IFeature self)
+        {
+            int count = 0;
 
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature intersects the other feature.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if the two IFeatures intersect</returns>
-        // public static bool Intersects(this IFeature self, IGeometry other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Intersects(other);
-        // }
-
-        // /// <summary>
-        // /// This tests the current feature to see if the geometry intersects with the specified
-        // /// coordinate.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="coordinate">The coordinate</param>
-        // /// <returns>Boolean if the coordinate intersects with this feature</returns>
-        // public static bool Intersects(this IFeature self, Coordinate coordinate)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Intersects(new Point(coordinate));
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature is within the specified distance of the other feature.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <param name="distance">The double distance criteria</param>
-        // /// <returns>Boolean, true if the other feature is within the specified distance of this feature</returns>
-        // public static bool IsWithinDistance(this IFeature self, IFeature other, double distance)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).IsWithinDistance(Geometry.FromBasicGeometry(other.Geometry), distance);
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature is within the specified distance of the other feature.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <param name="distance">The double distance criteria</param>
-        // /// <returns>Boolean, true if the other feature is within the specified distance of this feature</returns>
-        // public static bool IsWithinDistance(this IFeature self, IGeometry other, double distance)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).IsWithinDistance(other, distance);
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature overlaps the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if the two IFeatures overlap</returns>
-        // public static bool Overlaps(this IFeature self, IFeature other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Overlaps(Geometry.FromBasicGeometry(other.Geometry));
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature overlaps the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if the two IFeatures overlap</returns>
-        // public static bool Overlaps(this IFeature self, IGeometry other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Overlaps(other);
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if the relationship between this feature and the other feature
-        // /// matches the relationship matrix specified by other
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <param name="intersectionPattern">The string relationship pattern to test</param>
-        // /// <returns>Boolean, true if the other feature's relationship to this feature matches the relate expression.</returns>
-        // public static bool Relates(this IFeature self, IFeature other, string intersectionPattern)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Relate(Geometry.FromBasicGeometry(other.Geometry), intersectionPattern);
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if the relationship between this feature and the other feature
-        // /// matches the relationship matrix specified by other
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <param name="intersectionPattern">The string relationship pattern to test</param>
-        // /// <returns>Boolean, true if the other feature's relationship to this feature matches the relate expression.</returns>
-        // public static bool Relates(this IFeature self, IGeometry other, string intersectionPattern)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Relate(other, intersectionPattern);
-        // }
+            if (self.FeatureType != FeatureType.Polygon)
+                return self.Geometry.NumGeometries;
+            IPolygon p = self.Geometry as IPolygon;
+            if (p == null)
+            {
+                // we have a multi-polygon situation
+                for (int i = 0; i < self.Geometry.NumGeometries; i++)
+                {
+                    p = self.Geometry.GetGeometryN(i) as IPolygon;
+                    if (p == null) continue;
+                    count += 1; // Shell
+                    count += p.NumInteriorRings; // Holes
+                }
+            }
+            else
+            {
+                // The feature is a polygon, not a multi-polygon
+                count += 1; // Shell
+                count += p.NumInteriorRings; // Holes
+            }
+            return count;
+        }
 
         /// <summary>
         /// Rotates the BasicGeometry of the feature by the given radian angle around the given Origin.
@@ -657,19 +471,22 @@ namespace DotSpatial.Data
             self.UpdateEnvelope();
         }
 
-        // /// <summary>
-        // /// Creates a new Feature that has a geometry that is the symmetric difference between this feature and the specified feature.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to compare to.</param>
-        // /// <returns>A new feature that is the geometric symmetric difference between this feature and the specified feature.</returns>
-        // public static IFeature SymmetricDifference(this IFeature self, IFeature other)
-        // {
-        //     IGeometry g = Geometry.FromBasicGeometry(self.Geometry).SymmetricDifference(Geometry.FromBasicGeometry(other.Geometry));
-        //     if (g == null) return null;
-        //     if (g.IsEmpty) return null;
-        //     return new Feature(g);
-        // }
+        /// <summary>
+        /// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
+        /// and whether or not the shape is null.
+        /// </summary>
+        public static ShapeType ShapeType(this IFeature self)
+        {
+            return self.ShapeIndex != null ? self.ShapeIndex.ShapeType : Data.ShapeType.NullShape;
+        }
+
+        /// <summary>
+        /// An index value that is saved in some file formats.
+        /// </summary>
+        public static int RecordNumber(this IFeature self)
+        {
+            return self.ShapeIndex != null ? self.ShapeIndex.RecordNumber : -1;
+        }
 
         /// <summary>
         /// Creates a new Feature that has a geometry that is the symmetric difference between this feature and the specified feature.
@@ -704,41 +521,6 @@ namespace DotSpatial.Data
             return f;
         }
 
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature touches the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if the two IFeatures touch</returns>
-        // public static bool Touches(this IFeature self, IFeature other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Touches(Geometry.FromBasicGeometry(other.Geometry));
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature touches the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if the two IFeatures touch</returns>
-        // public static bool Touches(this IFeature self, IGeometry other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Touches(other);
-        // }
-
-        ///// <summary>
-        ///// Creates a new Feature that has a geometry that is the union between this feature and the specified feature.
-        ///// </summary>
-        ///// <param name="self">This feature</param>
-        ///// <param name="other">The other feature to compare to.</param>
-        ///// <returns>A new feature that is the geometric union between this feature and the specified feature.</returns>
-        //public static IFeature Union(this IFeature self, IFeature other)
-        //{
-        //    IGeometry g = self.Geometry.Union(other.Geometry);
-        //    if (g == null || g.IsEmpty) return null;
-        //    return new Feature(g);
-        //}
-
         /// <summary>
         /// Creates a new Feature that has a geometry that is the union between this feature and the specified feature.
         /// </summary>
@@ -772,26 +554,5 @@ namespace DotSpatial.Data
             return f;
         }
 
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature is within the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if this feature is within the specified feature</returns>
-        // public static bool Within(this IFeature self, IFeature other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Within(Geometry.FromBasicGeometry(other.Geometry));
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if this feature is within the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to test</param>
-        // /// <returns>Boolean, true if this feature is within the specified feature</returns>
-        // public static bool Within(this IFeature self, IGeometry other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Within(other);
-        // }
     }
 }

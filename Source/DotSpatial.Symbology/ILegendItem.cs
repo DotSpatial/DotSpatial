@@ -19,11 +19,9 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// The LegendItem interface controls specifically the
-    /// properties associated with the legend.  It is assumed that
-    /// All layers will support one legend item, but this way
-    /// ostensibly we can eventually add things to the legend that
-    /// are not technically layers.
+    /// The LegendItem interface controls specifically the properties associated with the legend.  
+    /// It is assumed that all layers will support one legend item, but this way ostensibly we 
+    /// can eventually add things to the legend that are not technically layers.
     /// </summary>
     public interface ILegendItem : IDescriptor, IChangeItem, IParentItem<ILegendItem>
     {
@@ -54,7 +52,7 @@ namespace DotSpatial.Symbology
         void PrintLegendItem(Graphics g, Font font, Color fontColor, SizeF maxExtent);
 
         /// <summary>
-        /// Gets the size of the symbol to be drawn to the legend
+        /// Gets the size of the symbol to be drawn to the legend.
         /// </summary>
         Size GetLegendSymbolSize();
 
@@ -71,8 +69,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets whether or not this legend item should be visible.
-        /// This will not be altered unless the LegendSymbolMode is set
-        /// to CheckBox.
+        /// This will not be altered unless the LegendSymbolMode is set to CheckBox.
         /// </summary>
         bool Checked { get; set; }
 
@@ -82,7 +79,7 @@ namespace DotSpatial.Symbology
         bool IsExpanded { get; set; }
 
         /// <summary>
-        /// Gets or sets whether this legend item is currently selected (and therefore drawn differently)
+        /// Gets or sets whether this legend item is currently selected (and therefore drawn differently).
         /// </summary>
         bool IsSelected { get; set; }
 
@@ -104,9 +101,14 @@ namespace DotSpatial.Symbology
         SymbolMode LegendSymbolMode { get; }
 
         /// <summary>
-        /// The text that will appear in the legend
+        /// The text that will appear in the legend.
         /// </summary>
         string LegendText { get; set; }
+
+        /// <summary>
+        /// Indicates whether the user can change the legend text in GUI.
+        /// </summary>
+        bool LegendTextReadOnly { get; set; }
 
         /// <summary>
         /// Gets or sets a pre-defined behavior in the legend when referring to drag and drop functionality.

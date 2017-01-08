@@ -15,22 +15,6 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Clarifies whether a value is cached in a local variable or updated dynamically
-    /// </summary>
-    public enum CacheTypes
-    {
-        /// <summary>
-        /// The value is cached locally, rather than calculated on the fly
-        /// </summary>
-        Cached,
-
-        /// <summary>
-        /// The value is calculated each type, rather than using a local cache
-        /// </summary>
-        Dynamic
-    }
-
-    /// <summary>
     /// Byte order
     /// </summary>
     public enum ByteOrder
