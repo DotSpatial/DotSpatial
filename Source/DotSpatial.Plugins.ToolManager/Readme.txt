@@ -1,1 +1,1 @@
-﻿Allow to use DotSpatial ToolManager.
+﻿The Toolmanager plugin is used to load the ToolManager from the Controls project into the Tools tab.

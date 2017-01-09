@@ -11,6 +11,9 @@ using DotSpatial.Modeling.Forms;
 
 namespace DotSpatial.Plugins.ToolManager
 {
+    /// <summary>
+    /// The Toolmanager plugin is used to load the ToolManager from the Controls project into the Tools tab.
+    /// </summary>
     public class ToolManagerPlugin : Extension, IPartImportsSatisfiedNotification
     {
         private Controls.ToolManager _toolManager;
