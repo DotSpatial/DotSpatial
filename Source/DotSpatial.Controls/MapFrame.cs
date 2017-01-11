@@ -338,7 +338,12 @@ namespace DotSpatial.Controls
             _buffer = _backBuffer;
             if (setView)
                 _view = _backView;
-            bufferDevice.Clip = new Region(ImageRectangle);
+
+            Rectangle rectangle = ImageRectangle;
+            if (ExtendBuffer)
+                rectangle = new Rectangle(_width / ExtendBufferCoeff, _height / ExtendBufferCoeff, _width / ExtendBufferCoeff, _height / ExtendBufferCoeff);
+
+            bufferDevice.Clip = new Region(rectangle);
             gp.Dispose();
             List<Rectangle> rects = args.ProjToPixel(regions);
             OnBufferChanged(this, new ClipArgs(rects));
@@ -1130,7 +1135,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                if (_extendBuffer) return new Rectangle(_width / ExtendBufferCoeff, _height / ExtendBufferCoeff, _width / ExtendBufferCoeff, _height / ExtendBufferCoeff);
+                if (_extendBuffer) return new Rectangle(-_width / ExtendBufferCoeff, -_height / ExtendBufferCoeff, _width, _height);
                 return new Rectangle(0, 0, _width, _height);
             }
         }

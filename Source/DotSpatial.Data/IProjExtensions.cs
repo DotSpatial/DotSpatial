@@ -42,21 +42,8 @@ namespace DotSpatial.Data
             double y = Convert.ToDouble(position.Y);
             if (self != null && self.GeographicExtents != null)
             {
-                Rectangle rectangle;
-
-                if (_extendBuffer && self.GetType().FullName.Equals("DotSpatial.Controls.MapFrame"))
-                {
-                    rectangle = new Rectangle(-self.ImageRectangle.Width, -self.ImageRectangle.Height, self.ImageRectangle.Width * _extendBufferCoeff, self.ImageRectangle.Height * _extendBufferCoeff);
-                }
-                else
-                {
-                    rectangle = self.ImageRectangle;
-                }
-
-
-                x = (x - rectangle.X) * self.GeographicExtents.Width / rectangle.Width + self.GeographicExtents.MinX;
-                y = self.GeographicExtents.MaxY - (y - rectangle.Y) * self.GeographicExtents.Height / rectangle.Height;
-
+                x = (x - self.ImageRectangle.X) * self.GeographicExtents.Width / self.ImageRectangle.Width + self.GeographicExtents.MinX;
+                y = self.GeographicExtents.MaxY - (y - self.ImageRectangle.Y) * self.GeographicExtents.Height / self.ImageRectangle.Height;
             }
             return new Coordinate(x, y, 0.0);
         }
@@ -105,23 +92,10 @@ namespace DotSpatial.Data
             if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0) return Point.Empty;
             try
             {
-
-                Rectangle rectangle;
-
-                if (_extendBuffer && self.GetType().FullName.Equals("DotSpatial.Controls.MapFrame"))
-                {
-                    rectangle =
-                        new Rectangle(-self.ImageRectangle.Width, -self.ImageRectangle.Height, self.ImageRectangle.Width * _extendBufferCoeff, self.ImageRectangle.Height * _extendBufferCoeff);
-                }
-                else
-                {
-                    rectangle = self.ImageRectangle;
-                }
-
-                int x = Convert.ToInt32(rectangle.X + (location.X - self.GeographicExtents.MinX) *
-                                    (rectangle.Width / self.GeographicExtents.Width));
-                int y = Convert.ToInt32(rectangle.Y + (self.GeographicExtents.MaxY - location.Y) *
-                                        (rectangle.Height / self.GeographicExtents.Height));
+                int x = Convert.ToInt32(self.ImageRectangle.X + (location.X - self.GeographicExtents.MinX) *
+                                    (self.ImageRectangle.Width / self.GeographicExtents.Width));
+                int y = Convert.ToInt32(self.ImageRectangle.Y + (self.GeographicExtents.MaxY - location.Y) *
+                                        (self.ImageRectangle.Height / self.GeographicExtents.Height));
 
                 return new Point(x, y);
             }
