@@ -189,7 +189,7 @@ namespace DotSpatial.Positioning
 
 
             // Do we have enough info for magnetic variation?
-            if (wordCount >= 10 && words[9].Length != 0 && words[10].Length != 0)
+            if (wordCount > 10 && words[9].Length != 0 && words[10].Length != 0)
                 MagneticVariation = new Longitude(double.Parse(words[9], NmeaCultureInfo), words[10].Equals("E", StringComparison.Ordinal) ? LongitudeHemisphere.East : LongitudeHemisphere.West);
             else
                 MagneticVariation = Longitude.Invalid;

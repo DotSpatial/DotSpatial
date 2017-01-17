@@ -10,10 +10,36 @@ namespace DotSpatial.Positioning.Tests
     internal class NmeaTests
     {
         /// <summary>
+        /// Checks whether the build GpggkSentence equals the Gpggk string it was build from.
+        /// </summary>
+        [Test]
+        public void GpggkSentenceFromString()
+        {
+            GpggkSentence sentence = new GpggkSentence("$GPGGK,113616.00,041006,4724.5248557,N,00937.1063064,E,3,12,1.7,EHT1171.742,M*6D");
+
+            Assert.AreEqual("$GPGGK,113616.00,041006,4724.5248557,N,00937.1063064,E,3,12,1.7,EHT1171.742,M*6D", sentence.Sentence);
+            Assert.AreEqual(FixQuality.PulsePerSecond, sentence.FixQuality);
+            Assert.AreEqual(12, sentence.SatellitesInUse);
+            Assert.AreEqual(new DilutionOfPrecision((float)1.7), sentence.PositionDilutionOfPrecision);
+
+            Latitude l = new Latitude(47, 24.5248557, LatitudeHemisphere.North);
+            Assert.AreEqual(l, sentence.Position.Latitude);
+
+            Longitude l2 = new Longitude(9, 37.1063064, LongitudeHemisphere.East);
+            Assert.AreEqual(l2, sentence.Position.Longitude);
+
+            Distance d = new Distance(1171.742, DistanceUnit.Meters).ToLocalUnitType();
+            Assert.AreEqual(d, sentence.AltitudeAboveEllipsoid);
+
+            DateTime date = new DateTime(2006, 10, 04, 11, 36, 16, DateTimeKind.Utc);
+            Assert.AreEqual(date, sentence.UtcDateTime);
+        }
+
+        /// <summary>
         /// Checks whether the build GpgsaSentence equals the Gpgsa objects it was build from.
         /// </summary>
         [Test]
-        public void GpsaSentenceFromObjects()
+        public void GpgsaSentenceFromObjects()
         {
             List<Satellite> sateliteList = new List<Satellite>
             {
@@ -51,7 +77,7 @@ namespace DotSpatial.Positioning.Tests
         /// Checks whether the build GpgsaSentence equals the Gpgsa string it was build from.
         /// </summary>
         [Test]
-        public void GpsaSentenceFromString()
+        public void GpgsaSentenceFromString()
         {
             GpgsaSentence sentence = new GpgsaSentence("$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39");
             Assert.AreEqual("$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39", sentence.Sentence);
@@ -291,7 +317,6 @@ namespace DotSpatial.Positioning.Tests
 
                 Latitude l = new Latitude(51, 33.82, LatitudeHemisphere.North);
                 Longitude l2 = new Longitude(0, 42.24, LongitudeHemisphere.West);
-                Position p = new Position(l, l2);
                 DateTime date = new DateTime(2004, 06, 13, 22, 05, 16, DateTimeKind.Utc);
                 Speed s = new Speed(173.8, SpeedUnit.Knots);
                 Azimuth a = new Azimuth(231.8);
@@ -306,8 +331,5 @@ namespace DotSpatial.Positioning.Tests
                 Assert.AreEqual(date, sentence.UtcDateTime);
             }
         }
-
-
-
     }
 }

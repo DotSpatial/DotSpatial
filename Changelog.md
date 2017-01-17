@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - "Add layer to Map"-checkbox to the ToolDialog (#147)
 - CopySubset overloads with withAttributes parameters
 - Jenks Natural Breaks support in categories binning.
+- Test that checks correct creation of GpggkSentence objects from string
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11
@@ -86,3 +87,6 @@ All notable changes to this project will be documented in this file.
 - ExtendBuffer Map property fixed (#661)
 - Polygon Hatch Style is not displayed (#851)
 - Is this a bug in DotSpatial.WebControls? (#496)
+- NmeaSentence.ParseDilution produces an exception when an nmea string with dilution of precision not greater than 0 is used. (#909)
+- Errors in SetPropertiesFromSentence functions of GpggkSentence, GpgsvSentence, GprmcSentence
+
