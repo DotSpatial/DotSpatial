@@ -705,7 +705,7 @@ namespace DotSpatial.Projections
 
             return ToEsriString().Equals(other.ToEsriString()) || ToProj4String().Equals(other.ToProj4String());
         }
-
+        
         /// <summary>
         /// If this is a geographic coordinate system, this will show decimal degrees.  Otherwise,
         ///   this will show the linear unit units.
@@ -1336,5 +1336,6 @@ namespace DotSpatial.Projections
         }
 
         #endregion
+        
     }
 }
