@@ -206,6 +206,14 @@ namespace DotSpatial.Controls
         bool ExtendBuffer { get; set; }
 
         /// <summary>
+        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// </summary>
+        int ExtendBufferCoeff
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets or sets whether this map frame is currently in the process of redrawing the
         /// stencils after a pan operation.  Drawing should not take place if this is true.
         /// </summary>

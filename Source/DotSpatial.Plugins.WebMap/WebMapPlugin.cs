@@ -33,6 +33,7 @@ namespace DotSpatial.Plugins.WebMap
         private ServiceProvider _emptyProvider;
         private IMapFeatureLayer _featureSetLayer;
         private Int16 _opacity = 100;
+        private int _extendBufferCoeff = 3;
         private TileManager _tileManager;
         private bool _busySet;
 
@@ -524,7 +525,11 @@ namespace DotSpatial.Plugins.WebMap
             });
 
             var rectangle = map.Bounds;
-            var webMercExtent = map.ViewExtents;
+            var webMercExtent = map.ViewExtents.Clone() as Extent;
+            //If ExtendBuffer, correct the displayed extent
+            if (map.ExtendBuffer)
+                webMercExtent.ExpandBy(-webMercExtent.Width / _extendBufferCoeff, -webMercExtent.Height / _extendBufferCoeff);
+            
 
             //Clip the reported Web Merc Envelope to be within possible Web Merc extents
             //  This fixes an issue with Reproject returning bad results for very large (impossible) web merc extents reported from the Map

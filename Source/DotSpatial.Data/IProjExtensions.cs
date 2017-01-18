@@ -24,6 +24,10 @@ namespace DotSpatial.Data
     /// </summary>
     public static class IProjExtensions
     {
+
+        private static bool _extendBuffer;
+        private static int _extendBufferCoeff = 3;
+
         #region Methods
 
         /// <summary>
@@ -38,8 +42,8 @@ namespace DotSpatial.Data
             double y = Convert.ToDouble(position.Y);
             if (self != null && self.GeographicExtents != null)
             {
-                x = x * self.GeographicExtents.Width / self.ImageRectangle.Width + self.GeographicExtents.MinX;
-                y = self.GeographicExtents.MaxY - y * self.GeographicExtents.Height / self.ImageRectangle.Height;
+                x = (x - self.ImageRectangle.X) * self.GeographicExtents.Width / self.ImageRectangle.Width + self.GeographicExtents.MinX;
+                y = self.GeographicExtents.MaxY - (y - self.ImageRectangle.Y) * self.GeographicExtents.Height / self.ImageRectangle.Height;
             }
             return new Coordinate(x, y, 0.0);
         }
@@ -88,10 +92,11 @@ namespace DotSpatial.Data
             if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0) return Point.Empty;
             try
             {
-                int x = Convert.ToInt32((location.X - self.GeographicExtents.MinX) *
-                                        (self.ImageRectangle.Width / self.GeographicExtents.Width));
-                int y = Convert.ToInt32((self.GeographicExtents.MaxY - location.Y) *
+                int x = Convert.ToInt32(self.ImageRectangle.X + (location.X - self.GeographicExtents.MinX) *
+                                    (self.ImageRectangle.Width / self.GeographicExtents.Width));
+                int y = Convert.ToInt32(self.ImageRectangle.Y + (self.GeographicExtents.MaxY - location.Y) *
                                         (self.ImageRectangle.Height / self.GeographicExtents.Height));
+
                 return new Point(x, y);
             }
             catch (OverflowException)
@@ -146,5 +151,28 @@ namespace DotSpatial.Data
         }
 
         #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets whether this map frame should define its buffer
+        /// region to be the same size as the client, or three times larger.
+        /// </summary>
+        public static bool ExtendBuffer
+        {
+            get { return _extendBuffer; }
+            set { _extendBuffer = value; }
+        }
+
+        /// <summary>
+        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// </summary>
+        public static int ExtendBufferCoeff
+        {
+            get { return _extendBufferCoeff; }
+            set { _extendBufferCoeff = value; }
+        }
+        #endregion
+
     }
 }
