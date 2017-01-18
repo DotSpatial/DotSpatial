@@ -185,6 +185,5 @@ namespace DotSpatial.Projections.Tests
                 System.IO.File.Delete(prjFile);
             }
         }
-
     }
 }
