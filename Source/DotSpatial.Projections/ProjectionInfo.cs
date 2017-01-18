@@ -1336,7 +1336,6 @@ namespace DotSpatial.Projections
         }
 
         #endregion
-
         
     }
 }
