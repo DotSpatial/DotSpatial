@@ -16,5 +16,20 @@ namespace DotSpatial.Data.Tests
             var shape = new Shape(c);
             Assert.IsNotNull(shape);
         }
+
+        [Test]
+        public void CanConvertFeatureToShapeWhenDataRowIsMissing()
+        {
+            var feature = new Feature(FeatureType.Polygon, new Coordinate[]
+            {
+                new Coordinate(1375930, 6269230),
+                new Coordinate(1376248, 6269230),
+                new Coordinate(1376248, 6268860),
+                new Coordinate(1375930, 6268860),
+                new Coordinate(1375930, 6269230)
+            });
+            var shape = feature.ToShape();
+            Assert.IsNotNull(shape);
+        }
     }
 }
