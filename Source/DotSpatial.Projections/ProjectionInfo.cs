@@ -703,22 +703,7 @@ namespace DotSpatial.Projections
                 return false;
             }
 
-            if (ToEsriString().Equals(other.ToEsriString()) || ToProj4String().Equals(other.ToProj4String()))
-                return true;
-
-            // A sufficent criteria is that authority codes are the same
-            if (!string.IsNullOrWhiteSpace(Authority) && AuthorityCode > 0 && other.AuthorityCode > 0 &&
-               Authority.Equals(other.Authority, StringComparison.CurrentCultureIgnoreCase) &&
-               AuthorityCode == other.AuthorityCode)
-                return true;
-
-            // Another sufficent criteria is that meridians, datums and units are the same
-            if (Math.Abs(CentralMeridian.GetValueOrDefault() - other.CentralMeridian.GetValueOrDefault()) < 1E-10 &&
-              GeographicInfo.Datum.Spheroid.Matches(other.GeographicInfo.Datum.Spheroid) &&
-              GeographicInfo.Unit.Matches(other.GeographicInfo.Unit))
-                return true;
-
-            return false;
+            return ToEsriString().Equals(other.ToEsriString()) || ToProj4String().Equals(other.ToProj4String());
         }
         
         /// <summary>
