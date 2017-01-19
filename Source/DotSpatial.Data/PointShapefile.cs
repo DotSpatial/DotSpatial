@@ -80,6 +80,39 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Opens a shapefile
+        /// </summary>
+        /// <param name="shapeBytes">The shape bytes</param>
+        /// <param name="indexBytes">The index bytes</param>
+        /// <param name="dbaseBytes">The dbase bytes</param>
+        /// <param name="projectionBytes">The projection bytes</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        public void Open(Byte[] shapeBytes, Byte[] indexBytes, Byte[] dbaseBytes, Byte[] projectionBytes, IProgressHandler progressHandler)
+        {
+            IndexMode = true;
+            Header = new ShapefileHeader(shapeBytes);
+
+            switch (Header.ShapeType)
+            {
+                case ShapeType.PointM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.PointZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
+            }
+
+            Extent = Header.ToExtent();
+            Attributes.Open(dbaseBytes);
+
+            FillPoints(shapeBytes, indexBytes, progressHandler, this, FeatureType.Line);
+            ReadProjection(projectionBytes);
+        }
+
+        /// <summary>
         /// Obtains a typed list of ShapefilePoint structures with double values associated with the various coordinates.
         /// </summary>
         /// <param name="fileName">A string fileName</param>
@@ -111,9 +144,27 @@ namespace DotSpatial.Data
                 return;
             }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
+            FillPoints(header, ReadIndexFile(fileName), fileName, null, progressHandler);
+        }
 
+        /// <summary>
+        /// Obtains a typed list of ShapefilePoint structures with double values associated with the various coordinates.
+        /// </summary>
+        /// <param name="fileName">A string fileName</param>
+        /// <param name="progressHandler">Progress handler</param>
+        private void FillPoints(byte[] headerBytes, byte[] indexBytes, IProgressHandler progressHandler, Shapefile shapefile, FeatureType featureType)
+        {
+            if (indexBytes.Length == 100)
+            {
+                // the file is empty so we are done reading
+                return;
+            }
+
+            FillPoints(shapefile.Header, shapefile.ReadIndexFile(indexBytes), null, headerBytes, progressHandler);
+        }
+
+        private void FillPoints(ShapefileHeader header, List<ShapeHeader> shapeHeaders, string fileName, byte[] headerBytes, IProgressHandler progressHandler)
+        {
             var numShapes = shapeHeaders.Count;
             double[] m = null;
             double[] z = null;
@@ -128,11 +179,12 @@ namespace DotSpatial.Data
                 z = new double[numShapes];
             }
 
-            var progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName))
+            var progressMeter = new ProgressMeter(progressHandler, fileName != null ? "Reading from " + Path.GetFileName(fileName) : "Reading")
             {
                 StepPercent = 5
             };
-            using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+
+            using (var reader = fileName != null ? (Stream)new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 65536) : new MemoryStream(headerBytes))
             {
                 for (var shp = 0; shp < numShapes; shp++)
                 {
@@ -185,7 +237,7 @@ namespace DotSpatial.Data
                         }
                     }
 
-                fin:
+                    fin:
                     var shape = new ShapeRange(FeatureType.Point)
                     {
                         RecordNumber = recordNumber,

@@ -80,6 +80,39 @@ namespace DotSpatial.Data
             ReadProjection();
         }
 
+        /// <summary>
+        /// Opens a shapefile
+        /// </summary>
+        /// <param name="shapeBytes">The shape bytes</param>
+        /// <param name="indexBytes">The index bytes</param>
+        /// <param name="dbaseBytes">The dbase bytes</param>
+        /// <param name="projectionBytes">The projection bytes</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        public void Open(Byte[] shapeBytes, Byte[] indexBytes, Byte[] dbaseBytes, Byte[] projectionBytes, IProgressHandler progressHandler)
+        {
+            IndexMode = true;
+            Header = new ShapefileHeader(shapeBytes);
+
+            switch (Header.ShapeType)
+            {
+                case ShapeType.PolyLineM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.PolyLineZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
+            }
+
+            Extent = Header.ToExtent();
+            Attributes.Open(dbaseBytes);
+
+            FillLines(shapeBytes, indexBytes, progressHandler, this, FeatureType.Line);
+            ReadProjection(projectionBytes);
+        }
+
         // X Y Poly Lines
         // ---------------------------------------------------------
         // Position     Value               Type        Number      Byte Order
@@ -163,8 +196,7 @@ namespace DotSpatial.Data
         }
 
 
-        internal static void FillLines(string fileName, IProgressHandler progressHandler, Shapefile shapefile,
-            FeatureType featureType)
+        internal static void FillLines(string fileName, IProgressHandler progressHandler, Shapefile shapefile, FeatureType featureType)
         {
             // Check to ensure the fileName is not null
             if (fileName == null)
@@ -176,11 +208,6 @@ namespace DotSpatial.Data
             if (!File.Exists(fileName))
             {
                 throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
-            }
-
-            if (featureType != FeatureType.Line && featureType != FeatureType.Polygon)
-            {
-                throw new NotSupportedException();
             }
 
             var header = shapefile.Header;
@@ -211,180 +238,18 @@ namespace DotSpatial.Data
                 return;
             }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            var shapeHeaders = shapefile.ReadIndexFile(fileName);
-            int numShapes = shapeHeaders.Count;
+            FillLines(header, shapefile.ReadIndexFile(fileName), fileName, null, null, progressHandler, shapefile, featureType);
+        }
 
-            bool isM = false, isZ = false;
-            switch (header.ShapeType)
+        internal static void FillLines(byte[] headerBytes, byte[] indexBytes, IProgressHandler progressHandler, Shapefile shapefile, FeatureType featureType)
+        {
+            if (indexBytes.Length == 100)
             {
-                case ShapeType.PolyLineM:
-                case ShapeType.PolygonM:
-                    isM = true;
-                    break;
-                case ShapeType.PolyLineZ:
-                case ShapeType.PolygonZ:
-                    isZ = true;
-                    isM = true;
-                    break;
+                // the file is empty so we are done reading
+                return;
             }
 
-            int totalPointsCount = 0;
-            int totalPartsCount = 0;
-            var shapeIndices = new List<ShapeRange>(numShapes);
-
-            var progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName))
-            {
-                StepPercent = 5
-            };
-            using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
-            {
-                var boundsBytes = new byte[4 * 8];
-                var bounds = new double[4];
-                for (int shp = 0; shp < numShapes; shp++)
-                {
-                    progressMeter.CurrentPercent = (int)(shp * 50.0 / numShapes);
-
-                    // Read from the index file because some deleted records
-                    // might still exist in the .shp file.
-                    long offset = (shapeHeaders[shp].ByteOffset);
-                    reader.Seek(offset, SeekOrigin.Begin);
-
-                    var shape = new ShapeRange(featureType, shapefile.CoordinateType)
-                    {
-                        RecordNumber = reader.ReadInt32(Endian.BigEndian),
-                        ContentLength = reader.ReadInt32(Endian.BigEndian),
-                        ShapeType = (ShapeType)reader.ReadInt32(),
-                        StartIndex = totalPointsCount
-                    };
-                    Debug.Assert(shape.RecordNumber == shp + 1);
-
-                    if (shape.ShapeType != ShapeType.NullShape)
-                    {
-                        // Bounds
-                        reader.Read(boundsBytes, 0, boundsBytes.Length);
-                        Buffer.BlockCopy(boundsBytes, 0, bounds, 0, boundsBytes.Length);
-                        shape.Extent.MinX = bounds[0];
-                        shape.Extent.MinY = bounds[1];
-                        shape.Extent.MaxX = bounds[2];
-                        shape.Extent.MaxY = bounds[3];
-
-                        // Num Parts
-                        shape.NumParts = reader.ReadInt32();
-                        totalPartsCount += shape.NumParts;
-
-                        // Num Points
-                        shape.NumPoints = reader.ReadInt32();
-                        totalPointsCount += shape.NumPoints;
-                    }
-
-                    shapeIndices.Add(shape);
-                }
-
-                var vert = new double[totalPointsCount * 2];
-                var vertInd = 0;
-
-                var parts = new int[totalPartsCount];
-                var partsInd = 0;
-
-                double[] mArray = null, zArray = null;
-                if (isM)
-                {
-                    mArray = new double[totalPointsCount];
-                }
-                int mArrayInd = 0;
-                if (isZ)
-                {
-                    zArray = new double[totalPointsCount];
-                }
-                int zArrayInd = 0;
-
-                int partsOffset = 0;
-                for (int shp = 0; shp < numShapes; shp++)
-                {
-                    progressMeter.CurrentPercent = (int)(50 + shp * 50.0 / numShapes);
-
-                    var shape = shapeIndices[shp];
-                    if (shape.ShapeType == ShapeType.NullShape) continue;
-                    reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
-                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumParts, NumPoints)
-
-                    // Read parts
-                    var partsBytes = reader.ReadBytes(4 * shape.NumParts); //Numparts * Integer(4) = existing Parts
-                    Buffer.BlockCopy(partsBytes, 0, parts, partsInd, partsBytes.Length);
-                    partsInd += 4 * shape.NumParts;
-
-                    // Read points
-                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); //Numpoints * Point (X(8) + Y(8))
-                    Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
-                    vertInd += 8 * 2 * shape.NumPoints;
-
-                    // Fill parts
-                    shape.Parts.Capacity = shape.NumParts;
-                    for (int part = 0; part < shape.NumParts; part++)
-                    {
-                        int endIndex = shape.NumPoints + shape.StartIndex;
-                        int startIndex = parts[partsOffset + part] + shape.StartIndex;
-                        if (part < shape.NumParts - 1)
-                        {
-                            endIndex = parts[partsOffset + part + 1] + shape.StartIndex;
-                        }
-                        int count = endIndex - startIndex;
-                        var partR = new PartRange(vert, shape.StartIndex, parts[partsOffset + part], featureType)
-                        {
-                            NumVertices = count
-                        };
-                        shape.Parts.Add(partR);
-                    }
-                    partsOffset += shape.NumParts;
-
-                    // Fill M and Z arrays
-                    switch (header.ShapeType)
-                    {
-                        case ShapeType.PolyLineM:
-                        case ShapeType.PolygonM:
-                            if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
-                            {
-                                var mExt = (IExtentM)shape.Extent;
-                                mExt.MinM = reader.ReadDouble();
-                                mExt.MaxM = reader.ReadDouble();
-
-                                var mBytes = reader.ReadBytes(8 * shape.NumPoints);
-                                Buffer.BlockCopy(mBytes, 0, mArray, mArrayInd, mBytes.Length);
-                                mArrayInd += 8 * shape.NumPoints;
-                            }
-                            break;
-                        case ShapeType.PolyLineZ:
-                        case ShapeType.PolygonZ:
-                            var zExt = (IExtentZ)shape.Extent;
-                            zExt.MinZ = reader.ReadDouble();
-                            zExt.MaxZ = reader.ReadDouble();
-
-                            var zBytes = reader.ReadBytes(8 * shape.NumPoints);
-                            Buffer.BlockCopy(zBytes, 0, zArray, zArrayInd, zBytes.Length);
-                            zArrayInd += 8 * shape.NumPoints;
-
-
-                            // These are listed as "optional" but there isn't a good indicator of how to
-                            // determine if they were added.
-                            // To handle the "optional" M values, check the contentLength for the feature.
-                            // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                            if (shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints)
-                            {
-                                goto case ShapeType.PolyLineM;
-                            }
-
-                            break;
-                    }
-                }
-
-                if (isM) shapefile.M = mArray;
-                if (isZ) shapefile.Z = zArray;
-                shapefile.ShapeIndices = shapeIndices;
-                shapefile.Vertex = vert;
-            }
-
-            progressMeter.Reset();
+            FillLines(shapefile.Header, shapefile.ReadIndexFile(indexBytes), null, headerBytes, indexBytes, progressHandler, shapefile, featureType);
         }
 
         /// <summary>
@@ -647,6 +512,188 @@ namespace DotSpatial.Data
             WriteFileLength(Header.ShxFilename, 50 + fid * 4);
             UpdateAttributes();
             SaveProjection();
+        }
+
+        private static void FillLines(ShapefileHeader header, List<ShapeHeader> shapeHeaders, string fileName, byte[] headerBytes, byte[] indexBytes, IProgressHandler progressHandler, Shapefile shapefile, FeatureType featureType)
+        {
+            if (featureType != FeatureType.Line && featureType != FeatureType.Polygon)
+            {
+                throw new NotSupportedException();
+            }
+
+            int numShapes = shapeHeaders.Count;
+
+            bool isM = false, isZ = false;
+            switch (header.ShapeType)
+            {
+                case ShapeType.PolyLineM:
+                case ShapeType.PolygonM:
+                    isM = true;
+                    break;
+                case ShapeType.PolyLineZ:
+                case ShapeType.PolygonZ:
+                    isZ = true;
+                    isM = true;
+                    break;
+            }
+
+            int totalPointsCount = 0;
+            int totalPartsCount = 0;
+            var shapeIndices = new List<ShapeRange>(numShapes);
+
+            var progressMeter = new ProgressMeter(progressHandler, fileName != null ? "Reading from " + Path.GetFileName(fileName) : "Reading")
+            {
+                StepPercent = 5
+            };
+
+            using (var reader = fileName != null ? (Stream)new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 65536) : new MemoryStream(headerBytes))
+            {
+                var boundsBytes = new byte[4 * 8];
+                var bounds = new double[4];
+                for (int shp = 0; shp < numShapes; shp++)
+                {
+                    progressMeter.CurrentPercent = (int)(shp * 50.0 / numShapes);
+
+                    // Read from the index file because some deleted records
+                    // might still exist in the .shp file.
+                    long offset = (shapeHeaders[shp].ByteOffset);
+                    reader.Seek(offset, SeekOrigin.Begin);
+
+                    var shape = new ShapeRange(featureType, shapefile.CoordinateType)
+                    {
+                        RecordNumber = reader.ReadInt32(Endian.BigEndian),
+                        ContentLength = reader.ReadInt32(Endian.BigEndian),
+                        ShapeType = (ShapeType)reader.ReadInt32(),
+                        StartIndex = totalPointsCount
+                    };
+                    Debug.Assert(shape.RecordNumber == shp + 1);
+
+                    if (shape.ShapeType != ShapeType.NullShape)
+                    {
+                        // Bounds
+                        reader.Read(boundsBytes, 0, boundsBytes.Length);
+                        Buffer.BlockCopy(boundsBytes, 0, bounds, 0, boundsBytes.Length);
+                        shape.Extent.MinX = bounds[0];
+                        shape.Extent.MinY = bounds[1];
+                        shape.Extent.MaxX = bounds[2];
+                        shape.Extent.MaxY = bounds[3];
+
+                        // Num Parts
+                        shape.NumParts = reader.ReadInt32();
+                        totalPartsCount += shape.NumParts;
+
+                        // Num Points
+                        shape.NumPoints = reader.ReadInt32();
+                        totalPointsCount += shape.NumPoints;
+                    }
+
+                    shapeIndices.Add(shape);
+                }
+
+                var vert = new double[totalPointsCount * 2];
+                var vertInd = 0;
+
+                var parts = new int[totalPartsCount];
+                var partsInd = 0;
+
+                double[] mArray = null, zArray = null;
+                if (isM)
+                {
+                    mArray = new double[totalPointsCount];
+                }
+                int mArrayInd = 0;
+                if (isZ)
+                {
+                    zArray = new double[totalPointsCount];
+                }
+                int zArrayInd = 0;
+
+                int partsOffset = 0;
+                for (int shp = 0; shp < numShapes; shp++)
+                {
+                    progressMeter.CurrentPercent = (int)(50 + shp * 50.0 / numShapes);
+
+                    var shape = shapeIndices[shp];
+                    if (shape.ShapeType == ShapeType.NullShape) continue;
+                    reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
+                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumParts, NumPoints)
+
+                    // Read parts
+                    var partsBytes = reader.ReadBytes(4 * shape.NumParts); //Numparts * Integer(4) = existing Parts
+                    Buffer.BlockCopy(partsBytes, 0, parts, partsInd, partsBytes.Length);
+                    partsInd += 4 * shape.NumParts;
+
+                    // Read points
+                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); //Numpoints * Point (X(8) + Y(8))
+                    Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
+                    vertInd += 8 * 2 * shape.NumPoints;
+
+                    // Fill parts
+                    shape.Parts.Capacity = shape.NumParts;
+                    for (int part = 0; part < shape.NumParts; part++)
+                    {
+                        int endIndex = shape.NumPoints + shape.StartIndex;
+                        int startIndex = parts[partsOffset + part] + shape.StartIndex;
+                        if (part < shape.NumParts - 1)
+                        {
+                            endIndex = parts[partsOffset + part + 1] + shape.StartIndex;
+                        }
+                        int count = endIndex - startIndex;
+                        var partR = new PartRange(vert, shape.StartIndex, parts[partsOffset + part], featureType)
+                        {
+                            NumVertices = count
+                        };
+                        shape.Parts.Add(partR);
+                    }
+                    partsOffset += shape.NumParts;
+
+                    // Fill M and Z arrays
+                    switch (header.ShapeType)
+                    {
+                        case ShapeType.PolyLineM:
+                        case ShapeType.PolygonM:
+                            if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
+                            {
+                                var mExt = (IExtentM)shape.Extent;
+                                mExt.MinM = reader.ReadDouble();
+                                mExt.MaxM = reader.ReadDouble();
+
+                                var mBytes = reader.ReadBytes(8 * shape.NumPoints);
+                                Buffer.BlockCopy(mBytes, 0, mArray, mArrayInd, mBytes.Length);
+                                mArrayInd += 8 * shape.NumPoints;
+                            }
+                            break;
+                        case ShapeType.PolyLineZ:
+                        case ShapeType.PolygonZ:
+                            var zExt = (IExtentZ)shape.Extent;
+                            zExt.MinZ = reader.ReadDouble();
+                            zExt.MaxZ = reader.ReadDouble();
+
+                            var zBytes = reader.ReadBytes(8 * shape.NumPoints);
+                            Buffer.BlockCopy(zBytes, 0, zArray, zArrayInd, zBytes.Length);
+                            zArrayInd += 8 * shape.NumPoints;
+
+
+                            // These are listed as "optional" but there isn't a good indicator of how to
+                            // determine if they were added.
+                            // To handle the "optional" M values, check the contentLength for the feature.
+                            // The content length does not include the 8-byte record header and is listed in 16-bit words.
+                            if (shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints)
+                            {
+                                goto case ShapeType.PolyLineM;
+                            }
+
+                            break;
+                    }
+                }
+
+                if (isM) shapefile.M = mArray;
+                if (isZ) shapefile.Z = zArray;
+                shapefile.ShapeIndices = shapeIndices;
+                shapefile.Vertex = vert;
+            }
+
+            progressMeter.Reset();
         }
     }
 }

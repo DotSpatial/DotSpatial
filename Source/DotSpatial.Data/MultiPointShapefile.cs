@@ -107,7 +107,7 @@ namespace DotSpatial.Data
         // X = 48 + (16 * NumPoints)
         // Y = X + 16 + (8 * NumPoints)
         // * = optional
-        private void FillPoints(string fileName, IProgressHandler progressHandler)
+        private void FillPoints(string fileName)
         {
             // Check to ensure the fileName is not null
             if (fileName == null)
@@ -136,9 +136,22 @@ namespace DotSpatial.Data
                 return;
             }
 
+            FillPoints(header, ReadIndexFile(fileName), fileName, null);
+        }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
+        private void FillPoints(byte[] headerBytes, byte[] indexBytes, Shapefile shapefile)
+        {
+            if (indexBytes.Length == 100)
+            {
+                // the file is empty so we are done reading
+                return;
+            }
+
+            FillPoints(shapefile.Header, ReadIndexFile(indexBytes), null, headerBytes);
+        }
+
+        private void FillPoints(ShapefileHeader header, List<ShapeHeader> shapeHeaders, string fileName, byte[] headerBytes)
+        {
             int numShapes = shapeHeaders.Count;
 
             bool isM = (header.ShapeType == ShapeType.MultiPointZ || header.ShapeType == ShapeType.MultiPointM);
@@ -148,8 +161,7 @@ namespace DotSpatial.Data
             int totalPartsCount = 0;
             var shapeIndices = new List<ShapeRange>(numShapes);
 
-
-            using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
+            using (var reader = fileName != null ? (Stream)new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 65536) : new MemoryStream(headerBytes))
             {
                 var boundsBytes = new byte[4 * 8];
                 var bounds = new double[4];
@@ -338,7 +350,39 @@ namespace DotSpatial.Data
             Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(Filename);
-            FillPoints(Filename, progressHandler);
+            FillPoints(Filename);
+            ReadProjection();
+        }
+
+        /// <summary>
+        /// Opens a shapefile
+        /// </summary>
+        /// <param name="shapeBytes">The shape bytes</param>
+        /// <param name="indexBytes">The index bytes</param>
+        /// <param name="dbaseBytes">The dbase bytes</param>
+        /// <param name="projectionBytes">The projection bytes</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        public void Open(Byte[] shapeBytes, Byte[] indexBytes, Byte[] dbaseBytes, Byte[] projectionBytes, IProgressHandler progressHandler)
+        {
+            IndexMode = true;
+            FeatureType = FeatureType.MultiPoint;
+
+            switch (Header.ShapeType)
+            {
+                case ShapeType.MultiPointM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.MultiPointZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
+            }
+
+            Extent = Header.ToExtent();
+            Attributes.Open(dbaseBytes);
+            FillPoints(shapeBytes, indexBytes, this);
             ReadProjection();
         }
 

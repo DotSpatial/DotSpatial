@@ -24,12 +24,12 @@ using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Rather than being an abstract base class, this is a "router" class that will
-    /// make decisions based on the file extension or whatever being used and decide the best
-    /// IFeatureSet that matches the specifications.
-    /// </summary>
-    public class FeatureSet : DataSet, IFeatureSet
+   /// <summary>
+   /// Rather than being an abstract base class, this is a "router" class that will
+   /// make decisions based on the file extension or whatever being used and decide the best
+   /// IFeatureSet that matches the specifications.
+   /// </summary>
+   public class FeatureSet : DataSet, IFeatureSet
     {
         #region Events
 
@@ -1768,7 +1768,7 @@ namespace DotSpatial.Data
 
                 foreach (IFeature feature in Features)
                 {
-                    feature.Geometry.GeometryChanged();
+                    feature.Geometry.UpdateEnvelope();
                     MyExtent.ExpandToInclude(new Extent(feature.Geometry.EnvelopeInternal));
                 }
             }
