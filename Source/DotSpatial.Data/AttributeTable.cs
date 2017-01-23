@@ -718,6 +718,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Reads the header and if deletedRows is null, searches file for deletedRows if file size indicates possibility of deleted rows.
         /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="deletedRows"></param>
         public void Open(string fileName, List<int> deletedRows)
         {
             Contract.Requires(!String.IsNullOrEmpty(fileName), "fileName is null or empty.");
@@ -893,7 +895,7 @@ namespace DotSpatial.Data
         /// This populates the Table with data from the file.
         /// </summary>
         /// <param name="numRows">In the event that the dbf file is not found, this indicates how many blank rows should exist in the attribute Table.</param>
-        public void Fill(int numRows)
+        public void Fill(int numRows) 
         {
             if (_isFilling) return; // Changed by jany_ (2015-07-30) don't load again because the fill methode is called from inside the fill methode and we'd get a datatable that is filled with twice the existing records
             _attributesPopulated = false;
@@ -2001,7 +2003,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (!_attributesPopulated)
+                if (!_attributesPopulated && (!string.IsNullOrEmpty(Filename) || _dbaseBytes != null))
                     Fill(_numRecords);
                 return _dataTable;
             }
