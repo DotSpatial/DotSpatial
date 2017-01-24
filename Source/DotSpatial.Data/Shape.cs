@@ -67,7 +67,8 @@ namespace DotSpatial.Data
                 throw new ArgumentNullException("feature");
             if (feature.Geometry.NumPoints == 0)
                 throw new ArgumentOutOfRangeException("feature", DataStrings.Shape_ZeroPointsError);
-            _attributes = feature.DataRow.ItemArray;
+            if (feature.DataRow != null)
+                _attributes = feature.DataRow.ItemArray;
         }
 
         /// <summary>
