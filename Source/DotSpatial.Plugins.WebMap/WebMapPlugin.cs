@@ -372,7 +372,7 @@ namespace DotSpatial.Plugins.WebMap
 
         private void RunOrCancelBW()
         {
-            if (_bw.IsBusy != true)
+            if (!_bw.IsBusy)
                 _bw.RunWorkerAsync();
             else
                 _bw.CancelAsync();
