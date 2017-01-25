@@ -22,7 +22,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// Common implementation of IMapFunction interface.
     /// </summary>
-    public class MapFunction : IMapFunction
+    public abstract class MapFunction : IMapFunction
     {
         #region Events
 
