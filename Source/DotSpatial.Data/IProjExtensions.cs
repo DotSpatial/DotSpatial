@@ -23,6 +23,7 @@ namespace DotSpatial.Data
     /// Extension methods for <see cref="IProj"/> interface.
     /// </summary>
     public static class IProjExtensions
+
     {
 
         private static bool _extendBuffer;
@@ -91,6 +92,7 @@ namespace DotSpatial.Data
         {
             if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0) return Point.Empty;
             try
+
             {
                 int x = Convert.ToInt32(self.ImageRectangle.X + (location.X - self.GeographicExtents.MinX) *
                                     (self.ImageRectangle.Width / self.GeographicExtents.Width));
@@ -150,7 +152,11 @@ namespace DotSpatial.Data
             return (distance * self.ImageRectangle.Width / self.GeographicExtents.Width);
         }
 
+
         #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets whether this map frame should define its buffer
         /// region to be the same size as the client, or three times larger.
@@ -169,6 +175,7 @@ namespace DotSpatial.Data
             get { return _extendBufferCoeff; }
             set { _extendBufferCoeff = value; }
         }
+        #endregion
 
     }
 }
