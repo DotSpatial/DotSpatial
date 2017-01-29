@@ -84,8 +84,9 @@ All notable changes to this project will be documented in this file.
 - FeatureSet.Open(".shp") throws wrong error if .shx is missing (#903)
 - Wrong Expression at Expression Editor mess up Layer Feature Set. (#904)
 - Incorrect selection of polygons with Holes (#905)
-- ExtendBuffer Map property fixed (#661)
 - Polygon Hatch Style is not displayed (#851)
 - Is this a bug in DotSpatial.WebControls? (#496)
 - NmeaSentence.ParseDilution produces an exception when an nmea string with dilution of precision not greater than 0 is used. (#909)
+- Errors in SetPropertiesFromSentence functions of GpggkSentence, GpgsvSentence, GprmcSentence
+
 

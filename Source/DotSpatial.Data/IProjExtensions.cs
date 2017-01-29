@@ -151,9 +151,6 @@ namespace DotSpatial.Data
         }
 
         #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets whether this map frame should define its buffer
         /// region to be the same size as the client, or three times larger.
@@ -172,7 +169,6 @@ namespace DotSpatial.Data
             get { return _extendBufferCoeff; }
             set { _extendBufferCoeff = value; }
         }
-        #endregion
 
     }
 }
