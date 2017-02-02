@@ -91,3 +91,4 @@ All notable changes to this project will be documented in this file.
 - Errors in SetPropertiesFromSentence functions of GpggkSentence, GpgsvSentence, GprmcSentence
 - Allow feature.DataRow = null in Shape-constructor (#917)
 - DS uses InRamImage although GDAL provider was selected (#931)
+- Disable editing in identify window (#930)

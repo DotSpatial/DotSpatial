@@ -72,7 +72,7 @@ namespace DotSpatial.Controls
 
             _frmFeatureIdentifier.ReSelect();
             _frmFeatureIdentifier.ResumeLayout();
-           
+
             SetSelectToSelectedNode(e.Map);
             _frmFeatureIdentifier.treFeatures.EndUpdate();
 
@@ -148,7 +148,6 @@ namespace DotSpatial.Controls
                     if (rl != null)
                     {
                         _frmFeatureIdentifier.Add(rl, strict);
-                        continue;
                     }
                 }
             }

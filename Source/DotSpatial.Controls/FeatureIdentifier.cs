@@ -27,11 +27,11 @@ namespace DotSpatial.Controls
     public partial class FeatureIdentifier : Form
     {
         private Extent _activeRegion;
-        private readonly Dictionary<string, string> _featureIDFields;
+        private readonly Dictionary<string, string> _featureIdFields;
         private readonly MenuItem _mnuAssignIdField;
         private readonly MenuItem _mnuSelectMenu;
-        
-        private readonly ContextMenu mnuTreeContext;
+
+        private readonly ContextMenu _mnuTreeContext;
         private string _previouslySelectedLayerName;
 
         #region Constructors
@@ -43,13 +43,13 @@ namespace DotSpatial.Controls
         {
             InitializeComponent();
             treFeatures.MouseUp += treFeatures_MouseUp;
-            mnuTreeContext = new ContextMenu();
+            _mnuTreeContext = new ContextMenu();
             _mnuSelectMenu = new MenuItem("Select Feature");
             _mnuSelectMenu.Click += selectMenu_Click;
             // The "ID Field" seems more like a display caption.
             _mnuAssignIdField = new MenuItem("Assign ID Field");
             _mnuAssignIdField.Click += _mnuAssignIdField_Click;
-            _featureIDFields = new Dictionary<string, string>();
+            _featureIdFields = new Dictionary<string, string>();
         }
 
         #endregion
@@ -72,13 +72,13 @@ namespace DotSpatial.Controls
                 lstBox.Clear();
                 lstBox.Add(obj);
                 if (lstBox.ShowDialog(this) != DialogResult.OK) return;
-                if (_featureIDFields.ContainsKey(fl.LegendText) == false)
+                if (_featureIdFields.ContainsKey(fl.LegendText) == false)
                 {
-                    _featureIDFields.Add(fl.LegendText, (string)lstBox.SelectedItem);
+                    _featureIdFields.Add(fl.LegendText, (string)lstBox.SelectedItem);
                 }
                 else
                 {
-                    _featureIDFields[fl.LegendText] = (string)lstBox.SelectedItem;
+                    _featureIdFields[fl.LegendText] = (string)lstBox.SelectedItem;
                 }
                 SuspendLayout();
 
@@ -120,19 +120,19 @@ namespace DotSpatial.Controls
                     if (f != null)
                     {
                         treFeatures.SelectedNode = clickedNode;
-                        mnuTreeContext.MenuItems.Clear();
-                        mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
-                        mnuTreeContext.Show(treFeatures, e.Location);
+                        _mnuTreeContext.MenuItems.Clear();
+                        _mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
+                        _mnuTreeContext.Show(treFeatures, e.Location);
                     }
                     var fl = clickedNode.Tag as IFeatureLayer;
                     if (fl != null)
                     {
                         treFeatures.SelectedNode = clickedNode;
-                        mnuTreeContext.MenuItems.Clear();
-                        mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
-                        mnuTreeContext.Show(treFeatures, e.Location);
+                        _mnuTreeContext.MenuItems.Clear();
+                        _mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
+                        _mnuTreeContext.Show(treFeatures, e.Location);
                     }
-                }  
+                }
             }
         }
 
@@ -158,7 +158,7 @@ namespace DotSpatial.Controls
         /// <param name="bounds"></param>
         public virtual bool Add(IFeatureLayer layer, Extent bounds)
         {
-            var result = ((FeatureSet) layer.DataSet).Select(bounds);
+            var result = ((FeatureSet)layer.DataSet).Select(bounds);
             if (result.Count == 0)
             {
                 return false;
@@ -174,9 +174,9 @@ namespace DotSpatial.Controls
             {
                 var dr = feature.DataRow;
                 var name = feature.Fid.ToString(CultureInfo.InvariantCulture);
-                if (_featureIDFields.ContainsKey(layer.LegendText))
+                if (_featureIdFields.ContainsKey(layer.LegendText))
                 {
-                    if (dr != null) name += " - " + dr[_featureIDFields[layer.LegendText]];
+                    if (dr != null) name += " - " + dr[_featureIdFields[layer.LegendText]];
                 }
                 var node = nodeLayer.Nodes.Add(name);
                 node.Tag = feature;
@@ -234,7 +234,6 @@ namespace DotSpatial.Controls
                         treFeatures.Nodes[0].Expand();
                         treFeatures.SelectedNode = treFeatures.Nodes[0].FirstNode;
                     }
-
                 }
             }
             else
@@ -248,7 +247,6 @@ namespace DotSpatial.Controls
 
             treFeatures.ExpandAll();
             treFeatures.HideSelection = false;
-           // treFeatures.Focus();
         }
 
         private void treFeatures_AfterSelect(object sender, TreeViewEventArgs e)
