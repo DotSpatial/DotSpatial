@@ -28,17 +28,13 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DataProviders
+        /// Creates a new instance of DataProviderEventArgs
         /// </summary>
         /// <param name="providers">Specifies a list of IDataProviders</param>
         public DataProviderEventArgs(IEnumerable<IDataProvider> providers)
         {
             _providers = providers;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -55,16 +51,5 @@ namespace DotSpatial.Data
 
         #endregion
 
-        #region Events
-
-        #endregion
-
-        #region Event Handlers
-
-        #endregion
-
-        #region Private Helper Functions
-
-        #endregion
     }
 }

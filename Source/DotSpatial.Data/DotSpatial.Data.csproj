@@ -153,7 +153,7 @@
     <Compile Include="PolygonShape.cs" />
     <Compile Include="DataFormat.cs" />
     <Compile Include="DataManager.cs" />
-    <Compile Include="DataProviders.cs" />
+    <Compile Include="DataProviderEventArgs.cs" />
     <Compile Include="Extent.cs" />
     <Compile Include="PolygonShapefileFeatureSource.cs" />
     <Compile Include="PolygonShapefileShapeSource.cs" />
