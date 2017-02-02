@@ -314,37 +314,47 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Attempts to call the open fileName method for any IDataProvider plugin
-        /// that matches the extension on the string.
+        /// Attempts to call the open fileName method for any IDataProvider plugin that matches the extension on the string.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory.  This value overrides the property on this DataManager.</param>
-        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages.  This value overrides the property on this DataManager.</param>
-        public virtual IDataSet OpenFile(string fileName, bool inRam, IProgressHandler progressHandler)
+        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory. This value overrides the property on this DataManager.</param>
+        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
+         /// <param name="providerName">Name of the provider that should be used for opening. If it is not set or the provider can't open the file, DS takes the first provider that can open the file.</param>
+        public virtual IDataSet OpenFile(string fileName, bool inRam, IProgressHandler progressHandler, string providerName = "")
         {
-            // To Do: Add Customization that allows users to specify which plugins to use in priority order.
-
-            // First check for the extension in the preferred plugins list
-
-            //Fix by Jiri Kadlec - on Unix and Mac the path is case sensitive
-            //on windows it is case insensitive. This check ensures that both
-            //*.SHP and *.shp files can be opened on Windows.
-            //PlatformID platform = Environment.OSVersion.Platform;
-            //if (platform != PlatformID.MacOSX && platform != PlatformID.Unix)
-            //{
-            //    fileName = fileName.ToLower();
-            //}
-            // * Removed all "ToLower()" calculations here, since we only want
-            // the extension comparison to be converted to lower, not the filename itself.
             string ext = Path.GetExtension(fileName);
             if (ext != null)
             {
-                // Fix by Ted Dunsford, moved "ToLower" operation from the previous
-                // location on the filename which would mess up the actual filename
-                // identification, and only use the lower case for the extent testing.
-
+                // Fix by Ted Dunsford, moved "ToLower" operation from the previous location on the filename 
+                // which would mess up the actual filename identification, and only use the lower case for the extent testing.
                 ext = ext.ToLower();
                 IDataSet result;
+
+                if (providerName != "") // if a provider name was given we try to find this provider and use it to open the file
+                {
+                    var provider = PreferredProviders.FirstOrDefault(kvp => kvp.Value.Name == providerName);
+                    if (provider.Value != null)
+                    {
+                        if (GetSupportedExtensions(provider.Value.DialogReadFilter).Contains(ext))
+                        {
+                            result = provider.Value.Open(fileName);
+                            if (result != null)
+                                return result;
+                        }
+                    }
+                    var dp = DataProviders.FirstOrDefault(kvp => kvp.Name == providerName);
+                    if (dp != null)
+                    {
+                        if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
+                        {
+                            result = dp.Open(fileName);
+                            if (result != null)
+                                return result;
+                        }
+                    }
+                }
+
+                // Check for the extension in the preferred plugins list
                 if (PreferredProviders.ContainsKey(ext))
                 {
                     result = PreferredProviders[ext].Open(fileName);
@@ -353,8 +363,7 @@ namespace DotSpatial.Data
                     // if we get here, we found the provider, but it did not succeed in opening the file.
                 }
 
-                // Then check the general list of developer specified providers... but not the directory providers
-
+                // Check the general list of developer specified providers... but not the directory providers
                 foreach (IDataProvider dp in DataProviders)
                 {
                     if (!GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
@@ -408,8 +417,7 @@ namespace DotSpatial.Data
         /// <param name="progHandler">A Progress handler</param>
         /// <param name="bandType">The band color type</param>
         /// <returns>An IImageData interface allowing access to image data</returns>
-        public virtual IImageData CreateImage(string fileName, int width, int height, bool inRam,
-                                              IProgressHandler progHandler, ImageBandType bandType)
+        public virtual IImageData CreateImage(string fileName, int width, int height, bool inRam, IProgressHandler progHandler, ImageBandType bandType)
         {
             // First check for the extension in the preferred plugins list
             fileName = fileName.ToLower();
@@ -635,7 +643,7 @@ namespace DotSpatial.Data
                 foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
                 {
                     // we don't have to check for uniqueness here because it is enforced by the HashTable
-                    result.AppendFormat("| [{0}] - {1}| {0}", item.Key, item.Value.Name);
+                    result.AppendFormat("|{1} - [{0}]| {0}", item.Key, item.Value.Name);
                 }
                 // Now add each of the individual lines, prepended with the provider name
                 foreach (IDataProvider dp in DataProviders)
@@ -724,7 +732,7 @@ namespace DotSpatial.Data
                     result.Append("|Rasters|" + String.Join(";", rasterExtensions.ToArray()));
                 if (imageExtensions.Count > 0)
                     result.Append("|Images|" + String.Join(";", imageExtensions.ToArray()));
-                
+
                 foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
                 {
                     // we don't have to check for uniqueness here because it is enforced by the HashTable    

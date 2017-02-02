@@ -66,9 +66,10 @@ namespace DotSpatial.Data
         /// that matches the extension on the string.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory.  This value overrides the property on this DataManager.</param>
-        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages.  This value overrides the property on this DataManager.</param>
-        IDataSet OpenFile(string fileName, bool inRam, IProgressHandler progressHandler);
+        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory. This value overrides the property on this DataManager.</param>
+        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
+        /// <param name="providerName">Name of the provider that should be used for opening. If it is not set or the provider can't open the file, DS takes the first provider that can open the file.</param>
+        IDataSet OpenFile(string fileName, bool inRam, IProgressHandler progressHandler, string providerName = "");
 
         /// <summary>
         /// Opens the file as an Image and returns an IImageData object for interacting with the file.
