@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using DotSpatial.NTSExtension;
@@ -205,7 +206,7 @@ namespace DotSpatial.Data.Tests
             Assert.DoesNotThrow(() => fs1.Intersection(fs2, FieldJoinType.All, null));
         }
 
-        [Test(Description =@"Check whether the correct number of features is copied including the attributes.")]
+        [Test(Description = @"Check whether the correct number of features is copied including the attributes.")]
         public void CopySubsetWithAttributes()
         {
             IFeatureSet fs = BuildFeatureSet();
@@ -264,6 +265,139 @@ namespace DotSpatial.Data.Tests
             IFeatureSet res6 = fs.CopyFeatures(false);
             Assert.AreEqual(res6.Features.Count, 3);
             Assert.AreEqual(res6.Features[0].DataRow.ItemArray.Length, 0);
+        }
+
+        [Test(Description = @"Check whether point features are saved with correct M/Z extent and value.")]
+        [TestCase(CoordinateType.Regular)]
+        [TestCase(CoordinateType.M)]
+        [TestCase(CoordinateType.Z)]
+        public void SavePointToShapefileWithMandZ(CoordinateType c)
+        {
+            var fileName = FileTools.GetTempFileName(".shp");
+
+            try
+            {
+                var fs = new FeatureSet(FeatureType.Point)
+                {
+                    Projection = KnownCoordinateSystems.Geographic.World.WGS1984,
+                    CoordinateType = c
+                };
+
+                fs.AddFeature(new Point(new Coordinate(1, 2, 7, 4)));
+
+                Assert.DoesNotThrow(() => fs.SaveAs(fileName, true));
+
+                var loaded = FeatureSet.Open(fileName);
+
+                if (c == CoordinateType.Regular) //regular coordinates don't have m values
+                {
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                }
+                else // m or z coordinates have m values
+                {
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                }
+
+                if (c == CoordinateType.Z) // z coordinates have z values
+                {
+                    Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
+                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
+                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                }
+                else // regular and m coordinates don't have z values
+                {
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                }
+            }
+            finally
+            {
+                FileTools.DeleteShapeFile(fileName);
+            }
+        }
+
+        [Test(Description = @"Check whether polygon/line/multipoint features are saved with correct M/Z extent and value.")]
+        [TestCase(CoordinateType.Regular, FeatureType.Line)]
+        [TestCase(CoordinateType.M, FeatureType.Line)]
+        [TestCase(CoordinateType.Z, FeatureType.Line)]
+        [TestCase(CoordinateType.Regular, FeatureType.Polygon)]
+        [TestCase(CoordinateType.M, FeatureType.Polygon)]
+        [TestCase(CoordinateType.Z, FeatureType.Polygon)]
+        [TestCase(CoordinateType.Regular, FeatureType.MultiPoint)]
+        [TestCase(CoordinateType.M, FeatureType.MultiPoint)]
+        [TestCase(CoordinateType.Z, FeatureType.MultiPoint)]
+        public void SaveFeatureToShapefileWithMandZ(CoordinateType c, FeatureType ft)
+        {
+            var fileName = FileTools.GetTempFileName(".shp");
+
+            try
+            {
+                List<Coordinate> coords = new List<Coordinate> {
+                    new Coordinate(1, 2, 7, 4), 
+                    new Coordinate(3, 4, 5, 6), 
+                    new Coordinate(5, 6, 3, 8), 
+                    new Coordinate(7, 8, 9, 10), 
+                    new Coordinate(1, 2, 7, 4)};
+
+                var fs = new FeatureSet(ft)
+                {
+                    Projection = KnownCoordinateSystems.Geographic.World.WGS1984,
+                    CoordinateType = c
+                };
+
+                switch (ft)
+                {
+                    case FeatureType.Line:
+                        fs.AddFeature(new LineString(coords.ToArray()));
+                        break;
+                    case FeatureType.Polygon:
+                        fs.AddFeature(new Polygon(new LinearRing(coords.ToArray())));
+                        break;
+                    case FeatureType.MultiPoint:
+                        coords.RemoveAt(4);
+                        fs.AddFeature(new MultiPoint(coords.CastToPointArray()));
+                        break;
+                }
+
+                Assert.DoesNotThrow(() => fs.SaveAs(fileName, true));
+
+                var loaded = FeatureSet.Open(fileName);
+
+                if (c == CoordinateType.Regular) //regular coordinates don't have m values
+                {
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                }
+                else // m or z coordinates have m values
+                {
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
+                    Assert.AreEqual(10, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                }
+
+                if (c == CoordinateType.Z) // z coordinates have z values
+                {
+                    Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
+                    Assert.AreEqual(3, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
+                    Assert.AreEqual(9, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                }
+                else // regular and m coordinates don't have z values
+                {
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                }
+            }
+            finally
+            {
+                FileTools.DeleteShapeFile(fileName);
+            }
         }
     }
 }
