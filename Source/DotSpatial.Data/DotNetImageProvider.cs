@@ -21,8 +21,6 @@ namespace DotSpatial.Data
     {
         #region Private Variables
 
-        private IProgressHandler _prog;
-
         #endregion
 
         #region Methods
@@ -114,11 +112,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the progress handler
         /// </summary>
-        public IProgressHandler ProgressHandler
-        {
-            get { return _prog; }
-            set { _prog = value; }
-        }
+        public IProgressHandler ProgressHandler { get; set; }
 
         #endregion
     }

@@ -35,7 +35,7 @@ using OSGeo.OGR;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
-    public static partial class GdalConfiguration
+    public static class GdalConfiguration
     {
         private static volatile bool _configuredOgr;
         private static volatile bool _configuredGdal;
@@ -124,7 +124,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             for (var i = 0; i < num; i++)
             {
                 var driver = Ogr.GetDriver(i);
-                Console.WriteLine(string.Format("OGR {0}: {1}", i, driver.name));
+                Console.WriteLine("OGR {0}: {1}", i, driver.name);
             }
 #endif
         }
@@ -136,7 +136,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             for (var i = 0; i < num; i++)
             {
                 var driver = Gdal.GetDriver(i);
-                Console.WriteLine(string.Format("GDAL {0}: {1}-{2}", i, driver.ShortName, driver.LongName));
+                Console.WriteLine("GDAL {0}: {1}-{2}", i, driver.ShortName, driver.LongName);
             }
 #endif
         }

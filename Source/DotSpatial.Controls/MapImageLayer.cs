@@ -204,6 +204,7 @@ namespace DotSpatial.Controls
                 try
                 {
                     bmp = DataSet.GetBitmap(env, r);
+                    if (bmp == null) continue;
                     if (!_transparent.Name.Equals("0")) { bmp.MakeTransparent(_transparent); }
                 }
                 catch
@@ -213,12 +214,11 @@ namespace DotSpatial.Controls
                 }
                 if (bmp == null) continue;
 
-                if (this.Symbolizer != null && this.Symbolizer.Opacity < 1)
+                if (Symbolizer != null && Symbolizer.Opacity < 1)
                 {
-                    ColorMatrix matrix = new ColorMatrix(); //draws the image not completely opaque
-                    matrix.Matrix33 = Symbolizer.Opacity;
                     using (var attributes = new ImageAttributes())
                     {
+                        ColorMatrix matrix = new ColorMatrix { Matrix33 = Symbolizer.Opacity }; //draws the image not completely opaque    
                         attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
                         g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
                     }                    

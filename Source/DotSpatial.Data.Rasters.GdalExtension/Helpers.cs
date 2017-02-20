@@ -3,7 +3,7 @@ using OSGeo.GDAL;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
-    static class Helpers
+    internal static class Helpers
     {
         public static Dataset Open(string fileName)
         {

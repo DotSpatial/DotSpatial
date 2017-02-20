@@ -31,9 +31,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
     /// </summary>
     public class GdalImageProvider : IImageDataProvider
     {
-        private IProgressHandler _prog;
-
-        static GdalImageProvider ()
+        static GdalImageProvider()
         {
             GdalConfiguration.ConfigureGdal();
         }
@@ -124,11 +122,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <summary>
         /// Gets or sets the progress handler
         /// </summary>
-        public IProgressHandler ProgressHandler
-        {
-            get { return _prog; }
-            set { _prog = value; }
-        }
+        public IProgressHandler ProgressHandler { get; set; }
 
         #endregion
 
@@ -218,10 +212,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             using (var red = dataset.GetRasterBand(1))
             {
                 ColorInterp bandType = red.GetRasterColorInterpretation();
-                if (bandType != ColorInterp.GCI_PaletteIndex &&
-                    bandType != ColorInterp.GCI_GrayIndex &&
-                    bandType != ColorInterp.GCI_RedBand &&
-                    bandType != ColorInterp.GCI_AlphaBand)
+                if (bandType != ColorInterp.GCI_PaletteIndex && bandType != ColorInterp.GCI_GrayIndex && bandType != ColorInterp.GCI_RedBand && bandType != ColorInterp.GCI_AlphaBand)
                 {
                     // This is an image, not a raster, so return null.
                     dataset.Dispose();
@@ -255,7 +246,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 if (blockHeight > gs.Bounds.NumRows) blockHeight = gs.Bounds.NumRows;
                 int numBlocks = (int)Math.Ceiling(gs.Bounds.NumRows / (double)blockHeight);
                 ProgressMeter pm = new ProgressMeter(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
-                //ProgressHandler.Progress("pyramid", 0, "Copying Data To Pyramids: 0% Complete");
                 Application.DoEvents();
                 for (int j = 0; j < numBlocks; j++)
                 {
