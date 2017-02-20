@@ -204,7 +204,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             return null;
         }
-        
+
         private IImageData OpenFile(string fileName)
         {
             var dataset = Helpers.Open(fileName);
@@ -226,48 +226,53 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             // without creating our own pyramid image.
             if ((result.Width > 8000 || result.Height > 8000) && !hasOverviews)
             {
-                // For now, we can't get fast, low-res versions without some kind of pyramiding happening.
-                // since that can take a while for huge images, I'd rather do this once, and create a kind of
-                // standardized file-based pyramid system.  Maybe in future pyramid tiffs could be used instead?
-                string pyrFile = Path.ChangeExtension(fileName, ".mwi");
-                if (File.Exists(pyrFile))
+                int[] levels = { 2, 4, 8, 16, 32, 64, 128 };
+
+                if (dataset.BuildOverviews("NEAREST", levels) != (int)CPLErr.CE_None)
                 {
-                    if (File.Exists(Path.ChangeExtension(pyrFile, ".mwh")))
+                    // For now, we can't get fast, low-res versions without some kind of pyramiding happening.
+                    // since that can take a while for huge images, I'd rather do this once, and create a kind of
+                    // standardized file-based pyramid system.  Maybe in future pyramid tiffs could be used instead?
+                    string pyrFile = Path.ChangeExtension(fileName, ".mwi");
+                    if (File.Exists(pyrFile))
                     {
-                        return new PyramidImage(fileName);
+                        if (File.Exists(Path.ChangeExtension(pyrFile, ".mwh")))
+                        {
+                            return new PyramidImage(fileName);
+                        }
+                        File.Delete(pyrFile);
                     }
-                    File.Delete(pyrFile);
-                }
 
-                GdalImageSource gs = new GdalImageSource(fileName);
-                PyramidImage py = new PyramidImage(pyrFile, gs.Bounds);
-                int width = gs.Bounds.NumColumns;
-                int blockHeight = 64000000 / width;
-                if (blockHeight > gs.Bounds.NumRows) blockHeight = gs.Bounds.NumRows;
-                int numBlocks = (int)Math.Ceiling(gs.Bounds.NumRows / (double)blockHeight);
-                ProgressMeter pm = new ProgressMeter(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
-                Application.DoEvents();
-                for (int j = 0; j < numBlocks; j++)
-                {
-                    int h = blockHeight;
-                    if (j == numBlocks - 1)
+                    GdalImageSource gs = new GdalImageSource(fileName);
+                    PyramidImage py = new PyramidImage(pyrFile, gs.Bounds);
+                    int width = gs.Bounds.NumColumns;
+                    int blockHeight = 64000000 / width;
+                    if (blockHeight > gs.Bounds.NumRows) blockHeight = gs.Bounds.NumRows;
+                    int numBlocks = (int)Math.Ceiling(gs.Bounds.NumRows / (double)blockHeight);
+                    ProgressMeter pm = new ProgressMeter(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
+                    Application.DoEvents();
+                    for (int j = 0; j < numBlocks; j++)
                     {
-                        h = gs.Bounds.NumRows - j * blockHeight;
+                        int h = blockHeight;
+                        if (j == numBlocks - 1)
+                        {
+                            h = gs.Bounds.NumRows - j * blockHeight;
+                        }
+                        byte[] vals = gs.ReadWindow(j * blockHeight, 0, h, width, 0);
+
+                        pm.CurrentValue = j * 2 + 1;
+                        py.WriteWindow(vals, j * blockHeight, 0, h, width, 0);
+                        pm.CurrentValue = (j + 1) * 2;
                     }
-                    byte[] vals = gs.ReadWindow(j * blockHeight, 0, h, width, 0);
+                    gs.Dispose();
+                    pm.Reset();
+                    py.ProgressHandler = ProgressHandler;
+                    py.CreatePyramids();
+                    py.WriteHeader(pyrFile);
+                    result.Dispose();
 
-                    pm.CurrentValue = j * 2 + 1;
-                    py.WriteWindow(vals, j * blockHeight, 0, h, width, 0);
-                    pm.CurrentValue = (j + 1) * 2;
+                    return py;
                 }
-                gs.Dispose();
-                pm.Reset();
-                py.ProgressHandler = ProgressHandler;
-                py.CreatePyramids();
-                py.WriteHeader(pyrFile);
-                result.Dispose();
-
-                return py;
             }
             result.Open();
             return result;
