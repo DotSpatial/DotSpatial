@@ -1,1 +1,173 @@
+// *******************************************************************************************************
+// Product: InterSectionTool
+// Description:  Tool that Find polygons that has intersects in two featureclass
+// Copyright & License: See www.DotSpatial.org.
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// Majid Hojati       |  9/15/2014         |  First Release (https://github.com/am2222)
+// ********************************************************************************************************
 
+
+using DotSpatial.Data;
+using DotSpatial.Modeling.Forms;
+using DotSpatial.Topology;
+using System.Collections.Generic;
+
+namespace DotSpatial.Tools
+{
+    /// <summary>
+    /// Clip With Polygon
+    /// </summary>
+    public class InterSectionTool : Tool
+    {
+        #region Constants and Fields
+
+        private Parameter[] _inputParam;
+
+        private Parameter[] _outputParam;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the ClipRasterWithPolygon class.
+        /// </summary>
+        public InterSectionTool()
+        {
+            this.Name = "A tool in order to find the intersection amoung features";
+            this.Category = "Spatial Analiyze";
+            this.Description = "Using this Tool you can find the intersection among diffrent featureclasses";
+            this.ToolTip = "A tool in order to find the intersection amoung features";
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or Sets the input paramater array
+        /// </summary>
+        public override Parameter[] InputParameters
+        {
+            get
+            {
+                return _inputParam;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the output paramater array
+        /// </summary>
+        public override Parameter[] OutputParameters
+        {
+            get
+            {
+                return _outputParam;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// </summary>
+        public override bool Execute(ICancelProgressHandler cancelProgressHandler)
+        {
+            IFeatureSet polygon0 = _inputParam[0].Value as IFeatureSet;
+            IFeatureSet polygon1 = _inputParam[1].Value as IFeatureSet;
+
+            IFeatureSet output = _outputParam[0].Value as IFeatureSet;
+
+            // Validates the input and output data
+            if (polygon0 == null || polygon1 == null || output == null)
+            {
+                return false;
+            }
+
+            output.CopyTableSchema(polygon0.DataTable);
+            output.DataTable.Columns.Add("Intersection");
+
+            if (cancelProgressHandler != null)
+                cancelProgressHandler.Progress(null, 16, "Start...");
+            ProgressMeter pm = new ProgressMeter(cancelProgressHandler, "Finding Intersections",polygon0.Features.Count);
+            pm.StepPercent = 1;
+            pm.StartValue = polygon0.Features.Count+1;
+
+            int c = 0;
+         for (int i = 0; i < polygon0.Features.Count; i++)
+                                {
+             IFeature PolygonFeat1=polygon0.Features[i];
+
+                         pm.StartValue = polygon0.Features.IndexOf(PolygonFeat1);
+
+                Extent tolerant  = PolygonFeat1.Envelope.ToExtent();
+                List<IFeature> resultS =polygon1.Select(tolerant);
+
+                if (resultS != null && resultS.Count != 0)
+                {
+                    
+                    foreach (IFeature PolygonFeat2 in polygon1.Features)
+                    {
+
+                        bool basicCheck;
+
+                        basicCheck = PolygonFeat1.Envelope.Intersects(PolygonFeat2.Envelope);
+                        if (basicCheck)
+                        {
+                            bool Check1 = PolygonFeat1.Intersects(PolygonFeat2);
+                            if (Check1)
+                            {
+                                IFeature intersectedF = null;
+                                try
+                                {
+                                    intersectedF = PolygonFeat2.Intersection(PolygonFeat1);
+                                    output.AddFeature(PolygonFeat1);
+  
+                                   output.Features[c].CopyAttributes(PolygonFeat1);
+                                   output.Features[c].DataRow[19] = intersectedF.Area();
+                                   c=c+1;
+                                   // output.DataTable.ImportRow(polygon0.DataTable.Rows[i]);
+                                }
+                                catch { return false; }
+                            }
+                        }
+
+                    }
+                }
+                else
+                {
+                    output.Save();
+                }
+                output.Save();
+              
+             }
+     
+
+            return true;
+        }
+
+        /// <summary>
+        /// The Parameter array should be populated with default values here
+        /// </summary>
+        public override void Initialize()
+        {
+            _inputParam = new Parameter[2];
+            _inputParam[0] = new PolygonFeatureSetParam("Input Feature") { HelpText = "The input polygon feature class." };
+            _inputParam[1] = new PolygonFeatureSetParam("Intersecting Feature")
+            {
+                HelpText = "The secound Intersecting class"
+            };
+
+            _outputParam = new Parameter[1];
+            _outputParam[0] = new PolygonFeatureSetParam("Output") { HelpText = "Contains the inresecting features."};
+        }
+
+        #endregion
+    }
+}
