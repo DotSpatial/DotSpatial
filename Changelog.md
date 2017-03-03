@@ -2,8 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+Be aware that code written for 1.9 will not work out of the box because DotSpatial.Topology was replaced by DotSpatial.GeoAPI and DotSpatial.NetTopologySuite (#786).
+
 ### Added
-- Switched to NTS/GeoAPI instead of DotSpatial.Topology (#633, #404) 
+- Switched to NTS/GeoAPI instead of DotSpatial.Topology (#633, #404, #786) 
 - Tag property in ActionItem (#338)
 - Added property AppManager.BaseDirectory which allows to change base directory for plugins. (#758)
 - Support for formatted ESRI projection files (#793)
