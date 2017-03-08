@@ -100,6 +100,7 @@
     <Compile Include="AuthorityCodes\AuthorityCodeHandler.cs" />
     <Compile Include="AuxiliarySphereType.cs" />
     <EmbeddedResource Include="AuthorityCodes\epsg.ds" />
+    <EmbeddedResource Include="AuthorityCodes\esri.ds" />
     <None Include="DeflateStreamUtility\DeflateStreamUtility.cs" />
     <Compile Include="DatNadTable.cs" />
     <Compile Include="DatumsHandler.cs" />
@@ -339,13 +340,19 @@
     <None Include="DotSpatial.Projections.4.0.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DeflateStreamUtility\Readme.txt" />
+    <None Include="AuthorityCodes\Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DeflateStreamUtility\DeflateStreamUtility.exe" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AuthorityCodes\epsg.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DeflateStreamUtility\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AuthorityCodes\esri.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -104,6 +104,10 @@ namespace DotSpatial.Projections.AuthorityCodes
             {
                 ReadFromStream(str, "EPSG");
             }
+            using (var str = DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.AuthorityCodes.esri.ds"))
+            {
+                ReadFromStream(str, "ESRI");
+            }
         }
 
         private void ReadFromStream(Stream s, string authority)
