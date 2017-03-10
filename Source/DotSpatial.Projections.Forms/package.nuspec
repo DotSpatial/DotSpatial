@@ -14,7 +14,7 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.Projections" version="1.7"/>
+      <dependency id="DotSpatial.Projections" version="2.0"/>
     </dependencies>
   </metadata>
   <files>

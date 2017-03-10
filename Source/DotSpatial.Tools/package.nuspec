@@ -14,11 +14,11 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.Analysis" />
-      <dependency id="DotSpatial.Data" />
-      <dependency id="DotSpatial.Extensions" />
-      <dependency id="DotSpatial.Modeling.Forms" />
-      <dependency id="DotSpatial.Projections" />
+      <dependency id="DotSpatial.Analysis" version="2.0"/>
+      <dependency id="DotSpatial.Data" version="2.0"/>
+      <dependency id="DotSpatial.Extensions" version="2.0"/>
+      <dependency id="DotSpatial.Modeling.Forms" version="2.0"/>
+      <dependency id="DotSpatial.Projections" version="2.0"/>
       <dependency id="DotSpatial.NetTopologySuite" />
       <dependency id="DotSpatial.GeoAPI" />
     </dependencies>

@@ -14,11 +14,10 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.Mono" />
-      <dependency id="DotSpatial.Serialization" />
+      <dependency id="DotSpatial.Serialization" version="2.0" />
       <dependency id="DotSpatial.NetTopologySuite" />
       <dependency id="DotSpatial.GeoAPI" />
-      <dependency id="DotSpatial.Projections" />
+      <dependency id="DotSpatial.Projections" version="2.0" />
     </dependencies>
   </metadata>
 </package>

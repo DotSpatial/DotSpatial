@@ -147,6 +147,7 @@
     <Compile Include="MiscUtil\NullOp.cs" />
     <Compile Include="MiscUtil\Operator.cs" />
     <Compile Include="FilePathUtils.cs" />
+    <Compile Include="Mono.cs" />
     <Compile Include="PointShape.cs" />
     <Compile Include="PointShapefileFeatureSource.cs" />
     <Compile Include="PointShapefileShapeSource.cs" />
@@ -377,10 +378,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
-      <Project>{bdc11a53-b435-4b9f-b8fa-06be940acda8}</Project>
-      <Name>DotSpatial.Mono</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj">
       <Project>{034f7ade-ac2a-48ae-9cf2-0686eea97c25}</Project>
       <Name>DotSpatial.NTSExtension</Name>

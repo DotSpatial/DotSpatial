@@ -14,9 +14,9 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.Controls" />
-      <dependency id="DotSpatial.Data" />
-      <dependency id="DotSpatial.Symbology" />
+      <dependency id="DotSpatial.Controls" version="2.0"/>
+      <dependency id="DotSpatial.Data" version="2.0"/>
+      <dependency id="DotSpatial.Symbology" version="2.0"/>
       <dependency id="DotSpatial.NetTopologySuite" />
       <dependency id="DotSpatial.GeoAPI" />
     </dependencies>

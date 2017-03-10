@@ -35,6 +35,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
 - Removed obsolete methods\properties (#797)
+- Removed DotSpatial.Mono assembly. Mono helper now is in DotSpatial.Data assembly.
 
 ### Fixed
 - Parameters for the Austrian Bundesmeldenetz in DotSpatial.Projections.ProjectedCategories.NationalGrids are incorrect (#855)

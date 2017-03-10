@@ -447,7 +447,9 @@
     <EmbeddedResource Include="Resources\SpatialStatusStrip.ico" />
     <None Include="app.config" />
     <None Include="DotSpatial.Controls.snk" />
-    <None Include="package.nuspec" />
+    <None Include="package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -534,10 +536,6 @@
     <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
       <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
       <Name>DotSpatial.Modeling.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
-      <Project>{bdc11a53-b435-4b9f-b8fa-06be940acda8}</Project>
-      <Name>DotSpatial.Mono</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
       <Project>{1da244ce-5862-4dfb-8943-244a80b7e3ee}</Project>

@@ -14,10 +14,10 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.Data" />
-      <dependency id="DotSpatial.Projections.Forms" />
-      <dependency id="DotSpatial.Serialization" />
-      <dependency id="DotSpatial.Symbology" />
+      <dependency id="DotSpatial.Data" version="2.0"/>
+      <dependency id="DotSpatial.Projections.Forms" version="2.0" />
+      <dependency id="DotSpatial.Serialization" version="2.0" />
+      <dependency id="DotSpatial.Symbology" version="2.0" />
       <dependency id="DotSpatial.NetTopologySuite" />
       <dependency id="DotSpatial.GeoAPI" />
     </dependencies>
