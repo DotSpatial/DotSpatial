@@ -11,3 +11,4 @@ after_build:
 artifacts:
 - path: source\bin\Release
   name: Release
+appveyor PushArtifact DotSpatial.Projections.nupkg
