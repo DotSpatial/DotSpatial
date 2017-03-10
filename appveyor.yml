@@ -3,10 +3,10 @@ configuration: Release
 cache: source\packages -> **\packages.config
 build:
   project: source\DotSpatial.sln
+  publish_nuget: true
   verbosity: minimal
 after_build:
- - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)'
- - nuget pack source\DotSpatial.Projections\DotSpatial.Projections.csproj -version %APPVEYOR_BUILD_VERSION%
+ - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)' 
  - appveyor PushArtifact DotSpatial.Projections.%APPVEYOR_BUILD_VERSION%.nupkg
 artifacts:
 - path: source\bin\Release
