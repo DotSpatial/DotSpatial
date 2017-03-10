@@ -8,7 +8,8 @@ build:
   verbosity: minimal
 after_build:
  - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)'
- - appveyor PushArtifact DotSpatial.Projections.nupkg
+ - nuget pack source\DotSpatial.Projections\DotSpatial.Projections.csproj -version %APPVEYOR_BUILD_VERSION%
+ - appveyor PushArtifact DotSpatial.Projections.%APPVEYOR_BUILD_VERSION%..nupkg
 artifacts:
 - path: source\bin\Release
   name: Release
