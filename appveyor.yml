@@ -1,12 +1,37 @@
 version: 2.0.{build}
 configuration: Release
-cache: source\packages -> **\packages.config
+
+environment:
+  packageVersion: 2.0
+
+cache: 
+- source\packages -> **\packages.config
+
 build:
-  project: source\DotSpatial.sln
-  publish_nuget: true
+  project: source\DotSpatial.sln  
   verbosity: minimal
+  
+init:
+- ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
+- ps: $env:nugetVersion = "$env:packageVersion-alpha$env:appveyor_build_number"
+- ps: Update-AppveyorBuild -Version $env:buildVersion
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfoShared.*'
+  assembly_version: '$(buildVersion)'
+  assembly_file_version: '$(buildVersion)'
+  assembly_informational_version: '$(nugetVersion)'
+  
+nuget:
+  account_feed: false
+  project_feed: false
+  
 after_build:
  - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)' 
+ - ps: nuget pack Source\DotSpatial.Projections\DotSpatial.Projections.csproj -version "$env:nugetVersion"
+ - ps: Push-AppveyorArtifact DotSpatial.Projections.$env:nugetVersion.nupkg
+ 
 artifacts:
 - path: source\bin\Release
   name: Release
