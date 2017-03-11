@@ -29,8 +29,8 @@ nuget:
   
 after_build:
  - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)' 
- - ps: nuget pack Source\DotSpatial.Projections\DotSpatial.Projections.csproj -version "$env:nugetVersion"
- - ps: Push-AppveyorArtifact DotSpatial.Projections.$env:nugetVersion.nupkg
+ - nuget pack Source\DotSpatial.Projections\DotSpatial.Projections.csproj -version "$env:nugetVersion"
+ - appveyor Push-AppveyorArtifact DotSpatial.Projections.$env:nugetVersion.nupkg
  
 artifacts:
 - path: source\bin\Release
