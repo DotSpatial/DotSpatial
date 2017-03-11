@@ -68,12 +68,7 @@
     <Compile Include="GetPackage.cs" />
     <Compile Include="ListViewHelper.cs" />
     <Compile Include="AppFunction.cs" />
-    <Compile Include="ApplicationExtensionCategory.cs" />
-    <Compile Include="DataProviderCategory.cs" />
-    <Compile Include="ExtensionCategory.cs" />
     <Compile Include="ExtensionManagerPlugin.cs" />
-    <Compile Include="IExtensionCategory.cs" />
-    <Compile Include="PackageList.cs" />
     <Compile Include="Packages.cs" />
     <Compile Include="ExtensionManagerForm.cs">
       <SubType>Form</SubType>
@@ -94,13 +89,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SampleProjectHelper.cs" />
     <Compile Include="SampleProjectInfo.cs" />
     <Compile Include="SampleProjectsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SatisfyImportsOnStartupExtension.cs" />
-    <Compile Include="ToolsCategory.cs" />
     <Compile Include="Update.cs" />
   </ItemGroup>
   <ItemGroup>

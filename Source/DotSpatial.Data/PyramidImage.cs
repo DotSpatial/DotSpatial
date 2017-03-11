@@ -428,8 +428,8 @@ namespace DotSpatial.Data
         /// <param name="numColumns">The integer number of columns in the window</param>
         /// <param name="scale">The integer scale.  0 is the original image.</param>
         /// <returns>The bytes created by this process</returns>
-        /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined</exception>
-        /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale</exception>
+        /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined.</exception>
+        /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale.</exception>
         public byte[] ReadWindow(int startRow, int startColumn, int numRows, int numColumns, int scale)
         {
             byte[] bytes = new byte[numRows * numColumns * 4];

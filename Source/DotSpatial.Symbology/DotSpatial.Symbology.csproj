@@ -83,6 +83,7 @@
     <Compile Include="ColorExt.cs" />
     <Compile Include="ColorSchemeType.cs" />
     <Compile Include="IRasterLayerActions.cs" />
+    <Compile Include="LayerCollectionExensions.cs" />
     <Compile Include="LayerMovedEventArgs.cs" />
     <Compile Include="Position2DConverter.cs" />
     <Compile Include="Size2DConverter.cs" />

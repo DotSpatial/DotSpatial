@@ -100,7 +100,6 @@
     </Compile>
     <Compile Include="ItemType.cs" />
     <Compile Include="LogManager.cs" />
-    <Compile Include="NavigateEventArgs.cs" />
     <Compile Include="OpenDataDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,7 +110,6 @@
     <Compile Include="ScrollingControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SelectEventArgs.cs" />
     <Compile Include="ShapefileExt.cs" />
     <Compile Include="TimedProgressMeter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

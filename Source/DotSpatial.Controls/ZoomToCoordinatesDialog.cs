@@ -14,6 +14,9 @@ namespace DotSpatial.Controls
         private readonly double[] lat;
         private readonly double[] lon;
 
+        /// <summary>
+        /// Initialize new instance of <see cref="ZoomToCoordinatesDialog"/> with given map.
+        /// </summary>
         public ZoomToCoordinatesDialog(IMap map)
         {
             if (map == null) throw new ArgumentNullException("map");

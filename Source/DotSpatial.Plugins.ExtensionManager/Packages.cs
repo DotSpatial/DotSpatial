@@ -14,7 +14,7 @@ using PackageManager = NuGet.PackageManager;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    public class Packages
+    internal class Packages
     {
         #region Constants and Fields
 

@@ -775,11 +775,25 @@ namespace DotSpatial.Controls
         #endregion
     }
 
+
+    /// <summary>
+    /// Provides data for the <see langword='MapChanged'/> event.
+    /// </summary>
     public class MapChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Gets old map.
+        /// </summary>
         public IMap OldValue { get; private set; }
+
+        /// <summary>
+        /// Gets new map.
+        /// </summary>
         public IMap NewValue { get; private set; }
 
+        /// <summary>
+        /// Create new instance of <see cref="MapChangedEventArgs"/>.
+        /// </summary>
         public MapChangedEventArgs(IMap oldValue, IMap newValue)
         {
             OldValue = oldValue;

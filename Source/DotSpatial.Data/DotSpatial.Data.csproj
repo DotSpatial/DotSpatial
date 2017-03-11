@@ -211,7 +211,6 @@
     <Compile Include="PngHeader.cs" />
     <Compile Include="PngInsuficientLengthException.cs" />
     <Compile Include="PngInvalidSignatureException.cs" />
-    <Compile Include="PyramidException.cs" />
     <Compile Include="PyramidHeader.cs" />
     <Compile Include="PyramidImage.cs" />
     <Compile Include="PyramidImageHeader.cs" />
@@ -251,7 +250,6 @@
     <Compile Include="RasterFileType.cs" />
     <Compile Include="RCIndex.cs" />
     <Compile Include="Smoother.cs" />
-    <Compile Include="SpaceTimeSupport.cs" />
     <Compile Include="StreamExt.cs" />
     <Compile Include="ByteBlock.cs" />
     <Compile Include="DataSet.cs" />

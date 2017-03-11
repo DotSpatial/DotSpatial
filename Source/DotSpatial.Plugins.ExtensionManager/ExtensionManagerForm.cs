@@ -25,11 +25,11 @@ namespace DotSpatial.Plugins.ExtensionManager
     /// <summary>
     /// A Dialog that allows the user to manage extensions.
     /// </summary>
-    public partial class ExtensionManagerForm : Form
+    internal partial class ExtensionManagerForm : Form
     {
         #region Constants and Fields
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
-        public extern static int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);
+        private static extern int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);
         
         private const int ScrollBarMargin = 25;
 
@@ -412,11 +412,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Appends a label and some text to the text box on the online tab.
         /// </summary>
-        /// <typeparam name="string"></typeparam>
         /// <param name="label">The label for your text.  eg. "Label":</param>
-        /// <typeparam name="string"></typeparam>
         /// <param name="text">The text to be diplayed.</param>
-        /// <returns></returns>
         private void AppendToOnlineTab(string label, string text)
         {
             richTextBox1.SelectionColor = Color.Gray;
@@ -430,11 +427,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Appends a label and some text to the text box on the installed tab.
         /// </summary>
-        /// <typeparam name="string"></typeparam>
         /// <param name="label">The label for your text.  eg. "Label":</param>
-        /// <typeparam name="string"></typeparam>
         /// <param name="text">The text to be diplayed.</param>
-        /// <returns></returns>
         private void AppendToInstalledTab(string label, string text)
         {
             richTextBox2.SelectionColor = Color.Gray;
@@ -443,17 +437,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (text != null)
                 richTextBox2.AppendText(text);
             richTextBox2.AppendText(Environment.NewLine + Environment.NewLine);
-        }
-
-        /// <summary>
-        /// Sets a feed to be used with auto-updating.
-        /// </summary>
-        /// <typeparam name="ListViewItem"></typeparam>
-        /// <param name="item">The feed that should be used for auto updates</param>
-        /// <returns></returns>
-        private void changeAutoUpdateSetting(ListViewItem item)
-        {
-            FeedManager.ToggleAutoUpdate(item.SubItems[1].Text, item.Checked);
         }
 
         /// <summary>

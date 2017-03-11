@@ -315,7 +315,6 @@
     <Compile Include="TwoColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="IErrorCheck.cs" />
     <Compile Include="SymbologyFormsImages.Designer.cs">
       <DependentUpon>SymbologyFormsImages.resx</DependentUpon>
       <AutoGen>True</AutoGen>

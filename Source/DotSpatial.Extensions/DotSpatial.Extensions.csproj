@@ -60,7 +60,6 @@
     <Compile Include="IExtensionExtensionMethods.cs" />
     <Compile Include="IOpenProjectFileProvider.cs" />
     <Compile Include="IProjectFileProvider.cs" />
-    <Compile Include="ISampleProject.cs" />
     <Compile Include="ISaveProjectFileProvider.cs" />
     <Compile Include="ISatisfyImportsExtension.cs" />
     <Compile Include="SplashScreens\ISplashScreenManager.cs" />
