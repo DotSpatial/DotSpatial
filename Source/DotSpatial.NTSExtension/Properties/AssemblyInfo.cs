@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DotSpatial.NTSExtension")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("NTS extensions for DotSpatial.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("DotSpatial.NTSExtension")]
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015-2016")]

@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -447,7 +447,7 @@
     <EmbeddedResource Include="Resources\SpatialStatusStrip.ico" />
     <None Include="app.config" />
     <None Include="DotSpatial.Controls.snk" />
-    <None Include="package.nuspec">
+    <None Include="DotSpatial.Controls.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
