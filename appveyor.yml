@@ -2,7 +2,7 @@ version: 2.0.{build}
 configuration: Release
 
 environment:
-  packageVersion: 2.0
+  packageVersion: 2.0.0
 
 cache: 
 - source\packages -> **\packages.config
