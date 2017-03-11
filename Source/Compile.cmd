@@ -1,0 +1,2 @@
+"%ProgramFiles(x86)%\MSBuild\12.0\Bin\MSBuild.exe" DotSpatial.sln /target:Clean /property:Configuration=Release
+"%ProgramFiles(x86)%\MSBuild\12.0\Bin\MSBuild.exe" DotSpatial.sln /target:ReBuild /property:Configuration=Release
