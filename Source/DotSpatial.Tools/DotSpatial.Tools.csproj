@@ -146,7 +146,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DotSpatial.Tools.snk" />
-    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Tools.nuspec" />
     <None Include="packages.config" />
     <None Include="Resources\Union.bmp" />
   </ItemGroup>

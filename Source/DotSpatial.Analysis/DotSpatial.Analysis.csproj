@@ -82,7 +82,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DotSpatial.Analysis.snk" />
-    <None Include="package.nuspec">
+    <None Include="DotSpatial.Analysis.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />

@@ -294,7 +294,7 @@
     <None Include="Resources\HammerSmall.png" />
     <None Include="Resources\valid.png" />
     <None Include="DotSpatial.Tool.Forms.snk" />
-    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Modeling.Forms.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
