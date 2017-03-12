@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Positioning.Design.snk" />
-    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Positioning.Design.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

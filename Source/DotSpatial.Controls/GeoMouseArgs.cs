@@ -23,8 +23,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Creates a new instance of MouseArgs
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="inMap"></param>
         public GeoMouseArgs(MouseEventArgs e, IMap inMap)
             : base(e.Button, e.Clicks, e.X, e.Y, e.Delta)
         {

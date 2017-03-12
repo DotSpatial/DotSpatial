@@ -19,7 +19,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// GeoLayerCollection
+    /// Represents collection of map layers.
     /// </summary>
     public class MapLayerCollection : LayerCollection, IMapLayerCollection
     {

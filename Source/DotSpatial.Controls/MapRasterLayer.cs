@@ -280,17 +280,6 @@ namespace DotSpatial.Controls
         {
         }
 
-        ///// <summary>
-        ///// This ensures that when the symbolic content for the layer is updated that we re-load the image.
-        ///// </summary>
-        //protected override void OnItemChanged()
-        //{
-        //    if (_baseImage == null) return;
-        //    string imgFile = _baseImage.Filename;
-        //    _baseImage.Open(imgFile);
-        //    base.OnItemChanged();
-        //}
-
         /// <summary>
         /// Occurs when a new drawing is started, but after the BackBuffer has been established.
         /// </summary>
@@ -298,6 +287,7 @@ namespace DotSpatial.Controls
         {
         }
 
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if (disposing)

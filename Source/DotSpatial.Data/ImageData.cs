@@ -28,8 +28,6 @@ namespace DotSpatial.Data
         /// </summary>
         public ImageData()
         {
-            TypeName = "Image";
-
             WorldFile = new WorldFile();
         }
 

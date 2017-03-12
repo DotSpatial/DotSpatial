@@ -1,8 +1,6 @@
-﻿using DotSpatial.Extensions;
-
-namespace DotSpatial.Plugins.ExtensionManager
+﻿namespace DotSpatial.Plugins.ExtensionManager
 {
-    public class SampleProjectInfo : ISampleProject
+    internal class SampleProjectInfo
     {
         public string Name {
             get;

@@ -64,9 +64,12 @@ namespace DotSpatial.Controls
             // dgvAttributes
             // 
             this.dgvAttributes.AllowUserToAddRows = false;
+            this.dgvAttributes.AllowUserToDeleteRows = false;
             this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             resources.ApplyResources(this.dgvAttributes, "dgvAttributes");
+            this.dgvAttributes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAttributes.Name = "dgvAttributes";
+            this.dgvAttributes.ShowEditingIcon = false;
             // 
             // FeatureIdentifier
             // 

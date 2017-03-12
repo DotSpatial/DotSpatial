@@ -12,7 +12,7 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    public class SampleProjectsForm : Form
+    internal class SampleProjectsForm : Form
     {
         private readonly Packages packages = new Packages();
         private IContainer components;
@@ -36,10 +36,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             get;
             set;
         }
-        public string SelectedTemplate {
-            get;
-            set;
-        }
+      
         private IEnumerable<SampleProjectInfo> FindSampleProjectFiles() {
             List<SampleProjectInfo> list = new List<SampleProjectInfo>();
             if (Directory.Exists(AppManager.AbsolutePathToExtensions))

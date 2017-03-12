@@ -131,6 +131,7 @@ namespace DotSpatial.Controls
             _oldSize = Size;
         }
 
+        /// <inheritdoc />
         public bool PreFilterMessage(ref Message m)
         {
             if (m.Msg == 0x0100)
@@ -770,12 +771,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a boolean that indicates whether the Garbage collector should collect after drawing.
-        /// This can be disabled for fast-action panning, but should normally be enabled.
-        /// </summary>
-        public bool CollectAfterDraw { get; set; }
-
-        /// <summary>
         /// Gets or sets the dictionary of tools built into this project
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -1099,7 +1094,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles adding new event handlers to the map frame
         /// </summary>
-        /// <param name="mapFrame"></param>
         protected virtual void OnIncludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null)

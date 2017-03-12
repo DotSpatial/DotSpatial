@@ -1,36 +1,39 @@
 // ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  A library module for the DotSpatial geospatial framework for .Net.
+// Product Name: DotSpatial.Data.dll
+// Description:  The data access libraries for the DotSpatial project.
+//
 // ********************************************************************************************************
 //
 // The Original Code is from MapWindow.dll version 6.0
 //
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/13/2008 4:00:47 PM
+// The Initial Developer of this Original Code is Ted Dunsford. Created 2/21/2008 4:50:33 PM
 //
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
 //
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Generic;
 
-namespace DotSpatial.Data.Forms
+namespace DotSpatial.Data
 {
-    public class NavigateEventArgs : EventArgs
+    public class DataProviderEventArgs : EventArgs
     {
         #region Private Variables
 
-        private string _path;
+        private IEnumerable<IDataProvider> _providers;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of NavigateEventArgs
+        /// Creates a new instance of DataProviderEventArgs
         /// </summary>
-        public NavigateEventArgs(string path)
+        /// <param name="providers">Specifies a list of IDataProviders</param>
+        public DataProviderEventArgs(IEnumerable<IDataProvider> providers)
         {
-            _path = path;
+            _providers = providers;
         }
 
         #endregion
@@ -38,14 +41,15 @@ namespace DotSpatial.Data.Forms
         #region Properties
 
         /// <summary>
-        /// Gets the string path that is being navigated to
+        /// Gets the list of providers for this event.
         /// </summary>
-        public string Path
+        public virtual IEnumerable<IDataProvider> Providers
         {
-            get { return _path; }
-            protected set { _path = value; }
+            get { return _providers; }
+            protected set { _providers = value; }
         }
 
         #endregion
+
     }
 }

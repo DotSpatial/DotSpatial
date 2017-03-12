@@ -625,7 +625,7 @@ namespace DotSpatial.Symbology
         public static ILayer OpenFile(string fileName, ICollection<ILayer> container)
         {
             if (File.Exists(fileName) == false) return null;
-            ILayerManager dm = LayerManager.DefaultLayerManager;
+            var dm = LayerManager.DefaultLayerManager;
             return dm.OpenLayer(fileName, container);
         }
 
@@ -641,7 +641,7 @@ namespace DotSpatial.Symbology
         public virtual ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             if (File.Exists(fileName) == false) return null;
-            ILayerManager dm = LayerManager.DefaultLayerManager;
+            var dm = LayerManager.DefaultLayerManager;
             return dm.OpenLayer(fileName, inRam, container, progressHandler);
         }
 

@@ -68,12 +68,18 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <inheritdoc />
         public event EventHandler<DockablePanelEventArgs> ActivePanelChanged;
+        /// <inheritdoc />
         public event EventHandler<DockablePanelEventArgs> PanelClosed;
+        /// <inheritdoc />
         public event EventHandler<DockablePanelEventArgs> PanelAdded;
+        /// <inheritdoc />
         public event EventHandler<DockablePanelEventArgs> PanelRemoved;
+        /// <inheritdoc />
         public event EventHandler<DockablePanelEventArgs> PanelHidden;
 
+        /// <inheritdoc />
         public void Add(DockablePanel panel)
         {
             if (panel == null) throw new ArgumentNullException("panel");
@@ -114,6 +120,7 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <inheritdoc />
         public void Remove(string key)
         {
             var tabPage = GetByKey(key);
@@ -125,6 +132,7 @@ namespace DotSpatial.Controls
             OnPanelRemoved(new DockablePanelEventArgs(key));
         }
 
+        /// <inheritdoc />
         public void ResetLayout()
         {
             foreach (var tabPage in _allTabs)
@@ -133,6 +141,7 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <inheritdoc />
         public void SelectPanel(string key)
         {
             var tabPage = GetByKey(key);
@@ -142,6 +151,7 @@ namespace DotSpatial.Controls
             OnActivePanelChanged(new DockablePanelEventArgs(key));
         }
 
+        /// <inheritdoc />
         public void HidePanel(string key)
         {
             var tabPage = GetByKey(key);

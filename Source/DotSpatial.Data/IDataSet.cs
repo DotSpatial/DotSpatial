@@ -54,17 +54,6 @@ namespace DotSpatial.Data
         /// </summary>
         IProgressHandler ProgressHandler { get; set; }
 
-        /// <summary>
-        /// Gets or sets the space time support for this dataset.
-        /// </summary>
-        SpaceTimeSupport SpaceTimeSupport { get; set; }
-
-        /// <summary>
-        /// Gets or sets a string that describes as clearly as possible what type of
-        /// elements are contained in this dataset.
-        /// </summary>
-        string TypeName { get; set; }
-
         #endregion
 
         #region Methods

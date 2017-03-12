@@ -12,6 +12,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -28,7 +29,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>An IFeatureSet with the data from the file specified in a dialog, or null if nothing load.</returns>
         public static IFeatureSet OpenVector(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Filter = self.VectorReadFilter};
+            var ofd = new OpenFileDialog { Filter = self.VectorReadFilter };
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler) as IFeatureSet;
         }
@@ -40,7 +41,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>The enumerable or vectors.</returns>
         public static IEnumerable<IFeatureSet> OpenVectors(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Filter = self.VectorReadFilter, Multiselect = true};
+            var ofd = new OpenFileDialog { Filter = self.VectorReadFilter, Multiselect = true };
             if (ofd.ShowDialog() != DialogResult.OK) yield break;
             foreach (var name in ofd.FileNames)
             {
@@ -55,7 +56,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>for now an IDataSet</returns>
         public static IImageData OpenImage(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Filter = self.ImageReadFilter};
+            var ofd = new OpenFileDialog { Filter = self.ImageReadFilter };
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler) as IImageData;
         }
@@ -67,7 +68,7 @@ namespace DotSpatial.Data.Forms
         /// <returns></returns>
         public static IEnumerable<IImageData> OpenImages(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Filter = self.ImageReadFilter, Multiselect = true};
+            var ofd = new OpenFileDialog { Filter = self.ImageReadFilter, Multiselect = true };
             if (ofd.ShowDialog() != DialogResult.OK) yield break;
             foreach (var name in ofd.FileNames)
             {
@@ -81,7 +82,7 @@ namespace DotSpatial.Data.Forms
         /// </summary>
         public static IDataSet OpenFile(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Filter = self.DialogReadFilter};
+            var ofd = new OpenFileDialog { Filter = self.DialogReadFilter };
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler);
         }
@@ -93,12 +94,20 @@ namespace DotSpatial.Data.Forms
         /// <returns>An enumerable of all the files that were opened.</returns>
         public static IEnumerable<IDataSet> OpenFiles(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Multiselect = true, Filter = self.DialogReadFilter};
-            if (ofd.ShowDialog() != DialogResult.OK) yield break;
-            foreach (var name in ofd.FileNames)
+            using (var ofd = new OpenFileDialog { Multiselect = true, Filter = self.DialogReadFilter })
             {
-                var ds = self.OpenFile(name, self.LoadInRam, self.ProgressHandler);
-                if (ds != null) yield return ds;
+                if (ofd.ShowDialog() != DialogResult.OK) yield break;
+
+                var filterparts = ofd.Filter.Split('|');
+                var pos = (ofd.FilterIndex - 1) * 2;
+                int index = filterparts[pos].IndexOf(" - ", StringComparison.Ordinal);
+                var filterName = index > 0 ? filterparts[pos].Remove(index) : ""; //provider entries contain a -, entries without - aren't specific providers but lists that contain endings more than one provider can open
+
+                foreach (var name in ofd.FileNames)
+                {
+                    var ds = self.OpenFile(name, self.LoadInRam, self.ProgressHandler, filterName);
+                    if (ds != null) yield return ds;
+                }
             }
         }
 
@@ -108,7 +117,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
         public static IRaster OpenRaster(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Filter = self.RasterReadFilter};
+            var ofd = new OpenFileDialog { Filter = self.RasterReadFilter };
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler) as IRaster;
         }
@@ -120,7 +129,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>An enumerable or rasters.</returns>
         public static IEnumerable<IRaster> OpenRasters(this IDataManager self)
         {
-            var ofd = new OpenFileDialog {Filter = self.RasterReadFilter, Multiselect = true};
+            var ofd = new OpenFileDialog { Filter = self.RasterReadFilter, Multiselect = true };
             if (ofd.ShowDialog() != DialogResult.OK) yield break;
             foreach (var name in ofd.FileNames)
             {

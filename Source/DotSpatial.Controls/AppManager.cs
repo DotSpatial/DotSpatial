@@ -628,7 +628,7 @@ namespace DotSpatial.Controls
         private IEnumerable<string> GetDirectoriesNestedOneLevel()
         {
             // Visit each directory in Directories Property (usually set by application)
-            Directories.Add(Mono.Mono.IsRunningOnMono() ? "Mono Extensions" : "Windows Extensions");
+            Directories.Add(Mono.IsRunningOnMono() ? "Mono Extensions" : "Windows Extensions");
             foreach (string directory in Directories.Union(new[] { "Data Extensions", "Tools" }))
             {
                 string path = Path.Combine(BaseDirectory, directory);
@@ -775,11 +775,25 @@ namespace DotSpatial.Controls
         #endregion
     }
 
+
+    /// <summary>
+    /// Provides data for the <see langword='MapChanged'/> event.
+    /// </summary>
     public class MapChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Gets old map.
+        /// </summary>
         public IMap OldValue { get; private set; }
+
+        /// <summary>
+        /// Gets new map.
+        /// </summary>
         public IMap NewValue { get; private set; }
 
+        /// <summary>
+        /// Create new instance of <see cref="MapChangedEventArgs"/>.
+        /// </summary>
         public MapChangedEventArgs(IMap oldValue, IMap newValue)
         {
             OldValue = oldValue;
