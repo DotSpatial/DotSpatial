@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// a container for shapefile components
+    /// A container for shapefile components.
     /// </summary>
     public class ShapefilePackage
     {
         /// <summary>
-        /// shapefile
+        /// Gets or sets shapefile
         /// </summary>
         public Stream ShpFile { get; set; }
+
         /// <summary>
-        /// shapefile index
+        /// Gets os sets shapefile index.
         /// </summary>
         public Stream ShxFile { get; set; }
+
         /// <summary>
-        /// shapefile database
+        /// Gets or sets shapefile database.
         /// </summary>
         public Stream DbfFile { get; set; }
+
         /// <summary>
-        /// shapefile projection
+        /// Gets or sets shapefile projection.
         /// </summary>
         public Stream PrjFile { get; set; }
     }

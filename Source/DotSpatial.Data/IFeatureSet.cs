@@ -319,12 +319,11 @@ namespace DotSpatial.Data
         List<int> SelectIndices(Extent region);
 
         #endregion
-
+        
         /// <summary>
-        /// Exports the current Shapefile as a dictionary of filename, stream
+        /// Exports current shapefile as a zip archive in memory
         /// </summary>
-        /// <param name="ShapefileName">base filename</param>
-        /// <returns>Dictionary filename and contents </returns>
+        /// <returns>Shapefile components.</returns>
         ShapefilePackage ExportShapefilePackage();
 
         /// <summary>

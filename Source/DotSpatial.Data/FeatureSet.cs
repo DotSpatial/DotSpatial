@@ -750,6 +750,7 @@ namespace DotSpatial.Data
             if (!AttributesPopulated) FillAttributes();
             SaveAs(Filename, true);
         }
+
         /// <inheritdoc/>
         public virtual ShapefilePackage ExportShapefilePackage()
         {

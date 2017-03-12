@@ -466,11 +466,7 @@ namespace DotSpatial.Data
             return new StreamLengthPair() { ShpLength = offset, ShxLength = 50 + fid * 4 };
         }
 
-        /// <summary>
-        /// Exports current shapefile as a zip archive in memory
-        /// </summary>
-        /// <param name="shapefilename"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override ShapefilePackage ExportShapefilePackage()
         {
             SetHeaderShapeType();

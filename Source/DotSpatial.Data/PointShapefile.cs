@@ -365,11 +365,7 @@ namespace DotSpatial.Data
             }
         }
 
-        /// <summary>
-        /// exports current shapefile as a zip archive in memory
-        /// </summary>
-        /// <param name="shapefilename"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override ShapefilePackage ExportShapefilePackage()
         {
             // Set Header.ShapeType before setting extent.

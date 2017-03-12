@@ -5,7 +5,6 @@ using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
-
     [TestFixture]
     internal class PackageExportTests
     {
@@ -17,7 +16,6 @@ namespace DotSpatial.Data.Tests
         [TestCase("rivers.shp")]
         public void ShapeFileExport(string filename)
         {
-
             string originalFileName = Path.Combine(new[] { _shapefiles, filename });
             
             var original = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(originalFileName);
@@ -59,14 +57,15 @@ namespace DotSpatial.Data.Tests
                 FileTools.DeleteShapeFile(shp_name);
             }
         }
+
         /// <summary>
         /// save a stream to disk
         /// </summary>
         /// <param name="path"></param>
         /// <param name="content"></param>
-        public static void SaveStream (string path, Stream content)
+        private static void SaveStream(string path, Stream content)
         {
-            using (FileStream fs = new FileStream(path,FileMode.Create))
+            using (var fs = new FileStream(path, FileMode.Create))
             {
                 content.CopyTo(fs);
                 fs.Flush();
