@@ -2,13 +2,12 @@
 using System.Linq;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;
-using Ionic.Zip;
 
 namespace DotSpatial.Data.Tests
 {
 
     [TestFixture]
-    class PackageExportTests
+    internal class PackageExportTests
     {
         private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
 
