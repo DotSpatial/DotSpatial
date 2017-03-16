@@ -14,6 +14,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - "Add layer to Map"-checkbox to the ToolDialog (#147)
 - CopySubset overloads with withAttributes parameters
 - Jenks Natural Breaks support in categories binning.
+- Test that checks correct creation of GpggkSentence objects from string
 - Constructing Shapefiles in memory as single zip archives (#885)
 
 ### Changed
