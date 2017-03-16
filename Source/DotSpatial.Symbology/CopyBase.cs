@@ -1,6 +1,6 @@
 // ********************************************************************************************************
-// Product Name: DotSpatial.Projection
-// Description:  The basic module for MapWindow version 6.0
+// Product Name: DotSpatial.Symbology.dll
+// Description:  Contains the business logic for symbology layers and symbol categories.
 // ********************************************************************************************************
 //
 // The Original Code is from MapWindow.dll version 6.0
@@ -8,27 +8,26 @@
 // The Initial Developer of this Original Code is Ted Dunsford. Created 6/2/2009 3:10:43 PM
 //
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
-//        Name         |    Date    |        Comment
-// --------------------|------------|------------------------------------------------------------
-// Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
+//
 // ********************************************************************************************************
 
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using DotSpatial.Projections.Reflection;
 
-namespace DotSpatial.Projections
+namespace DotSpatial.Symbology
 {
-    [Serializable]
-    public class ProjCopyBase : ICloneable
+    /// <summary>
+    /// Base class for classes with cloning support.
+    /// </summary>
+    public class CopyBase : ICloneable
     {
         #region Constructors
 
         /// <summary>
         /// Creates a new instance of CopyBase
         /// </summary>
-        protected ProjCopyBase()
+        protected CopyBase()
         {
         }
 
@@ -42,7 +41,7 @@ namespace DotSpatial.Projections
         /// <returns>A clone of this object as a duplicate</returns>
         object ICloneable.Clone()
         {
-            ProjDescriptor copy = MemberwiseClone() as ProjDescriptor;
+            Descriptor copy = MemberwiseClone() as Descriptor;
 
             OnCopy(copy);
             return copy;
@@ -75,7 +74,7 @@ namespace DotSpatial.Projections
         /// This occurs during the Copy method and is overridable by sub-classes
         /// </summary>
         /// <param name="copy">The duplicate descriptor</param>
-        protected virtual void OnCopy(ProjDescriptor copy)
+        protected virtual void OnCopy(Descriptor copy)
         {
             // This checks any property on copy, and if it is cloneable, it
             // creates a clone instead
@@ -89,7 +88,7 @@ namespace DotSpatial.Projections
                 if (myProperties.Contains(p.Name) == false) continue;
                 PropertyInfo myProperty = myProperties.GetFirst(p.Name);
                 object myValue = myProperty.GetValue(this, null);
-                if (myProperty.GetCustomAttributes(typeof(ProjShallowCopy), true).Length > 0)
+                if (myProperty.GetCustomAttributes(typeof(ShallowCopy), true).Length > 0)
                 {
                     // This property is marked as shallow, so skip cloning it
                     continue;
@@ -108,7 +107,7 @@ namespace DotSpatial.Projections
                 FieldInfo myField = myFields.GetFirst(f.Name);
                 object myValue = myField.GetValue(copy);
 
-                if (myField.GetCustomAttributes(typeof(ProjShallowCopy), true).Length > 0)
+                if (myField.GetCustomAttributes(typeof(ShallowCopy), true).Length > 0)
                 {
                     // This field is marked as shallow, so skip cloning it
                     continue;

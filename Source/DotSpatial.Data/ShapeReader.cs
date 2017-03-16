@@ -74,7 +74,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates an enumerator for pages of shapes returned as dictionaries.
         /// </summary>
-        public class Enumerator : IEnumerator<Dictionary<int, Shape>>
+        private class Enumerator : IEnumerator<Dictionary<int, Shape>>
         {
             private readonly Envelope _envelope;
             private readonly int _pageSize;

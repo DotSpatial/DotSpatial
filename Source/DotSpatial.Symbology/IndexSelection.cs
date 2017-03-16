@@ -736,7 +736,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This class cycles through the members
         /// </summary>
-        public class IndexSelectionEnumerator : IEnumerator<int>
+        private class IndexSelectionEnumerator : IEnumerator<int>
         {
             private readonly bool _selectionState;
             private readonly FastDrawnState[] _states;
@@ -745,8 +745,6 @@ namespace DotSpatial.Symbology
             /// <summary>
             /// Creates a new instance of IndexSelectionEnumerator
             /// </summary>
-            /// <param name="states"></param>
-            /// <param name="selectionState"></param>
             public IndexSelectionEnumerator(FastDrawnState[] states, bool selectionState)
             {
                 _states = states;

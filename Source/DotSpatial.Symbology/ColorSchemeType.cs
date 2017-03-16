@@ -20,30 +20,37 @@ namespace DotSpatial.Symbology
         /// DeadSea
         /// </summary>
         DeadSea,
+
         /// <summary>
         /// Desert
         /// </summary>
         Desert,
+
         /// <summary>
         /// Fall Leaves
         /// </summary>
         FallLeaves,
+
         /// <summary>
         /// Glacier
         /// </summary>
         Glaciers,
+
         /// <summary>
         /// Highway
         /// </summary>
         Highway,
+
         /// <summary>
         /// Meadow
         /// </summary>
         Meadow,
+
         /// <summary>
         /// Summer Mountains
         /// </summary>
         Summer_Mountains,
+
         /// <summary>
         /// Valley Fires
         /// </summary>

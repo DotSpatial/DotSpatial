@@ -68,7 +68,7 @@ namespace DotSpatial.Data
         /// property accessors slowing down the process.  However, it's here
         /// if someone wants it.
         /// </summary>
-        public class VertexRangeEnumerator : IEnumerator<Vertex>
+        private class VertexRangeEnumerator : IEnumerator<Vertex>
         {
             private readonly int _end;
             private readonly int _start;

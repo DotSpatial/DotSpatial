@@ -143,11 +143,13 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <inheritdoc />
         public void BeginInit()
         {
             _isInitializing = true;
         }
 
+        /// <inheritdoc />
         public void EndInit()
         {
             _isInitializing = false;

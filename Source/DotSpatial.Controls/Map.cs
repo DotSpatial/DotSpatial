@@ -1446,7 +1446,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the OnMouseWheel event for the active tools
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
@@ -1459,6 +1458,9 @@ namespace DotSpatial.Controls
             base.OnMouseWheel(e);
         }
 
+        /// <summary>
+        /// Raises <see cref="FinishedRefresh"/> event.
+        /// </summary>
         protected virtual void OnFinishedRefresh(EventArgs e)
         {
             var h = FinishedRefresh;

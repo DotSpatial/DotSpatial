@@ -115,7 +115,6 @@
     <Compile Include="LasLosNadTable.cs" />
     <Compile Include="LlaNadTable.cs" />
     <Compile Include="ICloneableExtensions.cs" />
-    <Compile Include="IProjDescriptor.cs" />
     <Compile Include="IMatchable.cs" />
     <Compile Include="IRandomizable.cs" />
     <Compile Include="IProjMatchableExtensions.cs" />

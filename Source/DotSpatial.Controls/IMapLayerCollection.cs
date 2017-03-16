@@ -17,6 +17,9 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Collection of <see cref="IMapLayer"/>.
+    /// </summary>
     public interface IMapLayerCollection : ILayerEventList<IMapLayer>
     {
         #region Events

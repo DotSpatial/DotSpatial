@@ -197,7 +197,6 @@
     <Compile Include="MapFrameExt.cs" />
     <Compile Include="MapFrameProjectionHelper.cs" />
     <Compile Include="MapFunctionKeyNavigation.cs" />
-    <Compile Include="MapLayerEnumerator.cs" />
     <Compile Include="MessageStrings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,7 +216,6 @@
     <Compile Include="MapFrame.cs" />
     <Compile Include="MapGroup.cs" />
     <Compile Include="MapLayerCollection.cs" />
-    <Compile Include="GeoLayerEnumerator.cs" />
     <Compile Include="IMapRasterLayer.cs" />
     <Compile Include="MapRasterLayer.cs" />
     <Compile Include="ProjectChangeTracker.cs" />
