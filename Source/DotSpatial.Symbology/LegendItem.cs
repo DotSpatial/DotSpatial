@@ -217,13 +217,13 @@ namespace DotSpatial.Symbology
                 if (_changeOccured)
                 {
 #if DEBUG
-                    var sw = new Stopwatch();
+                    var sw = new System.Diagnostics.Stopwatch();
                     sw.Start();
 #endif
                     OnItemChanged();
 #if DEBUG
                     sw.Stop();
-                    Debug.WriteLine("OnItemChanged time:" + sw.ElapsedMilliseconds);
+                    System.Diagnostics.Debug.WriteLine("OnItemChanged time:" + sw.ElapsedMilliseconds);
 #endif
                 }
             }
