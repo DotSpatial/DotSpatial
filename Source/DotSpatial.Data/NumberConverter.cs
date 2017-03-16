@@ -66,6 +66,7 @@ namespace DotSpatial.Data
         /// Cycles through the numeric values in the specified column and determines a selection of
         /// length and decimal count can accurately store the data.
         /// </summary>
+        /// <exception cref="NumberException"/>
         public NumberConverter(IList<double> values)
         {
             int maxExp = 0;

@@ -481,7 +481,7 @@ namespace DotSpatial.Symbology
         /// <param name="rasterSymbolizer">The raster symbolizer to use.</param>
         /// <param name="bitmap">The bitmap to edit.  Ensure that this has been created and saved at least once.</param>
         /// <param name="progressHandler">An IProgressHandler implementation to receive progress updates.</param>
-        /// <exception cref="ArgumentNullException"><see cref="rasterSymbolizer"/> cannot be null, <see cref="raster"/> cannot be null, <see cref="bitmap"/> cannot be null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="rasterSymbolizer"/> cannot be null, <see cref="raster"/> cannot be null, <see cref="bitmap"/> cannot be null</exception>
         public static void PaintColorSchemeToBitmapT<T>(this Raster<T> raster, IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler)
             where T : struct, IEquatable<T>, IComparable<T>
         {

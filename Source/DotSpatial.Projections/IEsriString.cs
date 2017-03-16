@@ -15,6 +15,9 @@
 
 namespace DotSpatial.Projections
 {
+    /// <summary>
+    /// Represents object that can save and parse itself to\from ESRI string.
+    /// </summary>
     public interface IEsriString
     {
         #region Methods
@@ -30,10 +33,6 @@ namespace DotSpatial.Projections
         /// </summary>
         /// <param name="esriString">The string to read</param>
         void ParseEsriString(string esriString);
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

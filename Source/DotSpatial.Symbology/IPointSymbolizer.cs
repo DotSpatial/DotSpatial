@@ -23,8 +23,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws the symbol to the specified graphics object.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="scaleSize"></param>
         void Draw(Graphics g, double scaleSize);
 
         /// <summary>

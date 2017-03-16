@@ -21,8 +21,10 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    [Serializable,
-    XmlRoot("CartographicStroke")]
+    /// <summary>
+    /// Represents a cartographic stroke with several useful settings.
+    /// </summary>
+    [Serializable, XmlRoot("CartographicStroke")]
     public class CartographicStroke : SimpleStroke, ICartographicStroke
     {
         #region Private Variables

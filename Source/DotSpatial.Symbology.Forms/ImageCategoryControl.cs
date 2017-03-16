@@ -15,12 +15,10 @@ namespace DotSpatial.Symbology.Forms
 {
     public partial class ImageCategoryControl : UserControl, ICategoryControl
     {
-
         /// <summary>
         /// Occurs when the apply changes option has been triggered.
         /// </summary>
         public event EventHandler ChangesApplied;
-
 
         #region Private Variables
 
@@ -28,8 +26,8 @@ namespace DotSpatial.Symbology.Forms
         private IImageLayer _newLayer;
         private IImageLayer _originalLayer;
         private IImageSymbolizer _symbolizer;
-        #endregion
 
+        #endregion
 
         /// <summary>
         /// Initialize new instance of <see cref="ImageCategoryControl"/>.
@@ -114,9 +112,6 @@ namespace DotSpatial.Symbology.Forms
         {
             _originalLayer.Symbolizer = _symbolizer;
         }
-
-
-
 
     }
 }

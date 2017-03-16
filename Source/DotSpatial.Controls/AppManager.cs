@@ -424,9 +424,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Triggers the ExtensionsActivated event.
         /// </summary>
-        /// <param name="ea">
-        /// The ea.
-        /// </param>
         public virtual void OnExtensionsActivated(EventArgs ea)
         {
             if (ExtensionsActivated != null)
@@ -624,7 +621,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the directories in Directories and those nested one level deep.
         /// </summary>
-        /// <returns></returns>
         private IEnumerable<string> GetDirectoriesNestedOneLevel()
         {
             // Visit each directory in Directories Property (usually set by application)
@@ -651,8 +647,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the paths of dlls for extensions that were downloaded as packages.
         /// </summary>
-        /// <param name="absolutePathToExtensions">The absolute path to extensions.</param>
-        /// <returns></returns>
         private static IEnumerable<string> GetPackageExtensionPaths(string absolutePathToExtensions)
         {
             if (!Directory.Exists(absolutePathToExtensions))
@@ -728,7 +722,6 @@ namespace DotSpatial.Controls
             var h = SatisfyImportsExtensionsActivated;
             if (h != null)
                 h(this, ea);
-            
         }
 
         private string PrefixWithEllipsis(string text, int length)
@@ -766,6 +759,10 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Update splash screen with given text.
+        /// </summary>
+        /// <param name="text">Splash screen text.</param>
         public void UpdateSplashScreen(string text)
         {
             if (_splashScreen != null && text != null)

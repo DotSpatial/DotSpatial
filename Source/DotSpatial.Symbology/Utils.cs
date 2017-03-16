@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Contains misc utils methods.
+    /// </summary>
     public static class Utils
     {
         /// <summary>

@@ -28,7 +28,7 @@ namespace DotSpatial.Projections
     /// properties of descriptors.
     /// </summary>
     [Serializable]
-    public class ProjDescriptor : ProjCopyBase, IProjDescriptor
+    public class ProjDescriptor : ProjCopyBase, IProjMatchable, IProjRandomizable
     {
         #region Private Variables
 

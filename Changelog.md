@@ -18,6 +18,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Constructing Shapefiles in memory as single zip archives (#885)
 
 ### Changed
+- Switched to VS2015 and C#6
 - GdalExtension: Updated to GDAL 1.1.11
 - Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)

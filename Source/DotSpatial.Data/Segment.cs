@@ -17,6 +17,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Represents segment between 2 vertices.
+    /// </summary>
     public class Segment
     {
         #region Private Variables
@@ -24,11 +27,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// The start point of the segment
         /// </summary>
-        public Vertex P1;
+        public Vertex P1 { get; set; }
+
         /// <summary>
         /// the end point of the segment
         /// </summary>
-        public Vertex P2;
+        public Vertex P2 { get; set; }
 
         /// <summary>
         /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
@@ -46,10 +50,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a segment from double valued ordinates.
         /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="y1"></param>
-        /// <param name="x2"></param>
-        /// <param name="y2"></param>
         public Segment(double x1, double y1, double x2, double y2)
         {
             P1 = new Vertex(x1, y1);

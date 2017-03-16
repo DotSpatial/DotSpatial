@@ -33,7 +33,7 @@ namespace DotSpatial.Data
         /// Cycles through the values of a BitmapGrid starting at the top left corner and moving in row major
         /// fashion, (raster-scan fashion, moving across end then down.)
         /// </summary>
-        public class BitmapGridEnumerator : IEnumerator<Color>
+        private class BitmapGridEnumerator : IEnumerator<Color>
         {
             readonly int _height;
             readonly int _stride;
