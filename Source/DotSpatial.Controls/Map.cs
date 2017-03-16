@@ -1007,7 +1007,7 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public List<ILayer> GetLayers()
         {
-            return _geoMapFrame == null ? Enumerable.Empty<ILayer>().ToList() : _geoMapFrame.Layers.Cast<ILayer>().ToList();
+            return _geoMapFrame?.Layers.Cast<ILayer>().ToList() ?? Enumerable.Empty<ILayer>().ToList();
         }
 
         /// <summary>
@@ -1020,7 +1020,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                return _geoMapFrame != null ? _geoMapFrame.Projection : null;
+                return _geoMapFrame?.Projection;
             }
             set
             {
@@ -1041,10 +1041,7 @@ namespace DotSpatial.Controls
             set
             {
                 _legend = value;
-                if (_legend != null)
-                {
-                    _legend.AddMapFrame(_geoMapFrame);
-                }
+                _legend?.AddMapFrame(_geoMapFrame);
             }
         }
 
@@ -1074,7 +1071,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles removing event handlers for the map frame
         /// </summary>
-        /// <param name="mapFrame"></param>
         protected virtual void OnExcludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null) return;
@@ -1085,10 +1081,7 @@ namespace DotSpatial.Controls
             mapFrame.SelectionChanged -= MapFrame_SelectionChanged;
             mapFrame.LayerAdded -= MapFrame_LayerAdded;
             mapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
-            if (Legend != null)
-            {
-                Legend.RemoveMapFrame(mapFrame, true);
-            }
+            Legend?.RemoveMapFrame(mapFrame, true);
         }
 
         /// <summary>
@@ -1098,8 +1091,7 @@ namespace DotSpatial.Controls
         {
             if (mapFrame == null)
             {
-                if (Legend == null) return;
-                Legend.RefreshNodes();
+                Legend?.RefreshNodes();
                 return;
             }
             mapFrame.Parent = this;
@@ -1110,8 +1102,7 @@ namespace DotSpatial.Controls
             mapFrame.SelectionChanged += MapFrame_SelectionChanged;
             mapFrame.LayerAdded += MapFrame_LayerAdded;
             mapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
-            if (Legend == null) return;
-            Legend.AddMapFrame(mapFrame);
+            Legend?.AddMapFrame(mapFrame);
         }
 
         private void MapFrame_LayerAdded(object sender, LayerEventArgs e)
