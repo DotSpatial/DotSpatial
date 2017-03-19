@@ -9,7 +9,7 @@ namespace DotSpatial.Controls
     public partial class ZoomToCoordinatesDialog : Form
     {
         private readonly IMap _map;
-        private const String regExpression = "(-?\\d{1,3})[\\.\\,°]{0,1}\\s*(\\d{0,2})[\\.\\,\']{0,1}\\s*(\\d*)[\\.\\,°]{0,1}\\s*([NSnsEeWw]?)";
+        private const string regExpression = "(-?\\d{1,3})[\\.\\,°]{0,1}\\s*(\\d{0,2})[\\.\\,\']{0,1}\\s*(\\d*)[\\.\\,°]{0,1}\\s*([NSnsEeWw]?)";
 
         private readonly double[] lat;
         private readonly double[] lon;
@@ -98,21 +98,21 @@ namespace DotSpatial.Controls
         // Parse Coordinates will understand lat-lon coordinates in a variety of formats and separate them into Degrees, Minutes, and Seconds.
         // We could just accept a simple decimal value for the coordinates, but since users might be copying and pasting from a variety of sources
         // it makes it user friendly to be able to accept a number of different formats.
-        private bool parseCoordinates(IList<double> values, String text)
+        private bool parseCoordinates(IList<double> values, string text)
         {
             var match = Regex.Match(text, regExpression);
             var groups = match.Groups;
             try
             {  
-                values[0] = Double.Parse(groups[1].ToString());
+                values[0] = double.Parse(groups[1].ToString());
                 if (groups[2].Length > 0)
                 {
-                    values[1] = Double.Parse(groups[2].ToString());
+                    values[1] = double.Parse(groups[2].ToString());
                     if (groups[2].Length == 1) values[1] *= 10;
                 }
                 if (groups[3].Length > 0)
                 {
-                    values[2] = Double.Parse(groups[3].ToString());
+                    values[2] = double.Parse(groups[3].ToString());
                     if (groups[3].Length == 1) values[2] *= 10;
                 }
             }

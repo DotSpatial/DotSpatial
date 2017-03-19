@@ -220,10 +220,7 @@ namespace DotSpatial.Controls.Docking
         /// </param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs ea)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, ea);
-            }
+            PropertyChanged?.Invoke(this, ea);
         }
 
         #endregion
