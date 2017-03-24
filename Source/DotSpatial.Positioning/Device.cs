@@ -1186,7 +1186,7 @@ namespace DotSpatial.Positioning
         #region Static Methods
 
         /// <summary>
-        /// Esitmates device prcision based on the fix quality.
+        /// Estimates device precision based on the fix quality.
         /// </summary>
         /// <param name="quality">The current fix quality of a device or emulation</param>
         /// <returns>The estimated error of latitude/longitude coordinates attributed to the device.</returns>
