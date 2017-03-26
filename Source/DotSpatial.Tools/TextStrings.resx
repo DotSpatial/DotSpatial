@@ -151,7 +151,7 @@
     <value>Input First Raster</value>
   </data>
   <data name="InputPolygonforclipingtoRaster" xml:space="preserve">
-    <value>Input Polygon for cliping to Raste</value>
+    <value>Input Polygon for clipping to Raste</value>
   </data>
   <data name="inputRaster" xml:space="preserve">
     <value>input Raster</value>

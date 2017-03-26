@@ -79,7 +79,7 @@ namespace DotSpatial.Projections
         /// The default behavior is to cycle through all the properties of this
         /// object, and call Randomize on any that implement the IRandomizable interface.
         /// </summary>
-        /// <param name="generator">The Random seed generator for controling how the random content is created</param>
+        /// <param name="generator">The Random seed generator for controlling how the random content is created</param>
         public void Randomize(Random generator)
         {
             OnRandomize(generator);

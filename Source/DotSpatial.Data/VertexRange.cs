@@ -25,7 +25,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// The StartIndex is the sum of the shape offset and the part offset.  Controlling them separately
-        /// allows the entire shape offset to be adjusted independantly after the part is created.
+        /// allows the entire shape offset to be adjusted independently after the part is created.
         /// </summary>
         public int ShapeOffset { get; set; }
 
