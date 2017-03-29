@@ -439,7 +439,7 @@ namespace DotSpatial.Positioning
             }
 
             /* For the purposes of detection, we should be getting data immediately.
-             * As a result, we can use agressive timeouts here.  Only a tiny handful of devices
+             * As a result, we can use aggressive timeouts here.  Only a tiny handful of devices
              * need longer than two seconds to start transmitting data.
              */
             _port.ReadTimeout = 1000;

@@ -485,7 +485,7 @@ namespace DotSpatial.Positioning
         /// <value>The command timeout.</value>
         /// <remarks>The <strong>Interpreter</strong> class is multithreaded and is also thread-safe.  Still, however, in some rare cases,
         /// two threads may attempt to change the state of the interpreter at the same time.  Critical sections will allow both threads to
-        /// succees whenever possible, but in the event of a deadlock, this property control how much time to allow before giving up.</remarks>
+        /// success whenever possible, but in the event of a deadlock, this property control how much time to allow before giving up.</remarks>
         public static TimeSpan CommandTimeout
         {
             get
@@ -751,7 +751,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns the avereage precision tolerance based on the fix quality reported
+        /// Returns the average precision tolerance based on the fix quality reported
         /// by the device.
         /// </summary>
         /// <remarks>This property returns the estimated error attributed to the device. To get
@@ -821,9 +821,9 @@ namespace DotSpatial.Positioning
         /// Controls the largest amount of precision error allowed before GPS data is ignored.
         /// </summary>
         /// <value>The maximum horizontal dilution of precision.</value>
-        /// <remarks>This property is important for commercial GPS softwaqre development because it helps the interpreter determine
+        /// <remarks>This property is important for commercial GPS software development because it helps the interpreter determine
         /// when GPS data reports are precise enough to utilize.  Live GPS data can be inaccurate by up to a factor of fifty, or nearly
-        /// the size of an American football field!  As a result, setting a vlue for this property can help to reduce precision errors.
+        /// the size of an American football field!  As a result, setting a value for this property can help to reduce precision errors.
         /// When set, reports of latitude, longitude, speed, and bearing are ignored if precision is not at or below the set value.
         /// For more on Dilution of Precision and how to determine your precision needs, please refer to our online article here:
         /// http://dotspatial.codeplex.com/Articles/WritingApps2_1.aspx.</remarks>
@@ -886,9 +886,9 @@ namespace DotSpatial.Positioning
         /// Controls the largest amount of precision error allowed before GPS data is ignored.
         /// </summary>
         /// <value>The maximum vertical dilution of precision.</value>
-        /// <remarks>This property is important for commercial GPS softwaqre development because it helps the interpreter determine
+        /// <remarks>This property is important for commercial GPS software development because it helps the interpreter determine
         /// when GPS data reports are precise enough to utilize.  Live GPS data can be inaccurate by up to a factor of fifty, or nearly
-        /// the size of an American football field!  As a result, setting a vlue for this property can help to reduce precision errors.
+        /// the size of an American football field!  As a result, setting a value for this property can help to reduce precision errors.
         /// When set, reports of altitude are ignored if precision is not at or below the set value.
         /// For more on Dilution of Precision and how to determine your precision needs, please refer to our online article here:
         /// http://dotspatial.codeplex.com/Articles/WritingApps2_1.aspx.</remarks>
@@ -1735,7 +1735,7 @@ namespace DotSpatial.Positioning
             // Change the devices class
             Devices.Bearing = _bearing;
 
-            // If the value hasn't changed, skiiiip
+            // If the value hasn't changed, skip
             if (_bearing.Equals(value))
                 return;
 
@@ -1764,7 +1764,7 @@ namespace DotSpatial.Positioning
             // Change the devices class
             Devices.Heading = _heading;
 
-            // If the value hasn't changed, skiiiip
+            // If the value hasn't changed, skip
             if (_heading.Equals(value))
                 return;
 

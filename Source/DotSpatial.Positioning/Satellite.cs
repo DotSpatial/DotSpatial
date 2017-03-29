@@ -897,7 +897,7 @@ namespace DotSpatial.Positioning
                     #endregion MSAS (Japan)
 
                     case 0:
-                        // A placeholder for the SatellitSignalBar control that
+                        // A placeholder for the SatelliteSignalBar control that
                         // is displaying no satellites. Otherwise the control is
                         // not visible.
                         return "Unknown";
@@ -912,7 +912,7 @@ namespace DotSpatial.Positioning
         #region Public Methods
 
         /// <summary>
-        /// REturns the string equivalent of this object using ht ecurrent cul
+        /// REturns the string equivalent of this object using the current culture
         /// </summary>
         /// <param name="format">The format.</param>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>

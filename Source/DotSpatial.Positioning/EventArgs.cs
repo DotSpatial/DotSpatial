@@ -809,7 +809,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Indicates information about the error and its location within a module.
         /// </summary>
-        /// <value>An <strong>ApplicationException</strong> object or derivitive describing the error.</value>
+        /// <value>An <strong>ApplicationException</strong> object or derivative describing the error.</value>
         public Exception Exception
         {
             get

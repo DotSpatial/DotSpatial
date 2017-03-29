@@ -267,7 +267,7 @@ namespace DotSpatial.Positioning
             // Is the socket already connected?
             if (_socket == null || !_socket.Connected)
             {
-                // Close any exsisting socket
+                // Close any existing socket
                 if (_socket != null)
                     _socket.Close();
 
