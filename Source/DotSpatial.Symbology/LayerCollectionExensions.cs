@@ -12,7 +12,7 @@ namespace DotSpatial.Symbology
         /// Given a base name, this increments a number for appending
         /// if the name already exists in the collection.
         /// </summary>
-        /// <param name="layers">Layers collecion.</param>
+        /// <param name="layers">Layers collection.</param>
         /// <param name="baseName">The string base name to start with</param>
         /// <returns>The base name modified by a number making it unique in the collection</returns>
         public static string UnusedName(this ICollection<ILayer> layers, string baseName)

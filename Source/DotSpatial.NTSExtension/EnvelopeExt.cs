@@ -12,7 +12,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes the envelopes Minimum.Z with the smaller of the two given z values and the Maximum.Z with the bigger of the two given z values. 
         /// </summary>
-        /// <param name="envelope">Envelope, whos Minimum and Maximum.Z should be initialized.</param>
+        /// <param name="envelope">Envelope, whose Minimum and Maximum.Z should be initialized.</param>
         /// <param name="z1">First z value.</param>
         /// <param name="z2">Second z value.</param>
         public static void InitZ(this Envelope envelope, double z1, double z2)

@@ -39,7 +39,7 @@ namespace DotSpatial.Data
                 throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "lineShape", "line", lineShape.FeatureType)); 
             }
 
-            // Implmented in PolygonShape
+            // Implemented in PolygonShape
             if (otherShape.FeatureType == FeatureType.Polygon)
             {
                 return otherShape.Intersects(lineShape);
