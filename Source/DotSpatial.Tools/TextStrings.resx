@@ -151,7 +151,7 @@
     <value>Input First Raster</value>
   </data>
   <data name="InputPolygonforclipingtoRaster" xml:space="preserve">
-    <value>Input Polygon for clipping to Raste</value>
+    <value>Input Polygon for clipping to Raster</value>
   </data>
   <data name="inputRaster" xml:space="preserve">
     <value>input Raster</value>
@@ -259,7 +259,7 @@
     <value>The value of each cell will either be assigned the value from this field or will attept to parse the string field member as a number</value>
   </data>
   <data name="InputRasterforCliping" xml:space="preserve">
-    <value>Input Raster for Cliping</value>
+    <value>Input Raster for Clipping</value>
   </data>
   <data name="BaseFeatureSet" xml:space="preserve">
     <value>Base Feature Set</value>
@@ -424,7 +424,7 @@
     <value>DP line simplification</value>
   </data>
   <data name="Exceptioninclipin" xml:space="preserve">
-    <value>Exception in Executer the polygon cliping with line</value>
+    <value>Exception in Executer the polygon clipping with line</value>
   </data>
   <data name="ExpressionSelectFeatures" xml:space="preserve">
     <value>Expression to Select the Features from Featureset</value>
@@ -538,7 +538,7 @@
     <value>Input FeatureSet to reproject</value>
   </data>
   <data name="Inputlineforcliping" xml:space="preserve">
-    <value>Input line for cliping</value>
+    <value>Input line for clipping</value>
   </data>
   <data name="InputnewcellHight" xml:space="preserve">
     <value>Input new cell Hight</value>
@@ -547,7 +547,7 @@
     <value>Input new cell Width</value>
   </data>
   <data name="InputPolygonforCliping" xml:space="preserve">
-    <value>Input Polygon for Cliping</value>
+    <value>Input Polygon for Clipping</value>
   </data>
   <data name="InputRasterforaverageslopecalculation" xml:space="preserve">
     <value>Input Raster for average slope calculation</value>
