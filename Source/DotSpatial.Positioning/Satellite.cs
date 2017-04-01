@@ -450,7 +450,7 @@ namespace DotSpatial.Positioning
                     case 12: // USA-192
                     case 13: // USA-132
                     case 14: // USA-154
-                    case 15: // USA-186
+                    case 15: // USA-196
                     case 16: // USA-166
                     case 17: // USA-183
                     case 18: // USA-156
@@ -520,7 +520,7 @@ namespace DotSpatial.Positioning
                     case 05: // USA-206
                     case 07: // USA-201
                     case 12: // USA-192
-                    case 15: // USA-186
+                    case 15: // USA-196
                     case 17: // USA-183
                     case 29: // USA-199
                     case 31: // USA-190
@@ -869,7 +869,7 @@ namespace DotSpatial.Positioning
 
                     #endregion Wide Area Augmentation System (WAAS)
 
-                    #region EGNOS  (European)
+                    #region EGNOS (European)
 
                     case 33:
                         return "Atlantic Ocean Region-East (EGNOS)";
