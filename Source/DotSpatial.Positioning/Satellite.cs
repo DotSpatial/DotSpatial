@@ -777,82 +777,81 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                /* Information was obtained from WikiPedia:
-                 * http://en.wikipedia.org/wiki/List_of_GPS_satellite_launches
-                 */
-
+                // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
                 switch (_pseudorandomNumber)
                 {
                     #region Standard NAVSTAR satellites
-
-                    case 32:
-                        return "Navstar 2A-01";
-                    case 24:
-                        return "Navstar 2A-02";
-                    case 25:
-                        return "Navstar 2A-03";
-                    case 26:
-                        return "Navstar 2A-05";
-                    case 27:
-                        return "Navstar 2A-06";
-                    case 1:
-                        return "Navstar 2A-11";
-                    case 9:
-                        return "Navstar 2A-12";
-                    case 5:
-                        return "Navstar 2A-13";
-                    case 4:
-                        return "Navstar 2A-14";
-                    case 6:
-                        return "Navstar 2A-15";
-                    case 3:
-                        return "Navstar 2A-16";
-                    case 10:
-                        return "Navstar 2A-17";
-                    case 30:
-                        return "Navstar 2A-18";
-                    case 13:
-                        return "Navstar 43";
-                    case 11:
-                        return "Navstar 46";
-                    case 20:
-                        return "Navstar 47";
-                    case 28:
-                        return "Navstar 48";
-                    case 14:
-                        return "Navstar 49";
-                    case 18:
-                        return "Navstar 50";
-                    case 16:
-                        return "Navstar 51";
-                    case 21:
-                        return "Navstar 52";
-                    case 22:
-                        return "Navstar 53";
-                    case 19:
-                        return "Navstar 54";
-                    case 23:
-                        return "Navstar 55";
-                    case 2:
-                        return "Navstar 56";
-                    case 17:
-                        return "Navstar 57";
-                    case 31:
-                        return "GPS 2R-15";
-                    case 12:
-                        return "Navstar 59";
-                    case 15:
-                        return "GPS 2R-17";
-                    case 29:
-                        return "GPS 2R-18";
-                    case 7:
-                        return "Navstar 62";
+                    
+                    case 01: // USA-232
+                        return "USA-232";
+                    case 02: // USA-180
+                        return "USA-180";
+                    case 03: // USA-258
+                        return "USA-258";
+                    //case 04: // USA-96 (In reserve)
+                    //  return "USA-96";
+                    case 05: // USA-206
+                        return "USA-206";
+                    case 06: // USA-251
+                        return "USA-251";
+                    case 07: // USA-201
+                        return "USA-201";
+                    case 08: // USA-262
+                        return "USA-262";
+                    case 09: // USA-256
+                        return "USA-256";
+                    case 10: // USA-265
+                        return "USA-265";
+                    case 11: // USA-145
+                        return "USA-145";
+                    case 12: // USA-192
+                        return "USA-192";
+                    case 13: // USA-132
+                        return "USA-132";
+                    case 14: // USA-154
+                        return "USA-154";
+                    case 15: // USA-196
+                        return "USA-196";
+                    case 16: // USA-166
+                        return "USA-166";
+                    case 17: // USA-183
+                        return "USA-183";
+                    case 18: // USA-156
+                        return "USA-156";
+                    case 19: // USA-177
+                        return "USA-177";
+                    case 20: // USA-150
+                        return "USA-150";
+                    case 21: // USA-168
+                        return "USA-168";
+                    case 22: // USA-175
+                        return "USA-175";
+                    case 23: // USA-178
+                        return "USA-178";
+                    case 24: // USA-239
+                        return "USA-239";
+                    case 25: // USA-213
+                        return "USA-213";
+                    case 26: // USA-260
+                        return "USA-260";
+                    case 27: // USA-242
+                        return "USA-242";
+                    case 28: // USA-151
+                        return "USA-151";
+                    case 29: // USA-199
+                        return "USA-199";
+                    case 30: // USA-248
+                        return "USA-248";
+                    case 31: // USA-190
+                        return "USA-190";
+                    case 32: // USA-266
+                        return "USA-266";
 
                     #endregion Standard NAVSTAR satellites
 
                     #region Wide Area Augmentation System (WAAS)
 
-                    /* http://en.wikipedia.org/wiki/WAAS */
+                    // http://en.wikipedia.org/wiki/WAAS
 
                     case 35:
                         return "Atlantic Ocean Region-West (WAAS)";
