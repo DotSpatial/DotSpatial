@@ -1172,7 +1172,11 @@ namespace DotSpatial.Positioning
         /// <summary>Represents Block IIA</summary>
         IIA,
         /// <summary>Represents Block IIR.</summary>
-        IIR
+        IIR,
+        /// <summary>Represents Block IIR-M.</summary>
+        IIRM,
+        /// <summary>Represents Block IIF.</summary>
+        IIF
     }
 
     /// <summary>
