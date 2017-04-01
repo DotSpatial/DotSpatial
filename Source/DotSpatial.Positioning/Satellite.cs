@@ -433,44 +433,41 @@ namespace DotSpatial.Positioning
         {
             get
             {
+                // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
                 switch (_pseudorandomNumber)
                 {
-                    /* Data was compiled from Wikipedia:
-                     * http://en.wikipedia.org/wiki/List_of_GPS_satellite_launches
-                     */
-
-                    case 24:
-                    case 27:
-                    case 09:
-                    case 03:
-                    case 10:
-                    case 30:
-                    case 08:
-                        return SatelliteAtomicClockType.Cesium;
-                    case 32:
-                    case 25:
-                    case 26:
-                    case 05:
-                    case 04:
-                    case 06:
-                    case 13:
-                    case 11:
-                    case 20:
-                    case 28:
-                    case 14:
-                    case 18:
-                    case 16:
-                    case 21:
-                    case 22:
-                    case 19:
-                    case 23:
-                    case 02:
-                    case 17:
-                    case 31:
-                    case 12:
-                    case 15:
-                    case 29:
-                    case 07:
+                    case 01: // USA-232
+                    case 02: // USA-180
+                    case 03: // USA-258
+                    //case 04: // USA-96 (In reserve)
+                    case 05: // USA-206
+                    case 06: // USA-251
+                    case 07: // USA-201
+                    case 08: // USA-262
+                    case 09: // USA-256
+                    case 10: // USA-265
+                    case 11: // USA-145
+                    case 12: // USA-192
+                    case 13: // USA-132
+                    case 14: // USA-154
+                    case 15: // USA-186
+                    case 16: // USA-166
+                    case 17: // USA-183
+                    case 18: // USA-156
+                    case 19: // USA-177
+                    case 20: // USA-150
+                    case 21: // USA-168
+                    case 22: // USA-175
+                    case 23: // USA-178
+                    case 24: // USA-239
+                    case 25: // USA-213
+                    case 26: // USA-260
+                    case 27: // USA-242
+                    case 28: // USA-151
+                    case 29: // USA-199
+                    case 30: // USA-248
+                    case 31: // USA-190
+                    case 32: // USA-266
                         return SatelliteAtomicClockType.Rubidium;
                     default:
                         return SatelliteAtomicClockType.Unknown;
