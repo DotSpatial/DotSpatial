@@ -544,76 +544,72 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                /* Data was compiled from Wikipedia:
-                 * http://en.wikipedia.org/wiki/List_of_GPS_satellite_launches
-                 */
-
+                // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
                 switch (_pseudorandomNumber)
                 {
-                    case 32:
-                        return new DateTime(1990, 11, 26);
-                    case 24:
-                        return new DateTime(1991, 07, 04);
-                    case 25:
-                        return new DateTime(1992, 02, 23);
-                    case 26:
-                        return new DateTime(1992, 07, 07);
-                    case 27:
-                        return new DateTime(1992, 09, 09);
-                    case 01:
-                        return new DateTime(1992, 05, 13);
-                    case 09:
-                        return new DateTime(1993, 06, 26);
-                    case 05:
-                        return new DateTime(1993, 08, 30);
-                    case 04:
-                        return new DateTime(1993, 10, 28);
-                    case 06:
-                        return new DateTime(1994, 03, 10);
-                    case 03:
-                        return new DateTime(1996, 03, 28);
-                    case 10:
-                        return new DateTime(1996, 07, 16);
-                    case 30:
-                        return new DateTime(1996, 09, 12);
-
-                    case 13:
-                        return new DateTime(1997, 07, 23);
-                    case 11:
-                        return new DateTime(1999, 10, 07);
-                    case 20:
-                        return new DateTime(2000, 05, 11);
-                    case 28:
-                        return new DateTime(2000, 07, 16);
-                    case 14:
-                        return new DateTime(2000, 11, 10);
-                    case 18:
-                        return new DateTime(2001, 01, 30);
-                    case 16:
-                        return new DateTime(2003, 01, 29);
-                    case 21:
-                        return new DateTime(2003, 03, 31);
-                    case 22:
-                        return new DateTime(2003, 12, 21);
-                    case 19:
-                        return new DateTime(2004, 03, 20);
-                    case 23:
-                        return new DateTime(2004, 06, 23);
-                    case 02:
+                    case 01: // USA-232
+                        return new DateTime(2011, 07, 16);
+                    case 02: // USA-180
                         return new DateTime(2004, 11, 06);
-
-                    case 17:
-                        return new DateTime(2005, 09, 26);
-                    case 31:
-                        return new DateTime(2006, 09, 25);
-                    case 12:
-                        return new DateTime(2006, 11, 17);
-                    case 15:
-                        return new DateTime(2007, 10, 17);
-                    case 29:
-                        return new DateTime(2007, 12, 20);
-                    case 07:
+                    case 03: // USA-258
+                        return new DateTime(2014, 10, 29);
+                    //case 04: // USA-96 (In reserve)
+                    case 05: // USA-206
+                        return new DateTime(2009, 08, 17);
+                    case 06: // USA-251
+                        return new DateTime(2014, 05, 17);
+                    case 07: // USA-201
                         return new DateTime(2008, 03, 15);
+                    case 08: // USA-262
+                        return new DateTime(2015, 07, 15);
+                    case 09: // USA-256
+                        return new DateTime(2014, 08, 02);
+                    case 10: // USA-265
+                        return new DateTime(2015, 10, 31);
+                    case 11: // USA-145
+                        return new DateTime(1999, 10, 07);
+                    case 12: // USA-192
+                        return new DateTime(2006, 11, 17);
+                    case 13: // USA-132
+                        return new DateTime(1997, 07, 23);
+                    case 14: // USA-154
+                        return new DateTime(2000, 11, 10);
+                    case 15: // USA-196
+                        return new DateTime(2007, 10, 17);
+                    case 16: // USA-166
+                        return new DateTime(2003, 01, 29);
+                    case 17: // USA-183
+                        return new DateTime(2005, 09, 26);
+                    case 18: // USA-156
+                        return new DateTime(2001, 01, 30);
+                    case 19: // USA-177
+                        return new DateTime(2004, 03, 20);
+                    case 20: // USA-150
+                        return new DateTime(2000, 05, 11);
+                    case 21: // USA-168
+                        return new DateTime(2003, 03, 31);
+                    case 22: // USA-175
+                        return new DateTime(2003, 12, 21);
+                    case 23: // USA-178
+                        return new DateTime(2004, 06, 23);
+                    case 24: // USA-239
+                        return new DateTime(2012, 10, 04);
+                    case 25: // USA-213
+                        return new DateTime(2010, 05, 28);
+                    case 26: // USA-260
+                        return new DateTime(2015, 03, 25);
+                    case 27: // USA-242
+                        return new DateTime(2013, 05, 15);
+                    case 28: // USA-151
+                        return new DateTime(2000, 07, 16);
+                    case 29: // USA-199
+                        return new DateTime(2007, 12, 20);
+                    case 30: // USA-248
+                        return new DateTime(2014, 02, 21);
+                    case 31: // USA-190
+                        return new DateTime(2006, 09, 25);
+                    case 32: // USA-266
+                        return new DateTime(2016, 02, 05);
 
                     default:
                         return DateTime.MinValue;
