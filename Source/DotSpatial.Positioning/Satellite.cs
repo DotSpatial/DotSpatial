@@ -897,6 +897,260 @@ namespace DotSpatial.Positioning
             }
         }
 
+        /// <summary>
+        /// Returns the aliases of the satellite.
+        /// </summary>
+        [Category("Statistics")]
+        [Description("Returns the aliases of the satellite.")]
+        [Browsable(true)]
+        public string[] Aliases
+        {
+            get
+            {
+                // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
+                switch (_pseudorandomNumber)
+                {
+                    case 01: // USA-232
+                        return new[]
+                        {
+                            "USA-232",
+                            "GPS IIF-2",
+                            "GPS SVN-63"
+                        };
+                    case 02: // USA-180
+                        return new[]
+                        {
+                            "USA-180",
+                            "GPS IIR-13",
+                            "GPS SVN-61"
+                        };
+                    case 03: // USA-258
+                        return new[]
+                        {
+                            "USA-258",
+                            "GPS IIF-8",
+                            "GPS SVN-69",
+                            "NAVSTAR 72"
+                        };
+                    //case 04: // USA-96 (In reserve)
+                    case 05: // USA-206
+                        return new[]
+                        {
+                            "USA-206",
+                            "GPS SVN-50",
+                            "PRN-05",
+                            "NAVSTAR 64"
+                        };
+                    case 06: // USA-251
+                        return new[]
+                        {
+                            "USA-251",
+                            "GPS IIF-6",
+                            "GPS SVN-6",
+                            "NAVSTAR 70"
+                        };
+                    case 07: // USA-201
+                        return new[]
+                        {
+                            "USA-201",
+                            "GPS IIR-19(M)",
+                            "GPS IIRM-6",
+                            "GPS SVN-48"
+                        };
+                    case 08: // USA-262
+                        return new[]
+                        {
+                            "USA-262",
+                            "GPS IIF-10",
+                            "GPS SVN-72",
+                            "NAVSTAR 74"
+                        };
+                    case 09: // USA-256
+                        return new[]
+                        {
+                            "USA-256",
+                            "GPS IIF-7",
+                            "GPS SVN-68",
+                            "NAVSTAR 71"
+                        };
+                    case 10: // USA-265
+                        return new[]
+                        {
+                            "USA-265",
+                            "GPS IIF-11",
+                            "GPS SVN-73",
+                            "NAVSTAR 75"
+                        };
+                    case 11: // USA-145
+                        return new[]
+                        {
+                            "USA-145",
+                            "GPS IIR-3",
+                            "GPS SVN-46"
+                        };
+                    case 12: // USA-192
+                        return new[]
+                        {
+                            "USA-192",
+                            "GPS IIR-16(M)",
+                            "GPS IIRM-3",
+                            "GPS SVN-58"
+                        };
+                    case 13: // USA-132
+                        return new[]
+                        {
+                            "USA-132",
+                            "GPS IIR-2",
+                            "GPS SVN-43"
+                        };
+                    case 14: // USA-154
+                        return new[]
+                        {
+                            "USA-154",
+                            "GPS IIR-6",
+                            "GPS SVN-41"
+                        };
+                    case 15: // USA-196
+                        return new[]
+                        {
+                            "USA-196",
+                            "GPS IIR-17(M)",
+                            "GPS IIRM-4",
+                            "GPS SVN-55"
+                        };
+                    case 16: // USA-166
+                        return new[]
+                        {
+                            "USA-166",
+                            "GPS IIR-8",
+                            "GPS SVN-56"
+                        };
+                    case 17: // USA-183
+                        return new[]
+                        {
+                            "USA-183",
+                            "GPS IIR-14(M)",
+                            "GPS IIRM-1",
+                            "GPS SVN-53"
+                        };
+                    case 18: // USA-156
+                        return new[]
+                        {
+                            "USA-156",
+                            "GPS IIR-7",
+                            "GPS SVN-54"
+                        };
+                    case 19: // USA-177
+                        return new[]
+                        {
+                            "USA-177",
+                            "GPS IIR-11",
+                            "GPS SVN-59"
+                        };
+                    case 20: // USA-150
+                        return new[]
+                        {
+                            "USA-150",
+                            "GPS IIR-4",
+                            "GPS SVN-51"
+                        };
+                    case 21: // USA-168
+                        return new[]
+                        {
+                            "USA-168",
+                            "GPS IIR-9",
+                            "GPS SVN-45"
+                        };
+                    case 22: // USA-175
+                        return new[]
+                        {
+                            "USA-175",
+                            "GPS IIR-10",
+                            "GPS SVN-47"
+                        };
+                    case 23: // USA-178
+                        return new[]
+                        {
+                            "USA-178",
+                            "GPS IIR-12",
+                            "GPS SVN-60"
+                        };
+                    case 24: // USA-239
+                        return new[]
+                        {
+                            "USA-239",
+                            "GPS IIF-3",
+                            "GPS SVN-65"
+                        };
+                    case 25: // USA-213
+                        return new[]
+                        {
+                            "USA-213",
+                            "GPS IIF SV-1",
+                            "GPS SVN-62",
+                            "NAVSTAR 65"
+                        };
+                    case 26: // USA-260
+                        return new[]
+                        {
+                            "USA-260",
+                            "GPS IIF-9",
+                            "GPS SVN-71",
+                            "NAVSTAR 73"
+                        };
+                    case 27: // USA-242
+                        return new[]
+                        {
+                            "USA-242",
+                            "GPS IIF-4",
+                            "GPS IIF SV-5",
+                            "Vega"
+                        };
+                    case 28: // USA-151
+                        return new[]
+                        {
+                            "USA-151",
+                            "GPS IIR-5",
+                            "GPS SVN-44"
+                        };
+                    case 29: // USA-199
+                        return new[]
+                        {
+                            "USA-199",
+                            "GPS IIR-18(M)",
+                            "GPS IIRM-5",
+                            "GPS SVN-57"
+                        };
+                    case 30: // USA-248
+                        return new[]
+                        {
+                            "USA-248",
+                            "GPS IIF-5",
+                            "GPS SVN-64",
+                            "NAVSTAR 69"
+                        };
+                    case 31: // USA-190
+                        return new[]
+                        {
+                            "USA-190",
+                            "GPS IIR-15(M)",
+                            "GPS IIRM-2",
+                            "GPS SVN-52"
+                        };
+                    case 32: // USA-266
+                        return new[]
+                        {
+                            "USA-266",
+                            "GPS IIF-12",
+                            "GPS SVN-70",
+                            "NAVSTAR 76"
+                        };
+                    default:
+                        return default(string[]);
+                }
+            }
+        }
+
         #endregion Public Properties
 
         #region Public Methods
