@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
         private string _vectorWriteFilter;
 
         /// <summary>
-        /// Gets or sets the implemenation of ILayerManager for the project to use when
+        /// Gets or sets the implementation of ILayerManager for the project to use when
         /// accessing data.  This is THE place where the LayerManager can be replaced
         /// by a different data manager.  If you add this data manager to your
         /// project, this will automatically set itself as the DefaultLayerManager.

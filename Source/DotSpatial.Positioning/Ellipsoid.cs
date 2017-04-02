@@ -37,7 +37,7 @@ namespace DotSpatial.Positioning
     /// <remarks><para>Mathematics involving points on Earth's surface are difficult to perform with
     /// precision because the Earth's surface is rugged. In order to maximize precision,
     /// scientists developed "ellipsoids," smooth ellipsoidal shapes (known as "oblate
-    /// spheriods" or flattened spheres) which attempt to approximate Earth's exact shape.
+    /// spheroids" or flattened spheres) which attempt to approximate Earth's exact shape.
     /// Like datums, ellipsoids have been subject to frequent revisions thanks to advances
     /// in technology, yet countries cannot quickly abandon outdated ellipsoids because so
     /// much infrastructure is built upon them. As a result, multiple ellipsoids are
@@ -453,7 +453,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Internal contructor for static list generation
+        /// Internal constructor for static list generation
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="equatorialRadius">The equatorial radius.</param>
@@ -474,7 +474,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Internal contructor for static list generation
+        /// Internal constructor for static list generation
         /// </summary>
         /// <param name="epsgNumber">The epsg number.</param>
         /// <param name="a">A.</param>

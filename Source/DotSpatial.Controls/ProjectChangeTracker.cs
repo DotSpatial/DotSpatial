@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 
@@ -14,13 +13,11 @@ namespace DotSpatial.Controls
     internal class ProjectChangeTracker
     {
         //the main map where changes are tracked
-        private IMap map;
+        private IMap _map;
 
         public ProjectChangeTracker(IMap mainMap)
         {
-            Contract.Requires(mainMap != null);
-
-            this.Map = mainMap;
+            Map = mainMap;
         }
 
         /// <summary>
@@ -28,29 +25,29 @@ namespace DotSpatial.Controls
         /// </summary>
         public IMap Map
         {
-            get { return map; }
+            get { return _map; }
             set
             {
-                if (map != null)
+                if (_map != null)
                 {
                     //remove previous event handlers
-                    map.MapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
-                    map.LayerAdded -= map_LayerAdded;
-                    map.MapFrame.LayerRemoved -= MapFrame_LayerRemoved;
-                    map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
-                    map.MapFrame.Invalidated -= MapFrame_Invalidated;
+                    _map.MapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
+                    _map.LayerAdded -= map_LayerAdded;
+                    _map.MapFrame.LayerRemoved -= MapFrame_LayerRemoved;
+                    _map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
+                    _map.MapFrame.Invalidated -= MapFrame_Invalidated;
                 }
 
                 //attach new event handlers
-                map = value;
+                _map = value;
 
-                if (map != null)
+                if (_map != null)
                 {
-                    map.MapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
-                    map.LayerAdded += map_LayerAdded;
-                    map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
-                    map.MapFrame.LayerSelected += MapFrame_LayerSelected;
-                    map.MapFrame.Invalidated += MapFrame_Invalidated;
+                    _map.MapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
+                    _map.LayerAdded += map_LayerAdded;
+                    _map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
+                    _map.MapFrame.LayerSelected += MapFrame_LayerSelected;
+                    _map.MapFrame.Invalidated += MapFrame_Invalidated;
                 }
             }
         }
@@ -87,8 +84,7 @@ namespace DotSpatial.Controls
 
         private void OnMapPropertyChanged()
         {
-            if (MapPropertyChanged != null)
-                MapPropertyChanged(this, null);
+            MapPropertyChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

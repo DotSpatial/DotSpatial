@@ -26,7 +26,7 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// This class is strictly the vector access code.  This does not handle
-    /// the attributes, which must be handled independantly.
+    /// the attributes, which must be handled independently.
     /// </summary>
     public class LineShapefileFeatureSource : ShapefileFeatureSource
     {

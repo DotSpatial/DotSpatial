@@ -792,7 +792,7 @@ namespace DotSpatial.Controls
             else if (symb.UseLabelAngleField)
             {
                 var angleField = symb.LabelAngleField;
-                if (String.IsNullOrEmpty(angleField)) return 0;
+                if (string.IsNullOrEmpty(angleField)) return 0;
                 return ToSingle(feature.DataRow[angleField]);
             }
             else if (symb.UseLineOrientation)

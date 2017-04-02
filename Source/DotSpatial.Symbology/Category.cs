@@ -150,7 +150,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                return Range != null ? Range.Maximum : null;
+                return Range?.Maximum;
             }
             set
             {
@@ -174,7 +174,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                return Range != null ? Range.Minimum : null;
+                return Range?.Minimum;
             }
             set
             {

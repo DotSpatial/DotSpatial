@@ -424,7 +424,7 @@ namespace DotSpatial.Positioning
         /// Therefore, use a conversion method such as <see cref="Speed.ToKilometersPerHour">
         /// ToKilometersPerHour</see> or <see cref="Speed.ToStatuteMilesPerHour">
         /// ToStatuteMilesPerHour</see> to ensure that the speed is in the correct unit
-        /// type before perfoming mathematics.</para></remarks>
+        /// type before performing mathematics.</para></remarks>
         public SpeedUnit Units
         {
             get

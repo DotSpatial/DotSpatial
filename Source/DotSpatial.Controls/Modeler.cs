@@ -1,6 +1,6 @@
 // ********************************************************************************************************
 // Product Name: DotSpatial.Tools.Modeler
-// Description:  Creats and displays models
+// Description:  Creates and displays models
 //
 // ********************************************************************************************************
 //
@@ -801,8 +801,8 @@ namespace DotSpatial.Controls
                 XmlNode toolXml = root.FirstChild;
                 while (toolXml != null && toolXml.Name == "Tool")
                 {
-                    String toolUniqueName = toolXml.Attributes["ToolUniqueName"].Value;
-                    String toolModelName = toolXml.Attributes["ModelName"].Value;
+                    string toolUniqueName = toolXml.Attributes["ToolUniqueName"].Value;
+                    string toolModelName = toolXml.Attributes["ModelName"].Value;
                     Point toolLocation = new Point(Convert.ToInt32(toolXml.Attributes["X"].Value), Convert.ToInt32(toolXml.Attributes["Y"].Value));
                     Version toolVersion = new Version(toolXml.Attributes["Version"].Value);
 
@@ -822,8 +822,8 @@ namespace DotSpatial.Controls
                             {
                                 if (outputDataXml.Attributes != null)
                                 {
-                                    String dataParameterName = outputDataXml.Attributes["ParameterName"].Value;
-                                    String dataModelName = outputDataXml.Attributes["ModelName"].Value;
+                                    string dataParameterName = outputDataXml.Attributes["ParameterName"].Value;
+                                    string dataModelName = outputDataXml.Attributes["ModelName"].Value;
                                     Point dataLocation = new Point(Convert.ToInt32(outputDataXml.Attributes["X"].Value), Convert.ToInt32(outputDataXml.Attributes["Y"].Value));
                                     foreach (DataElement de in te.GetChildren())
                                     {
@@ -853,12 +853,12 @@ namespace DotSpatial.Controls
                 {
                     if (toolXml.Attributes != null)
                     {
-                        String toolModelName = toolXml.Attributes["ModelName"].Value;
+                        string toolModelName = toolXml.Attributes["ModelName"].Value;
                         ToolElement te = (_modelElements.Find(delegate(ModelElement o) { return (o.Name == toolModelName); }) as ToolElement);
                         XmlNode inputDataXml = toolXml.LastChild;
                         while (inputDataXml != null && inputDataXml.Name == "InputData")
                         {
-                            String dataModelName = inputDataXml.Attributes["ModelName"].Value;
+                            string dataModelName = inputDataXml.Attributes["ModelName"].Value;
                             DataElement de = (_modelElements.Find(delegate(ModelElement o) { return (o.Name == dataModelName); }) as DataElement);
                             if (de != null)
                             {
@@ -926,7 +926,7 @@ namespace DotSpatial.Controls
                 return;
 
             //Thic creates a list of all the model elements that will need to be deleted due to their associations to data and tools
-            Boolean promptDelParents = false;
+            bool promptDelParents = false;
             List<ModelElement> tempSelection = new List<ModelElement>();
             foreach (ModelElement selectedElement in _modelElementsSelected)
             {

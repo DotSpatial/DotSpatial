@@ -25,7 +25,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class SerializationManager
     {
-        private static readonly ResourceManager resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
+        private static readonly ResourceManager _resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
         readonly AppManager _applicationManager;
         readonly ProjectChangeTracker _changeTracker;
         private readonly Dictionary<string, object> _customSettings;
@@ -39,7 +39,7 @@ namespace DotSpatial.Controls
             _applicationManager = applicationManager;
             _customSettings = new Dictionary<string, object>();
             _changeTracker = new ProjectChangeTracker(_applicationManager.Map);
-            _changeTracker.MapPropertyChanged += mapPropertyChanged;
+            _changeTracker.MapPropertyChanged += MapPropertyChanged;
 
             _applicationManager.SatisfyImportsExtensionsActivated += App_SatisfyImportsExtensionsActivated;
 
@@ -50,46 +50,22 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Filter text for an open project file dialog
         /// </summary>
-        public string OpenDialogFilterText
-        {
-            get
-            {
-                return String.Format(OpenDialogFilterFormat, resources.GetString("SupportedFiles"), resources.GetString("ProjectFile"));
-            }
-        }
+        public string OpenDialogFilterText => string.Format(OpenDialogFilterFormat, _resources.GetString("SupportedFiles"), _resources.GetString("ProjectFile"));
 
         /// <summary>
         /// Filter text for a save project as dialog
         /// </summary>
-        public string SaveDialogFilterText
-        {
-            get
-            {
-                return String.Format(SaveDialogFilterFormat, resources.GetString("ProjectFile"));
-            }
-        }
+        public string SaveDialogFilterText => string.Format(SaveDialogFilterFormat, _resources.GetString("ProjectFile"));
 
         /// <summary>
         /// Gets the save dialog filter format.
         /// </summary>
-        public string SaveDialogFilterFormat
-        {
-            get
-            {
-                return "{0} (*.dspx)|*.dspx" + AggregateProviderExtensions(SaveProjectFileProviders);
-            }
-        }
+        public string SaveDialogFilterFormat => "{0} (*.dspx)|*.dspx" + AggregateProviderExtensions(SaveProjectFileProviders);
 
         /// <summary>
         /// Gets the open dialog filter format.
         /// </summary>
-        public string OpenDialogFilterFormat
-        {
-            get
-            {
-                return "{0} |*.map.xml;*.dspx|{1} (*.dspx)|*.dspx" + AggregateProviderExtensions(OpenProjectFileProviders);
-            }
-        }
+        public string OpenDialogFilterFormat => "{0} |*.map.xml;*.dspx|{1} (*.dspx)|*.dspx" + AggregateProviderExtensions(OpenProjectFileProviders);
 
         /// <summary>
         /// Gets or sets the current project directory.
@@ -160,7 +136,7 @@ namespace DotSpatial.Controls
         /// <param name="fileName">Name of the file.</param>
         public void SaveProject(string fileName)
         {
-            Contract.Requires(!String.IsNullOrEmpty(fileName), "fileName is null or empty.");
+            Contract.Requires(!string.IsNullOrEmpty(fileName), "fileName is null or empty.");
             Contract.Requires(_applicationManager.Map != null);
 
             SetCurrentProjectDirectory(fileName);
@@ -177,7 +153,7 @@ namespace DotSpatial.Controls
 
             foreach (ISaveProjectFileProvider provider in SaveProjectFileProviders)
             {
-                if (String.Equals(provider.Extension, extension, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(provider.Extension, extension, StringComparison.OrdinalIgnoreCase))
                 {
                     provider.Save(fileName, xml);
                     isProviderPresent = true;
@@ -252,26 +228,20 @@ namespace DotSpatial.Controls
             foreach (ILayer layer in mapFrame.GetAllLayers())
             {
                 IMapLineLayer lineLayer = layer as IMapLineLayer;
-                if (lineLayer != null)
+                ILineScheme original = lineLayer?.Symbology;
+                if (original != null)
                 {
-                    ILineScheme original = lineLayer.Symbology;
-                    if (original != null)
-                    {
-                        ILineScheme newScheme = original.Clone() as ILineScheme;
-                        original.CopyProperties(newScheme);
-                        original.ResumeEvents();
-                    }
+                    var newScheme = original.Clone() as ILineScheme;
+                    original.CopyProperties(newScheme);
+                    original.ResumeEvents();
                 }
 
                 //to correctly draw categories:
                 IMapFeatureLayer featureLayer = layer as IMapFeatureLayer;
-                if (featureLayer != null)
+                if (featureLayer?.Symbology.NumCategories > 1)
                 {
-                    if (featureLayer.Symbology.NumCategories > 1)
-                    {
-                        featureLayer.DataSet.FillAttributes();
-                        featureLayer.ApplyScheme(featureLayer.Symbology);
-                    }
+                    featureLayer.DataSet.FillAttributes();
+                    featureLayer.ApplyScheme(featureLayer.Symbology);
                 }
             }
         }
@@ -283,7 +253,7 @@ namespace DotSpatial.Controls
             //the parent groups are NULL.
             foreach (ILayer child in parentGroup.GetLayers())
             {
-                IGroup childGroup = child as IGroup;
+                var childGroup = child as IGroup;
                 if (childGroup != null)
                 {
                     AssignParentGroups(childGroup, parentMapFrame);
@@ -299,7 +269,7 @@ namespace DotSpatial.Controls
         /// <param name="fileName">Name of the file.</param>
         public void OpenProject(string fileName)
         {
-            Contract.Requires(!String.IsNullOrEmpty(fileName), "fileName is null or empty.");
+            Contract.Requires(!string.IsNullOrEmpty(fileName), "fileName is null or empty.");
             Contract.Requires(_applicationManager.Map != null);
 
             _applicationManager.Map.ClearLayers();
@@ -310,7 +280,7 @@ namespace DotSpatial.Controls
             bool isProviderPresent = false;
             foreach (var provider in OpenProjectFileProviders)
             {
-                if (String.Equals(provider.Extension, extension, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(provider.Extension, extension, StringComparison.OrdinalIgnoreCase))
                 {
                     provider.Open(fileName);
                     isProviderPresent = true;
@@ -390,7 +360,7 @@ namespace DotSpatial.Controls
         /// </returns>
         public bool IsCustomSettingPresent(string uniqueName)
         {
-            return (_customSettings.ContainsKey(uniqueName));
+            return _customSettings.ContainsKey(uniqueName);
         }
 
         /// <summary>
@@ -399,7 +369,7 @@ namespace DotSpatial.Controls
         public void New()
         {
             _applicationManager.Map.ClearLayers();
-            SetCurrentProjectDirectory(String.Empty);
+            SetCurrentProjectDirectory(string.Empty);
 
             IsDirty = false;
             OnIsDirtyChanged();
@@ -419,7 +389,7 @@ namespace DotSpatial.Controls
             _changeTracker.Map = _applicationManager.Map;
         }
 
-        private void mapPropertyChanged(object sender, EventArgs e)
+        private void MapPropertyChanged(object sender, EventArgs e)
         {
             IsDirty = true;
             OnIsDirtyChanged();
@@ -435,12 +405,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ResetMapProjection()
         {
-            if (_applicationManager == null) return;
-            if (_applicationManager.Map == null) return;
-
-            string dspxProjectionEsriString = _applicationManager.Map.Projection.ToEsriString();
-
-            if (String.IsNullOrEmpty(dspxProjectionEsriString)) return;
+            var dspxProjectionEsriString = _applicationManager?.Map?.Projection.ToEsriString();
+            if (string.IsNullOrEmpty(dspxProjectionEsriString)) return;
 
             _applicationManager.Map.MapFrame.ReprojectMapFrame(dspxProjectionEsriString);
             _applicationManager.Map.MapFrame.ResetExtents();
@@ -455,8 +421,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void OnDeserializing(SerializingEventArgs ea)
         {
-            if (Deserializing != null)
-                Deserializing(this, ea);
+            Deserializing?.Invoke(this, ea);
         }
 
         #endregion
@@ -468,8 +433,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void OnSerializing(SerializingEventArgs ea)
         {
-            if (Serializing != null)
-                Serializing(this, ea);
+            Serializing?.Invoke(this, ea);
         }
 
         #endregion
@@ -481,8 +445,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void OnNewProject(SerializingEventArgs ea)
         {
-            if (NewProjectCreated != null)
-                NewProjectCreated(this, ea);
+            NewProjectCreated?.Invoke(this, ea);
         }
 
         #endregion
@@ -494,8 +457,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void OnIsDirtyChanged()
         {
-            if (IsDirtyChanged != null)
-                IsDirtyChanged(this, null);
+            IsDirtyChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

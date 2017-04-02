@@ -1301,7 +1301,7 @@ namespace DotSpatial.Controls
             var bReproject = false;
             if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
             {
-    			string message = String.Format(MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch, layer.DataSet.Name, layer.Projection.Name, Projection.Name);
+    			string message = string.Format(MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch, layer.DataSet.Name, layer.Projection.Name, Projection.Name);
                 if (ProjectionModeReproject == ActionMode.PromptOnce)
                 {
                     message =

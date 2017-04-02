@@ -15,7 +15,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// An inteface specification for any of the multiple types of IDataBlock.
+    /// An interface specification for any of the multiple types of IDataBlock.
     /// </summary>
     public interface IValueGrid
     {

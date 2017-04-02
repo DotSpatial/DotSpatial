@@ -1,6 +1,6 @@
 ﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Ribbon.dll
-// Description:  Original new code creatd by Ted Dunsford to help add items to panels
+// Description:  Original new code created by Ted Dunsford to help add items to panels
 // ********************************************************************************************************
 // The license is the Microsoft Public License (Ms-PL).  A copy of the license can be found
 // here: http://www.opensource.org/licenses/ms-pl.html.  This is to keep it consistent with the

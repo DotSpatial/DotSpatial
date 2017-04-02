@@ -51,7 +51,7 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Intializes a new progress meter, but doesn't support the IProgressHandler unless one is specified.
+        /// Initializes a new progress meter, but doesn't support the IProgressHandler unless one is specified.
         /// </summary>
         public TimedProgressMeter()
             : this(null, "Calculating values.", 100)

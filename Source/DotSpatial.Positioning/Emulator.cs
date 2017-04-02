@@ -271,7 +271,7 @@ namespace DotSpatial.Positioning
         #region Events
 
         /// <summary>
-        /// An Excpetion occured
+        /// An Exception occured
         /// </summary>
         public EventHandler<ExceptionEventArgs> ExceptionOccurred;
 
@@ -568,7 +568,7 @@ namespace DotSpatial.Positioning
         #endregion Public Members
 
         /// <summary>
-        /// the string Name ofhte emulator
+        /// The string Name of the emulator
         /// </summary>
         public string Name
         {
@@ -1081,10 +1081,10 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Gets or sets a value, in miliseconds, that determines how long the stream will attempt to read before timing out.
+        /// Gets or sets a value, in milliseconds, that determines how long the stream will attempt to read before timing out.
         /// </summary>
         /// <value>The read timeout.</value>
-        /// <returns>A value, in miliseconds, that determines how long the stream will attempt to read before timing out.</returns>
+        /// <returns>A value, in milliseconds, that determines how long the stream will attempt to read before timing out.</returns>
         ///
         /// <exception cref="T:System.InvalidOperationException">The <see cref="P:System.IO.Stream.ReadTimeout"/> method always throws an <see cref="T:System.InvalidOperationException"/>. </exception>
         public override int ReadTimeout
@@ -1100,10 +1100,10 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Gets or sets a value, in miliseconds, that determines how long the stream will attempt to write before timing out.
+        /// Gets or sets a value, in milliseconds, that determines how long the stream will attempt to write before timing out.
         /// </summary>
         /// <value>The write timeout.</value>
-        /// <returns>A value, in miliseconds, that determines how long the stream will attempt to write before timing out.</returns>
+        /// <returns>A value, in milliseconds, that determines how long the stream will attempt to write before timing out.</returns>
         ///
         /// <exception cref="T:System.InvalidOperationException">The <see cref="P:System.IO.Stream.WriteTimeout"/> method always throws an <see cref="T:System.InvalidOperationException"/>. </exception>
         public override int WriteTimeout
@@ -1161,7 +1161,7 @@ namespace DotSpatial.Positioning
         /// Closes the emulation stream, but doesn't dispose of it.
         /// </summary>
         /// <remarks>The Emulator.Close() method simply terminates the thread that feeds data to
-        /// a virtual Device. This allows the emulator to be reused indefinately.</remarks>
+        /// a virtual Device. This allows the emulator to be reused indefinitely.</remarks>
         public override void Close()
         {
             if (_emulationIntervalWaitHandle != null)

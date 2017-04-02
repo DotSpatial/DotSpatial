@@ -317,7 +317,7 @@ namespace DotSpatial.Controls
             //report progress
             if (ProgressHandler != null)
             {
-                ProgressHandler.Progress(MessageStrings.LoadingPlugins, 0, String.Empty);
+                ProgressHandler.Progress(MessageStrings.LoadingPlugins, 0, string.Empty);
             }
         }
 
@@ -449,7 +449,7 @@ namespace DotSpatial.Controls
             if (_splashScreen != null)
                 UpdateSplashScreen(msg);
             else if (ProgressHandler != null)
-                ProgressHandler.Progress(String.Empty, 0, msg);
+                ProgressHandler.Progress(string.Empty, 0, msg);
             else
             {
                 MessageBox.Show(msg);
@@ -465,7 +465,7 @@ namespace DotSpatial.Controls
             if (!extension.IsActive)
             {
                 if (!extension.TryActivate())
-                    MessageBox.Show(String.Format(MessageStrings.ErrorWhileWhileActivating, extension.AssemblyQualifiedName));
+                    MessageBox.Show(string.Format(MessageStrings.ErrorWhileWhileActivating, extension.AssemblyQualifiedName));
             }
         }
 
@@ -678,8 +678,8 @@ namespace DotSpatial.Controls
                 var importCount = imports.Count;
                 string extensionTypeName = typeof(T).Name;
                 MessageBox.Show(importCount > 1
-                    ? String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount)
-                    : String.Format("A {0} extension must be included because a UI plugin was found.", extensionTypeName));
+                    ? string.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount)
+                    : string.Format("A {0} extension must be included because a UI plugin was found.", extensionTypeName));
                 return null;
             }
 
@@ -751,9 +751,9 @@ namespace DotSpatial.Controls
                 if (type != null)
                     typeAssembly = type.Assembly.ToString();
                 else
-                    typeAssembly = String.Empty;
+                    typeAssembly = string.Empty;
 
-                string message = String.Format("Skipping extension {0}. {1}", typeAssembly, ex.LoaderExceptions.First().Message);
+                string message = string.Format("Skipping extension {0}. {1}", typeAssembly, ex.LoaderExceptions.First().Message);
                 Trace.WriteLine(message);
                 MessageBox.Show(message);
             }
