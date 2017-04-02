@@ -41,7 +41,7 @@ namespace DotSpatial.Data
         private bool _isFinishedBuffering;
         private bool _isFinishedReading;
         private int _maxBufferSize = 9600000; // Approximately around ten megs, divisible by 8
-        private int _readOffset; //
+        private int _readOffset;
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace DotSpatial.Data
 
             FileInfo fi = new FileInfo(fileName);
 
-            _fileLength = fi.Length;
+            _fileLength = fi.Length; // TODO: This needs looking at!
             _fileOffset = 0;
 
             _readOffset = -1; // There is no buffer loaded.
@@ -83,6 +83,46 @@ namespace DotSpatial.Data
             _isFinishedBuffering = false;
             _isFinishedReading = false;
             _progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName), _fileLength);
+
+            if (_fileLength < 10000000) _progressMeter.StepPercent = 5;
+            if (_fileLength < 5000000) _progressMeter.StepPercent = 10;
+            if (_fileLength < 100000) _progressMeter.StepPercent = 50;
+            if (_fileLength < 10000) _progressMeter.StepPercent = 100;
+            //long testMax = _fileLength / _progressMeter.StepPercent;
+            //if (testMax < (long)9600000) _maxBufferSize = Convert.ToInt32(testMax); // otherwise keep it at 96000000
+        }
+
+        /// <summary>
+        /// Creates a new instance of BufferedBinaryReader.
+        /// </summary>
+        ///<param name="b">The byte array.</param>
+        public BufferedBinaryReader(Byte[] b)
+            : this(b, null)
+        {
+            // This is just an overload that sends the default null value in for the progressHandler
+        }
+
+        /// <summary>
+        /// Creates a new instance of BufferedBinaryReader, and specifies where to send progress messages.
+        /// </summary>
+        ///<param name="b">The byte array.</param>
+        /// <param name="progressHandler">Any implementation of IProgressHandler for receiving progress messages.</param>
+        public BufferedBinaryReader(Byte[] b, IProgressHandler progressHandler)
+        {
+            _binaryReader = new BinaryReader(new MemoryStream(b));
+
+            _fileLength = b.Length;
+            _fileOffset = 0;
+
+            _readOffset = -1; // There is no buffer loaded.
+
+            _bufferSize = 0;
+            _bufferOffset = -1; // -1 means no buffer is loaded.
+
+            _isFinishedBuffering = false;
+            _isFinishedReading = false;
+
+            _progressMeter = new ProgressMeter(progressHandler, "Reading", _fileLength);
 
             if (_fileLength < 10000000) _progressMeter.StepPercent = 5;
             if (_fileLength < 5000000) _progressMeter.StepPercent = 10;
@@ -156,7 +196,7 @@ namespace DotSpatial.Data
         {
             _buffer = null;
             _binaryReader = null;
-            _fileStream.Dispose();
+            _fileStream?.Dispose();
         }
 
         /// <summary>
@@ -202,9 +242,11 @@ namespace DotSpatial.Data
                 case SeekOrigin.Begin:
                     startPosition = offset;
                     break;
-                case SeekOrigin.Current: startPosition = _readOffset + offset;
+                case SeekOrigin.Current:
+                    startPosition = _readOffset + offset;
                     break;
-                case SeekOrigin.End: startPosition = _fileLength - offset;
+                case SeekOrigin.End:
+                    startPosition = _fileLength - offset;
                     break;
             }
 

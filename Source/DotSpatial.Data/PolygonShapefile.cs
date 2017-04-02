@@ -80,6 +80,39 @@ namespace DotSpatial.Data
             ReadProjection();
         }
 
+        /// <summary>
+        /// Opens a shapefile
+        /// </summary>
+        /// <param name="shapeBytes">The shape bytes</param>
+        /// <param name="indexBytes">The index bytes</param>
+        /// <param name="dbaseBytes">The dbase bytes</param>
+        /// <param name="projectionBytes">The projection bytes</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        public void Open(Byte[] shapeBytes, Byte[] indexBytes, Byte[] dbaseBytes, Byte[] projectionBytes, IProgressHandler progressHandler)
+        {
+            IndexMode = true;
+            Header = new ShapefileHeader(shapeBytes);
+
+            switch (Header.ShapeType)
+            {
+                case ShapeType.PolyLineM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.PolyLineZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
+            }
+
+            Extent = Header.ToExtent();
+            Attributes.Open(dbaseBytes);
+
+            LineShapefile.FillLines(shapeBytes, indexBytes, progressHandler, this, FeatureType.Line);
+            ReadProjection(projectionBytes);
+        }
+
         // X Y Poly Lines: Total Length = 28 Bytes
         // ---------------------------------------------------------
         // Position     Value               Type        Number      Byte Order

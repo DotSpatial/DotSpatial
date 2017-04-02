@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotSpatial.Projections;
-using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {
@@ -323,6 +322,69 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// This will return the correct shapefile type by reading the fileName.
+        /// </summary>
+        /// <param name="shapeBytes">The shape bytes</param>
+        /// <param name="indexBytes">The index bytes</param>
+        /// <param name="dbaseBytes">The dbase bytes</param>
+        /// <param name="projectionBytes">The projection bytes</param>
+        /// <returns>A correct shapefile object which is exclusively for reading the shape data</returns>
+        public static new Shapefile OpenFile(Byte[] shapeBytes, Byte[] indexBytes, Byte[] dbaseBytes, Byte[] projectionBytes)
+        {
+            return OpenFile(shapeBytes, indexBytes, dbaseBytes, projectionBytes, DataManager.DefaultDataManager.ProgressHandler);
+        }
+
+        /// <param name="shapeBytes">The shape bytes</param>
+        /// <param name="indexBytes">The index bytes</param>
+        /// <param name="dbaseBytes">The dbase bytes</param>
+        /// <param name="projectionBytes">The projection bytes</param>
+        /// <param name="progressHandler">receives progress messages and overrides the ProgressHandler on the DataManager.DefaultDataManager</param>
+        /// <returns>A correct shapefile object which is exclusively for reading the shape data</returns>
+        public static new Shapefile OpenFile(Byte[] shapeBytes, Byte[] indexBytes, Byte[] dbaseBytes, Byte[] projectionBytes, IProgressHandler progressHandler)
+        {
+            var head = new ShapefileHeader();
+            head.Open(shapeBytes);
+            switch (head.ShapeType)
+            {
+                case ShapeType.MultiPatch:
+                    throw new NotImplementedException("This shape type is not yet supported.");
+
+                case ShapeType.MultiPoint:
+                case ShapeType.MultiPointM:
+                case ShapeType.MultiPointZ:
+                    var mpsf = new MultiPointShapefile();
+                    mpsf.Open(shapeBytes, indexBytes, dbaseBytes, projectionBytes, progressHandler);
+                    return mpsf;
+
+                case ShapeType.NullShape:
+                    throw new NotImplementedException("This shape type is not yet supported.");
+
+                case ShapeType.Point:
+                case ShapeType.PointM:
+                case ShapeType.PointZ:
+                    var psf = new PointShapefile();
+                    psf.Open(shapeBytes, indexBytes, dbaseBytes, projectionBytes, progressHandler);
+                    return psf;
+
+                case ShapeType.Polygon:
+                case ShapeType.PolygonM:
+                case ShapeType.PolygonZ:
+                    var pgsf = new PolygonShapefile();
+                    pgsf.Open(shapeBytes, indexBytes, dbaseBytes, projectionBytes, progressHandler);
+                    return pgsf;
+
+                case ShapeType.PolyLine:
+                case ShapeType.PolyLineM:
+                case ShapeType.PolyLineZ:
+                    var lsf = new LineShapefile();
+                    lsf.Open(shapeBytes, indexBytes, dbaseBytes, projectionBytes, progressHandler);
+                    return lsf;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// saves a single row to the data source.
         /// </summary>
         /// <param name="index">the integer row (or FID) index</param>
@@ -595,6 +657,40 @@ namespace DotSpatial.Data
             }
         }
 
+        public List<ShapeHeader> ReadIndexFile(Byte[] b)
+        {
+            var fileLen = b.Length;
+            if (fileLen == 100)
+            {
+                // the file is empty so we are done reading
+                return Enumerable.Empty<ShapeHeader>().ToList();
+            }
+
+            // Use a the length of the file to dimension the byte array
+            using (var bbReader = new MemoryStream(b))
+            {
+                // Skip the header and begin reading from the first record
+                bbReader.Seek(100, SeekOrigin.Begin);
+
+                _header.ShxLength = (int)(fileLen / 2);
+                var length = (int)(fileLen - 100);
+                var numRecords = length / 8;
+                // Each record consists of 2 Big-endian integers for a total of 8 bytes.
+                // This will store the header elements that we read from the file.
+                var result = new List<ShapeHeader>(numRecords);
+                for (var i = 0; i < numRecords; i++)
+                {
+                    result.Add(new ShapeHeader
+                    {
+                        Offset = bbReader.ReadInt32(Endian.BigEndian),
+                        ContentLength = bbReader.ReadInt32(Endian.BigEndian),
+                    });
+                }
+
+                return result;
+            }
+        }
+
         /// <summary>
         /// Ensures that the attribute Table will have information that matches the current Table of attribute information
         /// </summary>
@@ -654,6 +750,18 @@ namespace DotSpatial.Data
             if (File.Exists(prjFile))
             {
                 Projection = ProjectionInfo.Open(prjFile);
+            }
+            else
+            {
+                Projection = new ProjectionInfo();
+            }
+        }
+
+        public void ReadProjection(Byte[] b)
+        {
+            if (b != null)
+            {
+                Projection = ProjectionInfo.Open(b);
             }
             else
             {

@@ -71,6 +71,14 @@ namespace DotSpatial.Data
             Open(inFilename);
         }
 
+        /// <summary>
+        /// Opens the specified shape file directly
+        /// </summary>
+        /// <param name="b">The header bytes.</param>
+        public ShapefileHeader(Byte[] b)
+        {
+            Open(b);
+        }
         #endregion
 
         #region Methods
@@ -88,7 +96,7 @@ namespace DotSpatial.Data
             _yMax = 0.0;
             _zMin = 0.0;
             _zMax = 0.0;
-            _mMin = 0.0;
+            _mMin = 0.0; 
             _mMax = 0.0;
         }
 
@@ -100,67 +108,22 @@ namespace DotSpatial.Data
         {
             Filename = inFilename;
 
-            //  Position        Field           Value       Type        ByteOrder
-            //  --------------------------------------------------------------
-            //  Byte 0          File Code       9994        Integer     Big
-            //  Byte 4          Unused          0           Integer     Big
-            //  Byte 8          Unused          0           Integer     Big
-            //  Byte 12         Unused          0           Integer     Big
-            //  Byte 16         Unused          0           Integer     Big
-            //  Byte 20         Unused          0           Integer     Big
-            //  Byte 24         File Length     File Length Integer     Big
-            //  Byte 28         Version         1000        Integer     Little
-            //  Byte 32         Shape Type      Shape Type  Integer     Little
-            //  Byte 36         Bounding Box    Xmin        Double      Little
-            //  Byte 44         Bounding Box    Ymin        Double      Little
-            //  Byte 52         Bounding Box    Xmax        Double      Little
-            //  Byte 60         Bounding Box    Ymax        Double      Little
-            //  Byte 68         Bounding Box    Zmin        Double      Little
-            //  Byte 76         Bounding Box    Zmax        Double      Little
-            //  Byte 84         Bounding Box    Mmin        Double      Little
-            //  Byte 92         Bounding Box    Mmax        Double      Little
-
             // This may throw an IOException if the file is already in use.
             BufferedBinaryReader bbReader = new BufferedBinaryReader(Filename);
 
-            bbReader.FillBuffer(100); // we only need to read 100 bytes from the header.
-
-            bbReader.Close(); // Close the internal readers connected to the file, but don't close the file itself.
-
-            // Reading BigEndian simply requires us to reverse the byte order.
-            _fileCode = bbReader.ReadInt32(false);
-
-            // Skip the next 20 bytes because they are unused
-            bbReader.Seek(20, SeekOrigin.Current);
-
-            // Read the file length in reverse sequence
-            _fileLength = bbReader.ReadInt32(false);
-
-            // From this point on, all the header values are in little Endean
-
-            // Read the version
-            _version = bbReader.ReadInt32();
-
-            // Read in the shape type that should be the shape type for the whole shapefile
-            _shapeType = (ShapeType)bbReader.ReadInt32();
-
-            // Get the extents, each of which are double values.
-            _xMin = bbReader.ReadDouble();
-            _yMin = bbReader.ReadDouble();
-            _xMax = bbReader.ReadDouble();
-            _yMax = bbReader.ReadDouble();
-            _zMin = bbReader.ReadDouble();
-            _zMax = bbReader.ReadDouble();
-            _mMin = bbReader.ReadDouble();
-            _mMax = bbReader.ReadDouble();
-
-            bbReader.Dispose();
+            Open(bbReader);
 
             FileInfo fi = new FileInfo(ShxFilename);
             if (fi.Exists)
             {
                 _shxLength = Convert.ToInt32(fi.Length / 2); //length is in 16 bit words.
             }
+        }
+
+        public void Open(Byte[] b)
+        {
+            BufferedBinaryReader bbReader = new BufferedBinaryReader(b);
+            Open(bbReader);
         }
 
         /// <summary>
@@ -492,6 +455,63 @@ namespace DotSpatial.Data
             _xMax = extent.MaxX;
             _yMin = extent.MinY;
             _yMax = extent.MaxY;
+        }
+
+        private void Open(BufferedBinaryReader bbReader)
+        {
+            //  Position        Field           Value       Type        ByteOrder
+            //  --------------------------------------------------------------
+            //  Byte 0          File Code       9994        Integer     Big
+            //  Byte 4          Unused          0           Integer     Big
+            //  Byte 8          Unused          0           Integer     Big
+            //  Byte 12         Unused          0           Integer     Big
+            //  Byte 16         Unused          0           Integer     Big
+            //  Byte 20         Unused          0           Integer     Big
+            //  Byte 24         File Length     File Length Integer     Big
+            //  Byte 28         Version         1000        Integer     Little
+            //  Byte 32         Shape Type      Shape Type  Integer     Little
+            //  Byte 36         Bounding Box    Xmin        Double      Little
+            //  Byte 44         Bounding Box    Ymin        Double      Little
+            //  Byte 52         Bounding Box    Xmax        Double      Little
+            //  Byte 60         Bounding Box    Ymax        Double      Little
+            //  Byte 68         Bounding Box    Zmin        Double      Little
+            //  Byte 76         Bounding Box    Zmax        Double      Little
+            //  Byte 84         Bounding Box    Mmin        Double      Little
+            //  Byte 92         Bounding Box    Mmax        Double      Little
+
+            // This may throw an IOException if the file is already in use.
+            bbReader.FillBuffer(100); // we only need to read 100 bytes from the header.
+
+            bbReader.Close(); // Close the internal readers connected to the file, but don't close the file itself.
+
+            // Reading BigEndian simply requires us to reverse the byte order.
+            _fileCode = bbReader.ReadInt32(false);
+
+            // Skip the next 20 bytes because they are unused
+            bbReader.Seek(20, SeekOrigin.Current);
+
+            // Read the file length in reverse sequence
+            _fileLength = bbReader.ReadInt32(false);
+
+            // From this point on, all the header values are in little Endean
+
+            // Read the version
+            _version = bbReader.ReadInt32();
+
+            // Read in the shape type that should be the shape type for the whole shapefile
+            _shapeType = (ShapeType)bbReader.ReadInt32();
+
+            // Get the extents, each of which are double values.
+            _xMin = bbReader.ReadDouble();
+            _yMin = bbReader.ReadDouble();
+            _xMax = bbReader.ReadDouble();
+            _yMax = bbReader.ReadDouble();
+            _zMin = bbReader.ReadDouble();
+            _zMax = bbReader.ReadDouble();
+            _mMin = bbReader.ReadDouble();
+            _mMax = bbReader.ReadDouble();
+
+            bbReader.Dispose();
         }
     }
 }
