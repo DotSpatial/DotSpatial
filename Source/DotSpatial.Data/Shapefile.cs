@@ -26,7 +26,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// This is a generic shapefile that is inherited by other specific shapefile types.
     /// </summary>
-    public class Shapefile : FeatureSet
+    public abstract class Shapefile : FeatureSet
     {
         #region Private Variables
 
@@ -34,13 +34,13 @@ namespace DotSpatial.Data
         private AttributeTable _attributeTable;
 
         #endregion
-
+        
         #region Constructors
 
         /// <summary>
         /// When creating a new shapefile, this simply prevents the basic values from being null.
         /// </summary>
-        public Shapefile()
+        protected Shapefile()
         {
             Configure();
         }
