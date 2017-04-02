@@ -68,11 +68,6 @@ namespace DotSpatial.Data
         /// Indicates that the Fill methode is called from inside itself.
         /// </summary>
         private bool _isFilling;
-        /// <summary>
-        /// set true to make _writer operate on _inMemoryStream
-        /// </summary>
-        private bool _inMemoryMode = false;
-        private Stream _inMemoryStream = null;
         #endregion
 
         #region Constructors
@@ -189,7 +184,7 @@ namespace DotSpatial.Data
                     while (current < fieldLength)
                     {
                         current += myStream.Read(byteContent, current, fieldLength - current);
-                    }                    
+                    }
 
                     result[outRow++] = ParseColumn(field, row, byteContent, 0, fieldLength, null);
                 }
@@ -297,24 +292,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// returns Binary writer on _filename, unless _inMemoryMode in which case returns binary writer on _inMemoryStream
-        /// _inMemoryMode is used by zip file export
+        /// Gets a BinaryWriter that can be used to write to the file inside _fileName.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a BinaryWriter that can be used to write to the file inside _fileName.</returns>
         private BinaryWriter GetBinaryWriter()
         {
-            if (_inMemoryMode)
-            {
-                if (_inMemoryStream == null )
-                {
-                    _inMemoryStream = new MemoryStream(); 
-                }
-                return new BinaryWriter(_inMemoryStream); 
-            }
-            else
-            {
-                return new BinaryWriter(new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1000000));
-            }
+            return new BinaryWriter(new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1000000));
         }
 
         private BinaryReader GetBinaryReader()
@@ -907,36 +890,33 @@ namespace DotSpatial.Data
             OnAttributesFilled();
             _isFilling = false;
         }
+
         /// <summary>
-        /// Gets DBF file as a memory stream for use in zip export
+        /// Exports the dbf file content to a stream.
         /// </summary>
-        /// <returns></returns>
-        public Stream ExportDBFToStream()
+        /// <returns>A stream that contains the dbf file content.</returns>
+        public Stream ExportDbfToStream()
         {
-            MemoryStream DBFStream = new MemoryStream(); 
+            MemoryStream dbfStream = new MemoryStream();
             UpdateSchema();
-            // switch the usual file writer for a memory stream writer, using this technique as GetBinaryWriter is called from many places
+
             try
             {
-                _inMemoryMode = true;
-                _inMemoryStream = null; 
-                // GetBinaryWriter will return a writer on _in_memory_stream if _in_memory_stream == true, otherwise writer attached to a filestream 
-                _writer = GetBinaryWriter();
-                WriteHeader(_writer);
-                WriteTable();
-                _inMemoryStream.Seek(0, SeekOrigin.Begin);
-                _inMemoryStream.CopyTo(DBFStream);
-                _writer.Close();
+                using (var inMemoryStream = new MemoryStream())
+                using (_writer = new BinaryWriter(inMemoryStream))
+                {
+                    WriteHeader(_writer);
+                    WriteTable();
+                    inMemoryStream.Seek(0, SeekOrigin.Begin);
+                    inMemoryStream.CopyTo(dbfStream);
+                    _writer.Close();
+                }
             }
             finally
             {
-                // make sure this is called 
-                _inMemoryMode = false;
-                // dont want to hold this in ram indefinately 
-                _inMemoryStream = null;
-                DBFStream.Seek(0, SeekOrigin.Begin);
+                dbfStream.Seek(0, SeekOrigin.Begin);
             }
-            return DBFStream;
+            return dbfStream;
         }
 
         /// <summary>
@@ -1000,7 +980,6 @@ namespace DotSpatial.Data
             }
 
             // Add new columns that exist in the data Table, but don't have a matching field yet.
-
             tempColumns.AddRange(from DataColumn dc in _dataTable.Columns
                                  where !ColumnNameExists(dc.ColumnName)
                                  select dc as Field ?? new Field(dc));
@@ -1424,10 +1403,10 @@ namespace DotSpatial.Data
                     break;
 
                 case 'C': // character record.
-                    // Symbol | Data Type | Description
-                    // -------+-----------+----------------------------------------------------------------------------
-                    //   C    | Character | All OEM code page characters - padded with blanks to the width of the field.
-                    
+                          // Symbol | Data Type | Description
+                          // -------+-----------+----------------------------------------------------------------------------
+                          //   C    | Character | All OEM code page characters - padded with blanks to the width of the field.
+
                     for (var i = cBuffer.Length - 1; i >= 0; --i)
                     {
                         if (cBuffer[i] != ' ')
@@ -1520,7 +1499,7 @@ namespace DotSpatial.Data
             {
                 return DBNull.Value;
             }
-            
+
             object tempObject = DBNull.Value;
             Type t = field.DataType;
             var errorMessage = new Lazy<string>(() => string.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t));
@@ -1669,6 +1648,7 @@ namespace DotSpatial.Data
             }
             return tempObject;
         }
+
         /// <summary>
         /// Read the header data from the DBF file.
         /// </summary>

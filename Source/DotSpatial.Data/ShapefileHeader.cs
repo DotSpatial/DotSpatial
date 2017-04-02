@@ -76,7 +76,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Resets all the extent values to 0
+        /// Resets all the extent values to 0.
         /// </summary>
         public void Clear()
         {
@@ -90,6 +90,28 @@ namespace DotSpatial.Data
             _zMax = 0.0;
             _mMin = 0.0;
             _mMax = 0.0;
+        }
+
+        /// <summary>
+        /// Exports the shapefile header for the shp file to a stream.
+        /// </summary>
+        /// <returns>Stream that contains the header for the shp file.</returns>
+        public Stream ExportShpHeaderToStream()
+        {
+            Stream s = new MemoryStream();
+            WriteToStream(_fileLength, s);
+            return s;
+        }
+
+        /// <summary>
+        /// Exports the shapefile header for the shx file to a stream.
+        /// </summary>
+        /// <returns>Stream, that contains the header for the shx file.</returns>
+        public Stream ExportShxHeaderToStream()
+        {
+            Stream s = new MemoryStream();
+            WriteToStream(_shxLength, s);
+            return s;
         }
 
         /// <summary>
@@ -186,101 +208,46 @@ namespace DotSpatial.Data
         /// <summary>
         /// Writes the current content to the specified file.
         /// </summary>
-        /// <param name="destFilename">The string fileName to write to</param>
+        /// <param name="destFilename">The string fileName to write to.</param>
         /// <param name="destFileLength">The only difference between the shp header and the
         ///  shx header is the file length parameter.</param>
         private void Write(string destFilename, int destFileLength)
         {
-            string dir = Path.GetDirectoryName(Path.GetFullPath(Filename));
-            if (dir != null)
-                if (!Directory.Exists(dir))
-                {
-                    //if (MessageBox.Show("Directory " + dir + " does not exist.  Do you want to create it?",
-                    // "Create Directory?", MessageBoxButtons.YesNo) != DialogResult.OK)
-                    //    return;
-                    Directory.CreateDirectory(dir);
-                }
-            //if (File.Exists(destFilename)) File.Delete(destFilename);
+            var dir = Path.GetDirectoryName(Filename);
+            if (dir != null && !Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
-            // file that will be written to 
-            using (FileStream fs = new FileStream(destFilename, FileMode.Append, FileAccess.Write, FileShare.None))
+            using (var fs = new FileStream(destFilename, FileMode.Append, FileAccess.Write, FileShare.None))
             {
-
-                // Write everything to memory first 
-                using (Stream memorystream = WriteToStream(destFileLength))
-                {
-                    // rewind the stream before writing it to the file
-                    memorystream.Seek(0, SeekOrigin.Begin);
-
-                    // copy into the file stream 
-                    memorystream.CopyTo(fs);
-
-                    // tidy up 
-                    memorystream.Close();
-                }
+                WriteToStream(destFileLength, fs);
                 fs.Close();
             }
         }
 
         /// <summary>
-        /// export SHP file to stream instead of disk
-        /// </summary>
-        /// <returns></returns>
-        public Stream ExportSHPToStream()
-        {
-            Stream shp_stream = WriteToStream(_fileLength);
-            return shp_stream;
-        }
-
-        /// <summary>
-        /// export SHP file to stream instead of disk
-        /// </summary>
-        /// <returns></returns>
-        public Stream ExportSHXToStream()
-        {
-
-            Stream shp_stream = WriteToStream(_shxLength);
-            return shp_stream;
-        }
-
-        // donogst // put into a memory stream to remove dependence on hard disk for webservers etc
-        /// <summary>
-        /// write the current content to a memorystream 
+        /// Writes the current content to the given stream.
         /// </summary>
         /// <param name="destFileLength">The only difference between the shp header and the
         ///  shx header is the file length parameter.</param>
-        /// <returns></returns>
-        private Stream WriteToStream(int destFileLength)
+        /// <param name="stream">Stream the content is written to.</param>
+        private void WriteToStream(int destFileLength, Stream stream)
         {
-            Stream ms = new MemoryStream(); 
-
-            ms.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
+            stream.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
 
             byte[] bt = new byte[20];
-            ms.Write(bt, 0, 20);         //  Bytes 4 - 20 are unused
+            stream.Write(bt, 0, 20);         //  Bytes 4 - 20 are unused
 
-            ms.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
-
-            ms.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
-
-            ms.WriteLe((int)_shapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
-
-            ms.WriteLe(_xMin);           //  Byte 36         Bounding Box    Xmin        Double      Little
-
-            ms.WriteLe(_yMin);           //  Byte 44         Bounding Box    Ymin        Double      Little
-
-            ms.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
-
-            ms.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
-
-            ms.WriteLe(_zMin);           //  Byte 68         Bounding Box    Zmin        Double      Little
-
-            ms.WriteLe(_zMax);           //  Byte 76         Bounding Box    Zmax        Double      Little
-
-            ms.WriteLe(_mMin);           //  Byte 84         Bounding Box    Mmin        Double      Little
-
-            ms.WriteLe(_mMax);           //  Byte 92         Bounding Box    Mmax        Double      Little
-            return ms;
+            stream.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
+            stream.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
+            stream.WriteLe((int)_shapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
+            stream.WriteLe(_xMin);           //  Byte 36         Bounding Box    Xmin        Double      Little
+            stream.WriteLe(_yMin);           //  Byte 44         Bounding Box    Ymin        Double      Little
+            stream.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
+            stream.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
+            stream.WriteLe(_zMin);           //  Byte 68         Bounding Box    Zmin        Double      Little
+            stream.WriteLe(_zMax);           //  Byte 76         Bounding Box    Zmax        Double      Little
+            stream.WriteLe(_mMin);           //  Byte 84         Bounding Box    Mmin        Double      Little
+            stream.WriteLe(_mMax);           //  Byte 92         Bounding Box    Mmax        Double      Little
         }
 
         #endregion

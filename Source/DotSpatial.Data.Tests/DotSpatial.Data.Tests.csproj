@@ -103,7 +103,6 @@
     <Compile Include="ShapefileTests.cs" />
     <Compile Include="ShapeReaderTests.cs" />
     <Compile Include="ShapeTests.cs" />
-    <Compile Include="PackageExportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
