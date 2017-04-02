@@ -64,6 +64,7 @@ namespace DotSpatial.Data
         private Encoding _encoding;
         private DateTime _updateDate;
         private BinaryWriter _writer;
+        private Byte[] _dbaseBytes;
         /// <summary>
         /// Indicates that the Fill methode is called from inside itself.
         /// </summary>
@@ -774,37 +775,109 @@ namespace DotSpatial.Data
             }
         }
 
+        /// <summary>
+        /// Reads all the information from the file, including the vector shapes and the database component.
+        /// </summary>
+        public void Open(Byte[] b)
+        {
+            Open(b, null);
+        }
+
+        /// <summary>
+        /// Reads the header and if deletedRows is null, searches file for deletedRows if file size indicates possibility of deleted rows.
+        /// </summary>
+        public void Open(Byte[] b, List<int> deletedRows)
+        {
+            _dbaseBytes = b;
+            _attributesPopulated = false; // we had a file, but have not read the dbf content into memory yet.
+            _dataTable = new DataTable();
+
+            using (var reader = new BinaryReader(new MemoryStream(_dbaseBytes)))
+            {
+                ReadTableHeader(reader); // based on the header, set up the fields information etc.
+
+                // If the deleted rows were passed in, we don't need to look for them
+                if (null != deletedRows)
+                {
+                    _deletedRows = deletedRows;
+                    _hasDeletedRecords = _deletedRows.Count > 0;
+                    return;
+                }
+                long length = _headerLength + _numRecords * _recordLength;
+                long pos = reader.BaseStream.Position;
+                if (HasEof(reader.BaseStream, length))
+                    length++;
+
+                if (b.Length == length)
+                {
+                    _hasDeletedRecords = false;
+                    // No deleted rows detected
+                    return;
+                }
+
+                reader.BaseStream.Seek(pos, SeekOrigin.Begin);
+
+                _hasDeletedRecords = true;
+                int count = 0;
+                int row = 0;
+                while (count < _numRecords)
+                {
+                    if (reader.BaseStream.ReadByte() == (byte)' ')
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        _deletedRows.Add(row);
+                    }
+                    row++;
+                    reader.BaseStream.Seek(_recordLength - 1, SeekOrigin.Current);
+                }
+            }
+        }
+
         private void GetRowOffsets()
         {
-            var fi = new FileInfo(_fileName);
-
-            // Encoding appears to be ASCII, not Unicode
-            if ((int)fi.Length == _headerLength)
+            if (_fileName != null)
             {
-                // The file is empty, so we are done here
-                return;
-            }
+                var fi = new FileInfo(_fileName);
 
-            if (_hasDeletedRecords)
-            {
-                int length = (int)(fi.Length - _headerLength - 1);
-                int recordCount = length / _recordLength;
-                _offsets = new long[_numRecords];
-                int j = 0; // undeleted index
-                using (var myReader = GetBinaryReader())
+                // Encoding appears to be ASCII, not Unicode
+                if ((int)fi.Length == _headerLength)
                 {
-                    for (int i = 0; i <= recordCount; i++)
+                    // The file is empty, so we are done here
+                    return;
+                }
+                if (_hasDeletedRecords)
+                {
+                    int length = (int)(fi.Length - _headerLength - 1);
+                    int recordCount = length / _recordLength;
+                    _offsets = new long[_numRecords];
+                    int j = 0; // undeleted index
+                    using (var myReader = GetBinaryReader())
                     {
-                        // seek to byte
-                        myReader.BaseStream.Seek(_headerLength + 1 + i * _recordLength, SeekOrigin.Begin);
-                        var cb = myReader.ReadByte();
-                        if (cb != '*')
-                            _offsets[j] = i * _recordLength;
-                        j++;
-                        if (j == _numRecords) break;
+                        for (int i = 0; i <= recordCount; i++)
+                        {
+                            // seek to byte
+                            myReader.BaseStream.Seek(_headerLength + 1 + i * _recordLength, SeekOrigin.Begin);
+                            var cb = myReader.ReadByte();
+                            if (cb != '*')
+                                _offsets[j] = i * _recordLength;
+                            j++;
+                            if (j == _numRecords) break;
+                        }
                     }
                 }
             }
+
+            if (_dbaseBytes != null)
+            {
+                if (_dbaseBytes.Length == _headerLength)
+                {
+                    return;
+                }
+            }
+
             _loaded = true;
         }
 
@@ -822,13 +895,13 @@ namespace DotSpatial.Data
         /// This populates the Table with data from the file.
         /// </summary>
         /// <param name="numRows">In the event that the dbf file is not found, this indicates how many blank rows should exist in the attribute Table.</param>
-        public void Fill(int numRows)
+        public void Fill(int numRows) 
         {
             if (_isFilling) return; // Changed by jany_ (2015-07-30) don't load again because the fill methode is called from inside the fill methode and we'd get a datatable that is filled with twice the existing records
             _attributesPopulated = false;
             _dataTable.Rows.Clear(); // if we have already loaded data, clear the data.
             _isFilling = true;
-            if (!File.Exists(_fileName))
+            if (!File.Exists(_fileName) && _dbaseBytes == null)
             {
                 _numRecords = numRows;
                 _dataTable.BeginLoadData();
@@ -855,7 +928,7 @@ namespace DotSpatial.Data
 
             _dataTable.BeginLoadData();
             // Reading the Table elements as well as the shapes in a single progress loop.
-            using (var myReader = GetBinaryReader())
+            using (var myReader = _dbaseBytes != null ? new BinaryReader(new MemoryStream(_dbaseBytes)) : GetBinaryReader())
             {
                 for (int row = 0; row < _numRecords; row++)
                 {
@@ -1930,7 +2003,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (!_attributesPopulated && !string.IsNullOrEmpty(Filename))
+                if (!_attributesPopulated && (!string.IsNullOrEmpty(Filename) || _dbaseBytes != null))
                     Fill(_numRecords);
                 return _dataTable;
             }
