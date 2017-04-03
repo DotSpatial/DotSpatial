@@ -20,7 +20,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// Raster parameter allows ITools to specify that they require a Raster data set as input
+    /// Raster parameter allows ITools to specify that they require a Raster data set as input.
     /// </summary>
     public class FeatureSetParam : Parameter
     {
@@ -54,7 +54,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <param name="path"></param>
         public override void GenerateDefaultOutput(string path)
         {
-            FeatureSet addedFeatureSet = new Shapefile
+            FeatureSet addedFeatureSet = new FeatureSet
                                              {
                                                  Filename =
                                                      Path.GetDirectoryName(path) +
@@ -70,7 +70,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <returns></returns>
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new FeatureSetElement(this, dataSets));
+            return new FeatureSetElement(this, dataSets);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <returns></returns>
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new FeatureSetElementOut(this, dataSets));
+            return new FeatureSetElementOut(this, dataSets);
         }
     }
 }

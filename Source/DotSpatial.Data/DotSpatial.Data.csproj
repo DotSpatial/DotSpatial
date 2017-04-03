@@ -171,6 +171,7 @@
     <Compile Include="ShapefileFeatureSource.cs" />
     <Compile Include="ShapefileFeatureSourceQuadtree.cs" />
     <Compile Include="ShapefileIndexFile.cs" />
+    <Compile Include="ShapefilePackage.cs" />
     <Compile Include="ShapefileShapeSource.cs" />
     <Compile Include="ShapeReader.cs" />
     <Compile Include="ShapeRelateType.cs" />

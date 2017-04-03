@@ -78,7 +78,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             sfd.Filter = "Shape Files|*.shp";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                IFeatureSet _addedFeatureSet = new Shapefile();
+                IFeatureSet _addedFeatureSet = new FeatureSet();
                 _addedFeatureSet.Filename = sfd.FileName;
 
                 //If the features set is null do nothing the user probably hit cancel

@@ -16,6 +16,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - CopySubset overloads with withAttributes parameters
 - Jenks Natural Breaks support in categories binning.
 - Test that checks correct creation of GpggkSentence objects from string
+- Constructing Shapefiles in memory as single zip archives (#885)
 
 ### Changed
 - Switched to VS2015 and C#6
