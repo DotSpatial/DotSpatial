@@ -1,8 +1,5 @@
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Common interface for coordinate system holders.
-    /// </summary>
     public interface ICoordinateSystemCategoryHolder
     {
         /// <summary>

@@ -35,5 +35,7 @@ namespace DotSpatial.Controls
                     _map.ZoomToMaxExtent();
             }
         }
+
+
     }
 }

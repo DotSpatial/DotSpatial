@@ -13,14 +13,12 @@ using System.Reflection;
 
 namespace DotSpatial.Extensions.SplashScreens
 {
-    /// <summary>
-    /// Contains helper methods for splash screens.
-    /// </summary>
     public sealed class SplashScreenHelper
     {
         /// <summary>
         /// Searches "Application Extensions" for and activates "*SplashScreen*.dll"
         /// </summary>
+        /// <returns></returns>
         public static ISplashScreenManager GetSplashScreenManager()
         {
             // This is a specific directory where a splash screen may be located.

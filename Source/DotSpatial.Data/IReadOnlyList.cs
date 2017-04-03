@@ -27,7 +27,7 @@ namespace DotSpatial.Data
         bool Contains(T item);
 
         /// <summary>
-        /// Copies the specified members into the array, starting at the specified index.
+        /// Copies the specified memebers into the array, starting at the specified index.
         /// </summary>
         /// <param name="array">The array to copy values to.</param>
         /// <param name="arrayIndex">The array index where the 0 member of this list should be copied to.</param>

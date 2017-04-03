@@ -92,7 +92,7 @@ namespace DotSpatial.Positioning
         /// <param name="culture">The culture.</param>
         public SignalToNoiseRatio(string value, CultureInfo culture)
         {
-            // Remove the decibels "DB"
+            // Remove the decibals "DB"
             value = value.ToUpper(culture).Replace(" DB", string.Empty).Trim();
 
             // If there's a rating in there, get rid of it
@@ -376,7 +376,7 @@ namespace DotSpatial.Positioning
         Poor,
         /// <summary>Represents a value between 16 and 30.  The radio signal is partially obscured, but could be part of a sustained fix.</summary>
         Moderate,
-        /// <summary>Represents a value between 31 and 40.  The radio signal is being received with little interference and could maintain a reliable fix.</summary>
+        /// <summary>Represents a value between 31 and 40.  The radio signal is being received with little interferance and could maintain a reliable fix.</summary>
         Good,
         /// <summary>Represents a value of 41 or above.  The satellite is in direct line of sight from the receiver and can sustain a fix.</summary>
         Excellent

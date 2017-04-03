@@ -1024,7 +1024,7 @@ Math.Round(
         }
 
         /// <summary>
-        /// Converts a sexagesimal number into an Angle.
+        /// Convers a sexagesimal number into an Angle.
         /// </summary>
         /// <param name="dms">A Double value, a number in the form of DDD.MMSSSSS format</param>
         /// <returns>An <strong>Angle</strong> object.</returns>
@@ -1079,7 +1079,7 @@ Math.Round(
         /// <summary>
         /// Returns a random Angle between 0° and 360°
         /// </summary>
-        /// <param name="generator">A <strong>Random</strong> object used to generate random values.</param>
+        /// <param name="generator">A <strong>Random</strong> object used to ogenerate random values.</param>
         /// <returns>An <strong>Angle</strong> containing a random value.</returns>
         public static Angle Random(Random generator)
         {

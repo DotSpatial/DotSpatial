@@ -42,7 +42,7 @@ namespace DotSpatial.Positioning
         #endregion
 
         /// <summary>
-        /// The observed position
+        /// The obsedrved position
         /// </summary>
         public Position ObservedPosition { get { return new Position(ObservedLocation.Latitude, ObservedLocation.Longitude); } }
 

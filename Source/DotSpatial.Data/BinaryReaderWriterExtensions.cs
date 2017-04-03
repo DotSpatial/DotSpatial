@@ -3,9 +3,6 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Extension methods for <see cref="BinaryReader"/> and <see cref="BinaryWriter"/> classes.
-    /// </summary>
     public static class BinaryReaderWriterExtensions
     {
         /// <summary>
@@ -41,7 +38,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Reads the specified type.
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="reader">The reader.</param>
+        /// <returns></returns>
         public static T Read<T>(this BinaryReader reader)
         {
             object ret = null;

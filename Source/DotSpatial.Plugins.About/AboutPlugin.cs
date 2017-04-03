@@ -21,7 +21,7 @@ namespace DotSpatial.Plugins.About
             base.Deactivate();
         }
 
-        private static void ButtonClick(object sender, EventArgs e)
+        public void ButtonClick(object sender, EventArgs e)
         {
             Assembly assembly = Assembly.GetEntryAssembly();
             var form = new AboutBox { AppEntryAssembly = assembly };

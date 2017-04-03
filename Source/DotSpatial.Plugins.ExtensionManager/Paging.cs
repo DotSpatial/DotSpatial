@@ -10,7 +10,7 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    internal class Paging
+    public class Paging
     {
         public event EventHandler<PageSelectedEventArgs> PageChanged;
         private readonly ListViewHelper add;
@@ -90,14 +90,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             listOfButtons.Clear();
         }
-
-        private class PackageList
-        {
-            public IPackage[] packages { get; set; }
-
-            public int TotalPackageCount { get; set; }
-        }
-
         public void DisplayPackages(ListView listview, int pagenumber, TabPage tab, AppManager App)
         {
             ResetButtons(tab);

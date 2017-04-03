@@ -26,17 +26,17 @@ namespace DotSpatial.Data
         /// <summary>
         /// The featureset with all the lines
         /// </summary>
-        public IFeatureSet Lines { get; set; }
+        public IFeatureSet Lines;
 
         /// <summary>
         /// The featureset with all the points
         /// </summary>
-        public IFeatureSet Points { get; set; }
+        public IFeatureSet Points;
 
         /// <summary>
         /// The featureset with all the polygons
         /// </summary>
-        public IFeatureSet Polygons { get; set; }
+        public IFeatureSet Polygons;
 
         private int _lineLength;
         private List<double[]> _lineVertices;
@@ -55,9 +55,12 @@ namespace DotSpatial.Data
         /// </summary>
         public FeatureSetPack()
         {
-            Polygons = new FeatureSet(FeatureType.Polygon) {IndexMode = true};
-            Points = new FeatureSet(FeatureType.MultiPoint) {IndexMode = true};
-            Lines = new FeatureSet(FeatureType.Line) {IndexMode = true};
+            Polygons = new FeatureSet(FeatureType.Polygon);
+            Polygons.IndexMode = true;
+            Points = new FeatureSet(FeatureType.MultiPoint);
+            Points.IndexMode = true;
+            Lines = new FeatureSet(FeatureType.Line);
+            Lines.IndexMode = true;
             _polygonVertices = new List<double[]>();
             _pointVertices = new List<double[]>();
             _lineVertices = new List<double[]>();
@@ -166,7 +169,7 @@ namespace DotSpatial.Data
         /// Enuemratres the FeatureSetPack in Polygon, Line, Point order.  If any member
         /// is null, it skips that member.
         /// </summary>
-        private class FeatureSetPackEnumerator : IEnumerator<IFeatureSet>
+        public class FeatureSetPackEnumerator : IEnumerator<IFeatureSet>
         {
             private readonly FeatureSetPack _parent;
             private IFeatureSet _current;

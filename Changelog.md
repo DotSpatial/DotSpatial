@@ -6,7 +6,6 @@ All notable changes to this project will be documented in this file.
 Be aware that code written for 1.9 will not work out of the box because DotSpatial.Topology was replaced by DotSpatial.GeoAPI and DotSpatial.NetTopologySuite (#786).
 
 ### Added
-- Aliases to Satellite of DotSpatial.Positioning
 - Switched to NTS/GeoAPI instead of DotSpatial.Topology (#633, #404, #786) 
 - Tag property in ActionItem (#338)
 - Added property AppManager.BaseDirectory which allows to change base directory for plugins. (#758)
@@ -16,10 +15,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - CopySubset overloads with withAttributes parameters
 - Jenks Natural Breaks support in categories binning.
 - Test that checks correct creation of GpggkSentence objects from string
-- Constructing Shapefiles in memory as single zip archives (#885)
 
 ### Changed
-- Switched to VS2015 and C#6
 - GdalExtension: Updated to GDAL 1.1.11
 - Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)
@@ -38,10 +35,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
 - Removed obsolete methods\properties (#797)
-- Removed DotSpatial.Mono assembly. Mono helper now is in DotSpatial.Data assembly.
 
 ### Fixed
-- Satellite's missing properties (#958)
 - Parameters for the Austrian Bundesmeldenetz in DotSpatial.Projections.ProjectedCategories.NationalGrids are incorrect (#855)
 - Raster extent shifts from correct extent (#725)
 - Inconsistent use of affine coefficients (#822)

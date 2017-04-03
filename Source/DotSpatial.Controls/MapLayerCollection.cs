@@ -12,7 +12,6 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -20,7 +19,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Represents collection of map layers.
+    /// GeoLayerCollection
     /// </summary>
     public class MapLayerCollection : LayerCollection, IMapLayerCollection
     {
@@ -397,10 +396,13 @@ namespace DotSpatial.Controls
 
         #region IMapLayerCollection Members
 
-        /// <inheritdoc />
+        /// <summary>
+        /// An IEnumerator
+        /// </summary>
+        /// <returns></returns>
         public new IEnumerator<IMapLayer> GetEnumerator()
         {
-            return new MapLayerEnumerator(base.GetEnumerator());
+            return new GeoLayerEnumerator(base.GetEnumerator());
         }
 
         #endregion
@@ -416,73 +418,6 @@ namespace DotSpatial.Controls
         protected virtual void OnBufferChanged(object sender, ClipArgs e)
         {
             if (BufferChanged != null) BufferChanged(sender, e);
-        }
-
-        #endregion
-
-        #region Nested classes
-
-        private class MapLayerEnumerator : IEnumerator<IMapLayer>
-        {
-            readonly IEnumerator<ILayer> _internalEnumerator;
-
-            /// <summary>
-            /// Creates a new instance of LayerEnumerator
-            /// </summary>
-            public MapLayerEnumerator(IEnumerator<ILayer> source)
-            {
-                _internalEnumerator = source;
-            }
-
-            #region IEnumerator<IMapLayer> Members
-
-            /// <summary>
-            /// Retrieves the current member as an ILegendItem
-            /// </summary>
-            public IMapLayer Current
-            {
-                get
-                {
-                    return _internalEnumerator.Current as IMapLayer;
-                }
-            }
-
-            object IEnumerator.Current
-            {
-                get { return _internalEnumerator.Current; }
-            }
-
-            /// <summary>
-            /// Calls the Dispose method
-            /// </summary>
-            public void Dispose()
-            {
-                _internalEnumerator.Dispose();
-            }
-
-            /// <summary>
-            /// Moves to the next member
-            /// </summary>
-            /// <returns>boolean, true if the enumerator was able to advance</returns>
-            public bool MoveNext()
-            {
-                while (_internalEnumerator.MoveNext())
-                {
-                    var result = _internalEnumerator.Current as IMapLayer;
-                    if (result != null) return true;
-                }
-                return false;
-            }
-
-            /// <summary>
-            /// Resets to before the first member
-            /// </summary>
-            public void Reset()
-            {
-                _internalEnumerator.Reset();
-            }
-
-            #endregion
         }
 
         #endregion

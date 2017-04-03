@@ -43,7 +43,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Keyboard Input Handlers
+        #region Keyboard Input Hanlders
 
         /// <summary>
         /// Handles the Key Up situation

@@ -11,7 +11,7 @@ using DotSpatial.Extensions;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// A class from which Tools may be derived. Implements mundane parts of ITool for Assembly based tools.
+    /// A class from which Tools may be derived. Implments mundane parts of ITool for Assembly based tools.
     /// </summary>
     public abstract class Tool : AssemblyInformation, ITool
     {

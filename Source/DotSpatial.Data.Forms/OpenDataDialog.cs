@@ -80,6 +80,14 @@ namespace DotSpatial.Data.Forms
 
         #endregion
 
+        #region Methods
+
+        #endregion
+
+        #region Properties
+
+        #endregion
+
         #region Events
 
         #endregion

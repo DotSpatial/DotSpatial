@@ -8,17 +8,24 @@
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using DotSpatial.Data;
 using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology.Forms
 {
     public partial class ImageCategoryControl : UserControl, ICategoryControl
     {
+
         /// <summary>
         /// Occurs when the apply changes option has been triggered.
         /// </summary>
         public event EventHandler ChangesApplied;
+
 
         #region Private Variables
 
@@ -26,27 +33,17 @@ namespace DotSpatial.Symbology.Forms
         private IImageLayer _newLayer;
         private IImageLayer _originalLayer;
         private IImageSymbolizer _symbolizer;
-
         #endregion
 
-        /// <summary>
-        /// Initialize new instance of <see cref="ImageCategoryControl"/>.
-        /// </summary>
+
         public ImageCategoryControl()
         {
             InitializeComponent();
 
         }
-
-        /// <inheritdoc />
         public void Initialize(ILayer layer)
-        {
-            Initialize(layer as IImageLayer);
-        }
+        { Initialize(layer as IImageLayer); }
 
-        /// <summary>
-        /// Initialize new instance of <see cref="ImageCategoryControl"/> with given layer.
-        /// </summary>
         public ImageCategoryControl(IImageLayer layer)
         {
             InitializeComponent();
@@ -112,6 +109,9 @@ namespace DotSpatial.Symbology.Forms
         {
             _originalLayer.Symbolizer = _symbolizer;
         }
+
+
+
 
     }
 }

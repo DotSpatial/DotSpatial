@@ -142,7 +142,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the rounding radius for this box.
+        /// Gets or sets the rouding radius for this box.
         /// </summary>
         public int RoundingRadius
         {

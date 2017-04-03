@@ -31,10 +31,10 @@ namespace DotSpatial.Positioning
 
         /*
          * Many API calls are identical on either framework. The only thing different is
-         * the dll name in the DllImport attribute, which can be a string constant. The
+         * the dll name in the DllImport atribute, which can be a string constant. The
          * API calls that are used by both frameworks can be moved here to lessen the
          * code footprint for the sake of maintainability. Others, like the GPSID and
-         * Serial Comm can be kept separated.
+         * Serial Comm can be kept seprarated.
          */
         /// <summary>
         ///
@@ -1176,7 +1176,7 @@ namespace DotSpatial.Positioning
         /// The BluetoothGetRadioInfo function obtains information about a Bluetooth radio.
         /// </summary>
         /// <param name="hRadio">A handle to a local Bluetooth radio, obtained by calling the
-        /// BluetoothFindFirstRadio or similar functions, or the SetupDiEnumerateDeviceInterfaces function.</param>
+        /// BluetoothFindFirstRadio or similar functions, or the SetupDiEnumerateDeviceInterfances function.</param>
         /// <param name="pbtdi">A pointer to a BLUETOOTH_RADIO_INFO structure into which information about the radio
         /// will be placed. The dwSize member of the BLUETOOTH_RADIO_INFO structure must match the size of the structure.</param>
         /// <returns>The following table lists common return values.

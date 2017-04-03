@@ -16,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Represents categorizable legend item.
-    /// </summary>
     public interface IScheme : ILegendItem
     {
         #region Methods

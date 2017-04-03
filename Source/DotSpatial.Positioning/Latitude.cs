@@ -914,7 +914,7 @@ Math.Round(
             if (hemisphere == LatitudeHemisphere.None)
                 throw new ArgumentException(Resources.Latitude_InvalidHemisphere);
 
-            // IF the degrees is already in the right hemisphere, do nothing
+            // IF the degrees is already in the right hemishpere, do nothing
             if ((hemisphere == LatitudeHemisphere.North && _decimalDegrees >= 0)
                 || (hemisphere == LatitudeHemisphere.South && _decimalDegrees < 0))
                 return this;

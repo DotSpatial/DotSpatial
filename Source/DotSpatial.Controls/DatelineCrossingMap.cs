@@ -13,6 +13,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Data;
@@ -69,7 +70,6 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <inheritdoc />
         protected override void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
             if (!_viewExtentsBeingChanged)
@@ -96,7 +96,6 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <inheritdoc />
         protected override void OnExcludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null) return;
@@ -104,7 +103,6 @@ namespace DotSpatial.Controls
             base.OnExcludeMapFrame(mapFrame);
         }
 
-        /// <inheritdoc />
         protected override void OnIncludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null) return;

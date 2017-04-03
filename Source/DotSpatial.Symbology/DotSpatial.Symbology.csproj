@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -66,6 +66,7 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="BackBuffer.cs" />
     <Compile Include="BitmapFormatException.cs" />
     <Compile Include="JenksBreaksCalcuation.cs" />
     <Compile Include="Expression.cs" />
@@ -82,18 +83,17 @@
     <Compile Include="ColorExt.cs" />
     <Compile Include="ColorSchemeType.cs" />
     <Compile Include="IRasterLayerActions.cs" />
-    <Compile Include="LayerCollectionExensions.cs" />
     <Compile Include="LayerMovedEventArgs.cs" />
     <Compile Include="Position2DConverter.cs" />
     <Compile Include="Size2DConverter.cs" />
     <Compile Include="DesktopRasterExt.cs" />
-    <Compile Include="CopyBase.cs" />
+    <Compile Include="CopyBasea.cs" />
     <Compile Include="Descriptor.cs" />
     <Compile Include="DrawArgs.cs" />
     <Compile Include="DrawWindow.cs" />
     <Compile Include="DynamicVisibilityMode.cs" />
     <Compile Include="EditorSettings.cs" />
-    <Compile Include="LineJoinType.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="EnvelopeArgs.cs" />
     <Compile Include="FeatureChangeArgs.cs" />
     <Compile Include="FeatureChangeEnvelopeArgs.cs" />
@@ -306,13 +306,14 @@
     <Compile Include="PolygonSymbolizerOld.cs" />
     <Compile Include="QuickSchemeType.cs" />
     <Compile Include="Selection.cs" />
+    <Compile Include="SelectionEM.cs" />
     <Compile Include="SelectionMode.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Symbology.snk" />
-    <None Include="DotSpatial.Symbology.nuspec" />
+    <None Include="package.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SymbologyImages.resx">

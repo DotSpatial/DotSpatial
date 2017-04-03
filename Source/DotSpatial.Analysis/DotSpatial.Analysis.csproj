@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -82,7 +82,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DotSpatial.Analysis.snk" />
-    <None Include="DotSpatial.Analysis.nuspec">
+    <None Include="package.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />

@@ -233,7 +233,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Refreshes the items in the list to accurately reflect the current collection
+        /// Refreshes the items in the list to accuratly reflect the current collection
         /// </summary>
         public void RefreshList()
         {

@@ -144,7 +144,7 @@ namespace DotSpatial.Analysis
         /// as well as the values entered into them and the result.
         /// </summary>
         /// <param name="messageText">The string message that appeared on the input box.</param>
-        /// <param name="result">The System.Windows.Forms.DialogResult describing if the value was canceled.</param>
+        /// <param name="result">The System.Windows.Forms.DialogResult describing if the value was cancelled.</param>
         /// <param name="value">The string containing the value entered.</param>
         public virtual void InputBoxShown(string messageText, DialogResult result, string value)
         {

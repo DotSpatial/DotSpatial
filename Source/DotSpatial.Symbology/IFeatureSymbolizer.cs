@@ -15,9 +15,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Legend item with feature symbolization support.
-    /// </summary>
     public interface IFeatureSymbolizer : ILegendItem
     {
         #region Methods
@@ -25,6 +22,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws a simple rectangle in the specified location.
         /// </summary>
+        /// <param name="g"></param>
+        /// <param name="target"></param>
         void Draw(Graphics g, Rectangle target);
 
         #endregion

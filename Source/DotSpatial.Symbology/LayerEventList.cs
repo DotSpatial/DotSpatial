@@ -78,6 +78,7 @@ namespace DotSpatial.Symbology
         #region Private Variables
 
         private int _disposeLockCount;
+        private bool _isDisposed;
         private bool _isInitialized; // True if layers already existed before a member change
         private ILayer _selectedLayer;
 
@@ -142,7 +143,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets a value indicating whether dispose has already been called on this object.
         /// </summary>
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
 
         #region IDisposable Members
 
@@ -210,26 +214,33 @@ namespace DotSpatial.Symbology
             }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectableSelectionChanged(object sender, EventArgs e)
         {
             OnSelectionChanged();
         }
 
         /// <summary>
-        /// Raises <see cref="SelectionChanged"/> event.
+        /// Occurs when the selection is changed
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
             if (SelectionChanged != null) SelectionChanged(this, EventArgs.Empty);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Ensures that we re-draw the content when inserting new layers
+        /// </summary>
+        /// <param name="item"></param>
         protected override void OnIncludeComplete(T item)
         {
             OnLayerAdded(this, new LayerEventArgs(item));
         }
 
-        /// <inheritdoc />
         protected override void OnMoved(T item, int newPosition)
         {
             base.OnListChanged();
@@ -399,7 +410,7 @@ namespace DotSpatial.Symbology
         /// if the Dispose method should be called on contained objects.</param>
         protected virtual void Dispose(bool disposeManagedMemory)
         {
-            if (!IsDisposed)
+            if (!_isDisposed)
             {
                 // In debug mode, try to find any calls to dispose that will conflict with locks.
                 Debug.Assert(_disposeLockCount == 0);
@@ -415,7 +426,7 @@ namespace DotSpatial.Symbology
                     }
                 }
             }
-            IsDisposed = true;
+            _isDisposed = true;
         }
     }
 }

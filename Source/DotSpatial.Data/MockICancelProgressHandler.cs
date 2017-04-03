@@ -18,7 +18,7 @@
         }
 
         /// <summary>
-        /// Returns true if the running process should be canceled
+        /// Returns true if the running process should be cancelled
         /// </summary>
         public bool Cancel
         {

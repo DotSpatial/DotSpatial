@@ -129,7 +129,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the dynamic visibility mode for this dialog.
+        /// Gets or sets the dynamic visiblity mode for this dialog.
         /// This stores the result from this dialog.
         /// </summary>
         public DynamicVisibilityMode DynamicVisibilityMode

@@ -145,7 +145,7 @@ namespace DotSpatial.Positioning
             try
             {
                 /* In some rare cases (such as the TDS Nomad, I'm seeing valid
-                 * data with some intermittent failures.  As a result, let's not panic,
+                 * data with some intermittant failures.  As a result, let's not panic,
                  * but simply try a few more times to get a sentence.
                  */
                 for (int index = 0; index < 5; index++)
@@ -288,7 +288,7 @@ namespace DotSpatial.Positioning
         {
             // Does it support the value we want?
             IPositionSentence sentence = ReadTypedSentence() as IPositionSentence;
-            // If not, start over (recursive)
+            // If not, start over (recorsive)
             while (sentence == null)
                 sentence = ReadTypedSentence() as IPositionSentence;
             // Return the location
@@ -303,7 +303,7 @@ namespace DotSpatial.Positioning
         {
             // Does it support the value we want?
             IUtcDateTimeSentence sentence = ReadTypedSentence() as IUtcDateTimeSentence;
-            // If not, start over (recursive)
+            // If not, start over (recorsive)
             while (sentence == null)
                 sentence = ReadTypedSentence() as IUtcDateTimeSentence;
             // Return the location
@@ -327,7 +327,7 @@ namespace DotSpatial.Positioning
         {
             // Does it support the value we want?
             ISpeedSentence sentence = ReadTypedSentence() as ISpeedSentence;
-            // If not, start over (recursive)
+            // If not, start over (recorsive)
             while (sentence == null)
                 sentence = ReadTypedSentence() as ISpeedSentence;
             // Return the location
@@ -342,7 +342,7 @@ namespace DotSpatial.Positioning
         {
             // Does it support the value we want?
             IBearingSentence sentence = ReadTypedSentence() as IBearingSentence;
-            // If not, start over (recursive)
+            // If not, start over (recorsive)
             while (sentence == null)
                 sentence = ReadTypedSentence() as IBearingSentence;
             // Return the location
@@ -357,7 +357,7 @@ namespace DotSpatial.Positioning
         {
             // Does it support the value we want?
             IHeadingSentence sentence = ReadTypedSentence() as IHeadingSentence;
-            // If not, start over (recursive)
+            // If not, start over (recorsive)
             while (sentence == null)
                 sentence = ReadTypedSentence() as IHeadingSentence;
             // Return the location
@@ -372,7 +372,7 @@ namespace DotSpatial.Positioning
         {
             // Does it support the value we want?
             IFixQualitySentence sentence = ReadTypedSentence() as IFixQualitySentence;
-            // If not, start over (recursive)
+            // If not, start over (recorsive)
             while (sentence == null)
                 sentence = ReadTypedSentence() as IFixQualitySentence;
             // Return the location
@@ -402,7 +402,7 @@ namespace DotSpatial.Positioning
         {
             // Does it support the value we want?
             IHorizontalDilutionOfPrecisionSentence sentence = ReadTypedSentence() as IHorizontalDilutionOfPrecisionSentence;
-            // If not, start over (recursive)
+            // If not, start over (recorsive)
             while (sentence == null)
                 sentence = ReadTypedSentence() as IHorizontalDilutionOfPrecisionSentence;
             // Return the location

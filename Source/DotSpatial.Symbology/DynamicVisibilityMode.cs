@@ -13,10 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Represents mode whether the layer is visible when zoomed in closer than the dynamic
-    /// visibility width or only when further away from the dynamic visibility width.
-    /// </summary>
     public enum DynamicVisibilityMode
     {
         /// <summary>
@@ -24,7 +20,6 @@ namespace DotSpatial.Symbology
         /// DynamicVisibilityWidth.
         /// </summary>
         ZoomedIn,
-
         /// <summary>
         /// The layer will only be visible when zoomed out beyond the
         /// DynamicVisibilityWidth.

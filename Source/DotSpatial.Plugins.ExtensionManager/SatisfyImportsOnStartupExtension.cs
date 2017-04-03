@@ -30,12 +30,11 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #region ISatisfyImportsExtension Members
 
-        /// <inheritdoc />
         public void Activate()
         {
-            bool isDockManagerNeeded = !App.CompositionContainer.GetExportedValues<IDockManager>().Any();
-            bool isHeaderControlNeeded = !App.CompositionContainer.GetExportedValues<IHeaderControl>().Any();
-            bool isStatusControlNeeded = !App.CompositionContainer.GetExportedValues<IStatusControl>().Any();
+            bool isDockManagerNeeded = App.CompositionContainer.GetExportedValues<IDockManager>().Count() == 0;
+            bool isHeaderControlNeeded = App.CompositionContainer.GetExportedValues<IHeaderControl>().Count() == 0;
+            bool isStatusControlNeeded = App.CompositionContainer.GetExportedValues<IStatusControl>().Count() == 0;
 
             if (isDockManagerNeeded && isHeaderControlNeeded && isStatusControlNeeded)
             {
@@ -61,10 +60,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        /// <inheritdoc />
         public int Priority
         {
-            get { return 0; }
+            get
+            {
+                return 0;
+            }
         }
 
         #endregion

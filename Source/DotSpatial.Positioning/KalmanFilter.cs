@@ -59,7 +59,7 @@
 % of the system and are left unchanged. A calling routine may change
 % these other fields as needed if state dynamics are time-dependent;
 % otherwise, they should be left alone after initial values are set.
-% The exceptions are the observation vector "z" and the input control
+% The exceptions are the observation vectro "z" and the input control
 % (or forcing function) "u." If there is an input function, then
 % "u" should be set to some nonzero value by the calling routine.
 %
@@ -107,7 +107,7 @@
 % NORMAL OPERATION:
 %
 % (1) define all state definition fields: A, B, H, Q, R
-% (2) define initial state estimate: x, P
+% (2) define intial state estimate: x, P
 % (3) obtain observation and control vectors: z, u
 % (4) call the filter to obtain updated state estimate: x, P
 % (5) return to step (3) and repeat
@@ -117,7 +117,7 @@
 % If an initial state estimate is unavailable, it can be obtained
 % from the first observation as follows, provided that there are the
 % same number of observable variables as state variables. This "auto-
-% initialization" is done automatically if s.x is absent or NaN.
+% intitialization" is done automatically if s.x is absent or NaN.
 %
 % x = inv(H)*z
 % P = inv(H)*R*inv(H')
@@ -125,7 +125,7 @@
 % This is mathematically equivalent to setting the initial state estimate
 % covariance to infinity.
 %
-% SCALAR EXAMPLE (Automobile Voltmeter):
+% SCALAR EXAMPLE (Automobile Voltimeter):
 %
 % % Define the system as a constant of 12 volts:
 % clear s
@@ -133,7 +133,7 @@
 % s.A = 1;
 % % Define a process noise (stdev) of 2 volts as the car operates:
 % s.Q = 2^2; % variance, hence stdev^2
-% % Define the voltmeter to measure the voltage itself:
+% % Define the voltimeter to measure the voltage itself:
 % s.H = 1;
 % % Define a measurement error (stdev) of 2 volts:
 % s.R = 2^2; % variance, hence stdev^2
@@ -159,7 +159,7 @@
 % hk=plot([s(2:end).x],'b-');
 % ht=plot(tru,'g-');
 % legend([hz hk ht],'observations','Kalman output','true voltage', 0)
-% title('Automobile Voltmeter Example')
+% title('Automobile Voltimeter Example')
 % hold off
 
 function s = kalmanf(s)
@@ -198,7 +198,7 @@ else
    s.P = s.P - K*s.H*s.P;
 
    % Notice that the desired result, which is an improved estimate
-   % of the system state vector x and its covariance P, was obtained
+   % of the sytem state vector x and its covariance P, was obtained
    % in only five lines of code, once the system was defined. (That's
    % how simple the discrete Kalman filter is to use.) Later,
    % we'll discuss how to deal with nonlinear systems.
@@ -703,7 +703,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Represents the latency between the current observation and the filter state
+        /// Represents the latency between the current obervation and the filter state
         /// </summary>
         public override TimeSpan Delay
         {
@@ -777,7 +777,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <remarks>The results of a Kalman filter are cumulative. Each
         /// position processed changes the state of the filter, thus making
         /// the results more accurate with each subsequent position.</remarks>
@@ -789,7 +789,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">Distance of the error</param>
         public void Initialize(Position gpsPosition, Distance deviceError)
         {
@@ -799,7 +799,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="meanDOP">The mean dilution of precision</param>
         public void Initialize(Position gpsPosition, DilutionOfPrecision meanDOP)
         {
@@ -809,7 +809,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">Distance of the error</param>
         /// <param name="meanDOP">The mean dilution of precision</param>
         public void Initialize(Position gpsPosition, Distance deviceError, DilutionOfPrecision meanDOP)
@@ -820,7 +820,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">Distance of the error</param>
         /// <param name="meanDOP">The mean dilution of precision</param>
         /// <param name="ellipsoid">The ellipsoid</param>
@@ -832,7 +832,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">Distance of the error</param>
         /// <param name="horizontalDOP">The horizontal dilution of precision</param>
         /// <param name="verticalDOP">The vertical dilution of precision</param>
@@ -849,7 +849,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <remarks>The results of a Kalman filter are cumulative. Each
         /// position processed changes the state of the filter, thus making
         /// the results more accurate with each subsequent position.</remarks>
@@ -861,7 +861,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">A distance measure of device error</param>
         public void Initialize(Position3D gpsPosition, Distance deviceError)
         {
@@ -871,7 +871,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="meanDOP">The mean dilution of precision</param>
         public void Initialize(Position3D gpsPosition, DilutionOfPrecision meanDOP)
         {
@@ -881,7 +881,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">A distance measure of device error</param>
         /// <param name="meanDOP">The mean dilution of precision</param>
         public void Initialize(Position3D gpsPosition, Distance deviceError, DilutionOfPrecision meanDOP)
@@ -892,7 +892,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">A distance measure of device error</param>
         /// <param name="meanDOP">The mean dilution of precision</param>
         /// <param name="ellipsoid">The ellipsoid</param>
@@ -904,7 +904,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes the Kalman Filter using an initial observation (position)
         /// </summary>
-        /// <param name="gpsPosition">The position at which filter is to begin operating.</param>
+        /// <param name="gpsPosition">The position at which tfilter is to begin opperating.</param>
         /// <param name="deviceError">A distance measure of device error</param>
         /// <param name="horizontalDOP">The horizontal dilution of precision</param>
         /// <param name="verticalDOP">The vertical dilution of precision</param>
@@ -941,7 +941,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="gpsPosition">The gps Position</param>
         /// <param name="currentDOP">The current dilution of precision</param>
-        /// <returns>A Position structure</returns>
+        /// <returns>A Position sturcture</returns>
         public Position Filter(Position gpsPosition, DilutionOfPrecision currentDOP)
         {
             return Filter(gpsPosition, _currentState.DeviceError, currentDOP, currentDOP, Azimuth.Empty, Speed.AtRest);
@@ -954,7 +954,7 @@ namespace DotSpatial.Positioning
         /// <param name="currentDOP">The current dilution of precision</param>
         /// <param name="bearing">the directional azimuth</param>
         /// <param name="speed">the magnitude of the velocity</param>
-        /// <returns>A Position structure</returns>
+        /// <returns>A Position sturcture</returns>
         public Position Filter(Position gpsPosition, DilutionOfPrecision currentDOP, Azimuth bearing, Speed speed)
         {
             return Filter(gpsPosition, _currentState.DeviceError, currentDOP, currentDOP, bearing, speed);
@@ -981,7 +981,7 @@ namespace DotSpatial.Positioning
         /// Returns the 3D position
         /// </summary>
         /// <param name="gpsPosition">The gps Position</param>
-        /// <returns>A Position3D structure</returns>
+        /// <returns>A Position3D sturcture</returns>
         public override Position3D Filter(Position3D gpsPosition)
         {
             return Filter(gpsPosition, _currentState.DeviceError, _currentState.HorizontalDilutionOfPrecision, _currentState.VerticalDilutionOfPrecision, Azimuth.Empty, Speed.AtRest);
@@ -992,7 +992,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="gpsPosition">The gps Position</param>
         /// <param name="currentDOP">The current dilution of precision</param>
-        /// <returns>A Position3D structure</returns>
+        /// <returns>A Position3D sturcture</returns>
         public Position3D Filter(Position3D gpsPosition, DilutionOfPrecision currentDOP)
         {
             return Filter(gpsPosition, _currentState.DeviceError, currentDOP, currentDOP, Azimuth.Empty, Speed.AtRest);
@@ -1005,7 +1005,7 @@ namespace DotSpatial.Positioning
         /// <param name="currentDOP">The current dilution of precision</param>
         /// <param name="bearing">the directional azimuth</param>
         /// <param name="speed">the magnitude of the velocity</param>
-        /// <returns>A Position3D structure</returns>
+        /// <returns>A Position3D sturcture</returns>
         public Position3D Filter(Position3D gpsPosition, DilutionOfPrecision currentDOP, Azimuth bearing, Speed speed)
         {
             return Filter(gpsPosition, _currentState.DeviceError, currentDOP, currentDOP, bearing, Speed.AtRest);

@@ -17,9 +17,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// Collection of <see cref="IMapLayer"/>.
-    /// </summary>
     public interface IMapLayerCollection : ILayerEventList<IMapLayer>
     {
         #region Events
@@ -105,6 +102,14 @@ namespace DotSpatial.Controls
         /// Gets or sets the currently active layer.
         /// </summary>
         IMapLayer SelectedLayer { get; set; }
+
+        /// <summary>
+        /// Given a base name, this increments a number for appending
+        /// if the name already exists in the collection.
+        /// </summary>
+        /// <param name="baseName">The string base name to start with</param>
+        /// <returns>The base name modified by a number making it unique in the collection</returns>
+        string UnusedName(string baseName);
 
         #endregion
     }

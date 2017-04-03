@@ -27,7 +27,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         Unknown = 0,
         /// <summary>
-        /// The current platform is a desktop computer.
+        /// The current plarform is a desktop computer.
         /// </summary>
         Desktop = 1,
         /// <summary>

@@ -51,7 +51,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the integer index in the IEventList where this event occurred
+        /// Gets the integer index in the IEventList where this event occured
         /// </summary>
         public int Index
         {

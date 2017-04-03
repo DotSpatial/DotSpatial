@@ -50,7 +50,6 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        /// <inheritdoc />
         protected override void OnDraw(MapDrawArgs e)
         {
             if (_isDragging)

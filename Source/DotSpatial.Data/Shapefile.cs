@@ -20,47 +20,47 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotSpatial.Projections;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {
     /// <summary>
     /// This is a generic shapefile that is inherited by other specific shapefile types.
     /// </summary>
-    public abstract class Shapefile : FeatureSet
+    public class Shapefile : FeatureSet
     {
         #region Private Variables
 
         // Stores extents and some very basic info common to all shapefiles
         private AttributeTable _attributeTable;
+        private int _bufferSize = 1; // The buffer is approximately how much memory in bytes will be loaded at any one time
+        private ShapefileHeader _header;
 
         #endregion
-        
+
         #region Constructors
 
         /// <summary>
         /// When creating a new shapefile, this simply prevents the basic values from being null.
         /// </summary>
-        protected Shapefile()
+        public Shapefile()
         {
             Configure();
         }
 
         /// <summary>
-        /// Creates a new shapefile that has a specific feature type.
+        /// Creates a new shapefile that has a specific feature type
         /// </summary>
-        /// <param name="featureType">FeatureType of the features inside this shapefile.</param>
-        /// <param name="shapeType">ShapeType of the features inside this shapefile.</param>
-        protected Shapefile(FeatureType featureType, ShapeType shapeType)
+        /// <param name="featureType"></param>
+        protected Shapefile(FeatureType featureType)
             : base(featureType)
         {
-            Attributes = new AttributeTable();
-            Header = new ShapefileHeader { FileLength = 100, ShapeType = shapeType };
         }
 
         /// <summary>
-        /// Creates a new instance of a shapefile based on a fileName.
+        /// Creates a new instance of a shapefile based on a fileName
         /// </summary>
-        /// <param name="fileName">File name the shapefile is based on.</param>
+        /// <param name="fileName"></param>
         protected Shapefile(string fileName)
         {
             base.Filename = fileName;
@@ -70,7 +70,7 @@ namespace DotSpatial.Data
         private void Configure()
         {
             Attributes = new AttributeTable();
-            Header = new ShapefileHeader();
+            _header = new ShapefileHeader();
             IndexMode = true;
         }
 
@@ -82,7 +82,11 @@ namespace DotSpatial.Data
         /// the disk management, but the more ram will be required (and the more likely to trip an out of memory error).
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int BufferSize { get; set; } = 1;
+        public int BufferSize
+        {
+            get { return _bufferSize; }
+            set { _bufferSize = value; }
+        }
 
         /// <summary>
         /// Gets whether or not the attributes have all been loaded into the data table.
@@ -94,7 +98,6 @@ namespace DotSpatial.Data
             {
                 return _attributeTable.AttributesPopulated;
             }
-
             set
             {
                 _attributeTable.AttributesPopulated = value;
@@ -110,7 +113,6 @@ namespace DotSpatial.Data
             {
                 return _attributeTable.Table;
             }
-
             set
             {
                 _attributeTable.Table = value;
@@ -121,7 +123,11 @@ namespace DotSpatial.Data
         /// A general header structure that stores some basic information about the shapefile.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ShapefileHeader Header { get; set; }
+        public ShapefileHeader Header
+        {
+            get { return _header; }
+            set { _header = value; }
+        }
 
         /// <summary>
         /// Gets or sets the attribute Table used by this shapefile.
@@ -137,7 +143,6 @@ namespace DotSpatial.Data
                 {
                     _attributeTable.AttributesFilled -= AttributeTableAttributesFilled;
                 }
-
                 _attributeTable = value;
                 if (_attributeTable != null)
                 {
@@ -172,7 +177,6 @@ namespace DotSpatial.Data
                     counts[iex] = NumRows();
                 }
             }
-
             if (!requiresRun) return counts;
 
             AttributePager ap = new AttributePager(this, 5000);
@@ -194,18 +198,16 @@ namespace DotSpatial.Data
                         do
                         {
                             row = rnd.Next(ap.StartIndex, ap.StartIndex + ap.PageSize);
-                        }
-                        while (usedRows.ContainsKey(row));
+                        } while (usedRows.ContainsKey(row));
                         usedRows.Add(row, row);
                         sample.Rows.Add(ap.Row(row).ItemArray);
                     }
-
                     ap.MoveNext();
 
                     pm.CurrentValue = page;
                     if (progressHandler.Cancel) break;
+                    //Application.DoEvents();
                 }
-
                 for (int i = 0; i < expressions.Length; i++)
                 {
                     try
@@ -218,11 +220,9 @@ namespace DotSpatial.Data
                         Debug.WriteLine(ex);
                     }
                 }
-
                 pm.Reset();
                 return counts;
             }
-
             for (int page = 0; page < ap.NumPages(); page++)
             {
                 for (int i = 0; i < expressions.Length; i++)
@@ -230,11 +230,10 @@ namespace DotSpatial.Data
                     DataRow[] dr = ap[page].Select(expressions[i]);
                     counts[i] += dr.Length;
                 }
-
                 pm.CurrentValue = page;
                 if (progressHandler.Cancel) break;
+                //Application.DoEvents();
             }
-
             pm.Reset();
             return counts;
         }
@@ -255,7 +254,6 @@ namespace DotSpatial.Data
                     Features[fid].DataRow = _attributeTable.Table.Rows[fid];
                 }
             }
-
             SetupFeatureLookup();
         }
 
@@ -274,22 +272,20 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="fileName">A string specifying the file with the extension .shp to open.</param>
         /// <param name="progressHandler">receives progress messages and overrides the ProgressHandler on the DataManager.DefaultDataManager</param>
-        /// <exception cref="NotImplementedException">Throws a NotImplementedException if the ShapeType of the loaded file is NullShape or MultiPatch.</exception>
         /// <returns>A correct shapefile object which is exclusively for reading the .shp data</returns>
         public static new Shapefile OpenFile(string fileName, IProgressHandler progressHandler)
         {
-            var ext = Path.GetExtension(fileName)?.ToLower();
+            var ext = Path.GetExtension(fileName);
+            if (ext != null) ext = ext.ToLower();
             if (ext != ".shp" && ext != ".shx" && ext != ".dbf")
-                throw new ArgumentException(string.Format(DataStrings.FileExtensionNotSupportedByShapefileDataProvider, ext));
-
+                throw new ArgumentException(String.Format("The file extension {0} is not supported by Shapefile data provider.", ext));
             string name = Path.ChangeExtension(fileName, ".shp");
             var head = new ShapefileHeader();
             head.Open(name);
             switch (head.ShapeType)
             {
                 case ShapeType.MultiPatch:
-                case ShapeType.NullShape:
-                    throw new NotImplementedException(DataStrings.ShapeTypeNotYetSupported);
+                    throw new NotImplementedException("This shape type is not yet supported.");
 
                 case ShapeType.MultiPoint:
                 case ShapeType.MultiPointM:
@@ -297,7 +293,10 @@ namespace DotSpatial.Data
                     var mpsf = new MultiPointShapefile();
                     mpsf.Open(name, progressHandler);
                     return mpsf;
-             
+
+                case ShapeType.NullShape:
+                    throw new NotImplementedException("This shape type is not yet supported.");
+
                 case ShapeType.Point:
                 case ShapeType.PointM:
                 case ShapeType.PointZ:
@@ -385,12 +384,10 @@ namespace DotSpatial.Data
             {
                 _attributeTable.Fill(_attributeTable.NumRecords);
             }
-
             if (FeatureLookup.Count == 0)
             {
                 SetupFeatureLookup();
             }
-
             return base.SelectByAttribute(filterExpression);
         }
 
@@ -402,7 +399,6 @@ namespace DotSpatial.Data
             _attributeTable.AttributesPopulated = false; // attributeTable.Table fills itself if attributes are not populated
             DataTable = _attributeTable.Table;
             base.AttributesPopulated = true;
-
             // Link the data rows to the vectors in this object
         }
 
@@ -428,36 +424,16 @@ namespace DotSpatial.Data
         /// <param name="length">The integer length of the file in 16-bit words</param>
         public static void WriteFileLength(string fileName, int length)
         {
-            using (var fs = new FileStream(fileName, FileMode.Open))
-            {
-                WriteFileLength(fs, length);
-            }
-        }
-
-        /// <summary>
-        /// Operates on abritrary stream.
-        /// This doesn't rewrite the entire header or erase the existing content.  This simply replaces the file length
-        /// in the file with the new file length.  This is generally because we want to write the header first,
-        /// but don't know the total length of a new file until cycling through the entire file.  It is easier, therefore
-        /// to update the length after editing.
-        /// Note: performs seek
-        /// </summary>
-        /// <param name="stream">stream to edit</param>
-        /// <param name="length">The integer length of the file in 16-bit words</param>
-        public static void WriteFileLength(Stream stream, int length)
-        {
-            stream.Seek(0, SeekOrigin.Begin);
             byte[] headerData = new byte[28];
 
-            WriteBytes(headerData, 0, 9994, false); // Byte 0          File Code       9994        Integer     Big
-
+            WriteBytes(headerData, 0, 9994, false);          //  Byte 0          File Code       9994        Integer     Big
             // Bytes 4 - 20 are unused
-            WriteBytes(headerData, 24, length, false); // Byte 24         File Length     File Length Integer     Big
-            var bw = new BinaryWriter(stream);
-
-            // no using to avoid closing the stream 
-            // Actually write our byte array to the file
-            bw.Write(headerData);
+            WriteBytes(headerData, 24, length, false);       //  Byte 24         File Length     File Length Integer     Big
+            using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Open)))
+            {
+                // Actually write our byte array to the file
+                bw.Write(headerData);
+            }
         }
 
         /// <summary>
@@ -482,7 +458,6 @@ namespace DotSpatial.Data
                 startIndex += 4;
                 return BitConverter.ToInt32(flipBytes, 0);
             }
-
             startIndex += 4;
             return BitConverter.ToInt32(value, startIndex);
         }
@@ -508,7 +483,6 @@ namespace DotSpatial.Data
                 startIndex += 8;
                 return BitConverter.ToDouble(flipBytes, 0);
             }
-
             startIndex += 8;
             return BitConverter.ToDouble(value, startIndex);
         }
@@ -579,7 +553,6 @@ namespace DotSpatial.Data
             {
                 shxFilename = Path.ChangeExtension(fileName, ".shx");
             }
-
             if (shxFilename == null)
             {
                 throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
@@ -598,21 +571,24 @@ namespace DotSpatial.Data
             }
 
             // Use a the length of the file to dimension the byte array
-            using (var fs = new FileStream(shxFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
+            using (var bbReader = new FileStream(shxFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
             {
                 // Skip the header and begin reading from the first record
-                fs.Seek(100, SeekOrigin.Begin);
+                bbReader.Seek(100, SeekOrigin.Begin);
 
-                Header.ShxLength = (int)(fileLen / 2);
+                _header.ShxLength = (int)(fileLen / 2);
                 var length = (int)(fileLen - 100);
                 var numRecords = length / 8;
-
                 // Each record consists of 2 Big-endian integers for a total of 8 bytes.
                 // This will store the header elements that we read from the file.
                 var result = new List<ShapeHeader>(numRecords);
                 for (var i = 0; i < numRecords; i++)
                 {
-                    result.Add(new ShapeHeader { Offset = fs.ReadInt32(Endian.BigEndian), ContentLength = fs.ReadInt32(Endian.BigEndian) });
+                    result.Add(new ShapeHeader
+                    {
+                        Offset = bbReader.ReadInt32(Endian.BigEndian),
+                        ContentLength = bbReader.ReadInt32(Endian.BigEndian),
+                    });
                 }
 
                 return result;
@@ -620,62 +596,52 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Ensures that the attribute table will have information that matches the current table of attribute information.
+        /// Ensures that the attribute Table will have information that matches the current Table of attribute information
         /// </summary>
         public void UpdateAttributes()
         {
-            if (Attributes == null) return;
-
             string newFile = Path.ChangeExtension(Filename, "dbf");
-            if (!AttributesPopulated && File.Exists(Attributes.Filename))
+            if (!AttributesPopulated)
             {
-                if (!newFile.Equals(Attributes.Filename))
+                if (File.Exists(Attributes.Filename))
                 {
-                    // only switch to the new file, if we aren't using it already
-                    if (File.Exists(newFile)) File.Delete(newFile);
-                    File.Copy(Attributes.Filename, newFile);
-                    Attributes.Filename = newFile;
+                    if (newFile.Equals(Attributes.Filename))
+                    {   // Already using existing file
+                    }
+                    else
+                    {
+                        if (File.Exists(newFile)) File.Delete(newFile);
+                        File.Copy(Attributes.Filename, newFile);
+                        Attributes.Filename = newFile;
+                    }
+                    return;
                 }
-
-                return;
             }
 
-            InitAttributeTable();
-            Attributes.SaveAs(newFile, true);
-        }
-
-        /// <summary>
-        /// Exports the dbf file content to a stream.
-        /// </summary>
-        /// <returns>A stream that contains the dbf file content.</returns>
-        protected Stream ExportDbfToStream()
-        {
-            InitAttributeTable();
-            return Attributes?.ExportDbfToStream();
-        }
-
-        /// <summary>
-        /// Creates the Attributes Table if it does not already exist.
-        /// </summary>
-        private void InitAttributeTable()
-        {
-            // The Attributes either don't exist or have been loaded and will now replace the ones in the file.
-            if (Attributes == null || Attributes.Table != null && Attributes.Table.Columns.Count > 0) return;
-
-            // Only add an FID field if there are no attributes at all.
-            DataTable newTable = new DataTable();
-            newTable.Columns.Add("FID");
-
-            // Added by JamesP@esdm.co.uk - Index mode has no attributes and no features - so Features.count is Null and so was not adding any rows and failing
-            int numRows = IndexMode ? ShapeIndices.Count : Features.Count;
-            for (int i = 0; i < numRows; i++)
+            if (Attributes != null && Attributes.Table != null && Attributes.Table.Columns.Count > 0)
             {
-                DataRow dr = newTable.NewRow();
-                dr["FID"] = i;
-                newTable.Rows.Add(dr);
+                // The attributes have been loaded and will now replace the ones in the file.
+            }
+            else
+            {
+                // Only add an FID field if there are no attributes at all.
+                DataTable newTable = new DataTable();
+                newTable.Columns.Add("FID");
+                //for (int i = 0; i < Features.Count; i++)
+                //Added by JamesP@esdm.co.uk - Index mode has no attributes and no features - so Features.count is Null and so was not adding any rows and failing
+                int iNumRows = IndexMode ? ShapeIndices.Count : Features.Count;
+                for (int i = 0; i < iNumRows; i++)
+                {
+                    DataRow dr = newTable.NewRow();
+                    dr["FID"] = i;
+                    newTable.Rows.Add(dr);
+                }
+                if (Attributes != null) Attributes.Table = newTable;
             }
 
-            Attributes.Table = newTable;
+            //System.Data.DataRow drtemp = Attributes.Table.Rows[0];
+
+            if (Attributes != null) Attributes.SaveAs(Path.ChangeExtension(Filename, "dbf"), true);
         }
 
         /// <summary>
@@ -684,8 +650,15 @@ namespace DotSpatial.Data
         /// </summary>
         public void ReadProjection()
         {
-            var prjFile = Path.ChangeExtension(Filename, ".prj");
-            Projection = File.Exists(prjFile) ? ProjectionInfo.Open(prjFile) : new ProjectionInfo();
+            string prjFile = Path.ChangeExtension(Filename, ".prj");
+            if (File.Exists(prjFile))
+            {
+                Projection = ProjectionInfo.Open(prjFile);
+            }
+            else
+            {
+                Projection = new ProjectionInfo();
+            }
         }
 
         /// <summary>
@@ -693,10 +666,12 @@ namespace DotSpatial.Data
         /// </summary>
         public void SaveProjection()
         {
-            var prjFile = Path.ChangeExtension(Filename, ".prj");
+            string prjFile = Path.ChangeExtension(Filename, ".prj");
             if (File.Exists(prjFile))
+            {
                 File.Delete(prjFile);
-            Projection?.SaveAs(prjFile);
+            }
+            if (Projection != null) Projection.SaveAs(prjFile);
         }
 
         /// <summary>
@@ -711,34 +686,29 @@ namespace DotSpatial.Data
             if (AttributesPopulated) return base.GetAttributes(startIndex, numRows, fieldNames);
             DataTable result = new DataTable();
             DataColumn[] columns = GetColumns();
-
             // Always add FID in this paging scenario.
             result.Columns.Add("FID", typeof(int));
-
-            var fields = fieldNames as IList<string> ?? fieldNames.ToList();
-            foreach (string name in fields)
+            foreach (string name in fieldNames)
             {
                 foreach (var col in columns)
                 {
-                    if (string.Equals(col.ColumnName, name, StringComparison.CurrentCultureIgnoreCase))
+                    if (String.Equals(col.ColumnName, name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         result.Columns.Add(col);
                         break;
                     }
                 }
             }
-
             for (int i = 0; i < numRows; i++)
             {
                 DataRow dr = result.NewRow();
                 dr["FID"] = startIndex + i;
                 result.Rows.Add(dr);
             }
-
             // Most use cases with an expression use only one or two fieldnames.  Tailor for better
             // performance in that case, at the cost of performance in the "read all " case.
             // The other overload without fieldnames specified is designed for that case.
-            foreach (string field in fields)
+            foreach (string field in fieldNames)
             {
                 if (field == "FID") continue;
                 object[] values = _attributeTable.SupplyPageOfData(startIndex, numRows, field);
@@ -747,7 +717,6 @@ namespace DotSpatial.Data
                     result.Rows[i][field] = values[i];
                 }
             }
-
             return result;
         }
 
@@ -768,15 +737,15 @@ namespace DotSpatial.Data
         public override DataColumn[] GetColumns()
         {
             return _attributeTable.Columns
-                .Select(_ => (DataColumn)new Field(_.ColumnName, _.TypeCharacter, _.Length, _.DecimalCount))
+                .Select(_ => (DataColumn) new Field(_.ColumnName, _.TypeCharacter, _.Length, _.DecimalCount))
                 .ToArray();
         }
 
         /// <summary>
-        /// Checks whether the shapefile can be saved with the given fileName.
+        /// Checks that shape file can be saved to given fileName.
         /// </summary>
         /// <param name="fileName">File name to save.</param>
-        /// <param name="overwrite">Indicates whether the file may be overwritten.</param>
+        /// <param name="overwrite">Overwrite file or not.</param>
         protected void EnsureValidFileToSave(string fileName, bool overwrite)
         {
             string dir = Path.GetDirectoryName(fileName);
@@ -786,7 +755,7 @@ namespace DotSpatial.Data
             }
             else if (File.Exists(fileName))
             {
-                if (fileName != Filename && !overwrite) throw new ArgumentOutOfRangeException(string.Format(DataStrings.FileExistsOverwritingNotAllowed, fileName));
+                if (fileName != Filename && overwrite == false) throw new ArgumentOutOfRangeException("fileName", "File exists and overwrite = False.");
                 File.Delete(fileName);
                 var shx = Path.ChangeExtension(fileName, ".shx");
                 if (File.Exists(shx)) File.Delete(shx);
@@ -794,110 +763,15 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Updates the Header with the shape type that corresponds to this shapefiles CoordinateType.
-        /// </summary>
-        protected virtual void SetHeaderShapeType()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Saves the file to a new location.
-        /// </summary>
-        /// <param name="fileName">The fileName to save.</param>
-        /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file.</param>
-        public override void SaveAs(string fileName, bool overwrite)
-        {
-            EnsureValidFileToSave(fileName, overwrite);
-            Filename = fileName;
-            HeaderSaveAs(fileName);
-
-            StreamLengthPair streamLengthPair;
-            using (var shpStream = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000))
-            using (var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000))
-            {
-                streamLengthPair = PopulateShpAndShxStreams(shpStream, shxStream, IndexMode);
-            }
-
-            WriteFileLength(Filename, streamLengthPair.ShpLength);
-            WriteFileLength(Header.ShxFilename, streamLengthPair.ShxLength);
-            UpdateAttributes();
-            SaveProjection();
-        }
-
-        /// <summary>
-        /// Saves the header to a new location.
+        /// Saves header
         /// </summary>
         /// <param name="fileName">File to save.</param>
         protected void HeaderSaveAs(string fileName)
         {
-            UpdateHeader();
-            Header.SaveAs(fileName);
-        }
-
-        /// <summary>
-        /// Updates the Header.
-        /// </summary>
-        protected void UpdateHeader()
-        {
-            SetHeaderShapeType();
             InvalidateEnvelope();
             Header.SetExtent(Extent);
             Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
-        }
-
-        /// <summary>
-        /// Populates the given streams for the shp and shx file.
-        /// </summary>
-        /// <param name="shpStream">Stream that is used to write the shp file.</param>
-        /// <param name="shxStream">Stream that is used to write the shx file.</param>
-        /// <param name="indexed">Indicates whether the streams are populated in IndexMode.</param>
-        /// <returns>The lengths of the streams in bytes.</returns>
-        protected virtual StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public override ShapefilePackage ExportShapefilePackage()
-        {
-            UpdateHeader();
-
-            ShapefilePackage package = new ShapefilePackage
-            {
-                DbfFile = ExportDbfToStream(),
-                ShpFile = Header.ExportShpHeaderToStream(),
-                ShxFile = Header.ExportShxHeaderToStream()
-            };
-
-            StreamLengthPair streamLengthPair = PopulateShpAndShxStreams(package.ShpFile, package.ShxFile, IndexMode);
-
-            // write file length 
-            WriteFileLength(package.ShpFile, streamLengthPair.ShpLength);
-            WriteFileLength(package.ShxFile, streamLengthPair.ShxLength);
-
-            package.ShpFile.Seek(0, SeekOrigin.Begin);
-            package.ShxFile.Seek(0, SeekOrigin.Begin);
-
-            if (Projection != null)
-            {
-                package.PrjFile = new MemoryStream();
-                StreamWriter projWriter = new StreamWriter(package.PrjFile);
-                projWriter.WriteLine(Projection.ToEsriString());
-                projWriter.Flush();
-                package.PrjFile.Seek(0, SeekOrigin.Begin);
-            }
-
-            return package;
-        }
-
-        /// <summary>
-        /// StreamLengthPair is used to get the length of the shp and shx file from PopulateShpAndShxStreams and update the file length inside the corresponding stream.
-        /// </summary>
-        protected internal class StreamLengthPair
-        {
-            internal int ShpLength { get; set; }
-            internal int ShxLength { get; set; }
+            Header.SaveAs(fileName);
         }
     }
 }

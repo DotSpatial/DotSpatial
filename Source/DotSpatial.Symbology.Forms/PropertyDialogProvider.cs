@@ -34,16 +34,21 @@ namespace DotSpatial.Symbology.Forms
         private PropertyDialog _frmDialog;
 
         #endregion
-      
+
+        #region Constructors
+
+        #endregion
 
         #region Methods
 
         /// <summary>
         /// Shows a PropertyGrid Dialog and uses the specified object as the edit copy.
         /// </summary>
+        /// <param name="editCopy"></param>
         public void ShowDialog(object editCopy)
         {
-            _frmDialog = new PropertyDialog {PropertyGrid = {SelectedObject = editCopy}};
+            _frmDialog = new PropertyDialog();
+            _frmDialog.PropertyGrid.SelectedObject = editCopy;
             _frmDialog.ChangesApplied += frmDialog_ChangesApplied;
             _frmDialog.ShowDialog();
         }

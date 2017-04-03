@@ -75,7 +75,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="positions">The positions.</param>
         /// <param name="sampleCount">The sample count.</param>
-        /// <remarks>If the number of positions supplied in the positions parameter and the sample
+        /// <remarks>If the number of positions supllied in the positions parameter and the sample
         /// count parameter are not equal, the filter is uninitialized.</remarks>
         public PositionAverageFilter(IList<Position> positions, int sampleCount)
         {
@@ -107,7 +107,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Gets the number of samples required for a valid filtered value.
+        /// Gets the number of samples required for a valid fintered value.
         /// </summary>
         public int SampleCount
         {
@@ -123,7 +123,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Not implemented in the PositionAverage filter. Use ObservedLocations to get a list
+        /// Not implemented in the PrositionAverage filter. Use ObservedLocations to get a list
         /// of observed locations.
         /// </summary>
         public override Position3D ObservedLocation
@@ -250,7 +250,7 @@ namespace DotSpatial.Positioning
         /// <param name="gpsPosition">The new observation to add to the filter.</param>
         /// <param name="deviceError">A DeviceError, which does not currently affect position averaging.</param>
         /// <param name="horizontalDOP">A horizontal dilution of position, which does not currently affect position averaging.</param>
-        /// <param name="verticalDOP">A vertical dilution of position which does not currently affect position averaging.</param>
+        /// <param name="verticalDOP">A vertical dilution of positoin which does not currently affect position averaging.</param>
         /// <param name="bearing">A directional bearing, which does not currently affect position averaging.</param>
         /// <param name="speed">A speed, which does not currently affect position averaging.</param>
         /// <returns></returns>
@@ -278,7 +278,7 @@ namespace DotSpatial.Positioning
         /// <param name="gpsPosition">The new observation to add to the filter.</param>
         /// <param name="deviceError">A DeviceError, which does not currently affect position averaging.</param>
         /// <param name="horizontalDOP">A horizontal dilution of position, which does not currently affect position averaging.</param>
-        /// <param name="verticalDOP">A vertical dilution of position which does not currently affect position averaging.</param>
+        /// <param name="verticalDOP">A vertical dilution of positoin which does not currently affect position averaging.</param>
         /// <param name="bearing">A directional bearing, which does not currently affect position averaging.</param>
         /// <param name="speed">A speed, which does not currently affect position averaging.</param>
         /// <returns></returns>

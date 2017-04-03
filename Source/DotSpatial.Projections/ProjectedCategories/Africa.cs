@@ -34,7 +34,7 @@ namespace DotSpatial.Projections.ProjectedCategories
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of <see cref="Africa"/>.
+        /// Creates a new instance of Africa
         /// </summary>
         public Africa()
         {

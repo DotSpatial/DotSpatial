@@ -182,7 +182,7 @@ namespace DotSpatial.Controls
             //Calculates the width of one break in greographic units
             float unitLegnth = g.MeasureString(_unitText, _font).Width * 2;
             float widthNoUnit = (Size.Width - unitLegnth);
-            long geoBreakWidth = Convert.ToInt64((widthNoUnit / 100 * _layoutMap.Scale) / GetConversionFactor(_unit.ToString()) / (_numBreaks));
+            Int64 geoBreakWidth = Convert.ToInt64((widthNoUnit / 100 * _layoutMap.Scale) / GetConversionFactor(_unit.ToString()) / (_numBreaks));
 
             //If the geobreakWidth is less than 1 we return and don't draw anything
             if (geoBreakWidth < 1)
@@ -196,7 +196,7 @@ namespace DotSpatial.Controls
 
             double n = Math.Pow(10, geoBreakWidth.ToString(CultureInfo.InvariantCulture).Length - 1);
             geoBreakWidth = Convert.ToInt64(Math.Floor(geoBreakWidth / n) * n);
-            long breakWidth = Convert.ToInt64((1D * geoBreakWidth / _layoutMap.Scale) * GetConversionFactor(_unit.ToString()) * 100D);
+            Int64 breakWidth = Convert.ToInt64((1D * geoBreakWidth / _layoutMap.Scale) * GetConversionFactor(_unit.ToString()) * 100D);
             float fontHeight = g.MeasureString(geoBreakWidth.ToString(CultureInfo.InvariantCulture), _font).Height;
             float leftStart = g.MeasureString(Math.Abs(geoBreakWidth).ToString(CultureInfo.InvariantCulture), _font).Width / 2F;
 

@@ -110,6 +110,30 @@ namespace DotSpatial.Plugins.LiDAR
             { }
         }
 
+        public SpaceTimeSupport SpaceTimeSupport
+        {
+            get
+            {
+                return SpaceTimeSupport.Spatial;
+            }
+            set
+            {
+                //throw new NotImplementedException();
+            }
+        }
+
+        public string TypeName
+        {
+            get
+            {
+                return "LiDARDataSet";
+            }
+            set
+            {
+                // throw new NotImplementedException();
+            }
+        }
+
         public void Dispose()
         {
             //throw new NotImplementedException();

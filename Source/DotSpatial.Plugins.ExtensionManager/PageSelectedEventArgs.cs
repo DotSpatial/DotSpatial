@@ -2,7 +2,7 @@
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    internal class PageSelectedEventArgs : EventArgs
+    public class PageSelectedEventArgs : EventArgs
     {
         public int SelectedPage { get; set; }
     }

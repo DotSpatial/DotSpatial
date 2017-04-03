@@ -68,7 +68,7 @@ namespace DotSpatial.Controls
         Point PointToScreen(Point position);
 
         /// <summary>
-        /// Converts a point from screen coordinates to client coordinates
+        /// Converst a point from screen coordinates to client coordinates
         /// </summary>
         /// <param name="position">The Point representing the screen position</param>
         /// <returns>The Point</returns>

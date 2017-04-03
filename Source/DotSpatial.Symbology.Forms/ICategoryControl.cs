@@ -1,7 +1,7 @@
 ﻿namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// Generic interface for category controls.
+    ///
     /// </summary>
     public interface ICategoryControl
     {

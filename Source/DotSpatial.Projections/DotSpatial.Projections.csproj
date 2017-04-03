@@ -116,6 +116,7 @@
     <Compile Include="LasLosNadTable.cs" />
     <Compile Include="LlaNadTable.cs" />
     <Compile Include="ICloneableExtensions.cs" />
+    <Compile Include="IProjDescriptor.cs" />
     <Compile Include="IMatchable.cs" />
     <Compile Include="IRandomizable.cs" />
     <Compile Include="IProjMatchableExtensions.cs" />
@@ -296,7 +297,7 @@
     <EmbeddedResource Include="Nad\GridShiftsBundled\TN.ds.lla" />
     <EmbeddedResource Include="Nad\GridShiftsBundled\WI.ds.lla" />
     <EmbeddedResource Include="Nad\GridShiftsBundled\WO.ds.lla" />
-    <None Include="DotSpatial.Projections.nuspec" />
+    <None Include="package.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectionMessages.resx">

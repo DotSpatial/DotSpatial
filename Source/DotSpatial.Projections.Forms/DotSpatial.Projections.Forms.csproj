@@ -185,7 +185,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DotSpatial.Projections.Forms.nuspec" />
+    <None Include="package.nuspec" />
     <None Include="Projections.Forms.4.0.snk" />
   </ItemGroup>
   <ItemGroup>

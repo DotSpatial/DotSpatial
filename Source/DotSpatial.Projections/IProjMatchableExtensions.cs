@@ -17,9 +17,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Extension methods for <see cref="IProjMatchable"/> class.
-    /// </summary>
     public static class IProjMatchableExtensions
     {
         /// <summary>

@@ -26,7 +26,7 @@ namespace DotSpatial.Controls.Header
         private ToolStripPanel _tsPanel;
         private MenuStrip _menuStrip;
         private List<ToolStrip> _strips;
-        private bool _toolstripsLoaded; // indicates whether toolstrips were loaded after programstart
+        private Boolean _toolstripsLoaded; // indicates whether toolstrips were loaded after programstart
         private readonly List<ToolstripPosition> _stripPosList = new List<ToolstripPosition>(); // List to remember ToolstripPositions for saving on exit.
 
         #endregion
@@ -176,7 +176,7 @@ namespace DotSpatial.Controls.Header
                     {
                         strip.Items.Add(menu);
                     }
-                    menu.ToolTipText = string.IsNullOrWhiteSpace(item.ToolTipText) == false ? item.ToolTipText : item.Caption;
+                    menu.ToolTipText = String.IsNullOrWhiteSpace(item.ToolTipText) == false ? item.ToolTipText : item.Caption;
                 }
             }
             else
@@ -718,7 +718,7 @@ namespace DotSpatial.Controls.Header
         public int Row { get; set; }
         public int Column { get; set; }
 
-        public ToolstripPosition(string name, int row, int column)
+        public ToolstripPosition(String name, int row, int column)
         {
             Name = name;
             Row = row;

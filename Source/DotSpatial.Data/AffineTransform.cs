@@ -20,6 +20,12 @@ namespace DotSpatial.Data
 {
     public class AffineTransform
     {
+        #region Private Variables
+
+        private double[] _coefficients;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -27,7 +33,7 @@ namespace DotSpatial.Data
         /// </summary>
         public AffineTransform(double[] inCoefficients)
         {
-            Coefficients = inCoefficients;
+            _coefficients = inCoefficients;
         }
 
         #endregion
@@ -43,8 +49,8 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the center of the specified cell</returns>
         public Coordinate CellCenter_ToProj(int row, int column)
         {
-            double x = Coefficients[0] + Coefficients[1] * column + Coefficients[2] * row;
-            double y = Coefficients[3] + Coefficients[4] * column + Coefficients[5] * row;
+            double x = _coefficients[0] + _coefficients[1] * column + _coefficients[2] * row;
+            double y = _coefficients[3] + _coefficients[4] * column + _coefficients[5] * row;
             return new Coordinate(x, y);
         }
 
@@ -56,8 +62,8 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the top left corner of the specified cell</returns>
         public Coordinate CellTopLeft_ToProj(int row, int column)
         {
-            double x = Coefficients[0] + Coefficients[1] * (column - 0.5) + Coefficients[2] * (row - 0.5);
-            double y = Coefficients[3] + Coefficients[4] * (column - 0.5) + Coefficients[5] * (row - 0.5);
+            double x = _coefficients[0] + _coefficients[1] * (column - 0.5) + _coefficients[2] * (row - 0.5);
+            double y = _coefficients[3] + _coefficients[4] * (column - 0.5) + _coefficients[5] * (row - 0.5);
             return new Coordinate(x, y);
         }
 
@@ -69,8 +75,8 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the top right corner of the specified cell</returns>
         public Coordinate CellTopRight_ToProj(int row, int column)
         {
-            double x = Coefficients[0] + Coefficients[1] * (column + 0.5) + Coefficients[2] * (row - 0.5);
-            double y = Coefficients[3] + Coefficients[4] * (column + 0.5) + Coefficients[5] * (row - 0.5);
+            double x = _coefficients[0] + _coefficients[1] * (column + 0.5) + _coefficients[2] * (row - 0.5);
+            double y = _coefficients[3] + _coefficients[4] * (column + 0.5) + _coefficients[5] * (row - 0.5);
             return new Coordinate(x, y);
         }
 
@@ -82,8 +88,8 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the bottom left corner of the specified cell</returns>
         public Coordinate CellBottomLeft_ToProj(int row, int column)
         {
-            double x = Coefficients[0] + Coefficients[1] * (column - 0.5) + Coefficients[2] * (row + 0.5);
-            double y = Coefficients[3] + Coefficients[4] * (column - 0.5) + Coefficients[5] * (row + 0.5);
+            double x = _coefficients[0] + _coefficients[1] * (column - 0.5) + _coefficients[2] * (row + 0.5);
+            double y = _coefficients[3] + _coefficients[4] * (column - 0.5) + _coefficients[5] * (row + 0.5);
             return new Coordinate(x, y);
         }
 
@@ -95,8 +101,8 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the bottom right corner of the specified cell</returns>
         public Coordinate CellBottomRight_ToProj(int row, int column)
         {
-            double x = Coefficients[0] + Coefficients[1] * (column + 0.5) + Coefficients[2] * (row + 0.5);
-            double y = Coefficients[3] + Coefficients[4] * (column + 0.5) + Coefficients[5] * (row + 0.5);
+            double x = _coefficients[0] + _coefficients[1] * (column + 0.5) + _coefficients[2] * (row + 0.5);
+            double y = _coefficients[3] + _coefficients[4] * (column + 0.5) + _coefficients[5] * (row + 0.5);
             return new Coordinate(x, y);
         }
 
@@ -111,12 +117,12 @@ namespace DotSpatial.Data
             // X = [0] + [1] * column + [2] * row;
             // Y = [3] + [4] * column + [5] * row;
             var ba = new double[6];
-            ba[0] = Coefficients[0] + Coefficients[1] * startColumn + Coefficients[2] * startRow;
-            ba[1] = Coefficients[1];
-            ba[2] = Coefficients[2];
-            ba[3] = Coefficients[3] + Coefficients[4] * startColumn + Coefficients[5] * startRow;
-            ba[4] = Coefficients[4];
-            ba[5] = Coefficients[5];
+            ba[0] = _coefficients[0] + _coefficients[1] * startColumn + _coefficients[2] * startRow;
+            ba[1] = _coefficients[1];
+            ba[2] = _coefficients[2];
+            ba[3] = _coefficients[3] + _coefficients[4] * startColumn + _coefficients[5] * startRow;
+            ba[4] = _coefficients[4];
+            ba[5] = _coefficients[5];
             return ba;
         }
 
@@ -127,7 +133,7 @@ namespace DotSpatial.Data
         /// <returns>An RcIndex that shows the best row or column index for the specified coordinate.</returns>
         public RcIndex ProjToCell(Coordinate location)
         {
-            double[] c = Coefficients;
+            double[] c = _coefficients;
             double rw, cl;
             if (c[2] == 0 && c[4] == 0)
             {
@@ -161,7 +167,11 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the array of coefficients for this transform
         /// </summary>
-        public double[] Coefficients { get; set; }
+        public double[] Coefficients
+        {
+            get { return _coefficients; }
+            set { _coefficients = value; }
+        }
 
         #endregion
     }

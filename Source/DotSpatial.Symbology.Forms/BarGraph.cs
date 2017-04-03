@@ -177,7 +177,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Very small counts frequently disappear next to big counts. One strategy is to use a
+        /// Very small counts frequently dissappear next to big counts.  One strategey is to use a
         /// minimum height, so that the difference between 0 and 1 is magnified on the columns.
         /// </summary>
         public int MinHeight

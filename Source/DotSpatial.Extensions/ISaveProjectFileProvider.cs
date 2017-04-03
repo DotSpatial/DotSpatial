@@ -2,9 +2,6 @@
 
 namespace DotSpatial.Extensions
 {
-    /// <summary>
-    /// Project file provider with capability to save files.
-    /// </summary>
     [InheritedExport]
     public interface ISaveProjectFileProvider : IProjectFileProvider
     {

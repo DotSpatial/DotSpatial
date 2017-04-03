@@ -156,6 +156,32 @@ namespace DotSpatial.Symbology
             }
         }
 
+        /// <summary>
+        /// Given a base name, this increments a number for appending
+        /// if the name already exists in the collection.
+        /// </summary>
+        /// <param name="baseName">The string base name to start with</param>
+        /// <returns>The base name modified by a number making it unique in the collection</returns>
+        public string UnusedName(string baseName)
+        {
+            int i = 1;
+            string name = baseName;
+            bool duplicateExists = this.Any(item => item.LegendText == baseName);
+            while (duplicateExists)
+            {
+                duplicateExists = false;
+                name = baseName + i;
+                foreach (ILayer item in this)
+                {
+                    if (item.LegendText != name) continue;
+                    duplicateExists = true;
+                    break;
+                }
+                i++;
+            }
+            return name;
+        }
+
         #endregion
 
         /// <summary>

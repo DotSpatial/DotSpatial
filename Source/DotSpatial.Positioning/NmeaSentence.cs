@@ -85,7 +85,7 @@ namespace DotSpatial.Positioning
         #region Protected Members
 
         /// <summary>
-        /// Calculates and adds a checksum to the end of the sentence if the sentence doesn't have a checksum.
+        /// Calculates and adds a checksum to the end of the sentence if the senctence doesn't have a checksum.
         /// </summary>
         public void AppendChecksum()
         {
@@ -202,7 +202,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Parses the word at the given position to FixMethod. Expected is (0 = noFix, 1 = Fix2D, 2 = Fix3D). If the order is correct but noFix starts at 1 set noFixAt1 to true.
+        /// Parses the word at the given position to FixMethode. Expected is (0 = noFix, 1 = Fix2D, 2 = Fix3D). If the order is correct but noFix starts at 1 set noFixAt1 to true.
         /// </summary>
         /// <param name="position">Position of the word that will be parsed.</param>
         /// <param name="noFixAt1">Indicates that noFix starts at 1 instead of 0.</param>
@@ -288,7 +288,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Parses the Position based on the given indices and the Words array.
+        /// Parses the Position based on the given indizes and the Words array.
         /// </summary>
         /// <param name="latitudeValuePosition">Position of the latitude value inside the Words array.</param>
         /// <param name="latitudeHemispherePosition">Position of the latitude hemisphere inside the Words array.</param>

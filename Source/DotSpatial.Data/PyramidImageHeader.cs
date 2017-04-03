@@ -20,6 +20,15 @@ namespace DotSpatial.Data
     {
         #region Private Variables
 
+        private double[] _affine;
+        private int _numColums;
+        private int _numRows;
+        private long _offset;
+
+        #endregion
+
+        #region Constructors
+
         #endregion
 
         #region Methods
@@ -32,12 +41,12 @@ namespace DotSpatial.Data
         /// <param name="scale">The integer scale starting at 0 for the original image, and increasing by one for each down-sampling</param>
         public void SetAffine(double[] affine, int scale)
         {
-            Affine = new double[6];
-            Array.Copy(affine, Affine, 6);
-            Affine[1] = Affine[1] * Math.Pow(2, scale);
-            Affine[2] = Affine[2] * Math.Pow(2, scale);
-            Affine[4] = Affine[4] * Math.Pow(2, scale);
-            Affine[5] = Affine[5] * Math.Pow(2, scale);
+            _affine = new double[6];
+            Array.Copy(affine, _affine, 6);
+            _affine[1] = _affine[1] * Math.Pow(2, scale);
+            _affine[2] = _affine[2] * Math.Pow(2, scale);
+            _affine[4] = _affine[4] * Math.Pow(2, scale);
+            _affine[5] = _affine[5] * Math.Pow(2, scale);
         }
 
         /// <summary>
@@ -47,7 +56,7 @@ namespace DotSpatial.Data
         /// <param name="scale">integer starts at 0 for the original image</param>
         public void SetNumRows(int originalNumRows, int scale)
         {
-            NumRows = (int)(originalNumRows / Math.Pow(2, scale));
+            _numRows = (int)(originalNumRows / Math.Pow(2, scale));
         }
 
         /// <summary>
@@ -57,7 +66,7 @@ namespace DotSpatial.Data
         /// <param name="scale">integer starts at 0 for the original image</param>
         public void SetNumColumns(int originalNumColumns, int scale)
         {
-            NumColumns = (int)(originalNumColumns / Math.Pow(2, scale));
+            _numColums = (int)(originalNumColumns / Math.Pow(2, scale));
         }
 
         #endregion
@@ -68,19 +77,31 @@ namespace DotSpatial.Data
         /// Offsets
         /// </summary>
         [XmlAttribute("Offset")]
-        public long Offset { get; set; }
+        public long Offset
+        {
+            get { return _offset; }
+            set { _offset = value; }
+        }
 
         /// <summary>
         /// Integer number of rows
         /// </summary>
         [XmlAttribute("NumRows")]
-        public int NumRows { get; set; }
+        public int NumRows
+        {
+            get { return _numRows; }
+            set { _numRows = value; }
+        }
 
         /// <summary>
         /// Integer number of columns
         /// </summary>
         [XmlAttribute("NumColumns")]
-        public int NumColumns { get; set; }
+        public int NumColumns
+        {
+            get { return _numColums; }
+            set { _numColums = value; }
+        }
 
         /// <summary>
         /// Gets or sets the affine coefficients for this image in ABCDEF order
@@ -88,7 +109,11 @@ namespace DotSpatial.Data
         /// Y' = D + EX + FY
         /// </summary>
         [XmlAttribute("Affine")]
-        public double[] Affine { get; set; }
+        public double[] Affine
+        {
+            get { return _affine; }
+            set { _affine = value; }
+        }
 
         #endregion
     }
