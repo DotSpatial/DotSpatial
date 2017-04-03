@@ -1,5 +1,8 @@
-﻿using DotSpatial.Data;
+﻿using System.IO;
+using System.Linq;
+using DotSpatial.Data;
 using DotSpatial.Tests.Common;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Tools.Tests
@@ -7,6 +10,8 @@ namespace DotSpatial.Tools.Tests
     [TestFixture]
     internal class ClipPolygonWithPolygonTests
     {
+        private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
+
         /// <summary>
         /// After clipping Europe with Belgium the test verifies that the clipping outputs the correct number of features,
         /// and that the attributes columns from the original file are set on the output.
@@ -28,7 +33,7 @@ namespace DotSpatial.Tools.Tests
             IFeatureSet belgiumShape = Shapefile.OpenFile(@"Data\ClipPolygonWithPolygonTests\Belgium.shp");
 
             // set output file as IFeatureSet shapefile
-            IFeatureSet outputShape = new FeatureSet()
+            IFeatureSet outputShape = new Shapefile()
             {
                 Filename = FileTools.GetTempFileName(".shp")
             };

@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -60,6 +60,7 @@
     <Compile Include="IExtensionExtensionMethods.cs" />
     <Compile Include="IOpenProjectFileProvider.cs" />
     <Compile Include="IProjectFileProvider.cs" />
+    <Compile Include="ISampleProject.cs" />
     <Compile Include="ISaveProjectFileProvider.cs" />
     <Compile Include="ISatisfyImportsExtension.cs" />
     <Compile Include="SplashScreens\ISplashScreenManager.cs" />
@@ -69,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.snk" />
-    <None Include="DotSpatial.Extensions.nuspec" />
+    <None Include="package.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

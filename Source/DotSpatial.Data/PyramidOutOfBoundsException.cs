@@ -11,19 +11,14 @@
 //
 // ********************************************************************************************************
 
-using System;
-
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// The exception that is thrown when range specified is outside the bounds for the specified image scale.
-    /// </summary>
-    public class PyramidOutOfBoundsException : Exception
+    public class PyramidOutOfBoundsException : PyramidException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of <see cref="PyramidOutOfBoundsException"/>.
+        /// Creates a new instance of PyramidOutOfBoundsException
         /// </summary>
         public PyramidOutOfBoundsException()
             : base(DataStrings.PyramidOutOfBoundsException)

@@ -13,8 +13,7 @@ namespace DotSpatial.Data.Tests
             const string path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
             var target = new LineShapefile(path);
             Assert.IsNotNull(target);
-            Assert.AreEqual(11, target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape));
-            Assert.AreEqual(11, target.Features.Count(d => d.Geometry.IsEmpty));
+            Assert.IsTrue(target.ShapeIndices.Any(d => d.ShapeType == ShapeType.NullShape));
         }
 
         [Test]
@@ -34,11 +33,12 @@ namespace DotSpatial.Data.Tests
             {
                 var actual = new LineShapefile(exportPath);
                 Assert.IsNotNull(actual);
-                Assert.AreEqual(target.Extent,actual.Extent);
                 Assert.AreEqual(target.ShapeIndices.Count, actual.ShapeIndices.Count);
-                Assert.AreEqual(target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape), actual.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape));
+                if (indexMode)
+                {
+                    Assert.AreEqual(target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape), actual.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape));
+                }
                 Assert.AreEqual(target.Features.Count, actual.Features.Count);
-                Assert.AreEqual(target.Features.Count(d => d.Geometry.IsEmpty), actual.Features.Count(d => d.Geometry.IsEmpty));
             }
             finally
             {

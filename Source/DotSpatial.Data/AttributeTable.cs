@@ -184,7 +184,7 @@ namespace DotSpatial.Data
                     while (current < fieldLength)
                     {
                         current += myStream.Read(byteContent, current, fieldLength - current);
-                    }
+                    }                    
 
                     result[outRow++] = ParseColumn(field, row, byteContent, 0, fieldLength, null);
                 }
@@ -291,10 +291,6 @@ namespace DotSpatial.Data
             }
         }
 
-        /// <summary>
-        /// Gets a BinaryWriter that can be used to write to the file inside _fileName.
-        /// </summary>
-        /// <returns>Returns a BinaryWriter that can be used to write to the file inside _fileName.</returns>
         private BinaryWriter GetBinaryWriter()
         {
             return new BinaryWriter(new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1000000));
@@ -892,34 +888,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Exports the dbf file content to a stream.
-        /// </summary>
-        /// <returns>A stream that contains the dbf file content.</returns>
-        public Stream ExportDbfToStream()
-        {
-            MemoryStream dbfStream = new MemoryStream();
-            UpdateSchema();
-
-            try
-            {
-                using (var inMemoryStream = new MemoryStream())
-                using (_writer = new BinaryWriter(inMemoryStream))
-                {
-                    WriteHeader(_writer);
-                    WriteTable();
-                    inMemoryStream.Seek(0, SeekOrigin.Begin);
-                    inMemoryStream.CopyTo(dbfStream);
-                    _writer.Close();
-                }
-            }
-            finally
-            {
-                dbfStream.Seek(0, SeekOrigin.Begin);
-            }
-            return dbfStream;
-        }
-
-        /// <summary>
         /// Attempts to save the file to the path specified by the Filename property.
         /// This should be the .shp extension.
         /// </summary>
@@ -980,6 +948,7 @@ namespace DotSpatial.Data
             }
 
             // Add new columns that exist in the data Table, but don't have a matching field yet.
+
             tempColumns.AddRange(from DataColumn dc in _dataTable.Columns
                                  where !ColumnNameExists(dc.ColumnName)
                                  select dc as Field ?? new Field(dc));
@@ -1403,10 +1372,10 @@ namespace DotSpatial.Data
                     break;
 
                 case 'C': // character record.
-                          // Symbol | Data Type | Description
-                          // -------+-----------+----------------------------------------------------------------------------
-                          //   C    | Character | All OEM code page characters - padded with blanks to the width of the field.
-
+                    // Symbol | Data Type | Description
+                    // -------+-----------+----------------------------------------------------------------------------
+                    //   C    | Character | All OEM code page characters - padded with blanks to the width of the field.
+                    
                     for (var i = cBuffer.Length - 1; i >= 0; --i)
                     {
                         if (cBuffer[i] != ' ')
@@ -1499,7 +1468,7 @@ namespace DotSpatial.Data
             {
                 return DBNull.Value;
             }
-
+            
             object tempObject = DBNull.Value;
             Type t = field.DataType;
             var errorMessage = new Lazy<string>(() => string.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t));
@@ -1648,7 +1617,6 @@ namespace DotSpatial.Data
             }
             return tempObject;
         }
-
         /// <summary>
         /// Read the header data from the DBF file.
         /// </summary>

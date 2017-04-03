@@ -115,7 +115,6 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <inheritdoc />
         protected override void OnItemRemoved(ToolStripItemEventArgs e)
         {
             base.OnItemRemoved(e);
@@ -126,7 +125,6 @@ namespace DotSpatial.Controls
 
         #region IStatusControl implementation
 
-        /// <inheritdoc />
         public void Add(StatusPanel panel)
         {
             if (panel == null) throw new ArgumentNullException("panel");
@@ -194,7 +192,6 @@ namespace DotSpatial.Controls
             Refresh();
         }
 
-        /// <inheritdoc />
         public void Remove(StatusPanel panel)
         {
             if (panel == null) throw new ArgumentNullException("panel");

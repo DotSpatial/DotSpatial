@@ -34,8 +34,10 @@ namespace DotSpatial.Data.Forms
         //private IContainer components = null; // the members to be contained
         private string _directory;
 
+        private bool _ignoreSelectChanged;
         private List<DirectoryItem> _items;
         private DirectoryItem _selectedItem; // the most recently selected
+        private DirectoryItem _selectionStart;
 
         #endregion
 
@@ -248,6 +250,84 @@ namespace DotSpatial.Data.Forms
             }
         }
 
+        private void item_SelectChanged(object sender, SelectEventArgs e)
+        {
+            if (_ignoreSelectChanged) return;
+
+            DirectoryItem di = sender as DirectoryItem;
+            if (di == null) return;
+
+            if ((e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) != Keys.Shift)
+            {
+                if (_selectedItem != null)
+                {
+                    _selectedItem.IsOutlined = false;
+                }
+                _selectionStart = di;
+                _selectedItem = di;
+                _selectedItem.IsOutlined = true;
+                Invalidate();
+                return;
+            }
+            _ignoreSelectChanged = true;
+
+            if (((e.Modifiers & Keys.Shift) == Keys.Shift) && ((e.Modifiers & Keys.Control) != Keys.Control))
+            {
+                ClearSelection();
+                _selectedItem.IsOutlined = false;
+                int iOld;
+                if (_selectionStart != null)
+                {
+                    iOld = _items.IndexOf(_selectionStart);
+                }
+                else
+                {
+                    _selectionStart = _items[0];
+                    iOld = 0;
+                }
+                int iNew = _items.IndexOf(di);
+
+                int start = Math.Min(iOld, iNew);
+                int end = Math.Max(iOld, iNew);
+
+                for (int i = start; i <= end; i++)
+                {
+                    _items[i].IsSelected = true;
+                }
+                _selectionStart.IsOutlined = false;
+            }
+
+            // With no control keys or both.
+            if ((((e.Modifiers & Keys.Shift) == Keys.Shift) && ((e.Modifiers & Keys.Control) == Keys.Control)) ||
+                (((e.Modifiers & Keys.Shift) != Keys.Shift) && ((e.Modifiers & Keys.Control) != Keys.Control)))
+            {
+                if (_selectedItem != null)
+                {
+                    _selectedItem.IsOutlined = false;
+                }
+                ClearSelection();
+                di.IsSelected = true;
+                _selectionStart = di;
+                di.IsOutlined = true;
+            }
+            _selectedItem = di;
+            di.IsOutlined = true;
+            Invalidate();
+
+            _ignoreSelectChanged = false;
+        }
+
+        /// <summary>
+        /// Systematically clears any currently selected items.
+        /// </summary>
+        public void ClearSelection()
+        {
+            foreach (DirectoryItem di in _items)
+            {
+                di.IsSelected = false;
+            }
+        }
+
         private void AddFolders(ref int tp, int fontHeight)
         {
             if (_directory == null) return;
@@ -289,6 +369,13 @@ namespace DotSpatial.Data.Forms
                     tp += fontHeight;
                 }
             }
+        }
+
+        private void item_Navigate(object sender, NavigateEventArgs e)
+        {
+            _directory = e.Path;
+            UpdateContent();
+            Invalidate();
         }
     }
 }

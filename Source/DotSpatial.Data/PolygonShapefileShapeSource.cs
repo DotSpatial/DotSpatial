@@ -12,7 +12,7 @@
 // |-----------------|----------|---------------------------------------------------------------------
 // |      Name       |  Date    |                        Comments
 // |-----------------|----------|----------------------------------------------------------------------
-// | Kyle Ellison    |10/13/2010| Performance improvement. Keep shx cached during repeated GetShapes calls
+// | Kyle Ellison    |10/13/2010| Performance improvment. Keep shx cached during repeated GetShapes calls
 // | Kyle Ellison    |12/02/2010| Pushed common code into base class and derived from it.
 // | Kyle Ellison    |12/15/2010| Added method to get multiple shapes by index values, and consolidated code.
 // |-----------------|----------|----------------------------------------------------------------------

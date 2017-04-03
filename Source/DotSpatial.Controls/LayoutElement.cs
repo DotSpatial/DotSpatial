@@ -50,7 +50,7 @@ namespace DotSpatial.Controls
 
         private IPolygonSymbolizer _background = new PolygonSymbolizer(Color.Transparent, Color.Transparent);
         private PointF _location;
-        private string _name;
+        private String _name;
         private ResizeStyle _resizeStyle;
         private bool _resizing;
         private SizeF _size;
@@ -81,7 +81,7 @@ namespace DotSpatial.Controls
         /// Gets or sets the name of the element
         /// </summary>
         [Browsable(true), Category("Layout")]
-        public string Name
+        public String Name
         {
             get { return _name; }
             set { _name = value; OnInvalidate(); }

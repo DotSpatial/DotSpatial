@@ -19,9 +19,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Represents stroke using specified <see cref="Color"/> and  <see cref="DashStyle"/>.
-    /// </summary>
     [Serializable, XmlRoot("SimpleStroke")]
     public class SimpleStroke : Stroke, ISimpleStroke
     {
@@ -174,6 +171,19 @@ namespace DotSpatial.Symbology
         #endregion
 
         #region Protected Methods
+
+        ///// <summary>
+        ///// Adds SimpleStroke copy content
+        ///// </summary>
+        ///// <param name="copy"></param>
+        //protected override void OnCopy(Descriptor copy)
+        //{
+        //    base.OnCopy(copy);
+        //    ISimpleStroke ss = copy as ISimpleStroke;
+        //    ss.Color = Color;
+        //    ss.Width = Width;
+        //    ss.DashStyle = this.DashStyle;
+        //}
 
         /// <summary>
         /// Handles randomization of simple stroke content

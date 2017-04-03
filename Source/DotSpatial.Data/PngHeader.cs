@@ -20,6 +20,12 @@ namespace DotSpatial.Data
     {
         #region Private Variables
 
+        private BitDepth _bitdepth;
+        private ColorType _colortype;
+        private int _height;
+        private InterlaceMethod _interlaceMethod;
+        private int _width;
+
         #endregion
 
         #region Constructors
@@ -29,11 +35,11 @@ namespace DotSpatial.Data
         /// </summary>
         public PngHeader(int width, int height)
         {
-            Width = width;
-            Height = height;
-            BitDepth = BitDepth.Eight;
-            ColorType = ColorType.TruecolorAlpha;
-            InterlaceMethod = InterlaceMethod.NoInterlacing;
+            _width = width;
+            _height = height;
+            _bitdepth = BitDepth.Eight;
+            _colortype = ColorType.TruecolorAlpha;
+            _interlaceMethod = InterlaceMethod.NoInterlacing;
         }
 
         #endregion
@@ -63,13 +69,13 @@ namespace DotSpatial.Data
             vals[5] = 72; //H
             vals[6] = 68; //D
             vals[7] = 82; //R
-            Write(vals, 8, Width);
-            Write(vals, 12, Height);
-            vals[16] = (byte)BitDepth;
-            vals[17] = (byte)ColorType;
+            Write(vals, 8, _width);
+            Write(vals, 12, _height);
+            vals[16] = (byte)_bitdepth;
+            vals[17] = (byte)_colortype;
             vals[18] = CompressionMethod;
             vals[19] = FilterMethod;
-            vals[20] = (byte)InterlaceMethod;
+            vals[20] = (byte)_interlaceMethod;
 
             // CRC check is calculated on the chunk type and chunk data, but not the length.
 
@@ -150,27 +156,47 @@ namespace DotSpatial.Data
         /// Greyscale/alpha - 8, 16
         /// TrueColor/alpha - 8, 16
         /// </summary>
-        public BitDepth BitDepth { get; set; }
+        public BitDepth BitDepth
+        {
+            get { return _bitdepth; }
+            set { _bitdepth = value; }
+        }
 
         /// <summary>
         /// Gets or sets the color type.
         /// </summary>
-        public ColorType ColorType { get; set; }
+        public ColorType ColorType
+        {
+            get { return _colortype; }
+            set { _colortype = value; }
+        }
 
         /// <summary>
         /// Gets or sets the width
         /// </summary>
-        public int Width { get; set; }
+        public int Width
+        {
+            get { return _width; }
+            set { _width = value; }
+        }
 
         /// <summary>
         /// Gets or sets the height
         /// </summary>
-        public int Height { get; set; }
+        public int Height
+        {
+            get { return _height; }
+            set { _height = value; }
+        }
 
         /// <summary>
         /// Gets or sets the interlacing method used for this image.
         /// </summary>
-        public InterlaceMethod InterlaceMethod { get; set; }
+        public InterlaceMethod InterlaceMethod
+        {
+            get { return _interlaceMethod; }
+            set { _interlaceMethod = value; }
+        }
 
         #endregion
     }

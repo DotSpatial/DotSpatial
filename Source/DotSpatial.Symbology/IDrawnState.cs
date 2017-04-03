@@ -15,6 +15,10 @@ namespace DotSpatial.Symbology
 {
     public interface IDrawnState
     {
+        #region Methods
+
+        #endregion
+
         #region Properties
 
         /// <summary>

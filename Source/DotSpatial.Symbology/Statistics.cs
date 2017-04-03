@@ -16,33 +16,63 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Reprsents som basic statistics like Min/Max/Meduim, etc.
-    /// </summary>
     public class Statistics
     {
+        #region Private Variables
+
+        private int _count;
+        private double _maximum;
+        private double _mean;
+        private double _median;
+        private double _minimum;
+        private double _std;
+        private double _sum;
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// Resets all statistics to 0.
+        /// resets all statistics to 0.
         /// </summary>
         public void Clear()
         {
-            Count = 0;
-            Minimum = 0;
-            Maximum = 0;
-            Mean = 0;
-            Median = 0;
-            Sum = 0;
-            StandardDeviation = 0;
+            _count = 0;
+            _minimum = 0;
+            _maximum = 0;
+            _mean = 0;
+            _median = 0;
+            _sum = 0;
+            _std = 0;
         }
 
         /// <summary>
         /// Calculates the statistics for the specified values
         /// </summary>
-        public void Calculate(List<double> values, double min = double.MinValue, double max = double.MaxValue)
+        /// <param name="values"></param>
+        public void Calculate(List<double> values)
+        {
+            Calculate(values, double.MinValue, double.MaxValue);
+        }
+
+        /// <summary>
+        /// Calculates the statistics for the specified values
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        public void Calculate(List<double> values, double min, double max)
         {
             values.Sort(); // Linear solutions for finding median can be problematic.  Easier to simply sort values.
+            // Trim the extremes when calculating statistics.
+            //while (values.Count > 0 && values[0] < min)
+            //{
+            //    values.RemoveAt(0);
+            //}
+            //while (values.Count > 0 && values[values.Count-1] > max)
+            //{
+            //    values.RemoveAt(values.Count - 1);
+            //}
 
             if (values.Count == 0)
             {
@@ -53,16 +83,16 @@ namespace DotSpatial.Symbology
             {
                 // In the even case, take the average of the two middle values
                 int lowIndex = (values.Count - 1) / 2; //Divide by one less than values.Count to grab the middle two values.
-                Median = (values[lowIndex] + values[lowIndex + 1]) / 2;
+                _median = (values[lowIndex] + values[lowIndex + 1]) / 2;
             }
             else
             {
                 int index = values.Count / 2; // integer division causes 5-> 2, not 2.5.
-                Median = values[index];
+                _median = values[index];
             }
-            Count = values.Count;
-            Minimum = values[0];
-            Maximum = values[values.Count - 1];
+            _count = values.Count;
+            _minimum = values[0];
+            _maximum = values[values.Count - 1];
 
             double total = 0;
             double sqrTotal = 0;
@@ -71,9 +101,9 @@ namespace DotSpatial.Symbology
                 total += val;
                 sqrTotal += val * val;
             }
-            Sum = total;
-            Mean = total / Count;
-            StandardDeviation = Math.Sqrt((sqrTotal / Count) - (total / Count) * (total / Count));
+            _sum = total;
+            _mean = total / _count;
+            _std = Math.Sqrt((sqrTotal / _count) - (total / _count) * (total / _count));
         }
 
         #endregion
@@ -83,37 +113,65 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the integer count of the values
         /// </summary>
-        public int Count { get; protected set; }
+        public int Count
+        {
+            get { return _count; }
+            protected set { _count = value; }
+        }
 
         /// <summary>
         /// Gets the highest value
         /// </summary>
-        public double Maximum { get; protected set; }
+        public double Maximum
+        {
+            get { return _maximum; }
+            protected set { _maximum = value; }
+        }
 
         /// <summary>
         /// Gets the average value
         /// </summary>
-        public double Mean { get; protected set; }
+        public double Mean
+        {
+            get { return _mean; }
+            protected set { _mean = value; }
+        }
 
         /// <summary>
         /// Gets the middle value, or the average of the two middle values
         /// </summary>
-        public double Median { get; protected set; }
+        public double Median
+        {
+            get { return _median; }
+            protected set { _median = value; }
+        }
 
         /// <summary>
         /// Gets the minimum value
         /// </summary>
-        public double Minimum { get; protected set; }
+        public double Minimum
+        {
+            get { return _minimum; }
+            protected set { _minimum = value; }
+        }
 
         /// <summary>
         /// Gets the standard deviation
         /// </summary>
-        public double StandardDeviation { get; protected set; }
+        public double StandardDeviation
+        {
+            get { return _std; }
+            protected set { _std = value; }
+        }
 
         /// <summary>
         /// Gets the sum of the values.
         /// </summary>
-        public double Sum { get; protected set; }
+        public double Sum
+        {
+            get { return _sum; }
+            protected set { _sum = value; }
+        }
 
         #endregion
     }

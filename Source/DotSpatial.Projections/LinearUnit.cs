@@ -22,6 +22,9 @@ namespace DotSpatial.Projections
     {
         #region Private Variables
 
+        private double _meters;
+        private string _name;
+
         #endregion
 
         #region Constructors
@@ -31,8 +34,8 @@ namespace DotSpatial.Projections
         /// </summary>
         public LinearUnit()
         {
-            Meters = 1;
-            Name = "Meter";
+            _meters = 1;
+            _name = "Meter";
         }
 
         #endregion
@@ -42,12 +45,20 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Gets or sets the name of this
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         /// <summary>
         /// Gets or sets the constant to multiply with maps distances to get the distances in meters
         /// </summary>
-        public double Meters { get; set; }
+        public double Meters
+        {
+            get { return _meters; }
+            set { _meters = value; }
+        }
 
         #endregion
 
@@ -59,7 +70,7 @@ namespace DotSpatial.Projections
         /// <returns>A string that contains the name and conversion factor to meters </returns>
         public string ToEsriString()
         {
-            return @"UNIT[""" + Name + @"""," + Convert.ToString(Meters, CultureInfo.InvariantCulture) + "]";
+            return @"UNIT[""" + _name + @"""," + Convert.ToString(_meters, CultureInfo.InvariantCulture) + "]";
         }
 
         /// <summary>
@@ -74,9 +85,9 @@ namespace DotSpatial.Projections
             if (iEnd < iStart) return;
             string extracted = esriString.Substring(iStart, iEnd - iStart);
             string[] terms = extracted.Split(',');
-            Name = terms[0];
-            Name = Name.Substring(1, Name.Length - 2);
-            Meters = double.Parse(terms[1], CultureInfo.InvariantCulture);
+            _name = terms[0];
+            _name = _name.Substring(1, _name.Length - 2);
+            _meters = double.Parse(terms[1], CultureInfo.InvariantCulture);
         }
 
         #endregion
@@ -92,8 +103,8 @@ namespace DotSpatial.Projections
             var setUom = (Action<string, double>)
                 ((name, meters) =>
                 {
-                    Name = name;
-                    Meters = meters;
+                    _name = name;
+                    _meters = meters;
                 });
 
             switch (uomCode)

@@ -22,12 +22,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// The zero based integer column index
         /// </summary>
-        public int Column { get; private set; }
+        public int Column;
 
         /// <summary>
         /// The zero based integer row index
         /// </summary>
-        public int Row { get; private set; }
+        public int Row;
 
         /// <summary>
         /// Creates a new RcIndex structure with the specified coordinates
@@ -35,12 +35,10 @@ namespace DotSpatial.Data
         /// <param name="row">The integer row index</param>
         /// <param name="column">The integer column index</param>
         public RcIndex(int row, int column)
-            :this()
         {
             Row = row;
             Column = column;
         }
-
 
         /// <summary>
         /// Returns a new RcIndex that is defined as empty when both indices are int.

@@ -21,7 +21,7 @@ namespace DotSpatial.Symbology.Forms
     /// This parses the input values and changes the background color to salmon
     /// if the value won't work as a degree.
     /// </summary>
-    internal class ValidTextBox : TextBox
+    internal class ValidTextBox : TextBox, IErrorCheck
     {
         #region Private Variables
 

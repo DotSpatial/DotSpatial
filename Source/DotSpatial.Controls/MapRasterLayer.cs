@@ -37,6 +37,16 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region Private Variables
+
+        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
+        private Envelope _bufferExtent; // the geographic extent of the current buffer.
+        private Rectangle _bufferRectangle;
+        private bool _isInitialized;
+        private Image _stencil; // draw features to the stencil
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -126,8 +136,8 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (BackBuffer == null) return;
-            Graphics g = Graphics.FromImage(BackBuffer);
+            if (_backBuffer == null) return;
+            Graphics g = Graphics.FromImage(_backBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -159,8 +169,8 @@ namespace DotSpatial.Controls
         public void FinishDrawing()
         {
             OnFinishDrawing();
-            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
-            Buffer = BackBuffer;
+            if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
+            _stencil = _backBuffer;
         }
 
         /// <summary>
@@ -173,12 +183,15 @@ namespace DotSpatial.Controls
         public void StartDrawing(bool preserve)
         {
             Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
-            if (Buffer?.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
+            if (Buffer != null)
             {
-                if (preserve)
+                if (Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
                 {
-                    Graphics g = Graphics.FromImage(backBuffer);
-                    g.DrawImageUnscaled(Buffer, 0, 0);
+                    if (preserve)
+                    {
+                        Graphics g = Graphics.FromImage(backBuffer);
+                        g.DrawImageUnscaled(Buffer, 0, 0);
+                    }
                 }
             }
             if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
@@ -194,33 +207,53 @@ namespace DotSpatial.Controls
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Image BackBuffer { get; set; }
+        public Image BackBuffer
+        {
+            get { return _backBuffer; }
+            set { _backBuffer = value; }
+        }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Image Buffer { get; set; }
+        public Image Buffer
+        {
+            get { return _stencil; }
+            set { _stencil = value; }
+        }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Envelope BufferEnvelope { get; set; }
+        public Envelope BufferEnvelope
+        {
+            get { return _bufferExtent; }
+            set { _bufferExtent = value; }
+        }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Rectangle BufferRectangle { get; set; }
+        public Rectangle BufferRectangle
+        {
+            get { return _bufferRectangle; }
+            set { _bufferRectangle = value; }
+        }
 
         /// <summary>
         /// Gets or sets whether the image layer is initialized
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool IsInitialized { get; set; }
+        public new bool IsInitialized
+        {
+            get { return _isInitialized; }
+            set { _isInitialized = value; }
+        }
 
         #endregion
 
@@ -247,6 +280,17 @@ namespace DotSpatial.Controls
         {
         }
 
+        ///// <summary>
+        ///// This ensures that when the symbolic content for the layer is updated that we re-load the image.
+        ///// </summary>
+        //protected override void OnItemChanged()
+        //{
+        //    if (_baseImage == null) return;
+        //    string imgFile = _baseImage.Filename;
+        //    _baseImage.Open(imgFile);
+        //    base.OnItemChanged();
+        //}
+
         /// <summary>
         /// Occurs when a new drawing is started, but after the BackBuffer has been established.
         /// </summary>
@@ -254,25 +298,24 @@ namespace DotSpatial.Controls
         {
         }
 
-        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (Buffer != BackBuffer && Buffer != null)
+                if (_stencil != _backBuffer && _stencil != null)
                 {
-                    Buffer.Dispose();
-                    Buffer = null;
+                    _stencil.Dispose();
+                    _stencil = null;
                 }
-                if (BackBuffer != null)
+                if (_backBuffer != null)
                 {
-                    BackBuffer.Dispose();
-                    BackBuffer = null;
+                    _backBuffer.Dispose();
+                    _backBuffer = null;
                 }
 
-                BufferEnvelope = null;
-                BufferRectangle = Rectangle.Empty;
-                IsInitialized = false;
+                _bufferExtent = null;
+                _bufferRectangle = Rectangle.Empty;
+                _isInitialized = false;
             }
             base.Dispose(disposing);
         }
@@ -297,8 +340,8 @@ namespace DotSpatial.Controls
             }
             else
             {
-                if (BackBuffer == null) BackBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
-                g = Graphics.FromImage(BackBuffer);
+                if (_backBuffer == null) _backBuffer = new Bitmap(_bufferRectangle.Width, _bufferRectangle.Height);
+                g = Graphics.FromImage(_backBuffer);
             }
 
             int numBounds = Math.Min(regions.Count, clipRectangles.Count);

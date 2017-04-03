@@ -195,6 +195,8 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Occurs when items are inserted
         /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
         protected virtual void OnInsert(int index, object value)
         {
             T item = value as T;
@@ -204,6 +206,8 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Occurs after a new item has been inserted, and fires IncludeComplete
         /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
         protected virtual void OnInsertComplete(int index, object value)
         {
             T item = value as T;
@@ -213,6 +217,8 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Fires after the remove operation, ensuring that OnExclude gets called
         /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
         protected virtual void OnRemoveComplete(int index, object value)
         {
             T item = value as T;
@@ -222,6 +228,9 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Fires before the set operation ensuring the new item is included if necessary
         /// </summary>
+        /// <param name="index"></param>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
         protected virtual void OnSet(int index, object oldValue, object newValue)
         {
             T item = newValue as T;
@@ -231,6 +240,9 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Fires after the set operation, ensuring that the item is removed
         /// </summary>
+        /// <param name="index"></param>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
         protected virtual void OnSetComplete(int index, object oldValue, object newValue)
         {
             T item = oldValue as T;
@@ -256,12 +268,14 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Occurs after the item has been included either by set, insert, or addition.
         /// </summary>
+        /// <param name="item"></param>
         protected virtual void OnIncludeComplete(T item) { }
 
         /// <summary>
         /// Occurs any time an item is removed from the collection and no longer
         /// exists anywhere in the collection
         /// </summary>
+        /// <param name="item"></param>
         protected virtual void OnExclude(T item) { }
 
         /// <summary>
@@ -290,6 +304,73 @@ namespace DotSpatial.Serialization
                 OnExclude(item);
             }
         }
+
+        #region Enumerator
+
+        /// <summary>
+        /// Defines a new kind of enumerator designed to make the CollectionBase cooperate with strong type collections
+        /// </summary>
+        /// <typeparam name="TE">The enumerator type.</typeparam>
+        public class BaseCollectionEnumerator<TE> : IEnumerator<TE> where TE : class
+        {
+            private readonly IEnumerator _innerEnumerator;
+
+            /// <summary>
+            /// Creates the new enumerator
+            /// </summary>
+            /// <param name="innerEnumerator">A non type specific enumerator</param>
+            public BaseCollectionEnumerator(IEnumerator innerEnumerator)
+            {
+                _innerEnumerator = innerEnumerator;
+            }
+
+            #region IEnumerator<TE> Members
+
+            /// <summary>
+            /// The current item
+            /// </summary>
+            public TE Current
+            {
+                get { return _innerEnumerator.Current as TE; }
+            }
+
+            object IEnumerator.Current
+            {
+                get { return _innerEnumerator.Current as TE; }
+            }
+
+            /// <summary>
+            /// Does nothing
+            /// </summary>
+            public void Dispose()
+            {
+            }
+
+            /// <summary>
+            /// Moves to the next item in the collection
+            /// </summary>
+            /// <returns></returns>
+            public bool MoveNext()
+            {
+                return _innerEnumerator.MoveNext();
+            }
+
+            /// <summary>
+            /// resets the enumerator
+            /// </summary>
+            public void Reset()
+            {
+                _innerEnumerator.Reset();
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Private Variables
+
+        #endregion
 
         #region Constructors
 

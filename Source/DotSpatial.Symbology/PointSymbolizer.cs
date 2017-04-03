@@ -23,7 +23,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Symbolizer for point features.
+    /// PointSymbolizer
     /// </summary>
     public class PointSymbolizer : FeatureSymbolizer, IPointSymbolizer
     {

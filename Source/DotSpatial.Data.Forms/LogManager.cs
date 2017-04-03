@@ -37,7 +37,7 @@ namespace DotSpatial.Data.Forms
 
         // A list of places to potentially add data from
 
-        // increments so that each addition increments the active key.
+        // incrememnts so that each addition increments the active key.
         private int _currentKey;
         private List<string> _directories;
 

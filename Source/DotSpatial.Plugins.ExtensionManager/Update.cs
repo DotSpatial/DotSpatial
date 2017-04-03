@@ -10,7 +10,7 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    internal class Update
+    public class Update
     {
         private readonly Packages packages;
         private AppManager App;

@@ -408,7 +408,7 @@ namespace DotSpatial.Positioning
             %        (2) Error correcting code, convergence failure traps, antipodal
             %            corrections, polar error corrections, WGS84 ellipsoid
             %            parameters, testing, and comments: Michael Kleder, 2004.
-            %        (3) Azimuth implementation (including quadrant ambiguity
+            %        (3) Azimuth implementation (including quadrant abiguity
             %            resolution) and code vectorization, Michael Kleder, Sep 2005.
             %        (4) Vectorization is convergence sensitive; that is, quantities
             %            which have already converged to within tolerance are not
@@ -1312,7 +1312,7 @@ namespace DotSpatial.Positioning
 %        (2) Error correcting code, convergence failure traps, antipodal
 %            corrections, polar error corrections, WGS84 ellipsoid
 %            parameters, testing, and comments: Michael Kleder, 2004.
-%        (3) Azimuth implementation (including quadrant ambiguity
+%        (3) Azimuth implementation (including quadrant abiguity
 %            resolution) and code vectorization, Michael Kleder, Sep 2005.
 %        (4) Vectorization is convergence sensitive; that is, quantities
 %            which have already converged to within tolerance are not
@@ -2138,9 +2138,9 @@ return
         {
             // Taken from: http://www.koders.com/java/fid72A4E7D3DA8195D118CF926431263DDB8C45C5A1.aspx
             /*
-             * Vincenty's Inverse Algorithm.
+             * Vincenty's Inverse Algorythm.
              *
-             * notice: MATLAB had no formula which took the ellipsoid into account -- only a
+             * notice: MATLAB had no formula which took the ellipsoid into accout -- only a
              * formula which used Earth's average radius.  This is why the formulae have
              * two separate sources.  -- Jon
              *

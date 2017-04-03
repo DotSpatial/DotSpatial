@@ -436,7 +436,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Horizontal dilution of precision
         /// </summary>
-        /// <value>The horizontal dilution of precision.</value>
+        /// <value>The horizontal dilutiuon of precision.</value>
         public DilutionOfPrecision HorizontalDilutiuonOfPrecision
         {
             get { return _horizontalDOP; }
@@ -450,7 +450,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Vertical dilution of precision
         /// </summary>
-        /// <value>The vertical dilution of precision.</value>
+        /// <value>The vertical dilutiuon of precision.</value>
         public DilutionOfPrecision VerticalDilutiuonOfPrecision
         {
             get { return _verticalDOP; }
@@ -464,7 +464,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Mean Dilution of Precision
         /// </summary>
-        /// <value>The mean dilution of precision.</value>
+        /// <value>The mean dilutiuon of precision.</value>
         public DilutionOfPrecision MeanDilutiuonOfPrecision
         {
             get { return _meanDOP; }

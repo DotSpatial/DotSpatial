@@ -16,6 +16,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class PackageManager
     {
+
         /// <summary>
         /// Marks the package for removal.
         /// </summary>

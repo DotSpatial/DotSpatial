@@ -22,7 +22,7 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Group of layers.
+    /// Group
     /// </summary>
     public class Group : Layer, IGroup
     {
@@ -45,6 +45,7 @@ namespace DotSpatial.Symbology
         private int _handle;
         private Image _image;
         private ILayerCollection _layers;
+        //private ILegend _legend;
         private IGroup _parentGroup;
         private bool _selectionEnabled;
         private bool _stateLocked;

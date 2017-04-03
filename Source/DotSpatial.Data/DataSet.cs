@@ -12,6 +12,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -198,6 +199,18 @@ namespace DotSpatial.Data
             }
         }
 
+        /// <summary>
+        /// Gets an enumeration specifying if this data supports time, space, both or neither.
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SpaceTimeSupport SpaceTimeSupport { get; set; }
+
+        /// <summary>
+        /// Gets or sets the string type name that identifies this dataset
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string TypeName { get; set; }
+
         #endregion
 
         #region Methods
@@ -221,6 +234,7 @@ namespace DotSpatial.Data
             {
                 Name = null;
                 Projection = null;
+                TypeName = null;
                 _progressHandler = null;
                 _progressMeter = null;
             }

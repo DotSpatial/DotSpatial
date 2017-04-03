@@ -17,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Contains extensions for <see cref="ICloneable"/> interface.
-    /// </summary>
     public static class ICloneableExtensions
     {
         /// <summary>

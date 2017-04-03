@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Creates a new instance of ShadedRelief based on some more common
-        /// elevation to geographic coordinate system scenarios
+        /// elevation to goegraphic coordinate sysetem scenarios
         /// </summary>
         public ShadedRelief(ElevationScenario scenario)
         {

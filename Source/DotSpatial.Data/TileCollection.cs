@@ -49,7 +49,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Enumerates the collection of tiles
         /// </summary>
-        private class TileCollectionEnumerator : IEnumerator<IImageData>
+        public class TileCollectionEnumerator : IEnumerator<IImageData>
         {
             private readonly IImageData[,] _tiles;
             private int _col;

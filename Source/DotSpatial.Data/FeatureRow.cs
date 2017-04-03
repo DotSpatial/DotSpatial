@@ -56,7 +56,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Stores the geometry as WKB, overwriting any existing value.
+        /// Stores the goemetry as WKB, overwriting any existing value.
         /// </summary>
         public void StoreGeometry()
         {

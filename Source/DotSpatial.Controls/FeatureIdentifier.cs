@@ -198,7 +198,7 @@ namespace DotSpatial.Controls
             if (index == RcIndex.Empty) return;
             var val = layer.DataSet.Value[index.Row, index.Column];
 
-            var text = string.Format("{0} = {1} ({2},{3})", layer.LegendText, val, index.Column, index.Row);
+            var text = String.Format("{0} = {1} ({2},{3})", layer.LegendText, val, index.Column, index.Row);
             var nodeLayer = treFeatures.Nodes.Add(text);
             nodeLayer.Tag = layer;
             nodeLayer.Name = layer.LegendText;

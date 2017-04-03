@@ -1,11 +1,13 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/7tof6s7m07qdad3b?svg=true)](https://ci.appveyor.com/project/mogikanin/dotspatial)
+
 # What is DotSpatial?
 
-DotSpatial is a geographic information system library written for .NET Framework.
+DotSpatial is a geographic information system library written for .NET 4. 
 It allows developers to incorporate spatial data, analysis and mapping functionality into their applications or to contribute GIS extensions to the community.
 
-DotSpatial provides a map control for .NET and several GIS capabilities including:
+DotSpatial provides a map control for .NET and several GIS capabilities including: 
 
-* Display a map in a .NET Windows Forms.
+* Display a map in a .NET Windows Forms or Web application.
 * Open shapefiles, grids, rasters and images.
 * Render symbology and labels.
 * Reproject on the fly.
@@ -25,11 +27,11 @@ Still have questions? Maybe someone already [asked them](https://github.com/DotS
 
 See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
 
-### Links
-* Continious integration build [![Build status](https://ci.appveyor.com/api/projects/status/7tof6s7m07qdad3b?svg=true)](https://ci.appveyor.com/project/mogikanin/dotspatial)
-* [Changelog](https://github.com/DotSpatial/DotSpatial/blob/master/Changelog.md)
-* [Latest available build from master branch](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifacts/Source/bin/Release.zip?branch=master)
-* [Continiuos Integration builds Nuget feed](https://ci.appveyor.com/nuget/dotspatial)
+### Download
+
+Use this [link](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifacts/Source/bin/Release.zip?branch=master) to download latest binaries (from master branch).
+
+Have a look at the [Changelog](https://github.com/DotSpatial/DotSpatial/blob/master/Changelog.md) to see the difference between the master branch and the latest stable release.
 
 ### License
 

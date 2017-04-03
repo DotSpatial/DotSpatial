@@ -77,7 +77,7 @@ namespace DotSpatial.Projections
         #region Methods
 
         /// <summary>
-        /// Returns a representation of this object as a Proj4 string.
+        /// Returns a representaion of this object as a Proj4 string.
         /// </summary>
         /// <returns></returns>
         public string ToProj4String()

@@ -211,7 +211,7 @@
     <value>Create a new selection</value>
   </data>
   <data name="cmbMethod.Items1" xml:space="preserve">
-    <value>Append to the existing selection</value>
+    <value>Append to the exsiting selection</value>
   </data>
   <data name="cmbMethod.Items2" xml:space="preserve">
     <value>Remove from the existing selection</value>

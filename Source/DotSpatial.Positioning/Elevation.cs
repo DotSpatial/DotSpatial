@@ -68,7 +68,7 @@ namespace DotSpatial.Positioning
     ///   </code>
     ///   </example>
     /// <remarks>This class is used to indicate a vertical angle where 90° represents a point
-    /// directly overhead, 0° represents the horizon (straight ahead), and -90° represents a
+    /// directly overhead, 0° represents the horizon (striaght ahead), and -90° represents a
     /// point straight down. This class is typically combined with an <strong>Elevation</strong>
     /// object (which measures a horizontal angle) to form a three-dimensional direction to an
     /// object in space, such as a GPS satellite.</remarks>
@@ -1076,7 +1076,7 @@ Math.Round(
         /// Returns a random Elevation between 0° and 360° using the specified random number
         /// seed.
         /// </summary>
-        /// <param name="generator">A <strong>Random</strong> object used to generate random values.</param>
+        /// <param name="generator">A <strong>Random</strong> object used to ogenerate random values.</param>
         /// <returns>An <strong>Elevation</strong> containing a random value.</returns>
         public static Elevation Random(Random generator)
         {

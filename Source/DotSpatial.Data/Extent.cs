@@ -618,7 +618,6 @@ namespace DotSpatial.Data
         /// M or MZ version of extent will be returned if the string has those values.
         /// </summary>
         /// <param name="text">The string text to parse.</param>
-        /// <exception cref="ExtentParseException"/>
         public static Extent Parse(string text)
         {
             Extent result;

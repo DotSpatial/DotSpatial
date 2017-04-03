@@ -322,7 +322,7 @@ namespace DotSpatial.Positioning
 #if !PocketPC
 
         /// <summary>
-        /// Indicates whether the current satellite with this PRN is providing additional corrective
+        /// Indicates whether the satellite is providing additional corrective
         /// signals to increase precision.
         /// </summary>
         /// <remarks>This property will return a value of <strong>True</strong>
@@ -331,7 +331,7 @@ namespace DotSpatial.Positioning
         /// and re-broadcast correction signals from ground stations.  When this property
         /// is true, the GPS device has improved precision.</remarks>
         [Category("Behavior")]
-        [Description("Indicates whether the current satellite with this PRN is providing additional corrective signals to increase precision.")]
+        [Description("Indicates whether the satellite is providing additional corrective signals to increase precision.")]
         [Browsable(true)]
 #endif
         public bool IsDifferentialGpsSatellite
@@ -348,10 +348,10 @@ namespace DotSpatial.Positioning
 #if !PocketPC
 
         /// <summary>
-        /// Returns the government project responsible for launching the current satellite with this PRN.
+        /// Returns the government project responsible for launching the satellite.
         /// </summary>
         [Category("Statistics")]
-        [Description("Returns the government project responsible for launching the current satellite with this PRN.")]
+        [Description("Returns the government project responsible for launching the satellite.")]
         [Browsable(true)]
 #endif
         public SatelliteClass Class
@@ -384,38 +384,35 @@ namespace DotSpatial.Positioning
                     case 42:
                     case 50:
                         return SatelliteClass.Msas;
-                    case 01: // USA-232
-                    case 02: // USA-180
-                    case 03: // USA-258
-                    case 04: // USA-96 (In reserve)
-                    case 05: // USA-206
-                    case 06: // USA-251
-                    case 07: // USA-201
-                    case 08: // USA-262
-                    case 09: // USA-256
-                    case 10: // USA-265
-                    case 11: // USA-145
-                    case 12: // USA-192
-                    case 13: // USA-132
-                    case 14: // USA-154
-                    case 15: // USA-196
-                    case 16: // USA-166
-                    case 17: // USA-183
-                    case 18: // USA-156
-                    case 19: // USA-177
-                    case 20: // USA-150
-                    case 21: // USA-168
-                    case 22: // USA-175
-                    case 23: // USA-178
-                    case 24: // USA-239
-                    case 25: // USA-213
-                    case 26: // USA-260
-                    case 27: // USA-242
-                    case 28: // USA-151
-                    case 29: // USA-199
-                    case 30: // USA-248
-                    case 31: // USA-190
-                    case 32: // USA-266
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 13:
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 18:
+                    case 19:
+                    case 20:
+                    case 21:
+                    case 22:
+                    case 23:
+                    case 24:
+                    case 25:
+                    case 26:
+                    case 27:
+                    case 28:
+                    case 29:
+                    case 30:
+                    case 31:
                         return SatelliteClass.Navstar;
                     default:
                         return SatelliteClass.Unknown;
@@ -426,53 +423,55 @@ namespace DotSpatial.Positioning
 #if !PocketPC
 
         /// <summary>
-        /// Returns the atomic clock currently in service for the satellite with this PRN.
+        /// Returns the atomic clock currently in service.
         /// </summary>
         [Category("Statistics")]
-        [Description("Returns the atomic clock currently in service for the satellite with this PRN.")]
+        [Description("Returns the atomic clock currently in service.")]
         [Browsable(true)]
 #endif
         public SatelliteAtomicClockType AtomicClockType
         {
             get
             {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpstd.txt
                 switch (_pseudorandomNumber)
                 {
-                    case 01: // USA-232
-                    case 02: // USA-180
-                    case 03: // USA-258
-                    case 04: // USA-96
-                    case 05: // USA-206
-                    case 06: // USA-251
-                    case 07: // USA-201
-                    case 09: // USA-256
-                    case 10: // USA-265
-                    case 11: // USA-145
-                    case 12: // USA-192
-                    case 13: // USA-132
-                    case 14: // USA-154
-                    case 15: // USA-196
-                    case 16: // USA-166
-                    case 17: // USA-183
-                    case 18: // USA-156
-                    case 19: // USA-177
-                    case 20: // USA-150
-                    case 21: // USA-168
-                    case 22: // USA-175
-                    case 23: // USA-178
-                    case 25: // USA-213
-                    case 26: // USA-260
-                    case 27: // USA-242
-                    case 28: // USA-151
-                    case 29: // USA-199
-                    case 30: // USA-248
-                    case 31: // USA-190
-                    case 32: // USA-266
-                        return SatelliteAtomicClockType.Rubidium;
-                    case 08: // USA-262
-                    case 24: // USA-239
+                    /* Data was compiled from Wikipedia:
+                     * http://en.wikipedia.org/wiki/List_of_GPS_satellite_launches
+                     */
+
+                    case 24:
+                    case 27:
+                    case 09:
+                    case 03:
+                    case 10:
+                    case 30:
+                    case 08:
                         return SatelliteAtomicClockType.Cesium;
+                    case 32:
+                    case 25:
+                    case 26:
+                    case 05:
+                    case 04:
+                    case 06:
+                    case 13:
+                    case 11:
+                    case 20:
+                    case 28:
+                    case 14:
+                    case 18:
+                    case 16:
+                    case 21:
+                    case 22:
+                    case 19:
+                    case 23:
+                    case 02:
+                    case 17:
+                    case 31:
+                    case 12:
+                    case 15:
+                    case 29:
+                    case 07:
+                        return SatelliteAtomicClockType.Rubidium;
                     default:
                         return SatelliteAtomicClockType.Unknown;
                 }
@@ -482,338 +481,304 @@ namespace DotSpatial.Positioning
 #if !PocketPC
 
         /// <summary>
-        /// Returns the launch block of the current satellite with this PRN.
+        /// Returns the launch block of the satellite.
         /// </summary>
         [Category("Statistics")]
-        [Description("Returns the launch block of the current satellite with this PRN.")]
+        [Description("Returns the launch block of the satellite.")]
         [Browsable(true)]
 #endif
         public SatelliteBlock Block
         {
             get
             {
-                // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
                 switch (_pseudorandomNumber)
                 {
-                    case 01: // USA-232
-                    case 03: // USA-258
-                    case 06: // USA-251
-                    case 08: // USA-262
-                    case 09: // USA-256
-                    case 10: // USA-265
-                    case 24: // USA-239
-                    case 25: // USA-213
-                    case 26: // USA-260
-                    case 27: // USA-242
-                    case 30: // USA-248
-                    case 32: // USA-266
-                        return SatelliteBlock.IIF;
-                    case 02: // USA-180
-                    case 11: // USA-145
-                    case 13: // USA-132
-                    case 14: // USA-154
-                    case 16: // USA-166
-                    case 18: // USA-156
-                    case 19: // USA-177
-                    case 20: // USA-150
-                    case 21: // USA-168
-                    case 22: // USA-175
-                    case 23: // USA-178
-                    case 28: // USA-151
-                        return SatelliteBlock.IIR;
-                    case 05: // USA-206
-                    case 07: // USA-201
-                    case 12: // USA-192
-                    case 15: // USA-196
-                    case 17: // USA-183
-                    case 29: // USA-199
-                    case 31: // USA-190
-                        return SatelliteBlock.IIRM;
-                }
+                    /* Compiled via the US Military
+                     * ftp://tycho.usno.navy.mil/pub/gps/gpsb1.txt
+                     */
 
-                return SatelliteBlock.Unknown;
-            }
-        }
-
-#if !PocketPC
-
-        /// <summary>
-        /// Returns the date the current satellite with this PRN was placed into orbit.
-        /// </summary>
-        [Category("Statistics")]
-        [Description("Returns the date the current satellite with this PRN was placed into orbit.")]
-        [Browsable(true)]
-#endif
-        public DateTime LaunchDate
-        {
-            get
-            {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpstd.txt
-                switch (_pseudorandomNumber)
-                {
-                    case 01: // USA-232
-                        return new DateTime(2011, 07, 16);
-                    case 02: // USA-180
-                        return new DateTime(2004, 11, 06);
-                    case 03: // USA-258
-                        return new DateTime(2014, 10, 29);
-                    case 04:
-                        // USA-96 (In reserve)
-                        break;
-                    case 05: // USA-206
-                        return new DateTime(2009, 08, 17);
-                    case 06: // USA-251
-                        return new DateTime(2014, 05, 17);
-                    case 07: // USA-201
-                        return new DateTime(2008, 03, 15);
-                    case 08: // USA-262
-                        return new DateTime(2015, 07, 15);
-                    case 09: // USA-256
-                        return new DateTime(2014, 08, 02);
-                    case 10: // USA-265
-                        return new DateTime(2015, 10, 31);
-                    case 11: // USA-145
-                        return new DateTime(1999, 10, 07);
-                    case 12: // USA-192
-                        return new DateTime(2006, 11, 17);
-                    case 13: // USA-132
-                        return new DateTime(1997, 07, 23);
-                    case 14: // USA-154
-                        return new DateTime(2000, 11, 10);
-                    case 15: // USA-196
-                        return new DateTime(2007, 10, 17);
-                    case 16: // USA-166
-                        return new DateTime(2003, 01, 29);
-                    case 17: // USA-183
-                        return new DateTime(2005, 09, 26);
-                    case 18: // USA-156
-                        return new DateTime(2001, 01, 30);
-                    case 19: // USA-177
-                        return new DateTime(2004, 03, 20);
-                    case 20: // USA-150
-                        return new DateTime(2000, 05, 11);
-                    case 21: // USA-168
-                        return new DateTime(2003, 03, 31);
-                    case 22: // USA-175
-                        return new DateTime(2003, 12, 21);
-                    case 23: // USA-178
-                        return new DateTime(2004, 06, 23);
-                    case 24: // USA-239
-                        return new DateTime(2012, 10, 04);
-                    case 25: // USA-213
-                        return new DateTime(2010, 05, 28);
-                    case 26: // USA-260
-                        return new DateTime(2015, 03, 25);
-                    case 27: // USA-242
-                        return new DateTime(2013, 05, 15);
-                    case 28: // USA-151
-                        return new DateTime(2000, 07, 16);
-                    case 29: // USA-199
-                        return new DateTime(2007, 12, 20);
-                    case 30: // USA-248
-                        return new DateTime(2014, 02, 21);
-                    case 31: // USA-190
-                        return new DateTime(2006, 09, 25);
-                    case 32: // USA-266
-                        return new DateTime(2016, 02, 05);
-                }
-
-                return DateTime.MinValue;
-            }
-        }
-
-#if !PocketPC
-
-        /// <summary>
-        /// Returns the latest date when a satellite with this PRN was placed into service.
-        /// </summary>
-        [Category("Statistics")]
-        [Description("Returns the latest date when a satellite with this PRN was placed into service.")]
-        [Browsable(true)]
-#endif
-        public DateTime CommissionDate
-        {
-            get
-            {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpstd.txt
-                switch (_pseudorandomNumber)
-                {
-                    case 01:
-                        return new DateTime(2011, 10, 14);
-                    case 02:
-                        return new DateTime(2004, 11, 22);
-                    case 03:
-                        return new DateTime(2014, 12, 12);
-                    case 04:
-                        // Unknown
-                        break;
-                    case 05:
-                        return new DateTime(2009, 08, 27);
-                    case 06:
-                        return new DateTime(2014, 06, 10);
-                    case 07:
-                        return new DateTime(2008, 03, 24);
-                    case 08:
-                        return new DateTime(2015, 08, 12);
-                    case 09:
-                        return new DateTime(2014, 09, 17);
+                    case 32:
+                    case 24:
+                    case 25:
+                    case 26:
+                    case 27:
+                    case 9:
+                    case 5:
+                    case 4:
+                    case 6:
+                    case 3:
                     case 10:
-                        return new DateTime(2015, 12, 09);
-                    case 11:
-                        return new DateTime(2000, 01, 03);
-                    case 12:
-                        return new DateTime(2006, 12, 13);
+                    case 30:
+                    case 08:
+                        return SatelliteBlock.IIA;
                     case 13:
-                        return new DateTime(1998, 01, 31);
+                    case 11:
+                    case 20:
+                    case 28:
+                    case 14:
+                    case 18:
+                    case 16:
+                    case 21:
+                    case 22:
+                    case 19:
+                    case 23:
+                    case 2:
+                    case 17:
+                    case 31:
+                    case 12:
+                    case 15:
+                    case 29:
+                    case 7:
+                        return SatelliteBlock.IIR;
+                    default:
+                        return SatelliteBlock.Unknown;
+                }
+            }
+        }
+
+#if !PocketPC
+
+        /// <summary>
+        /// Returns the date the satellite was placed into orbit.
+        /// </summary>
+        [Category("Statistics")]
+        [Description("Returns the date the satellite was placed into orbit.")]
+        [Browsable(true)]
+#endif
+        public DateTime DateLaunched
+        {
+            get
+            {
+                /* Data was compiled from Wikipedia:
+                 * http://en.wikipedia.org/wiki/List_of_GPS_satellite_launches
+                 */
+
+                switch (_pseudorandomNumber)
+                {
+                    case 32:
+                        return new DateTime(1990, 11, 26);
+                    case 24:
+                        return new DateTime(1991, 07, 04);
+                    case 25:
+                        return new DateTime(1992, 02, 23);
+                    case 26:
+                        return new DateTime(1992, 07, 07);
+                    case 27:
+                        return new DateTime(1992, 09, 09);
+                    case 01:
+                        return new DateTime(1992, 05, 13);
+                    case 09:
+                        return new DateTime(1993, 06, 26);
+                    case 05:
+                        return new DateTime(1993, 08, 30);
+                    case 04:
+                        return new DateTime(1993, 10, 28);
+                    case 06:
+                        return new DateTime(1994, 03, 10);
+                    case 03:
+                        return new DateTime(1996, 03, 28);
+                    case 10:
+                        return new DateTime(1996, 07, 16);
+                    case 30:
+                        return new DateTime(1996, 09, 12);
+
+                    case 13:
+                        return new DateTime(1997, 07, 23);
+                    case 11:
+                        return new DateTime(1999, 10, 07);
+                    case 20:
+                        return new DateTime(2000, 05, 11);
+                    case 28:
+                        return new DateTime(2000, 07, 16);
+                    case 14:
+                        return new DateTime(2000, 11, 10);
+                    case 18:
+                        return new DateTime(2001, 01, 30);
+                    case 16:
+                        return new DateTime(2003, 01, 29);
+                    case 21:
+                        return new DateTime(2003, 03, 31);
+                    case 22:
+                        return new DateTime(2003, 12, 21);
+                    case 19:
+                        return new DateTime(2004, 03, 20);
+                    case 23:
+                        return new DateTime(2004, 06, 23);
+                    case 02:
+                        return new DateTime(2004, 11, 06);
+
+                    case 17:
+                        return new DateTime(2005, 09, 26);
+                    case 31:
+                        return new DateTime(2006, 09, 25);
+                    case 12:
+                        return new DateTime(2006, 11, 17);
+                    case 15:
+                        return new DateTime(2007, 10, 17);
+                    case 29:
+                        return new DateTime(2007, 12, 20);
+                    case 07:
+                        return new DateTime(2008, 03, 15);
+
+                    default:
+                        return DateTime.MinValue;
+                }
+            }
+        }
+
+#if !PocketPC
+
+        /// <summary>
+        /// Returns the date the satellite was placed into service.
+        /// </summary>
+        [Category("Statistics")]
+        [Description("Returns the date the satellite was placed into service.")]
+        [Browsable(true)]
+#endif
+        public DateTime DateCommissioned
+        {
+            get
+            {
+                switch (_pseudorandomNumber)
+                {
+                    /* Data was compiled from the US Military:
+                     * ftp://tycho.usno.navy.mil/pub/gps/gpsb2.txt
+                     */
+
+                    #region Temporarily offline or decommissioned
+
+                    //case 17:
+                    //    return new DateTime(1990, 1, 6);              DECOMMISSIONED
+                    //case 18:
+                    //    return new DateTime(1990, 2, 14);              DECOMMISSIONED
+                    //case 19:
+                    //    return new DateTime(1989, 11, 23);              DECOMMISSIONED
+                    //case 20:
+                    //    return new DateTime(1990, 4, 18);              DECOMMISSIONED
+                    //case 21:
+                    //    return new DateTime(1990, 8, 22);              DECOMMISSIONED
+                    //case 22:
+                    //    return new DateTime(1993, 4, 4);              DECOMMISSIONED
+                    //case 23:
+                    //    return new DateTime(1990, 12, 10);              DECOMMISSIONED
+                    case 32:
+                        return new DateTime(2008, 2, 26);
+                    case 24:
+                        return new DateTime(1991, 8, 30);
+                    case 25:
+                        return new DateTime(1992, 3, 24);
+                    case 26:
+                        return new DateTime(1992, 7, 23);
+                    case 27:
+                        return new DateTime(1992, 9, 30);
+                    //case 28:
+                    //    return new DateTime(1992, 4, 25);              DECOMMISSIONED
+                    //case 29:
+                    //    return new DateTime(1993, 1, 5);              DECOMMISSIONED
+                    case 30:
+                        return new DateTime(1996, 10, 1);
+                    //case 31:
+                    //    return new DateTime(1993, 4, 13);              DECOMMISSIONED
+                    case 01:
+                        return new DateTime(1992, 12, 11);
+                    case 03:
+                        return new DateTime(1996, 4, 9);
+                    case 04:
+                        return new DateTime(1993, 11, 22);
+                    case 05:
+                        return new DateTime(1993, 9, 28);
+                    case 06:
+                        return new DateTime(1994, 3, 28);
+                    //case 07:
+                    //    return new DateTime(1993, 6, 12);              DECOMMISSIONED
+                    case 08:
+                        return new DateTime(1997, 12, 18);
+                    case 09:
+                        return new DateTime(1993, 7, 21);
+                    case 10:
+                        return new DateTime(1996, 8, 15);
+
+                    #endregion Temporarily offline or decommissioned
+
+                    #region Currently operational
+
                     case 14:
                         return new DateTime(2000, 12, 10);
-                    case 15:
-                        return new DateTime(2007, 10, 31);
-                    case 16:
-                        return new DateTime(2003, 02, 18);
+                    case 13:
+                        return new DateTime(1998, 1, 31);
+                    case 28:
+                        return new DateTime(2000, 8, 17);
+                    case 21:
+                        return new DateTime(2003, 4, 12);
+                    case 11:
+                        return new DateTime(2000, 1, 3);
+                    case 22:
+                        return new DateTime(2004, 1, 12);
+                    case 07:
+                        return new DateTime(2008, 3, 24);
+                    case 20:
+                        return new DateTime(2000, 1, 1);
+                    case 31:
+                        return new DateTime(2006, 10, 12);
                     case 17:
                         return new DateTime(2005, 12, 16);
                     case 18:
-                        return new DateTime(2001, 02, 15);
-                    case 19:
-                        return new DateTime(2004, 04, 05);
-                    case 20:
-                        return new DateTime(2000, 06, 01);
-                    case 21:
-                        return new DateTime(2003, 04, 12);
-                    case 22:
-                        return new DateTime(2004, 01, 12);
-                    case 23:
-                        return new DateTime(2004, 07, 09);
-                    case 24:
-                        return new DateTime(2012, 11, 14);
-                    case 25:
-                        return new DateTime(2010, 08, 27);
-                    case 26:
-                        return new DateTime(2015, 04, 20);
-                    case 27:
-                        return new DateTime(2013, 06, 21);
-                    case 28:
-                        return new DateTime(2000, 08, 17);
+                        return new DateTime(2001, 2, 15);
+                    case 15:
+                        return new DateTime(2007, 10, 31);
+                    case 16:
+                        return new DateTime(2003, 2, 19);
                     case 29:
-                        return new DateTime(2008, 01, 02);
-                    case 30:
-                        return new DateTime(2014, 05, 30);
-                    case 31:
-                        return new DateTime(2006, 10, 12);
-                    case 32:
-                        return new DateTime(2016, 03, 09);
-                }
+                        return new DateTime(2008, 1, 2);
+                    case 12:
+                        return new DateTime(2006, 12, 13);
+                    case 19:
+                        return new DateTime(2004, 4, 5);
+                    case 23:
+                        return new DateTime(2004, 7, 9);
+                    case 02:
+                        return new DateTime(2004, 11, 22);
 
-                return DateTime.MinValue;
+                    #endregion Currently operational
+
+                    default:
+                        return DateTime.MinValue;
+                }
             }
         }
 
 #if !PocketPC
 
         /// <summary>
-        /// Returns the latest date when a satellite with this PRN was removed from service.
+        /// Returns the date the satellite was removed from service.
         /// </summary>
         [Category("Statistics")]
-        [Description("Returns the latest date when a satellite with this PRN was removed from service.")]
+        [Description("Returns the date the satellite was removed from service.")]
         [Browsable(true)]
 #endif
-        public DateTime DecommissionDate
+        public DateTime DateDecommissioned
         {
             get
             {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpsb2.txt
                 switch (_pseudorandomNumber)
                 {
-                    case 01:
-                        return new DateTime(2008, 03, 17);
-                    case 02:
-                        return new DateTime(2004, 05, 12);
-                    case 03:
-                        // Unknown
-                        break;
-                    case 04:
-                        return new DateTime(2015, 11, 03);
-                    case 05:
-                        return new DateTime(2013, 05, 01);
-                    case 06:
-                        // Unknown
-                    case 07:
-                        return new DateTime(2007, 12, 20);
-                    case 08:
-                        // Unknown
-                        break;
-                    case 09:
-                        // Unknown
-                        break;
-                    case 10:
-                        // Unknown
-                        break;
-                    case 11:
-                        // Unknown
-                        break;
-                    case 12:
-                        // Unknown
-                        break;
-                    case 13:
-                        // Unknown
-                        break;
+                    case 2:
+                        return new DateTime(2004, 5, 12);
                     case 14:
-                        return new DateTime(2000, 04, 14);
-                    case 15:
-                        return new DateTime(2007, 03, 15);
-                    case 16:
-                        return new DateTime(2000, 10, 13);
-                    case 17:
-                        return new DateTime(2005, 02, 23);
-                    case 18:
-                        return new DateTime(2000, 08, 18);
-                    case 19:
-                        return new DateTime(2001, 09, 11);
-                    case 20:
-                        return new DateTime(1996, 12, 13);
-                    case 21:
-                        return new DateTime(2003, 01, 27);
-                    case 22:
-                        return new DateTime(2003, 08, 06);
-                    case 23:
-                        return new DateTime(2004, 02, 13);
-                    case 24:
-                        // Unknown
-                        break;
-                    case 25:
-                        return new DateTime(2009, 12, 18);
-                    case 26:
-                        // Unknown
-                        break;
-                    case 27:
-                        // Unknown
-                        break;
-                    case 28:
-                        return new DateTime(1997, 08, 15);
-                    case 29:
-                        return new DateTime(2007, 10, 23);
-                    case 30:
-                        // Unknown
-                        break;
-                    case 31:
-                        return new DateTime(2005, 10, 24);
-                    case 32:
-                        // Unknown
-                        break;
+                        return new DateTime(2000, 4, 14);
+                    default:
+                        return new DateTime(0);
                 }
-
-                return DateTime.MinValue;
             }
         }
 
 #if !PocketPC
 
         /// <summary>
-        /// Returns the friendly name of the current satellite with this PRN.
+        /// Returns the friendly name of the satellite.
         /// </summary>
         [Category("Statistics")]
-        [Description("Returns the friendly name of the current satellite with this PRN.")]
+        [Description("Returns the friendly name of the satellite.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
 #endif
@@ -821,82 +786,82 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
+                /* Information was obtained from WikiPedia:
+                 * http://en.wikipedia.org/wiki/List_of_GPS_satellite_launches
+                 */
+
                 switch (_pseudorandomNumber)
                 {
                     #region Standard NAVSTAR satellites
-                    
-                    case 01:
-                        return "USA-232";
-                    case 02:
-                        return "USA-180";
-                    case 03:
-                        return "USA-258";
-                    case 04:
-                        // USA-96 (In reserve)
-                        break;
-                    case 05:
-                        return "USA-206";
-                    case 06:
-                        return "USA-251";
-                    case 07:
-                        return "USA-201";
-                    case 08:
-                        return "USA-262";
-                    case 09:
-                        return "USA-256";
-                    case 10:
-                        return "USA-265";
-                    case 11:
-                        return "USA-145";
-                    case 12:
-                        return "USA-192";
-                    case 13:
-                        return "USA-132";
-                    case 14:
-                        return "USA-154";
-                    case 15:
-                        return "USA-196";
-                    case 16:
-                        return "USA-166";
-                    case 17:
-                        return "USA-183";
-                    case 18:
-                        return "USA-156";
-                    case 19:
-                        return "USA-177";
-                    case 20:
-                        return "USA-150";
-                    case 21:
-                        return "USA-168";
-                    case 22:
-                        return "USA-175";
-                    case 23:
-                        return "USA-178";
-                    case 24:
-                        return "USA-239";
-                    case 25:
-                        return "USA-213";
-                    case 26:
-                        return "USA-260";
-                    case 27:
-                        return "USA-242";
-                    case 28:
-                        return "USA-151";
-                    case 29:
-                        return "USA-199";
-                    case 30:
-                        return "USA-248";
-                    case 31:
-                        return "USA-190";
+
                     case 32:
-                        return "USA-266";
+                        return "Navstar 2A-01";
+                    case 24:
+                        return "Navstar 2A-02";
+                    case 25:
+                        return "Navstar 2A-03";
+                    case 26:
+                        return "Navstar 2A-05";
+                    case 27:
+                        return "Navstar 2A-06";
+                    case 1:
+                        return "Navstar 2A-11";
+                    case 9:
+                        return "Navstar 2A-12";
+                    case 5:
+                        return "Navstar 2A-13";
+                    case 4:
+                        return "Navstar 2A-14";
+                    case 6:
+                        return "Navstar 2A-15";
+                    case 3:
+                        return "Navstar 2A-16";
+                    case 10:
+                        return "Navstar 2A-17";
+                    case 30:
+                        return "Navstar 2A-18";
+                    case 13:
+                        return "Navstar 43";
+                    case 11:
+                        return "Navstar 46";
+                    case 20:
+                        return "Navstar 47";
+                    case 28:
+                        return "Navstar 48";
+                    case 14:
+                        return "Navstar 49";
+                    case 18:
+                        return "Navstar 50";
+                    case 16:
+                        return "Navstar 51";
+                    case 21:
+                        return "Navstar 52";
+                    case 22:
+                        return "Navstar 53";
+                    case 19:
+                        return "Navstar 54";
+                    case 23:
+                        return "Navstar 55";
+                    case 2:
+                        return "Navstar 56";
+                    case 17:
+                        return "Navstar 57";
+                    case 31:
+                        return "GPS 2R-15";
+                    case 12:
+                        return "Navstar 59";
+                    case 15:
+                        return "GPS 2R-17";
+                    case 29:
+                        return "GPS 2R-18";
+                    case 7:
+                        return "Navstar 62";
 
                     #endregion Standard NAVSTAR satellites
 
                     #region Wide Area Augmentation System (WAAS)
 
-                    // Data was compiled from Wikipedia: http://en.wikipedia.org/wiki/WAAS
+                    /* http://en.wikipedia.org/wiki/WAAS */
 
                     case 35:
                         return "Atlantic Ocean Region-West (WAAS)";
@@ -909,7 +874,7 @@ namespace DotSpatial.Positioning
 
                     #endregion Wide Area Augmentation System (WAAS)
 
-                    #region EGNOS (European)
+                    #region EGNOS  (European)
 
                     case 33:
                         return "Atlantic Ocean Region-East (EGNOS)";
@@ -932,269 +897,13 @@ namespace DotSpatial.Positioning
                     #endregion MSAS (Japan)
 
                     case 0:
-                        // A placeholder for the SatelliteSignalBar control that
+                        // A placeholder for the SatellitSignalBar control that
                         // is displaying no satellites. Otherwise the control is
                         // not visible.
                         return "Unknown";
+                    default:
+                        return "New Satellite";
                 }
-
-                return "New Satellite";
-            }
-        }
-
-        /// <summary>
-        /// Returns the aliases of the current satellite with this PRN.
-        /// </summary>
-        [Category("Statistics")]
-        [Description("Returns the aliases of the current satellite with this PRN.")]
-        [Browsable(true)]
-        public string[] Aliases
-        {
-            get
-            {
-                // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
-                switch (_pseudorandomNumber)
-                {
-                    case 01:
-                        return new[]
-                        {
-                            "USA-232",
-                            "GPS IIF-2",
-                            "GPS SVN-63"
-                        };
-                    case 02:
-                        return new[]
-                        {
-                            "USA-180",
-                            "GPS IIR-13",
-                            "GPS SVN-61"
-                        };
-                    case 03:
-                        return new[]
-                        {
-                            "USA-258",
-                            "GPS IIF-8",
-                            "GPS SVN-69",
-                            "NAVSTAR 72"
-                        };
-                    case 04:
-                        // USA-96 (In reserve)
-                        break;
-                    case 05:
-                        return new[]
-                        {
-                            "USA-206",
-                            "GPS SVN-50",
-                            "PRN-05",
-                            "NAVSTAR 64"
-                        };
-                    case 06:
-                        return new[]
-                        {
-                            "USA-251",
-                            "GPS IIF-6",
-                            "GPS SVN-6",
-                            "NAVSTAR 70"
-                        };
-                    case 07:
-                        return new[]
-                        {
-                            "USA-201",
-                            "GPS IIR-19(M)",
-                            "GPS IIRM-6",
-                            "GPS SVN-48"
-                        };
-                    case 08:
-                        return new[]
-                        {
-                            "USA-262",
-                            "GPS IIF-10",
-                            "GPS SVN-72",
-                            "NAVSTAR 74"
-                        };
-                    case 09:
-                        return new[]
-                        {
-                            "USA-256",
-                            "GPS IIF-7",
-                            "GPS SVN-68",
-                            "NAVSTAR 71"
-                        };
-                    case 10:
-                        return new[]
-                        {
-                            "USA-265",
-                            "GPS IIF-11",
-                            "GPS SVN-73",
-                            "NAVSTAR 75"
-                        };
-                    case 11:
-                        return new[]
-                        {
-                            "USA-145",
-                            "GPS IIR-3",
-                            "GPS SVN-46"
-                        };
-                    case 12:
-                        return new[]
-                        {
-                            "USA-192",
-                            "GPS IIR-16(M)",
-                            "GPS IIRM-3",
-                            "GPS SVN-58"
-                        };
-                    case 13:
-                        return new[]
-                        {
-                            "USA-132",
-                            "GPS IIR-2",
-                            "GPS SVN-43"
-                        };
-                    case 14:
-                        return new[]
-                        {
-                            "USA-154",
-                            "GPS IIR-6",
-                            "GPS SVN-41"
-                        };
-                    case 15:
-                        return new[]
-                        {
-                            "USA-196",
-                            "GPS IIR-17(M)",
-                            "GPS IIRM-4",
-                            "GPS SVN-55"
-                        };
-                    case 16:
-                        return new[]
-                        {
-                            "USA-166",
-                            "GPS IIR-8",
-                            "GPS SVN-56"
-                        };
-                    case 17:
-                        return new[]
-                        {
-                            "USA-183",
-                            "GPS IIR-14(M)",
-                            "GPS IIRM-1",
-                            "GPS SVN-53"
-                        };
-                    case 18:
-                        return new[]
-                        {
-                            "USA-156",
-                            "GPS IIR-7",
-                            "GPS SVN-54"
-                        };
-                    case 19:
-                        return new[]
-                        {
-                            "USA-177",
-                            "GPS IIR-11",
-                            "GPS SVN-59"
-                        };
-                    case 20:
-                        return new[]
-                        {
-                            "USA-150",
-                            "GPS IIR-4",
-                            "GPS SVN-51"
-                        };
-                    case 21:
-                        return new[]
-                        {
-                            "USA-168",
-                            "GPS IIR-9",
-                            "GPS SVN-45"
-                        };
-                    case 22:
-                        return new[]
-                        {
-                            "USA-175",
-                            "GPS IIR-10",
-                            "GPS SVN-47"
-                        };
-                    case 23:
-                        return new[]
-                        {
-                            "USA-178",
-                            "GPS IIR-12",
-                            "GPS SVN-60"
-                        };
-                    case 24:
-                        return new[]
-                        {
-                            "USA-239",
-                            "GPS IIF-3",
-                            "GPS SVN-65"
-                        };
-                    case 25:
-                        return new[]
-                        {
-                            "USA-213",
-                            "GPS IIF SV-1",
-                            "GPS SVN-62",
-                            "NAVSTAR 65"
-                        };
-                    case 26:
-                        return new[]
-                        {
-                            "USA-260",
-                            "GPS IIF-9",
-                            "GPS SVN-71",
-                            "NAVSTAR 73"
-                        };
-                    case 27:
-                        return new[]
-                        {
-                            "USA-242",
-                            "GPS IIF-4",
-                            "GPS IIF SV-5",
-                            "Vega"
-                        };
-                    case 28:
-                        return new[]
-                        {
-                            "USA-151",
-                            "GPS IIR-5",
-                            "GPS SVN-44"
-                        };
-                    case 29:
-                        return new[]
-                        {
-                            "USA-199",
-                            "GPS IIR-18(M)",
-                            "GPS IIRM-5",
-                            "GPS SVN-57"
-                        };
-                    case 30:
-                        return new[]
-                        {
-                            "USA-248",
-                            "GPS IIF-5",
-                            "GPS SVN-64",
-                            "NAVSTAR 69"
-                        };
-                    case 31:
-                        return new[]
-                        {
-                            "USA-190",
-                            "GPS IIR-15(M)",
-                            "GPS IIRM-2",
-                            "GPS SVN-52"
-                        };
-                    case 32:
-                        return new[]
-                        {
-                            "USA-266",
-                            "GPS IIF-12",
-                            "GPS SVN-70",
-                            "NAVSTAR 76"
-                        };
-                }
-
-                return default(string[]);
             }
         }
 
@@ -1203,7 +912,7 @@ namespace DotSpatial.Positioning
         #region Public Methods
 
         /// <summary>
-        /// REturns the string equivalent of this object using the current culture
+        /// REturns the string equivalent of this object using ht ecurrent cul
         /// </summary>
         /// <param name="format">The format.</param>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -1468,11 +1177,7 @@ namespace DotSpatial.Positioning
         /// <summary>Represents Block IIA</summary>
         IIA,
         /// <summary>Represents Block IIR.</summary>
-        IIR,
-        /// <summary>Represents Block IIR-M.</summary>
-        IIRM,
-        /// <summary>Represents Block IIF.</summary>
-        IIF
+        IIR
     }
 
     /// <summary>

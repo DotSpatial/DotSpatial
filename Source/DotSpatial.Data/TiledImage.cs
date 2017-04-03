@@ -130,6 +130,8 @@ namespace DotSpatial.Data
         public void Init(int width, int height)
         {
             _tiles = new TileCollection(width, height);
+            TypeName = "TileImage";
+            SpaceTimeSupport = SpaceTimeSupport.Spatial;
         }
 
         /// <summary>

@@ -630,11 +630,13 @@ namespace DotSpatial.Symbology.Forms
         private NumericUpDown nudSigFig;
         private RampSlider opacityNoData;
         private RampSlider sldSchemeOpacity;
+        private DataGridViewTextBoxColumn stat;
         private TabPage tabGraph;
         private TabControl tabScheme;
         private TabPage tabStatistics;
         private TabColorControl tccColorRange;
         private ToolTip ttHelp;
+        private DataGridViewTextBoxColumn value;
         private TabColorDialog _tabColorDialog;
         private BreakSliderGraph breakSliderGraph1;
         private Button btnAdd;

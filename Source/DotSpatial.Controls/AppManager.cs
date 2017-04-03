@@ -317,7 +317,7 @@ namespace DotSpatial.Controls
             //report progress
             if (ProgressHandler != null)
             {
-                ProgressHandler.Progress(MessageStrings.LoadingPlugins, 0, string.Empty);
+                ProgressHandler.Progress(MessageStrings.LoadingPlugins, 0, String.Empty);
             }
         }
 
@@ -424,6 +424,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Triggers the ExtensionsActivated event.
         /// </summary>
+        /// <param name="ea">
+        /// The ea.
+        /// </param>
         public virtual void OnExtensionsActivated(EventArgs ea)
         {
             if (ExtensionsActivated != null)
@@ -449,7 +452,7 @@ namespace DotSpatial.Controls
             if (_splashScreen != null)
                 UpdateSplashScreen(msg);
             else if (ProgressHandler != null)
-                ProgressHandler.Progress(string.Empty, 0, msg);
+                ProgressHandler.Progress(String.Empty, 0, msg);
             else
             {
                 MessageBox.Show(msg);
@@ -465,7 +468,7 @@ namespace DotSpatial.Controls
             if (!extension.IsActive)
             {
                 if (!extension.TryActivate())
-                    MessageBox.Show(string.Format(MessageStrings.ErrorWhileWhileActivating, extension.AssemblyQualifiedName));
+                    MessageBox.Show(String.Format(MessageStrings.ErrorWhileWhileActivating, extension.AssemblyQualifiedName));
             }
         }
 
@@ -621,10 +624,11 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the directories in Directories and those nested one level deep.
         /// </summary>
+        /// <returns></returns>
         private IEnumerable<string> GetDirectoriesNestedOneLevel()
         {
             // Visit each directory in Directories Property (usually set by application)
-            Directories.Add(Mono.IsRunningOnMono() ? "Mono Extensions" : "Windows Extensions");
+            Directories.Add(Mono.Mono.IsRunningOnMono() ? "Mono Extensions" : "Windows Extensions");
             foreach (string directory in Directories.Union(new[] { "Data Extensions", "Tools" }))
             {
                 string path = Path.Combine(BaseDirectory, directory);
@@ -647,6 +651,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the paths of dlls for extensions that were downloaded as packages.
         /// </summary>
+        /// <param name="absolutePathToExtensions">The absolute path to extensions.</param>
+        /// <returns></returns>
         private static IEnumerable<string> GetPackageExtensionPaths(string absolutePathToExtensions)
         {
             if (!Directory.Exists(absolutePathToExtensions))
@@ -678,8 +684,8 @@ namespace DotSpatial.Controls
                 var importCount = imports.Count;
                 string extensionTypeName = typeof(T).Name;
                 MessageBox.Show(importCount > 1
-                    ? string.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount)
-                    : string.Format("A {0} extension must be included because a UI plugin was found.", extensionTypeName));
+                    ? String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount)
+                    : String.Format("A {0} extension must be included because a UI plugin was found.", extensionTypeName));
                 return null;
             }
 
@@ -722,6 +728,7 @@ namespace DotSpatial.Controls
             var h = SatisfyImportsExtensionsActivated;
             if (h != null)
                 h(this, ea);
+            
         }
 
         private string PrefixWithEllipsis(string text, int length)
@@ -751,18 +758,14 @@ namespace DotSpatial.Controls
                 if (type != null)
                     typeAssembly = type.Assembly.ToString();
                 else
-                    typeAssembly = string.Empty;
+                    typeAssembly = String.Empty;
 
-                string message = string.Format("Skipping extension {0}. {1}", typeAssembly, ex.LoaderExceptions.First().Message);
+                string message = String.Format("Skipping extension {0}. {1}", typeAssembly, ex.LoaderExceptions.First().Message);
                 Trace.WriteLine(message);
                 MessageBox.Show(message);
             }
         }
 
-        /// <summary>
-        /// Update splash screen with given text.
-        /// </summary>
-        /// <param name="text">Splash screen text.</param>
         public void UpdateSplashScreen(string text)
         {
             if (_splashScreen != null && text != null)
@@ -772,25 +775,11 @@ namespace DotSpatial.Controls
         #endregion
     }
 
-
-    /// <summary>
-    /// Provides data for the <see langword='MapChanged'/> event.
-    /// </summary>
     public class MapChangedEventArgs : EventArgs
     {
-        /// <summary>
-        /// Gets old map.
-        /// </summary>
         public IMap OldValue { get; private set; }
-
-        /// <summary>
-        /// Gets new map.
-        /// </summary>
         public IMap NewValue { get; private set; }
 
-        /// <summary>
-        /// Create new instance of <see cref="MapChangedEventArgs"/>.
-        /// </summary>
         public MapChangedEventArgs(IMap oldValue, IMap newValue)
         {
             OldValue = oldValue;

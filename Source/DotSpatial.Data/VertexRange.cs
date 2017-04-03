@@ -25,7 +25,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// The StartIndex is the sum of the shape offset and the part offset.  Controlling them separately
-        /// allows the entire shape offset to be adjusted independently after the part is created.
+        /// allows the entire shape offset to be adjusted independantly after the part is created.
         /// </summary>
         public int ShapeOffset { get; set; }
 
@@ -68,7 +68,7 @@ namespace DotSpatial.Data
         /// property accessors slowing down the process.  However, it's here
         /// if someone wants it.
         /// </summary>
-        private class VertexRangeEnumerator : IEnumerator<Vertex>
+        public class VertexRangeEnumerator : IEnumerator<Vertex>
         {
             private readonly int _end;
             private readonly int _start;

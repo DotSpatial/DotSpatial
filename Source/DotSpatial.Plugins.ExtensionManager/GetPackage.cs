@@ -5,7 +5,7 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    internal class GetPackage
+    public class GetPackage
     {
         private readonly Packages packages;
 

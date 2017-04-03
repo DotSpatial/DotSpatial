@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -315,6 +315,7 @@
     <Compile Include="TwoColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="IErrorCheck.cs" />
     <Compile Include="SymbologyFormsImages.Designer.cs">
       <DependentUpon>SymbologyFormsImages.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1124,7 +1125,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DotSpatial.Symbology.Forms.snk" />
-    <None Include="DotSpatial.Symbology.Forms.nuspec" />
+    <None Include="package.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ColorLever.ico" />

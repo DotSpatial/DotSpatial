@@ -21,9 +21,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Scheme with colors support.
-    /// </summary>
     [Serializable]
     public class ColorScheme : Scheme, IColorScheme
     {

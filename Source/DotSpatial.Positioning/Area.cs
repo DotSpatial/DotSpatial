@@ -1739,7 +1739,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns a random distance between 0 and 1, 000 square meters.
         /// </summary>
-        /// <param name="generator">A <strong>Random</strong> object used to generate random values.</param>
+        /// <param name="generator">A <strong>Random</strong> object used to ogenerate random values.</param>
         /// <returns>A <strong>Distance</strong> containing a random value, converted to local units.</returns>
         public static Area Random(Random generator)
         {

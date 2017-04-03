@@ -235,16 +235,4 @@
   <data name="Shape_ZeroPointsError" xml:space="preserve">
     <value>The given feature must have more than 0 points.</value>
   </data>
-  <data name="FeatureSet_ExportShapefilePackage_NotImplemented" xml:space="preserve">
-    <value>ExportShapefilePackage has not been implemented for this type of FeatureSet.</value>
-  </data>
-  <data name="FileExistsOverwritingNotAllowed" xml:space="preserve">
-    <value>The file {0} already exists and may not be overwritten.</value>
-  </data>
-  <data name="ShapeTypeNotYetSupported" xml:space="preserve">
-    <value>This shape type is not yet supported.</value>
-  </data>
-  <data name="FileExtensionNotSupportedByShapefileDataProvider" xml:space="preserve">
-    <value>The file extension {0} is not supported by Shapefile data provider.</value>
-  </data>
 </root>

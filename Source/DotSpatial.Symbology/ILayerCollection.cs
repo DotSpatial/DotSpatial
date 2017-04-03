@@ -16,9 +16,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Generic interface for collection with <see cref="ILayer"/> elements.
-    /// </summary>
     public interface ILayerCollection : ILayerEventList<ILayer>, IDisposable, IDisposeLock
     {
         /// <summary>
@@ -36,5 +33,13 @@ namespace DotSpatial.Symbology
         /// Gets or sets the currently active layer.
         /// </summary>
         ILayer SelectedLayer { get; set; }
+
+        /// <summary>
+        /// Given a base name, this increments a number for appending
+        /// if the name already exists in the collection.
+        /// </summary>
+        /// <param name="baseName">The string base name to start with</param>
+        /// <returns>The base name modified by a number making it unique in the collection</returns>
+        string UnusedName(string baseName);
     }
 }

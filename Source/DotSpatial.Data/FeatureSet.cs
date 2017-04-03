@@ -550,12 +550,6 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public virtual ShapefilePackage ExportShapefilePackage()
-        {
-            throw new NotImplementedException(DataStrings.FeatureSet_ExportShapefilePackage_NotImplemented);
-        }
-
-        /// <inheritdoc/>
         public IFeature FeatureFromRow(DataRow row)
         {
             return _featureLookup[row];
@@ -1076,7 +1070,7 @@ namespace DotSpatial.Data
             var f = new Feature(geom)
                             {
                                 ParentFeatureSet = this,
-                                ShapeIndex = shape
+                                ShapeIndex = shape,
                             };
 
             // Attribute reading is only handled in the overridden case.
@@ -1120,7 +1114,7 @@ namespace DotSpatial.Data
             var f = new Feature(mp)
             {
                 ParentFeatureSet = this,
-                ShapeIndex = shape
+                ShapeIndex = shape,
             };
 
             // Attribute reading is only handled in the overridden case.
@@ -1133,36 +1127,25 @@ namespace DotSpatial.Data
         protected IFeature GetPoint(int index)
         {
             ShapeRange shape = ShapeIndices[index];
-            IPoint p;
-            if (shape.ShapeType == ShapeType.NullShape)
+            Coordinate c = new Coordinate(Vertex[index * 2], Vertex[index * 2 + 1]);
+            if (M != null && M.Length != 0)
             {
-                p = Point.Empty;
-            }
-            else
-            {
-                Coordinate c = new Coordinate(Vertex[shape.StartIndex * 2], Vertex[shape.StartIndex * 2 + 1]);
-
-                if (M != null && M.Length != 0)
-                {
-                    c.M = M[shape.StartIndex];
-                }
-
-                if (Z != null && Z.Length != 0)
-                {
-                    c.Z = Z[shape.StartIndex];
-                }
-
-                if (FeatureGeometryFactory == null) FeatureGeometryFactory = GeometryFactory.Default;
-
-                FeatureGeometryFactory.CreatePoint(new Coordinate());
-
-                p = FeatureGeometryFactory.CreatePoint(c);
+                c.M = M[index];
             }
 
+            if (Z != null && Z.Length != 0)
+            {
+                c.Z = Z[index];
+            }
+
+            if (FeatureGeometryFactory == null)
+                FeatureGeometryFactory = GeometryFactory.Default;
+
+            IPoint p = FeatureGeometryFactory.CreatePoint(c);
             var f = new Feature(p)
             {
                 ParentFeatureSet = this,
-                ShapeIndex = shape
+                ShapeIndex = shape,
             };
 
             // Attributes only retrieved in the overridden case
@@ -1256,7 +1239,7 @@ namespace DotSpatial.Data
                 polygons[i] = FeatureGeometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray());
             }
 
-            Feature feature = new Feature(polygons.Length == 1 ? polygons[0] : FeatureGeometryFactory.CreateMultiPolygon(polygons) as IGeometry)
+            Feature feature = new Feature((polygons.Length == 1 ? polygons[0] : FeatureGeometryFactory.CreateMultiPolygon(polygons) as IGeometry))
             {
                 ParentFeatureSet = this,
                 ShapeIndex = shape
@@ -2199,7 +2182,10 @@ namespace DotSpatial.Data
         /// </summary>
         protected virtual void OnVerticesInvalidated()
         {
-            VerticesInvalidated?.Invoke(this, EventArgs.Empty);
+            if (VerticesInvalidated != null)
+            {
+                VerticesInvalidated(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>

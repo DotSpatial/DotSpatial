@@ -76,7 +76,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Resets all the extent values to 0.
+        /// Resets all the extent values to 0
         /// </summary>
         public void Clear()
         {
@@ -90,28 +90,6 @@ namespace DotSpatial.Data
             _zMax = 0.0;
             _mMin = 0.0;
             _mMax = 0.0;
-        }
-
-        /// <summary>
-        /// Exports the shapefile header for the shp file to a stream.
-        /// </summary>
-        /// <returns>Stream that contains the header for the shp file.</returns>
-        public Stream ExportShpHeaderToStream()
-        {
-            Stream s = new MemoryStream();
-            WriteToStream(_fileLength, s);
-            return s;
-        }
-
-        /// <summary>
-        /// Exports the shapefile header for the shx file to a stream.
-        /// </summary>
-        /// <returns>Stream, that contains the header for the shx file.</returns>
-        public Stream ExportShxHeaderToStream()
-        {
-            Stream s = new MemoryStream();
-            WriteToStream(_shxLength, s);
-            return s;
         }
 
         /// <summary>
@@ -208,46 +186,54 @@ namespace DotSpatial.Data
         /// <summary>
         /// Writes the current content to the specified file.
         /// </summary>
-        /// <param name="destFilename">The string fileName to write to.</param>
+        /// <param name="destFilename">The string fileName to write to</param>
         /// <param name="destFileLength">The only difference between the shp header and the
         ///  shx header is the file length parameter.</param>
         private void Write(string destFilename, int destFileLength)
         {
-            var dir = Path.GetDirectoryName(Filename);
-            if (dir != null && !Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
+            string dir = Path.GetDirectoryName(Path.GetFullPath(Filename));
+            if (dir != null)
+                if (!Directory.Exists(dir))
+                {
+                    //if (MessageBox.Show("Directory " + dir + " does not exist.  Do you want to create it?",
+                    // "Create Directory?", MessageBoxButtons.YesNo) != DialogResult.OK)
+                    //    return;
+                    Directory.CreateDirectory(dir);
+                }
+            //if (File.Exists(destFilename)) File.Delete(destFilename);
 
-            using (var fs = new FileStream(destFilename, FileMode.Append, FileAccess.Write, FileShare.None))
-            {
-                WriteToStream(destFileLength, fs);
-                fs.Close();
-            }
-        }
+            FileStream fs = new FileStream(destFilename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
 
-        /// <summary>
-        /// Writes the current content to the given stream.
-        /// </summary>
-        /// <param name="destFileLength">The only difference between the shp header and the
-        ///  shx header is the file length parameter.</param>
-        /// <param name="stream">Stream the content is written to.</param>
-        private void WriteToStream(int destFileLength, Stream stream)
-        {
-            stream.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
+            fs.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
 
             byte[] bt = new byte[20];
-            stream.Write(bt, 0, 20);         //  Bytes 4 - 20 are unused
+            fs.Write(bt, 0, 20);         //  Bytes 4 - 20 are unused
 
-            stream.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
-            stream.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
-            stream.WriteLe((int)_shapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
-            stream.WriteLe(_xMin);           //  Byte 36         Bounding Box    Xmin        Double      Little
-            stream.WriteLe(_yMin);           //  Byte 44         Bounding Box    Ymin        Double      Little
-            stream.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
-            stream.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
-            stream.WriteLe(_zMin);           //  Byte 68         Bounding Box    Zmin        Double      Little
-            stream.WriteLe(_zMax);           //  Byte 76         Bounding Box    Zmax        Double      Little
-            stream.WriteLe(_mMin);           //  Byte 84         Bounding Box    Mmin        Double      Little
-            stream.WriteLe(_mMax);           //  Byte 92         Bounding Box    Mmax        Double      Little
+            fs.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
+
+            fs.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
+
+            fs.WriteLe((int)_shapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
+
+            fs.WriteLe(_xMin);           //  Byte 36         Bounding Box    Xmin        Double      Little
+
+            fs.WriteLe(_yMin);           //  Byte 44         Bounding Box    Ymin        Double      Little
+
+            fs.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
+
+            fs.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
+
+            fs.WriteLe(_zMin);           //  Byte 68         Bounding Box    Zmin        Double      Little
+
+            fs.WriteLe(_zMax);           //  Byte 76         Bounding Box    Zmax        Double      Little
+
+            fs.WriteLe(_mMin);           //  Byte 84         Bounding Box    Mmin        Double      Little
+
+            fs.WriteLe(_mMax);           //  Byte 92         Bounding Box    Mmax        Double      Little
+
+            // ------------ WRITE TO SHP FILE -------------------------
+
+            fs.Close();
         }
 
         #endregion

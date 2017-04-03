@@ -61,7 +61,7 @@ namespace DotSpatial.Positioning
         public event EventHandler<NmeaSentenceEventArgs> SentenceReceived;
 
         /// <summary>
-        /// SentenceReceived event handler
+        /// SentanceRecieved event handler
         /// </summary>
         /// <param name="sentence">The sentence.</param>
         protected void OnSentenceReceived(NmeaSentence sentence)

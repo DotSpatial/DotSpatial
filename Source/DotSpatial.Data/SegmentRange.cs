@@ -39,7 +39,7 @@ namespace DotSpatial.Data
         /// Cycles through the points, creating segments.  If the feature type is a polygon, then this will
         /// loop around again at the end of the part to create a segment from the first and last vertex.
         /// </summary>
-        private class SegmentRangeEnumerator : IEnumerator<Segment>
+        public class SegmentRangeEnumerator : IEnumerator<Segment>
         {
             private readonly int _numVertices;
             private readonly SegmentRange _range;

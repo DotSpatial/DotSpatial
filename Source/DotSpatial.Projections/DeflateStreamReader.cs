@@ -7,7 +7,7 @@ namespace DotSpatial.Projections
     internal static class DeflateStreamReader
     {
         /// <summary>
-        /// Decodes embedded resource and returns it as Stream
+        /// Decodedes embedded resource and returns it as Stream
         /// </summary>
         /// <param name="resourceName">Resource name</param>
         /// <returns>Stream</returns>

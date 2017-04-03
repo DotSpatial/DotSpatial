@@ -15,9 +15,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Represents scheme with colors support.
-    /// </summary>
     public interface IColorScheme : IScheme
     {
         #region Methods

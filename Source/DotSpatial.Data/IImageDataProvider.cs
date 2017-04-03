@@ -14,9 +14,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Inheritor of <see cref="IDataProvider"/> with <see cref="IImageData"/>-specific methods.
-    /// </summary>
     public interface IImageDataProvider : IDataProvider
     {
         /// <summary>

@@ -20,18 +20,15 @@ namespace DotSpatial.Symbology
         /// and the end color for the surround color
         /// </summary>
         Circular,
-
         /// <summary>
         /// Draws the gradient with the start color for the center of the circle
         /// and the end color for the color at the contour.
         /// </summary>
         Contour,
-
         /// <summary>
         /// Draws the gradient in a line with a specified direction
         /// </summary>
         Linear,
-
         /// <summary>
         /// Draws the gradient in a rectangular path with the start color
         /// at the center and the end color for the surround color

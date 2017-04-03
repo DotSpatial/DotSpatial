@@ -194,7 +194,7 @@ namespace DotSpatial.Positioning
 
             #region Differential GPS information
 
-            // Differential signal age in seconds
+            // Differnetial signal age in seconds
             if (!differentialGpsAge.Equals(TimeSpan.MinValue))
                 builder.Append(differentialGpsAge.TotalSeconds.ToString(NmeaCultureInfo));
             builder.Append(",");
@@ -287,7 +287,7 @@ namespace DotSpatial.Positioning
         public int DifferentialGpsStationID { get; private set; }
 
         /// <summary>
-        /// Differential GPS Age
+        /// Differntial GPS Age
         /// </summary>
         public TimeSpan DifferentialGpsAge { get; private set; }
 

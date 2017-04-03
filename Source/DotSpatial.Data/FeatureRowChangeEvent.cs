@@ -27,7 +27,7 @@ namespace DotSpatial.Data
         /// A new event argument for events in a FeatureTable.
         /// </summary>
         /// <param name="row">The FeatureRow of the event.</param>
-        /// <param name="action">The action occurring for this event.</param>
+        /// <param name="action">The action occuring for this event.</param>
         public FeatureRowChangeEvent(FeatureRow row, DataRowAction action)
         {
             _eventRow = row;

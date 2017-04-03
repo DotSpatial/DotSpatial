@@ -16,7 +16,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {
@@ -32,7 +31,7 @@ namespace DotSpatial.Controls
         {
             InitializeComponent();
 
-            if (Mono.IsRunningOnMono())
+            if (Mono.Mono.IsRunningOnMono())
             {
                 // On Mac and possibly other Mono platforms, GdipCreateLineBrushFromRect
                 // in gdiplus native lib returns InvalidParameter in Mono file LinearGradientBrush.cs

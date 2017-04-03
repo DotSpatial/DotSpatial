@@ -60,7 +60,7 @@ namespace DotSpatial.Data
         /// Creates a new instance of a named list.
         /// </summary>
         /// <param name="values">The values to use for the content.</param>
-        /// <param name="baseName">The string that should precede the numbering to describe the individual items.</param>
+        /// <param name="baseName">The string that should preceed the numbering to describe the individual items.</param>
         public NamedList(IList<T> values, string baseName)
         {
             _list = values;
