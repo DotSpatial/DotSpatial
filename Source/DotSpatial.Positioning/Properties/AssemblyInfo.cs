@@ -88,7 +88,7 @@ using System.Runtime.ConstrainedExecution;
  */
 #if !PocketPC || DesignTime
 
-// CAS permission declarations are obsolted in .Net 4.0
+// CAS permission declarations are obsolete in .Net 4.0
 #if !Framework40
 
     // Grant only the minimum security permissions

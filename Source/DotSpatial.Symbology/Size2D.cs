@@ -17,6 +17,9 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// 2D size: Height, Width.
+    /// </summary>
     [Serializable, TypeConverter(typeof(Size2DConverter))]
     public class Size2D : Descriptor
     {
@@ -26,27 +29,27 @@ namespace DotSpatial.Symbology
         /// Gets or sets the height
         /// </summary>
         [Serialize("Height")]
-        public double Height;
+        public double Height { get; set; }
 
         /// <summary>
         /// Gets or sets the width
         /// </summary>
         [Serialize("Width")]
-        public double Width;
+        public double Width { get; set; }
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Size2D
+        /// Creates a new instance of <see cref="Size2D"/>.
         /// </summary>
         public Size2D()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of a Size2D
+        /// Creates a new instance of <see cref=" Size2D"/>.
         /// </summary>
         /// <param name="width">The double width</param>
         /// <param name="height">The double height</param>
@@ -67,9 +70,8 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-            Size2D other = obj as Size2D;
-            if (((object)other) == null) return false;
+            var other = obj as Size2D;
+            if ((object) other == null) return false;
             return Equals(other);
         }
 

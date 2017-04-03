@@ -48,7 +48,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a new instance of a PointLayer for storing and drawing points
         /// </summary>
-        /// <param name="inFeatureSet">Any implentation of an IFeatureLayer</param>
+        /// <param name="inFeatureSet">Any implementation of an IFeatureLayer</param>
         /// <param name="progressHandler">A valid implementation of the IProgressHandler interface.</param>
         /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
         public PointLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler)

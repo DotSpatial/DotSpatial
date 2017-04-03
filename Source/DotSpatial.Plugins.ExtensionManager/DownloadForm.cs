@@ -4,10 +4,8 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    public partial class DownloadForm : Form
+    internal partial class DownloadForm : Form
     {
-        private readonly Packages packages = new Packages();
-
         public DownloadForm()
         {
             InitializeComponent();

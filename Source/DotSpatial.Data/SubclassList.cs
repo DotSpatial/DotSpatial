@@ -37,7 +37,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <typeparam name="TB">The base type that is inherited</typeparam>
         /// <typeparam name="TS">The sub type that inherits from the base type</typeparam>
-        public class SubclassListEnumerator<TB, TS> : IEnumerator<TS>
+        private class SubclassListEnumerator<TB, TS> : IEnumerator<TS>
             where TS : class, TB
         {
             private readonly IEnumerator<TB> _internalEnumerator;

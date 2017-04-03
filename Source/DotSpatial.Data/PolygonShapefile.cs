@@ -12,7 +12,6 @@
 //
 // ********************************************************************************************************
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,11 +29,7 @@ namespace DotSpatial.Data
         /// Creates a new instance of a PolygonShapefile for in-ram handling only.
         /// </summary>
         public PolygonShapefile()
-            : base(FeatureType.Polygon)
-        {
-            Attributes = new AttributeTable();
-            Header = new ShapefileHeader { FileLength = 100, ShapeType = ShapeType.Polygon };
-        }
+            : base(FeatureType.Polygon, ShapeType.Polygon) { }
 
         /// <summary>
         /// Creates a new instance of a PolygonShapefile that is loaded from the supplied fileName.
@@ -47,9 +42,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens a shapefile
+        /// Opens a shapefile.
         /// </summary>
-        /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
+        /// <param name="fileName">The string fileName of the polygon shapefile to load.</param>
         /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
@@ -156,288 +151,60 @@ namespace DotSpatial.Data
                 f = GetPolygon(index);
                 f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
             }
-
             return f;
         }
 
-        /// <summary>
-        /// Saves the file to a new location
-        /// </summary>
-        /// <param name="fileName">The fileName to save</param>
-        /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
-        public override void SaveAs(string fileName, bool overwrite)
+        /// <inheritdoc />
+        protected override void SetHeaderShapeType()
         {
-            EnsureValidFileToSave(fileName, overwrite);
-            Filename = fileName;
-
-            // Set ShapeType before setting extent.
             if (CoordinateType == CoordinateType.Regular)
-            {
                 Header.ShapeType = ShapeType.Polygon;
-            }
-            if (CoordinateType == CoordinateType.M)
-            {
+            else if (CoordinateType == CoordinateType.M)
                 Header.ShapeType = ShapeType.PolygonM;
-            }
-            if (CoordinateType == CoordinateType.Z)
-            {
+            else if (CoordinateType == CoordinateType.Z)
                 Header.ShapeType = ShapeType.PolygonZ;
-            }
-            HeaderSaveAs(fileName);
+        }
 
-            if (IndexMode)
+        /// <inheritdoc />
+        protected override StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
+        {
+            if (indexed)
+                return LineShapefile.PopulateStreamsIndexed(shpStream, shxStream, this, ShapeType.PolygonZ, ShapeType.PolygonM, true);
+
+            return LineShapefile.PopulateStreamsNotIndexed(shpStream, shxStream, this, AddPoints, ShapeType.PolygonZ, ShapeType.PolygonM, true);
+        }
+
+        /// <summary>
+        /// Adds the parts and points of the given feature to the given parts and points lists.
+        /// </summary>
+        /// <param name="parts">List of parts, where the features parts get added.</param>
+        /// <param name="points">List of points, where the features points get added.</param>
+        /// <param name="f">Feature, whose parts and points get added to the lists.</param>
+        private static void AddPoints(List<int> parts, List<Coordinate> points, IFeature f)
+        {
+            for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
             {
-                SaveAsIndexed(fileName);
-                return;
-            }
+                parts.Add(points.Count);
+                IPolygon pg = f.Geometry.GetGeometryN(iPart) as IPolygon;
+                if (pg == null) continue;
 
-            var bbWriter = new BufferedBinaryWriter(fileName);
-            var indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
-            int fid = 0;
-            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
-            int contentLength = 0;
-            foreach (IFeature f in Features)
-            {
-                List<int> parts = new List<int>();
+                ILineString bl = pg.Shell;
 
-                offset += contentLength; // adding the previous content length from each loop calculates the word offset
-                List<Coordinate> points = new List<Coordinate>();
-                contentLength = 22;
-                for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
+                // Exterior rings need to be clockwise
+                IEnumerable<Coordinate> coords = CGAlgorithms.IsCCW(bl.Coordinates) ? bl.Coordinates.Reverse() : bl.Coordinates;
+                points.AddRange(coords);
+
+                foreach (var hole in pg.Holes)
                 {
                     parts.Add(points.Count);
-                    IPolygon pg = f.Geometry.GetGeometryN(iPart) as IPolygon;
-                    if (pg == null) continue;
-                    ILineString bl = pg.Shell;
-                    IEnumerable<Coordinate> coords = bl.Coordinates;
 
-                    if (CGAlgorithms.IsCCW(bl.Coordinates))
-                    {
-                        // Exterior rings need to be clockwise
-                        coords = coords.Reverse();
-                    }
-
-                    foreach (Coordinate coord in coords)
-                    {
-                        points.Add(coord);
-                    }
-                    foreach (ILineString hole in pg.Holes)
-                    {
-                        parts.Add(points.Count);
-                        IEnumerable<Coordinate> holeCoords = hole.Coordinates;
-                        if (!CGAlgorithms.IsCCW(hole.Coordinates))
-                        {
-                            // Interior rings need to be counter-clockwise
-                            holeCoords = holeCoords.Reverse();
-                        }
-                        foreach (Coordinate coord in holeCoords)
-                        {
-                            points.Add(coord);
-                        }
-                    }
+                    // Interior rings need to be counter-clockwise
+                    IEnumerable<Coordinate> holeCoords = CGAlgorithms.IsCCW(hole.Coordinates) ? hole.Coordinates : hole.Coordinates.Reverse();
+                    points.AddRange(holeCoords);
                 }
-                contentLength += 2 * parts.Count;
-                if (Header.ShapeType == ShapeType.Polygon)
-                {
-                    contentLength += points.Count * 8;
-                }
-                if (Header.ShapeType == ShapeType.PolygonM)
-                {
-                    contentLength += 8; // mmin mmax
-                    contentLength += points.Count * 12; // x, y, m
-                }
-                if (Header.ShapeType == ShapeType.PolygonZ)
-                {
-                    contentLength += 16; // mmin, mmax, zmin, zmax
-                    contentLength += points.Count * 16; // x, y, m, z
-                }
-
-                //                                              Index File
-                //                                              ---------------------------------------------------------
-                //                                              Position     Value               Type        Number      Byte Order
-                //                                              ---------------------------------------------------------
-                indexWriter.Write(offset, false);               // Byte 0     Offset             Integer     1           Big
-                indexWriter.Write(contentLength, false);        // Byte 4    Content Length      Integer     1           Big
-
-                //                                              X Y Poly Lines
-                //                                              ---------------------------------------------------------
-                //                                              Position     Value               Type        Number      Byte Order
-                //                                              ---------------------------------------------------------
-                bbWriter.Write(fid + 1, false);                  // Byte 0       Record Number       Integer     1           Big
-                bbWriter.Write(contentLength, false);        // Byte 4       Content Length      Integer     1           Big
-                bbWriter.Write((int)Header.ShapeType);       // Byte 8       Shape Type 3        Integer     1           Little
-                if (Header.ShapeType == ShapeType.NullShape)
-                {
-                    continue;
-                }
-
-                bbWriter.Write(f.Geometry.EnvelopeInternal.MinX);             // Byte 12      Xmin                Double      1           Little
-                bbWriter.Write(f.Geometry.EnvelopeInternal.MinY);             // Byte 20      Ymin                Double      1           Little
-                bbWriter.Write(f.Geometry.EnvelopeInternal.MaxX);             // Byte 28      Xmax                Double      1           Little
-                bbWriter.Write(f.Geometry.EnvelopeInternal.MaxY);             // Byte 36      Ymax                Double      1           Little
-                bbWriter.Write(parts.Count);                 // Byte 44      NumParts            Integer     1           Little
-                bbWriter.Write(points.Count);                // Byte 48      NumPoints           Integer     1           Little
-                // Byte 52      Parts               Integer     NumParts    Little
-                foreach (int iPart in parts)
-                {
-                    bbWriter.Write(iPart);
-                }
-                double[] xyVals = new double[points.Count * 2];
-
-                int i = 0;
-
-                // Byte X       Points              Point       NumPoints   Little
-                foreach (Coordinate coord in points)
-                {
-                    xyVals[i * 2] = coord.X;
-                    xyVals[i * 2 + 1] = coord.Y;
-                    i++;
-                }
-                bbWriter.Write(xyVals);
-
-                if (Header.ShapeType == ShapeType.PolygonZ)
-                {
-                    bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.Z);
-                    bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.Z);
-                    double[] zVals = new double[points.Count];
-                    for (int ipoint = 0; ipoint < points.Count; i++)
-                    {
-                        zVals[ipoint] = points[ipoint].Z;
-                        ipoint++;
-                    }
-                    bbWriter.Write(zVals);
-                }
-
-                if (Header.ShapeType == ShapeType.PolygonM || Header.ShapeType == ShapeType.PolygonZ)
-                {
-                    if (f.Geometry.EnvelopeInternal == null)
-                    {
-                        bbWriter.Write(0.0);
-                        bbWriter.Write(0.0);
-                    }
-                    else
-                    {
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.M);
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.M);
-                    }
-
-                    double[] mVals = new double[points.Count];
-                    for (int ipoint = 0; ipoint < points.Count; i++)
-                    {
-                        mVals[ipoint] = points[ipoint].M;
-                        ipoint++;
-                    }
-                    bbWriter.Write(mVals);
-                }
-
-                fid++;
-                offset += 4; // header bytes
             }
-
-            bbWriter.Close();
-            indexWriter.Close();
-
-            offset += contentLength;
-            //offset += 4;
-            WriteFileLength(fileName, offset);
-            WriteFileLength(Header.ShxFilename, 50 + fid * 4);
-            UpdateAttributes();
-            SaveProjection();
         }
 
-        private void SaveAsIndexed(string fileName)
-        {
-            var shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
-            var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
 
-            int fid = 0;
-            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
-            int contentLength = 0;
-            foreach (ShapeRange shape in ShapeIndices)
-            {
-                offset += contentLength; // adding the previous content length from each loop calculates the word offset
-                contentLength = 22;
-
-                contentLength += 2 * shape.NumParts;
-                if (Header.ShapeType == ShapeType.Polygon)
-                {
-                    contentLength += shape.NumPoints * 8;
-                }
-                if (Header.ShapeType == ShapeType.PolygonM)
-                {
-                    contentLength += 8; // mmin mmax
-                    contentLength += shape.NumPoints * 12; // x, y, m
-                }
-                if (Header.ShapeType == ShapeType.PolygonZ)
-                {
-                    contentLength += 16; // mmin, mmax, zmin, zmax
-                    contentLength += shape.NumPoints * 16; // x, y, m, z
-                }
-
-                //                                         Index File
-                //                                        ---------------------------------------------------------
-                //                                          Position   Value            Type    Number  Byte Order
-                //                                        ---------------------------------------------------------
-                shxStream.WriteBe(offset);                // Byte 0    Offset           Integer   1     Big
-                shxStream.WriteBe(contentLength);         // Byte 4    Content Length   Integer   1     Big
-
-                //                                         X Y Poly Lines
-                //                                        ---------------------------------------------------------
-                //                                           Position   Value           Type    Number Byte Order
-                //                                        ---------------------------------------------------------
-                shpStream.WriteBe(fid + 1);               // Byte 0     Record Number   Integer   1    Big
-                shpStream.WriteBe(contentLength);         // Byte 4     Content Length  Integer   1    Big
-                shpStream.WriteLe((int)Header.ShapeType); // Byte 8     Shape Type 3    Integer   1    Little
-                if (Header.ShapeType == ShapeType.NullShape)
-                {
-                    continue;
-                }
-
-                shpStream.WriteLe(shape.Extent.MinX);     // Byte 12    Xmin             Double   1    Little
-                shpStream.WriteLe(shape.Extent.MinY);     // Byte 20    Ymin             Double   1    Little
-                shpStream.WriteLe(shape.Extent.MaxX);     // Byte 28    Xmax             Double   1    Little
-                shpStream.WriteLe(shape.Extent.MaxY);     // Byte 36    Ymax             Double   1    Little
-                shpStream.WriteLe(shape.NumParts);        // Byte 44    NumParts         Integer  1    Little
-                shpStream.WriteLe(shape.NumPoints);       // Byte 48    NumPoints        Integer  1    Little
-                // Byte 52    Parts            Integer NumParts  Little
-                foreach (PartRange part in shape.Parts)
-                {
-                    shpStream.WriteLe(part.PartOffset);
-                }
-                int start = shape.StartIndex;
-                int count = shape.NumPoints;
-                shpStream.WriteLe(Vertex, start * 2, count * 2);
-                if (Header.ShapeType == ShapeType.PolygonZ)
-                {
-                    double[] shapeZ = new double[count];
-                    Array.Copy(Z, start, shapeZ, 0, count);
-                    shpStream.WriteLe(shapeZ.Min());
-                    shpStream.WriteLe(shapeZ.Max());
-                    shpStream.WriteLe(Z, start, count);
-                }
-
-                if (Header.ShapeType == ShapeType.PolygonM || Header.ShapeType == ShapeType.PolygonZ)
-                {
-                    if (M != null && M.Length >= start + count)
-                    {
-                        double[] shapeM = new double[count];
-                        Array.Copy(M, start, shapeM, 0, count);
-                        shpStream.WriteLe(shapeM.Min());
-                        shpStream.WriteLe(shapeM.Max());
-                        shpStream.WriteLe(M, start, count);
-                    }
-                }
-                fid++;
-                offset += 4; // header bytes
-            }
-
-            shpStream.Close();
-            shxStream.Close();
-            offset += contentLength;
-            WriteFileLength(fileName, offset);
-            WriteFileLength(Header.ShxFilename, 50 + fid * 4);
-            UpdateAttributes();
-            SaveProjection();
-        }
     }
 }

@@ -389,7 +389,7 @@ namespace DotSpatial.Positioning
         /// Controls the number of times this device has been confirmed as a GPS device.
         /// </summary>
         /// <remarks>In order to maximize the performance of detecting GPS devices, statistics are maintained for each device.  This
-        /// property indicates how many times the device has been confirmed as a GPS device.  It will be incremented automatcially if
+        /// property indicates how many times the device has been confirmed as a GPS device.  It will be incremented automatically if
         /// a call to <strong>DetectProtocol</strong> has been successful.</remarks>
         [Category("Statistics")]
         [Description("Controls the number of times this device has been confirmed as a GPS device.")]
@@ -1186,12 +1186,12 @@ namespace DotSpatial.Positioning
         #region Static Methods
 
         /// <summary>
-        /// Esitmates device prcision based on the fix quality.
+        /// Estimates device precision based on the fix quality.
         /// </summary>
         /// <param name="quality">The current fix quality of a device or emulation</param>
         /// <returns>The estimated error of latitude/longitude coordinates attributed to the device.</returns>
         /// <remarks>If a the fix quality is unknown or NoFix, this method returns the value stored
-        /// in the DillutionOfPrecision.CurrentAverageDevicePrecision property.</remarks>
+        /// in the DilutionOfPrecision.CurrentAverageDevicePrecision property.</remarks>
         public static Distance PrecisionEstimate(FixQuality quality)
         {
             // We only need the expected device error

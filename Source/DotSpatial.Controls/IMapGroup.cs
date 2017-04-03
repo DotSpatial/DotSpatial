@@ -20,7 +20,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the GeoLayerCollection for members contained by this group.
+        /// Gets the IMapLayerCollection for members contained by this group.
         /// </summary>
         IMapLayerCollection Layers { get; set; }
 

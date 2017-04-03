@@ -131,6 +131,7 @@ namespace DotSpatial.Controls
             _oldSize = Size;
         }
 
+        /// <inheritdoc />
         public bool PreFilterMessage(ref Message m)
         {
             if (m.Msg == 0x0100)
@@ -765,15 +766,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ClearLayers()
         {
-            if (MapFrame == null) return;
-            MapFrame.Layers.Clear();
+            MapFrame?.Layers.Clear();
         }
-
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether the Garbage collector should collect after drawing.
-        /// This can be disabled for fast-action panning, but should normally be enabled.
-        /// </summary>
-        public bool CollectAfterDraw { get; set; }
 
         /// <summary>
         /// Gets or sets the dictionary of tools built into this project
@@ -951,10 +945,7 @@ namespace DotSpatial.Controls
         [Category("Bounds"),
          Description("Gets the geographic bounds of all of the different data layers currently visible on the map."),
          Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Extent Extent
-        {
-            get { return _geoMapFrame.Extent; }
-        }
+        public Extent Extent => _geoMapFrame.Extent;
 
         /// <summary>
         /// Gets or sets the geographic extents to show in the view.
@@ -995,14 +986,7 @@ namespace DotSpatial.Controls
         /// Gets or sets the collection of layers
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IMapLayerCollection Layers
-        {
-            get
-            {
-                if (_geoMapFrame != null) return _geoMapFrame.Layers;
-                return null;
-            }
-        }
+        public IMapLayerCollection Layers => _geoMapFrame?.Layers;
 
         /// <summary>
         /// returns a functional list of the ILayer members.  This list will be
@@ -1012,7 +996,7 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public List<ILayer> GetLayers()
         {
-            return _geoMapFrame == null ? Enumerable.Empty<ILayer>().ToList() : _geoMapFrame.Layers.Cast<ILayer>().ToList();
+            return _geoMapFrame?.Layers.Cast<ILayer>().ToList() ?? Enumerable.Empty<ILayer>().ToList();
         }
 
         /// <summary>
@@ -1025,7 +1009,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                return _geoMapFrame != null ? _geoMapFrame.Projection : null;
+                return _geoMapFrame?.Projection;
             }
             set
             {
@@ -1046,10 +1030,7 @@ namespace DotSpatial.Controls
             set
             {
                 _legend = value;
-                if (_legend != null)
-                {
-                    _legend.AddMapFrame(_geoMapFrame);
-                }
+                _legend?.AddMapFrame(_geoMapFrame);
             }
         }
 
@@ -1079,7 +1060,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles removing event handlers for the map frame
         /// </summary>
-        /// <param name="mapFrame"></param>
         protected virtual void OnExcludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null) return;
@@ -1090,22 +1070,17 @@ namespace DotSpatial.Controls
             mapFrame.SelectionChanged -= MapFrame_SelectionChanged;
             mapFrame.LayerAdded -= MapFrame_LayerAdded;
             mapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
-            if (Legend != null)
-            {
-                Legend.RemoveMapFrame(mapFrame, true);
-            }
+            Legend?.RemoveMapFrame(mapFrame, true);
         }
 
         /// <summary>
         /// Handles adding new event handlers to the map frame
         /// </summary>
-        /// <param name="mapFrame"></param>
         protected virtual void OnIncludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null)
             {
-                if (Legend == null) return;
-                Legend.RefreshNodes();
+                Legend?.RefreshNodes();
                 return;
             }
             mapFrame.Parent = this;
@@ -1116,8 +1091,7 @@ namespace DotSpatial.Controls
             mapFrame.SelectionChanged += MapFrame_SelectionChanged;
             mapFrame.LayerAdded += MapFrame_LayerAdded;
             mapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
-            if (Legend == null) return;
-            Legend.AddMapFrame(mapFrame);
+            Legend?.AddMapFrame(mapFrame);
         }
 
         private void MapFrame_LayerAdded(object sender, LayerEventArgs e)
@@ -1130,8 +1104,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
-            var h = LayerAdded;
-            if (h != null) h(sender, e);
+            LayerAdded?.Invoke(sender, e);
         }
 
         private void MapFrame_SelectionChanged(object sender, EventArgs e)
@@ -1144,8 +1117,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            var h = SelectionChanged;
-            if (h != null) h(this, EventArgs.Empty);
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void MapFrame_BufferChanged(object sender, ClipArgs e)
@@ -1170,7 +1142,7 @@ namespace DotSpatial.Controls
         /// <returns>The list of the layers</returns>
         public List<ILayer> GetAllLayers()
         {
-            return _geoMapFrame != null ? _geoMapFrame.GetAllLayers() : null;
+            return _geoMapFrame?.GetAllLayers();
         }
 
         /// <summary>
@@ -1179,7 +1151,7 @@ namespace DotSpatial.Controls
         /// <returns>the list of the groups</returns>
         public List<IMapGroup> GetAllGroups()
         {
-            return _geoMapFrame != null ? _geoMapFrame.GetAllGroups() : null;
+            return _geoMapFrame?.GetAllGroups();
         }
 
         /// <summary>
@@ -1442,9 +1414,8 @@ namespace DotSpatial.Controls
                 tool.DoMouseMove(args);
                 if (args.Handled) break;
             }
-
-            var h = GeoMouseMove;
-            if (h != null) h(this, args);
+            
+            GeoMouseMove?.Invoke(this, args);
 
             base.OnMouseMove(e);
         }
@@ -1452,7 +1423,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the OnMouseWheel event for the active tools
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
@@ -1465,10 +1435,12 @@ namespace DotSpatial.Controls
             base.OnMouseWheel(e);
         }
 
+        /// <summary>
+        /// Raises <see cref="FinishedRefresh"/> event.
+        /// </summary>
         protected virtual void OnFinishedRefresh(EventArgs e)
         {
-            var h = FinishedRefresh;
-            if (h != null) h(this, e);
+            FinishedRefresh?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1476,8 +1448,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnProjectionChanged()
         {
-            var h = ProjectionChanged;
-            if (h != null) h(this, EventArgs.Empty);
+            ProjectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1527,8 +1498,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                var h = ViewExtentsChanged;
-                if (h != null) h(sender, args);
+                ViewExtentsChanged?.Invoke(sender, args);
             }
         }
 
@@ -1537,8 +1507,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnFunctionModeChanged(object sender, EventArgs e)
         {
-            var h = FunctionModeChanged;
-            if (h != null) h(this, e);
+            FunctionModeChanged?.Invoke(this, e);
         }
 
         private void OnSizeChanged(object sender, EventArgs eventArgs)
@@ -1567,8 +1536,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnResized()
         {
-            var handler = Resized;
-            if (handler != null) handler(this, EventArgs.Empty);
+            Resized?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

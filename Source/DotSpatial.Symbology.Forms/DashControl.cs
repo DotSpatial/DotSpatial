@@ -27,7 +27,7 @@ namespace DotSpatial.Symbology.Forms
         #region Events
 
         /// <summary>
-        /// Occurs any time any action has occured that changes the pattern.
+        /// Occurs any time any action has occurred that changes the pattern.
         /// </summary>
         public event EventHandler PatternChanged;
 

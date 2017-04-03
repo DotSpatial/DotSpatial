@@ -599,8 +599,6 @@ namespace DotSpatial.Data
         #endregion
 
         #region Properties
-
-
         
         /// <summary>
         /// Gets the size of each raster element in bytes.

@@ -33,7 +33,7 @@ namespace DotSpatial.Data
         private long _bufferOffset; // Position of the start of the buffer relative to the start of the file
         private int _bufferSize;
         private long _fileOffset; // position in the entire file
-        private FileStream _fileStream;
+        private Stream _fileStream;
         private bool _isBufferLoaded;
         private int _maxBufferSize = 9600000; // Approximately around ten megs, divisible by 8
         private IProgressHandler _progressHandler;
@@ -54,6 +54,26 @@ namespace DotSpatial.Data
             // This is just an overload that sends the default null value in for the progressHandler
             _progressHandler = DataManager.DefaultDataManager.ProgressHandler;
             _progressMeter = new ProgressMeter(_progressHandler);
+        }
+
+        /// <summary>
+        /// create buffered binary writer on arbitrary stream 
+        /// </summary>
+        /// <param name="s"></param>
+        public BufferedBinaryWriter(Stream s)
+        {
+            long expectedByteCount = 100000;
+
+            _fileStream = s;
+            _fileLength = 0;
+            _fileOffset = 0;
+
+            _buffer = new byte[expectedByteCount];
+            _bufferSize = Convert.ToInt32(expectedByteCount);
+            _maxBufferSize = _bufferSize;
+            _writeOffset = -1; // There is no buffer loaded.
+            _bufferOffset = -1; // -1 means no buffer is loaded.
+
         }
 
         /// <summary>

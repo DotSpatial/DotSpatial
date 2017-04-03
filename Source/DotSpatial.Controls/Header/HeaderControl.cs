@@ -68,7 +68,7 @@ namespace DotSpatial.Controls.Header
             HeaderItemDesc hid;
             if (_items.TryGetValue(item.Key, out hid))
             {
-                throw new ArgumentException(String.Format("The key \"{0}\" was already added by {1}. The key may only be used by one HeaderItem.", item.Key, hid.AssemblyName));
+                throw new ArgumentException(string.Format("The key \"{0}\" was already added by {1}. The key may only be used by one HeaderItem.", item.Key, hid.AssemblyName));
             }
 
             // We don't add the root items to this list. The HeaderControl implementation should remove a root
@@ -157,8 +157,8 @@ namespace DotSpatial.Controls.Header
         /// <param name="assemblyFullName">Full name of the assembly.</param>
         protected void RecordItemAdd(HeaderItem item, string assemblyFullName)
         {
-            Contract.Requires(!String.IsNullOrEmpty(assemblyFullName), "assemblyFullName is null or empty.");
-            Contract.Requires(!String.IsNullOrEmpty(item.Key), "key is null or empty.");
+            Contract.Requires(!string.IsNullOrEmpty(assemblyFullName), "assemblyFullName is null or empty.");
+            Contract.Requires(!string.IsNullOrEmpty(item.Key), "key is null or empty.");
 
             _items.Add(item.Key, new HeaderItemDesc(item, assemblyFullName));
         }

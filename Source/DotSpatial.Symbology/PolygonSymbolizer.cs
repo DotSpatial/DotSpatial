@@ -21,7 +21,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PolygonSymbolizer
+    /// Symbolizer for polygon features.
     /// </summary>
     public class PolygonSymbolizer : FeatureSymbolizer, IPolygonSymbolizer
     {

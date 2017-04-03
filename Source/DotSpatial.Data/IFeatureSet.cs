@@ -319,6 +319,12 @@ namespace DotSpatial.Data
         List<int> SelectIndices(Extent region);
 
         #endregion
+        
+        /// <summary>
+        /// Exports current shapefile as a zip archive in memory
+        /// </summary>
+        /// <returns>Shapefile components.</returns>
+        ShapefilePackage ExportShapefilePackage();
 
         /// <summary>
         /// Saves the information in the Layers provided by this datasource onto its existing file location

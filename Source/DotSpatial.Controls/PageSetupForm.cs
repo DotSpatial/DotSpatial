@@ -27,13 +27,13 @@ namespace DotSpatial.Controls
     public class PageSetupForm : Form
     {
         private readonly PrinterSettings _printerSettings;
-        private Double _bottom;
+        private double _bottom;
         private GroupBox _groupBox2;
-        private Double _left;
+        private double _left;
         private RadioButton _rdbLandscape;
         private RadioButton _rdbPortrait;
-        private Double _right;
-        private Double _top;
+        private double _right;
+        private double _top;
 
         ///<summary>
         /// Creates a new instance of the Page Setup Form
@@ -64,13 +64,13 @@ namespace DotSpatial.Controls
 
             //Gets the margins
             _left = settings.DefaultPageSettings.Margins.Left / 100.0;
-            txtBoxLeft.Text = String.Format("{0:0.00}", _left);
+            txtBoxLeft.Text = $"{_left:0.00}";
             _top = settings.DefaultPageSettings.Margins.Top / 100.0;
-            txtBoxTop.Text = String.Format("{0:0.00}", _top);
+            txtBoxTop.Text = $"{_top:0.00}";
             _bottom = settings.DefaultPageSettings.Margins.Bottom / 100.0;
-            txtBoxBottom.Text = String.Format("{0:0.00}", _bottom);
+            txtBoxBottom.Text = $"{_bottom:0.00}";
             _right = settings.DefaultPageSettings.Margins.Right / 100.0;
-            txtBoxRight.Text = String.Format("{0:0.00}", _right);
+            txtBoxRight.Text = $"{_right:0.00}";
         }
 
         private void UpdatePaperSize()
@@ -98,28 +98,28 @@ namespace DotSpatial.Controls
         {
             if (IsValidMargin(txtBoxRight.Text))
                 _right = Convert.ToDouble(txtBoxRight.Text);
-            txtBoxRight.Text = String.Format("{0:0.00}", _right);
+            txtBoxRight.Text = $"{_right:0.00}";
         }
 
         private void txtBoxLeft_Leave(object sender, EventArgs e)
         {
             if (IsValidMargin(txtBoxLeft.Text))
                 _left = Convert.ToDouble(txtBoxLeft.Text);
-            txtBoxLeft.Text = String.Format("{0:0.00}", _left);
+            txtBoxLeft.Text = $"{_left:0.00}";
         }
 
         private void txtBoxTop_Leave(object sender, EventArgs e)
         {
             if (IsValidMargin(txtBoxTop.Text))
                 _top = Convert.ToDouble(txtBoxTop.Text);
-            txtBoxTop.Text = String.Format("{0:0.00}", _top);
+            txtBoxTop.Text = $"{_top:0.00}";
         }
 
         private void txtBoxBottom_Leave(object sender, EventArgs e)
         {
             if (IsValidMargin(txtBoxBottom.Text))
                 _bottom = Convert.ToDouble(txtBoxBottom.Text);
-            txtBoxBottom.Text = String.Format("{0:0.00}", _bottom);
+            txtBoxBottom.Text = $"{_bottom:0.00}";
         }
 
         /// <summary>

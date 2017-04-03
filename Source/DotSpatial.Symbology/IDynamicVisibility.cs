@@ -15,7 +15,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// An shared interface for members that wish to set dynamic visiblity.
+    /// An shared interface for members that wish to set dynamic visibility.
     /// </summary>
     public interface IDynamicVisibility
     {

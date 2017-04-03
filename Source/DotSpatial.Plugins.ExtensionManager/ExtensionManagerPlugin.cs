@@ -25,6 +25,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #region Public Methods
 
+        /// <inheritdoc />
         public override void Activate()
         {
             AddButtons();
@@ -38,6 +39,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             base.Activate();
         }
 
+        /// <inheritdoc />
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
@@ -88,16 +90,14 @@ namespace DotSpatial.Plugins.ExtensionManager
             App.UpdateSplashScreen("Finished.");
         }
 
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose is called when a non-modal form is closed.")]
         private void ExtensionManager_Click(object sender, EventArgs e)
         {
             form.Show();
         }
 
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose is called when a non-modal form is closed.")]
         private void OpenSampleProjects_Click(object sender, EventArgs e)
         {
-            SampleProjectsForm sampleProjForm = new SampleProjectsForm(App);
+            var sampleProjForm = new SampleProjectsForm(App);
             sampleProjForm.Show();
         }
 

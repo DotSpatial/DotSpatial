@@ -216,8 +216,6 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Properties
-        
-        bool CollectAfterDraw { get; set; }
 
         /// <summary>
         /// Gets or sets the Cursor.  This will be changed as the cursor mode changes.

@@ -35,7 +35,7 @@ namespace DotSpatial.Controls
         /// <param name="app">AppManager that contains the Map the tools should work on.</param>
         public DefaultMenuBars(AppManager app)
         {
-            if (app == null) throw new ArgumentNullException("app");
+            if (app == null) throw new ArgumentNullException(nameof(app));
             App = app;
 
             App.MapChanged += (sender, args) => OnAppMapChanged(args);
@@ -47,7 +47,7 @@ namespace DotSpatial.Controls
         /// <param name="header">IHeaderControl the default tools should be added to.</param>
         public void Initialize(IHeaderControl header)
         {
-            if (header == null) throw new ArgumentNullException("header");
+            if (header == null) throw new ArgumentNullException(nameof(header));
 
             AddItems(header);
             OnAppMapChanged(new MapChangedEventArgs(null, App.Map));
@@ -225,8 +225,10 @@ namespace DotSpatial.Controls
         /// </summary>
         private void Options_Click(object sender, EventArgs e)
         {
-            using (OptionsForm form = new OptionsForm(App.Map))
-            { form.ShowDialog(); }
+            using (var form = new OptionsForm(App.Map))
+            {
+                form.ShowDialog();
+            }
         }
 
         /// <summary>
@@ -245,11 +247,11 @@ namespace DotSpatial.Controls
         private void PrintLayout_Click(object sender, EventArgs e)
         {
             // In Mono show the dialog only if printers installed else show error message.
-            if (Mono.Mono.IsRunningOnMono())
+            if (Mono.IsRunningOnMono())
             {
                 if (!new PrinterSettings().IsValid)
                 {
-                    MessageBox.Show(MessageStrings.NoPrintersInstalled, MessageStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Msg.NoPrintersInstalled, Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }

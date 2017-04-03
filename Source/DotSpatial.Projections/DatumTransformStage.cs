@@ -22,9 +22,9 @@ namespace DotSpatial.Projections
     {
         /// <summary>Grid shift table</summary>
         GridShift,
-        /// <summary>3-parameter geocentric transform: delat x, delta y, and delta z</summary>
+        /// <summary>3-parameter geocentric transform: delta x, delta y, and delta z</summary>
         Param3,
-        /// <summary>7-parameter geocentric tranform: delta x,y,z, plus rotataion of x,y,z axes, and delta scale</summary>
+        /// <summary>7-parameter geocentric transform: delta x,y,z, plus rotation of x,y,z axes, and delta scale</summary>
         Param7
     };
 
@@ -37,10 +37,10 @@ namespace DotSpatial.Projections
         /// <summary>True if the table must be used in the direction opposite that specified by the From/To Datum properties</summary>
         protected bool ApplyTableInv;
 
-        /// <summary>Delta scale in parts-per-million. Actaul scale is 1+DS/1000000.</summary>
+        /// <summary>Delta scale in parts-per-million. Actual scale is 1+DS/1000000.</summary>
         protected double Ds;
 
-        /// <summary>Detla X of geocentric origin, in meters</summary>
+        /// <summary>Delta X of geocentric origin, in meters</summary>
         protected double Dx;
 
         /// <summary>Delta Y of geocentric origin, in meters</summary>
@@ -49,10 +49,10 @@ namespace DotSpatial.Projections
         /// <summary>Delta Z of geocentric origin, in meters</summary>
         protected double Dz;
 
-        /// <summary>String identifer of datum from which the transform proceeds</summary>
+        /// <summary>String identifier of datum from which the transform proceeds</summary>
         protected string From;
 
-        /// <summary>Spheriod on which the From datum is based</summary>
+        /// <summary>Spheroid on which the From datum is based</summary>
         protected Spheroid FromSph;
 
         /// <summary>Rotation about the geocentric X-axis, in arc-seconds</summary>
@@ -73,7 +73,7 @@ namespace DotSpatial.Projections
         /// <summary>String identifier of the datum to which the transform proceeds</summary>
         protected string To;
 
-        /// <summary>Spheriod on which the To datum is based</summary>
+        /// <summary>Spheroid on which the To datum is based</summary>
         protected Spheroid ToSph;
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Parmeterless constructor
+        /// Parameterless constructor
         /// </summary>
         public DatumTransformStage() { }
 

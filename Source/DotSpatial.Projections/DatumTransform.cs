@@ -22,22 +22,14 @@ namespace DotSpatial.Projections
         protected const double SecToRad = 4.848136811095359935899141023e-6;
 
         private readonly IDatumTransformStage[] _aiDts;
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="aiDatumTransformStage"></param>
+       
         public DatumTransform(IDatumTransformStage[] aiDatumTransformStage)
         {
             if (aiDatumTransformStage == null)
             {
                 throw new Exception("Null DatumTransformStage array passed to constructor");
             }
-            //for (int i = 1; i < aiDatumTransformStage.Length; i++) {
-            //  if (aiDatumTransformStage[i - 1].ToDatum != aiDatumTransformStage[i].FromDatum) {
-            //    throw new Exception("DatumTranformStage array contained consecutive stages with unmatched from/to datums.");
-            //  }
-            //}
+         
             _aiDts = aiDatumTransformStage;
         }
 
@@ -83,16 +75,7 @@ namespace DotSpatial.Projections
         }
 
         #region IDatumTransform Members
-
-        /// <summary>
-        /// datum tranform method
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="dest"></param>
-        /// <param name="xy"></param>
-        /// <param name="z"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="numPoints"></param>
+        
         public void Transform(ProjectionInfo source, ProjectionInfo dest, double[] xy, double[] z, int startIndex, int numPoints)
         {
             if (_aiDts.Length == 0) return; // "empty" datum transform
@@ -150,24 +133,13 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Returns an interface to the stage at the specified index
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
         public IDatumTransformStage GetStage(int index)
         {
             if (index > _aiDts.Length - 1)
                 return null;
-            else
-                return _aiDts[index];
+            return _aiDts[index];
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="idts"></param>
-        /// <param name="xy"></param>
-        /// <param name="zArr"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="numPoints"></param>
+       
         private static void ApplyParameterizedTransform(IDatumTransformStage idts, double[] xy, double[] zArr, int startIndex, int numPoints)
         {
             double[] shift;
