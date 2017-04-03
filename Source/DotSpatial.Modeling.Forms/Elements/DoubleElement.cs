@@ -6,7 +6,7 @@
 //
 // The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
 //
-// The Initializeializeial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
+// The Initial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
 //
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
 //

@@ -15,6 +15,9 @@ namespace DotSpatial.Controls
         private bool _isInitializing;
         private AppManager _applicationManager;
 
+        /// <summary>
+        /// Initialize new instance of <see cref="SpatialHeaderControl"/>.
+        /// </summary>
         public SpatialHeaderControl()
         {
             _menuBar = new MenuBarHeaderControl();
@@ -93,26 +96,31 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <inheritdoc />
         public object Add(HeaderItem item)
         {
             return _menuBar.Add(item);
         }
 
+        /// <inheritdoc />
         public void Remove(string key)
         {
             _menuBar.Remove(key);
         }
 
+        /// <inheritdoc />
         public void RemoveAll()
         {
             _menuBar.RemoveAll();
         }
 
+        /// <inheritdoc />
         public void SelectRoot(string key)
         {
             _menuBar.SelectRoot(key);
         }
 
+        /// <inheritdoc />
         public event EventHandler<RootItemEventArgs> RootItemSelected;
 
         private void InitHeaderControl()
@@ -135,11 +143,13 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <inheritdoc />
         public void BeginInit()
         {
             _isInitializing = true;
         }
 
+        /// <inheritdoc />
         public void EndInit()
         {
             _isInitializing = false;

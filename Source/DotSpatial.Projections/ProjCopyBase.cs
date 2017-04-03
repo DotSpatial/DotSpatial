@@ -23,10 +23,6 @@ namespace DotSpatial.Projections
     [Serializable]
     public class ProjCopyBase : ICloneable
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>

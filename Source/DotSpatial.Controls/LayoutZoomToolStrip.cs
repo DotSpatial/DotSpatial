@@ -158,7 +158,7 @@ namespace DotSpatial.Controls
 
         private void _layoutControl_ZoomChanged(object sender, EventArgs e)
         {
-            _comboZoom.Text = String.Format("{0:0}", _layoutControl.Zoom * 100) + "%";
+            _comboZoom.Text = string.Format("{0:0}", _layoutControl.Zoom * 100) + "%";
         }
 
         //Fires when the user clicks the zoom to full extent button

@@ -11,14 +11,19 @@
 //
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Data
 {
-    public class PyramidUndefinedHeaderException : PyramidException
+    /// <summary>
+    /// The exception that is thrown when attempting to write data before the headers are defined.
+    /// </summary>
+    public class PyramidUndefinedHeaderException : Exception
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PyramidUndefinedHeader
+        /// Creates a new instance of <see cref="PyramidUndefinedHeaderException"/>.
         /// </summary>
         public PyramidUndefinedHeaderException()
             : base(DataStrings.PyramidHeaderException)

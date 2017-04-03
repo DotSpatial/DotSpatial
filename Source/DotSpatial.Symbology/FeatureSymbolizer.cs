@@ -18,6 +18,9 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Common symbolizer for features.
+    /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter)), Serializable]
     public class FeatureSymbolizer : LegendItem, IFeatureSymbolizer
     {

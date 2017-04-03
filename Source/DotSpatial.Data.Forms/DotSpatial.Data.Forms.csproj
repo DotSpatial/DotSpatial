@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -100,7 +100,6 @@
     </Compile>
     <Compile Include="ItemType.cs" />
     <Compile Include="LogManager.cs" />
-    <Compile Include="NavigateEventArgs.cs" />
     <Compile Include="OpenDataDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,7 +110,6 @@
     <Compile Include="ScrollingControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SelectEventArgs.cs" />
     <Compile Include="ShapefileExt.cs" />
     <Compile Include="TimedProgressMeter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -163,7 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Data.Forms.snk" />
-    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Data.Forms.nuspec" />
     <None Include="packages.config" />
     <None Include="Resources\FileFolder.png" />
   </ItemGroup>

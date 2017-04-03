@@ -42,8 +42,6 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Formerly pj_enfn from Proj4
         /// </summary>
-        /// <param name="es"></param>
-        /// <returns></returns>
         public static double[] GetEn(double es)
         {
             double t;
@@ -60,11 +58,6 @@ namespace DotSpatial.Projections
         /// Formerly pj_mlfn
         /// Given geodetic angular displacement phi, this calculates the equivalent meridional distance
         /// </summary>
-        /// <param name="phi">The geodetic angular displacement</param>
-        /// <param name="sphi"></param>
-        /// <param name="cphi"></param>
-        /// <param name="en"></param>
-        /// <returns></returns>
         public static double MeridionalLength(double phi, double sphi, double cphi, double[] en)
         {
             cphi *= sphi;
@@ -76,10 +69,6 @@ namespace DotSpatial.Projections
         /// Formerly pj_inv_mlfn
         /// Given the linear distance, this calculates the equivalent geodetic angular displacement
         /// </summary>
-        /// <param name="arg"></param>
-        /// <param name="es"></param>
-        /// <param name="en"></param>
-        /// <returns></returns>
         public static double AngularDistance(double arg, double es, double[] en)
         {
             double k = 1 / (1 - es);

@@ -2,6 +2,9 @@ using System.ComponentModel.Composition;
 
 namespace DotSpatial.Extensions
 {
+    /// <summary>
+    /// Project file provider with capability to open files.
+    /// </summary>
     [InheritedExport]
     public interface IOpenProjectFileProvider : IProjectFileProvider
     {

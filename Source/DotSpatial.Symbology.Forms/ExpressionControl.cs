@@ -129,7 +129,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Suppress tab if it was entered because it is illigal in expressions.
+        /// Suppress tab if it was entered because it is illegal in expressions.
         /// </summary>
         private void rtbExpression_KeyDown(object sender, KeyEventArgs e)
         {

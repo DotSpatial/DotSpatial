@@ -196,7 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Positioning.snk" />
-    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Positioning.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

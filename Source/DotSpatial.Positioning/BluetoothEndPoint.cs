@@ -214,7 +214,7 @@ namespace DotSpatial.Positioning
 #if !PocketPC
 
         /// <summary>
-        /// Returns a GUID indentifying the service.
+        /// Returns a GUID identifying the service.
         /// </summary>
         [Category("Data")]
         [Description("Returns a GUID indentifying the service.")]

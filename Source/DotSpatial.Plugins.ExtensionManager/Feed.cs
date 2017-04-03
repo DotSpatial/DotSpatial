@@ -3,7 +3,7 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    public class Feed
+    internal class Feed
     {
         public string Name { get; set; }
 

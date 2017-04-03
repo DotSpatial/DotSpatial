@@ -20,16 +20,11 @@ using System.Linq;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// DrawingScheme
+    /// Categorizable legend item.
     /// </summary>
     public abstract class Scheme : LegendItem
     {
         #region Private Variables
-
-        private List<Break> _breaks; // A temporary list for helping construction of schemes.
-        private EditorSettings _editorSettings;
-        private Statistics _statistics;
-        private List<double> _values;
 
         #endregion
 
@@ -81,7 +76,7 @@ namespace DotSpatial.Symbology
         {
             base.LegendSymbolMode = SymbolMode.None;
             LegendType = LegendType.Scheme;
-            _statistics = new Statistics();
+            Statistics = new Statistics();
         }
 
         #endregion
@@ -164,7 +159,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected void CreateBreakCategories()
         {
-            int count = EditorSettings.NumBreaks;
+            var count = EditorSettings.NumBreaks;
             switch (EditorSettings.IntervalMethod)
             {
                 case IntervalMethod.EqualFrequency:
@@ -179,17 +174,17 @@ namespace DotSpatial.Symbology
             }
             ApplyBreakSnapping();
             SetBreakNames(Breaks);
-            List<Color> colorRamp = GetColorSet(count);
-            List<double> sizeRamp = GetSizeSet(count);
+            var colorRamp = GetColorSet(count);
+            var sizeRamp = GetSizeSet(count);
             ClearCategories();
-            int colorIndex = 0;
+            var colorIndex = 0;
             Break prevBreak = null;
-            foreach (Break brk in Breaks)
+            foreach (var brk in Breaks)
             {
                 //get the color for the category
-                Color randomColor = colorRamp[colorIndex];
-                double randomSize = sizeRamp[colorIndex];
-                ICategory cat = CreateNewCategory(randomColor, randomSize);
+                var randomColor = colorRamp[colorIndex];
+                var randomSize = sizeRamp[colorIndex];
+                var cat = CreateNewCategory(randomColor, randomSize);
 
                 if (cat != null)
                 {
@@ -214,8 +209,8 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         protected virtual List<double> GetSizeSet(int count)
         {
-            List<double> result = new List<double>();
-            for (int i = 0; i < count; i++)
+            var result = new List<double>();
+            for (var i = 0; i < count; i++)
             {
                 result.Add(20);
             }
@@ -243,8 +238,8 @@ namespace DotSpatial.Symbology
                 }
                 else
                 {
-                    Color cStart = EditorSettings.StartColor;
-                    Color cEnd = EditorSettings.EndColor;
+                    var cStart = EditorSettings.StartColor;
+                    var cEnd = EditorSettings.EndColor;
                     colorRamp = CreateRampColors(count, cStart.GetSaturation(), cStart.GetBrightness(),
                                                  (int)cStart.GetHue(),
                                                  cEnd.GetSaturation(), cEnd.GetBrightness(), (int)cEnd.GetHue(),
@@ -289,9 +284,9 @@ namespace DotSpatial.Symbology
 
         private static List<Color> CreateUnboundedRandomColors(int numColors)
         {
-            Random rnd = new Random(DateTime.Now.Millisecond);
-            List<Color> result = new List<Color>(numColors);
-            for (int i = 0; i < numColors; i++)
+            var rnd = new Random(DateTime.Now.Millisecond);
+            var result = new List<Color>(numColors);
+            for (var i = 0; i < numColors; i++)
             {
                 result.Add(rnd.NextColor());
             }
@@ -300,9 +295,9 @@ namespace DotSpatial.Symbology
 
         private List<Color> CreateRandomColors(int numColors)
         {
-            List<Color> result = new List<Color>(numColors);
-            Random rnd = new Random(DateTime.Now.Millisecond);
-            for (int i = 0; i < numColors; i++)
+            var result = new List<Color>(numColors);
+            var rnd = new Random(DateTime.Now.Millisecond);
+            for (var i = 0; i < numColors; i++)
             {
                 result.Add(CreateRandomColor(rnd));
             }
@@ -316,18 +311,18 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         protected Color CreateRandomColor(Random rnd)
         {
-            Color startColor = EditorSettings.StartColor;
-            Color endColor = EditorSettings.EndColor;
+            var startColor = EditorSettings.StartColor;
+            var endColor = EditorSettings.EndColor;
             if (EditorSettings.HueSatLight)
             {
                 double hLow = startColor.GetHue();
-                double dH = endColor.GetHue() - hLow;
+                var dH = endColor.GetHue() - hLow;
                 double sLow = startColor.GetSaturation();
-                double ds = endColor.GetSaturation() - sLow;
+                var ds = endColor.GetSaturation() - sLow;
                 double lLow = startColor.GetBrightness();
-                double dl = endColor.GetBrightness() - lLow;
-                double aLow = (startColor.A) / 255.0;
-                double da = (endColor.A - aLow) / 255.0;
+                var dl = endColor.GetBrightness() - lLow;
+                var aLow = (startColor.A) / 255.0;
+                var da = (endColor.A - aLow) / 255.0;
                 return SymbologyGlobal.ColorFromHsl(rnd.NextDouble() * dH + hLow, rnd.NextDouble() * ds + sLow,
                                                     rnd.NextDouble() * dl + lLow).ToTransparent((float)(rnd.NextDouble() * da + aLow));
             }
@@ -344,12 +339,12 @@ namespace DotSpatial.Symbology
 
         private static List<Color> CreateRampColors(int numColors, Color startColor, Color endColor)
         {
-            List<Color> result = new List<Color>(numColors);
-            double dR = (endColor.R - (double)startColor.R) / numColors;
-            double dG = (endColor.G - (double)startColor.G) / numColors;
-            double dB = (endColor.B - (double)startColor.B) / numColors;
-            double dA = (endColor.A - (double)startColor.A) / numColors;
-            for (int i = 0; i < numColors; i++)
+            var result = new List<Color>(numColors);
+            var dR = (endColor.R - (double)startColor.R) / numColors;
+            var dG = (endColor.G - (double)startColor.G) / numColors;
+            var dB = (endColor.B - (double)startColor.B) / numColors;
+            var dA = (endColor.A - (double)startColor.A) / numColors;
+            for (var i = 0; i < numColors; i++)
             {
                 result.Add(Color.FromArgb((int)(startColor.A + dA * i), (int)(startColor.R + dR * i), (int)(startColor.G + dG * i), (int)(startColor.B + dB * i)));
             }
@@ -373,13 +368,13 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         protected List<Break> GetEqualBreaks(int count)
         {
-            List<Break> result = new List<Break>();
-            double min = Values[0];
-            double dx = (Values[Values.Count - 1] - min) / count;
+            var result = new List<Break>();
+            var min = Values[0];
+            var dx = (Values[Values.Count - 1] - min) / count;
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                Break brk = new Break();
+                var brk = new Break();
                 // max
                 if (i == count - 1)
                 {
@@ -405,22 +400,22 @@ namespace DotSpatial.Symbology
                 case IntervalSnapMethod.None:
                     break;
                 case IntervalSnapMethod.SignificantFigures:
-                    foreach (Break item in Breaks)
+                    foreach (var item in Breaks)
                     {
                         if (item.Maximum == null) continue;
-                        double val = (double)item.Maximum;
+                        var val = (double)item.Maximum;
                         item.Maximum = Utils.SigFig(val, EditorSettings.IntervalRoundingDigits);
                     }
                     break;
                 case IntervalSnapMethod.Rounding:
-                    foreach (Break item in Breaks)
+                    foreach (var item in Breaks)
                     {
                         if (item.Maximum == null) continue;
                         item.Maximum = Math.Round((double)item.Maximum, EditorSettings.IntervalRoundingDigits);
                     }
                     break;
                 case IntervalSnapMethod.DataValue:
-                    foreach (Break item in Breaks)
+                    foreach (var item in Breaks)
                     {
                         if (item.Maximum == null) continue;
                         item.Maximum = Utils.GetNearestValue((double)item.Maximum, Values);
@@ -436,20 +431,20 @@ namespace DotSpatial.Symbology
         /// <returns>A list of breaks.</returns>
         protected List<Break> GetQuantileBreaks(int count)
         {
-            List<Break> result = new List<Break>();
-            int binSize = (int)Math.Ceiling(Values.Count / (double)count);
-            for (int iBreak = 1; iBreak <= count; iBreak++)
+            var result = new List<Break>();
+            var binSize = (int)Math.Ceiling(Values.Count / (double)count);
+            for (var iBreak = 1; iBreak <= count; iBreak++)
             {
                 if (binSize * iBreak < Values.Count)
                 {
-                    Break brk = new Break();
+                    var brk = new Break();
                     brk.Maximum = Values[binSize * iBreak];
                     result.Add(brk);
                 }
                 else
                 {
                     // if num breaks is larger than number of members, this can happen
-                    Break brk = new Break();
+                    var brk = new Break();
                     brk.Maximum = null;
                     result.Add(brk);
                     break;
@@ -458,6 +453,11 @@ namespace DotSpatial.Symbology
             return result;
         }
 
+        /// <summary>
+        /// Generates natural breaks.
+        /// </summary>
+        /// <param name="count">Count of breaks.</param>
+        /// <returns>List with breaks.</returns>
         protected List<Break> GetNaturalBreaks(int count)
         {
             var breaks = new JenksBreaksCalcuation(Values, count);
@@ -477,14 +477,13 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Sets the names for the break categories
+        /// Sets the names for the break categories.
         /// </summary>
-        /// <param name="breaks"></param>
         protected static void SetBreakNames(IList<Break> breaks)
         {
-            for (int i = 0; i < breaks.Count; i++)
+            for (var i = 0; i < breaks.Count; i++)
             {
-                Break brk = breaks[i];
+                var brk = breaks[i];
                 if (breaks.Count == 1)
                 {
                     brk.Name = "All Values";
@@ -506,17 +505,17 @@ namespace DotSpatial.Symbology
 
         private static List<Color> CreateRampColors(int numColors, float minSat, float minLight, int minHue, float maxSat, float maxLight, int maxHue, int hueShift, int minAlpha, int maxAlpha)
         {
-            List<Color> result = new List<Color>(numColors);
-            double ds = (maxSat - (double)minSat) / numColors;
-            double dh = (maxHue - (double)minHue) / numColors;
-            double dl = (maxLight - (double)minLight) / numColors;
-            double dA = (maxAlpha - (double)minAlpha) / numColors;
-            for (int i = 0; i < numColors; i++)
+            var result = new List<Color>(numColors);
+            var ds = (maxSat - (double)minSat) / numColors;
+            var dh = (maxHue - (double)minHue) / numColors;
+            var dl = (maxLight - (double)minLight) / numColors;
+            var dA = (maxAlpha - (double)minAlpha) / numColors;
+            for (var i = 0; i < numColors; i++)
             {
-                double h = (minHue + dh * i) + hueShift % 360;
-                double s = minSat + ds * i;
-                double l = minLight + dl * i;
-                float a = (float)(minAlpha + dA * i) / 255f;
+                var h = (minHue + dh * i) + hueShift % 360;
+                var s = minSat + ds * i;
+                var l = minLight + dl * i;
+                var a = (float)(minAlpha + dA * i) / 255f;
                 result.Add(SymbologyGlobal.ColorFromHsl(h, s, l).ToTransparent(a));
             }
             return result;
@@ -530,37 +529,19 @@ namespace DotSpatial.Symbology
         /// Gets or sets the editor settings that control how this scheme operates.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public EditorSettings EditorSettings
-        {
-            get { return _editorSettings; }
-            set { _editorSettings = value; }
-        }
+        public EditorSettings EditorSettings { get; set; }
 
         /// <summary>
         /// This is cached until a GetValues call is made, at which time the statistics will
         /// be re-calculated from the values.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Statistics Statistics
-        {
-            get
-            {
-                return _statistics;
-            }
-            protected set
-            {
-                _statistics = value;
-            }
-        }
+        public Statistics Statistics { get; protected set; }
 
         /// <summary>
         /// Gets or sets the list of breaks for this scheme
         /// </summary>
-        protected List<Break> Breaks
-        {
-            get { return _breaks; }
-            set { _breaks = value; }
-        }
+        protected List<Break> Breaks { get; set; }
 
         /// <summary>
         /// Gets the current list of values calculated in the case of numeric breaks.
@@ -568,11 +549,7 @@ namespace DotSpatial.Symbology
         /// and have a valid numeric value.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<double> Values
-        {
-            get { return _values; }
-            protected set { _values = value; }
-        }
+        public List<double> Values { get; protected set; }
 
         #endregion
     }

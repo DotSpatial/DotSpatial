@@ -22,15 +22,16 @@ namespace DotSpatial.Data
     {
         private static int _rowsPerPage;
         private readonly IAttributeSource _dataSupply;
+
         /// <summary>
         /// The row being edited
         /// </summary>
-        public Dictionary<string, object> EditRow;
+        public Dictionary<string, object> EditRow { get; set; }
 
         /// <summary>
         /// The pages currently stored in the cache
         /// </summary>
-        public DataPage[] Pages;
+        public DataPage[] Pages { get; set; }
 
         private int _editRowIndex;
 
@@ -275,7 +276,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Enumerates the dictionaries that represent row content stored by field name.
         /// </summary>
-        public class AttributeCacheEnumerator : IEnumerator<Dictionary<string, object>>
+        private class AttributeCacheEnumerator : IEnumerator<Dictionary<string, object>>
         {
             private readonly AttributeCache _cache;
             private int _row;

@@ -20,13 +20,6 @@ namespace DotSpatial.Projections
 {
     public class AngularUnit : ProjDescriptor, IEsriString
     {
-        #region Private Variables
-
-        private string _name;
-        private double _radians;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -34,8 +27,8 @@ namespace DotSpatial.Projections
         /// </summary>
         public AngularUnit()
         {
-            _radians = 0.017453292519943295; // assume degrees
-            _name = "Degree";
+            Radians = 0.017453292519943295; // assume degrees
+            Name = "Degree";
         }
 
         #endregion
@@ -49,20 +42,12 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Gets or sets the name of this
         /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the constant to multiply against this unit to get radians.
         /// </summary>
-        public double Radians
-        {
-            get { return _radians; }
-            set { _radians = value; }
-        }
+        public double Radians { get; set; }
 
         #endregion
 
@@ -74,7 +59,7 @@ namespace DotSpatial.Projections
         /// <returns>The resulting esri string</returns>
         public string ToEsriString()
         {
-            return @"UNIT[""" + _name + @"""," + Convert.ToString(_radians, CultureInfo.InvariantCulture) + "]";
+            return @"UNIT[""" + Name + @"""," + Convert.ToString(Radians, CultureInfo.InvariantCulture) + "]";
         }
 
         /// <summary>
@@ -92,9 +77,9 @@ namespace DotSpatial.Projections
             if (iEnd < iStart) return;
             string extracted = esriString.Substring(iStart, iEnd - iStart);
             string[] terms = extracted.Split(',');
-            _name = terms[0];
-            _name = _name.Substring(1, _name.Length - 2);
-            _radians = double.Parse(terms[1], CultureInfo.InvariantCulture);
+            Name = terms[0];
+            Name = Name.Substring(1, Name.Length - 2);
+            Radians = double.Parse(terms[1], CultureInfo.InvariantCulture);
         }
 
         #endregion
