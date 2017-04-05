@@ -17,8 +17,8 @@ namespace DotSpatial.Projections.Tests
         {
             var infoBuiltIn = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-            const string esri = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
-            var infoFromEsri = ProjectionInfo.FromEsriString(esri);
+            const string Esri = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            var infoFromEsri = ProjectionInfo.FromEsriString(Esri);
 
             var expected = infoFromEsri.ToProj4String();
             var actual = infoBuiltIn.ToProj4String();
@@ -43,12 +43,12 @@ namespace DotSpatial.Projections.Tests
         ///A test for http://dotspatial.codeplex.com/workitem/188 WGS1984
         ///</summary>
         [Test]
-        public void ToEsriStringWGS1984Test()
+        public void ToEsriStringWgs1984Test()
         {
             var p1 = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-            const string esri = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
-            var p2 = ProjectionInfo.FromEsriString(esri);
+            const string Esri = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            var p2 = ProjectionInfo.FromEsriString(Esri);
 
             var expected = p2.ToEsriString();
             var actual = p1.ToEsriString();
@@ -77,8 +77,7 @@ namespace DotSpatial.Projections.Tests
         [Test]
         public void ProjectionInfoConstructorTest2()
         {
-            string proj4String = null;
-            var actual = ProjectionInfo.FromProj4String(proj4String);
+            var actual = ProjectionInfo.FromProj4String(null);
             var expected = new ProjectionInfo();
 
             Assert.AreEqual(expected.ToProj4String(), actual.ToProj4String());
@@ -107,10 +106,10 @@ namespace DotSpatial.Projections.Tests
         [Test]
         public void ToEsriStringNorthAmericanDatum1983Test()
         {
-            var p1 = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1983;
+            var p1 = KnownCoordinateSystems.Geographic.NorthAmerica.NAD1983;
 
-            const string esri = "GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101004]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
-            var p2 = ProjectionInfo.FromEsriString(esri);
+            const string Esri = "GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101004]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            var p2 = ProjectionInfo.FromEsriString(Esri);
 
             var expected = p2.ToEsriString();
             var actual = p1.ToEsriString();
@@ -123,33 +122,33 @@ namespace DotSpatial.Projections.Tests
         [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void Over_Proj4ExportImport(bool expected)
+        public void OverProj4ExportImport(bool expected)
         {
             var target = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Geographic.World.WGS1984.ToProj4String());
             target.Over = expected;
-            var proj4str = target.ToProj4String();
-            var actual = ProjectionInfo.FromProj4String(proj4str);
+            var proj4Str = target.ToProj4String();
+            var actual = ProjectionInfo.FromProj4String(proj4Str);
             Assert.AreEqual(target.Over, actual.Over);
         }
 
         [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void Geoc_Proj4ExportImport(bool expected)
+        public void GeocProj4ExportImport(bool expected)
         {
             var target = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Geographic.World.WGS1984.ToProj4String());
             target.Geoc = expected;
-            var proj4str = target.ToProj4String();
-            var actual = ProjectionInfo.FromProj4String(proj4str);
+            var proj4Str = target.ToProj4String();
+            var actual = ProjectionInfo.FromProj4String(proj4Str);
             Assert.AreEqual(target.Geoc, actual.Geoc);
         }
 
         [Test]
-        public void EsriCentral_ParallelParse()
+        public void EsriCentralParallelParse()
         {
             // Test for https://dotspatial.codeplex.com/workitem/22934
-            const string esriStr = "PROJCS[\"Albers Equal-Area Conic [SHG]\",GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\";Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-96.0],PARAMETER[\"Standard_Parallel_1\",29.5],PARAMETER[\"Standard_Parallel_2\",45.5],PARAMETER[\"Central_Parallel\",23.0],UNIT[\"Meter\",1.0]]";
-            var pi = ProjectionInfo.FromEsriString(esriStr);
+            const string EsriStr = "PROJCS[\"Albers Equal-Area Conic [SHG]\",GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\";Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-96.0],PARAMETER[\"Standard_Parallel_1\",29.5],PARAMETER[\"Standard_Parallel_2\",45.5],PARAMETER[\"Central_Parallel\",23.0],UNIT[\"Meter\",1.0]]";
+            var pi = ProjectionInfo.FromEsriString(EsriStr);
             Assert.AreEqual(23.0, pi.LatitudeOfOrigin);
             var proj4Str = pi.ToProj4String();
             Assert.IsTrue(proj4Str.Contains("+lat_0=23"));

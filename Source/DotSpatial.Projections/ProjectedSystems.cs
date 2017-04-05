@@ -17,241 +17,52 @@
 using System.Linq;
 using System.Reflection;
 using DotSpatial.Projections.ProjectedCategories;
+using DotSpatial.Projections.ProjectedCategories.CountySystems.Minnesota;
+using DotSpatial.Projections.ProjectedCategories.GaussKruger;
+using DotSpatial.Projections.ProjectedCategories.NationalGrids;
+using DotSpatial.Projections.ProjectedCategories.StatePlane;
+using DotSpatial.Projections.ProjectedCategories.UTM;
+using DotSpatial.Projections.Transforms;
+
+using Africa = DotSpatial.Projections.ProjectedCategories.Continental.Africa;
+using Asia = DotSpatial.Projections.ProjectedCategories.Continental.Asia;
+using Europe = DotSpatial.Projections.ProjectedCategories.Continental.Europe;
+using NewZealand = DotSpatial.Projections.ProjectedCategories.NationalGrids.NewZealand;
+using NorthAmerica = DotSpatial.Projections.ProjectedCategories.Continental.NorthAmerica;
+using SouthAmerica = DotSpatial.Projections.ProjectedCategories.Continental.SouthAmerica;
 
 namespace DotSpatial.Projections
 {
     public class ProjectedSystems : ICoordinateSystemCategoryHolder
     {
         #region Fields
-
         private string[] _names;
-        private Africa _africa;
-        private Asia _asia;
-        private Europe _europe;
-        private GaussKrugerBeijing1954 _gausKrugerBeijing1954;
-        private GaussKrugerOther _gausKrugerOther;
-        private GaussKrugerPulkovo1942 _gaussKrugerPulkovo1942;
-        private KrugerXian1980 _krugerXian1980;
-        private Minnesota _minnesotaCounties;
-        private Nad1983IntlFeet _nad1983IntlFeet;
-        private NationalGrids _nationalGrids;
-        private NationalGridsAustralia _nationalGridsAustralia;
-        private NationalGridsCanada _nationalGridsCanada;
-        private NationalGridsIndia _nationalGridsIndia;
-        private NationalGridsJapan _nationalGridsJapan;
-        private NationalGridsNewZealand _nationalGridsNewZealand;
-        private NationalGridsNorway _nationalGridsNorway;
-        private NationalGridsSweden _nationalGridsSweden;
-        private NorthAmerica _northAmerica;
-        private Polar _polar;
-        private SouthAmerica _southAmerica;
-        private SpheroidBased _spheroidBased;
-        private StatePlaneNad1927 _statePlaneNad1927;
-        private StatePlaneNad1983 _statePlaneNad1983;
-        private StatePlaneNad1983Feet _statePlaneNad1983Feet;
-        private StatePlaneNad1983Harn _statePlaneNad1983Harn;
-        private StatePlaneNad1983HarnFeet _statePlaneNad1983HarnFeet;
-        private StatePlaneOther _statePlaneOther;
-        private StateSystems _stateSystems;
-        private TransverseMercatorSystems _transverseMercator;
-        private UtmNad1927 _utmNad1927;
-        private UtmNad1983 _utmNad1983;
-        private UtmOther _utmOther;
-        private UtmWgs1972 _utmWgs1972;
-        private UtmWgs1984 _utmWgs1984;
-        private Wisconsin _wisconsin;
-        private World _world;
-        private WorldSpheroid _worldSpheroid;
 
+        private ARCEqualarcSecond _arcEqualarcSecond;
+        private ProjectedSystem.Continental _continental;
+        private ProjectedSystem.CountySystems _countySystems;
+        private ProjectedSystem.GaussKruger _gaussKruger;
+        private ProjectedSystem.NationalGrids _nationalGrids;
+        private Polar _polar;
+        private ProjectedSystem.StatePlane _statePlane;
+        private StateSystems _stateSystems;
+        private ProjectedSystem.Utm _utm;
+        private World _world;
+        private WorldSphereBased _worldSphereBased;
         #endregion
 
-        #region Constructors
-
-        public Africa Africa
-        {
-            get { return _africa ?? (_africa = new Africa()); }
-        }
-
-        public Asia Asia
-        {
-            get { return _asia ?? (_asia = new Asia()); }
-        }
-
-        public Europe Europe
-        {
-            get { return _europe ?? (_europe = new Europe()); }
-        }
-
-        public GaussKrugerBeijing1954 GausKrugerBeijing1954
-        {
-            get { return _gausKrugerBeijing1954 ?? (_gausKrugerBeijing1954 = new GaussKrugerBeijing1954()); }
-        }
-
-        public GaussKrugerOther GausKrugerOther
-        {
-            get { return _gausKrugerOther ?? (_gausKrugerOther = new GaussKrugerOther()); }
-        }
-
-        public GaussKrugerPulkovo1942 GaussKrugerPulkovo1942
-        {
-            get { return _gaussKrugerPulkovo1942 ?? (_gaussKrugerPulkovo1942 = new GaussKrugerPulkovo1942()); }
-        }
-
-        public KrugerXian1980 KrugerXian1980
-        {
-            get { return _krugerXian1980 ?? (_krugerXian1980 = new KrugerXian1980()); }
-        }
-
-        public Minnesota MinnesotaCounties
-        {
-            get { return _minnesotaCounties ?? (_minnesotaCounties = new Minnesota()); }
-        }
-
-        public Nad1983IntlFeet Nad1983IntlFeet
-        {
-            get { return _nad1983IntlFeet ?? (_nad1983IntlFeet = new Nad1983IntlFeet()); }
-        }
-
-        public NationalGrids NationalGrids
-        {
-            get { return _nationalGrids ?? (_nationalGrids = new NationalGrids()); }
-        }
-
-        public NationalGridsAustralia NationalGridsAustralia
-        {
-            get { return _nationalGridsAustralia ?? (_nationalGridsAustralia = new NationalGridsAustralia()); }
-        }
-
-        public NationalGridsCanada NationalGridsCanada
-        {
-            get { return _nationalGridsCanada ?? (_nationalGridsCanada = new NationalGridsCanada()); }
-        }
-
-        public NationalGridsIndia NationalGridsIndia
-        {
-            get { return _nationalGridsIndia ?? (_nationalGridsIndia = new NationalGridsIndia()); }
-        }
-
-        public NationalGridsJapan NationalGridsJapan
-        {
-            get { return _nationalGridsJapan ?? (_nationalGridsJapan = new NationalGridsJapan()); }
-        }
-
-        public NationalGridsNewZealand NationalGridsNewZealand
-        {
-            get { return _nationalGridsNewZealand ?? (_nationalGridsNewZealand = new NationalGridsNewZealand()); }
-        }
-
-        public NationalGridsNorway NationalGridsNorway
-        {
-            get { return _nationalGridsNorway ?? (_nationalGridsNorway = new NationalGridsNorway()); }
-        }
-
-        public NationalGridsSweden NationalGridsSweden
-        {
-            get { return _nationalGridsSweden ?? (_nationalGridsSweden = new NationalGridsSweden()); }
-        }
-
-        public NorthAmerica NorthAmerica
-        {
-            get { return _northAmerica ?? (_northAmerica = new NorthAmerica()); }
-        }
-
-        public Polar Polar
-        {
-            get { return _polar ?? (_polar = new Polar()); }
-        }
-
-        public SouthAmerica SouthAmerica
-        {
-            get { return _southAmerica ?? (_southAmerica = new SouthAmerica()); }
-        }
-
-        public SpheroidBased SpheroidBased
-        {
-            get { return _spheroidBased ?? (_spheroidBased = new SpheroidBased()); }
-        }
-
-        public StatePlaneNad1927 StatePlaneNad1927
-        {
-            get { return _statePlaneNad1927 ?? (_statePlaneNad1927 = new StatePlaneNad1927()); }
-        }
-
-        public StatePlaneNad1983 StatePlaneNad1983
-        {
-            get { return _statePlaneNad1983 ?? (_statePlaneNad1983 = new StatePlaneNad1983()); }
-        }
-
-        public StatePlaneNad1983Feet StatePlaneNad1983Feet
-        {
-            get { return _statePlaneNad1983Feet ?? (_statePlaneNad1983Feet = new StatePlaneNad1983Feet()); }
-        }
-
-        public StatePlaneNad1983Harn StatePlaneNad1983Harn
-        {
-            get { return _statePlaneNad1983Harn ?? (_statePlaneNad1983Harn = new StatePlaneNad1983Harn()); }
-        }
-
-        public StatePlaneNad1983HarnFeet StatePlaneNad1983HarnFeet
-        {
-            get { return _statePlaneNad1983HarnFeet ?? (_statePlaneNad1983HarnFeet = new StatePlaneNad1983HarnFeet()); }
-        }
-
-        public StatePlaneOther StatePlaneOther
-        {
-            get { return _statePlaneOther ?? (_statePlaneOther = new StatePlaneOther()); }
-        }
-
-        public StateSystems StateSystems
-        {
-            get { return _stateSystems ?? (_stateSystems = new StateSystems()); }
-        }
-
-        public TransverseMercatorSystems TransverseMercator
-        {
-            get { return _transverseMercator ?? (_transverseMercator = new TransverseMercatorSystems()); }
-        }
-
-        public UtmNad1927 UtmNad1927
-        {
-            get { return _utmNad1927 ?? (_utmNad1927 = new UtmNad1927()); }
-        }
-
-        public UtmNad1983 UtmNad1983
-        {
-            get { return _utmNad1983 ?? (_utmNad1983 = new UtmNad1983()); }
-        }
-
-        public UtmOther UtmOther
-        {
-            get { return _utmOther ?? (_utmOther = new UtmOther()); }
-        }
-
-        public UtmWgs1972 UtmWgs1972
-        {
-            get { return _utmWgs1972 ?? (_utmWgs1972 = new UtmWgs1972()); }
-        }
-
-        public UtmWgs1984 UtmWgs1984
-        {
-            get { return _utmWgs1984 ?? (_utmWgs1984 = new UtmWgs1984()); }
-        }
-
-        public Wisconsin Wisconsin
-        {
-            get { return _wisconsin ?? (_wisconsin = new Wisconsin()); }
-        }
-
-        public World World
-        {
-            get { return _world ?? (_world = new World()); }
-        }
-
-        public WorldSpheroid WorldSpheroid
-        {
-            get { return _worldSpheroid ?? (_worldSpheroid = new WorldSpheroid()); }
-        }
-
+        #region Properties
+        public ARCEqualarcSecond ArcEqualarcSecond => _arcEqualarcSecond ?? (_arcEqualarcSecond = new ARCEqualarcSecond());
+        public ProjectedSystem.Continental Continental => _continental ?? (_continental = new ProjectedSystem.Continental());
+        public ProjectedSystem.CountySystems CountySystems => _countySystems ?? (_countySystems = new ProjectedSystem.CountySystems());
+        public ProjectedSystem.GaussKruger GaussKruger => _gaussKruger ?? (_gaussKruger = new ProjectedSystem.GaussKruger());
+        public ProjectedSystem.NationalGrids NationalGrids => _nationalGrids ?? (_nationalGrids = new ProjectedSystem.NationalGrids());
+        public Polar Polar => _polar ?? (_polar = new Polar());
+        public ProjectedSystem.StatePlane StatePlane => _statePlane ?? (_statePlane = new ProjectedSystem.StatePlane());
+        public StateSystems StateSystems => _stateSystems ?? (_stateSystems = new StateSystems());
+        public ProjectedSystem.Utm Utm => _utm ?? (_utm = new ProjectedSystem.Utm());
+        public World World => _world ?? (_world = new World());
+        public WorldSphereBased WorldSphereBased => _worldSphereBased ?? (_worldSphereBased = new WorldSphereBased());
         #endregion
 
         private void AddNames()
@@ -288,7 +99,14 @@ namespace DotSpatial.Projections
                 return _names;
             }
         }
+
     }
+
+
+
+
+
+
 }
 
 #pragma warning restore 1591

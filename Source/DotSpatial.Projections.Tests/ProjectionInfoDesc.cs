@@ -11,7 +11,7 @@ namespace DotSpatial.Projections.Tests
             ProjectionInfo = projectionInfo;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
         public ProjectionInfo ProjectionInfo { get; private set; }
 
         public static IEnumerable<ProjectionInfoDesc> GetForCoordinateSystemCategory(CoordinateSystemCategory category)

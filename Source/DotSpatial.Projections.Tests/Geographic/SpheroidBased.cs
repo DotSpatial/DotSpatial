@@ -10,7 +10,7 @@ namespace DotSpatial.Projections.Tests.Geographic
     public class SpheroidBased
     {
         [Test]
-        [TestCaseSource("GetProjections")]
+        [TestCaseSource(nameof(GetProjections))]
         public void SpheroidBasedTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);

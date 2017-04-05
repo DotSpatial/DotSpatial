@@ -18,6 +18,7 @@
 using System.Linq;
 using System.Reflection;
 using DotSpatial.Projections.GeographicCategories;
+using DotSpatial.Projections.GeographicSystem;
 
 namespace DotSpatial.Projections
 {
@@ -28,91 +29,43 @@ namespace DotSpatial.Projections
         private Africa _africa;
         private Antarctica _antarctica;
         private Asia _asia;
-        private Australia _australia;
+        private AustraliaNewZealand _australia;
+        private Caribbean _caribbean;
         private CountySystems _countySystems;
         private Europe _europe;
+        private IndianOcean _indianOcean;
         private NorthAmerica _northAmerica;
-        private Oceans _oceans;
-        private SolarSystem _solarSystem;
+        private PacificOcean _oceans;
         private SouthAmerica _southAmerica;
         private SpheroidBased _spheroidBased;
         private World _world;
         private string[] _names;
 
+        private SolarSystem _solarSystem;
+
         #endregion
 
-        #region Constructors
+        #region Properties
 
-        public Africa Africa
-        {
-            get { return _africa ?? (_africa = new Africa()); }
-        }
-        public Antarctica Antarctica
-        {
-            get { return _antarctica ?? (_antarctica = new Antarctica()); }
-        }
-
-        public Asia Asia
-        {
-            get { return _asia ?? (_asia = new Asia()); }
-        }
-
-        public Australia Australia
-        {
-            get { return _australia ?? (_australia = new Australia()); }
-        }
-
-        public CountySystems CountySystems
-        {
-            get { return _countySystems ?? (_countySystems = new CountySystems()); }
-        }
-
-        public Europe Europe
-        {
-            get { return _europe ?? (_europe = new Europe()); }
-        }
-
-        public NorthAmerica NorthAmerica
-        {
-            get { return _northAmerica ?? (_northAmerica = new NorthAmerica()); }
-        }
-
-        public Oceans Oceans
-        {
-            get { return _oceans ?? (_oceans = new Oceans()); }
-        }
-
-        public SolarSystem SolarSystem
-        {
-            get { return _solarSystem ?? (_solarSystem = new SolarSystem()); }
-        }
-
-        public SouthAmerica SouthAmerica
-        {
-            get { return _southAmerica ?? (_southAmerica = new SouthAmerica()); }
-        }
-
-        public SpheroidBased SpheroidBased
-        {
-            get { return _spheroidBased ?? (_spheroidBased = new SpheroidBased()); }
-        }
-
-        public World World
-        {
-            get { return _world ?? (_world = new World()); }
-        }
-
-        private void AddNames()
-        {
-            var properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            _names = (from property in properties where property.Name != "Names" select property.Name).ToArray();
-        }
-
+        public Africa Africa => _africa ?? (_africa = new Africa());
+        public Antarctica Antarctica => _antarctica ?? (_antarctica = new Antarctica());
+        public Asia Asia => _asia ?? (_asia = new Asia());
+        public AustraliaNewZealand AustraliaNewZealand => _australia ?? (_australia = new AustraliaNewZealand());
+        public Caribbean Caribbean => _caribbean ?? (_caribbean = new Caribbean());
+        public CountySystems CountySystems => _countySystems ?? (_countySystems = new CountySystems());
+        public Europe Europe => _europe ?? (_europe = new Europe());
+        public IndianOcean IndianOcean => _indianOcean ?? (_indianOcean = new IndianOcean());
+        public NorthAmerica NorthAmerica => _northAmerica ?? (_northAmerica = new NorthAmerica());
+        public PacificOcean PacificOcean => _oceans ?? (_oceans = new PacificOcean());
+        public SolarSystem SolarSystem => _solarSystem ?? (_solarSystem = new SolarSystem());
+        public SouthAmerica SouthAmerica => _southAmerica ?? (_southAmerica = new SouthAmerica());
+        public SpheroidBased SpheroidBased => _spheroidBased ?? (_spheroidBased = new SpheroidBased());
+        public World World => _world ?? (_world = new World());
 
         #endregion
 
         /// <summary>
-        /// Given the string name, this will return the specified coordinate category
+        /// Given the string name, this will return the specified coordinate category.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -139,6 +92,13 @@ namespace DotSpatial.Projections
                 return _names;
             }
         }
+
+        private void AddNames()
+        {
+            var properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            _names = (from property in properties where property.Name != "Names" select property.Name).ToArray();
+        }
+
     }
 }
 

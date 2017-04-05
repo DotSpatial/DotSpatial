@@ -10,7 +10,7 @@ namespace DotSpatial.Projections.Tests.Geographic
     public class SouthAmerica
     {
         [Test]
-        [TestCaseSource("GetProjections")]
+        [TestCaseSource(nameof(GetProjections))]
         public void SouthAmericaGeographicTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);

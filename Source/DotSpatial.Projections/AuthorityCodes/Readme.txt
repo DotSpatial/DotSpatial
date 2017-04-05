@@ -7,3 +7,5 @@ DeflateStreamUtility ..\AuthorityCodes\epsg.txt
 has to be called from command line to update the corresponding .ds file.
 
 This must be done for all manipulated . txt files.
+
+The missing file contains all projections that were found in ESRI.ArcGISExplorer Version=2.0.0.1500 but not in the esri and epsg file from proj.4.

@@ -17,7 +17,7 @@ namespace DotSpatial.Projections.Tests
         }
 
         [Test]
-        [TestCaseSource("WellKnownMeridians")]
+        [TestCaseSource(nameof(WellKnownMeridians))]
         public void CtorLongitudeName(Tuple<Proj4Meridian, double, int> meridian)
         {
             var target = new Meridian(meridian.Item2, meridian.Item1.ToString());
@@ -27,7 +27,7 @@ namespace DotSpatial.Projections.Tests
         }
 
         [Test]
-        [TestCaseSource("WellKnownMeridians")]
+        [TestCaseSource(nameof(WellKnownMeridians))]
         public void CtorProj4Meridian(Tuple<Proj4Meridian, double, int> meridian)
         {
             var target = new Meridian(meridian.Item1);
@@ -38,7 +38,7 @@ namespace DotSpatial.Projections.Tests
         }
 
         [Test]
-        [TestCaseSource("WellKnownMeridians")]
+        [TestCaseSource(nameof(WellKnownMeridians))]
         public void CtorStandardMeridianName(Tuple<Proj4Meridian, double, int> meridian)
         {
             var target = new Meridian(meridian.Item1.ToString());
@@ -49,7 +49,7 @@ namespace DotSpatial.Projections.Tests
         }
 
         [Test]
-        [TestCaseSource("WellKnownMeridians")]
+        [TestCaseSource(nameof(WellKnownMeridians))]
         public void ReadCode(Tuple<Proj4Meridian, double, int> meridian)
         {
             var target = new Meridian();
@@ -60,7 +60,7 @@ namespace DotSpatial.Projections.Tests
         }
 
         [Test]
-        [TestCaseSource("WellKnownMeridians")]
+        [TestCaseSource(nameof(WellKnownMeridians))]
         public void AssignMeridian(Tuple<Proj4Meridian, double, int> meridian)
         {
             var target = new Meridian();
@@ -71,7 +71,7 @@ namespace DotSpatial.Projections.Tests
         }
 
         [Test]
-        [TestCaseSource("WellKnownMeridians")]
+        [TestCaseSource(nameof(WellKnownMeridians))]
         public void PmStringValue(Tuple<Proj4Meridian, double, int> meridian)
         {
             var target = new Meridian {pm = meridian.Item1.ToString()};
@@ -82,7 +82,7 @@ namespace DotSpatial.Projections.Tests
 
 
         [Test]
-        [TestCaseSource("WellKnownMeridians")]
+        [TestCaseSource(nameof(WellKnownMeridians))]
         public void PmDoubleValue(Tuple<Proj4Meridian, double, int> meridian)
         {
             var target = new Meridian { pm = meridian.Item2.ToString(CultureInfo.InvariantCulture) };

@@ -11,7 +11,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
-// Jiri Kadlec         | 11/20/2010 |  Updated the Esri string of Web Mercator Auxiliary sphere projection
+// Jiri Kadlec         | 11/20/2010 |  Updated the Esri string of Web Mercator Auxiliary Sphere projection
 // Matthew K           | 01/10/2010 |  Removed Parameters dictionary
 // ********************************************************************************************************
 
@@ -80,7 +80,7 @@ namespace DotSpatial.Projections
         public int AuthorityCode { get; set; }
 
         /// <summary>
-        ///   Gets or sets the auxiliary sphere type.
+        ///   Gets or sets the auxiliary Sphere type.
         /// </summary>
         public AuxiliarySphereType AuxiliarySphereType { get; set; }
 
@@ -478,7 +478,7 @@ namespace DotSpatial.Projections
         {
             Spheroid tempSpheroid = new Spheroid(Proj4Ellipsoid.WGS_1984);
 
-            // changed by JK to fix the web mercator auxiliary sphere Esri string
+            // changed by JK to fix the web mercator auxiliary Sphere Esri string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
             {
                 tempSpheroid = GeographicInfo.Datum.Spheroid;
@@ -571,14 +571,14 @@ namespace DotSpatial.Projections
                 result += @"PARAMETER[""" + alias + @"""," + Convert.ToString(LatitudeOfOrigin, CultureInfo.InvariantCulture) + "],";
             }
 
-            // changed by JK to fix the web mercator auxiliary sphere Esri string
+            // changed by JK to fix the web mercator auxiliary Sphere Esri string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
             {
                 result += @"PARAMETER[""Auxiliary_Sphere_Type""," + ((int)AuxiliarySphereType) + ".0],";
             }
 
             result += Unit.ToEsriString() + "]";
-            // changed by JK to fix the web mercator auxiliary sphere Esri string
+            // changed by JK to fix the web mercator auxiliary Sphere Esri string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
             {
                 GeographicInfo.Datum.Spheroid = new Spheroid(Proj4Ellipsoid.WGS_1984);
@@ -644,8 +644,8 @@ namespace DotSpatial.Projections
             //special case for Krovak Projection
             //todo use a lookup table instead of hard coding the projection here
             if (esriString.Contains("Krovak"))
-                return KnownCoordinateSystems.Projected.NationalGrids.SJTSKKrovakEastNorth;
-
+                return KnownCoordinateSystems.Projected.NationalGrids.Europe.SJTSKKrovakEastNorth;
+            
             var info = new ProjectionInfo();
             info.NoDefs = true;
             if (!info.TryParseEsriString(esriString))
@@ -1018,10 +1018,10 @@ namespace DotSpatial.Projections
                 if (s == "R_A")
                 {
                     //+R_A tells PROJ.4 to use a spherical radius that
-                    //gives a sphere with the same surface area as the original ellipsoid.  I
+                    //gives a Sphere with the same surface area as the original ellipsoid.  I
                     //imagine I added this while trying to get the results to match PCI's GCTP
                     //based implementation though the history isn't clear on the details.
-                    //the R_A parameter indicates that an authalic auxiliary sphere should be used.
+                    //the R_A parameter indicates that an authalic auxiliary Sphere should be used.
                     //from http://pdl.perl.org/?docs=Transform/Proj4&title=PDL::Transform::Proj4#r_a
                     AuxiliarySphereType = AuxiliarySphereType.Authalic;
                     continue;
@@ -1281,11 +1281,11 @@ namespace DotSpatial.Projections
             {
                 // While the Esri implementation sort of tip-toes around the datum transform,
                 // we simply ensure that the spheroid becomes properly spherical based on the
-                // parameters we have here.  (The sphereoid will be read as WGS84).
+                // parameters we have here.  (The Sphereoid will be read as WGS84).
                 AuxiliarySphereType = (AuxiliarySphereType)auxType;
                 if (AuxiliarySphereType == AuxiliarySphereType.SemimajorAxis)
                 {
-                    // added by Jiri to properly re-initialize the 'web mercator auxiliary sphere' transform
+                    // added by Jiri to properly re-initialize the 'web mercator auxiliary Sphere' transform
                     Transform = KnownCoordinateSystems.Projected.World.WebMercator.Transform;
                 }
                 else if (AuxiliarySphereType == AuxiliarySphereType.SemiminorAxis)

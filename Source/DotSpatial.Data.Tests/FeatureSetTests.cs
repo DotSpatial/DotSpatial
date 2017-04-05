@@ -101,7 +101,7 @@ namespace DotSpatial.Data.Tests
         {
             var fs = new FeatureSet(FeatureType.Point)
             {
-                Projection = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984UTMZone33N // set any UTM projection
+                Projection = KnownCoordinateSystems.Projected.Utm.Wgs1984.NorthernHemisphere.WGS1984UTMZone33N // set any UTM projection
             };
 
             const double originalX = 13.408056;

@@ -18,100 +18,122 @@
 namespace DotSpatial.Projections.ProjectedCategories
 {
     /// <summary>
-    /// StateSystems
+    /// This class contains predefined CoordinateSystems for StateSystems.
     /// </summary>
     public class StateSystems : CoordinateSystemCategory
     {
         #region Private Variables
-
-        public readonly ProjectionInfo NAD1927AlaskaAlbersFeet;
+        // ReSharper disable InconsistentNaming
         public readonly ProjectionInfo NAD1927AlaskaAlbersMeters;
-        public readonly ProjectionInfo NAD1927CaliforniaTealeAlbers;
-        public readonly ProjectionInfo NAD1927GeorgiaStatewideAlbers;
-        public readonly ProjectionInfo NAD1927TexasStatewideMappingSystem;
-        public readonly ProjectionInfo NAD1983CaliforniaTealeAlbers;
-        public readonly ProjectionInfo NAD1983GeorgiaStatewideLambert;
-        public readonly ProjectionInfo NAD1983HARNOregonStatewideLambert;
-        public readonly ProjectionInfo NAD1983HARNOregonStatewideLambertFeetIntl;
-        public readonly ProjectionInfo NAD1983IdahoTM;
-        public readonly ProjectionInfo NAD1983OregonStatewideLambert;
-        public readonly ProjectionInfo NAD1983OregonStatewideLambertFeetIntl;
-        public readonly ProjectionInfo NAD1983TexasCentricMappingSystemAlbers;
-        public readonly ProjectionInfo NAD1983TexasCentricMappingSystemLambert;
-        public readonly ProjectionInfo NAD1983TexasStatewideMappingSystem;
-
+        public readonly ProjectionInfo NAD1927AlaskaAlbersUSFeet;
+        public readonly ProjectionInfo NAD1927CaliforniaTealeAlbersMeters;
+        public readonly ProjectionInfo NAD1927GeorgiaStatewideAlbersUSFeet;
+        public readonly ProjectionInfo NAD1927MichiganGeoRefMeters;
+        public readonly ProjectionInfo NAD1927MichiganGeoRefUSfeet;
+        public readonly ProjectionInfo NAD1927TexasStatewideMappingSystemIntlFeet;
+        public readonly ProjectionInfo NAD1927WisconsinTMMeters;
+        public readonly ProjectionInfo NAD1983CaliforniaTealeAlbersMeters;
+        public readonly ProjectionInfo NAD1983CORS96AlaskaAlbersMeters;
+        public readonly ProjectionInfo NAD1983CORS96OregonStatewideLambertIntlFeet;
+        public readonly ProjectionInfo NAD1983CORS96OregonStatewideLambertMeters;
+        public readonly ProjectionInfo NAD1983FloridaGDLAlbersMeters;
+        public readonly ProjectionInfo NAD1983GeorgiaStatewideLambertUSFeet;
+        public readonly ProjectionInfo NAD1983HARNCaliforniaTealeAlbersMeters;
+        public readonly ProjectionInfo NAD1983HARNFloridaGDLAlbersMeters;
+        public readonly ProjectionInfo NAD1983HARNMichiganGeoRefMeters;
+        public readonly ProjectionInfo NAD1983HARNMississippiTMMeters;
+        public readonly ProjectionInfo NAD1983HARNOregonStatewideLambertIntlFeet;
+        public readonly ProjectionInfo NAD1983HARNOregonStatewideLambertMeters;
+        public readonly ProjectionInfo NAD1983HARNTexasCentricMappingSystemAlbersMeters;
+        public readonly ProjectionInfo NAD1983HARNTexasCentricMappingSystemLambertMeters;
+        public readonly ProjectionInfo NAD1983HARNVirginiaLambertMeters;
+        public readonly ProjectionInfo NAD1983HARNWisconsinTMMeters;
+        public readonly ProjectionInfo NAD1983HARNWisconsinTMUSFeet;
+        public readonly ProjectionInfo NAD1983IdahoTMMeters;
+        public readonly ProjectionInfo NAD1983MichiganGeoRefMeters;
+        public readonly ProjectionInfo NAD1983MichiganGeoRefUSfeet;
+        public readonly ProjectionInfo NAD1983MississippiTMMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007AlaskaAlbersMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007FloridaGDLAlbersMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007MichiganGeoRefMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007MississippiTMMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007OregonStatewideLambertIntlFeet;
+        public readonly ProjectionInfo NAD1983NSRS2007OregonStatewideLambertMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007TexasCentricMappingSystemAlbersMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007TexasCentricMappingSystemLambertMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007VirginiaLambertMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007WisconsinTMMeters;
+        public readonly ProjectionInfo NAD1983NSRS2007WisconsinTMUSFeet;
+        public readonly ProjectionInfo NAD1983OregonStatewideLambertIntlFeet;
+        public readonly ProjectionInfo NAD1983OregonStatewideLambertMeters;
+        public readonly ProjectionInfo NAD1983TexasCentricMappingSystemAlbersMeters;
+        public readonly ProjectionInfo NAD1983TexasCentricMappingSystemLambertMeters;
+        public readonly ProjectionInfo NAD1983TexasStatewideMappingSystemMeters;
+        public readonly ProjectionInfo NAD1983USFSR6AlbersMeters;
+        public readonly ProjectionInfo NAD1983VirginiaLambertMeters;
+        public readonly ProjectionInfo NAD1983WisconsinTMMeters;
+        public readonly ProjectionInfo NAD1983WisconsinTMUSFeet;
+        public readonly ProjectionInfo NAD1983WyLamMeters;
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of StateSystems
+        /// Creates a new instance of StateSystems.
         /// </summary>
         public StateSystems()
         {
-            NAD1927AlaskaAlbersFeet = ProjectionInfo.FromProj4String("+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +to_meter=0.3048006096012192 +no_defs ");
-            NAD1927AlaskaAlbersMeters = ProjectionInfo.FromProj4String("+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
-            NAD1927CaliforniaTealeAlbers = ProjectionInfo.FromProj4String("+proj=aea +lat_1=34 +lat_2=40.5 +lat_0=0 +lon_0=-120 +x_0=0 +y_0=-4000000 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
-            NAD1927GeorgiaStatewideAlbers = ProjectionInfo.FromProj4String("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-83.5 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +to_meter=0.3048006096012192 +no_defs ");
-            NAD1927TexasStatewideMappingSystem = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=27.41666666666667 +lat_2=34.91666666666666 +lat_0=31.16666666666667 +lon_0=-100 +x_0=914400 +y_0=914400 +ellps=clrk66 +datum=NAD27 +to_meter=0.3048 +no_defs ");
-            NAD1983CaliforniaTealeAlbers = ProjectionInfo.FromProj4String("+proj=aea +lat_1=34 +lat_2=40.5 +lat_0=0 +lon_0=-120 +x_0=0 +y_0=-4000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
-            NAD1983GeorgiaStatewideLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=31.41666666666667 +lat_2=34.28333333333333 +lat_0=0 +lon_0=-83.5 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs ");
-            NAD1983HARNOregonStatewideLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=400000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            NAD1983HARNOregonStatewideLambertFeetIntl = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=399999.9999999999 +y_0=0 +ellps=GRS80 +to_meter=0.3048 +no_defs ");
-            NAD1983IdahoTM = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=42 +lon_0=-114 +k=0.999600 +x_0=2000000 +y_0=3000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
-            NAD1983OregonStatewideLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=400000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
-            NAD1983OregonStatewideLambertFeetIntl = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=399999.9999999999 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048 +no_defs ");
-            NAD1983TexasCentricMappingSystemAlbers = ProjectionInfo.FromProj4String("+proj=aea +lat_1=27.5 +lat_2=35 +lat_0=18 +lon_0=-100 +x_0=1500000 +y_0=6000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
-            NAD1983TexasCentricMappingSystemLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=27.5 +lat_2=35 +lat_0=18 +lon_0=-100 +x_0=1500000 +y_0=5000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
-            NAD1983TexasStatewideMappingSystem = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=27.41666666666667 +lat_2=34.91666666666666 +lat_0=31.16666666666667 +lon_0=-100 +x_0=1000000 +y_0=1000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
-
-            NAD1927AlaskaAlbersFeet.Name = "NAD_1927_Alaska_Albers_Feet";
-            NAD1927AlaskaAlbersMeters.Name = "NAD_1927_Alaska_Albers_Meters";
-            NAD1927CaliforniaTealeAlbers.Name = "NAD_1927_California_Teale_Albers";
-            NAD1927GeorgiaStatewideAlbers.Name = "NAD_1927_Georgia_Statewide_Albers";
-            NAD1927TexasStatewideMappingSystem.Name = "NAD_1927_Texas_Statewide_Mapping_System";
-            NAD1983CaliforniaTealeAlbers.Name = "NAD_1983_California_Teale_Albers";
-            NAD1983GeorgiaStatewideLambert.Name = "NAD_1983_Georgia_Statewide_Lambert";
-            NAD1983HARNOregonStatewideLambert.Name = "NAD_1983_HARN_Oregon_Statewide_Lambert";
-            NAD1983HARNOregonStatewideLambertFeetIntl.Name = "NAD_1983_HARN_Oregon_Statewide_Lambert_Feet_Intl";
-            NAD1983IdahoTM.Name = "NAD_1983_Idaho_TM";
-            NAD1983OregonStatewideLambert.Name = "NAD_1983_Oregon_Statewide_Lambert";
-            NAD1983OregonStatewideLambertFeetIntl.Name = "NAD_1983_Oregon_Statewide_Lambert_Feet_Intl";
-            NAD1983TexasCentricMappingSystemAlbers.Name = "NAD_1983_Texas_Centric_Mapping_System_Albers";
-            NAD1983TexasCentricMappingSystemLambert.Name = "NAD_1983_Texas_Centric_Mapping_System_Lambert";
-            NAD1983TexasStatewideMappingSystem.Name = "NAD_1983_Texas_Statewide_Mapping_System";
-
-            NAD1927AlaskaAlbersFeet.GeographicInfo.Name = "GCS_North_American_1927";
-            NAD1927AlaskaAlbersMeters.GeographicInfo.Name = "GCS_North_American_1927";
-            NAD1927CaliforniaTealeAlbers.GeographicInfo.Name = "GCS_North_American_1927";
-            NAD1927GeorgiaStatewideAlbers.GeographicInfo.Name = "GCS_North_American_1927";
-            NAD1927TexasStatewideMappingSystem.GeographicInfo.Name = "GCS_North_American_1927";
-            NAD1983CaliforniaTealeAlbers.GeographicInfo.Name = "GCS_North_American_1983";
-            NAD1983GeorgiaStatewideLambert.GeographicInfo.Name = "GCS_North_American_1983";
-            NAD1983HARNOregonStatewideLambert.GeographicInfo.Name = "GCS_North_American_1983_HARN";
-            NAD1983HARNOregonStatewideLambertFeetIntl.GeographicInfo.Name = "GCS_North_American_1983_HARN";
-            NAD1983IdahoTM.GeographicInfo.Name = "GCS_North_American_1983";
-            NAD1983OregonStatewideLambert.GeographicInfo.Name = "GCS_North_American_1983";
-            NAD1983OregonStatewideLambertFeetIntl.GeographicInfo.Name = "GCS_North_American_1983";
-            NAD1983TexasCentricMappingSystemAlbers.GeographicInfo.Name = "GCS_North_American_1983";
-            NAD1983TexasCentricMappingSystemLambert.GeographicInfo.Name = "GCS_North_American_1983";
-            NAD1983TexasStatewideMappingSystem.GeographicInfo.Name = "GCS_North_American_1983";
-
-            NAD1927AlaskaAlbersFeet.GeographicInfo.Datum.Name = "D_North_American_1927";
-            NAD1927AlaskaAlbersMeters.GeographicInfo.Datum.Name = "D_North_American_1927";
-            NAD1927CaliforniaTealeAlbers.GeographicInfo.Datum.Name = "D_North_American_1927";
-            NAD1927GeorgiaStatewideAlbers.GeographicInfo.Datum.Name = "D_North_American_1927";
-            NAD1927TexasStatewideMappingSystem.GeographicInfo.Datum.Name = "D_North_American_1927";
-            NAD1983CaliforniaTealeAlbers.GeographicInfo.Datum.Name = "D_North_American_1983";
-            NAD1983GeorgiaStatewideLambert.GeographicInfo.Datum.Name = "D_North_American_1983";
-            NAD1983HARNOregonStatewideLambert.GeographicInfo.Datum.Name = "D_North_American_1983_HARN";
-            NAD1983HARNOregonStatewideLambertFeetIntl.GeographicInfo.Datum.Name = "D_North_American_1983_HARN";
-            NAD1983IdahoTM.GeographicInfo.Datum.Name = "D_North_American_1983";
-            NAD1983OregonStatewideLambert.GeographicInfo.Datum.Name = "D_North_American_1983";
-            NAD1983OregonStatewideLambertFeetIntl.GeographicInfo.Datum.Name = "D_North_American_1983";
-            NAD1983TexasCentricMappingSystemAlbers.GeographicInfo.Datum.Name = "D_North_American_1983";
-            NAD1983TexasCentricMappingSystemLambert.GeographicInfo.Datum.Name = "D_North_American_1983";
-            NAD1983TexasStatewideMappingSystem.GeographicInfo.Datum.Name = "D_North_American_1983";
+            NAD1927AlaskaAlbersMeters = ProjectionInfo.FromAuthorityCode("ESRI", 102117).SetNames("NAD_1927_Alaska_Albers_Meters", "GCS_North_American_1927", "D_North_American_1927"); // missing
+            NAD1927AlaskaAlbersUSFeet = ProjectionInfo.FromEpsgCode(2964).SetNames("NAD_1927_Alaska_Albers_Feet", "GCS_North_American_1927", "D_North_American_1927");
+            NAD1927CaliforniaTealeAlbersMeters = ProjectionInfo.FromEpsgCode(3309).SetNames("NAD_1927_California_Teale_Albers", "GCS_North_American_1927", "D_North_American_1927");
+            NAD1927GeorgiaStatewideAlbersUSFeet = ProjectionInfo.FromAuthorityCode("ESRI", 102118).SetNames("NAD_1927_Georgia_Statewide_Albers", "GCS_North_American_1927", "D_North_American_1927"); // missing
+            NAD1927MichiganGeoRefMeters = ProjectionInfo.FromAuthorityCode("ESRI", 102122).SetNames("NAD_1927_Michigan_GeoRef_Meters", "GCS_North_American_1927", "D_North_American_1927");
+            NAD1927MichiganGeoRefUSfeet = ProjectionInfo.FromAuthorityCode("ESRI", 102120).SetNames("NAD_1927_Michigan_GeoRef_Feet_US", "GCS_North_American_1927", "D_North_American_1927");
+            NAD1927TexasStatewideMappingSystemIntlFeet = ProjectionInfo.FromEpsgCode(3080).SetNames("NAD_1927_Texas_Statewide_Mapping_System", "GCS_North_American_1927", "D_North_American_1927");
+            NAD1927WisconsinTMMeters = ProjectionInfo.FromEpsgCode(3069).SetNames("NAD_1927_Wisconsin_TM", "GCS_North_American_1927", "D_North_American_1927");
+            NAD1983CaliforniaTealeAlbersMeters = ProjectionInfo.FromEpsgCode(3310).SetNames("NAD_1983_California_Teale_Albers", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983CORS96AlaskaAlbersMeters = ProjectionInfo.FromAuthorityCode("ESRI", 102247).SetNames("NAD_1983_CORS96_Alaska_Albers", "GCS_NAD_1983_CORS96", "D_NAD_1983_CORS96"); // missing
+            NAD1983CORS96OregonStatewideLambertIntlFeet = ProjectionInfo.FromAuthorityCode("EPSG", 102381).SetNames("NAD_1983_CORS96_Oregon_Statewide_Lambert_Ft_Intl", "GCS_NAD_1983_CORS96", "D_NAD_1983_CORS96"); // missing
+            NAD1983CORS96OregonStatewideLambertMeters = ProjectionInfo.FromAuthorityCode("EPSG", 102380).SetNames("NAD_1983_CORS96_Oregon_Statewide_Lambert", "GCS_NAD_1983_CORS96", "D_NAD_1983_CORS96"); // missing
+            NAD1983FloridaGDLAlbersMeters = ProjectionInfo.FromEpsgCode(3086).SetNames("NAD_1983_Florida_GDL_Albers", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983GeorgiaStatewideLambertUSFeet = ProjectionInfo.FromAuthorityCode("ESRI", 102604).SetNames("NAD_1983_Georgia_Statewide_Lambert", "GCS_North_American_1983", "D_North_American_1983"); // missing
+            NAD1983HARNCaliforniaTealeAlbersMeters = ProjectionInfo.FromEpsgCode(3311).SetNames("NAD_1983_HARN_California_Teale_Albers", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNFloridaGDLAlbersMeters = ProjectionInfo.FromEpsgCode(3087).SetNames("NAD_1983_HARN_Florida_GDL_Albers", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNMichiganGeoRefMeters = ProjectionInfo.FromEpsgCode(3079).SetNames("NAD_1983_HARN_Michigan_GeoRef_Meters", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNMississippiTMMeters = ProjectionInfo.FromEpsgCode(3815).SetNames("NAD_1983_HARN_Mississippi_TM", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNOregonStatewideLambertIntlFeet = ProjectionInfo.FromEpsgCode(2994).SetNames("NAD_1983_HARN_Oregon_Statewide_Lambert_Feet_Intl", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNOregonStatewideLambertMeters = ProjectionInfo.FromEpsgCode(2993).SetNames("NAD_1983_HARN_Oregon_Statewide_Lambert", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNTexasCentricMappingSystemAlbersMeters = ProjectionInfo.FromEpsgCode(3085).SetNames("NAD_1983_HARN_Texas_Centric_Mapping_System_Albers", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNTexasCentricMappingSystemLambertMeters = ProjectionInfo.FromEpsgCode(3084).SetNames("NAD_1983_HARN_Texas_Centric_Mapping_System_Lambert", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNVirginiaLambertMeters = ProjectionInfo.FromEpsgCode(3969).SetNames("NAD_1983_HARN_Virginia_Lambert", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNWisconsinTMMeters = ProjectionInfo.FromEpsgCode(3071).SetNames("NAD_1983_HARN_Wisconsin_TM", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983HARNWisconsinTMUSFeet = ProjectionInfo.FromAuthorityCode("ESRI", 102220).SetNames("NAD_1983_HARN_Wisconsin_TM_US_Ft", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN"); // missing
+            NAD1983IdahoTMMeters = ProjectionInfo.FromAuthorityCode("ESRI", 102605).SetNames("NAD_1983_Idaho_TM", "GCS_North_American_1983", "D_North_American_1983"); // missing
+            NAD1983MichiganGeoRefMeters = ProjectionInfo.FromEpsgCode(3078).SetNames("NAD_1983_Michigan_GeoRef_Meters", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983MichiganGeoRefUSfeet = ProjectionInfo.FromAuthorityCode("ESRI", 102121).SetNames("NAD_1983_Michigan_GeoRef_Feet_US", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983MississippiTMMeters = ProjectionInfo.FromEpsgCode(3814).SetNames("NAD_1983_Mississippi_TM", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983NSRS2007AlaskaAlbersMeters = ProjectionInfo.FromEpsgCode(3467).SetNames("NAD_1983_NSRS2007_Alaska_Albers", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007FloridaGDLAlbersMeters = ProjectionInfo.FromEpsgCode(3513).SetNames("NAD_1983_NSRS2007_Florida_GDL_Albers", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007MichiganGeoRefMeters = ProjectionInfo.FromEpsgCode(3591).SetNames("NAD_1983_NSRS2007_Michigan_GeoRef_Meters", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007MississippiTMMeters = ProjectionInfo.FromEpsgCode(3816).SetNames("NAD_1983_NSRS2007_Mississippi_TM", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007OregonStatewideLambertIntlFeet = ProjectionInfo.FromEpsgCode(3644).SetNames("NAD_1983_NSRS2007_Oregon_Statewide_Lambert_Ft_Intl", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007OregonStatewideLambertMeters = ProjectionInfo.FromEpsgCode(3643).SetNames("NAD_1983_NSRS2007_Oregon_Statewide_Lambert", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007TexasCentricMappingSystemAlbersMeters = ProjectionInfo.FromEpsgCode(3665).SetNames("NAD_1983_NSRS2007_Texas_Centric_Mapping_System_Albers", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007TexasCentricMappingSystemLambertMeters = ProjectionInfo.FromEpsgCode(3666).SetNames("NAD_1983_NSRS2007_Texas_Centric_Mapping_System_Lambert", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007VirginiaLambertMeters = ProjectionInfo.FromEpsgCode(3970).SetNames("NAD_1983_NSRS2007_Virginia_Lambert", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007WisconsinTMMeters = ProjectionInfo.FromEpsgCode(3701).SetNames("NAD_1983_NSRS2007_Wisconsin_TM", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            NAD1983NSRS2007WisconsinTMUSFeet = ProjectionInfo.FromAuthorityCode("ESRI", 102217).SetNames("NAD_1983_NSRS2007_Wisconsin_TM_US_Ft", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007"); // missing
+            NAD1983OregonStatewideLambertIntlFeet = ProjectionInfo.FromEpsgCode(2992).SetNames("NAD_1983_Oregon_Statewide_Lambert_Feet_Intl", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983OregonStatewideLambertMeters = ProjectionInfo.FromEpsgCode(2991).SetNames("NAD_1983_Oregon_Statewide_Lambert", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983TexasCentricMappingSystemAlbersMeters = ProjectionInfo.FromEpsgCode(3083).SetNames("NAD_1983_Texas_Centric_Mapping_System_Albers", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983TexasCentricMappingSystemLambertMeters = ProjectionInfo.FromEpsgCode(3082).SetNames("NAD_1983_Texas_Centric_Mapping_System_Lambert", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983TexasStatewideMappingSystemMeters = ProjectionInfo.FromEpsgCode(3081).SetNames("NAD_1983_Texas_Statewide_Mapping_System", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983USFSR6AlbersMeters = ProjectionInfo.FromAuthorityCode("ESRI", 102218).SetNames("NAD_1983_USFS_R6_Albers", "GCS_North_American_1983", "D_North_American_1983"); // missing
+            NAD1983VirginiaLambertMeters = ProjectionInfo.FromEpsgCode(3968).SetNames("NAD_1983_Virginia_Lambert", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983WisconsinTMMeters = ProjectionInfo.FromEpsgCode(3070).SetNames("NAD_1983_Wisconsin_TM", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983WisconsinTMUSFeet = ProjectionInfo.FromAuthorityCode("ESRI", 102219).SetNames("NAD_1983_Wisconsin_TM_US_Ft", "GCS_North_American_1983", "D_North_American_1983"); // missing
+            NAD1983WyLamMeters = ProjectionInfo.FromAuthorityCode("ESRI", 102212).SetNames("NAD_1983_WyLAM", "GCS_North_American_1983", "D_North_American_1983"); // missing
         }
 
         #endregion

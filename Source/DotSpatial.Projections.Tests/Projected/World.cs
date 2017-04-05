@@ -1,319 +1,324 @@
+using System.Collections.Generic;
+
 using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests.Projected
 {
     /// <summary>
-    /// This class contains all the tests for the World category of Projected coordinate systems
+    /// This class contains all the tests for the World category of Projected coordinate systems.
     /// </summary>
     [TestFixture]
-    public class ProjectedWorld
+    public class World
     {
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        [TestCaseSource(nameof(GetProjections))]
+        public void ProjectedTests(ProjectionInfoDesc pInfo)
         {
-            
+            Tester.TestProjection(pInfo.ProjectionInfo);
         }
 
-        [Test]
-        [Ignore]
-        public void Aitoffworld()
+        private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Aitoffworld;
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Projected.World);
+        }
+
+        //[Test]
+        //[Ignore]
+        //public void AitoffWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.AitoffWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void BehrmannWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.BehrmannWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        [Test]
+        public void BonneWorld()
+        {
+            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.BonneWorld;
             Tester.TestProjection(pStart);
         }
 
 
-        [Test]
-        [Ignore]
-        public void Behrmannworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Behrmannworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void Bonneworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Bonneworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void CrasterParabolicworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.CrasterParabolicworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void Cubeworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Cubeworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void CylindricalEqualAreaworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.CylindricalEqualAreaworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void EckertIIIworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIIIworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void EckertIIworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIIworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void EckertIVworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIVworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void EckertIworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void EckertVIworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertVIworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void EckertVworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertVworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void EquidistantConicworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EquidistantConicworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void EquidistantCylindricalworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EquidistantCylindricalworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void FlatPolarQuarticworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.FlatPolarQuarticworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void Fullerworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Fullerworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void GallStereographicworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.GallStereographicworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void HammerAitoffworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.HammerAitoffworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void Loximuthalworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Loximuthalworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void Mercatorworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Mercatorworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void MillerCylindricalworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.MillerCylindricalworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void Mollweideworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Mollweideworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void PlateCarreeworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.PlateCarreeworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void Polyconicworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Polyconicworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void QuarticAuthalicworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.QuarticAuthalicworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void Robinsonworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Robinsonworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void Sinusoidalworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Sinusoidalworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void TheWorldfromSpace()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.TheWorldfromSpace;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void Timesworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Timesworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void VanderGrintenIworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.VanderGrintenIworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void VerticalPerspectiveworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.VerticalPerspectiveworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void WebMercator()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WebMercator;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void WinkelIIworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelIIworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void WinkelIworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelIworld;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore]
-        public void WinkelTripelNGSworld()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelTripelNGSworld;
-            Tester.TestProjection(pStart);
-        }
+        //[Test]
+        //[Ignore]
+        //public void CrasterParabolicWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.CrasterParabolicWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void CubeWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.CubeWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void CylindricalEqualAreaWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.CylindricalEqualAreaWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void EckertIiiWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIIIWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void EckertIiWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIIWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void EckertIvWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIVWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void EckertIWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void EckertViWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertVIWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void EckertVWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertVWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void EquidistantConicWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EquidistantConicWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void EquidistantCylindricalWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EquidistantCylindricalWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void FlatPolarQuarticWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.FlatPolarQuarticWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void FullerWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.FullerWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void GallStereographicWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.GallStereographicWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void HammerAitoffWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.HammerAitoffWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void LoximuthalWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.LoximuthalWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void MercatorWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.MercatorWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void MillerCylindricalWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.MillerCylindricalWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void MollweideWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.MollweideWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void PlateCarreeWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.PlateCarreeWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void PolyconicWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.PolyconicWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void QuarticAuthalicWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.QuarticAuthalicWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void RobinsonWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.RobinsonWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void SinusoidalWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.SinusoidalWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void TheWorldfromSpace()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.TheWorldfromSpace;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void TimesWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.TimesWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void VanderGrintenIWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.VanderGrintenIWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void VerticalPerspectiveWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.VerticalPerspectiveWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //public void WebMercator()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WebMercator;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void WinkelIiWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelIIWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void WinkelIWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelIWorld;
+        //    Tester.TestProjection(pStart);
+        //}
+
+
+        //[Test]
+        //[Ignore]
+        //public void WinkelTripelNgsWorld()
+        //{
+        //    ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelTripelNGSWorld;
+        //    Tester.TestProjection(pStart);
+        //}
     }
 }

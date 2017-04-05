@@ -18,15 +18,12 @@
 namespace DotSpatial.Projections.GeographicCategories
 {
     /// <summary>
-    /// Africa
+    /// This class contains predefined CoordinateSystems for Africa.
     /// </summary>
     public class Africa : CoordinateSystemCategory
     {
         #region Private Variables
-
-        /// <summary>
-        ///Abidjan 1987
-        /// </summary>
+        // ReSharper disable InconsistentNaming
         public readonly ProjectionInfo Abidjan1987;
         public readonly ProjectionInfo Accra;
         public readonly ProjectionInfo Adindan;
@@ -38,26 +35,36 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo AyabelleLighthouse;
         public readonly ProjectionInfo Beduaram;
         public readonly ProjectionInfo Bissau;
+        public readonly ProjectionInfo Cadastre1997;
         public readonly ProjectionInfo Camacupa;
         public readonly ProjectionInfo Cape;
         public readonly ProjectionInfo Carthage;
+        public readonly ProjectionInfo CarthageGrads;
         public readonly ProjectionInfo CarthageParis;
-        public readonly ProjectionInfo Carthagedegrees;
         public readonly ProjectionInfo Conakry1905;
         public readonly ProjectionInfo CotedIvoire;
-        public readonly ProjectionInfo Dabola;
+        public readonly ProjectionInfo Dabola1981;
         public readonly ProjectionInfo Douala;
         public readonly ProjectionInfo Douala1948;
         public readonly ProjectionInfo Egypt1907;
         public readonly ProjectionInfo Egypt1930;
+        public readonly ProjectionInfo EgyptGulfofSuezS650TL;
         public readonly ProjectionInfo EuropeanDatum1950;
         public readonly ProjectionInfo EuropeanLibyanDatum1979;
         public readonly ProjectionInfo Garoua;
         public readonly ProjectionInfo Hartebeesthoek1994;
+        public readonly ProjectionInfo IGC1962Arcofthe6thParallelSouth;
+        public readonly ProjectionInfo IGCB1955;
+        public readonly ProjectionInfo IGNAstro1960;
+        public readonly ProjectionInfo Jouik1961;
+        public readonly ProjectionInfo Kasai1953;
+        public readonly ProjectionInfo Katanga1955;
         public readonly ProjectionInfo Kousseri;
         public readonly ProjectionInfo KuwaitOilCompany;
         public readonly ProjectionInfo KuwaitUtility;
         public readonly ProjectionInfo Leigon;
+        public readonly ProjectionInfo LePouce1934;
+        public readonly ProjectionInfo LGD2006;
         public readonly ProjectionInfo Liberia1964;
         public readonly ProjectionInfo Locodjo1965;
         public readonly ProjectionInfo Lome;
@@ -67,24 +74,28 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo Manoca;
         public readonly ProjectionInfo Manoca1962;
         public readonly ProjectionInfo Massawa;
+        public readonly ProjectionInfo Mauritania1999;
         public readonly ProjectionInfo Merchich;
-        public readonly ProjectionInfo Merchichdegrees;
-        public readonly ProjectionInfo Mhast;
+        public readonly ProjectionInfo MerchichDegrees;
+        public readonly ProjectionInfo Mhast1951;
+        public readonly ProjectionInfo MhastOffshore;
+        public readonly ProjectionInfo MhastOnshore;
         public readonly ProjectionInfo Minna;
         public readonly ProjectionInfo Moznet;
-        public readonly ProjectionInfo Mporaloko;
+        public readonly ProjectionInfo MPoraloko;
         public readonly ProjectionInfo Nahrwan1967;
         public readonly ProjectionInfo NationalGeodeticNetworkKuwait;
         public readonly ProjectionInfo NordSahara1959;
         public readonly ProjectionInfo NordSahara1959Paris;
+        public readonly ProjectionInfo Nouakchott1965;
         public readonly ProjectionInfo Observatario;
-        public readonly ProjectionInfo Oman;
-        public readonly ProjectionInfo PDO1993;
         public readonly ProjectionInfo Palestine1923;
         public readonly ProjectionInfo Point58;
         public readonly ProjectionInfo PointeNoire;
-        public readonly ProjectionInfo Qatar;
         public readonly ProjectionInfo Qatar1948;
+        public readonly ProjectionInfo Qatar1974;
+        public readonly ProjectionInfo RGM04;
+        public readonly ProjectionInfo RGRDC2005;
         public readonly ProjectionInfo Schwarzeck;
         public readonly ProjectionInfo SierraLeone1924;
         public readonly ProjectionInfo SierraLeone1960;
@@ -96,255 +107,123 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo Tete;
         public readonly ProjectionInfo TrucialCoast1948;
         public readonly ProjectionInfo Voirol1875;
+        public readonly ProjectionInfo Voirol1875Grads;
         public readonly ProjectionInfo Voirol1875Paris;
-        public readonly ProjectionInfo Voirol1875degrees;
+        public readonly ProjectionInfo Voirol1879Degrees;
+        public readonly ProjectionInfo Voirol1879Grads;
+        public readonly ProjectionInfo Voirol1879Paris;
         public readonly ProjectionInfo VoirolUnifie1960;
+        public readonly ProjectionInfo VoirolUnifie1960Degrees;
         public readonly ProjectionInfo VoirolUnifie1960Paris;
-        public readonly ProjectionInfo VoirolUnifie1960degrees;
         public readonly ProjectionInfo YemenNGN1996;
         public readonly ProjectionInfo Yoff;
-
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Africa
+        /// Creates a new instance of Africa.
         /// </summary>
         public Africa()
         {
-            Abidjan1987 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Accra = ProjectionInfo.FromProj4String("+proj=longlat +a=6378300 +b=6356751.689189189 +no_defs ");
-            Adindan = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Afgooye = ProjectionInfo.FromProj4String("+proj=longlat +ellps=krass +no_defs ");
-            Agadez = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            AinelAbd1970 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Arc1950 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.145 +b=6356514.966395495 +no_defs ");
-            Arc1960 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            AyabelleLighthouse = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Beduaram = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Bissau = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Camacupa = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Cape = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.145 +b=6356514.966395495 +no_defs ");
-            Carthage = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Carthagedegrees = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            CarthageParis = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +pm=2.337229166666667 +no_defs ");
-            Conakry1905 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            CotedIvoire = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Dabola = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Douala = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Douala1948 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Egypt1907 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=helmert +no_defs ");
-            Egypt1930 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            EuropeanDatum1950 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            EuropeanLibyanDatum1979 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Garoua = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Hartebeesthoek1994 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS84 +no_defs ");
-            Kousseri = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            KuwaitOilCompany = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            KuwaitUtility = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            Leigon = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Liberia1964 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Locodjo1965 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Lome = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Madzansua = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Mahe1971 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Malongo1987 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Manoca = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Manoca1962 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Massawa = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
-            Merchich = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Merchichdegrees = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Mhast = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Minna = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Moznet = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS84 +no_defs ");
-            Mporaloko = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Nahrwan1967 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            NationalGeodeticNetworkKuwait = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS84 +no_defs ");
-            NordSahara1959 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            NordSahara1959Paris = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +pm=2.337229166666667 +no_defs ");
-            Observatario = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Oman = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Palestine1923 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378300.79 +b=6356566.430000036 +no_defs ");
-            PDO1993 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Point58 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            PointeNoire = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Qatar = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Qatar1948 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=helmert +no_defs ");
-            Schwarzeck = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bess_nam +no_defs ");
-            SierraLeone1924 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378300 +b=6356751.689189189 +no_defs ");
-            SierraLeone1960 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            SierraLeone1968 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            SouthYemen = ProjectionInfo.FromProj4String("+proj=longlat +ellps=krass +no_defs ");
-            Sudan = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Tananarive1925 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Tananarive1925Paris = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +pm=2.337229166666667 +no_defs ");
-            Tete = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            TrucialCoast1948 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=helmert +no_defs ");
-            Voirol1875 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Voirol1875degrees = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Voirol1875Paris = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +pm=2.337229166666667 +no_defs ");
-            VoirolUnifie1960 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            VoirolUnifie1960degrees = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            VoirolUnifie1960Paris = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +pm=2.337229166666667 +no_defs ");
-            YemenNGN1996 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS84 +no_defs ");
-            Yoff = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-
-            Abidjan1987.GeographicInfo.Name = "GCS_Abidjan_1987";
-            Accra.GeographicInfo.Name = "GCS_Accra";
-            Adindan.GeographicInfo.Name = "GCS_Adindan";
-            Afgooye.GeographicInfo.Name = "GCS_Afgooye";
-            Agadez.GeographicInfo.Name = "GCS_Agadez";
-            AinelAbd1970.GeographicInfo.Name = "GCS_Ain_el_Abd_1970";
-            Arc1950.GeographicInfo.Name = "GCS_Arc_1950";
-            Arc1960.GeographicInfo.Name = "GCS_Arc_1960";
-            AyabelleLighthouse.GeographicInfo.Name = "GCS_Ayabelle";
-            Beduaram.GeographicInfo.Name = "GCS_Beduaram";
-            Bissau.GeographicInfo.Name = "GCS_Bissau";
-            Camacupa.GeographicInfo.Name = "GCS_Camacupa";
-            Cape.GeographicInfo.Name = "GCS_Cape";
-            Carthage.GeographicInfo.Name = "GCS_Carthage";
-            Carthagedegrees.GeographicInfo.Name = "GCS_Carthage_Degree";
-            CarthageParis.GeographicInfo.Name = "GCS_Carthage_Paris";
-            Conakry1905.GeographicInfo.Name = "GCS_Conakry_1905";
-            CotedIvoire.GeographicInfo.Name = "GCS_Cote_d_Ivoire";
-            Dabola.GeographicInfo.Name = "GCS_Dabola";
-            Douala.GeographicInfo.Name = "GCS_Douala";
-            Douala1948.GeographicInfo.Name = "GCS_Douala_1948";
-            Egypt1907.GeographicInfo.Name = "GCS_Egypt_1907";
-            Egypt1930.GeographicInfo.Name = "GCS_Egypt_1930";
-            EuropeanDatum1950.GeographicInfo.Name = "GCS_European_1950";
-            EuropeanLibyanDatum1979.GeographicInfo.Name = "GCS_European_Libyan_Datum_1979";
-            Garoua.GeographicInfo.Name = "GCS_Garoua";
-            Hartebeesthoek1994.GeographicInfo.Name = "GCS_Hartebeesthoek_1994";
-            Kousseri.GeographicInfo.Name = "GCS_Kousseri";
-            KuwaitOilCompany.GeographicInfo.Name = "GCS_Kuwait_Oil_Company";
-            KuwaitUtility.GeographicInfo.Name = "GCS_KUDAMS";
-            Leigon.GeographicInfo.Name = "GCS_Leigon";
-            Liberia1964.GeographicInfo.Name = "GCS_Liberia_1964";
-            Locodjo1965.GeographicInfo.Name = "GCS_Locodjo_1965";
-            Lome.GeographicInfo.Name = "GCS_Lome";
-            Madzansua.GeographicInfo.Name = "GCS_Madzansua";
-            Mahe1971.GeographicInfo.Name = "GCS_Mahe_1971";
-            Malongo1987.GeographicInfo.Name = "GCS_Malongo_1987";
-            Manoca.GeographicInfo.Name = "GCS_Manoca";
-            Manoca1962.GeographicInfo.Name = "GCS_Manoca_1962";
-            Massawa.GeographicInfo.Name = "GCS_Massawa";
-            Merchich.GeographicInfo.Name = "GCS_Merchich";
-            Merchichdegrees.GeographicInfo.Name = "GCS_Merchich_Degree";
-            Mhast.GeographicInfo.Name = "GCS_Mhast_Offshore";
-            Minna.GeographicInfo.Name = "GCS_Minna";
-            Moznet.GeographicInfo.Name = "GCS_Moznet";
-            Nahrwan1967.GeographicInfo.Name = "GCS_Nahrwan_1967";
-            NationalGeodeticNetworkKuwait.GeographicInfo.Name = "GCS_NGN";
-            NordSahara1959.GeographicInfo.Name = "GCS_Nord_Sahara_1959";
-            NordSahara1959Paris.GeographicInfo.Name = "GCS_Nord_Sahara_1959_Paris";
-            Observatario.GeographicInfo.Name = "GCS_Observatario";
-            Oman.GeographicInfo.Name = "GCS_Oman";
-            Palestine1923.GeographicInfo.Name = "GCS_Palestine_1923";
-            PDO1993.GeographicInfo.Name = "GCS_PDO_1993";
-            Point58.GeographicInfo.Name = "GCS_Point_58";
-            PointeNoire.GeographicInfo.Name = "GCS_Pointe_Noire";
-            Qatar.GeographicInfo.Name = "GCS_Qatar";
-            Qatar1948.GeographicInfo.Name = "GCS_Qatar_1948";
-            Schwarzeck.GeographicInfo.Name = "GCS_Schwarzeck";
-            SierraLeone1924.GeographicInfo.Name = "GCS_Sierra_Leone_1924";
-            SierraLeone1960.GeographicInfo.Name = "GCS_Sierra_Leone_1960";
-            SierraLeone1968.GeographicInfo.Name = "GCS_Sierra_Leone_1968";
-            SouthYemen.GeographicInfo.Name = "GCS_South_Yemen";
-            Sudan.GeographicInfo.Name = "GCS_Sudan";
-            Tananarive1925.GeographicInfo.Name = "GCS_Tananarive_1925";
-            Tananarive1925Paris.GeographicInfo.Name = "GCS_Tananarive_1925_Paris";
-            Tete.GeographicInfo.Name = "GCS_Tete";
-            TrucialCoast1948.GeographicInfo.Name = "GCS_Trucial_Coast_1948";
-            Voirol1875.GeographicInfo.Name = "GCS_Voirol_1875";
-            Voirol1875degrees.GeographicInfo.Name = "GCS_Voirol_1875_Degree";
-            Voirol1875Paris.GeographicInfo.Name = "GCS_Voirol_1875_Paris";
-            VoirolUnifie1960.GeographicInfo.Name = "GCS_Voirol_Unifie_1960";
-            VoirolUnifie1960degrees.GeographicInfo.Name = "GCS_Voirol_Unifie_1960_Degree";
-            VoirolUnifie1960Paris.GeographicInfo.Name = "GCS_Voirol_Unifie_1960_Paris";
-            YemenNGN1996.GeographicInfo.Name = "GCS_Yemen_NGN_1996";
-            Yoff.GeographicInfo.Name = "GCS_Yoff";
-
-            Abidjan1987.GeographicInfo.Datum.Name = "D_Abidjan_1987";
-            Accra.GeographicInfo.Datum.Name = "D_Accra";
-            Adindan.GeographicInfo.Datum.Name = "D_Adindan";
-            Afgooye.GeographicInfo.Datum.Name = "D_Afgooye";
-            Agadez.GeographicInfo.Datum.Name = "D_Agadez";
-            AinelAbd1970.GeographicInfo.Datum.Name = "D_Ain_el_Abd_1970";
-            Arc1950.GeographicInfo.Datum.Name = "D_Arc_1950";
-            Arc1960.GeographicInfo.Datum.Name = "D_Arc_1960";
-            AyabelleLighthouse.GeographicInfo.Datum.Name = "D_Ayabelle";
-            Beduaram.GeographicInfo.Datum.Name = "D_Beduaram";
-            Bissau.GeographicInfo.Datum.Name = "D_Bissau";
-            Camacupa.GeographicInfo.Datum.Name = "D_Camacupa";
-            Cape.GeographicInfo.Datum.Name = "D_Cape";
-            Carthage.GeographicInfo.Datum.Name = "D_Carthage";
-            Carthagedegrees.GeographicInfo.Datum.Name = "D_Carthage";
-            CarthageParis.GeographicInfo.Datum.Name = "D_Carthage";
-            Conakry1905.GeographicInfo.Datum.Name = "D_Conakry_1905";
-            CotedIvoire.GeographicInfo.Datum.Name = "D_Cote_d_Ivoire";
-            Dabola.GeographicInfo.Datum.Name = "D_Dabola";
-            Douala.GeographicInfo.Datum.Name = "D_Douala";
-            Douala1948.GeographicInfo.Datum.Name = "D_Douala_1948";
-            Egypt1907.GeographicInfo.Datum.Name = "D_Egypt_1907";
-            Egypt1930.GeographicInfo.Datum.Name = "D_Egypt_1930";
-            EuropeanDatum1950.GeographicInfo.Datum.Name = "D_European_1950";
-            EuropeanLibyanDatum1979.GeographicInfo.Datum.Name = "D_European_Libyan_1979";
-            Garoua.GeographicInfo.Datum.Name = "D_Garoua";
-            Hartebeesthoek1994.GeographicInfo.Datum.Name = "D_Hartebeesthoek_1994";
-            Kousseri.GeographicInfo.Datum.Name = "D_Kousseri";
-            KuwaitOilCompany.GeographicInfo.Datum.Name = "D_Kuwait_Oil_Company";
-            KuwaitUtility.GeographicInfo.Datum.Name = "D_Kuwait_Utility";
-            Leigon.GeographicInfo.Datum.Name = "D_Leigon";
-            Liberia1964.GeographicInfo.Datum.Name = "D_Liberia_1964";
-            Locodjo1965.GeographicInfo.Datum.Name = "D_Locodjo_1965";
-            Lome.GeographicInfo.Datum.Name = "D_Lome";
-            Madzansua.GeographicInfo.Datum.Name = "D_Madzansua";
-            Mahe1971.GeographicInfo.Datum.Name = "D_Mahe_1971";
-            Malongo1987.GeographicInfo.Datum.Name = "D_Malongo_1987";
-            Manoca.GeographicInfo.Datum.Name = "D_Manoca";
-            Manoca1962.GeographicInfo.Datum.Name = "D_Manoca_1962";
-            Massawa.GeographicInfo.Datum.Name = "D_Massawa";
-            Merchich.GeographicInfo.Datum.Name = "D_Merchich";
-            Merchichdegrees.GeographicInfo.Datum.Name = "D_Merchich";
-            Mhast.GeographicInfo.Datum.Name = "D_Mhast_Offshore";
-            Minna.GeographicInfo.Datum.Name = "D_Minna";
-            Moznet.GeographicInfo.Datum.Name = "D_Moznet";
-            Nahrwan1967.GeographicInfo.Datum.Name = "D_Nahrwan_1967";
-            NationalGeodeticNetworkKuwait.GeographicInfo.Datum.Name = "D_NGN";
-            NordSahara1959.GeographicInfo.Datum.Name = "D_Nord_Sahara_1959";
-            NordSahara1959Paris.GeographicInfo.Datum.Name = "D_Nord_Sahara_1959";
-            Observatario.GeographicInfo.Datum.Name = "D_Observatario";
-            Oman.GeographicInfo.Datum.Name = "D_Oman";
-            Palestine1923.GeographicInfo.Datum.Name = "D_Palestine_1923";
-            PDO1993.GeographicInfo.Datum.Name = "D_PDO_1993";
-            Point58.GeographicInfo.Datum.Name = "D_Point_58";
-            PointeNoire.GeographicInfo.Datum.Name = "D_Pointe_Noire";
-            Qatar.GeographicInfo.Datum.Name = "D_Qatar";
-            Qatar1948.GeographicInfo.Datum.Name = "D_Qatar_1948";
-            Schwarzeck.GeographicInfo.Datum.Name = "D_Schwarzeck";
-            SierraLeone1924.GeographicInfo.Datum.Name = "D_Sierra_Leone_1924";
-            SierraLeone1960.GeographicInfo.Datum.Name = "D_Sierra_Leone_1960";
-            SierraLeone1968.GeographicInfo.Datum.Name = "D_Sierra_Leone_1968";
-            SouthYemen.GeographicInfo.Datum.Name = "D_South_Yemen";
-            Sudan.GeographicInfo.Datum.Name = "D_Sudan";
-            Tananarive1925.GeographicInfo.Datum.Name = "D_Tananarive_1925";
-            Tananarive1925Paris.GeographicInfo.Datum.Name = "D_Tananarive_1925";
-            Tete.GeographicInfo.Datum.Name = "D_Tete";
-            TrucialCoast1948.GeographicInfo.Datum.Name = "D_Trucial_Coast_1948";
-            Voirol1875.GeographicInfo.Datum.Name = "D_Voirol_1875";
-            Voirol1875degrees.GeographicInfo.Datum.Name = "D_Voirol_1875";
-            Voirol1875Paris.GeographicInfo.Datum.Name = "D_Voirol_1875";
-            VoirolUnifie1960.GeographicInfo.Datum.Name = "D_Voirol_Unifie_1960";
-            VoirolUnifie1960degrees.GeographicInfo.Datum.Name = "D_Voirol_Unifie_1960";
-            VoirolUnifie1960Paris.GeographicInfo.Datum.Name = "D_Voirol_Unifie_1960";
-            YemenNGN1996.GeographicInfo.Datum.Name = "D_Yemen_NGN_1996";
-            Yoff.GeographicInfo.Datum.Name = "D_Yoff";
+            Abidjan1987 = ProjectionInfo.FromEpsgCode(4143).SetNames("", "GCS_Abidjan_1987", "D_Abidjan_1987");
+            Accra = ProjectionInfo.FromEpsgCode(4168).SetNames("", "GCS_Accra", "D_Accra");
+            Adindan = ProjectionInfo.FromEpsgCode(4201).SetNames("", "GCS_Adindan", "D_Adindan");
+            Afgooye = ProjectionInfo.FromEpsgCode(4205).SetNames("", "GCS_Afgooye", "D_Afgooye");
+            Agadez = ProjectionInfo.FromEpsgCode(4206).SetNames("", "GCS_Agadez", "D_Agadez");
+            AinelAbd1970 = ProjectionInfo.FromEpsgCode(4204).SetNames("", "GCS_Ain_el_Abd_1970", "D_Ain_el_Abd_1970");
+            Arc1950 = ProjectionInfo.FromEpsgCode(4209).SetNames("", "GCS_Arc_1950", "D_Arc_1950");
+            Arc1960 = ProjectionInfo.FromEpsgCode(4210).SetNames("", "GCS_Arc_1960", "D_Arc_1960");
+            AyabelleLighthouse = ProjectionInfo.FromEpsgCode(4713).SetNames("", "GCS_Ayabelle", "D_Ayabelle");
+            Beduaram = ProjectionInfo.FromEpsgCode(4213).SetNames("", "GCS_Beduaram", "D_Beduaram");
+            Bissau = ProjectionInfo.FromEpsgCode(4165).SetNames("", "GCS_Bissau", "D_Bissau");
+            Cadastre1997 = ProjectionInfo.FromEpsgCode(4475).SetNames("", "GCS_Cadastre_1997", "D_Cadastre_1997");
+            Camacupa = ProjectionInfo.FromEpsgCode(4220).SetNames("", "GCS_Camacupa", "D_Camacupa");
+            Cape = ProjectionInfo.FromEpsgCode(4222).SetNames("", "GCS_Cape", "D_Cape");
+            Carthage = ProjectionInfo.FromEpsgCode(4223).SetNames("", "GCS_Carthage", "D_Carthage");
+            CarthageGrads = ProjectionInfo.FromAuthorityCode("ESRI", 37225).SetNames("", "GCS_Carthage_Grad", "D_Carthage"); // missing
+            CarthageParis = ProjectionInfo.FromEpsgCode(4816).SetNames("", "GCS_Carthage_Paris", "D_Carthage");
+            Conakry1905 = ProjectionInfo.FromEpsgCode(4315).SetNames("", "GCS_Conakry_1905", "D_Conakry_1905");
+            CotedIvoire = ProjectionInfo.FromEpsgCode(4226).SetNames("", "GCS_Cote_d_Ivoire", "D_Cote_d_Ivoire");
+            Dabola1981 = ProjectionInfo.FromEpsgCode(4155).SetNames("", "GCS_Dabola_1981", "D_Dabola_1981");
+            Douala = ProjectionInfo.FromEpsgCode(4228).SetNames("", "GCS_Douala", "D_Douala");
+            Douala1948 = ProjectionInfo.FromEpsgCode(4192).SetNames("", "GCS_Douala_1948", "D_Douala_1948");
+            Egypt1907 = ProjectionInfo.FromEpsgCode(4229).SetNames("", "GCS_Egypt_1907", "D_Egypt_1907");
+            Egypt1930 = ProjectionInfo.FromEpsgCode(4199).SetNames("", "GCS_Egypt_1930", "D_Egypt_1930");
+            EgyptGulfofSuezS650TL = ProjectionInfo.FromEpsgCode(4706).SetNames("", "GCS_Egypt_Gulf_of_Suez_S-650_TL", "D_Egypt_Gulf_of_Suez_S-650_TL");
+            EuropeanDatum1950 = ProjectionInfo.FromEpsgCode(4230).SetNames("", "GCS_European_1950", "D_European_1950");
+            EuropeanLibyanDatum1979 = ProjectionInfo.FromEpsgCode(4159).SetNames("", "GCS_European_Libyan_Datum_1979", "D_European_Libyan_1979");
+            Garoua = ProjectionInfo.FromEpsgCode(4234).SetNames("", "GCS_Garoua", "D_Garoua");
+            Hartebeesthoek1994 = ProjectionInfo.FromEpsgCode(4148).SetNames("", "GCS_Hartebeesthoek_1994", "D_Hartebeesthoek_1994");
+            IGC1962Arcofthe6thParallelSouth = ProjectionInfo.FromEpsgCode(4697).SetNames("", "GCS_IGC_1962_6th_Parallel_South", "D_IGC_1962_Arc_of_the_6th_Parallel_South");
+            IGCB1955 = ProjectionInfo.FromEpsgCode(4701).SetNames("", "GCS_IGCB_1955", "D_Institut_Geographique_du_Congo_Belge_1955");
+            IGNAstro1960 = ProjectionInfo.FromEpsgCode(4700).SetNames("", "GCS_IGN_Astro_1960", "D_IGN_Astro_1960");
+            Jouik1961 = ProjectionInfo.FromEpsgCode(4679).SetNames("", "GCS_Jouik_1961", "D_Jouik_1961");
+            Kasai1953 = ProjectionInfo.FromEpsgCode(4696).SetNames("", "GCS_Kasai_1953", "D_Kasai_1953");
+            Katanga1955 = ProjectionInfo.FromEpsgCode(4695).SetNames("", "GCS_Katanga_1955", "D_Katanga_1955");
+            Kousseri = ProjectionInfo.FromEpsgCode(4198).SetNames("", "GCS_Kousseri", "D_Kousseri");
+            KuwaitOilCompany = ProjectionInfo.FromEpsgCode(4246).SetNames("", "GCS_Kuwait_Oil_Company", "D_Kuwait_Oil_Company");
+            KuwaitUtility = ProjectionInfo.FromEpsgCode(4319).SetNames("", "GCS_KUDAMS", "D_Kuwait_Utility");
+            Leigon = ProjectionInfo.FromEpsgCode(4250).SetNames("", "GCS_Leigon", "D_Leigon");
+            LePouce1934 = ProjectionInfo.FromEpsgCode(4699).SetNames("", "GCS_Le_Pouce_1934", "D_Le_Pouce_1934");
+            LGD2006 = ProjectionInfo.FromEpsgCode(4754).SetNames("", "GCS_LGD2006", "D_Libyan_Geodetic_Datum_2006");
+            Liberia1964 = ProjectionInfo.FromEpsgCode(4251).SetNames("", "GCS_Liberia_1964", "D_Liberia_1964");
+            Locodjo1965 = ProjectionInfo.FromEpsgCode(4142).SetNames("", "GCS_Locodjo_1965", "D_Locodjo_1965");
+            Lome = ProjectionInfo.FromEpsgCode(4252).SetNames("", "GCS_Lome", "D_Lome");
+            Madzansua = ProjectionInfo.FromEpsgCode(4128).SetNames("", "GCS_Madzansua", "D_Madzansua");
+            Mahe1971 = ProjectionInfo.FromEpsgCode(4256).SetNames("", "GCS_Mahe_1971", "D_Mahe_1971");
+            Malongo1987 = ProjectionInfo.FromEpsgCode(4259).SetNames("", "GCS_Malongo_1987", "D_Malongo_1987");
+            Manoca = ProjectionInfo.FromEpsgCode(4260).SetNames("", "GCS_Manoca", "D_Manoca");
+            Manoca1962 = ProjectionInfo.FromEpsgCode(4193).SetNames("", "GCS_Manoca_1962", "D_Manoca_1962");
+            Massawa = ProjectionInfo.FromEpsgCode(4262).SetNames("", "GCS_Massawa", "D_Massawa");
+            Mauritania1999 = ProjectionInfo.FromEpsgCode(4702).SetNames("", "GCS_Mauritania_1999", "D_Mauritania_1999");
+            Merchich = ProjectionInfo.FromEpsgCode(4261).SetNames("", "GCS_Merchich", "D_Merchich");
+            MerchichDegrees = ProjectionInfo.FromAuthorityCode("ESRI", 104261).SetNames("", "GCS_Merchich_Degree", "D_Merchich");
+            Mhast1951 = ProjectionInfo.FromEpsgCode(4703).SetNames("", "GCS_Mhast_1951", "D_Mhast_1951");
+            MhastOffshore = ProjectionInfo.FromEpsgCode(4705).SetNames("", "GCS_Mhast_Offshore", "D_Mhast_Offshore");
+            MhastOnshore = ProjectionInfo.FromEpsgCode(4704).SetNames("", "GCS_Mhast_Onshore", "D_Mhast_Onshore");
+            Minna = ProjectionInfo.FromEpsgCode(4263).SetNames("", "GCS_Minna", "D_Minna");
+            Moznet = ProjectionInfo.FromEpsgCode(4130).SetNames("", "GCS_Moznet", "D_Moznet");
+            MPoraloko = ProjectionInfo.FromEpsgCode(4266).SetNames("", "GCS_Mporaloko", "D_Mporaloko");
+            Nahrwan1967 = ProjectionInfo.FromEpsgCode(4270).SetNames("", "GCS_Nahrwan_1967", "D_Nahrwan_1967");
+            NationalGeodeticNetworkKuwait = ProjectionInfo.FromEpsgCode(4318).SetNames("", "GCS_NGN", "D_NGN");
+            NordSahara1959 = ProjectionInfo.FromEpsgCode(4307).SetNames("", "GCS_Nord_Sahara_1959", "D_Nord_Sahara_1959");
+            NordSahara1959Paris = ProjectionInfo.FromEpsgCode(4819).SetNames("", "GCS_Nord_Sahara_1959_Paris", "D_Nord_Sahara_1959");
+            Nouakchott1965 = ProjectionInfo.FromEpsgCode(4680).SetNames("", "GCS_Nouakchott_1965", "D_Nouakchott_1965");
+            Observatario = ProjectionInfo.FromEpsgCode(4129).SetNames("", "GCS_Observatario", "D_Observatario");
+            Palestine1923 = ProjectionInfo.FromEpsgCode(4281).SetNames("", "GCS_Palestine_1923", "D_Palestine_1923");
+            Point58 = ProjectionInfo.FromEpsgCode(4620).SetNames("", "GCS_Point_58", "D_Point_58");
+            PointeNoire = ProjectionInfo.FromEpsgCode(4282).SetNames("", "GCS_Pointe_Noire", "D_Pointe_Noire");
+            Qatar1948 = ProjectionInfo.FromEpsgCode(4286).SetNames("", "GCS_Qatar_1948", "D_Qatar_1948");
+            Qatar1974 = ProjectionInfo.FromEpsgCode(4285).SetNames("", "GCS_Qatar_1974", "D_Qatar");
+            RGM04 = ProjectionInfo.FromAuthorityCode("EPSG", 4469).SetNames("", "GCS_RGM_2004", "D_Reseau_Geodesique_de_Mayotte_2004"); // missing
+            RGRDC2005 = ProjectionInfo.FromEpsgCode(4046).SetNames("", "GCS_RGRDC_2005", "D_Reseau_Geodesique_de_la_RDC_2005");
+            Schwarzeck = ProjectionInfo.FromEpsgCode(4293).SetNames("", "GCS_Schwarzeck", "D_Schwarzeck");
+            SierraLeone1924 = ProjectionInfo.FromEpsgCode(4174).SetNames("", "GCS_Sierra_Leone_1924", "D_Sierra_Leone_1924");
+            SierraLeone1960 = ProjectionInfo.FromAuthorityCode("ESRI", 104103).SetNames("", "GCS_Sierra_Leone_1960", "D_Sierra_Leone_1960");
+            SierraLeone1968 = ProjectionInfo.FromEpsgCode(4175).SetNames("", "GCS_Sierra_Leone_1968", "D_Sierra_Leone_1968");
+            SouthYemen = ProjectionInfo.FromEpsgCode(4164).SetNames("", "GCS_South_Yemen", "D_South_Yemen");
+            Sudan = ProjectionInfo.FromEpsgCode(4296).SetNames("", "GCS_Sudan", "D_Sudan");
+            Tananarive1925 = ProjectionInfo.FromEpsgCode(4297).SetNames("", "GCS_Tananarive_1925", "D_Tananarive_1925");
+            Tananarive1925Paris = ProjectionInfo.FromEpsgCode(4810).SetNames("", "GCS_Tananarive_1925_Paris", "D_Tananarive_1925");
+            Tete = ProjectionInfo.FromEpsgCode(4127).SetNames("", "GCS_Tete", "D_Tete");
+            TrucialCoast1948 = ProjectionInfo.FromEpsgCode(4303).SetNames("", "GCS_Trucial_Coast_1948", "D_Trucial_Coast_1948");
+            Voirol1875 = ProjectionInfo.FromEpsgCode(4304).SetNames("", "GCS_Voirol_1875", "D_Voirol_1875");
+            Voirol1875Grads = ProjectionInfo.FromAuthorityCode("ESRI", 104139).SetNames("", "GCS_Voirol_1875_Grad", "D_Voirol_1875"); // missing
+            Voirol1875Paris = ProjectionInfo.FromEpsgCode(4811).SetNames("", "GCS_Voirol_1875_Paris", "D_Voirol_1875");
+            Voirol1879Degrees = ProjectionInfo.FromEpsgCode(4671).SetNames("", "GCS_Voirol_1879", "D_Voirol_1879");
+            Voirol1879Grads = ProjectionInfo.FromAuthorityCode("ESRI", 104140).SetNames("", "GCS_Voirol_1879_Grad", "D_Voirol_1879"); // missing
+            Voirol1879Paris = ProjectionInfo.FromEpsgCode(4821).SetNames("", "GCS_Voirol_1879_Paris", "D_Voirol_1879");
+            VoirolUnifie1960 = ProjectionInfo.FromAuthorityCode("EPSG", 4305).SetNames("", "GCS_Voirol_Unifie_1960", "D_Voirol_Unifie_1960"); // missing
+            VoirolUnifie1960Degrees = ProjectionInfo.FromAuthorityCode("ESRI", 104305).SetNames("", "GCS_Voirol_Unifie_1960_Degree", "D_Voirol_Unifie_1960"); // missing
+            VoirolUnifie1960Paris = ProjectionInfo.FromEpsgCode(4812).SetNames("", "GCS_Voirol_Unifie_1960_Paris", "D_Voirol_Unifie_1960");
+            YemenNGN1996 = ProjectionInfo.FromEpsgCode(4163).SetNames("", "GCS_Yemen_NGN_1996", "D_Yemen_NGN_1996");
+            Yoff = ProjectionInfo.FromEpsgCode(4310).SetNames("", "GCS_Yoff", "D_Yoff");
         }
 
         #endregion
     }
+}
 
 #pragma warning restore 1591
-}

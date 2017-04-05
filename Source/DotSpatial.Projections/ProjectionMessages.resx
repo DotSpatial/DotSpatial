@@ -270,4 +270,10 @@
   <data name="AuthorityCodeNotFound" xml:space="preserve">
     <value>Authority Code not found.</value>
   </data>
+  <data name="ProjectionWithAuthorityCode0WasAlreadyAdded" xml:space="preserve">
+    <value>The projection with the authority code {0} was already added.</value>
+  </data>
+  <data name="ProjectionWithName0WasAlreadyAdded" xml:space="preserve">
+    <value>The projection with the name {0} was already added.</value>
+  </data>
 </root>

@@ -15,109 +15,89 @@
 
 #pragma warning disable 1591
 
-using System;
-
 namespace DotSpatial.Projections.GeographicCategories
 {
     /// <summary>
-    /// NorthAmerica
+    /// This class contains predefined CoordinateSystems for NorthAmerica.
     /// </summary>
     public class NorthAmerica : CoordinateSystemCategory
     {
-        #region Fields
-
-        public readonly ProjectionInfo ATS1977;
+        #region Private Variables
+        // ReSharper disable InconsistentNaming
         public readonly ProjectionInfo AlaskanIslands;
         public readonly ProjectionInfo AmericanSamoa1962;
         public readonly ProjectionInfo Ammassalik1958;
-        public readonly ProjectionInfo Barbados;
+        public readonly ProjectionInfo AverageTerrestrialSystem1977;
+        public readonly ProjectionInfo Barbados1938;
         public readonly ProjectionInfo Bermuda1957;
         public readonly ProjectionInfo Bermuda2000;
         public readonly ProjectionInfo CapeCanaveral;
+        public readonly ProjectionInfo CR05;
+        public readonly ProjectionInfo Greenland1996;
         public readonly ProjectionInfo Guam1963;
         public readonly ProjectionInfo Helle1954;
-        public readonly ProjectionInfo Jamaica1875;
-        public readonly ProjectionInfo Jamaica1969;
+        public readonly ProjectionInfo MexicanDatumof1993;
+        public readonly ProjectionInfo NAD1927;
         public readonly ProjectionInfo NAD1927CGQ77;
         public readonly ProjectionInfo NAD1927Definition1976;
-        public readonly ProjectionInfo NADMichigan;
-        public readonly ProjectionInfo NorthAmerican1983CSRS98;
-        public readonly ProjectionInfo NorthAmerican1983HARN;
-        public readonly ProjectionInfo NorthAmericanDatum1927;
-        public readonly ProjectionInfo NorthAmericanDatum1983;
+        public readonly ProjectionInfo NAD1983;
+        public readonly ProjectionInfo NAD1983CORS96;
+        public readonly ProjectionInfo NAD1983CSRS;
+        public readonly ProjectionInfo NAD1983HARN;
+        public readonly ProjectionInfo NAD1983NSRS2007;
+        public readonly ProjectionInfo Ocotepeque1935;
         public readonly ProjectionInfo OldHawaiian;
+        public readonly ProjectionInfo OldHawaiianIntl1924;
         public readonly ProjectionInfo PuertoRico;
         public readonly ProjectionInfo Qornoq;
         public readonly ProjectionInfo Qornoq1927;
+        public readonly ProjectionInfo SaintPierreetMiquelon1950;
         public readonly ProjectionInfo Scoresbysund1952;
         public readonly ProjectionInfo StGeorgeIsland;
         public readonly ProjectionInfo StLawrenceIsland;
         public readonly ProjectionInfo StPaulIsland;
-
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of NorthAmerica
+        /// Creates a new instance of NorthAmerica.
         /// </summary>
         public NorthAmerica()
         {
-            AlaskanIslands = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            AmericanSamoa1962 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Ammassalik1958 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            ATS1977 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378135 +b=6356750.304921594 +no_defs ");
-            Barbados = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Bermuda1957 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Bermuda2000 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS84 +no_defs ");
-            CapeCanaveral = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Guam1963 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Helle1954 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Jamaica1875 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.138 +b=6356514.959419348 +no_defs ");
-            Jamaica1969 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            NAD1927CGQ77 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            NAD1927Definition1976 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            NADMichigan = ProjectionInfo.FromProj4String("+proj=longlat +a=6378450.047 +b=6356826.620025999 +no_defs ");
-            NorthAmerican1983CSRS98 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            NorthAmerican1983HARN = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            NorthAmericanDatum1927 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +datum=NAD27 +no_defs ");
-            NorthAmericanDatum1983 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs ");
-            OldHawaiian = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            PuertoRico = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Qornoq = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Qornoq1927 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            Scoresbysund1952 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            StGeorgeIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            StLawrenceIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            StPaulIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-
-            AlaskanIslands.GeographicInfo.Name = "GCS_Alaskan_Islands";
-            AmericanSamoa1962.GeographicInfo.Name = "GCS_American_Samoa_1962";
-            Ammassalik1958.GeographicInfo.Name = "GCS_Ammassalik_1958";
-            ATS1977.GeographicInfo.Name = "GCS_ATS_1977";
-            Barbados.GeographicInfo.Name = "GCS_Barbados";
-            Bermuda1957.GeographicInfo.Name = "GCS_Bermuda_1957";
-            Bermuda2000.GeographicInfo.Name = "GCS_Bermuda_2000";
-            CapeCanaveral.GeographicInfo.Name = "GCS_Cape_Canaveral";
-            Helle1954.GeographicInfo.Name = "GCS_Helle_1954";
-            Guam1963.GeographicInfo.Name = "GCS_Guam_1963";
-            Jamaica1875.GeographicInfo.Name = "GCS_Jamaica_1875";
-            Jamaica1969.GeographicInfo.Name = "GCS_Jamaica_1969";
-            NAD1927CGQ77.GeographicInfo.Name = "GCS_NAD_1927_CGQ77";
-            NAD1927Definition1976.GeographicInfo.Name = "GCS_NAD_1927_Definition_1976";
-            NADMichigan.GeographicInfo.Name = "GCS_North_American_Michigan";
-            NorthAmerican1983CSRS98.GeographicInfo.Name = "GCS_North_American_1983_CSRS98";
-            NorthAmerican1983HARN.GeographicInfo.Name = "GCS_North_American_1983_HARN";
-            NorthAmericanDatum1927.GeographicInfo.Name = "GCS_North_American_1927";
-            NorthAmericanDatum1983.GeographicInfo.Name = "GCS_North_American_1983";
-            OldHawaiian.GeographicInfo.Name = "GCS_Old_Hawaiian";
-            PuertoRico.GeographicInfo.Name = "GCS_Puerto_Rico";
-            Qornoq.GeographicInfo.Name = String.Empty;
-            Qornoq1927.GeographicInfo.Name = "GCS_Qornoq_1927";
-            Scoresbysund1952.GeographicInfo.Name = "GCS_Scoresbysund_1952";
-            StGeorgeIsland.GeographicInfo.Name = "GCS_St_George_Island";
-            StLawrenceIsland.GeographicInfo.Name = "GCS_St_Lawrence_Island";
-            StPaulIsland.GeographicInfo.Name = "GCS_St_Paul_Island";
+            AlaskanIslands = ProjectionInfo.FromAuthorityCode("ESRI", 37260).SetNames("", "GCS_Alaskan_Islands", "D_Alaskan_Islands");
+            AmericanSamoa1962 = ProjectionInfo.FromEpsgCode(4169).SetNames("", "GCS_American_Samoa_1962", "D_American_Samoa_1962");
+            Ammassalik1958 = ProjectionInfo.FromEpsgCode(4196).SetNames("", "GCS_Ammassalik_1958", "D_Ammassalik_1958");
+            AverageTerrestrialSystem1977 = ProjectionInfo.FromEpsgCode(4122).SetNames("", "GCS_ATS_1977", "D_ATS_1977");
+            Barbados1938 = ProjectionInfo.FromEpsgCode(4212).SetNames("", "GCS_Barbados_1938", "D_Barbados_1938");
+            Bermuda1957 = ProjectionInfo.FromEpsgCode(4216).SetNames("", "GCS_Bermuda_1957", "D_Bermuda_1957");
+            Bermuda2000 = ProjectionInfo.FromEpsgCode(4762).SetNames("", "GCS_Bermuda_2000", "D_Bermuda_2000");
+            CapeCanaveral = ProjectionInfo.FromEpsgCode(4717).SetNames("", "GCS_Cape_Canaveral", "D_Cape_Canaveral");
+            CR05 = ProjectionInfo.FromAuthorityCode("EPSG", 104143).SetNames("", "GCS_CR05", "D_Costa_Rica_2005"); // missing
+            Greenland1996 = ProjectionInfo.FromEpsgCode(4747).SetNames("", "GCS_Greenland_1996", "D_Greenland_1996");
+            Guam1963 = ProjectionInfo.FromEpsgCode(4675).SetNames("", "GCS_Guam_1963", "D_Guam_1963");
+            Helle1954 = ProjectionInfo.FromEpsgCode(4660).SetNames("", "GCS_Helle_1954", "D_Helle_1954");
+            MexicanDatumof1993 = ProjectionInfo.FromEpsgCode(4483).SetNames("", "GCS_Mexican_Datum_of_1993", "D_Mexican_Datum_of_1993");
+            NAD1927 = ProjectionInfo.FromEpsgCode(4267).SetNames("", "GCS_North_American_1927", "D_North_American_1927");
+            NAD1927CGQ77 = ProjectionInfo.FromEpsgCode(4609).SetNames("", "GCS_NAD_1927_CGQ77", "D_NAD_1927_CGQ77");
+            NAD1927Definition1976 = ProjectionInfo.FromEpsgCode(4608).SetNames("", "GCS_NAD_1927_Definition_1976", "D_NAD_1927_Definition_1976");
+            NAD1983 = ProjectionInfo.FromEpsgCode(4269).SetNames("", "GCS_North_American_1983", "D_North_American_1983");
+            NAD1983CORS96 = ProjectionInfo.FromAuthorityCode("EPSG", 104223).SetNames("", "GCS_NAD_1983_CORS96", "D_NAD_1983_CORS96"); // missing
+            NAD1983CSRS = ProjectionInfo.FromEpsgCode(4617).SetNames("", "GCS_North_American_1983_CSRS", "D_North_American_1983_CSRS");
+            NAD1983HARN = ProjectionInfo.FromEpsgCode(4152).SetNames("", "GCS_North_American_1983_HARN", "D_North_American_1983_HARN");
+            NAD1983NSRS2007 = ProjectionInfo.FromEpsgCode(4759).SetNames("", "GCS_NAD_1983_NSRS2007", "D_NAD_1983_NSRS2007");
+            Ocotepeque1935 = ProjectionInfo.FromAuthorityCode("EPSG", 104132).SetNames("", "GCS_Ocotepeque_1935", "D_Ocotepeque_1935"); // missing
+            OldHawaiian = ProjectionInfo.FromEpsgCode(4135).SetNames("", "GCS_Old_Hawaiian", "D_Old_Hawaiian");
+            OldHawaiianIntl1924 = ProjectionInfo.FromAuthorityCode("ESRI", 104138).SetNames("", "GCS_Old_Hawaiian_Intl_1924", "D_Old_Hawaiian_Intl_1924"); // missing
+            PuertoRico = ProjectionInfo.FromEpsgCode(4139).SetNames("", "GCS_Puerto_Rico", "D_Puerto_Rico");
+            Qornoq = ProjectionInfo.FromEpsgCode(4287).SetNames("", "GCS_Qornoq", "D_Qornoq");
+            Qornoq1927 = ProjectionInfo.FromEpsgCode(4194).SetNames("", "GCS_Qornoq_1927", "D_Qornoq_1927");
+            SaintPierreetMiquelon1950 = ProjectionInfo.FromEpsgCode(4638).SetNames("", "GCS_Saint_Pierre_et_Miquelon_1950", "D_Saint_Pierre_et_Miquelon_1950");
+            Scoresbysund1952 = ProjectionInfo.FromEpsgCode(4195).SetNames("", "GCS_Scoresbysund_1952", "D_Scoresbysund_1952");
+            StGeorgeIsland = ProjectionInfo.FromEpsgCode(4138).SetNames("", "GCS_St_George_Island", "D_St_George_Island");
+            StLawrenceIsland = ProjectionInfo.FromEpsgCode(4136).SetNames("", "GCS_St_Lawrence_Island", "D_St_Lawrence_Island");
+            StPaulIsland = ProjectionInfo.FromEpsgCode(4137).SetNames("", "GCS_St_Paul_Island", "D_St_Paul_Island");
         }
 
         #endregion

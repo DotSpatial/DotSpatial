@@ -18,12 +18,12 @@
 namespace DotSpatial.Projections.GeographicCategories
 {
     /// <summary>
-    /// SpheroidBased
+    /// This class contains predefined CoordinateSystems for SpheroidBased.
     /// </summary>
     public class SpheroidBased : CoordinateSystemCategory
     {
-        #region Fields
-
+        #region Private Variables
+        // ReSharper disable InconsistentNaming
         public readonly ProjectionInfo Airy1830;
         public readonly ProjectionInfo Airymodified;
         public readonly ProjectionInfo AustralianNational;
@@ -31,10 +31,11 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo AuthalicsphereARCINFO;
         public readonly ProjectionInfo AverageTerrestrialSystem1977;
         public readonly ProjectionInfo Bessel1841;
-        public readonly ProjectionInfo BesselNamibia;
         public readonly ProjectionInfo Besselmodified;
+        public readonly ProjectionInfo BesselNamibia;
         public readonly ProjectionInfo Clarke1858;
         public readonly ProjectionInfo Clarke1866;
+        public readonly ProjectionInfo Clarke1866AuthalicSphere;
         public readonly ProjectionInfo Clarke1866Michigan;
         public readonly ProjectionInfo Clarke1880;
         public readonly ProjectionInfo Clarke1880Arc;
@@ -43,20 +44,25 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo Clarke1880RGS;
         public readonly ProjectionInfo Clarke1880SGA;
         public readonly ProjectionInfo Everest1830;
-        public readonly ProjectionInfo Everestdefinition1967;
-        public readonly ProjectionInfo Everestdefinition1975;
-        public readonly ProjectionInfo Everestmodified;
+        public readonly ProjectionInfo EverestDefinition1937;
+        public readonly ProjectionInfo EverestDefinition1962;
+        public readonly ProjectionInfo EverestDefinition1967;
+        public readonly ProjectionInfo EverestDefinition1975;
+        public readonly ProjectionInfo EverestModified;
         public readonly ProjectionInfo Everestmodified1969;
         public readonly ProjectionInfo Fischer1960;
         public readonly ProjectionInfo Fischer1968;
         public readonly ProjectionInfo Fischermodified;
+        public readonly ProjectionInfo GEMgravitypotentialmodel;
         public readonly ProjectionInfo GRS1967;
         public readonly ProjectionInfo GRS1980;
+        public readonly ProjectionInfo GRS1980AuthalicSphere;
         public readonly ProjectionInfo Helmert1906;
         public readonly ProjectionInfo Hough1960;
+        public readonly ProjectionInfo Hughes1980;
         public readonly ProjectionInfo IndonesianNational;
         public readonly ProjectionInfo International1924;
-        public readonly ProjectionInfo International1967;
+        public readonly ProjectionInfo International1924AuthalicSphere;
         public readonly ProjectionInfo Krasovsky1940;
         public readonly ProjectionInfo OSU1986geoidalmodel;
         public readonly ProjectionInfo OSU1991geoidalmodel;
@@ -64,150 +70,70 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo SphereEMEP;
         public readonly ProjectionInfo Struve1860;
         public readonly ProjectionInfo Transitpreciseephemeris;
-        public readonly ProjectionInfo WGS1966;
         public readonly ProjectionInfo Walbeck;
         public readonly ProjectionInfo WarOffice;
-
+        public readonly ProjectionInfo WGS1966;
+        public readonly ProjectionInfo WGS1984MajorAuxiliarySphere;
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of SpheroidBased
+        /// Creates a new instance of SpheroidBased.
         /// </summary>
         public SpheroidBased()
         {
-            Airy1830 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=airy +no_defs ");
-            Airymodified = ProjectionInfo.FromProj4String("+proj=longlat +a=6377340.189 +b=6356034.447938534 +no_defs ");
-            AustralianNational = ProjectionInfo.FromProj4String("+proj=longlat +ellps=aust_SA +no_defs ");
-            Authalicsphere = ProjectionInfo.FromProj4String("+proj=longlat +a=6371000 +b=6371000 +no_defs ");
-            AuthalicsphereARCINFO = ProjectionInfo.FromProj4String("+proj=longlat +a=6370997 +b=6370997 +no_defs ");
-            AverageTerrestrialSystem1977 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378135 +b=6356750.304921594 +no_defs ");
-            Bessel1841 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
-            Besselmodified = ProjectionInfo.FromProj4String("+proj=longlat +a=6377492.018 +b=6356173.508712696 +no_defs ");
-            BesselNamibia = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bess_nam +no_defs ");
-            Clarke1858 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378293.639 +b=6356617.98149216 +no_defs ");
-            Clarke1866 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
-            Clarke1866Michigan = ProjectionInfo.FromProj4String("+proj=longlat +a=6378450.047 +b=6356826.620025999 +no_defs ");
-            Clarke1880 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.138 +b=6356514.959419348 +no_defs ");
-            Clarke1880Arc = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.145 +b=6356514.966395495 +no_defs ");
-            Clarke1880Benoit = ProjectionInfo.FromProj4String("+proj=longlat +a=6378300.79 +b=6356566.430000036 +no_defs ");
-            Clarke1880IGN = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs ");
-            Clarke1880RGS = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Clarke1880SGA = ProjectionInfo.FromProj4String("+proj=longlat +a=6378249.2 +b=6356514.996941779 +no_defs ");
-            Everestdefinition1967 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=evrstSS +no_defs ");
-            Everestdefinition1975 = ProjectionInfo.FromProj4String("+proj=longlat +a=6377301.243 +b=6356100.228368102 +no_defs ");
-            Everest1830 = ProjectionInfo.FromProj4String("+proj=longlat +a=6377276.345 +b=6356075.41314024 +no_defs ");
-            Everestmodified = ProjectionInfo.FromProj4String("+proj=longlat +a=6377304.063 +b=6356103.041812424 +no_defs ");
-            Everestmodified1969 = ProjectionInfo.FromProj4String("+proj=longlat +a=6377295.664 +b=6356094.667915204 +no_defs ");
-            Fischer1960 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378166 +b=6356784.283607107 +no_defs ");
-            Fischer1968 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378150 +b=6356768.337244385 +no_defs ");
-            Fischermodified = ProjectionInfo.FromProj4String("+proj=longlat +ellps=fschr60m +no_defs ");
-            GRS1967 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS67 +no_defs ");
-            GRS1980 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            Helmert1906 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=helmert +no_defs ");
-            Hough1960 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378270 +b=6356794.343434343 +no_defs ");
-            IndonesianNational = ProjectionInfo.FromProj4String("+proj=longlat +a=6378160 +b=6356774.50408554 +no_defs ");
-            International1924 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            International1967 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=aust_SA +no_defs ");
-            Krasovsky1940 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=krass +no_defs ");
-            OSU1986geoidalmodel = ProjectionInfo.FromProj4String("+proj=longlat +a=6378136.2 +b=6356751.516671965 +no_defs ");
-            OSU1991geoidalmodel = ProjectionInfo.FromProj4String("+proj=longlat +a=6378136.3 +b=6356751.616336684 +no_defs ");
-            Plessis1817 = ProjectionInfo.FromProj4String("+proj=longlat +a=6376523 +b=6355862.933255573 +no_defs ");
-            SphereEMEP = ProjectionInfo.FromProj4String("+proj=longlat +a=6370000 +b=6370000 +no_defs ");
-            Struve1860 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378297 +b=6356655.847080379 +no_defs ");
-            Transitpreciseephemeris = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS66 +no_defs ");
-            Walbeck = ProjectionInfo.FromProj4String("+proj=longlat +a=6376896 +b=6355834.846687364 +no_defs ");
-            WarOffice = ProjectionInfo.FromProj4String("+proj=longlat +a=6378300.583 +b=6356752.270219594 +no_defs ");
-            WGS1966 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS66 +no_defs ");
-
-            Airy1830.GeographicInfo.Name = "GCS_Airy_1830";
-            Airymodified.GeographicInfo.Name = "GCS_Airy_Modified";
-            AustralianNational.GeographicInfo.Name = "GCS_Australian";
-            Authalicsphere.GeographicInfo.Name = "GCS_Sphere";
-            AuthalicsphereARCINFO.GeographicInfo.Name = "GCS_Sphere_ARC_INFO";
-            AverageTerrestrialSystem1977.GeographicInfo.Name = "GCS_ATS_1977";
-            Bessel1841.GeographicInfo.Name = "GCS_Bessel_1841";
-            Besselmodified.GeographicInfo.Name = "GCS_Bessel_Modified";
-            BesselNamibia.GeographicInfo.Name = "GCS_Bessel_Namibia";
-            Clarke1858.GeographicInfo.Name = "GCS_Clarke_1858";
-            Clarke1866.GeographicInfo.Name = "GCS_Clarke_1866";
-            Clarke1866Michigan.GeographicInfo.Name = "GCS_Clarke_1866_Michigan";
-            Clarke1880.GeographicInfo.Name = "GCS_Clarke_1880";
-            Clarke1880Arc.GeographicInfo.Name = "GCS_Clarke_1880_Arc";
-            Clarke1880Benoit.GeographicInfo.Name = "GCS_Clarke_1880_Benoit";
-            Clarke1880IGN.GeographicInfo.Name = "GCS_Clarke_1880_IGN";
-            Clarke1880RGS.GeographicInfo.Name = "GCS_Clarke_1880_RGS";
-            Clarke1880SGA.GeographicInfo.Name = "GCS_Clarke_1880_SGA";
-            Everestdefinition1967.GeographicInfo.Name = "GCS_Everest_def_1967";
-            Everestdefinition1975.GeographicInfo.Name = "GCS_Everest_def_1975";
-            Everest1830.GeographicInfo.Name = "GCS_Everest_1830";
-            Everestmodified.GeographicInfo.Name = "GCS_Everest_Modified";
-            Everestmodified1969.GeographicInfo.Name = "GCS_Everest_Modified_1969";
-            Fischer1960.GeographicInfo.Name = "GCS_Fischer_1960";
-            Fischer1968.GeographicInfo.Name = "GCS_Fischer_1968";
-            Fischermodified.GeographicInfo.Name = "GCS_Fischer_Modified";
-            GRS1967.GeographicInfo.Name = "GCS_GRS_1967";
-            GRS1980.GeographicInfo.Name = "GCS_GRS_1980";
-            Helmert1906.GeographicInfo.Name = "GCS_Helmert_1906";
-            Hough1960.GeographicInfo.Name = "GCS_Hough_1960";
-            IndonesianNational.GeographicInfo.Name = "GCS_Indonesian";
-            International1924.GeographicInfo.Name = "GCS_International_1924";
-            International1967.GeographicInfo.Name = "GCS_International_1967";
-            Krasovsky1940.GeographicInfo.Name = "GCS_Krasovsky_1940";
-            OSU1986geoidalmodel.GeographicInfo.Name = "GCS_OSU_86F";
-            OSU1991geoidalmodel.GeographicInfo.Name = "GCS_OSU_91A";
-            Plessis1817.GeographicInfo.Name = "GCS_Plessis_1817";
-            SphereEMEP.GeographicInfo.Name = "GCS_Sphere_EMEP";
-            Struve1860.GeographicInfo.Name = "GCS_Struve_1860";
-            Transitpreciseephemeris.GeographicInfo.Name = "GCS_NWL_9D";
-            Walbeck.GeographicInfo.Name = "GCS_Walbeck";
-            WarOffice.GeographicInfo.Name = "GCS_War_Office";
-            WGS1966.GeographicInfo.Name = "GCS_WGS_1966";
-
-            Airy1830.GeographicInfo.Datum.Name = "D_Airy_1830";
-            Airymodified.GeographicInfo.Datum.Name = "D_Airy_Modified";
-            AustralianNational.GeographicInfo.Datum.Name = "D_Australian";
-            Authalicsphere.GeographicInfo.Datum.Name = "D_Sphere";
-            AuthalicsphereARCINFO.GeographicInfo.Datum.Name = "D_Sphere_ARC_INFO";
-            AverageTerrestrialSystem1977.GeographicInfo.Datum.Name = "D_ATS_1977";
-            Bessel1841.GeographicInfo.Datum.Name = "D_Bessel_1841";
-            Besselmodified.GeographicInfo.Datum.Name = "D_Bessel_Modified";
-            BesselNamibia.GeographicInfo.Datum.Name = "D_Bessel_Namibia";
-            Clarke1858.GeographicInfo.Datum.Name = "D_Clarke_1858";
-            Clarke1866.GeographicInfo.Datum.Name = "D_Clarke_1866";
-            Clarke1866Michigan.GeographicInfo.Datum.Name = "D_Clarke_1866_Michigan";
-            Clarke1880.GeographicInfo.Datum.Name = "D_Clarke_1880";
-            Clarke1880Arc.GeographicInfo.Datum.Name = "D_Clarke_1880_Arc";
-            Clarke1880Benoit.GeographicInfo.Datum.Name = "D_Clarke_1880_Benoit";
-            Clarke1880IGN.GeographicInfo.Datum.Name = "D_Clarke_1880_IGN";
-            Clarke1880RGS.GeographicInfo.Datum.Name = "D_Clarke_1880_RGS";
-            Clarke1880SGA.GeographicInfo.Datum.Name = "D_Clarke_1880_SGA";
-            Everestdefinition1967.GeographicInfo.Datum.Name = "D_Everest_Def_1967";
-            Everestdefinition1975.GeographicInfo.Datum.Name = "D_Everest_Def_1975";
-            Everest1830.GeographicInfo.Datum.Name = "D_Everest_1830";
-            Everestmodified.GeographicInfo.Datum.Name = "D_Everest_Modified";
-            Everestmodified1969.GeographicInfo.Datum.Name = "D_Everest_Modified_1969";
-            Fischer1960.GeographicInfo.Datum.Name = "D_Fischer_1960";
-            Fischer1968.GeographicInfo.Datum.Name = "D_Fischer_1968";
-            Fischermodified.GeographicInfo.Datum.Name = "D_Fischer_Modified";
-            GRS1967.GeographicInfo.Datum.Name = "D_GRS_1967";
-            GRS1980.GeographicInfo.Datum.Name = "D_GRS_1980";
-            Helmert1906.GeographicInfo.Datum.Name = "D_Helmert_1906";
-            Hough1960.GeographicInfo.Datum.Name = "D_Hough_1960";
-            IndonesianNational.GeographicInfo.Datum.Name = "D_Indonesian";
-            International1924.GeographicInfo.Datum.Name = "D_International_1924";
-            International1967.GeographicInfo.Datum.Name = "D_International_1967";
-            Krasovsky1940.GeographicInfo.Datum.Name = "D_Krasovsky_1940";
-            OSU1986geoidalmodel.GeographicInfo.Datum.Name = "D_OSU_86F";
-            OSU1991geoidalmodel.GeographicInfo.Datum.Name = "D_OSU_91A";
-            Plessis1817.GeographicInfo.Datum.Name = "D_Plessis_1817";
-            SphereEMEP.GeographicInfo.Datum.Name = "D_Sphere_EMEP";
-            Struve1860.GeographicInfo.Datum.Name = "D_Struve_1860";
-            Transitpreciseephemeris.GeographicInfo.Datum.Name = "D_NWL_9D";
-            Walbeck.GeographicInfo.Datum.Name = "D_Walbeck";
-            WarOffice.GeographicInfo.Datum.Name = "D_War_Office";
-            WGS1966.GeographicInfo.Datum.Name = "D_WGS_1966";
+            Airy1830 = ProjectionInfo.FromEpsgCode(4001).SetNames("", "GCS_Airy_1830", "D_Airy_1830");
+            Airymodified = ProjectionInfo.FromEpsgCode(4002).SetNames("", "GCS_Airy_Modified", "D_Airy_Modified");
+            AustralianNational = ProjectionInfo.FromEpsgCode(4003).SetNames("", "GCS_Australian", "D_Australian");
+            Authalicsphere = ProjectionInfo.FromEpsgCode(4035).SetNames("", "GCS_Sphere", "D_Sphere");
+            AuthalicsphereARCINFO = ProjectionInfo.FromAuthorityCode("ESRI", 37008).SetNames("", "GCS_Sphere_ARC_INFO", "D_Sphere_ARC_INFO");
+            AverageTerrestrialSystem1977 = ProjectionInfo.FromEpsgCode(4122).SetNames("", "GCS_ATS_1977", "D_ATS_1977");
+            Bessel1841 = ProjectionInfo.FromEpsgCode(4004).SetNames("", "GCS_Bessel_1841", "D_Bessel_1841");
+            Besselmodified = ProjectionInfo.FromEpsgCode(4005).SetNames("", "GCS_Bessel_Modified", "D_Bessel_Modified");
+            BesselNamibia = ProjectionInfo.FromEpsgCode(4006).SetNames("", "GCS_Bessel_Namibia", "D_Bessel_Namibia");
+            Clarke1858 = ProjectionInfo.FromEpsgCode(4007).SetNames("", "GCS_Clarke_1858", "D_Clarke_1858");
+            Clarke1866 = ProjectionInfo.FromEpsgCode(4008).SetNames("", "GCS_Clarke_1866", "D_Clarke_1866");
+            Clarke1866AuthalicSphere = ProjectionInfo.FromEpsgCode(4052).SetNames("", "GCS_Sphere_Clarke_1866_Authalic", "D_Sphere_Clarke_1866_Authalic");
+            Clarke1866Michigan = ProjectionInfo.FromEpsgCode(4009).SetNames("", "GCS_Clarke_1866_Michigan", "D_Clarke_1866_Michigan");
+            Clarke1880 = ProjectionInfo.FromEpsgCode(4034).SetNames("", "GCS_Clarke_1880", "D_Clarke_1880");
+            Clarke1880Arc = ProjectionInfo.FromEpsgCode(4013).SetNames("", "GCS_Clarke_1880_Arc", "D_Clarke_1880_Arc");
+            Clarke1880Benoit = ProjectionInfo.FromEpsgCode(4010).SetNames("", "GCS_Clarke_1880_Benoit", "D_Clarke_1880_Benoit");
+            Clarke1880IGN = ProjectionInfo.FromEpsgCode(4011).SetNames("", "GCS_Clarke_1880_IGN", "D_Clarke_1880_IGN");
+            Clarke1880RGS = ProjectionInfo.FromEpsgCode(4012).SetNames("", "GCS_Clarke_1880_RGS", "D_Clarke_1880_RGS");
+            Clarke1880SGA = ProjectionInfo.FromEpsgCode(4014).SetNames("", "GCS_Clarke_1880_SGA", "D_Clarke_1880_SGA");
+            Everest1830 = ProjectionInfo.FromEpsgCode(4042).SetNames("", "GCS_Everest_1830", "D_Everest_1830");
+            EverestDefinition1937 = ProjectionInfo.FromEpsgCode(4015).SetNames("", "GCS_Everest_Adj_1937", "D_Everest_Adj_1937");
+            EverestDefinition1962 = ProjectionInfo.FromEpsgCode(4044).SetNames("", "GCS_Everest_def_1962", "D_Everest_Def_1962");
+            EverestDefinition1967 = ProjectionInfo.FromEpsgCode(4016).SetNames("", "GCS_Everest_def_1967", "D_Everest_Def_1967");
+            EverestDefinition1975 = ProjectionInfo.FromEpsgCode(4045).SetNames("", "GCS_Everest_def_1975", "D_Everest_Def_1975");
+            EverestModified = ProjectionInfo.FromEpsgCode(4018).SetNames("", "GCS_Everest_Modified", "D_Everest_Modified");
+            Everestmodified1969 = ProjectionInfo.FromAuthorityCode("ESRI", 37006).SetNames("", "GCS_Everest_Modified_1969", "D_Everest_Modified_1969");
+            Fischer1960 = ProjectionInfo.FromAuthorityCode("ESRI", 37002).SetNames("", "GCS_Fischer_1960", "D_Fischer_1960");
+            Fischer1968 = ProjectionInfo.FromAuthorityCode("ESRI", 37003).SetNames("", "GCS_Fischer_1968", "D_Fischer_1968");
+            Fischermodified = ProjectionInfo.FromAuthorityCode("ESRI", 37004).SetNames("", "GCS_Fischer_Modified", "D_Fischer_Modified");
+            GEMgravitypotentialmodel = ProjectionInfo.FromEpsgCode(4031).SetNames("", "GCS_GEM_10C", "D_GEM_10C");
+            GRS1967 = ProjectionInfo.FromEpsgCode(4036).SetNames("", "GCS_GRS_1967", "D_GRS_1967");
+            GRS1980 = ProjectionInfo.FromEpsgCode(4019).SetNames("", "GCS_GRS_1980", "D_GRS_1980");
+            GRS1980AuthalicSphere = ProjectionInfo.FromEpsgCode(4047).SetNames("", "GCS_Sphere_GRS_1980_Authalic", "D_Sphere_GRS_1980_Authalic");
+            Helmert1906 = ProjectionInfo.FromEpsgCode(4020).SetNames("", "GCS_Helmert_1906", "D_Helmert_1906");
+            Hough1960 = ProjectionInfo.FromAuthorityCode("ESRI", 37005).SetNames("", "GCS_Hough_1960", "D_Hough_1960");
+            Hughes1980 = ProjectionInfo.FromEpsgCode(4054).SetNames("", "GCS_Hughes_1980", "D_Hughes_1980");
+            IndonesianNational = ProjectionInfo.FromEpsgCode(4021).SetNames("", "GCS_Indonesian", "D_Indonesian");
+            International1924 = ProjectionInfo.FromEpsgCode(4022).SetNames("", "GCS_International_1924", "D_International_1924");
+            International1924AuthalicSphere = ProjectionInfo.FromEpsgCode(4053).SetNames("", "GCS_Sphere_International_1924_Authalic", "D_Sphere_International_1924_Authalic");
+            Krasovsky1940 = ProjectionInfo.FromEpsgCode(4024).SetNames("", "GCS_Krasovsky_1940", "D_Krasovsky_1940");
+            OSU1986geoidalmodel = ProjectionInfo.FromEpsgCode(4032).SetNames("", "GCS_OSU_86F", "D_OSU_86F");
+            OSU1991geoidalmodel = ProjectionInfo.FromEpsgCode(4033).SetNames("", "GCS_OSU_91A", "D_OSU_91A");
+            Plessis1817 = ProjectionInfo.FromEpsgCode(4027).SetNames("", "GCS_Plessis_1817", "D_Plessis_1817");
+            SphereEMEP = ProjectionInfo.FromAuthorityCode("ESRI", 104128).SetNames("", "GCS_Sphere_EMEP", "D_Sphere_EMEP"); // missing
+            Struve1860 = ProjectionInfo.FromEpsgCode(4028).SetNames("", "GCS_Struve_1860", "D_Struve_1860");
+            Transitpreciseephemeris = ProjectionInfo.FromEpsgCode(4025).SetNames("", "GCS_NWL_9D", "D_NWL_9D");
+            Walbeck = ProjectionInfo.FromAuthorityCode("ESRI", 37007).SetNames("", "GCS_Walbeck", "D_Walbeck");
+            WarOffice = ProjectionInfo.FromEpsgCode(4029).SetNames("", "GCS_War_Office", "D_War_Office");
+            WGS1966 = ProjectionInfo.FromEpsgCode(4760).SetNames("", "GCS_WGS_1966", "D_WGS_1966");
+            WGS1984MajorAuxiliarySphere = ProjectionInfo.FromAuthorityCode("EPSG", 104199).SetNames("", "GCS_WGS_1984_Major_Auxiliary_Sphere", "D_WGS_1984_Major_Auxiliary_Sphere"); // missing
         }
 
         #endregion

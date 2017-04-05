@@ -18,44 +18,34 @@
 namespace DotSpatial.Projections.GeographicCategories
 {
     /// <summary>
-    /// Antarctica
+    /// This class contains predefined CoordinateSystems for Antarctica.
     /// </summary>
     public class Antarctica : CoordinateSystemCategory
     {
-        #region Fields
-
+        #region Private Variables
+        // ReSharper disable InconsistentNaming
         public readonly ProjectionInfo AustralianAntarctic1998;
         public readonly ProjectionInfo CampAreaAstro;
         public readonly ProjectionInfo DeceptionIsland;
         public readonly ProjectionInfo Petrels1972;
         public readonly ProjectionInfo PointeGeologiePerroud1950;
-
+        public readonly ProjectionInfo RSRGD2000;
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Antarctica
+        /// Creates a new instance of Antarctica.
         /// </summary>
         public Antarctica()
         {
-            AustralianAntarctic1998 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            CampAreaAstro = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            DeceptionIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
-            Petrels1972 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            PointeGeologiePerroud1950 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            
-            AustralianAntarctic1998.GeographicInfo.Name = "GCS_Australian_Antarctic_1998";
-            CampAreaAstro.GeographicInfo.Name = "GCS_Camp_Area";
-            DeceptionIsland.GeographicInfo.Name = "GCS_Deception_Island";
-            Petrels1972.GeographicInfo.Name = "GCS_Petrels_1972";
-            PointeGeologiePerroud1950.GeographicInfo.Name = "GCS_Pointe_Geologie_Perroud_1950";
-
-            AustralianAntarctic1998.GeographicInfo.Datum.Name = "D_Australian_Antarctic_1998";
-            CampAreaAstro.GeographicInfo.Datum.Name = "D_Camp_Area";
-            DeceptionIsland.GeographicInfo.Datum.Name = "D_Deception_Island";
-            Petrels1972.GeographicInfo.Datum.Name = "D_Petrels_1972";
-            PointeGeologiePerroud1950.GeographicInfo.Datum.Name = "D_Pointe_Geologie_Perroud_1950";
+            AustralianAntarctic1998 = ProjectionInfo.FromEpsgCode(4176).SetNames("", "GCS_Australian_Antarctic_1998", "D_Australian_Antarctic_1998");
+            CampAreaAstro = ProjectionInfo.FromEpsgCode(4715).SetNames("", "GCS_Camp_Area", "D_Camp_Area");
+            DeceptionIsland = ProjectionInfo.FromEpsgCode(4736).SetNames("", "GCS_Deception_Island", "D_Deception_Island");
+            Petrels1972 = ProjectionInfo.FromEpsgCode(4636).SetNames("", "GCS_Petrels_1972", "D_Petrels_1972");
+            PointeGeologiePerroud1950 = ProjectionInfo.FromEpsgCode(4637).SetNames("", "GCS_Pointe_Geologie_Perroud_1950", "D_Pointe_Geologie_Perroud_1950");
+            RSRGD2000 = ProjectionInfo.FromEpsgCode(4764).SetNames("", "GCS_RSRGD2000", "D_Ross_Sea_Region_Geodetic_Datum_2000");
         }
 
         #endregion

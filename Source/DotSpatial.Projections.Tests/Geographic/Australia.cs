@@ -10,7 +10,7 @@ namespace DotSpatial.Projections.Tests.Geographic
     public class Australia
     {
         [Test]
-        [TestCaseSource("GetProjections")]
+        [TestCaseSource(nameof(GetProjections))]
         public void AustraliaGeographicTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);
@@ -19,7 +19,7 @@ namespace DotSpatial.Projections.Tests.Geographic
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Geographic.Australia);
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Geographic.AustraliaNewZealand);
         }
     }
 }

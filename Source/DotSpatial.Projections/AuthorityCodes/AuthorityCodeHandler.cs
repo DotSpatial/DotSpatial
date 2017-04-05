@@ -10,13 +10,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Remoting;
+using System.Text;
 
 namespace DotSpatial.Projections.AuthorityCodes
 {
     /// <summary>
-    /// Reads and holds projections per authority codes
+    /// Reads and holds projections per authority codes.
     /// </summary>
     public sealed class AuthorityCodeHandler
     {
@@ -90,7 +93,7 @@ namespace DotSpatial.Projections.AuthorityCodes
         /// <param name="replace">a value indicating if a previously defined projection should be replaced or not.</param>
         public void Add(string authority, int code, string name, string proj4String, bool replace = false)
         {
-            var authorityCode = string.Format("{0}:{1}", authority, code);
+            var authorityCode = $"{authority}:{code}";
             Add(authorityCode, name, proj4String, replace);
         }
 
@@ -108,25 +111,117 @@ namespace DotSpatial.Projections.AuthorityCodes
             {
                 ReadFromStream(str, "ESRI");
             }
+            using (var str = DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.AuthorityCodes.missing.ds"))
+            {
+                ReadMissingFromStream(str);
+            }
         }
 
         private void ReadFromStream(Stream s, string authority)
         {
             using (var sr = new StreamReader(s))
             {
+                string lastLine = "";
+
                 while (!sr.EndOfStream)
                 {
                     var line = sr.ReadLine();
-                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#", StringComparison.Ordinal)) continue;
-                    if (!line.StartsWith("<") || !line.EndsWith("<>")) continue;
 
-                    var endAuthorityCode = line.IndexOf('>', 1);
-                    var authorityCode = line.Substring(1, endAuthorityCode - 1);
-                    var projString = line.Substring(endAuthorityCode + 1, line.Length - 2 - (endAuthorityCode + 1)).Trim();
+                    if (!string.IsNullOrWhiteSpace(line) && line.StartsWith("<"))
+                    {
+                        string name = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(lastLine) && lastLine.StartsWith("#")) name = lastLine.Trim('#').Trim();
 
-                    Add(string.Format("{0}:{1}", authority, authorityCode), string.Empty, projString, false);
+                        var endAuthorityCode = line.IndexOf('>', 1);
+                        var authorityCode = line.Substring(1, endAuthorityCode - 1);
+                        var projString = line.Substring(endAuthorityCode + 1, line.Length - 2 - (endAuthorityCode + 1)).Trim();
+
+                        Add($"{authority}:{authorityCode}", string.Empty, projString, false);
+                    }
+                    lastLine = line;
                 }
             }
+        }
+
+        /// <summary>
+        /// Reads the projection
+        /// </summary>
+        /// <param name="s"></param>
+        private void ReadMissingFromStream(Stream s)
+        {
+            using (var sr = new StreamReader(s))
+            {
+                string lastLine = "";
+
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(line) && line.StartsWith("<"))
+                    {
+                        string name = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(lastLine) && lastLine.StartsWith("#")) name = lastLine.Trim('#').Trim();
+
+                        var endAuthorityType = line.IndexOf('>', 1);
+                        var authorityType = line.Substring(1, endAuthorityType - 1);
+
+                        var endAuthorityCode = line.IndexOf('>', endAuthorityType + 1);
+                        var startAuthorityCode = endAuthorityType + 2;
+                        var authorityCode = line.Substring(startAuthorityCode, endAuthorityCode - startAuthorityCode);
+
+                        var projString = line.Substring(endAuthorityCode + 1).Trim();
+
+                        AddMissing(authorityType, authorityCode, name, projString);
+                    }
+                    lastLine = line;
+                }
+            }
+
+            //StringBuilder sb = new StringBuilder();
+
+            //foreach (var kvp in errors)
+            //{
+            //    sb.AppendLine($"{kvp.Key}\t{kvp.Value}");
+            //}
+            //File.WriteAllText(@"D:\nonexisting.txt", sb.ToString());
+
+        }
+
+        private SortedDictionary<string, string> errors = new SortedDictionary<string, string>();
+
+        private void AddMissing(string authorityType, string authorityCode, string name, string projString)
+        {
+            var authority = $"{authorityType}:{authorityCode}";
+
+            if (_authorityCodeToProjectionInfo.ContainsKey(authority))
+            {
+                throw new ArgumentOutOfRangeException(nameof(authority), string.Format(ProjectionMessages.ProjectionWithAuthorityCode0WasAlreadyAdded, authority));
+            }
+            ProjectionInfo pi;
+
+            try
+            {
+                pi = ProjectionInfo.FromEsriString(projString);
+            }
+            catch (Exception e)
+            {
+                errors[authority] = e.Message;
+                return;
+            }
+
+            pi.Authority = authorityType;
+            pi.AuthorityCode = int.Parse(authorityCode, CultureInfo.InvariantCulture);
+            pi.Name = string.IsNullOrEmpty(name) ? authorityCode : name;
+
+            _authorityCodeToProjectionInfo[authority] = pi;
+
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            if (_authorityNameToProjectionInfo.ContainsKey(name))
+            {
+                throw new ArgumentOutOfRangeException(nameof(name), string.Format(ProjectionMessages.ProjectionWithName0WasAlreadyAdded, name));
+            }
+            _authorityNameToProjectionInfo[name] = pi;
         }
 
 
@@ -134,11 +229,11 @@ namespace DotSpatial.Projections.AuthorityCodes
         {
             var pos = authorityCode.IndexOf(':');
             if (pos == -1)
-                throw new ArgumentOutOfRangeException("authorityCode", "Invalid authorityCode");
+                throw new ArgumentOutOfRangeException(nameof(authorityCode), "Invalid authorityCode");
 
             if (!replace && _authorityCodeToProjectionInfo.ContainsKey(authorityCode))
             {
-                throw new ArgumentOutOfRangeException("authorityCode", "Such projection already added.");
+                throw new ArgumentOutOfRangeException(nameof(authorityCode), string.Format(ProjectionMessages.ProjectionWithAuthorityCode0WasAlreadyAdded, authorityCode));
             }
             ProjectionInfo pi;
             try
@@ -151,7 +246,7 @@ namespace DotSpatial.Projections.AuthorityCodes
                 if (proj4String.Contains("+proj=geocent")) return;
                 throw;
             }
-            
+
             pi.Authority = authorityCode.Substring(0, pos);
             pi.AuthorityCode = int.Parse(authorityCode.Substring(pos + 1), CultureInfo.InvariantCulture);
             pi.Name = string.IsNullOrEmpty(name) ? authorityCode : name;
@@ -163,7 +258,7 @@ namespace DotSpatial.Projections.AuthorityCodes
 
             if (!replace && _authorityNameToProjectionInfo.ContainsKey(name))
             {
-                throw new ArgumentOutOfRangeException("name", "Such projection already added.");
+                throw new ArgumentOutOfRangeException(nameof(name), string.Format(ProjectionMessages.ProjectionWithName0WasAlreadyAdded, name));
             }
             _authorityNameToProjectionInfo[name] = pi;
         }

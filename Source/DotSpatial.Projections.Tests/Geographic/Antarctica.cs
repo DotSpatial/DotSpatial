@@ -10,7 +10,7 @@ namespace DotSpatial.Projections.Tests.Geographic
     public class Antarctica
     {
         [Test]
-        [TestCaseSource("GetProjections")]
+        [TestCaseSource(nameof(GetProjections))]
         public void AntarcticaTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);

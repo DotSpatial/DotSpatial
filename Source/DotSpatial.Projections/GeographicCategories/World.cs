@@ -18,13 +18,12 @@
 namespace DotSpatial.Projections.GeographicCategories
 {
     /// <summary>
-    /// World
+    /// This class contains predefined CoordinateSystems for World.
     /// </summary>
     public class World : CoordinateSystemCategory
     {
         #region Private Variables
-
-        public readonly ProjectionInfo GRS1980;
+        // ReSharper disable InconsistentNaming
         public readonly ProjectionInfo ITRF1988;
         public readonly ProjectionInfo ITRF1989;
         public readonly ProjectionInfo ITRF1990;
@@ -35,84 +34,38 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo ITRF1996;
         public readonly ProjectionInfo ITRF1997;
         public readonly ProjectionInfo ITRF2000;
+        public readonly ProjectionInfo ITRF2005;
         public readonly ProjectionInfo NSWC9Z2;
         public readonly ProjectionInfo WGS1966;
         public readonly ProjectionInfo WGS1972;
         public readonly ProjectionInfo WGS1972TBE;
         public readonly ProjectionInfo WGS1984;
-
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of World
+        /// Creates a new instance of World.
         /// </summary>
         public World()
         {
-            GRS1980 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            GRS1980.GeographicInfo.Name = "GCS_GRS_1980";
-            GRS1980.GeographicInfo.Datum.Name = "D_GRS_1980";
-
-            ITRF1988 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1988.GeographicInfo.Name = "GCS_ITRF_1988";
-            ITRF1988.GeographicInfo.Datum.Name = "D_ITRF_1988";
-
-            ITRF1989 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1989.GeographicInfo.Name = "GCS_ITRF_1989";
-            ITRF1989.GeographicInfo.Datum.Name = "D_ITRF_1989";
-
-            ITRF1990 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1990.GeographicInfo.Name = "GCS_ITRF_1990";
-            ITRF1990.GeographicInfo.Datum.Name = "D_ITRF_1990";
-
-            ITRF1991 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1991.GeographicInfo.Name = "GCS_ITRF_1991";
-            ITRF1991.GeographicInfo.Datum.Name = "D_ITRF_1991";
-
-            ITRF1992 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1992.GeographicInfo.Name = "GCS_ITRF_1992";
-            ITRF1992.GeographicInfo.Datum.Name = "D_ITRF_1992";
-
-            ITRF1993 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1993.GeographicInfo.Name = "GCS_ITRF_1993";
-            ITRF1993.GeographicInfo.Datum.Name = "D_ITRF_1993";
-
-            ITRF1994 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1994.GeographicInfo.Name = "GCS_ITRF_1994";
-            ITRF1994.GeographicInfo.Datum.Name = "D_ITRF_1994";
-
-            ITRF1996 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1996.GeographicInfo.Name = "GCS_ITRF_1996";
-            ITRF1996.GeographicInfo.Datum.Name = "D_ITRF_1996";
-
-            ITRF1997 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF1997.GeographicInfo.Name = "GCS_ITRF_1997";
-            ITRF1997.GeographicInfo.Name = "D_ITRF_1997";
-
-            ITRF2000 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
-            ITRF2000.GeographicInfo.Name = "GCS_ITRF_2000";
-            ITRF2000.GeographicInfo.Datum.Name = "D_ITRF_2000";
-
-            NSWC9Z2 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS66 +no_defs ");
-            NSWC9Z2.GeographicInfo.Name = "GCS_NSWC_9Z_2";
-            NSWC9Z2.GeographicInfo.Datum.Name = "D_NSWC_9Z_2";
-
-            WGS1966 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS66 +no_defs ");
-            WGS1966.GeographicInfo.Name = "GCS_WGS_1966";
-            WGS1966.GeographicInfo.Datum.Name = "D_WGS_1996";
-
-            WGS1972 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS72 +no_defs ");
-            WGS1972.GeographicInfo.Name = "GCS_WGS_1972";
-            WGS1972.GeographicInfo.Datum.Name = "D_WGS_1972";
-
-            WGS1972TBE = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS72 +no_defs ");
-            WGS1972TBE.GeographicInfo.Name = "GCS_WGS_1972_BE";
-            WGS1972TBE.GeographicInfo.Datum.Name = "D_WGS_1972_BE";
-
-            WGS1984 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ");
-            WGS1984.GeographicInfo.Name = "GCS_WGS_1984";
-            WGS1984.GeographicInfo.Datum.Name = "D_WGS_1984";
+            ITRF1988 = ProjectionInfo.FromAuthorityCode("ESRI", 104115).SetNames("", "GCS_ITRF_1988", "D_ITRF_1988"); // missing
+            ITRF1989 = ProjectionInfo.FromAuthorityCode("ESRI", 104116).SetNames("", "GCS_ITRF_1989", "D_ITRF_1989"); // missing
+            ITRF1990 = ProjectionInfo.FromAuthorityCode("ESRI", 104117).SetNames("", "GCS_ITRF_1990", "D_ITRF_1990"); // missing
+            ITRF1991 = ProjectionInfo.FromAuthorityCode("ESRI", 104118).SetNames("", "GCS_ITRF_1991", "D_ITRF_1991"); // missing
+            ITRF1992 = ProjectionInfo.FromAuthorityCode("ESRI", 104119).SetNames("", "GCS_ITRF_1992", "D_ITRF_1992"); // missing
+            ITRF1993 = ProjectionInfo.FromAuthorityCode("ESRI", 104120).SetNames("", "GCS_ITRF_1993", "D_ITRF_1993"); // missing
+            ITRF1994 = ProjectionInfo.FromAuthorityCode("ESRI", 104121).SetNames("", "GCS_ITRF_1994", "D_ITRF_1994"); // missing
+            ITRF1996 = ProjectionInfo.FromAuthorityCode("ESRI", 104122).SetNames("", "GCS_ITRF_1996", "D_ITRF_1996"); // missing
+            ITRF1997 = ProjectionInfo.FromAuthorityCode("ESRI", 104123).SetNames("", "GCS_ITRF_1997", "D_ITRF_1997"); // missing
+            ITRF2000 = ProjectionInfo.FromAuthorityCode("ESRI", 104124).SetNames("", "GCS_ITRF_2000", "D_ITRF_2000"); // missing
+            ITRF2005 = ProjectionInfo.FromAuthorityCode("ESRI", 104896).SetNames("", "GCS_ITRF_2005", "D_ITRF_2005"); // missing
+            NSWC9Z2 = ProjectionInfo.FromEpsgCode(4276).SetNames("", "GCS_NSWC_9Z_2", "D_NSWC_9Z_2");
+            WGS1966 = ProjectionInfo.FromEpsgCode(4760).SetNames("", "GCS_WGS_1966", "D_WGS_1966");
+            WGS1972 = ProjectionInfo.FromEpsgCode(4322).SetNames("", "GCS_WGS_1972", "D_WGS_1972");
+            WGS1972TBE = ProjectionInfo.FromEpsgCode(4324).SetNames("", "GCS_WGS_1972_BE", "D_WGS_1972_BE");
+            WGS1984 = ProjectionInfo.FromEpsgCode(4326).SetNames("", "GCS_WGS_1984", "D_WGS_1984");
         }
 
         #endregion
