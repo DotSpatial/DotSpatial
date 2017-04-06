@@ -1970,7 +1970,7 @@ namespace DotSpatial.Positioning
         private void SanityCheck()
         {
             if (_ellipsoid == null)
-                throw new ArgumentException("Datum constructiopn failed. Ellipsoid is null or invalid");
+                throw new ArgumentException("Datum construction failed. Ellipsoid is null or invalid");
         }
 
         #endregion Constructors
@@ -2035,7 +2035,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns the prime meridian assocated with this Datum.
+        /// Returns the prime meridian associated with this Datum.
         /// </summary>
         /// <remarks>Most datums use Greenwich as the prime meridian. However, several systems offset coordinates
         /// using a local meridian. This value reflects that usage.</remarks>

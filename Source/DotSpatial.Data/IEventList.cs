@@ -379,7 +379,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Occurs before a range of items is added to the list.
-        /// There is no index yet, but this event can be cancelled.
+        /// There is no index yet, but this event can be canceled.
         /// </summary>
         event EventHandler<CollectiveCancel<T>> BeforeRangeAdded;
 

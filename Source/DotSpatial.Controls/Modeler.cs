@@ -1,6 +1,6 @@
 // ********************************************************************************************************
 // Product Name: DotSpatial.Tools.Modeler
-// Description:  Creats and displays models
+// Description:  Creates and displays models
 //
 // ********************************************************************************************************
 //
@@ -1142,7 +1142,7 @@ namespace DotSpatial.Controls
             switch (par.ParamType)
             {
                 case "DotSpatial FeatureSet Param":
-                    addedFeatureSet = new Shapefile
+                    addedFeatureSet = new FeatureSet
                                           {
                                               Filename =
                                                   Path.GetTempPath() +

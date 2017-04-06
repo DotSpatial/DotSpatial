@@ -136,7 +136,7 @@ namespace DotSpatial.Positioning
         public DilutionOfPrecision(float value)
         {
             if (value <= 0)
-                throw new ArgumentException("Dillution of precision value must be > 0");
+                throw new ArgumentException("Dilution of precision value must be > 0");
 
             _value = value;
         }
@@ -271,8 +271,8 @@ namespace DotSpatial.Positioning
         /// Controls the estimated average precision possible by the current GPS device.
         /// </summary>
         /// <value>The current average device precision.</value>
-        /// <remarks>Most consumer GPS devces are capable of about six meters of precision without DGPS features
-        /// such as WAAS or EGNOS.  When DGPS features are utilized, a typical cunsumer device is capable of about
+        /// <remarks>Most consumer GPS devices are capable of about six meters of precision without DGPS features
+        /// such as WAAS or EGNOS.  When DGPS features are utilized, a typical consumer device is capable of about
         /// two meters of precision.  If you know of a specific amount for your device, you can set this property to
         /// assist GPS.NET in calculating the current estimated measurable amount of error in latitude/longitude reports.</remarks>
         public static Distance CurrentAverageDevicePrecision

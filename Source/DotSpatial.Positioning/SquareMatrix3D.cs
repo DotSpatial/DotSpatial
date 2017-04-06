@@ -160,7 +160,7 @@ namespace DotSpatial.Positioning
         #region Public Methods
 
         /// <summary>
-        /// Ctreates an exact copy of this matrix.
+        /// Creates an exact copy of this matrix.
         /// </summary>
         /// <returns>A cloned matrix.</returns>
         public SquareMatrix3D Clone()
@@ -187,7 +187,7 @@ namespace DotSpatial.Positioning
         /// <param name="matrixOrder">The order in which to carry out the operation.</param>
         public void Multiply(SquareMatrix3D matrix, MatrixOrder matrixOrder)
         {
-            // Matrix placholders
+            // Matrix placeholders
             SquareMatrix3D a;
             SquareMatrix3D b;
 
@@ -218,7 +218,7 @@ namespace DotSpatial.Positioning
             double m32 = (a._m31 * b._m12) + (a._m32 * b._m22) + (a._m33 * b._m31);
             double m33 = (a._m31 * b._m13) + (a._m32 * b._m23) + (a._m33 * b._m33);
 
-            // Push calc'd values to this matrix
+            // Push calculated values to this matrix
             _m11 = m11;
             _m12 = m12;
             _m13 = m13;
@@ -321,9 +321,9 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Calculates the determinat of this matrix.
+        /// Calculates the determinant of this matrix.
         /// </summary>
-        /// <returns>The signed area of the parallelagram described by this matrix.</returns>
+        /// <returns>The signed area of the parallelogram described by this matrix.</returns>
         /// <remarks>The determinant is a scalar value typically used to invert a matrix. As a signed area, it can also be used to
         /// identify "flipped" orientations, like mirroring. A negative determinant indicates that a matrix is "flipped".</remarks>
         private double Determinant()
@@ -335,7 +335,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Resests the matrix to the identity matrix.
+        /// Resets the matrix to the identity matrix.
         /// </summary>
         public void Reset()
         {

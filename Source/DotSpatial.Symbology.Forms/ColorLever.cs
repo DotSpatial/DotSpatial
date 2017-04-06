@@ -22,7 +22,7 @@ namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
     /// A Color lever is a control that shows a color on a plate, and has a knob on a lever on the side of the plate for
-    /// controling the opacity, where the up position is opaque and the bottom position is transparent.
+    /// controlling the opacity, where the up position is opaque and the bottom position is transparent.
     /// </summary>
     [DefaultEvent("ColorChanging"),
     ToolboxBitmap(typeof(ColorLever), "GradientControls.ColorLever.ico")]
