@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -48,11 +48,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.2\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.2.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.2\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
+    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.4\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -197,7 +197,6 @@
     <Compile Include="MapFrameExt.cs" />
     <Compile Include="MapFrameProjectionHelper.cs" />
     <Compile Include="MapFunctionKeyNavigation.cs" />
-    <Compile Include="MapLayerEnumerator.cs" />
     <Compile Include="MessageStrings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,7 +216,6 @@
     <Compile Include="MapFrame.cs" />
     <Compile Include="MapGroup.cs" />
     <Compile Include="MapLayerCollection.cs" />
-    <Compile Include="GeoLayerEnumerator.cs" />
     <Compile Include="IMapRasterLayer.cs" />
     <Compile Include="MapRasterLayer.cs" />
     <Compile Include="ProjectChangeTracker.cs" />
@@ -447,7 +445,9 @@
     <EmbeddedResource Include="Resources\SpatialStatusStrip.ico" />
     <None Include="app.config" />
     <None Include="DotSpatial.Controls.snk" />
-    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Controls.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -534,10 +534,6 @@
     <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
       <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
       <Name>DotSpatial.Modeling.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
-      <Project>{bdc11a53-b435-4b9f-b8fa-06be940acda8}</Project>
-      <Name>DotSpatial.Mono</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
       <Project>{1da244ce-5862-4dfb-8943-244a80b7e3ee}</Project>

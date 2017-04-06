@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 namespace DotSpatial.Extensions
 {
     /// <summary>
-    /// Extensions of this type are activiated before other extensions and may be used to help satisfy required imports.
+    /// Extensions of this type are activated before other extensions and may be used to help satisfy required imports.
     /// </summary>
     [InheritedExport]
     public interface ISatisfyImportsExtension

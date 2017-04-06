@@ -6,7 +6,7 @@ using DotSpatial.Plugins.ExtensionManager.Properties;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    public static class FeedManager
+    internal static class FeedManager
     {
         public static IEnumerable<Feed> GetFeeds()
         {
@@ -60,9 +60,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Add or remove feeds to be autoupdated when app starts.
         /// </summary>
-        /// <param name="appManager">The app manager.</param>
-        /// <param name="path">URL of feed.</param>
-        public static void ToggleAutoUpdate(string feed, Boolean toAdd)
+        public static void ToggleAutoUpdate(string feed, bool toAdd)
         {
             {
                 if (toAdd && !Settings.Default.FeedsToAutoUpdate.Contains(feed))
@@ -80,7 +78,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Return a list of feeds to autoupdate when app starts.
         /// </summary>
-        /// <param name="appManager">The app manager.</param>
         public static StringCollection getAutoUpdateFeeds()
         {
             if (Settings.Default.FeedsToAutoUpdate == null)
@@ -89,15 +86,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             return Settings.Default.FeedsToAutoUpdate;
         }
-
-        /// <summary>
-        /// Check if a specific URL is in the autoupdate list.
-        /// </summary>
-        /// <param name="appManager">The app manager.</param>
-        /// <param name="feed">The feed to check.</param>
-        public static bool isAutoUpdateFeed(string feed)
-        {
-            return Settings.Default.FeedsToAutoUpdate.Contains(feed);
-        }
+      
     }
 }

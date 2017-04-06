@@ -17,6 +17,9 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Layer with capability to draw itself on map.
+    /// </summary>
     public interface IMapLayer : ILayer
     {
         /// <summary>

@@ -238,7 +238,7 @@ namespace DotSpatial.Controls
 
         private static void ShowSaveAsError(string fileName)
         {
-            MessageBox.Show(String.Format(MessageStrings.FailedToWriteTheSpecifiedMapFile, fileName), MessageStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(string.Format(MessageStrings.FailedToWriteTheSpecifiedMapFile, fileName), MessageStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         
         private void cmdOpen_Click(object sender, EventArgs e)
@@ -256,19 +256,19 @@ namespace DotSpatial.Controls
                 }
                 catch (IOException)
                 {
-                    MessageBox.Show(String.Format(MessageStrings.CouldNotOpenTheSpecifiedMapFile, dlg.FileName),
+                    MessageBox.Show(string.Format(MessageStrings.CouldNotOpenTheSpecifiedMapFile, dlg.FileName),
                         MessageStrings.Error,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (XmlException)
                 {
-                    MessageBox.Show(String.Format(MessageStrings.FailedToReadTheSpecifiedMapFile, dlg.FileName),
+                    MessageBox.Show(string.Format(MessageStrings.FailedToReadTheSpecifiedMapFile, dlg.FileName),
                         MessageStrings.Error,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (ArgumentException)
                 {
-                    MessageBox.Show(String.Format(MessageStrings.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName),
+                    MessageBox.Show(string.Format(MessageStrings.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName),
                         MessageStrings.Error,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -284,7 +284,7 @@ namespace DotSpatial.Controls
             {
                 app.SerializationManager.New();
             }
-            else if (String.IsNullOrEmpty(app.SerializationManager.CurrentProjectFile))
+            else if (string.IsNullOrEmpty(app.SerializationManager.CurrentProjectFile))
             {
                 //if the current project is not specified - just ask to discard changes
                 if (MessageBox.Show(MessageStrings.ClearAllDataAndStartANewMap, MessageStrings.DiscardChanges, MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -295,7 +295,7 @@ namespace DotSpatial.Controls
             else
             {
                 //the current project is specified - ask the users if they want to save changes to current project
-                var saveProjectMessage = String.Format(MessageStrings.SaveChangesToCurrentProject, Path.GetFileName(app.SerializationManager.CurrentProjectFile));
+                var saveProjectMessage = string.Format(MessageStrings.SaveChangesToCurrentProject, Path.GetFileName(app.SerializationManager.CurrentProjectFile));
                 var msgBoxResult = MessageBox.Show(saveProjectMessage, MessageStrings.DiscardChanges, MessageBoxButtons.YesNoCancel);
 
                 if (msgBoxResult == DialogResult.Yes)

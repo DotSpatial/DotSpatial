@@ -24,7 +24,7 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LineSymbolizer
+    /// Symbolizer for line features.
     /// </summary>
     [Serializable]
     public class LineSymbolizer : FeatureSymbolizer, ILineSymbolizer

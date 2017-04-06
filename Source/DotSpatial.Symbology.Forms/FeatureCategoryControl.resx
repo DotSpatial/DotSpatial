@@ -400,7 +400,7 @@
     <value>6</value>
   </data>
   <data name="btnDelete.ToolTip" xml:space="preserve">
-    <value>Removes the selected cateogry from the set.</value>
+    <value>Removes the selected category from the set.</value>
   </data>
   <data name="&gt;&gt;btnDelete.Name" xml:space="preserve">
     <value>btnDelete</value>

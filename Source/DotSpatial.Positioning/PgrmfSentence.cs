@@ -51,7 +51,7 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// OnSentanceChanged event handler
+        /// OnSentenceChanged event handler
         /// </summary>
         private new void SetPropertiesFromSentence()
         {

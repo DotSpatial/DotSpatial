@@ -39,7 +39,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -86,11 +86,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.2\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.2.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.2\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
+    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.4\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -147,13 +147,14 @@
     <Compile Include="MiscUtil\NullOp.cs" />
     <Compile Include="MiscUtil\Operator.cs" />
     <Compile Include="FilePathUtils.cs" />
+    <Compile Include="Mono.cs" />
     <Compile Include="PointShape.cs" />
     <Compile Include="PointShapefileFeatureSource.cs" />
     <Compile Include="PointShapefileShapeSource.cs" />
     <Compile Include="PolygonShape.cs" />
     <Compile Include="DataFormat.cs" />
     <Compile Include="DataManager.cs" />
-    <Compile Include="DataProviders.cs" />
+    <Compile Include="DataProviderEventArgs.cs" />
     <Compile Include="Extent.cs" />
     <Compile Include="PolygonShapefileFeatureSource.cs" />
     <Compile Include="PolygonShapefileShapeSource.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="ShapefileFeatureSource.cs" />
     <Compile Include="ShapefileFeatureSourceQuadtree.cs" />
     <Compile Include="ShapefileIndexFile.cs" />
+    <Compile Include="ShapefilePackage.cs" />
     <Compile Include="ShapefileShapeSource.cs" />
     <Compile Include="ShapeReader.cs" />
     <Compile Include="ShapeRelateType.cs" />
@@ -210,7 +212,6 @@
     <Compile Include="PngHeader.cs" />
     <Compile Include="PngInsuficientLengthException.cs" />
     <Compile Include="PngInvalidSignatureException.cs" />
-    <Compile Include="PyramidException.cs" />
     <Compile Include="PyramidHeader.cs" />
     <Compile Include="PyramidImage.cs" />
     <Compile Include="PyramidImageHeader.cs" />
@@ -250,7 +251,6 @@
     <Compile Include="RasterFileType.cs" />
     <Compile Include="RCIndex.cs" />
     <Compile Include="Smoother.cs" />
-    <Compile Include="SpaceTimeSupport.cs" />
     <Compile Include="StreamExt.cs" />
     <Compile Include="ByteBlock.cs" />
     <Compile Include="DataSet.cs" />
@@ -347,7 +347,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DotSpatial.Data.4.0.snk" />
-    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Data.nuspec" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -377,10 +377,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
-      <Project>{bdc11a53-b435-4b9f-b8fa-06be940acda8}</Project>
-      <Name>DotSpatial.Mono</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj">
       <Project>{034f7ade-ac2a-48ae-9cf2-0686eea97c25}</Project>
       <Name>DotSpatial.NTSExtension</Name>

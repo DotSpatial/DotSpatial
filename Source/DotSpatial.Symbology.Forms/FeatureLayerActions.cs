@@ -131,6 +131,7 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <inheritdoc />
         public void SelectByAttributes(FeatureLayer featureLayer)
         {
             using (var form = new SelectByAttributes(featureLayer))

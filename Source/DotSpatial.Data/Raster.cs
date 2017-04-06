@@ -30,7 +30,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Occurs when attempting to copy or save to a fileName that already exists.  A developer can tap into this event
         /// in order to display an appropriate message.  A cancel property allows the developer (and ultimately the user)
-        /// decide if the specified event should ultimately be cancelled.
+        /// decide if the specified event should ultimately be canceled.
         /// </summary>
         public event EventHandler<MessageCancelEventArgs> FileExists;
 

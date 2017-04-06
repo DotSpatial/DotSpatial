@@ -14,7 +14,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Xml.Serialization;
@@ -23,7 +22,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LegendItem
+    /// Legend item supposed to be located inside legend.
     /// </summary>
     [Serializable]
     public class LegendItem : Descriptor, ILegendItem
@@ -218,13 +217,13 @@ namespace DotSpatial.Symbology
                 if (_changeOccured)
                 {
 #if DEBUG
-                    var sw = new Stopwatch();
+                    var sw = new System.Diagnostics.Stopwatch();
                     sw.Start();
 #endif
                     OnItemChanged();
 #if DEBUG
                     sw.Stop();
-                    Debug.WriteLine("OnItemChanged time:" + sw.ElapsedMilliseconds);
+                    System.Diagnostics.Debug.WriteLine("OnItemChanged time:" + sw.ElapsedMilliseconds);
 #endif
                 }
             }

@@ -169,6 +169,7 @@ namespace DotSpatial.Data
         /// <param name="length">The number of bytes to filter, starting at the specified offset.  This should be evenly divisible by the width.</param>
         /// <param name="width">The integer width of a scan-line for grabbing the c and b bytes</param>
         /// <returns>The entire length of bytes starting with the specified offset</returns>
+        /// <exception cref="PngInsuficientLengthException"/>
         public static byte[] Filter(byte[] refData, int offset, int length, int width)
         {
             // the 'B' and 'C' values of the first row are considered to be 0.
@@ -207,7 +208,6 @@ namespace DotSpatial.Data
         /// <param name="offset">the integer offset where reconstruction should begin</param>
         /// <param name="length">The integer length of bytes to deconstruct</param>
         /// <param name="width">The integer width of a scan-line in bytes (not counting any filter type bytes.</param>
-        /// <returns></returns>
         /// <exception cref="PngInsuficientLengthException"></exception>
         public byte[] UnFilter(byte[] filterStream, int offset, int length, int width)
         {   // the 'B' and 'C' values of the first row are considered to be 0.

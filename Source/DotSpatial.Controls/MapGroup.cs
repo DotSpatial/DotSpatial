@@ -35,7 +35,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Transforms an IMapLayer enumerator into an ILayer Enumerator
         /// </summary>
-        public class MapLayerEnumerator : IEnumerator<ILayer>
+        private class MapLayerEnumerator : IEnumerator<ILayer>
         {
             private readonly IEnumerator<IMapLayer> _enumerator;
 

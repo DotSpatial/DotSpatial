@@ -1075,7 +1075,7 @@ namespace DotSpatial.Positioning
 
                 // Control flags which determine how the search is performed
                 NativeMethods2.WasLookupControlOptions controlOptions =
-                    // This flag is manadatory
+                    // This flag is mandatory
                     NativeMethods2.WasLookupControlOptions.Containers;
 
                 // Indicate that we want a fat blob describing the device
@@ -1199,7 +1199,7 @@ namespace DotSpatial.Positioning
 
                     #region Decode the device information
 
-                    /* At this point, the WSAQUERYSET object contains plenty of information for one Buletooth device.
+                    /* At this point, the WSAQUERYSET object contains plenty of information for one Bluetooth device.
                      * The name of the device is included, along with its address, and an object further describing its
                      * characteristics.  From this information, we'll build a managed BluetoothDevice class for GPS.NET.
                      */
@@ -1518,7 +1518,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         None = 0,
         /// <summary>
-        /// Limited Disoverable mode
+        /// Limited Discoverable mode
         /// </summary>
         LimitedDiscoverableMode = 0x2000,
         /// <summary>

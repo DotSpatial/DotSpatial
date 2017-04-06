@@ -12,7 +12,7 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    public class ListViewHelper
+    internal class ListViewHelper
     {
 
         public void AddPackages(IEnumerable<IPackage> list, ListView listView, int pagenumber)
