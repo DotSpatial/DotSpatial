@@ -15,7 +15,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime
 
             if (DesignMode) return;
 
-            //------ These 2 lines required to load extensions
+            //------ These 2 lines are required to load extensions
             Shell = this;
             appManager.LoadExtensions();
             //-----------

@@ -67,16 +67,16 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Positioning,  Version=1.9.0.0, Culture=neutral, PublicKeyToken=f6f66d1554473068, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotSpatial.Positioning.1.9\lib\net40-Client\DotSpatial.Positioning.dll</HintPath>
+    <Reference Include="DotSpatial.Positioning, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f6f66d1554473068, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotSpatial.Positioning.2.0.0-rc1\lib\net40-client\DotSpatial.Positioning.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotSpatial.Positioning.Design,  Version=1.9.0.0, Culture=neutral, PublicKeyToken=b4b0b185210c9dae, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotSpatial.Positioning.1.9\lib\net40-Client\DotSpatial.Positioning.Design.dll</HintPath>
+    <Reference Include="DotSpatial.Positioning.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b4b0b185210c9dae, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotSpatial.Positioning.Design.2.0.0-rc1\lib\net40-client\DotSpatial.Positioning.Design.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotSpatial.Positioning.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3a45fedac1c4cdab, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotSpatial.Positioning.Forms.1.9\lib\net40-Client\DotSpatial.Positioning.Forms.dll</HintPath>
+    <Reference Include="DotSpatial.Positioning.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3a45fedac1c4cdab, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotSpatial.Positioning.Forms.2.0.0-rc1\lib\net40-client\DotSpatial.Positioning.Forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

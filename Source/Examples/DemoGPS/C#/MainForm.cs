@@ -47,23 +47,23 @@ namespace Demo.GPS
              * any GPS devices which have been found, along with any problems encountered and reasons
              * why a particular device could NOT be detected.
              */
-            Devices.DeviceDetectionAttempted += Devices_DeviceDetectionAttempted;
-            Devices.DeviceDetectionAttemptFailed += Devices_DeviceDetectionAttemptFailed;
-            Devices.DeviceDetectionStarted += Devices_DeviceDetectionStarted;
-            Devices.DeviceDetectionCompleted += Devices_DeviceDetectionCompleted;
-            Devices.DeviceDetectionCanceled += Devices_DeviceDetectionCanceled;
-            Devices.DeviceDetected += Devices_DeviceDetected;
+            Devices.DeviceDetectionAttempted += DevicesDeviceDetectionAttempted;
+            Devices.DeviceDetectionAttemptFailed += DevicesDeviceDetectionAttemptFailed;
+            Devices.DeviceDetectionStarted += DevicesDeviceDetectionStarted;
+            Devices.DeviceDetectionCompleted += DevicesDeviceDetectionCompleted;
+            Devices.DeviceDetectionCanceled += DevicesDeviceDetectionCanceled;
+            Devices.DeviceDetected += DevicesDeviceDetected;
 
             /* Hook up event handlers for application-level and AppDomain-level exceptions so
              * they can be reported to the user
              */
-            Application.ThreadException += Application_ThreadException;
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            Application.ThreadException += ApplicationThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
         }
 
         #region GPS Device Detection Events
 
-        private void Devices_DeviceDetectionCanceled(object sender, EventArgs e)
+        private void DevicesDeviceDetectionCanceled(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -73,7 +73,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void Devices_DeviceDetected(object sender, DeviceEventArgs e)
+        private void DevicesDeviceDetected(object sender, DeviceEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -89,7 +89,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void Devices_DeviceDetectionCompleted(object sender, EventArgs e)
+        private void DevicesDeviceDetectionCompleted(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -99,7 +99,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void Devices_DeviceDetectionStarted(object sender, EventArgs e)
+        private void DevicesDeviceDetectionStarted(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -110,7 +110,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void Devices_DeviceDetectionAttemptFailed(object sender, DeviceDetectionExceptionEventArgs e)
+        private void DevicesDeviceDetectionAttemptFailed(object sender, DeviceDetectionExceptionEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -127,7 +127,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void Devices_DeviceDetectionAttempted(object sender, DeviceEventArgs e)
+        private void DevicesDeviceDetectionAttempted(object sender, DeviceEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -153,7 +153,7 @@ namespace Demo.GPS
 
         #region NmeaInterpreter Events
 
-        private void nmeaInterpreter1_SpeedChanged(object sender, SpeedEventArgs e)
+        private void NmeaInterpreter1SpeedChanged(object sender, SpeedEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -162,7 +162,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_BearingChanged(object sender, AzimuthEventArgs e)
+        private void NmeaInterpreter1BearingChanged(object sender, AzimuthEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -171,7 +171,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_AltitudeChanged(object sender, DistanceEventArgs e)
+        private void NmeaInterpreter1AltitudeChanged(object sender, DistanceEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -180,7 +180,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_Paused(object sender, EventArgs e)
+        private void NmeaInterpreter1Paused(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -190,7 +190,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_Resumed(object sender, EventArgs e)
+        private void NmeaInterpreter1Resumed(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -199,7 +199,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_Starting(object sender, DeviceEventArgs e)
+        private void NmeaInterpreter1Starting(object sender, DeviceEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -207,7 +207,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_Started(object sender, EventArgs e)
+        private void NmeaInterpreter1Started(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -225,7 +225,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_Stopping(object sender, EventArgs e)
+        private void NmeaInterpreter1Stopping(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -233,7 +233,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_Stopped(object sender, EventArgs e)
+        private void NmeaInterpreter1Stopped(object sender, EventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -245,7 +245,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_SatellitesChanged(object sender, SatelliteListEventArgs e)
+        private void NmeaInterpreter1SatellitesChanged(object sender, SatelliteListEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -282,7 +282,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_PositionChanged(object sender, PositionEventArgs e)
+        private void NmeaInterpreter1PositionChanged(object sender, PositionEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -291,7 +291,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_DateTimeChanged(object sender, DateTimeEventArgs e)
+        private void NmeaInterpreter1DateTimeChanged(object sender, DateTimeEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -300,7 +300,7 @@ namespace Demo.GPS
                                               }));
         }
 
-        private void nmeaInterpreter1_SentenceReceived(object sender, NmeaSentenceEventArgs e)
+        private void NmeaInterpreter1SentenceReceived(object sender, NmeaSentenceEventArgs e)
         {
             BeginInvoke(new MethodInvoker(delegate
                                               {
@@ -318,24 +318,24 @@ namespace Demo.GPS
 
         #region Button Events
 
-        private void DetectButton_Click(object sender, EventArgs e)
+        private void DetectButtonClick(object sender, EventArgs e)
         {
             Devices.BeginDetection();
         }
 
-        private void CancelDetectButton_Click(object sender, EventArgs e)
+        private void CancelDetectButtonClick(object sender, EventArgs e)
         {
             Devices.CancelDetection(true);
         }
 
-        private void undetectButton_Click(object sender, EventArgs e)
+        private void UndetectButtonClick(object sender, EventArgs e)
         {
             Devices.Undetect();
             devicesListView.Items.Clear();
             undetectButton.Enabled = false;
         }
 
-        private void startButton_Click(object sender, EventArgs e)
+        private void StartButtonClick(object sender, EventArgs e)
         {
             try
             {
@@ -347,17 +347,17 @@ namespace Demo.GPS
             }
         }
 
-        private void stopButton_Click(object sender, EventArgs e)
+        private void StopButtonClick(object sender, EventArgs e)
         {
             nmeaInterpreter1.Stop();
         }
 
-        private void pauseButton_Click(object sender, EventArgs e)
+        private void PauseButtonClick(object sender, EventArgs e)
         {
             nmeaInterpreter1.Pause();
         }
 
-        private void resumeButton_Click(object sender, EventArgs e)
+        private void ResumeButtonClick(object sender, EventArgs e)
         {
             nmeaInterpreter1.Resume();
         }
@@ -366,19 +366,19 @@ namespace Demo.GPS
 
         #region Context Menu Events
 
-        private void deviceContextMenu_Opening(object sender, CancelEventArgs e)
+        private void DeviceContextMenuOpening(object sender, CancelEventArgs e)
         {
             e.Cancel = devicesListView.SelectedItems.Count == 0;
         }
 
-        private void redetectMenuItem_Click(object sender, EventArgs e)
+        private void RedetectMenuItemClick(object sender, EventArgs e)
         {
             Device device = (Device)devicesListView.SelectedItems[0].Tag;
             device.Undetect();
             device.BeginDetection();
         }
 
-        private void resetMenuItem_Click(object sender, EventArgs e)
+        private void ResetMenuItemClick(object sender, EventArgs e)
         {
             Device device = (Device)devicesListView.SelectedItems[0].Tag;
             device.Reset();
@@ -388,33 +388,33 @@ namespace Demo.GPS
 
         #region Other Form Control Events
 
-        private void devicesListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        private void DevicesListViewItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             propertyGrid1.SelectedObject = e.Item.Tag;
         }
 
-        private void serialCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void SerialCheckBoxCheckedChanged(object sender, EventArgs e)
         {
             Devices.AllowSerialConnections = serialCheckBox.Checked;
             exhaustiveCheckBox.Enabled = serialCheckBox.Checked;
         }
 
-        private void exhaustiveCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void ExhaustiveCheckBoxCheckedChanged(object sender, EventArgs e)
         {
             Devices.AllowExhaustiveSerialPortScanning = exhaustiveCheckBox.Checked;
         }
 
-        private void bluetoothCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void BluetoothCheckBoxCheckedChanged(object sender, EventArgs e)
         {
             Devices.AllowBluetoothConnections = bluetoothCheckBox.Checked;
         }
 
-        private void firstDeviceCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void FirstDeviceCheckBoxCheckedChanged(object sender, EventArgs e)
         {
             Devices.IsOnlyFirstDeviceDetected = firstDeviceCheckBox.Checked;
         }
 
-        private void clockSynchronizationCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void ClockSynchronizationCheckBoxCheckedChanged(object sender, EventArgs e)
         {
             Devices.IsClockSynchronizationEnabled = clockSynchronizationCheckBox.Checked;
         }
@@ -423,13 +423,13 @@ namespace Demo.GPS
 
         #region Unhandled Exception Events
 
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception ex = (Exception)e.ExceptionObject;
             NotifyOfUnhandledException(ex);
         }
 
-        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        private void ApplicationThreadException(object sender, ThreadExceptionEventArgs e)
         {
             NotifyOfUnhandledException(e.Exception);
         }

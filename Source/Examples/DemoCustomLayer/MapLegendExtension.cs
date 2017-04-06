@@ -5,7 +5,7 @@ using DotSpatial.Controls.Docking;
 namespace DemoCustomLayer
 {
     /// <summary>
-    /// Adds map and legend to the application
+    /// Adds a map and a legend to the application.
     /// </summary>
     public class MapLegendExtension : Extension
     {

@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 using Point = System.Drawing.Point;
 using PointShape = DotSpatial.Symbology.PointShape;
 
@@ -28,11 +28,6 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
 
         // private bool _isPreventingOverlap;
         // private KDTree _regularTree;
-
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private Image _stencil; // draw features to the stencil
-        private Envelope _bufferExtent; // the geographic extent of the current buffer.
-        private Rectangle _bufferRectangle;
 
         #endregion
 
@@ -75,8 +70,8 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
+            if (BackBuffer == null) return;
+            Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -87,8 +82,6 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             }
             g.Dispose();
         }
-
-        
 
         /// <summary>
         /// This will draw any features that intersect this region.  To specify the features
@@ -107,7 +100,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
 
             foreach (Extent boundingBox in regions)
             {
-                Graphics g = args.Device ?? Graphics.FromImage(_backBuffer);
+                Graphics g = args.Device ?? Graphics.FromImage(BackBuffer);
                 Matrix origTransform = g.Transform;
                 FeatureType featureType = FeatureType.Point;
 
@@ -128,9 +121,11 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
 
                     if (featureType == FeatureType.Point)
                     {
-                        Point pt = new Point();
-                        pt.X = Convert.ToInt32((vertices[index * 2] - minX) * dx);
-                        pt.Y = Convert.ToInt32((maxY - vertices[index * 2 + 1]) * dy);
+                        Point pt = new Point
+                        {
+                            X = Convert.ToInt32((vertices[index * 2] - minX) * dx),
+                            Y = Convert.ToInt32((maxY - vertices[index * 2 + 1]) * dy)
+                        };
 
                         Matrix shift = origTransform.Clone();
                         shift.Translate(pt.X, pt.Y);
@@ -152,8 +147,8 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         public void FinishDrawing()
         {
             OnFinishDrawing();
-            if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
-            _stencil = _backBuffer;
+            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
+            Buffer = BackBuffer;
         }
 
         /// <summary>
@@ -227,7 +222,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         }
 
         private Bitmap CreateDefaultSymbol(Color color, int symbolSize)
-        {           
+        {
             double scaleSize = 1;
             Size2D size = new Size2D(symbolSize, symbolSize);
             Bitmap normalSymbol = new Bitmap((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
@@ -266,7 +261,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
 
         //    //runs the drawing
         //    int numPoints = vertices.Length / 2;
-            
+
         //    for (int index=0; index < numPoints; index++)
         //    {
         //        Bitmap bmp = normalSymbol;
@@ -297,21 +292,13 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer
-        {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
-        }
+        public Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+        public Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
@@ -319,11 +306,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         /// </summary>
         [ShallowCopy,
         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Envelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+        public Envelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
@@ -331,11 +314,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         /// </summary>
         [ShallowCopy,
         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+        public Rectangle BufferRectangle { get; set; }
 
         public override Extent Extent
         {
