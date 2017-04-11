@@ -253,7 +253,7 @@ namespace DotSpatial.Controls
             if (items == null || !items.Any()) return;
             List<ILegendItem> itemList = items.ToList();
 
-            for (int i = itemList.Count - 1; i >= 0; i--)
+            for (int i = 0; i < itemList.Count; i++)
             {
                 if (itemList[i].LegendItems == null)
                 {
