@@ -157,7 +157,7 @@ namespace DotSpatial.Controls
         {
             if (Resizing == false)
             {
-                //If the size has never been set before we set the maps extent to that of the map
+                // If the size has never been set before we set the maps extent to that of the map
                 if (_oldRectangle.Width == 0 && _oldRectangle.Height == 0)
                 {
                     ZoomViewExtent();
@@ -166,12 +166,12 @@ namespace DotSpatial.Controls
                 {
                     double dx = Envelope.Width / _oldRectangle.Width;
                     double dy = Envelope.Height / _oldRectangle.Height;
-                    //Envelope newEnv = Envelope.Clone();
-                    //newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
-                    //newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
-                    //newEnv.X = Envelope.X;
-                    //newEnv.Y = Envelope.Y;
-                    //Envelope = newEnv;
+                    ////Envelope newEnv = Envelope.Clone();
+                    ////newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
+                    ////newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
+                    ////newEnv.X = Envelope.X;
+                    ////newEnv.Y = Envelope.Y;
+                    ////Envelope = newEnv;
 
                     double xtl = Envelope.MinX;
                     double ytl = Envelope.MaxY;
@@ -192,8 +192,8 @@ namespace DotSpatial.Controls
         public virtual void ZoomToFullExtent()
         {
             Envelope = MapControl.Extent.ToEnvelope();
-            base.OnThumbnailChanged();
-            base.OnInvalidate();
+            OnThumbnailChanged();
+            OnInvalidate();
         }
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace DotSpatial.Controls
         public virtual void ZoomOutMap()
         {
             double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
-            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20;// todo jany_ why uses maxy tenperwidth instead of height?
-            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth);//TODO jany_ can we assign this direct or do we lose MinX etc?
+            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
+            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); //TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
         }
 

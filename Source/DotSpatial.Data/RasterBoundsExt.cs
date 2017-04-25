@@ -21,16 +21,15 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// RasterBoundsEM
+    /// Extension methods for the raster bounds.
     /// </summary>
     public static class RasterBoundsExt
     {
         /// <summary>
-        /// Calculates the area of this envelope.  Because the word Area,
-        /// like Volume, is dimension specific, this method only looks
-        /// at the X and Y ordinates, and requires at least 2 ordinates.
+        /// Calculates the area of this envelope.  Because the word Area, like Volume, is dimension specific,
+        /// this method only looks at the X and Y ordinates, and requires at least 2 ordinates.
         /// </summary>
-        /// <param name="self">The IEnvelope to use with this method</param>
+        /// <param name="self">The IEnvelope to use with this method.</param>
         /// <returns>The 2D area as a double value.</returns>
         public static double Area(this IRasterBounds self)
         {
@@ -42,7 +41,7 @@ namespace DotSpatial.Data
         /// Gets the minY, which is Y - Height.
         /// </summary>
         /// <param name="self">The <c>IRasterBounds</c> that this calculation is for.</param>
-        /// <returns></returns>
+        /// <returns>The minY value.</returns>
         public static double Bottom(this IRasterBounds self)
         {
             return self.Y - self.Height;
@@ -59,15 +58,15 @@ namespace DotSpatial.Data
             self.Y += distance;
             self.Width += distance * 2;
             self.Height += distance * 2;
+
             // the maximum is now the minimum etc.
         }
 
         /// <summary>
-        /// Gets the left value for this rectangle.  This should be the
-        /// X coordinate, but is added for clarity.
+        /// Gets the left value for this rectangle. This should be the X coordinate, but is added for clarity.
         /// </summary>
         /// <param name="self">The <c>IRasterBounds</c> that this calculation is for.</param>
-        /// <returns></returns>
+        /// <returns>The left value.</returns>
         public static double Left(this IRasterBounds self)
         {
             return self.X;
@@ -77,7 +76,7 @@ namespace DotSpatial.Data
         /// Gets the right value, which is X + Width.
         /// </summary>
         /// <param name="self">The <c>IRasterBounds</c> that this calculation is for.</param>
-        /// <returns></returns>
+        /// <returns>The right value.</returns>
         public static double Right(this IRasterBounds self)
         {
             return self.X + self.Width;
@@ -87,19 +86,18 @@ namespace DotSpatial.Data
         /// Gets the maxY value, which should be Y.
         /// </summary>
         /// <param name="self">The <c>IRasterBounds</c> that this calculation is for.</param>
-        /// <returns>The double value representing the Max Y value of this rectangle</returns>
+        /// <returns>The double value representing the max Y value of this rectangle.</returns>
         public static double Top(this IRasterBounds self)
         {
             return self.Y;
         }
 
         /// <summary>
-        /// Use the Open method instead of this extension.  This only provides
-        /// a default behavior that can optionally be used by implementers
-        /// of the IRasterBounds interface.
+        /// Use the Open method instead of this extension. This only provides a default behavior that can
+        /// optionally be used by implementers of the IRasterBounds interface.
         /// </summary>
-        /// <param name="bounds">The bounds to open</param>
-        /// <param name="fileName">The *.wld or *.**w world file to open</param>
+        /// <param name="bounds">The bounds to open.</param>
+        /// <param name="fileName">The *.wld or *.**w world file to open.</param>
         public static void OpenWorldFile(this IRasterBounds bounds, string fileName)
         {
             bounds.WorldFile = fileName;
@@ -111,40 +109,46 @@ namespace DotSpatial.Data
             {
                 affine[1] = double.Parse(line); // Dx
             }
+
             line = sr.ReadLine();
             if (line != null)
             {
                 affine[2] = double.Parse(line); // Skew X
             }
+
             line = sr.ReadLine();
             if (line != null)
             {
                 affine[4] = double.Parse(line); // Skew Y
             }
+
             line = sr.ReadLine();
             if (line != null)
             {
                 affine[5] = double.Parse(line); // Dy
             }
+
             line = sr.ReadLine();
             if (line != null)
             {
                 affine[0] = double.Parse(line); // Top Left X
             }
+
             line = sr.ReadLine();
             if (line != null)
             {
                 affine[3] = double.Parse(line); // Top Left Y
             }
+
             bounds.AffineCoefficients = affine;
             sr.Close();
         }
 
         /// <summary>
-        /// Use the Save method instead of this extension.  This only provides
-        /// a default behavior that can optionally be used by implementers
-        /// of the IRasterBounds interface.
+        /// Use the Save method instead of this extension. This only provides a default behavior that can
+        /// optionally be used by implementers of the IRasterBounds interface.
         /// </summary>
+        /// <param name="bounds">The bounds that get saved to file.</param>
         public static void SaveWorldFile(this IRasterBounds bounds)
         {
             using (var sw = new StreamWriter(bounds.WorldFile))
@@ -160,13 +164,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Generates a new version of the affine transform that will
-        /// cover the same region, but using the specified number of
-        /// rows and columns instead.
+        /// Generates a new version of the affine transform that will cover the same region, but using the
+        /// specified number of rows and columns instead.
         /// </summary>
-        /// <param name="bounds">The raster bounds to resample</param>
-        /// <param name="numRows">The new number of rows </param>
-        /// <param name="numColumns">The new number of columns</param>
+        /// <param name="bounds">The raster bounds to resample.</param>
+        /// <param name="numRows">The new number of rows.</param>
+        /// <param name="numColumns">The new number of columns.</param>
         /// <returns>
         /// X = [0] + [1] * Column + [2] * Row
         /// Y = [3] + [4] * Column + [5] * Row
@@ -187,10 +190,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Attempts to save the affine coefficients to the specified worldfile file name
+        /// Attempts to save the affine coefficients to the specified worldfile file name.
         /// </summary>
-        /// <param name="bounds">The bounds to save</param>
-        /// <param name="fileName">The fileName to save this bounds to</param>
+        /// <param name="bounds">The bounds to save.</param>
+        /// <param name="fileName">The fileName to save this bounds to.</param>
         public static void SaveAs(this IRasterBounds bounds, string fileName)
         {
             bounds.WorldFile = fileName;
@@ -198,11 +201,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Converts creates a float precisions drawing matrix from the double precision affine
-        /// coordinates.  The Matrix can be manipulated and then set back.  Some precision will
-        /// be lost, however, as only floats are supported.
+        /// Creates a float precisions System.Drawing2D.Matrix from the double precision affine coordinates.
+        /// The Matrix can be manipulated and then set back. Some precision will be lost, however, as only floats are supported.
         /// </summary>
-        public static Matrix Get_AffineMatrix(this IRasterBounds bounds)
+        /// <param name="bounds">The double precision affine coordinates needed for the creation.</param>
+        /// <returns>The created float precision drawing matrix.</returns>
+        public static Matrix GetAffineMatrix(this IRasterBounds bounds)
         {
             double[] affine = bounds.AffineCoefficients;
             return new Matrix(
@@ -215,12 +219,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Re-defines the double precision affine transform values based on the specified
-        /// system.Drawing.Matrix.
+        /// Re-defines the double precision affine transform values based on the specified System.Drawing2D.Matrix.
         /// </summary>
         /// <param name="bounds">The bounds to adjust based on the matrix</param>
         /// <param name="matrix">The matrix to use as a guide for adjustments.</param>
-        public static void Set_AffineMatrix(this IRasterBounds bounds, Matrix matrix)
+        public static void SetAffineMatrix(this IRasterBounds bounds, Matrix matrix)
         {
             double[] affine = new double[6];
             affine[0] = Convert.ToDouble(matrix.Elements[0]); // XShift
@@ -234,12 +237,15 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Images can be skewed, so this gets the point that actually defines the bottom left
-        /// corner of the data in geographic coordinates
+        /// corner of the data in geographic coordinates.
         /// </summary>
+        /// <param name="bounds">The IRasterBounds to obtain the bottom left of.</param>
+        /// <returns>The bottom left corner.</returns>
         public static Coordinate BottomLeft(this IRasterBounds bounds)
         {
             double[] affine = bounds.AffineCoefficients;
             int numRows = bounds.NumRows;
+
             // X' = [0] + [1] * Column + [2] * Row
             // Y' = [3] + [4] * Column + [5] * Row
             double x = affine[0] + numRows * affine[2];
@@ -249,13 +255,16 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Images can be skewed, so this gets the point that actually defines the bottom right
-        /// corner of the data in geographic coordinates
+        /// corner of the data in geographic coordinates.
         /// </summary>
+        /// <param name="bounds">The IRasterBounds to obtain the bottom right of.</param>
+        /// <returns>The bottom right corner.</returns>
         public static Coordinate BottomRight(this IRasterBounds bounds)
         {
             double[] affine = bounds.AffineCoefficients;
             double numRows = bounds.NumRows;
             double numColumns = bounds.NumColumns;
+
             // X' = [0] + [1] * Column + [2] * Row
             // Y' = [3] + [4] * Column + [5] * Row
             double x = affine[0] + numColumns * affine[1] + numRows * affine[2];
@@ -265,12 +274,14 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Images can be skewed, so this gets the point that actually defines the top left
-        /// corner of the data in geographic coordinates
+        /// corner of the data in geographic coordinates.
         /// </summary>
-        /// <param name="bounds">The IRasterBounds to obtain the top left of</param>
+        /// <param name="bounds">The IRasterBounds to obtain the top left of.</param>
+        /// <returns>The top left corner.</returns>
         public static Coordinate TopLeft(this IRasterBounds bounds)
         {
             double[] affine = bounds.AffineCoefficients;
+
             // X' = [0] + [1] * Column + [2] * Row
             // Y' = [3] + [4] * Column + [5] * Row
             double x = affine[0];
@@ -280,20 +291,21 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Images can be skewed, so this gets the point that actually defines the top right
-        /// corner of the data in geographic coordinates
+        /// corner of the data in geographic coordinates.
         /// </summary>
+        /// <param name="bounds">The IRasterBounds to obtain the top right of.</param>
+        /// <returns>The top right corner.</returns>
         public static Coordinate TopRight(this IRasterBounds bounds)
         {
             double[] affine = bounds.AffineCoefficients;
             double numColumns = bounds.NumColumns;
+
             // X' = [0] + [1] * Column + [2] * Row
             // Y' = [3] + [4] * Column + [5] * Row
             double x = affine[0] + numColumns * affine[1];
             double y = affine[3] + numColumns * affine[4];
             return new Coordinate(x, y);
         }
-
-        #region projection Handling
 
         /// <summary>
         /// Given any input row or column, this returns the appropriate geographic location for the
@@ -303,62 +315,61 @@ namespace DotSpatial.Data
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the center of the specified cell</returns>
-        public static Coordinate CellCenter_ToProj(this IRasterBounds bounds, int row, int column)
+        public static Coordinate CellCenterToProj(this IRasterBounds bounds, int row, int column)
         {
-            return new AffineTransform(bounds.AffineCoefficients).CellCenter_ToProj(row, column);
+            return new AffineTransform(bounds.AffineCoefficients).CellCenterToProj(row, column);
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the top left corner of the cell
+        /// Given the row and column, this returns the geographic position of the top left corner of the cell.
         /// </summary>
         /// <param name="bounds">The raster bounds to perform the calculation on</param>
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the top left corner of the specified cell</returns>
-        public static Coordinate CellTopLeft_ToProj(this IRasterBounds bounds, int row, int column)
+        public static Coordinate CellTopLeftToProj(this IRasterBounds bounds, int row, int column)
         {
-            return new AffineTransform(bounds.AffineCoefficients).CellTopLeft_ToProj(row, column);
+            return new AffineTransform(bounds.AffineCoefficients).CellTopLeftToProj(row, column);
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the top right corner of the cell
+        /// Given the row and column, this returns the geographic position of the top right corner of the cell.
         /// </summary>
         /// <param name="bounds">The raster bounds to perform the calculation on</param>
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the top right corner of the specified cell</returns>
-        public static Coordinate CellTopRight_ToProj(this IRasterBounds bounds, int row, int column)
+        public static Coordinate CellTopRightToProj(this IRasterBounds bounds, int row, int column)
         {
-            return new AffineTransform(bounds.AffineCoefficients).CellTopRight_ToProj(row, column);
+            return new AffineTransform(bounds.AffineCoefficients).CellTopRightToProj(row, column);
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the bottom left corner of the cell
+        /// Given the row and column, this returns the geographic position of the bottom left corner of the cell.
         /// </summary>
         /// <param name="bounds">The raster bounds to perform the calculation on</param>
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the bottom left corner of the specified cell</returns>
-        public static Coordinate CellBottomLeft_ToProj(this IRasterBounds bounds, int row, int column)
+        public static Coordinate CellBottomLeftToProj(this IRasterBounds bounds, int row, int column)
         {
-            return new AffineTransform(bounds.AffineCoefficients).CellBottomLeft_ToProj(row, column);
+            return new AffineTransform(bounds.AffineCoefficients).CellBottomLeftToProj(row, column);
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the bottom right corner of the cell
+        /// Given the row and column, this returns the geographic position of the bottom right corner of the cell.
         /// </summary>
         /// <param name="bounds">The raster bounds to perform the calculation on</param>
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the bottom right corner of the specified cell</returns>
-        public static Coordinate CellBottomRight_ToProj(this IRasterBounds bounds, int row, int column)
+        public static Coordinate CellBottomRightToProj(this IRasterBounds bounds, int row, int column)
         {
-            return new AffineTransform(bounds.AffineCoefficients).CellBottomRight_ToProj(row, column);
+            return new AffineTransform(bounds.AffineCoefficients).CellBottomRightToProj(row, column);
         }
 
-
         /// <summary>
-        /// Returns the row col index
+        /// Returns the row col index.
         /// </summary>
         /// <param name="bounds">The raster bounds to perform the calculation on</param>
         /// <param name="location">Gets or sets the ICoordinate</param>
@@ -413,13 +424,12 @@ namespace DotSpatial.Data
                 if (rowCol.Row > maxY) maxY = rowCol.Row;
                 if (rowCol.Column > maxX) maxX = rowCol.Column;
             }
+
             if (minX < 0) minX = 0;
             if (minY < 0) minY = 0;
             if (maxX > self.NumColumns) maxX = self.NumColumns;
             if (maxY > self.NumRows) maxY = self.NumRows;
             return new Rectangle(minX, minY, maxX - minX, maxY - minY);
         }
-
-        #endregion
     }
 }

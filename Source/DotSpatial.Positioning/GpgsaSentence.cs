@@ -20,8 +20,8 @@ using System.Text;
 
 namespace DotSpatial.Positioning
 {
-    ///<summary>
-    ///$GPGSA
+    /// <summary>
+    /// $GPGSA
     /// GPS DOP and active satellites
     /// eg1. $GPGSA,A,3,,,,,,16,18,,22,24,,,3.6,2.1,2.2*3C
     ///      $GPGSA,A,1,,,,,,,,,,,,,6,6,6
@@ -46,7 +46,7 @@ namespace DotSpatial.Positioning
         #region Constructors
 
         /// <summary>
-        /// Creates a GpgsaSentence from the specified string
+        /// Initializes a new instance of the <see cref="GpgsaSentence"/> class using the specified sentence.
         /// </summary>
         /// <param name="sentence">The sentence.</param>
         public GpgsaSentence(string sentence)
@@ -58,27 +58,13 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Initializes a new instance of the <see cref="GpgsaSentence"/> class.
         /// </summary>
-        /// <param name="sentence">The sentence.</param>
-        /// <param name="commandWord">The command word.</param>
-        /// <param name="words">The words.</param>
-        /// <param name="validChecksum">The valid checksum.</param>
-        internal GpgsaSentence(string sentence, string commandWord, string[] words, string validChecksum)
-            : base(sentence, commandWord, words, validChecksum)
-        {
-            SetPropertiesFromSentence();
-        }
-
-        /// <summary>
-        /// Creates a new GpgsaSentence
-        /// </summary>
         /// <param name="fixMode">The fix mode.</param>
         /// <param name="fixMethod">The fix method.</param>
         /// <param name="satellites">The satellites.</param>
         /// <param name="positionDilutionOfPrecision">The position dilution of precision.</param>
         /// <param name="horizontalDilutionOfPrecision">The horizontal dilution of precision.</param>
         /// <param name="verticalDilutionOfPrecision">The vertical dilution of precision.</param>
-        public GpgsaSentence(FixMode fixMode, FixMethod fixMethod, IEnumerable<Satellite> satellites, DilutionOfPrecision positionDilutionOfPrecision,
-                             DilutionOfPrecision horizontalDilutionOfPrecision, DilutionOfPrecision verticalDilutionOfPrecision)
+        public GpgsaSentence(FixMode fixMode, FixMethod fixMethod, IEnumerable<Satellite> satellites, DilutionOfPrecision positionDilutionOfPrecision, DilutionOfPrecision horizontalDilutionOfPrecision, DilutionOfPrecision verticalDilutionOfPrecision)
         {
             // Use a string builder to create the sentence text
             StringBuilder builder = new StringBuilder(128);
@@ -96,6 +82,7 @@ namespace DotSpatial.Positioning
                     builder.Append("M");
                     break;
             }
+
             builder.Append(',');
 
             switch (fixMethod)
@@ -110,14 +97,12 @@ namespace DotSpatial.Positioning
                     builder.Append("1");
                     break;
             }
+
             builder.Append(',');
 
-            #region Fixed satellites
-
-            /* A comma-delimited list of satellites involved in a fix. Up to 12 satellites can be serialized.
-             * This one concerns me, because while the limit is 12, ever more satellites are being launched.
-             * Should we just serialize everything??
-             */
+            // A comma-delimited list of satellites involved in a fix. Up to 12 satellites can be serialized.
+            // This one concerns me, because while the limit is 12, ever more satellites are being launched.
+            // Should we just serialize everything??
 
             // Get a count of satellites to write, up to 123. We'll scrub the list to ensure only fixed satellites are written
             int fixedSatellitesWritten = 0;
@@ -145,8 +130,6 @@ namespace DotSpatial.Positioning
             for (int index = 0; index < 12 - fixedSatellitesWritten; index++)
                 builder.Append(",");
 
-            #endregion Fixed satellites
-
             // NOTE: Commas have been written at this point
 
             // Position Dilution of Precision
@@ -168,12 +151,62 @@ namespace DotSpatial.Positioning
             AppendChecksum();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GpgsaSentence"/> class.
+        /// </summary>
+        /// <param name="sentence">The sentence.</param>
+        /// <param name="commandWord">The command word.</param>
+        /// <param name="words">The words.</param>
+        /// <param name="validChecksum">The valid checksum.</param>
+        internal GpgsaSentence(string sentence, string commandWord, string[] words, string validChecksum)
+            : base(sentence, commandWord, words, validChecksum)
+        {
+            SetPropertiesFromSentence();
+        }
+
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a list of fixed satellites.
+        /// </summary>
+        public IList<Satellite> FixedSatellites
+        {
+            get { return _fixedSatellites; }
+        }
+
+        /// <summary>
+        /// Gets the Fix Method.
+        /// </summary>
+        public FixMethod FixMethod { get; private set; }
+
+        /// <summary>
+        /// Gets the Position Dilution of Precision (PDOP)
+        /// </summary>
+        public DilutionOfPrecision PositionDilutionOfPrecision { get; private set; }
+
+        /// <summary>
+        /// Gets the Vertical Dilution of Precision
+        /// </summary>
+        public DilutionOfPrecision VerticalDilutionOfPrecision { get; private set; }
+
+        /// <summary>
+        /// Gets the Horizontal Dilution of Precision
+        /// </summary>
+        public DilutionOfPrecision HorizontalDilutionOfPrecision { get; private set; }
+
+        /// <summary>
+        /// Gets the fix mode
+        /// </summary>
+        public FixMode FixMode { get; private set; }
+
+        #endregion
 
         /// <summary>
         /// Corrects this classes properties after the base sentence was changed.
         /// </summary>
-        new void SetPropertiesFromSentence()
+        private new void SetPropertiesFromSentence()
         {
             // Cache the sentence words
             string[] words = Words;
@@ -190,51 +223,16 @@ namespace DotSpatial.Positioning
                 // Get each satellite PRN number
                 int count = wordCount < 14 ? wordCount : 14;
                 for (int index = 2; index < count; index++)
+                {
                     // add the satellite if word isn't empty
                     if (words[index].Length != 0)
                         _fixedSatellites.Add(new Satellite(int.Parse(words[index], NmeaCultureInfo)));
+                }
             }
 
             PositionDilutionOfPrecision = ParseDilution(14);  // Set overall dilution of precision
-            HorizontalDilutionOfPrecision = ParseDilution(15);// Set horizontal dilution of precision
+            HorizontalDilutionOfPrecision = ParseDilution(15); // Set horizontal dilution of precision
             VerticalDilutionOfPrecision = ParseDilution(16); // Set vertical dilution of precision
         }
-
-        #region Properties
-
-        /// <summary>
-        /// the list of FixedSatellites
-        /// </summary>
-        public IList<Satellite> FixedSatellites
-        {
-            get { return _fixedSatellites; }
-        }
-
-        /// <summary>
-        /// The Fix Method
-        /// </summary>
-        public FixMethod FixMethod { get; private set; }
-
-        /// <summary>
-        /// The Position Dilution of Precision (PDOP)
-        /// </summary>
-        public DilutionOfPrecision PositionDilutionOfPrecision { get; private set; }
-
-        /// <summary>
-        /// The Vertical Dilution of Precision
-        /// </summary>
-        public DilutionOfPrecision VerticalDilutionOfPrecision { get; private set; }
-
-        /// <summary>
-        /// The Horizontal Dilution of Precision
-        /// </summary>
-        public DilutionOfPrecision HorizontalDilutionOfPrecision { get; private set; }
-
-        /// <summary>
-        /// Gets the fix mode
-        /// </summary>
-        public FixMode FixMode { get; private set; }
-
-        #endregion
     }
 }

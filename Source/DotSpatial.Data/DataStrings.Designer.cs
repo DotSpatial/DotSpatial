@@ -196,6 +196,15 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The fileName should not be null..
+        /// </summary>
+        internal static string FileNameShouldNotBeNull {
+            get {
+                return ResourceManager.GetString("FileNameShouldNotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The fileName %S was not found..
         /// </summary>
         internal static string FileNotFound_S {
@@ -399,6 +408,15 @@ namespace DotSpatial.Data {
         internal static string RasterTooLarge {
             get {
                 return ResourceManager.GetString("RasterTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempting to read an extent string failed while reading the {0} term..
+        /// </summary>
+        internal static string ReadingExtentFromStringFailedOnTerm {
+            get {
+                return ResourceManager.GetString("ReadingExtentFromStringFailedOnTerm", resourceCulture);
             }
         }
         
