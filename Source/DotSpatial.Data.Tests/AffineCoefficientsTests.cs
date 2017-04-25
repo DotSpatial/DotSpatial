@@ -42,7 +42,7 @@ namespace DotSpatial.Data.Tests
             {
                 for (int col = 0; col < 9; col++)
                 {
-                    Coordinate corner = at.CellTopLeft_ToProj(row, col);
+                    Coordinate corner = at.CellTopLeftToProj(row, col);
                     double frac_col = rand.NextDouble();
                     double frac_row = rand.NextDouble();
                     double dX = c[1] * frac_col + c[2] * frac_row;
@@ -65,7 +65,7 @@ namespace DotSpatial.Data.Tests
             var rp = new GdalRasterProvider();
             var raster = rp.Open(@"Data\Grids\sample_geotiff.tif");
             var at = new AffineTransform(raster.Bounds.AffineCoefficients);
-            Assert.AreEqual(at.CellCenter_ToProj(0, 0), new Coordinate(-179.9499969, 89.9499969));// correct location from sample_geotiff.tfw
+            Assert.AreEqual(at.CellCenterToProj(0, 0), new Coordinate(-179.9499969, 89.9499969));// correct location from sample_geotiff.tfw
         }
     }
 }

@@ -7,17 +7,9 @@ namespace DotSpatial.Data
     /// </summary>
     public struct Argb
     {
-        #region Fields
-
-        private readonly byte _a;
-        private readonly byte _b;
-        private readonly byte _g;
-        private readonly byte _r;
-
-        #endregion
-
         /// <summary>
-        /// Creates a new Argb object from the given values. If the values are bigger than 255 they are changed to 255. If the values are smaller than 0 they are changed to 0.
+        /// Initializes a new instance of the <see cref="Argb"/> struct from the given values.
+        /// If the values are bigger than 255 they are changed to 255. If the values are smaller than 0 they are changed to 0.
         /// </summary>
         /// <param name="a">The a part of a color.</param>
         /// <param name="r">The r part of a color.</param>
@@ -26,11 +18,10 @@ namespace DotSpatial.Data
         public Argb(int a, int r, int g, int b)
             : this(ByteRange(a), ByteRange(r), ByteRange(g), ByteRange(b))
         {
-            
         }
 
         /// <summary>
-        /// Creates a new Argb object from the given values.
+        /// Initializes a new instance of the <see cref="Argb"/> struct from the given values.
         /// </summary>
         /// <param name="a">The a part of a color.</param>
         /// <param name="r">The r part of a color.</param>
@@ -38,42 +29,40 @@ namespace DotSpatial.Data
         /// <param name="b">The b part of a color.</param>
         public Argb(byte a, byte r, byte g, byte b)
         {
-            _a = a;
-            _r = r;
-            _g = g;
-            _b = b;
+            A = a;
+            R = r;
+            G = g;
+            B = b;
         }
 
         /// <summary>
-        /// The A part of this Argb object.
+        /// Gets the A part of this Argb object.
         /// </summary>
-        public byte A
-        {
-            get { return _a; }
-        }
+        public byte A { get; }
 
         /// <summary>
-        /// The B part of this Argb object.
+        /// Gets the B part of this Argb object.
         /// </summary>
-        public byte B
-        {
-            get { return _b; }
-        }
+        public byte B { get; }
 
         /// <summary>
-        /// The G part of this Argb object.
+        /// Gets the G part of this Argb object.
         /// </summary>
-        public byte G
-        {
-            get { return _g; }
-        }
+        public byte G { get; }
 
         /// <summary>
-        /// The R part of this Argb object.
+        /// Gets the R part of this Argb object.
         /// </summary>
-        public byte R
+        public byte R { get; }
+
+        /// <summary>
+        /// Converts the given Color to Argb.
+        /// </summary>
+        /// <param name="color">color that gets converted.</param>
+        /// <returns>Argb object that contains the color values.</returns>
+        public static Argb FromColor(Color color)
         {
-            get { return _r; }
+            return new Argb(color.A, color.R, color.G, color.B);
         }
 
         /// <summary>
@@ -96,16 +85,6 @@ namespace DotSpatial.Data
         public Color ToColor()
         {
             return Color.FromArgb(A, R, G, B);
-        }
-
-        /// <summary>
-        /// Converts the given Color to Argb.
-        /// </summary>
-        /// <param name="color">color that gets converted.</param>
-        /// <returns>Argb object that contains the color values.</returns>
-        public static Argb FromColor(Color color)
-        {
-            return new Argb(color.A, color.R, color.G, color.B);
         }
     }
 }

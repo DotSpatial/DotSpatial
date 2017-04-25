@@ -28,17 +28,19 @@ using NetTopologySuite.Index;
 
 namespace DotSpatial.Data
 {
-    ///<summary>
-    /// Provides common functionality for all ShapefileFeatureSource classes (Point, Line, Polygon)
-    ///</summary>
+    /// <summary>
+    /// Provides common functionality for all ShapefileFeatureSource classes (Point, Line, Polygon).
+    /// </summary>
     public abstract class ShapefileFeatureSource
     {
+        private readonly bool _trackDeletedRows;
+        private List<int> _deletedRows;
         private string _fileName;
 
         #region Constructors
 
         /// <summary>
-        /// Sets the fileName and creates a new ShapefileFeatureSource for the specified file.
+        /// Initializes a new instance of the <see cref="ShapefileFeatureSource"/> class from the specified file.
         /// </summary>
         /// <param name="fileName">The fileName to work with.</param>
         protected ShapefileFeatureSource(string fileName)
@@ -47,11 +49,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Sets the fileName and creates a new PolygonshapefileFeatureSource for the specified file (and builds spatial index if requested)
+        /// Initializes a new instance of the <see cref="ShapefileFeatureSource"/> class from the specified file and builds spatial index if requested.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="useSpatialIndexing"></param>
-        /// <param name="trackDeletedRows"></param>
+        /// <param name="fileName">The fileName to work with.</param>
+        /// <param name="useSpatialIndexing">Indicates whether the spatial index should be build.</param>
+        /// <param name="trackDeletedRows">Indicates whether deleted records should be tracked.</param>
         protected ShapefileFeatureSource(string fileName, bool useSpatialIndexing, bool trackDeletedRows)
         {
             Filename = fileName;
@@ -59,12 +61,52 @@ namespace DotSpatial.Data
             {
                 InitializeQuadtree();
             }
+
             _trackDeletedRows = trackDeletedRows;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
+
+        /// <summary>
+        /// Gets the AttributeTable  for this feature source including DeletedRows
+        /// </summary>
+        public AttributeTable AttributeTable => GetAttributeTable(Filename);
+
+        /// <summary>
+        /// Gets the geographic extent of the feature source.
+        /// </summary>
+        public Extent Extent
+        {
+            get
+            {
+                var sh = new ShapefileHeader(Filename);
+                if (sh.ShxLength == 50)
+                    return new Extent(double.NaN, 0, 0, 0);
+                return sh.ToExtent();
+            }
+        }
+
+        /// <summary>
+        /// Gets the feature type supported by this feature source
+        /// </summary>
+        public abstract FeatureType FeatureType { get; }
+
+        /// <summary>
+        /// Gets the shape type (without M or Z) supported by this feature source
+        /// </summary>
+        public abstract ShapeType ShapeType { get; }
+
+        /// <summary>
+        /// Gets the shape type (with M, and no Z) supported by this feature source
+        /// </summary>
+        public abstract ShapeType ShapeTypeM { get; }
+
+        /// <summary>
+        /// Gets the shape type (with M and Z) supported by this feature source
+        /// </summary>
+        public abstract ShapeType ShapeTypeZ { get; }
 
         /// <summary>
         /// Gets or sets the absolute Filename of this ShapefileFeatureSource. If a relative path gets assigned it is changed to the absolute path including the file extension.
@@ -76,73 +118,68 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The integer maximum number of records to return in a single page of results.
+        /// Gets or sets the integer maximum number of records to return in a single page of results.
         /// </summary>
         public int PageSize { get; set; }
 
         /// <summary>
         /// Gets the spatial index if any
         /// </summary>
-        public ISpatialIndex<int> SpatialIndex
-        {
-            get { return Quadtree; }
-        }
+        public ISpatialIndex<int> SpatialIndex => Quadtree;
+
+        /// <summary>
+        /// Gets or sets the spatial index for faster searches.
+        /// </summary>
+        protected ShapefileFeatureSourceQuadtree Quadtree { get; set; }
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// This deletes the files with any extension and the same base fileName.
+        /// Creates a ShapefileFeatureSource of the appropriate type.
         /// </summary>
-        public void Delete()
+        /// <param name="filename">Name of the file that gets opened.</param>
+        /// <returns>A ShapefileFeatureSource loaded from the specified file.</returns>
+        public static ShapefileFeatureSource Open(string filename)
         {
-            if (File.Exists(Filename)) File.Delete(Filename);
-            string dir = Path.GetDirectoryName(Filename);
-            if (dir == null) return;
-            string baseName = Path.GetFileNameWithoutExtension(Filename);
-            string[] files = Directory.GetFiles(dir, baseName + ".*");
-            foreach (string file in files)
+            return Open(filename, false, false);
+        }
+
+        /// <summary>
+        /// Create a ShapefileFeatureSource of the appropriate type spatial indexing
+        /// </summary>
+        /// <param name="filename">Name of the file that gets opened.</param>
+        /// <param name="useSpatialIndexing">Indicates whether a spatial index should be used.</param>
+        /// <param name="trackDeletedRows">Indicates whether deleted rows should be tracked.</param>
+        /// <returns>A ShapefileFeatureSource loaded from the specified file.</returns>
+        public static ShapefileFeatureSource Open(string filename, bool useSpatialIndexing, bool trackDeletedRows)
+        {
+            var header = new ShapefileHeader(filename);
+
+            switch (header.ShapeType)
             {
-                if (File.Exists(file)) File.Delete(file);
+                case ShapeType.Polygon:
+                case ShapeType.PolygonM:
+                case ShapeType.PolygonZ:
+                    return new PolygonShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
+                case ShapeType.PolyLine:
+                case ShapeType.PolyLineM:
+                case ShapeType.PolyLineZ:
+                    return new LineShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
+                case ShapeType.Point:
+                case ShapeType.PointM:
+                case ShapeType.PointZ:
+                    return new PointShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
+                default:
+                    throw new ClassNotSupportedException($"Cannot create ShapefileFeatureSource for {header.ShapeType} shape type"); // TODO jany_ why use classNotSupportedException if message not a class name?  resulting Errormessage makes no sense
             }
         }
-
-        #endregion
-
-        private readonly bool _trackDeletedRows;
-
-        /// <summary>
-        /// Spatial index for faster searches
-        /// </summary>
-        protected ShapefileFeatureSourceQuadtree Quadtree;
-
-        private List<int> _deletedRows;
-
-        /// <summary>
-        /// Get the feature type supported by this feature source
-        /// </summary>
-        public abstract FeatureType FeatureType { get; }
-
-        /// <summary>
-        /// Get the shape type (without M or Z) supported by this feature source
-        /// </summary>
-        public abstract ShapeType ShapeType { get; }
-
-        /// <summary>
-        /// Get the shape type (with M, and no Z) supported by this feature source
-        /// </summary>
-        public abstract ShapeType ShapeTypeM { get; }
-
-        /// <summary>
-        /// Get the shape type (with M and Z) supported by this feature source
-        /// </summary>
-        public abstract ShapeType ShapeTypeZ { get; }
 
         /// <summary>
         /// Updates the file with an additional feature.
         /// </summary>
-        /// <param name="feature"></param>
+        /// <param name="feature">Feature that gets added.</param>
         public void Add(IFeature feature)
         {
             if (feature.FeatureType != FeatureType)
@@ -190,61 +227,22 @@ namespace DotSpatial.Data
                         header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
                         header.ShapeType = ShapeTypeZ;
                     }
+
                     header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
                     header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
                 }
+
                 header.ShxLength = 4 + 50;
                 header.SaveAs(Filename);
             }
 
-            AppendBasicGeometry(header, feature.Geometry, numFeatures);
+            AppendGeometry(header, feature.Geometry, numFeatures);
 
-            if (null != Quadtree)
-                Quadtree.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
+            Quadtree?.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
         }
 
-
         /// <summary>
-        /// Removes the feature with the specified index
-        /// </summary>
-        /// <param name="index">Removes the feature from the specified index location</param>
-        public void RemoveAt(int index)
-        {
-            // Get shape range so we can update header smartly
-            int startIndex = index;
-            IFeatureSet ifs = Select(null, null, ref startIndex, 1);
-            if (ifs.NumRows() > 0)
-            {
-                var shx = new ShapefileIndexFile();
-                shx.Open(Filename);
-                shx.Shapes.RemoveAt(index);
-                shx.Save();
-
-                AttributeTable dbf = GetAttributeTable(Filename);
-                dbf.RemoveRowAt(index);
-                if (_trackDeletedRows)
-                    _deletedRows = dbf.DeletedRows;
-
-                // Update extent in header if feature being deleted is NOT completely contained
-                var hdr = new ShapefileHeader(Filename);
-
-                Envelope featureEnv = ifs.GetFeature(0).Geometry.EnvelopeInternal;
-                if (featureEnv.MinX <= hdr.Xmin || featureEnv.MaxX >= hdr.Xmax || featureEnv.MaxY >= hdr.Ymax || featureEnv.MinY <= hdr.Ymin)
-                {
-                    UpdateExtents();
-                }
-
-                // Update the Quadtree
-                if (null != Quadtree)
-                {
-                    Quadtree.Remove(featureEnv, index);
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// The default implementation calls the add method repeatedly.
+        /// Adds the given features to the file.
         /// </summary>
         /// <param name="features">The set of features to add</param>
         public void AddRange(IEnumerable<IFeature> features)
@@ -305,21 +303,43 @@ namespace DotSpatial.Data
                             header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
                             header.ShapeType = ShapeTypeZ;
                         }
+
                         header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
                         header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
                     }
+
                     header.ShxLength = 4 + 50;
                     header.SaveAs(Filename);
                     filenameExists = true;
                 }
 
-                AppendBasicGeometry(header, feature.Geometry, numFeatures);
+                AppendGeometry(header, feature.Geometry, numFeatures);
 
-                if (null != Quadtree)
-                    Quadtree.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
+                Quadtree?.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
             }
         }
 
+        /// <summary>
+        /// Create an appropriate ShapeSource for this FeatureSource.
+        /// </summary>
+        /// <returns>The created IShapeSource.</returns>
+        public abstract IShapeSource CreateShapeSource();
+
+        /// <summary>
+        /// This deletes the files with any extension and the same base fileName.
+        /// </summary>
+        public void Delete()
+        {
+            if (File.Exists(Filename)) File.Delete(Filename);
+            string dir = Path.GetDirectoryName(Filename);
+            if (dir == null) return;
+            string baseName = Path.GetFileNameWithoutExtension(Filename);
+            string[] files = Directory.GetFiles(dir, baseName + ".*");
+            foreach (string file in files)
+            {
+                if (File.Exists(file)) File.Delete(file);
+            }
+        }
 
         /// <summary>
         /// Select function passed with a filter expression.
@@ -333,7 +353,6 @@ namespace DotSpatial.Data
         /// <returns>A dictionary with FID keys and IFeature values.</returns>
         public abstract IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount);
 
-
         /// <summary>
         /// Conditionally modify attributes as searched in a single pass via client supplied callback.
         /// </summary>
@@ -341,7 +360,6 @@ namespace DotSpatial.Data
         /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
         /// <param name="rowCallback">Callback on each feature</param>
         public abstract void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
-
 
         /// <summary>
         /// Edits the values of the specified row in the attribute table.  Since not all data formats
@@ -355,17 +373,15 @@ namespace DotSpatial.Data
             at.Edit(fid, attributeValues);
         }
 
-
         /// <summary>
         /// Edits the values of the specified rows in the attribute table.
         /// </summary>
-        /// <param name="indexDataRowPairs"></param>
+        /// <param name="indexDataRowPairs">IEnumerable of rows that should be edited and their corresponding indices.</param>
         public void EditAttributes(IEnumerable<KeyValuePair<int, DataRow>> indexDataRowPairs)
         {
             AttributeTable at = GetAttributeTable(Filename);
             at.Edit(indexDataRowPairs);
         }
-
 
         /// <summary>
         /// Adding and removing shapes may make the bounds for the entire shapefile invalid.
@@ -373,94 +389,62 @@ namespace DotSpatial.Data
         /// </summary>
         public abstract void UpdateExtents();
 
-        ///<summary>
-        /// The geographic extent of the feature source
-        ///</summary>
-        public Extent Extent
+        /// <summary>
+        /// Removes the feature with the specified index.
+        /// </summary>
+        /// <param name="index">Removes the feature from the specified index location</param>
+        public void RemoveAt(int index)
         {
-            get
+            // Get shape range so we can update header smartly
+            int startIndex = index;
+            IFeatureSet ifs = Select(null, null, ref startIndex, 1);
+            if (ifs.NumRows() > 0)
             {
-                var sh = new ShapefileHeader(Filename);
-                if (sh.ShxLength == 50)
-                    return new Extent(double.NaN, 0, 0, 0);
-                return sh.ToExtent();
+                var shx = new ShapefileIndexFile();
+                shx.Open(Filename);
+                shx.Shapes.RemoveAt(index);
+                shx.Save();
+
+                AttributeTable dbf = GetAttributeTable(Filename);
+                dbf.RemoveRowAt(index);
+                if (_trackDeletedRows)
+                    _deletedRows = dbf.DeletedRows;
+
+                // Update extent in header if feature being deleted is NOT completely contained
+                var hdr = new ShapefileHeader(Filename);
+
+                Envelope featureEnv = ifs.GetFeature(0).Geometry.EnvelopeInternal;
+                if (featureEnv.MinX <= hdr.Xmin || featureEnv.MaxX >= hdr.Xmax || featureEnv.MaxY >= hdr.Ymax || featureEnv.MinY <= hdr.Ymin)
+                {
+                    UpdateExtents();
+                }
+
+                // Update the Quadtree
+                Quadtree?.Remove(featureEnv, index);
             }
         }
 
         /// <summary>
-        /// Gets the AttributeTable  for this feature source including DeletedRows
+        /// Updates the header to include the feature extent.
         /// </summary>
-        public AttributeTable AttributeTable
-        {
-            get { return GetAttributeTable(Filename); }
-        }
-        
-
-        #region Static Methods
-
-        /// <summary>
-        /// Create a ShapefileFeatureSource of the appropriate type
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public static ShapefileFeatureSource Open(string filename)
-        {
-            return Open(filename, false, false);
-        }
-
-        /// <summary>
-        /// Create a ShapefileFeatureSource of the appropriate type spatial indexing
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="useSpatialIndexing"></param>
-        /// <param name="trackDeletedRows"></param>
-        /// <returns></returns>
-        public static ShapefileFeatureSource Open(string filename, bool useSpatialIndexing, bool trackDeletedRows)
-        {
-            var header = new ShapefileHeader(filename);
-
-            switch (header.ShapeType)
-            {
-                case ShapeType.Polygon:
-                case ShapeType.PolygonM:
-                case ShapeType.PolygonZ:
-                    return new PolygonShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
-                case ShapeType.PolyLine:
-                case ShapeType.PolyLineM:
-                case ShapeType.PolyLineZ:
-                    return new LineShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
-                case ShapeType.Point:
-                case ShapeType.PointM:
-                case ShapeType.PointZ:
-                    return new PointShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
-                default:
-                    throw new ClassNotSupportedException(string.Format("Cannot create ShapefileFeatureSource for {0} shape type", header.ShapeType)); // TODO jany_ why use classNotSupportedException if message not a class name?  resulting Errormessage makes no sense
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Update the header to include the feature extent
-        /// </summary>
-        /// <param name="header"></param>
-        /// <param name="feature"></param>
+        /// <param name="header">Header that gets updated.</param>
+        /// <param name="feature">Feature, whose extent gets include into the header extent. </param>
         protected void UpdateHeader(ShapefileHeader header, IGeometry feature)
         {
             UpdateHeader(header, feature, true);
         }
 
-
         /// <summary>
-        /// Update the header to include the feature extent
+        /// Updates the header to include the feature extent.
         /// </summary>
-        /// <param name="header"></param>
-        /// <param name="feature"></param>
-        /// <param name="writeHeaderFiles"> </param>
+        /// <param name="header">Header that gets updated.</param>
+        /// <param name="feature">Feature, whose extent gets include into the header extent. </param>
+        /// <param name="writeHeaderFiles">Indicates whether the headers should be written to file.</param>
         protected void UpdateHeader(ShapefileHeader header, IGeometry feature, bool writeHeaderFiles)
         {
             // Update the envelope
             Envelope newExt;
+
             // First, check to see if there are no features (ShxLength == 50)
             if (header.ShxLength <= 50)
             {
@@ -475,13 +459,14 @@ namespace DotSpatial.Data
                 newExt.InitZ(header.Zmin, header.Zmax);
                 newExt.ExpandToInclude(feature.EnvelopeInternal);
             }
+
             header.Xmin = newExt.Minimum.X;
             header.Ymin = newExt.Minimum.Y;
             header.Zmin = newExt.Minimum.Z;
             header.Xmax = newExt.Maximum.X;
             header.Ymax = newExt.Maximum.Y;
             header.Zmax = newExt.Maximum.Z;
-            header.Mmin = newExt.Minimum.M; //TODO added by jany_ on nts integration ... is this correct?
+            header.Mmin = newExt.Minimum.M; // TODO added by jany_ on nts integration ... is this correct?
             header.Mmax = newExt.Maximum.M;
             header.ShxLength = header.ShxLength + 4;
             if (writeHeaderFiles)
@@ -492,12 +477,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Update header extents from the geometries in a IShapeSource
+        /// Update header extents from the geometries in a IShapeSource.
         /// </summary>
-        /// <param name="src"></param>
-        protected void UpdateExtents(IShapeSource src)
+        /// <param name="shapeSource">IShapeSource that is used to update the header extents.</param>
+        protected void UpdateExtents(IShapeSource shapeSource)
         {
-            var sr = new ShapeReader(src);
+            var sr = new ShapeReader(shapeSource);
             Extent env = null;
 
             foreach (var page in sr)
@@ -517,7 +502,7 @@ namespace DotSpatial.Data
             }
 
             // Extents for an empty file are unspecified according to the specification, so do nothing
-            if (null == env)
+            if (env == null)
                 return;
 
             var sh = new ShapefileHeader(Filename);
@@ -526,17 +511,17 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Select the features in an IShapeSource
+        /// Select the features in an IShapeSource.
         /// </summary>
-        /// <param name="sr"></param>
-        /// <param name="filterExpression"></param>
-        /// <param name="envelope"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="maxCount"></param>
-        /// <returns></returns>
-        protected IFeatureSet Select(IShapeSource sr, string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
+        /// <param name="shapeSource">ShapeSource that contains the shapes.</param>
+        /// <param name="filterExpression">Expression that is used to filter the attributes.</param>
+        /// <param name="envelope">The geographic extents that can be used to limit the shapes. If this is null, then no envelope is used.</param>
+        /// <param name="startIndex">The integer offset of the first shape to test. When this returns, the offset is set to the integer index of the last shape tested, regardless of whether or not it was returned.</param>
+        /// <param name="maxCount">The integer count of the maximum number of shapes to return here. </param>
+        /// <returns>An IFeatureSet containing the selected features.</returns>
+        protected IFeatureSet Select(IShapeSource shapeSource, string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
         {
-            var shapes = sr.GetShapes(ref startIndex, maxCount, envelope);
+            var shapes = shapeSource.GetShapes(ref startIndex, maxCount, envelope);
             AttributeTable at = GetAttributeTable(Filename);
             var result = new FeatureSet(FeatureType.Polygon);
             bool schemaDefined = false;
@@ -550,12 +535,13 @@ namespace DotSpatial.Data
                         schemaDefined = true;
                         result.CopyTableSchema(td);
                     }
+
                     IFeature f = new Feature(pair.Value) { DataRow = td.Rows[0] };
-                    
                     result.Features.Add(f);
                     f.UpdateEnvelope();
                 }
             }
+
             return result;
         }
 
@@ -573,61 +559,60 @@ namespace DotSpatial.Data
             int startIndex = 0;
             do
             {
-                samp.CurrentSearchAndModifyAttributeshapes = sr.GetShapes(ref startIndex, chunkSize, envelope);
-                if (samp.CurrentSearchAndModifyAttributeshapes.Count > 0)
+                samp.CurrentSearchAndModifyAttributeShapes = sr.GetShapes(ref startIndex, chunkSize, envelope);
+                if (samp.CurrentSearchAndModifyAttributeShapes.Count > 0)
                 {
-                    if (null == at)
+                    if (at == null)
                         at = GetAttributeTable(Filename);
 
-                    at.Edit(samp.CurrentSearchAndModifyAttributeshapes.Keys, samp.OnRowEditEvent);
+                    at.Edit(samp.CurrentSearchAndModifyAttributeShapes.Keys, samp.OnRowEditEvent);
                 }
-            } while (samp.CurrentSearchAndModifyAttributeshapes.Count == chunkSize);
+            }
+            while (samp.CurrentSearchAndModifyAttributeShapes.Count == chunkSize);
         }
-        
+
+        /// <summary>
+        /// Append the geometry to the shapefile.
+        /// </summary>
+        /// <param name="header">ShapefileHeader of this file.</param>
+        /// <param name="geometry">Geometry that gets appended.</param>
+        /// <param name="numFeatures">Number of the features in the shapefile including the one getting appended.</param>
+        protected abstract void AppendGeometry(ShapefileHeader header, IGeometry geometry, int numFeatures);
+
+        /// <summary>
+        /// Writes the header to the given file.
+        /// </summary>
+        /// <param name="header">Header that gets written.</param>
+        /// <param name="fileName">File whose header should be written.</param>
         private static void WriteHeader(ShapefileHeader header, string fileName)
         {
             string dir = Path.GetDirectoryName(fileName);
-            if (dir != null)
+            if (dir != null && !Directory.Exists(dir))
             {
-                if (!Directory.Exists(dir))
-                {
-                    Directory.CreateDirectory(dir);
-                }
+                Directory.CreateDirectory(dir);
             }
 
-            var bbWriter = new FileStream(fileName, FileMode.Open, FileAccess.Write, FileShare.None, 100);
+            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Write, FileShare.None, 100))
+            {
+                fs.WriteBe(header.FileCode);       ////  Byte 0          File Code       9994        Integer     Big
 
-            bbWriter.WriteBe(header.FileCode);                     //  Byte 0          File Code       9994        Integer     Big
+                var bt = new byte[20];
+                fs.Write(bt, 0, 20);               ////  Bytes 4 - 20 are unused
 
-            var bt = new byte[20];
-            bbWriter.Write(bt, 0, 20);                                   //  Bytes 4 - 20 are unused
-
-            // This is overwritten later
-            bbWriter.WriteBe(0);                //  Byte 24         File Length     File Length Integer     Big
-
-            bbWriter.WriteLe(header.Version);                             //  Byte 28         Version         1000        Integer     Little
-
-            bbWriter.WriteLe((int)header.ShapeType);                      //  Byte 32         Shape Type      Shape Type  Integer     Little
-
-            bbWriter.WriteLe(header.Xmin);                                //  Byte 36         Bounding Box    Xmin        Double      Little
-
-            bbWriter.WriteLe(header.Ymin);                                //  Byte 44         Bounding Box    Ymin        Double      Little
-
-            bbWriter.WriteLe(header.Xmax);                                //  Byte 52         Bounding Box    Xmax        Double      Little
-
-            bbWriter.WriteLe(header.Ymax);                                //  Byte 60         Bounding Box    Ymax        Double      Little
-
-            bbWriter.WriteLe(header.Zmin);                                //  Byte 68         Bounding Box    Zmin        Double      Little
-
-            bbWriter.WriteLe(header.Zmax);                                //  Byte 76         Bounding Box    Zmax        Double      Little
-
-            bbWriter.WriteLe(header.Mmin);                                //  Byte 84         Bounding Box    Mmin        Double      Little
-
-            bbWriter.WriteLe(header.Mmax);                                //  Byte 92         Bounding Box    Mmax        Double      Little
-
-            // ------------ WRITE TO SHP FILE -------------------------
-
-            bbWriter.Close();
+                // This is overwritten later
+                fs.WriteBe(0);                       //  Byte 24         File Length     File Length Integer     Big
+                fs.WriteLe(header.Version);          //  Byte 28         Version         1000        Integer     Little
+                fs.WriteLe((int)header.ShapeType);   //  Byte 32         Shape Type      Shape Type  Integer     Little
+                fs.WriteLe(header.Xmin);             //  Byte 36         Bounding Box    Xmin        Double      Little
+                fs.WriteLe(header.Ymin);             //  Byte 44         Bounding Box    Ymin        Double      Little
+                fs.WriteLe(header.Xmax);             //  Byte 52         Bounding Box    Xmax        Double      Little
+                fs.WriteLe(header.Ymax);             //  Byte 60         Bounding Box    Ymax        Double      Little
+                fs.WriteLe(header.Zmin);             //  Byte 68         Bounding Box    Zmin        Double      Little
+                fs.WriteLe(header.Zmax);             //  Byte 76         Bounding Box    Zmax        Double      Little
+                fs.WriteLe(header.Mmin);             //  Byte 84         Bounding Box    Mmin        Double      Little
+                fs.WriteLe(header.Mmax);             //  Byte 92         Bounding Box    Mmax        Double      Little
+                fs.Close();
+            }
         }
 
         private void InitializeQuadtree()
@@ -643,8 +628,10 @@ namespace DotSpatial.Data
                 {
                     qt.Insert(shape.Value.Range.Extent.ToEnvelope(), shape.Key);
                 }
+
                 returnedCount = shapes.Count;
-            } while (1000 == returnedCount);
+            }
+            while (returnedCount == 1000);
             Quadtree = qt;
         }
 
@@ -657,35 +644,42 @@ namespace DotSpatial.Data
             return at;
         }
 
-        /// <summary>
-        /// Append the geometry to the shapefile
-        /// </summary>
-        /// <param name="header"></param>
-        /// <param name="feature"></param>
-        /// <param name="numFeatures"></param>
-        protected abstract void AppendBasicGeometry(ShapefileHeader header, IGeometry feature, int numFeatures);
+        #endregion
 
-        /// <summary>
-        /// Create an appropriate ShapeSource for this FeatureSource
-        /// </summary>
-        /// <returns></returns>
-        public abstract IShapeSource CreateShapeSource();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     internal class ShapefileFeatureSourceSearchAndModifyAttributeParameters
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="featureEditCallback"></param>
         public ShapefileFeatureSourceSearchAndModifyAttributeParameters(FeatureSourceRowEditEvent featureEditCallback)
         {
             FeatureEditCallback = featureEditCallback;
         }
 
-        public Dictionary<int, Shape> CurrentSearchAndModifyAttributeshapes { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<int, Shape> CurrentSearchAndModifyAttributeShapes { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public FeatureSourceRowEditEvent FeatureEditCallback { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public bool OnRowEditEvent(RowEditEventArgs e)
         {
-            var shape = CurrentSearchAndModifyAttributeshapes[e.RowNumber];
+            var shape = CurrentSearchAndModifyAttributeShapes[e.RowNumber];
             return FeatureEditCallback(new FeatureSourceRowEditEventArgs(e, shape));
         }
     }

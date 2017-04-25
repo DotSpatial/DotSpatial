@@ -589,12 +589,12 @@ namespace DotSpatial.Controls
         public Rectangle ParentToView(Rectangle clip)
         {
             Rectangle result = new Rectangle
-                                   {
-                                       X = View.X + (clip.X * View.Width) / _parent.ClientRectangle.Width,
-                                       Y = View.Y + (clip.Y * View.Height) / _parent.ClientRectangle.Height,
-                                       Width = clip.Width * View.Width / _parent.ClientRectangle.Width,
-                                       Height = clip.Height * View.Height / _parent.ClientRectangle.Height
-                                   };
+            {
+                X = View.X + (clip.X * View.Width) / _parent.ClientRectangle.Width,
+                Y = View.Y + (clip.Y * View.Height) / _parent.ClientRectangle.Height,
+                Width = clip.Width * View.Width / _parent.ClientRectangle.Width,
+                Height = clip.Height * View.Height / _parent.ClientRectangle.Height
+            };
             return result;
         }
 
@@ -809,10 +809,11 @@ namespace DotSpatial.Controls
         public bool ExtendBuffer
         {
             get { return _extendBuffer; }
-            set { 
-                    _extendBuffer = value;
-                    IProjExtensions.ExtendBuffer = value;
-                }
+            set
+            {
+                _extendBuffer = value;
+                IProjExtensions.ExtendBuffer = value;
+            }
         }
 
         /// <summary>
@@ -925,9 +926,9 @@ namespace DotSpatial.Controls
                 var h = ViewChanged;
                 if (h != null)
                 {
-                    var old_view = _view;
+                    var oldView = _view;
                     _view = value;
-                    var args = new ViewChangedEventArgs { OldView = old_view, NewView = _view };
+                    var args = new ViewChangedEventArgs(oldView, _view);
                     h(this, args);
                 }
                 else
@@ -1301,7 +1302,7 @@ namespace DotSpatial.Controls
             var bReproject = false;
             if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
             {
-    			string message = string.Format(MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch, layer.DataSet.Name, layer.Projection.Name, Projection.Name);
+                string message = string.Format(MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch, layer.DataSet.Name, layer.Projection.Name, Projection.Name);
                 if (ProjectionModeReproject == ActionMode.PromptOnce)
                 {
                     message =

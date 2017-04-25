@@ -22,11 +22,23 @@ namespace DotSpatial.Data
     /// <summary>
     /// Extension methods for <see cref="IProj"/> interface.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public static class IProjExtensions
     {
+        #region Properties
 
-        private static bool _extendBuffer;
-        private static int _extendBufferCoeff = 3;
+        /// <summary>
+        /// Gets or sets a value indicating whether this map frame should define its buffer
+        /// region to be the same size as the client, or three times larger.
+        /// </summary>
+        public static bool ExtendBuffer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// </summary>
+        public static int ExtendBufferCoeff { get; set; } = 3;
+
+        #endregion
 
         #region Methods
 
@@ -45,6 +57,7 @@ namespace DotSpatial.Data
                 x = (x - self.ImageRectangle.X) * self.GeographicExtents.Width / self.ImageRectangle.Width + self.GeographicExtents.MinX;
                 y = self.GeographicExtents.MaxY - (y - self.ImageRectangle.Y) * self.GeographicExtents.Height / self.ImageRectangle.Height;
             }
+
             return new Coordinate(x, y, 0.0);
         }
 
@@ -77,12 +90,12 @@ namespace DotSpatial.Data
             {
                 result.Add(PixelToProj(self, r));
             }
+
             return result;
         }
 
         /// <summary>
-        /// Converts a single geographic location into the equivalent point on the
-        /// screen relative to the top left corner of the map.
+        /// Converts a single geographic location into the equivalent point on the screen relative to the top left corner of the map.
         /// </summary>
         /// <param name="self">This IProj</param>
         /// <param name="location">The geographic position to transform</param>
@@ -106,8 +119,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Converts a single geographic envelope into an equivalent Rectangle
-        /// as it would be drawn on the screen.
+        /// Converts a single geographic envelope into an equivalent Rectangle as it would be drawn on the screen.
         /// </summary>
         /// <param name="self">This IProj</param>
         /// <param name="env">The geographic IEnvelope</param>
@@ -135,44 +147,21 @@ namespace DotSpatial.Data
                 if (region == null) continue;
                 result.Add(ProjToPixel(self, region));
             }
+
             return result;
         }
 
         /// <summary>
-        /// Calculates an integer length distance in pixels that corresponds to the double
-        /// length specified in the image.
+        /// Calculates an integer length distance in pixels that corresponds to the double length specified in the image.
         /// </summary>
         /// <param name="self">The IProj that this describes</param>
         /// <param name="distance">The double distance to obtain in pixels</param>
         /// <returns>The integer distance in pixels</returns>
         public static double ProjToPixel(this IProj self, double distance)
         {
-            return (distance * self.ImageRectangle.Width / self.GeographicExtents.Width);
+            return distance * self.ImageRectangle.Width / self.GeographicExtents.Width;
         }
 
         #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets whether this map frame should define its buffer
-        /// region to be the same size as the client, or three times larger.
-        /// </summary>
-        public static bool ExtendBuffer
-        {
-            get { return _extendBuffer; }
-            set { _extendBuffer = value; }
-        }
-
-        /// <summary>
-        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
-        /// </summary>
-        public static int ExtendBufferCoeff
-        {
-            get { return _extendBufferCoeff; }
-            set { _extendBufferCoeff = value; }
-        }
-        #endregion
-
     }
 }

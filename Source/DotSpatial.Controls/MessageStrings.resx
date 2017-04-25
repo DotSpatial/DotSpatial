@@ -930,4 +930,7 @@ Reproject the layer to match the map coordinate system? This will not affect the
   <data name="ToolManager_ExecutionComplete_UnableToAddLayerReason" xml:space="preserve">
     <value>Unable to add layer. Reason: </value>
   </data>
+  <data name="ExtentXIsTooLargeForDegreesToBeSignificant" xml:space="preserve">
+    <value>Extent.X is too large for degrees to be significant.</value>
+  </data>
 </root>

@@ -16,8 +16,80 @@ using System.Runtime.InteropServices;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Smoother
     {
+        #region Private Variables
+
+        private readonly int _height;
+        private readonly ProgressMeter _pm;
+        private readonly byte[] _result;
+        private readonly int _stride;
+        private readonly int _width;
+        private readonly Func<int, byte> _getByte;
+        private readonly Action _copyResult;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Smoother"/> class.
+        /// </summary>
+        public Smoother(int stride, int width, int height, byte[] inRgbData, IProgressHandler progHandler)
+        {
+            _stride = stride;
+            _getByte = _ => inRgbData[_];
+            _copyResult = () => Array.Copy(_result, 0, inRgbData, 0, _result.Length);
+            _result = new byte[inRgbData.Length];
+            _width = width;
+            _height = height;
+            _pm = new ProgressMeter(progHandler, "Smoothing Image", height);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Smoother"/> class with IntPtr for input array.
+        /// </summary>
+        public Smoother(int stride, int width, int height, IntPtr inRgbData, IProgressHandler progHandler)
+        {
+            _stride = stride;
+            _getByte = _ => Marshal.ReadByte(inRgbData, _);
+            _copyResult = () => Marshal.Copy(_result, 0, inRgbData, _result.Length);
+            _result = new byte[stride * height];
+            _width = width;
+            _height = height;
+            _pm = new ProgressMeter(progHandler, "Smoothing Image", height);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Calculates the smoothing by cycling through the values.
+        /// </summary>
+        public void Smooth()
+        {
+            for (int row = 0; row < _height; row++)
+            {
+                for (int col = 0; col < _width; col++)
+                {
+                    DoSmooth(row, col);
+                }
+
+                _pm.CurrentValue = row;
+            }
+
+            _copyResult();
+        }
+
+        private static int Offset(int row, int col, int stride)
+        {
+            return row * stride + col * 4;
+        }
+
         private void DoSmooth(int row, int col)
         {
             int a = 0, b = 0, g = 0, r = 0;
@@ -32,6 +104,7 @@ namespace DotSpatial.Data
                     r += inValue.R;
                 }
             }
+
             a = a / 9;
             b = b / 9;
             g = g / 9;
@@ -57,74 +130,6 @@ namespace DotSpatial.Data
             _result[offset + 1] = color.G;
             _result[offset + 2] = color.R;
             _result[offset + 3] = color.A;
-        }
-
-        private static int Offset(int row, int col, int stride)
-        {
-            return row * stride + col * 4;
-        }
-
-        #region Private Variables
-
-        private readonly int _height;
-        private readonly ProgressMeter _pm;
-        private readonly byte[] _result;
-        private readonly int _stride;
-        private readonly int _width;
-        private readonly Func<int, byte> _getByte;
-        private readonly Action _copyResult;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of Smoother
-        /// </summary>
-        public Smoother(int stride, int width, int height, byte[] inRgbData, IProgressHandler progHandler)
-        {
-            _stride = stride;
-            _getByte = _ => inRgbData[_];
-            _copyResult = () => Array.Copy(_result, 0, inRgbData, 0, _result.Length);
-            _result = new byte[inRgbData.Length];
-            _width = width;
-            _height = height;
-            _pm = new ProgressMeter(progHandler, "Smoothing Image", height);
-        }
-
-
-        /// <summary>
-        /// Creates a new instance of Smoother with IntPtr for input array
-        /// </summary>
-        public Smoother(int stride, int width, int height, IntPtr inRgbData, IProgressHandler progHandler)
-        {
-            _stride = stride;
-            _getByte = _ => Marshal.ReadByte(inRgbData, _);
-            _copyResult = () => Marshal.Copy(_result, 0, inRgbData, _result.Length);
-            _result = new byte[stride*height];
-            _width = width;
-            _height = height;
-            _pm = new ProgressMeter(progHandler, "Smoothing Image", height);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Calculates the smoothing by cycling through the values
-        /// </summary>
-        public void Smooth()
-        {
-            for (int row = 0; row < _height; row++)
-            {
-                for (int col = 0; col < _width; col++)
-                {
-                    DoSmooth(row, col);
-                }
-                _pm.CurrentValue = row;
-            }
-            _copyResult();
         }
 
         #endregion
