@@ -1,8 +1,6 @@
-﻿// <copyright file="AssemblyInfoShared.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
+﻿using System.Reflection;
 
-using System.Reflection;
+// Shared Assembly info
 
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyVersion("2.0")]

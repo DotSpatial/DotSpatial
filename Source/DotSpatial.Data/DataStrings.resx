@@ -247,10 +247,4 @@
   <data name="FileExtensionNotSupportedByShapefileDataProvider" xml:space="preserve">
     <value>The file extension {0} is not supported by Shapefile data provider.</value>
   </data>
-  <data name="FileNameShouldNotBeNull" xml:space="preserve">
-    <value>The fileName should not be null.</value>
-  </data>
-  <data name="ReadingExtentFromStringFailedOnTerm" xml:space="preserve">
-    <value>Attempting to read an extent string failed while reading the {0} term.</value>
-  </data>
 </root>

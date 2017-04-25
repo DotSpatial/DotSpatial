@@ -23,73 +23,27 @@ namespace DotSpatial.Data
     /// </summary>
     public class AttributePager : IEnumerable<DataTable>, IEnumerator<DataTable>
     {
+        #region Private Variables
+
         private readonly int _numRows;
         private readonly IAttributeSource _source;
+        private DataTable _currentTable;
         private int _pageIndex;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttributePager"/> class.
-        /// </summary>
-        /// <param name="source">IAttributeSource to get the attribues from.</param>
-        /// <param name="pageSize">Number of rows each data table page should hold.</param>
-        public AttributePager(IAttributeSource source, int pageSize)
-        {
-            _numRows = source.NumRows();
-            _source = source;
-            PageSize = pageSize;
-        }
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the current table.
-        /// </summary>
-        public DataTable Current { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the pages size as a count of the number of rows each data table page should hold.
-        /// </summary>
-        public int PageSize { get; protected set; }
-
-        /// <summary>
-        /// Gets the starting row index of the current page.
-        /// </summary>
-        public int StartIndex => _pageIndex * PageSize;
-
-        /// <summary>
-        /// Gets the current table.
-        /// </summary>
-        object IEnumerator.Current => Current;
+        private int _pageSize;
 
         #endregion
 
         /// <summary>
-        /// This returns the data table for the given page index, but also sets the Pager so that it is sitting on the specified page index.
+        /// Creates a new instance of AttributePager
         /// </summary>
-        /// <param name="pageIndex">Index of the page that should be returned.</param>
-        /// <returns>The data table for the given page index.</returns>
-        public DataTable this[int pageIndex]
+        public AttributePager(IAttributeSource source, int pageSize)
         {
-            get
-            {
-                if (_pageIndex != pageIndex || Current == null)
-                {
-                    Current = _source.GetAttributes(pageIndex * PageSize, RowCount(pageIndex));
-                    _pageIndex = pageIndex;
-                }
-
-                return Current;
-            }
+            _numRows = source.NumRows();
+            _source = source;
+            _pageSize = pageSize;
         }
 
-        #region Methods
-
-        /// <summary>
-        /// Does nothing.
-        /// </summary>
-        public void Dispose()
-        {
-        }
+        #region IEnumerable<DataTable> Members
 
         /// <inheritdoc />
         public IEnumerator<DataTable> GetEnumerator()
@@ -97,35 +51,45 @@ namespace DotSpatial.Data
             return this;
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this;
+        }
+
+        #endregion
+
+        #region IEnumerator<DataTable> Members
+
         /// <summary>
-        /// Advances to the next attribute.
+        /// Gets the current table
         /// </summary>
-        /// <returns>False if the index is bigger then NumPages.</returns>
+        public DataTable Current
+        {
+            get { return _currentTable; }
+        }
+
+        /// <summary>
+        /// Does nothing
+        /// </summary>
+        public void Dispose()
+        {
+        }
+
+        object IEnumerator.Current
+        {
+            get { return _currentTable; }
+        }
+
+        /// <summary>
+        /// Advances to the next attribute
+        /// </summary>
+        /// <returns></returns>
         public bool MoveNext()
         {
             _pageIndex += 1;
             if (_pageIndex >= NumPages()) return false;
-            Current = this[_pageIndex];
+            _currentTable = this[_pageIndex];
             return true;
-        }
-
-        /// <summary>
-        /// The integer number of pages.
-        /// </summary>
-        /// <returns>the number of pages</returns>
-        public int NumPages()
-        {
-            return (int)Math.Ceiling((double)_numRows / PageSize);
-        }
-
-        /// <summary>
-        /// Returns the page that the specified row is on
-        /// </summary>
-        /// <param name="rowIndex">The integer row index</param>
-        /// <returns>The page of the row in question</returns>
-        public int PageOfRow(int rowIndex)
-        {
-            return (int)Math.Floor((double)rowIndex / PageSize);
         }
 
         /// <summary>
@@ -133,8 +97,68 @@ namespace DotSpatial.Data
         /// </summary>
         public void Reset()
         {
-            Current = null;
+            _currentTable = null;
             _pageIndex = -1;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the starting row index of the current page.
+        /// </summary>
+        public int StartIndex
+        {
+            get { return _pageIndex * _pageSize; }
+        }
+
+        /// <summary>
+        /// Gets the pages size as a count of the number of rows each data table page should hold
+        /// </summary>
+        public int PageSize
+        {
+            get { return _pageSize; }
+            protected set { _pageSize = value; }
+        }
+
+        /// <summary>
+        /// This returns the data table for the corresponding page index, but also sets the
+        /// Pager so that it is sitting on the specified page index.
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        public DataTable this[int pageIndex]
+        {
+            get
+            {
+                if (_pageIndex != pageIndex || _currentTable == null)
+                {
+                    _currentTable = _source.GetAttributes(pageIndex * PageSize, RowCount(pageIndex));
+                    _pageIndex = pageIndex;
+                }
+                return _currentTable;
+            }
+        }
+
+        /// <summary>
+        /// The integer number of pages
+        /// </summary>
+        /// <returns>the number of pages</returns>
+        public int NumPages()
+        {
+            return (int)Math.Ceiling((double)_numRows / _pageSize);
+        }
+
+        /// <summary>
+        /// Gets the number of rows on the specified page.
+        /// </summary>
+        /// <param name="pageindex">The page index</param>
+        /// <returns>The number of rows that should be on that page.</returns>
+        public int RowCount(int pageindex)
+        {
+            if (pageindex == NumPages() - 1) return _numRows % _pageSize;
+            return PageSize;
         }
 
         /// <summary>
@@ -146,35 +170,24 @@ namespace DotSpatial.Data
         public DataRow Row(int rowIndex)
         {
             int page = PageOfRow(rowIndex);
-            if (_pageIndex != page || Current == null)
+            if (_pageIndex != page || _currentTable == null)
             {
-                Current = _source.GetAttributes(page * PageSize, RowCount(page));
+                _currentTable = _source.GetAttributes(page * PageSize, RowCount(page));
                 _pageIndex = page;
             }
-
-            return Current.Rows[rowIndex % PageSize];
-        }
-
-        /// <summary>
-        /// Gets the number of rows on the specified page.
-        /// </summary>
-        /// <param name="pageindex">The page index</param>
-        /// <returns>The number of rows that should be on that page.</returns>
-        public int RowCount(int pageindex)
-        {
-            if (pageindex == NumPages() - 1) return _numRows % PageSize;
-            return PageSize;
+            return _currentTable.Rows[rowIndex % PageSize];
         }
 
         #endregion
 
         /// <summary>
-        /// Returns this as IEnumerator.
+        /// Returns the page that the specified row is on
         /// </summary>
-        /// <returns>This as IEnumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <param name="rowIndex">The integer row index</param>
+        /// <returns>The page of the row in question</returns>
+        public int PageOfRow(int rowIndex)
         {
-            return this;
+            return (int)Math.Floor((double)rowIndex / _pageSize);
         }
     }
 }

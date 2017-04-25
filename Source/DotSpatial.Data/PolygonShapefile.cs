@@ -26,15 +26,13 @@ namespace DotSpatial.Data
     public class PolygonShapefile : Shapefile
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolygonShapefile"/> class for in-ram handling only.
+        /// Creates a new instance of a PolygonShapefile for in-ram handling only.
         /// </summary>
         public PolygonShapefile()
-            : base(FeatureType.Polygon, ShapeType.Polygon)
-        {
-        }
+            : base(FeatureType.Polygon, ShapeType.Polygon) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolygonShapefile"/> class that is loaded from the supplied fileName.
+        /// Creates a new instance of a PolygonShapefile that is loaded from the supplied fileName.
         /// </summary>
         /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
         public PolygonShapefile(string fileName)
@@ -141,7 +139,6 @@ namespace DotSpatial.Data
         /// than requiring that all the features be created. (which takes up a lot of memory).
         /// </summary>
         /// <param name="index">The integer index</param>
-        /// <returns>The polygon feature belonging to the given index.</returns>
         public override IFeature GetFeature(int index)
         {
             IFeature f;
@@ -154,7 +151,6 @@ namespace DotSpatial.Data
                 f = GetPolygon(index);
                 f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
             }
-
             return f;
         }
 
@@ -208,5 +204,7 @@ namespace DotSpatial.Data
                 }
             }
         }
+
+
     }
 }

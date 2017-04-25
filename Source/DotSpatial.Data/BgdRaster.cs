@@ -19,36 +19,35 @@ using System.Text;
 
 namespace DotSpatial.Data
 {
-    public class BgdRaster<T> : Raster<T>
-        where T : IComparable<T>, IEquatable<T>
+    public class BgdRaster<T> : Raster<T> where T : IComparable<T>, IEquatable<T>
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BgdRaster{T}"/> class.
-        /// A BgdRaster created this way probably expects to open a file using the "Open" method, which allows
-        /// for progress handlers or other things to be set before what might be a time consuming read-value process.
+        /// A BgdRaster in created this way probably expects to open a file using the "Open" method,
+        /// which allows for progress handlers or other things to be set before what might be a
+        /// time consuming read-value process.
         /// </summary>
         public BgdRaster()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BgdRaster{T}"/> class, attempting to store the entire structure in memory if possible.
+        /// Creates a new instance of a BGD raster, attempting to store the entire structure in memory if possible.
         /// </summary>
-        /// <param name="numRows">The number of rows in the raster</param>
-        /// <param name="numColumns">The number of columns in the raster</param>
+        /// <param name="numRows"></param>
+        /// <param name="numColumns"></param>
         public BgdRaster(int numRows, int numColumns)
             : base(numRows, numColumns)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BgdRaster{T}"/> class.
+        /// This creates a new BGD raster.
         /// </summary>
-        /// <param name="fileName">Name of the file that should be written by this BgdRaster instance.</param>
-        /// <param name="numRows">The number of rows in the raster</param>
-        /// <param name="numColumns">The number of columns in the raster</param>
+        /// <param name="fileName"></param>
+        /// <param name="numRows"></param>
+        /// <param name="numColumns"></param>
         public BgdRaster(string fileName, int numRows, int numColumns)
             : base(numRows, numColumns)
         {
@@ -56,19 +55,8 @@ namespace DotSpatial.Data
             base.Filename = fileName;
             base.NumRowsInFile = numRows;
             base.NumColumnsInFile = numColumns;
+            //base.IsInRam = false;
             WriteHeader(fileName);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the size of the header. There is one no-data value in the header.
-        /// </summary>
-        public virtual int HeaderSize
-        {
-            get { return 554 + ByteSize; }
         }
 
         #endregion
@@ -76,13 +64,48 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Most reading is optimized to read in a block at a time and process it. This method is designed
-        /// for seeking through the file. It should work faster than the buffered methods in cases where
-        /// an unusually arranged collection of values are required. Sorting the list before calling
+        /// This Method should be overrridden by classes, and provides the primary ability.
+        /// </summary>
+        /// <param name="xOff">The horizontal offset of the area to read values from.</param>
+        /// <param name="yOff">The vertical offset of the window to read values from.</param>
+        /// <param name="sizeX">The number of values to read into the buffer.</param>
+        /// <param name="sizeY">The vertical size of the window to read into the buffer.</param>
+        /// <returns>A jagged array of type T.</returns>
+        public override T[][] ReadRaster(int xOff, int yOff, int sizeX, int sizeY)
+        {
+            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, NumColumns * ByteSize);
+            ProgressMeter pm = new ProgressMeter(ProgressHandler,
+                                                 DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRows);
+            fs.Seek(HeaderSize, SeekOrigin.Begin);
+
+            // Position the binary reader at the top of the "window"
+            fs.Seek(yOff * NumColumnsInFile * ByteSize, SeekOrigin.Current);
+            BinaryReader br = new BinaryReader(fs);
+
+            T[][] result = new T[NumRows][];
+            int endX = xOff + sizeX;
+
+            for (int row = 0; row < sizeY; row++)
+            {
+                result[row] = new T[sizeX];
+                // Position the binary reader at the beginning of the window
+                fs.Seek(ByteSize * xOff, SeekOrigin.Current);
+                byte[] values = br.ReadBytes(sizeX * ByteSize);
+                Buffer.BlockCopy(values, 0, result[row], 0, ByteSize * sizeX);
+                pm.CurrentValue = row;
+                fs.Seek(ByteSize * (NumColumnsInFile - endX), SeekOrigin.Current);
+            }
+            br.Close();
+            return result;
+        }
+
+        /// <summary>
+        /// Most reading is optimized to read in a block at a time and process it.  This method is designed
+        /// for seeking through the file.  It should work faster than the buffered methods in cases where
+        /// an unusually arranged collection of values are required.  Sorting the list before calling
         /// this should significantly improve performance.
         /// </summary>
         /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column)</param>
-        /// <returns>A List{T} of values that belong to the given indices.</returns>
         public override List<T> GetValuesT(IEnumerable<long> indices)
         {
             if (IsInRam) return base.GetValuesT(indices);
@@ -98,8 +121,7 @@ namespace DotSpatial.Data
                 {
                     foreach (long index in indices)
                     {
-                        var offset = HeaderSize + index * ByteSize;
-
+                        var offset = HeaderSize + index*ByteSize;
                         // Position the binary reader at the top of the "window"
                         fs.Seek(offset, SeekOrigin.Begin);
                         var values = br.ReadBytes(ByteSize);
@@ -114,87 +136,7 @@ namespace DotSpatial.Data
             sw.Stop();
             Debug.WriteLine("Time to read values from file:" + sw.ElapsedMilliseconds);
 #endif
-            return result;
-        }
 
-        /// <summary>
-        /// Writes the header, regardless of which subtype of binary raster this is written for
-        /// </summary>
-        /// <param name="fileName">The string fileName specifying what file to load</param>
-        public void ReadHeader(string fileName)
-        {
-            using (var br = new BinaryReader(new FileStream(fileName, FileMode.Open)))
-            {
-                StartColumn = 0;
-                NumColumns = br.ReadInt32();
-                NumColumnsInFile = NumColumns;
-                EndColumn = NumColumns - 1;
-                StartRow = 0;
-                NumRows = br.ReadInt32();
-                NumRowsInFile = NumRows;
-                EndRow = NumRows - 1;
-                Bounds = new RasterBounds(NumRows, NumColumns, new[] { 0.0, 1.0, 0.0, NumRows, 0.0, -1.0 });
-
-                CellWidth = br.ReadDouble();
-                Bounds.AffineCoefficients[5] = -br.ReadDouble(); // dy
-                Xllcenter = br.ReadDouble();
-                Yllcenter = br.ReadDouble();
-                br.ReadInt32(); // Read RasterDataType only to skip it since we know the type already.
-                byte[] noDataBytes = br.ReadBytes(ByteSize);
-                var nd = new T[1];
-                Buffer.BlockCopy(noDataBytes, 0, nd, 0, ByteSize);
-                NoDataValue = Global.ToDouble(nd[0]);
-                string proj = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
-                ProjectionString = proj;
-
-                Notes = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
-                if (Notes.Length == 0) Notes = null;
-            }
-
-            string prj = Path.ChangeExtension(Filename, ".prj");
-            if (File.Exists(prj))
-            {
-                using (var sr = new StreamReader(prj))
-                {
-                    ProjectionString = sr.ReadToEnd();
-                }
-            }
-        }
-
-        /// <summary>
-        /// This Method should be overrridden by classes, and provides the primary ability.
-        /// </summary>
-        /// <param name="xOff">The horizontal offset of the area to read values from.</param>
-        /// <param name="yOff">The vertical offset of the window to read values from.</param>
-        /// <param name="sizeX">The number of values to read into the buffer.</param>
-        /// <param name="sizeY">The vertical size of the window to read into the buffer.</param>
-        /// <returns>A jagged array of type T.</returns>
-        public override T[][] ReadRaster(int xOff, int yOff, int sizeX, int sizeY)
-        {
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, NumColumns * ByteSize);
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRows);
-            fs.Seek(HeaderSize, SeekOrigin.Begin);
-
-            // Position the binary reader at the top of the "window"
-            fs.Seek(yOff * NumColumnsInFile * ByteSize, SeekOrigin.Current);
-            BinaryReader br = new BinaryReader(fs);
-
-            T[][] result = new T[NumRows][];
-            int endX = xOff + sizeX;
-
-            for (int row = 0; row < sizeY; row++)
-            {
-                result[row] = new T[sizeX];
-
-                // Position the binary reader at the beginning of the window
-                fs.Seek(ByteSize * xOff, SeekOrigin.Current);
-                byte[] values = br.ReadBytes(sizeX * ByteSize);
-                Buffer.BlockCopy(values, 0, result[row], 0, ByteSize * sizeX);
-                pm.CurrentValue = row;
-                fs.Seek(ByteSize * (NumColumnsInFile - endX), SeekOrigin.Current);
-            }
-
-            br.Close();
             return result;
         }
 
@@ -208,15 +150,17 @@ namespace DotSpatial.Data
         /// <param name="ySize">The number of values to write vertically</param>
         public override void WriteRaster(T[][] buffer, int xOff, int yOff, int xSize, int ySize)
         {
-            var pm = new ProgressMeter(ProgressHandler, DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRowsInFile)
-            { StartValue = yOff };
+            var pm = new ProgressMeter(ProgressHandler,
+                    DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRowsInFile) { StartValue = yOff };
 
-            using (var fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.Write, NumColumns * ByteSize))
+            using (var fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.Write,
+                    NumColumns*ByteSize))
             {
+                
                 fs.Seek(HeaderSize, SeekOrigin.Begin);
 
                 // Position the binary reader at the top of the "window"
-                long offset = yOff * (long)NumColumnsInFile * ByteSize;
+                long offset = yOff*(long) NumColumnsInFile*ByteSize;
                 fs.Seek(offset, SeekOrigin.Current);
                 using (var br = new BinaryWriter(fs))
                 {
@@ -224,12 +168,12 @@ namespace DotSpatial.Data
                     for (int row = 0; row < ySize; row++)
                     {
                         // Position the binary reader at the beginning of the window
-                        fs.Seek(ByteSize * xOff, SeekOrigin.Current);
-                        byte[] values = new byte[xSize * ByteSize];
-                        Buffer.BlockCopy(buffer[row], 0, values, 0, xSize * ByteSize);
+                        fs.Seek(ByteSize*xOff, SeekOrigin.Current);
+                        byte[] values = new byte[xSize*ByteSize];
+                        Buffer.BlockCopy(buffer[row], 0, values, 0, xSize*ByteSize);
                         br.Write(values);
                         pm.CurrentValue = row + yOff;
-                        fs.Seek(ByteSize * (NumColumnsInFile - endX), SeekOrigin.Current);
+                        fs.Seek(ByteSize*(NumColumnsInFile - endX), SeekOrigin.Current);
                     }
                 }
             }
@@ -254,7 +198,6 @@ namespace DotSpatial.Data
                 {
                     blank[col] = val;
                 }
-
                 for (int row = 0; row < NumRowsInFile; row++)
                 {
                     WriteRow(blank, row);
@@ -263,12 +206,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens the file specified by Filename.
+        /// Opens the specified file
         /// </summary>
         public override void Open()
         {
             NoDataValue = Global.ToDouble(Global.MinimumValue<T>()); // Sets it to the appropriate minimum for the int datatype
-
+            
             ReadHeader(Filename);
 
             StartRow = 0;
@@ -279,20 +222,19 @@ namespace DotSpatial.Data
             NumRowsInFile = NumRows;
             NumValueCells = 0;
             Value = new ValueGrid<T>(this);
-
+            
             DataType = typeof(T);
 
-            if (NumColumnsInFile * NumRowsInFile < 64000000)
+            if (base.NumColumnsInFile * base.NumRowsInFile < 64000000)
             {
-                IsInRam = true;
+                base.IsInRam = true;
                 Data = ReadRaster();
-                GetStatistics();
+                base.GetStatistics();
             }
             else
             {
-                IsInRam = false;
-
-                // Don't read in any data at this point. Let the user use ReadRaster for specific blocks.
+                base.IsInRam = false;
+                // Don't read in any data at this point.  Let the user use ReadRaster for specific blocks.
             }
         }
 
@@ -305,7 +247,68 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Writes the header to the file whose path is inside Filename property.
+        /// If no file exists, this writes the header and no-data values.  If a file exists, it will assume
+        /// that data already has been filled in the file and will attempt to insert the data values
+        /// as a window into the file.  If you want to create a copy of the file and values, just use
+        /// System.IO.File.Copy, it almost certainly would be much more optimized.
+        /// </summary>
+        private void Write(string fileName)
+        {
+            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Writing values to " + Filename, NumRows);
+            long expectedByteCount = NumRows * NumColumns * ByteSize;
+            if (expectedByteCount < 1000000) pm.StepPercent = 5;
+            if (expectedByteCount < 5000000) pm.StepPercent = 10;
+            if (expectedByteCount < 100000) pm.StepPercent = 50;
+
+            if (File.Exists(fileName))
+            {
+                FileInfo fi = new FileInfo(Filename);
+                // if the following test fails, then the target raster doesn't fit the bill for pasting into, so clear it and write a new one.
+                if (fi.Length == HeaderSize + ByteSize * NumColumnsInFile * NumRowsInFile)
+                {
+                    WriteHeader(fileName);
+                    WriteRaster(Data);
+                    return;
+                }
+
+                // If we got here, either the file didn't exist or didn't match the specifications correctly, so write a new one.
+
+                Debug.WriteLine("The size of the file was " + fi.Length + " which didn't match the expected " +
+                                HeaderSize + ByteSize * NumColumnsInFile * NumRowsInFile);
+            }
+
+            if (File.Exists(Filename)) File.Delete(Filename);
+            WriteHeader(fileName);
+
+            // Open as append and it will automatically skip the header for us.
+            using (var bw =new BinaryWriter(new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None,ByteSize*NumColumnsInFile)))
+            {
+                // the row and column counters here are relative to the whole file, not just the window that is currently in memory.
+                pm.EndValue = NumRowsInFile;
+
+                for (int row = 0; row < NumRowsInFile; row++)
+                {
+                    byte[] rawBytes = new byte[NumColumnsInFile*ByteSize];
+                    T[] nd = new T[1];
+                    nd[0] = (T) Convert.ChangeType(NoDataValue, typeof (T));
+                    Buffer.BlockCopy(Data[row - StartRow], 0, rawBytes, StartColumn*ByteSize, NumColumns*ByteSize);
+                    for (int col = 0; col < StartColumn; col++)
+                    {
+                        Buffer.BlockCopy(nd, 0, rawBytes, col*ByteSize, ByteSize);
+                    }
+                    for (int col = EndColumn + 1; col < NumColumnsInFile; col++)
+                    {
+                        Buffer.BlockCopy(nd, 0, rawBytes, col*ByteSize, ByteSize);
+                    }
+                    bw.Write(rawBytes);
+                    pm.CurrentValue = row;
+                }
+            }
+            pm.Reset();
+        }
+
+        /// <summary>
+        /// Writes the header to the fileName
         /// </summary>
         public override void WriteHeader()
         {
@@ -313,9 +316,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Writes the header to the fileName.
+        /// The string fileName where this will begin to write data by clearing the existing file
         /// </summary>
-        /// <param name="fileName">The string fileName where this will begin to write data by clearing the existing file.</param>
         public void WriteHeader(string fileName)
         {
             var dt = GetRasterDataType();
@@ -332,9 +334,9 @@ namespace DotSpatial.Data
                 bw.Write(CellHeight);
                 bw.Write(Xllcenter);
                 bw.Write(Yllcenter);
-                bw.Write((int)dt);
+                bw.Write((int) dt);
                 var nd = new byte[ByteSize];
-                var nds = new[] { (T)Convert.ChangeType(NoDataValue, typeof(T)) };
+                var nds = new[] {(T) Convert.ChangeType(NoDataValue, typeof (T))};
                 Buffer.BlockCopy(nds, 0, nd, 0, ByteSize);
                 bw.Write(nd);
 
@@ -348,20 +350,17 @@ namespace DotSpatial.Data
                     {
                         proj[i] = temp[i];
                     }
-
                     string prj = Path.ChangeExtension(Filename, ".prj");
                     if (File.Exists(prj))
                     {
                         File.Delete(prj);
                     }
-
                     var fi = new FileInfo(prj);
                     using (var tw = fi.CreateText())
                     {
                         tw.WriteLine(Projection.ToEsriString());
                     }
                 }
-
                 bw.Write(proj);
                 byte[] note = new byte[255];
                 if (Notes != null)
@@ -384,7 +383,7 @@ namespace DotSpatial.Data
                 return RasterDataType.BYTE;
             if (DataType == typeof(short))
                 return RasterDataType.SHORT;
-            if (DataType == typeof(int))
+            if (DataType == typeof (int))
                 return RasterDataType.INTEGER;
             if (DataType == typeof(long))
                 return RasterDataType.LONG;
@@ -406,69 +405,60 @@ namespace DotSpatial.Data
             return RasterDataType.INVALID;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// If no file exists, this writes the header and no-data values. If a file exists, it will assume
-        /// that data already has been filled in the file and will attempt to insert the data values
-        /// as a window into the file. If you want to create a copy of the file and values, just use
-        /// System.IO.File.Copy, it almost certainly would be much more optimized.
+        /// Gets the size of the header.  There is one no-data value in the header.
         /// </summary>
-        /// <param name="fileName">Name of the file that should be written. </param>
-        private void Write(string fileName)
+        public virtual int HeaderSize
         {
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Writing values to " + Filename, NumRows);
-            long expectedByteCount = NumRows * NumColumns * ByteSize;
-            if (expectedByteCount < 1000000) pm.StepPercent = 5;
-            if (expectedByteCount < 5000000) pm.StepPercent = 10;
-            if (expectedByteCount < 100000) pm.StepPercent = 50;
+            get { return 554 + ByteSize; }
+        }
 
-            if (File.Exists(fileName))
+        /// <summary>
+        /// Writes the header, regardless of which subtype of binary raster this is written for
+        /// </summary>
+        /// <param name="fileName">The string fileName specifying what file to load</param>
+        public void ReadHeader(string fileName)
+        {
+            using (var br = new BinaryReader(new FileStream(fileName, FileMode.Open)))
             {
-                FileInfo fi = new FileInfo(Filename);
+                StartColumn = 0;
+                NumColumns = br.ReadInt32();
+                NumColumnsInFile = NumColumns;
+                EndColumn = NumColumns - 1;
+                StartRow = 0;
+                NumRows = br.ReadInt32();
+                NumRowsInFile = NumRows;
+                EndRow = NumRows - 1;
+                Bounds = new RasterBounds(NumRows, NumColumns, new[] {0.0, 1.0, 0.0, NumRows, 0.0, -1.0});
 
-                // if the following test fails, then the target raster doesn't fit the bill for pasting into, so clear it and write a new one.
-                if (fi.Length == HeaderSize + ByteSize * NumColumnsInFile * NumRowsInFile)
-                {
-                    WriteHeader(fileName);
-                    WriteRaster(Data);
-                    return;
-                }
+                CellWidth = br.ReadDouble();
+                Bounds.AffineCoefficients[5] = -br.ReadDouble(); // dy
+                Xllcenter = br.ReadDouble();
+                Yllcenter = br.ReadDouble();
+                br.ReadInt32(); //  Read RasterDataType only to skip it since we know the type already.
+                byte[] noDataBytes = br.ReadBytes(ByteSize);
+                var nd = new T[1];
+                Buffer.BlockCopy(noDataBytes, 0, nd, 0, ByteSize);
+                NoDataValue = Global.ToDouble(nd[0]);
+                string proj = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
+                ProjectionString = proj;
 
-                // If we got here, either the file didn't exist or didn't match the specifications correctly, so write a new one.
-                Debug.WriteLine("The size of the file was " + fi.Length + " which didn't match the expected " +
-                                HeaderSize + ByteSize * NumColumnsInFile * NumRowsInFile);
+                Notes = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
+                if (Notes.Length == 0) Notes = null;
             }
 
-            if (File.Exists(Filename)) File.Delete(Filename);
-            WriteHeader(fileName);
-
-            // Open as append and it will automatically skip the header for us.
-            using (var bw = new BinaryWriter(new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, ByteSize * NumColumnsInFile)))
+            string prj = Path.ChangeExtension(Filename, ".prj");
+            if (File.Exists(prj))
             {
-                // the row and column counters here are relative to the whole file, not just the window that is currently in memory.
-                pm.EndValue = NumRowsInFile;
-
-                for (int row = 0; row < NumRowsInFile; row++)
+                using (var sr = new StreamReader(prj))
                 {
-                    byte[] rawBytes = new byte[NumColumnsInFile * ByteSize];
-                    T[] nd = new T[1];
-                    nd[0] = (T)Convert.ChangeType(NoDataValue, typeof(T));
-                    Buffer.BlockCopy(Data[row - StartRow], 0, rawBytes, StartColumn * ByteSize, NumColumns * ByteSize);
-                    for (int col = 0; col < StartColumn; col++)
-                    {
-                        Buffer.BlockCopy(nd, 0, rawBytes, col * ByteSize, ByteSize);
-                    }
-
-                    for (int col = EndColumn + 1; col < NumColumnsInFile; col++)
-                    {
-                        Buffer.BlockCopy(nd, 0, rawBytes, col * ByteSize, ByteSize);
-                    }
-
-                    bw.Write(rawBytes);
-                    pm.CurrentValue = row;
+                    ProjectionString = sr.ReadToEnd();
                 }
             }
-
-            pm.Reset();
         }
 
         #endregion

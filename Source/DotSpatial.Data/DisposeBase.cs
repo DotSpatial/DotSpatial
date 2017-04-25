@@ -21,29 +21,19 @@ namespace DotSpatial.Data
     public class DisposeBase : IDisposeLock, IDisposable
     {
         private int _disposeCount;
+        private bool _isDisposed;
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="DisposeBase"/> class.
+        /// Gets a value indicating whether this instance has already had the Dispose method called on it.
         /// </summary>
-        ~DisposeBase()
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsDisposed
         {
-            Dispose(false);
+            get { return _isDisposed; }
+            set { _isDisposed = value; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance has already had the Dispose method called on it.
-        /// </summary>
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsDisposed { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether there are outstanding references that may be using the item
-        /// that would prefer it if you did not dispose of the item while they are still using it.
-        /// </summary>
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsDisposeLocked => _disposeCount > 0;
+        #region IDisposable Members
 
         /// <summary>
         /// Disposes
@@ -51,8 +41,8 @@ namespace DotSpatial.Data
         public void Dispose()
         {
             // During debugging look for instances that are disposing when they shouldn't be.
-            Debug.Assert(!IsDisposeLocked, "Disposing is currently forbitten.");
-            if (!IsDisposed)
+            Debug.Assert(IsDisposeLocked == false);
+            if (!_isDisposed)
             {
                 Dispose(true);
                 GC.SuppressFinalize(this);
@@ -61,9 +51,12 @@ namespace DotSpatial.Data
             {
                 Debug.WriteLine(GetType().Name + " was disposed more than once!");
             }
-
-            IsDisposed = true;
+            _isDisposed = true;
         }
+
+        #endregion
+
+        #region IDisposeLock Members
 
         /// <summary>
         /// Adds one request or "reference count" for this item not to be disposed.  When an owner is finished,
@@ -76,11 +69,31 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Gets a value indicating whether there are outstanding references that may be using the item
+        /// that would prefer it if you did not dispose of the item while they are still using it.
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsDisposeLocked
+        {
+            get { return (_disposeCount > 0); }
+        }
+
+        /// <summary>
         /// Removes one reference or request to prevent an object from being automatically disposed.
         /// </summary>
         public void UnlockDispose()
         {
             _disposeCount--;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="DisposeBase"/> class.
+        /// </summary>
+        ~DisposeBase()
+        {
+            Dispose(false);
         }
 
         /// <summary>

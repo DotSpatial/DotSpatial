@@ -28,32 +28,32 @@ namespace DotSpatial.Data
     public class BoxStatistics
     {
         /// <summary>
-        /// Gets or sets the median between the median and the highest value.
+        /// The median between the median and the highest value.
         /// This separates the third and fourth quartiles.
         /// </summary>
-        public object HighMedian { get; set; }
+        public object HighMedian;
 
         /// <summary>
-        /// Gets or sets the highest value that is not considered an outlier.
+        /// The highest value that is not considered an outlier.
         /// If the values are not numeric, this will be the Maximum.
         /// </summary>
-        public object HighWisker { get; set; }
+        public object HighWisker;
 
         /// <summary>
-        /// Gets or sets the median between the lowest value and the median value.
+        /// The median between the lowest value and the median value.
         /// This separates the first quartile from the second.
         /// </summary>
-        public object LowMedian { get; set; }
+        public object LowMedian;
 
         /// <summary>
-        /// Gets or sets the lowest value that is not considered to be an outlier.
+        /// The lowest value that is not considered to be an outlier.
         /// If the values are not numeric, this will be the minimum.
         /// </summary>
-        public object LowWhisker { get; set; }
+        public object LowWhisker;
 
         /// <summary>
-        /// Gets or sets the Median value (the value of the middle member)
+        /// The Median value (the value of the middle member)
         /// </summary>
-        public object Median { get; set; }
+        public object Median;
     }
 }

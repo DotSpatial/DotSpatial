@@ -165,8 +165,8 @@ namespace DotSpatial.Data
                         ShapeType = (ShapeType)reader.ReadInt32()
                     };
 
-                    Debug.Assert(shape.RecordNumber == shp + 1, "The record number should equal " + shp + 1);
-                    Debug.Assert(shape.ContentLength == shapeHeaders[shp].ContentLength, "The shapes content length should equals the shapeHeaders content length.");
+                    Debug.Assert(shape.RecordNumber == shp + 1);
+                    Debug.Assert(shape.ContentLength == shapeHeaders[shp].ContentLength);
 
                     if (shape.ShapeType == ShapeType.NullShape)
                     {
@@ -179,7 +179,6 @@ namespace DotSpatial.Data
                         shape.NumPoints = 1;
                         shape.NumParts = 1;
                     }
-
                     shapeIndices.Add(shape);
                 }
 
@@ -191,7 +190,6 @@ namespace DotSpatial.Data
                 {
                     m = new double[totalPointsCount];
                 }
-
                 if (Header.ShapeType == ShapeType.PointZ)
                 {
                     z = new double[totalPointsCount];
@@ -264,7 +262,6 @@ namespace DotSpatial.Data
                 f = GetPoint(index);
                 f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
             }
-
             return f;
         }
 
@@ -286,7 +283,7 @@ namespace DotSpatial.Data
         /// <returns>ContentLength that is needed to save a shape with the given number of parts and points.</returns>
         private static int GetContentLength(ShapeType header)
         {
-            int contentLength = 2; // Shape Type
+            int contentLength = 2; //Shape Type
 
             switch (header)
             {
@@ -353,13 +350,11 @@ namespace DotSpatial.Data
                     {
                         shpStream.WriteLe(c.Z);
                     }
-
                     if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
                     {
                         shpStream.WriteLe(c.M);
                     }
                 }
-
                 progressMeter.CurrentValue = fid;
                 fid++;
                 offset += 4; // header bytes
@@ -369,13 +364,7 @@ namespace DotSpatial.Data
             progressMeter.Reset();
 
             return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + fid * 4 };
-        }
 
-        /// <inheritdoc />
-        protected override StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
-        {
-            if (indexed) return PopulateShpAndShxStreamsIndexed(shpStream, shxStream);
-            return PopulateShpAndShxStreamsNotIndexed(shpStream, shxStream);
         }
 
         /// <summary>
@@ -410,13 +399,18 @@ namespace DotSpatial.Data
                     if (Z != null) shpStream.WriteLe(Z[shape.StartIndex]);
                     if (M != null) shpStream.WriteLe(M[shape.StartIndex]);
                 }
-
                 fid++;
                 offset += 4; // header bytes
                 offset += contentLength; // adding the content length from each loop calculates the word offset
             }
-
             return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + fid * 4 };
+        }
+
+        /// <inheritdoc />
+        protected override StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
+        {
+            if (indexed) return PopulateShpAndShxStreamsIndexed(shpStream, shxStream);
+            return PopulateShpAndShxStreamsNotIndexed(shpStream, shxStream);
         }
     }
 }

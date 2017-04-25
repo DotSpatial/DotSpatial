@@ -36,8 +36,8 @@ namespace DotSpatial.Data
         {
             double dx = self.Width * (newRectangle.X - original.X) / original.Width;
             double dy = self.Height * (newRectangle.Y - original.Y) / original.Height;
-            double w = self.Width * newRectangle.Width / original.Width;
-            double h = self.Height * newRectangle.Height / original.Height;
+            double w = (self.Width * newRectangle.Width / original.Width);
+            double h = (self.Height * newRectangle.Height / original.Height);
             return new Envelope(self.MinX + dx, self.MinX + dx + w, self.MinY + dy - h, self.MinY + dy);
         }
 
@@ -46,7 +46,7 @@ namespace DotSpatial.Data
         /// M or Z values.
         /// </summary>
         /// <param name="self">The Envelope to convert into an Extent.</param>
-        /// <returns>The extent that was created from the envelope.</returns>
+        /// <returns></returns>
         public static Extent ToExtent(this Envelope self)
         {
             if (self.HasZ())
@@ -54,8 +54,12 @@ namespace DotSpatial.Data
                 // regardless of whether it has M, we need an MZExtent.
                 return new ExtentMZ(self);
             }
-
-            return self.HasM() ? new ExtentM(self) : new Extent(self);
+            if (self.HasM())
+            {
+                return new ExtentM(self);
+            }
+            return new Extent(self);
         }
+
     }
 }
