@@ -16,17 +16,23 @@ namespace DotSpatial.Compatibility
     /// <summary>
     /// This interface is used to access the list of shapes that were found during an Identify function call.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public interface IdentifiedShapes
     {
+        #region Properties
+
         /// <summary>
-        /// Returns the number of shapes that were identified.
+        /// Gets the number of shapes that were identified.
         /// </summary>
         int Count { get; }
 
+        #endregion
+
         /// <summary>
-        /// Returns the shape index of an identified that is stored at the position
+        /// Gets the shape index of an identified that is stored at the position
         /// specified by the Index parameter.
         /// </summary>
+        /// <param name="index">Index of the element to get.</param>
         int this[int index] { get; }
     }
 }

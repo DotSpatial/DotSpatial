@@ -21,6 +21,40 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface IPlugin
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets the Author of the plugin.
+        /// </summary>
+        string Author { get; }
+
+        /// <summary>
+        /// Gets the Build date.
+        /// </summary>
+        string BuildDate { get; }
+
+        /// <summary>
+        /// Gets the Short description of the plugin.
+        /// </summary>
+        string Description { get; }
+
+        /// <summary>
+        /// Gets the Name of the plugin.
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// Gets the Plugin serial number.  NO LONGER NEEDED; kept for backward compatibility.
+        /// </summary>
+        string SerialNumber { get; }
+
+        /// <summary>
+        /// Gets the Plugin version.
+        /// </summary>
+        string Version { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -38,6 +72,12 @@ namespace DotSpatial.Compatibility
         void ItemClicked(string itemName, ref bool handled);
 
         /// <summary>
+        /// This method is called by the DotSpatial when a layer is removed from the map.
+        /// </summary>
+        /// <param name="handle">Handle of the layer that was removed.</param>
+        void LayerRemoved(int handle);
+
+        /// <summary>
         /// This method is called by the DotSpatial when one or more layer(s) is/are added.
         /// </summary>
         /// <param name="layers">An array of <c>Layer</c> objects that were added.</param>
@@ -47,12 +87,6 @@ namespace DotSpatial.Compatibility
         /// This method is called by the DotSpatial when all layers are cleared from the map.
         /// </summary>
         void LayersCleared();
-
-        /// <summary>
-        /// This method is called by the DotSpatial when a layer is removed from the map.
-        /// </summary>
-        /// <param name="handle">Handle of the layer that was removed.</param>
-        void LayerRemoved(int handle);
 
         /// <summary>
         /// This method is called by the DotSpatial when a layer is selected in code or by the legend.
@@ -85,6 +119,13 @@ namespace DotSpatial.Compatibility
         /// <param name="location">Location that was clicked.  Either a layer or a group</param>
         /// <param name="handled">Set this parameter to true if your plugin handles this so that no other plugins recieve this message.</param>
         void LegendMouseUp(int handle, int button, ClickLocation location, ref bool handled);
+
+        /// <summary>
+        /// This method is called by the DotSpatial when the user completes a dragging operation on the map.
+        /// </summary>
+        /// <param name="bounds">The rectangle that was selected, in pixel coordinates.</param>
+        /// <param name="handled">Set this parameter to true if your plugin handles this so that no other plugins recieve this message.</param>
+        void MapDragFinished(Rectangle bounds, ref bool handled);
 
         /// <summary>
         /// This method is called by the DotSpatial when the extents of the map have changed.
@@ -120,11 +161,11 @@ namespace DotSpatial.Compatibility
         void MapMouseUp(int button, int shift, int x, int y, ref bool handled);
 
         /// <summary>
-        /// This method is called by the DotSpatial when the user completes a dragging operation on the map.
+        /// This message is relayed by the DotSpatial when another plugin broadcasts a message.  Messages can be used to send messages between plugins.
         /// </summary>
-        /// <param name="bounds">The rectangle that was selected, in pixel coordinates.</param>
+        /// <param name="msg">The message being relayed.</param>
         /// <param name="handled">Set this parameter to true if your plugin handles this so that no other plugins recieve this message.</param>
-        void MapDragFinished(Rectangle bounds, ref bool handled);
+        void Message(string msg, ref bool handled);
 
         /// <summary>
         /// This method is called by the DotSpatial when a project is being loaded.
@@ -141,11 +182,6 @@ namespace DotSpatial.Compatibility
         void ProjectSaving(string projectFile, ref string settingsString);
 
         /// <summary>
-        /// This method is called by the DotSpatial when the plugin is unloaded.
-        /// </summary>
-        void Terminate();
-
-        /// <summary>
         /// This method is called by the DotSpatial when shapes are selected by the user.
         /// </summary>
         /// <param name="handle">Handle of the shapefile layer that was selected on.</param>
@@ -153,45 +189,9 @@ namespace DotSpatial.Compatibility
         void ShapesSelected(int handle, ISelectInfo selectInfo);
 
         /// <summary>
-        /// This message is relayed by the DotSpatial when another plugin broadcasts a message.  Messages can be used to send messages between plugins.
+        /// This method is called by the DotSpatial when the plugin is unloaded.
         /// </summary>
-        /// <param name="msg">The message being relayed.</param>
-        /// <param name="handled">Set this parameter to true if your plugin handles this so that no other plugins recieve this message.</param>
-        void Message(string msg, ref bool handled);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Author of the plugin.
-        /// </summary>
-        string Author { get; }
-
-        /// <summary>
-        /// Short description of the plugin.
-        /// </summary>
-        string Description { get; }
-
-        /// <summary>
-        /// Plugin serial number.  NO LONGER NEEDED; kept for backward compatibility.
-        /// </summary>
-        string SerialNumber { get; }
-
-        /// <summary>
-        /// Name of the plugin.
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Build date.
-        /// </summary>
-        string BuildDate { get; }
-
-        /// <summary>
-        /// Plugin version.
-        /// </summary>
-        string Version { get; }
+        void Terminate();
 
         #endregion
     }

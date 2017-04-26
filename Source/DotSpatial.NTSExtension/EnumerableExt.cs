@@ -33,19 +33,38 @@ namespace DotSpatial.NTSExtension
         #region Methods
 
         /// <summary>
+        /// Converts an array of coordinates into points.
+        /// Eventually I hope to reduce the amount of "casting" necessary, in order to allow as much as possible to occur via an interface.
+        /// </summary>
+        /// <param name="rawPoints">The coordinates that should be converted to points.</param>
+        /// <returns>The resulting point array.</returns>
+        public static IPoint[] CastToPointArray(this IEnumerable<Coordinate> rawPoints)
+        {
+            List<IPoint> result = new List<IPoint>();
+            foreach (Coordinate rawPoint in rawPoints)
+            {
+                result.Add(new Point(rawPoint));
+            }
+
+            return result.ToArray();
+        }
+
+        /// <summary>
         /// cycles through any strong typed collection where the type implements ICLoneable
         /// and clones each member, inserting that member into the new list.
         /// </summary>
         /// <typeparam name="T">The type of the values in the list.</typeparam>
         /// <param name="original">The original enumerable collection of type T.</param>
         /// <returns>A deep copy of the list.</returns>
-        public static List<T> CloneList<T>(this IEnumerable<T> original) where T : ICloneable
+        public static List<T> CloneList<T>(this IEnumerable<T> original)
+            where T : ICloneable
         {
             List<T> result = new List<T>();
             foreach (T item in original)
             {
                 result.Add(SafeCastTo<T>(item.Clone()));
             }
+
             return result;
         }
 
@@ -61,30 +80,14 @@ namespace DotSpatial.NTSExtension
             {
                 return default(T);
             }
+
             if (!(obj is T))
             {
                 return default(T);
             }
+
             return (T)obj;
         }
-
-        /// <summary>
-        /// Converts an array of coordinates into points.
-        /// Eventually I hope to reduce the amount of "casting" necessary, in order
-        /// to allow as much as possible to occur via an interface.
-        /// </summary>
-        /// <param name="rawPoints"></param>
-        /// <returns></returns>
-        public static IPoint[] CastToPointArray(this IEnumerable<Coordinate> rawPoints)
-        {
-            List<IPoint> result = new List<IPoint>();
-            foreach (Coordinate rawPoint in rawPoints)
-            {
-                result.Add(new Point(rawPoint));
-            }
-            return result.ToArray();
-        }
-
 
         #endregion
     }

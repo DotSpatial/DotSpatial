@@ -21,18 +21,14 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public class MenuItem : IMenuItem
     {
-        #region Private Variables
+        #region Fields
 
         private readonly ToolStripMenuItem _menuItem;
-        private string _category;
-        private string _description;
 
         #endregion
 
-        #region Constructors
-
         /// <summary>
-        /// Creates a new instance of MenuItem
+        /// Initializes a new instance of the <see cref="MenuItem"/> class.
         /// </summary>
         /// <param name="inMenuItem">The ToolStripMenuItem to wrap with this item</param>
         public MenuItem(ToolStripMenuItem inMenuItem)
@@ -40,61 +36,10 @@ namespace DotSpatial.Compatibility
             _menuItem = inMenuItem;
         }
 
-        #endregion
-
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets/Sets the Text shown for the MenuItem
-        /// </summary>
-        public string Text
-        {
-            get { return _menuItem.Text; }
-            set { _menuItem.Text = value; }
-        }
-
-        /// <summary>
-        /// Gets/Sets the icon for the menu item
-        /// </summary>
-        public Image Picture
-        {
-            get { return _menuItem.Image; }
-            set { _menuItem.Image = value; }
-        }
-
-        /// <summary>
-        /// Gets/Sets the category for this item (used when the user customizes the menu)
-        /// </summary>
-        public string Category
-        {
-            get { return _category; }
-            set { _category = value; }
-        }
-
-        /// <summary>
-        /// Gets/Sets the checked state of the item
-        /// </summary>
-        public bool Checked
-        {
-            get { return _menuItem.Checked; }
-            set { _menuItem.Checked = value; }
-        }
-
-        /// <summary>
-        /// Gets/Sets the tool tip text that will pop up for the item when a mouse over event occurs
-        /// </summary>
-        public string Tooltip
-        {
-            get { return _menuItem.ToolTipText; }
-            set { _menuItem.ToolTipText = value; }
-        }
-
-        /// <summary>
-        /// Gets/Sets whether or not this item should draw a dividing line between itself and any
+        /// Gets or sets a value indicating whether or not this item should draw a dividing line between itself and any
         /// items before this item
         /// </summary>
         public bool BeginsGroup
@@ -103,6 +48,7 @@ namespace DotSpatial.Compatibility
             {
                 return PreviousItemIsSeparator;
             }
+
             set
             {
                 if (value)
@@ -123,10 +69,7 @@ namespace DotSpatial.Compatibility
                         }
                         else
                         {
-                            if (_menuItem.Owner != null)
-                            {
-                                _menuItem.Owner.Items.Remove(PreviousItem);
-                            }
+                            _menuItem.Owner?.Items.Remove(PreviousItem);
                         }
                     }
                 }
@@ -134,87 +77,84 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets/Sets the cursor used when the mouse is over this control
+        /// Gets or sets the category for this item (used when the user customizes the menu)
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the item is checked.
+        /// </summary>
+        public bool Checked
+        {
+            get
+            {
+                return _menuItem.Checked;
+            }
+
+            set
+            {
+                _menuItem.Checked = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the cursor used when the mouse is over this control
         /// </summary>
         public Cursor Cursor
         {
-            get { return _menuItem.Owner.Cursor; }
-            set { _menuItem.Owner.Cursor = value; }
+            get
+            {
+                return _menuItem.Owner.Cursor;
+            }
+
+            set
+            {
+                _menuItem.Owner.Cursor = value;
+            }
         }
 
         /// <summary>
-        /// Gets/Sets the description of this menu item, used in customization of menu by the user
+        /// Gets or sets the description of this menu item, used in customization of menu by the user
         /// </summary>
-        public string Description
-        {
-            get { return _description; }
-            set { _description = value; }
-        }
+        public string Description { get; set; }
 
         /// <summary>
-        /// Gets/Sets the Displayed state of this item
+        /// Gets or sets a value indicating whether the item is displayed.
         /// ... Side Note
         /// ... I have no idea what this is supposed to do, so it is redundant with visible for now
         /// and possibly should be made obsolete.
         /// </summary>
         public bool Displayed
         {
-            get { return _menuItem.Visible; }
-            set { _menuItem.Visible = value; }
+            get
+            {
+                return _menuItem.Visible;
+            }
+
+            set
+            {
+                _menuItem.Visible = value;
+            }
         }
 
         /// <summary>
-        ///	Gets/Sets the enabled state of this item
+        /// Gets or sets a value indicating whether the item is enabled.
         /// </summary>
         public bool Enabled
         {
-            get { return _menuItem.Enabled; }
-            set { _menuItem.Enabled = value; }
+            get
+            {
+                return _menuItem.Enabled;
+            }
+
+            set
+            {
+                _menuItem.Enabled = value;
+            }
         }
 
         /// <summary>
-        /// Gets the Name of this item
-        /// </summary>
-        public string Name
-        {
-            get { return _menuItem.Name; }
-        }
-
-        /// <summary>
-        /// Gets/Sets the visibility state of this item
-        /// </summary>
-        public bool Visible
-        {
-            get { return _menuItem.Visible; }
-            set { _menuItem.Visible = true; }
-        }
-
-        /// <summary>
-        /// Gets the count of the submenu items contained within this item
-        /// </summary>
-        public int NumSubItems
-        {
-            get { return _menuItem.DropDownItems.Count; }
-        }
-
-        /// <summary>
-        /// Gets a submenu item by its 0-based index
-        /// </summary>
-        public IMenuItem SubItem(int index)
-        {
-            return new MenuItem(_menuItem.DropDownItems[index] as ToolStripMenuItem);
-        }
-
-        /// <summary>
-        /// Gets a submenu item by its string name
-        /// </summary>
-        public IMenuItem SubItem(string name)
-        {
-            return new MenuItem(_menuItem.DropDownItems[name] as ToolStripMenuItem);
-        }
-
-        /// <summary>
-        /// Returns whether this menu item is the first visible submenu item.
+        /// Gets a value indicating whether this menu item is the first visible submenu item.
         /// This is only valid in submenus, i.e. menus which have a parent.
         /// </summary>
         public bool IsFirstVisibleSubmenuItem
@@ -230,25 +170,89 @@ namespace DotSpatial.Compatibility
                         if (tsi.Visible) return false;
                     }
                 }
+
                 ToolStrip cont = _menuItem.Owner;
                 foreach (ToolStripItem tsi in cont.Items)
                 {
                     if (tsi == _menuItem) return true;
                     if (tsi.Visible) return false;
                 }
+
                 return true;
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the Name of this item
+        /// </summary>
+        public string Name => _menuItem.Name;
 
-        private bool PreviousItemIsSeparator
+        /// <summary>
+        /// Gets the count of the submenu items contained within this item
+        /// </summary>
+        public int NumSubItems => _menuItem.DropDownItems.Count;
+
+        /// <summary>
+        /// Gets or sets the icon for the menu item
+        /// </summary>
+        public Image Picture
         {
             get
             {
-                ToolStripSeparator ts = PreviousItem as ToolStripSeparator;
-                if (ts != null) return true;
-                return false;
+                return _menuItem.Image;
+            }
+
+            set
+            {
+                _menuItem.Image = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Text shown for the MenuItem
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                return _menuItem.Text;
+            }
+
+            set
+            {
+                _menuItem.Text = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the tool tip text that will pop up for the item when a mouse over event occurs
+        /// </summary>
+        public string Tooltip
+        {
+            get
+            {
+                return _menuItem.ToolTipText;
+            }
+
+            set
+            {
+                _menuItem.ToolTipText = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the item is visible.
+        /// </summary>
+        public bool Visible
+        {
+            get
+            {
+                return _menuItem.Visible;
+            }
+
+            set
+            {
+                _menuItem.Visible = value;
             }
         }
 
@@ -266,14 +270,50 @@ namespace DotSpatial.Compatibility
                         return parent.DropDownItems[indx];
                     }
                 }
+
                 ToolStrip cont = _menuItem.Owner;
                 indx = cont.Items.IndexOf(_menuItem) - 1;
                 if (indx > -1)
                 {
                     return cont.Items[indx];
                 }
+
                 return null;
             }
+        }
+
+        private bool PreviousItemIsSeparator
+        {
+            get
+            {
+                ToolStripSeparator ts = PreviousItem as ToolStripSeparator;
+                if (ts != null) return true;
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets a submenu item by its 0-based index
+        /// </summary>
+        /// <param name="index">Index of the item that should be returned.</param>
+        /// <returns>The MenuItem with the given index.</returns>
+        public IMenuItem SubItem(int index)
+        {
+            return new MenuItem(_menuItem.DropDownItems[index] as ToolStripMenuItem);
+        }
+
+        /// <summary>
+        /// Gets a submenu item by its string name
+        /// </summary>
+        /// <param name="name">Name of the item that should be returned.</param>
+        /// <returns>The MenuItem with the given name.</returns>
+        public IMenuItem SubItem(string name)
+        {
+            return new MenuItem(_menuItem.DropDownItems[name] as ToolStripMenuItem);
         }
 
         private void InsertSeparator()
@@ -285,10 +325,12 @@ namespace DotSpatial.Compatibility
                 indx = parent.DropDownItems.IndexOf(_menuItem);
                 parent.DropDownItems.Insert(indx, new ToolStripSeparator());
             }
+
             ToolStrip cont = _menuItem.Owner;
             indx = cont.Items.IndexOf(_menuItem);
             cont.Items.Insert(indx, new ToolStripSeparator());
-            return;
         }
+
+        #endregion
     }
 }

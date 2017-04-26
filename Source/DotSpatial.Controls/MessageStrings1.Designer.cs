@@ -70,11 +70,56 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discovering Extensions....
+        /// </summary>
+        internal static string AppManager_DiscoveringExtensions {
+            get {
+                return ResourceManager.GetString("AppManager_DiscoveringExtensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string AppManager_Home {
             get {
                 return ResourceManager.GetString("AppManager_Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Extensions....
+        /// </summary>
+        internal static string AppManager_LoadingExtensions {
+            get {
+                return ResourceManager.GetString("AppManager_LoadingExtensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A {0} extension must be included because a UI plugin was found..
+        /// </summary>
+        internal static string AppManager_NeedExtensionBecauseUIPluginFound {
+            get {
+                return ResourceManager.GetString("AppManager_NeedExtensionBecauseUIPluginFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You may only include one {0} Extension. {1} were found..
+        /// </summary>
+        internal static string AppManager_OnlyIncludeOneExtension {
+            get {
+                return ResourceManager.GetString("AppManager_OnlyIncludeOneExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipping extension {0}. {1}.
+        /// </summary>
+        internal static string AppManager_SkippingExtension {
+            get {
+                return ResourceManager.GetString("AppManager_SkippingExtension", resourceCulture);
             }
         }
         
@@ -2102,6 +2147,15 @@ namespace DotSpatial.Controls {
         internal static string PolygonFeatureTypeException {
             get {
                 return ResourceManager.GetString("PolygonFeatureTypeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path resulting from {0} was null. The project directory may not be a root directory..
+        /// </summary>
+        internal static string ProjectDirectoryMayNotBeARootDirectory {
+            get {
+                return ResourceManager.GetString("ProjectDirectoryMayNotBeARootDirectory", resourceCulture);
             }
         }
         

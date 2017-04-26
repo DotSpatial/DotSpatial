@@ -20,113 +20,58 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public class AppInfo : IAppInfo
     {
-        #region Private Variables
-
-        private string _applicationName;
-        private string _defaultDir;
-        private Icon _formIcon;
-        private string _helpFilePath;
-        private bool _showWelcomeScreen;
-        private Image _splashPicture;
-        private double _splashTime;
-        private string _url;
-        private bool _useSplashScreen;
-        private string _welcomePlugin;
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// The name of the main application.
+        /// Gets or sets the name of the main application.
         /// </summary>
-        public string ApplicationName
-        {
-            get { return _applicationName; }
-            set { _applicationName = value; }
-        }
+        public string ApplicationName { get; set; }
 
         /// <summary>
-        /// The default directory for file dialogs
+        /// Gets or sets the default directory for file dialogs
         /// </summary>
-        public string DefaultDir
-        {
-            get { return _defaultDir; }
-            set { _defaultDir = value; }
-        }
+        public string DefaultDir { get; set; }
 
         /// <summary>
-        /// The icon to be displayed as the default form icon
+        /// Gets or sets the icon to be displayed as the default form icon
         /// </summary>
-        public Icon FormIcon
-        {
-            get { return _formIcon; }
-            set { _formIcon = value; }
-        }
+        public Icon FormIcon { get; set; }
 
         /// <summary>
-        /// The path to the help file to be displayed from the Help menu.
+        /// Gets or sets the path to the help file to be displayed from the Help menu.
         /// </summary>
-        public string HelpFilePath
-        {
-            get { return _helpFilePath; }
-            set { _helpFilePath = value; }
-        }
+        public string HelpFilePath { get; set; }
 
         /// <summary>
-        /// Whether or not to show a welcome screen (overriding the Splash Screen)
+        /// Gets or sets a value indicating whether or not to show a welcome screen (overriding the Splash Screen)
         /// </summary>
-        public bool ShowWelcomeScreen
-        {
-            get { return _showWelcomeScreen; }
-            set { _showWelcomeScreen = value; }
-        }
+        public bool ShowWelcomeScreen { get; set; }
 
         /// <summary>
-        /// The image to be displayed on the splash screen.
+        /// Gets or sets the image to be displayed on the splash screen.
         /// </summary>
-        public Image SplashPicture
-        {
-            get { return _splashPicture; }
-            set { _splashPicture = value; }
-        }
+        public Image SplashPicture { get; set; }
 
         /// <summary>
-        /// How long the splash screen should be displayed
+        /// Gets or sets how long the splash screen should be displayed
         /// </summary>
-        public double SplashTime
-        {
-            get { return _splashTime; }
-            set { _splashTime = value; }
-        }
+        public double SplashTime { get; set; }
 
         /// <summary>
-        /// The URL to be displayed on the Help->About dialog.
+        /// Gets or sets the URL to be displayed on the Help->About dialog.
         /// </summary>
-        public string URL
-        {
-            get { return _url; }
-            set { _url = value; }
-        }
+        public string URL { get; set; }
 
         /// <summary>
-        /// Whether to display a splash screen on starting the application
+        /// Gets or sets a value indicating whether to display a splash screen on starting the application
         /// </summary>
-        public bool UseSplashScreen
-        {
-            get { return _useSplashScreen; }
-            set { _useSplashScreen = value; }
-        }
+        public bool UseSplashScreen { get; set; }
 
         /// <summary>
-        /// The name of the plugin responsible for displaying a custom welcome screen
+        /// Gets or sets tname of the plugin responsible for displaying a custom welcome screen
         /// in response to the WELCOME_SCREEN message.
         /// </summary>
-        public string WelcomePlugin
-        {
-            get { return _welcomePlugin; }
-            set { _welcomePlugin = value; }
-        }
+        public string WelcomePlugin { get; set; }
 
         #endregion
     }

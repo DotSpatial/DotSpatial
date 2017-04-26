@@ -933,4 +933,22 @@ Reproject the layer to match the map coordinate system? This will not affect the
   <data name="ExtentXIsTooLargeForDegreesToBeSignificant" xml:space="preserve">
     <value>Extent.X is too large for degrees to be significant.</value>
   </data>
+  <data name="AppManager_SkippingExtension" xml:space="preserve">
+    <value>Skipping extension {0}. {1}</value>
+  </data>
+  <data name="AppManager_DiscoveringExtensions" xml:space="preserve">
+    <value>Discovering Extensions...</value>
+  </data>
+  <data name="AppManager_LoadingExtensions" xml:space="preserve">
+    <value>Loading Extensions...</value>
+  </data>
+  <data name="AppManager_OnlyIncludeOneExtension" xml:space="preserve">
+    <value>You may only include one {0} Extension. {1} were found.</value>
+  </data>
+  <data name="AppManager_NeedExtensionBecauseUIPluginFound" xml:space="preserve">
+    <value>A {0} extension must be included because a UI plugin was found.</value>
+  </data>
+  <data name="ProjectDirectoryMayNotBeARootDirectory" xml:space="preserve">
+    <value>The path resulting from {0} was null. The project directory may not be a root directory.</value>
+  </data>
 </root>

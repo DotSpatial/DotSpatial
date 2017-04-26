@@ -23,7 +23,7 @@ namespace DotSpatial.Serialization
 {
     /// <summary>
     /// In many cases, the explicit type name references a version or public key token that is expired,
-    /// even though the reference is still perfectly valid in the new instance.  This type allows testing
+    /// even though the reference is still perfectly valid in the new instance. This type allows testing
     /// for that eventuality, as well as working directly with the components of a fully qualified name.
     /// </summary>
     public class TypeNameManager
@@ -80,7 +80,7 @@ namespace DotSpatial.Serialization
 
         /// <summary>
         /// This method searches the executable path, as well as sub-folders looking for an instance of
-        /// the specified assembly.  Since this class is only needed if the fully qualified assembly name
+        /// the specified assembly. Since this class is only needed if the fully qualified assembly name
         /// is invalid, we have to assume that we are looking for something else.
         /// </summary>
         /// <param name="assembly">The string assembly name.</param>

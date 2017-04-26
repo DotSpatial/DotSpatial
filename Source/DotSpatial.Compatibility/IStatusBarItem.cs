@@ -19,29 +19,33 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface IStatusBarItem
     {
+        #region Properties
+
         /// <summary>
-        /// Gets/Sets the Alignment of the text
+        /// Gets or sets the Alignment of the text
         /// </summary>
         HJustification Alignment { get; set; }
 
         /// <summary>
-        /// Gets/Sets whether or not this StatusBarItem should auto size itself
+        /// Gets or sets a value indicating whether or not this StatusBarItem should auto size itself
         /// </summary>
         bool AutoSize { get; set; }
 
         /// <summary>
-        /// Gets/Sets the minimum allowed width for this StatusBarItem
+        /// Gets or sets the minimum allowed width for this StatusBarItem
         /// </summary>
         int MinWidth { get; set; }
 
         /// <summary>
-        /// Gets/Sets the Text within the StatusBarItem
+        /// Gets or sets the Text within the StatusBarItem
         /// </summary>
         string Text { get; set; }
 
         /// <summary>
-        /// Gets/Sets the width of the StatusBarItem
+        /// Gets or sets the width of the StatusBarItem
         /// </summary>
         int Width { get; set; }
+
+        #endregion
     }
 }

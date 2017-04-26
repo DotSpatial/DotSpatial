@@ -53,7 +53,7 @@ namespace DotSpatial.Serialization
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Extent.  This introduces no error checking and assumes
+        /// Creates a new instance of Extent. This introduces no error checking and assumes
         /// that the user knows what they are doing when working with this.
         /// </summary>
         public SerializeExtent()

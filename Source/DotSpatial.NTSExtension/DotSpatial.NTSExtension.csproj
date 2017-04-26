@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Debug\DotSpatial.NTSExtension.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -79,10 +80,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TopologyText.Designer.cs" />
     <Compile Include="Vector.cs" />
-    <Compile Include="Voronoi\FortuneVoronoi.cs" />
+    <Compile Include="Voronoi\Fortune.cs" />
     <Compile Include="Voronoi\HashSet.cs" />
-    <Compile Include="Voronoi\ToolBox.cs" />
+    <Compile Include="Voronoi\MathTools.cs" />
+    <Compile Include="Voronoi\VCircleEvent.cs" />
+    <Compile Include="Voronoi\VDataEvent.cs" />
+    <Compile Include="Voronoi\VDataNode.cs" />
     <Compile Include="Voronoi\Vector2.cs" />
+    <Compile Include="Voronoi\VEdgeNode.cs" />
     <Compile Include="Voronoi\VEvent.cs" />
     <Compile Include="Voronoi\VNode.cs" />
     <Compile Include="Voronoi\VoronoiEdge.cs" />

@@ -136,7 +136,7 @@ namespace DotSpatial.Serialization
                 }
                 catch (FileLoadException)
                 {
-                    // Attempting to load the fully qualified name failed.  Search under more general terms
+                    // Attempting to load the fully qualified name failed. Search under more general terms
                     // and see if we can find a valid assembly with the specified type.
                     string updatedName = typeNameManager.UpdateTypename(valueAttrib.Value);
                     t = Type.GetType(updatedName);

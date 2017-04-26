@@ -19,15 +19,20 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface IIdentifiedLayers
     {
+        #region Properties
+
         /// <summary>
-        /// Returns the number of layers that had information from the Identify function call.
+        /// Gets the number of layers that had information from the Identify function call.
         /// </summary>
         int Count { get; }
+
+        #endregion
 
         /// <summary>
         /// Returns an <c>IdentifiedShapes</c> object containing inforamtion about shapes that were
         /// identified during the Identify function call.
         /// </summary>
+        /// <param name="layerHandle">Handle of the layer.</param>
         IdentifiedShapes this[int layerHandle] { get; }
     }
 }

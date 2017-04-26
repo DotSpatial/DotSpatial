@@ -27,9 +27,9 @@ using System.Xml.Linq;
 namespace DotSpatial.Serialization
 {
     /// <summary>
-    /// Serializes data to XML.  A valid serialization map must be available for all classes being serialized.
+    /// Serializes data to XML. A valid serialization map must be available for all classes being serialized.
     /// The serialization map is generally created at runtime from fields and properties marked with the
-    /// <see cref="SerializeAttribute"/>.  For classes that cannot be directly marked up with attributes a
+    /// <see cref="SerializeAttribute"/>. For classes that cannot be directly marked up with attributes a
     /// new map class can be created explicitly as needed.
     /// </summary>
     public class XmlSerializer

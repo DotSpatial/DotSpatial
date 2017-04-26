@@ -73,7 +73,7 @@ namespace DotSpatial.Plugins.About
             this.DetailsButton.Size = new System.Drawing.Size(76, 23);
             this.DetailsButton.TabIndex = 25;
             this.DetailsButton.Text = "&Details >>";
-            this.DetailsButton.Click += new System.EventHandler(this.DetailsButton_Click);
+            this.DetailsButton.Click += new System.EventHandler(this.DetailsButtonClick);
             // 
             // ImagePictureBox
             // 
@@ -102,7 +102,7 @@ namespace DotSpatial.Plugins.About
             this.SysInfoButton.TabIndex = 22;
             this.SysInfoButton.Text = "&System Info...";
             this.SysInfoButton.Visible = false;
-            this.SysInfoButton.Click += new System.EventHandler(this.SysInfoButton_Click);
+            this.SysInfoButton.Click += new System.EventHandler(this.SysInfoButtonClick);
             // 
             // AppCopyrightLabel
             // 
@@ -164,7 +164,7 @@ namespace DotSpatial.Plugins.About
             this.OKButton.Size = new System.Drawing.Size(76, 23);
             this.OKButton.TabIndex = 16;
             this.OKButton.Text = "OK";
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.OKButton.Click += new System.EventHandler(this.OkButtonClick);
             // 
             // MoreRichTextBox
             // 
@@ -179,7 +179,7 @@ namespace DotSpatial.Plugins.About
             this.MoreRichTextBox.Size = new System.Drawing.Size(380, 114);
             this.MoreRichTextBox.TabIndex = 26;
             this.MoreRichTextBox.Text = "%product% is %copyright%, %trademark%";
-            this.MoreRichTextBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.MoreRichTextBox_LinkClicked);
+            this.MoreRichTextBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.MoreRichTextBoxLinkClicked);
             // 
             // TabPanelDetails
             // 
@@ -195,7 +195,7 @@ namespace DotSpatial.Plugins.About
             this.TabPanelDetails.Size = new System.Drawing.Size(378, 114);
             this.TabPanelDetails.TabIndex = 27;
             this.TabPanelDetails.Visible = false;
-            this.TabPanelDetails.SelectedIndexChanged += new System.EventHandler(this.TabPanelDetails_SelectedIndexChanged);
+            this.TabPanelDetails.SelectedIndexChanged += new System.EventHandler(this.TabPanelDetailsSelectedIndexChanged);
             // 
             // TabPageApplication
             // 
@@ -257,8 +257,8 @@ namespace DotSpatial.Plugins.About
             this.AssemblyInfoListView.TabIndex = 13;
             this.AssemblyInfoListView.UseCompatibleStateImageBehavior = false;
             this.AssemblyInfoListView.View = System.Windows.Forms.View.Details;
-            this.AssemblyInfoListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.AssemblyInfoListView_ColumnClick);
-            this.AssemblyInfoListView.DoubleClick += new System.EventHandler(this.AssemblyInfoListView_DoubleClick);
+            this.AssemblyInfoListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.AssemblyInfoListViewColumnClick);
+            this.AssemblyInfoListView.DoubleClick += new System.EventHandler(this.AssemblyInfoListViewDoubleClick);
             // 
             // colAssemblyName
             // 
@@ -325,7 +325,7 @@ namespace DotSpatial.Plugins.About
             this.AssemblyNamesComboBox.Size = new System.Drawing.Size(370, 21);
             this.AssemblyNamesComboBox.Sorted = true;
             this.AssemblyNamesComboBox.TabIndex = 18;
-            this.AssemblyNamesComboBox.SelectedIndexChanged += new System.EventHandler(this.AssemblyNamesComboBox_SelectedIndexChanged);
+            this.AssemblyNamesComboBox.SelectedIndexChanged += new System.EventHandler(this.AssemblyNamesComboBoxSelectedIndexChanged);
             // 
             // AboutBox
             // 
@@ -352,8 +352,8 @@ namespace DotSpatial.Plugins.About
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About %title%";
-            this.Load += new System.EventHandler(this.AboutBox_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AboutBox_Paint);
+            this.Load += new System.EventHandler(this.AboutBoxLoad);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AboutBoxPaint);
             ((System.ComponentModel.ISupportInitialize)(this.ImagePictureBox)).EndInit();
             this.TabPanelDetails.ResumeLayout(false);
             this.TabPageApplication.ResumeLayout(false);

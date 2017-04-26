@@ -34,16 +34,16 @@ namespace DotSpatial.NTSExtension.Voronoi
         #region Fields
 
         /// <summary>
-        /// The collection of VoronoiEdges.  The Left and Right points are from the
-        /// original set of points that are bisected by the edge.  The A and B
+        /// Gets the collection of VoronoiEdges. The Left and Right points are from the
+        /// original set of points that are bisected by the edge. The A and B
         /// Vectors are the endpoints of the edge itself.
         /// </summary>
-        public readonly HashSet<VoronoiEdge> Edges = new HashSet<VoronoiEdge>();
+        public HashSet<VoronoiEdge> Edges { get; } = new HashSet<VoronoiEdge>();
 
         /// <summary>
-        /// The vertices that join the voronoi polygon edges (not the original points)
+        /// Gets the vertices that join the voronoi polygon edges (not the original points)
         /// </summary>
-        public readonly HashSet<Vector2> Vertices = new HashSet<Vector2>();
+        public HashSet<Vector2> Vertices { get; } = new HashSet<Vector2>();
 
         #endregion
     }

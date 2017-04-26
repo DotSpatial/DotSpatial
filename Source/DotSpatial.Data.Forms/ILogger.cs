@@ -32,13 +32,13 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Gets or Sets an integer key to keep track of this logger.
         /// When you add this logger to a LogManager, it will attempt to keep track of the
-        /// logger by using the key it was given.  If that key is already in use, this
+        /// logger by using the key it was given. If that key is already in use, this
         /// will be set to the next available integer.
         /// </summary>
         int Key { get; set; }
 
         /// <summary>
-        /// The Complete exception is passed here.  To get the stack
+        /// The Complete exception is passed here. To get the stack
         /// trace, be sure to call ex.ToString().
         /// </summary>
         /// <param name="ex">The exception that was thrown by DotSpatial.</param>
@@ -60,8 +60,8 @@ namespace DotSpatial.Data.Forms
         void PublicMethodLeft(string methodName);
 
         /// <summary>
-        /// A status message was sent.  Complex methods that have a few major steps will
-        /// call a status message to show which step the process is in.  Loops will call
+        /// A status message was sent. Complex methods that have a few major steps will
+        /// call a status message to show which step the process is in. Loops will call
         /// the progress method instead.
         /// </summary>
         /// <param name="message">The string message that was posted.</param>

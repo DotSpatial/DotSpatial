@@ -9,12 +9,12 @@ namespace DotSpatial.Extensions
     public interface ISatisfyImportsExtension
     {
         /// <summary>
-        /// Specifies the activation priority order
+        /// Gets the activation priority order.
         /// </summary>
         int Priority { get; }
 
         /// <summary>
-        /// Activates this extension
+        /// Activates this extension.
         /// </summary>
         void Activate();
     }

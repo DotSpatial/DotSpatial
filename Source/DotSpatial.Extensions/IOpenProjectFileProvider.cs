@@ -12,7 +12,7 @@ namespace DotSpatial.Extensions
         /// Opens the specified file name.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <returns></returns>
+        /// <returns>True, if the file was opened.</returns>
         bool Open(string fileName);
     }
 }

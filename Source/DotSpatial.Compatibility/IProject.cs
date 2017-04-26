@@ -20,6 +20,58 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface IProject
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets the fileName of the configuration file that was used to load the current DotSpatial project.
+        /// </summary>
+        string ConfigFileName { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the configuration file specified by the project has been loaded.
+        /// </summary>
+        bool ConfigLoaded { get; }
+
+        /// <summary>
+        /// Gets the fileName of the current project.
+        /// </summary>
+        string FileName { get; }
+
+        /// <summary>
+        /// Gets or sets the current map units, in the format
+        /// "Meters", "Feet", etc
+        /// </summary>
+        string MapUnits { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current alternate display units, in the format
+        /// "Meters", "Feet", etc
+        /// </summary>
+        string MapUnitsAlternate { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the project was modified.
+        /// </summary>
+        bool Modified { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current project projection, in the format
+        /// "+proj=tmerc +ellps=WGS84 etc etc +datum=WGS84"
+        /// </summary>
+        string ProjectProjection { get; set; }
+
+        /// <summary>
+        /// Gets an ArrayList of the recent projects (the full path to the projects)
+        /// </summary>
+        ArrayList RecentProjects { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether shape-level formatting should be saved.
+        /// </summary>
+        bool SaveShapeSettings { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -48,58 +100,6 @@ namespace DotSpatial.Compatibility
         /// <param name="fileName">The fileName to save the configuration as.</param>
         /// <returns>Returns true if successful.</returns>
         bool SaveConfig(string fileName);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Returns the fileName of the configuration file that was used to load the current DotSpatial project.
-        /// </summary>
-        string ConfigFileName { get; }
-
-        /// <summary>
-        /// Returns whether the configuration file specified by the project has been loaded.
-        /// </summary>
-        bool ConfigLoaded { get; }
-
-        /// <summary>
-        /// Returns the fileName of the current project.
-        /// </summary>
-        string FileName { get; }
-
-        /// <summary>
-        /// Return or set the current map units, in the format
-        /// "Meters", "Feet", etc
-        /// </summary>
-        string MapUnits { get; set; }
-
-        /// <summary>
-        /// Return or set the current alternate display units, in the format
-        /// "Meters", "Feet", etc
-        /// </summary>
-        string MapUnitsAlternate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the project modified flag.
-        /// </summary>
-        bool Modified { get; set; }
-
-        /// <summary>
-        /// Return or set the current project projection, in the format
-        /// "+proj=tmerc +ellps=WGS84 etc etc +datum=WGS84"
-        /// </summary>
-        string ProjectProjection { get; set; }
-
-        /// <summary>
-        /// Returns an ArrayList of the recent projects (the full path to the projects)
-        /// </summary>
-        ArrayList RecentProjects { get; }
-
-        /// <summary>
-        /// Gets or sets the option to save shape-level formatting.
-        /// </summary>
-        bool SaveShapeSettings { get; set; }
 
         #endregion
     }

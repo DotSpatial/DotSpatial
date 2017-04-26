@@ -18,17 +18,13 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface IToolbar
     {
-        /// <summary>
-        /// Adds a Toolbar group to the Main Toolbar
-        /// </summary>
-        /// <param name="name">The name to give to the Toolbar item</param>
-        /// <returns>true on success, false on failure</returns>
-        bool AddToolbar(string name);
+        #region Methods
 
         /// <summary>
         /// Adds a button to a specified to the default Toolbar
         /// </summary>
         /// <param name="name">The name to give to the new ToolbarButton</param>
+        /// <returns>The specified ToolbarButton</returns>
         IToolbarButton AddButton(string name);
 
         /// <summary>
@@ -36,6 +32,7 @@ namespace DotSpatial.Compatibility
         /// </summary>
         /// <param name="name">The name to give to the new ToolbarButton</param>
         /// <param name="isDropDown">Should this button support drop-down items?</param>
+        /// <returns>The specified ToolbarButton</returns>
         IToolbarButton AddButton(string name, bool isDropDown);
 
         /// <summary>
@@ -44,7 +41,35 @@ namespace DotSpatial.Compatibility
         /// <param name="name">The name to give to the new ToolbarButton</param>
         /// /// <param name="toolbar">The name of the Toolbar to which this ToolbarButton should belong (if null or empty, then the default Toolbar will be used</param>
         /// <param name="isDropDown">Should this button support drop-down items?</param>
+        /// <returns>The specified ToolbarButton</returns>
         IToolbarButton AddButton(string name, string toolbar, bool isDropDown);
+
+        /// <summary>
+        /// Adds a button to a specified to the default Toolbar
+        /// </summary>
+        /// <param name="name">The name to give to the new ToolbarButton</param>
+        /// <param name="picture">The Icon/Bitmap to use as a picture on the ToolbarButton face</param>
+        /// <returns>The specified ToolbarButton</returns>
+        IToolbarButton AddButton(string name, object picture);
+
+        /// <summary>
+        /// Adds a button to a specified to the default Toolbar
+        /// </summary>
+        /// <param name="name">The name to give to the new ToolbarButton</param>
+        /// <param name="picture">The Icon/Bitmap to use as a picture on the ToolbarButton face</param>
+        /// <param name="text">The text name for the ToolbarButton.  This is the text the user will see if customizing the Toolbar</param>
+        /// <returns>The specified ToolbarButton</returns>
+        IToolbarButton AddButton(string name, object picture, string text);
+
+        /// <summary>
+        /// Adds a button to a specified to the specified Toolbar.
+        /// </summary>
+        /// <param name="name">The name to give to the new ToolbarButton.</param>
+        /// <param name="toolbar">The name of the Toolbar to which this ToolbarButton should belong (if null or empty, then the default Toolbar will be used.</param>
+        /// <param name="parentButton">The name of the ToolbarButton to which this new ToolbarButton should be added as a subitem.</param>
+        /// <param name="after">The name of the ToolbarButton after which this new ToolbarButton should be added.</param>
+        /// <returns>The specified ToolbarButton</returns>
+        IToolbarButton AddButton(string name, string toolbar, string parentButton, string after);
 
         /// <summary>
         /// Adds a separator to a toolstrip dropdown button.
@@ -55,47 +80,33 @@ namespace DotSpatial.Compatibility
         void AddButtonDropDownSeparator(string name, string toolbar, string parentButton);
 
         /// <summary>
-        /// Adds a button to a specified to the default Toolbar
-        /// </summary>
-        /// <param name="name">The name to give to the new ToolbarButton</param>
-        /// <param name="picture">The Icon/Bitmap to use as a picture on the ToolbarButton face</param>
-        IToolbarButton AddButton(string name, object picture);
-
-        /// <summary>
-        /// Adds a button to a specified to the default Toolbar
-        /// </summary>
-        /// <param name="name">The name to give to the new ToolbarButton</param>
-        /// <param name="picture">The Icon/Bitmap to use as a picture on the ToolbarButton face</param>
-        /// <param name="text">The text name for the ToolbarButton.  This is the text the user will see if customizing the Toolbar</param>
-        IToolbarButton AddButton(string name, object picture, string text);
-
-        /// <summary>
-        /// Adds a button to a specified to the specified Toolbar.
-        /// </summary>
-        /// <param name="name">The name to give to the new ToolbarButton.</param>
-        /// <param name="toolbar">The name of the Toolbar to which this ToolbarButton should belong (if null or empty, then the default Toolbar will be used.</param>
-        /// <param name="parentButton">The name of the ToolbarButton to which this new ToolbarButton should be added as a subitem.</param>
-        /// <param name="after">The name of the ToolbarButton after which this new ToolbarButton should be added.</param>
-        IToolbarButton AddButton(string name, string toolbar, string parentButton, string after);
-
-        /// <summary>
         /// Adds a ComboBoxItem to a specified to the default Toolbar.
         /// </summary>
         /// <param name="name">The name to give to the new ComboBoxItem.</param>
         /// <param name="toolbar">The name of the Toolbar to which this ToolbarButton should belong.</param>
         /// <param name="after">The name of the ToolbarButton/ComboBoxItem afterwhich this new item should be added.</param>
+        /// <returns>The specified ComboBoxItem</returns>
         IComboBoxItem AddComboBox(string name, string toolbar, string after);
+
+        /// <summary>
+        /// Adds a Toolbar group to the Main Toolbar
+        /// </summary>
+        /// <param name="name">The name to give to the Toolbar item</param>
+        /// <returns>true on success, false on failure</returns>
+        bool AddToolbar(string name);
 
         /// <summary>
         /// returns the specified ToolbarButton (null on failure)
         /// </summary>
         /// <param name="name">The name of the ToolbarButton to retrieve</param>
+        /// <returns>The specified ToolbarButton</returns>
         IToolbarButton ButtonItem(string name);
 
         /// <summary>
         /// returns the specified ComboBoxItem
         /// </summary>
         /// <param name="name">Name of the item to retrieve</param>
+        /// <returns>The specified ComboBoxItem</returns>
         IComboBoxItem ComboBoxItem(string name);
 
         /// <summary>
@@ -114,13 +125,6 @@ namespace DotSpatial.Compatibility
         bool PressToolbarButton(string name);
 
         /// <summary>
-        /// Removes the specified Toolbar and any ToolbarButton/ComboBoxItems contained within the control
-        /// </summary>
-        /// <param name="name">The name of the Toolbar to be removed</param>
-        /// <returns>true on success, false on failure</returns>
-        bool RemoveToolbar(string name);
-
-        /// <summary>
         /// Removes the specified ToolbarButton item
         /// </summary>
         /// <param name="name">The name of the ToolbarButton to be removed</param>
@@ -133,5 +137,14 @@ namespace DotSpatial.Compatibility
         /// <param name="name">The name of the ComboBoxItem to be removed</param>
         /// <returns>true on success, false on failure</returns>
         bool RemoveComboBox(string name);
+
+        /// <summary>
+        /// Removes the specified Toolbar and any ToolbarButton/ComboBoxItems contained within the control
+        /// </summary>
+        /// <param name="name">The name of the Toolbar to be removed</param>
+        /// <returns>true on success, false on failure</returns>
+        bool RemoveToolbar(string name);
+
+        #endregion
     }
 }

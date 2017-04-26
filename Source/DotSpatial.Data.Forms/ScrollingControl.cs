@@ -20,43 +20,28 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// ScrollingControl that provides autoscroll and custom draw that won't crash mono
+    /// ScrollingControl that provides autoscroll and custom draw that won't crash mono.
     /// </summary>
     [ToolboxItem(false)]
     public class ScrollingControl : Control
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs after the base drawing content has been rendered to the page.
-        /// </summary>
-        public event EventHandler<PaintEventArgs> Initialized;
-
-        #endregion
-
-        #region Private Variables
-
+        #region Fields
         private readonly Brush _controlBrush;
-        private Brush _backImageBrush;
         private Brush _backcolorBrush;
-
+        private Brush _backImageBrush;
         private Rectangle _controlRectangle;
         private Rectangle _documentRectangle;
         private bool _firstDrawing;
-        private bool _isInitialized;
-        private Bitmap _page; // the page is always the size of the control
         private Size _pageSize;
-        private bool _resetOnResize;
-        private Label lblCorner;
-        private HScrollBar scrHorizontal;
-        private VScrollBar scrVertical;
-
+        private Label _lblCorner;
+        private HScrollBar _scrHorizontal;
+        private VScrollBar _scrVertical;
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of ScrollingControl
+        /// Initializes a new instance of the <see cref="ScrollingControl"/> class.
         /// </summary>
         public ScrollingControl()
         {
@@ -67,108 +52,165 @@ namespace DotSpatial.Data.Forms
             {
                 _backImageBrush = new TextureBrush(base.BackgroundImage);
             }
-            base.MinimumSize = new Size(5, 5);
+
+            MinimumSize = new Size(5, 5);
         }
 
         #endregion
 
-        private void InitializeComponent()
-        {
-            scrVertical = new VScrollBar();
-            scrHorizontal = new HScrollBar();
-            lblCorner = new Label();
-            SuspendLayout();
-            //
-            // scrVertical
-            //
-            scrVertical.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom)
-                                 | AnchorStyles.Right;
-            scrVertical.Location = new Point(170, 0);
-            scrVertical.Name = "scrVertical";
-            scrVertical.Size = new Size(17, 411);
-            scrVertical.TabIndex = 0;
-            scrVertical.Scroll += scrVertical_Scroll;
-            //
-            // scrHorizontal
-            //
-            scrHorizontal.Anchor = (AnchorStyles.Bottom | AnchorStyles.Left)
-                                   | AnchorStyles.Right;
-            scrHorizontal.Location = new Point(0, 411);
-            scrHorizontal.Name = "scrHorizontal";
-            scrHorizontal.Size = new Size(169, 17);
-            scrHorizontal.TabIndex = 1;
-            scrHorizontal.Scroll += scrHorizontal_Scroll;
-            //
-            // lblCorner
-            //
-            lblCorner.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            lblCorner.Location = new Point(169, 411);
-            lblCorner.AutoSize = false;
-            lblCorner.Text = null;
-            lblCorner.Size = new Size(18, 17);
-            lblCorner.BackColor = SystemColors.Control;
-            //
-            // ScrollingControl
-            //
-            Controls.Add(scrHorizontal);
-            Controls.Add(scrVertical);
-            Controls.Add(lblCorner);
-            Name = "ScrollingControl";
-            Size = new Size(187, 428);
-            ResumeLayout(false);
-        }
+        #region Events
 
-        private void scrHorizontal_Scroll(object sender, ScrollEventArgs e)
-        {
-            OnVerticalScroll(sender, e);
-        }
+        /// <summary>
+        /// Occurs after the base drawing content has been rendered to the page.
+        /// </summary>
+        public event EventHandler<PaintEventArgs> Initialized;
 
-        private void scrVertical_Scroll(object sender, ScrollEventArgs e)
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the background color to use for this control
+        /// </summary>
+        public override Color BackColor
         {
-            OnHorizontalScroll(sender, e);
+            get
+            {
+                return base.BackColor;
+            }
+
+            set
+            {
+                _backcolorBrush?.Dispose();
+                _backcolorBrush = new SolidBrush(value);
+                base.BackColor = value;
+            }
         }
 
         /// <summary>
-        /// Occurs when scrolling vertically
+        /// Gets or sets the background image for this control.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void OnVerticalScroll(object sender, ScrollEventArgs e)
+        public override Image BackgroundImage
         {
-            _controlRectangle.X = scrHorizontal.Value;
-            Initialize();
-            Invalidate();
+            get
+            {
+                return base.BackgroundImage;
+            }
+
+            set
+            {
+                base.BackgroundImage = value;
+                _backImageBrush?.Dispose();
+                if (value == null) return;
+                _backImageBrush = new TextureBrush(BackgroundImage);
+                Size s = _pageSize;
+                if (s.Width < BackgroundImage.Width) s.Width = BackgroundImage.Width;
+                if (s.Height < BackgroundImage.Height) s.Height = BackgroundImage.Height;
+                _pageSize = s;
+            }
         }
 
         /// <summary>
-        /// Occurs when scrolling horizontally
+        /// Gets or sets the rectangular region of the control in page coordinates.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void OnHorizontalScroll(object sender, ScrollEventArgs e)
+        public Rectangle ControlRectangle
         {
-            _controlRectangle.Y = scrVertical.Value;
-            Initialize();
-            Invalidate();
+            get
+            {
+                return _controlRectangle;
+            }
+
+            set
+            {
+                _controlRectangle = value;
+            }
         }
+
+        /// <summary>
+        /// Gets or sets the rectangle for the entire content, whether on the page buffer or not. X and Y for this are always 0.
+        /// </summary>
+        public virtual Rectangle DocumentRectangle
+        {
+            get
+            {
+                return _documentRectangle;
+            }
+
+            set
+            {
+                _documentRectangle = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not horizontal scrolling is enabled
+        /// </summary>
+        public bool HorizontalScrollEnabled
+        {
+            get
+            {
+                return _scrHorizontal.Enabled;
+            }
+
+            set
+            {
+                _scrHorizontal.Enabled = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the page for this control has been drawn.
+        /// </summary>
+        public bool IsInitialized { get; set; }
+
+        /// <summary>
+        /// Gets or sets the page image being used as a buffer. This is useful
+        /// for content changes that need to be made rapidly. First refresh
+        /// a small region of this page, and then invalidate the client rectangle.
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Bitmap Page { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the scrolling should be reset on every resize or not.
+        /// </summary>
+        public bool ResetOnResize { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the vertical scroll should be permitted.
+        /// </summary>
+        public bool VerticalScrollEnabled
+        {
+            get
+            {
+                return _scrVertical.Enabled;
+            }
+
+            set
+            {
+                _scrVertical.Enabled = value;
+            }
+        }
+
+        #endregion
 
         #region Methods
 
         /// <summary>
-        /// Gets a rectangle in document coordinates for hte specified rectangle in client coordinates
+        /// Gets a rectangle in document coordinates for the specified rectangle in client coordinates.
         /// </summary>
-        /// <param name="rect"></param>
-        /// <returns></returns>
+        /// <param name="rect">Rectangle in client coordinates.</param>
+        /// <returns>Rectangle in document coordinates.</returns>
         public Rectangle ClientToDocument(Rectangle rect)
         {
             return new Rectangle(rect.X + _controlRectangle.X, rect.Y + _controlRectangle.Y, rect.Width, rect.Height);
         }
 
         /// <summary>
-        /// Translates a rectangle from document coordinates to coordinates relative to the client control
+        /// Translates a rectangle from document coordinates to coordinates relative to the client control.
         /// </summary>
-        /// <param name="rect"></param>
-        /// <returns></returns>
+        /// <param name="rect">Rectangle in document coordinates.</param>
+        /// <returns>Rectangle in client coordinates.</returns>
         public Rectangle DocumentToClient(Rectangle rect)
         {
             return new Rectangle(rect.X - _controlRectangle.X, rect.Y - _controlRectangle.Y, rect.Width, rect.Height);
@@ -187,171 +229,109 @@ namespace DotSpatial.Data.Forms
             int ch = Height;
             if (dw == 0 || dh == 0) return; // prevent divide by 0
             if (cw == 0 || ch == 0) return;
-            scrHorizontal.LargeChange = (cw * cw) / dw;
-            scrVertical.LargeChange = (ch * ch) / dh;
-            scrHorizontal.Maximum = dw;
-            scrVertical.Maximum = dh;
+            _scrHorizontal.LargeChange = (cw * cw) / dw;
+            _scrVertical.LargeChange = (ch * ch) / dh;
+            _scrHorizontal.Maximum = dw;
+            _scrVertical.Maximum = dh;
             if (dw <= cw)
             {
-                scrHorizontal.Visible = false;
+                _scrHorizontal.Visible = false;
             }
             else
             {
-                if (scrHorizontal.Enabled) scrHorizontal.Visible = true;
+                if (_scrHorizontal.Enabled) _scrHorizontal.Visible = true;
             }
+
             if (dh <= ch)
             {
-                scrVertical.Visible = false;
+                _scrVertical.Visible = false;
             }
             else
             {
-                if (scrVertical.Enabled) scrVertical.Visible = true;
+                if (_scrVertical.Enabled) _scrVertical.Visible = true;
             }
 
-            lblCorner.Visible = scrVertical.Visible || scrHorizontal.Visible;
+            _lblCorner.Visible = _scrVertical.Visible || _scrHorizontal.Visible;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the background color to use for this control
+        /// Disposes the unmanaged memory objects and optionally disposes the managed memory objects.
         /// </summary>
-        public override Color BackColor
+        /// <param name="disposing">Indicates whether managed objects should be disposed.</param>
+        protected override void Dispose(bool disposing)
         {
-            get
+            if (disposing)
             {
-                return base.BackColor;
+                _backcolorBrush?.Dispose();
+                _controlBrush?.Dispose();
+                _backImageBrush?.Dispose();
+                Page?.Dispose();
             }
-            set
+
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Occurs during custom drawing.
+        /// </summary>
+        /// <param name="e">The paint event args.</param>
+        protected virtual void OnDraw(PaintEventArgs e)
+        {
+            if (_firstDrawing == false)
             {
-                if (_backcolorBrush != null) _backcolorBrush.Dispose();
-                _backcolorBrush = new SolidBrush(value);
-                base.BackColor = value;
+                ResetScroll();
+                _firstDrawing = true;
             }
+
+            e.Graphics.FillRectangle(_backcolorBrush, e.ClipRectangle); // in client coordinates, the clip-rectangle is the area to clear
+            e.Graphics.DrawImage(Page, e.ClipRectangle, e.ClipRectangle, GraphicsUnit.Pixel);
         }
 
         /// <summary>
-        ///
+        /// Occurs during custom drawing when erasing things.
         /// </summary>
-        public override Image BackgroundImage
+        /// <param name="e">The paint event args.</param>
+        protected virtual void OnDrawBackground(PaintEventArgs e)
         {
-            get
-            {
-                return base.BackgroundImage;
-            }
-            set
-            {
-                base.BackgroundImage = value;
-                if (_backImageBrush != null) _backImageBrush.Dispose();
-                if (value == null) return;
-                _backImageBrush = new TextureBrush(BackgroundImage);
-                Size s = _pageSize;
-                if (s.Width < BackgroundImage.Width) s.Width = BackgroundImage.Width;
-                if (s.Height < BackgroundImage.Height) s.Height = BackgroundImage.Height;
-                _pageSize = s;
-            }
         }
 
         /// <summary>
-        /// Gets the rectangular region of the control in page coordinates.
+        /// Occurs when scrolling horizontally.
         /// </summary>
-        public Rectangle ControlRectangle
+        /// <param name="sender">The sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnHorizontalScroll(object sender, ScrollEventArgs e)
         {
-            get { return _controlRectangle; }
-            set { _controlRectangle = value; }
+            _controlRectangle.Y = _scrVertical.Value;
+            Initialize();
+            Invalidate();
         }
 
         /// <summary>
-        /// Gets or sets the rectangle for the entire content, whether on the page buffer or not.  X and Y for this
-        /// are always 0.
+        /// Fires the Initialized event.
         /// </summary>
-        public virtual Rectangle DocumentRectangle
+        /// <param name="e">The paint event args.</param>
+        protected virtual void OnInitialize(PaintEventArgs e)
         {
-            get { return _documentRectangle; }
-            set { _documentRectangle = value; }
+            Initialized?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Gets or sets whether or not the page for this control has been drawn.
+        /// On Paint only paints the specified clip rectangle, but paints it from the page buffer.
         /// </summary>
-        public bool IsInitialized
-        {
-            get { return _isInitialized; }
-            set { _isInitialized = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean indicating whether or not horizontal scrolling is enabled
-        /// </summary>
-        public bool HorizontalScrollEnabled
-        {
-            get { return scrHorizontal.Enabled; }
-            set { scrHorizontal.Enabled = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the page image being used as a buffer.  This is useful
-        /// for content changes that need to be made rapidly.  First refresh
-        /// a small region of this page, and then invalidate the client rectangle.
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Bitmap Page
-        {
-            get { return _page; }
-            set { _page = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether or not the scrolling
-        /// should be reset on every resize or not.
-        /// </summary>
-        public bool ResetOnResize
-        {
-            get { return _resetOnResize; }
-            set { _resetOnResize = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean indicating whether the vertical scroll should be permitted
-        /// </summary>
-        public bool VerticalScrollEnabled
-        {
-            get { return scrVertical.Enabled; }
-            set { scrVertical.Enabled = value; }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Prevent flicker by preventing this
-        /// </summary>
-        /// <param name="pevent"></param>
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            // Do Nothing
-        }
-
-        /// <summary>
-        /// On Paint only paints the specified clip rectangle, but paints
-        /// it from the page buffer.
-        /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The paint event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             Rectangle clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
-            if (IsInitialized == false || _page == null)
+            if (IsInitialized == false || Page == null)
             {
                 Initialize(); // redraw the entire page buffer if necessary
             }
 
             using (var buffer = new Bitmap(clip.Width, clip.Height))
             using (var g = Graphics.FromImage(buffer))
-            using(var mat = new Matrix())
+            using (var mat = new Matrix())
             {
                 mat.Translate(-clip.X, -clip.Y); // draw in "client" coordinates
                 g.Transform = mat;
@@ -362,70 +342,35 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Occurs during custom drawing when erasing things
+        /// Prevent flicker by preventing this.
         /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnDrawBackground(PaintEventArgs e)
+        /// <param name="e">The paint event args.</param>
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //  e.Graphics.FillRectangle(_backcolorBrush, e.ClipRectangle);
-
-            //  e.Graphics.DrawImage(_page, e.ClipRectangle, ClientToPage(e.ClipRectangle), GraphicsUnit.Pixel);
+            // Do Nothing
         }
 
         /// <summary>
-        /// Occurs during custom drawing
+        /// Occurens when resizing.
         /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnDraw(PaintEventArgs e)
-        {
-            if (_firstDrawing == false)
-            {
-                ResetScroll();
-                _firstDrawing = true;
-            }
-            e.Graphics.FillRectangle(_backcolorBrush, e.ClipRectangle); // in client coordinates, the clip-rectangle is the area to clear
-            e.Graphics.DrawImage(_page, e.ClipRectangle, e.ClipRectangle, GraphicsUnit.Pixel);
-        }
-
-        /// <summary>
-        /// Disposes the unmanaged memory objects and optionally disposes
-        /// the managed memory objects
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_backcolorBrush != null) _backcolorBrush.Dispose();
-                if (_controlBrush != null) _controlBrush.Dispose();
-                if (_backImageBrush != null) _backImageBrush.Dispose();
-                if (_page != null) _page.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Fires the Initialized event
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnInitialize(PaintEventArgs e)
-        {
-            if (Initialized != null) Initialized(this, e);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnResize(EventArgs e)
         {
             ResetScroll();
             base.OnResize(e);
         }
 
-        #endregion
-
-        #region Private Methods
+        /// <summary>
+        /// Occurs when scrolling vertically.
+        /// </summary>
+        /// <param name="sender">The sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnVerticalScroll(object sender, ScrollEventArgs e)
+        {
+            _controlRectangle.X = _scrHorizontal.Value;
+            Initialize();
+            Invalidate();
+        }
 
         // Redraws the entire contents of the control, even if the clip rectangle is smaller.
         private void Initialize()
@@ -434,6 +379,7 @@ namespace DotSpatial.Data.Forms
             {
                 _documentRectangle = ClientRectangle;
             }
+
             if (_controlRectangle.IsEmpty)
             {
                 _controlRectangle = ClientRectangle;
@@ -444,9 +390,9 @@ namespace DotSpatial.Data.Forms
                 _controlRectangle.Height = ClientRectangle.Height;
             }
 
-            _page = new Bitmap(Width, Height);
+            Page = new Bitmap(Width, Height);
 
-            Graphics g = Graphics.FromImage(_page);
+            Graphics g = Graphics.FromImage(Page);
             g.Clear(BackColor);
             if (BackgroundImage != null)
             {
@@ -454,23 +400,25 @@ namespace DotSpatial.Data.Forms
                 {
                     g.DrawImage(BackgroundImage, ClientRectangle, _controlRectangle, GraphicsUnit.Pixel);
                 }
+
                 if (BackgroundImageLayout == ImageLayout.Center)
                 {
                     int x = (Width - BackgroundImage.Width) / 2;
                     int y = (Height - BackgroundImage.Height) / 2;
                     g.DrawImage(BackgroundImage, new Point(x, y));
                 }
+
                 if (BackgroundImageLayout == ImageLayout.Stretch || BackgroundImageLayout == ImageLayout.Zoom)
                 {
                     g.DrawImage(BackgroundImage, ClientRectangle);
                 }
+
                 if (BackgroundImageLayout == ImageLayout.Tile)
                 {
-                    //g.DrawImage(BackgroundImage, new Point(0, 0));
-
                     g.FillRectangle(_backImageBrush, ClientRectangle);
                 }
             }
+
             Matrix mat = g.Transform;
             Matrix oldMat = g.Transform;
             mat.Translate(-_controlRectangle.X, -_controlRectangle.Y);
@@ -478,6 +426,56 @@ namespace DotSpatial.Data.Forms
             OnInitialize(new PaintEventArgs(g, ClientRectangle));
             g.Transform = oldMat;
             g.Dispose();
+        }
+
+        private void InitializeComponent()
+        {
+            _scrVertical = new VScrollBar();
+            _scrHorizontal = new HScrollBar();
+            _lblCorner = new Label();
+            SuspendLayout();
+
+            // scrVertical
+            _scrVertical.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Right;
+            _scrVertical.Location = new Point(170, 0);
+            _scrVertical.Name = "_scrVertical";
+            _scrVertical.Size = new Size(17, 411);
+            _scrVertical.TabIndex = 0;
+            _scrVertical.Scroll += ScrVerticalScroll;
+
+            // scrHorizontal
+            _scrHorizontal.Anchor = (AnchorStyles.Bottom | AnchorStyles.Left) | AnchorStyles.Right;
+            _scrHorizontal.Location = new Point(0, 411);
+            _scrHorizontal.Name = "_scrHorizontal";
+            _scrHorizontal.Size = new Size(169, 17);
+            _scrHorizontal.TabIndex = 1;
+            _scrHorizontal.Scroll += ScrHorizontalScroll;
+
+            // lblCorner
+            _lblCorner.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            _lblCorner.Location = new Point(169, 411);
+            _lblCorner.AutoSize = false;
+            _lblCorner.Text = null;
+            _lblCorner.Size = new Size(18, 17);
+            _lblCorner.BackColor = SystemColors.Control;
+
+            // ScrollingControl
+            Controls.Add(_scrHorizontal);
+            Controls.Add(_scrVertical);
+            Controls.Add(_lblCorner);
+            Name = "ScrollingControl";
+            Size = new Size(187, 428);
+            ResumeLayout(false);
+        }
+
+        private void ScrHorizontalScroll(object sender, ScrollEventArgs e)
+        {
+            OnVerticalScroll(sender, e);
+        }
+
+        private void ScrVerticalScroll(object sender, ScrollEventArgs e)
+        {
+            OnHorizontalScroll(sender, e);
         }
 
         #endregion

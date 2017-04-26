@@ -3,17 +3,23 @@ using System.Windows.Forms;
 
 namespace DemoMap
 {
+    /// <summary>
+    /// This is the main window of the DemoMap program.
+    /// </summary>
     public partial class MainForm : Form
     {
         [Export("Shell", typeof(ContainerControl))]
-        private static ContainerControl Shell;
+        private static ContainerControl shell;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainForm"/> class.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
 
             if (DesignMode) return;
-            Shell = this;
+            shell = this;
             appManager.LoadExtensions();
         }
     }

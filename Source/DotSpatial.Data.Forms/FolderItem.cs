@@ -15,37 +15,30 @@ using System.IO;
 
 namespace DotSpatial.Data.Forms
 {
+    /// <summary>
+    /// FolderItem
+    /// </summary>
     internal class FolderItem : DirectoryItem
     {
-        #region Private Variables
-
-        private DirectoryInfo _info;
-
-        #endregion
-
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of FolderItem
+        /// Initializes a new instance of the <see cref="FolderItem"/> class.
         /// </summary>
         public FolderItem()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of FolderItem, but already pointing to the specified path
+        /// Initializes a new instance of the <see cref="FolderItem"/> class that points to the specified path.
         /// </summary>
         /// <param name="path">The string path that this FolderItem should be identified with</param>
         public FolderItem(string path)
             : base(path)
         {
             ItemType = ItemType.Folder;
-            _info = new DirectoryInfo(path);
+            Info = new DirectoryInfo(path);
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -54,11 +47,7 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Gets or sets the directory info
         /// </summary>
-        public DirectoryInfo Info
-        {
-            get { return _info; }
-            set { _info = value; }
-        }
+        public DirectoryInfo Info { get; set; }
 
         #endregion
     }

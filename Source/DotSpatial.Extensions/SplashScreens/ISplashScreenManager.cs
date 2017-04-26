@@ -21,7 +21,7 @@ namespace DotSpatial.Extensions.SplashScreens
         void Activate();
 
         /// <summary>
-        ///
+        /// Processes the given command with the given arguments.
         /// </summary>
         /// <param name="cmd">A SplashScreenCommand enum value.</param>
         /// <param name="arg">The argument to pass to the command. See SplashScreenCommand for details reguarding each individual command.</param>

@@ -1,15 +1,9 @@
 ﻿using System;
-using System.IO;
 using GeoAPI.Geometries;
 using DotSpatial.Data.Rasters.GdalExtension;
-using DotSpatial.Tests.Common;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
-using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 
 namespace DotSpatial.Data.Tests
 {
@@ -43,10 +37,10 @@ namespace DotSpatial.Data.Tests
                 for (int col = 0; col < 9; col++)
                 {
                     Coordinate corner = at.CellTopLeftToProj(row, col);
-                    double frac_col = rand.NextDouble();
-                    double frac_row = rand.NextDouble();
-                    double dX = c[1] * frac_col + c[2] * frac_row;
-                    double dY = c[4] * frac_col + c[5] * frac_row;
+                    double fracCol = rand.NextDouble();
+                    double fracRow = rand.NextDouble();
+                    double dX = c[1] * fracCol + c[2] * fracRow;
+                    double dY = c[4] * fracCol + c[5] * fracRow;
                     Coordinate point = new Coordinate(corner.X + dX, corner.Y + dY);
                     Assert.AreEqual(at.ProjToCell(point), new RcIndex(row, col));
                 }

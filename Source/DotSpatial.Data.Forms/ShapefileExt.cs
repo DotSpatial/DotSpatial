@@ -22,16 +22,17 @@ namespace DotSpatial.Data.Forms
     public static class ShapefileExt
     {
         /// <summary>
-        /// This will use this object to open a shapefile, but launches an open file dialog for the user
-        /// to select the file to open.
+        /// This will use this object to open a shapefile, but launches an open file dialog for the user to select the file to open.
         /// </summary>
+        /// <param name="self">this</param>
         /// <returns>A new Shapefile created from the file chosen by the open file dialog.</returns>
         public static Shapefile OpenFile(this Shapefile self)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Shapefiles (*.shp) |*.shp|All Files|*.*";
-            if (ofd.ShowDialog() != DialogResult.OK) return null;
-            return Shapefile.OpenFile(ofd.FileName);
+            using (var ofd = new OpenFileDialog { Filter = @"Shapefiles (*.shp) |*.shp|All Files|*.*" })
+            {
+                if (ofd.ShowDialog() != DialogResult.OK) return null;
+                return Shapefile.OpenFile(ofd.FileName);
+            }
         }
     }
 }

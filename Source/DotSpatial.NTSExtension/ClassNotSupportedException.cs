@@ -30,8 +30,9 @@ namespace DotSpatial.NTSExtension
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of ClassNotSupportedException
+        /// Initializes a new instance of the <see cref="ClassNotSupportedException"/> class.
         /// </summary>
+        /// <param name="name">Name of the class that is not supported.</param>
         public ClassNotSupportedException(string name)
             : base(TopologyText.ClassNotSupportedException_S.Replace("%S", name))
         {

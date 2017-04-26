@@ -20,8 +20,10 @@ namespace DotSpatial.Compatibility
     {
         /// <summary>The user clicked outside of any group or layer.</summary>
         None = 0,
+
         /// <summary>The user clicked on a layer.</summary>
         Layer = 1,
+
         /// <summary>The user clicked on a group.</summary>
         Group = 2
     }

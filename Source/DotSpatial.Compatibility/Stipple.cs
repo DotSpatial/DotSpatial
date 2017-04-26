@@ -22,18 +22,22 @@ namespace DotSpatial.Compatibility
         /// Use a custom stipple pattern
         /// </summary>
         Custom,
+
         /// <summary>
         /// A dashes and dots
         /// </summary>
         DashDotDash,
+
         /// <summary>
         /// Dashes only
         /// </summary>
         Dashed,
+
         /// <summary>
         /// Dots only
         /// </summary>
         Dotted,
+
         /// <summary>
         /// No stipple pattern should be used
         /// </summary>

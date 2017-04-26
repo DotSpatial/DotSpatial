@@ -170,7 +170,7 @@ namespace DotSpatial.Serialization
         #endregion
 
         /// <summary>
-        /// After serialization, the inner list is directly set.  This is uzed by the FeatureLayer, for instance,
+        /// After serialization, the inner list is directly set. This is uzed by the FeatureLayer, for instance,
         /// to apply the new scheme.
         /// </summary>
         protected virtual void OnInnerListSet() { }
@@ -265,7 +265,7 @@ namespace DotSpatial.Serialization
         protected virtual void OnExclude(T item) { }
 
         /// <summary>
-        /// Includes the specified item.  This should be called BEFORE an item
+        /// Includes the specified item. This should be called BEFORE an item
         /// is added to the list.
         /// </summary>
         /// <param name="item"></param>

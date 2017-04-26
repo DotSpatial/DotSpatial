@@ -50,6 +50,7 @@ namespace DotSpatial.NTSExtension
         #region Constructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FloatVector3"/> struct.
         /// Copies the X, Y and Z values from the CoordinateF without doing a conversion.
         /// </summary>
         /// <param name="coord">X, Y Z</param>
@@ -61,7 +62,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Creates a new FloatVector3 with the specified values
+        /// Initializes a new instance of the <see cref="FloatVector3"/> struct with the specified values.
         /// </summary>
         /// <param name="xValue">X</param>
         /// <param name="yValue">Y</param>
@@ -74,7 +75,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Uses the X, Y and Z values from the coordinate to create a new FloatVector3
+        /// Initializes a new instance of the <see cref="FloatVector3"/> structusing the X, Y and Z values from the coordinate.
         /// </summary>
         /// <param name="coord">The coordinate to obtain X, Y and Z values from</param>
         public FloatVector3(Coordinate coord)
@@ -89,38 +90,33 @@ namespace DotSpatial.NTSExtension
         #region Properties
 
         /// <summary>
-        /// Gets the length of the vector
+        /// Gets the length of the vector.
         /// </summary>
-        public float Length
-        {
-            get { return Convert.ToSingle(Math.Sqrt(X * X + Y * Y + Z * Z)); }
-        }
+        public float Length => Convert.ToSingle(Math.Sqrt(X * X + Y * Y + Z * Z));
 
         /// <summary>
-        /// Gets the square of length of this vector
+        /// Gets the square of length of this vector.
         /// </summary>
-        public float LengthSq
-        {
-            get { return Convert.ToSingle(X * X + Y * Y + Z * Z); }
-        }
+        public float LengthSq => Convert.ToSingle(X * X + Y * Y + Z * Z);
 
         #endregion
 
         #region Operators
 
         /// <summary>
-        /// Adds the vectors lhs and V using vector addition, which adds the corresponding components
+        /// Adds the vectors lhs and V using vector addition, which adds the corresponding components.
         /// </summary>
         /// <param name="lhs">One vector to be added</param>
         /// <param name="rhs">A second vector to be added</param>
         /// <returns>The sum of the vectors</returns>
         public static FloatVector3 operator +(FloatVector3 lhs, FloatVector3 rhs)
         {
-            FloatVector3 result;
-            result.X = lhs.X + rhs.X;
-            result.Y = lhs.Y + rhs.Y;
-            result.Z = lhs.Z + rhs.Z;
-            return result;
+            return new FloatVector3
+            {
+                X = lhs.X + rhs.X,
+                Y = lhs.Y + rhs.Y,
+                Z = lhs.Z + rhs.Z
+            };
         }
 
         /// <summary>
@@ -133,7 +129,7 @@ namespace DotSpatial.NTSExtension
         /// <remarks>To prevent divide by 0, if a 0 is in V, it will return 0 in the result</remarks>
         public static FloatVector3 operator /(FloatVector3 lhs, FloatVector3 rhs)
         {
-            FloatVector3 result = new FloatVector3();
+            FloatVector3 result = default(FloatVector3);
             if (rhs.X > 0) result.X = lhs.X / rhs.X;
             if (rhs.Y > 0) result.Y = lhs.Y / rhs.Y;
             if (rhs.Z > 0) result.Z = lhs.Z / rhs.Z;
@@ -146,14 +142,17 @@ namespace DotSpatial.NTSExtension
         /// <param name="lhs">A vector representing the vector to be multiplied</param>
         /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
         /// <returns>A FloatVector3 representing the vector product of vector lhs and the Scalar</returns>
+        /// <exception cref="ArgumentException">Thrown if scalar is 0.</exception>
         public static FloatVector3 operator /(FloatVector3 lhs, float scalar)
         {
-            FloatVector3 result;
             if (scalar == 0) throw new ArgumentException("Divisor cannot be 0.");
-            result.X = lhs.X / scalar;
-            result.Y = lhs.Y / scalar;
-            result.Z = lhs.Z / scalar;
-            return result;
+
+            return new FloatVector3
+            {
+                X = lhs.X / scalar,
+                Y = lhs.Y / scalar,
+                Z = lhs.Z / scalar
+            };
         }
 
         /// <summary>
@@ -164,23 +163,23 @@ namespace DotSpatial.NTSExtension
         /// <returns>Returns true if X, Y and Z are all equal.</returns>
         public static bool operator ==(FloatVector3 lhs, FloatVector3 rhs)
         {
-            if (lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z) return true;
-            return false;
+            return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z;
         }
 
         /// <summary>
-        /// Returns the Cross Product of two vectors lhs and rhs
+        /// Returns the Cross Product of two vectors lhs and rhs.
         /// </summary>
         /// <param name="lhs">Vector, the first input vector</param>
         /// <param name="rhs">Vector, the second input vector</param>
         /// <returns>A FloatVector3 containing the cross product of lhs and V</returns>
         public static FloatVector3 operator ^(FloatVector3 lhs, FloatVector3 rhs)
         {
-            FloatVector3 result = new FloatVector3();
-            result.X = (lhs.Y * rhs.Z - lhs.Z * rhs.Y);
-            result.Y = (lhs.Z * rhs.X - lhs.X * rhs.Z);
-            result.Z = (lhs.X * rhs.Y - lhs.Y * rhs.X);
-            return result;
+            return new FloatVector3
+            {
+                X = lhs.Y * rhs.Z - lhs.Z * rhs.Y,
+                Y = lhs.Z * rhs.X - lhs.X * rhs.Z,
+                Z = lhs.X * rhs.Y - lhs.Y * rhs.X
+            };
         }
 
         /// <summary>
@@ -191,8 +190,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>Returns true if any of X, Y and Z are unequal.</returns>
         public static bool operator !=(FloatVector3 lhs, FloatVector3 rhs)
         {
-            if (lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z) return false;
-            return true;
+            return lhs.X != rhs.X || lhs.Y != rhs.Y || lhs.Z != rhs.Z;
         }
 
         /// <summary>
@@ -215,11 +213,12 @@ namespace DotSpatial.NTSExtension
         /// <returns>The scalar product for the vectors</returns>
         public static FloatVector3 operator *(float scalar, FloatVector3 rhs)
         {
-            FloatVector3 result;
-            result.X = scalar * rhs.X;
-            result.Y = scalar * rhs.Y;
-            result.Z = scalar * rhs.Z;
-            return result;
+            return new FloatVector3
+            {
+                X = scalar * rhs.X,
+                Y = scalar * rhs.Y,
+                Z = scalar * rhs.Z
+            };
         }
 
         /// <summary>
@@ -230,11 +229,12 @@ namespace DotSpatial.NTSExtension
         /// <returns>A FloatVector3 representing the vector product of vector lhs and the Scalar</returns>
         public static FloatVector3 operator *(FloatVector3 lhs, float scalar)
         {
-            FloatVector3 result;
-            result.X = lhs.X * scalar;
-            result.Y = lhs.Y * scalar;
-            result.Z = lhs.Z * scalar;
-            return result;
+            return new FloatVector3
+            {
+                X = lhs.X * scalar,
+                Y = lhs.Y * scalar,
+                Z = lhs.Z * scalar
+            };
         }
 
         /// <summary>
@@ -257,14 +257,64 @@ namespace DotSpatial.NTSExtension
         #region Methods
 
         /// <summary>
-        /// Adds all the scalar members of the the two vectors
+        /// Adds all the scalar members of the the two vectors.
         /// </summary>
         /// <param name="lhs">Left hand side</param>
         /// <param name="rhs">Right hand side</param>
-        /// <returns></returns>
+        /// <returns>The resulting vector.</returns>
         public static FloatVector3 Add(FloatVector3 lhs, FloatVector3 rhs)
         {
             return new FloatVector3(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z);
+        }
+
+        /// <summary>
+        /// Returns the Cross Product of two vectors lhs and V.
+        /// </summary>
+        /// <param name="lhs">Vector, the first input vector</param>
+        /// <param name="rhs">Vector, the second input vector</param>
+        /// <returns>A FloatVector3 containing the cross product of lhs and V</returns>
+        public static FloatVector3 CrossProduct(FloatVector3 lhs, FloatVector3 rhs)
+        {
+            FloatVector3 result = new FloatVector3
+            {
+                X = lhs.Y * rhs.Z - lhs.Z * rhs.Y,
+                Y = lhs.Z * rhs.X - lhs.X * rhs.Z,
+                Z = lhs.X * rhs.Y - lhs.Y * rhs.X
+            };
+            return result;
+        }
+
+        /// <summary>
+        /// Multiplies all the scalar members of the the two vectors.
+        /// </summary>
+        /// <param name="lhs">Left hand side</param>
+        /// <param name="rhs">Right hand side</param>
+        /// <returns>The resulting value.</returns>
+        public static float Dot(FloatVector3 lhs, FloatVector3 rhs)
+        {
+            return lhs.X * rhs.X + lhs.Y * rhs.Y + lhs.Z * rhs.Z;
+        }
+
+        /// <summary>
+        /// Multiplies the source vector by a scalar.
+        /// </summary>
+        /// <param name="source">The vector.</param>
+        /// <param name="scalar">The scalar.</param>
+        /// <returns>The resulting vector.</returns>
+        public static FloatVector3 Multiply(FloatVector3 source, float scalar)
+        {
+            return new FloatVector3(source.X * scalar, source.Y * scalar, source.Z * scalar);
+        }
+
+        /// <summary>
+        /// Subtracts all the scalar members of the the two vectors.
+        /// </summary>
+        /// <param name="lhs">Left hand side</param>
+        /// <param name="rhs">Right hand side</param>
+        /// <returns>The resulting vector.</returns>
+        public static FloatVector3 Subtract(FloatVector3 lhs, FloatVector3 rhs)
+        {
+            return new FloatVector3(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z);
         }
 
         /// <summary>
@@ -279,64 +329,24 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the Cross Product of two vectors lhs and V
+        /// Tests to see if the specified object has the same X, Y and Z values.
         /// </summary>
-        /// <param name="lhs">Vector, the first input vector</param>
-        /// <param name="rhs">Vector, the second input vector</param>
-        /// <returns>A FloatVector3 containing the cross product of lhs and V</returns>
-        public static FloatVector3 CrossProduct(FloatVector3 lhs, FloatVector3 rhs)
-        {
-            FloatVector3 result = new FloatVector3();
-            result.X = (lhs.Y * rhs.Z - lhs.Z * rhs.Y);
-            result.Y = (lhs.Z * rhs.X - lhs.X * rhs.Z);
-            result.Z = (lhs.X * rhs.Y - lhs.Y * rhs.X);
-            return result;
-        }
-
-        /// <summary>
-        /// Multiplies all the scalar members of the the two vectors
-        /// </summary>
-        /// <param name="lhs">Left hand side</param>
-        /// <param name="rhs">Right hand side</param>
-        /// <returns></returns>
-        public static float Dot(FloatVector3 lhs, FloatVector3 rhs)
-        {
-            return lhs.X * rhs.X + lhs.Y * rhs.Y + lhs.Z * rhs.Z;
-        }
-
-        /// <summary>
-        /// tests to see if the specified object has the same X, Y and Z values
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">object to test against.</param>
+        /// <returns>True, if the X, Y, Z values of the two vectors are equal.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is FloatVector3)
-            {
-                FloatVector3 fv = (FloatVector3)obj;
-                if (fv.X == X && fv.Y == Y && fv.Z == Z) return true;
-            }
-            return false;
+            if (!(obj is FloatVector3)) return false;
+            FloatVector3 fv = (FloatVector3)obj;
+            return fv.X == X && fv.Y == Y && fv.Z == Z;
         }
 
         /// <summary>
         /// Not sure what I should be doing here since Int can't really contain this much info very well
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The generated hash code.</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-        /// <summary>
-        /// Multiplies the source vector by a scalar.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="scalar"></param>
-        /// <returns></returns>
-        public static FloatVector3 Multiply(FloatVector3 source, float scalar)
-        {
-            return new FloatVector3(source.X * scalar, source.Y * scalar, source.Z * scalar);
         }
 
         /// <summary>
@@ -351,7 +361,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        ///  Normalizes the vectors
+        /// Normalizes the vectors.
         /// </summary>
         public void Normalize()
         {
@@ -362,18 +372,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Subtracts all the scalar members of the the two vectors
-        /// </summary>
-        /// <param name="lhs">Left hand side</param>
-        /// <param name="rhs">Right hand side</param>
-        /// <returns></returns>
-        public static FloatVector3 Subtract(FloatVector3 lhs, FloatVector3 rhs)
-        {
-            return new FloatVector3(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z);
-        }
-
-        /// <summary>
-        /// Subtracts the specified value
+        /// Subtracts the specified value.
         /// </summary>
         /// <param name="vector">A FloatVector3</param>
         public void Subtract(FloatVector3 vector)

@@ -12,6 +12,7 @@
 // ********************************************************************************************************
 
 using System.Drawing;
+
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Compatibility
@@ -21,15 +22,21 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface ISelectedShape
     {
+        #region Properties
+
         /// <summary>
-        /// Returns the extents of this selected shape.
+        /// Gets the extents of this selected shape.
         /// </summary>
         Envelope Extents { get; }
 
         /// <summary>
-        /// Returns the shape index of this selected shape.
+        /// Gets the shape index of this selected shape.
         /// </summary>
         int ShapeIndex { get; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Initializes all information in the <c>SelectedShape</c> object then highlights the shape on the map.
@@ -37,5 +44,7 @@ namespace DotSpatial.Compatibility
         /// <param name="shapeIndex">Index of the shape in the shapefile.</param>
         /// <param name="selectColor">Color to use when highlighting the shape.</param>
         void Add(int shapeIndex, Color selectColor);
+
+        #endregion
     }
 }

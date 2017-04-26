@@ -15,13 +15,17 @@ using System;
 
 namespace DotSpatial.Data.Forms
 {
+    /// <summary>
+    /// Exception that is caused when trying to get something from xml.
+    /// </summary>
     public class TryXmlDocumentException : ApplicationException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of <see cref="TryXmlDocumentException"/>
+        /// Initializes a new instance of the <see cref="TryXmlDocumentException"/> class.
         /// </summary>
+        /// <param name="exceptionText">Error Message.</param>
         public TryXmlDocumentException(string exceptionText)
             : base(exceptionText)
         {
@@ -33,7 +37,7 @@ namespace DotSpatial.Data.Forms
         #region Methods
 
         /// <summary>
-        /// Logs this exception
+        /// Logs this exception.
         /// </summary>
         public void Log()
         {

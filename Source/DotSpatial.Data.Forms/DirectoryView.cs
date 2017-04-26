@@ -11,7 +11,6 @@
 //
 // ********************************************************************************************************
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -26,58 +25,36 @@ namespace DotSpatial.Data.Forms
     /// </summary>
     public class DirectoryView : ScrollingControl
     {
-        #region Private Variables
-
-        /// <summary>
-        /// Designer variable
-        /// </summary>
-        //private IContainer components = null; // the members to be contained
+        #region Fields
         private string _directory;
-
-        private List<DirectoryItem> _items;
         private DirectoryItem _selectedItem; // the most recently selected
-
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of DirectoryView
+        /// Initializes a new instance of the <see cref="DirectoryView"/> class.
         /// </summary>
         public DirectoryView()
         {
-            _items = new List<DirectoryItem>();
+            Items = new List<DirectoryItem>();
             InitializeComponent();
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the selected item.  In cases of a multiple select, this is the
-        /// last member added to the selection.
-        /// </summary>
-        public DirectoryItem SelectedItem
-        {
-            get { return _selectedItem; }
-            set
-            {
-                _selectedItem = value;
-                Invalidate();
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the string path that should be itemized in the view.
         /// </summary>
         public string Directory
         {
-            get { return _directory; }
+            get
+            {
+                return _directory;
+            }
+
             set
             {
                 _directory = value;
@@ -86,52 +63,17 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Gets or sets the collection of DirectoryItems to draw in this control
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<DirectoryItem> Items
-        {
-            get { return _items; }
-            set { _items = value; }
-        }
-
-        /// <summary>
-        /// Draws
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnInitialize(PaintEventArgs e)
-        {
-            UpdateContent();
-
-            // translate into document coordinates
-            Matrix oldMat = e.Graphics.Transform;
-            Matrix mat = new Matrix();
-            e.Graphics.Transform = mat;
-            foreach (DirectoryItem item in _items)
-            {
-                if (ControlRectangle.IntersectsWith(item.Bounds))
-                {
-                    item.Draw(e);
-                }
-            }
-            e.Graphics.Transform = oldMat;
-            base.OnInitialize(e);
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
         /// Gets or sets the Font to be used for all of the items in this view.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets the Font to be used for all of the items in this view.")]
+        [Category("Appearance")]
+        [Description("Gets or sets the Font to be used for all of the items in this view.")]
         public override Font Font
         {
             get
             {
                 return base.Font;
             }
+
             set
             {
                 base.Font = value;
@@ -140,22 +82,40 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Handles the situation where the mouse has been pressed down.
+        /// Gets or sets the collection of DirectoryItems to draw in this control
         /// </summary>
-        /// <param name="e"></param>
-        protected override void OnMouseDown(MouseEventArgs e)
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public List<DirectoryItem> Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selected item. In cases of a multiple select, this is the
+        /// last member added to the selection.
+        /// </summary>
+        public DirectoryItem SelectedItem
         {
-            foreach (DirectoryItem di in _items)
+            get
             {
-                if (di.Bounds.Contains(e.Location))
-                {
-                    di.IsSelected = true;
-                    RefreshItem(di);
-                    Invalidate(DocumentToClient(di.Bounds));
-                }
+                return _selectedItem;
             }
 
-            base.OnMouseDown(e);
+            set
+            {
+                _selectedItem = value;
+                Invalidate();
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Removes the existing Directory Items from the control
+        /// </summary>
+        public virtual void Clear()
+        {
+            Items?.Clear();
         }
 
         /// <summary>
@@ -180,40 +140,11 @@ namespace DotSpatial.Data.Forms
             g.Dispose();
         }
 
-        ///// <summary>
-        ///// This handles drawing but extends the
-        ///// </summary>
-        ///// <param name="e"></param>
-        //protected override void OnDraw(PaintEventArgs e)
-        //{
-        //    base.OnDraw(e);
-        //    foreach (DirectoryItem item in _items)
-        //    {
-        //        item.Draw(e);
-        //    }
-
-        //}
-
-        #endregion
-
-        private void InitializeComponent()
-        {
-        }
-
-        /// <summary>
-        /// Removes the existing Directory Items from the control
-        /// </summary>
-        public virtual void Clear()
-        {
-            if (_items != null) _items.Clear();
-        }
-
         /// <summary>
         /// Causes the control to refresh the current content.
         /// </summary>
         public void UpdateContent()
         {
-            if (Controls == null) return;
             SuspendLayout();
             int tp = 1;
             Clear();
@@ -225,10 +156,53 @@ namespace DotSpatial.Data.Forms
             AddFolders(ref tp, fontHeight);
 
             AddFiles(ref tp, fontHeight);
-            if (tp < fontHeight * _items.Count) tp = fontHeight * _items.Count;
+            if (tp < fontHeight * Items.Count) tp = fontHeight * Items.Count;
             DocumentRectangle = new Rectangle(DocumentRectangle.X, DocumentRectangle.Y, ClientRectangle.Width, tp);
             ResetScroll();
             ResumeLayout(false);
+        }
+
+        /// <summary>
+        /// Draws
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnInitialize(PaintEventArgs e)
+        {
+            UpdateContent();
+
+            // translate into document coordinates
+            Matrix oldMat = e.Graphics.Transform;
+            Matrix mat = new Matrix();
+            e.Graphics.Transform = mat;
+            foreach (DirectoryItem item in Items)
+            {
+                if (ControlRectangle.IntersectsWith(item.Bounds))
+                {
+                    item.Draw(e);
+                }
+            }
+
+            e.Graphics.Transform = oldMat;
+            base.OnInitialize(e);
+        }
+
+        /// <summary>
+        /// Handles the situation where the mouse has been pressed down.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            foreach (DirectoryItem di in Items)
+            {
+                if (di.Bounds.Contains(e.Location))
+                {
+                    di.IsSelected = true;
+                    RefreshItem(di);
+                    Invalidate(DocumentToClient(di.Bounds));
+                }
+            }
+
+            base.OnMouseDown(e);
         }
 
         private void AddFiles(ref int tp, int fontHeight)
@@ -243,7 +217,7 @@ namespace DotSpatial.Data.Forms
                 fi.Top = tp;
                 fi.Font = Font;
                 fi.Height = fontHeight;
-                _items.Add(fi);
+                Items.Add(fi);
                 tp += fontHeight;
             }
         }
@@ -261,34 +235,43 @@ namespace DotSpatial.Data.Forms
                     DirectoryInfo parent = System.IO.Directory.GetParent(_directory);
                     if (parent != null)
                     {
-                        FolderItem up = new FolderItem(parent.FullName);
+                        FolderItem up = new FolderItem(parent.FullName)
+                        {
+                            Text = "..",
+                            Font = Font,
+                            Top = tp,
+                            Height = fontHeight
+                        };
 
-                        up.Text = "..";
-                        up.Font = this.Font;
-                        up.Top = tp;
-                        up.Height = fontHeight;
-                        _items.Add(up);
+                        Items.Add(up);
                     }
                 }
+
                 tp += fontHeight;
             }
 
             if (_directory != null)
             {
                 string[] subDirs = System.IO.Directory.GetDirectories(_directory);
-                if (_items == null) _items = new List<DirectoryItem>();
+                if (Items == null) Items = new List<DirectoryItem>();
                 foreach (string dir in subDirs)
                 {
-                    FolderItem di = new FolderItem(dir);
-                    di.Font = this.Font;
-                    di.Top = tp;
-                    di.Height = fontHeight;
-                    //di.Navigate += new EventHandler<NavigateEventArgs>(item_Navigate);
-                    //di.SelectChanged += new EventHandler<SelectEventArgs>(item_SelectChanged);
-                    _items.Add(di);
+                    FolderItem di = new FolderItem(dir)
+                    {
+                        Font = Font,
+                        Top = tp,
+                        Height = fontHeight
+                    };
+                    Items.Add(di);
                     tp += fontHeight;
                 }
             }
         }
+
+        private void InitializeComponent()
+        {
+        }
+
+        #endregion
     }
 }

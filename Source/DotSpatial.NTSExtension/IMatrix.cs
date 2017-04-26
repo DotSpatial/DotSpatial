@@ -22,7 +22,7 @@
 // |                      |            |
 // *********************************************************************************************************
 
-namespace DotSpatial.NTSExtension 
+namespace DotSpatial.NTSExtension
 {
     /// <summary>
     /// IMatrix
@@ -32,7 +32,7 @@ namespace DotSpatial.NTSExtension
         #region Properties
 
         /// <summary>
-        /// Gets the number of columns
+        /// Gets the number of columns.
         /// </summary>
         int NumColumns
         {
@@ -40,7 +40,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Gets the number of rows
+        /// Gets the number of rows.
         /// </summary>
         int NumRows
         {
@@ -52,10 +52,10 @@ namespace DotSpatial.NTSExtension
         #region Methods
 
         /// <summary>
-        /// Performs the matrix multiplication against the specified matrix
+        /// Performs the matrix multiplication against the specified matrix.
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns></returns>
+        /// <param name="matrix">The matrix to multiply with.</param>
+        /// <returns>The resulting matrix.</returns>
         IMatrix Multiply(IMatrix matrix);
 
         #endregion

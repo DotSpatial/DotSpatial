@@ -6,24 +6,169 @@ using System.Reflection;
 namespace DotSpatial.Extensions
 {
     /// <summary>
-    /// Information about the assembly containing the extension
+    /// Information about the assembly containing the extension.
     /// </summary>
     public abstract class AssemblyInformation
     {
+        #region Fields
+
         private Type _classType;
+
         private FileVersionInfo _file;
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// The type of the referenced class
+        /// Gets the name of the assembly and class.
         /// </summary>
-        protected Type ReferenceType
+        public virtual string AssemblyQualifiedName
         {
             get
             {
-                if (_classType == null)
-                    _classType = this.GetType();
+                string fullName = string.Empty;
+                try
+                {
+                    fullName = ReferenceType.AssemblyQualifiedName;
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
 
-                return _classType;
+                return fullName;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the plugins author.
+        /// </summary>
+        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        public virtual string Author
+        {
+            get
+            {
+                string author = string.Empty;
+                try
+                {
+                    author = ReferenceFile.CompanyName;
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
+
+                return author;
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Gets the build date.
+        /// </summary>
+        public string BuildDate
+        {
+            get
+            {
+                string buildDate = string.Empty;
+                try
+                {
+                    if (ReferenceAssembly.Location == null)
+                        throw new ArgumentNullException(nameof(ReferenceAssembly.Location), Messages.ReferenceAssemblyLocationMayNotBeNull);
+                    buildDate = File.GetLastWriteTime(ReferenceAssembly.Location).ToLongDateString();
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
+
+                return buildDate;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the short description of the plugin.
+        /// </summary>
+        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        public virtual string Description
+        {
+            get
+            {
+                string desc = string.Empty;
+                try
+                {
+                    desc = ReferenceFile.Comments;
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
+
+                return desc;
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the plugin.
+        /// </summary>
+        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        public virtual string Name
+        {
+            get
+            {
+                string name = string.Empty;
+                try
+                {
+                    name = ReferenceFile.ProductName;
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
+
+                return name;
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the plugin version.
+        /// </summary>
+        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        public virtual string Version
+        {
+            get
+            {
+                string version = string.Empty;
+                try
+                {
+                    version = ReferenceFile.FileVersion;
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
+
+                return version;
+            }
+
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -34,8 +179,7 @@ namespace DotSpatial.Extensions
         {
             get
             {
-                if (_classType == null)
-                    _classType = this.GetType();
+                if (_classType == null) _classType = GetType();
 
                 return _classType.Assembly;
             }
@@ -48,151 +192,17 @@ namespace DotSpatial.Extensions
         {
             get
             {
-                return this._file ?? (this._file = FileVersionInfo.GetVersionInfo(this.ReferenceAssembly.Location));
+                if (ReferenceAssembly.Location == null)
+                    throw new ArgumentNullException(nameof(ReferenceAssembly.Location), Messages.ReferenceAssemblyLocationMayNotBeNull);
+                return _file ?? (_file = FileVersionInfo.GetVersionInfo(ReferenceAssembly.Location));
             }
         }
 
         /// <summary>
-        /// Author of the plugin.
+        /// Gets the type of the referenced class.
         /// </summary>
-        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
-        public virtual string Author
-        {
-            get
-            {
-                string author = String.Empty;
-                try
-                {
-                    author = this.ReferenceFile.CompanyName;
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e);
-                }
-                return author;
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        protected Type ReferenceType => _classType ?? (_classType = GetType());
 
-        /// <summary>
-        /// Build date.
-        /// </summary>
-        public string BuildDate
-        {
-            get
-            {
-                string buildDate = String.Empty;
-                try
-                {
-                    buildDate = File.GetLastWriteTime(this.ReferenceAssembly.Location).ToLongDateString();
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e);
-                }
-                return buildDate;
-            }
-        }
-
-        /// <summary>
-        /// Short description of the plugin.
-        /// </summary>
-        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
-        public virtual string Description
-        {
-            get
-            {
-                string desc = String.Empty;
-                try
-                {
-                    desc = this.ReferenceFile.Comments;
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e);
-                }
-                return desc;
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        /// <summary>
-        /// Name of the plugin.
-        /// </summary>
-        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
-        public virtual string Name
-        {
-            get
-            {
-                string name = String.Empty;
-                try
-                {
-                    name = this.ReferenceFile.ProductName;
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e);
-                }
-
-                return name;
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        /// <summary>
-        /// Plugin version.
-        /// </summary>
-        /// <remarks>This setter should be overriden by a derived class (if needed).</remarks>
-        public virtual string Version
-        {
-            get
-            {
-                string version = String.Empty;
-                try
-                {
-                    version = this.ReferenceFile.FileVersion;
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e);
-                }
-
-                return version;
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the assembly and class.
-        /// </summary>
-        public virtual string AssemblyQualifiedName
-        {
-            get
-            {
-                string fullName = String.Empty;
-                try
-                {
-                    fullName = this.ReferenceType.AssemblyQualifiedName;
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e);
-                }
-
-                return fullName;
-            }
-        }
+        #endregion
     }
 }

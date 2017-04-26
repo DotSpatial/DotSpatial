@@ -5,21 +5,20 @@ using NUnit.Framework;
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
-    ///This is a test class for AppManagerTest and is intended
-    ///to contain all AppManagerTest Unit Tests
-    ///</summary>
+    /// This is a test class for AppManagerTest and is intended
+    /// to contain all AppManagerTest Unit Tests
+    /// </summary>
     [TestFixture()]
     public class AppManagerTest
     {
         /// <summary>
-        ///A test for GetCustomSettingDefault
-        ///</summary>
+        /// A test for GetCustomSettingDefault
+        /// </summary>
         [Test]
         public void GetCustomSettingDefaultTest()
         {
             Map map = new Map();
-            AppManager target = new AppManager();
-            target.Map = map;
+            AppManager target = new AppManager { Map = map };
 
             string uniqueName = "customsettingname";
             var expected = DateTime.Now;
@@ -29,14 +28,13 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        ///A test for GetCustomSettingFromMemory
-        ///</summary>
+        /// A test for GetCustomSettingFromMemory
+        /// </summary>
         [Test]
         public void GetCustomSettingFromMemoryTest()
         {
             Map map = new Map();
-            AppManager target = new AppManager();
-            target.Map = map;
+            AppManager target = new AppManager { Map = map };
 
             string uniqueName = "customsettingname";
             var expected = DateTime.Now;
@@ -48,14 +46,13 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        ///A test for GetCustomSettingFromFile
-        ///</summary>
+        /// A test for GetCustomSettingFromFile
+        /// </summary>
         [Test]
         public void GetCustomSettingFromFileTest()
         {
             Map map = new Map();
-            AppManager target = new AppManager();
-            target.Map = map;
+            AppManager target = new AppManager { Map = map };
 
             string uniqueName = "customsettingname";
             var expected = DateTime.Now;

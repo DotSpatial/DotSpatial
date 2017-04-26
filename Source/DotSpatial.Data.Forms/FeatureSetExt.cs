@@ -24,12 +24,15 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Displays a dialog, allowing the users to open a raster.
         /// </summary>
+        /// <param name="self">this</param>
         public static void Open(this FeatureSet self)
         {
             string filter = DataManager.DefaultDataManager.RasterReadFilter;
-            OpenFileDialog ofd = new OpenFileDialog { Filter = filter };
-            if (ofd.ShowDialog() != DialogResult.OK) return;
-            FeatureSet.Open(ofd.FileName);
+            using (var ofd = new OpenFileDialog { Filter = filter })
+            {
+                if (ofd.ShowDialog() != DialogResult.OK) return;
+                FeatureSet.Open(ofd.FileName);
+            }
         }
     }
 }

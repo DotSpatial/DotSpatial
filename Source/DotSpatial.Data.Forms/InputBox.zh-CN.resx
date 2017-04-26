@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lblMessageText.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_lblMessageText.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 13</value>
   </data>
-  <data name="lblMessageText.Text" xml:space="preserve">
+  <data name="_lblMessageText.Text" xml:space="preserve">
     <value>请输入值:</value>
   </data>
-  <data name="cmdOk.Text" xml:space="preserve">
+  <data name="_cmdOk.Text" xml:space="preserve">
     <value>确认</value>
   </data>
-  <data name="cmdCancel.Text" xml:space="preserve">
+  <data name="_cmdCancel.Text" xml:space="preserve">
     <value>&amp;取消</value>
   </data>
   <data name="$this.Text" xml:space="preserve">

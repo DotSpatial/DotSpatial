@@ -24,6 +24,7 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Displays a dialog, allowing the users to open a raster.
         /// </summary>
+        /// <param name="self">this</param>
         public static void Open(this Raster self)
         {
             if (self.Filename == null)

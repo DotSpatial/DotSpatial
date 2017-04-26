@@ -34,7 +34,7 @@ namespace DotSpatial.NTSExtension
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of CoordinateMismatchException
+        /// Initializes a new instance of the <see cref="CoordinateMismatchException"/> class.
         /// </summary>
         public CoordinateMismatchException()
             : base(TopologyText.CoordinateMismatchException)

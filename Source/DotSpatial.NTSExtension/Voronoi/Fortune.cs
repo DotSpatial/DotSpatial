@@ -21,7 +21,7 @@
 // Name              |   Date             |   Comments
 // ------------------|--------------------|---------------------------------------------------------
 // Benjamin Dittes   | August 10, 2005    |  Authored original code for working with laser data
-// Ted Dunsford      | August 26, 2009    |  Ported and re-formated code.  Fixed a sorting and rounding problem
+// Ted Dunsford      | August 26, 2009    |  Ported and re-formated code. Fixed a sorting and rounding problem
 // ********************************************************************************************************
 
 using System;
@@ -31,40 +31,193 @@ using System.Linq;
 
 namespace DotSpatial.NTSExtension.Voronoi
 {
-    ///<summary>
-    /// Contains static methods and parameters that organize the major elements of
-    /// applying the Fortune linesweep methods
-    ///</summary>
+    /// <summary>
+    /// Contains static methods and parameters that organize the major elements of applying the Fortune linesweep methods.
+    /// </summary>
     public abstract class Fortune
     {
         #region Fields
 
         /// <summary>
-        /// Represents an infinite vector location
+        /// Represents an infinite vector location.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public static readonly Vector2 VVInfinite = new Vector2(double.PositiveInfinity, double.PositiveInfinity);
 
-        ///<summary>
-        /// The default definition of a coordinate that uses double.NaN to clarify
-        /// that no value has yet been assigned to this vector.
-        ///</summary>
+        /// <summary>
+        /// The default definition of a coordinate that uses double.NaN to clarify that no value has yet been assigned to this vector.
+        /// </summary>
+        // ReSharper disable once InconsistentNaming
         public static readonly Vector2 VVUnkown = new Vector2(double.NaN, double.NaN);
 
         /// <summary>
-        /// Boolean, true if the cleanup method should be called.  This is unnecessary, for
+        /// Gets or sets a value indicating whether the cleanup method should be called. This is unnecessary, for
         /// the mapwindow implementation and will in fact cause the implementation to break
         /// because infinities and other bad values start showing up.
         /// </summary>
-        public static bool DoCleanup;
+        public static bool DoCleanup { get; set; }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Calculates the voronoi graph, but specifies a tolerance below which values should be considered equal.
+        /// </summary>
+        /// <param name="vertices">The original points to use during the calculation</param>
+        /// <param name="tolerance">A double value that controls the test for equality</param>
+        /// <param name="cleanup">This for Ben's code and should be passed as true if cleanup should be done.</param>
+        /// <returns>A VoronoiGraph structure containing the output geometries</returns>
+        public static VoronoiGraph ComputeVoronoiGraph(double[] vertices, double tolerance, bool cleanup)
+        {
+            Vector2.Tolerance = tolerance;
+            DoCleanup = cleanup;
+            return ComputeVoronoiGraph(vertices);
+        }
+
+        /// <summary>
+        /// Calculates a list of edges and junction vertices by using the specified points.
+        /// This defaults to not using any tolerance for determining if points are equal,
+        /// and will not use the cleanup algorithm, which breaks the HandleBoundaries
+        /// method in the Voronoi class.
+        /// </summary>
+        /// <param name="vertices">The original points to use during the calculation</param>
+        /// <returns>A VoronoiGraph structure containing the output geometries</returns>
+        public static VoronoiGraph ComputeVoronoiGraph(double[] vertices)
+        {
+            SortedDictionary<VEvent, VEvent> pq = new SortedDictionary<VEvent, VEvent>();
+
+            Dictionary<VDataNode, VCircleEvent> currentCircles = new Dictionary<VDataNode, VCircleEvent>();
+            VoronoiGraph vg = new VoronoiGraph();
+            VNode rootNode = null;
+            for (int i = 0; i < vertices.Length / 2; i++)
+            {
+                VDataEvent e = new VDataEvent(new Vector2(vertices, i * 2));
+                if (pq.ContainsKey(e)) continue;
+                pq.Add(e, e);
+            }
+
+            while (pq.Count > 0)
+            {
+                VEvent ve = pq.First().Key;
+                pq.Remove(ve);
+
+                VDataNode[] circleCheckList = new VDataNode[] { };
+                if (ve is VDataEvent)
+                {
+                    rootNode = VNode.ProcessDataEvent(ve as VDataEvent, rootNode, vg, ve.Y, out circleCheckList);
+                }
+                else if (ve is VCircleEvent)
+                {
+                    currentCircles.Remove(((VCircleEvent)ve).NodeN);
+                    if (!((VCircleEvent)ve).Valid) continue;
+                    rootNode = VNode.ProcessCircleEvent(ve as VCircleEvent, rootNode, vg, out circleCheckList);
+                }
+                else if (ve != null)
+                {
+                    throw new Exception("Got event of type " + ve.GetType() + "!");
+                }
+
+                foreach (VDataNode vd in circleCheckList)
+                {
+                    if (currentCircles.ContainsKey(vd))
+                    {
+                        currentCircles[vd].Valid = false;
+                        currentCircles.Remove(vd);
+                    }
+
+                    if (ve == null) continue;
+                    VCircleEvent vce = VNode.CircleCheckDataNode(vd, ve.Y);
+                    if (vce == null) continue;
+
+                    pq.Add(vce, vce);
+
+                    currentCircles[vd] = vce;
+                }
+
+                if (!(ve is VDataEvent)) continue;
+                Vector2 dp = ((VDataEvent)ve).DataPoint;
+                foreach (VCircleEvent vce in currentCircles.Values)
+                {
+                    if (MathTools.Dist(dp.X, dp.Y, vce.Center.X, vce.Center.Y) < vce.Y - vce.Center.Y && Math.Abs(MathTools.Dist(dp.X, dp.Y, vce.Center.X, vce.Center.Y) - (vce.Y - vce.Center.Y)) > 1e-10) vce.Valid = false;
+                }
+            }
+
+            // This is where the MapWindow version should exit since it uses the HandleBoundaries
+            // function instead. The following code is needed for Benjamin Ditter's original process to work.
+            if (!DoCleanup) return vg;
+
+            VNode.CleanUpTree(rootNode);
+            foreach (VoronoiEdge ve in vg.Edges)
+            {
+                if (ve.Done) continue;
+                if (ve.VVertexB != VVUnkown) continue;
+                ve.AddVertex(VVInfinite);
+                if (Math.Abs(ve.LeftData.Y - ve.RightData.Y) < 1e-10 && ve.LeftData.X < ve.RightData.X)
+                {
+                    Vector2 t = ve.LeftData;
+                    ve.LeftData = ve.RightData;
+                    ve.RightData = t;
+                }
+            }
+
+            ArrayList minuteEdges = new ArrayList();
+            foreach (VoronoiEdge ve in vg.Edges)
+            {
+                if (ve.IsPartlyInfinite || !ve.VVertexA.Equals(ve.VVertexB)) continue;
+                minuteEdges.Add(ve);
+
+                // prevent rounding errors from expanding to holes
+                foreach (VoronoiEdge ve2 in vg.Edges)
+                {
+                    if (ve2.VVertexA.Equals(ve.VVertexA)) ve2.VVertexA = ve.VVertexA;
+                    if (ve2.VVertexB.Equals(ve.VVertexA)) ve2.VVertexB = ve.VVertexA;
+                }
+            }
+
+            foreach (VoronoiEdge ve in minuteEdges)
+            {
+                vg.Edges.Remove(ve);
+            }
+
+            return vg;
+        }
+
+        /// <summary>
+        /// Applies an optional cleanup method needed by Benjamine Ditter for laser data calculations.
+        /// This is not used by the MapWindow calculations.
+        /// </summary>
+        /// <param name="vg">The output voronoi graph created in the Compute Voronoi Graph section</param>
+        /// <param name="minLeftRightDist">A minimum left to right distance</param>
+        /// <returns>The Voronoi Graph after it has been filtered.</returns>
+        public static VoronoiGraph FilterVg(VoronoiGraph vg, double minLeftRightDist)
+        {
+            VoronoiGraph vgErg = new VoronoiGraph();
+            foreach (VoronoiEdge ve in vg.Edges)
+            {
+                if (ve.LeftData.Distance(ve.RightData) >= minLeftRightDist) vgErg.Edges.Add(ve);
+            }
+
+            foreach (VoronoiEdge ve in vgErg.Edges)
+            {
+                vgErg.Vertices.Add(ve.VVertexA);
+                vgErg.Vertices.Add(ve.VVertexB);
+            }
+
+            return vgErg;
+        }
+
+        /// <summary>
+        /// Gets the center of the circle.
+        /// </summary>
+        /// <param name="a">First circle point.</param>
+        /// <param name="b">Second circle point.</param>
+        /// <param name="c">Third circle point.</param>
+        /// <returns>The center vector.</returns>
+        /// <exception cref="ArgumentException">Thrown if at least 2 of the points are the same.</exception>
         internal static Vector2 CircumCircleCenter(Vector2 a, Vector2 b, Vector2 c)
         {
-            if (a == b || b == c || a == c)
-                throw new ArgumentException("Need three different points!");
+            if (a == b || b == c || a == c) throw new ArgumentException("Need three different points!");
 
             double tx = (a.X + c.X) / 2;
             double ty = (a.Y + c.Y) / 2;
@@ -102,150 +255,15 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Calculates the voronoi graph, but specifies a tolerance below which values should be considered equal.
+        /// Performs a parabolic cut with the given values.
         /// </summary>
-        /// <param name="vertices">The original points to use during the calculation</param>
-        /// <param name="tolerance">A double value that controls the test for equality</param>
-        /// <param name="cleanup">This for Ben's code and should be passed as true if cleanup should be done.</param>
-        /// <returns>A VoronoiGraph structure containing the output geometries</returns>
-        public static VoronoiGraph ComputeVoronoiGraph(double[] vertices, double tolerance, bool cleanup)
-        {
-            Vector2.Tolerance = tolerance;
-            DoCleanup = cleanup;
-            return ComputeVoronoiGraph(vertices);
-        }
-
-        /// <summary>
-        /// Calculates a list of edges and junction vertices by using the specified points.
-        /// This defaults to not using any tolerance for determining if points are equal,
-        /// and will not use the cleanup algorithm, which breaks the HandleBoundaries
-        /// method in the Voronoi class.
-        /// </summary>
-        /// <param name="vertices">The original points to use during the calculation</param>
-        /// <returns>A VoronoiGraph structure containing the output geometries</returns>
-        public static VoronoiGraph ComputeVoronoiGraph(double[] vertices)
-        {
-            //BinaryPriorityQueue pq = new BinaryPriorityQueue();
-            SortedDictionary<VEvent, VEvent> pq = new SortedDictionary<VEvent, VEvent>();
-
-            Dictionary<VDataNode, VCircleEvent> currentCircles = new Dictionary<VDataNode, VCircleEvent>();
-            VoronoiGraph vg = new VoronoiGraph();
-            VNode rootNode = null;
-            for (int i = 0; i < vertices.Length / 2; i++)
-            {
-                //pq.Push(new VDataEvent(new Vector(vertex)));
-                VDataEvent e = new VDataEvent(new Vector2(vertices, i * 2));
-                if (pq.ContainsKey(e)) continue;
-                pq.Add(e, e);
-            }
-
-            while (pq.Count > 0)
-            {
-                //VEvent ve = pq.Pop() as VEvent;
-                VEvent ve = pq.First().Key;
-                pq.Remove(ve);
-
-                VDataNode[] circleCheckList = new VDataNode[] { };
-                if (ve is VDataEvent)
-                {
-                    rootNode = VNode.ProcessDataEvent(ve as VDataEvent, rootNode, vg, ve.Y, out circleCheckList);
-                }
-                else if (ve is VCircleEvent)
-                {
-                    currentCircles.Remove(((VCircleEvent)ve).NodeN);
-                    if (!((VCircleEvent)ve).Valid)
-                        continue;
-                    rootNode = VNode.ProcessCircleEvent(ve as VCircleEvent, rootNode, vg, out circleCheckList);
-                }
-                else if (ve != null) throw new Exception("Got event of type " + ve.GetType() + "!");
-                foreach (VDataNode vd in circleCheckList)
-                {
-                    if (currentCircles.ContainsKey(vd))
-                    {
-                        currentCircles[vd].Valid = false;
-                        currentCircles.Remove(vd);
-                    }
-                    if (ve == null) continue;
-                    VCircleEvent vce = VNode.CircleCheckDataNode(vd, ve.Y);
-                    if (vce == null) continue;
-                    //pq.Push(vce);
-                    pq.Add(vce, vce);
-
-                    currentCircles[vd] = vce;
-                }
-                if (!(ve is VDataEvent)) continue;
-                Vector2 dp = ((VDataEvent)ve).DataPoint;
-                foreach (VCircleEvent vce in currentCircles.Values)
-                {
-                    if (MathTools.Dist(dp.X, dp.Y, vce.Center.X, vce.Center.Y) < vce.Y - vce.Center.Y && Math.Abs(MathTools.Dist(dp.X, dp.Y, vce.Center.X, vce.Center.Y) - (vce.Y - vce.Center.Y)) > 1e-10)
-                        vce.Valid = false;
-                }
-            }
-
-            // This is where the MapWindow version should exit since it uses the HandleBoundaries
-            // function instead.  The following code is needed for Benjamin Ditter's original process to work.
-            if (!DoCleanup) return vg;
-
-            VNode.CleanUpTree(rootNode);
-            foreach (VoronoiEdge ve in vg.Edges)
-            {
-                if (ve.Done)
-                    continue;
-                if (ve.VVertexB != VVUnkown) continue;
-                ve.AddVertex(VVInfinite);
-                if (Math.Abs(ve.LeftData.Y - ve.RightData.Y) < 1e-10 && ve.LeftData.X < ve.RightData.X)
-                {
-                    Vector2 t = ve.LeftData;
-                    ve.LeftData = ve.RightData;
-                    ve.RightData = t;
-                }
-            }
-
-            ArrayList minuteEdges = new ArrayList();
-            foreach (VoronoiEdge ve in vg.Edges)
-            {
-                if (ve.IsPartlyInfinite || !ve.VVertexA.Equals(ve.VVertexB)) continue;
-                minuteEdges.Add(ve);
-                // prevent rounding errors from expanding to holes
-                foreach (VoronoiEdge ve2 in vg.Edges)
-                {
-                    if (ve2.VVertexA.Equals(ve.VVertexA))
-                        ve2.VVertexA = ve.VVertexA;
-                    if (ve2.VVertexB.Equals(ve.VVertexA))
-                        ve2.VVertexB = ve.VVertexA;
-                }
-            }
-            foreach (VoronoiEdge ve in minuteEdges)
-            {
-                vg.Edges.Remove(ve);
-            }
-
-            return vg;
-        }
-
-        /// <summary>
-        /// Applies an optional cleanup method needed by Benjamine Ditter for
-        /// laser data calculations.  This is not used by the MapWindow calculations
-        /// </summary>
-        /// <param name="vg">The output voronoi graph created in the Compute Voronoi Graph section</param>
-        /// <param name="minLeftRightDist">A minimum left to right distance</param>
-        /// <returns>The Voronoi Graph after it has been filtered.</returns>
-        public static VoronoiGraph FilterVg(VoronoiGraph vg, double minLeftRightDist)
-        {
-            VoronoiGraph vgErg = new VoronoiGraph();
-            foreach (VoronoiEdge ve in vg.Edges)
-            {
-                if (ve.LeftData.Distance(ve.RightData) >= minLeftRightDist)
-                    vgErg.Edges.Add(ve);
-            }
-            foreach (VoronoiEdge ve in vgErg.Edges)
-            {
-                vgErg.Vertices.Add(ve.VVertexA);
-                vgErg.Vertices.Add(ve.VVertexB);
-            }
-            return vgErg;
-        }
-
+        /// <param name="x1">First x value.</param>
+        /// <param name="y1">First y value.</param>
+        /// <param name="x2">Second x value.</param>
+        /// <param name="y2">Second y value.</param>
+        /// <param name="ys">The ys.</param>
+        /// <returns>The resulting x value.</returns>
+        /// <exception cref="ArgumentException">Thrown if the two points are the same.</exception>
         internal static double ParabolicCut(double x1, double y1, double x2, double y2, double ys)
         {
             if (x1 == x2 && y1 == y2)
@@ -268,6 +286,7 @@ namespace DotSpatial.NTSExtension.Voronoi
                 xs1 = xs2;
                 xs2 = h;
             }
+
             return y1 >= y2 ? xs2 : xs1;
         }
 

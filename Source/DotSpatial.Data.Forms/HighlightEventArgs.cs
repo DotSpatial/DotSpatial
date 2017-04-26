@@ -16,24 +16,19 @@ using System;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// HighlightEventArgs
+    /// Indicates whether the control is now highlighted.
     /// </summary>
     public class HighlightEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private bool _isHighlighted;
-
-        #endregion
-
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of HighlightEventArgs
+        /// Initializes a new instance of the <see cref="HighlightEventArgs"/> class.
         /// </summary>
+        /// <param name="isHighlighted">Indicates whether the control is now highlighted.</param>
         public HighlightEventArgs(bool isHighlighted)
         {
-            _isHighlighted = isHighlighted;
+            IsHighlighted = isHighlighted;
         }
 
         #endregion
@@ -41,13 +36,9 @@ namespace DotSpatial.Data.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets whether or not the control is now highlighted
+        /// Gets or sets a value indicating whether or not the control is now highlighted.
         /// </summary>
-        public bool IsHighlighted
-        {
-            get { return _isHighlighted; }
-            protected set { _isHighlighted = value; }
-        }
+        public bool IsHighlighted { get; protected set; }
 
         #endregion
     }

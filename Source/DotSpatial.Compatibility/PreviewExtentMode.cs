@@ -22,6 +22,7 @@ namespace DotSpatial.Compatibility
         /// Update using full exents.
         /// </summary>
         FullExtents = 0,
+
         /// <summary>
         /// Update using current map view.
         /// </summary>

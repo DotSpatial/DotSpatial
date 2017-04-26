@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 namespace DemoMap
 {
+    /// <summary>
+    /// The main entry point for the DemoMap application.
+    /// </summary>
     internal static class Program
     {
         /// <summary>

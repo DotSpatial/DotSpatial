@@ -22,7 +22,7 @@
 // |                      |            |
 // *********************************************************************************************************
 
-namespace DotSpatial.NTSExtension 
+namespace DotSpatial.NTSExtension
 {
     /// <summary>
     /// IMatrix4
@@ -32,7 +32,7 @@ namespace DotSpatial.NTSExtension
         #region Properties
 
         /// <summary>
-        /// Gets or sets the values for this matrix of double precision coordinates
+        /// Gets or sets the values for this matrix of double precision coordinates.
         /// </summary>
         double[,] Values
         {
@@ -54,8 +54,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// This replaces the underlying general multiplication with a more specific type.
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns></returns>
+        /// <param name="matrix">The matrix to multiply with.</param>
+        /// <returns>The resulting matrix.</returns>
         IMatrixD Multiply(IMatrixD matrix);
 
         #endregion

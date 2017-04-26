@@ -23,9 +23,9 @@ namespace DotSpatial.Serialization
     public class QualifiedTypeName
     {
         /// <summary>
-        /// Reads in the full string, parsing out the separate elements.  These are not always in the specified order,
-        /// and many times there are several optional elements.  This class helps find the optional elements that are
-        /// necessary.  This does not support mulitple enclosed types yet, like dictionaries or something.  We needed
+        /// Reads in the full string, parsing out the separate elements. These are not always in the specified order,
+        /// and many times there are several optional elements. This class helps find the optional elements that are
+        /// necessary. This does not support mulitple enclosed types yet, like dictionaries or something. We needed
         /// the single enclosed type for supporting the layer collection however.
         /// </summary>
         /// <param name="qualifiedName">The string qualified name.</param>

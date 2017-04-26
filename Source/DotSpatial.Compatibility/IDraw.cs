@@ -20,6 +20,16 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface IDraw
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to use double buffering. Double buffering makes the drawing of the
+        /// custom drawings smoother (not flickering). It is recommended that you use double buffering.
+        /// </summary>
+        bool DoubleBuffer { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -85,16 +95,6 @@ namespace DotSpatial.Compatibility
         /// by the DotSpatial.  There is only one active drawing layer, which is the most recently created one.  There is no
         /// way to access any other drawing layers other than the current one.</remarks>
         int NewDrawing(ReferenceType projection);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Specifies whether or not to use double buffering.  Double buffering makes the drawing of the
-        /// custom drawings smoother (not flickering). It is recommended that you use double buffering.
-        /// </summary>
-        bool DoubleBuffer { get; set; }
 
         #endregion
     }
