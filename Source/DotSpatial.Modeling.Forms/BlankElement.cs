@@ -22,16 +22,12 @@ namespace DotSpatial.Modeling.Forms
     /// </summary>
     public class BlankElement : ModelElement
     {
-        #region --------------- class variables
-
-        #endregion
-
-        #region --------------- Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the Data Element
-        /// <param name="modelElements">A list of all the elements in the model</param>
+        /// Initializes a new instance of the <see cref="BlankElement"/> class.
         /// </summary>
+        /// <param name="modelElements">A list of all the elements in the model</param>
         public BlankElement(List<ModelElement> modelElements)
             : base(modelElements)
         {
@@ -39,10 +35,14 @@ namespace DotSpatial.Modeling.Forms
             Height = 0;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Does nothing
         /// </summary>
-        /// <param name="graph"></param>
+        /// <param name="graph">Graphics object used for drawing.</param>
         public override void Paint(Graphics graph)
         {
         }

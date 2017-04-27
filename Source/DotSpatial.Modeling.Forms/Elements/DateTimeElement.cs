@@ -13,57 +13,27 @@
 // ********************************************************************************************************
 
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Modeling.Forms.Elements
 {
-    internal class DateTimeElement : DialogElement
+    /// <summary>
+    /// DateTimeElement
+    /// </summary>
+    internal partial class DateTimeElement : DialogElement
     {
-        #region Class Variables
+        #region Fields
 
         private DateTimePicker _dateTimePicker2;
         private bool _enableUpdate = true;
 
         #endregion
 
-        #region Windows Form Designer generated code
-
-        private void InitializeComponent()
-        {
-            this._dateTimePicker2 = new DateTimePicker();
-            this.GroupBox.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // GroupBox1
-            //
-            this.GroupBox.Controls.Add(this._dateTimePicker2);
-            this.GroupBox.Controls.SetChildIndex(this._dateTimePicker2, 0);
-            //
-            // _dateTimePicker2
-            //
-            this._dateTimePicker2.Format = DateTimePickerFormat.Short;
-            this._dateTimePicker2.Location = new Point(55, 15);
-            this._dateTimePicker2.Name = "_dateTimePicker2";
-            this._dateTimePicker2.Size = new Size(200, 20);
-            this._dateTimePicker2.TabIndex = 2;
-            this._dateTimePicker2.ValueChanged += new EventHandler(this.dateTimePicker2_ValueChanged);
-            //
-            // DateTimeElement
-            //
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
-            this.Name = "DateTimeElement";
-            this.GroupBox.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-
-        #endregion
-
-        #region Methods
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="DateTimeElement"/> class.
         /// </summary>
         /// <param name="param">The parameter this element represents</param>
         public DateTimeElement(DateTimeParam param)
@@ -75,33 +45,11 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 _dateTimePicker2.Value = param.Value;
             }
+
             GroupBox.Text = param.Name;
+
             // We save the parameters passed in
-            Refresh();
-        }
-
-        public override void Refresh()
-        {
             SetupDefaultLighting();
-        }
-
-        private void SetupDefaultLighting()
-        {
-            // We load the default parameters
-            if (Param.DefaultSpecified)
-            {
-                if (Param.Value > _dateTimePicker2.MinDate)
-                {
-                    _dateTimePicker2.Value = Param.Value;
-                }
-                Status = ToolStatus.Ok;
-                LightTipText = ModelingMessageStrings.ParameterValid;
-            }
-            else
-            {
-                Status = ToolStatus.Empty;
-                LightTipText = ModelingMessageStrings.ParameterInvalid;
-            }
         }
 
         #endregion
@@ -113,18 +61,32 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// </summary>
         public new DateTimeParam Param
         {
-            get { return (DateTimeParam)base.Param; }
-            set { base.Param = value; }
+            get
+            {
+                return (DateTimeParam)base.Param;
+            }
+
+            set
+            {
+                base.Param = value;
+            }
         }
 
         #endregion
 
-        #region Events
+        #region Methods
+
+        /// <inheritdoc />
+        public override void Refresh()
+        {
+            SetupDefaultLighting();
+        }
 
         private static bool IsDateTime(string theValue)
         {
             try
             {
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 Convert.ToDateTime(theValue);
                 return true;
             }
@@ -134,7 +96,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             }
         }
 
-        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        private void DateTimePicker2ValueChanged(object sender, EventArgs e)
         {
             if (_enableUpdate)
             {
@@ -142,10 +104,26 @@ namespace DotSpatial.Modeling.Forms.Elements
                 {
                     Param.Value = Convert.ToDateTime(_dateTimePicker2.Text);
                 }
-                // else
-                //{
-                //    _dateTimePicker2.Value = _oldDate;
-                //}
+            }
+        }
+
+        private void SetupDefaultLighting()
+        {
+            // We load the default parameters
+            if (Param.DefaultSpecified)
+            {
+                if (Param.Value > _dateTimePicker2.MinDate)
+                {
+                    _dateTimePicker2.Value = Param.Value;
+                }
+
+                Status = ToolStatus.Ok;
+                LightTipText = ModelingMessageStrings.ParameterValid;
+            }
+            else
+            {
+                Status = ToolStatus.Empty;
+                LightTipText = ModelingMessageStrings.ParameterInvalid;
             }
         }
 

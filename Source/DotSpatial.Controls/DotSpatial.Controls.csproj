@@ -87,6 +87,9 @@
     <Compile Include="Header\ProgressStatusPanel.cs" />
     <Compile Include="IFeatureLayerExtensions.cs" />
     <Compile Include="MapChangedEventArgs.cs" />
+    <Compile Include="Modeler.Designer.cs">
+      <DependentUpon>Modeler.cs</DependentUpon>
+    </Compile>
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>

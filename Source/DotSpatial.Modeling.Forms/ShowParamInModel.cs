@@ -5,6 +5,7 @@
 //
 // The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
 // ********************************************************************************************************
+
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
@@ -16,10 +17,12 @@ namespace DotSpatial.Modeling.Forms
         /// Always add the parameter to the model
         /// </summary>
         Always,
+
         /// <summary>
         /// Show the parameter in the model
         /// </summary>
         Yes,
+
         /// <summary>
         /// Don't show the parameter in the model
         /// </summary>

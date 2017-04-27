@@ -13,7 +13,6 @@
 // ********************************************************************************************************
 
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 
@@ -22,19 +21,16 @@ namespace DotSpatial.Modeling.Forms.Elements
     /// <summary>
     /// An element for true/false values
     /// </summary>
-    public class BooleanElement : DialogElement
+    public partial class BooleanElement : DialogElement
     {
-        #region Class Variables
-
+        #region Fields
         private bool _updateBox = true;
-        private CheckBox checkBox1;
-
         #endregion
 
-        #region Methods
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="BooleanElement"/> class.
         /// </summary>
         /// <param name="param">The parameter this element represents</param>
         public BooleanElement(BooleanParam param)
@@ -47,6 +43,67 @@ namespace DotSpatial.Modeling.Forms.Elements
             GroupBox.Text = param.Name;
 
             DoRefresh();
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the Parameter that the element represents
+        /// </summary>
+        public new BooleanParam Param
+        {
+            get
+            {
+                return (BooleanParam)base.Param;
+            }
+
+            set
+            {
+                base.Param = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Updates the status lights
+        /// </summary>
+        public override void Refresh()
+        {
+            DoRefresh();
+        }
+
+        /// <summary>
+        /// This changes the color of the light and the tooltip of the light based on the status of the checkbox
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void CheckBox1CheckStateChanged(object sender, EventArgs e)
+        {
+            if (!_updateBox) return;
+            switch (checkBox1.CheckState)
+            {
+                case CheckState.Checked:
+                    Param.Value = true;
+                    break;
+                case CheckState.Unchecked:
+                    Param.Value = false;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// When the check box it clicked this event fires
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void CheckBox1Click(object sender, EventArgs e)
+        {
+            OnClick(e);
         }
 
         private void DoRefresh()
@@ -74,98 +131,6 @@ namespace DotSpatial.Modeling.Forms.Elements
             }
 
             _updateBox = true;
-        }
-
-        /// <summary>
-        /// Updates the status lights
-        /// </summary>
-        public override void Refresh()
-        {
-            DoRefresh();
-        }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// This changes the color of the light and the tooltip of the light based on the status of the checkbox
-        /// </summary>
-        private void CheckBox1CheckStateChanged(object sender, EventArgs e)
-        {
-            if (!_updateBox) return;
-            switch (checkBox1.CheckState)
-            {
-                case CheckState.Checked:
-                    Param.Value = true;
-                    break;
-                case CheckState.Unchecked:
-                    Param.Value = false;
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// When the check box it clicked this event fires
-        /// </summary>
-        private void CheckBox1Click(object sender, EventArgs e)
-        {
-            OnClick(e);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the Parameter that the element represents
-        /// </summary>
-        public new BooleanParam Param
-        {
-            get { return (BooleanParam)base.Param; }
-            set { base.Param = value; }
-        }
-
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        private void InitializeComponent()
-        {
-            this.checkBox1 = new CheckBox();
-            this.GroupBox.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // groupBox1
-            //
-            this.GroupBox.Controls.Add(this.checkBox1);
-            this.GroupBox.Text = "Caption";
-            this.GroupBox.Controls.SetChildIndex(this.StatusLabel, 0);
-            this.GroupBox.Controls.SetChildIndex(this.checkBox1, 0);
-            //
-            // lblStatus
-            //
-            this.StatusLabel.Location = new Point(12, 20);
-            //
-            // checkBox1
-            //
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new Point(44, 19);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new Size(80, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckStateChanged += new EventHandler(this.CheckBox1CheckStateChanged);
-            this.checkBox1.Click += new EventHandler(this.CheckBox1Click);
-            //
-            // BooleanElement
-            //
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
-            this.Name = "BooleanElement";
-            this.GroupBox.ResumeLayout(false);
-            this.GroupBox.PerformLayout();
-            this.ResumeLayout(false);
         }
 
         #endregion

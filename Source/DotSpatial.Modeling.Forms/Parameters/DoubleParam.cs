@@ -22,17 +22,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class DoubleParam : Parameter
     {
-        #region variables
-
-        private double _max = double.MaxValue;
-        private double _min = double.MinValue;
-
-        #endregion
-
-        #region constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new double parameter
+        /// Initializes a new instance of the <see cref="DoubleParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public DoubleParam(string name)
@@ -44,7 +37,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new double parameter
+        /// Initializes a new instance of the <see cref="DoubleParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">The default value</param>
@@ -58,7 +51,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new double parameter
+        /// Initializes a new instance of the <see cref="DoubleParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">The default value</param>
@@ -77,10 +70,20 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         #endregion
 
-        #region properties
+        #region Properties
 
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the maximum range for the paramater Default: 1.79769313486232e308
+        /// </summary>
+        public double Max { get; set; } = double.MaxValue;
+
+        /// <summary>
+        /// Gets or sets the minimum range for the parameter Default: -1.79769313486232e308
+        /// </summary>
+        public double Min { get; set; } = double.MinValue;
+
+        /// <summary>
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new double Value
         {
@@ -89,6 +92,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
                 if (DefaultSpecified) return (double)base.Value;
                 return 0;
             }
+
             set
             {
                 base.Value = value;
@@ -96,44 +100,22 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
-        /// <summary>
-        /// The minimum range for the parameter Default: -1.79769313486232e308
-        /// </summary>
-        public double Min
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
+        public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            get { return _min; }
-            set { _min = value; }
+            return new DoubleElement(this);
         }
 
-        /// <summary>
-        /// The maximum range for the paramater Default: 1.79769313486232e308
-        /// </summary>
-        public double Max
+        /// <inheritdoc />
+        public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            get { return _max; }
-            set { _max = value; }
+            return new DoubleElement(this);
         }
 
         #endregion
-
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
-        public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
-        {
-            return (new DoubleElement(this));
-        }
-
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
-        public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
-        {
-            return (new DoubleElement(this));
-        }
     }
 }

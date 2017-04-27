@@ -23,7 +23,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class RasterParam : Parameter
     {
+        #region  Constructors
+
         /// <summary>
+        /// Initializes a new instance of the <see cref="RasterParam"/> class.
         /// Creates a new Raster parameter
         /// </summary>
         /// <param name="name">The name of the parameter</param>
@@ -34,12 +37,20 @@ namespace DotSpatial.Modeling.Forms.Parameters
             ParamType = "DotSpatial Raster Param";
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input)
         /// </summary>
         public new IRaster Value
         {
-            get { return (IRaster)base.Value; }
+            get
+            {
+                return (IRaster)base.Value;
+            }
+
             set
             {
                 base.Value = value;
@@ -47,32 +58,34 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
-        public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
-        {
-            return (new RasterElement(this, dataSets));
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+        /// Creates a new blank raster.
         /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
-        public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
-        {
-            return (new RasterElementOut(this, dataSets));
-        }
-
-        /// <summary>
-        /// Creates a new blank raster
-        /// </summary>
+        /// <param name="path">Filename of the raster.</param>
         public override void GenerateDefaultOutput(string path)
         {
-            Value = new Raster { Filename = path };
+            Value = new Raster
+                        {
+                            Filename = path
+                        };
         }
+
+        /// <inheritdoc />
+        public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
+        {
+            return new RasterElement(this, dataSets);
+        }
+
+        /// <inheritdoc />
+        public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
+        {
+            return new RasterElementOut(this, dataSets);
+        }
+
+        #endregion
     }
 }

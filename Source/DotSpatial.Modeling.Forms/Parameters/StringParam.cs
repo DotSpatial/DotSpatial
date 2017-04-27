@@ -22,10 +22,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class StringParam : Parameter
     {
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new string parameter
+        /// Initializes a new instance of the <see cref="StringParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public StringParam(string name)
@@ -36,7 +36,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new string parameter
+        /// Initializes a new instance of the <see cref="StringParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">The default value</param>
@@ -51,12 +51,18 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         #endregion
 
+        #region Properties
+
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new string Value
         {
-            get { return (string)base.Value; }
+            get
+            {
+                return (string)base.Value;
+            }
+
             set
             {
                 base.Value = value;
@@ -64,24 +70,22 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new StringElement(this));
+            return new StringElement(this);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new StringElement(this));
+            return new StringElement(this);
         }
+
+        #endregion
     }
 }

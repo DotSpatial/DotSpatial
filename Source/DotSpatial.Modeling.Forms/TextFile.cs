@@ -17,20 +17,21 @@ using DotSpatial.Data;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// This class is used to enable linking of tools
-    /// that work with File parameters
+    /// This class is used to enable linking of tools that work with File parameters.
     /// </summary>
     public class TextFile : DataSet
     {
+        #region  Constructors
+
         /// <summary>
-        /// Text File constructor
+        /// Initializes a new instance of the <see cref="TextFile"/> class.
         /// </summary>
         public TextFile()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of the TextFile class
+        /// Initializes a new instance of the <see cref="TextFile"/> class.
         /// </summary>
         /// <param name="fileName">the associated file name</param>
         public TextFile(string fileName)
@@ -38,13 +39,19 @@ namespace DotSpatial.Modeling.Forms
             Filename = fileName;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// To string
+        /// Returns the file name.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The file name</returns>
         public override string ToString()
         {
             return Filename;
         }
+
+        #endregion
     }
 }

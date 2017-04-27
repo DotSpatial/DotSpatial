@@ -23,10 +23,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class DateTimeParam : Parameter
     {
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new string parameter
+        /// Initializes a new instance of the <see cref="DateTimeParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public DateTimeParam(string name)
@@ -38,7 +38,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new string parameter
+        /// Initializes a new instance of the <see cref="DateTimeParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">The default value</param>
@@ -53,8 +53,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         #endregion
 
+        #region Properties
+
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input)
         /// </summary>
         public new DateTime Value
         {
@@ -63,6 +65,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
                 if (DefaultSpecified) return (DateTime)base.Value;
                 return DateTime.Now;
             }
+
             set
             {
                 base.Value = value;
@@ -70,24 +73,22 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new DateTimeElement(this));
+            return new DateTimeElement(this);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new DateTimeElement(this));
+            return new DateTimeElement(this);
         }
+
+        #endregion
     }
 }

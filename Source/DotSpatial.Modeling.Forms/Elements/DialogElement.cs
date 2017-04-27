@@ -14,8 +14,6 @@
 // *********************************************************************************************************
 
 using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace DotSpatial.Modeling.Forms.Elements
@@ -23,36 +21,17 @@ namespace DotSpatial.Modeling.Forms.Elements
     /// <summary>
     /// A modular component that can be inherited to retrieve parameters for functions.
     /// </summary>
-    public class DialogElement : UserControl
+    public partial class DialogElement : UserControl
     {
-        #region Class Variables
-
+        #region Fields
         // Status stuff
         private readonly ToolTip _lightTip = new ToolTip();
-
-        /// <summary>
-        /// The group box for this element
-        /// </summary>
-        private GroupBox _groupBox;
-
-        // The group box that every other component sites in
-
-        // The label that contains the icon
-        private Label _lblStatus;
-        private Parameter _param;
-        private ToolStatus _status;
-
-        /// <summary>
-        /// Fires when the inactive areas around the controls are clicked on the element.
-        /// </summary>
-        public event EventHandler Clicked;
-
         #endregion
 
-        #region Methods
+        #region  Constructors
 
         /// <summary>
-        /// Creates a blank dialog element
+        /// Initializes a new instance of the <see cref="DialogElement"/> class.
         /// </summary>
         public DialogElement()
         {
@@ -63,82 +42,38 @@ namespace DotSpatial.Modeling.Forms.Elements
             _lightTip.SetToolTip(_lblStatus, string.Empty);
         }
 
-        /// <summary>
-        /// Fires whenever the
-        /// </summary>
-        /// <param name="sender"></param>
-        protected virtual void ParamValueChanged(Parameter sender)
-        {
-            Refresh();
-        }
-
-        /// <summary>
-        /// Sets the given text as the tooltip text of the given control.
-        /// </summary>
-        /// <param name="control">Control whose tooltip text is set.</param>
-        /// <param name="toolTipText">Text that should be shown in tooltip of the control.</param>
-        protected void SetToolTipText(Control control, string toolTipText)
-        {
-            _lightTip.SetToolTip(control, toolTipText);
-        }
-
         #endregion
 
         #region Events
 
         /// <summary>
-        /// Called to fire the click event for this element
+        /// Fires when the inactive areas around the controls are clicked on the element.
         /// </summary>
-        /// <param name="e">A mouse event args thingy</param>
-        protected new void OnClick(EventArgs e)
-        {
-            if (Clicked != null)
-                Clicked(this, e);
-        }
-
-        /// <summary>
-        /// Occurs when the dialong element is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void DialogElement_Click(object sender, EventArgs e)
-        {
-            OnClick(e);
-        }
+        public event EventHandler Clicked;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the group box that surrounds the element contents
+        /// Gets or sets the Parameter that the element represents
         /// </summary>
-        protected GroupBox GroupBox
+        public Parameter Param
         {
-            get { return _groupBox; }
-            set { _groupBox = value; }
+            get
+            {
+                return _param;
+            }
+
+            protected set
+            {
+                _param = value;
+                _param.ValueChanged += ParamValueChanged;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the status label
-        /// </summary>
-        protected Label StatusLabel
-        {
-            get { return _lblStatus; }
-            set { _lblStatus = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the tool tip text to display when the mouse hovers over the light status
-        /// </summary>
-        protected string LightTipText
-        {
-            get { return _lightTip.GetToolTip(_lblStatus); }
-            set { _lightTip.SetToolTip(_lblStatus, value); }
-        }
-
-      /// <summary>
-        /// Gets the current status the input
+        /// Gets or sets the current status.
         /// </summary>
         public virtual ToolStatus Status
         {
@@ -146,6 +81,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 return _status;
             }
+
             set
             {
                 _status = value;
@@ -159,84 +95,93 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the group box that surrounds the element contents
         /// </summary>
-        public Parameter Param
+        protected GroupBox GroupBox
         {
-            get { return _param; }
-            protected set
+            get
             {
-                _param = value;
-                _param.ValueChanged += ParamValueChanged;
+                return _groupBox;
+            }
+
+            set
+            {
+                _groupBox = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the tool tip text to display when the mouse hovers over the light status
+        /// </summary>
+        protected string LightTipText
+        {
+            get
+            {
+                return _lightTip.GetToolTip(_lblStatus);
+            }
+
+            set
+            {
+                _lightTip.SetToolTip(_lblStatus, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the status label
+        /// </summary>
+        protected Label StatusLabel
+        {
+            get
+            {
+                return _lblStatus;
+            }
+
+            set
+            {
+                _lblStatus = value;
             }
         }
 
         #endregion
 
+        #region Methods
+
         /// <summary>
-        /// Clean up any resources being used.
+        /// Occurs when the dialong element is clicked
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        protected void DialogElementClick(object sender, EventArgs e)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
+            OnClick(e);
         }
 
-        #region Windows Form Designer generated code
+       /// <summary>
+        /// Called to fire the click event for this element
+        /// </summary>
+        /// <param name="e">A mouse event args thingy</param>
+        protected new void OnClick(EventArgs e)
+       {
+           Clicked?.Invoke(this, e);
+       }
 
         /// <summary>
-        /// Required designer variable
+        /// Fires whenever the param value changed.
         /// </summary>
-        protected IContainer components;
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
+        /// <param name="sender">Sender that raised the event.</param>
+        protected virtual void ParamValueChanged(Parameter sender)
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(DialogElement));
-            this._groupBox = new GroupBox();
-            this._lblStatus = new Label();
-            this._groupBox.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // GroupBox1
-            //
-            this._groupBox.BackgroundImageLayout = ImageLayout.None;
-            this._groupBox.Controls.Add(this._lblStatus);
-            this._groupBox.Dock = DockStyle.Fill;
-            this._groupBox.Location = new Point(0, 0);
-            this._groupBox.Name = "_groupBox";
-            this._groupBox.Size = new Size(492, 45);
-            this._groupBox.TabIndex = 2;
-            this._groupBox.TabStop = false;
-            this._groupBox.Click += new EventHandler(this.DialogElement_Click);
-            //
-            // _lblStatus
-            //
-            this._lblStatus.Image = ((Image)(resources.GetObject("_lblStatus.Image")));
-            this._lblStatus.Location = new Point(12, 20);
-            this._lblStatus.Name = "_lblStatus";
-            this._lblStatus.Size = new Size(16, 16);
-            this._lblStatus.TabIndex = 1;
-            this._lblStatus.Click += new EventHandler(this.DialogElement_Click);
-            //
-            // DialogElement
-            //
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            Refresh();
+        }
 
-            this.AutoSize = true;
-            this.Controls.Add(this._groupBox);
-            this.Name = "DialogElement";
-            this.Size = new Size(492, 45);
-            this.Click += new EventHandler(this.DialogElement_Click);
-            this._groupBox.ResumeLayout(false);
-            this.ResumeLayout(false);
+        /// <summary>
+        /// Sets the given text as the tooltip text of the given control.
+        /// </summary>
+        /// <param name="control">Control whose tooltip text is set.</param>
+        /// <param name="toolTipText">Text that should be shown in tooltip of the control.</param>
+        protected void SetToolTipText(Control control, string toolTipText)
+        {
+            _lightTip.SetToolTip(control, toolTipText);
         }
 
         #endregion

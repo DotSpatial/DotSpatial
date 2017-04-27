@@ -14,31 +14,28 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Modeling.Forms.Elements
 {
-    internal class RasterElement : DialogElement
+    /// <summary>
+    /// Raster in element.
+    /// </summary>
+    internal partial class RasterElement : DialogElement
     {
-        #region Class Variables
-
+        #region Fields
+        private readonly List<DataSetArray> _dataSets;
         private DataSetArray _addedRasterSet;
-        private List<DataSetArray> _dataSets;
         private bool _refreshCombo = true;
-        private Button btnAddData;
-        private ComboBox comboRaster;
-
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="RasterElement"/> class.
         /// </summary>
         /// <param name="inputParam">The parameter this element represents</param>
         /// <param name="dataSets">An array of available data</param>
@@ -60,61 +57,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         #endregion
 
-        private void DoRefresh()
-        {
-            // Disable the combo box temporarily
-            _refreshCombo = false;
-
-            // We set the combo boxes status to empty to start
-            base.Status = ToolStatus.Empty;
-            LightTipText = ModelingMessageStrings.FeaturesetMissing;
-            comboRaster.Items.Clear();
-
-            // If the user added a raster set
-            if (_addedRasterSet != null)
-            {
-                comboRaster.Items.Add(_addedRasterSet);
-                if (Param.Value != null && Param.DefaultSpecified)
-                {
-                    if (_addedRasterSet.DataSet == Param.Value)
-                    {
-                        comboRaster.SelectedItem = _addedRasterSet;
-                        base.Status = ToolStatus.Ok;
-                        LightTipText = ModelingMessageStrings.FeaturesetValid;
-                    }
-                }
-            }
-
-            // Add all the dataSets back to the combo box
-            if (_dataSets != null)
-            {
-                foreach (DataSetArray dsa in _dataSets)
-                {
-                    IRaster aRasterSet = (dsa.DataSet as IRaster);
-                    if (aRasterSet != null)
-                    {
-                        // If the featureset is the correct type and isn't already in the combo box we add it
-                        if (comboRaster.Items.Contains(dsa) == false)
-                        {
-                            comboRaster.Items.Add(dsa);
-                            if (Param.Value != null && Param.DefaultSpecified)
-                            {
-                                if (dsa.DataSet == Param.Value)
-                                {
-                                    comboRaster.SelectedItem = dsa;
-                                    base.Status = ToolStatus.Ok;
-                                    LightTipText = ModelingMessageStrings.FeaturesetValid;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            _refreshCombo = true;
-        }
-
-        #region methods
+        #region Methods
 
         /// <summary>
         /// updates the param if something's been changed
@@ -124,32 +67,13 @@ namespace DotSpatial.Modeling.Forms.Elements
             DoRefresh();
         }
 
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
-        /// </summary>
-        private void ComboRasterSelectedValueChanged(object sender, EventArgs e)
-        {
-            if (!_refreshCombo) return;
-            DataSetArray dsa = comboRaster.SelectedItem as DataSetArray;
-            if (dsa == null) return;
-            Param.ModelName = dsa.Name;
-            Param.Value = dsa.DataSet;
-
-            return;
-        }
-
         /// <summary>
         /// Adds a new entry to the drop down list from data provider
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void BtnAddDataClick(object sender, EventArgs e)
         {
-            /////////////////////////////////
             // Replace with something that uses the default data provider
             IRaster tempRaster = DataManager.DefaultDataManager.OpenRaster();
 
@@ -163,55 +87,72 @@ namespace DotSpatial.Modeling.Forms.Elements
             Param.Value = _addedRasterSet.DataSet;
         }
 
-        #endregion
-
-        #region Generate by the designer
-
-        private void InitializeComponent()
+        /// <summary>
+        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void ComboRasterSelectedValueChanged(object sender, EventArgs e)
         {
-            btnAddData = new Button();
-            comboRaster = new ComboBox();
-            GroupBox.SuspendLayout();
-            SuspendLayout();
-            //
-            // groupBox1
-            //
-            GroupBox.Controls.Add(comboRaster);
-            GroupBox.Controls.Add(btnAddData);
-            GroupBox.Size = new Size(492, 46);
-            GroupBox.Text = "Caption";
-            GroupBox.Controls.SetChildIndex(btnAddData, 0);
-            GroupBox.Controls.SetChildIndex(comboRaster, 0);
-            GroupBox.Controls.SetChildIndex(StatusLabel, 0);
-            //
-            // btnAddData
-            //
-            btnAddData.Image = Images.AddLayer;
-            btnAddData.Location = new Point(460, 14);
-            btnAddData.Name = "btnAddData";
-            btnAddData.Size = new Size(26, 26);
-            btnAddData.TabIndex = 4;
-            btnAddData.UseVisualStyleBackColor = true;
-            btnAddData.Click += BtnAddDataClick;
-            //
-            // comboFeatures
-            //
-            comboRaster.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboRaster.FormattingEnabled = true;
-            comboRaster.Location = new Point(44, 17);
-            comboRaster.Name = "comboFeatures";
-            comboRaster.Size = new Size(410, 21);
-            comboRaster.TabIndex = 5;
-            comboRaster.SelectedValueChanged += ComboRasterSelectedValueChanged;
-            comboRaster.Click += DialogElement_Click;
-            //
-            // RasterElement
-            //
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            Name = "RasterElement";
-            Size = new Size(492, 46);
-            GroupBox.ResumeLayout(false);
-            ResumeLayout(false);
+            if (!_refreshCombo) return;
+            DataSetArray dsa = comboRaster.SelectedItem as DataSetArray;
+            if (dsa == null) return;
+            Param.ModelName = dsa.Name;
+            Param.Value = dsa.DataSet;
+        }
+
+        private void DoRefresh()
+        {
+            // Disable the combo box temporarily
+            _refreshCombo = false;
+
+            // We set the combo boxes status to empty to start
+            Status = ToolStatus.Empty;
+            LightTipText = ModelingMessageStrings.FeaturesetMissing;
+            comboRaster.Items.Clear();
+
+            // If the user added a raster set
+            if (_addedRasterSet != null)
+            {
+                comboRaster.Items.Add(_addedRasterSet);
+                if (Param.Value != null && Param.DefaultSpecified)
+                {
+                    if (_addedRasterSet.DataSet == Param.Value)
+                    {
+                        comboRaster.SelectedItem = _addedRasterSet;
+                        Status = ToolStatus.Ok;
+                        LightTipText = ModelingMessageStrings.FeaturesetValid;
+                    }
+                }
+            }
+
+            // Add all the dataSets back to the combo box
+            if (_dataSets != null)
+            {
+                foreach (DataSetArray dsa in _dataSets)
+                {
+                    IRaster aRasterSet = dsa.DataSet as IRaster;
+                    if (aRasterSet != null)
+                    {
+                        // If the featureset is the correct type and isn't already in the combo box we add it
+                        if (comboRaster.Items.Contains(dsa) == false)
+                        {
+                            comboRaster.Items.Add(dsa);
+                            if (Param.Value != null && Param.DefaultSpecified)
+                            {
+                                if (dsa.DataSet == Param.Value)
+                                {
+                                    comboRaster.SelectedItem = dsa;
+                                    Status = ToolStatus.Ok;
+                                    LightTipText = ModelingMessageStrings.FeaturesetValid;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            _refreshCombo = true;
         }
 
         #endregion

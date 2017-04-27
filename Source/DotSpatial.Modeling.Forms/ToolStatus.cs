@@ -23,10 +23,12 @@ namespace DotSpatial.Modeling.Forms
         /// Indicates that no value has been set for this yet.
         /// </summary>
         Empty,
+
         /// <summary>
         /// Indicates that the element parameter is ok and won't halt.
         /// </summary>
         Ok,
+
         /// <summary>
         /// Indicates that the element value will cause an error.
         /// </summary>

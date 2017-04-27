@@ -1719,7 +1719,7 @@ namespace DotSpatial.Controls {
         /// <summary>
         ///   Looks up a localized string similar to The layer &quot;{0}&quot; uses projection &quot;{1}&quot; while the map uses projection &quot;{2}&quot;. 
         ///
-        /// Reproject the layer to match the map coordinate system? This will not affect the source file..
+        ///Reproject the layer to match the map coordinate system? This will not affect the source file..
         /// </summary>
         internal static string MapFrame_GlcLayerAdded_ProjectionMismatch {
             get {
@@ -1764,6 +1764,24 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tool could not be created..
+        /// </summary>
+        internal static string Modeler_ToolCouldNotBeCreated {
+            get {
+                return ResourceManager.GetString("Modeler_ToolCouldNotBeCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool version mismatch.
+        /// </summary>
+        internal static string Modeler_ToolVersionMismatch {
+            get {
+                return ResourceManager.GetString("Modeler_ToolVersionMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete elements?.
         /// </summary>
         internal static string ModelerConfirmDelete {
@@ -1778,6 +1796,15 @@ namespace DotSpatial.Controls {
         internal static string ModelerConfirmDeleteSource {
             get {
                 return ResourceManager.GetString("ModelerConfirmDeleteSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DotSpatial Modeler.
+        /// </summary>
+        internal static string ModelerSaveDialogTitle {
+            get {
+                return ResourceManager.GetString("ModelerSaveDialogTitle", resourceCulture);
             }
         }
         

@@ -18,16 +18,16 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// ProjectionParam
+    /// ExtentParam
     /// </summary>
     public class ExtentParam : Parameter
     {
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of ProjectionParam with the specified name
-        /// and a default projection of WGS1984
+        /// Initializes a new instance of the <see cref="ExtentParam"/> class with the specified name.
         /// </summary>
+        /// <param name="name">Name of the parameter.</param>
         public ExtentParam(string name)
         {
             Name = name;
@@ -36,12 +36,11 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new instance of an Extent Param with the specified name
-        /// and the specified projection as the default projection that will
-        /// appear if no changes are made.
+        /// Initializes a new instance of the <see cref="ExtentParam"/> class with the specified name
+        /// and the specified default extent.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="defaultExtent"></param>
+        /// <param name="name">Name of the parameter.</param>
+        /// <param name="defaultExtent">Default extent.</param>
         public ExtentParam(string name, Extent defaultExtent)
         {
             Name = name;
@@ -62,11 +61,15 @@ namespace DotSpatial.Modeling.Forms.Parameters
         public bool DefaultToMapExtent { get; set; }
 
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input)
         /// </summary>
         public new Extent Value
         {
-            get { return (Extent)base.Value; }
+            get
+            {
+                return (Extent)base.Value;
+            }
+
             set
             {
                 base.Value = value;
@@ -74,24 +77,20 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualize INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new ExtentElement(this));
+            return new ExtentElement(this);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualize OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new ExtentElement(this));
+            return new ExtentElement(this);
         }
 
         #endregion

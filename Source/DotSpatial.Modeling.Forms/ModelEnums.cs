@@ -23,14 +23,17 @@ namespace DotSpatial.Modeling.Forms
         /// Defines the Model Component as a Rectangle
         /// </summary>
         Rectangle,
+
         /// <summary>
         /// Defines the Model Component as a Triangle
         /// </summary>
         Triangle,
+
         /// <summary>
         /// Defines the Model Component as a Ellipse
         /// </summary>
         Ellipse,
+
         /// <summary>
         /// Defines an Arrow
         /// </summary>

@@ -13,25 +13,23 @@
 // ********************************************************************************************************
 
 using System;
-using System.Drawing;
-using System.Windows.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Modeling.Forms.Elements
 {
-    internal class ListElement : DialogElement
+    /// <summary>
+    /// ListElement
+    /// </summary>
+    internal partial class ListElement : DialogElement
     {
-        #region Class Variables
-
+        #region Fields
         private bool _disableComboRefresh;
-        private ComboBox comboBox1;
-
         #endregion
 
-        #region Methods
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="ListElement"/> class.
         /// </summary>
         /// <param name="param">The parameter this element represents</param>
         public ListElement(ListParam param)
@@ -49,44 +47,51 @@ namespace DotSpatial.Modeling.Forms.Elements
             ComboBox1SelectedValueChanged(null, null);
         }
 
-        private void DoRefresh()
-        {
-            _disableComboRefresh = true;
+        #endregion
 
-            comboBox1.Items.Clear();
-
-            // We load the items in the list
-            for (int i = 0; i < Param.ValueList.Count; i++)
-            {
-                comboBox1.Items.Insert(i, Param.ValueList[i]);
-            }
-
-            // We set the default value
-            if ((base.Param.DefaultSpecified) && (Param.Value >= 0))
-            {
-                comboBox1.SelectedIndex = Param.Value;
-                Status = ToolStatus.Ok;
-                LightTipText = ModelingMessageStrings.FeaturesetValid;
-            }
-
-            _disableComboRefresh = false;
-        }
+        #region Properties
 
         /// <summary>
-        ///
+        /// Gets or sets the Parameter that the element represents
         /// </summary>
+        public new ListParam Param
+        {
+            get
+            {
+                return (ListParam)base.Param;
+            }
+
+            set
+            {
+                base.Param = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override void Refresh()
         {
             DoRefresh();
         }
 
-        #endregion
-
-        #region Events
+        /// <summary>
+        /// When the control is clicked this event fires
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void ComboBox1Click(object sender, EventArgs e)
+        {
+            OnClick(e);
+        }
 
         /// <summary>
         /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void ComboBox1SelectedValueChanged(object sender, EventArgs e)
         {
             if (_disableComboRefresh) return;
@@ -101,73 +106,31 @@ namespace DotSpatial.Modeling.Forms.Elements
                 Status = ToolStatus.Ok;
                 LightTipText = "The selection is valid";
                 Param.Value = comboBox1.SelectedIndex;
-                return;
             }
         }
 
-        /// <summary>
-        /// When the control is clicked this event fires
-        /// </summary>
-        private void ComboBox1Click(object sender, EventArgs e)
+        private void DoRefresh()
         {
-            OnClick(e);
+            _disableComboRefresh = true;
+
+            comboBox1.Items.Clear();
+
+            // We load the items in the list
+            for (int i = 0; i < Param.ValueList.Count; i++)
+            {
+                comboBox1.Items.Insert(i, Param.ValueList[i]);
+            }
+
+            // We set the default value
+            if (base.Param.DefaultSpecified && (Param.Value >= 0))
+            {
+                comboBox1.SelectedIndex = Param.Value;
+                Status = ToolStatus.Ok;
+                LightTipText = ModelingMessageStrings.FeaturesetValid;
+            }
+
+            _disableComboRefresh = false;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the Parameter that the element represents
-        /// </summary>
-        public new ListParam Param
-        {
-            get { return (ListParam)base.Param; }
-            set { base.Param = value; }
-        }
-
-        #endregion
-
-        #region Generate by the designer
-
-        private void InitializeComponent()
-        {
-            comboBox1 = new ComboBox();
-            GroupBox.SuspendLayout();
-            SuspendLayout();
-            //
-            // groupBox1
-            //
-            GroupBox.Controls.Add(comboBox1);
-            GroupBox.Size = new Size(492, 46);
-            GroupBox.Text = "Caption";
-            GroupBox.Controls.SetChildIndex(comboBox1, 0);
-            GroupBox.Controls.SetChildIndex(StatusLabel, 0);
-            //
-            // lblStatus
-            //
-            StatusLabel.Location = new Point(12, 20);
-            //
-            // comboBox1
-            //
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(44, 17);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(440, 21);
-            comboBox1.TabIndex = 5;
-            comboBox1.SelectedValueChanged += ComboBox1SelectedValueChanged;
-            comboBox1.Click += ComboBox1Click;
-            //
-            // ListElement
-            //
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            Name = "ListElement";
-            Size = new Size(492, 46);
-            GroupBox.ResumeLayout(false);
-            ResumeLayout(false);
-        }
-
         #endregion
     }
 }

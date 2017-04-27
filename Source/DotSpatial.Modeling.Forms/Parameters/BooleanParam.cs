@@ -22,10 +22,14 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class BooleanParam : Parameter
     {
-        private string _checkBoxText = string.Empty;
+        #region Fields
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new Boolean parameter
+        /// Initializes a new instance of the <see cref="BooleanParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="checkBoxText">The text to appear adjacent to the checkBox</param>
@@ -34,11 +38,11 @@ namespace DotSpatial.Modeling.Forms.Parameters
             Name = name;
             ParamType = "DotSpatial Boolean Param";
             ParamVisible = ShowParamInModel.No;
-            _checkBoxText = checkBoxText;
+            CheckBoxText = checkBoxText;
         }
 
         /// <summary>
-        /// Creates a new Boolean parameter
+        /// Initializes a new instance of the <see cref="BooleanParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="checkBoxText">The text to appear adjacent to the checkBox</param>
@@ -50,15 +54,28 @@ namespace DotSpatial.Modeling.Forms.Parameters
             ParamType = "DotSpatial Boolean Param";
             ParamVisible = ShowParamInModel.No;
             DefaultSpecified = true;
-            _checkBoxText = checkBoxText;
+            CheckBoxText = checkBoxText;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the text that appears beside the check box in a Tool Dialog.
+        /// </summary>
+        public string CheckBoxText { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the parameter is true (This is also the default value for input).
         /// </summary>
         public new bool Value
         {
-            get { return (bool)base.Value; }
+            get
+            {
+                return (bool)base.Value;
+            }
+
             set
             {
                 base.Value = value;
@@ -66,33 +83,22 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
-        /// <summary>
-        /// Gets or sets the text that appears beside the check box in a Tool Dialog
-        /// </summary>
-        public string CheckBoxText
-        {
-            get { return _checkBoxText; }
-            set { _checkBoxText = value; }
-        }
+        #endregion
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new BooleanElement(this));
+            return new BooleanElement(this);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new BooleanElement(this));
+            return new BooleanElement(this);
         }
+
+        #endregion
     }
 }

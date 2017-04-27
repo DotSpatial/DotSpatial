@@ -24,8 +24,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class PolygonFeatureSetParam : Parameter
     {
+        #region  Constructors
+
         /// <summary>
-        /// Creates a new Polygon Feature Set parameter
+        /// Initializes a new instance of the <see cref="PolygonFeatureSetParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public PolygonFeatureSetParam(string name)
@@ -35,12 +37,20 @@ namespace DotSpatial.Modeling.Forms.Parameters
             ParamType = "DotSpatial PolygonFeatureSet Param";
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input)
         /// </summary>
         public new IFeatureSet Value
         {
-            get { return (IFeatureSet)base.Value; }
+            get
+            {
+                return (IFeatureSet)base.Value;
+            }
+
             set
             {
                 base.Value = value;
@@ -48,39 +58,35 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Generates a default instance of the data type so that tools have something to write too
+        /// Generates a default instance of the data type so that tools have something to write too.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path of the generated shapefile.</param>
         public override void GenerateDefaultOutput(string path)
         {
             FeatureSet addedFeatureSet = new PolygonShapefile
                                              {
-                                                 Filename =
-                                                     Path.GetDirectoryName(path) +
-                                                     Path.DirectorySeparatorChar + ModelName + ".shp"
+                                                 Filename = Path.GetDirectoryName(path) + Path.DirectorySeparatorChar + ModelName + ".shp"
                                              };
             Value = addedFeatureSet;
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new PolygonElement(this, dataSets));
+            return new PolygonElement(this, dataSets);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new PolygonElementOut(this, dataSets));
+            return new PolygonElementOut(this, dataSets);
         }
+
+        #endregion
     }
 }

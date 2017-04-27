@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -24,45 +23,41 @@ namespace DotSpatial.Modeling.Forms.Elements
     /// <summary>
     /// Open File Element
     /// </summary>
-    public class OpenFileElement : DialogElement
+    public partial class OpenFileElement : DialogElement
     {
-        #region Class Variables
+        #region Fields
 
         private readonly List<DataSetArray> _dataSets;
         private DataSetArray _addedTextFile;
         private bool _refreshCombo = true;
-        private Button _btnAddData;
-        private ComboBox _comboFile;
 
         #endregion
 
-        #region Constructor
+        #region  Constructors
 
         /// <summary>
-        /// Create an instance of the dialog
+        /// Initializes a new instance of the <see cref="OpenFileElement"/> class.
         /// </summary>
-        /// <param name="param"></param>
-        /// <param name="text"></param>
+        /// <param name="param">The parameter this element represents</param>
+        /// <param name="text">Not used.</param>
         public OpenFileElement(FileParam param, string text)
         {
             InitializeComponent();
             Param = param;
-            // _fileName = text;
-            // textBox1.Text = param.Value;
+
             GroupBox.Text = param.Name;
             DoRefresh();
 
             // Populates the dialog with the default parameter value
             if (param.Value != null && param.DefaultSpecified)
             {
-                // _fileName = param.ModelName;
-                base.Status = ToolStatus.Ok;
+                Status = ToolStatus.Ok;
                 LightTipText = ModelingMessageStrings.FeaturesetValid;
             }
         }
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="OpenFileElement"/> class.
         /// </summary>
         /// <param name="inputParam">The parameter this element represents</param>
         /// <param name="dataSets">An array of available data</param>
@@ -84,13 +79,58 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// updates the param if something's been changed
+        /// </summary>
+        public override void Refresh()
+        {
+            DoRefresh();
+        }
+
+        private void BtnAddDataClick(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = ModelingMessageStrings.OpenFileElement_btnAddDataClick_SelectFileName;
+                if (Param == null) Param = new FileParam("open filename");
+                FileParam p = Param as FileParam;
+                if (p != null) dialog.Filter = p.DialogFilter;
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    TextFile tmpTextFile = new TextFile(dialog.FileName);
+                    _addedTextFile = new DataSetArray(Path.GetFileNameWithoutExtension(dialog.FileName), tmpTextFile);
+
+                    Param.ModelName = _addedTextFile.Name;
+                    Param.Value = _addedTextFile.DataSet;
+                    Refresh();
+                    Status = ToolStatus.Ok;
+                }
+            }
+        }
+
+        private void ComboFileSelectedValueChanged(object sender, EventArgs e)
+        {
+            if (_refreshCombo)
+            {
+                DataSetArray dsa = _comboFile.SelectedItem as DataSetArray;
+                if (dsa != null)
+                {
+                    Param.ModelName = dsa.Name;
+                    Param.Value = dsa.DataSet;
+                }
+            }
+        }
+
         private void DoRefresh()
         {
             // Disable the combo box temporarily
             _refreshCombo = false;
 
             // We set the combo boxes status to empty to start
-            base.Status = ToolStatus.Empty;
+            Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
             _comboFile.Items.Clear();
 
@@ -101,7 +141,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                 if (Param.Value != null && Param.DefaultSpecified && _addedTextFile.DataSet == Param.Value)
                 {
                     _comboFile.SelectedItem = _addedTextFile;
-                    base.Status = ToolStatus.Ok;
+                    Status = ToolStatus.Ok;
                     LightTipText = ModelingMessageStrings.FeaturesetValid;
                 }
             }
@@ -119,105 +159,14 @@ namespace DotSpatial.Modeling.Forms.Elements
                         if (Param.Value != null && Param.DefaultSpecified && dsa.DataSet == Param.Value)
                         {
                             _comboFile.SelectedItem = dsa;
-                            base.Status = ToolStatus.Ok;
+                            Status = ToolStatus.Ok;
                             LightTipText = ModelingMessageStrings.FeaturesetValid;
                         }
                     }
                 }
             }
+
             _refreshCombo = true;
-        }
-
-        /// <summary>
-        /// updates the param if something's been changed
-        /// </summary>
-        public override void Refresh()
-        {
-            DoRefresh();
-        }
-
-        private void btnAddData_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog dialog = new OpenFileDialog())
-            {
-                dialog.Title = ModelingMessageStrings.OpenFileElement_btnAddDataClick_SelectFileName;
-                if (Param == null) Param = new FileParam("open filename");
-                FileParam p = Param as FileParam;
-                if (p != null) dialog.Filter = p.DialogFilter;
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    TextFile tmpTextFile = new TextFile(dialog.FileName);
-                    _addedTextFile = new DataSetArray(Path.GetFileNameWithoutExtension(dialog.FileName), tmpTextFile);
-
-                    Param.ModelName = _addedTextFile.Name;
-                    Param.Value = _addedTextFile.DataSet;
-                    Refresh();
-                    base.Status = ToolStatus.Ok;
-                }
-            }
-        }
-
-        private void comboFile_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (_refreshCombo)
-            {
-                DataSetArray dsa = _comboFile.SelectedItem as DataSetArray;
-                if (dsa != null)
-                {
-                    Param.ModelName = dsa.Name;
-                    Param.Value = dsa.DataSet;
-                }
-            }
-        }
-
-        #region Component Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this._btnAddData = new Button();
-            this._comboFile = new ComboBox();
-            this.GroupBox.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // GroupBox
-            //
-            this.GroupBox.Controls.Add(this._btnAddData);
-            this.GroupBox.Controls.Add(this._comboFile);
-            this.GroupBox.Controls.SetChildIndex(this._comboFile, 0);
-            this.GroupBox.Controls.SetChildIndex(this._btnAddData, 0);
-            //
-            // btnAddData
-            //
-            this._btnAddData.Image = Images.AddLayer;
-            this._btnAddData.Location = new Point(450, 10);
-            this._btnAddData.Name = "_btnAddData";
-            this._btnAddData.Size = new Size(26, 26);
-            this._btnAddData.TabIndex = 9;
-            this._btnAddData.UseVisualStyleBackColor = true;
-            this._btnAddData.Click += new EventHandler(this.btnAddData_Click);
-            //
-            // comboFile
-            //
-            this._comboFile.DropDownStyle = ComboBoxStyle.DropDownList;
-            this._comboFile.FormattingEnabled = true;
-            this._comboFile.Location = new Point(34, 12);
-            this._comboFile.Name = "_comboFile";
-            this._comboFile.Size = new Size(410, 21);
-            this._comboFile.TabIndex = 10;
-            this._comboFile.SelectedValueChanged += new EventHandler(this.comboFile_SelectedValueChanged);
-            //
-            // OpenFileElement
-            //
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
-
-            this.Name = "OpenFileElement";
-            this.GroupBox.ResumeLayout(false);
-            this.ResumeLayout(false);
         }
 
         #endregion

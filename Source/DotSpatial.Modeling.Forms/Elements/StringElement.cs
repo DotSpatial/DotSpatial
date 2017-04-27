@@ -13,24 +13,19 @@
 // ********************************************************************************************************
 
 using System;
-using System.Drawing;
-using System.Windows.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Modeling.Forms.Elements
 {
-    internal class StringElement : DialogElement
+    /// <summary>
+    /// String element.
+    /// </summary>
+    internal partial class StringElement : DialogElement
     {
-        #region Class Variables
-
-        private TextBox textBox1;
-
-        #endregion
-
-        #region Methods
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="StringElement"/> class.
         /// </summary>
         /// <param name="param">The parameter this element represents</param>
         public StringElement(StringParam param)
@@ -44,6 +39,31 @@ namespace DotSpatial.Modeling.Forms.Elements
             SetupDefaultLighting();
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the Parameter that the element represents.
+        /// </summary>
+        public new StringParam Param
+        {
+            get
+            {
+                return (StringParam)base.Param;
+            }
+
+            set
+            {
+                base.Param = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override void Refresh()
         {
             SetupDefaultLighting();
@@ -65,76 +85,24 @@ namespace DotSpatial.Modeling.Forms.Elements
             }
         }
 
-        #endregion
-
-        #region Events
-
         /// <summary>
-        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
+        /// When the text box is clicked this event fires.
         /// </summary>
-        private void TextBox1TextChanged(object sender, EventArgs e)
-        {
-            Param.Value = textBox1.Text;
-        }
-
-        /// <summary>
-        /// When the text box is clicked this event fires
-        /// </summary>
+        /// <param name="sender">The sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void TextBox1Click(object sender, EventArgs e)
         {
             OnClick(e);
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
         /// </summary>
-        public new StringParam Param
+        /// <param name="sender">The sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void TextBox1TextChanged(object sender, EventArgs e)
         {
-            get { return (StringParam)base.Param; }
-            set { base.Param = value; }
-        }
-
-        #endregion
-
-        #region Generate by the designer
-
-        private void InitializeComponent()
-        {
-            textBox1 = new TextBox();
-            GroupBox.SuspendLayout();
-            SuspendLayout();
-            //
-            // groupBox1
-            //
-            GroupBox.Controls.Add(textBox1);
-            GroupBox.Text = "Caption";
-            GroupBox.Controls.SetChildIndex(textBox1, 0);
-            GroupBox.Controls.SetChildIndex(StatusLabel, 0);
-            //
-            // lblStatus
-            //
-            StatusLabel.Location = new Point(12, 20);
-            //
-            // textBox1
-            //
-            textBox1.Location = new Point(44, 17);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(440, 20);
-            textBox1.TabIndex = 3;
-            textBox1.TextChanged += TextBox1TextChanged;
-            textBox1.Click += TextBox1Click;
-            //
-            // IntElement
-            //
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            Name = "IntElement";
-            GroupBox.ResumeLayout(false);
-            GroupBox.PerformLayout();
-            ResumeLayout(false);
+            Param.Value = textBox1.Text;
         }
 
         #endregion

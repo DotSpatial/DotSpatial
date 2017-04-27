@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Data;
@@ -22,19 +21,15 @@ using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Modeling.Forms.Elements
 {
-    internal class RasterElementOut : DialogElement
+    /// <summary>
+    /// Raster out element.
+    /// </summary>
+    internal partial class RasterElementOut : DialogElement
     {
-        #region Class Variables
-
-        private Button btnAddData;
-        private TextBox textBox1;
-
-        #endregion
-
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="RasterElementOut"/> class.
         /// </summary>
         /// <param name="outputParam">The parameter this element represents</param>
         /// <param name="dataSets">An array of available data</param>
@@ -50,29 +45,29 @@ namespace DotSpatial.Modeling.Forms.Elements
             GroupBox.Text = Param.Name;
 
             // Sets up the initial status light indicator
-            base.Status = ToolStatus.Empty;
+            Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
 
             // Populates the dialog with the default parameter value
             if (outputParam.Value != null && outputParam.DefaultSpecified)
             {
                 textBox1.Text = outputParam.ModelName;
-                base.Status = ToolStatus.Ok;
+                Status = ToolStatus.Ok;
                 LightTipText = ModelingMessageStrings.FeaturesetValid;
             }
         }
 
         #endregion
 
-        #region Events
+        #region Methods
 
         private void BtnAddDataClick(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog
-            {
-                OverwritePrompt = true,
-                Filter = DataManager.DefaultDataManager.RasterWriteFilter
-            };
+                          {
+                              OverwritePrompt = true,
+                              Filter = DataManager.DefaultDataManager.RasterWriteFilter
+                          };
             if (sfd.ShowDialog(this) != DialogResult.OK) return;
             IRaster raster = new Raster();
             raster.Filename = sfd.FileName;
@@ -80,56 +75,10 @@ namespace DotSpatial.Modeling.Forms.Elements
             // This inserts the new featureset into the list
             textBox1.Text = Path.GetFileNameWithoutExtension(raster.Filename);
             Param.Value = raster;
-            base.Status = ToolStatus.Ok;
+            Status = ToolStatus.Ok;
             LightTipText = ModelingMessageStrings.FeaturesetValid;
         }
 
         #endregion
-
-        private void InitializeComponent()
-        {
-            btnAddData = new Button();
-            textBox1 = new TextBox();
-            GroupBox.SuspendLayout();
-            SuspendLayout();
-            //
-            // groupBox1
-            //
-            GroupBox.Controls.Add(textBox1);
-            GroupBox.Controls.Add(btnAddData);
-            GroupBox.Controls.SetChildIndex(StatusLabel, 0);
-            GroupBox.Controls.SetChildIndex(btnAddData, 0);
-            GroupBox.Controls.SetChildIndex(textBox1, 0);
-            //
-            // lblStatus
-            //
-            StatusLabel.Location = new Point(12, 20);
-            //
-            // btnAddData
-            //
-            btnAddData.Image = Images.AddLayer;
-            btnAddData.Location = new Point(460, 14);
-            btnAddData.Name = "btnAddData";
-            btnAddData.Size = new Size(26, 26);
-            btnAddData.TabIndex = 5;
-            btnAddData.UseVisualStyleBackColor = true;
-            btnAddData.Click += BtnAddDataClick;
-            //
-            // textBox1
-            //
-            textBox1.Location = new Point(44, 17);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(410, 20);
-            textBox1.TabIndex = 6;
-            //
-            // PolygonElementOut
-            //
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            Name = "PolygonElementOut";
-            GroupBox.ResumeLayout(false);
-            GroupBox.PerformLayout();
-            ResumeLayout(false);
-        }
     }
 }
