@@ -330,7 +330,7 @@ namespace DotSpatial.Controls
             }
             FastLabelDrawnState[] drawStates = FastDrawnStates;
             if (drawStates == null) return;
-            //Sets the graphics objects smoothing modes
+            // Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -418,7 +418,7 @@ namespace DotSpatial.Controls
             }
             Dictionary<IFeature, LabelDrawState> drawStates = DrawnStates;
             if (drawStates == null) return;
-            //Sets the graphics objects smoothing modes
+            // Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -497,11 +497,11 @@ namespace DotSpatial.Controls
         /// <param name="angle">Angle in degree the label gets rotated by.</param>
         private static void DrawLabel(Graphics g, string labelText, RectangleF labelBounds, ILabelSymbolizer symb, IFeature feature, float angle)
         {
-            //Sets up the brushes and such for the labeling
+            // Sets up the brushes and such for the labeling
             Font textFont = _caches.GetFont(symb);
             var format = new StringFormat { Alignment = symb.Alignment };
 
-            //Text graphics path
+            // Text graphics path
             var gp = new GraphicsPath();
             gp.AddString(labelText, textFont.FontFamily, (int)textFont.Style, textFont.SizeInPoints * 96F / 72F, labelBounds, format);
 
@@ -572,7 +572,7 @@ namespace DotSpatial.Controls
         {
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
-            //Gets the features text and calculate the label size
+            // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;
 
@@ -588,7 +588,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                //Depending on the labeling strategy we do diff things
+                // Depending on the labeling strategy we do diff things
                 if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
                 {
                     for (int n = 0; n < geo.NumGeometries; n++)
@@ -633,13 +633,13 @@ namespace DotSpatial.Controls
         {
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
-            //Gets the features text and calculate the label size
+            // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;
             var angle = GetAngleToRotate(symb, f);
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
-            //Depending on the labeling strategy we do different things
+            // Depending on the labeling strategy we do different things
             if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
             {
                 for (int n = 0; n < f.Geometry.NumGeometries; n++)
@@ -662,7 +662,7 @@ namespace DotSpatial.Controls
         {
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
-            //Gets the features text and calculate the label size
+            // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;
             var angle = GetAngleToRotate(symb, f);
@@ -889,7 +889,7 @@ namespace DotSpatial.Controls
             if (!e.GeographicExtents.Intersects(c)) return RectangleF.Empty;
             var lz = labelSize();
             PointF adjustment = Position(symb, lz);
-            RotatePoint(ref adjustment, angle); //rotates the adjustment according to the given angle
+            RotatePoint(ref adjustment, angle); // rotates the adjustment according to the given angle
             float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + e.ImageRectangle.X + adjustment.X;
             float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + e.ImageRectangle.Y + adjustment.Y;
             return new RectangleF(x, y, lz.Width, lz.Height);

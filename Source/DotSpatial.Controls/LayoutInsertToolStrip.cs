@@ -22,7 +22,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A Brian Marchioni original toolstrip... preloaded with content.
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public partial class LayoutInsertToolStrip : ToolStrip
     {
@@ -72,13 +72,13 @@ namespace DotSpatial.Controls
             _layoutControl.AddElementWithMouse(_layoutControl.CreateLegendElement());
         }
 
-        //Adds a scale bar element to the layout and if there is already a map on the form we link it to the first one
+        // Adds a scale bar element to the layout and if there is already a map on the form we link it to the first one
         private void _btnScaleBar_Click(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(_layoutControl.CreateScaleBarElement());
         }
 
-        //Fires the print method on the layoutcontrol
+        // Fires the print method on the layoutcontrol
         private void _btnMap_Click(object sender, EventArgs e)
         {
             if (_layoutControl.MapControl != null)
@@ -93,25 +93,25 @@ namespace DotSpatial.Controls
             }
         }
 
-        //Fires the saveas method on the layoutcontrol
+        // Fires the saveas method on the layoutcontrol
         private void _btnText_Click(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(new LayoutText());
         }
 
-        //Fires the save method on the layoutcontrol
+        // Fires the save method on the layoutcontrol
         private void _btnRectangle_Click(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(new LayoutRectangle());
         }
 
-        //Fires the new method on the layoutcontrol
+        // Fires the new method on the layoutcontrol
         private void _btnNorthArrow_Click(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(new LayoutNorthArrow());
         }
 
-        //Fires the open method on the layoutcontrol
+        // Fires the open method on the layoutcontrol
         private void _btnBitmap_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog

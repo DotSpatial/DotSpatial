@@ -65,7 +65,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                         imageList.Images.Add(image);
                         int imageCount = imageList.Images.Count;
 
-                        //hack: for some reason i can be greater than the number of items in the listview.
+                        // hack: for some reason i can be greater than the number of items in the listview.
                         // This is probably because we don't cancel the existing thread when the feed changes.
                         // todo: use CancellationToken
                         // this can also happen when the form closes.

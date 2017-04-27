@@ -215,7 +215,7 @@ namespace DotSpatial.Controls
 
                 if (this.Symbolizer != null && this.Symbolizer.Opacity < 1)
                 {
-                    ColorMatrix matrix = new ColorMatrix(); //draws the image not completely opaque
+                    ColorMatrix matrix = new ColorMatrix(); // draws the image not completely opaque
                     matrix.Matrix33 = Symbolizer.Opacity;
                     using (var attributes = new ImageAttributes())
                     {

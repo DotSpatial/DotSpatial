@@ -320,8 +320,8 @@ namespace DotSpatial.Data
                 if (ItemChanged != null)
                 {
                     // activate this remarked code to test if the handlers are getting copied somewhere.
-                    //int count = ItemChanged.GetInvocationList().Length;
-                    //if (count > 1) Debug.WriteLine(this + " has " + count + " item changed handlers.");
+                    // int count = ItemChanged.GetInvocationList().Length;
+                    // if (count > 1) Debug.WriteLine(this + " has " + count + " item changed handlers.");
                     ItemChanged(this, EventArgs.Empty);
                 }
             }

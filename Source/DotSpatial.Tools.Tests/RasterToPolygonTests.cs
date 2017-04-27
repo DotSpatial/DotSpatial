@@ -51,7 +51,7 @@ namespace DotSpatial.Tools.Tests
     {
         public void Progress(string key, int percent, string message)
         {
-            //nothing
+            // nothing
         }
 
         public bool Cancel { get { return false; } }

@@ -43,20 +43,20 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="dataSets">An array of available data</param>
         public FeatureSetElementOut(FeatureSetParam outputParam, List<DataSetArray> dataSets)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = outputParam;
 
-            //Saves the label
+            // Saves the label
             GroupBox.Text = Param.Name;
 
-            //Sets up the initial status light indicator
+            // Sets up the initial status light indicator
             base.Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
 
-            //Populates the dialog with the default parameter value
+            // Populates the dialog with the default parameter value
             if (outputParam.Value != null && outputParam.DefaultSpecified)
             {
                 textBox1.Text = outputParam.ModelName;
@@ -72,7 +72,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void btnAddData_Click(object sender, EventArgs e)
         {
             /////////////////////////////////
-            //Replace with something that uses the default data provider
+            // Replace with something that uses the default data provider
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.OverwritePrompt = true;
             sfd.Filter = "Shape Files|*.shp";
@@ -81,12 +81,12 @@ namespace DotSpatial.Modeling.Forms.Elements
                 IFeatureSet _addedFeatureSet = new FeatureSet();
                 _addedFeatureSet.Filename = sfd.FileName;
 
-                //If the features set is null do nothing the user probably hit cancel
+                // If the features set is null do nothing the user probably hit cancel
                 if (_addedFeatureSet == null)
                     return;
 
-                //If the feature type is good save it
-                //This inserts the new featureset into the list
+                // If the feature type is good save it
+                // This inserts the new featureset into the list
                 textBox1.Text = Path.GetFileNameWithoutExtension(_addedFeatureSet.Filename);
                 Param.Value = _addedFeatureSet;
                 base.Status = ToolStatus.Ok;

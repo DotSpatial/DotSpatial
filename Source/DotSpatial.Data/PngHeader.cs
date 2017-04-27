@@ -59,10 +59,10 @@ namespace DotSpatial.Data
             byte[] vals = new byte[25];
 
             Write(vals, 0, 13);
-            vals[4] = 73; //I
-            vals[5] = 72; //H
-            vals[6] = 68; //D
-            vals[7] = 82; //R
+            vals[4] = 73; // I
+            vals[5] = 72; // H
+            vals[6] = 68; // D
+            vals[7] = 82; // R
             Write(vals, 8, Width);
             Write(vals, 12, Height);
             vals[16] = (byte)BitDepth;

@@ -251,9 +251,9 @@ namespace DotSpatial.Symbology
             get { return _patterns; }
             set
             {
-                //if (_patterns != null) OnIgnorePatternEvents();
+                // if (_patterns != null) OnIgnorePatternEvents();
                 _patterns = value;
-                //if (_patterns != null) OnHandlePatternEvents();
+                // if (_patterns != null) OnHandlePatternEvents();
             }
         }
 

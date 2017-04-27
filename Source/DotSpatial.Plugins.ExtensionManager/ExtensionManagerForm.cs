@@ -81,7 +81,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             tabControl.Deselecting += tab_deselecting;
             tabControl.SelectedIndexChanged += tab_selected;
 
-            //find name of app
+            // find name of app
             string name = Assembly.GetEntryAssembly().GetName().Name;
             int i;
             for (i = 0; i < name.Length; i++)
@@ -132,7 +132,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void ExtensionManager_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //hide the extension manager when closed by the user
+            // hide the extension manager when closed by the user
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
@@ -391,7 +391,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             // Remove the selected package.
             App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
 
-            //Make backup
+            // Make backup
 
             if (selectedExtension.DeactivationAllowed)
                     App.EnsureDeactivated(selectedPackage.Id);

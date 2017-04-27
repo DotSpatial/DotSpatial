@@ -85,7 +85,7 @@ namespace DotSpatial.Symbology
         {
             // First pass is the "border" which actually fills things in, but then will be painted over with the fill.
             throw new NotImplementedException();
-            //bool TO_DO_Draw_LINE_SNAPSHOT = true;
+            // bool TO_DO_Draw_LINE_SNAPSHOT = true;
         }
       
         #endregion

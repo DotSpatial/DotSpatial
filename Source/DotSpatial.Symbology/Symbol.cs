@@ -308,7 +308,7 @@ namespace DotSpatial.Symbology
         ///// Slightly modifies the copy process to duplicate an inner symbol if one is used.
         ///// </summary>
         ///// <param name="copy"></param>
-        //protected override void OnCopy(Descriptor copy)
+        // protected override void OnCopy(Descriptor copy)
         //{
         //    Symbol s = copy as Symbol;
         //    if (s != null)

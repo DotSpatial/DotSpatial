@@ -21,7 +21,7 @@ namespace DotSpatial.Controls
             if (mapFrame == null) throw new ArgumentNullException("mapFrame");
             if (newProjEsriString == null) throw new ArgumentNullException("newProjEsriString");
 
-            //parse the projection
+            // parse the projection
             var newProjection = ProjectionInfo.FromEsriString(newProjEsriString);
             mapFrame.ReprojectMapFrame(newProjection);
         }

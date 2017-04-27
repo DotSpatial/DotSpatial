@@ -563,7 +563,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.ccPatterns, "ccPatterns");
             this.ccPatterns.Name = "ccPatterns";
             this.helpProvider1.SetShowHelp(this.ccPatterns, ((bool)(resources.GetObject("ccPatterns.ShowHelp"))));
-            //this.ccPatterns.Load += new System.EventHandler(this.ccPatterns_Load);
+            // this.ccPatterns.Load += new System.EventHandler(this.ccPatterns_Load);
             //
             // DetailedPolygonSymbolControl
             //

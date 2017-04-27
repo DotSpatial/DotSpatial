@@ -857,7 +857,7 @@ Math.Round(
 #endif
             // Get the amount in seconds
             double newSeconds = Seconds;
-            //double HalfInterval = interval * 0.5;
+            // double HalfInterval = interval * 0.5;
             // Loop through all intervals to find the right rounding
             for (double value = 0; value < 60; value += interval)
             {
@@ -1802,7 +1802,7 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, int minutes, double seconds)
         {
-            //return hours < 0
+            // return hours < 0
             //    ? -Math.Round(-hours + minutes / 60.0 + seconds / 3600.0, MaximumPrecisionDigits)
             //    : Math.Round(hours + minutes / 60.0 + seconds / 3600.0, MaximumPrecisionDigits);
             return hours < 0
@@ -1824,7 +1824,7 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, double decimalMinutes)
         {
-            //return hours < 0
+            // return hours < 0
             //    ? -Math.Round(-hours + decimalMinutes / 60.0, MaximumPrecisionDigits)
             //    : Math.Round(hours + decimalMinutes / 60.0, MaximumPrecisionDigits);
             return hours < 0

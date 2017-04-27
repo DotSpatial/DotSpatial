@@ -31,18 +31,18 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A modeler form which allows users to create models with visual representations of tools
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public class Modeler : UserControl
     {
         #region ------------------- Class Variables
 
-        //Decides if the the DotSpatial watermark is present in the lowerleft corner
+        // Decides if the the DotSpatial watermark is present in the lowerleft corner
 
-        //These lists contain all the selected and unselected elements in the model
+        // These lists contain all the selected and unselected elements in the model
         private readonly Color _arrowColor = Color.Black;
-        private readonly List<ModelElement> _modelElements = new List<ModelElement>();            //All the model elements, selected or otherwise
-        private readonly List<ModelElement> _modelElementsSelected = new List<ModelElement>();    //All the selected model elements
+        private readonly List<ModelElement> _modelElements = new List<ModelElement>();            // All the model elements, selected or otherwise
+        private readonly List<ModelElement> _modelElementsSelected = new List<ModelElement>();    // All the selected model elements
         private readonly Timer _scrollTimerHorizontal;
         private readonly Timer _scrollTimerVertical;
         private Bitmap _backBuffer;
@@ -57,11 +57,11 @@ namespace DotSpatial.Controls
         private ArrowElement _linkArrow;
         private MenuItem _menuItem1;
 
-        //Used for loading and saving models
+        // Used for loading and saving models
         private string _modelFilename;
         private bool _mouseDownOnElement;
 
-        //Used for mouse movements
+        // Used for mouse movements
         private bool _mouseMoveDone = true;
         private bool _mouseMoved;
         private Point _mouseOldPoint;
@@ -69,23 +69,23 @@ namespace DotSpatial.Controls
         private Panel _panelHScroll;
         private bool _scrollLock;
 
-        //Used for drawing the selection box when a user left clicks and drags
+        // Used for drawing the selection box when a user left clicks and drags
         private Rectangle _selectBox;
         private bool _selectBoxDraw;
         private Point _selectBoxPt;
         private bool _showWaterMark = true;
 
-        //These variables define how the tool elements of the model are drawn
+        // These variables define how the tool elements of the model are drawn
         private Color _toolColor = Color.Khaki;
         private Font _toolFont = SystemFonts.DialogFont;
         private ModelShape _toolShape = ModelShape.Rectangle;
         private int _toolToExeCount;
 
-        //These variables define how the data elements of the model are drawn
+        // These variables define how the data elements of the model are drawn
         private int _verLastValue;
         private VScrollBar _verScroll;
-        private Point _virtualOffset; //The location of the model origin in the form
-        private float _virtualZoom; //The zoom factor of the model
+        private Point _virtualOffset; // The location of the model origin in the form
+        private float _virtualZoom; // The zoom factor of the model
 
         #endregion
 
@@ -107,7 +107,7 @@ namespace DotSpatial.Controls
         {
             InitializeComponent();
 
-            //Sets up the scroll bars
+            // Sets up the scroll bars
             _verScroll.Minimum = 0;
             _verScroll.Maximum = Height - 16;
             _verScroll.Value = Height / 2;
@@ -128,14 +128,14 @@ namespace DotSpatial.Controls
             _scrollTimerVertical.Tick += ScrollTimerVerticalTick;
             _scrollLock = false;
 
-            //Sets up the zoom and offset
+            // Sets up the zoom and offset
             _virtualZoom = 1F;
             _virtualOffset = new Point(0, 0);
 
-            //Sets the default project extension
+            // Sets the default project extension
             DefaultFileExtension = "mwm";
 
-            //Default number of simulatenous tool execution threads
+            // Default number of simulatenous tool execution threads
             MaxExecutionThreads = 2;
         }
 
@@ -568,7 +568,7 @@ namespace DotSpatial.Controls
             _modelElementsSelected.Insert(0, element);
             element.Highlighted(true);
 
-            //We check if the element has any arrows connected to it and if it does we select them too
+            // We check if the element has any arrows connected to it and if it does we select them too
             foreach (ModelElement me in _modelElements)
             {
                 if (me as ArrowElement != null)
@@ -706,13 +706,13 @@ namespace DotSpatial.Controls
         /// <param name="fileName"></param>
         public bool SaveModel(string fileName)
         {
-            //Creates the model xml document
+            // Creates the model xml document
             XmlDocument modelXmlDoc = new XmlDocument();
             XmlElement root = modelXmlDoc.CreateElement("DotSpatialModelFile");
             root.SetAttribute("Version", "1.0");
             modelXmlDoc.AppendChild(root);
 
-            //Saves the Tools and their output configuration to the model
+            // Saves the Tools and their output configuration to the model
             foreach (var te in _modelElements.OfType<ToolElement>())
             {
                 XmlElement tool = modelXmlDoc.CreateElement("Tool");
@@ -763,14 +763,14 @@ namespace DotSpatial.Controls
         /// </summary>
         public void LoadModel()
         {
-            //Prompt the user to save
+            // Prompt the user to save
             DialogResult dr = MessageBox.Show(this, MessageStrings.ModelSaveCurrentModel.Replace("%S", Path.GetFileNameWithoutExtension(ModelFilename)), "DotSpatial Modeler", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
             if (dr == DialogResult.Cancel)
                 return;
             if (dr == DialogResult.Yes)
                 SaveModel();
 
-            //Prompts user to pick file
+            // Prompts user to pick file
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Model *." + DefaultFileExtension + "|*." + DefaultFileExtension;
             ofd.DefaultExt = DefaultFileExtension;
@@ -790,14 +790,14 @@ namespace DotSpatial.Controls
         {
             CreateNewModel(false);
 
-            //Open the file and make sure its a DotSpatialModelFile
+            // Open the file and make sure its a DotSpatialModelFile
             XmlDocument modelXmlDoc = new XmlDocument();
             modelXmlDoc.Load(fileName);
             XmlElement root = modelXmlDoc.DocumentElement;
             if (root == null) return;
             if (root.Name == "DotSpatialModelFile")
             {
-                //Find all the tools and add them
+                // Find all the tools and add them
                 XmlNode toolXml = root.FirstChild;
                 while (toolXml != null && toolXml.Name == "Tool")
                 {
@@ -815,7 +815,7 @@ namespace DotSpatial.Controls
                         }
                         else
                         {
-                            //This code creates the tool and restores its outputs locations and names
+                            // This code creates the tool and restores its outputs locations and names
                             ToolElement te = AddTool(newTool, toolModelName, toolLocation);
                             XmlNode outputDataXml = toolXml.FirstChild;
                             while (outputDataXml != null && outputDataXml.Name == "OutputData")
@@ -847,7 +847,7 @@ namespace DotSpatial.Controls
                     toolXml = toolXml.NextSibling;
                 }
 
-                //Next we re-join all the input parameters
+                // Next we re-join all the input parameters
                 toolXml = root.FirstChild;
                 while (toolXml != null && toolXml.Name == "Tool")
                 {
@@ -883,11 +883,11 @@ namespace DotSpatial.Controls
                     toolXml = toolXml.NextSibling;
                 }
 
-                //This updates all the arrows so that they properly link to their output ends (since they might have moved since being created)
+                // This updates all the arrows so that they properly link to their output ends (since they might have moved since being created)
                 foreach (ArrowElement ae in _modelElements.FindAll(o => (o as ArrowElement != null)))
                     ae.UpdateDimentions();
 
-                //Zooms to the full extent of the model
+                // Zooms to the full extent of the model
                 ZoomFullExtent();
             }
             else
@@ -910,7 +910,7 @@ namespace DotSpatial.Controls
             ModelFilename = fileName;
             _newModel = true;
 
-            //Resets all the model properties
+            // Resets all the model properties
             _modelElements.Clear();
             _modelElementsSelected.Clear();
             Invalidate();
@@ -925,7 +925,7 @@ namespace DotSpatial.Controls
             if (_modelElementsSelected.Count <= 0)
                 return;
 
-            //Thic creates a list of all the model elements that will need to be deleted due to their associations to data and tools
+            // Thic creates a list of all the model elements that will need to be deleted due to their associations to data and tools
             bool promptDelParents = false;
             List<ModelElement> tempSelection = new List<ModelElement>();
             foreach (ModelElement selectedElement in _modelElementsSelected)
@@ -968,7 +968,7 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //We prompt the user to see if they want to delete the parents and children, if they say no we return
+            // We prompt the user to see if they want to delete the parents and children, if they say no we return
             if (promptDelParents)
             {
                 if (MessageBox.Show(MessageStrings.ModelerConfirmDeleteSource, MessageStrings.ModelerConfirmDelete, MessageBoxButtons.YesNo) == DialogResult.No)
@@ -977,7 +977,7 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //Then we delete all the elements
+            // Then we delete all the elements
             ClearSelectedElements();
             foreach (ModelElement selectedElement in tempSelection)
             {
@@ -1001,7 +1001,7 @@ namespace DotSpatial.Controls
                 DeleteElement(selectedElement);
             }
 
-            //Loop through all remaining tool elements to make sure they are not trying to reference something thats been deleted
+            // Loop through all remaining tool elements to make sure they are not trying to reference something thats been deleted
             List<ModelElement> modelData = _modelElements.FindAll(o => (o as DataElement != null));
             foreach (ToolElement selectedElement in _modelElements.FindAll(o => (o as ToolElement != null)))
             {
@@ -1017,7 +1017,7 @@ namespace DotSpatial.Controls
                 selectedElement.UpdateStatus();
             }
 
-            //Finaly we clean up any arrows that are hanging around
+            // Finaly we clean up any arrows that are hanging around
             foreach (var selectedElement in _modelElements.OfType<ArrowElement>())
             {
                 if (!_modelElements.Contains(selectedElement.StartElement) || !_modelElements.Contains(selectedElement.StopElement))
@@ -1036,7 +1036,7 @@ namespace DotSpatial.Controls
             Point virtTl = PixelToVirtual(0, 0);
             Point oldVirtCenterPoint = new Point(virtTl.X + ((virtBr.X - virtTl.X) / 2), virtTl.Y + ((virtBr.Y - virtTl.Y) / 2));
 
-            //Debuging code
+            // Debuging code
             Debug.WriteLine("Window size: X=" + Width + "Y=" + Height);
             Debug.WriteLine("Old Virtyual Center: X=" + oldVirtCenterPoint.X + "Y=" + oldVirtCenterPoint.Y);
 
@@ -1056,7 +1056,7 @@ namespace DotSpatial.Controls
             Point virtTl = PixelToVirtual(0, 0);
             Point oldVirtCenterPoint = new Point(virtTl.X + ((virtBr.X - virtTl.X) / 2), virtTl.Y + ((virtBr.Y - virtTl.Y) / 2));
 
-            //Debuging code
+            // Debuging code
             Debug.WriteLine("Window size: X=" + Width + "Y=" + Height);
             Debug.WriteLine("Old Virtyual Center: X=" + oldVirtCenterPoint.X + "Y=" + oldVirtCenterPoint.Y);
 
@@ -1081,9 +1081,9 @@ namespace DotSpatial.Controls
 
             virtBr = PixelToVirtual(Width, Height);
             virtTl = PixelToVirtual(0, 0);
-            //Point newVirtCenterPoint = new Point(virtTl.X + ((virtBr.X - virtTl.X) / 2), virtTl.Y + ((virtBr.Y - virtTl.Y) / 2));
+            // Point newVirtCenterPoint = new Point(virtTl.X + ((virtBr.X - virtTl.X) / 2), virtTl.Y + ((virtBr.Y - virtTl.Y) / 2));
 
-            //Debuging code
+            // Debuging code
             //            Debug.WriteLine("New Virtyual Center: X=" + newVirtCenterPoint.X + "Y=" + newVirtCenterPoint.Y);
 
             IsInitialized = false;
@@ -1094,7 +1094,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomFullExtent()
         {
-            //If there are no elements bring the modeler back to the origin with zoom = 1
+            // If there are no elements bring the modeler back to the origin with zoom = 1
             if (_modelElements.Count < 1)
             {
                 _virtualOffset = new Point(0, 0);
@@ -1103,11 +1103,11 @@ namespace DotSpatial.Controls
                 return;
             }
 
-            //The top left and right virtual points of the model
+            // The top left and right virtual points of the model
             Point virtTl = new Point(_modelElements[0].Location.X, _modelElements[0].Location.Y);
             Point virtBr = new Point(_modelElements[0].Location.X + _modelElements[0].Width, _modelElements[0].Location.Y + _modelElements[0].Height);
 
-            //Calculates the full virtual extent
+            // Calculates the full virtual extent
             for (int i = 1; i < _modelElements.Count; i++)
             {
                 if (virtTl.X > _modelElements[i].Location.X)
@@ -1120,12 +1120,12 @@ namespace DotSpatial.Controls
                     virtBr.Y = (_modelElements[i].Location.Y + _modelElements[i].Height);
             }
 
-            //Calculates the new zoom level
+            // Calculates the new zoom level
             double virtWidth = Math.Abs(virtTl.X - virtBr.X);
             double virtHeight = Math.Abs(virtTl.Y - virtBr.Y);
             ZoomFactor = ((Width - 100) / virtWidth) < ((Height - 100) / virtHeight) ? Convert.ToSingle((Width - 100) / virtWidth) : Convert.ToSingle((Height - 100) / virtHeight);
 
-            //Centers the modeler on the model elements
+            // Centers the modeler on the model elements
             Point centerPoint = new Point(virtTl.X + ((virtBr.X - virtTl.X) / 2), virtTl.Y + ((virtBr.Y - virtTl.Y) / 2));
             CenterModelerOnPoint(centerPoint);
 
@@ -1189,10 +1189,10 @@ namespace DotSpatial.Controls
         /// Executes a model after verifying that it is ready
         /// </summary>
         /// <param name="error">A string parameter which will contains a error string if one is generated</param>
-        /// <returns>Returns true if it executed succesfully</returns>
+        /// <returns>Returns true if it executed successfully</returns>
         public bool ExecuteModel(out string error)
         {
-            //Make sure all the tools are ready for execution
+            // Make sure all the tools are ready for execution
             foreach (ToolElement te in _modelElements.FindAll(o => (o as ToolElement != null)))
             {
                 if (te.ToolStatus == ToolStatus.Error || te.ToolStatus == ToolStatus.Empty)
@@ -1202,13 +1202,13 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //The number of tools to execute
+            // The number of tools to execute
             _toolToExeCount = _modelElements.FindAll(o => (o as ToolElement != null)).Count;
 
-            //First we create the progress form
+            // First we create the progress form
             ToolProgress progForm = new ToolProgress(_toolToExeCount);
 
-            //We create a background worker thread to execute the tool
+            // We create a background worker thread to execute the tool
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += BwToolThreader;
 
@@ -1221,7 +1221,7 @@ namespace DotSpatial.Controls
 
             error = string.Empty;
 
-            //Make sure all the tools are ready for execution
+            // Make sure all the tools are ready for execution
             foreach (ToolElement te in _modelElements.FindAll(o => (o as ToolElement != null)))
                 te.ExecutionStatus = ToolExecuteStatus.NotRun;
 
@@ -1234,7 +1234,7 @@ namespace DotSpatial.Controls
             if (threadParamerter == null) return;
             ToolProgress progForm = threadParamerter[0] as ToolProgress;
 
-            //Loops through all the tools and executes them
+            // Loops through all the tools and executes them
             int i = 0;
             while (i < _toolToExeCount)
             {
@@ -1307,10 +1307,10 @@ namespace DotSpatial.Controls
             Point virPt = PixelToVirtual(e.Location);
             _mouseOldPoint = MousePosition;
 
-            //Deals with left clicks when the model is in link mode
+            // Deals with left clicks when the model is in link mode
             if (e.Button == MouseButtons.Left && _enableLinking)
             {
-                //figure out if the user click on a element
+                // figure out if the user click on a element
                 foreach (ModelElement me in _modelElements)
                 {
                     if (me.PointInElement(virPt))
@@ -1330,13 +1330,13 @@ namespace DotSpatial.Controls
                 return;
             }
 
-            //Deals with left clicks when the model is not in link mode
+            // Deals with left clicks when the model is not in link mode
             if (e.Button == MouseButtons.Left)
             {
-                //If the user left clicked on a selected element we do nothing
+                // If the user left clicked on a selected element we do nothing
                 foreach (ModelElement me in _modelElementsSelected)
                 {
-                    //Point pt = new Point(virPt.X - me.Location.X, virPt.Y - me.Location.Y);
+                    // Point pt = new Point(virPt.X - me.Location.X, virPt.Y - me.Location.Y);
                     if (me.PointInElement(virPt))
                     {
                         if (ModifierKeys == Keys.Control)
@@ -1349,7 +1349,7 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                //If the user left clicked on a unselected element we clear the selected list and highlight the new element
+                // If the user left clicked on a unselected element we clear the selected list and highlight the new element
                 foreach (ModelElement me in _modelElements)
                 {
                     if (_modelElementsSelected.Contains(me))
@@ -1366,7 +1366,7 @@ namespace DotSpatial.Controls
                         break;
                     }
                 }
-                //If the mouse is clicked on a white area we draw a box
+                // If the mouse is clicked on a white area we draw a box
                 if (_mouseDownOnElement == false)
                 {
                     ClearSelectedElements();
@@ -1388,7 +1388,7 @@ namespace DotSpatial.Controls
                 return;
             _mouseMoveDone = false;
 
-            //Makes sure the mouse actually moved before we do anything
+            // Makes sure the mouse actually moved before we do anything
             if ((MousePosition.X != _mouseOldPoint.X) || (MousePosition.Y != _mouseOldPoint.Y))
             {
                 _mouseMoved = true;
@@ -1398,21 +1398,21 @@ namespace DotSpatial.Controls
                 int inflateFactor = Convert.ToInt32(5 * _virtualZoom);
                 if (inflateFactor < 5) inflateFactor = 5;
 
-                //If were in link mode draw a update link arrow
+                // If were in link mode draw a update link arrow
                 if (_linkArrow != null)
                 {
-                    //This code invalidates the elements OLD location
+                    // This code invalidates the elements OLD location
                     Point pt1 = VirtualToPixel(_linkArrow.Location.X + _linkArrow.StartPoint.X, _linkArrow.Location.Y + _linkArrow.StartPoint.Y);
                     Point pt2 = VirtualToPixel(_linkArrow.Location.X + _linkArrow.StopPoint.X, _linkArrow.Location.Y + _linkArrow.StopPoint.Y);
                     Rectangle invalid = new Rectangle(Math.Max(0, Math.Min(Math.Min(pt1.X, pt2.X) - 5, Width)), Math.Max(0, Math.Min(Math.Min(pt1.Y, pt2.Y) - 5, Height)), Math.Max(pt1.X, pt2.X) + 10, Math.Max(pt1.Y, pt2.Y) + 10);
                     invalid.Inflate(inflateFactor, inflateFactor);
                     Invalidate(invalid);
 
-                    //Sets the new dimentions
+                    // Sets the new dimentions
                     _linkArrow.StopElement.Location = PixelToVirtual(e.Location);
                     _linkArrow.UpdateDimentions();
 
-                    //This code invalidates the elements NEW location
+                    // This code invalidates the elements NEW location
                     pt1 = VirtualToPixel(_linkArrow.Location.X + _linkArrow.StartPoint.X, _linkArrow.Location.Y + _linkArrow.StartPoint.Y);
                     pt2 = VirtualToPixel(_linkArrow.Location.X + _linkArrow.StopPoint.X, _linkArrow.Location.Y + _linkArrow.StopPoint.Y);
                     invalid = new Rectangle(Math.Max(0, Math.Min(Math.Min(pt1.X, pt2.X) - 5, Width)), Math.Max(0, Math.Min(Math.Min(pt1.Y, pt2.Y) - 5, Height)), Math.Max(pt1.X, pt2.X) + 10, Math.Max(pt1.Y, pt2.Y) + 10);
@@ -1423,27 +1423,27 @@ namespace DotSpatial.Controls
                     _mouseOldPoint = MousePosition;
                 }
 
-                //If the mouse was clicked and held on a item this code fires
+                // If the mouse was clicked and held on a item this code fires
                 if (_mouseDownOnElement)
                 {
                     if ((Math.Abs(virtualDelta.X) >= 1) || (Math.Abs(virtualDelta.Y) >= 1))
                     {
-                        //This moves elements that are not arrows
+                        // This moves elements that are not arrows
                         foreach (ModelElement me in _modelElementsSelected)
                         {
                             if ((me as ArrowElement) == null)
                             {
-                                //This code invalidates the elements OLD location
+                                // This code invalidates the elements OLD location
                                 Point pt1 = VirtualToPixel(me.Location);
                                 Point pt2 = VirtualToPixel(me.Location.X + me.Width, me.Location.Y + me.Height);
                                 Rectangle invalid = new Rectangle(Math.Max(0, Math.Min(Math.Min(pt1.X, pt2.X) - 5, Width)), Math.Max(0, Math.Min(Math.Min(pt1.Y, pt2.Y) - 5, Height)), Math.Max(pt1.X, pt2.X) + 10, Math.Max(pt1.Y, pt2.Y) + 10);
                                 invalid.Inflate(inflateFactor, inflateFactor);
                                 Invalidate(invalid);
 
-                                //Updates the elements location
+                                // Updates the elements location
                                 me.Location = new Point(me.Location.X + virtualDelta.X, me.Location.Y + virtualDelta.Y);
 
-                                //This code invalidates the elements NEW location
+                                // This code invalidates the elements NEW location
                                 pt1 = VirtualToPixel(me.Location);
                                 pt2 = VirtualToPixel(me.Location.X + me.Width, me.Location.Y + me.Height);
                                 invalid = new Rectangle(Math.Max(0, Math.Min(Math.Min(pt1.X, pt2.X) - 5, Width)), Math.Max(0, Math.Min(Math.Min(pt1.Y, pt2.Y) - 5, Height)), Math.Max(pt1.X, pt2.X) + 10, Math.Max(pt1.Y, pt2.Y) + 10);
@@ -1451,25 +1451,25 @@ namespace DotSpatial.Controls
                                 Invalidate(invalid);
                             }
                         }
-                        //This moves all the arrow elements second so they don't drag
+                        // This moves all the arrow elements second so they don't drag
                         foreach (ModelElement me in _modelElementsSelected)
                         {
                             if ((me as ArrowElement) != null)
                             {
                                 ArrowElement ar = me as ArrowElement;
 
-                                //This code invalidates the elements OLD location
+                                // This code invalidates the elements OLD location
                                 Point pt1 = VirtualToPixel(ar.Location.X + ar.StartPoint.X, ar.Location.Y + ar.StartPoint.Y);
                                 Point pt2 = VirtualToPixel(ar.Location.X + ar.StopPoint.X, ar.Location.Y + ar.StopPoint.Y);
 
-                                //Updates the elements location
+                                // Updates the elements location
                                 ar.UpdateDimentions();
 
                                 Rectangle invalid = new Rectangle(Math.Max(0, Math.Min(Math.Min(pt1.X, pt2.X) - 5, Width)), Math.Max(0, Math.Min(Math.Min(pt1.Y, pt2.Y) - 5, Height)), Math.Max(pt1.X, pt2.X) + 10, Math.Max(pt1.Y, pt2.Y) + 10);
                                 invalid.Inflate(inflateFactor, inflateFactor);
                                 Invalidate(invalid);
 
-                                //This code invalidates the elements NEW location
+                                // This code invalidates the elements NEW location
                                 pt1 = VirtualToPixel(ar.Location.X + ar.StartPoint.X, ar.Location.Y + ar.StartPoint.Y);
                                 pt2 = VirtualToPixel(ar.Location.X + ar.StopPoint.X, ar.Location.Y + ar.StopPoint.Y);
                                 invalid = new Rectangle(Math.Max(0, Math.Min(Math.Min(pt1.X, pt2.X) - 5, Width)), Math.Max(0, Math.Min(Math.Min(pt1.Y, pt2.Y) - 5, Height)), Math.Max(pt1.X, pt2.X) + 10, Math.Max(pt1.Y, pt2.Y) + 10);
@@ -1481,7 +1481,7 @@ namespace DotSpatial.Controls
                     }
                     Application.DoEvents();
                 }
-                //If the mouse was clicked outside of an element
+                // If the mouse was clicked outside of an element
                 if (_selectBoxDraw)
                 {
                     Invalidate(_selectBox);
@@ -1504,7 +1504,7 @@ namespace DotSpatial.Controls
             base.OnMouseUp(e);
             Point virPt = PixelToVirtual(e.Location);
 
-            //If we are in link mode we run this
+            // If we are in link mode we run this
             if (_linkArrow != null)
             {
                 ClearSelectedElements();
@@ -1517,12 +1517,12 @@ namespace DotSpatial.Controls
                         ToolElement te = me as ToolElement;
                         if (te != null)
                         {
-                            //If the user let go over a tool we try to link to to, assuming it doesn't create a loop
+                            // If the user let go over a tool we try to link to to, assuming it doesn't create a loop
                             if (_linkArrow.StartElement != null)
                             {
                                 if (_linkArrow.StartElement.IsDownstreamOf(te))
                                 {
-                                    //If the tool is the data sets parent
+                                    // If the tool is the data sets parent
                                     MessageBox.Show(MessageStrings.linkErrorCircle, MessageStrings.linkError, MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     break;
                                 }
@@ -1560,7 +1560,7 @@ namespace DotSpatial.Controls
                 return;
             }
 
-            //If we detect the user clicked on a element and didn't move the mouse we select that element and clear the others
+            // If we detect the user clicked on a element and didn't move the mouse we select that element and clear the others
             if (_mouseMoved == false && _mouseDownOnElement)
             {
                 if (ModifierKeys != Keys.Control)
@@ -1585,7 +1585,7 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //When the user lets go of the select box we find out which elements it selected
+            // When the user lets go of the select box we find out which elements it selected
             if (_selectBoxDraw && _mouseMoved)
             {
                 ClearSelectedElements();
@@ -1605,7 +1605,7 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //After a mouse up we reset the mouse variables
+            // After a mouse up we reset the mouse variables
             _selectBoxDraw = false;
             Invalidate(_selectBox);
             _mouseDownOnElement = false;
@@ -1631,26 +1631,26 @@ namespace DotSpatial.Controls
 
             MouseEventArgs mouseE = e as MouseEventArgs;
 
-            //If the user left clicked on a selected element we do nothing
+            // If the user left clicked on a selected element we do nothing
             if (mouseE == null) return;
             Point virPt = PixelToVirtual(mouseE.X, mouseE.Y);
             foreach (ModelElement me in _modelElementsSelected)
             {
-                //Point pt = new Point(virPt.X - me.Location.X, virPt.Y - me.Location.Y);
+                // Point pt = new Point(virPt.X - me.Location.X, virPt.Y - me.Location.Y);
                 if (me.PointInElement(virPt))
                 {
-                    //We create a new instance if its a toolelement
+                    // We create a new instance if its a toolelement
                     ToolElement meAsTool = me as ToolElement;
                     if (meAsTool != null)
                     {
-                        //All of the parameters are copied from the original one
+                        // All of the parameters are copied from the original one
                         ITool newToolCopy = ToolManager.GetTool(meAsTool.Tool.AssemblyQualifiedName);
                         for (int i = 0; i < (meAsTool.Tool.InputParameters.Length); i++)
                             if (newToolCopy.InputParameters[i] != null) newToolCopy.InputParameters[i] = meAsTool.Tool.InputParameters[i].Copy();
                         for (int i = 0; i < (meAsTool.Tool.OutputParameters.Length); i++)
                             if (newToolCopy.OutputParameters[i] != null) newToolCopy.OutputParameters[i] = meAsTool.Tool.OutputParameters[i].Copy();
 
-                        //This code ensures that no children are passed into the tool
+                        // This code ensures that no children are passed into the tool
                         List<ModelElement> tempList = new List<ModelElement>();
                         foreach (ModelElement mEle in _modelElements)
                         {
@@ -1659,7 +1659,7 @@ namespace DotSpatial.Controls
                         }
                         ToolElement tempTool = new ToolElement(newToolCopy, tempList);
 
-                        //If the user hits ok we dispose of the saved copy if they don't we restore the old values
+                        // If the user hits ok we dispose of the saved copy if they don't we restore the old values
                         if (tempTool.DoubleClick())
                         {
                             for (int i = 0; i < (meAsTool.Tool.InputParameters.Length); i++)
@@ -1676,7 +1676,7 @@ namespace DotSpatial.Controls
                                 }
                             }
 
-                            //First we clear all the arrows linking to the current tool (We use a temporary array since we will be removing items from the list)
+                            // First we clear all the arrows linking to the current tool (We use a temporary array since we will be removing items from the list)
                             ModelElement[] tempArray = new ModelElement[_modelElements.Count];
                             _modelElements.CopyTo(tempArray);
                             foreach (ModelElement mele in tempArray)
@@ -1689,21 +1689,21 @@ namespace DotSpatial.Controls
                                 }
                             }
 
-                            //We go through each parameters of the tool to the model if they haven't been added already
+                            // We go through each parameters of the tool to the model if they haven't been added already
                             int j = 0;
                             foreach (Parameter par in meAsTool.Tool.InputParameters)
                             {
                                 if (par == null) continue;
 
-                                //If its not supposed to be visible we ignore it.
+                                // If its not supposed to be visible we ignore it.
                                 if (par.ParamVisible == ShowParamInModel.No)
                                     continue;
 
-                                //If no default has been specified continue
+                                // If no default has been specified continue
                                 if (par.DefaultSpecified == false)
                                     continue;
 
-                                //If the parameter has not been assigned a model name we add the data to the model
+                                // If the parameter has not been assigned a model name we add the data to the model
                                 bool addParam = true;
                                 foreach (ModelElement modElem in _modelElements)
                                 {
@@ -1719,7 +1719,7 @@ namespace DotSpatial.Controls
                                 }
                                 else
                                 {
-                                    //If the parameter has already been added we make sure that we have linked to it properly
+                                    // If the parameter has already been added we make sure that we have linked to it properly
                                     tempArray = new ModelElement[_modelElements.Count];
                                     _modelElements.CopyTo(tempArray);
                                     foreach (ModelElement mele in tempArray)
@@ -1735,7 +1735,7 @@ namespace DotSpatial.Controls
                                     }
                                 }
                             }
-                            //This updates the status light
+                            // This updates the status light
                             meAsTool.UpdateStatus();
                         }
                     }
@@ -1811,8 +1811,8 @@ namespace DotSpatial.Controls
             graph.SmoothingMode = DrawingQuality;
             graph.FillRectangle(Brushes.White, 0, 0, _backBuffer.Width, _backBuffer.Height);
 
-            //When the backbuffer is updated this code draws the watermark
-            //if (_showWaterMark)
+            // When the backbuffer is updated this code draws the watermark
+            // if (_showWaterMark)
             //{
             //    Bitmap watermark = Images.SpatialLogoPale;
             //    if ((_backBuffer.Width > watermark.Width) && (_backBuffer.Height > watermark.Height))
@@ -1821,7 +1821,7 @@ namespace DotSpatial.Controls
             //    }
             //}
 
-            //Check if there are any model elements to draw
+            // Check if there are any model elements to draw
             foreach (ModelElement me in _modelElements)
             {
                 if (_modelElementsSelected.Contains(me) == false)
@@ -1836,7 +1836,7 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //Updates is initialized
+            // Updates is initialized
             IsInitialized = true;
         }
 
@@ -1862,7 +1862,7 @@ namespace DotSpatial.Controls
                 tempGraph.DrawImage(_backBuffer, new Point(0, 0));
             }
 
-            //Draws selected shapes last
+            // Draws selected shapes last
             if (_modelElementsSelected.Count > 0)
             {
                 for (int i = _modelElementsSelected.Count - 1; i >= 0; i--)
@@ -1878,7 +1878,7 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //If the users is dragging a select box we draw it here
+            // If the users is dragging a select box we draw it here
             if (_selectBoxDraw)
             {
                 SolidBrush highlightBrush = new SolidBrush(Color.FromArgb(30, SystemColors.Highlight));
@@ -1886,15 +1886,15 @@ namespace DotSpatial.Controls
                 Rectangle outlineRect = new Rectangle(_selectBox.X, _selectBox.Y, _selectBox.Width - 1, _selectBox.Height - 1);
                 tempGraph.DrawRectangle(SystemPens.Highlight, outlineRect);
 
-                //garbage collection
+                // garbage collection
                 highlightBrush.Dispose();
             }
 
-            //Draws the temporary bitmap to the screen
+            // Draws the temporary bitmap to the screen
             e.Graphics.SmoothingMode = DrawingQuality;
             e.Graphics.DrawImage(tempBuffer, inflatedInvalidationRect, inflatedInvalidationRect, GraphicsUnit.Pixel);
 
-            //Garbage collection
+            // Garbage collection
             tempBuffer.Dispose();
             tempGraph.Dispose();
         }

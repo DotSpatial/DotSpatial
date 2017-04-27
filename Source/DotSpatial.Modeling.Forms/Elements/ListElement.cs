@@ -36,16 +36,16 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="param">The parameter this element represents</param>
         public ListElement(ListParam param)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
             GroupBox.Text = param.Name;
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = param;
 
             DoRefresh();
 
-            //Update the state of the status light
+            // Update the state of the status light
             ComboBox1SelectedValueChanged(null, null);
         }
 
@@ -55,13 +55,13 @@ namespace DotSpatial.Modeling.Forms.Elements
 
             comboBox1.Items.Clear();
 
-            //We load the items in the list
+            // We load the items in the list
             for (int i = 0; i < Param.ValueList.Count; i++)
             {
                 comboBox1.Items.Insert(i, Param.ValueList[i]);
             }
 
-            //We set the default value
+            // We set the default value
             if ((base.Param.DefaultSpecified) && (Param.Value >= 0))
             {
                 comboBox1.SelectedIndex = Param.Value;

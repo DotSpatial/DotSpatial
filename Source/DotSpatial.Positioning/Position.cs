@@ -591,36 +591,36 @@ namespace DotSpatial.Positioning
             #region Newer code
 
             double goodLambda = 0;
-            //double goodAlpha = 0;
-            //double goodSigma = 0;
-            //double goodCos2SigmaM = 0;
+            // double goodAlpha = 0;
+            // double goodSigma = 0;
+            // double goodCos2SigmaM = 0;
 
             //            % reshape inputs
-            //keepsize = size(lat1);
-            //lat1=lat1(:);
-            //lon1=lon1(:);
-            //lat2=lat2(:);
-            //lon2=lon2(:);
+            // keepsize = size(lat1);
+            // lat1=lat1(:);
+            // lon1=lon1(:);
+            // lat2=lat2(:);
+            // lon2=lon2(:);
 
             // ?
 
             //% Input check:
-            //if any(abs(lat1)>90 | abs(lat2)>90)
+            // if any(abs(lat1)>90 | abs(lat2)>90)
             //    error('Input latitudes must be between -90 and 90 degrees, inclusive.')
-            //end
+            // end
 
             // The -90 to 90 check is handled by Normalize
 
             //% Supply WGS84 earth ellipsoid axis lengths in meters:
-            //a = 6378137; % definitionally
-            //b = 6356752.31424518; % computed from WGS84 earth flattening coefficient
+            // a = 6378137; % definitionally
+            // b = 6356752.31424518; % computed from WGS84 earth flattening coefficient
 
-            //double a = ellipsoid.EquatorialRadiusMeters;
-            //double b = ellipsoid.PolarRadiusMeters;
+            // double a = ellipsoid.EquatorialRadiusMeters;
+            // double b = ellipsoid.PolarRadiusMeters;
 
             //% preserve true input latitudes:
-            //lat1tr = lat1;
-            //lat2tr = lat2;
+            // lat1tr = lat1;
+            // lat2tr = lat2;
 
             double lat1Tr = _latitude.DecimalDegrees;
 
@@ -632,10 +632,10 @@ namespace DotSpatial.Positioning
              */
 
             //% convert inputs in degrees to radians:
-            //lat1 = lat1 * 0.0174532925199433;
-            //lon1 = lon1 * 0.0174532925199433;
-            //lat2 = lat2 * 0.0174532925199433;
-            //lon2 = lon2 * 0.0174532925199433;
+            // lat1 = lat1 * 0.0174532925199433;
+            // lon1 = lon1 * 0.0174532925199433;
+            // lat2 = lat2 * 0.0174532925199433;
+            // lon2 = lon2 * 0.0174532925199433;
 
             // Convert inputs into radians
             double lat1 = Latitude.Normalize().ToRadians().Value;
@@ -644,10 +644,10 @@ namespace DotSpatial.Positioning
             double lon2 = destination.Longitude.Normalize().ToRadians().Value;
 
             //% correct for errors at exact poles by adjusting 0.6 millimeters:
-            //kidx = abs(pi/2-abs(lat1)) < 1e-10;
-            //if any(kidx);
+            // kidx = abs(pi/2-abs(lat1)) < 1e-10;
+            // if any(kidx);
             //    lat1(kidx) = sign(lat1(kidx))*(pi/2-(1e-10));
-            //end
+            // end
 
             // Correct for errors at exact poles by adjusting 0.6mm
             if (Math.Abs(Math.PI * 0.5 - Math.Abs(lat1)) < 1E-10)
@@ -655,77 +655,77 @@ namespace DotSpatial.Positioning
                 lat1 = Math.Sign(lat1) * (Math.PI * 0.5 - 1E-10);
             }
 
-            //kidx = abs(pi/2-abs(lat2)) < 1e-10;
-            //if any(kidx)
+            // kidx = abs(pi/2-abs(lat2)) < 1e-10;
+            // if any(kidx)
             //    lat2(kidx) = sign(lat2(kidx))*(pi/2-(1e-10));
-            //end
+            // end
 
             if (Math.Abs(Math.PI * 0.5 - Math.Abs(lat2)) < 1E-10)
             {
                 lat2 = Math.Sign(lat2) * (Math.PI * 0.5 - 1E-10);
             }
 
-            //f = (a-b)/a;
+            // f = (a-b)/a;
 
             double f = ellipsoid.Flattening;
 
-            //U1 = atan((1-f)*tan(lat1));
+            // U1 = atan((1-f)*tan(lat1));
 
             double u1 = Math.Atan((1 - f) * Math.Tan(lat1));
 
-            //U2 = atan((1-f)*tan(lat2));
+            // U2 = atan((1-f)*tan(lat2));
 
             double u2 = Math.Atan((1 - f) * Math.Tan(lat2));
 
-            //lon1 = mod(lon1, 2*pi);
+            // lon1 = mod(lon1, 2*pi);
 
             lon1 = lon1 % (2 * Math.PI);
 
-            //lon2 = mod(lon2, 2*pi);
+            // lon2 = mod(lon2, 2*pi);
 
             lon2 = lon2 % (2 * Math.PI);
 
-            //L = abs(lon2-lon1);
+            // L = abs(lon2-lon1);
 
             double l = Math.Abs(lon2 - lon1);
 
-            //kidx = L > pi;
-            //if any(kidx)
+            // kidx = L > pi;
+            // if any(kidx)
             //    L(kidx) = 2*pi - L(kidx);
-            //end
+            // end
 
             if (l > Math.PI)
             {
                 l = 2.0 * Math.PI - l;
             }
 
-            //lambda = L;
+            // lambda = L;
 
             double lambda = l;
 
-            //lambdaold = 0*lat1;
+            // lambdaold = 0*lat1;
 
-            //itercount = 0;
+            // itercount = 0;
 
             int itercount = 0;
 
-            //notdone = logical(1+0*lat1);
+            // notdone = logical(1+0*lat1);
 
             bool notdone = true;
 
-            //alpha = 0*lat1;
+            // alpha = 0*lat1;
 
-            //sigma = 0*lat1;
+            // sigma = 0*lat1;
 
-            //cos2sigmam = 0*lat1;
+            // cos2sigmam = 0*lat1;
 
-            //C = 0*lat1;
+            // C = 0*lat1;
 
-            //warninggiven = logical(0);
+            // warninggiven = logical(0);
 
-            //bool warninggiven = false;
+            // bool warninggiven = false;
 
-            //while any(notdone)  % force at least one execution
+            // while any(notdone)  % force at least one execution
 
             while (notdone)
             {
@@ -740,7 +740,7 @@ namespace DotSpatial.Positioning
                 {
                     //        if ~warninggiven
 
-                    //if (!warninggiven)
+                    // if (!warninggiven)
                     //{
                     //    //            warning(['Essentially antipodal points encountered. ' ...
                     //    //                'Precision may be reduced slightly.']);
@@ -752,7 +752,7 @@ namespace DotSpatial.Positioning
                     //        end
                     //        lambda(notdone) = pi;
 
-                    //lambda = Math.PI;
+                    // lambda = Math.PI;
 
                     //        break
 
@@ -830,7 +830,7 @@ namespace DotSpatial.Positioning
                 {
                     //        if ~warninggiven
 
-                    //if (!warninggiven)
+                    // if (!warninggiven)
                     //{
                     //    //            warning(['Essentially antipodal points encountered. ' ...
                     //    //                'Precision may be reduced slightly.']);
@@ -856,43 +856,43 @@ namespace DotSpatial.Positioning
 
                 notdone = Math.Abs(lambda - lambdaold) > TARGET_ACCURACY;
 
-                //end
+                // end
 
                 // notice: In some cases "alpha" would return a "NaN".  If values are healthy,
                 // remember them so we get a good distance calc.
                 if (!double.IsNaN(alpha))
                 {
                     goodLambda = lambda;
-                    //goodAlpha = alpha;
-                    //goodSigma = sigma;
-                    //goodCos2SigmaM = cos2sigmam;
+                    // goodAlpha = alpha;
+                    // goodSigma = sigma;
+                    // goodCos2SigmaM = cos2sigmam;
                 }
             }
 
-            //u2 = cos(alpha).^2.*(a^2-b^2)/b^2;
+            // u2 = cos(alpha).^2.*(a^2-b^2)/b^2;
             // This was never used
             // double u2 = Math.Pow(Math.Cos(goodAlpha), 2) * (Math.Pow(a, 2) - Math.Pow(b, 2)) / Math.Pow(b, 2);
 
-            //A = 1+u2./16384.*(4096+u2.*(-768+u2.*(320-175.*u2)));
+            // A = 1+u2./16384.*(4096+u2.*(-768+u2.*(320-175.*u2)));
 
             // The variable A here was never used, so i commented this out.  (Ted)
-            //double A = 1 + u2 / 16384 * (4096 + u2 * (-768 + u2 * (320 - 175 * u2)));
+            // double A = 1 + u2 / 16384 * (4096 + u2 * (-768 + u2 * (320 - 175 * u2)));
 
-            //B = u2./1024.*(256+u2.*(-128+u2.*(74-47.*u2)));
+            // B = u2./1024.*(256+u2.*(-128+u2.*(74-47.*u2)));
 
             // This was never used (TD)
-            //double B = u2 / 1024 * (256 + u2 * (-128 + u2 * (74 - 47 * u2)));
+            // double B = u2 / 1024 * (256 + u2 * (-128 + u2 * (74 - 47 * u2)));
 
-            //deltasigma = B.*sin(sigma).*(cos2sigmam+B./4.*(cos(sigma).*(-1+2.*...
+            // deltasigma = B.*sin(sigma).*(cos2sigmam+B./4.*(cos(sigma).*(-1+2.*...
             //    cos2sigmam.^2)-B./6.*cos2sigmam.*(-3+4.*sin(sigma).^2).*(-3+4*...
             //    cos2sigmam.^2)));
 
             // This was never used (TD)
-            //double deltasigma = B * Math.Sin(goodSigma) * (goodCos2SigmaM + B / 4 * (Math.Cos(goodSigma) * (-1 + 2 *
+            // double deltasigma = B * Math.Sin(goodSigma) * (goodCos2SigmaM + B / 4 * (Math.Cos(goodSigma) * (-1 + 2 *
             //    Math.Pow(goodCos2SigmaM, 2)) - B / 6 * goodCos2SigmaM * (-3 + 4 * Math.Pow(Math.Sin(goodSigma), 2)) * (-3 + 4 *
             //    Math.Pow(goodCos2SigmaM, 2))));
 
-            //varargout{1} = reshape(b.*A.*(sigma-deltasigma), keepsize);
+            // varargout{1} = reshape(b.*A.*(sigma-deltasigma), keepsize);
 
             /* FxCop says that this variable "double s" is only assigned to, but never used.
              *
@@ -902,9 +902,9 @@ namespace DotSpatial.Positioning
              */
 
             // Return the Distance in meters
-            //return new Distance(s, DistanceUnit.Meters).ToLocalUnitType();
+            // return new Distance(s, DistanceUnit.Meters).ToLocalUnitType();
 
-            //if nargout > 1
+            // if nargout > 1
             //    % From point #1 to point #2
             //    % correct sign of lambda for azimuth calcs:
 
@@ -958,8 +958,8 @@ namespace DotSpatial.Positioning
             // Convert to degrees
             return Azimuth.FromRadians(a12);
 
-            //end
-            //if nargout > 2
+            // end
+            // if nargout > 2
             //    a21=NaN*lat1;
             //    % From point #2 to point #1
             //    % correct sign of lambda for azimuth calcs:
@@ -975,8 +975,8 @@ namespace DotSpatial.Positioning
             //    a21(lat2tr >= 90) = pi;
             //    a21(lat2tr <= -90) = 0;
             //    varargout{3} = reshape(a21 * 57.2957795130823, keepsize); % to degrees
-            //end
-            //return
+            // end
+            // return
 
             #endregion Newer code
 
@@ -998,7 +998,7 @@ namespace DotSpatial.Positioning
 
             //			try
             ////			{
-            //				//Dim AdjustedDestination As Position = destination.ToEllipsoid(Ellipsoid.Type)
+            //				// Dim AdjustedDestination As Position = destination.ToEllipsoid(Ellipsoid.Type)
             //
             //				double y = -Math.Sin(Longitude.ToRadians().Value - destination.Longitude.ToRadians().Value)
             //					* Math.Cos(destination.Latitude.ToRadians().Value);
@@ -1006,10 +1006,10 @@ namespace DotSpatial.Positioning
             //					- Math.Sin(Latitude.ToRadians().Value) * Math.Cos(destination.Latitude.ToRadians().Value)
             //					* Math.Cos(Longitude.ToRadians().Value - destination.Longitude.ToRadians().Value);
             //
-            //			//Console.WriteLine(String.Format("X: {0}, Y: {1}
+            //			// Console.WriteLine(String.Format("X: {0}, Y: {1}
             //
             ////			atan2(-sin(long1-long2).cos(lat2),
-            ////cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(long1-long2) )
+            //// cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(long1-long2) )
             //
             //
             //				return new Azimuth(((Math.Atan2(y, x) * 180.0 / Math.PI) + 360) % 360); //+ 1 / 7200.0)
@@ -1078,7 +1078,7 @@ namespace DotSpatial.Positioning
         public Speed SpeedTo(Position destination, TimeSpan time)
         {
             // Make sure the position is in the same datum as we are
-            //Dim AdjustedDestination As Position = destination.ToDatum(Datum)
+            // Dim AdjustedDestination As Position = destination.ToDatum(Datum)
             // Now calculate the distance
             double travelDistance = DistanceTo(destination).ToMeters().Value;
             // Perform the calculation
@@ -1205,7 +1205,7 @@ namespace DotSpatial.Positioning
         public Distance DistanceTo(Position destination, Ellipsoid ellipsoid, bool isApproximated)
         {
             //// Make sure the destination isn't null
-            //if (destination == null)
+            // if (destination == null)
             //    throw new ArgumentNullException("destination", "The Position.DistanceTo method requires a non-null destination parameter.");
 
             // If they want the high-speed formula, use it
@@ -1216,7 +1216,7 @@ namespace DotSpatial.Positioning
             if (ellipsoid == null)
                 throw new ArgumentNullException("ellipsoid", Resources.Position_DistanceTo_Null_Ellipsoid);
 
-            //Dim AdjustedDestination As Position = destination.ToDatum(Datum)
+            // Dim AdjustedDestination As Position = destination.ToDatum(Datum)
             // USING THE FORMULA FROM:
             //$lat1 = deg2rad(28.5333);
             double lat1 = Latitude.ToRadians().Value;
@@ -1499,40 +1499,40 @@ return
             double goodCos2SigmaM = 0;
 
             //            % reshape inputs
-            //keepsize = size(lat1);
-            //lat1=lat1(:);
-            //lon1=lon1(:);
-            //lat2=lat2(:);
-            //lon2=lon2(:);
+            // keepsize = size(lat1);
+            // lat1=lat1(:);
+            // lon1=lon1(:);
+            // lat2=lat2(:);
+            // lon2=lon2(:);
 
             // ?
 
             //% Input check:
-            //if any(abs(lat1)>90 | abs(lat2)>90)
+            // if any(abs(lat1)>90 | abs(lat2)>90)
             //    error('Input latitudes must be between -90 and 90 degrees, inclusive.')
-            //end
+            // end
 
             // The -90 to 90 check is handled by Normalize
 
             //% Supply WGS84 earth ellipsoid axis lengths in meters:
-            //a = 6378137; % definitionally
-            //b = 6356752.31424518; % computed from WGS84 earth flattening coefficient
+            // a = 6378137; % definitionally
+            // b = 6356752.31424518; % computed from WGS84 earth flattening coefficient
 
             double a = ellipsoid.EquatorialRadiusMeters;
             double b = ellipsoid.PolarRadiusMeters;
 
             //% preserve true input latitudes:
-            //lat1tr = lat1;
-            //lat2tr = lat2;
+            // lat1tr = lat1;
+            // lat2tr = lat2;
 
-            //double lat1tr = pLatitude.DecimalDegrees;
-            //double lat2tr = destination.Latitude.DecimalDegrees;
+            // double lat1tr = pLatitude.DecimalDegrees;
+            // double lat2tr = destination.Latitude.DecimalDegrees;
 
             //% convert inputs in degrees to radians:
-            //lat1 = lat1 * 0.0174532925199433;
-            //lon1 = lon1 * 0.0174532925199433;
-            //lat2 = lat2 * 0.0174532925199433;
-            //lon2 = lon2 * 0.0174532925199433;
+            // lat1 = lat1 * 0.0174532925199433;
+            // lon1 = lon1 * 0.0174532925199433;
+            // lat2 = lat2 * 0.0174532925199433;
+            // lon2 = lon2 * 0.0174532925199433;
 
             // Convert inputs into radians
             double lat1 = Latitude.Normalize().ToRadians().Value;
@@ -1541,10 +1541,10 @@ return
             double lon2 = destination.Longitude.Normalize().ToRadians().Value;
 
             //% correct for errors at exact poles by adjusting 0.6 millimeters:
-            //kidx = abs(pi/2-abs(lat1)) < 1e-10;
-            //if any(kidx);
+            // kidx = abs(pi/2-abs(lat1)) < 1e-10;
+            // if any(kidx);
             //    lat1(kidx) = sign(lat1(kidx))*(pi/2-(1e-10));
-            //end
+            // end
 
             // Correct for errors at exact poles by adjusting 0.6mm
             if (Math.Abs(Math.PI * 0.5 - Math.Abs(lat1)) < 1E-10)
@@ -1552,77 +1552,77 @@ return
                 lat1 = Math.Sign(lat1) * (Math.PI * 0.5 - 1E-10);
             }
 
-            //kidx = abs(pi/2-abs(lat2)) < 1e-10;
-            //if any(kidx)
+            // kidx = abs(pi/2-abs(lat2)) < 1e-10;
+            // if any(kidx)
             //    lat2(kidx) = sign(lat2(kidx))*(pi/2-(1e-10));
-            //end
+            // end
 
             if (Math.Abs(Math.PI * 0.5 - Math.Abs(lat2)) < 1E-10)
             {
                 lat2 = Math.Sign(lat2) * (Math.PI * 0.5 - 1E-10);
             }
 
-            //f = (a-b)/a;
+            // f = (a-b)/a;
 
             double f = ellipsoid.Flattening;
 
-            //U1 = atan((1-f)*tan(lat1));
+            // U1 = atan((1-f)*tan(lat1));
 
             double u1 = Math.Atan((1 - f) * Math.Tan(lat1));
 
-            //U2 = atan((1-f)*tan(lat2));
+            // U2 = atan((1-f)*tan(lat2));
 
             double u2A = Math.Atan((1 - f) * Math.Tan(lat2));
 
-            //lon1 = mod(lon1, 2*pi);
+            // lon1 = mod(lon1, 2*pi);
 
             lon1 = lon1 % (2 * Math.PI);
 
-            //lon2 = mod(lon2, 2*pi);
+            // lon2 = mod(lon2, 2*pi);
 
             lon2 = lon2 % (2 * Math.PI);
 
-            //L = abs(lon2-lon1);
+            // L = abs(lon2-lon1);
 
             double l = Math.Abs(lon2 - lon1);
 
-            //kidx = L > pi;
-            //if any(kidx)
+            // kidx = L > pi;
+            // if any(kidx)
             //    L(kidx) = 2*pi - L(kidx);
-            //end
+            // end
 
             if (l > Math.PI)
             {
                 l = 2.0 * Math.PI - l;
             }
 
-            //lambda = L;
+            // lambda = L;
 
             double lambda = l;
 
-            //lambdaold = 0*lat1;
+            // lambdaold = 0*lat1;
 
-            //itercount = 0;
+            // itercount = 0;
 
             int itercount = 0;
 
-            //notdone = logical(1+0*lat1);
+            // notdone = logical(1+0*lat1);
 
             bool notdone = true;
 
-            //alpha = 0*lat1;
+            // alpha = 0*lat1;
 
-            //sigma = 0*lat1;
+            // sigma = 0*lat1;
 
-            //cos2sigmam = 0*lat1;
+            // cos2sigmam = 0*lat1;
 
-            //C = 0*lat1;
+            // C = 0*lat1;
 
-            //warninggiven = logical(0);
+            // warninggiven = logical(0);
 
-            //bool warninggiven = false;
+            // bool warninggiven = false;
 
-            //while any(notdone)  % force at least one execution
+            // while any(notdone)  % force at least one execution
 
             while (notdone)
             {
@@ -1637,7 +1637,7 @@ return
                 {
                     //        if ~warninggiven
 
-                    //if (!warninggiven)
+                    // if (!warninggiven)
                     //{
                     //    //            warning(['Essentially antipodal points encountered. ' ...
                     //    //                'Precision may be reduced slightly.']);
@@ -1649,7 +1649,7 @@ return
                     //        end
                     //        lambda(notdone) = pi;
 
-                    //lambda = Math.PI;
+                    // lambda = Math.PI;
 
                     //        break
 
@@ -1727,7 +1727,7 @@ return
                 {
                     //        if ~warninggiven
 
-                    //if (!warninggiven)
+                    // if (!warninggiven)
                     //{
                     //    //            warning(['Essentially antipodal points encountered. ' ...
                     //    //                'Precision may be reduced slightly.']);
@@ -1753,7 +1753,7 @@ return
 
                 notdone = Math.Abs(lambda - lambdaold) > TARGET_ACCURACY;
 
-                //end
+                // end
 
                 // notice In some cases "alpha" would return a "NaN".  If values are healthy,
                 // remember them so we get a good distance calc.
@@ -1768,19 +1768,19 @@ return
                 Thread.Sleep(0);
             }
 
-            //u2 = cos(alpha).^2.*(a^2-b^2)/b^2;
+            // u2 = cos(alpha).^2.*(a^2-b^2)/b^2;
 
             double u2 = Math.Pow(Math.Cos(goodAlpha), 2) * (Math.Pow(a, 2) - Math.Pow(b, 2)) / Math.Pow(b, 2);
 
-            //A = 1+u2./16384.*(4096+u2.*(-768+u2.*(320-175.*u2)));
+            // A = 1+u2./16384.*(4096+u2.*(-768+u2.*(320-175.*u2)));
 
             double aa = 1 + u2 / 16384 * (4096 + u2 * (-768 + u2 * (320 - 175 * u2)));
 
-            //B = u2./1024.*(256+u2.*(-128+u2.*(74-47.*u2)));
+            // B = u2./1024.*(256+u2.*(-128+u2.*(74-47.*u2)));
 
             double bb = u2 / 1024 * (256 + u2 * (-128 + u2 * (74 - 47 * u2)));
 
-            //deltasigma = B.*sin(sigma).*(cos2sigmam+B./4.*(cos(sigma).*(-1+2.*...
+            // deltasigma = B.*sin(sigma).*(cos2sigmam+B./4.*(cos(sigma).*(-1+2.*...
             //    cos2sigmam.^2)-B./6.*cos2sigmam.*(-3+4.*sin(sigma).^2).*(-3+4*...
             //    cos2sigmam.^2)));
 
@@ -1788,13 +1788,13 @@ return
                 Math.Pow(goodCos2SigmaM, 2)) - bb / 6 * goodCos2SigmaM * (-3 + 4 * Math.Pow(Math.Sin(goodSigma), 2)) * (-3 + 4 *
                 Math.Pow(goodCos2SigmaM, 2))));
 
-            //varargout{1} = reshape(b.*A.*(sigma-deltasigma), keepsize);
+            // varargout{1} = reshape(b.*A.*(sigma-deltasigma), keepsize);
             double s = b * aa * (goodSigma - deltasigma);
 
             // Return the Distance in meters
             return new Distance(s, DistanceUnit.Meters).ToLocalUnitType();
 
-            //if nargout > 1
+            // if nargout > 1
             //    % From point #1 to point #2
             //    % correct sign of lambda for azimuth calcs:
             //    lambda = abs(lambda);
@@ -1809,8 +1809,8 @@ return
             //    a12(lat1tr <= -90) = 0;
             //    a12(lat1tr >= 90 ) = pi;
             //    varargout{2} = reshape(a12 * 57.2957795130823, keepsize); % to degrees
-            //end
-            //if nargout > 2
+            // end
+            // if nargout > 2
             //    a21=NaN*lat1;
             //    % From point #2 to point #1
             //    % correct sign of lambda for azimuth calcs:
@@ -1826,15 +1826,15 @@ return
             //    a21(lat2tr >= 90) = pi;
             //    a21(lat2tr <= -90) = 0;
             //    varargout{3} = reshape(a21 * 57.2957795130823, keepsize); % to degrees
-            //end
-            //return
+            // end
+            // return
 
             #endregion Newer code
 
             #region Unused Code (Commented Out)
 
             /*
-            //Dim AdjustedDestination As Position = destination.ToDatum(Datum)
+            // Dim AdjustedDestination As Position = destination.ToDatum(Datum)
             // USING THE FORMULA FROM:
             //$lat1 = deg2rad(28.5333);
             double lat1 = Latitude.ToRadians().Value;
@@ -1934,7 +1934,7 @@ return
         /// <returns></returns>
         public Position IntersectionOf(double firstBearing, Position secondPosition, double secondBearing)
         {
-            //Dim AdjustedDestination As Position = secondPosition.ToDatum(Datum)
+            // Dim AdjustedDestination As Position = secondPosition.ToDatum(Datum)
 
             const double tol = 0.000000000000001;
             //			  // in1 - line 1, point 1 latitude index
@@ -1946,17 +1946,17 @@ return
             //  // in7 - intersection point latitude index
             //  // in8 - intersection point longitude index
 
-            //var j = form.units.selectedIndex;
-            //var units = form.units.options[j].value;
+            // var j = form.units.selectedIndex;
+            // var units = form.units.options[j].value;
 
-            //double latddd1 = Latitude.DecimalDegrees;
+            // double latddd1 = Latitude.DecimalDegrees;
             double latrad1 = _latitude.ToRadians().Value;
-            //double londdd1 = Longitude.DecimalDegrees;
+            // double londdd1 = Longitude.DecimalDegrees;
             double lonrad1 = _longitude.ToRadians().Value;
 
-            //double latddd2 = secondPosition.Latitude.DecimalDegrees;
+            // double latddd2 = secondPosition.Latitude.DecimalDegrees;
             double latrad2 = secondPosition.Latitude.ToRadians().Value;
-            //double londdd2 = secondPosition.Longitude.DecimalDegrees;
+            // double londdd2 = secondPosition.Longitude.DecimalDegrees;
             double lonrad2 = secondPosition.Longitude.ToRadians().Value;
 
             double crs13 = Radian.FromDegrees(firstBearing).Value;
@@ -1971,18 +1971,18 @@ return
             //  var londdd2 = dms2ddd(form.degreevalue[in5].value, form.minutevalue[in5].value, form.secondvalue[in5].value);  // likewise for longitude
             //  var lonrad2 = deg2rad(londdd2);
 
-            //  var crs13 = dms2ddd(form.degreevalue[in3].value, form.minutevalue[in3].value, form.secondvalue[in3].value);  //convert bearing line 1 to decimal degrees
-            //  crs13 = deg2rad(crs13);			 //convert to radians
-            //  var crs23 = dms2ddd(form.degreevalue[in6].value, form.minutevalue[in6].value, form.secondvalue[in6].value);  //convert bearing line 2 to decimal degrees
-            //  crs23 = deg2rad(crs23);			 //convert to radians
+            //  var crs13 = dms2ddd(form.degreevalue[in3].value, form.minutevalue[in3].value, form.secondvalue[in3].value);  // convert bearing line 1 to decimal degrees
+            //  crs13 = deg2rad(crs13);			 // convert to radians
+            //  var crs23 = dms2ddd(form.degreevalue[in6].value, form.minutevalue[in6].value, form.secondvalue[in6].value);  // convert bearing line 2 to decimal degrees
+            //  crs23 = deg2rad(crs23);			 // convert to radians
 
             double w = lonrad2 - lonrad1;
             double v = latrad1 - latrad2;
-            double s = 2 * Math.Asin(Math.Sqrt((Math.Sin(v * 0.5) * Math.Sin(v * 0.5)) + (Math.Cos(latrad1) * Math.Cos(latrad2) * Math.Sin(w * 0.5) * Math.Sin(w * 0.5)))); // //distance between start points
+            double s = 2 * Math.Asin(Math.Sqrt((Math.Sin(v * 0.5) * Math.Sin(v * 0.5)) + (Math.Cos(latrad1) * Math.Cos(latrad2) * Math.Sin(w * 0.5) * Math.Sin(w * 0.5)))); // // distance between start points
 
             //  var w = lonrad2 - lonrad1;
             //  var v = latrad1 - latrad2;
-            //  var s = 2 * Math.asin(Math.sqrt((Math.sin(v * 0.5) * Math.sin(v * 0.5)) + (Math.cos(latrad1) * Math.cos(latrad2) * Math.sin(w * 0.5) * Math.sin(w * 0.5))));	 //distance between start points
+            //  var s = 2 * Math.asin(Math.sqrt((Math.sin(v * 0.5) * Math.sin(v * 0.5)) + (Math.cos(latrad1) * Math.cos(latrad2) * Math.sin(w * 0.5) * Math.sin(w * 0.5))));	 // distance between start points
 
             double crs12;
             if (Math.Sin(lonrad1 - lonrad2) < 0)
@@ -2030,7 +2030,7 @@ return
             {
                 // NO EXCEPTION IS THROWN.  RETURN NULL
                 return Empty;
-                //throw new GeoException("No intersection exists between these two points and the given bearings.");
+                // throw new GeoException("No intersection exists between these two points and the given bearings.");
             }
             ang1 = Math.Abs(ang1);
             ang2 = Math.Abs(ang2);
@@ -2049,13 +2049,13 @@ return
             //		  alert('No Intersection Exists');
             //		  return true;
             //	 }
-            //else {
-            //var	ang1 = Math.abs(ang1);
-            //var	ang2 = Math.abs(ang2);
-            //var	ang3 = Math.acos(Math.sin(ang1) * Math.sin(ang2) * Math.cos(s) - Math.cos(ang1) * Math.cos(ang2));
-            //var	dst13 = Math.asin(Math.sin(ang2) * Math.sin(s) / Math.sin(ang3));
-            //var	latrad3 = Math.asin(Math.sin(latrad1) * Math.cos(dst13) + Math.cos(latrad1) * Math.sin(dst13) * Math.cos(crs13));
-            //var	lonrad3 = lonrad1 + Math.asin(Math.sin(crs13) * Math.sin(dst13) / Math.cos(latrad3));
+            // else {
+            // var	ang1 = Math.abs(ang1);
+            // var	ang2 = Math.abs(ang2);
+            // var	ang3 = Math.acos(Math.sin(ang1) * Math.sin(ang2) * Math.cos(s) - Math.cos(ang1) * Math.cos(ang2));
+            // var	dst13 = Math.asin(Math.sin(ang2) * Math.sin(s) / Math.sin(ang3));
+            // var	latrad3 = Math.asin(Math.sin(latrad1) * Math.cos(dst13) + Math.cos(latrad1) * Math.sin(dst13) * Math.cos(crs13));
+            // var	lonrad3 = lonrad1 + Math.asin(Math.sin(crs13) * Math.sin(dst13) / Math.cos(latrad3));
             //	   lonrad3 = mod(lonrad3 + pi, 2 * pi) - pi;
             //  ddd2dms(form, in8, rad2deg(lonrad3));
             //  ddd2dms(form, in7, rad2deg(latrad3));
@@ -2171,7 +2171,7 @@ return
                      * Modified for IBM SYSTEM 360 by John G.Gergen NGS ROCKVILLE MD 7507
                      * Ported from Fortran to Java by Daniele Franzoni.
                      *
-                     * Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/forward.for
+                     * Source: ftp:// ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/forward.for
                      *         subroutine DIRECT1
             // Protect internal variables from changes
                     final double lat1     = this.lat1;
@@ -2222,68 +2222,68 @@ return
             double fo = 1.0 - f;
             double semiMajorAxis = ellipsoid.SemiMajorAxisMeters;
 
-            //final double lat1     = this.lat1;
+            // final double lat1     = this.lat1;
             double lat1 = _latitude.ToRadians().Value;
 
-            //final double long1    = this.long1;
+            // final double long1    = this.long1;
             double long1 = _longitude.ToRadians().Value;
 
-            //final double azimuth  = this.azimuth;
+            // final double azimuth  = this.azimuth;
             double azimuth = bearing / 180.0 * Math.PI;
 
-            //final double distance = this.distance;
+            // final double distance = this.distance;
             double dist = distance.ToMeters().Value;
 
-            //double TU  = fo*Math.sin(lat1) / Math.cos(lat1);
+            // double TU  = fo*Math.sin(lat1) / Math.cos(lat1);
             double tu = fo * Math.Sin(lat1) / Math.Cos(lat1);
 
-            //double SF  = Math.sin(azimuth);
+            // double SF  = Math.sin(azimuth);
             double sf = Math.Sin(azimuth);
 
-            //double CF  = Math.cos(azimuth);
+            // double CF  = Math.cos(azimuth);
             double cf = Math.Cos(azimuth);
 
-            //double BAZ = (CF!=0) ? Math.atan2(TU, CF)*2.0 : 0;
+            // double BAZ = (CF!=0) ? Math.atan2(TU, CF)*2.0 : 0;
             double baz = (cf != 0) ? Math.Atan2(tu, cf) * 2.0 : 0;
 
-            //double CU  = 1/Math.sqrt(TU*TU + 1.0);
+            // double CU  = 1/Math.sqrt(TU*TU + 1.0);
             double cu = 1.0 / Math.Sqrt(tu * tu + 1.0);
 
-            //double SU  = TU*CU;
+            // double SU  = TU*CU;
             double su = tu * cu;
 
-            //double SA  = CU*SF;
+            // double SA  = CU*SF;
             double sa = cu * sf;
 
-            //double C2A = 1.0 - SA*SA;
+            // double C2A = 1.0 - SA*SA;
             double c2A = 1.0 - sa * sa;
 
-            //double X   = Math.sqrt((1.0/fo/fo-1)*C2A+1.0) + 1.0;
+            // double X   = Math.sqrt((1.0/fo/fo-1)*C2A+1.0) + 1.0;
             double x = Math.Sqrt((1.0 / fo / fo - 1) * c2A + 1.0) + 1.0;
 
-            //X   = (X-2.0)/X;
+            // X   = (X-2.0)/X;
             x = (x - 2.0) / x;
 
-            //double C   = 1.0-X;
+            // double C   = 1.0-X;
             double c = 1.0 - x;
 
-            //C   = (X*X/4.0+1.0)/C;
+            // C   = (X*X/4.0+1.0)/C;
             c = (x * x / 4.0 + 1.0) / c;
 
-            //double D   = (0.375*X*X-1.0)*X;
+            // double D   = (0.375*X*X-1.0)*X;
             double d = (0.375 * x * x - 1.0) * x;
 
-            //TU   = distance / fo / semiMajorAxis / C;
+            // TU   = distance / fo / semiMajorAxis / C;
             tu = dist / fo / semiMajorAxis / c;
 
-            //double Y   = TU;
+            // double Y   = TU;
             double y = tu;
 
-            //double SY, CY, CZ, E;
+            // double SY, CY, CZ, E;
             double sy, cy, cz, e;
             int iterations = 0;
 
-            //do {
+            // do {
             do
             {
                 //    SY = Math.sin(Y);
@@ -2306,37 +2306,37 @@ return
                 iterations++;
             } while (iterations < 30 && Math.Abs(y - c) > TARGET_ACCURACY);
 
-            //BAZ  = CU*CY*CF - SU*SY;
+            // BAZ  = CU*CY*CF - SU*SY;
             baz = cu * cy * cf - su * sy;
 
-            //C    = fo*Math.sqrt(SA*SA+BAZ*BAZ);
+            // C    = fo*Math.sqrt(SA*SA+BAZ*BAZ);
             c = fo * Math.Sqrt(sa * sa + baz * baz);
 
-            //D    = SU*CY + CU*SY*CF;
+            // D    = SU*CY + CU*SY*CF;
             d = su * cy + cu * sy * cf;
 
-            //lat2 = Math.atan2(D, C);
+            // lat2 = Math.atan2(D, C);
             double lat2 = Math.Atan2(d, c);
 
-            //C    = CU*CY-SU*SY*CF;
+            // C    = CU*CY-SU*SY*CF;
             c = cu * cy - su * sy * cf;
 
-            //X    = Math.atan2(SY*SF, C);
+            // X    = Math.atan2(SY*SF, C);
             x = Math.Atan2(sy * sf, c);
 
-            //C    = ((-3.0*C2A+4.0)*f+4.0)*C2A*f/16.0;
+            // C    = ((-3.0*C2A+4.0)*f+4.0)*C2A*f/16.0;
             c = ((-3.0 * c2A + 4.0) * f + 4.0) * c2A * f / 16.0;
 
-            //D    = ((E*CY*C+CZ)*SY*C+Y)*SA;
+            // D    = ((E*CY*C+CZ)*SY*C+Y)*SA;
             d = ((e * cy * c + cz) * sy * c + y) * sa;
 
-            //long2 = long1+X - (1.0-C)*D*f;
+            // long2 = long1+X - (1.0-C)*D*f;
             double long2 = long1 + x - (1.0 - c) * d * f;
 
-            //long2 = castToAngleRange(long2);
+            // long2 = castToAngleRange(long2);
             long2 = long2 - (2 * Math.PI) * Math.Floor(long2 / (2 * Math.PI) + 0.5);
 
-            //destinationValid = true;
+            // destinationValid = true;
 
             // Return a new position, rounded to 10 digits of accuracy
 
@@ -2853,7 +2853,7 @@ return
         /// <remarks>The two objects are compared at up to four digits of precision.</remarks>
         public bool Equals(Position other)
         {
-            //if (other == null) return false;
+            // if (other == null) return false;
             return _latitude.Equals(other.Latitude) && _longitude.Equals(other.Longitude);
         }
 

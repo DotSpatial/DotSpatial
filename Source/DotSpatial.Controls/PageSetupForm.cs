@@ -41,13 +41,13 @@ namespace DotSpatial.Controls
         ///<param name="settings"></param>
         public PageSetupForm(PrinterSettings settings)
         {
-            //This call is required by the Windows Form Designer.
+            // This call is required by the Windows Form Designer.
             InitializeComponent();
 
-            //Store the printer settings
+            // Store the printer settings
             _printerSettings = settings;
 
-            //Gets the list of available paper sizes
+            // Gets the list of available paper sizes
             ComboPaperSizes.SuspendLayout();
             PrinterSettings.PaperSizeCollection paperSizes = settings.PaperSizes;
             foreach (PaperSize ps in paperSizes)
@@ -56,13 +56,13 @@ namespace DotSpatial.Controls
             if (ComboPaperSizes.SelectedIndex == -1) ComboPaperSizes.SelectedIndex = 1;
             ComboPaperSizes.ResumeLayout();
 
-            //Gets the paper orientation
+            // Gets the paper orientation
             if (settings.DefaultPageSettings.Landscape)
                 _rdbLandscape.Checked = true;
             else
                 _rdbPortrait.Checked = true;
 
-            //Gets the margins
+            // Gets the margins
             _left = settings.DefaultPageSettings.Margins.Left / 100.0;
             txtBoxLeft.Text = $"{_left:0.00}";
             _top = settings.DefaultPageSettings.Margins.Top / 100.0;

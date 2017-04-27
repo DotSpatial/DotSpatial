@@ -149,7 +149,7 @@ namespace DotSpatial.Controls
         {
             if (_bitmap == null) return;
           
-            //This color matrix is used to adjust how the image is drawn to the graphics object
+            // This color matrix is used to adjust how the image is drawn to the graphics object
             var bright = _brightness / 255.0F;
             var cont = (_contrast + 255.0F) / 255.0F;
             float[][] colorArray =
@@ -164,7 +164,7 @@ namespace DotSpatial.Controls
             var imgAttrib = new ImageAttributes();
             imgAttrib.SetColorMatrix(cm);
 
-            //Defines a parallelgram where the image is to be drawn
+            // Defines a parallelgram where the image is to be drawn
             var destPoints = new[]
             {
                 LocationF,

@@ -300,7 +300,7 @@ namespace DotSpatial.Positioning.Tests
         }
 
         /// <summary>
-        ///Checks whether the GpgsvSentence that was build from reading a Gprmc string with NmeaReader contains all the objects it should.
+        /// Checks whether the GpgsvSentence that was build from reading a Gprmc string with NmeaReader contains all the objects it should.
         /// </summary>
         [Test]
         public void ReadGprmcWithNmeaReader()

@@ -53,7 +53,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             InitializeComponent();
             GroupBox.Text = param.Name;
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             base.Param = param;
             HandleStatusLight();
         }
@@ -67,10 +67,10 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             _enableUpdate = false;
 
-            //base.Status = ToolStatus.Ok;
+            // base.Status = ToolStatus.Ok;
             // base.LightTipText = DotSpatial.MessageStrings.FeaturesSelected;
 
-            //We load the default parameters
+            // We load the default parameters
             if (_click)
             {
                 textBox1.Text = _expression;
@@ -87,7 +87,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         #endregion
 
-        //User Click the Select Button
+        // User Click the Select Button
         private void BtnSelectClick(object sender, EventArgs e)
         {
             if (_enableUpdate)
@@ -172,7 +172,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new Size(400, 20);
             this.textBox1.TabIndex = 3;
-            //this.textBox1.TextChanged += new EventHandler(this.textBox1_TextChanged);
+            // this.textBox1.TextChanged += new EventHandler(this.textBox1_TextChanged);
             this.textBox1.Click += new EventHandler(this.TextBox1Click);
             //
             // IndexElement

@@ -223,7 +223,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public override Size GetLegendSymbolSize()
         {
-            Size size = new Size(16, 16); //default size for smaller lines
+            Size size = new Size(16, 16); // default size for smaller lines
             if (_strokes == null) return size;
             foreach (var stroke in _strokes.OfType<ISimpleStroke>())
             {

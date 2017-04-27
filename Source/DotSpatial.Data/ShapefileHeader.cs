@@ -181,7 +181,7 @@ namespace DotSpatial.Data
             FileInfo fi = new FileInfo(ShxFilename);
             if (fi.Exists)
             {
-                _shxLength = Convert.ToInt32(fi.Length / 2); //length is in 16 bit words.
+                _shxLength = Convert.ToInt32(fi.Length / 2); // length is in 16 bit words.
             }
         }
 

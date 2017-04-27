@@ -625,7 +625,7 @@ namespace DotSpatial.Plugins.About
         }
 
         /// <summary>
-        /// Launch any http:// or mailto: links clicked in the body of the rich text box.
+        /// Launch any http://or mailto: links clicked in the body of the rich text box.
         /// </summary>
         /// <param name="sender">The sender that raised the event.</param>
         /// <param name="e">The event args.</param>

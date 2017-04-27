@@ -37,7 +37,7 @@ namespace DotSpatial.Positioning
         internal GprmcSentence(string sentence, string commandWord, string[] words, string validChecksum)
             : base(sentence, commandWord, words, validChecksum)
         {
-            SetPropertiesFromSentence(); //correct this classes properties based on the sentence
+            SetPropertiesFromSentence(); // correct this classes properties based on the sentence
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace DotSpatial.Positioning
         public GprmcSentence(string sentence)
             : base(sentence)
         {
-            SetPropertiesFromSentence(); //correct this classes properties based on the sentence
+            SetPropertiesFromSentence(); // correct this classes properties based on the sentence
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace DotSpatial.Positioning
 
             // Set this object's sentence
             Sentence = builder.ToString();
-            SetPropertiesFromSentence(); //correct this classes properties based on the sentence
+            SetPropertiesFromSentence(); // correct this classes properties based on the sentence
 
             // Finally, append the checksum
             AppendChecksum();

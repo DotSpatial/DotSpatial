@@ -103,7 +103,7 @@ namespace DotSpatial.Symbology
         ///// <summary>
         ///// Gets the legend that this group belongs to... regardless of how deep the item is.
         ///// </summary>
-        //ILegend Legend
+        // ILegend Legend
         //{
         //    get;
         //}

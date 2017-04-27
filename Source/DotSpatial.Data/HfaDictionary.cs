@@ -11,7 +11,7 @@
 //
 // ********************************************************************************************************
 
-//ORIGINAL HEADER FROM C++ source which was converted to C# by Ted Dunsford 2/25/2010
+// ORIGINAL HEADER FROM C++ source which was converted to C# by Ted Dunsford 2/25/2010
 /******************************************************************************
  * $Id: hfadictionary.cpp, v 1.8 2005/09/27 18:01:37 fwarmerdam Exp $
  *

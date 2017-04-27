@@ -78,8 +78,8 @@ namespace DotSpatial.Data
             // If the area is negative, then the polygon is clockwise.
             // http://en.wikipedia.org/wiki/Polygon
             double area = 0;
-            //We will triangulate the polygon
-            //into triangles with points p[0], p[i], p[i+1]
+            // We will triangulate the polygon
+            // into triangles with points p[0], p[i], p[i+1]
             for (int i = StartIndex; i <= EndIndex; i++)
             {
                 double x1 = Vertices[i * 2];

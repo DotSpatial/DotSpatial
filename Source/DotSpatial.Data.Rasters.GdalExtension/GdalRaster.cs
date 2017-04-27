@@ -178,7 +178,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
                     T[] data = new T[1];
 
-                    //http://trac.osgeo.org/gdal/wiki/GdalOgrCsharpRaster
+                    // http://trac.osgeo.org/gdal/wiki/GdalOgrCsharpRaster
                     GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
                     try
                     {
@@ -533,9 +533,9 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                         {
                             case PaletteInterp.GPI_RGB: Colors[ColorIndex] = Color.FromArgb(entry.c4, entry.c1, entry.c2, entry.c3); break;
                             case PaletteInterp.GPI_Gray: Colors[ColorIndex] = Color.FromArgb(255, entry.c1, entry.c1, entry.c1); break;
-                            //TODO: do any files use these types?
-                            //case PaletteInterp.GPI_HLS
-                            //case PaletteInterp.GPI_CMYK
+                            // TODO: do any files use these types?
+                            // case PaletteInterp.GPI_HLS
+                            // case PaletteInterp.GPI_CMYK
                         }
                         
                     }

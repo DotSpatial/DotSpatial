@@ -151,7 +151,7 @@ namespace DotSpatial.Symbology.Forms
                 if (_scrVertical.Enabled) _scrVertical.Visible = true;
             }
 
-            //if (_documentRectangle.Width > 3 * Width || _documentRectangle.Height > 3 * Height)
+            // if (_documentRectangle.Width > 3 * Width || _documentRectangle.Height > 3 * Height)
             //{
             //    ResetPage();
             //}
@@ -229,7 +229,7 @@ namespace DotSpatial.Symbology.Forms
         ///// a small region of this page, and then invalidate the client rectangle.
         ///// </summary>
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //public Bitmap Page
+        // public Bitmap Page
         //{
         //    get { return _page; }
         //    set { _page = value; }
@@ -241,7 +241,7 @@ namespace DotSpatial.Symbology.Forms
         ///// The Page Rectangle is in document coordinates.
         ///// </summary>
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //public Rectangle PageRectangle
+        // public Rectangle PageRectangle
         //{
         //    get { return _pageRectangle; }
         //    set { _pageRectangle = value; }
@@ -399,7 +399,7 @@ namespace DotSpatial.Symbology.Forms
                 }
                 if (BackgroundImageLayout == ImageLayout.Tile)
                 {
-                    //g.DrawImage(BackgroundImage, new Point(0, 0));
+                    // g.DrawImage(BackgroundImage, new Point(0, 0));
 
                     g.FillRectangle(_backImageBrush, ClientRectangle);
                 }

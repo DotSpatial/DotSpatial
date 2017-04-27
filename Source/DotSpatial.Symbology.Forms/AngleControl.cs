@@ -97,9 +97,9 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this._anglePicker1, "_anglePicker1");
             this._anglePicker1.Angle = 0;
             this._anglePicker1.BackgroundImage = null;
-            //this._anglePicker1.BorderStyle = BorderStyle.None;
+            // this._anglePicker1.BorderStyle = BorderStyle.None;
             this._anglePicker1.CircleBorderColor = Color.LightGray;
-            //this._anglePicker1.CircleBorderStyle = BorderStyle.Fixed3D;
+            // this._anglePicker1.CircleBorderStyle = BorderStyle.Fixed3D;
             this._anglePicker1.CircleFillColor = Color.LightGray;
             this._anglePicker1.Clockwise = false;
             this._anglePicker1.Font = null;

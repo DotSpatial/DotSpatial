@@ -153,7 +153,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Description("Gets or sets the symbolizer for this category")]
         //[TypeConverter(typeof(GeneralTypeConverter)),
-        //Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
+        // Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
         public new IPolygonSymbolizer Symbolizer
         {
             get { return base.Symbolizer as IPolygonSymbolizer; }
@@ -165,7 +165,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Description("Gets or sets the symbolizer to use to draw selected features from this category.")]
         //[TypeConverter(typeof(GeneralTypeConverter)),
-        //Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
+        // Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
         public new IPolygonSymbolizer SelectionSymbolizer
         {
             get { return base.SelectionSymbolizer as IPolygonSymbolizer; }

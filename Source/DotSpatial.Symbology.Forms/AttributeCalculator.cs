@@ -152,7 +152,7 @@ namespace DotSpatial.Symbology.Forms
             char[] seperators = new[] { '[', ']', ' ', ',' };
             string[] split = exp.Split(seperators, StringSplitOptions.None);
             int noOfSplit = split.Count();
-            FunClass[] functionClsArr = new FunClass[noOfSplit]; //assign no of arg to no of split string
+            FunClass[] functionClsArr = new FunClass[noOfSplit]; // assign no of arg to no of split string
             FunClass tempClass;
             bool isFunctionEndingBracket = false;
             string st;
@@ -169,17 +169,17 @@ namespace DotSpatial.Symbology.Forms
                         break;
                     case (","):
                         break;
-                    case ("(")://process Open Bracket
+                    case ("("):// process Open Bracket
                     case ("{"): numPart++;
                         break;
 
-                    case (")")://process Closed Bracket
+                    case (")"):// process Closed Bracket
                     case ("}"):
                         {
                             if (st == ")" && i > 1)
                             {
-                                //consider closing functions
-                                //check it is normal closing bracket or function closing bracket
+                                // consider closing functions
+                                // check it is normal closing bracket or function closing bracket
                                 num = i;
                                 for (int l = i - 1; l > -1; l--)
                                 {
@@ -190,13 +190,13 @@ namespace DotSpatial.Symbology.Forms
                                         {
                                             if (functionClsArr[l].NoOfArg == 1 && num == i - 2)
                                             {
-                                                //mono function
+                                                // mono function
                                                 isFunctionEndingBracket = true;
                                                 break;
                                             }
                                             if (functionClsArr[l].NoOfArg == 3 && num == i - 3)
                                             {
-                                                //di function
+                                                // di function
                                                 isFunctionEndingBracket = true;
                                                 break;
                                             }
@@ -206,7 +206,7 @@ namespace DotSpatial.Symbology.Forms
                             }
                             if (isFunctionEndingBracket == false)
                                 numPart -= 1;
-                            else //No need to subtract
+                            else // No need to subtract
                                 isFunctionEndingBracket = false;
                             if (numPart < 0)
                                 throw new ArgumentException(SymbologyFormsMessageStrings.AttributeCalculator_TooManyClosingBrackets);
@@ -240,8 +240,8 @@ namespace DotSpatial.Symbology.Forms
                     case ("^"):
                         tempClass = new FunClass(st, i) { PriorityLevel = 4 + numPart * 10 };
                         functionClsArr[i] = tempClass;
-                        //functionClsArr[i].PreviousArgument = functionClsArr[i - 1].functionName;
-                        //functionClsArr[i].NextArgument = functionClsArr[i + 1].functionName;
+                        // functionClsArr[i].PreviousArgument = functionClsArr[i - 1].functionName;
+                        // functionClsArr[i].NextArgument = functionClsArr[i + 1].functionName;
                         functionClsArr[i].NoOfArg = 2;
                         break;
 
@@ -259,13 +259,13 @@ namespace DotSpatial.Symbology.Forms
                         break;
 
                     case (";"):
-                        //comes from bivariate function f(x;y)
+                        // comes from bivariate function f(x;y)
                         break;
                     case ("|"):
-                        //absolute symbol |.|
+                        // absolute symbol |.|
                         if (IsNumeric(split[i - 1]))
                         {
-                            //ending absolte symbol
+                            // ending absolte symbol
                             numPart--;
                             if (numPart < 0)
                             {
@@ -274,7 +274,7 @@ namespace DotSpatial.Symbology.Forms
                         }
                         else
                         {
-                            //start absolute
+                            // start absolute
                             numPart++;
                             tempClass = new FunClass(st, i) { PriorityLevel = numPart * 10 };
                             functionClsArr[i] = tempClass;
@@ -284,18 +284,18 @@ namespace DotSpatial.Symbology.Forms
 
                     case ("="):
                     case ("<"):
-                    case (">")://Logical operators
+                    case (">"):// Logical operators
                         tempClass = new FunClass(st, i) { PriorityLevel = 1 + numPart * 10 };
                         functionClsArr[i] = tempClass;
                         functionClsArr[i].NoOfArg = 2;
                         break;
 
-                    case ("X"):  //Not use full in practical
+                    case ("X"):  // Not use full in practical
                     case ("x"):
                     case ("Y"):
                     case ("y"):
-                    case ("Z")://monomial coeff.
-                    case ("z")://Ex: 7x  is converted into product 7*x
+                    case ("Z"):// monomial coeff.
+                    case ("z"):// Ex: 7x  is converted into product 7*x
                         if (IsNumeric(split[i + 1]))
                         {
                             tempClass = new FunClass("*", i) { PriorityLevel = 3 + numPart * 10 };
@@ -307,13 +307,13 @@ namespace DotSpatial.Symbology.Forms
                     default:
                         if (IsNumeric(st))
                         {
-                            //Check with Numeric number
+                            // Check with Numeric number
                             if (st.IndexOf(")", st.Length - 1) == st.Length - 1 && st.Length > 1)
                             {
-                                //this will check the following 24).closing bracket with out space in between
+                                // this will check the following 24).closing bracket with out space in between
                                 st = st.Remove(st.Length - 1, 1);
                                 st = st.Trim();
-                                //check it is normal closing bracket or function closing bracket
+                                // check it is normal closing bracket or function closing bracket
                                 num = i;
                                 for (int l = i - 1; l > -1; l--)
                                 {
@@ -324,13 +324,13 @@ namespace DotSpatial.Symbology.Forms
                                         {
                                             if (functionClsArr[l].NoOfArg == 1 && num == i - 1)
                                             {
-                                                //mono function
+                                                // mono function
                                                 isFunctionEndingBracket = true;
                                                 break;
                                             }
                                             if (functionClsArr[l].NoOfArg == 3 && num == i - 2)
                                             {
-                                                //di function
+                                                // di function
                                                 isFunctionEndingBracket = true;
                                                 break;
                                             }
@@ -350,7 +350,7 @@ namespace DotSpatial.Symbology.Forms
 
                         if (st.IndexOf("(", 0) == 0 && st.Length > 1)
                         {
-                            //this will check the following 24).starting bracket with out space in between
+                            // this will check the following 24).starting bracket with out space in between
                             st = st.Remove(0, 1);
                             st = st.Trim();
                             numPart++;
@@ -362,7 +362,7 @@ namespace DotSpatial.Symbology.Forms
                         }
                         if (fun1Full.ToLower().Contains(st.ToLower()))
                         {
-                            //MonoVariable function
+                            // MonoVariable function
                             tempClass = new FunClass(st, i) { PriorityLevel = 9 + numPart * 10 };
                             functionClsArr[i] = tempClass;
                             functionClsArr[i].NoOfArg = 1;
@@ -370,10 +370,10 @@ namespace DotSpatial.Symbology.Forms
                         }
                         if (fun2Full.ToLower().Contains(st.ToLower()))
                         {
-                            //BiVariable function
+                            // BiVariable function
                             tempClass = new FunClass(st, i) { PriorityLevel = 9 + numPart * 10 };
                             functionClsArr[i] = tempClass;
-                            functionClsArr[i].NoOfArg = 3; //mean it need to take next two arguments but in between ";" sysmbol
+                            functionClsArr[i].NoOfArg = 3; // mean it need to take next two arguments but in between ";" sysmbol
                             break;
                         }
                         foreach (string field in _fields)
@@ -396,8 +396,8 @@ namespace DotSpatial.Symbology.Forms
                 }
             }
 
-            int count = 0; //index after filtered
-            //sort the array.
+            int count = 0; // index after filtered
+            // sort the array.
             List<FunClass> templist1 = new List<FunClass>();
             foreach (FunClass funcls in functionClsArr)
             {
@@ -410,7 +410,7 @@ namespace DotSpatial.Symbology.Forms
             }
 
             int noOfArr = templist1.Count;
-            //assign the relavent variables
+            // assign the relavent variables
             for (int i = 0; i < noOfArr; i++)
             {
                 if (templist1[i].NoOfArg == 1)
@@ -427,7 +427,7 @@ namespace DotSpatial.Symbology.Forms
                 }
                 else if (templist1[i].NoOfArg == 3)
                 {
-                    //need to modify to handle continues two arguments
+                    // need to modify to handle continues two arguments
                     if (i < noOfArr - 2)
                     {
                         templist1[i].PreviousArgument = templist1[i + 1].FunctionName;
@@ -436,12 +436,12 @@ namespace DotSpatial.Symbology.Forms
                 }
             }
 
-            //sort according to Priority Level
+            // sort according to Priority Level
             for (int a = 1; a < noOfArr; a++)
             {
                 if (templist1[a].PriorityLevel > templist1[a - 1].PriorityLevel)
                 {
-                    //int b = a;
+                    // int b = a;
                     for (int c = a; c > 0; c--)
                     {
                         if (templist1[c].PriorityLevel > templist1[c - 1].PriorityLevel)
@@ -454,14 +454,14 @@ namespace DotSpatial.Symbology.Forms
                 }
             }
 
-            //arrange operation next to previous priority level operation in same prority level oprations
+            // arrange operation next to previous priority level operation in same prority level oprations
             for (int a = 2; a < noOfArr; a++)
             {
                 if (templist1[a].PriorityLevel == templist1[a - 1].PriorityLevel && templist1[a].PriorityLevel > 0)
                 {
                     if (a > 1)
                     {
-                        //At least 3 operations need, 1 higher prority and 2 same prorities
+                        // At least 3 operations need, 1 higher prority and 2 same prorities
                         if (templist1[a - 2].Index > templist1[a].Index)
                         {
                             if (templist1[a].Index > templist1[a - 1].Index)
@@ -484,24 +484,24 @@ namespace DotSpatial.Symbology.Forms
                 }
             }
 
-            //take selected destination field from combo box
+            // take selected destination field from combo box
             int destinationCol = comDestFieldComboBox.SelectedIndex;
             if (destinationCol == -1)
             {
-                //set to new field if user not selected
+                // set to new field if user not selected
                 destinationCol = 0;
             }
             if (destinationCol == 0)
             {
-                //create new field
+                // create new field
                 if (CreateNewColumn() == false)
                 {
                     return;
                 }
-                destinationCol = FeatureSet.DataTable.Columns.Count; //point the last field
+                destinationCol = FeatureSet.DataTable.Columns.Count; // point the last field
             }
 
-            //execute the equation through records
+            // execute the equation through records
             for (int i = 0; i < _fs.DataTable.Rows.Count; i++)
             {
                 double finanalVal = 1.0;
@@ -512,7 +512,7 @@ namespace DotSpatial.Symbology.Forms
                     {
                         if (templist1[a].NoOfArg == 0)
                         {
-                            //check it is argument.
+                            // check it is argument.
                             continue;
                         }
                         bool isField1 = false;
@@ -522,15 +522,15 @@ namespace DotSpatial.Symbology.Forms
                         double argVal1 = 0.0;
                         double argVal2 = 0.0;
                         double val;
-                        int colField1 = 0; //save the colum index of the field
+                        int colField1 = 0; // save the colum index of the field
 
                         if (templist1[a].NoOfArg == 1)
                         {
-                            //mono argument function
+                            // mono argument function
                             arg1 = templist1[a].NextArgument;
                             if (IsNumeric(arg1) == false)
                             {
-                                //Get the field from data Table
+                                // Get the field from data Table
                                 for (int j = 0; j < _fields.Count; j++)
                                 {
                                     if (arg1 == _fields[j])
@@ -555,7 +555,7 @@ namespace DotSpatial.Symbology.Forms
                                 throw new ArgumentException(SymbologyFormsMessageStrings.AttributeCalculator_ParameterInvalid);
                             }
 
-                            val = EvaluateFunction(GetTokenNo(templist1[a].FunctionName), argVal1, 0.0); //EXECUTE operation
+                            val = EvaluateFunction(GetTokenNo(templist1[a].FunctionName), argVal1, 0.0); // EXECUTE operation
                             templist1[a].Value = val;
                             finanalVal = finanalVal * val;
                         }
@@ -564,15 +564,15 @@ namespace DotSpatial.Symbology.Forms
                             string arg2;
                             if ((templist1[a].NoOfArg == 2))
                             {
-                                //operator
+                                // operator
                                 arg1 = templist1[a].PreviousArgument;
                                 arg2 = templist1[a].NextArgument;
                                 if (IsNumeric(arg1) == false)
                                 {
-                                    //Get the field from data Table
+                                    // Get the field from data Table
                                     for (int j = 0; j < _fields.Count; j++)
                                     {
-                                        //check in the field of datatable
+                                        // check in the field of datatable
                                         if (arg1 == _fields[j])
                                         {
                                             colField1 = j;
@@ -584,15 +584,15 @@ namespace DotSpatial.Symbology.Forms
 
                                 if (a > 0)
                                 {
-                                    //take the value from previous operation
+                                    // take the value from previous operation
                                     for (int r = a; r > -1; r--)
                                     {
-                                        //go through previous calculated functions
+                                        // go through previous calculated functions
                                         if (Equals(noNeedToAssign, true))
                                             break;
                                         if (templist1[a].Index > templist1[r].Index)
                                         {
-                                            //check the prority in left side
+                                            // check the prority in left side
                                             for (int b = a; b < noOfArr; b++)
                                             {
                                                 // this will check the rest operation that in between current and Previous prority operation
@@ -620,13 +620,13 @@ namespace DotSpatial.Symbology.Forms
                                     throw new ArgumentException(SymbologyFormsMessageStrings.AttributeCalculator_ParameterInvalid);
                                 }
 
-                                isArgAssign = false; //reset flag
+                                isArgAssign = false; // reset flag
                                 noNeedToAssign = false;
 
                                 if (IsNumeric(arg2) == false)
                                 {
-                                    //Get the field from data Table
-                                    //Caroso add code to determine the second field
+                                    // Get the field from data Table
+                                    // Caroso add code to determine the second field
                                     int j = 0;
                                     foreach (string t in _fields)
                                     {
@@ -642,15 +642,15 @@ namespace DotSpatial.Symbology.Forms
 
                                 if (a > 0)
                                 {
-                                    //take the value from previous operation
+                                    // take the value from previous operation
                                     for (int r = a; r > -1; r--)
                                     {
-                                        //go through previous calculated functions
+                                        // go through previous calculated functions
                                         if (noNeedToAssign) break;
                                         if (templist1[a].Index < templist1[r].Index)
                                         {
-                                            //check the prority in right side
-                                            //Take only if it is next opration
+                                            // check the prority in right side
+                                            // Take only if it is next opration
                                             for (int b = a; b < noOfArr; b++)
                                             {
                                                 // this will check the rest operation that in between current and Previous prority operation
@@ -678,22 +678,22 @@ namespace DotSpatial.Symbology.Forms
                                     argVal2 = 0.0;
                                 }
 
-                                //execute the operation
+                                // execute the operation
                                 val = EvaluateFunction(GetTokenNo(templist1[a].FunctionName), argVal1, argVal2);
                                 templist1[a].Value = val;
                                 finanalVal = val;
                             }
                             else if ((templist1[a].NoOfArg == 3))
                             {
-                                //di argument function
+                                // di argument function
                                 arg1 = templist1[a].PreviousArgument;
                                 arg2 = templist1[a].NextArgument;
                                 if (IsNumeric(arg1) == false)
                                 {
-                                    //Get the field from data Table
+                                    // Get the field from data Table
                                     for (int j = 0; j < _fields.Count; j++)
                                     {
-                                        //check in the field of datatable
+                                        // check in the field of datatable
                                         if (arg1 == _fields[j])
                                         {
                                             colField1 = j;
@@ -714,7 +714,7 @@ namespace DotSpatial.Symbology.Forms
 
                                 if (IsNumeric(arg2) == false)
                                 {
-                                    //Get the field from data Table
+                                    // Get the field from data Table
                                     foreach (string t in _fields)
                                     {
                                         if (arg2 == t)
@@ -734,20 +734,20 @@ namespace DotSpatial.Symbology.Forms
                                     throw new ArgumentException(SymbologyFormsMessageStrings.AttributeCalculator_ParameterInvalid);
                                 }
 
-                                //execute the operation
+                                // execute the operation
                                 val = EvaluateFunction(GetTokenNo(templist1[a].FunctionName), argVal1, argVal2);
                                 templist1[a].Value = val;
                                 finanalVal = val;
                             }
                         }
-                    }//loop through all operation
+                    }// loop through all operation
                 }
                 else if (noOfArr == 1 && templist1[0].NoOfArg == 0)
                 {
-                    //Simple case only one variable or one argument
+                    // Simple case only one variable or one argument
                     arg1 = templist1[0].FunctionName;
                     int colField1 = FindFieldInDataTable(arg1);
-                    if (colField1 != -1)//Field inside the Table
+                    if (colField1 != -1)// Field inside the Table
                         finanalVal = Convert.ToDouble(_fs.DataTable.Rows[i][colField1]);
                     else if (IsNumeric(arg1))
                         finanalVal = Convert.ToDouble(arg1);
@@ -762,7 +762,7 @@ namespace DotSpatial.Symbology.Forms
                     return;
                 }
 
-                //Save the final value to the field under attribute
+                // Save the final value to the field under attribute
                 if (_fs.DataTable.Columns[destinationCol - 1].DataType == typeof(double))
                     _fs.DataTable.Rows[i][destinationCol - 1] = finanalVal;
                 else if (_fs.DataTable.Columns[destinationCol - 1].DataType == typeof(string))
@@ -773,8 +773,8 @@ namespace DotSpatial.Symbology.Forms
                 {
                     throw new ArgumentException(SymbologyFormsMessageStrings.AttributeCalculator_IncompatibleDestinationField);
                 }
-            } //Loop through records
-            //_fs.Save();
+            } // Loop through records
+            // _fs.Save();
             Hide();
             // MessageBox.Show(MessageStrings.ToSave);
 
@@ -790,7 +790,7 @@ namespace DotSpatial.Symbology.Forms
         {
             for (int j = 0; j < _fields.Count; j++)
             {
-                //check in the field of datatable
+                // check in the field of datatable
                 if (arg == _fields[j])
                 {
                     return j;
@@ -848,8 +848,8 @@ namespace DotSpatial.Symbology.Forms
                     break;
                 case ("%"): tok = 4;
                     break;
-                //case ("\") : tok=5;
-                //break;
+                // case ("\") : tok=5;
+                // break;
                 case ("^"): tok = 6;
                     break;
                 case ("abs("): tok = 7;
@@ -862,7 +862,7 @@ namespace DotSpatial.Symbology.Forms
                     break;
                 case ("exp("): tok = 11;
                     break;
-                //case ("exp(") : tok=12;
+                // case ("exp(") : tok=12;
                 //    break;
                 case ("fix("): tok = 13;
                     break;
@@ -1004,11 +1004,11 @@ namespace DotSpatial.Symbology.Forms
 
         #region Evaluate functiion
 
-        //This will perform single function calculation.
+        // This will perform single function calculation.
 
         private static double EvaluateFunction(int index, double a, double b)
         {
-            const double cvAngleCoeff = 1.0; //This has to assign proper value accoding to the unit as Radiaous or Degree.
+            const double cvAngleCoeff = 1.0; // This has to assign proper value accoding to the unit as Radiaous or Degree.
             double result;
             switch (index)
             {
@@ -1046,8 +1046,8 @@ namespace DotSpatial.Symbology.Forms
                     break;
                 case 16: result = Math.Log10(a);
                     break;
-                //case 17: result = Math.r //return a random number of  type single
-                //break;
+                // case 17: result = Math.r // return a random number of  type single
+                // break;
                 case 18: result = Math.Sign(a);
                     break;
                 case 19: result = Math.Sqrt(a);
@@ -1079,7 +1079,7 @@ namespace DotSpatial.Symbology.Forms
                             result = Math.Pow(a, (1 / b));
                         else
                         {
-                            //if (Math.IEEERemainder(b, 2)!=0)
+                            // if (Math.IEEERemainder(b, 2)!=0)
                             if ((b % 2) != 0)
                                 result = Math.Pow(a, (1 / b));
                             else
@@ -1087,7 +1087,7 @@ namespace DotSpatial.Symbology.Forms
                         }
                     }
                     break;
-                case 29: result = a % b; //Math.IEEERemainder(a, b); //check no
+                case 29: result = a % b; // Math.IEEERemainder(a, b); // check no
                     break;
                 case 30: result = Fact(a);
                     break;
@@ -1267,7 +1267,7 @@ namespace DotSpatial.Symbology.Forms
             const double fpmin = 1E-30;
             if (x <= 0)
                 return 0;
-            if (x < fpmin)//Special case: avoid failure of convergence test be-
+            if (x < fpmin)// Special case: avoid failure of convergence test be-
                 return (Math.Log(x, E) + euler); //'cause of under ow.
             double sum;
             double term;
@@ -1283,17 +1283,17 @@ namespace DotSpatial.Symbology.Forms
                     if (term < eps * sum)
                         break;
                 }
-                return (Math.Log(eps, E)); //cause of under ow.
+                return (Math.Log(eps, E)); // cause of under ow.
             }
-            sum = 0; //Start with second term.
+            sum = 0; // Start with second term.
             term = 1;
             for (int k = 1; k < maxit + 1; k++)
             {
                 double prev = term;
                 term = term * k / x;
-                if (term < eps) break; //Since al sum is greater than one, term itself ap-
+                if (term < eps) break; // Since al sum is greater than one, term itself ap-
                 if (term < prev)
-                    sum += term; //Still converging: add new term.
+                    sum += term; // Still converging: add new term.
                 else
                 {
                     sum -= prev;
@@ -1487,9 +1487,9 @@ namespace DotSpatial.Symbology.Forms
             double[] b1 = new double[12];
             double[] b2 = new double[12];
             double z;
-            //int k;
+            // int k;
             const short limLow = 8;
-            //Bernoulli's numbers
+            // Bernoulli's numbers
             b1[0] = 1; b2[0] = 1;
             b1[1] = 1; b2[1] = 6;
             b1[2] = -1; b2[2] = 30;
@@ -1556,11 +1556,11 @@ namespace DotSpatial.Symbology.Forms
                 s += cf[i] / (z + 1);
             s /= w;
             double p = Math.Log((z + g + 0.5) / Math.Exp(1), E) * (z + 0.5) / Math.Log(10, E);
-            //split in mantissa and exponent to avoid overflow
+            // split in mantissa and exponent to avoid overflow
             expo = Convert.ToInt32(Math.Floor(p));
             p -= expo;
             mantissa = Math.Pow(10, p) * s;
-            //rescaling
+            // rescaling
             p = Math.Floor(Math.Log(mantissa, E) / Math.Log(10, E));
             mantissa = mantissa * (Math.Pow(10, -p));
             expo += Convert.ToInt32(p);
@@ -1584,11 +1584,11 @@ namespace DotSpatial.Symbology.Forms
                 return false;
             if ((eguTrim.IndexOf("E", 0, 1) == 0) || (eguTrim.IndexOf("e", 0, 1) == 0))
             {
-                //check the next character
-                //if ((eguTrim.IndexOf("+", 1, 1) == 1) || (eguTrim.IndexOf("-", 1, 1) == 1) || (eguTrim.IndexOfAny(number, 1) == 1))
+                // check the next character
+                // if ((eguTrim.IndexOf("+", 1, 1) == 1) || (eguTrim.IndexOf("-", 1, 1) == 1) || (eguTrim.IndexOfAny(number, 1) == 1))
                 //{
                 exponentioal = true;
-                //eguTrim.Remove(0, 1);
+                // eguTrim.Remove(0, 1);
                 //}
             }
             return exponentioal;
@@ -1599,50 +1599,50 @@ namespace DotSpatial.Symbology.Forms
         ///// </summary>
         ///// <param name="arg"></param>
         ///// <returns></returns>
-        //private static double ConvSymbConst(string arg)
+        // private static double ConvSymbConst(string arg)
         //{
         //    double val;
         //    switch (arg)
         //    {
         //        case ("PI"):
-        //        case ("pi"): val = Math.PI; //pi-greek
+        //        case ("pi"): val = Math.PI; // pi-greek
         //            break;
         //        case ("PI2"):
-        //        case ("pi2"): val = Math.PI / 2; //pi-greek/2
+        //        case ("pi2"): val = Math.PI / 2; // pi-greek/2
         //            break;
         //        case ("PI3"):
-        //        case ("pi3"): val = Math.PI / 3; //pi-greek/3
+        //        case ("pi3"): val = Math.PI / 3; // pi-greek/3
         //            break;
         //        case ("PI4"):
-        //        case ("pi4"): val = Math.PI / 4; //pi-greek/4
+        //        case ("pi4"): val = Math.PI / 4; // pi-greek/4
         //            break;
-        //        case ("e"): val = 2.71828182845905; //Euler-Napier
+        //        case ("e"): val = 2.71828182845905; // Euler-Napier
         //            break;
-        //        case ("eu"): val = 0.577215664901533; //Euler-Mascheroni
+        //        case ("eu"): val = 0.577215664901533; // Euler-Mascheroni
         //            break;
-        //        case ("phi"): val = 1.61803398874989; //golden ratio
+        //        case ("phi"): val = 1.61803398874989; // golden ratio
         //            break;
-        //        case ("g"): val = 9.80665; //Acceleration due to gravity
+        //        case ("g"): val = 9.80665; // Acceleration due to gravity
         //            break;
-        //        case ("G"): val = 6.672 * Math.Pow(10, -11); //Gravitational constant
+        //        case ("G"): val = 6.672 * Math.Pow(10, -11); // Gravitational constant
         //            break;
-        //        case ("R"): val = 8.31451; //Gas constant
+        //        case ("R"): val = 8.31451; // Gas constant
         //            break;
-        //        case ("eps"): val = 8.854187817 * Math.Pow(10, -12); //Permittivity of vacuum
+        //        case ("eps"): val = 8.854187817 * Math.Pow(10, -12); // Permittivity of vacuum
         //            break;
-        //        case ("mu"): val = 12.566370614 * Math.Pow(10, -7); //Permeability of vacuum
+        //        case ("mu"): val = 12.566370614 * Math.Pow(10, -7); // Permeability of vacuum
         //            break;
-        //        case ("c"): val = 2.99792458 * Math.Pow(10, 8); //Speed of light
+        //        case ("c"): val = 2.99792458 * Math.Pow(10, 8); // Speed of light
         //            break;
-        //        case ("q"): val = 1.60217733 * Math.Pow(10, -19); //Elementary charge
+        //        case ("q"): val = 1.60217733 * Math.Pow(10, -19); // Elementary charge
         //            break;
-        //        case ("me"): val = 9.1093897 * Math.Pow(10, -31); //Electron rest mass
+        //        case ("me"): val = 9.1093897 * Math.Pow(10, -31); // Electron rest mass
         //            break;
-        //        case ("mp"): val = 1.6726231 * Math.Pow(10, -27); //Proton rest mass
+        //        case ("mp"): val = 1.6726231 * Math.Pow(10, -27); // Proton rest mass
         //            break;
-        //        case ("K"): val = 1.380658 * Math.Pow(10, -23); //Boltzmann constant
+        //        case ("K"): val = 1.380658 * Math.Pow(10, -23); // Boltzmann constant
         //            break;
-        //        case ("h"): val = 6.6260755 * Math.Pow(10, -34); //Planck constant
+        //        case ("h"): val = 6.6260755 * Math.Pow(10, -34); // Planck constant
         //            break;
         //        default: return -1.0;
         //    }
@@ -1657,7 +1657,7 @@ namespace DotSpatial.Symbology.Forms
         ///// </summary>
         ///// <param name="arg"></param>
         ///// <returns></returns>
-        //private static double ConvEgu(string arg)
+        // private static double ConvEgu(string arg)
         //{
         //    bool exponentioal = false;
         //    string eguNumber = null;
@@ -1667,10 +1667,10 @@ namespace DotSpatial.Symbology.Forms
         //    char[] number = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
         //    for (int i = 0; i < eguTrim.Length; i++)
         //    {
-        //        //Check IS it exponential value
+        //        // Check IS it exponential value
         //        if ((eguTrim.IndexOf("E", 0, 1) == 0) || (eguTrim.IndexOf("e", 0, 1) == 0))
         //        {
-        //            //check the next character
+        //            // check the next character
         //            if ((eguTrim.IndexOf("+", 1, 1) == 1) || (eguTrim.IndexOf("-", 1, 1) == 1) || (eguTrim.IndexOfAny(number, 1) == 1))
         //            {
         //                exponentioal = true;
@@ -1678,14 +1678,14 @@ namespace DotSpatial.Symbology.Forms
         //            }
         //        }
 
-        //        //chech the decimal point in the number
+        //        // chech the decimal point in the number
         //        if ((eguTrim.IndexOf(".", 0, 1) == 0) || (eguTrim.IndexOf("+", 0, 1) == 0) || (eguTrim.IndexOf("-", 0, 1) == 0))
         //        {
         //            eguNumber += eguTrim.Substring(0, 1);
         //            eguTrim.Remove(0, 1);
         //            continue;
         //        }
-        //        //check the number
+        //        // check the number
         //        if (eguTrim.IndexOfAny(number, 0) == 0)
         //        {
         //            eguNumber += eguTrim.Substring(0, 1);
@@ -1724,24 +1724,24 @@ namespace DotSpatial.Symbology.Forms
         //            eguStr = eguTrim.Substring(0);
         //            switch (eguStr)
         //            {
-        //                case ("s")://second
-        //                case ("Hz")://frequency
-        //                case ("m")://meter
-        //                case ("rad")://radiant
-        //                case ("Rad")://radiant
-        //                case ("RAD")://radiant
-        //                case ("S")://siemens
-        //                case ("V")://volt
-        //                case ("A")://ampere
-        //                case ("W")://watt
-        //                case ("F")://farad
-        //                case ("bar")://bar
-        //                case ("Pa")://pascal
-        //                case ("Nm")://newtonmeter
-        //                case ("Ohm")://ohm
+        //                case ("s"):// second
+        //                case ("Hz"):// frequency
+        //                case ("m"):// meter
+        //                case ("rad"):// radiant
+        //                case ("Rad"):// radiant
+        //                case ("RAD"):// radiant
+        //                case ("S"):// siemens
+        //                case ("V"):// volt
+        //                case ("A"):// ampere
+        //                case ("W"):// watt
+        //                case ("F"):// farad
+        //                case ("bar"):// bar
+        //                case ("Pa"):// pascal
+        //                case ("Nm"):// newtonmeter
+        //                case ("Ohm"):// ohm
         //                case ("ohm"): factor = 1.0;
         //                    break;
-        //                case ("g"): factor = 0.001; //gramme
+        //                case ("g"): factor = 0.001; // gramme
         //                    break;
         //                default: factor = 1.0;
         //                    break;
@@ -1752,24 +1752,24 @@ namespace DotSpatial.Symbology.Forms
         //            eguStr = eguTrim.Substring(1);
         //            switch (eguStr)
         //            {
-        //                case ("s")://second
-        //                case ("Hz")://frequency
-        //                case ("m")://meter
-        //                case ("rad")://radiant
-        //                case ("Rad")://radiant
-        //                case ("RAD")://radiant
-        //                case ("S")://siemens
-        //                case ("V")://volt
-        //                case ("A")://ampere
-        //                case ("W")://watt
-        //                case ("F")://farad
-        //                case ("bar")://bar
-        //                case ("Pa")://pascal
-        //                case ("Nm")://newtonmeter
-        //                case ("Ohm")://ohm
+        //                case ("s"):// second
+        //                case ("Hz"):// frequency
+        //                case ("m"):// meter
+        //                case ("rad"):// radiant
+        //                case ("Rad"):// radiant
+        //                case ("RAD"):// radiant
+        //                case ("S"):// siemens
+        //                case ("V"):// volt
+        //                case ("A"):// ampere
+        //                case ("W"):// watt
+        //                case ("F"):// farad
+        //                case ("bar"):// bar
+        //                case ("Pa"):// pascal
+        //                case ("Nm"):// newtonmeter
+        //                case ("Ohm"):// ohm
         //                case ("ohm"): factor = factor * 1.0;
         //                    break;
-        //                case ("g"): factor = factor * 0.001; //gramme
+        //                case ("g"): factor = factor * 0.001; // gramme
         //                    break;
         //                default: factor = 1.0;
         //                    break;

@@ -164,7 +164,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void UpdateCategories()
         {
-            //the default new category will be called 'My Symbols'.
+            // the default new category will be called 'My Symbols'.
             if (!_categories.Contains("My Symbols"))
             {
                 _categories.Insert(0, "My Symbols");
@@ -226,7 +226,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            //creates the new custom symbolizer
+            // creates the new custom symbolizer
             CustomSymbolizer newCustSym = CreateCustomSymbolizer();
             if (newCustSym != null)
             {

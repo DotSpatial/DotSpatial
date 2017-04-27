@@ -371,7 +371,7 @@ namespace DotSpatial.Data
             for (int iString = 0; iString < numLineStrings; iString++)
             {
                 // Each of these needs to read a full WKBLineString
-                data.Seek(5, SeekOrigin.Current); //ignore header
+                data.Seek(5, SeekOrigin.Current); // ignore header
                 int numPoints = ReadInt32(data);
                 double[] coords = ReadDouble(data, 2 * numPoints);
                 PartRange lPrt = new PartRange(FeatureType.Line);
@@ -401,7 +401,7 @@ namespace DotSpatial.Data
             for (int iString = 0; iString < numLineStrings; iString++)
             {
                 // Each of these needs to read a full WKBLineString
-                data.Seek(5, SeekOrigin.Current); //ignore header
+                data.Seek(5, SeekOrigin.Current); // ignore header
                 int numPoints = ReadInt32(data);
                 double[] coords = ReadDouble(data, 2 * numPoints);
                 PartRange lPrt = new PartRange(FeatureType.Line);
@@ -604,8 +604,8 @@ namespace DotSpatial.Data
             double[] newCoords = new double[numCoords];
             for (int i = numCoords - 1; i >= 0; i -= 2)
             {
-                newCoords[i - 1] = coords[numCoords - i - 1]; //X
-                newCoords[i] = coords[numCoords - i]; //Y
+                newCoords[i - 1] = coords[numCoords - i - 1]; // X
+                newCoords[i] = coords[numCoords - i]; // Y
             }
             return newCoords;
         }

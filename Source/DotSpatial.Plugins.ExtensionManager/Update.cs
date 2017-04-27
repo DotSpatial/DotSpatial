@@ -26,7 +26,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.packages = package;
             this.App = Appmanager;
 
-            //find name of app
+            // find name of app
             string name = Assembly.GetEntryAssembly().GetName().Name;
             int i;
             for (i = 0; i < name.Length; i++)
@@ -53,13 +53,13 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         /// <summary>
-        ///autoUpdate any packages found in current feed.
+        /// autoUpdate any packages found in current feed.
         /// </summary>
         internal void autoUpdate()
         {
             var file = Path.Combine(AppManager.AbsolutePathToExtensions, "updates.txt");
 
-            //skip autoUpdating if already done
+            // skip autoUpdating if already done
             if (File.Exists(file))
             {
                 try
@@ -70,12 +70,12 @@ namespace DotSpatial.Plugins.ExtensionManager
                 return;
             }
 
-            //find updates
+            // find updates
             getAllAvailableUpdates();
 
             if (list != null && list.Count > 0)
             {
-                //save packages to update
+                // save packages to update
                 string[] updates = new string[list.Count * 2];
                 for (int i = 0; i < list.Count; i++)
                 {
@@ -84,13 +84,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
                 try
                 {
-                    //don't autoupdate in debug mode
+                    // don't autoupdate in debug mode
                     if (Debugger.IsAttached)
                         throw new Exception();
 
                     File.WriteAllLines(file, updates);
 
-                    //open updater
+                    // open updater
                     var updaterSource = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Updater.exe");
                     if (!File.Exists(updaterSource))
                         throw new Exception();
@@ -100,7 +100,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     updater.StartInfo.FileName = updaterPath;
                     updater.StartInfo.Arguments = '"' + Assembly.GetEntryAssembly().Location + '"';
 
-                    //elevate privelages if the app needs updating
+                    // elevate privelages if the app needs updating
                     if (updateApp && !IsAdminRole())
                     {
                         updater.StartInfo.UseShellExecute = true;
@@ -118,10 +118,10 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// </summary>
         private void CheckUpdateApp()
         {
-            //find app package
+            // find app package
             var packs = packages.Repo.FindPackagesById(AppName);
 
-            //compare app version
+            // compare app version
             var programVersion = SemanticVersion.Parse(Assembly.GetEntryAssembly().GetName().Version.ToString());
             foreach (var pack in packs.Reverse())
             {
@@ -141,7 +141,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             list = null;
 
-            //Look for packages to be updated in the folder where Extension Manager downloads new packages.
+            // Look for packages to be updated in the folder where Extension Manager downloads new packages.
             getpack = new GetPackage(packages);
             IEnumerable<IPackage> localPackages = getpack.GetPackagesFromExtensions(App.Extensions);
 

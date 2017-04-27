@@ -98,7 +98,7 @@ namespace DotSpatial.Data
 
             myShape.Range = shape;
 
-            //bbReader.Read(allBounds, shp*32, 32);
+            // bbReader.Read(allBounds, shp*32, 32);
             double xMin = fs.ReadDouble(); // Byte 12      Xmin                Double      1           Little
             double yMin = fs.ReadDouble(); // Byte 20      Ymin                Double      1           Little
             double xMax = fs.ReadDouble(); // Byte 28      Xmax                Double      1           Little
@@ -114,11 +114,11 @@ namespace DotSpatial.Data
             }
 
             shape.NumParts = fs.ReadInt32(); // Byte 44      NumParts            Integer     1           Little
-            //feature.NumPoints = bbReader.ReadInt32();             // Byte 48      NumPoints           Integer     1           Little
+            // feature.NumPoints = bbReader.ReadInt32();             // Byte 48      NumPoints           Integer     1           Little
             shape.NumPoints = fs.ReadInt32();
 
             // Create an envelope from the extents box in the file.
-            //feature.Envelope = new Envelope(xMin, xMax, yMin, yMax);
+            // feature.Envelope = new Envelope(xMin, xMax, yMin, yMax);
             int[] partIndices = fs.ReadInt32(shape.NumParts);
             myShape.Vertices = fs.ReadDouble(shape.NumPoints * 2);
 

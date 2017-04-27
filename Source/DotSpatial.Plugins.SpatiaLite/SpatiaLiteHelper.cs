@@ -194,7 +194,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         {
             var fType = GetGeometryType(featureSetInfo.GeometryType);
             FeatureSet fs = new SpatiaLiteFeatureSet(fType);
-            fs.IndexMode = false; //setting the initial index mode..
+            fs.IndexMode = false; // setting the initial index mode..
 
             using (var cmd = CreateCommand(connString, sql))
             {
@@ -202,7 +202,7 @@ namespace DotSpatial.Plugins.SpatiaLite
 
                 RunInitialCommands(cmd.Connection);
 
-                //DotSpatial.Topology.Utilities.WkbReader wkbr = new DotSpatial.Topology.Utilities.WkbReader();
+                // DotSpatial.Topology.Utilities.WkbReader wkbr = new DotSpatial.Topology.Utilities.WkbReader();
                 var wkbr = new SpatiaLiteWkbReader();
 
                 var rdr = cmd.ExecuteReader();
@@ -215,7 +215,7 @@ namespace DotSpatial.Plugins.SpatiaLite
 
                     var newFeature = fs.AddFeature(geom);
 
-                    //populate the attributes
+                    // populate the attributes
                     foreach (var colName in columnNames)
                     {
                         newFeature.DataRow[colName] = rdr[colName];
@@ -224,10 +224,10 @@ namespace DotSpatial.Plugins.SpatiaLite
                 cmd.Connection.Close();
                 fs.Name = featureSetInfo.TableName;
 
-                //HACK required for selection to work properly
+                // HACK required for selection to work properly
                 fs.IndexMode = true;
 
-                //assign projection
+                // assign projection
                 var proj = ProjectionInfo.FromEpsgCode(featureSetInfo.SRID);
                 fs.Projection = proj;
 
@@ -243,9 +243,9 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <returns>the resulting feature set</returns>
         public IFeatureSet ReadFeatureSet(string connString, string sqlQuery)
         {
-            //RunInitialCommands(connString);
+            // RunInitialCommands(connString);
 
-            //Find the geometry type and geometry column
+            // Find the geometry type and geometry column
             var geomInfo = FindGeometryColumnInfo(connString, sqlQuery);
             return ReadFeatureSet(connString, geomInfo, sqlQuery);
         }
@@ -254,7 +254,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         {
             //(new SQLiteConnection("vole"))
 
-            //string cmdText = "SELECT load_extension('E:/dev/DotSpatial/Debug/x86/Plugins/SpatiaLite/libspatialite-2.dll');";
+            // string cmdText = "SELECT load_extension('E:/dev/DotSpatial/Debug/x86/Plugins/SpatiaLite/libspatialite-2.dll');";
 
             var cmdText = "SELECT load_extension('libspatialite-2.dll')";
 
@@ -272,7 +272,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             }
         }
 
-        //finds out the geometry column information..
+        // finds out the geometry column information..
         private GeometryColumnInfo FindGeometryColumnInfo(string connString, string sqlQuery)
         {
             GeometryColumnInfo result = null;
@@ -292,7 +292,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                 {
                     var colName = Convert.ToString(r["ColumnName"]);
                     var colDataType = Convert.ToString(r["DataType"]);
-                    //if BLOB, then assume geometry column
+                    // if BLOB, then assume geometry column
                     if (Type.GetType(colDataType) == typeof(byte[]))
                     {
                         result = new GeometryColumnInfo();
@@ -336,9 +336,9 @@ namespace DotSpatial.Plugins.SpatiaLite
         {
             using (Stream stream = new MemoryStream(blob))
             {
-                //read first byte
+                // read first byte
                 BinaryReader reader = null;
-                var startByte = stream.ReadByte(); //must be "0"
+                var startByte = stream.ReadByte(); // must be "0"
                 var byteOrder = (ByteOrder)stream.ReadByte();
                 try
                 {

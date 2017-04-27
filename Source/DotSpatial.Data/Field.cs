@@ -289,8 +289,8 @@ namespace DotSpatial.Data
             // to fit the data before saving.
             if (DataType == typeof(float))
             {
-                ////_decimalCount = (byte)40;  // Singles  -3.402823E+38 to 3.402823E+38
-                ////_length = (byte)40;
+                //// _decimalCount = (byte)40;  // Singles  -3.402823E+38 to 3.402823E+38
+                //// _length = (byte)40;
                 Length = 18;
                 DecimalCount = 6;
                 return;
@@ -298,8 +298,8 @@ namespace DotSpatial.Data
 
             if (DataType == typeof(double))
             {
-                ////_decimalCount = (byte)255; // Doubles -1.79769313486232E+308 to 1.79769313486232E+308
-                ////_length = (byte)255;
+                //// _decimalCount = (byte)255; // Doubles -1.79769313486232E+308 to 1.79769313486232E+308
+                //// _length = (byte)255;
                 Length = 18;
                 DecimalCount = 9;
                 return;

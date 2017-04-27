@@ -22,13 +22,16 @@ namespace DotSpatial.Plugins.ToolManager
         private ContainerControl Shell { get; set; }
 
         /// <summary>
-        /// Gets the list tools available.
+        /// Gets or sets the list tools available.
         /// </summary>
         [ImportMany(AllowRecomposition = true)]
         private IEnumerable<ITool> Tools { get; set; }
 
         #region IPartImportsSatisfiedNotification Members
 
+        /// <summary>
+        /// Shows the tool panel after the imports are satisfied.
+        /// </summary>
         public void OnImportsSatisfied()
         {
             if (IsActive)
@@ -47,6 +50,7 @@ namespace DotSpatial.Plugins.ToolManager
 
         #endregion
 
+        /// <inheritdoc />
         public override void Activate()
         {
             App.HeaderControl.Add(new SimpleActionItem("Show Tools", ButtonClick));
@@ -54,6 +58,7 @@ namespace DotSpatial.Plugins.ToolManager
             base.Activate();
         }
 
+        /// <inheritdoc />
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
@@ -62,6 +67,11 @@ namespace DotSpatial.Plugins.ToolManager
             base.Deactivate();
         }
 
+        /// <summary>
+        /// Shows the tool panel.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         public void ButtonClick(object sender, EventArgs e)
         {
             ShowToolsPanel();

@@ -99,8 +99,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets the pointSymbolizer characteristics to use for the selected features.
         /// </summary>
         [Category("Appearance"), Description("Gets or sets the symbolic characteristics to use for the selected features."),
-            //TypeConverter(typeof(GeneralTypeConverter)),
-            //Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
+            // TypeConverter(typeof(GeneralTypeConverter)),
+            // Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
          ShallowCopy]
         public new IPointSymbolizer SelectionSymbolizer
         {
@@ -115,7 +115,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the symbolic characteristics for this layer.
         /// </summary>
         [Category("Appearance"), Description("Gets or sets the symbolic characteristics for this layer."),
-            //TypeConverter(typeof(GeneralTypeConverter)),
+            // TypeConverter(typeof(GeneralTypeConverter)),
             // Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
          ShallowCopy]
         public new IPointSymbolizer Symbolizer
@@ -136,8 +136,8 @@ namespace DotSpatial.Symbology
         /// to editing the members of an existing scheme directly, however.
         /// </summary>
         [Category("Appearance"), Description("Gets the currently applied scheme."),
-            //TypeConverter(typeof(GeneralTypeConverter)),
-            //Editor(typeof(PointSchemePropertyGridEditor), typeof(UITypeEditor)),
+            // TypeConverter(typeof(GeneralTypeConverter)),
+            // Editor(typeof(PointSchemePropertyGridEditor), typeof(UITypeEditor)),
          Serialize("Symbology")]
         public new IPointScheme Symbology
         {

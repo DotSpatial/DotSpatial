@@ -99,7 +99,7 @@ namespace CSharpEditor
         {
             // We can return code-completion items like this:
 
-            //return new ICompletionData[] {
+            // return new ICompletionData[] {
             //	new DefaultCompletionData("Text", "Description", 1)
             //};
 

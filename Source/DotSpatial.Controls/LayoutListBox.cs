@@ -23,13 +23,13 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This is designed to automatically have add, subtract, up and down arrows for working with a simple collection of items.
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public class LayoutListBox : UserControl
     {
         #region ---------------- Class Variables
 
-        //Internal Variables
+        // Internal Variables
         private Button _btnDown;
         private Panel _btnPanel;
         private Button _btnRemove;
@@ -211,17 +211,17 @@ namespace DotSpatial.Controls
         {
             _lbxItems.SuspendLayout();
 
-            //We clear the old list
+            // We clear the old list
             _lbxItems.Items.Clear();
 
-            //Updates the list of elements
+            // Updates the list of elements
             foreach (LayoutElement le in _layoutControl.LayoutElements.ToArray())
             {
                 _lbxItems.Items.Add(le);
                 le.ThumbnailChanged += le_ThumbnailChanged;
             }
 
-            //Updates the selection list
+            // Updates the selection list
             foreach (LayoutElement le in _layoutControl.SelectedLayoutElements.ToArray())
                 _lbxItems.SelectedItems.Add(le);
 

@@ -214,7 +214,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
         private static bool IsPackageInstalled(IPackage pack) {
             string packagePath = GetPackagePath(pack);
-            //return Directory.Exists(packagePath) &&  //Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories).Any<string>();
+            // return Directory.Exists(packagePath) &&  // Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories).Any<string>();
 
             if (Directory.Exists(packagePath))
             {

@@ -124,14 +124,14 @@ namespace DotSpatial.Controls
             {
                 if (_mapControl.Layers.Count < 1)
                     return;
-                //Envelope tempEnv = Envelope;
+                // Envelope tempEnv = Envelope;
                 double xtl = Envelope.MinX;
                 double ytl = Envelope.MaxY;
-                //tempEnv.Width = (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D);
-                //tempEnv.Height = (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D);
-                //tempEnv.X = xtl;
-                //tempEnv.Y = ytl;
-                //Envelope = tempEnv;
+                // tempEnv.Width = (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D);
+                // tempEnv.Height = (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D);
+                // tempEnv.X = xtl;
+                // tempEnv.Y = ytl;
+                // Envelope = tempEnv;
                 Envelope.Init(xtl, xtl + (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D), ytl - (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D), ytl);
             }
         }
@@ -166,12 +166,12 @@ namespace DotSpatial.Controls
                 {
                     double dx = Envelope.Width / _oldRectangle.Width;
                     double dy = Envelope.Height / _oldRectangle.Height;
-                    ////Envelope newEnv = Envelope.Clone();
-                    ////newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
-                    ////newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
-                    ////newEnv.X = Envelope.X;
-                    ////newEnv.Y = Envelope.Y;
-                    ////Envelope = newEnv;
+                    //// Envelope newEnv = Envelope.Clone();
+                    //// newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
+                    //// newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
+                    //// newEnv.X = Envelope.X;
+                    //// newEnv.Y = Envelope.Y;
+                    //// Envelope = newEnv;
 
                     double xtl = Envelope.MinX;
                     double ytl = Envelope.MaxY;
@@ -218,7 +218,7 @@ namespace DotSpatial.Controls
         {
             double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
             double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
-            Envelope envl = new Envelope(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); //TODO jany_ can we assign this direct or do we lose MinX etc?
+            Envelope envl = new Envelope(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
         }
 
@@ -229,7 +229,7 @@ namespace DotSpatial.Controls
         {
             double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
             double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
-            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); //TODO jany_ can we assign this direct or do we lose MinX etc?
+            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
         }
 

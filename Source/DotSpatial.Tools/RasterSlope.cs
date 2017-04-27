@@ -5,7 +5,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -25,7 +25,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class RasterSlope : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -33,52 +33,42 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the RasterSlope class.
+        /// Initializes a new instance of the <see cref="RasterSlope"/> class.
         /// </summary>
         public RasterSlope()
         {
-            this.Name = TextStrings.SlopeRasterLayer;
-            this.Category = TextStrings.TerrainAnalysis;
-            this.Description = TextStrings.RasterSlopeDescription;
-            this.ToolTip = TextStrings.GenerateslopeRasterLayer;
+            Name = TextStrings.SlopeRasterLayer;
+            Category = TextStrings.TerrainAnalysis;
+            Description = TextStrings.RasterSlopeDescription;
+            ToolTip = TextStrings.GenerateslopeRasterLayer;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True if the method worked.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IRaster input1 = _inputParam[0].Value as IRaster;
@@ -114,8 +104,6 @@ namespace DotSpatial.Tools
                 int noOfRow = ras.NumRows;
                 output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(double), new[] { string.Empty });
                 output.NoDataValue = ras.NoDataValue;
-
-                // output.Bounds = ras.Bounds.Copy();
                 output.Bounds = ras.Bounds;
 
                 int previous = 0;
@@ -175,7 +163,6 @@ namespace DotSpatial.Tools
                     }
                 }
 
-                // output = Temp;
                 if (output.IsFullyWindowed())
                 {
                     output.Save();
@@ -191,7 +178,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

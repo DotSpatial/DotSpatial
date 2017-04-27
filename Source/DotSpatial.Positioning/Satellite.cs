@@ -436,7 +436,7 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpstd.txt
+                // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpstd.txt
                 switch (_pseudorandomNumber)
                 {
                     case 01: // USA-232
@@ -548,7 +548,7 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpstd.txt
+                // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpstd.txt
                 switch (_pseudorandomNumber)
                 {
                     case 01: // USA-232
@@ -635,7 +635,7 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpstd.txt
+                // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpstd.txt
                 switch (_pseudorandomNumber)
                 {
                     case 01:
@@ -722,7 +722,7 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                // Data was compiled from the US Military: ftp://tycho.usno.navy.mil/pub/gps/gpsb2.txt
+                // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpsb2.txt
                 switch (_pseudorandomNumber)
                 {
                     case 01:

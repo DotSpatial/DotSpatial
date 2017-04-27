@@ -201,7 +201,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the string TextureFile to define the fill texture
         /// </summary>
         [Category("Appearance"),
-            //Editor(typeof(Forms.OpenFileEditor), typeof(UITypeEditor)),
+            // Editor(typeof(Forms.OpenFileEditor), typeof(UITypeEditor)),
          Description("Gets or sets the string TextureFile to define the fill texture")]
         public string TextureFile
         {

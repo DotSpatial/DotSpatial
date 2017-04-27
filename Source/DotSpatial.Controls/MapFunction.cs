@@ -168,7 +168,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void Draw(MapDrawArgs args)
         {
-            //if (OnBeforeDrawing(args) == true) return; // handled
+            // if (OnBeforeDrawing(args) == true) return; // handled
             OnDraw(args);
         }
 

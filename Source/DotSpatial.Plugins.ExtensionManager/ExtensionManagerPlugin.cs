@@ -64,7 +64,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     };
                     App.HeaderControl.Add(simpleAction);
 
-                    //sample projects menu
+                    // sample projects menu
                     var simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenSampleProjects_Click)
                     {
                         GroupCaption = HeaderControl.ApplicationMenuKey,

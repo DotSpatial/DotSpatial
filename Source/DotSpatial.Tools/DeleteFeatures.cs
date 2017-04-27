@@ -4,7 +4,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -26,7 +26,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class DeleteFeatures : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -34,59 +34,46 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the DeleteFeatures class.
+        /// Initializes a new instance of the <see cref="DeleteFeatures"/> class.
         /// </summary>
         public DeleteFeatures()
         {
-            this.Name = TextStrings.DeleteFeatures;
-            this.Category = TextStrings.VectorOverlay;
-            this.Description = TextStrings.DeleteFeaturesDescription;
-            this.ToolTip = TextStrings.DeleteFeaturesfromFeatureSet;
+            Name = TextStrings.DeleteFeatures;
+            Category = TextStrings.VectorOverlay;
+            Description = TextStrings.DeleteFeaturesDescription;
+            ToolTip = TextStrings.DeleteFeaturesfromFeatureSet;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;
-            if (input1 != null)
-            {
-                input1.FillAttributes();
-            }
+            input1?.FillAttributes();
 
             IndexParam ip = _inputParam[1] as IndexParam;
             string input2 = string.Empty;
@@ -101,21 +88,18 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the Erase Opaeration tool programaticaly.
+        /// Executes the Erase Opaeration tool programmatically.
         /// Ping deleted static for external testing 01/2010
         /// </summary>
         /// <param name="input1">The input FeatureSet.</param>
         /// <param name="input2">The input Expression string to select features to Delete.</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input1, string input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
-            if (input1 == null || input2 == null || output == null)
-            {
-                return false;
-            }
+            if (input1 == null || input2 == null || output == null) return false;
 
             if (cancelProgressHandler.Cancel)
             {
@@ -187,6 +171,7 @@ namespace DotSpatial.Tools
         /// <summary>
         /// Fires when one of the paramters value has beend changed, usually when a user changes a input or output parameters value, this can be used to populate input2 parameters default values.
         /// </summary>
+        /// <param name="sender">Sender that fired the event.</param>
         public override void ParameterChanged(Parameter sender)
         {
             // This will give the Featureset values to second parameter
@@ -196,13 +181,8 @@ namespace DotSpatial.Tools
             }
 
             FeatureSetParam fsp = _inputParam[0] as FeatureSetParam;
-            if (fsp == null || fsp.Value == null)
-            {
-                return;
-            }
-
             IndexParam ip = _inputParam[1] as IndexParam;
-            if (ip != null)
+            if (fsp?.Value != null && ip != null)
             {
                 ip.Fs = fsp.Value as FeatureSet;
             }

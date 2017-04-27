@@ -199,7 +199,7 @@ namespace DotSpatial.Symbology
             RectangleF bounds = Bounds;
             if (bounds.IsEmpty) bounds = gp.GetBounds();
             if (bounds.Width == 0 || bounds.Height == 0) return;
-            //also don't draw gradient for very small polygons
+            // also don't draw gradient for very small polygons
             if (bounds.Width < 0.01 || bounds.Height < 0.01) return;
             if (_gradientType == GradientType.Linear)
             {

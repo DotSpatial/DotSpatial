@@ -177,7 +177,7 @@ namespace DotSpatial.Serialization.Tests
             manager.SerializationManager.SaveProject(projectFileName);
             Assert.True(File.Exists(projectFileName));
 
-            //reopen the project
+            // reopen the project
             map.Layers.Clear();
             Assert.AreEqual(map.Layers.Count, 0);
 
@@ -200,14 +200,14 @@ namespace DotSpatial.Serialization.Tests
             Map map = new Map();
             manager.Map = map;
 
-            //new map group added to map
+            // new map group added to map
             MapGroup grp = new MapGroup(map, "group1");
 
-            //new map layer added to group
+            // new map layer added to group
             IFeatureSet fs = FeatureSet.Open(filename);
             MapPointLayer l = new MapPointLayer(fs);
 
-            //add layer to group
+            // add layer to group
             grp.Layers.Add(l);
 
             Assert.Greater(map.Layers.Count, 0);
@@ -216,7 +216,7 @@ namespace DotSpatial.Serialization.Tests
             manager.SerializationManager.SaveProject(projectFileName);
             Assert.True(File.Exists(projectFileName));
 
-            //reopen the project
+            // reopen the project
             map.Layers.Clear();
             Assert.AreEqual(map.Layers.Count, 0);
 

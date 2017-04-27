@@ -50,21 +50,21 @@ namespace DotSpatial.Controls
             this._btnNorthArrow.Text = MessageStrings.LayoutInsertToolStripNorthArrow;
             this._btnNorthArrow.Click += _btnNorthArrow_Click;
 
-            //_Insert Scale bar
+            // _Insert Scale bar
             this._btnScaleBar.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this._btnScaleBar.Image = Images.ScaleBar;
             this._btnScaleBar.Size = new Size(23, 22);
             this._btnScaleBar.Text = MessageStrings.LayoutInsertMenuStripScaleBar;
             this._btnScaleBar.Click += _btnScaleBar_Click;
 
-            //_Insert Legend
+            // _Insert Legend
             this._btnLegend.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this._btnLegend.Image = Images.Legend;
             this._btnLegend.Size = new Size(23, 22);
             this._btnLegend.Text = MessageStrings.LayoutInsertMenuStripLegend;
             this._btnLegend.Click += _btnLegend_Click;
 
-            //_Insert Bitmap
+            // _Insert Bitmap
             this._btnBitmap.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this._btnBitmap.Image = Images.Apple;
             this._btnBitmap.Size = new Size(23, 22);

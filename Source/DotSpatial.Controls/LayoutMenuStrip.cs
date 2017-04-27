@@ -23,7 +23,7 @@ namespace DotSpatial.Controls
     /// <summary>
     ///
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public class LayoutMenuStrip : MenuStrip
     {
@@ -93,7 +93,7 @@ namespace DotSpatial.Controls
                 if (value == null) return;
                 _layoutControl = value;
 
-                //Sets the Margin tool to checked depending on the property of the layoutcontrol
+                // Sets the Margin tool to checked depending on the property of the layoutcontrol
                 if (_layoutControl.LayoutZoomToolStrip != null)
                 {
                     if (_layoutControl.ShowMargin)
@@ -102,7 +102,7 @@ namespace DotSpatial.Controls
                         _showMargin.Checked = false;
                 }
 
-                //Sets the layoutzoom striptoolbar button to checked if its visible
+                // Sets the layoutzoom striptoolbar button to checked if its visible
                 if (_layoutControl.LayoutZoomToolStrip != null)
                 {
                     if (_layoutControl.LayoutZoomToolStrip.Visible)
@@ -111,7 +111,7 @@ namespace DotSpatial.Controls
                         _zoomToolbar.Checked = false;
                 }
 
-                //Sets the layout doc toolbar button to checked if its visible
+                // Sets the layout doc toolbar button to checked if its visible
                 if (_layoutControl.LayoutDocToolStrip != null)
                 {
                     if (_layoutControl.LayoutDocToolStrip.Visible)
@@ -132,7 +132,7 @@ namespace DotSpatial.Controls
         {
             this.SuspendLayout();
 
-            //File Menu
+            // File Menu
             _fileMenu = new ToolStripMenuItem(MessageStrings.LayoutMenuStripFile);
             _new = new ToolStripMenuItem(MessageStrings.LayoutMenuStripNew);
             _new.Image = Images.file_new;
@@ -171,7 +171,7 @@ namespace DotSpatial.Controls
             _fileMenu.DropDownItems.Add(_close);
             this.Items.Add(_fileMenu);
 
-            //The Select Menu
+            // The Select Menu
             _selectMenu = new ToolStripMenuItem(MessageStrings.LayoutMenuStripSelect);
             _selectAll = new ToolStripMenuItem(MessageStrings.LayoutMenuStripSelectAll);
             _selectAll.Image = Images.select_all;
@@ -205,7 +205,7 @@ namespace DotSpatial.Controls
             _selectMenu.DropDownItems.Add(_selectConvert);
             this.Items.Add(_selectMenu);
 
-            //View Menu
+            // View Menu
             _viewMenu = new ToolStripMenuItem(MessageStrings.LayoutMenuStripView);
 
             _zoomIn = new ToolStripMenuItem(MessageStrings.LayoutMenuStripZoomIn);
@@ -420,7 +420,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        //Enables and disables the convert selected to bitmap option if the selection changes above or below 1
+        // Enables and disables the convert selected to bitmap option if the selection changes above or below 1
         private void LayoutControlSelectionChanged(object sender, EventArgs e)
         {
             if (_layoutControl.SelectedLayoutElements.Count == 1)

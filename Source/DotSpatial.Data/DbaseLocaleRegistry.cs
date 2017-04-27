@@ -117,7 +117,7 @@ namespace DotSpatial.Data
         // Found here: http://downloads.esri.com/support/documentation/pad_/ArcPad_RefGuide_1105.pdf
         private static void setupDbaseToEncodingMap()
         {
-            _dbaseToEncoding[0x01] = new CultureWithEncoding(CultureInfo.GetCultureInfo(1033), CodePageChoice.Oem); //DOS USA code page 437 
+            _dbaseToEncoding[0x01] = new CultureWithEncoding(CultureInfo.GetCultureInfo(1033), CodePageChoice.Oem); // DOS USA code page 437 
             _dbaseToEncoding[0x02] = new CultureWithEncoding(CultureInfo.GetCultureInfo(1033), Encoding.GetEncoding(850)); // DOS Multilingual code page 850 
             _dbaseToEncoding[0x03] = new CultureWithEncoding(CultureInfo.GetCultureInfo(1033), CodePageChoice.Ansi); // Windows ANSI code page 1252 
             _dbaseToEncoding[0x04] = new CultureWithEncoding(CultureInfo.GetCultureInfo(1033), CodePageChoice.Mac); // Macintosh US English 
@@ -161,8 +161,8 @@ namespace DotSpatial.Data
             _dbaseToEncoding[0x65] = new CultureWithEncoding(CultureInfo.GetCultureInfo(25), CodePageChoice.Oem); // Russian MS–DOS
             _dbaseToEncoding[0x66] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(865)); // Nordic MS–DOS
             _dbaseToEncoding[0x67] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(861)); // Icelandic MS–DOS
-            //_dbaseToEncoding[0x68] = Encoding.GetEncoding(895); // Kamenicky (Czech) MS-DOS 
-            //_dbaseToEncoding[0x69] = Encoding.GetEncoding(620); // Mazovia (Polish) MS-DOS 
+            // _dbaseToEncoding[0x68] = Encoding.GetEncoding(895); // Kamenicky (Czech) MS-DOS 
+            // _dbaseToEncoding[0x69] = Encoding.GetEncoding(620); // Mazovia (Polish) MS-DOS 
             _dbaseToEncoding[0x6B] = new CultureWithEncoding(CultureInfo.GetCultureInfo(31), CodePageChoice.Oem); // Turkish MS–DOS
             _dbaseToEncoding[0x6C] = new CultureWithEncoding(CultureInfo.GetCultureInfo(3084), Encoding.GetEncoding(863)); // French–Canadian MS–DOS
             _dbaseToEncoding[0x78] = new CultureWithEncoding(CultureInfo.GetCultureInfo(1028), CodePageChoice.Oem); // Taiwan Big 5

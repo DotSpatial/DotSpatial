@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology
         #region Private Variables
 
         // Legend Item properties
-        //private IChangeEventList<ILegendItem> _legendItems; // not used by mapwindow, but can be used by developers
+        // private IChangeEventList<ILegendItem> _legendItems; // not used by mapwindow, but can be used by developers
         private bool _changeOccured;
         private bool _checked;
         private bool _isDragable;

@@ -9,29 +9,54 @@ using Microsoft.VisualBasic;
 
 namespace DotSpatial.Plugins.WebMap
 {
+    /// <summary>
+    /// This can be used to work with services other than the ones already defined.
+    /// </summary>
     public class OtherServiceProvider : ServiceProvider
     {
+        #region Fields
+
         private string _url;
 
-        public OtherServiceProvider(string name, string url) : base(name)
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OtherServiceProvider"/> class.
+        /// </summary>
+        /// <param name="name">Name of the service provider.</param>
+        /// <param name="url">Url of the service provider.</param>
+        public OtherServiceProvider(string name, string url)
+            : base(name)
         {
             _url = url;
-            Configure = delegate
-            {
-                var dialogDefault = string.IsNullOrWhiteSpace(_url)
-                    ? "http://tiles.virtualearth.net/tiles/h{key}.jpeg?g=461&mkt=en-us&n=z"
-                    : _url;
-                var guiUrl = Interaction.InputBox("Please provide the Url for the service.",
-                    DefaultResponse: dialogDefault);
-                if (!string.IsNullOrWhiteSpace(guiUrl))
+            Configure = () =>
                 {
-                    _url = guiUrl;
-                    return true;
-                }
-                return false;
-            };
+                    var dialogDefault = string.IsNullOrWhiteSpace(_url) ? "http://tiles.virtualearth.net/tiles/h{key}.jpeg?g=461&mkt=en-us&n=z" : _url;
+                    var guiUrl = Interaction.InputBox("Please provide the Url for the service.", DefaultResponse: dialogDefault);
+                    if (!string.IsNullOrWhiteSpace(guiUrl))
+                    {
+                        _url = guiUrl;
+                        return true;
+                    }
+
+                    return false;
+                };
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <inheritdoc />
+        public override bool NeedConfigure => string.IsNullOrWhiteSpace(_url);
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
         public override Bitmap GetBitmap(int x, int y, Envelope envelope, int zoom)
         {
             try
@@ -44,7 +69,7 @@ namespace DotSpatial.Plugins.WebMap
 
                 if (url.Contains("{key}"))
                 {
-                    var quadKey = TileCalculator.TileXYToBingQuadKey(x, y, zoom);
+                    var quadKey = TileCalculator.TileXyToBingQuadKey(x, y, zoom);
                     url = url.Replace("{key}", quadKey);
                 }
                 else
@@ -68,20 +93,17 @@ namespace DotSpatial.Plugins.WebMap
             }
             catch (Exception ex)
             {
-                if (ex is WebException ||
-                    ex is TimeoutException)
+                if (ex is WebException || ex is TimeoutException)
                 {
                     return ExceptionToBitmap(ex, 256, 256);
                 }
+
                 Debug.WriteLine(ex.Message);
             }
 
             return null;
         }
 
-        public override bool NeedConfigure
-        {
-            get { return string.IsNullOrWhiteSpace(_url); }
-        }
+        #endregion
     }
 }

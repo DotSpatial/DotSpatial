@@ -90,11 +90,11 @@ namespace DotSpatial.Controls
         /// </returns>
         public static LineClipStatus ClipLine(ref double x1, ref double y1, ref double x2, ref double y2, double xmin, double ymin, double xmax, double ymax)
         {
-            //Outcodes for P0, P1, and whatever point lies outside the clip rectangle
+            // Outcodes for P0, P1, and whatever point lies outside the clip rectangle
             int hhh = 0;
             bool done = false;
             LineClipStatus returnValue = LineClipStatus.Unknown;
-            //compute outcodes
+            // compute outcodes
             int outcode0 = ComputeOutCode(x1, y1, xmin, ymin, xmax, ymax);
             int outcode1 = ComputeOutCode(x2, y2, xmin, ymin, xmax, ymax);
 
@@ -113,10 +113,10 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
-                    //failed both tests, so calculate the line segment to clip
-                    //from an outside point to an intersection with clip edge
+                    // failed both tests, so calculate the line segment to clip
+                    // from an outside point to an intersection with clip edge
                     double x = 0, y = 0;
-                    //At least one endpoint is outside the clip rectangle; pick it.
+                    // At least one endpoint is outside the clip rectangle; pick it.
                     int outcodeOut;
                     if (outcode0 != 0)
                     {
@@ -128,8 +128,8 @@ namespace DotSpatial.Controls
                         outcodeOut = outcode1;
                         returnValue |= LineClipStatus.ClippedLast;
                     }
-                    //Now find the intersection point;
-                    //use formulas y = y0 + slope * (x - x0), x = x0 + (1/slope)* (y - y0)
+                    // Now find the intersection point;
+                    // use formulas y = y0 + slope * (x - x0), x = x0 + (1/slope)* (y - y0)
                     if ((outcodeOut & Top) > 0)
                     {
                         x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1);
@@ -150,8 +150,8 @@ namespace DotSpatial.Controls
                         y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1);
                         x = xmin;
                     }
-                    //Now we move outside point to intersection point to clip
-                    //and get ready for next pass.
+                    // Now we move outside point to intersection point to clip
+                    // and get ready for next pass.
                     if (outcodeOut == outcode0)
                     {
                         x1 = x;

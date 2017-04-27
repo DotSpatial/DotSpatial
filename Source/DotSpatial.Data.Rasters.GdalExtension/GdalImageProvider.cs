@@ -255,7 +255,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 if (blockHeight > gs.Bounds.NumRows) blockHeight = gs.Bounds.NumRows;
                 int numBlocks = (int)Math.Ceiling(gs.Bounds.NumRows / (double)blockHeight);
                 ProgressMeter pm = new ProgressMeter(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
-                //ProgressHandler.Progress("pyramid", 0, "Copying Data To Pyramids: 0% Complete");
+                // ProgressHandler.Progress("pyramid", 0, "Copying Data To Pyramids: 0% Complete");
                 Application.DoEvents();
                 for (int j = 0; j < numBlocks; j++)
                 {

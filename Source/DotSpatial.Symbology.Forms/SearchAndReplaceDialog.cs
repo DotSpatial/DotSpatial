@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public string FindString
         {
-            //set { _find = value; }
+            // set { _find = value; }
             get { return _find; }
         }
 
@@ -43,7 +43,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public string ReplaceString
         {
-            //set { _replace = value; }
+            // set { _replace = value; }
             get { return _replace; }
         }
 

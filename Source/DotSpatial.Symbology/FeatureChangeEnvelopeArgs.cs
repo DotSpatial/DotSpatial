@@ -17,7 +17,7 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Symbology
 {
     ///<summary>
-    ///Represents the argument for events that need to report changed features and the corresponding envelope.
+    /// Represents the argument for events that need to report changed features and the corresponding envelope.
     ///</summary>
     public class FeatureChangeEnvelopeArgs : FeatureChangeArgs
     {

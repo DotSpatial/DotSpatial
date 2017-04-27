@@ -111,7 +111,7 @@ namespace DotSpatial.Symbology
             // _layerProviders.Add(new ShapefileLayerProvider()); // .shp files
             // _layerProviders.Add(new BinaryLayerProvider()); // .bgd files
 
-            //string path = Application.ExecutablePath;
+            // string path = Application.ExecutablePath;
             _layerProviderDirectories = new List<string>();
             _layerProviderDirectories.Add("\\Plugins");
             _preferredProviders = new Dictionary<string, ILayerProvider>();
@@ -154,10 +154,10 @@ namespace DotSpatial.Symbology
         /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
         public virtual IRasterLayer OpenRasterLayer()
         {
-            //OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.Filter = RasterReadFilter;
-            //if (ofd.ShowDialog() != DialogResult.OK) return null;
-            //return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler) as IRasterLayer;
+            // OpenFileDialog ofd = new OpenFileDialog();
+            // ofd.Filter = RasterReadFilter;
+            // if (ofd.ShowDialog() != DialogResult.OK) return null;
+            // return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler) as IRasterLayer;
             throw new NotImplementedException();
         }
 
@@ -167,10 +167,10 @@ namespace DotSpatial.Symbology
         /// <returns>An IFeatureSet with the data from the file specified in a dialog</returns>
         public virtual IFeatureLayer OpenVectorLayer()
         {
-            //OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.Filter = VectorReadFilter;
-            //if (ofd.ShowDialog() != DialogResult.OK) return null;
-            //return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler) as IFeatureLayer;
+            // OpenFileDialog ofd = new OpenFileDialog();
+            // ofd.Filter = VectorReadFilter;
+            // if (ofd.ShowDialog() != DialogResult.OK) return null;
+            // return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler) as IFeatureLayer;
             throw new NotImplementedException();
         }
 
@@ -201,10 +201,10 @@ namespace DotSpatial.Symbology
         /// <returns>The layer after it has been created and added to the container</returns>
         public virtual ILayer OpenLayer(ICollection<ILayer> container)
         {
-            //OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.Filter = DialogReadFilter;
-            //if (ofd.ShowDialog() != DialogResult.OK) return null;
-            //return OpenLayer(ofd.FileName, LoadInRam, container, ProgressHandler);
+            // OpenFileDialog ofd = new OpenFileDialog();
+            // ofd.Filter = DialogReadFilter;
+            // if (ofd.ShowDialog() != DialogResult.OK) return null;
+            // return OpenLayer(ofd.FileName, LoadInRam, container, ProgressHandler);
             throw new NotImplementedException();
         }
 
@@ -216,10 +216,10 @@ namespace DotSpatial.Symbology
         public virtual ILayer OpenLayer(IProgressHandler progressHandler)
         {
             throw new NotImplementedException();
-            //OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.Filter = DialogReadFilter;
-            //if (ofd.ShowDialog() != DialogResult.OK) return null;
-            //return OpenLayer(ofd.FileName, LoadInRam, null, progressHandler);
+            // OpenFileDialog ofd = new OpenFileDialog();
+            // ofd.Filter = DialogReadFilter;
+            // if (ofd.ShowDialog() != DialogResult.OK) return null;
+            // return OpenLayer(ofd.FileName, LoadInRam, null, progressHandler);
         }
 
         /// <summary>
@@ -229,10 +229,10 @@ namespace DotSpatial.Symbology
         public virtual ILayer OpenLayer()
         {
             throw new NotImplementedException();
-            //OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.Filter = DialogReadFilter;
-            //if (ofd.ShowDialog() != DialogResult.OK) return null;
-            //return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler);
+            // OpenFileDialog ofd = new OpenFileDialog();
+            // ofd.Filter = DialogReadFilter;
+            // if (ofd.ShowDialog() != DialogResult.OK) return null;
+            // return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler);
         }
 
         /// <summary>
@@ -380,10 +380,10 @@ namespace DotSpatial.Symbology
         /// <returns>for now an ILayerSet</returns>
         public virtual ILayer OpenImageLayer()
         {
-            //OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.Filter = ImageReadFilter;
-            //if (ofd.ShowDialog() != DialogResult.OK) return null;
-            //return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler);
+            // OpenFileDialog ofd = new OpenFileDialog();
+            // ofd.Filter = ImageReadFilter;
+            // if (ofd.ShowDialog() != DialogResult.OK) return null;
+            // return OpenLayer(ofd.FileName, LoadInRam, null, ProgressHandler);
             throw new NotImplementedException();
         }
 

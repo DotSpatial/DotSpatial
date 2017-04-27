@@ -119,7 +119,7 @@ namespace DotSpatial.Positioning
         ///// <summary>
         ///// Returns a GUID which serves as the base of all Bluetooth services.
         ///// </summary>
-        //private static readonly Guid BaseServiceGuid = new Guid(0x00000000, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
+        // private static readonly Guid BaseServiceGuid = new Guid(0x00000000, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
         /// <summary>
         /// Returns a GUID which represents the RFComm service.
         /// </summary>
@@ -127,7 +127,7 @@ namespace DotSpatial.Positioning
         ///// <summary>
         ///// Returns a GUID which represents the L2Cap service.
         ///// </summary>
-        //private static readonly Guid L2CapServiceGuid = new Guid(0x00000100, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
+        // private static readonly Guid L2CapServiceGuid = new Guid(0x00000100, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
 
         #endregion Fields
 
@@ -1458,7 +1458,7 @@ namespace DotSpatial.Positioning
 
         #region Unused Code (Commented Out)
 
-        //public override void Close()
+        // public override void Close()
         //{
         //    lock (BluetoothStackSyncRoot)
         //    {

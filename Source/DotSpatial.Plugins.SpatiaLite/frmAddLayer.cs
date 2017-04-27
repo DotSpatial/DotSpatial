@@ -25,7 +25,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             dgGeometryColumns.DataSource = geometryColumnList;
         }
 
-        //when clicking "OK"
+        // when clicking "OK"
         private void btnOK_Click(object sender, EventArgs e)
         {
             SpatiaLiteHelper slh = new SpatiaLiteHelper();
@@ -40,7 +40,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                         IFeatureSet fs = slh.ReadFeatureSet(connString, item);
 
                         IMapFeatureLayer lay = mainMap.Layers.Add(fs);
-                        //lay.EditMode = false;
+                        // lay.EditMode = false;
                     }
                 }
             }

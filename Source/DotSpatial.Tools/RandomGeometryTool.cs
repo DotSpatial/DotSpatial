@@ -3,7 +3,7 @@
 // Description:  Wraps DotSpatial.Analysis.RandomGeometry in a tool wrapper for use through the DotSptial toolbox.
 
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name               |   Date             |         Comments
 //--------------------|--------------------|--------------------------------------------------------------
@@ -21,9 +21,9 @@ namespace DotSpatial.Tools
     /// DotSpatial tools are intended to be used through the DotSpatial toolbox or modeler.
     /// To perform buffer analysis through code, consider using DotSpatial.Analysis.RandomGeometry directly.
     /// </summary>
-    class RandomGeometryTool : Tool
+    public class RandomGeometryTool : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         // Declare input and output parameter arrays
         private Parameter[] _inputParam;
@@ -31,78 +31,72 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructor
+        #region  Constructors
+
         /// <summary>
+        /// Initializes a new instance of the <see cref="RandomGeometryTool"/> class.
         /// Create a new instance of the RandomGeometry tool
         /// </summary>
         public RandomGeometryTool()
         {
-            this.Name = TextStrings.RandomGeometry;
-            this.Category = TextStrings.Analysis;
-            this.Description = TextStrings.RandomGeometryDescription;
-            this.ToolTip = TextStrings.RandomGeometryToolTip;
+            Name = TextStrings.RandomGeometry;
+            Category = TextStrings.Analysis;
+            Description = TextStrings.RandomGeometryDescription;
+            ToolTip = TextStrings.RandomGeometryToolTip;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array. 
-        /// Number of parameter and parameter types are defined during initialize. 
+        /// Gets the input paramater array.
+        /// Number of parameter and parameter types are defined during initialize.
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array. 
-        /// Number of parameter and parameter types are defined during initialize. 
+        /// Gets the output paramater array.
+        /// Number of parameter and parameter types are defined during initialize.
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
         /// Executes the random geometry tool, returning true when it has completed.
         /// </summary>
-        /// <param name="cancelProgressHandler"></param>
-        /// <returns></returns>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
-            //Get the needed input and output parameters
+            // Get the needed input and output parameters
             IFeatureSet inputFeatures = _inputParam[0].Value as IFeatureSet;
             IFeatureSet outputFeatures = _outputParam[0].Value as IFeatureSet;
             IntParam intInput = _inputParam[1] as IntParam;
 
             int numPoints = 1;
-            if (intInput != null) { numPoints = intInput.Value; }
+            if (intInput != null)
+            {
+                numPoints = intInput.Value;
+            }
 
             RandomGeometry.RandomPoints(inputFeatures, numPoints, outputFeatures, cancelProgressHandler);
 
             if (cancelProgressHandler.Cancel)
             {
-                //Set output param to null so that ToolManager does not attempt to open file.
+                // Set output param to null so that ToolManager does not attempt to open file.
                 _outputParam = null;
                 return false;
             }
 
+            if (outputFeatures == null) return false;
+
             outputFeatures.Save();
             return true;
         }
-
 
         /// <summary>
         /// Inititalize input and output arrays with parameter types and default values.

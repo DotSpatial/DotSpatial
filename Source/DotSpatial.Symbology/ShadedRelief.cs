@@ -98,7 +98,7 @@ namespace DotSpatial.Symbology
             _lightIntensity = .7F;
             _ambientIntensity = .8F;
             _extrusion = 5;
-            //_elevationFactor = 0.0000027F;
+            // _elevationFactor = 0.0000027F;
             _isUsed = false;
             _hasChanged = false;
         }
@@ -197,7 +197,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the zenith angle for the light direction in degrees from 0 (at the horizon) to 90 (straight up).
         /// </summary>
         [Category("Shaded Relief"), Serialize("ZenithAngle"),
-            //Editor(typeof(ZenithEditor), typeof(UITypeEditor)),
+            // Editor(typeof(ZenithEditor), typeof(UITypeEditor)),
          Description("Gets or sets the zenith angle for the light direction in degrees from 0 (at the horizon) to 90 (straight up).")]
         public double ZenithAngle
         {
@@ -214,7 +214,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets a double that represents the light direction in degrees clockwise from North
         /// </summary>
         [Category("Shaded Relief"),
-            //Editor(typeof(AzimuthAngleEditor), typeof(UITypeEditor)), Serialize("LightDirection"),
+            // Editor(typeof(AzimuthAngleEditor), typeof(UITypeEditor)), Serialize("LightDirection"),
          Description("The azimuth angle in degrees for the light direction.  The angle is measured clockwise from North.")]
         public double LightDirection
         {

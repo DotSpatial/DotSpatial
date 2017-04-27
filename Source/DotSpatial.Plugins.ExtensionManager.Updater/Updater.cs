@@ -157,21 +157,21 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
 
                 try
                 {
-                    //perform update
+                    // perform update
                     UpdatePackage(updates[i * 2], updates[i * 2 + 1]);
                     updated.Insert(0, updates[i * 2]);
                     Add.AddChecked(updated, uxUpdates);
 
-                    //copy new updater to temp location
+                    // copy new updater to temp location
                     var UpdaterPath = Path.GetDirectoryName(PackagePath);
                     String[] files = Directory.GetFiles(PackagePath, "Updater.exe", SearchOption.AllDirectories);
                     File.Copy(files[0], Path.Combine(UpdaterPath, "Updater(1).exe"), true);
 
-                    //remove current update and save updates
+                    // remove current update and save updates
                     updateList.RemoveRange(i * 2, 2);
                     File.WriteAllLines(Path.Combine(UpdaterPath, "updates.txt"), updateList);
 
-                    //start new updater
+                    // start new updater
                     Process updater = new Process();
                     updater.StartInfo.FileName = Path.Combine(UpdaterPath, "Updater(1).exe");
                     updater.StartInfo.Arguments = '"' + AppPath + '"';
@@ -194,10 +194,10 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
 
             if (path.Contains(id))
             {
-                //install new app package
+                // install new app package
                 packages.Manager.InstallPackage(id, SemanticVersion.Parse(version), true, false);
 
-                //copy over essential files
+                // copy over essential files
                 if(File.Exists(Path.Combine(path, "unins000.exe")))
                     File.Copy(Path.Combine(path, "unins000.exe"), Path.Combine(source, "unins000.exe"), true);
                 if (File.Exists(Path.Combine(path, "unins000.dat")))
@@ -211,7 +211,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
                 if (Directory.Exists(Path.Combine(path, "Mono Extensions")))
                     Directory.Move(Path.Combine(path, "Mono Extensions"), Path.Combine(source, "Mono Extensions"));
 
-                //perform update
+                // perform update
                 Directory.Delete(path, true);
                 Directory.Move(source, path);
                 Directory.Delete(Path.Combine(PackagePath, id + '.' + version), true);

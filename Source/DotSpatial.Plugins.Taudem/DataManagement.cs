@@ -10,7 +10,7 @@ using System.IO;
 
 namespace DotSpatial.Plugins.Taudem
 {
-    //using MapWinUtility;
+    // using MapWinUtility;
 
     /// <summary>
     /// The DataManagement namespace will contain basic file handling routines
@@ -47,8 +47,8 @@ namespace DotSpatial.Plugins.Taudem
                 Trace.WriteLine("Input shapefile does not exists: " + oldShapefilePath);
                 return false;
             }
-            //todo:
-            //DeleteShapefile(newShapefilePath);
+            // todo:
+            // DeleteShapefile(newShapefilePath);
 
             // Copy the files that make up a shape file:
 

@@ -216,7 +216,7 @@ namespace DotSpatial.Controls
                     FinishDrawing();
                     Application.DoEvents();
                     OnBufferChanged(clipRectangles);
-                    //this.StartDrawing();
+                    // this.StartDrawing();
                 }
             }
         }

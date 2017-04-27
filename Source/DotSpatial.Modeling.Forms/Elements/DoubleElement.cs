@@ -40,11 +40,11 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="param">The parameter this element represents</param>
         public DoubleElement(DoubleParam param)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeializeializeComponent();
             GroupBox.Text = param.Name;
 
-            //We save the Parameter passed in
+            // We save the Parameter passed in
             Param = param;
 
             DoRefresh();
@@ -56,7 +56,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
             _enableUpdate = false;
 
-            //We load the default Parameter
+            // We load the default Parameter
             if (Param.DefaultSpecified)
             {
                 double value = Param.Value;

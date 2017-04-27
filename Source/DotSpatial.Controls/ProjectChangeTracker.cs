@@ -12,7 +12,7 @@ namespace DotSpatial.Controls
     /// </summary>
     internal class ProjectChangeTracker
     {
-        //the main map where changes are tracked
+        // the main map where changes are tracked
         private IMap _map;
 
         public ProjectChangeTracker(IMap mainMap)
@@ -30,7 +30,7 @@ namespace DotSpatial.Controls
             {
                 if (_map != null)
                 {
-                    //remove previous event handlers
+                    // remove previous event handlers
                     _map.MapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
                     _map.LayerAdded -= map_LayerAdded;
                     _map.MapFrame.LayerRemoved -= MapFrame_LayerRemoved;
@@ -38,7 +38,7 @@ namespace DotSpatial.Controls
                     _map.MapFrame.Invalidated -= MapFrame_Invalidated;
                 }
 
-                //attach new event handlers
+                // attach new event handlers
                 _map = value;
 
                 if (_map != null)

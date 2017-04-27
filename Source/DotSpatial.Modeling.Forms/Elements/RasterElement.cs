@@ -44,15 +44,15 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="dataSets">An array of available data</param>
         public RasterElement(RasterParam inputParam, List<DataSetArray> dataSets)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = inputParam;
 
             _dataSets = dataSets;
 
-            //Saves the label
+            // Saves the label
             GroupBox.Text = Param.Name;
 
             DoRefresh();
@@ -62,15 +62,15 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void DoRefresh()
         {
-            //Disable the combo box temporarily
+            // Disable the combo box temporarily
             _refreshCombo = false;
 
-            //We set the combo boxes status to empty to start
+            // We set the combo boxes status to empty to start
             base.Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
             comboRaster.Items.Clear();
 
-            //If the user added a raster set
+            // If the user added a raster set
             if (_addedRasterSet != null)
             {
                 comboRaster.Items.Add(_addedRasterSet);
@@ -85,7 +85,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                 }
             }
 
-            //Add all the dataSets back to the combo box
+            // Add all the dataSets back to the combo box
             if (_dataSets != null)
             {
                 foreach (DataSetArray dsa in _dataSets)
@@ -93,7 +93,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                     IRaster aRasterSet = (dsa.DataSet as IRaster);
                     if (aRasterSet != null)
                     {
-                        //If the featureset is the correct type and isn't already in the combo box we add it
+                        // If the featureset is the correct type and isn't already in the combo box we add it
                         if (comboRaster.Items.Contains(dsa) == false)
                         {
                             comboRaster.Items.Add(dsa);
@@ -150,14 +150,14 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void BtnAddDataClick(object sender, EventArgs e)
         {
             /////////////////////////////////
-            //Replace with something that uses the default data provider
+            // Replace with something that uses the default data provider
             IRaster tempRaster = DataManager.DefaultDataManager.OpenRaster();
 
-            //If the feature is null don't do anything the user probably hit cancel on the dialog
+            // If the feature is null don't do anything the user probably hit cancel on the dialog
             if (tempRaster == null)
                 return;
 
-            //If its good add the feature set and save it
+            // If its good add the feature set and save it
             _addedRasterSet = new DataSetArray(Path.GetFileNameWithoutExtension(tempRaster.Filename), tempRaster);
             Param.ModelName = _addedRasterSet.Name;
             Param.Value = _addedRasterSet.DataSet;

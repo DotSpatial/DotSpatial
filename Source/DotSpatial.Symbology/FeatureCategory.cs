@@ -154,7 +154,7 @@ namespace DotSpatial.Symbology
         /// <param name="copy"></param>
         protected override void OnCopy(Descriptor copy)
         {
-            //todo: do the same for DeselectFeatures event...
+            // todo: do the same for DeselectFeatures event...
             FeatureCategory cat = copy as FeatureCategory;
             if (cat != null && cat.SelectFeatures != null)
             {

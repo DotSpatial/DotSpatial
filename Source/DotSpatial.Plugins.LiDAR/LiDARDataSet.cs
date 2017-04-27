@@ -12,15 +12,15 @@ namespace DotSpatial.Plugins.LiDAR
 
         public LiDARDataSet(string filename)
         {
-            //here read the maxX, maxY from the las file header
-            //and change the Extent property
+            // here read the maxX, maxY from the las file header
+            // and change the Extent property
             LasReader Reader = new LasReader(filename);
             Reader.initialize();
             ulong PointNum = Reader.getNumPoints();
             int ArrayLength = (int)PointNum;
-            //Range_double range = Reader.getBounds();
-            //Reader.getBounds
-            //Bounds_double ll = Reader.getBounds();
+            // Range_double range = Reader.getBounds();
+            // Reader.getBounds
+            // Bounds_double ll = Reader.getBounds();
             Schema schema = Reader.getSchema();
             PointBuffer data = new PointBuffer(schema, (uint)PointNum);
 
@@ -112,7 +112,7 @@ namespace DotSpatial.Plugins.LiDAR
 
         public void Dispose()
         {
-            //throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         public bool IsDisposeLocked
@@ -122,7 +122,7 @@ namespace DotSpatial.Plugins.LiDAR
 
         public void LockDispose()
         {
-            //throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         public void UnlockDispose()
@@ -155,13 +155,13 @@ namespace DotSpatial.Plugins.LiDAR
             }
             set
             {
-                //throw new NotImplementedException();
+                // throw new NotImplementedException();
             }
         }
 
         public void Reproject(ProjectionInfo targetProjection)
         {
-            //throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         #endregion
@@ -225,8 +225,8 @@ namespace DotSpatial.Plugins.LiDAR
                 double y = dimensionY.applyScaling_Int32(yraw);
                 double z = dimensionZ.applyScaling_Int32(zraw);
 
-                //double randomX = xMin + rnd.NextDouble() * boundingBox.Width;
-                //double randomY = yMin + rnd.NextDouble() * boundingBox.Height;
+                // double randomX = xMin + rnd.NextDouble() * boundingBox.Width;
+                // double randomY = yMin + rnd.NextDouble() * boundingBox.Height;
                 pointArray[i] = x;
                 i = i + 1;
                 pointArray[i] = y;

@@ -47,7 +47,7 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        ///Initializes a new instance of the EventList&lt;T&gt; class that is empty and has the default initial capacity.
+        /// Initializes a new instance of the EventList&lt;T&gt; class that is empty and has the default initial capacity.
         /// </summary>
         public EventList()
         {

@@ -27,7 +27,7 @@ namespace DotSpatial.Modeling.Forms.Elements
     {
         #region Class Variables
 
-        //Status stuff
+        // Status stuff
         private readonly ToolTip _lightTip = new ToolTip();
 
         /// <summary>
@@ -56,10 +56,10 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// </summary>
         public DialogElement()
         {
-            //Required by the constructor
+            // Required by the constructor
             InitializeComponent();
 
-            //Sets up the tooltip
+            // Sets up the tooltip
             _lightTip.SetToolTip(_lblStatus, string.Empty);
         }
 

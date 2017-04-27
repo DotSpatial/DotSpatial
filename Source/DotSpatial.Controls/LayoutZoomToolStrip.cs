@@ -23,7 +23,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A Brian Marchioni original toolstrip... preloaded with content.
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public class LayoutZoomToolStrip : ToolStrip
     {
@@ -161,19 +161,19 @@ namespace DotSpatial.Controls
             _comboZoom.Text = string.Format("{0:0}", _layoutControl.Zoom * 100) + "%";
         }
 
-        //Fires when the user clicks the zoom to full extent button
+        // Fires when the user clicks the zoom to full extent button
         private void _btnZoomFullExtent_Click(object sender, EventArgs e)
         {
             _layoutControl.ZoomFitToScreen();
         }
 
-        //Fires the zoom in control on the modeler
+        // Fires the zoom in control on the modeler
         private void _btnZoomIn_Click(object sender, EventArgs e)
         {
             _layoutControl.ZoomIn();
         }
 
-        //Fires the zoom out control on the modeler
+        // Fires the zoom out control on the modeler
         private void _btnZoomOut_Click(object sender, EventArgs e)
         {
             _layoutControl.ZoomOut();

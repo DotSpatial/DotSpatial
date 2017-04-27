@@ -105,7 +105,7 @@ namespace DotSpatial.Controls
             mypen.LineJoin = LineJoin.Round;
             mypen.StartCap = LineCap.Round;
             mypen.EndCap = LineCap.Round;
-            //All north arrows are defined as a graphics path in 100x100 size which is then scaled to fit the rectangle of the element
+            // All north arrows are defined as a graphics path in 100x100 size which is then scaled to fit the rectangle of the element
             switch (_northArrowStyle)
             {
                 case (NorthArrowStyle.BlackArrow):
@@ -121,7 +121,7 @@ namespace DotSpatial.Controls
                     g.DrawPath(mypen, gp);
                     g.FillPath(fillBrush, gp);
 
-                    //N
+                    // N
                     gp = new GraphicsPath();
                     gp.AddLine(40, 80, 40, 45);
                     gp.StartFigure();
@@ -137,11 +137,11 @@ namespace DotSpatial.Controls
 
                 case (NorthArrowStyle.Default):
 
-                    //draw the outline
+                    // draw the outline
                     DrawOutline(gp);
                     gp.CloseFigure();
 
-                    //Draw the N
+                    // Draw the N
                     gp.AddLine(45, 57, 45, 43);
                     gp.StartFigure();
                     gp.AddLine(45, 43, 55, 57);
@@ -151,7 +151,7 @@ namespace DotSpatial.Controls
                     gp.Transform(m);
                     g.DrawPath(mypen, gp);
 
-                    //Draw the top arrow
+                    // Draw the top arrow
                     gp = new GraphicsPath();
                     gp.AddLine(50, 5, 60, 40);
                     gp.AddBezier(60, 40, 55, 35, 45, 35, 40, 40);
@@ -164,13 +164,13 @@ namespace DotSpatial.Controls
 
                 case (NorthArrowStyle.CenterStar):
 
-                    //Outline
+                    // Outline
                     DrawOutline(gp);
                     gp.AddBezier(40F, 40F, 45F, 35F, 55F, 35F, 60f, 40F);
                     gp.AddLine(60, 40, 50, 5);
                     gp.CloseFigure();
 
-                    //N
+                    // N
                     gp.AddLine(47, 33, 47, 20);
                     gp.StartFigure();
                     gp.AddLine(47, 20, 53, 33);
@@ -180,7 +180,7 @@ namespace DotSpatial.Controls
                     gp.Transform(m);
                     g.DrawPath(mypen, gp);
 
-                    //Draw the center circle
+                    // Draw the center circle
                     gp = new GraphicsPath();
                     gp.AddLine(30, 30, 40, 50);
                     gp.AddLine(40, 50, 30, 70);

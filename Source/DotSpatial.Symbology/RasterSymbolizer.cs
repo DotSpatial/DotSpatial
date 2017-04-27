@@ -130,22 +130,22 @@ namespace DotSpatial.Symbology
                 {   // Use colors that are built into the raster, e.g. GeoTIFF with palette
                     _isElevation = false;
 
-                    //use all colors instead of unique colors because unique colors are not always set/correct
-                    int lastColor = Colors[0].ToArgb(); //changed by jany_ 2015-06-02
+                    // use all colors instead of unique colors because unique colors are not always set/correct
+                    int lastColor = Colors[0].ToArgb(); // changed by jany_ 2015-06-02
                     int firstNr = 0;
 
-                    //group succeeding values with the same color to the same category
+                    // group succeeding values with the same color to the same category
                     for (int i = 1; i < Colors.Length; i++)
                     {
                         int hash = Colors[i].ToArgb();
-                        if (hash != lastColor) //the current color differs from the one before so we add a category for the color before
+                        if (hash != lastColor) // the current color differs from the one before so we add a category for the color before
                         {
                             AddCategory(firstNr, i - 1, Colors[firstNr]);
                             firstNr = i;
                             lastColor = hash;
                         }
 
-                        if (i == Colors.Length - 1) //this is the last color, so we add the last category
+                        if (i == Colors.Length - 1) // this is the last color, so we add the last category
                             AddCategory(firstNr, i, Colors[firstNr]);
                     }
                 }
@@ -490,7 +490,7 @@ namespace DotSpatial.Symbology
             set
             {
                 _raster = value;
-                //if (_raster != null)_scheme.CreateCategories(_raster);
+                // if (_raster != null)_scheme.CreateCategories(_raster);
             }
         }
 

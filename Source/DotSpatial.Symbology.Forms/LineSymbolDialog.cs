@@ -256,7 +256,7 @@ namespace DotSpatial.Symbology.Forms
             predefinedLineSymbolControl1.CategoryFilter = cmbCategories.SelectedItem.ToString();
         }
 
-        //when the user clicks 'Add to custom symbols' on the details dialog
+        // when the user clicks 'Add to custom symbols' on the details dialog
         private void detailsDialog_AddToCustomSymbols(object sender, LineSymbolizerEventArgs e)
         {
             // Here a dialog is displayed. The user can enter the custom symbol name and category
@@ -267,7 +267,7 @@ namespace DotSpatial.Symbology.Forms
             CustomLineSymbolizer newSym = dlg.CustomSymbolizer as CustomLineSymbolizer;
             if (newSym != null)
             {
-                //check if user added a new category
+                // check if user added a new category
                 if (!_categories.Contains(newSym.Category))
                 {
                     _categories.Add(newSym.Category);
@@ -278,13 +278,13 @@ namespace DotSpatial.Symbology.Forms
                 predefinedLineSymbolControl1.Invalidate();
             }
 
-            //TODO: save the custom symbolizer to xml / serialized file.
-            //predefinedLineSymbolControl1.SaveToXml("test.xml");
+            // TODO: save the custom symbolizer to xml / serialized file.
+            // predefinedLineSymbolControl1.SaveToXml("test.xml");
         }
 
         private void detailsDialog_ChangesApplied(object sender, EventArgs e)
         {
-            //unselect any symbolizers in the control
+            // unselect any symbolizers in the control
             predefinedLineSymbolControl1.IsSelected = false;
 
             UpdatePreview(_symbolizer2);
@@ -314,8 +314,8 @@ namespace DotSpatial.Symbology.Forms
             detailsDialog.ShowDialog();
         }
 
-        //this loads the default symbols and initializes the control
-        //as well as the available categories
+        // this loads the default symbols and initializes the control
+        // as well as the available categories
         private void LoadDefaultSymbols()
         {
             CustomLineSymbolProvider prov = new CustomLineSymbolProvider();

@@ -40,12 +40,12 @@ namespace DotSpatial.Plugins.LiDAR
         public LiDARLayer()
         {
             Configure();
-            //assign the data set
-            //DataSet = new LiDARDataSet();
+            // assign the data set
+            // DataSet = new LiDARDataSet();
             DataSet = new LiDARDataSet("C:\\Tile_1.las");
         }
 
-        //public new LiDARDataSet MyDataSet
+        // public new LiDARDataSet MyDataSet
         //{
         //    get;
         //    set;
@@ -102,15 +102,15 @@ namespace DotSpatial.Plugins.LiDAR
                 double dx = args.Dx;
                 double dy = args.Dy;
 
-                //reads the point array from the data source
-                //DataSet implements or uses IShapeSource to read the points that are within the bounding box
+                // reads the point array from the data source
+                // DataSet implements or uses IShapeSource to read the points that are within the bounding box
                 double[] vertices = DataSet.GetPointArray(boundingBox);
 
-                //setup the point symbol
+                // setup the point symbol
                 Color randomColor = CreateRandomColor();
                 Bitmap normalSymbol = CreateDefaultSymbol(randomColor, 4);
 
-                //run the drawing operation
+                // run the drawing operation
                 int numPoints = vertices.Length / 2;
 
                 for (int index = 0; index < numPoints; index++)

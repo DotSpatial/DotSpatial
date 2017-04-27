@@ -107,7 +107,7 @@ namespace DotSpatial.Symbology
             }
             DrawnStates = new Dictionary<IFeature, LabelDrawState>();
             if (FeatureSet == null) return;
-            //DataTable dt = _featureSet.DataTable; // if working correctly, this should auto-populate
+            // DataTable dt = _featureSet.DataTable; // if working correctly, this should auto-populate
             if (Symbology == null) return;
 
             foreach (ILabelCategory category in Symbology.Categories)
@@ -154,7 +154,7 @@ namespace DotSpatial.Symbology
             if (FeatureSet == null) return;
             FastDrawnStates = new FastLabelDrawnState[FeatureSet.ShapeIndices.Count];
 
-            //DataTable dt = _featureSet.DataTable; // if working correctly, this should auto-populate
+            // DataTable dt = _featureSet.DataTable; // if working correctly, this should auto-populate
             if (Symbology == null) return;
 
             foreach (ILabelCategory category in Symbology.Categories)

@@ -11,8 +11,8 @@ using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
-    ///This is a test class for MapFrame and is intended
-    ///to contain all MapFrame Unit Tests
+    /// This is a test class for MapFrame and is intended
+    /// to contain all MapFrame Unit Tests
     ///</summary>
     [TestClass()]
     public class MapFrameTest
@@ -30,7 +30,7 @@ namespace DotSpatial.Controls.Tests
             group.Layers.Add(new MapLineLayer());
             group.Layers.Add(new MapPointLayer());
 
-            //add a nested group
+            // add a nested group
             var group2 = new MapGroup();
             group.Layers.Add(group2);
             group2.Layers.Add(new MapPointLayer());
@@ -54,7 +54,7 @@ namespace DotSpatial.Controls.Tests
             group.Layers.Add(new MapLineLayer());
             group.Layers.Add(new MapPointLayer());
 
-            //add a nested group
+            // add a nested group
             var group2 = new MapGroup();
             group.Layers.Add(group2);
             group2.Layers.Add(new MapPointLayer());

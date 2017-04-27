@@ -4,7 +4,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -27,7 +27,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class FeatureToRaster : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -35,52 +35,42 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the FeatureToRaster class.
+        /// Initializes a new instance of the <see cref="FeatureToRaster"/> class.
         /// </summary>
         public FeatureToRaster()
         {
-            this.Name = TextStrings.FeatureToRaster;
-            this.Category = TextStrings.Conversion;
-            this.Description = TextStrings.FeatureToRasterDescription;
-            this.ToolTip = TextStrings.newrasteronspecifiedfeatureset;
+            Name = TextStrings.FeatureToRaster;
+            Category = TextStrings.Conversion;
+            Description = TextStrings.FeatureToRasterDescription;
+            ToolTip = TextStrings.newrasteronspecifiedfeatureset;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">A progress handler for handling progress messages</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet poly = _inputParam[0].Value as IFeatureSet;
@@ -109,7 +99,7 @@ namespace DotSpatial.Tools
         /// <param name="fieldName">The string fieldName to use</param>
         /// <param name="output">The raster that will be created</param>
         /// <param name="cancelProgressHandler">A progress handler for handling progress messages</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet source, double cellSize, string fieldName, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -130,19 +120,29 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[4];
             _inputParam[0] = new FeatureSetParam(TextStrings.input1polygontoRaster)
-                                 {
-                                     HelpText = TextStrings.InputPolygontochange
-                                 };
-            _inputParam[2] = new DoubleParam(TextStrings.DesiredCellSize) { HelpText = TextStrings.Themaximumnumber };
-            _inputParam[1] = new ListParam(TextStrings.stringnameoffield) { HelpText = TextStrings.Thevalueofeachcell };
+            {
+                HelpText = TextStrings.InputPolygontochange
+            };
+            _inputParam[2] = new DoubleParam(TextStrings.DesiredCellSize)
+            {
+                HelpText = TextStrings.Themaximumnumber
+            };
+            _inputParam[1] = new ListParam(TextStrings.stringnameoffield)
+            {
+                HelpText = TextStrings.Thevalueofeachcell
+            };
             _outputParam = new Parameter[2];
-            _outputParam[0] = new RasterParam(TextStrings.OutputRaster) { HelpText = TextStrings.Resultofaverageslope };
+            _outputParam[0] = new RasterParam(TextStrings.OutputRaster)
+            {
+                HelpText = TextStrings.Resultofaverageslope
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         /// <summary>
         /// Fires when one of the paramters value has beend changed, usually when a user changes a input or output Parameter value, this can be used to populate input2 Parameter default values.
         /// </summary>
+        /// <param name="sender">Sender that fired the event.</param>
         public override void ParameterChanged(Parameter sender)
         {
             if (sender != _inputParam[0])
@@ -152,12 +152,7 @@ namespace DotSpatial.Tools
 
             List<string> fields = new List<string>();
             IFeatureSet fs = _inputParam[0].Value as IFeatureSet;
-            if (fs == null)
-            {
-                return;
-            }
-
-            DataTable dt = fs.DataTable;
+            DataTable dt = fs?.DataTable;
             if (dt == null)
             {
                 return;

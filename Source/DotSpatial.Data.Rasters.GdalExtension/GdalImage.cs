@@ -120,7 +120,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             NumBands = _dataset.RasterCount;
             var test = new double[6];
             _dataset.GetGeoTransform(test);
-            test = (new AffineTransform(test)).TransfromToCorner(0.5, 0.5);//shift origin by half a cell
+            test = (new AffineTransform(test)).TransfromToCorner(0.5, 0.5);// shift origin by half a cell
             ProjectionString = _dataset.GetProjection();
             Bounds = new RasterBounds(Height, Width, test);
             WorldFile.Affine = test;
@@ -278,7 +278,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             if (m11 > 1 || m22 > 1) // out of pyramids
             {
                 g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                _overview = -1; //don't use overviews when zooming behind the max res.
+                _overview = -1; // don't use overviews when zooming behind the max res.
             }
             else
             {

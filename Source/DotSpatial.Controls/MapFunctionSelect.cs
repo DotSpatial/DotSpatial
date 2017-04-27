@@ -148,8 +148,8 @@ namespace DotSpatial.Controls
 #endif
             _currentPoint = e.Location;
             _isDragging = false;
-            //Map.Invalidate(); // Get rid of the selection box
-            //Application.DoEvents();
+            // Map.Invalidate(); // Get rid of the selection box
+            // Application.DoEvents();
             Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
                 _geoStartPoint.Y, e.GeographicLocation.Y);
             Envelope tolerant = env;
@@ -192,7 +192,7 @@ namespace DotSpatial.Controls
             Map.MapFrame.ResumeEvents();
             // Force an invalidate to clear the dotted lines, even if we haven't changed anything.
             e.Map.Invalidate();
-            //e.Map.MapFrame.Initialize();
+            // e.Map.MapFrame.Initialize();
 #if DEBUG
             sw.Stop();
             Debug.WriteLine("Initialize: " + sw.ElapsedMilliseconds);

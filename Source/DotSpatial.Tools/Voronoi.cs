@@ -3,7 +3,7 @@
 // Description:  Create thiessen polygons within a raster layer.
 
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //---------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|-------------------------------------------------------
@@ -18,71 +18,57 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Class for creating voronoi (Thiessen) polygons
+    /// Class for creating voronoi (Thiessen) polygons.
     /// </summary>
     public class Voronoi : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
-
         private Parameter[] _outputParam;
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the voronoi polygon tool
+        /// Initializes a new instance of the <see cref="Voronoi"/> class.
         /// </summary>
         public Voronoi()
         {
-            this.Name = TextStrings.ThiessenPolygons;
-            this.Category = TextStrings.Analysis;
-            this.Description = TextStrings.VoronoiDescription;
-            this.ToolTip = TextStrings.CreateVoronoiPolygons;
+            Name = TextStrings.ThiessenPolygons;
+            Category = TextStrings.Analysis;
+            Description = TextStrings.VoronoiDescription;
+            ToolTip = TextStrings.CreateVoronoiPolygons;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input = _inputParam[0].Value as IFeatureSet;
-            if (input != null)
-            {
-                input.FillAttributes();
-            }
+            input?.FillAttributes();
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 

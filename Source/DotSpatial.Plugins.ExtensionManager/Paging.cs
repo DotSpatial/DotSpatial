@@ -26,7 +26,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.packages = packageHelper;
             this.add = adder;
 
-            //find name of app
+            // find name of app
             string name = Assembly.GetEntryAssembly().GetName().Name;
             int i;
             for (i = 0; i < name.Length; i++)
@@ -154,9 +154,9 @@ namespace DotSpatial.Plugins.ExtensionManager
                         throw new InvalidOperationException();
 
                     var info = new PackageList();
-                    //info.TotalPackageCount = result.Count();
-                    //info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
-                    info.packages = onlinePacks.ToArray(); //Toggle comments here to reenable paging.
+                    // info.TotalPackageCount = result.Count();
+                    // info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
+                    info.packages = onlinePacks.ToArray(); // Toggle comments here to reenable paging.
 
                     return info;
                 }

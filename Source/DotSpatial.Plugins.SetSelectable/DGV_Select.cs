@@ -71,12 +71,12 @@ namespace DotSpatial.Plugins.SetSelectable
             LayerSelection old = _layers[index];
             _layers.RemoveAt(index);
 
-            if (_layers.Count <= newPosition) //hinter der Liste
+            if (_layers.Count <= newPosition) // hinter der Liste
                 _layers.Add(old);
-            else if (newPosition < 0) //vor der liste
+            else if (newPosition < 0) // vor der liste
                 _layers.Insert(0, old);
             else
-                _layers.Insert(newPosition, old); //irgendwo innerhalb
+                _layers.Insert(newPosition, old); // irgendwo innerhalb
             ChangeDataSource();
         }
 
@@ -105,7 +105,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="collection">Collection to sort by.</param>
         public void MoveLayers(IMapLayerCollection collection)
         {
-            int reverseI = 0; //position in layers is reverse to position in collection
+            int reverseI = 0; // position in layers is reverse to position in collection
             bool Moved = false;
             for (int i = collection.Count - 1; i >= 0; i--)
             {
@@ -120,7 +120,7 @@ namespace DotSpatial.Plugins.SetSelectable
                         _layers.Insert(reverseI, layer);
                         Moved = true;
                     }
-                    reverseI += 1; //non-FeatureLayers get ignored
+                    reverseI += 1; // non-FeatureLayers get ignored
                 }
             }
             if (Moved) ChangeDataSource();
@@ -133,7 +133,7 @@ namespace DotSpatial.Plugins.SetSelectable
         {
             if (DGV_Layer.DataSource != null) DGV_Layer.DataSource = null;
             DGV_Layer.DataSource = _layers;
-            DGV_Layer.Columns[DGVC_Unselect.Name].DisplayIndex = 2; //Corrects the position of the deselect button
+            DGV_Layer.Columns[DGVC_Unselect.Name].DisplayIndex = 2; // Corrects the position of the deselect button
         }
 
         /// <summary>

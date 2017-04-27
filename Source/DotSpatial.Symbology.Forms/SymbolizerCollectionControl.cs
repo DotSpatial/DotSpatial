@@ -90,7 +90,7 @@ namespace DotSpatial.Symbology.Forms
         {
             if (e.Index == -1) return;
 
-            //prepare to draw the rectangle for symbol display and selection
+            // prepare to draw the rectangle for symbol display and selection
             Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
@@ -106,7 +106,7 @@ namespace DotSpatial.Symbology.Forms
             e.Graphics.FillRectangle(Brushes.White, inner);
             e.Graphics.DrawRectangle(Pens.Black, inner);
 
-            //draw the symbolizer itself
+            // draw the symbolizer itself
             PointSymbolizer pointSym = lbxItems.Items[e.Index] as PointSymbolizer;
             if (pointSym != null)
             {
@@ -128,21 +128,21 @@ namespace DotSpatial.Symbology.Forms
                 return;
             }
 
-            //IFeatureSymbolizer sym = lbxItems.Items[e.Index] as IFeatureSymbolizer;
-            //if (sym == null) return;
-            //Matrix old = e.Graphics.Transform;
-            //Matrix shift = e.Graphics.Transform;
-            //Size2D size = _symbolizers.GetBoundingSize();
-            //double scaleSize = 1;
-            //if (_scaleMode == ScaleModes.Geographic || size.Height > 14)
+            // IFeatureSymbolizer sym = lbxItems.Items[e.Index] as IFeatureSymbolizer;
+            // if (sym == null) return;
+            // Matrix old = e.Graphics.Transform;
+            // Matrix shift = e.Graphics.Transform;
+            // Size2D size = _symbolizers.GetBoundingSize();
+            // double scaleSize = 1;
+            // if (_scaleMode == ScaleModes.Geographic || size.Height > 14)
             //{
             //    scaleSize = (ItemHeight - 6) / size.Height;
             //}
-            //shift.Translate(e.Bounds.Left + e.Bounds.Width / 2, e.Bounds.Top + e.Bounds.Height / 2);
-            ////shift.Translate(-(float)(size.Width * scaleSize / 2), -(float)(size.Height * scaleSize / 2));
-            //e.Graphics.Transform = shift;
-            //sym.Draw(e.Graphics, scaleSize);
-            //e.Graphics.Transform = old;
+            // shift.Translate(e.Bounds.Left + e.Bounds.Width / 2, e.Bounds.Top + e.Bounds.Height / 2);
+            //// shift.Translate(-(float)(size.Width * scaleSize / 2), -(float)(size.Height * scaleSize / 2));
+            // e.Graphics.Transform = shift;
+            // sym.Draw(e.Graphics, scaleSize);
+            // e.Graphics.Transform = old;
         }
 
         #endregion

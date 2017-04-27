@@ -113,7 +113,7 @@ namespace DotSpatial.Data
                     IFeature union = new Feature(resultFeatures[value].Geometry.Union(feature.Geometry));
                     union.DataRow = result.DataTable.NewRow();
                     union.DataRow[fieldName] = value;
-                    resultFeatures[value] = union; //TODO does this work without leaving remnants of the old datarow?
+                    resultFeatures[value] = union; // TODO does this work without leaving remnants of the old datarow?
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace DotSpatial.Data
             {
                 f = f.Union(fs.Features[i], fsunion, FieldJoinType.LocalOnly);
             }
-            fsunion.AddFeature(f.Geometry); //TODO jany_ why union feature if only geometry is used to create new feature?
+            fsunion.AddFeature(f.Geometry); // TODO jany_ why union feature if only geometry is used to create new feature?
             return fsunion;
         }
 

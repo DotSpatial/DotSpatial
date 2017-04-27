@@ -3,7 +3,7 @@
 // Description:  Tool that merges two raster layers.
 
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name               |   Date             |         Comments
 //--------------------|--------------------|--------------------------------------------------------------
@@ -25,7 +25,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class MergeGrids : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -33,62 +33,46 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the MergeGrids class.
+        /// Initializes a new instance of the <see cref="MergeGrids"/> class.
         /// </summary>
         public MergeGrids()
         {
-            this.Name = TextStrings.MergeRasterLayers;
-            this.Category = TextStrings.Analysis;
-            this.Description = TextStrings.MergeGridsDescription;
+            Name = TextStrings.MergeRasterLayers;
+            Category = TextStrings.Analysis;
+            Description = TextStrings.MergeGridsDescription;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Help text to be displayed when no input field is selected
+        /// Gets the help text to be displayed when no input field is selected.
         /// </summary>
-        public string HelpText
-        {
-            get
-            {
-                return TextStrings.MergeGridsDescription;
-            }
-        }
+        public string HelpText => TextStrings.MergeGridsDescription;
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>Boolean, true if the merge is successful.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IRaster input1 = _inputParam[0].Value as IRaster;
@@ -100,7 +84,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the Erase Opaeration tool programaticaly
+        /// Executes the Erase Opaeration tool programmatically
         /// Ping deleted static for external testing 01/2010.
         /// </summary>
         /// <param name="input1">The first input raster.</param>
@@ -126,15 +110,11 @@ namespace DotSpatial.Tools
             int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / smallestCellRaster.CellHeight));
 
             // create output raster
-            output = Raster.CreateRaster(
-                output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
+            output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
             RasterBounds bound = new RasterBounds(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
             output.NoDataValue = input1.NoDataValue;
-
-            RcIndex v1;
-            RcIndex v2;
 
             int previous = 0;
             int max = output.Bounds.NumRows + 1;
@@ -143,7 +123,7 @@ namespace DotSpatial.Tools
                 for (int j = 0; j < output.Bounds.NumColumns; j++)
                 {
                     Coordinate cellCenter = output.CellToProj(i, j);
-                    v1 = input1.ProjToCell(cellCenter);
+                    var v1 = input1.ProjToCell(cellCenter);
                     double val1;
                     if (v1.Row <= input1.EndRow && v1.Column <= input1.EndColumn && v1.Row > -1 && v1.Column > -1)
                     {
@@ -154,7 +134,7 @@ namespace DotSpatial.Tools
                         val1 = input1.NoDataValue;
                     }
 
-                    v2 = input2.ProjToCell(cellCenter);
+                    var v2 = input2.ProjToCell(cellCenter);
                     double val2;
                     if (v2.Row <= input2.EndRow && v2.Column <= input2.EndColumn && v2.Row > -1 && v2.Column > -1)
                     {
@@ -210,20 +190,22 @@ namespace DotSpatial.Tools
         public override void Initialize()
         {
             _inputParam = new Parameter[2];
-            _inputParam[0] = new RasterParam(TextStrings.input1Raster) { HelpText = TextStrings.InputFirstRaster };
+            _inputParam[0] = new RasterParam(TextStrings.input1Raster)
+                                 {
+                                     HelpText = TextStrings.InputFirstRaster
+                                 };
             _inputParam[1] = new RasterParam(TextStrings.input2Raster)
                                  {
                                      HelpText = TextStrings.InputSecondRasterforMerging
                                  };
 
             _outputParam = new Parameter[2];
-            _outputParam[0] = new RasterParam(TextStrings.OutputRaster) { HelpText = TextStrings.ResultRasterDirectory };
+            _outputParam[0] = new RasterParam(TextStrings.OutputRaster)
+                                  {
+                                      HelpText = TextStrings.ResultRasterDirectory
+                                  };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Execute the union region for output envelope.

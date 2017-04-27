@@ -250,7 +250,7 @@ namespace DotSpatial.Controls
                     return;
                 try
                 {
-                    //use the AppManager.SerializationManager to open the project
+                    // use the AppManager.SerializationManager to open the project
                     ApplicationManager.SerializationManager.OpenProject(dlg.FileName);
                     ApplicationManager.Map.Invalidate();
                 }
@@ -286,7 +286,7 @@ namespace DotSpatial.Controls
             }
             else if (string.IsNullOrEmpty(app.SerializationManager.CurrentProjectFile))
             {
-                //if the current project is not specified - just ask to discard changes
+                // if the current project is not specified - just ask to discard changes
                 if (MessageBox.Show(MessageStrings.ClearAllDataAndStartANewMap, MessageStrings.DiscardChanges, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     app.SerializationManager.New();
@@ -294,7 +294,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                //the current project is specified - ask the users if they want to save changes to current project
+                // the current project is specified - ask the users if they want to save changes to current project
                 var saveProjectMessage = string.Format(MessageStrings.SaveChangesToCurrentProject, Path.GetFileName(app.SerializationManager.CurrentProjectFile));
                 var msgBoxResult = MessageBox.Show(saveProjectMessage, MessageStrings.DiscardChanges, MessageBoxButtons.YesNoCancel);
 

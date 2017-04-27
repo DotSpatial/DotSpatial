@@ -11,15 +11,15 @@ using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
-    ///This is a test class for MapTest and is intended
-    ///to contain all MapTest Unit Tests
+    /// This is a test class for MapTest and is intended
+    /// to contain all MapTest Unit Tests
     ///</summary>
     [TestClass()]
     public class MapLayerCollectionTest
     {
         /// <summary>
-        ///A test for SelectedLayer.
-        ///After the selected layer is removed, Layers.SelectedLayer should be null
+        /// A test for SelectedLayer.
+        /// After the selected layer is removed, Layers.SelectedLayer should be null
         ///</summary>
         [TestMethod()]
         public void SelectedLayerNullIfLayerRemoved()
@@ -33,16 +33,16 @@ namespace DotSpatial.Controls.Tests
             myLayer.IsSelected = true;
             Assert.AreEqual(map.Layers.SelectedLayer, myLayer, "the selected layer should be equal to myLayer.");
 
-            //now remove all layers
+            // now remove all layers
             map.Layers.Clear();
 
-            //selectedLayer should be null
+            // selectedLayer should be null
             Assert.IsNull(map.Layers.SelectedLayer, "SelectedLayer should be null after removing all layers");
         }
 
         /// <summary>
-        ///A test for MapFrame property
-        ///is the mapFrame null when adding a group?
+        /// A test for MapFrame property
+        /// is the mapFrame null when adding a group?
         ///</summary>
         [TestMethod()]
         public void MapFrameIsNotNull_Group()

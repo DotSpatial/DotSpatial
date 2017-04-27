@@ -71,7 +71,7 @@ namespace DotSpatial.Controls
         {
             SuspendLayout();
 
-            //New model button
+            // New model button
             _btnNewModel = new ToolStripButton();
             _btnNewModel.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnNewModel.Image = Images.file_new;
@@ -79,9 +79,9 @@ namespace DotSpatial.Controls
             _btnNewModel.Name = "btnNewModel";
             _btnNewModel.Size = new Size(23, 22);
             _btnNewModel.Text = MessageStrings.ModelTipNew;
-            //_btnNewModel.Click
+            // _btnNewModel.Click
 
-            //save model button
+            // save model button
             _btnSaveModel = new ToolStripButton();
             _btnSaveModel.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnSaveModel.Image = Images.file_saveas;
@@ -91,7 +91,7 @@ namespace DotSpatial.Controls
             _btnSaveModel.Text = MessageStrings.ModelTipSave;
             _btnSaveModel.Click += BtnSaveModelClick;
 
-            //Load model button
+            // Load model button
             _btnLoadModel = new ToolStripButton();
             _btnLoadModel.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnLoadModel.Image = Images.FolderOpen;
@@ -101,7 +101,7 @@ namespace DotSpatial.Controls
             _btnLoadModel.Text = MessageStrings.ModelTipLoad;
             _btnLoadModel.Click += BtnLoadModelClick;
 
-            //Zoom In button
+            // Zoom In button
             _btnZoomIn = new ToolStripButton();
             _btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnZoomIn.Image = Images.zoom_in.ToBitmap();
@@ -111,7 +111,7 @@ namespace DotSpatial.Controls
             _btnZoomIn.Text = MessageStrings.ModelTipZoonIn;
             _btnZoomIn.Click += BtnZoomInClick;
 
-            //Zoom out button
+            // Zoom out button
             _btnZoomOut = new ToolStripButton();
             _btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnZoomOut.Image = Images.zoom_out.ToBitmap();
@@ -121,7 +121,7 @@ namespace DotSpatial.Controls
             _btnZoomOut.Text = MessageStrings.ModelTipZoomOut;
             _btnZoomOut.Click += BtnZoomOutClick;
 
-            //Zoom full extent
+            // Zoom full extent
             _btnZoomFullExtent = new ToolStripButton();
             _btnZoomFullExtent.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnZoomFullExtent.Image = Images.zoom_full_extent.ToBitmap();
@@ -131,7 +131,7 @@ namespace DotSpatial.Controls
             _btnZoomFullExtent.Text = MessageStrings.ModelTipFullExtent;
             _btnZoomFullExtent.Click += BtnZoomFullExtentClick;
 
-            //Add data button
+            // Add data button
             _btnAddData = new ToolStripButton();
             _btnAddData.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnAddData.Image = Images.AddLayer;
@@ -141,7 +141,7 @@ namespace DotSpatial.Controls
             _btnAddData.Text = MessageStrings.ModelTipAddData;
             // _btnAddData.Click += new EventHandler(BtnLinkClick);
 
-            //Zoom link tools
+            // Zoom link tools
             _btnLink = new ToolStripButton();
             _btnLink.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnLink.Image = Images.LinkData;
@@ -151,7 +151,7 @@ namespace DotSpatial.Controls
             _btnLink.Text = MessageStrings.ModelTipLink;
             _btnLink.Click += BtnLinkClick;
 
-            //delete stuff
+            // delete stuff
             _btnDelete = new ToolStripButton();
             _btnDelete.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnDelete.Image = Images.mnuLayerClear;
@@ -161,7 +161,7 @@ namespace DotSpatial.Controls
             _btnDelete.Text = MessageStrings.ModelTipDelete;
             _btnDelete.Click += BtnDeleteClick;
 
-            //delete stuff
+            // delete stuff
             _btnRun = new ToolStripButton();
             _btnRun.DisplayStyle = ToolStripItemDisplayStyle.Image;
             _btnRun.Image = Images.RunModel;
@@ -171,7 +171,7 @@ namespace DotSpatial.Controls
             _btnRun.Text = MessageStrings.ModelTipRunModel;
             _btnRun.Click += BtnRunClick;
 
-            //Adds all the buttons to the toolstrip
+            // Adds all the buttons to the toolstrip
             Items.Add(_btnNewModel);
             Items.Add(_btnLoadModel);
             Items.Add(_btnSaveModel);
@@ -209,13 +209,13 @@ namespace DotSpatial.Controls
 
         #region "Envent Handlers"
 
-        //Fires when the user clicks the delete button
+        // Fires when the user clicks the delete button
         private void BtnDeleteClick(object sender, EventArgs e)
         {
             _modeler.DeleteSelectedElements();
         }
 
-        //Fires when the user clicks the link button
+        // Fires when the user clicks the link button
         private void BtnLinkClick(object sender, EventArgs e)
         {
             if (_modeler.EnableLinking)
@@ -230,19 +230,19 @@ namespace DotSpatial.Controls
             }
         }
 
-        //Fires when the user clicks the zoom to full extent button
+        // Fires when the user clicks the zoom to full extent button
         private void BtnZoomFullExtentClick(object sender, EventArgs e)
         {
             _modeler.ZoomFullExtent();
         }
 
-        //Fires the zoom in control on the modeler
+        // Fires the zoom in control on the modeler
         private void BtnZoomInClick(object sender, EventArgs e)
         {
             _modeler.ZoomIn();
         }
 
-        //Fires the zoom out control on the modeler
+        // Fires the zoom out control on the modeler
         private void BtnZoomOutClick(object sender, EventArgs e)
         {
             _modeler.ZoomOut();

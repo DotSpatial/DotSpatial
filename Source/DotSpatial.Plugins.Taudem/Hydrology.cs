@@ -1,25 +1,25 @@
 //********************************************************************************************************
-//File name: Hydrology.cs
-//Description: Public class, provides methods for watershed delineation.
+// File name: Hydrology.cs
+// Description: Public class, provides methods for watershed delineation.
 //********************************************************************************************************
-//The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-//you may not use this file except in compliance with the License. You may obtain a copy of the License at
-//http://www.mozilla.org/MPL/
-//Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-//ANY KIND, either express or implied. See the License for the specific language governing rights and
-//limitations under the License.
+// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
+// you may not use this file except in compliance with the License. You may obtain a copy of the License at
+// http://www.mozilla.org/MPL/
+// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
+// ANY KIND, either express or implied. See the License for the specific language governing rights and
+// limitations under the License.
 //
-//The Original Code is MapWindow Open Source Hydrology, including the Fill algorithm that was
-//developed by Ted Dunsford at Idaho State University.  This algorithm is currently being
-//prepared for publication in Computers and Geosciences.
+// The Original Code is MapWindow Open Source Hydrology, including the Fill algorithm that was
+// developed by Ted Dunsford at Idaho State University.  This algorithm is currently being
+// prepared for publication in Computers and Geosciences.
 //
-//Contributor(s): (Open source contributors should list themselves and their modifications here).
-//7/7/2006 Ted Dunsford established this new environment for an improved hydrology toolkit.
-//2/11/2009 Chris George rewrote BuildJoinedBasins to (dramatically) improve speed
-//20/7/2010 Chris George made corrections to deal correctly with zero length links
-//TODO the Magnitude field in the network shapefile is currently incorrectly calculated
-//23/1/2011 Chris George replaced use of binary grids with GeoTiffs for TauDEM V5
-//26/1/2011 Chris George replaced old Taudem and some Hydrology functions with TauDEM V5
+// Contributor(s): (Open source contributors should list themselves and their modifications here).
+// 7/7/2006 Ted Dunsford established this new environment for an improved hydrology toolkit.
+// 2/11/2009 Chris George rewrote BuildJoinedBasins to (dramatically) improve speed
+// 20/7/2010 Chris George made corrections to deal correctly with zero length links
+// TODO the Magnitude field in the network shapefile is currently incorrectly calculated
+// 23/1/2011 Chris George replaced use of binary grids with GeoTiffs for TauDEM V5
+// 26/1/2011 Chris George replaced old Taudem and some Hydrology functions with TauDEM V5
 //********************************************************************************************************
 
 using System;
@@ -40,12 +40,12 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Plugins.Taudem
 {
-    //using System.Windows.Forms;
-    //using MapWindow.Interfaces.Geometries;
-    //using MapWinGeoProc.Dialogs;
-    //using MapWinGeoProc.Pitfill;
-    //using MapWinGeoProc.Topology2D;
-    //using MapWinGIS;
+    // using System.Windows.Forms;
+    // using MapWindow.Interfaces.Geometries;
+    // using MapWinGeoProc.Dialogs;
+    // using MapWinGeoProc.Pitfill;
+    // using MapWinGeoProc.Topology2D;
+    // using MapWinGIS;
 
     /// <summary>
     /// The Hydrology algorithms are especially designed for working with DEMs in the context
@@ -72,7 +72,7 @@ namespace DotSpatial.Plugins.Taudem
         {
             // 2000 width
             // 1000 height
-            //MapWinUtility.Logger.Dbg("Fill(SourceFile: " + SourceFile + ",\n" +
+            // MapWinUtility.Logger.Dbg("Fill(SourceFile: " + SourceFile + ",\n" +
             //                         "     DestFile: " + DestFile + ",\n" +
             //                         "     IProgressHandler");
             File_Fill(SourceFile, DestFile, true, false, 10000, 2000, progress);
@@ -274,7 +274,7 @@ namespace DotSpatial.Plugins.Taudem
 
             var pars = "-z " + Quote(sourceFile) + " -fel " + Quote(destFile);
             var result = RunTaudem("PitRemove.exe", pars, 1, false);
-            //todo use tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput,
+            // todo use tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput,
 
             if (result != 0)
             {
@@ -286,9 +286,9 @@ namespace DotSpatial.Plugins.Taudem
                     );
             }
 
-            //var sourceRaster = Raster.Open(sourceFile);
+            // var sourceRaster = Raster.Open(sourceFile);
 
-            //if (File.Exists(destFile))
+            // if (File.Exists(destFile))
             //{
             //    // Delete any existing files for our output grid
             //    var bmp = Path.ChangeExtension(destFile, "bmp");
@@ -351,15 +351,15 @@ namespace DotSpatial.Plugins.Taudem
             //    File.Delete(destFile);
             //}
 
-            //if (callBack != null)
+            // if (callBack != null)
             //{
             //    callBack.Progress("Status", 0, "Creating Output File");
             //}
 
-            //var destinationRaster = Raster.CreateRaster(destFile, sourceRaster.DriverCode, sourceRaster.NumColumnsInFile, sourceRaster.NumRowsInFile, sourceRaster.NumBands, sourceRaster.DataType, new[] { string.Empty });
+            // var destinationRaster = Raster.CreateRaster(destFile, sourceRaster.DriverCode, sourceRaster.NumColumnsInFile, sourceRaster.NumRowsInFile, sourceRaster.NumBands, sourceRaster.DataType, new[] { string.Empty });
 
             // Trying something new... Copy first and only edit a few cells: 2-12-07
-            //if (newNumColumns * newNumRows > 64000000)
+            // if (newNumColumns * newNumRows > 64000000)
             //{
             //    if (Path.GetExtension(sourceFile) != Path.GetExtension(destFile))
             //    {
@@ -369,18 +369,18 @@ namespace DotSpatial.Plugins.Taudem
             //    File.Copy(sourceFile, destFile);
             //    destGrid.Open(destFile, GridDataType.FloatDataType, true, GridFileType.UseExtension, callBack);
             //}
-            //else
+            // else
             //{
             // This allows for more versitile file types, but tends to lock up if the file is too large.
             // res = destGrid.CreateNew(destFile, newHeader, GridDataType.FloatDataType, float.MaxValue, true, GridFileType.UseExtension, callBack);
             //}
 
-            //DoFill(sourceGrid, destGrid, showProgressDialog, frameWidth, frameHeight, callBack);
+            // DoFill(sourceGrid, destGrid, showProgressDialog, frameWidth, frameHeight, callBack);
 
-            //res = destGrid.Save(destFile, RasterFileType.UseExtension, callBack);
+            // res = destGrid.Save(destFile, RasterFileType.UseExtension, callBack);
 
-            //sourceRaster.Close();
-            //destinationRaster.Close();
+            // sourceRaster.Close();
+            // destinationRaster.Close();
         }
 
         /*
@@ -406,12 +406,12 @@ namespace DotSpatial.Plugins.Taudem
                 + "', ShowProgressDialog: " + showProgressDialog + "\n" + ", FrameWidth: " + frameWidth + "\n"
                 + ", FrameHeight: " + frameHeight + ", callback);\n");
 
-            //var numRows = sourceGrid.NumRows;
-            //var numCols = sourceGrid.NumColumns;
+            // var numRows = sourceGrid.NumRows;
+            // var numCols = sourceGrid.NumColumns;
             //                                      Trace.WriteLine("Assigning Edges");
 
             //// We only need to do this if we are using the "create new" strategy
-            //if (numRows * numCols < 64000000)
+            // if (numRows * numCols < 64000000)
             //{
             //    // assume that we can store at least one whole row in memory at once
             //    var rowVals = new float[numCols];
@@ -434,14 +434,14 @@ namespace DotSpatial.Plugins.Taudem
             //    destGrid.PutFloatWindow(1, numRows - 2, numCols - 1, numCols - 1, colVals[0]);
             //}
 
-            //myFramework.InitDependencyFiles(destGrid.Filename);
+            // myFramework.InitDependencyFiles(destGrid.Filename);
 
-            //Trace.WriteLine("Beginning Algorithm");
-            //var myFrame = myFramework.First_Frame();
-            //var total = myFramework.NumFramesTall * myFramework.NumFramesWide;
-            //var count = 0;
-            //var algTime = new TimeSpan();
-            //do
+            // Trace.WriteLine("Beginning Algorithm");
+            // var myFrame = myFramework.First_Frame();
+            // var total = myFramework.NumFramesTall * myFramework.NumFramesWide;
+            // var count = 0;
+            // var algTime = new TimeSpan();
+            // do
             //{
             //    if (myFrame.HasDependencies)
             //    {
@@ -474,23 +474,23 @@ namespace DotSpatial.Plugins.Taudem
             //    count += 1;
             //    myProgressDialog.Progress = count * 100 / total;
             //}
-            //while (myFramework.HasDependencies);
+            // while (myFramework.HasDependencies);
 
-            //Trace.WriteLine(
+            // Trace.WriteLine(
             //    string.Format("TIME: {0}, {1}, {2}, {3}", algTime.Hours, algTime.Minutes, algTime.Seconds.ToString(), algTime.Milliseconds));
-            //myProgressDialog.ReDraw();
-            //myFramework.DeleteFiles();
-            //myProgressDialog.Hide();
-            //Application.DoEvents();
+            // myProgressDialog.ReDraw();
+            // myFramework.DeleteFiles();
+            // myProgressDialog.Hide();
+            // Application.DoEvents();
         }
 
         #endregion
 
-        //Class level variables.  These variables are shared by the functions, or can be used
-        //to preserve information between function calls, in the event of future dependency.
-        //To indicate that they are class level, I will mark them with m_
+        // Class level variables.  These variables are shared by the functions, or can be used
+        // to preserve information between function calls, in the event of future dependency.
+        // To indicate that they are class level, I will mark them with m_
 
-        //private class Times
+        // private class Times
         //{
         //    DateTime t_StartTime;
         //    DateTime t_StartOfLast;
@@ -506,7 +506,7 @@ namespace DotSpatial.Plugins.Taudem
         //        {
         //            t_StartTime = value;
         //        }
-        //    }//End StartTime
+        //    }// End StartTime
         //    public DateTime StartOfLast
         //    {
         //        get
@@ -517,8 +517,8 @@ namespace DotSpatial.Plugins.Taudem
         //        {
         //            t_StartOfLast = value;
         //        }
-        //    }//End StartOfLast
-        //    //Returns a statuslike string showing the timespan
+        //    }// End StartOfLast
+        //    // Returns a statuslike string showing the timespan
         //    public string TotalSpan
         //    {
         //        get
@@ -535,12 +535,12 @@ namespace DotSpatial.Plugins.Taudem
         //            return t_LastSpan.ToString();
         //        }
         //    }
-        //}//End of Times class
+        //}// End of Times class
 
         ///// <summary>
         ///// This is a dataformat to hold some strings with error information
         ///// </summary>
-        //public struct ErrorLog
+        // public struct ErrorLog
         //{
         //    /// <summary>
         //    /// A stringbuilder with log of errors
@@ -569,7 +569,7 @@ namespace DotSpatial.Plugins.Taudem
         //        LastLocation = String.Empty;
         //    }
         //}
-        //ErrorLog m_ErrorLog;
+        // ErrorLog m_ErrorLog;
 
         //// These are some properties for Hydrology that I plan for other functions to use as well.
         //#region Shared Properties
@@ -577,7 +577,7 @@ namespace DotSpatial.Plugins.Taudem
         ///// <summary>
         ///// A string holding the last error generated in this class
         ///// </summary>
-        //public ErrorLog LastErrorInfo
+        // public ErrorLog LastErrorInfo
         //{
         //    get
         //    {
@@ -594,10 +594,10 @@ namespace DotSpatial.Plugins.Taudem
         //            m_ErrorLog.LastLocation = Message;
         //            if (IProgressHandler == null) return; // IProgressHandler is where we are sending progress
         //            if (Percent < 0) Percent = 0;
-        //            if (Percent > 100) Percent = 100; //ProgressBars don't like overflow percentages
+        //            if (Percent > 100) Percent = 100; // ProgressBars don't like overflow percentages
         //            IProgressHandler.Progress(KeyOfSender, Percent, Message);
 
-        //        }//End Report Progress
+        //        }// End Report Progress
 
         //        // Handles IProgressHandler as well as taking advantage of the Global Error object
         //        private void SetError(string Message)
@@ -606,7 +606,7 @@ namespace DotSpatial.Plugins.Taudem
         //            m_ErrorLog.LastErrorMessage = Message;
         //            m_ErrorLog.log.Append(Message);
         //            // IProgressHandler.Error("Error", Message);
-        //        }//End SetError
+        //        }// End SetError
 
         //        // Clears errors from both error tracking systems
         //        private void ClearErrors()
@@ -1366,8 +1366,8 @@ namespace DotSpatial.Plugins.Taudem
                 callback.Progress("Status", 0, "D-inf Flow Directions");
             }
 
-            //DataManagement.DeleteGrid(dInfResultPath);
-            //DataManagement.DeleteGrid(dInfSlopeResultPath);
+            // DataManagement.DeleteGrid(dInfResultPath);
+            // DataManagement.DeleteGrid(dInfSlopeResultPath);
 
             var pars = "-ang " + Quote(dInfResultPath) + " -slp " + Quote(dInfSlopeResultPath) + " -fel "
                        + Quote(pitFillPath);
@@ -1378,8 +1378,8 @@ namespace DotSpatial.Plugins.Taudem
                 MessageBox.Show("TauDEM Error " + result, "TauDEM Error " + result, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            //CopyProjectionFromGrid(pitFillPath, dInfResultPath);
-            //CopyProjectionFromGrid(pitFillPath, dInfSlopeResultPath);
+            // CopyProjectionFromGrid(pitFillPath, dInfResultPath);
+            // CopyProjectionFromGrid(pitFillPath, dInfSlopeResultPath);
             if (callback != null)
             {
                 callback.Progress("Status", 0, string.Empty);
@@ -1774,7 +1774,7 @@ namespace DotSpatial.Plugins.Taudem
 
         //            if (delinstreamDiag.ShowDialog() == DialogResult.OK)
         //            {
-        //                //TODO add stream shape and watershed grid
+        //                // TODO add stream shape and watershed grid
         //                return DelinStreamGrids(demElem.Filename, fillElem.Filename, d8Elem.Filename, d8slpElem.Filename, aread8Elem.Filename, areadinfElem.Filename, outletsElem.Filename, strahlResElem.Filename, longestResElem.Filename, totalResElem.Filename, streamGridResElem.Filename, streamOrdResElem.Filename, treeDatResElem.Filename, coordDatResElem.Filename, streamShapeResElem.Filename, wshedGridResElem.Filename, int.Parse(threshElem.Value), useOutletsElem.Value, useEdgeElem.Value, usedinfElem.Value, Int32.Parse(numProcessesElem.Value), showTaudemOutputElem.Value, callback);
         //            }
         //            return -2;
@@ -1814,9 +1814,9 @@ namespace DotSpatial.Plugins.Taudem
                 callback.Progress("Status", 0, "Grid Network");
             }
 
-            //DataManagement.DeleteGrid(strahlOrdResultPath);
-            //DataManagement.DeleteGrid(longestUpslopeResultPath);
-            //DataManagement.DeleteGrid(totalUpslopeResultPath);
+            // DataManagement.DeleteGrid(strahlOrdResultPath);
+            // DataManagement.DeleteGrid(longestUpslopeResultPath);
+            // DataManagement.DeleteGrid(totalUpslopeResultPath);
 
             var pars = "-p " + Quote(d8Path) + " -plen " + Quote(longestUpslopeResultPath) + " -tlen "
                        + Quote(totalUpslopeResultPath) + " -gord " + Quote(strahlOrdResultPath);
@@ -1835,9 +1835,9 @@ namespace DotSpatial.Plugins.Taudem
                     MessageBoxIcon.Error);
             }
 
-            //CopyProjectionFromGrid(demGridPath, strahlOrdResultPath);
-            //CopyProjectionFromGrid(demGridPath, longestUpslopeResultPath);
-            //CopyProjectionFromGrid(demGridPath, totalUpslopeResultPath);
+            // CopyProjectionFromGrid(demGridPath, strahlOrdResultPath);
+            // CopyProjectionFromGrid(demGridPath, longestUpslopeResultPath);
+            // CopyProjectionFromGrid(demGridPath, totalUpslopeResultPath);
 
             if (callback != null)
             {
@@ -1870,7 +1870,7 @@ namespace DotSpatial.Plugins.Taudem
                 callback.Progress("Status", 0, "All Stream Delineation");
             }
 
-            //DataManagement.DeleteGrid(streamGridResultPath);
+            // DataManagement.DeleteGrid(streamGridResultPath);
 
             var areaGridPath = areaD8Path; // TODO CWG inf does not seems to work (useDinf)?areaDInfPath:areaD8Path;
             var pars = "-ssa " + Quote(areaGridPath) + " -src " + Quote(streamGridResultPath) + " -thresh "
@@ -1932,9 +1932,9 @@ namespace DotSpatial.Plugins.Taudem
                 callback.Progress("Status", 0, "Stream Order Grid and Raster");
             }
 
-            //DataManagement.DeleteGrid(streamOrdResultPath);
-            //DataManagement.DeleteGrid(streamShapeResultPath);
-            //DataManagement.DeleteGrid(watershedGridResultPath);
+            // DataManagement.DeleteGrid(streamOrdResultPath);
+            // DataManagement.DeleteGrid(streamShapeResultPath);
+            // DataManagement.DeleteGrid(watershedGridResultPath);
 
             File.Delete(coordDatResultPath);
             File.Delete(treeDatResultPath);
@@ -1974,9 +1974,9 @@ namespace DotSpatial.Plugins.Taudem
                 }
             }
 
-            //CopyProjectionFromGrid(demGridPath, streamGridResultPath);
-            //CopyProjectionFromGrid(demGridPath, streamOrdResultPath);
-            //CopyProjectionFromGrid(demGridPath, watershedGridResultPath);
+            // CopyProjectionFromGrid(demGridPath, streamGridResultPath);
+            // CopyProjectionFromGrid(demGridPath, streamOrdResultPath);
+            // CopyProjectionFromGrid(demGridPath, watershedGridResultPath);
 
             DataManagement.TryCopy(
                 Path.ChangeExtension(demGridPath, ".prj"), Path.ChangeExtension(streamShapeResultPath, ".prj"));
@@ -2148,7 +2148,7 @@ namespace DotSpatial.Plugins.Taudem
         //            }
         //            else
         //            {
-        //                err = 1; //TD_FAILED_GRID_OPEN
+        //                err = 1; // TD_FAILED_GRID_OPEN
         //            }
         //            if (err != 0) return err;
         //            dx = sdir.Header.dX;
@@ -2166,7 +2166,7 @@ namespace DotSpatial.Plugins.Taudem
         //                }
         //                else
         //                {
-        //                    err = 1; //TD_FAILED_GRID_OPEN
+        //                    err = 1; // TD_FAILED_GRID_OPEN
         //                }
         //                if (err != 0) return err;
         //            }
@@ -2226,7 +2226,7 @@ namespace DotSpatial.Plugins.Taudem
         //            }
         //            else
         //            {
-        //                err = 2; //TD_FAILED_GRID_SAVE
+        //                err = 2; // TD_FAILED_GRID_SAVE
         //                return err;
         //            }
 
@@ -2236,7 +2236,7 @@ namespace DotSpatial.Plugins.Taudem
         //            }
         //            else
         //            {
-        //                err = 2; //TD_FAILED_GRID_SAVE
+        //                err = 2; // TD_FAILED_GRID_SAVE
         //                return err;
         //            }
 
@@ -2246,7 +2246,7 @@ namespace DotSpatial.Plugins.Taudem
         //            }
         //            else
         //            {
-        //                err = 2; //TD_FAILED_GRID_SAVE
+        //                err = 2; // TD_FAILED_GRID_SAVE
         //                return err;
         //            }
 
@@ -2316,7 +2316,7 @@ namespace DotSpatial.Plugins.Taudem
         //            }
         //        }
 
-        //        #endregion //GridNet conversion
+        //        #endregion // GridNet conversion
 
         //        #region "     Source Def conversion"
 
@@ -2516,7 +2516,7 @@ namespace DotSpatial.Plugins.Taudem
         //            //            for(i=0; i <ny; i++)
         //            //                for(j=0; j<nx; j++)
         //            //                {
-        //            //                    if (ndve > 0) //ARA 10/17/05 Fixed for possible positive nodata
+        //            //                    if (ndve > 0) // ARA 10/17/05 Fixed for possible positive nodata
         //            //              {
         //            //                  if(i == 0 || i == (ny-1) || j == 0 || j == (nx-1) || felevg.d[j][i] >= ndve)
         //            //                  {
@@ -2680,7 +2680,7 @@ namespace DotSpatial.Plugins.Taudem
 
         //            //        if(err != TD_NO_ERROR)goto ERROR1;
 
-        //            //        //allocate memory and headers for larr
+        //            //        // allocate memory and headers for larr
         //            //        larr.head.dx=dx;
         //            //        larr.head.dy=dy;
         //            //        larr.head.nx=nx;
@@ -2694,7 +2694,7 @@ namespace DotSpatial.Plugins.Taudem
         //            //        nout=0;
         //            //        itresh=1;
         //            //        if(ipar == 4)itresh = p[0];
-        //            //        err=TD_CHANNEL_NETWORK_MISMATCH;   //This flag will indicate no outlet found  12/15/02  DGT moved to outside the if block
+        //            //        err=TD_CHANNEL_NETWORK_MISMATCH;   // This flag will indicate no outlet found  12/15/02  DGT moved to outside the if block
         //            //        // so that code works for at least one outlet found
         //            //        if(nxy >0)
         //            //        {
@@ -2742,7 +2742,7 @@ namespace DotSpatial.Plugins.Taudem
         //            //                    else larr.d[j][i]=0;
         //            //                }
         //            //        }
-        //            //        //free memory for sdir
+        //            //        // free memory for sdir
         //            //        free(sdir.d[0]);free(sdir.d);
 
         //            //        if(ipar <= 3){free(faagrid.d[0]);free(faagrid.d);}  // Moved from below so that could reopen with sca file for sure
@@ -2769,22 +2769,22 @@ namespace DotSpatial.Plugins.Taudem
         //            //            err=TD_NO_ERROR;
         //            //        else{
         //            //            err=TD_FAILED_GRID_SAVE;
-        //            //            //if (srcfile)
+        //            //            // if (srcfile)
         //            //            //	AfxMessageBox( LPCTSTR(strcat( "Failed to save file: ", srcfile) ));
         //            //        }
 
         //            //        free(src[0]); free(src);
         //            //        free(larr.d[0]); free(larr.d);
         //            //        return(err);
-        //            //ERROR9:
+        //            // ERROR9:
         //            //        free(src[0]); free(src);
-        //            //        //Kiran added the following statement to clean up.
+        //            //        // Kiran added the following statement to clean up.
         //            //        free(larr.d[0]); free(larr.d);
         //            //        if(faagrid.d != NULL) free(faagrid.d[0]); free(faagrid.d);
         //            //        if(sdir.d[0] != NULL) free(sdir.d[0]); free(sdir.d);
         //            //        return(err);
 
-        //            //ERROR1:
+        //            // ERROR1:
         //            //        free(src[0]); free(src);
         //            //        free(larr.d[0]); free(larr.d);
         //            //        return(err);
@@ -2816,7 +2816,7 @@ namespace DotSpatial.Plugins.Taudem
         //            }
         //            else
         //            {
-        //                err = 1; //TD_FAILED_GRID_OPEN
+        //                err = 1; // TD_FAILED_GRID_OPEN
         //                return err;
         //            }
 
@@ -2850,13 +2850,13 @@ namespace DotSpatial.Plugins.Taudem
         //            }
         //            else
         //            {
-        //                err = 1; //TD_FAILED_GRID_OPEN
+        //                err = 1; // TD_FAILED_GRID_OPEN
         //                dirg.Close();
         //                return err;
         //            }
         //            if (area.NumColumns != nx || area.NumRows != ny)
         //            {
-        //                err = 27; //TD_GRID_SIZE_MISMATCH
+        //                err = 27; // TD_GRID_SIZE_MISMATCH
         //                dirg.Close();
         //                area.Close();
         //                return 1;
@@ -2893,7 +2893,7 @@ namespace DotSpatial.Plugins.Taudem
 
         //            if (n <= 0)
         //            {
-        //                err = 8; //TD_CHANNEL_NETWORK_MISMATCH
+        //                err = 8; // TD_CHANNEL_NETWORK_MISMATCH
         //            }
         //            else
         //            {
@@ -2943,7 +2943,7 @@ namespace DotSpatial.Plugins.Taudem
 
         //                Netex(dir, aread, treefile, coordfile, ordfile, nx, ny, itresh, out icr, out icend, dx, dy, 0, dx, 0, err, inodes, jnodes, nxy, idnodes);
 
-        //                //Write any changes that were made to the area
+        //                // Write any changes that were made to the area
         //                for (int i = 0; i < ny; i++)
         //                {
         //                    tmpRow = new float[nx];
@@ -2961,14 +2961,14 @@ namespace DotSpatial.Plugins.Taudem
         //                }
         //                else
         //                {
-        //                    err = 2; //TD_FAILED_GRID_SAVE;
+        //                    err = 2; // TD_FAILED_GRID_SAVE;
         //                    dirg.Close();
         //                    area.Close();
         //                    return err;
         //                }
         //                area.Close();
 
-        //                //Fix negative markers
+        //                // Fix negative markers
         //                for (int i = 0; i < ny; i++)
         //                {
         //                    for (int j = 0; j < nx; j++)
@@ -2987,7 +2987,7 @@ namespace DotSpatial.Plugins.Taudem
         //                }
         //                else
         //                {
-        //                    err = 1; //TD_FAILED_GRID_OPEN
+        //                    err = 1; // TD_FAILED_GRID_OPEN
         //                    dirg.Close();
         //                    return err;
         //                }
@@ -3010,7 +3010,7 @@ namespace DotSpatial.Plugins.Taudem
         //                }
         //                else
         //                {
-        //                    err = 1; //TD_FAILED_GRID_OPEN
+        //                    err = 1; // TD_FAILED_GRID_OPEN
         //                    dirg.Close();
         //                    area.Close();
         //                    return err;
@@ -3062,7 +3062,7 @@ namespace DotSpatial.Plugins.Taudem
 
         //            int[] ist, jst, iord, istart, jstart, iend, jend, mag;
 
-        //            //READ INPUT
+        //            // READ INPUT
         //            int igy = ny;
         //            int igx = nx;
 
@@ -3124,7 +3124,7 @@ namespace DotSpatial.Plugins.Taudem
 
         //            if (n > nmax)
         //            {
-        //                err = 2;//stop too big
+        //                err = 2;// stop too big
         //                return err;
         //            }
 
@@ -3182,10 +3182,10 @@ namespace DotSpatial.Plugins.Taudem
         //                    iend[ilink] = i;
         //                    jend[ilink] = j;
 
-        //                    //mods allow insertion of nodes   DGT 7/17/02
+        //                    // mods allow insertion of nodes   DGT 7/17/02
         //                    if (isnode(mnext, mag[ilink], i, j, inodes, jnodes, nnodes))
         //                    {
-        //                        //heck here that this is not the end of a path because then it will be a node anyway
+        //                        // heck here that this is not the end of a path because then it will be a node anyway
         //                        intemp = i + d1[Math.Abs(dir[i, j])];
         //                        jntemp = j + d2[Math.Abs(dir[i, j])];
         //                        if (dir[intemp, jntemp] != 0)
@@ -3202,7 +3202,7 @@ namespace DotSpatial.Plugins.Taudem
         //                            jend[ilink] = j;
         //                        }
         //                    }
-        //                    //end mods to allow insertion of nodes  DGT
+        //                    // end mods to allow insertion of nodes  DGT
         //                    if (mnext != mag[ilink])
         //                    {
         //                        //----CONTINUE HERE FOR NEW LINK
@@ -3223,14 +3223,14 @@ namespace DotSpatial.Plugins.Taudem
         //                                }
         //                            }
 
-        //                            if (msum == mnext) //All links have been processed
+        //                            if (msum == mnext) // All links have been processed
         //                            {
         //                                //---SORT IORDUP,IPOINT INTO DECENDING STREAM ORDER
         //                                for (int ic = 1; ic <= iconv - 1; ic++)
         //                                {
         //                                    for (int iic = ic + 1; iic <= iconv; iic++)
         //                                    {
-        //                                        if (iordup[iic] > iordup[ic]) //switch these
+        //                                        if (iordup[iic] > iordup[ic]) // switch these
         //                                        {
         //                                            itemp = iordup[iic];
         //                                            iordup[iic] = iordup[ic];
@@ -3271,7 +3271,7 @@ namespace DotSpatial.Plugins.Taudem
         //                            runEndPath = false;
         //                            break;
         //                        }
-        //                    } //end if mnext != mag(ilink)
+        //                    } // end if mnext != mag(ilink)
 
         //                    inext = i + d1[Math.Abs(dir[i, j])];
         //                    jnext = j + d2[Math.Abs(dir[i, j])];
@@ -3287,7 +3287,7 @@ namespace DotSpatial.Plugins.Taudem
         //                        ilink = ilink + 1;
         //                    }
         //                }
-        //            } //end for (int si=1; si <= n; si++)
+        //            } // end for (int si=1; si <= n; si++)
 
         //            StreamWriter coord = new System.IO.StreamWriter(coordfile);
         //            StreamWriter tree = new System.IO.StreamWriter(treefile);
@@ -3331,13 +3331,13 @@ namespace DotSpatial.Plugins.Taudem
         //                }
         //            }
 
-        //            inodeid = 0; //This is the first one so it will be the most downstream
+        //            inodeid = 0; // This is the first one so it will be the most downstream
         //            if (isnode2(iend[ilink], jend[ilink], inodes, jnodes, nnodes, out nodeno))
         //            {
         //                if (idnodes[nodeno] >= 0)
         //                {
         //                    inodeid = idnodes[nodeno];
-        //                    idnodes[nodeno] = -1; //This logic to pick only the first one if there are multiple at a junction
+        //                    idnodes[nodeno] = -1; // This logic to pick only the first one if there are multiple at a junction
         //                }
         //            }
         //            tree.Write("{0,10:G} {1,10:G} {2,10:G} {3,10:G} {4,10:G} {5,10:G} {6,10:G} {7,10:G}\n", 0, ics, icend, -1, prevl1[ilink], prevl2[ilink], iord[ilink], inodeid);
@@ -3390,7 +3390,7 @@ namespace DotSpatial.Plugins.Taudem
         //                    if (idnodes[nodeno] >= 0)
         //                    {
         //                        inodeid = idnodes[nodeno];
-        //                        idnodes[nodeno] = -1; //This logic to pick only the first one if there are multiple at a junction
+        //                        idnodes[nodeno] = -1; // This logic to pick only the first one if there are multiple at a junction
         //                    }
         //                }
 
@@ -3416,21 +3416,21 @@ namespace DotSpatial.Plugins.Taudem
         //                result = false;
         //                if (area[i, j] <= 0)
         //                {
-        //                    dir[i, j] = 0; //ZERO DIRECTIONS OUTSIDE AREA
+        //                    dir[i, j] = 0; // ZERO DIRECTIONS OUTSIDE AREA
         //                }
         //            }
-        //            else //CHECK UPSTREAM PIXELS
+        //            else // CHECK UPSTREAM PIXELS
         //            {
         //                int ni, nj, ind, jnd;
         //                for (int k = 1; k <= 8; k++)
         //                {
-        //                    ni = i + d1[k]; //neighbor pixel
+        //                    ni = i + d1[k]; // neighbor pixel
         //                    nj = j + d2[k];
         //                    if (dir[ni, nj] > 0)
         //                    {
-        //                        ind = ni + d1[dir[ni, nj]]; //pixel downstream from neighbor
+        //                        ind = ni + d1[dir[ni, nj]]; // pixel downstream from neighbor
         //                        jnd = nj + d2[dir[ni, nj]];
-        //                        if (ind == i && jnd == j) //Neighbor drains into i,j
+        //                        if (ind == i && jnd == j) // Neighbor drains into i,j
         //                        {
         //                            if (area[ni, nj] >= itresh)
         //                            {
@@ -3439,7 +3439,7 @@ namespace DotSpatial.Plugins.Taudem
         //                        }
         //                    }
         //                }
-        //                //Do not allow sources that drain off the raster set i.e. a link of 0 length
+        //                // Do not allow sources that drain off the raster set i.e. a link of 0 length
         //                ni = i + d1[dir[i, j]];
         //                nj = j + d2[dir[i, j]];
         //                if (area[ni, nj] < itresh)
@@ -3459,7 +3459,7 @@ namespace DotSpatial.Plugins.Taudem
         //                if ((inodes[k]) == i && (jnodes[k]) == j)
         //                {
         //                    result = true;
-        //                    if (mnext != mag) //false alarm it is a junction
+        //                    if (mnext != mag) // false alarm it is a junction
         //                    {
         //                        result = false;
         //                    }
@@ -3545,7 +3545,7 @@ namespace DotSpatial.Plugins.Taudem
         //                inext = i + d1[dir[i, j]];
         //                jnext = j + d2[dir[i, j]];
 
-        //                while (dir[inext, jnext] != 0) //not yet end of path
+        //                while (dir[inext, jnext] != 0) // not yet end of path
         //                {
         //                    DXx = dx * (double)(j - jnext);
         //                    DYy = dy * (double)(i - inext);
@@ -3602,7 +3602,7 @@ namespace DotSpatial.Plugins.Taudem
         //        //
         //        //			try
         //        //			{
-        //        //				//result = TaudemLib.Subbasinsetup(d8Path, watershedGridResultPath, TreeDatPath, CoordDatPath, streamShapeResultPath, ordert, subbno);
+        //        //				// result = TaudemLib.Subbasinsetup(d8Path, watershedGridResultPath, TreeDatPath, CoordDatPath, streamShapeResultPath, ordert, subbno);
         //        //				result = CreateSubbasinGridAndNetworkShape(d8Path, TreeDatPath, CoordDatPath, ordert, subbno, watershedGridResultPath, streamShapeResultPath, callback);
         //        //			}
         //        //			catch
@@ -3705,8 +3705,8 @@ namespace DotSpatial.Plugins.Taudem
         //            }
 
         //            int numBasins = 0;
-        //            int currReach = 2 * (numTreeNodes + 1) - 1; //Initialize current reach number
-        //            int maxReaches = 5 * (numTreeNodes + 1) - 2; //The maximum number of reaches possible in binary tree
+        //            int currReach = 2 * (numTreeNodes + 1) - 1; // Initialize current reach number
+        //            int maxReaches = 5 * (numTreeNodes + 1) - 2; // The maximum number of reaches possible in binary tree
         //            int[,] ReachConnections = new int[maxReaches + 1, 3];
         //            float[,] ReachProperties = new float[maxReaches + 1, 5];
         //            int[] Magnitude = new int[numTreeNodes + 2];
@@ -3730,7 +3730,7 @@ namespace DotSpatial.Plugins.Taudem
 
         //            Raster BasinGrid = new Raster();
         //            BasinGrid.CreateNew(ResultBasinGridPath, BasinGridHead, RasterDataType.ShortDataType, BasinGridHead.NodataValue, true, RasterFileType.UseExtension, null);
-        //            //TODO: May need this to be a temp path instead of result grid
+        //            // TODO: May need this to be a temp path instead of result grid
 
         //            Shapefile NetSF = new Shapefile();
         //            NetSF.CreateNew(ResultNetShapePath, MapWinGIS.ShpfileType.SHP_POLYLINE);
@@ -3751,7 +3751,7 @@ namespace DotSpatial.Plugins.Taudem
         //                    }
         //                }
 
-        //                if (FlowNet[i, 3] == -1) //This is a root link
+        //                if (FlowNet[i, 3] == -1) // This is a root link
         //                {
         //                    if (ordert >= 0)
         //                    {
@@ -3764,7 +3764,7 @@ namespace DotSpatial.Plugins.Taudem
         //                    }
         //                }
 
-        //                if (FlowNet[i, 4] == 0 && FlowNet[i, 5] == 0) //This is a branch
+        //                if (FlowNet[i, 4] == 0 && FlowNet[i, 5] == 0) // This is a branch
         //                {
         //                    Links.Enqueue(i);
         //                }
@@ -3953,14 +3953,14 @@ namespace DotSpatial.Plugins.Taudem
 
         //                if (LinkBegin < LinkEnd)
         //                {
-        //                    //has physical length
+        //                    // has physical length
         //                    numBasins = numBasins + 1;
         //                    if (ordert < 0)
         //                    {
         //                        numBasins = subbno;
         //                    }
 
-        //                    if (FlowNet[currLink, 4 - 1] != -1) //For anything other than a downstream end area is defined one grid cell back
+        //                    if (FlowNet[currLink, 4 - 1] != -1) // For anything other than a downstream end area is defined one grid cell back
         //                    {
         //                        LinkEndArea = LinkEnd - 1;
         //                    }
@@ -3998,15 +3998,15 @@ namespace DotSpatial.Plugins.Taudem
 
         //                if (callback != null) callback.Progress("Status", 50, "Stream Shapefile and Watershed Grid");
 
-        //                //Search for upstream basins
-        //                UpstreamLink1 = FlowNet[currLink, 5 - 1]; //pointers to upstream links
+        //                // Search for upstream basins
+        //                UpstreamLink1 = FlowNet[currLink, 5 - 1]; // pointers to upstream links
         //                UpstreamLink2 = FlowNet[currLink, 6 - 1];
 
         //                if (UpstreamLink1 > 0 | UpstreamLink2 > 0)
         //                {
         //                    if (flag == 1)
         //                    {
-        //                        //dummy 0 length reach
+        //                        // dummy 0 length reach
         //                        currReach = currReach + 1;
         //                        thisreach = currReach;
         //                        if (ordert <= 0)
@@ -4042,18 +4042,18 @@ namespace DotSpatial.Plugins.Taudem
         //                        {
         //                            ReachConnections[thisreach, 3 - 1] = 0;
         //                        }
-        //                        //AddReachShape3(NetSF, FlowNet, CoordList, currLink, BasinID, Magnitude[currLink], dsNodeID[currLink]);
+        //                        // AddReachShape3(NetSF, FlowNet, CoordList, currLink, BasinID, Magnitude[currLink], dsNodeID[currLink]);
 
         //                        //'Assign properties to dummy reach
-        //                        ReachProperties[thisreach, 1 - 1] = 0.01f; //slope
-        //                        ReachProperties[thisreach, 2 - 1] = CoordList[LinkEndArea, 5 - 1]; //ontributing area
-        //                        ReachProperties[thisreach, 3 - 1] = 0; //Length
-        //                        ReachProperties[thisreach, 4 - 1] = CoordList[LinkEndArea, 0]; //end x CoordList
-        //                        ReachProperties[thisreach, 5 - 1] = CoordList[LinkEndArea, 1]; //end x CoordList
+        //                        ReachProperties[thisreach, 1 - 1] = 0.01f; // slope
+        //                        ReachProperties[thisreach, 2 - 1] = CoordList[LinkEndArea, 5 - 1]; // ontributing area
+        //                        ReachProperties[thisreach, 3 - 1] = 0; // Length
+        //                        ReachProperties[thisreach, 4 - 1] = CoordList[LinkEndArea, 0]; // end x CoordList
+        //                        ReachProperties[thisreach, 5 - 1] = CoordList[LinkEndArea, 1]; // end x CoordList
         //                    }
         //                    else
         //                    {
-        //                        //Lower half reach
+        //                        // Lower half reach
         //                        currReach = currReach + 1;
         //                        thisreach = currReach;
         //                        ReachConnections[thisreach, 1 - 1] = thisreach;
@@ -4062,8 +4062,8 @@ namespace DotSpatial.Plugins.Taudem
         //                        ReachProperties[thisreach, 3 - 1] = (CoordList[LinkBegin, 3 - 1] - CoordList[LinkEnd, 3 - 1]) / 2;
         //                        ReachProperties[thisreach, 2 - 1] = CoordList[LinkEndArea, 5 - 1];
         //                        ReachProperties[thisreach, 1 - 1] = (CoordList[LinkBegin, 4 - 1] - CoordList[LinkEnd, 4 - 1]);
-        //                        ReachProperties[thisreach, 4 - 1] = CoordList[LinkEndArea, 0]; //end x CoordList
-        //                        ReachProperties[thisreach, 5 - 1] = CoordList[LinkEndArea, 1]; //end y coordinate
+        //                        ReachProperties[thisreach, 4 - 1] = CoordList[LinkEndArea, 0]; // end x CoordList
+        //                        ReachProperties[thisreach, 5 - 1] = CoordList[LinkEndArea, 1]; // end y coordinate
         //                        if (ordert <= 0)
         //                        {
         //                            BasinID = subbno;
@@ -4073,7 +4073,7 @@ namespace DotSpatial.Plugins.Taudem
         //                            BasinID = numBasins;
         //                        }
 
-        //                        //Upper half reach
+        //                        // Upper half reach
         //                        currReach = currReach + 1;
         //                        ReachConnections[thisreach + 1, 1 - 1] = currReach;
         //                        if (UpstreamLink1 > 0)
@@ -4098,17 +4098,17 @@ namespace DotSpatial.Plugins.Taudem
         //                        {
         //                            ReachConnections[thisreach + 1, 3 - 1] = 0;
         //                        }
-        //                        //AddReachShape3(NetSF, FlowNet, CoordList, currLink, BasinID, Magnitude[currLink], dsNodeID[currLink]);
+        //                        // AddReachShape3(NetSF, FlowNet, CoordList, currLink, BasinID, Magnitude[currLink], dsNodeID[currLink]);
         //                        ReachProperties[thisreach + 1, 3 - 1] = ReachProperties[thisreach, 3 - 1];
         //                        ReachProperties[thisreach + 1, 2 - 1] = ReachProperties[thisreach, 2 - 1];
         //                        ReachProperties[thisreach + 1, 1 - 1] = ReachProperties[thisreach, 1 - 1];
-        //                        ReachProperties[thisreach + 1, 4 - 1] = CoordList[(LinkEndArea + LinkBegin) / 2, 0]; //approx midpoint
+        //                        ReachProperties[thisreach + 1, 4 - 1] = CoordList[(LinkEndArea + LinkBegin) / 2, 0]; // approx midpoint
         //                        ReachProperties[thisreach + 1, 5 - 1] = CoordList[(LinkEndArea + LinkBegin) / 2, 1];
         //                    }
         //                }
         //                else
         //                {
-        //                    //This is an external basin
+        //                    // This is an external basin
         //                    currReach = currReach + 1;
         //                    thisreach = currReach;
         //                    ReachConnections[thisreach, 1 - 1] = currReach;
@@ -4124,8 +4124,8 @@ namespace DotSpatial.Plugins.Taudem
         //                    {
         //                        ReachProperties[thisreach, 1 - 1] = (CoordList[LinkBegin, 4 - 1] - CoordList[LinkEnd, 4 - 1]) / (2 * ReachProperties[thisreach, 3 - 1]);
         //                    }
-        //                    ReachProperties[thisreach, 4 - 1] = CoordList[LinkEndArea, 0]; //end x coordinate
-        //                    ReachProperties[thisreach, 5 - 1] = CoordList[LinkEndArea, 1]; //end y coordinate
+        //                    ReachProperties[thisreach, 4 - 1] = CoordList[LinkEndArea, 0]; // end x coordinate
+        //                    ReachProperties[thisreach, 5 - 1] = CoordList[LinkEndArea, 1]; // end y coordinate
 
         //                    if (ordert <= 0)
         //                    {
@@ -4135,8 +4135,8 @@ namespace DotSpatial.Plugins.Taudem
         //                    {
         //                        BasinID = numBasins;
         //                    }
-        //                    Magnitude[currLink] = 1;  //magnitude of external basin
-        //                    //AddReachShape3(NetSF, FlowNet, CoordList, currLink, BasinID, Magnitude[currLink], dsNodeID[currLink]);
+        //                    Magnitude[currLink] = 1;  // magnitude of external basin
+        //                    // AddReachShape3(NetSF, FlowNet, CoordList, currLink, BasinID, Magnitude[currLink], dsNodeID[currLink]);
         //                }
         //                if (currDSLink != -1 && currDSFrom != -1)
         //                {
@@ -4184,14 +4184,14 @@ namespace DotSpatial.Plugins.Taudem
         //                    LinkBegin = FlowNet[currLink, 2 - 1];//*  This is CoordList of beg of link */
         //                    if (LinkBegin < LinkEnd)
         //                    {
-        //                        //has physical length
+        //                        // has physical length
         //                        numBasins = numBasins + 1;
         //                        if (ordert < 0)
         //                        {
         //                            numBasins = subbno;
         //                        }
 
-        //                        if (FlowNet[currLink, 4 - 1] != -1) //For anything other than a downstream end area is defined one grid cell back
+        //                        if (FlowNet[currLink, 4 - 1] != -1) // For anything other than a downstream end area is defined one grid cell back
         //                        {
         //                            LinkEndArea = LinkEnd - 1;
         //                        }
@@ -4219,7 +4219,7 @@ namespace DotSpatial.Plugins.Taudem
         //                            pt.x = (double)col;
         //                            pt.y = (double)row;
         //                            markedPoint.Add(pt);
-        //                            MarkBasinAreaStack(d8Grid, row, col, numBasins, numCols, numRows, BasinGrid, callback); //Label the region that drains to this pixel
+        //                            MarkBasinAreaStack(d8Grid, row, col, numBasins, numCols, numRows, BasinGrid, callback); // Label the region that drains to this pixel
         //                            AddReachShape(NetSF, FlowNet, CoordList, currLink, numBasins, Magnitude[currLink], dsNodeID[currLink]);
         //                        }
         //                    }
@@ -4281,14 +4281,14 @@ namespace DotSpatial.Plugins.Taudem
         //                {
         //                    if (row != 0 & row != numRows - 1 & col != 0 & col != numCols - 1 & (short)d8Grid.get_Value(col, row) != -1)
         //                    {
-        //                        //Not on boundary
+        //                        // Not on boundary
         //                        BasinGrid.set_Value(col, row, BasinID);
         //                        for (int k = 1; k <= 8; k++)
         //                        {
         //                            newRow = row + rowMod[k];
         //                            newCol = col + colMod[k];
 
-        //                            //test if neighbor drains towards cell excluding boundaries
+        //                            // test if neighbor drains towards cell excluding boundaries
         //                            if ((short)d8Grid.get_Value(newCol, newRow) >= 0 & (((short)d8Grid.get_Value(newCol, newRow) - k) == 4 | ((short)d8Grid.get_Value(newCol, newRow) - k) == -4))
         //                            {
         //                                cells.Push(newCol);
@@ -4443,10 +4443,10 @@ namespace DotSpatial.Plugins.Taudem
         //            int iend;
         //            int zero;
 
-        //            istart = FlowNet[currLink, 1];  //start index for reach
-        //            iend = FlowNet[currLink, 2]; //end index for reach
-        //            x1 = CoordList[istart, 0]; //start x CoordList for reach
-        //            y1 = CoordList[istart, 1]; //start y CoordList for reach
+        //            istart = FlowNet[currLink, 1];  // start index for reach
+        //            iend = FlowNet[currLink, 2]; // end index for reach
+        //            x1 = CoordList[istart, 0]; // start x CoordList for reach
+        //            y1 = CoordList[istart, 1]; // start y CoordList for reach
         //            length = 0;
         //            xlast = x1;
         //            ylast = y1;
@@ -4466,7 +4466,7 @@ namespace DotSpatial.Plugins.Taudem
         //                    length = length + dl;
         //                    xlast = x;
         //                    ylast = y;
-        //                    dsarea = dslast; //keeps track of last ds area
+        //                    dsarea = dslast; // keeps track of last ds area
         //                    dslast = CoordList[j + istart, 4];
         //                }
         //                MapWinGIS.Point p = new MapWinGIS.Point();
@@ -4516,7 +4516,7 @@ namespace DotSpatial.Plugins.Taudem
         //            return 0;
         //        }
 
-        //        #endregion //converted Subbasinsetup
+        //        #endregion // converted Subbasinsetup
 
         //        #endregion
 
@@ -4582,8 +4582,8 @@ namespace DotSpatial.Plugins.Taudem
         //                LinkBegin = FlowNet[i, 2 - 1];//*  This is CoordList of beg of link */
         //                if (LinkBegin < LinkEnd)
         //                {
-        //                    //has physical length
-        //                    if (FlowNet[i, 4 - 1] != -1) //For anything other than a downstream end area is defined one grid cell back
+        //                    // has physical length
+        //                    if (FlowNet[i, 4 - 1] != -1) // For anything other than a downstream end area is defined one grid cell back
         //                    {
         //                        LinkEndArea = LinkEnd - 1;
         //                    }
@@ -4623,7 +4623,7 @@ namespace DotSpatial.Plugins.Taudem
         ///// <param name="watershedShapeResultPath"></param>
         ///// <param name="callback">A MapWinGIS.IProgressHandler used to return error messages etc.</param>
         ///// <returns>0 on success, -1 otherwise </returns>
-        //public static int SubbasinsToShape(string d8Path, string watershedGridPath, string watershedShapeResultPath, IProgressHandler callback)
+        // public static int SubbasinsToShape(string d8Path, string watershedGridPath, string watershedShapeResultPath, IProgressHandler callback)
         //{
         //    var result = -1;
         //    var gridD8 = new Grid();
@@ -4636,7 +4636,7 @@ namespace DotSpatial.Plugins.Taudem
         //        callback.Progress("Status", 0, "Watershed Grid to Shapefile");
         //    }
 
-        //    //DataManagement.DeleteShapefile(watershedShapeResultPath);
+        //    // DataManagement.DeleteShapefile(watershedShapeResultPath);
         //    gridD8.Open(d8Path, GridDataType.UnknownDataType, true, GridFileType.UseExtension, callback);
         //    gridWatershed.Open(watershedGridPath, GridDataType.UnknownDataType, true, GridFileType.UseExtension, callback);
         //    var sf = u.GridToShapefile(gridWatershed, gridD8, callback);
@@ -5015,14 +5015,14 @@ namespace DotSpatial.Plugins.Taudem
             return sf.DataTable.Columns.Count - 1;
 
             // doesn't look like DotSpatial has width or precision.
-            //var newField = new Field { Name = fieldname, Type = fieldType, Width = width };
-            //if (precision > -1)
+            // var newField = new Field { Name = fieldname, Type = fieldType, Width = width };
+            // if (precision > -1)
             //{
             //    newField.Precision = precision;
             //}
 
-            //var fieldNum = sf.NumFields;
-            //if (!sf.EditInsertField(newField, fieldNum, null))
+            // var fieldNum = sf.NumFields;
+            // if (!sf.EditInsertField(newField, fieldNum, null))
             //{
             //    throw new Exception("Error in adding field: " + sf.get_ErrorMsg(sf.LastErrorCode));
             //}
@@ -5099,7 +5099,7 @@ namespace DotSpatial.Plugins.Taudem
                 }
             }
 
-            //DataManagement.DeleteShapefile(joinBasinShapeResultPath);
+            // DataManagement.DeleteShapefile(joinBasinShapeResultPath);
 
             var newShed = new FeatureSet();
             newShed.FeatureType = FeatureType.Polygon;
@@ -5310,7 +5310,7 @@ namespace DotSpatial.Plugins.Taudem
             int resFieldNum = -1;
             int srcFieldNum = -1;
 
-            //search for 4 particular columns
+            // search for 4 particular columns
             for (int i = 0; i < outlets.DataTable.Columns.Count; i++)
             {
                 string currname = outlets.DataTable.Columns[i].ColumnName.ToUpper();
@@ -5615,7 +5615,7 @@ namespace DotSpatial.Plugins.Taudem
                 }
             }
 
-            //mergeshedShapefile.StartEditingShapes(true, null);
+            // mergeshedShapefile.StartEditingShapes(true, null);
             var streamwidthfieldnum = AddField(mergeshedShapefile, "CH_W2", typeof(double));
             var streamdepthfieldnum = AddField(mergeshedShapefile, "CH_D", typeof(double));
             var streamlengthfieldnum = AddField(mergeshedShapefile, "CH_L", typeof(double));
@@ -5992,7 +5992,7 @@ namespace DotSpatial.Plugins.Taudem
         //            int InFlow_ID = 0;
         //            int UpstreamCount, UpstreamFinishedCount;
 
-        //            //Write subbasins
+        //            // Write subbasins
         //            for (int i = 0; i < sf.NumRows(); i++)
         //            {
         //                Hyd_Stor_Num++;
@@ -6004,7 +6004,7 @@ namespace DotSpatial.Plugins.Taudem
         //                subIDs.Add(-1);
         //            }
 
-        //            //Write the rest
+        //            // Write the rest
         //            int curridx;
         //            string currUS1, currUS2;
         //            int currUS1idx, currUS2idx, currUS1ID, currUS2ID;
@@ -6014,16 +6014,16 @@ namespace DotSpatial.Plugins.Taudem
 
         //                currUS1 = sf.get_CellValue(USWSIDFieldNum1, curridx).ToString();
         //                currUS2 = sf.get_CellValue(USWSIDFieldNum2, curridx).ToString();
-        //                if (currUS1 == "-1" && currUS2 == "-1") //then we're on an outer reach.
+        //                if (currUS1 == "-1" && currUS2 == "-1") // then we're on an outer reach.
         //                {
-        //                    if (subIDs[curridx] == -1) //then it hasn't been added yet. add a route
+        //                    if (subIDs[curridx] == -1) // then it hasn't been added yet. add a route
         //                    {
         //                        Hyd_Stor_Num++;
         //                        InFlow_Num1 = curridx + 1;
         //                        fig.Write("route          2{0,6:G6}{1,6:G6}{2,6:G6}\n          {1,5:D5}0000.rte{1,5:D5}0000.swq\n", Hyd_Stor_Num, curridx + 1, InFlow_Num1);
         //                        subIDs[curridx] = Hyd_Stor_Num;
 
-        //                        if (sf.get_CellValue(ReservoirFieldNum, curridx).ToString() == "1") //it's a reservoir
+        //                        if (sf.get_CellValue(ReservoirFieldNum, curridx).ToString() == "1") // it's a reservoir
         //                        {
         //                            Hyd_Stor_Num++;
         //                            Res_Num++;
@@ -6034,12 +6034,12 @@ namespace DotSpatial.Plugins.Taudem
         //                        }
         //                    }
         //                }
-        //                else //we're on a middle or final reach
+        //                else // we're on a middle or final reach
         //                {
         //                    UpstreamCount = 0;
         //                    UpstreamFinishedCount = 0;
 
-        //                    //Get the hydro IDs and indexes of the upstream links
+        //                    // Get the hydro IDs and indexes of the upstream links
         //                    currUS1ID = -2;
         //                    currUS2ID = -2;
         //                    currUS1idx = -1;
@@ -6071,9 +6071,9 @@ namespace DotSpatial.Plugins.Taudem
         //                        }
         //                    }
 
-        //                    if (UpstreamCount == UpstreamFinishedCount) //all upstreams finished
+        //                    if (UpstreamCount == UpstreamFinishedCount) // all upstreams finished
         //                    {
-        //                        if (currUS1ID != -2 && currUS2ID != -2) //It has two upstream, have to do a double sum
+        //                        if (currUS1ID != -2 && currUS2ID != -2) // It has two upstream, have to do a double sum
         //                        {
         //                            Hyd_Stor_Num++;
         //                            InFlow_Num1 = currUS1ID;
@@ -6085,14 +6085,14 @@ namespace DotSpatial.Plugins.Taudem
         //                            InFlow_Num2 = Hyd_Stor_Num - 1;
         //                            fig.Write("add            5{0,6:G6}{1,6:G6}{2,6:G6}\n", Hyd_Stor_Num, InFlow_Num1, InFlow_Num2);
         //                        }
-        //                        else if (currUS1ID != -2) //It only has one upstream, check if it's 1
+        //                        else if (currUS1ID != -2) // It only has one upstream, check if it's 1
         //                        {
         //                            Hyd_Stor_Num++;
         //                            InFlow_Num1 = currUS1ID;
         //                            InFlow_Num2 = curridx + 1;
         //                            fig.Write("add            5{0,6:G6}{1,6:G6}{2,6:G6}\n", Hyd_Stor_Num, InFlow_Num1, InFlow_Num2);
         //                        }
-        //                        else if (currUS2ID != -2) //It only has one upstream, check if it's 2
+        //                        else if (currUS2ID != -2) // It only has one upstream, check if it's 2
         //                        {
         //                            Hyd_Stor_Num++;
         //                            InFlow_Num1 = currUS2ID;
@@ -6100,7 +6100,7 @@ namespace DotSpatial.Plugins.Taudem
         //                            fig.Write("add            5{0,6:G6}{1,6:G6}{2,6:G6}\n", Hyd_Stor_Num, InFlow_Num1, InFlow_Num2);
         //                        }
 
-        //                        //After summing, create the route and possibly reservoir
+        //                        // After summing, create the route and possibly reservoir
         //                        Hyd_Stor_Num++;
         //                        InFlow_Num1 = Hyd_Stor_Num - 1;
         //                        fig.Write("route          2{0,6:G6}{1,6:G6}{2,6:G6}\n          {1,5:D5}0000.rte{1,5:D5}0000.swq\n", Hyd_Stor_Num, curridx + 1, InFlow_Num1);
@@ -6116,7 +6116,7 @@ namespace DotSpatial.Plugins.Taudem
         //                            subIDs[curridx] = Hyd_Stor_Num;
         //                        }
         //                    }
-        //                    else //There are upstream items that need to still be processed before this one
+        //                    else // There are upstream items that need to still be processed before this one
         //                    {
         //                        substack.Push(curridx);
         //                        if (currUS1idx != -1 && currUS1ID == -1)
@@ -6132,9 +6132,9 @@ namespace DotSpatial.Plugins.Taudem
 
         //            }
 
-        //            //Write out the saveconc and finish commands
+        //            // Write out the saveconc and finish commands
         //            int SaveFile_Num = 1;
-        //            int Print_Freq = 0; //0 for daily, 1 for hourly
+        //            int Print_Freq = 0; // 0 for daily, 1 for hourly
         //            fig.Write("saveconc      14{0,6:G6}{1,6:G6}{2,6:G6}\n          watout.dat\n", Hyd_Stor_Num, SaveFile_Num, Print_Freq);
         //            fig.WriteLine("finish         0");
 
@@ -6171,7 +6171,7 @@ namespace DotSpatial.Plugins.Taudem
             }
         }
 
-        //private static int GetWshedFromStreamLink(int streamLink, IFeatureSet streamShape, IFeatureSet shedShape)
+        // private static int GetWshedFromStreamLink(int streamLink, IFeatureSet streamShape, IFeatureSet shedShape)
         //{
         //    int streamindx;
         //    const int LinkIDField = 0;
@@ -6226,10 +6226,10 @@ namespace DotSpatial.Plugins.Taudem
         //            {
         //                return false;
         //            }
-        //            //This is what it used to do. I have NO clue why. ARA
-        //            //X = new double[NumPoints-1];
-        //            //Y = new double[NumPoints-1];
-        //            //for (int curPnt = 1; curPnt < NumPoints; curPnt++)
+        //            // This is what it used to do. I have NO clue why. ARA
+        //            // X = new double[NumPoints-1];
+        //            // Y = new double[NumPoints-1];
+        //            // for (int curPnt = 1; curPnt < NumPoints; curPnt++)
         //            //{
         //            //    X[curPnt - 1] = System.Convert.ToDouble(xPnts[curPnt]);
         //            //    Y[curPnt - 1] = System.Convert.ToDouble(yPnts[curPnt]);
@@ -6574,9 +6574,9 @@ namespace DotSpatial.Plugins.Taudem
             else
             {
                 Trace.WriteLine("Error - there were multiple parts.");
-                //mergeShape = new IFeatureClass();
-                //mergeShape.Create(MapWinGIS.ShpfileType.SHP_POLYGON);
-                //SpatialOperations.MergeShapes(shape1, shape2, out mergeShape);
+                // mergeShape = new IFeatureClass();
+                // mergeShape.Create(MapWinGIS.ShpfileType.SHP_POLYGON);
+                // SpatialOperations.MergeShapes(shape1, shape2, out mergeShape);
             }
 
             return mergeShape;
@@ -6651,7 +6651,7 @@ namespace DotSpatial.Plugins.Taudem
 
             if (callback != null) callback.Progress("Status", 0, "Assigning WS Link");
 
-            //Stream fields
+            // Stream fields
             const int IDField = 0;
             const int DsidField = 1;
             const int Us1IDField = 2;
@@ -6702,7 +6702,7 @@ namespace DotSpatial.Plugins.Taudem
                 int WatershedID = Convert.ToInt32(shedShape.get_CellValue(WShedIDField, shedIndex)) + 1; 
                 shedShape.EditCellValue(WShedIDField, shedIndex, WatershedID);
                 for (int streamIndex = 0; streamIndex < streamShapeNumShapes; streamIndex++)
-                {   //Stream IDs have already been incremented to start at 1 in ApplyStreamAttributes, so match with incremented Watershed ID
+                {   // Stream IDs have already been incremented to start at 1 in ApplyStreamAttributes, so match with incremented Watershed ID
                     if (Convert.ToInt32(streamShape.get_CellValue(IDField, streamIndex)) == WatershedID)
                     {
                         shedShape.EditCellValue(dsnodeidFieldNum, shedIndex, streamShape.get_CellValue(DsNodeIDField, streamIndex));
@@ -6848,7 +6848,7 @@ namespace DotSpatial.Plugins.Taudem
             var tmpClipPath = Path.Combine(
                 Path.GetDirectoryName(slopeGridPath), Path.GetFileNameWithoutExtension(slopeGridPath) + "_clip.tif");
 
-            //DataManagement.DeleteGrid(tmpClipPath);
+            // DataManagement.DeleteGrid(tmpClipPath);
 
             if (callback != null)
             {
@@ -6915,7 +6915,7 @@ namespace DotSpatial.Plugins.Taudem
 
                 tmpClipGrid.Close();
 
-                //DataManagement.DeleteGrid(tmpClipPath);
+                // DataManagement.DeleteGrid(tmpClipPath);
             }
 
             if (callback != null)
@@ -6947,7 +6947,7 @@ namespace DotSpatial.Plugins.Taudem
                     continue;
                 }
 
-                //if (!string.IsNullOrEmpty(slopeProj))
+                // if (!string.IsNullOrEmpty(slopeProj))
                 //{
                 if (slopeProj.Unit.Name == "Meter")
                 {
@@ -6980,7 +6980,7 @@ namespace DotSpatial.Plugins.Taudem
                     }
                 }
                 //}
-                //else
+                // else
                 //{
                 //    switch (elevUnits)
                 //    {
@@ -7166,7 +7166,7 @@ namespace DotSpatial.Plugins.Taudem
                     continue;
                 }
 
-                //if (!string.IsNullOrEmpty(slopeProj))
+                // if (!string.IsNullOrEmpty(slopeProj))
                 //{
                 if (slopeProj.Unit.Name == "Meter")
                 {
@@ -7199,7 +7199,7 @@ namespace DotSpatial.Plugins.Taudem
                     }
                 }
                 //}
-                //else
+                // else
                 //{
                 //    switch (elevUnits)
                 //    {
@@ -7323,8 +7323,8 @@ namespace DotSpatial.Plugins.Taudem
                 callback.Progress("Status", 0, "D8 Flow Directions");
             }
 
-            //DataManagement.DeleteGrid(d8ResultPath);
-            //DataManagement.DeleteGrid(d8SlopeResultPath);
+            // DataManagement.DeleteGrid(d8ResultPath);
+            // DataManagement.DeleteGrid(d8SlopeResultPath);
 
             var pars = "-p " + Quote(d8ResultPath) + " -sd8 " + Quote(d8SlopeResultPath) + " -fel " + Quote(pitFillPath);
             var result = RunTaudem("D8FlowDir.exe", pars, numProcesses, showTaudemOutput);
@@ -7339,8 +7339,8 @@ namespace DotSpatial.Plugins.Taudem
                     );
             }
 
-            //CopyProjectionFromGrid(pitFillPath, d8ResultPath);
-            //CopyProjectionFromGrid(pitFillPath, d8SlopeResultPath);
+            // CopyProjectionFromGrid(pitFillPath, d8ResultPath);
+            // CopyProjectionFromGrid(pitFillPath, d8SlopeResultPath);
             if (callback != null)
             {
                 callback.Progress("Status", 0, string.Empty);
@@ -7355,7 +7355,7 @@ namespace DotSpatial.Plugins.Taudem
         ///// </summary>
         ///// <param name="callback"></param>
         ///// <returns></returns>
-        //public static int D8(IProgressHandler callback)
+        // public static int D8(IProgressHandler callback)
         //{
         //    return DoD8Diag(callback);
         //}
@@ -7364,12 +7364,12 @@ namespace DotSpatial.Plugins.Taudem
         ///// An overload of D8 which will generate a GeoprocDialog and execute the d8 from that.
         ///// </summary>
         ///// <returns></returns>
-        //public static int D8()
+        // public static int D8()
         //{
         //    return DoD8Diag(null);
         //}
 
-        //private static int DoD8Diag(IProgressHandler callback)
+        // private static int DoD8Diag(IProgressHandler callback)
         //{
         //    Trace.WriteLine("DoD8Diag(callback)");
         //    var d8Diag = new GeoProcDialog();
@@ -7463,5 +7463,5 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         #endregion
-    }//End Of Hydrology
+    }// End Of Hydrology
 }

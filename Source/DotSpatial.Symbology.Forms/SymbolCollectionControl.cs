@@ -109,7 +109,7 @@ namespace DotSpatial.Symbology.Forms
                 scaleSize = (ItemHeight - 6) / size.Height;
             }
             shift.Translate(e.Bounds.Left + e.Bounds.Width / 2, e.Bounds.Top + e.Bounds.Height / 2);
-            //shift.Translate(-(float)(size.Width * scaleSize / 2), -(float)(size.Height * scaleSize / 2));
+            // shift.Translate(-(float)(size.Width * scaleSize / 2), -(float)(size.Height * scaleSize / 2));
             e.Graphics.Transform = shift;
             stroke.Draw(e.Graphics, scaleSize);
             e.Graphics.Transform = old;

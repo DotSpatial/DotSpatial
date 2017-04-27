@@ -19,7 +19,7 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Data
 {
     /// <summary>
-    ///Represents the strongly named DataTable class.
+    /// Represents the strongly named DataTable class.
     ///</summary>
     public class FeatureTable : TypedTableBase<FeatureRow>
     {

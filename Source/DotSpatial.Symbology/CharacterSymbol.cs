@@ -253,7 +253,7 @@ namespace DotSpatial.Symbology
         /// specific character in a given "typeset" range.
         /// </summary>
         /// <remarks>
-        /// //Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor))
+        /// // Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor))
         /// </remarks>
         [XmlIgnore]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -282,7 +282,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the string font family name to use for this character set.
         /// </summary>
         /// <remarks>
-        /// //Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor)),
+        /// // Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor)),
         /// </remarks>
         [Description("Gets or sets the font family name to use when building the font.")]
         [Serialize("FontFamilyName")]
@@ -335,7 +335,7 @@ namespace DotSpatial.Symbology
         /// <param name="scaleSize"></param>
         protected override void OnDraw(Graphics g, double scaleSize)
         {
-            //base.OnDraw(g, scaleSize); // handle rotation etc.
+            // base.OnDraw(g, scaleSize); // handle rotation etc.
             Brush b = new SolidBrush(_color);
             string txt = new string(new[] { _character });
             float fontPointSize = (float)(Size.Height * scaleSize);

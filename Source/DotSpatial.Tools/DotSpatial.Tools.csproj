@@ -47,8 +47,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\Tools\DotSpatial.Tools.XML</DocumentationFile>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -98,7 +97,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClipRasterWithPolygon.cs" />
-    <Compile Include="RandomPoints.cs" />
+    <Compile Include="KdTreeEx.cs" />
+    <Compile Include="RandomGeometryTool.cs" />
     <Compile Include="RasterBinTool.cs" />
     <Compile Include="RasterMagic.cs" />
     <Compile Include="Voronoi.cs" />
@@ -113,7 +113,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ReprojectFeatures.cs" />
+    <Compile Include="ReprojectFeatureSet.cs" />
     <Compile Include="FindAverageSlope.cs" />
     <Compile Include="FindAverageSlopeExtented.cs" />
     <Compile Include="TextStrings.Designer.cs">

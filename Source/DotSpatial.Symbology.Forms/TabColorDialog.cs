@@ -93,7 +93,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnCancel.AccessibleName = null;
             resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.BackgroundImage = null;
-            //this.btnCancel.DialogResult = DialogResult.Cancel;
+            // this.btnCancel.DialogResult = DialogResult.Cancel;
             this.btnCancel.Font = null;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -105,7 +105,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmdOk.AccessibleName = null;
             resources.ApplyResources(this.cmdOk, "cmdOk");
             this.cmdOk.BackgroundImage = null;
-            //this.cmdOk.DialogResult = DialogResult.OK;
+            // this.cmdOk.DialogResult = DialogResult.OK;
             this.cmdOk.Font = null;
             this.cmdOk.Name = "cmdOk";
             this.cmdOk.UseVisualStyleBackColor = true;

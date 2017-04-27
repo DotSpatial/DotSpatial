@@ -151,10 +151,10 @@ namespace DotSpatial.Controls
         /// <param name="groupList">The list the groups should be added to.</param>
         private static void GetNestedGroups(IMapGroup grp, List<IMapGroup> groupList)
         {
-            //initialize the layer list if required
+            // initialize the layer list if required
             if (groupList == null) groupList = new List<IMapGroup>();
 
-            //recursive function -- all nested groups and layers are considered
+            // recursive function -- all nested groups and layers are considered
             foreach (var lyr in grp.Layers)
             {
                 grp = lyr as IMapGroup;

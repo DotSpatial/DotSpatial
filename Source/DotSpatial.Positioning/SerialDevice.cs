@@ -679,7 +679,7 @@ namespace DotSpatial.Positioning
 
             try
             {
-                //Delete the entire key for this port
+                // Delete the entire key for this port
                 Registry.LocalMachine.DeleteSubKeyTree(ROOT_KEY_NAME + Port);
             }
             catch (UnauthorizedAccessException)
@@ -978,8 +978,8 @@ namespace DotSpatial.Positioning
                         }
 
                         //// Does it already exist?
-                        //exists = false;
-                        //for (int index2 = 0; index2 < devices.Count; index2++)
+                        // exists = false;
+                        // for (int index2 = 0; index2 < devices.Count; index2++)
                         //{
                         //    // Look for a serial device with the same port (COM2: etc.)
                         //    SerialDevice existing = devices[index2];
@@ -991,7 +991,7 @@ namespace DotSpatial.Positioning
                         //}
 
                         //// Does it already exist?  If not, add it
-                        //if (!exists)
+                        // if (!exists)
                         //{
                         //    // Append to the collection
                         //    devices.Add(newDevice);
@@ -1032,8 +1032,8 @@ namespace DotSpatial.Positioning
                             }
 
                             //// Does it already exist?
-                            //exists = false;
-                            //for (int index2 = 0; index2 < devices.Count; index2++)
+                            // exists = false;
+                            // for (int index2 = 0; index2 < devices.Count; index2++)
                             //{
                             //    // Look for a serial device with the same port (COM2: etc.)
                             //    SerialDevice existing = devices[index2];
@@ -1045,7 +1045,7 @@ namespace DotSpatial.Positioning
                             //}
 
                             //// Does it already exist?  If not, add it
-                            //if (!exists)
+                            // if (!exists)
                             //{
                             //    // Make a new device.  Since it's Bluetooth, we can use a high baud rate (really ANY baud rate)
                             //    SerialDevice newDevice = new SerialDevice(devicePort, 115200);
@@ -1138,8 +1138,8 @@ namespace DotSpatial.Positioning
                                 }
 
                                 //// Add the port
-                                //exists = false;
-                                //for (int index2 = 0; index2 < devices.Count; index2++)
+                                // exists = false;
+                                // for (int index2 = 0; index2 < devices.Count; index2++)
                                 //{
                                 //    // Look for a serial device with the same port (COM2: etc.)
                                 //    SerialDevice existing = devices[index2];
@@ -1151,7 +1151,7 @@ namespace DotSpatial.Positioning
                                 //}
 
                                 //// Does it already exist?  If not, add it
-                                //if (!exists)
+                                // if (!exists)
                                 //{
                                 //    // Make a new device
                                 //    SerialDevice newDevice = new SerialDevice(devicePort);
@@ -1246,8 +1246,8 @@ namespace DotSpatial.Positioning
                                 }
 
                                 //// Add the port
-                                //exists = false;
-                                //for (int index2 = 0; index2 < devices.Count; index2++)
+                                // exists = false;
+                                // for (int index2 = 0; index2 < devices.Count; index2++)
                                 //{
                                 //    // Look for a serial device with the same port (COM2: etc.)
                                 //    SerialDevice existing = devices[index2];
@@ -1259,7 +1259,7 @@ namespace DotSpatial.Positioning
                                 //}
 
                                 //// Does it already exist?  If not, add it
-                                //if (!exists)
+                                // if (!exists)
                                 //{
                                 //    SerialDevice newDevice = new SerialDevice(devicePort);
                                 //    newDevice.SetName(friendlyName);

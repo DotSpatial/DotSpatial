@@ -34,8 +34,8 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public bool Remove(Envelope itemEnv, int item)
         {
-            bool retValue = base.Remove(itemEnv, item); //TODO Do we need to adjust? I didn't know how to change that when I upgraded the NTS quellcode because I couldn't figure out how to call this code. (2015-08-24 jany_)
-            //if (retValue)
+            bool retValue = base.Remove(itemEnv, item); // TODO Do we need to adjust? I didn't know how to change that when I upgraded the NTS quellcode because I couldn't figure out how to call this code. (2015-08-24 jany_)
+            // if (retValue)
             //    AdjustNodesForDeletedItem(Root, item);
             return retValue;
         }
@@ -45,7 +45,7 @@ namespace DotSpatial.Data
         ///// </summary>
         ///// <param name="node"></param>
         ///// <param name="deletedItem"></param>
-        //private static void AdjustNodesForDeletedItem(Node<object> node, int deletedItem)
+        // private static void AdjustNodesForDeletedItem(Node<object> node, int deletedItem)
         //{
         //    if (node.HasItems)
         //    {

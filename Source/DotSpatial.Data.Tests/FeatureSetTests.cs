@@ -38,7 +38,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
         ///</summary>
         [Test]
         public void FilePathTestWithSpaces()
@@ -59,7 +59,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
         ///</summary>
         [Test]
         public void FilePathTest1()
@@ -78,7 +78,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
         ///</summary>
         [Test]
         public void FilePathTest2()
@@ -289,7 +289,7 @@ namespace DotSpatial.Data.Tests
 
                 var loaded = FeatureSet.Open(fileName);
 
-                if (c == CoordinateType.Regular) //regular coordinates don't have m values
+                if (c == CoordinateType.Regular) // regular coordinates don't have m values
                 {
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
@@ -368,7 +368,7 @@ namespace DotSpatial.Data.Tests
 
                 var loaded = FeatureSet.Open(fileName);
 
-                if (c == CoordinateType.Regular) //regular coordinates don't have m values
+                if (c == CoordinateType.Regular) // regular coordinates don't have m values
                 {
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);

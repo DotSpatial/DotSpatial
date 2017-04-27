@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology.Forms
         {
             _symbolizerList = new List<CustomLineSymbolizer>();
             _provider = new CustomLineSymbolProvider();
-            //_symbolizerList = _provider.GetAllSymbols();
+            // _symbolizerList = _provider.GetAllSymbols();
 
             Configure();
         }
@@ -378,7 +378,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="fileName"></param>
         public void Save(string fileName)
         {
-            //_provider.Save(fileName);
+            // _provider.Save(fileName);
         }
 
         /// <summary>
@@ -388,8 +388,8 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="fileName">The file name from which to load</param>
         public void Load(string fileName)
         {
-            //_symbolizerList = (List<CustomLineSymbolizer>)_provider.Load(fileName);
-            //Refresh();
+            // _symbolizerList = (List<CustomLineSymbolizer>)_provider.Load(fileName);
+            // Refresh();
         }
 
         #endregion
@@ -508,7 +508,7 @@ namespace DotSpatial.Symbology.Forms
 
         #region Private Methods
 
-        //gets the maximum available number of columns based on cell margin and width
+        // gets the maximum available number of columns based on cell margin and width
         private int GetMaxNumColumns()
         {
             return (int)(Width / (double)(_cellSize.Width + _cellMargin));
@@ -532,8 +532,8 @@ namespace DotSpatial.Symbology.Forms
             if (_showSymbolNames)
             {
                 StringFormat fmt = new StringFormat();
-                //fmt.Alignment = StringAlignment.Center;
-                //fmt.LineAlignment = StringAlignment.Center;
+                // fmt.Alignment = StringAlignment.Center;
+                // fmt.LineAlignment = StringAlignment.Center;
 
                 PointF textLocation = new Point(rect.Left, rect.Bottom - textHeight);
                 g.DrawString(sym.Name, _textFont, Brushes.Black, textLocation, fmt);

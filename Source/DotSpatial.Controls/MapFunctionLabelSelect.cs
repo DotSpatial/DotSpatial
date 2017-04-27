@@ -93,7 +93,7 @@ namespace DotSpatial.Controls
                         continue;
                     }
                     IMapLabelLayer gll = fl.LabelLayer;
-                    //gll.Select(_selectionEnvelope, e); // using this form of selection can test the actual pixel rectangles
+                    // gll.Select(_selectionEnvelope, e); // using this form of selection can test the actual pixel rectangles
                     if (gll != null)
                     {
                         gll.Invalidate();
@@ -174,7 +174,7 @@ namespace DotSpatial.Controls
         ///// Disposes the selection pen
         ///// </summary>
         ///// <param name="disposing"></param>
-        //protected override void Dispose(bool disposing)
+        // protected override void Dispose(bool disposing)
         //{
         //    _selectionPen.Dispose();
         //    base.Dispose(disposing);

@@ -279,7 +279,7 @@ namespace DotSpatial.Controls.Header
             _menuStrip = menuStrip;
             _menuStrip.ItemClicked += MenuStrip_ItemClicked;
             _strips = new List<ToolStrip> { _menuStrip };
-            if (_stripPosList.Count == 0) //set the default position of the menustrip for it to show on top
+            if (_stripPosList.Count == 0) // set the default position of the menustrip for it to show on top
                 _stripPosList.Add(new ToolstripPosition(_menuStrip.Name, 0, 0));
         }
 
@@ -290,7 +290,7 @@ namespace DotSpatial.Controls.Header
         {
             _toolstripsLoaded = false;
             _tsPanel.Controls.Clear();
-            foreach (var i in _stripPosList.OrderBy(tsp => tsp.Row).ThenByDescending(tsp => tsp.Column)) //add toolstrips after saved order
+            foreach (var i in _stripPosList.OrderBy(tsp => tsp.Row).ThenByDescending(tsp => tsp.Column)) // add toolstrips after saved order
             {
                 var ts = _strips.Find(_ => _.Name == i.Name);
                 if (ts != null)
@@ -298,10 +298,10 @@ namespace DotSpatial.Controls.Header
                     _tsPanel.Join(ts, i.Row);
                 }
             }
-            _toolstripsLoaded = true; //all toolstrips in _StripPosList are added, any missing strips can now be added
+            _toolstripsLoaded = true; // all toolstrips in _StripPosList are added, any missing strips can now be added
 
-            var index = Math.Max(1, _tsPanel.Rows.Length - 1); //add toolstrips that were added after saving (e.g. Plugins dropped into Plugin-folder)
-            foreach (var strip in Enumerable.Reverse(_strips)) //Reverse order because join adds at the beginning of the ToolStripPanelRow
+            var index = Math.Max(1, _tsPanel.Rows.Length - 1); // add toolstrips that were added after saving (e.g. Plugins dropped into Plugin-folder)
+            foreach (var strip in Enumerable.Reverse(_strips)) // Reverse order because join adds at the beginning of the ToolStripPanelRow
             {
                 if (!_stripPosList.Exists(_ => _.Name == strip.Name))
                 {
@@ -518,7 +518,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (!_stripPosList.Exists(_ => _.Name == groupName))
                 { _tsPanel.Join(strip); }
-                else { LoadToolstrips(); } //if toolstrip exists, reload all for it to appear at the remembered position
+                else { LoadToolstrips(); } // if toolstrip exists, reload all for it to appear at the remembered position
             }
             return strip;
         }

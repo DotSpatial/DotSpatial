@@ -642,7 +642,7 @@ namespace DotSpatial.Symbology.Forms
                 if (_flipRamp)
                 {
                     y = (int)(span * val);
-                    //w = (int)(_rampRadius * 2 + hSpan * (1 - val));
+                    // w = (int)(_rampRadius * 2 + hSpan * (1 - val));
                 }
                 else
                 {
@@ -700,12 +700,12 @@ namespace DotSpatial.Symbology.Forms
             PointF centerTl = new PointF((Width - labelSize.Width) / 2, (Height - labelSize.Height) / 2);
             if (_orientation == Orientation.Vertical)
             {
-                //if (Height < labelSize.Height) return;
+                // if (Height < labelSize.Height) return;
                 if (_showValue)
                 {
                     g.DrawString(Value.ToString(_numberFormat), Font, fontBrush, new PointF(_textRectangle.X, centerTl.Y));
                 }
-                //if (Height < labelSize.Height * 3) return;
+                // if (Height < labelSize.Height * 3) return;
                 if (_flipRamp)
                 {
                     if (_showMinimum)
@@ -731,12 +731,12 @@ namespace DotSpatial.Symbology.Forms
             }
             else
             {
-                //if (Width < labelSize.Width) return;
+                // if (Width < labelSize.Width) return;
                 if (_showValue)
                 {
                     g.DrawString(Value.ToString(_numberFormat), Font, fontBrush, new PointF(centerTl.X, _textRectangle.Top));
                 }
-                //if (Width < labelSize.Width * 3) return;
+                // if (Width < labelSize.Width * 3) return;
                 if (_flipRamp)
                 {
                     if (_showMaximum)
@@ -852,7 +852,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="pevent"></param>
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //base.OnPaintBackground(pevent);
+            // base.OnPaintBackground(pevent);
         }
 
         /// <summary>

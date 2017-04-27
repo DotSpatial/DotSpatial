@@ -39,9 +39,9 @@ namespace DotSpatial.Symbology
         private bool _saveOperations;
         private string _floatingFormat = "g";
 
-        private bool _valid; //indicates whether the expression-syntax and -operations are valid
-        private bool _expChanged; //indicates whether expression was changed after last calculation
-        private string _expressionString; //Expression string that is used to calculate the expression for the DataRows
+        private bool _valid; // indicates whether the expression-syntax and -operations are valid
+        private bool _expChanged; // indicates whether expression was changed after last calculation
+        private string _expressionString; // Expression string that is used to calculate the expression for the DataRows
         #endregion
 
         #region Properties
@@ -85,7 +85,7 @@ namespace DotSpatial.Symbology
         {
             if (IsEmpty()) return "";
             ErrorMessage = "";
-            if (!_valid && !_expChanged) return ReplaceFieldsOnly(row, fid); //expression is invalid and hasn't changed => simply replace fields
+            if (!_valid && !_expChanged) return ReplaceFieldsOnly(row, fid); // expression is invalid and hasn't changed => simply replace fields
 
             foreach (Element e in _variables)
             {
@@ -129,7 +129,7 @@ namespace DotSpatial.Symbology
             if (IsEmpty()) return false;
 
             ErrorMessage = "";
-            if (row == null) //no row -> use exampleValues
+            if (row == null) // no row -> use exampleValues
             {
                 foreach (Element e in _variables)
                 {
@@ -146,7 +146,7 @@ namespace DotSpatial.Symbology
                     }
                 }
             }
-            else //use DataRow values
+            else // use DataRow values
             {
                 foreach (Element e in _variables)
                 {
@@ -190,7 +190,7 @@ namespace DotSpatial.Symbology
 
             if (s.Length == 0) return false;
 
-            //ExpressionPart bracket = new ExpressionPart();
+            // ExpressionPart bracket = new ExpressionPart();
 
             _saveOperations = true;
             _variables.Clear();
@@ -209,7 +209,7 @@ namespace DotSpatial.Symbology
                 }
             }
 
-            Regex r = new Regex(@"\[(\d+|\w+)\]"); //all fields in [] that contain only word characters and numbers
+            Regex r = new Regex(@"\[(\d+|\w+)\]"); // all fields in [] that contain only word characters and numbers
             var matches = r.Matches(s);
             for (int i = matches.Count - 1; i >= 0; i--)
             {
@@ -217,7 +217,7 @@ namespace DotSpatial.Symbology
                 ReplaceSubString(ref s, matches[i].Index, matches[i].Length, "{f" + (_strings.Count - 1) + "}");
             }
 
-            r = new Regex("(\"([^\"\n]*(\"\")*[^\"\n]*)*\")"); //everything inside "" all the same wether it contains no " or paired "
+            r = new Regex("(\"([^\"\n]*(\"\")*[^\"\n]*)*\")"); // everything inside "" all the same wether it contains no " or paired "
             matches = r.Matches(s);
             for (int i = matches.Count - 1; i >= 0; i--)
             {
@@ -302,7 +302,7 @@ namespace DotSpatial.Symbology
         private ExpressionValue Calculate()
         {
             if (_parts.Count == 0) return null;
-            //int operation, left, right;
+            // int operation, left, right;
             Operation operation = null;
             int partIndex = 0; // we begin from the inner most bracket
             bool success = false;
@@ -313,7 +313,7 @@ namespace DotSpatial.Symbology
             if (_saveOperations)
                 _operations.Clear();
 
-            foreach (var part in _parts) //reset calculations
+            foreach (var part in _parts) // reset calculations
             {
                 part.ActiveCount = part.Elements.Count;
                 foreach (var ele in part.Elements)
@@ -464,7 +464,7 @@ namespace DotSpatial.Symbology
                     ErrorMessage = SymbologyMessageStrings.Expression_PlusNotAllowed;
                     return false;
                 }
-                else //concat strings and doubles
+                else // concat strings and doubles
                 {
                     elLeft.CalcValue.Str = valLeft + valRight.ToString();
                     elLeft.CalcValue.Type = TkValueType.VtString;
@@ -750,7 +750,7 @@ namespace DotSpatial.Symbology
             // closing bracket
             end = expression.IndexOf(closingSymbol, StringComparison.Ordinal);
             if (end == -1) return false;
-            //opening bracket
+            // opening bracket
             begin = expression.LastIndexOf(openingSymbol, end, StringComparison.Ordinal);
             return begin != -1;
         }
@@ -846,7 +846,7 @@ namespace DotSpatial.Symbology
                 // saving element
                 part.Elements.Add(element);
 
-                //in case operation was unary the next element should be value as well
+                // in case operation was unary the next element should be value as well
                 if (element.Operation != TkOperation.OperNot && element.Operation != TkOperation.OperChangeSign)
                     readVal = !readVal;
             }
@@ -868,11 +868,11 @@ namespace DotSpatial.Symbology
 
             switch (chr)
             {
-                case '{': //fields, strings or parts
+                case '{': // fields, strings or parts
                     {
                         sub = "";
-                        position++; //opening bracket
-                        chr = s[position]; //s, p or f according to replaced text
+                        position++; // opening bracket
+                        chr = s[position]; // s, p or f according to replaced text
                         position++;
 
                         int closingIndex = s.IndexOf("}", position, StringComparison.Ordinal);
@@ -888,7 +888,7 @@ namespace DotSpatial.Symbology
                             position++;
                         }
 
-                        if (chr == 's') //string replacer
+                        if (chr == 's') // string replacer
                         {
                             int index = Convert.ToInt32(sub);
                             sub = _strings[index];
@@ -896,7 +896,7 @@ namespace DotSpatial.Symbology
                             element.Value.Type = TkValueType.VtString;
                             element.Value.Str = sub;
                         }
-                        else if (chr == 'f') //field replacer
+                        else if (chr == 'f') // field replacer
                         {
                             int index = Convert.ToInt32(sub);
                             sub = _strings[index].TrimStart('[').TrimEnd(']');
@@ -918,7 +918,7 @@ namespace DotSpatial.Symbology
                             element.IsField = true;
                             element.Type = TkElementType.EtValue;
                         }
-                        else if (chr == 'p') //part replacer
+                        else if (chr == 'p') // part replacer
                         {
                             element.PartIndex = Convert.ToInt32(sub);
                             element.Type = TkElementType.EtPart;
@@ -936,7 +936,7 @@ namespace DotSpatial.Symbology
                 case '7':
                 case '8':
                 case '9':
-                    { //numbers
+                    { // numbers
                         sub = "";
                         bool exponential = false;
 
@@ -1211,7 +1211,7 @@ namespace DotSpatial.Symbology
             if (_expressionString == null) return "";
             string s = _expressionString;
 
-            Regex r = new Regex(@"\[(\d+|\w+)\]"); //all fields in [] that contain only word characters or numbers
+            Regex r = new Regex(@"\[(\d+|\w+)\]"); // all fields in [] that contain only word characters or numbers
             var matches = r.Matches(s);
 
             for (int i = matches.Count - 1; i >= 0; i--)

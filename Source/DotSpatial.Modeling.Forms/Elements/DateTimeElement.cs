@@ -68,7 +68,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="param">The parameter this element represents</param>
         public DateTimeElement(DateTimeParam param)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
             Param = param;
             if (param.Value > _dateTimePicker2.MinDate)
@@ -76,7 +76,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                 _dateTimePicker2.Value = param.Value;
             }
             GroupBox.Text = param.Name;
-            //We save the parameters passed in
+            // We save the parameters passed in
             Refresh();
         }
 
@@ -87,7 +87,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void SetupDefaultLighting()
         {
-            //We load the default parameters
+            // We load the default parameters
             if (Param.DefaultSpecified)
             {
                 if (Param.Value > _dateTimePicker2.MinDate)
@@ -142,7 +142,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                 {
                     Param.Value = Convert.ToDateTime(_dateTimePicker2.Text);
                 }
-                //else
+                // else
                 //{
                 //    _dateTimePicker2.Value = _oldDate;
                 //}

@@ -169,8 +169,8 @@ namespace DotSpatial.Controls
         {
             MapFrame = new MapFrame(this, new Extent(0, 0, 0, 0));
 
-            //_resizeEndTimer = new Timer {Interval = 100};
-            //_resizeEndTimer.Tick += _resizeEndTimer_Tick;
+            // _resizeEndTimer = new Timer {Interval = 100};
+            // _resizeEndTimer.Tick += _resizeEndTimer_Tick;
 
             IMapFunction info = new MapFunctionIdentify(this);
             IMapFunction pan = new MapFunctionPan(this);
@@ -205,7 +205,7 @@ namespace DotSpatial.Controls
 
             IMapFunction keyNavigation = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionKeyNavigation));
             ActivateMapFunction(keyNavigation);
-            //changed by Jiri Kadlec - default function mode is none
+            // changed by Jiri Kadlec - default function mode is none
             FunctionMode = FunctionMode.None;
         }
 
@@ -866,7 +866,7 @@ namespace DotSpatial.Controls
                     ActivateMapFunction(newMode);
                 }
 
-                //function mode changed event
+                // function mode changed event
                 OnFunctionModeChanged(this, EventArgs.Empty);
             }
         }
@@ -1266,8 +1266,8 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //This is done deliberately to prevent flicker.
-            //base.OnPaintBackground(e);
+            // This is done deliberately to prevent flicker.
+            // base.OnPaintBackground(e);
         }
 
         /// <summary>
@@ -1460,7 +1460,7 @@ namespace DotSpatial.Controls
         protected virtual void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
             double minExt = 1e-7;
-            double maxExt = 1e+9; //if we can zoom out farther than the maps extent we don't zoom out farther than this
+            double maxExt = 1e+9; // if we can zoom out farther than the maps extent we don't zoom out farther than this
             var maxExtent = GetMaxExtent(true);
             if (Math.Max(maxExtent.Height, maxExtent.Width) > maxExt) maxExt = Math.Max(maxExtent.Height, maxExtent.Width); // make sure maxExtent isn't bigger than maxExt
 
@@ -1488,8 +1488,8 @@ namespace DotSpatial.Controls
                 double y = ViewExtents.Center.Y;
                 Extent newExtent = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2); // resize to stay above the minExt
 
-                //changed by jany_ (2016-04-14) Remember the last minimum extent in case MapFrame.ResetAspectRatio decides to resize the ViewExtent to something smaller than this.
-                //We don't want to cause a loop between this point and MapFrame.ResetAspectRatio switching ViewExtent between minExt and the corresponding extent that comes from fitting minExt to the maps aspect ratio.
+                // changed by jany_ (2016-04-14) Remember the last minimum extent in case MapFrame.ResetAspectRatio decides to resize the ViewExtent to something smaller than this.
+                // We don't want to cause a loop between this point and MapFrame.ResetAspectRatio switching ViewExtent between minExt and the corresponding extent that comes from fitting minExt to the maps aspect ratio.
                 if (_lastMinExtent == null || !_lastMinExtent.Equals(newExtent))
                 {
                     _lastMinExtent = newExtent; 

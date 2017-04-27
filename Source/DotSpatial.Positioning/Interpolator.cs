@@ -290,7 +290,7 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                //lock (SyncRoot)
+                // lock (SyncRoot)
                 {
                     if (index > Count - 1)
                         return _values[Count - 1];
@@ -333,7 +333,7 @@ namespace DotSpatial.Positioning
             // The count needs to be zero based, like the index (or we need to calc +1 values to get both poles).
             int zeroCount = _count - 1;
 
-            //adjust formula to selected algorithm from combobox
+            // adjust formula to selected algorithm from combobox
             switch (InterpolationMethod)
             {
                 case InterpolationMethod.Snap:

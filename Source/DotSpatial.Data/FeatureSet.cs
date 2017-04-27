@@ -1180,7 +1180,7 @@ namespace DotSpatial.Data
                 // fix to address issue http://dotspatial.codeplex.com/workitem/174
                 ////////////////////////////////////////////////////////////////
                 //// remove the m values if necessary
-                ////if (CoordinateType == CoordinateType.M)
+                //// if (CoordinateType == CoordinateType.M)
                 ////{
                 ////    double[] mShape = new double[sr.NumPoints];
                 ////    Array.Copy(_m, sr.StartIndex, mShape, 0, sr.NumPoints);

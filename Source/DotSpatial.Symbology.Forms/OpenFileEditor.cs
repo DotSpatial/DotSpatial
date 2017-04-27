@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology.Forms
         {
             OpenFileDialog ofd = new OpenFileDialog();
             // change this once a DataProvider has been sorted out
-            //ofd.Filter = "Binary Grids (*.bgd)";
+            // ofd.Filter = "Binary Grids (*.bgd)";
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return ofd.FileName;
         }

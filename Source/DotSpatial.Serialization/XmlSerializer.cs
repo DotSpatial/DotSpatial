@@ -179,7 +179,7 @@ namespace DotSpatial.Serialization
         {
             var ctor = formatterType.GetConstructor(Type.EmptyTypes);
             var formatter = (SerializationFormatter)ctor.Invoke(null);
-            //var formatter = (SerializationFormatter)formatterType.Assembly.CreateInstance(formatterType.AssemblyQualifiedName);
+            // var formatter = (SerializationFormatter)formatterType.Assembly.CreateInstance(formatterType.AssemblyQualifiedName);
             return new[]
 			       	{
 			       		new XAttribute(XmlConstants.VALUE, XmlHelper.EscapeInvalidCharacters(formatter.ToString(value))),

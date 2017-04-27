@@ -39,7 +39,7 @@ namespace DotSpatial.Data
         ///// Gets or sets the content length.  If the geometry for this shape was loaded from a file, this contains the size
         ///// of this shape in 16-bit words as per the Esri Shapefile specification.
         ///// </summary>
-        //int ContentLength { get; set; }
+        // int ContentLength { get; set; }
 
         /// <summary>
         /// Gets the datarow containing all the attributes related to this geometry
@@ -65,7 +65,7 @@ namespace DotSpatial.Data
         ///// <summary>
         ///// An index value that is saved in some file formats.
         ///// </summary>
-        //int RecordNumber { get; set; }
+        // int RecordNumber { get; set; }
 
         /// <summary>
         /// This is simply a quick access to the Vertices list for this specific
@@ -77,7 +77,7 @@ namespace DotSpatial.Data
         ///// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
         ///// and whether or not the shape is null.
         ///// </summary>
-        //ShapeType ShapeType { get; set; }
+        // ShapeType ShapeType { get; set; }
 
         #endregion
 

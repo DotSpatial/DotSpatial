@@ -22,7 +22,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A Brian Marchioni original toolstrip... preloaded with content.
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public class LayoutDocToolStrip : ToolStrip
     {
@@ -125,31 +125,31 @@ namespace DotSpatial.Controls
 
         #region "Envent Handlers"
 
-        //Fires the print method on the layoutcontrol
+        // Fires the print method on the layoutcontrol
         private void _btnPrint_Click(object sender, EventArgs e)
         {
             _layoutControl.Print();
         }
 
-        //Fires the saveas method on the layoutcontrol
+        // Fires the saveas method on the layoutcontrol
         private void _btnSaveAs_Click(object sender, EventArgs e)
         {
             _layoutControl.SaveLayout(true);
         }
 
-        //Fires the save method on the layoutcontrol
+        // Fires the save method on the layoutcontrol
         private void _btnSave_Click(object sender, EventArgs e)
         {
             _layoutControl.SaveLayout(false);
         }
 
-        //Fires the new method on the layoutcontrol
+        // Fires the new method on the layoutcontrol
         private void _btnNew_Click(object sender, EventArgs e)
         {
             _layoutControl.NewLayout(true);
         }
 
-        //Fires the open method on the layoutcontrol
+        // Fires the open method on the layoutcontrol
         private void _btnOpen_Click(object sender, EventArgs e)
         {
             _layoutControl.LoadLayout(true, true, true);

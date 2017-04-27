@@ -90,7 +90,7 @@ namespace DotSpatial.Symbology
 
             while (myIterator.NextSubpath(out start, out end, out isClosed) > 0)
             {
-                if (NumSymbols == 1) //single decoration spot
+                if (NumSymbols == 1) // single decoration spot
                 {
                     if (_percentualPosition == 0) // at start of the line
                     {
@@ -100,7 +100,7 @@ namespace DotSpatial.Symbology
                     {
                         DrawImage(g, points[end - 1], points[end], points[end], (FlipFirst ^ FlipAll), symbol, oldMat);
                     }
-                    else  //somewhere in between start and end
+                    else  // somewhere in between start and end
                     {
                         double totalLength = GetLength(points, start, end);
                         double span = totalLength * (double)_percentualPosition / 100;
@@ -114,7 +114,7 @@ namespace DotSpatial.Symbology
                     double totalLength = GetLength(points, start, end);
                     double span = Math.Round(totalLength / (NumSymbols - 1), 4);
                     List<DecorationSpot> spots = GetPosition(points, span, start, end);
-                    spots.Add(new DecorationSpot(points[end - 1], points[end], points[end])); //add the missing end point
+                    spots.Add(new DecorationSpot(points[end - 1], points[end], points[end])); // add the missing end point
                     for (int i = 0; i < spots.Count; i++)
                         DrawImage(g, spots[i].Before, spots[i].After, spots[i].Position, i == 0 ? (FlipFirst ^ FlipAll) : FlipAll, symbol, oldMat);
                 }
@@ -193,7 +193,7 @@ namespace DotSpatial.Symbology
         public Size GetLegendSymbolSize()
         {
             Size size = _symbol.GetLegendSymbolSize();
-            if (NumSymbols >= 1) size.Width *= 2; //add space for the line between the decorations
+            if (NumSymbols >= 1) size.Width *= 2; // add space for the line between the decorations
             return size;
         }
 
@@ -268,12 +268,12 @@ namespace DotSpatial.Symbology
         /// <returns>List of decoration spots that result from the given points and segLength.</returns>
         private List<DecorationSpot> GetPosition(PointF[] points, double segLength, int start, int end)
         {
-            double coveredDistance = 0; //distance between the last decoration spot and the line end; needed to get the correct position of the next decoration spot on the next line
+            double coveredDistance = 0; // distance between the last decoration spot and the line end; needed to get the correct position of the next decoration spot on the next line
             List<DecorationSpot> liste = new List<DecorationSpot>();
 
             for (int i = start; i < end; i++)
             {
-                if (coveredDistance == 0) //startpoint of the first line or last segment ended on startpoint of next line
+                if (coveredDistance == 0) // startpoint of the first line or last segment ended on startpoint of next line
                 {
                     DecorationSpot result = new DecorationSpot();
                     result.Position = points[i];

@@ -587,7 +587,7 @@ namespace DotSpatial.Controls
         {
             // Compute a clipping rectangle that accounts for symbology
             int maxLineWidth = 2 * (int)Math.Ceiling(ls.GetWidth());
-            Rectangle clipRect = args.ProjToPixel(args.GeographicExtents); //use GeographicExtent for clipping because ImageRect clips to much
+            Rectangle clipRect = args.ProjToPixel(args.GeographicExtents); // use GeographicExtent for clipping because ImageRect clips to much
             clipRect.Inflate(maxLineWidth, maxLineWidth);
             return clipRect;
         }

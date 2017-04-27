@@ -4,7 +4,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 // *******************************************************************************************************
 
 using System;
@@ -804,7 +804,7 @@ namespace DotSpatial.Symbology
                         if (val != noData) resi.Add(val);
                     }
                 }
-                //int count = numRows * numCols; //this could failed if there's lot of noDataValues
+                // int count = numRows * numCols; // this could failed if there's lot of noDataValues
                 long longcount = raster.NumValueCells;
                 int count = numRows * numCols;
                 if (count < int.MaxValue)
@@ -883,10 +883,10 @@ namespace DotSpatial.Symbology
 
                 // Normal checking
                 double cMax = value.CompareTo(Max.Value);
-                if (cMax > 0 || (!MaxInclusive && cMax == 0)) return false; //value bigger than max or max excluded
+                if (cMax > 0 || (!MaxInclusive && cMax == 0)) return false; // value bigger than max or max excluded
 
                 double cMin = value.CompareTo(Min.Value);
-                if (cMin < 0 || (cMin == 0 && !MinInclusive)) return false; //value smaller than min or min excluded
+                if (cMin < 0 || (cMin == 0 && !MinInclusive)) return false; // value smaller than min or min excluded
 
                 return true;
             }

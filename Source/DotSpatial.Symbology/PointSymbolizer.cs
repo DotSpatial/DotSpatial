@@ -286,7 +286,7 @@ namespace DotSpatial.Symbology
             {
                 symbol.Draw(g, scaleSize);
             }
-            g.Restore(s); //Changed by jany_ (2015-07-06) remove smoothing because we might not want to smooth whatever is drawn with g afterwards
+            g.Restore(s); // Changed by jany_ (2015-07-06) remove smoothing because we might not want to smooth whatever is drawn with g afterwards
         }
 
         /// <summary>

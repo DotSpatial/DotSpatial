@@ -339,7 +339,7 @@ namespace DotSpatial.Plugins.Measure
             else
             {
                 List<Coordinate> tempPolygon = _coordinates.ToList();
-                if (!c1.Equals2D(_coordinates[_coordinates.Count - 1])) tempPolygon.Add(c1); //don't add the current coordinate again if it was added by mouse click
+                if (!c1.Equals2D(_coordinates[_coordinates.Count - 1])) tempPolygon.Add(c1); // don't add the current coordinate again if it was added by mouse click
                 if (tempPolygon.Count < 3)
                 {
                     if (tempPolygon.Count > 1)
@@ -351,7 +351,7 @@ namespace DotSpatial.Plugins.Measure
                     _mousePosition = e.Location;
                     return;
                 }
-                tempPolygon.Add(_coordinates[0]); //changed by jany_ (2016-06-09) close the polygon, because they must be closed by definition
+                tempPolygon.Add(_coordinates[0]); // changed by jany_ (2016-06-09) close the polygon, because they must be closed by definition
                 Polygon pg = new Polygon(new LinearRing(tempPolygon.ToArray()));
 
                 double area = GetArea(tempPolygon.ToArray());
@@ -432,7 +432,7 @@ namespace DotSpatial.Plugins.Measure
                 {
                     if (_coordinates.Count >= 3)
                     {
-                        //changed by jany_ (2016-06-09) close the polygon to get the correct area
+                        // changed by jany_ (2016-06-09) close the polygon to get the correct area
                         List<Coordinate> tempPolygon = _coordinates.ToList();
                         tempPolygon.Add(_coordinates[0]);
 

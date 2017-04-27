@@ -41,12 +41,12 @@ namespace DotSpatial.Positioning.Forms
 #endif
     public sealed class GraphicsSettings
     {
-        private CompositingQuality _compositingQuality; //Gets or sets the rendering quality of composited images drawn to this Graphics.
-        private InterpolationMode _interpolationMode; //Gets or sets the interpolation mode associated with this Graphics.
-        private PixelOffsetMode _pixelOffsetMode; //Gets or set a value specifying how pixels are offset during rendering of this Graphics.
-        private SmoothingMode _smoothingMode; //Gets or sets the rendering quality for this Graphics.
-        private TextRenderingHint _textRenderingHint; //Gets or sets the rendering mode for text associated with this Graphics.
-        private int _textContrast; //Gets or sets the gamma correction value for rendering text.
+        private CompositingQuality _compositingQuality; // Gets or sets the rendering quality of composited images drawn to this Graphics.
+        private InterpolationMode _interpolationMode; // Gets or sets the interpolation mode associated with this Graphics.
+        private PixelOffsetMode _pixelOffsetMode; // Gets or set a value specifying how pixels are offset during rendering of this Graphics.
+        private SmoothingMode _smoothingMode; // Gets or sets the rendering quality for this Graphics.
+        private TextRenderingHint _textRenderingHint; // Gets or sets the rendering mode for text associated with this Graphics.
+        private int _textContrast; // Gets or sets the gamma correction value for rendering text.
 
         #region Fields
 

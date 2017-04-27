@@ -8,15 +8,15 @@ using TestMethod = NUnit.Framework.TestAttribute;
 namespace DotSpatial.Data.Tests
 {
     /// <summary>
-    ///This is a class testing the implementation of affine coefficients.
+    /// This is a class testing the implementation of affine coefficients.
     ///</summary>
     [TestClass()]
     public class AffineCoefficientsTests
     {
         /// <summary>
-        ///A test for affine coefficients in AffineTransform: generate random points with 
-        ///known (row, column) and check whether AffineTransform.ProjToCell returns the correct values.
-        ///This test fails when using Math.Floor in AffineTransform.ProjToCell.
+        /// A test for affine coefficients in AffineTransform: generate random points with 
+        /// known (row, column) and check whether AffineTransform.ProjToCell returns the correct values.
+        /// This test fails when using Math.Floor in AffineTransform.ProjToCell.
         ///</summary>
         [TestMethod]
         public void AffineTransformTest()
@@ -48,10 +48,10 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        ///A test for affine coefficients in GdalRaster: use gdal to load a raster file with
-        ///known geolocation and test the location of the center of the first grid cell.
-        ///Without a half-cell shift applied to the origin of the grid in GdalRaster.ReadHeader,
-        ///this test fails because affine coefficients are defined differently in gdal and dotspatial.
+        /// A test for affine coefficients in GdalRaster: use gdal to load a raster file with
+        /// known geolocation and test the location of the center of the first grid cell.
+        /// Without a half-cell shift applied to the origin of the grid in GdalRaster.ReadHeader,
+        /// this test fails because affine coefficients are defined differently in gdal and dotspatial.
         ///</summary>
         [TestMethod]
         public void GdalRasterTest()

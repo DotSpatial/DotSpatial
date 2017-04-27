@@ -67,7 +67,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Tests
 
             Feed feed = new Feed();
             feed.Name = "sample feed";
-            feed.Url = "htt://example.com";
+            feed.Url = "htt:// example.com";
 
             Assert.IsFalse(feed.IsValid());
         }

@@ -147,8 +147,8 @@ namespace DotSpatial.Plugins.WFSClient
 
         private void uxOpen_Click(object sender, EventArgs e)
         {
-            //var serverUrl = "http://ogi.state.ok.us/geoserver/wfs";
-            //wfsClient.TypeName = "quad100_centroids";
+            // var serverUrl = "http://ogi.state.ok.us/geoserver/wfs";
+            // wfsClient.TypeName = "quad100_centroids";
 
             var serverUrl = uxServer.Text;
              wfsClient.TypeName = uxLayer.Text;

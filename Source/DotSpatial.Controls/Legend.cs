@@ -445,14 +445,14 @@ namespace DotSpatial.Controls
         /// <param name="e">A PaintEventArgs</param>
         protected override void OnDraw(PaintEventArgs e)
         {
-            //MessageBox.Show("OnDraw");
-            //Rectangle clip = e.ClipRectangle;
-            //if (clip.IsEmpty || _isResizing) clip = ClientRectangle;
-            //Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
-            //Graphics g = Graphics.FromImage(stencil);
-            //Brush b = new SolidBrush(BackColor);
-            //g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
-            //b.Dispose();
+            // MessageBox.Show("OnDraw");
+            // Rectangle clip = e.ClipRectangle;
+            // if (clip.IsEmpty || _isResizing) clip = ClientRectangle;
+            // Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
+            // Graphics g = Graphics.FromImage(stencil);
+            // Brush b = new SolidBrush(BackColor);
+            // g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
+            // b.Dispose();
 
             base.OnDraw(e);
 
@@ -681,7 +681,7 @@ namespace DotSpatial.Controls
                         {
                             IGroup grp = _dragItem.Item.GetParentItem() as IGroup;
                             lyr.LockDispose();
-                            //when original location is inside group, remove layer from the group.
+                            // when original location is inside group, remove layer from the group.
                             if (grp != null) grp.Remove(lyr);
                             int index = _dragTarget.Item.InsertIndex(_dragItem.Item);
                             if (index == -1) index = 0;
@@ -689,7 +689,7 @@ namespace DotSpatial.Controls
                             if (grp != null)
                             {
                                 grp.Insert(index, lyr);
-                                //when the target is a group, assign the parent item.
+                                // when the target is a group, assign the parent item.
                                 lyr.SetParentItem(grp);
                             }
                             lyr.UnlockDispose();

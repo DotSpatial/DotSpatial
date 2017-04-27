@@ -13,14 +13,14 @@ using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 namespace DotSpatial.Data.Tests
 {
     /// <summary>
-    ///This is a test class for RasterTest and is intended
-    ///to contain all RasterTest Unit Tests
+    /// This is a test class for RasterTest and is intended
+    /// to contain all RasterTest Unit Tests
     ///</summary>
     [TestClass()]
     public class RasterTest
     {
         /// <summary>
-        ///A test for GetNoDataCellCount
+        /// A test for GetNoDataCellCount
         ///</summary>
         [TestMethod]
         public void GetNoDataCellCountTest()
@@ -68,7 +68,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        ///A test for SaveAs
+        /// A test for SaveAs
         ///</summary>
         [TestMethod]
         public void SaveAsTest()

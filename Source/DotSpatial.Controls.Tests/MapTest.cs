@@ -14,14 +14,14 @@ using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
-    ///This is a test class for MapTest and is intended
-    ///to contain all MapTest Unit Tests
+    /// This is a test class for MapTest and is intended
+    /// to contain all MapTest Unit Tests
     ///</summary>
     [TestClass]
     public class MapTest
     {
         /// <summary>
-        ///A test for ZoomToMaxExtent
+        /// A test for ZoomToMaxExtent
         ///</summary>
         [TestMethod]
         public void ZoomToMaxExtentTest()
@@ -79,7 +79,7 @@ namespace DotSpatial.Controls.Tests
             group.Layers.Add(new MapLineLayer());
             group.Layers.Add(new MapPointLayer());
 
-            //add a nested group
+            // add a nested group
             var group2 = new MapGroup();
             group.Layers.Add(group2);
             group2.Layers.Add(new MapPointLayer());
@@ -103,7 +103,7 @@ namespace DotSpatial.Controls.Tests
             group.Layers.Add(new MapLineLayer());
             group.Layers.Add(new MapPointLayer());
 
-            //add a nested group
+            // add a nested group
             var group2 = new MapGroup();
             group.Layers.Add(group2);
             group2.Layers.Add(new MapPointLayer());

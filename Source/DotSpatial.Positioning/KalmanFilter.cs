@@ -486,10 +486,10 @@ namespace DotSpatial.Positioning
 
             _z = z.ToCartesianPoint(_ellipsoid);
 
-            //s.x = inv(s.H)*s.z;
+            // s.x = inv(s.H)*s.z;
             _x = hi * _z;
 
-            //s.P = inv(s.H)*s.R*inv(s.H');
+            // s.P = inv(s.H)*s.R*inv(s.H');
             _p = hi * _r * SquareMatrix3D.Invert(SquareMatrix3D.Transpose(_h));
 
             _lastObservation = DateTime.Now;
@@ -552,7 +552,7 @@ namespace DotSpatial.Positioning
                 .ToCartesianPoint();
 
             // Get the vector of the translation and the last observation
-            //CartesianPoint w = (subX - this.z);
+            // CartesianPoint w = (subX - this.z);
             CartesianPoint w =
                 new CartesianPoint(
                     Distance.FromMeters(subX.X.Value - _z.X.Value),   // Values are in meters
@@ -572,8 +572,8 @@ namespace DotSpatial.Positioning
 
             #region State vector prediction and covariance
 
-            //s.x = s.A*s.x + s.B*s.u;
-            //this.x = this.A * this.x + this.B * this.u;
+            // s.x = s.A*s.x + s.B*s.u;
+            // this.x = this.A * this.x + this.B * this.u;
             CartesianPoint ax = _a.TransformVector(_x);
             CartesianPoint bu = _b.TransformVector(_u);
             _x =
@@ -582,14 +582,14 @@ namespace DotSpatial.Positioning
                     Distance.FromMeters(ax.Y.Value + bu.Y.Value),
                     Distance.FromMeters(ax.Z.Value + bu.Z.Value));
 
-            //s.P = s.A * s.P * s.A' + s.Q;
+            // s.P = s.A * s.P * s.A' + s.Q;
             _p = _a * _p * SquareMatrix3D.Transpose(_a) + _q;
 
             #endregion State vector prediction and covariance
 
             #region Kalman gain factor
 
-            //K = s.P*s.H'*inv(s.H*s.P*s.H'+s.R);
+            // K = s.P*s.H'*inv(s.H*s.P*s.H'+s.R);
             SquareMatrix3D ht = SquareMatrix3D.Transpose(_h);
             SquareMatrix3D k = _p * ht * SquareMatrix3D.Invert(_h * _p * ht + _r);
 
@@ -597,8 +597,8 @@ namespace DotSpatial.Positioning
 
             #region Observational correction
 
-            //s.x = s.x + K*(s.z-s.H*s.x);
-            //this.x = this.x + K * (this.z - this.H * this.x);
+            // s.x = s.x + K*(s.z-s.H*s.x);
+            // this.x = this.x + K * (this.z - this.H * this.x);
             CartesianPoint hx = _h.TransformVector(_x);
             CartesianPoint zHx = new CartesianPoint(
                 Distance.FromMeters(_z.X.Value - hx.X.Value),
@@ -611,7 +611,7 @@ namespace DotSpatial.Positioning
                     Distance.FromMeters(_x.Y.Value + kzHx.Y.Value),
                     Distance.FromMeters(_x.Z.Value + kzHx.Z.Value));
 
-            //s.P = s.P - K*s.H*s.P;
+            // s.P = s.P - K*s.H*s.P;
             _p = _p - k * _h * _p;
 
             #endregion Observational correction

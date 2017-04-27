@@ -27,7 +27,7 @@ namespace DotSpatial.Symbology
     {
         #region Private Variables
 
-        //the list where the custom symbolizers are stored
+        // the list where the custom symbolizers are stored
         private readonly List<CustomSymbolizer> _list;
 
         #endregion

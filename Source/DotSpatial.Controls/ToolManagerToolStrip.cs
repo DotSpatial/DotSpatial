@@ -95,21 +95,21 @@ namespace DotSpatial.Controls
             _txtBoxSearch.Text = MessageStrings.FindToolByName;
         }
 
-        //Fires when the text is changed in the find tool text box and calls the toolmanager to highlight a relevant tool
+        // Fires when the text is changed in the find tool text box and calls the toolmanager to highlight a relevant tool
         private void TxtBoxSearchTextChanged(object sender, EventArgs e)
         {
             if (_enableFind)
                 _toolManager.HighlightTool(_txtBoxSearch.Text);
         }
 
-        //Fires when the user hits a new, and handles it if its enter
+        // Fires when the user hits a new, and handles it if its enter
         private void TxtBoxSearchKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
                 _toolManager.HighlightNextTool(_txtBoxSearch.Text);
         }
 
-        //Fires when the user clicks the new model tool
+        // Fires when the user clicks the new model tool
         private void BtnNewModelClick(object sender, EventArgs e)
         {
             ModelerForm aModelerFormForm = new ModelerForm();

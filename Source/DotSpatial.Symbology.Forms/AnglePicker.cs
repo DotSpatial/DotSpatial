@@ -286,7 +286,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="pevent"></param>
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //base.OnPaintBackground(pevent);
+            // base.OnPaintBackground(pevent);
         }
 
         private void DrawBorder(Graphics g, Rectangle r)
@@ -326,12 +326,12 @@ namespace DotSpatial.Symbology.Forms
             DrawBorder(g, r);
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            //string angleText = _angle.ToString() + ((char)176).ToString();
-            //SizeF textSize = g.MeasureString(angleText, Font);
-            //Rectangle textBox = new Rectangle(0, 0, Convert.ToInt32(textSize.Width) + 4, Convert.ToInt32(textSize.Height) + 4);
+            // string angleText = _angle.ToString() + ((char)176).ToString();
+            // SizeF textSize = g.MeasureString(angleText, Font);
+            // Rectangle textBox = new Rectangle(0, 0, Convert.ToInt32(textSize.Width) + 4, Convert.ToInt32(textSize.Height) + 4);
 
             // Erase background.
-            //Brush b = new SolidBrush(BackColor);
+            // Brush b = new SolidBrush(BackColor);
 
             // 9/23/09 LCW: try to make transparent
 
@@ -340,7 +340,7 @@ namespace DotSpatial.Symbology.Forms
 
             // b.Dispose();
 
-            //GetRectangles(ref circle, ref textBox);
+            // GetRectangles(ref circle, ref textBox);
 
             Brush b = new SolidBrush(_circleFillColor);
             g.FillEllipse(b, circle);
@@ -384,7 +384,7 @@ namespace DotSpatial.Symbology.Forms
 
             DrawKnob(g, knob);
 
-            //b = new SolidBrush(ForeColor);
+            // b = new SolidBrush(ForeColor);
             // g.DrawString(angleText, Font, b, (float)textBox.X, (float)textBox.Y);
             // b.Dispose();
 
@@ -444,12 +444,12 @@ namespace DotSpatial.Symbology.Forms
                 if (Width < Height)
                 {
                     diameter = Width;
-                    //y = Height / 2 - diameter / 2;
+                    // y = Height / 2 - diameter / 2;
                 }
                 else
                 {
                     diameter = Height;
-                    //x = Width / 2 - diameter / 2;
+                    // x = Width / 2 - diameter / 2;
                 }
                 textBox.Y = Height / 2 - textBox.Height / 2;
                 textBox.X = Width / 2 - textBox.Width / 2;

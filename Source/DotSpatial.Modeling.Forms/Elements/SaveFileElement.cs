@@ -35,20 +35,20 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="dataSets">An array of available data</param>
         public SaveFileElement(FileParam outputParam, List<DataSetArray> dataSets)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = outputParam;
 
-            //Saves the label
+            // Saves the label
             GroupBox.Text = Param.Name;
 
-            //Sets up the initial status light indicator
+            // Sets up the initial status light indicator
             base.Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
 
-            //Populates the dialog with the default parameter value
+            // Populates the dialog with the default parameter value
             if (outputParam.Value != null && outputParam.DefaultSpecified)
             {
                 txtDataTable.Text = outputParam.ModelName;
@@ -84,7 +84,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                 if (sfd.ShowDialog() != DialogResult.OK)
                     return;
                 TextFile addedTextFile = new TextFile(sfd.FileName);
-                //This inserts the new featureset into the list
+                // This inserts the new featureset into the list
                 txtDataTable.Text = Path.GetFileNameWithoutExtension(addedTextFile.Filename);
                 Param.Value = addedTextFile;
             }

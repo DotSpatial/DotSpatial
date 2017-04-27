@@ -192,7 +192,7 @@ namespace DotSpatial.Serialization
     ///// Generic type used to make creating custom mappings a little bit easier.
     ///// </summary>
     ///// <typeparam name="T">The type that this map will be associated with.</typeparam>
-    //public class SerializationMap<T> : SerializationMap
+    // public class SerializationMap<T> : SerializationMap
     //{
     //    /// <summary>
     //    /// Constructs a new instance of the generic SerializationMap class

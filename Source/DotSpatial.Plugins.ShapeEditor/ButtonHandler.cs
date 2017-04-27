@@ -110,7 +110,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             const string shapeEditorMenuKey = "kShapeEditor";
 
-            //_Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
+            // _Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
             _header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.New, NewButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShapefile.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
             _addShape = new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShape.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey };
             _header.Add(_addShape);

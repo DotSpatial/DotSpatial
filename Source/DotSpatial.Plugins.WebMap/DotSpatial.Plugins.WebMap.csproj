@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Debug\Windows Extensions\DotSpatial.Plugins.WebMap\DotSpatial.Plugins.WebMap.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -89,6 +90,7 @@
     <Compile Include="Tiling\TileCalculator.cs" />
     <Compile Include="Tiling\TileManager.cs" />
     <Compile Include="Tiling\Tiles.cs" />
+    <Compile Include="WMS\RequestHelper.cs" />
     <Compile Include="WMS\WmsRequest.cs" />
     <Compile Include="WMS\WmsServiceProvider.cs" />
     <Compile Include="WebMapPlugin.cs" />

@@ -286,13 +286,13 @@ namespace DotSpatial.Symbology.Forms
             {
                 if (temp.Length > 2)
                 {
-                    //temp = "[" + temp +"]";
+                    // temp = "[" + temp +"]";
                     temp = " " + temp + " ";
                     if (temp != null)
                     {
                         Expression = rtxtComputaion.Text;
                         Expression = Expression + temp;
-                        //DisplyExpression();
+                        // DisplyExpression();
                         rtxtComputaion.Focus();
                         rtxtComputaion.Text = Expression;
                         rtxtComputaion.Select(Expression.Length - 4, 1);
@@ -303,13 +303,13 @@ namespace DotSpatial.Symbology.Forms
             {
                 if (temp.Length > 4)
                 {
-                    //temp = "[" + temp +"]";
+                    // temp = "[" + temp +"]";
                     temp = " " + temp + " ";
                     if (temp != null)
                     {
                         Expression = rtxtComputaion.Text;
                         Expression = Expression + temp;
-                        //DisplyExpression();
+                        // DisplyExpression();
                         rtxtComputaion.Focus();
                         rtxtComputaion.Text = Expression;
                         rtxtComputaion.Select(Expression.Length - 6, 1);
@@ -318,8 +318,8 @@ namespace DotSpatial.Symbology.Forms
             }
             else
             {
-                //temp = "[" + temp + "]"; //symbols
-                temp = " " + temp + " "; //symbols
+                // temp = "[" + temp + "]"; // symbols
+                temp = " " + temp + " "; // symbols
                 if (temp != null)
                 {
                     Expression = rtxtComputaion.Text;

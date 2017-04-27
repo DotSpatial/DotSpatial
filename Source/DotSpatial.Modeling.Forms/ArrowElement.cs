@@ -55,7 +55,7 @@ namespace DotSpatial.Modeling.Forms
         /// </summary>
         public void UpdateDimentions()
         {
-            //Updates the location and size of the element based on the elements its attached to
+            // Updates the location and size of the element based on the elements its attached to
             Location = _startElement.Location;
             Width = _stopElement.Location.X - _startElement.Location.X;
             Height = _stopElement.Location.Y - _startElement.Location.Y;
@@ -69,19 +69,19 @@ namespace DotSpatial.Modeling.Forms
         /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
         public override void Paint(Graphics graph)
         {
-            //Draws Rectangular Shapes
+            // Draws Rectangular Shapes
             if (Shape == ModelShape.Arrow)
             {
                 _arrowPath = new GraphicsPath();
 
-                //Draws the basic shape
+                // Draws the basic shape
                 Pen arrowPen;
                 if (Highlight < 1)
                     arrowPen = new Pen(Color.Cyan, 3F);
                 else
                     arrowPen = new Pen(Color.Black, 3F);
 
-                //Draws the curved arrow
+                // Draws the curved arrow
                 Point[] lineArray = new Point[4];
                 lineArray[0] = new Point(_startPoint.X, _startPoint.Y);
                 lineArray[1] = new Point(_startPoint.X - ((_startPoint.X - _stopPoint.X) / 3), _startPoint.Y);
@@ -91,14 +91,14 @@ namespace DotSpatial.Modeling.Forms
                 _arrowPath.AddBeziers(lineArray);
                 _arrowPath.Flatten();
 
-                //Draws the arrow head
+                // Draws the arrow head
                 Point[] arrowArray = new Point[3];
                 arrowArray[0] = _stopPoint;
                 arrowArray[1] = new Point(_stopPoint.X - (5 * Math.Sign(_stopPoint.X - _startPoint.X)), _stopPoint.Y - 2);
                 arrowArray[2] = new Point(_stopPoint.X - (5 * Math.Sign(_stopPoint.X - _startPoint.X)), _stopPoint.Y + 2);
                 graph.DrawPolygon(arrowPen, arrowArray);
 
-                //Garbage collection
+                // Garbage collection
                 arrowPen.Dispose();
             }
         }

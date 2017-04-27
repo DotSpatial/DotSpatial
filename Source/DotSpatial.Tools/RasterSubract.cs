@@ -5,7 +5,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -25,60 +25,49 @@ namespace DotSpatial.Tools
     /// </summary>
     public class RasterSubract : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
-
         private Parameter[] _outputParam;
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the RasterSubract class.
+        /// Initializes a new instance of the <see cref="RasterSubract"/> class.
         /// </summary>
         public RasterSubract()
         {
-            this.Name = TextStrings.SubtractRasterLayer;
-            this.Category = TextStrings.RasterOverlay;
-            this.Description = TextStrings.RasterSubractDescription;
-            this.ToolTip = TextStrings.RasterSubractDescription;
+            Name = TextStrings.SubtractRasterLayer;
+            Category = TextStrings.RasterOverlay;
+            Description = TextStrings.RasterSubractDescription;
+            ToolTip = TextStrings.RasterSubractDescription;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>Boolean, true if the method was successful.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IRaster input1 = _inputParam[0].Value as IRaster;
@@ -87,13 +76,8 @@ namespace DotSpatial.Tools
             return Execute(input1, input2, output, cancelProgressHandler);
         }
 
-        private static double Operation(double val1, double val2)
-        {
-            return val1 - val2;
-        }
-
         /// <summary>
-        /// Executes the Erase Opaeration tool programaticaly
+        /// Executes the Erase Opaeration tool programmatically
         /// Ping Yang deleted static for external testing 01/2010.
         /// </summary>
         /// <param name="input1">The original input raster.</param>
@@ -113,15 +97,26 @@ namespace DotSpatial.Tools
         public override void Initialize()
         {
             _inputParam = new Parameter[2];
-            _inputParam[0] = new RasterParam(TextStrings.input1Raster) { HelpText = TextStrings.InputFirstRaster };
+            _inputParam[0] = new RasterParam(TextStrings.input1Raster)
+                                 {
+                                     HelpText = TextStrings.InputFirstRaster
+                                 };
             _inputParam[1] = new RasterParam(TextStrings.input2Raster)
                                  {
                                      HelpText = TextStrings.InputSecondRasterforSubtract
                                  };
 
             _outputParam = new Parameter[2];
-            _outputParam[0] = new RasterParam(TextStrings.OutputRaster) { HelpText = TextStrings.ResultRasterDirectory };
+            _outputParam[0] = new RasterParam(TextStrings.OutputRaster)
+                                  {
+                                      HelpText = TextStrings.ResultRasterDirectory
+                                  };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        private static double Operation(double val1, double val2)
+        {
+            return val1 - val2;
         }
 
         #endregion

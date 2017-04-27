@@ -22,7 +22,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This is a control that allows users to easilly modify the various aspects of many different layout components
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public class LayoutPropertyGrid : UserControl
     {
@@ -59,13 +59,13 @@ namespace DotSpatial.Controls
         /// </summary>
         private void LayoutControlSelectionChanged(object sender, EventArgs e)
         {
-            //This code is so that the property grid gets updates if one of the properties changes
+            // This code is so that the property grid gets updates if one of the properties changes
             foreach (LayoutElement selecteElement in _layoutControl.LayoutElements)
                 selecteElement.Invalidated -= SelecteElementInvalidated;
             foreach (LayoutElement selecteElement in _layoutControl.SelectedLayoutElements)
                 selecteElement.Invalidated += SelecteElementInvalidated;
 
-            //If there is no selection get the layoutControls properties otherwise show the selected elements properties
+            // If there is no selection get the layoutControls properties otherwise show the selected elements properties
             if (_layoutControl.SelectedLayoutElements.Count > 0)
                 _propertyGrid.SelectedObjects = _layoutControl.SelectedLayoutElements.ToArray();
             else
@@ -74,7 +74,7 @@ namespace DotSpatial.Controls
 
         private void SelecteElementInvalidated(object sender, EventArgs e)
         {
-            //If there is no selection get the layoutControls properties otherwise show the selected elements properties
+            // If there is no selection get the layoutControls properties otherwise show the selected elements properties
             _propertyGrid.Refresh();
         }
 

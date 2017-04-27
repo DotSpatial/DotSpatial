@@ -40,20 +40,20 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="dataSets">An array of available data</param>
         public PointElementOut(PointFeatureSetParam outputParam, List<DataSetArray> dataSets)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = outputParam;
 
-            //Saves the label
+            // Saves the label
             GroupBox.Text = Param.Name;
 
-            //Sets up the initial status light indicator
+            // Sets up the initial status light indicator
             base.Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
 
-            //Populates the dialog with the default parameter value
+            // Populates the dialog with the default parameter value
             if (outputParam.Value != null && outputParam.DefaultSpecified)
             {
                 textBox1.Text = outputParam.ModelName;
@@ -69,7 +69,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void BtnAddDataClick(object sender, EventArgs e)
         {
             /////////////////////////////////
-            //Replace with something that uses the default data provider
+            // Replace with something that uses the default data provider
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.OverwritePrompt = true;
             sfd.Filter = "Shape Files|*.shp";
@@ -77,7 +77,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             IFeatureSet addedFeatureSet = new PointShapefile();
             addedFeatureSet.Filename = sfd.FileName;
 
-            //This inserts the new featureset into the list
+            // This inserts the new featureset into the list
             textBox1.Text = Path.GetFileNameWithoutExtension(addedFeatureSet.Filename);
             Param.Value = addedFeatureSet;
             base.Status = ToolStatus.Ok;

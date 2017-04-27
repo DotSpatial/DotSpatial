@@ -56,7 +56,7 @@ namespace DotSpatial.Data.Tests
         [TestCase("rivers.shp", false)]
         public void ShapeFileExport(string filename, bool indexMode)
         {
-            //TODO needs test cases for multipoints
+            // TODO needs test cases for multipoints
             string originalFileName = Path.Combine(new[] { _shapefiles, filename });
 
             var original = (Shapefile)DataManager.DefaultDataManager.OpenFile(originalFileName);
@@ -82,7 +82,7 @@ namespace DotSpatial.Data.Tests
             // open the shape file from the archive
             var newExport = (Shapefile)DataManager.DefaultDataManager.OpenFile(shpName);
 
-            //compare the in memory representations of the original and the extract
+            // compare the in memory representations of the original and the extract
             try
             {
                 Assert.AreEqual(original.Features.Count, newExport.Features.Count);

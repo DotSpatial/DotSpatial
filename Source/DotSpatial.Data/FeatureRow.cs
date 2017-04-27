@@ -18,7 +18,7 @@ using NetTopologySuite.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    ///Represents strongly named DataRow class.
+    /// Represents strongly named DataRow class.
     ///</summary>
     public class FeatureRow : DataRow, IFeatureRow
     {

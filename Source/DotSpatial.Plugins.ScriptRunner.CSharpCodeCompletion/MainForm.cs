@@ -94,17 +94,17 @@ namespace CSharpEditor
 
             //            if (IsVisualBasic) {
             //                textEditorControl1.Text = @"
-            //Class A
+            // Class A
             // Sub B
             //  Dim xx As String
             //
             // End Sub
-            //End Class
+            // End Class
             //";
             //                textEditorControl1.SetHighlighting("VBNET");
             //            } else {
             //                textEditorControl1.Text = @"using System;
-            //class A
+            // class A
             //{
             // void B()
             // {
@@ -206,7 +206,7 @@ namespace CSharpEditor
             try
             {
                 string appPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\";
-                //string[] referencedAssemblies = {
+                // string[] referencedAssemblies = {
                 //     "System", "System.Data", "System.Drawing", "System.Xml", "System.Windows.Forms", "Microsoft.VisualBasic", appPath + "Interop.MapWinGIS.dll", appPath + "MapWinInterfaces.dll", appPath + "MapWinGeoProc.dll"
                 //};
                 string[] referencedAssemblies = {
@@ -219,7 +219,7 @@ namespace CSharpEditor
                     IProjectContent referenceProjectContent = pcRegistry.GetProjectContentForReference(assemblyName, assemblyName);
 
                     //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-                    //if (assemblyNameCopy.Contains("Interop.MapWinGIS.dll"))
+                    // if (assemblyNameCopy.Contains("Interop.MapWinGIS.dll"))
                     //{
                     //    Dom.DefaultCompilationUnit myDefaultCompilationUnit = new Dom.DefaultCompilationUnit(referenceProjectContent);
                     //    foreach (Dom.IClass iClass in referenceProjectContent.Classes)

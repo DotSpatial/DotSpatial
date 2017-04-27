@@ -11,7 +11,7 @@
 //
 // ********************************************************************************************************
 
-//ORIGINAL HEADER FROM C++ source which was converted to C# by Ted Dunsford 2/24/2010
+// ORIGINAL HEADER FROM C++ source which was converted to C# by Ted Dunsford 2/24/2010
 /******************************************************************************
  * $Id: hfafield.cpp, v 1.21 2006/05/07 04:04:03 fwarmerdam Exp $
  *
@@ -642,7 +642,7 @@ namespace DotSpatial.Data
             int nIntRet = 0;
             double dfDoubleRet = 0.0;
             // it doesn't appear like remove this line will have side effects.
-            //int size = GetInstBytes(data, dataOffset);
+            // int size = GetInstBytes(data, dataOffset);
             int nInstItemCount = GetInstCount(data, dataOffset);
             byte[] rawData = null;
             long offset = dataOffset;

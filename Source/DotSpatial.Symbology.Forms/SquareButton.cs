@@ -57,13 +57,13 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="clipRectangle"></param>
         public void Draw(Graphics g, Rectangle clipRectangle)
         {
-            //Rectangle clip = Rectangle.Intersect(clipRectangle, Bounds.ToRectangle());
-            //if (clip.IsEmpty) return;
-            //g.TranslateTransform(Bounds.X, Bounds.Y);
-            //clip.X -= (int)Bounds.X;
-            //clip.Y -= (int)Bounds.Y;
+            // Rectangle clip = Rectangle.Intersect(clipRectangle, Bounds.ToRectangle());
+            // if (clip.IsEmpty) return;
+            // g.TranslateTransform(Bounds.X, Bounds.Y);
+            // clip.X -= (int)Bounds.X;
+            // clip.Y -= (int)Bounds.Y;
             OnDraw(g, clipRectangle);
-            //g.TranslateTransform(-Bounds.X, -Bounds.Y);
+            // g.TranslateTransform(-Bounds.X, -Bounds.Y);
         }
 
         /// <summary>

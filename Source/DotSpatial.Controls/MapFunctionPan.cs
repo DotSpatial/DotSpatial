@@ -70,7 +70,7 @@ namespace DotSpatial.Controls
         {
             if (e.Button == MouseButtons.Left && _preventDrag == false)
             {
-                //PreventBackBuffer = true;
+                // PreventBackBuffer = true;
                 _dragStart = e.Location;
                 _source = e.Map.MapFrame.View;
             }

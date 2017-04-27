@@ -39,7 +39,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="param">The parameter this element represents</param>
         public BooleanElement(BooleanParam param)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
 
             Param = param;
@@ -53,7 +53,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             _updateBox = false;
 
-            //This stuff loads the default value
+            // This stuff loads the default value
             if (Param.DefaultSpecified == false)
             {
                 Status = ToolStatus.Empty;

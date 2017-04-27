@@ -25,7 +25,7 @@ namespace DotSpatial.Controls.Tests
             Extent defaultMapExtent = new Extent(-130, 5, -70, 60);
 
             string baseMapFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles");
-            //SetDefaultMapExtents(mainMap);
+            // SetDefaultMapExtents(mainMap);
             MapPolygonLayer layStates;
 
             MapGroup baseGroup = new MapGroup(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler);
@@ -34,7 +34,7 @@ namespace DotSpatial.Controls.Tests
             baseGroup.MapFrame = mainMap.MapFrame;
             baseGroup.IsVisible = true;
 
-            //load the 'Countries of the world' layer
+            // load the 'Countries of the world' layer
             try
             {
                 string fileName = Path.Combine(baseMapFolder, "50m_admin_0_countries.shp");
@@ -55,7 +55,7 @@ namespace DotSpatial.Controls.Tests
                 layCountries.MapFrame = mainMap.MapFrame;
             }
             catch { }
-            //load U.S. states layer
+            // load U.S. states layer
             try
             {
                 string fileName = Path.Combine(baseMapFolder, "50mil_us_states.shp");
@@ -77,7 +77,7 @@ namespace DotSpatial.Controls.Tests
                 layStates.MapFrame = mainMap.MapFrame;
             }
             catch { }
-            //load Canada Provinces layer
+            // load Canada Provinces layer
             try
             {
                 string fileName = Path.Combine(baseMapFolder, "50mil_canada_provinces.shp");
@@ -102,8 +102,8 @@ namespace DotSpatial.Controls.Tests
 
             
 
-            //theme data group
-            //create a new empty 'themes' data group
+            // theme data group
+            // create a new empty 'themes' data group
             try
             {
                 MapGroup themeGroup = new MapGroup(mainMap.Layers,

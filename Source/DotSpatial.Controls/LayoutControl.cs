@@ -40,7 +40,7 @@ namespace DotSpatial.Controls
     {
         #region Class Variables
 
-        //The list of all the layout elements currently loaded (Item 0 is drawn last)
+        // The list of all the layout elements currently loaded (Item 0 is drawn last)
         private readonly List<LayoutElement> _layoutElements = new List<LayoutElement>();
         private readonly List<LayoutElement> _selectedLayoutElements = new List<LayoutElement>();
 
@@ -53,16 +53,16 @@ namespace DotSpatial.Controls
         private RectangleF _mouseBox;
         private MouseMode _mouseMode;
         private PointF _mouseStartPoint;
-        private PointF _paperLocation;      //The location of the paper within the screen coordinants
+        private PointF _paperLocation;      // The location of the paper within the screen coordinants
 
-        //Printer Variables
+        // Printer Variables
         private PrinterSettings _printerSettings = new PrinterSettings();
         private Edge _resizeSelectedEdge;
         private Bitmap _resizeTempBitmap;
         private bool _showMargin;
         private bool _suppressLEinvalidate;
 
-        private float _zoom;                //The zoom of the paper
+        private float _zoom;                // The zoom of the paper
 
         /// <summary>
         /// This fires after a element was added or removed.
@@ -422,8 +422,8 @@ namespace DotSpatial.Controls
 
             if (_printerSettings.IsValid)
             {
-                //This code is used to speed up drawing because for some reason accessing .PaperSize is slow with its default value
-                //I know its ugly but it speeds things up from 80ms to 0ms
+                // This code is used to speed up drawing because for some reason accessing .PaperSize is slow with its default value
+                // I know its ugly but it speeds things up from 80ms to 0ms
                 var tempForm = new PageSetupForm(_printerSettings);
                 tempForm.OK_Button_Click(null, null);
 
@@ -517,24 +517,24 @@ namespace DotSpatial.Controls
         /// <param name="promptPaperMismatch">Warn the user if the paper size stored in the file doesn't exist in current printer and ask them if they want to load it anyways</param>
         public void LoadLayout(string fileName, bool loadPaperSettings, bool promptPaperMismatch)
         {
-            //Open the model xml document
+            // Open the model xml document
             var layoutXmlDoc = new XmlDocument();
             layoutXmlDoc.Load(fileName);
             var root = layoutXmlDoc.DocumentElement;
 
             var backDeserializer = new XmlDeserializer();
 
-            //Temporarily stores all the elements and settings until the whole XML file is parsed
+            // Temporarily stores all the elements and settings until the whole XML file is parsed
             var loadList = new List<LayoutElement>();
             var paperSizeSupported = false;
             PaperSize savedPaperSize = null;
             var savedLandscape = true;
             Margins savedMargins = null;
 
-            //Makes sure we are really loading a DotSpatial layout file
+            // Makes sure we are really loading a DotSpatial layout file
             if (root != null && root.Name == "DotSpatialLayout")
             {
-                //This creates instances of all the elements
+                // This creates instances of all the elements
                 var child = root.LastChild;
                 while (child != null)
                 {
@@ -583,11 +583,11 @@ namespace DotSpatial.Controls
                     }
                     else if (child.Name == "Paper" && loadPaperSettings)
                     {
-                        //Loads printer paper size
-                        //gets the name of the paper size
+                        // Loads printer paper size
+                        // gets the name of the paper size
                         var paperName = child.Attributes["Name"].Value;
 
-                        //Find out if it supports the paper size in the layout file
+                        // Find out if it supports the paper size in the layout file
                         var availableSizes = _printerSettings.PaperSizes;
                         foreach (PaperSize testSize in availableSizes)
                         {
@@ -599,7 +599,7 @@ namespace DotSpatial.Controls
                             }
                         }
 
-                        //If needed prompt the user due to a paper size mismatch
+                        // If needed prompt the user due to a paper size mismatch
                         if (paperSizeSupported == false && promptPaperMismatch)
                         {
                             if (MessageBox.Show(this, "The currently selected printer \"" + _printerSettings.PrinterName + "\"\ndoes not support the paper size \"" + paperName + "\" used by the layout being loaded.\n\nLoad the layout with the printer's current paper settings?", "Paper size mismatch", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
@@ -614,7 +614,7 @@ namespace DotSpatial.Controls
                     child = child.PreviousSibling;
                 }
 
-                //Since some of the elements may be dependant on elements already being added we add their other properties after we add them all
+                // Since some of the elements may be dependant on elements already being added we add their other properties after we add them all
                 child = root.LastChild;
                 for (var i = loadList.Count - 1; i >= 0; i--)
                 {
@@ -695,7 +695,7 @@ namespace DotSpatial.Controls
                             var lr = loadList[i] as LayoutRectangle;
                             if (lr != null)
                             {
-                                //This code is to load legacy layouts that had properties for the color/outline of rectangles
+                                // This code is to load legacy layouts that had properties for the color/outline of rectangles
                                 if (innerChild.Attributes["Color"] != null &&
                                     innerChild.Attributes["BackColor"] != null &&
                                     innerChild.Attributes["OutlineWidth"] != null)
@@ -744,7 +744,7 @@ namespace DotSpatial.Controls
                 _layoutElements.Clear();
                 _selectedLayoutElements.Clear();
                 _layoutElements.InsertRange(0, loadList);
-                //Loads the papersize if supported and needed
+                // Loads the papersize if supported and needed
                 if (paperSizeSupported)
                 {
                     _printerSettings.DefaultPageSettings.PaperSize = savedPaperSize;
@@ -866,22 +866,22 @@ namespace DotSpatial.Controls
         {
             if (fileName == null) throw new ArgumentNullException("fileName");
 
-            //Creates the model xml document
+            // Creates the model xml document
             var layoutXmlDoc = new XmlDocument();
             var root = layoutXmlDoc.CreateElement("DotSpatialLayout");
             layoutXmlDoc.AppendChild(root);
 
-            //Creates a serializer to handle the backgrounds
+            // Creates a serializer to handle the backgrounds
             var backSerializer = new XmlSerializer();
 
-            //Saves the printer paper settings
+            // Saves the printer paper settings
             var paperElement = layoutXmlDoc.CreateElement("Paper");
             paperElement.SetAttribute("Name", _printerSettings.DefaultPageSettings.PaperSize.PaperName);
             paperElement.SetAttribute("Landscape", XmlHelper.ToString(_printerSettings.DefaultPageSettings.Landscape));
             paperElement.SetAttribute("Margins", XmlHelper.ToString(_printerSettings.DefaultPageSettings.Margins));
             root.AppendChild(paperElement);
 
-            //Saves the Tools and their output configuration to the model
+            // Saves the Tools and their output configuration to the model
             foreach (var le in _layoutElements)
             {
                 var element = layoutXmlDoc.CreateElement("Element");
@@ -942,7 +942,7 @@ namespace DotSpatial.Controls
                 else if (le is LayoutRectangle)
                 {
                     // is this missing a few SetAttribute commands?
-                    //LayoutRectangle lr = le as LayoutRectangle;
+                    // LayoutRectangle lr = le as LayoutRectangle;
                     var rectangle = layoutXmlDoc.CreateElement("Rectangle");
                     element.AppendChild(rectangle);
                 }
@@ -1654,7 +1654,7 @@ namespace DotSpatial.Controls
         private void UpdateScrollBars()
         {
             if (_zoom == 0)
-                _zoom = 100; //Bug 1457. Zoom can be zero on older printer drivers don't divide by 0
+                _zoom = 100; // Bug 1457. Zoom can be zero on older printer drivers don't divide by 0
             var papVisRect = ScreenToPaper(0F, 0F, Width, Height);
             _hScrollBar.Minimum = -Convert.ToInt32(PaperWidth * 96 / 100.0 * _zoom);
             _hScrollBar.Maximum = Convert.ToInt32(PaperWidth * 96 / 100.0 * _zoom) + Convert.ToInt32(papVisRect.Width) / 2;
@@ -1712,27 +1712,27 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            //Deal with invalidate rectangles that have a size of 0
+            // Deal with invalidate rectangles that have a size of 0
             if ((e.ClipRectangle.Width <= 0) || (e.ClipRectangle.Height <= 0)) return;
 
-            //Store the cursor so we can show an hour glass while drawing
+            // Store the cursor so we can show an hour glass while drawing
             var oldCursor = Cursor;
 
-            //Updates the invalidation rectangle to be a bit bigger to deal with overlaps
+            // Updates the invalidation rectangle to be a bit bigger to deal with overlaps
             var invalRect = Rectangle.Inflate(e.ClipRectangle, 5, 5);
             if (invalRect.X < 0) invalRect.X = 0;
             if (invalRect.Y < 0) invalRect.Y = 0;
 
-            //We paint to a temporary buffer to avoid flickering
+            // We paint to a temporary buffer to avoid flickering
             var tempBuffer = new Bitmap(invalRect.Width, invalRect.Height, PixelFormat.Format24bppRgb);
             var graph = Graphics.FromImage(tempBuffer);
             graph.TranslateTransform(-invalRect.X, -invalRect.Y);
             graph.SmoothingMode = _drawingQuality;
 
-            //Fills the background with dark grey
+            // Fills the background with dark grey
             graph.FillRectangle(Brushes.DarkGray, invalRect);
 
-            //This code draws the paper
+            // This code draws the paper
 #if DEBUG
             var sw = new Stopwatch();
             sw.Start();
@@ -1753,12 +1753,12 @@ namespace DotSpatial.Controls
             Debug.WriteLine("Time to draw paper: " + sw.ElapsedMilliseconds);
 #endif
 
-            //Draws the layout elements
+            // Draws the layout elements
             for (var i = LayoutElements.Count - 1; i >= 0; i--)
             {
                 var le = LayoutElements[i];
 
-                //This code deals with drawins a map when its panning
+                // This code deals with drawins a map when its panning
                 if (_mouseMode == MouseMode.PanMap && _selectedLayoutElements.Contains(le) && le is LayoutMap && _selectedLayoutElements.Count == 1)
                 {
                     graph.TranslateTransform(_paperLocation.X + _mouseBox.Width, _paperLocation.Y + _mouseBox.Height);
@@ -1771,25 +1771,25 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
-                    //This code draws the selected elements
-                    //Draws the background
+                    // This code draws the selected elements
+                    // Draws the background
                     graph.TranslateTransform(_paperLocation.X, _paperLocation.Y);
                     graph.ScaleTransform(96F / 100F * _zoom, 96F / 100F * _zoom);
                     le.DrawBackground(graph, false);
                     graph.ResetTransform();
                     graph.TranslateTransform(-invalRect.X, -invalRect.Y);
 
-                    //If we've got a selection and we're resizing
+                    // If we've got a selection and we're resizing
                     if (_selectedLayoutElements.Contains(LayoutElements[i]) && _resizeTempBitmap != null)
                     {
                         var papRect = PaperToScreen(_selectedLayoutElements[0].Rectangle);
                         var clipRect = new Rectangle(Convert.ToInt32(papRect.X), Convert.ToInt32(papRect.Y), Convert.ToInt32(papRect.Width), Convert.ToInt32(papRect.Height));
 
-                        //If its stretch to fit just scale it
+                        // If its stretch to fit just scale it
                         if (_selectedLayoutElements[0].ResizeStyle == ResizeStyle.StretchToFit)
                             graph.DrawImage(_resizeTempBitmap, clipRect);
 
-                            //If there is no scaling we just draw it with a clipping rectangle
+                            // If there is no scaling we just draw it with a clipping rectangle
                         else if (_selectedLayoutElements[0].ResizeStyle == ResizeStyle.NoScaling)
                             graph.DrawImageUnscaled(_resizeTempBitmap, clipRect);
                     }
@@ -1802,7 +1802,7 @@ namespace DotSpatial.Controls
                         graph.TranslateTransform(-invalRect.X, -invalRect.Y);
                     }
 
-                    //Draws the outline last
+                    // Draws the outline last
                     graph.TranslateTransform(_paperLocation.X, _paperLocation.Y);
                     graph.ScaleTransform(96F / 100F * _zoom, 96F / 100F * _zoom);
                     le.DrawOutline(graph, false);
@@ -1811,7 +1811,7 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //Draws the selection rectangle around each selected item
+            // Draws the selection rectangle around each selected item
             var selectionPen = new Pen(Color.Black, 1F);
             selectionPen.DashPattern = new[] { 2.0F, 1.0F };
             selectionPen.DashCap = DashCap.Round;
@@ -1821,7 +1821,7 @@ namespace DotSpatial.Controls
                 graph.DrawRectangle(selectionPen, Convert.ToInt32(leRect.X), Convert.ToInt32(leRect.Y), Convert.ToInt32(leRect.Width), Convert.ToInt32(leRect.Height));
             }
 
-            //If the users is dragging a select box or an insert box we draw it here
+            // If the users is dragging a select box or an insert box we draw it here
             if (_mouseMode == MouseMode.CreateSelection || _mouseMode == MouseMode.InsertNewElement)
             {
                 Color boxColor;
@@ -1835,19 +1835,19 @@ namespace DotSpatial.Controls
                 graph.FillRectangle(highlightBrush, _mouseBox.X, _mouseBox.Y, _mouseBox.Width - 1, _mouseBox.Height - 1);
                 graph.DrawRectangle(outlinePen, _mouseBox.X, _mouseBox.Y, _mouseBox.Width - 1, _mouseBox.Height - 1);
 
-                //garbage collection
+                // garbage collection
                 highlightBrush.Dispose();
             }
 
-            //Draws the temporary bitmap to the screen
+            // Draws the temporary bitmap to the screen
             e.Graphics.SmoothingMode = _drawingQuality;
             e.Graphics.DrawImage(tempBuffer, invalRect, new RectangleF(0f, 0f, invalRect.Width, invalRect.Height), GraphicsUnit.Pixel);
 
-            //Garbage collection
+            // Garbage collection
             tempBuffer.Dispose();
             graph.Dispose();
 
-            //resets the cursor cuz some times it get jammed
+            // resets the cursor cuz some times it get jammed
             Cursor = oldCursor;
         }
 
@@ -1881,7 +1881,7 @@ namespace DotSpatial.Controls
             var paperBRPixel = PaperToScreen(new PointF(PaperWidth, PaperHeight));
             var paperSizeScreen = new SizeF(paperBRPixel.X - paperTLPixel.X, paperBRPixel.Y - paperTLPixel.Y);
 
-            //Sets up the vertical scroll bars
+            // Sets up the vertical scroll bars
             if (paperSizeScreen.Width <= (Width - _vScrollBar.Width - 4))
             {
                 _paperLocation.X = (Width - _vScrollBar.Width - 4 - paperSizeScreen.Width) / 2F;
@@ -1891,7 +1891,7 @@ namespace DotSpatial.Controls
                 _paperLocation.X = 0;
             }
 
-            //Sets up the horizontal scroll bar
+            // Sets up the horizontal scroll bar
             if (paperSizeScreen.Height <= (Height - _hScrollBar.Height - 4))
             {
                 _paperLocation.Y = (Height - _hScrollBar.Height - 4 - paperSizeScreen.Height) / 2F;
@@ -1903,7 +1903,7 @@ namespace DotSpatial.Controls
 
             UpdateScrollBars();
 
-            //Invalidate the whole thing since we are moving this around
+            // Invalidate the whole thing since we are moving this around
             Invalidate();
         }
 
@@ -1943,19 +1943,19 @@ namespace DotSpatial.Controls
 
         private void LayoutControl_MouseDown(object sender, MouseEventArgs e)
         {
-            //When the user clicks down we start tracking the mouses location
+            // When the user clicks down we start tracking the mouses location
             _mouseStartPoint = new PointF(e.X, e.Y);
             _lastMousePoint = new PointF(e.X, e.Y);
             var mousePointPaper = ScreenToPaper(_mouseStartPoint);
 
-            //Deals with left buttons clicks
+            // Deals with left buttons clicks
             if (e.Button == MouseButtons.Left)
             {
                 switch (_mouseMode)
                 {
                     case MouseMode.Default:
 
-                        //Handles resizing stuff
+                        // Handles resizing stuff
                         if (_resizeSelectedEdge != Edge.None)
                         {
                             _mouseMode = MouseMode.ResizeSelected;
@@ -1974,7 +1974,7 @@ namespace DotSpatial.Controls
                             return;
                         }
 
-                        //Starts moving selected elements
+                        // Starts moving selected elements
                         if (ModifierKeys != Keys.Control)
                         {
                             foreach (var le in _selectedLayoutElements)
@@ -1986,18 +1986,18 @@ namespace DotSpatial.Controls
                             }
                         }
 
-                        //Starts the selection code.
+                        // Starts the selection code.
                         _mouseMode = MouseMode.CreateSelection;
                         _mouseBox = new RectangleF(e.X, e.Y, 0F, 0F);
                         break;
 
-                    //Start drag rectangle insert new element
+                    // Start drag rectangle insert new element
                     case MouseMode.StartInsertNewElement:
                         _mouseMode = MouseMode.InsertNewElement;
                         _mouseBox = new RectangleF(e.X, e.Y, 0F, 0F);
                         break;
 
-                    //Starts the pan mode for the map
+                    // Starts the pan mode for the map
                     case MouseMode.StartPanMap:
                         _mouseMode = MouseMode.PanMap;
                         _mouseBox = new RectangleF(e.X, e.Y, 0F, 0F);
@@ -2005,12 +2005,12 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //Deals with right button clicks
+            // Deals with right button clicks
             if (e.Button == MouseButtons.Right)
             {
                 switch (_mouseMode)
                 {
-                    //If the user was in insert mode we cancel it
+                    // If the user was in insert mode we cancel it
                     case (MouseMode.StartInsertNewElement):
                         _mouseMode = MouseMode.Default;
                         _elementToAddWithMouse = null;
@@ -2024,10 +2024,10 @@ namespace DotSpatial.Controls
         {
             if (e.Button == MouseButtons.Left)
             {
-                //Handles various different mouse modes
+                // Handles various different mouse modes
                 switch (_mouseMode)
                 {
-                    //If we are dealing with a selection we look here
+                    // If we are dealing with a selection we look here
                     case MouseMode.CreateSelection:
                         var selectBoxTL = ScreenToPaper(_mouseBox.Location);
                         var selectBoxBR = ScreenToPaper(_mouseBox.Location.X + _mouseBox.Width, _mouseBox.Location.Y + _mouseBox.Height);
@@ -2043,7 +2043,7 @@ namespace DotSpatial.Controls
                                         _selectedLayoutElements.Remove(le);
                                     else
                                         _selectedLayoutElements.Add(le);
-                                    //If the box is just a point only select the top most
+                                    // If the box is just a point only select the top most
                                     if (_mouseBox.Width <= 1 && _mouseBox.Height <= 1)
                                         break;
                                 }
@@ -2057,7 +2057,7 @@ namespace DotSpatial.Controls
                                 if (le.IntersectsWith(selectBoxPaper))
                                 {
                                     _selectedLayoutElements.Add(le);
-                                    //If the box is just a point only select the top most
+                                    // If the box is just a point only select the top most
                                     if (_mouseBox.Width <= 1 && _mouseBox.Height <= 1)
                                         break;
                                 }
@@ -2068,13 +2068,13 @@ namespace DotSpatial.Controls
                         Invalidate();
                         break;
 
-                    //Stops moving the selection
+                    // Stops moving the selection
                     case MouseMode.MoveSelection:
                         _mouseMode = MouseMode.Default;
                         Cursor = Cursors.Default;
                         break;
 
-                    //Turns of resize
+                    // Turns of resize
                     case MouseMode.ResizeSelected:
                         if (_resizeTempBitmap != null)
                             _resizeTempBitmap.Dispose();
@@ -2145,19 +2145,19 @@ namespace DotSpatial.Controls
 
         private void LayoutControl_MouseMove(object sender, MouseEventArgs e)
         {
-            //The amount the mouse moved since the last time
+            // The amount the mouse moved since the last time
             var deltaX = _lastMousePoint.X - e.X;
             var deltaY = _lastMousePoint.Y - e.Y;
             _lastMousePoint = e.Location;
             var inflate = 5F;
 
-            //Handles various different mouse modes
+            // Handles various different mouse modes
             switch (_mouseMode)
             {
-                //Deals with inserting new elements
+                // Deals with inserting new elements
                 case MouseMode.InsertNewElement:
 
-                //Deals with creating a selections
+                // Deals with creating a selections
                 case MouseMode.CreateSelection:
                     Invalidate(new Region(_mouseBox));
                     _mouseBox.Width = Math.Abs(_mouseStartPoint.X - e.X);
@@ -2167,7 +2167,7 @@ namespace DotSpatial.Controls
                     Invalidate(new Region(_mouseBox));
                     break;
 
-                //Deals with moving the selection
+                // Deals with moving the selection
                 case MouseMode.MoveSelection:
                     _suppressLEinvalidate = true;
                     foreach (var le in _selectedLayoutElements)
@@ -2187,10 +2187,10 @@ namespace DotSpatial.Controls
                     _suppressLEinvalidate = false;
                     break;
 
-                //This handle mouse movement when in resize mode
+                // This handle mouse movement when in resize mode
                 case MouseMode.ResizeSelected:
 
-                    //Makes sure that we have a outline to use it to inflate the invalidation rectangle
+                    // Makes sure that we have a outline to use it to inflate the invalidation rectangle
                     if (_selectedLayoutElements[0].Background != null && _selectedLayoutElements[0].Background.OutlineSymbolizer != null)
                         inflate = inflate + ((float)_selectedLayoutElements[0].Background.GetOutlineWidth() * _zoom);
 
@@ -2262,7 +2262,7 @@ namespace DotSpatial.Controls
 
                 case MouseMode.Default:
 
-                    //If theres only one element selected and were on its edge change the cursor to the resize cursor
+                    // If theres only one element selected and were on its edge change the cursor to the resize cursor
                     if (_selectedLayoutElements.Count == 1)
                     {
                         _resizeSelectedEdge = IntersectElementEdge(PaperToScreen(_selectedLayoutElements[0].Rectangle), new PointF(e.X, e.Y), 3F);

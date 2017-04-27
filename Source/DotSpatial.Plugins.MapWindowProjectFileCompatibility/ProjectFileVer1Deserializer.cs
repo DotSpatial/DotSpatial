@@ -96,8 +96,8 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 }
                 catch (Exception exOpen)
                 {
-                    //TODO: provide a warning of some sort, possibly ask abort/retry/continue
-                    //HACK: we should be catching a more specific exception.
+                    // TODO: provide a warning of some sort, possibly ask abort/retry/continue
+                    // HACK: we should be catching a more specific exception.
                     Trace.WriteLine(exOpen.Message);
                 }
             }

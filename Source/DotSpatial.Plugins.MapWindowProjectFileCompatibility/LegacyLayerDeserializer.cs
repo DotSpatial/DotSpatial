@@ -163,35 +163,35 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
         private static void DeserializeLegend(dynamic layer, IMap map, Layer imageLayer)
         {
-            //var polyLayer = imageLayer as MapImageLayer;
+            // var polyLayer = imageLayer as MapImageLayer;
 
-            ////var imageSymbolizer = new ImageSymbolizer();
-            ////var outlineColor = LegacyDeserializer.GetColor(layer.ShapeFileProperties["OutLineColor"]);
-            ////var outlineWidth = Convert.ToDouble(layer.ShapeFileProperties["LineOrPointSize"]);
-            ////polySymbolizer.SetOutline(outlineColor, outlineWidth);
-            ////if (Convert.ToBoolean(layer.ShapeFileProperties["DrawFill"]))
+            //// var imageSymbolizer = new ImageSymbolizer();
+            //// var outlineColor = LegacyDeserializer.GetColor(layer.ShapeFileProperties["OutLineColor"]);
+            //// var outlineWidth = Convert.ToDouble(layer.ShapeFileProperties["LineOrPointSize"]);
+            //// polySymbolizer.SetOutline(outlineColor, outlineWidth);
+            //// if (Convert.ToBoolean(layer.ShapeFileProperties["DrawFill"]))
             ////{
             ////    System.Drawing.Color color = LegacyDeserializer.GetColor(layer.ShapeFileProperties["Color"]);
             ////    float transparency = Convert.ToSingle(layer.ShapeFileProperties["TransparencyPercent"]);
             ////    color = color.ToTransparent(transparency);
             ////    polySymbolizer.SetFillColor(color);
             ////}
-            ////else
+            //// else
             ////{
             ////    polySymbolizer.SetFillColor(Color.Transparent);
             ////}
 
-            ////layer.Symbolizer = imageSymbolizer;
+            //// layer.Symbolizer = imageSymbolizer;
 
-            //var j = layer.Break;
-            //try
+            // var j = layer.Break;
+            // try
             //{
             //    int fieldIndex = Convert.ToInt32(layer.ShapeFileProperties.Legend["FieldIndex"]);
 
             //    // we have to clear the categories or the collection ends up with a default item
             //    polyLayer.Symbology.Categories.Clear();
 
-            //    //foreach (var colorBreak in layer.ShapeFileProperties.Legend.ColorBreaks.Elements())
+            //    // foreach (var colorBreak in layer.ShapeFileProperties.Legend.ColorBreaks.Elements())
             //    //{
             //    //    PolygonCategory category;
 
@@ -218,7 +218,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             //    // it took too a lot of work to figure out that we would need to do this...
             //    polyLayer.ApplyScheme(polyLayer.Symbology);
             //}
-            //catch (RuntimeBinderException)
+            // catch (RuntimeBinderException)
             //{
             //    // ignore and continue.
             //    // this means the legend is not available.

@@ -110,7 +110,7 @@ namespace DotSpatial.Controls
 
             base.IsSelected = true;  // by default allow the map frame to be selected
 
-            //add properties context menu item
+            // add properties context menu item
             base.ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
         }
 
@@ -280,7 +280,7 @@ namespace DotSpatial.Controls
         {
             _backBuffer = null;
             // reset the view rectangle to represent the same region
-            //_view = _extendBuffer ? new Rectangle(_width / 3, _height / 3, _width / 3, _height / 3) : new Rectangle(0, 0, _width, _height);
+            // _view = _extendBuffer ? new Rectangle(_width / 3, _height / 3, _width / 3, _height / 3) : new Rectangle(0, 0, _width, _height);
 
             Initialize();
         }
@@ -296,7 +296,7 @@ namespace DotSpatial.Controls
             {
                 _backBuffer = CreateBuffer();
 
-                //set the view
+                // set the view
                 setView = true;
             }
 
@@ -639,7 +639,7 @@ namespace DotSpatial.Controls
                 // Might be called too freqently in some case.
                 if (ViewExtents != _previousExtents.Peek())
                 {
-                    if (_lastExtent != null && _lastExtent != ext) //changed by jany_ (2015-07-17) we don't want to jump between the views with the same extent
+                    if (_lastExtent != null && _lastExtent != ext) // changed by jany_ (2015-07-17) we don't want to jump between the views with the same extent
                         _previousExtents.Push(_lastExtent);
 
                     _lastExtent = ext;
@@ -1026,7 +1026,7 @@ namespace DotSpatial.Controls
                 // There was an exception (probably because of sizing issues) so don't bother with the chunk timer.
             }
 
-            //base.OnPaint(pe);
+            // base.OnPaint(pe);
         }
 
         /// <summary>
@@ -1229,7 +1229,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                double zoomInFactor = 0.05; // fixed zoom-in by 10% - 5% on each side
                 double newExtentWidth = ViewExtents.Width * zoomInFactor;
                 double newExtentHeight = ViewExtents.Height * zoomInFactor;
                 layerEnvelope.ExpandBy(newExtentWidth, newExtentHeight);
@@ -1412,7 +1412,7 @@ namespace DotSpatial.Controls
         /// </summary>
         private void Projection_Click(object sender, EventArgs e)
         {
-            //Launches a MapFrameProjectionDialog
+            // Launches a MapFrameProjectionDialog
             using (var dialog = new MapFrameProjectionDialog(this))
             {
                 dialog.ShowDialog(Parent);

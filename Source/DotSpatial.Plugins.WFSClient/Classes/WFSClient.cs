@@ -54,7 +54,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             Uri u = new Uri(Server);
 
             Stream stream;
-            if (u.IsAbsoluteUri && u.IsFile) //assume web if relative because IsFile is not supported on relative paths
+            if (u.IsAbsoluteUri && u.IsFile) // assume web if relative because IsFile is not supported on relative paths
             {
                 stream = File.OpenRead(u.LocalPath);
             }
@@ -120,7 +120,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             Uri u = new Uri(Server);
 
             Stream stream;
-            if (u.IsAbsoluteUri && u.IsFile) //assume web if relative because IsFile is not supported on relative paths
+            if (u.IsAbsoluteUri && u.IsFile) // assume web if relative because IsFile is not supported on relative paths
             {
                 stream = File.OpenRead(u.LocalPath);
             }
@@ -220,7 +220,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
 
             Uri u = new Uri(Server);
             Stream stream;
-            if (u.IsAbsoluteUri && u.IsFile) //assume web if relative because IsFile is not supported on relative paths
+            if (u.IsAbsoluteUri && u.IsFile) // assume web if relative because IsFile is not supported on relative paths
             {
                 stream = File.OpenRead(u.LocalPath);
             }
@@ -681,9 +681,9 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         }
         private void ParseCapabilities______________________(XmlDocument doc)
         {
-            //_nsmgr = new XmlNamespaceManager(doc.NameTable);
+            // _nsmgr = new XmlNamespaceManager(doc.NameTable);
 
-            //if (doc.DocumentElement.Attributes["version"] != null)
+            // if (doc.DocumentElement.Attributes["version"] != null)
             //{
             //    Version = doc.DocumentElement.Attributes["version"].Value;
 
@@ -695,21 +695,21 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             //    _nsmgr.AddNamespace("xlink", "http://www.w3.org/1999/xlink");
             //    _nsmgr.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
             //}
-            //else
+            // else
             //    throw (new ApplicationException("No service version number found!"));
 
 
-            //XmlNode xnService = doc.DocumentElement.SelectSingleNode("sm:Service", _nsmgr);
-            //XmlNode xnCapability = doc.DocumentElement.SelectSingleNode("sm:Capability", _nsmgr);
-            //if (xnService != null)
+            // XmlNode xnService = doc.DocumentElement.SelectSingleNode("sm:Service", _nsmgr);
+            // XmlNode xnCapability = doc.DocumentElement.SelectSingleNode("sm:Capability", _nsmgr);
+            // if (xnService != null)
             //    ParseServiceDescription(xnService, _nsmgr);
-            //else
+            // else
             //    throw (new ApplicationException("No service tag found!"));
 
 
-            //if (xnCapability != null)
+            // if (xnCapability != null)
             //    ParseCapability(xnCapability);
-            //else
+            // else
             //    throw (new ApplicationException("No capability tag found!"));
 
         }

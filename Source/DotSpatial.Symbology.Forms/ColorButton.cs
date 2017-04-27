@@ -265,8 +265,8 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="pevent"></param>
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //base.OnPaintBackground(pevent);
-            //OnPaint(pevent);
+            // base.OnPaintBackground(pevent);
+            // OnPaint(pevent);
         }
 
         /// <summary>

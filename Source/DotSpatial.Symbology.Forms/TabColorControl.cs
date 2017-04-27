@@ -593,8 +593,8 @@ namespace DotSpatial.Symbology.Forms
             _ignoreUpdates = true;
 
             sldHue.HueShift = (sldHue.HueShift + shift) % 360;
-            //sldHue.LeftValue = sldHue.LeftValue;
-            //sldHue.RightValue = sldHue.RightValue;
+            // sldHue.LeftValue = sldHue.LeftValue;
+            // sldHue.RightValue = sldHue.RightValue;
 
             SetHsl();
         }

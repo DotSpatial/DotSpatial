@@ -52,7 +52,7 @@ namespace DotSpatial.Controls
         ///// <summary>
         ///// Occurs when an individual zone has finished drawing
         ///// </summary>
-        //event EventHandler<ZoneEventArgs> FinishedDrawingZone;
+        // event EventHandler<ZoneEventArgs> FinishedDrawingZone;
 
         #endregion
 

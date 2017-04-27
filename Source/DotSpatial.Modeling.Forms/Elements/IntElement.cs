@@ -42,11 +42,11 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="param">The parameter this element represents</param>
         public IntElement(IntParam param)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
             GroupBox.Text = param.Name;
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = param;
 
             HandleStatusLight();
@@ -64,7 +64,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             _enableUpdate = false;
 
-            //We load the default parameters
+            // We load the default parameters
             if (Param.DefaultSpecified)
             {
                 int value = Param.Value;
@@ -128,7 +128,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 return false;
             }
-        } //IsDecimal
+        } // IsDecimal
 
         /// <summary>
         /// When the text box is clicked this event fires

@@ -78,7 +78,7 @@ namespace DotSpatial.Positioning
                 SafeBluetoothRadioFindHandle findHandle = NativeMethods2.BluetoothFindFirstRadio(radio, ref phRadio);
 
                 // Was a radio found?
-                //if (findHandle == IntPtr.Zero)
+                // if (findHandle == IntPtr.Zero)
                 //{
                 //    int errorCode = Marshal.GetLastWin32Error();
                 //    switch (errorCode)
@@ -92,7 +92,7 @@ namespace DotSpatial.Positioning
                 //}
 
                 //  Yes.  Close the search
-                //NativeMethods2.BluetoothFindRadioClose(findHandle);
+                // NativeMethods2.BluetoothFindRadioClose(findHandle);
                 findHandle.Close();
 
                 // If we have a radio, turn it into an object
@@ -218,7 +218,7 @@ namespace DotSpatial.Positioning
         ///// <summary>
         ///// Controls whether the radio can be found by other devices.
         ///// </summary>
-        //public bool IsDiscoverable
+        // public bool IsDiscoverable
         //{
         //    get
         //    {

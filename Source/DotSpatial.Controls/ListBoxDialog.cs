@@ -139,7 +139,7 @@ namespace DotSpatial.Controls
 
         #region Protected Methods
 
-        //protected override void OnClosing(CancelEventArgs e)
+        // protected override void OnClosing(CancelEventArgs e)
         //{
         //    e.Cancel = true;
         //    this.Hide();

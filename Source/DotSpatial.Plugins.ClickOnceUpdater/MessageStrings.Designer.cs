@@ -81,7 +81,7 @@ namespace DotSpatial.Plugins.ClickOnceUpdater {
         /// <summary>
         ///   Looks up a localized string similar to The new version of the application cannot be downloaded at this time. 
         ///
-        ///Please check your network connection, or try again later. Error: {0}.
+        /// Please check your network connection, or try again later. Error: {0}.
         /// </summary>
         internal static string CantDownloadNewVersion {
             get {

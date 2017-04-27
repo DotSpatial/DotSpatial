@@ -181,14 +181,14 @@ namespace DotSpatial.Symbology
             Break prevBreak = null;
             foreach (var brk in Breaks)
             {
-                //get the color for the category
+                // get the color for the category
                 var randomColor = colorRamp[colorIndex];
                 var randomSize = sizeRamp[colorIndex];
                 var cat = CreateNewCategory(randomColor, randomSize);
 
                 if (cat != null)
                 {
-                    //cat.SelectionSymbolizer = _selectionSymbolizer.Copy();
+                    // cat.SelectionSymbolizer = _selectionSymbolizer.Copy();
                     cat.LegendText = brk.Name;
                     if (prevBreak != null) cat.Minimum = prevBreak.Maximum;
                     cat.Maximum = brk.Maximum;

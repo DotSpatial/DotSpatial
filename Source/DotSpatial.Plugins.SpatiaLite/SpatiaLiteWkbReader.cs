@@ -17,12 +17,12 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <returns>IGeometry that is contained in the given stream.</returns>
         public override IGeometry Read(Stream stream)
         {
-            //specialized Read() method for SpatiaLite
+            // specialized Read() method for SpatiaLite
             using (stream)
             {
-                //read first byte
+                // read first byte
                 BinaryReader reader = null;
-                var startByte = stream.ReadByte(); //must be "0"
+                var startByte = stream.ReadByte(); // must be "0"
                 var byteOrder = (ByteOrder)stream.ReadByte();
 
                 try

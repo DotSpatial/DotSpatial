@@ -5,14 +5,14 @@ using NUnit.Framework;
 namespace DotSpatial.Analysis.Tests
 {
     /// <summary>
-    ///This is a test class for ClipWithPolygonTest and is intended
-    ///to contain all ClipWithPolygonTest Unit Tests
+    /// This is a test class for ClipWithPolygonTest and is intended
+    /// to contain all ClipWithPolygonTest Unit Tests
     ///</summary>
     [TestFixture]
     public class ClipWithPolygonTest
     {
         /// <summary>
-        ///A test for ClipRasterWithPolygon
+        /// A test for ClipRasterWithPolygon
         ///</summary>
         [Test]
         public void ClipRasterWithPolygonTest()

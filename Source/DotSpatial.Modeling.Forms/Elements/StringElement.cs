@@ -35,11 +35,11 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="param">The parameter this element represents</param>
         public StringElement(StringParam param)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
             GroupBox.Text = param.Name;
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = param;
             SetupDefaultLighting();
         }
@@ -51,7 +51,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void SetupDefaultLighting()
         {
-            //We load the default parameters
+            // We load the default parameters
             if (Param.DefaultSpecified)
             {
                 textBox1.Text = Param.Value;

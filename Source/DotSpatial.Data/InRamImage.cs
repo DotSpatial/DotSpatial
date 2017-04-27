@@ -107,7 +107,7 @@ namespace DotSpatial.Data
                 result = tempResult;
                 tempResult = null;
             }
-            catch (OverflowException) { } //Raised by g.DrawImage if the new images extent is to small
+            catch (OverflowException) { } // Raised by g.DrawImage if the new images extent is to small
             finally
             {
                 if (tempResult != null) tempResult.Dispose();

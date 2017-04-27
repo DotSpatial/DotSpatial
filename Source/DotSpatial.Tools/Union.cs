@@ -5,7 +5,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -23,11 +23,11 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Union the features
+    /// Union the features.
     /// </summary>
     public class Union : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -35,92 +35,65 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the Union tool
+        /// Initializes a new instance of the <see cref="Union"/> class.
         /// </summary>
         public Union()
         {
-            this.Name = TextStrings.Union;
-            this.Category = TextStrings.VectorOverlay;
-            this.Description = TextStrings.UnionDescription;
-            this.ToolTip = TextStrings.Unionofinputs;
-            this.HelpImage = BitmapResources.Union;
+            Name = TextStrings.Union;
+            Category = TextStrings.VectorOverlay;
+            Description = TextStrings.UnionDescription;
+            ToolTip = TextStrings.Unionofinputs;
+            HelpImage = BitmapResources.Union;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet self = _inputParam[0].Value as IFeatureSet;
-            if (self != null)
-            {
-                self.FillAttributes();
-            }
-
             IFeatureSet other = _inputParam[1].Value as IFeatureSet;
-            if (other != null)
-            {
-                other.FillAttributes();
-            }
+            if (self == null || other == null) return false;
+
+            self.FillAttributes();
+            other.FillAttributes();
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
-            if (self == null)
-            {
-                return false;
-            }
-
-            if (other == null)
-            {
-                return false;
-            }
-
-            return self.Features.Count < other.Features.Count
-                       ? Execute(self, other, output, cancelProgressHandler)
-                       : Execute(other, self, output, cancelProgressHandler);
+            return self.Features.Count < other.Features.Count ? Execute(self, other, output, cancelProgressHandler) : Execute(other, self, output, cancelProgressHandler);
         }
 
         /// <summary>
-        /// Executes the Union Opaeration tool programaticaly
+        /// Executes the Union Opaeration tool programmatically
         /// </summary>
         /// <param name="self">The input are feature set</param>
         /// <param name="other">The second input feature set</param>
         /// <param name="output">The output feature set</param>
         /// <param name="cancelProgressHandler">The progress handler</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet self, IFeatureSet other, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -235,7 +208,10 @@ namespace DotSpatial.Tools
         public override void Initialize()
         {
             _inputParam = new Parameter[2];
-            _inputParam[0] = new FeatureSetParam(TextStrings.BaseFeatureSet) { HelpText = TextStrings.MainFeatureset };
+            _inputParam[0] = new FeatureSetParam(TextStrings.BaseFeatureSet)
+                                 {
+                                     HelpText = TextStrings.MainFeatureset
+                                 };
             _inputParam[1] = new FeatureSetParam(TextStrings.ChildFeatureSet)
                                  {
                                      HelpText = TextStrings.SecondFeatureset

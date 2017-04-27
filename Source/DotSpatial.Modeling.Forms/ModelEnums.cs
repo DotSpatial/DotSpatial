@@ -53,7 +53,7 @@ namespace DotSpatial.Modeling.Forms
         Running,
 
         /// <summary>
-        /// The tool finished running succesfully
+        /// The tool finished running successfully
         /// </summary>
         Done,
 

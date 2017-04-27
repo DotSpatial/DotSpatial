@@ -153,7 +153,7 @@ namespace DotSpatial.Positioning.Forms
                         _interpolationWaitHandle.Set();
 
                     // Abort the painting thread
-                    //if (!InterpolationThread.Join(500))
+                    // if (!InterpolationThread.Join(500))
                     {
                         try
                         {
@@ -373,15 +373,15 @@ namespace DotSpatial.Positioning.Forms
             {
                 case PolarControlEffect.Glass:
                     {
-                        //BackColor = Color.Transparent;
+                        // BackColor = Color.Transparent;
                         MakeBrushes();
                         break;
                     }
                 case PolarControlEffect.None:
                     {
-                        //if (Parent != null)
+                        // if (Parent != null)
                         //    BackColor = Parent.BackColor;
-                        //else
+                        // else
                         //    BackColor = SystemColors.Control;
                         break;
                     }
@@ -552,7 +552,7 @@ namespace DotSpatial.Positioning.Forms
                         isNormalizationNeeded = true;
                     }
 
-                    //Console.WriteLine("Current = {0}, Target = {1}", Current, TargetValue);
+                    // Console.WriteLine("Current = {0}, Target = {1}", Current, TargetValue);
 
                     // Set final values
                     double finalTarget = targetValue;
@@ -609,20 +609,20 @@ namespace DotSpatial.Positioning.Forms
                     }
 
                     //// Are we changing direction?
-                    //if (pRotation.DecimalDegrees >= RotationInterpolator.Minimum
+                    // if (pRotation.DecimalDegrees >= RotationInterpolator.Minimum
                     //    && pRotation.DecimalDegrees > RotationInterpolator[InterpolationIndex])
                     //{
                     //    // No.  Just set the new maximum
                     //    RotationInterpolator.Maximum = pRotation.DecimalDegrees;
                     //}
-                    //else if (pRotation.DecimalDegrees < RotationInterpolator.Minimum)
+                    // else if (pRotation.DecimalDegrees < RotationInterpolator.Minimum)
                     //{
                     //    // We're changing directions, so stop then accellerate again
                     //    RotationInterpolator.Minimum = RotationInterpolator[InterpolationIndex];
                     //    RotationInterpolator.Maximum = pRotation.DecimalDegrees;
                     //    InterpolationIndex = 0;
                     //}
-                    //else if (pRotation.DecimalDegrees > RotationInterpolator.Minimum
+                    // else if (pRotation.DecimalDegrees > RotationInterpolator.Minimum
                     //    && pRotation.DecimalDegrees < RotationInterpolator[InterpolationIndex])
                     //{
                     //    // We're changing directions, so stop then accellerate again
@@ -630,7 +630,7 @@ namespace DotSpatial.Positioning.Forms
                     //    RotationInterpolator.Maximum = pRotation.DecimalDegrees;
                     //    InterpolationIndex = 0;
                     //}
-                    //else if (pRotation.DecimalDegrees > RotationInterpolator.Maximum)
+                    // else if (pRotation.DecimalDegrees > RotationInterpolator.Maximum)
                     //{
                     //    // No.  Just set the new maximum
                     //    RotationInterpolator.Maximum = pRotation.DecimalDegrees;
@@ -706,7 +706,7 @@ namespace DotSpatial.Positioning.Forms
         private void InterpolationLoop()
         {
             // Flag that the thread is now alive
-            //InterpolationThreadWaitHandle.Set();
+            // InterpolationThreadWaitHandle.Set();
             // Loop until tinterpolation is disabled
             while (_isInterpolationActive)
             {
@@ -748,7 +748,7 @@ namespace DotSpatial.Positioning.Forms
                 }
             }
             // Reset the flag which started this iteration
-            //InterpolationThreadWaitHandle.Set();
+            // InterpolationThreadWaitHandle.Set();
         }
 
 #endif

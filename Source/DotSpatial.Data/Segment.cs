@@ -120,7 +120,7 @@ namespace DotSpatial.Data
                 return P1;
             }
 
-            //http://softsurfer.com/Archive/algorithm_0102/algorithm_0102.htm
+            // http://softsurfer.com/Archive/algorithm_0102/algorithm_0102.htm
 
             Vector v = ToVector(); // vector from p1 to p2 in the segment
             v.Z = 0;
@@ -171,7 +171,7 @@ namespace DotSpatial.Data
         /// <returns>Double, the shortest distance between two segments</returns>
         public double DistanceTo(Segment lineSegment)
         {
-            //http://www.geometryalgorithms.com/Archive/algorithm_0106/algorithm_0106.htm
+            // http://www.geometryalgorithms.com/Archive/algorithm_0106/algorithm_0106.htm
             const double smallNum = 0.00000001;
             Vector u = ToVector(); // Segment 1
             Vector v = lineSegment.ToVector(); // Segment 2
@@ -294,7 +294,7 @@ namespace DotSpatial.Data
             double y4 = other.P2.Y;
             double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
 
-            //The case of two degenerate segements
+            // The case of two degenerate segements
             if ((x1 == x2) && (y1 == y2) && (x3 == x4) && (y3 == y4))
             {
                 if ((x1 != x3) || (y1 != y3))

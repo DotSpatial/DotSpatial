@@ -5,7 +5,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -30,7 +30,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class RasterToPolygon : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -38,52 +38,42 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the RasterToPolygon class.
+        /// Initializes a new instance of the <see cref="RasterToPolygon"/> class.
         /// </summary>
         public RasterToPolygon()
         {
-            this.Name = TextStrings.RasterToPolygon;
-            this.Category = TextStrings.Conversion;
-            this.Description = TextStrings.RasterToPolygonDescription;
-            this.ToolTip = TextStrings.RasterToPolygonDescription;
+            Name = TextStrings.RasterToPolygon;
+            Category = TextStrings.Conversion;
+            Description = TextStrings.RasterToPolygonDescription;
+            ToolTip = TextStrings.RasterToPolygonDescription;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             var input = _inputParam[0].Value as IRaster;
@@ -97,6 +87,7 @@ namespace DotSpatial.Tools
         /// <param name="input">The Polygon Raster(Grid file).</param>
         /// <param name="output">The Polygon shapefile path.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IRaster input, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             return Execute(input, null, output, cancelProgressHandler);
@@ -109,6 +100,7 @@ namespace DotSpatial.Tools
         /// <param name="connectionGrid">Connection Grid.</param>
         /// <param name="output">The Polygon shapefile path.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IRaster input, IRaster connectionGrid, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             if (input == null || output == null)
@@ -132,16 +124,12 @@ namespace DotSpatial.Tools
             var numRows = input.NumRows;
             var numColumns = input.NumColumns;
 
-            Func<int, int, double, bool> same = (y, x, value) => y >= 0 && y < numRows &&
-                                                                 x >= 0 && x < numColumns &&
-                                                                 input.Value[y, x] == value;
-            Func<int, int, double> get = (y, x) => y >= 0 && y < numRows && x >= 0 && x < numColumns
-                                                       ? input.Value[y, x]
-                                                       : input.NoDataValue;
+            Func<int, int, double, bool> same = (y, x, value) => y >= 0 && y < numRows && x >= 0 && x < numColumns && input.Value[y, x] == value;
+            Func<int, int, double> get = (y, x) => y >= 0 && y < numRows && x >= 0 && x < numColumns ? input.Value[y, x] : input.NoDataValue;
             Func<int, int, int, int, bool> eqValues = (y1, x1, y2, x2) => get(y1, x1) == get(y2, x2);
 
             var enableCon = connectionGrid != null;
-            Func<int, int, int> connection = (y, x) => enableCon ? (int)connectionGrid.Value[y, x] : 0;
+            Func<int, int, int> connection = (y, x) => connectionGrid != null ? (int)connectionGrid.Value[y, x] : 0;
 
             for (int y = 0; y < numRows; y++)
             {
@@ -170,50 +158,33 @@ namespace DotSpatial.Tools
 
                     var curCon = connection(y, x);
 
-                    /*  
+                    /*
                      6 7 8
                      5 0 1
-                     4 3 2  
-                 current cell (x,y)=0                             
+                     4 3 2
+                 current cell (x,y)=0
                      */
+                    var con7 = same(y + 1, x, value);
+                    var con5 = same(y, x - 1, value);
+                    var con3 = same(y - 1, x, value);
+                    var con1 = same(y, x + 1, value);
 
-                    var con_7 = same(y + 1, x, value);
-                    var con_5 = same(y, x - 1, value);
-                    var con_3 = same(y - 1, x, value);
-                    var con_1 = same(y, x + 1, value);
+                    var con8L = enableCon && same(y + 1, x + 1, value) && !con7 && (curCon == 8 || connection(y + 1, x + 1) == 4);
+                    var con8R = enableCon && same(y + 1, x + 1, value) && !con1 && (curCon == 8 || connection(y + 1, x + 1) == 4);
 
-                    var con_8l = enableCon &&
-                                same(y + 1, x + 1, value) && !con_7 &&
-                                (curCon == 8 || connection(y + 1, x + 1) == 4);
-                    var con_8r = enableCon &&
-                                same(y + 1, x + 1, value) && !con_1 &&
-                                (curCon == 8 || connection(y + 1, x + 1) == 4);
+                    var con6L = enableCon && same(y + 1, x - 1, value) && !con5 && (curCon == 6 || connection(y + 1, x - 1) == 2);
+                    var con6R = enableCon && same(y + 1, x - 1, value) && !con7 && (curCon == 6 || connection(y + 1, x - 1) == 2);
 
-                    var con_6l = enableCon &&
-                                same(y + 1, x - 1, value) && !con_5 &&
-                                (curCon == 6 || connection(y + 1, x - 1) == 2);
-                    var con_6r = enableCon &&
-                                same(y + 1, x - 1, value) && !con_7 &&
-                                (curCon == 6 || connection(y + 1, x - 1) == 2);
+                    var con4L = enableCon && same(y - 1, x - 1, value) && !con5 && (curCon == 4 || connection(y - 1, x - 1) == 8);
+                    var con4R = enableCon && same(y - 1, x - 1, value) && !con3 && (curCon == 4 || connection(y - 1, x - 1) == 8);
 
-                    var con_4l = enableCon &&
-                                same(y - 1, x - 1, value) && !con_5 &&
-                                (curCon == 4 || connection(y - 1, x - 1) == 8);
-                    var con_4r = enableCon &&
-                                same(y - 1, x - 1, value) && !con_3 &&
-                                (curCon == 4 || connection(y - 1, x - 1) == 8);
-
-                    var con_2l = enableCon &&
-                                same(y - 1, x + 1, value) && !con_3 &&
-                                (curCon == 2 || connection(y - 1, x + 1) == 6);
-                    var con_2r = enableCon &&
-                                same(y - 1, x + 1, value) && !con_1 &&
-                                (curCon == 2 || connection(y - 1, x + 1) == 6);
+                    var con2L = enableCon && same(y - 1, x + 1, value) && !con3 && (curCon == 2 || connection(y - 1, x + 1) == 6);
+                    var con2R = enableCon && same(y - 1, x + 1, value) && !con1 && (curCon == 2 || connection(y - 1, x + 1) == 6);
 
                     /* Cell points:
                      tl tc tr
-                     cl    cr 
-                     bl bc br   
+                     cl    cr
+                     bl bc br
                      */
                     var tl = new Coordinate(xMin + x * width, yMax - (y + 1) * height);
                     var tc = new Coordinate(xMin + (x + 0.5) * width, yMax - (y + 1) * height);
@@ -230,139 +201,115 @@ namespace DotSpatial.Tools
                      ----|----
                e_lt  |       | e_rt
                      -       -
-               e_lb  |       | e_rb 
-                     ----|---- 
+               e_lb  |       | e_rb
+                     ----|----
                     e_bl   e_br
                      */
+                    bool eTr = false, eTl = false, eLt = false, eLb = false, eRt = false, eRb = false, eBr = false, eBl = false;
 
-                    bool e_tr = false,
-                         e_tl = false,
-                         e_lt = false,
-                         e_lb = false,
-                         e_rt = false,
-                         e_rb = false,
-                         e_br = false,
-                         e_bl = false;
-
-                    if (!con_7)
+                    if (!con7)
                     {
-                        #region Check Cell 7
-
                         // top: right half
-                        if (!con_8l)
+                        if (!con8L)
                         {
-                            var a1 = con_6r && con_1;
-                            var a2 = !con_8r && !con_6l && con_4l && !con_2r;
-                            e_tr = a1 || a2;
+                            var a1 = con6R && con1;
+                            var a2 = !con8R && !con6L && con4L && !con2R;
+                            eTr = a1 || a2;
                         }
 
                         // top: left half
-                        if (!con_6r)
+                        if (!con6R)
                         {
-                            var a1 = con_8l && con_5;
-                            var a2 = !con_8r && !con_6l && !con_4l && con_2r;
-                            e_tl = a1 || a2;
+                            var a1 = con8L && con5;
+                            var a2 = !con8R && !con6L && !con4L && con2R;
+                            eTl = a1 || a2;
                         }
 
                         // top: full
-                        if (!con_8l && !con_6r && !con_4l && !con_2r)
+                        if (!con8L && !con6R && !con4L && !con2R)
                         {
-                            e_tr = e_tl = true;
+                            eTr = eTl = true;
                         }
-
-                        #endregion
                     }
 
-                    if (!con_3)
+                    if (!con3)
                     {
-                        #region Check Cell 3
-
                         // bottom: left half
-                        if (!con_4r)
+                        if (!con4R)
                         {
-                            var a1 = con_2l && con_5;
-                            var a2 = !con_2r && !con_4l && !con_6l && con_8r;
-                            e_bl = a1 || a2;
+                            var a1 = con2L && con5;
+                            var a2 = !con2R && !con4L && !con6L && con8R;
+                            eBl = a1 || a2;
                         }
 
                         // bottom: right half
-                        if (!con_2l)
+                        if (!con2L)
                         {
-                            var a1 = con_4r && con_1;
-                            var a2 = !con_2r && !con_4l && !con_8r && con_6l;
-                            e_br = a1 || a2;
+                            var a1 = con4R && con1;
+                            var a2 = !con2R && !con4L && !con8R && con6L;
+                            eBr = a1 || a2;
                         }
 
                         // bottom: full
-                        if (!con_4r && !con_2l && !con_8r && !con_6l)
+                        if (!con4R && !con2L && !con8R && !con6L)
                         {
-                            e_bl = e_br = true;
+                            eBl = eBr = true;
                         }
-
-                        #endregion
                     }
 
-                    if (!con_1)
+                    if (!con1)
                     {
-                        #region Check Cell 1
-
                         // right: bottom half
-                        if (!con_2r)
+                        if (!con2R)
                         {
-                            var a1 = con_8r && con_3;
-                            var a2 = !con_2l && !con_8l && !con_4r && con_6r;
-                            e_rb = a1 || a2;
+                            var a1 = con8R && con3;
+                            var a2 = !con2L && !con8L && !con4R && con6R;
+                            eRb = a1 || a2;
                         }
 
                         // right: top half
-                        if (!con_8r)
+                        if (!con8R)
                         {
-                            var a1 = con_2r && con_7;
-                            var a2 = !con_2l && !con_8l && !con_6r && con_4r;
-                            e_rt = a1 || a2;
+                            var a1 = con2R && con7;
+                            var a2 = !con2L && !con8L && !con6R && con4R;
+                            eRt = a1 || a2;
                         }
 
                         // right: full
-                        if (!con_2r && !con_8r && !con_4r && !con_6r)
+                        if (!con2R && !con8R && !con4R && !con6R)
                         {
-                            e_rb = e_rt = true;
+                            eRb = eRt = true;
                         }
-
-                        #endregion
                     }
 
-                    if (!con_5)
+                    if (!con5)
                     {
-                        #region Check Cell 5
-
                         // left: bottom half
-                        if (!con_4l)
+                        if (!con4L)
                         {
-                            var a1 = con_3 && con_6l;
-                            var a2 = !con_6r && !con_4r && con_8l && !con_2l;
-                            e_lb = a1 || a2;
+                            var a1 = con3 && con6L;
+                            var a2 = !con6R && !con4R && con8L && !con2L;
+                            eLb = a1 || a2;
                         }
 
                         // left: top half
-                        if (!con_6l)
+                        if (!con6L)
                         {
-                            var a1 = con_4l && con_7;
-                            var a2 = !con_6r && !con_4r && !con_8l && con_2l;
-                            e_lt = a1 || a2;
+                            var a1 = con4L && con7;
+                            var a2 = !con6R && !con4R && !con8L && con2L;
+                            eLt = a1 || a2;
                         }
 
                         // left: full
-                        if (!con_4l && !con_6l && !con_8l && !con_2l)
+                        if (!con4L && !con6L && !con8L && !con2L)
                         {
-                            e_lb = e_lt = true;
+                            eLb = eLt = true;
                         }
-
-                        #endregion
                     }
 
                     // Smooth boundaries regarding to outer cells
                     // Right top corner
-                    if (e_tr && e_rt)
+                    if (eTr && eRt)
                     {
                         if (eqValues(y + 1, x, y, x + 1))
                         {
@@ -371,13 +318,13 @@ namespace DotSpatial.Tools
                             if ((a1 == 6 || a1 == 2 || a2 == 6 || a2 == 2) && !(a1 == 6 && a2 == 2))
                             {
                                 lineList.AddSegment(tc, cr);
-                                e_tr = e_rt = false;
+                                eTr = eRt = false;
                             }
                         }
                     }
 
                     // Left top corner
-                    if (e_tl && e_lt)
+                    if (eTl && eLt)
                     {
                         if (eqValues(y, x - 1, y + 1, x))
                         {
@@ -386,13 +333,13 @@ namespace DotSpatial.Tools
                             if ((a1 == 8 || a1 == 4 || a2 == 8 || a2 == 4) && !(a1 == 8 && a2 == 4))
                             {
                                 lineList.AddSegment(tc, cl);
-                                e_tl = e_lt = false;
+                                eTl = eLt = false;
                             }
                         }
                     }
 
                     // Left bottom corner
-                    if (e_bl && e_lb)
+                    if (eBl && eLb)
                     {
                         if (eqValues(y - 1, x, y, x - 1))
                         {
@@ -401,13 +348,13 @@ namespace DotSpatial.Tools
                             if ((a1 == 6 || a1 == 2 || a2 == 6 || a2 == 2) && !(a1 == 6 && a2 == 2))
                             {
                                 lineList.AddSegment(cl, bc);
-                                e_bl = e_lb = false;
+                                eBl = eLb = false;
                             }
                         }
                     }
 
                     // Right bottom corner
-                    if (e_br && e_rb)
+                    if (eBr && eRb)
                     {
                         if (eqValues(y, x + 1, y - 1, x))
                         {
@@ -416,7 +363,7 @@ namespace DotSpatial.Tools
                             if ((a1 == 8 || a1 == 4 || a2 == 8 || a2 == 4) && !(a1 == 8 && a2 == 4))
                             {
                                 lineList.AddSegment(bc, cr);
-                                e_br = e_rb = false;
+                                eBr = eRb = false;
                             }
                         }
                     }
@@ -426,136 +373,144 @@ namespace DotSpatial.Tools
                     {
                         case 2:
                         case 6:
-                            if (e_tr && e_rt)
+                            if (eTr && eRt)
                             {
                                 lineList.AddSegment(tc, cr);
-                                e_tr = e_rt = false;
+                                eTr = eRt = false;
                             }
-                            if (e_bl && e_lb)
+
+                            if (eBl && eLb)
                             {
                                 lineList.AddSegment(bc, cl);
-                                e_bl = e_lb = false;
+                                eBl = eLb = false;
                             }
+
                             break;
                         case 4:
                         case 8:
-                            if (e_tl && e_lt)
+                            if (eTl && eLt)
                             {
                                 lineList.AddSegment(cl, tc);
-                                e_tl = e_lt = false;
+                                eTl = eLt = false;
                             }
-                            if (e_br && e_rb)
+
+                            if (eBr && eRb)
                             {
                                 lineList.AddSegment(cr, bc);
-                                e_br = e_rb = false;
+                                eBr = eRb = false;
                             }
+
                             break;
                     }
 
                     // Add remaining edges
                     // Top
-                    if (e_tl && e_tr)
+                    if (eTl && eTr)
                     {
                         lineList.AddSegment(tl, tr);
                     }
-                    else if (e_tl)
+                    else if (eTl)
                     {
                         lineList.AddSegment(tl, tc);
                     }
-                    else if (e_tr)
+                    else if (eTr)
                     {
                         lineList.AddSegment(tc, tr);
                     }
 
-                    //Left
-                    if (e_lt && e_lb)
+                    // Left
+                    if (eLt && eLb)
                     {
                         lineList.AddSegment(tl, bl);
                     }
-                    else if (e_lt)
+                    else if (eLt)
                     {
                         lineList.AddSegment(tl, cl);
                     }
-                    else if (e_lb)
+                    else if (eLb)
                     {
                         lineList.AddSegment(cl, bl);
                     }
 
                     // Bottom
-                    if (e_bl && e_br)
+                    if (eBl && eBr)
                     {
                         lineList.AddSegment(bl, br);
                     }
-                    else if (e_bl)
+                    else if (eBl)
                     {
                         lineList.AddSegment(bl, bc);
                     }
-                    else if (e_br)
+                    else if (eBr)
                     {
                         lineList.AddSegment(bc, br);
                     }
 
                     // Right
-                    if (e_rt && e_rb)
+                    if (eRt && eRb)
                     {
                         lineList.AddSegment(tr, br);
                     }
-                    else if (e_rt)
+                    else if (eRt)
                     {
                         lineList.AddSegment(tr, cr);
                     }
-                    else if (e_rb)
+                    else if (eRb)
                     {
                         lineList.AddSegment(cr, br);
                     }
 
                     // Right top out diagonals
-                    if (con_8l)
+                    if (con8L)
                     {
                         lineList.AddSegment(tc, new Coordinate(xMin + (x + 1) * width, yMax - (y + 1 + 0.5) * height));
                     }
-                    if (con_8r)
+
+                    if (con8R)
                     {
                         lineList.AddSegment(cr, new Coordinate(xMin + (x + 1 + 0.5) * width, yMax - (y + 1) * height));
                     }
 
                     // Right in diagonals
-                    if (con_4l || con_8l)
+                    if (con4L || con8L)
                     {
-                        if (!con_6r && !con_6l && !con_7 && !con_5)
+                        if (!con6R && !con6L && !con7 && !con5)
                         {
                             lineList.AddSegment(tc, cl);
                         }
                     }
-                    if (con_4r || con_8r)
+
+                    if (con4R || con8R)
                     {
-                        if (!con_2r && !con_2l && !con_1 && !con_3)
+                        if (!con2R && !con2L && !con1 && !con3)
                         {
                             lineList.AddSegment(cr, bc);
                         }
                     }
 
                     // Left Top out diagonals
-                    if (con_6r)
+                    if (con6R)
                     {
                         lineList.AddSegment(tc, new Coordinate(xMin + x * width, yMax - (y + 1 + 0.5) * height));
                     }
-                    if (con_6l)
+
+                    if (con6L)
                     {
                         lineList.AddSegment(cl, new Coordinate(xMin + (x - 0.5) * width, yMax - (y + 1) * height));
                     }
 
                     // Left In diagonals
-                    if (con_6r || con_2r)
+                    if (con6R || con2R)
                     {
-                        if (!con_8r && !con_8l && !con_7 && !con_1)
+                        if (!con8R && !con8L && !con7 && !con1)
                         {
                             lineList.AddSegment(tc, cr);
                         }
                     }
-                    if (con_6l || con_2l)
+
+                    if (con6L || con2L)
                     {
-                        if (!con_4r && !con_4l && !con_5 && !con_3)
+                        if (!con4R && !con4L && !con5 && !con3)
                         {
                             lineList.AddSegment(cl, bc);
                         }
@@ -608,7 +563,8 @@ namespace DotSpatial.Tools
                                 break;
                             }
                         }
-                        Debug.Assert(segment != null);
+
+                        Debug.Assert(segment != null, "Segment may not be null");
                         polyShell.Add(segment.P0.Equals2D(last) ? segment.P1 : segment.P0);
                     }
 
@@ -630,26 +586,16 @@ namespace DotSpatial.Tools
             return true;
         }
 
-        private class LineSegmentList
-        {
-            private readonly List<LineSegment> _list = new List<LineSegment>();
-
-            public void AddSegment(Coordinate p0, Coordinate p1)
-            {
-                _list.Add(new LineSegment(p0, p1));
-            }
-
-            public List<LineSegment> List { get { return _list; } }
-        }
-
-
         /// <summary>
         /// The Parameter array should be populated with default values here
         /// </summary>
         public override void Initialize()
         {
             _inputParam = new Parameter[1];
-            _inputParam[0] = new RasterParam(TextStrings.inputRaster) { HelpText = TextStrings.inputrastetoconvert };
+            _inputParam[0] = new RasterParam(TextStrings.inputRaster)
+                                 {
+                                     HelpText = TextStrings.inputrastetoconvert
+                                 };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.Convertedfeatureset)
@@ -657,6 +603,28 @@ namespace DotSpatial.Tools
                                       HelpText = TextStrings.featuresetcreated
                                   };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        #endregion
+
+        #region Classes
+
+        private class LineSegmentList
+        {
+            #region Properties
+
+            public List<LineSegment> List { get; } = new List<LineSegment>();
+
+            #endregion
+
+            #region Methods
+
+            public void AddSegment(Coordinate p0, Coordinate p1)
+            {
+                List.Add(new LineSegment(p0, p1));
+            }
+
+            #endregion
         }
 
         #endregion

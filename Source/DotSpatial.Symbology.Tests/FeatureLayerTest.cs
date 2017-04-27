@@ -8,14 +8,14 @@ namespace DotSpatial.Symbology.Tests
 {
 
     /// <summary>
-    ///This is a test class for FeatureLayerTest and is intended
-    ///to contain all FeatureLayerTest Unit Tests
+    /// This is a test class for FeatureLayerTest and is intended
+    /// to contain all FeatureLayerTest Unit Tests
     ///</summary>
     [TestFixture]
     class FeatureLayerTest
     {
         /// <summary>
-        ///A test for ExportSelection
+        /// A test for ExportSelection
         ///</summary>
         [Test]
         public void ExportSelectionTest()
@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology.Tests
         }
 
         /// <summary>
-        ///A test for ExportSelection http://dotspatial.codeplex.com/workitem/203
+        /// A test for ExportSelection http://dotspatial.codeplex.com/workitem/203
         ///</summary>
         [Test]
         public void ExportSelectionTestWithCulture()

@@ -108,8 +108,8 @@ namespace DotSpatial.Serialization
                 fullname = TypeName.Insert(insert, EnclosedName.ToString());
             }
 
-            //some assemblies don't have PublicKeyToken specified - in this
-            //case write 'PublicKeyToken=null'
+            // some assemblies don't have PublicKeyToken specified - in this
+            // case write 'PublicKeyToken=null'
             string keyToken = PublicKeyToken;
             if (string.IsNullOrEmpty(keyToken))
             {

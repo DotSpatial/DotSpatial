@@ -83,7 +83,7 @@ namespace DotSpatial.Data
         public virtual void Open()
         {
             // it seems that the images would already be open if they were instantiated.
-            //foreach (IImageData id in _images)
+            // foreach (IImageData id in _images)
             //{
             //    id.Open();
             //}

@@ -537,7 +537,7 @@ namespace DotSpatial.Data
         {
             if (_geometry == null) return;
             _geometry.GeometryChanged();
-            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
+            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); // Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
         #endregion

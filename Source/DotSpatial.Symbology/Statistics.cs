@@ -52,7 +52,7 @@ namespace DotSpatial.Symbology
             if (values.Count % 2 == 0)
             {
                 // In the even case, take the average of the two middle values
-                int lowIndex = (values.Count - 1) / 2; //Divide by one less than values.Count to grab the middle two values.
+                int lowIndex = (values.Count - 1) / 2; // Divide by one less than values.Count to grab the middle two values.
                 Median = (values[lowIndex] + values[lowIndex + 1]) / 2;
             }
             else

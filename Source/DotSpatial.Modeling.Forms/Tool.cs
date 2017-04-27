@@ -119,7 +119,7 @@ namespace DotSpatial.Modeling.Forms
         #region Public Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
         /// </summary>
         /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
         /// <returns></returns>

@@ -134,7 +134,7 @@ namespace DotSpatial.Modeling.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the number of tools that have been succesfully executed.
+        /// Gets or sets the number of tools that have been successfully executed.
         /// </summary>
         public int ToolProgressCount { get; set; }
 

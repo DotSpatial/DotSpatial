@@ -5,7 +5,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -26,7 +26,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class ReprojectFeatureSet : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -34,72 +34,52 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ReprojectFeatureSet class.
+        /// Initializes a new instance of the <see cref="ReprojectFeatureSet"/> class.
         /// </summary>
         public ReprojectFeatureSet()
         {
-            this.Name = TextStrings.ReprojectFeatures;
-            this.Category = TextStrings.SpatialReference;
-            this.Description = TextStrings.ReprojectFeatureSetDescription;
-            this.ToolTip = TextStrings.Reprojectsallcoordinates;
+            Name = TextStrings.ReprojectFeatures;
+            Category = TextStrings.SpatialReference;
+            Description = TextStrings.ReprojectFeatureSetDescription;
+            ToolTip = TextStrings.Reprojectsallcoordinates;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input parameter array
+        /// Gets the input parameter array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output parameter array
+        /// Gets the output parameter array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
         /// Once the parameters have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;
-            if (input1 != null)
-            {
-                input1.FillAttributes();
-            }
+            input1?.FillAttributes();
 
             ProjectionParam source = _inputParam[1] as ProjectionParam;
             ProjectionParam dest = _inputParam[2] as ProjectionParam;
-            ProjectionInfo pSource = null;
-            if (source != null)
-            {
-                pSource = source.Value;
-            }
+            ProjectionInfo pSource = source?.Value;
 
-            if (dest == null)
-            {
-                return false;
-            }
+            if (dest == null) return false;
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
@@ -107,19 +87,18 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the ReprojectFeatureSet Operation tool programaticaly.
+        /// Executes the ReprojectFeatureSet Operation tool programmatically.
         /// </summary>
         /// <param name="featureSet">The input FeatureSet.</param>
         /// <param name="sourceProjection">The input Expression string to select features to Delete.</param>
         /// <param name="destProjection">The target projected coordinate system to reproject the featureset to</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <remarks>Ping deleted "static" for external testing</remarks>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet featureSet, ProjectionInfo sourceProjection, ProjectionInfo destProjection, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             string filename = output.Filename;
-            output = featureSet.CopySubset("");
+            output = featureSet.CopySubset(string.Empty);
 
             if (sourceProjection != null)
             {
@@ -164,19 +143,14 @@ namespace DotSpatial.Tools
         /// Fires when one of the parameters value has been changed, usually when a user changes a input or output
         /// parameters value, this can be used to populate input2 parameters default values.
         /// </summary>
+        /// <param name="sender">Sender that fired the event.</param>
         public override void ParameterChanged(Parameter sender)
         {
             // This will give the Featureset values to second parameter
-            if (sender != _inputParam[0])
-            {
-                return;
-            }
+            if (sender != _inputParam[0]) return;
 
             FeatureSetParam fsp = _inputParam[0] as FeatureSetParam;
-            if (fsp == null || fsp.Value == null)
-            {
-                return;
-            }
+            if (fsp?.Value == null) return;
 
             _inputParam[1].Value = fsp.Value.Projection;
         }

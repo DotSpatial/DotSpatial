@@ -199,7 +199,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 // TODO: make a more complicated raster structure with individual bands.
                 result = GetBand(fileName, dataset, dataset.GetRasterBand(1));
 
-                //If we opened the dataset but did not find a raster to return, close the dataset
+                // If we opened the dataset but did not find a raster to return, close the dataset
                 if (result == null)
                 {
                     dataset.Dispose();
@@ -208,8 +208,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             return result;
         }
 
-        //This function checks if a GeoTiff dataset should be interpreted as a one-band raster
-        //or as an image. Returns true if the dataset is a valid one-band raster.
+        // This function checks if a GeoTiff dataset should be interpreted as a one-band raster
+        // or as an image. Returns true if the dataset is a valid one-band raster.
 
         /// <summary>
         /// Description of the raster

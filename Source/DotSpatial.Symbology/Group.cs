@@ -141,8 +141,8 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public Bitmap LegendSnapShot(int imgWidth)
         {
-            //bool TO_DO_GROUP_LEGEND_SNAPSHOT;
-            //return new Bitmap(100, 100);
+            // bool TO_DO_GROUP_LEGEND_SNAPSHOT;
+            // return new Bitmap(100, 100);
             throw new NotImplementedException();
         }
 
@@ -207,7 +207,7 @@ namespace DotSpatial.Symbology
                 }
                 // removed by jany_: this selected only features of the first layer with features in the selected area, if user wanted to select features of another layer too they get ignored
                 // added SelectPlugin enables user to choose the layers in which he wants to select features
-			    //if (somethingChanged)
+			    // if (somethingChanged)
                 //{
                 //    MapFrame.ResumeEvents();
                 //    OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.

@@ -159,14 +159,14 @@ namespace DotSpatial.Controls
 
         private void NewProject_Click(object sender, EventArgs e)
         {
-            //if the map is empty or if the current project is already saved, start a new project directly
+            // if the map is empty or if the current project is already saved, start a new project directly
             if (!App.SerializationManager.IsDirty || App.Map.Layers == null || App.Map.Layers.Count == 0)
             {
                 App.SerializationManager.New();
             }
             else if (string.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile))
             {
-                //if the current project is not specified - just ask to discard changes
+                // if the current project is not specified - just ask to discard changes
                 if (MessageBox.Show(Msg.ClearAllDataAndStartANewMap, Msg.DiscardChanges, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     App.SerializationManager.New();
@@ -174,7 +174,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                //the current project is specified - ask the users if they want to save changes to current project
+                // the current project is specified - ask the users if they want to save changes to current project
                 string saveProjectMessage = string.Format(Msg.SaveChangesToCurrentProject, Path.GetFileName(App.SerializationManager.CurrentProjectFile));
                 DialogResult msgBoxResult = MessageBox.Show(saveProjectMessage, Msg.DiscardChanges, MessageBoxButtons.YesNoCancel);
 
@@ -198,7 +198,7 @@ namespace DotSpatial.Controls
                     return;
                 try
                 {
-                    //use the AppManager.SerializationManager to open the project
+                    // use the AppManager.SerializationManager to open the project
                     App.SerializationManager.OpenProject(dlg.FileName);
                     App.Map.Invalidate();
                 }
@@ -284,7 +284,7 @@ namespace DotSpatial.Controls
         {
             try
             {
-                //use the AppManager.SerializationManager to save the project
+                // use the AppManager.SerializationManager to save the project
                 App.SerializationManager.SaveProject(fileName);
             }
             catch (XmlException)
@@ -318,7 +318,7 @@ namespace DotSpatial.Controls
             string fullPath = App.SerializationManager.CurrentProjectFile;
             string file = Path.GetFileNameWithoutExtension(fullPath);
 
-            //Hardcoded names of sample projects into Save button so that if user tries to save over project file they will have to pick a new filename.
+            // Hardcoded names of sample projects into Save button so that if user tries to save over project file they will have to pick a new filename.
             if (string.IsNullOrEmpty(fullPath)
                 || string.IsNullOrEmpty(file)
                 || file.Contains("SampleProjects")
@@ -423,7 +423,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                double zoomInFactor = 0.05; // fixed zoom-in by 10% - 5% on each side
                 double newExtentWidth = App.Map.ViewExtents.Width * zoomInFactor;
                 double newExtentHeight = App.Map.ViewExtents.Height * zoomInFactor;
                 layerEnvelope.ExpandBy(newExtentWidth, newExtentHeight);

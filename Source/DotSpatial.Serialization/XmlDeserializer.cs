@@ -122,7 +122,7 @@ namespace DotSpatial.Serialization
                             null);
                     }
                     if (t == null)
-                    {   //check whether the needed object was moved to another assembly
+                    {   // check whether the needed object was moved to another assembly
                         MovedTypes mt = new MovedTypes();
                         foreach (TypeMoveDefintion tc in mt.Types)
                         {
@@ -207,8 +207,8 @@ namespace DotSpatial.Serialization
                     }
                     catch
                     {
-                        //If a project file (such as a layer) is missing, this exception is thrown. 
-                        //We still want to be able to open the project; setting result to null seems to make this work.
+                        // If a project file (such as a layer) is missing, this exception is thrown. 
+                        // We still want to be able to open the project; setting result to null seems to make this work.
                         result = null;                                            
                     }
                 else

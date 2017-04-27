@@ -163,7 +163,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             Bitmap bmp = new Bitmap(numRows, numColumns);
 
             BitmapData bData = bmp.LockBits(new Rectangle(0, 0, numColumns, numRows), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            //int stride = bData.Stride;
+            // int stride = bData.Stride;
             Marshal.Copy(vals, 0, bData.Scan0, vals.Length);
             bmp.UnlockBits(bData);
             return bmp;
@@ -178,7 +178,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
             double[] test = new double[6];
             _dataset.GetGeoTransform(test);
-            test = (new AffineTransform(test)).TransfromToCorner(0.5, 0.5);//shift origin by half a cell
+            test = (new AffineTransform(test)).TransfromToCorner(0.5, 0.5);// shift origin by half a cell
             Bounds = new RasterBounds(_dataset.RasterYSize, _dataset.RasterXSize, test);
             _red = _dataset.GetRasterBand(1);
             _numOverviews = _red.GetOverviewCount();

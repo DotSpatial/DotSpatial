@@ -121,7 +121,7 @@ namespace DotSpatial.Controls
         /// Mouse Wheel
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseWheel(GeoMouseArgs e) //Fix this
+        protected override void OnMouseWheel(GeoMouseArgs e) // Fix this
         {
             _zoomTimer.Stop(); // if the timer was already started, stop it.
             if (!(e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0)))

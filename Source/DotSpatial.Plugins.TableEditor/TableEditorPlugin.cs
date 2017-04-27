@@ -10,8 +10,8 @@ namespace DotSpatial.Plugins.TableEditor
 {
     public class TableEditorPlugin : Extension
     {
-        //context menu item name
-        //TODO: make this localizable
+        // context menu item name
+        // TODO: make this localizable
         const string contextMenuItemName = "Attribute Table Editor";
 
         public override void Activate()
@@ -45,7 +45,7 @@ namespace DotSpatial.Plugins.TableEditor
                     }
                 }
             }
-            //attach layer added events to existing groups
+            // attach layer added events to existing groups
             foreach (IGroup grp in App.Map.MapFrame.GetAllGroups())
             {
                 grp.LayerAdded += Map_LayerAdded;

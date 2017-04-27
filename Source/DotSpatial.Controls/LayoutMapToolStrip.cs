@@ -22,7 +22,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A Brian Marchioni original toolstrip... preloaded with content.
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
     public class LayoutMapToolStrip : ToolStrip
     {
@@ -143,25 +143,25 @@ namespace DotSpatial.Controls
 
         #region "Envent Handlers"
 
-        //Fires when the user clicks the zoom to full extent button
+        // Fires when the user clicks the zoom to full extent button
         private void _btnZoomFullExtent_Click(object sender, EventArgs e)
         {
             LayoutControl.ZoomFullExtentMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);
         }
 
-        //Fires the zoom in control on the modeler
+        // Fires the zoom in control on the modeler
         private void _btnZoomIn_Click(object sender, EventArgs e)
         {
             LayoutControl.ZoomInMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);
         }
 
-        //Fires the zoom out control on the modeler
+        // Fires the zoom out control on the modeler
         private void _btnZoomOut_Click(object sender, EventArgs e)
         {
             LayoutControl.ZoomOutMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);
         }
 
-        //Fires when the user clicks the pan button
+        // Fires when the user clicks the pan button
         private void _btnPan_Click(object sender, EventArgs e)
         {
             if (_btnPan.Checked)
@@ -170,13 +170,13 @@ namespace DotSpatial.Controls
                 _layoutControl.MapPanMode = false;
         }
 
-        //If the toolbar is disabled we disable the pan checked button state
+        // If the toolbar is disabled we disable the pan checked button state
         private void LayoutMapToolStrip_EnabledChanged(object sender, EventArgs e)
         {
             _btnPan.Checked = false;
         }
 
-        //Zoom the map to the extent of the layout
+        // Zoom the map to the extent of the layout
         private void _btnZoomViewExtent_Click(object sender, EventArgs e)
         {
             LayoutControl.ZoomFullViewExtentMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);

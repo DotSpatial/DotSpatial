@@ -175,20 +175,20 @@ namespace DotSpatial.Controls
         {
             if (_layoutMap == null || _layoutMap.Scale == 0) return;
 
-            //Sets up the pens and brushes
+            // Sets up the pens and brushes
             Brush scaleBrush = new SolidBrush(_color);
             Pen scalePen = new Pen(scaleBrush);
 
-            //Calculates the width of one break in greographic units
+            // Calculates the width of one break in greographic units
             float unitLegnth = g.MeasureString(_unitText, _font).Width * 2;
             float widthNoUnit = (Size.Width - unitLegnth);
             long geoBreakWidth = Convert.ToInt64((widthNoUnit / 100 * _layoutMap.Scale) / GetConversionFactor(_unit.ToString()) / (_numBreaks));
 
-            //If the geobreakWidth is less than 1 we return and don't draw anything
+            // If the geobreakWidth is less than 1 we return and don't draw anything
             if (geoBreakWidth < 1)
                 return;
 
-            //Save the old transform
+            // Save the old transform
             Matrix oldTransform = g.Transform;
             g.TranslateTransform(Location.X, Location.Y);
             TextRenderingHint oldHint = g.TextRenderingHint;
@@ -200,7 +200,7 @@ namespace DotSpatial.Controls
             float fontHeight = g.MeasureString(geoBreakWidth.ToString(CultureInfo.InvariantCulture), _font).Height;
             float leftStart = g.MeasureString(Math.Abs(geoBreakWidth).ToString(CultureInfo.InvariantCulture), _font).Width / 2F;
 
-            //Decides if a break should be drawn before the zero
+            // Decides if a break should be drawn before the zero
             int startBreak = 0;
             if (_breakBeforeZero)
                 startBreak = -1;
@@ -217,7 +217,7 @@ namespace DotSpatial.Controls
             }
             g.DrawString(_unitText, _font, scaleBrush, leftStart - breakWidth + (fontHeight / 2), fontHeight * 1.1f);
 
-            //Restore the old transform
+            // Restore the old transform
             g.Transform = oldTransform;
             g.TextRenderingHint = oldHint;
         }

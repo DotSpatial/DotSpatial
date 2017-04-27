@@ -108,7 +108,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             ////            BinaryReader rdr = new BinaryReader(ms);
             ////            Microsoft.SqlServer.Types.SqlGeometry g = new Microsoft.SqlServer.Types.SqlGeometry();
             ////            g.Read( rdr );
-            //return geometry;
+            // return geometry;
         }
 
         private Type TranslateOgrType(FieldType ogrType)

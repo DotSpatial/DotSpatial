@@ -45,7 +45,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the line symbolizer
         /// </summary>
-        /// <remarks>//Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))</remarks>
+        /// <remarks>// Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))</remarks>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public new ILineSymbolizer Symbolizer
         {

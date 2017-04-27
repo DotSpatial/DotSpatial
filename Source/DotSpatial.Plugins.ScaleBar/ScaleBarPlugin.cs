@@ -4,7 +4,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name               |   Date             |         Comments
 //--------------------|--------------------|--------------------------------------------------------------
@@ -75,7 +75,7 @@ namespace DotSpatial.Plugins.ScaleBar
             _scaleDropDown.SelectedValueChanged += ScaleToSelected;
             _scaleDropDown.RootKey = HeaderControl.HomeRootItemKey;
 
-            //Add it to the Header
+            // Add it to the Header
             _combo = App.HeaderControl.Add(_scaleDropDown) as ToolStripComboBox;
             if (_combo != null)
             {
@@ -132,7 +132,7 @@ namespace DotSpatial.Plugins.ScaleBar
         {
             if (_ignore) return;
 
-            if (e.KeyChar == 13) //Enter starts scaling
+            if (e.KeyChar == 13) // Enter starts scaling
             {
                 var text = _combo.Text;
                 if (string.IsNullOrWhiteSpace(text)) return;
@@ -141,7 +141,7 @@ namespace DotSpatial.Plugins.ScaleBar
                 double nr;
                 if (double.TryParse(text, out nr)) ScaleTo(nr);
             }
-            else if (!((e.KeyChar > 47 && e.KeyChar < 58) || e.KeyChar == 8)) //don't allow keys that aren't numbers or backspace
+            else if (!((e.KeyChar > 47 && e.KeyChar < 58) || e.KeyChar == 8)) // don't allow keys that aren't numbers or backspace
             {
                 e.Handled = true;
             }
@@ -207,7 +207,7 @@ namespace DotSpatial.Plugins.ScaleBar
 
             var ext = App.Map.ViewExtents;
 
-            //TODO this works for Meter-based coordinate-systems. How must this be done for lat/long?
+            // TODO this works for Meter-based coordinate-systems. How must this be done for lat/long?
             if (ext.Width != 0)
             {
                 Point centerpoint = new Point((ext.MinX + ext.MaxX) / 2, (ext.MinY + ext.MaxY) / 2);
@@ -217,7 +217,7 @@ namespace DotSpatial.Plugins.ScaleBar
                 double newheight = ((App.Map.ViewExtents.Height * newwidth) / App.Map.ViewExtents.Width) / 2;
                 App.Map.ViewExtents = new Extent(centerpoint.X - newwidth, centerpoint.Y - newheight, centerpoint.X + newwidth, centerpoint.Y + newheight);
             }
-            if (_combo != null && _combo.Owner != null) _combo.Owner.Focus(); //Remove focus because users expect focus to leave on pressing enter.
+            if (_combo != null && _combo.Owner != null) _combo.Owner.Focus(); // Remove focus because users expect focus to leave on pressing enter.
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace DotSpatial.Plugins.ScaleBar
         {
             try
             {
-                //Code posted by kellison (https://dotspatial.codeplex.com/discussions/351173)
+                // Code posted by kellison (https://dotspatial.codeplex.com/discussions/351173)
                 const double dInchesPerMeter = 39.3700787401575;
                 const double dDegreesPerRadian = 57.2957;
                 double dMapWidthInMeters;
@@ -283,7 +283,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// <returns></returns>
         private static double MetersFromDecimalDegreesPoints(double dDegX1, double dDegY1, double dDegX2, double dDegY2)
         {
-            //Code posted by kellison (https://dotspatial.codeplex.com/discussions/351173)
+            // Code posted by kellison (https://dotspatial.codeplex.com/discussions/351173)
             try
             {
                 const double dRadius = 6378007; // radius of Earth in meters

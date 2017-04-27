@@ -93,7 +93,7 @@ namespace DotSpatial.Symbology.Forms
         protected virtual void OnApplyChanges()
         {
             _originalLayer.Symbolizer = _newLayer.Symbolizer.Copy();
-            //_originalLayer.WriteBitmap(mwProgressBar1);
+            // _originalLayer.WriteBitmap(mwProgressBar1);
             if (ChangesApplied != null) ChangesApplied(_originalLayer, EventArgs.Empty);
         }
 

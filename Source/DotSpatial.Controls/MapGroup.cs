@@ -305,7 +305,7 @@ namespace DotSpatial.Controls
                 }
                 Handle_Layer_Events(value);
                 _layers = value;
-                //set the MapFrame property
+                // set the MapFrame property
                 if (ParentMapFrame != null)
                 {
                     _layers.MapFrame = ParentMapFrame;

@@ -44,15 +44,15 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="dataSets">An array of available data</param>
         public PointElement(PointFeatureSetParam inputParam, List<DataSetArray> dataSets)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = inputParam;
 
             _dataSets = dataSets;
 
-            //Saves the label
+            // Saves the label
             GroupBox.Text = Param.Name;
 
             DoRefresh();
@@ -64,15 +64,15 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void DoRefresh()
         {
-            //Disable the combo box temporarily
+            // Disable the combo box temporarily
             _refreshCombo = false;
 
-            //We set the combo boxes status to empty to start
+            // We set the combo boxes status to empty to start
             base.Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
             comboFeatures.Items.Clear();
 
-            //If the user added a feature set
+            // If the user added a feature set
             if (_addedFeatureSet != null)
             {
                 comboFeatures.Items.Add(_addedFeatureSet);
@@ -87,7 +87,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                 }
             }
 
-            //Add all the dataSets back to the combo box
+            // Add all the dataSets back to the combo box
             if (_dataSets != null)
             {
                 foreach (DataSetArray dsa in _dataSets)
@@ -95,7 +95,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                     IFeatureSet aFeatureSet = (dsa.DataSet as IFeatureSet);
                     if (aFeatureSet != null)
                     {
-                        //If the featureset is the correct type and isn't already in the combo box we add it
+                        // If the featureset is the correct type and isn't already in the combo box we add it
                         if (aFeatureSet.FeatureType == FeatureType.Point && comboFeatures.Items.Contains(dsa) == false)
                         {
                             comboFeatures.Items.Add(dsa);
@@ -153,18 +153,18 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void BtnAddDataClick(object sender, EventArgs e)
         {
             /////////////////////////////////
-            //Replace with something that uses the default data provider
+            // Replace with something that uses the default data provider
             IFeatureSet tempFeatureSet = DataManager.DefaultDataManager.OpenVector();
 
-            //If the feature is null don't do anything the user probably hit cancel on the dialog
+            // If the feature is null don't do anything the user probably hit cancel on the dialog
             if (tempFeatureSet == null)
                 return;
 
-            //Else if the wrong feature type is returned don't add it and indicate whats wrong
+            // Else if the wrong feature type is returned don't add it and indicate whats wrong
             if (tempFeatureSet.FeatureType != FeatureType.Point)
                 MessageBox.Show(ModelingMessageStrings.FeatureTypeException);
 
-                //If its good add the feature set and save it
+                // If its good add the feature set and save it
             else
             {
                 _addedFeatureSet = new DataSetArray(Path.GetFileNameWithoutExtension(tempFeatureSet.Filename),

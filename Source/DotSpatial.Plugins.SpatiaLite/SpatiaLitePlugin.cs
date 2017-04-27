@@ -13,7 +13,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// </summary>
         public override void Activate()
         {
-            //try setting environment variables..
+            // try setting environment variables..
             SpatiaLiteHelper.SetEnvironmentVars();
 
             string spatiaLiteGroup = "SpatiaLite";
@@ -27,7 +27,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             };
             App.HeaderControl.Add(bOpenLayer);
 
-            //query
+            // query
             var bQuery = new SimpleActionItem("SpatiaLite Query", bQuery_Click)
             {
                 LargeImage = Resources.spatialite_query_32,
@@ -37,7 +37,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             };
             App.HeaderControl.Add(bQuery);
 
-            //save layer (not implemented yet)
+            // save layer (not implemented yet)
             var bSaveLayer = new SimpleActionItem("Save Layer", bSaveLayer_Click)
             {
                 LargeImage = Resources.spatialite_save_32,
@@ -60,7 +60,7 @@ namespace DotSpatial.Plugins.SpatiaLite
 
         private void bQuery_Click(object sender, EventArgs e)
         {
-            //check if it's a valid SpatiaLite layer
+            // check if it's a valid SpatiaLite layer
             OpenFileDialog fd = new OpenFileDialog();
             fd.Title = "Open SpatiaLite database";
             fd.Filter = "SpatiaLite database|*.sqlite";
@@ -79,7 +79,7 @@ namespace DotSpatial.Plugins.SpatiaLite
 
         public void ButtonClick(object sender, EventArgs e)
         {
-            //check if it's a valid SpatiaLite layer
+            // check if it's a valid SpatiaLite layer
             OpenFileDialog fd = new OpenFileDialog();
             fd.Title = "Open SpatiaLite database";
             fd.Filter = "SpatiaLite database|*.sqlite";

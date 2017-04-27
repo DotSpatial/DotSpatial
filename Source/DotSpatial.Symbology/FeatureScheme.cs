@@ -255,7 +255,7 @@ namespace DotSpatial.Symbology
             {
                 if (table.Columns[fieldName].DataType == typeof(string))
                 {
-                    //MessageBox.Show(MessageStrings.FieldNotNumeric);
+                    // MessageBox.Show(MessageStrings.FieldNotNumeric);
                     if (NonNumericField != null) NonNumericField(this, EventArgs.Empty);
                     return;
                 }
@@ -287,7 +287,7 @@ namespace DotSpatial.Symbology
             {
                 if (source.GetColumn(fieldName).DataType == typeof(string))
                 {
-                    //MessageBox.Show(MessageStrings.FieldNotNumeric);
+                    // MessageBox.Show(MessageStrings.FieldNotNumeric);
                     if (NonNumericField != null) NonNumericField(this, EventArgs.Empty);
                     return;
                 }
@@ -424,7 +424,7 @@ namespace DotSpatial.Symbology
                         randomValues.Add(index, val);
                         pm.CurrentValue = i + iPage * countPerPage;
                     }
-                    //Application.DoEvents();
+                    // Application.DoEvents();
                     if (progressHandler != null && progressHandler.Cancel)
                     {
                         break;
@@ -686,13 +686,13 @@ namespace DotSpatial.Symbology
             for (int colorIndex = 0; colorIndex < Breaks.Count; colorIndex++)
             {
                 Break brk = Breaks[colorIndex];
-                //get the color for the category
+                // get the color for the category
                 Color randomColor = colorRamp[colorIndex];
                 double size = sizeRamp[colorIndex];
                 IFeatureCategory cat = CreateNewCategory(randomColor, size) as IFeatureCategory;
                 if (cat != null)
                 {
-                    //cat.SelectionSymbolizer = _selectionSymbolizer.Copy();
+                    // cat.SelectionSymbolizer = _selectionSymbolizer.Copy();
                     cat.LegendText = brk.Name;
                     if (isStringField)
                         cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
@@ -722,14 +722,14 @@ namespace DotSpatial.Symbology
 
             foreach (Break brk in Breaks)
             {
-                //get the color for the category
+                // get the color for the category
                 Color randomColor = colorRamp[colorIndex];
                 double size = sizeRamp[colorIndex];
                 IFeatureCategory cat = CreateNewCategory(randomColor, size) as IFeatureCategory;
 
                 if (cat != null)
                 {
-                    //cat.SelectionSymbolizer = _selectionSymbolizer.Copy();
+                    // cat.SelectionSymbolizer = _selectionSymbolizer.Copy();
                     cat.LegendText = brk.Name;
 
                     if (isStringField)

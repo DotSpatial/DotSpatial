@@ -36,12 +36,12 @@ namespace DotSpatial.Positioning.Design
                 || sourceType == typeof(InstanceDescriptor)
                 || sourceType.Name == HandledTypeName)
             {
-                //Console.WriteLine("DEBUG: " + sourceType.Name + " CAN be converted to " + HandledTypeName + "...");
+                // Console.WriteLine("DEBUG: " + sourceType.Name + " CAN be converted to " + HandledTypeName + "...");
 
                 return true;
             }
 
-            //Console.WriteLine("DEBUG: " + sourceType.Name + " probably can NOT be converted to " + HandledTypeName + "...");
+            // Console.WriteLine("DEBUG: " + sourceType.Name + " probably can NOT be converted to " + HandledTypeName + "...");
 
             return base.CanConvertFrom(context, sourceType);
         }

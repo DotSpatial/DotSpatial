@@ -80,8 +80,8 @@ namespace DotSpatial.Symbology
         {
             _featureList = features;
             _scheme = scheme;
-            //features.FeatureAdded += new EventHandler<FeatureEventArgs>(features_FeatureAdded);
-            //features.FeatureRemoved += new EventHandler<FeatureEventArgs>(features_FeatureRemoved);
+            // features.FeatureAdded += new EventHandler<FeatureEventArgs>(features_FeatureAdded);
+            // features.FeatureRemoved += new EventHandler<FeatureEventArgs>(features_FeatureRemoved);
         }
 
         #endregion
@@ -505,12 +505,12 @@ namespace DotSpatial.Symbology
 
         #region Event Handlers
 
-        //void features_FeatureRemoved(object sender, FeatureEventArgs e)
+        // void features_FeatureRemoved(object sender, FeatureEventArgs e)
         //{
         //    _drawnStates.Remove(e.Feature);
         //}
 
-        //void features_FeatureAdded(object sender, FeatureEventArgs e)
+        // void features_FeatureAdded(object sender, FeatureEventArgs e)
         //{
         //    IDrawnState defaultState = GetDefaultState(_featureList.Count);
         //    _drawnStates.Add(new KeyValuePair<IFeature, IDrawnState>(e.Feature, defaultState));

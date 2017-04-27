@@ -22,7 +22,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             SpatiaLiteHelper slh = new SpatiaLiteHelper();
             List<GeometryColumnInfo> geometryColumnList = slh.GetGeometryColumns(dbConnection);
 
-            //get names of tables
+            // get names of tables
             List<string> tableNameList = slh.GetTableNames(connString);
             foreach (string tableName in tableNameList)
             {
@@ -39,7 +39,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             }
         }
 
-        //when clicking "OK"
+        // when clicking "OK"
         private void btnOK_Click(object sender, EventArgs e)
         {
             queryResult = null;
@@ -48,9 +48,9 @@ namespace DotSpatial.Plugins.SpatiaLite
 
             dgQueryResult.DataSource = queryResult.DataTable;
 
-            //SpatiaLiteHelper slh = new SpatiaLiteHelper();
+            // SpatiaLiteHelper slh = new SpatiaLiteHelper();
 
-            //foreach (DataGridViewRow r in dgGeometryColumns.Rows)
+            // foreach (DataGridViewRow r in dgGeometryColumns.Rows)
             //{
             //    if (r.Selected)
             //    {
@@ -60,7 +60,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             //            IFeatureSet fs = slh.ReadFeatureSet(connString, item);
 
             //            IMapFeatureLayer lay = mainMap.Layers.Add(fs);
-            //            //lay.EditMode = false;
+            //            // lay.EditMode = false;
 
             //        }
             //    }

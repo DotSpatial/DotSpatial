@@ -33,7 +33,7 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        ///Initializes a new instance of list with no parent
+        /// Initializes a new instance of list with no parent
         /// </summary>
         public TreeList()
         {

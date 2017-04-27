@@ -9,37 +9,63 @@ using BruTile;
 using BruTile.Cache;
 using DotSpatial.Projections;
 using GeoAPI.Geometries;
-using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {
+    /// <summary>
+    /// WMS service provider.
+    /// </summary>
     public class WmsServiceProvider : BrutileServiceProvider
     {
-        private WmsInfo _data;
+        #region Fields
+
         private static readonly ProjectionInfo Wgs84Proj = ProjectionInfo.FromEsriString(KnownCoordinateSystems.Geographic.World.WGS1984.ToEsriString());
+        private WmsInfo _data;
 
-        public WmsServiceProvider(string name) : 
-            base(name, null, new MemoryCache<byte[]>())
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WmsServiceProvider"/> class.
+        /// </summary>
+        /// <param name="name">Name of the service provider.</param>
+        public WmsServiceProvider(string name)
+            : base(name, null, new MemoryCache<byte[]>())
         {
-            Configure = delegate
-            {
-                using (var wmsDialog = new WMSServerParameters(_data))
+            Configure = () =>
                 {
-                    if (wmsDialog.ShowDialog() != DialogResult.OK) return false;
-
-                    _data = wmsDialog.WmsInfo;
-                    if (_data != null)
+                    using (var wmsDialog = new WmsServerParameters(_data))
                     {
+                        if (wmsDialog.ShowDialog() != DialogResult.OK) return false;
 
-                        TileSource = WmsTileSource.Create(_data);
-                        TileCache = new MemoryCache<byte[]>();
-                        return true;
+                        _data = wmsDialog.WmsInfo;
+                        if (_data != null)
+                        {
+                            TileSource = WmsTileSource.Create(_data);
+                            TileCache = new MemoryCache<byte[]>();
+                            return true;
+                        }
+
+                        return false;
                     }
-                    return false;
-                }
-            };
+                };
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether configuration is needed.
+        /// </summary>
+        public override bool NeedConfigure => _data == null;
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override Bitmap GetBitmap(int x, int y, Envelope envelope, int zoom)
         {
             var ts = TileSource;
@@ -50,42 +76,39 @@ namespace DotSpatial.Plugins.WebMap.WMS
             {
                 var index = new TileIndex(x, y, zoom.ToString(CultureInfo.InvariantCulture));
                 var tc = TileCache;
-                var bytes = tc != null ? tc.Find(index) : null;
+                var bytes = tc?.Find(index);
                 if (bytes == null)
                 {
-                    var mapVertices = new[]
-                    {
-                        envelope.MinX, envelope.MaxY,
-                        envelope.MaxX, envelope.MinY
-                    };
+                    var mapVertices = new[] { envelope.MinX, envelope.MaxY, envelope.MaxX, envelope.MinY };
                     double[] viewExtentZ = { 0.0, 0.0 };
                     Reproject.ReprojectPoints(mapVertices, viewExtentZ, Wgs84Proj, _data.CrsProjectionInfo, 0, mapVertices.Length / 2);
                     var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
-                    bytes = ts.Provider.GetTile(new TileInfo {Extent = ToBrutileExtent(geogEnv), Index = index});
+                    bytes = ts.Provider.GetTile(new TileInfo
+                                                    {
+                                                        Extent = ToBrutileExtent(geogEnv),
+                                                        Index = index
+                                                    });
                     var bm = new Bitmap(new MemoryStream(bytes));
-                    if (tc != null)
-                    {
-                        tc.Add(index, bytes);
-                    }
+                    tc?.Add(index, bytes);
+
                     return bm;
                 }
+
                 return new Bitmap(new MemoryStream(bytes));
             }
             catch (Exception ex)
             {
-                if (ex is WebException ||
-                    ex is TimeoutException)
+                if (ex is WebException || ex is TimeoutException)
                 {
                     return ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoomS), TileSource.Schema.GetTileHeight(zoomS));
                 }
+
                 Debug.WriteLine(ex.Message);
             }
+
             return null;
         }
 
-        public override bool NeedConfigure
-        {
-            get { return _data == null; }
-        }
+        #endregion
     }
 }

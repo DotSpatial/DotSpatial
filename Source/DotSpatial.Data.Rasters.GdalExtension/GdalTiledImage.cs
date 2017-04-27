@@ -68,7 +68,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             WorldFile = new WorldFile { Affine = new double[6] };
             double[] test = new double[6];
             _dataset.GetGeoTransform(test);
-            test = (new AffineTransform(test)).TransfromToCorner(0.5, 0.5);//shift origin by half a cell
+            test = (new AffineTransform(test)).TransfromToCorner(0.5, 0.5);// shift origin by half a cell
             Bounds = new RasterBounds(Height, Width, test);
             WorldFile.Affine = test;
             Close();

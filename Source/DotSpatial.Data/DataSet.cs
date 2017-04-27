@@ -103,7 +103,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                //do not construct FilePath for DataSets without a Filename
+                // do not construct FilePath for DataSets without a Filename
                 return string.IsNullOrEmpty(Filename) ? null : FilePathUtils.RelativePathTo(Filename);
             }
             set

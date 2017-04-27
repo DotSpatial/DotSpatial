@@ -249,8 +249,8 @@ namespace DotSpatial.Symbology
             item.SelectionChanged -= SelectableSelectionChanged;
             item.LayerSelected -= ItemLayerSelected;
 
-            //if the layer being removed is selected -
-            //ensure that the SelectedLayer property is cleared
+            // if the layer being removed is selected -
+            // ensure that the SelectedLayer property is cleared
             if (item.Equals(SelectedLayer))
             {
                 SelectedLayer = null;

@@ -212,25 +212,25 @@ namespace DotSpatial.Controls
         /// <param name="printing">A boolean value indicating if the Draw code is being called to print</param>
         public override void Draw(Graphics g, bool printing)
         {
-            //Make sure we don't get any null reference exceptions
+            // Make sure we don't get any null reference exceptions
             if (_layoutMap == null || _layoutMap.MapControl == null || _layoutMap.MapControl.Legend == null) return;
 
-            //Makes sure that it is big enough to be drawn to
+            // Makes sure that it is big enough to be drawn to
             if (Size.Width < 1 || Size.Height < 1) return;
 
-            //Saves the old graphis settings
+            // Saves the old graphis settings
             TextRenderingHint oldTextHint = g.TextRenderingHint;
             g.TextRenderingHint = _textHint;
             Matrix oldTrans = g.Transform;
 
-            //Calculates the size of each item and the max number of columns and rows
+            // Calculates the size of each item and the max number of columns and rows
             SizeF itemSize = new SizeF(Size.Width / NumColumns, g.MeasureString("SampleText", _font).Height + 4);
             int maxCol = Convert.ToInt32(Size.Width / itemSize.Width);
             int maxRow = Convert.ToInt32(Math.Floor(Size.Height / itemSize.Height));
             int col = 0;
             int row = 0;
 
-            //Loops through all of the legend items and populates the legend
+            // Loops through all of the legend items and populates the legend
             foreach (IMapLayer mapLayer in _layers)
             {
                 if (mapLayer.LegendItems == null)
@@ -239,14 +239,14 @@ namespace DotSpatial.Controls
                     DrawLegendList(g, mapLayer.LegendItems, itemSize, ref col, ref row, ref maxCol, ref maxRow);
             }
 
-            //Restored the old graphics settings
+            // Restored the old graphics settings
             g.Transform = oldTrans;
             g.TextRenderingHint = oldTextHint;
         }
 
         private void DrawLegendList(Graphics g, IEnumerable<ILegendItem> items, SizeF itemSize, ref int col, ref int row, ref int maxCol, ref int maxRow)
         {
-            //If we are passed the max size return;
+            // If we are passed the max size return;
             if (col > maxCol)
                 return;
 

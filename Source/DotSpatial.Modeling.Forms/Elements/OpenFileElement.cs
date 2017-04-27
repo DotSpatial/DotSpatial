@@ -47,15 +47,15 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             InitializeComponent();
             Param = param;
-            //_fileName = text;
+            // _fileName = text;
             // textBox1.Text = param.Value;
             GroupBox.Text = param.Name;
             DoRefresh();
 
-            //Populates the dialog with the default parameter value
+            // Populates the dialog with the default parameter value
             if (param.Value != null && param.DefaultSpecified)
             {
-                //_fileName = param.ModelName;
+                // _fileName = param.ModelName;
                 base.Status = ToolStatus.Ok;
                 LightTipText = ModelingMessageStrings.FeaturesetValid;
             }
@@ -68,15 +68,15 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="dataSets">An array of available data</param>
         public OpenFileElement(FileParam inputParam, List<DataSetArray> dataSets)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = inputParam;
 
             _dataSets = dataSets;
 
-            //Saves the label
+            // Saves the label
             GroupBox.Text = Param.Name;
 
             DoRefresh();
@@ -86,15 +86,15 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void DoRefresh()
         {
-            //Disable the combo box temporarily
+            // Disable the combo box temporarily
             _refreshCombo = false;
 
-            //We set the combo boxes status to empty to start
+            // We set the combo boxes status to empty to start
             base.Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
             _comboFile.Items.Clear();
 
-            //If the user added a text file
+            // If the user added a text file
             if (_addedTextFile != null)
             {
                 _comboFile.Items.Add(_addedTextFile);
@@ -106,7 +106,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                 }
             }
 
-            //Add all the dataSets back to the combo box
+            // Add all the dataSets back to the combo box
             if (_dataSets != null)
             {
                 foreach (DataSetArray dsa in _dataSets)
@@ -114,7 +114,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                     TextFile aTextFile = dsa.DataSet as TextFile;
                     if (aTextFile != null && !_comboFile.Items.Contains(dsa))
                     {
-                        //If the featureset is the correct type and isn't already in the combo box we add it
+                        // If the featureset is the correct type and isn't already in the combo box we add it
                         _comboFile.Items.Add(dsa);
                         if (Param.Value != null && Param.DefaultSpecified && dsa.DataSet == Param.Value)
                         {

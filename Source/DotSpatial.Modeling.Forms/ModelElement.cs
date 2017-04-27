@@ -88,38 +88,38 @@ namespace DotSpatial.Modeling.Forms
         /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
         public virtual void Paint(Graphics graph)
         {
-            //Sets up the colors to use
+            // Sets up the colors to use
             Pen outlinePen = new Pen(SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.6 * Highlight), 1.75F);
             Color gradientTop = SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.7 * Highlight);
             Color gradientBottom = SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 1.0 * Highlight);
 
-            //The path used for drop shadows
+            // The path used for drop shadows
             GraphicsPath shadowPath = new GraphicsPath();
             ColorBlend colorBlend = new ColorBlend(3);
             colorBlend.Colors = new[] { Color.Transparent, Color.FromArgb(180, Color.DarkGray), Color.FromArgb(180, Color.DimGray) };
             colorBlend.Positions = new[] { 0f, 0.125f, 1f };
 
-            //Draws Rectangular Shapes
+            // Draws Rectangular Shapes
             if (Shape == ModelShape.Rectangle)
             {
-                //Draws the shadow
+                // Draws the shadow
                 shadowPath.AddPath(GetRoundedRect(new Rectangle(5, 5, Width, Height), 10), true);
                 PathGradientBrush shadowBrush = new PathGradientBrush(shadowPath);
                 shadowBrush.WrapMode = WrapMode.Clamp;
                 shadowBrush.InterpolationColors = colorBlend;
                 graph.FillPath(shadowBrush, shadowPath);
 
-                //Draws the basic shape
+                // Draws the basic shape
                 Rectangle fillRectange = new Rectangle(0, 0, Width - 5, Height - 5);
                 GraphicsPath fillArea = GetRoundedRect(fillRectange, 5);
                 LinearGradientBrush myBrush = new LinearGradientBrush(fillRectange, gradientBottom, gradientTop, LinearGradientMode.Vertical);
                 graph.FillPath(myBrush, fillArea);
                 graph.DrawPath(outlinePen, fillArea);
 
-                //Draws the status light
+                // Draws the status light
                 DrawStatusLight(graph);
 
-                //Draws the text
+                // Draws the text
                 SizeF textSize = graph.MeasureString(Name, Font, Width);
                 RectangleF textRect;
                 if ((textSize.Width < Width) || (textSize.Height < Height))
@@ -131,28 +131,28 @@ namespace DotSpatial.Modeling.Forms
                 textRect.Y = textRect.Y - 1;
                 graph.DrawString(Name, Font, Brushes.Black, textRect);
 
-                //Garbage collection
+                // Garbage collection
                 fillArea.Dispose();
                 myBrush.Dispose();
             }
 
-            //Draws Ellipse Shapes
+            // Draws Ellipse Shapes
             if (Shape == ModelShape.Ellipse)
             {
-                //Draws the shadow
+                // Draws the shadow
                 shadowPath.AddEllipse(0, 5, Width + 5, Height);
                 PathGradientBrush shadowBrush = new PathGradientBrush(shadowPath);
                 shadowBrush.WrapMode = WrapMode.Clamp;
                 shadowBrush.InterpolationColors = colorBlend;
                 graph.FillPath(shadowBrush, shadowPath);
 
-                //Draws the Ellipse
+                // Draws the Ellipse
                 Rectangle fillArea = new Rectangle(0, 0, Width, Height);
                 LinearGradientBrush myBrush = new LinearGradientBrush(fillArea, gradientBottom, gradientTop, LinearGradientMode.Vertical);
                 graph.FillEllipse(myBrush, 1, 1, Width - 5, Height - 5);
                 graph.DrawEllipse(outlinePen, 1, 1, Width - 5, Height - 5);
 
-                //Draws the text
+                // Draws the text
                 SizeF textSize = graph.MeasureString(Name, Font, Width);
                 RectangleF textRect;
                 if ((textSize.Width < Width) || (textSize.Height < Height))
@@ -164,14 +164,14 @@ namespace DotSpatial.Modeling.Forms
                 textRect.Y = textRect.Y - 1;
                 graph.DrawString(Name, Font, Brushes.Black, textRect);
 
-                //Garbage collection
+                // Garbage collection
                 myBrush.Dispose();
             }
 
-            //Draws Triangular Shapes
+            // Draws Triangular Shapes
             if (Shape == ModelShape.Triangle)
             {
-                //Draws the shadow
+                // Draws the shadow
                 Point[] ptShadow = new Point[4];
                 ptShadow[0] = new Point(5, 5);
                 ptShadow[1] = new Point(Width + 5, ((Height - 5) / 2) + 5);
@@ -183,7 +183,7 @@ namespace DotSpatial.Modeling.Forms
                 shadowBrush.InterpolationColors = colorBlend;
                 graph.FillPath(shadowBrush, shadowPath);
 
-                //Draws the shape
+                // Draws the shape
                 Point[] pt = new Point[4];
                 pt[0] = new Point(0, 0);
                 pt[1] = new Point(Width - 5, (Height - 5) / 2);
@@ -196,7 +196,7 @@ namespace DotSpatial.Modeling.Forms
                 graph.FillPath(myBrush, myPath);
                 graph.DrawPath(outlinePen, myPath);
 
-                //Draws the text
+                // Draws the text
                 SizeF textSize = graph.MeasureString(Name, Font, Width);
                 RectangleF textRect;
                 if ((textSize.Width < Width) || (textSize.Height < Height))
@@ -205,11 +205,11 @@ namespace DotSpatial.Modeling.Forms
                     textRect = new RectangleF(0, (Height - textSize.Height) / 2, Width, textSize.Height);
                 graph.DrawString(Name, Font, Brushes.Black, textRect);
 
-                //Garbage collection
+                // Garbage collection
                 myBrush.Dispose();
             }
 
-            //Garbage collection
+            // Garbage collection
             shadowPath.Dispose();
             outlinePen.Dispose();
         }

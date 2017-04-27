@@ -11,11 +11,11 @@
 ////
 //// ********************************************************************************************************
 
-//using System;
-//using System.Collections;
-//using System.Data;
+// using System;
+// using System.Collections;
+// using System.Data;
 
-//namespace DotSpatial.Data
+// namespace DotSpatial.Data
 //{
 //    /// <summary>
 //    /// This contains statistic extensions for the DataTable class.

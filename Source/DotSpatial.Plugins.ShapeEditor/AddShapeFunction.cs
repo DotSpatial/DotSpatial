@@ -364,7 +364,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e">An empty EventArgs class.</param>
         public void FinishPart(object sender, EventArgs e)
         {
-            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[_coordinates.Count - 1])) _coordinates.Add(_coordinates[0]); //close polygons because they must be closed
+            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[_coordinates.Count - 1])) _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
 
             _parts.Add(_coordinates);
             _coordinates = new List<Coordinate>();

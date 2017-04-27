@@ -4,7 +4,7 @@
 
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
 //------------------------|------------------------|------------------------------------------------------
@@ -15,13 +15,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 using GeoAPI.Geometries;
-using NetTopologySuite.Index.KdTree;
 
 namespace DotSpatial.Tools
 {
@@ -46,88 +43,64 @@ namespace DotSpatial.Tools
     /// </summary>
     public class InverseDistanceWeighting : Tool
     {
-        #region Constants and Fields
-
+        #region Fields
         private Parameter[] _inputParam;
-
         private List<string> _neighborhoodType;
-
         private Parameter[] _outputParam;
-
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the inverse distance weighting interpolation tool
+        /// Initializes a new instance of the <see cref="InverseDistanceWeighting"/> class.
         /// </summary>
         public InverseDistanceWeighting()
         {
-            this.Name = "IDW";
-            this.Category = TextStrings.Interpolation;
-            this.Description = TextStrings.IDWDescription;
-            this.ToolTip = TextStrings.InverseDistanceWeighting;
+            Name = "IDW";
+            Category = TextStrings.Interpolation;
+            Description = TextStrings.IDWDescription;
+            ToolTip = TextStrings.InverseDistanceWeighting;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
+        /// <param name="cancelProgressHandler">A progress handler for receiving progress messages</param>
+        /// <returns>A boolean, true if the IDW process worked correctly</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input = _inputParam[0].Value as IFeatureSet;
-            if (input == null)
-            {
-                return false;
-            }
+            ListParam lp = _inputParam[1] as ListParam;
+            if (input == null || lp == null) return false;
 
             input.FillAttributes();
-            ListParam lp = _inputParam[1] as ListParam;
-            if (lp == null)
-            {
-                return false;
-            }
 
             string zField = lp.ValueList[lp.Value];
             double cellSize = (double)_inputParam[2].Value;
             double power = (double)_inputParam[3].Value;
-            NeighborhoodType neighborType = _inputParam[4].Value as string == TextStrings.FixedDistance
-                                                ? NeighborhoodType.FixedDistance
-                                                : NeighborhoodType.FixedCount;
+            NeighborhoodType neighborType = _inputParam[4].Value as string == TextStrings.FixedDistance ? NeighborhoodType.FixedDistance : NeighborhoodType.FixedCount;
             int pointCount = (int)_inputParam[5].Value;
             double distance = (double)_inputParam[6].Value;
             IRaster output = _outputParam[0].Value as IRaster;
-            return Execute(
-                input, zField, cellSize, power, neighborType, pointCount, distance, output, cancelProgressHandler);
+            return Execute(input, zField, cellSize, power, neighborType, pointCount, distance, output, cancelProgressHandler);
         }
 
         /// <summary>
@@ -147,8 +120,7 @@ namespace DotSpatial.Tools
         /// of rows and columns will be computed from the cellSize and input featureset</param>
         /// <param name="cancelProgressHandler">A progress handler for receiving progress messages</param>
         /// <returns>A boolean, true if the IDW process worked correctly</returns>
-        public bool Execute(IFeatureSet input, string zField, double cellSize, double power, NeighborhoodType neighborType, int pointCount, double distance,
-            IRaster output, ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IFeatureSet input, string zField, double cellSize, double power, NeighborhoodType neighborType, int pointCount, double distance, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input == null || output == null)
@@ -211,44 +183,39 @@ namespace DotSpatial.Tools
                         Coordinate cellCenter = output.CellToProj(y, x);
                         var coord = output.CellToProj(y, x);
                         var result = kd.NearestNeighbor(coord);
-                        if (result != null)
+                        var featurePt = result?.Data;
+                        if (featurePt != null)
                         {
-                            var featurePt = result.Data;
-                            if (featurePt != null)
+                            // Sets up the IDW numerator and denominator
+                            double top = 0;
+                            double bottom = 0;
+
+                            double distanceToCell = cellCenter.Distance(featurePt.Geometry.Coordinates[0]);
+                            if (distanceToCell <= distance || distance == 0)
                             {
-                                // Sets up the IDW numerator and denominator
-                                double top = 0;
-                                double bottom = 0;
-
-                                double distanceToCell = cellCenter.Distance(featurePt.Geometry.Coordinates[0]);
-                                if (distanceToCell <= distance || distance == 0)
+                                // If we can't convert the value to a double throw it out
+                                try
                                 {
-                                    // If we can't convert the value to a double throw it out
-                                    try
-                                    {
-                                        Convert.ToDouble(featurePt.DataRow[zField]);
-                                    }
-                                    catch
-                                    {
-                                        continue;
-                                    }
-
-                                    if (power == 2)
-                                    {
-                                        top += (1 / (distanceToCell * distanceToCell))
-                                               * Convert.ToDouble(featurePt.DataRow[zField]);
-                                        bottom += 1 / (distanceToCell * distanceToCell);
-                                    }
-                                    else
-                                    {
-                                        top += (1 / Math.Pow(distanceToCell, power))
-                                               * Convert.ToDouble(featurePt.DataRow[zField]);
-                                        bottom += 1 / Math.Pow(distanceToCell, power);
-                                    }
+                                    Convert.ToDouble(featurePt.DataRow[zField]);
+                                }
+                                catch
+                                {
+                                    continue;
                                 }
 
-                                output.Value[y, x] = top / bottom;
+                                if (power == 2)
+                                {
+                                    top += (1 / (distanceToCell * distanceToCell)) * Convert.ToDouble(featurePt.DataRow[zField]);
+                                    bottom += 1 / (distanceToCell * distanceToCell);
+                                }
+                                else
+                                {
+                                    top += (1 / Math.Pow(distanceToCell, power)) * Convert.ToDouble(featurePt.DataRow[zField]);
+                                    bottom += 1 / Math.Pow(distanceToCell, power);
+                                }
                             }
+
+                            output.Value[y, x] = top / bottom;
                         }
                     }
 
@@ -256,8 +223,7 @@ namespace DotSpatial.Tools
                     if (Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100) > lastUpdate)
                     {
                         lastUpdate = Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100);
-                        cancelProgressHandler.Progress(
-                            string.Empty, lastUpdate, "Cell: " + (x * numRows) + " of " + (numColumns * numRows));
+                        cancelProgressHandler.Progress(string.Empty, lastUpdate, "Cell: " + (x * numRows) + " of " + (numColumns * numRows));
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
@@ -277,7 +243,10 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[7];
             _inputParam[0] = new PointFeatureSetParam(TextStrings.PointFeatureSet);
-            _inputParam[1] = new ListParam(TextStrings.Zvalue) { HelpText = TextStrings.layercontainsvalues };
+            _inputParam[1] = new ListParam(TextStrings.Zvalue)
+                                 {
+                                     HelpText = TextStrings.layercontainsvalues
+                                 };
             _inputParam[2] = new DoubleParam(TextStrings.CellSize, 0, 0, double.MaxValue)
                                  {
                                      HelpText = TextStrings.Thecellsizeingeographicunits
@@ -286,7 +255,11 @@ namespace DotSpatial.Tools
                                  {
                                      HelpText = TextStrings.Theinfluenceofdistance
                                  };
-            _neighborhoodType = new List<string> { TextStrings.FixedDistance, TextStrings.FixedCount };
+            _neighborhoodType = new List<string>
+                                    {
+                                        TextStrings.FixedDistance,
+                                        TextStrings.FixedCount
+                                    };
             _inputParam[4] = new ListParam(TextStrings.NeighborhoodType, _neighborhoodType, 0)
                                  {
                                      HelpText = TextStrings.Selectthetypeofneighborhood
@@ -308,6 +281,7 @@ namespace DotSpatial.Tools
         /// <summary>
         /// Fires when one of the paramters value has beend changed, usually when a user changes a input or output Parameter value, this can be used to populate other Parameter default values.
         /// </summary>
+        /// <param name="sender">The sender that fired the event.</param>
         public override void ParameterChanged(Parameter sender)
         {
             if (sender == _inputParam[0])
@@ -328,26 +302,5 @@ namespace DotSpatial.Tools
         }
 
         #endregion
-    }
-
-    public class KdTreeEx<T> : KdTree<T> where T : class
-    {
-        private readonly MethodInfo _findBestMatchNodeMethod;
-
-        public KdTreeEx()
-        {
-            _findBestMatchNodeMethod =
-                typeof (KdTree<T>).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
-                    .FirstOrDefault(_ => _.Name == "FindBestMatchNode");
-        }
-
-        public bool MethodFindBestMatchNodeFound { get { return _findBestMatchNodeMethod != null; } }
-
-        public T Search(Coordinate coord)
-        {
-            var node = (KdNode<T>)_findBestMatchNodeMethod.Invoke(this, new object[] { coord });
-            if (node != null) return node.Data;
-            return null;
-        }
     }
 }

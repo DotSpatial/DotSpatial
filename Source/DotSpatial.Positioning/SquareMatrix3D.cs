@@ -76,9 +76,9 @@ namespace DotSpatial.Positioning
         /// </summary>
         public SquareMatrix3D()
             : this(
-            1, 0, 0, //row 1
-            0, 1, 0, //row 2
-            0, 0, 1 //row 3
+            1, 0, 0, // row 1
+            0, 1, 0, // row 2
+            0, 0, 1 // row 3
             )
         { }
 
@@ -597,7 +597,7 @@ namespace DotSpatial.Positioning
         ///// Prepend a rotation to this matrix.
         ///// </summary>
         ///// <param name="angle"> Amount, in degrees, to rotate. </param>
-        //public void Rotate(float angle)
+        // public void Rotate(float angle)
         //{
         //    this.Rotate(angle, MatrixOrder.Prepend);
         //}
@@ -607,7 +607,7 @@ namespace DotSpatial.Positioning
         ///// </summary>
         ///// <param name="angle"> Amount, in degrees, to rotate. </param>
         ///// <param name="matrixOrder"> The order in which to carry out the operation. </param>
-        //public void Rotate(float angle, MatrixOrder matrixOrder)
+        // public void Rotate(float angle, MatrixOrder matrixOrder)
         //{
         //    double a = angle * Radian.RadiansPerDegree;
         //    this.Multiply(new SquareMatrix3D(

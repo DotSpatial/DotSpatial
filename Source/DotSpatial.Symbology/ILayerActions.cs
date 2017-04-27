@@ -3,7 +3,7 @@
 // Description:  Contains methods which can be used in Layer (e.g. in ContextMenu)
 
 // Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
 // Name               |   Date             |         Comments
 //--------------------|--------------------|--------------------------------------------------------------

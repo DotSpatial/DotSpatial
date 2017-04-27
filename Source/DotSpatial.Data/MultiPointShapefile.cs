@@ -210,7 +210,7 @@ namespace DotSpatial.Data
                     reader.Seek(3 * 4 + 32 + 4, SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumPoints)
 
                     // Read points
-                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); //Numpoints * Point (X(8) + Y(8))
+                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); // Numpoints * Point (X(8) + Y(8))
                     Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
                     vertInd += 8 * 2 * shape.NumPoints;
 

@@ -81,7 +81,7 @@ namespace DotSpatial.Plugins.SetSelectable
             var grp = addedLayer as IMapGroup;
             if (grp != null)
             {
-                //handle layerAdded event separately for groups because map.layerAdded event doesn't fire for groups.
+                // handle layerAdded event separately for groups because map.layerAdded event doesn't fire for groups.
                 grp.LayerAdded += Map_LayerAdded;
                 grp.LayerRemoved += Map_LayerRemoved;
                 foreach (ILayer layer in grp.Layers)

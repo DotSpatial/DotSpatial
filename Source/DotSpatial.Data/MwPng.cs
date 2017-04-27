@@ -103,8 +103,8 @@ namespace DotSpatial.Data
             f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(combined)), 0, 4);
 
             //// The IDAT chunks can be no more than 32768, but can in fact be smaller than this.
-            //int numBlocks = (int) Math.Ceiling(data.Length/(double) 32768);
-            //for (int block = 0; block < numBlocks; block++)
+            // int numBlocks = (int) Math.Ceiling(data.Length/(double) 32768);
+            // for (int block = 0; block < numBlocks; block++)
             //{
             //    int bs = 32768;
             //    if (block == numBlocks - 1) bs = data.Length - block*32768;
@@ -146,7 +146,7 @@ namespace DotSpatial.Data
         private static void WriteSrgb(Stream f)
         {
             f.Write(ToBytesAsUInt32(1), 0, 4);
-            byte[] vals = new byte[] { 115, 82, 71, 66, 0 }; //sRGB and the value of 0
+            byte[] vals = new byte[] { 115, 82, 71, 66, 0 }; // sRGB and the value of 0
             f.Write(vals, 0, 5);
             f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(vals)), 0, 4);
         }

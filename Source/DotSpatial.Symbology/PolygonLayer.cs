@@ -86,7 +86,7 @@ namespace DotSpatial.Symbology
         /// <param name="p">The projection interface that specifies how to transform geographic coordinates to an image.</param>
         public override void DrawSnapShot(Graphics g, IProj p)
         {
-            //bool To_DO_DRaw_Polygon_Snapshot = true;
+            // bool To_DO_DRaw_Polygon_Snapshot = true;
             throw new NotImplementedException();
         }
 
