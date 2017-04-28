@@ -12,9 +12,19 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
+    /// <summary>
+    /// ListViewHelper
+    /// </summary>
     internal class ListViewHelper
     {
+        #region Methods
 
+        /// <summary>
+        /// Adds the packages to the listview.
+        /// </summary>
+        /// <param name="list">List with the packages.</param>
+        /// <param name="listView">Listview to add the packages to.</param>
+        /// <param name="pagenumber">PageNumber</param>
         public void AddPackages(IEnumerable<IPackage> list, ListView listView, int pagenumber)
         {
             if (list == null)
@@ -22,9 +32,12 @@ namespace DotSpatial.Plugins.ExtensionManager
                 return;
             }
 
-            ImageList imageList = new ImageList();
-            imageList.ImageSize = new Size(32, 32);
-            imageList.ColorDepth = ColorDepth.Depth32Bit;
+            ImageList imageList = new ImageList
+            {
+                ImageSize = new Size(32, 32),
+                ColorDepth = ColorDepth.Depth32Bit
+            };
+
             // Add a default image at position 0;
             imageList.Images.Add(Resources.box_closed_32x32);
             listView.LargeImageList = imageList;
@@ -38,8 +51,10 @@ namespace DotSpatial.Plugins.ExtensionManager
             var pagelist = list.ToArray();
             foreach (var package in pagelist)
             {
-                ListViewItem item = new ListViewItem(package.Id.Substring(package.Id.LastIndexOf('.') + 1));
-                item.ImageIndex = 0;
+                ListViewItem item = new ListViewItem(package.Id.Substring(package.Id.LastIndexOf('.') + 1))
+                {
+                    ImageIndex = 0
+                };
 
                 listView.Items.Add(item);
                 item.Tag = package;
@@ -50,46 +65,52 @@ namespace DotSpatial.Plugins.ExtensionManager
                     tasks.Add(task);
                 }
             }
+
             listView.EndUpdate();
 
             Task<Image>[] taskArray = tasks.ToArray();
-            if (taskArray.Count() == 0) return;
+            if (taskArray.Length == 0) return;
 
-            Task.Factory.ContinueWhenAll(taskArray, t =>
-            {
-                for (int i = 0; i < taskArray.Length; i++)
+            Task.Factory.ContinueWhenAll(
+                taskArray,
+                t =>
                 {
-                    var image = taskArray[i].Result;
-                    if (image != null)
+                    for (int i = 0; i < taskArray.Length; i++)
                     {
-                        imageList.Images.Add(image);
-                        int imageCount = imageList.Images.Count;
+                        var image = taskArray[i].Result;
+                        if (image != null)
+                        {
+                            imageList.Images.Add(image);
+                            int imageCount = imageList.Images.Count;
 
-                        // hack: for some reason i can be greater than the number of items in the listview.
-                        // This is probably because we don't cancel the existing thread when the feed changes.
-                        // todo: use CancellationToken
-                        // this can also happen when the form closes.
-                        if (listView.Items.Count < i + 1)
-                            return;
+                            // hack: for some reason i can be greater than the number of items in the listview.
+                            // This is probably because we don't cancel the existing thread when the feed changes.
+                            // todo: use CancellationToken
+                            // this can also happen when the form closes.
+                            if (listView.Items.Count < i + 1)
+                                return;
 
-                        var l = listView.Items[i];
-                        l.ImageIndex = imageCount - 1;
+                            var l = listView.Items[i];
+                            l.ImageIndex = imageCount - 1;
+                        }
                     }
-                }
-            },
-         new CancellationToken(), TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+                },
+                CancellationToken.None,
+                TaskContinuationOptions.None,
+                TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private static Task<Image> BeginGetImage(string iconUrl)
         {
-            var task = Task.Factory.StartNew(() =>
-            {
-                Image image = LoadImage(iconUrl);
-                return image;
-
-                // Had to use TaskScheduler.Default so that the threads were not attached to the parent (Main UI thread for RefreshPackageList)
-            },
-            new CancellationToken(), TaskCreationOptions.None, TaskScheduler.Default);
+            var task = Task.Factory.StartNew(
+                () =>
+                {
+                    Image image = LoadImage(iconUrl);
+                    return image;
+                },
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                TaskScheduler.Default);  // Had to use TaskScheduler.Default so that the threads were not attached to the parent (Main UI thread for RefreshPackageList)
 
             return task;
         }
@@ -105,18 +126,18 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 WebRequest request = WebRequest.Create(url);
                 WebResponse response = request.GetResponse();
-                Stream responseStream = response.GetResponseStream();
-
-                Bitmap bmp = new Bitmap(responseStream);
-
-                responseStream.Dispose();
-
-                return bmp;
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    if (responseStream == null) return null;
+                    return new Bitmap(responseStream);
+                }
             }
             catch (Exception)
             {
                 return null;
             }
         }
+
+        #endregion
     }
 }

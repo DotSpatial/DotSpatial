@@ -7,12 +7,22 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     internal class GetPackage
     {
+        #region Fields
+
         private readonly Packages packages;
+
+        #endregion
+
+        #region  Constructors
 
         public GetPackage(Packages packageHelper)
         {
             packages = packageHelper;
         }
+
+        #endregion
+
+        #region Methods
 
         public IPackage GetPackageFromExtension(IExtension extension)
         {
@@ -27,5 +37,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             return extensions.Select(GetPackageFromExtension).Where(package => package != null);
         }
+
+        #endregion
     }
 }

@@ -8,27 +8,19 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     internal static class FeedManager
     {
-        public static IEnumerable<Feed> GetFeeds()
-        {
-            for (int j = 0; j < Settings.Default.SourceUrls.Count; j++)
-            {
-                Feed feed = new Feed();
-                feed.Name = Settings.Default.SourceName[j];
-                feed.Url = Settings.Default.SourceUrls[j];
-                yield return feed;
-            }
-        }
+        #region Methods
 
         public static void Add(Feed feed)
         {
             if (Settings.Default.SourceName.Contains(feed.Name))
             {
-                MessageBox.Show(String.Format("Source name '{0}' already exists.", feed.Name));
+                MessageBox.Show(string.Format("Source name '{0}' already exists.", feed.Name));
                 return;
             }
+
             if (Settings.Default.SourceUrls.Contains(feed.Url))
             {
-                MessageBox.Show(String.Format("Source URL '{0}' already exists.", feed.Url));
+                MessageBox.Show(string.Format("Source URL '{0}' already exists.", feed.Url));
                 return;
             }
 
@@ -43,17 +35,41 @@ namespace DotSpatial.Plugins.ExtensionManager
             Settings.Default.Save();
         }
 
-        public static void Remove(Feed feed)
-        {
-            Settings.Default.SourceName.Remove(feed.Name);
-            Settings.Default.SourceUrls.Remove(feed.Url);
-            Settings.Default.Save();
-        }
-
         public static void ClearFeeds()
         {
             Settings.Default.SourceName.Clear();
             Settings.Default.SourceUrls.Clear();
+            Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Return a list of feeds to autoupdate when app starts.
+        /// </summary>
+        public static StringCollection getAutoUpdateFeeds()
+        {
+            if (Settings.Default.FeedsToAutoUpdate == null)
+            {
+                Settings.Default.FeedsToAutoUpdate = new StringCollection();
+            }
+
+            return Settings.Default.FeedsToAutoUpdate;
+        }
+
+        public static IEnumerable<Feed> GetFeeds()
+        {
+            for (int j = 0; j < Settings.Default.SourceUrls.Count; j++)
+            {
+                Feed feed = new Feed();
+                feed.Name = Settings.Default.SourceName[j];
+                feed.Url = Settings.Default.SourceUrls[j];
+                yield return feed;
+            }
+        }
+
+        public static void Remove(Feed feed)
+        {
+            Settings.Default.SourceName.Remove(feed.Name);
+            Settings.Default.SourceUrls.Remove(feed.Url);
             Settings.Default.Save();
         }
 
@@ -71,21 +87,11 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     Settings.Default.FeedsToAutoUpdate.Remove(feed);
                 }
+
                 Settings.Default.Save();
             }
         }
 
-        /// <summary>
-        /// Return a list of feeds to autoupdate when app starts.
-        /// </summary>
-        public static StringCollection getAutoUpdateFeeds()
-        {
-            if (Settings.Default.FeedsToAutoUpdate == null)
-            {
-                Settings.Default.FeedsToAutoUpdate = new StringCollection();
-            }
-            return Settings.Default.FeedsToAutoUpdate;
-        }
-      
+        #endregion
     }
 }

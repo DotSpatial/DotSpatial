@@ -151,4 +151,7 @@
   <data name="plugin_disabled_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plugin_disabled_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NoHeaderControlErrorDownloadingRibbon" xml:space="preserve">
+    <value>No HeaderControl was available, but we couldn't download the ribbon. Please make sure you are connected to the Internet.</value>
+  </data>
 </root>

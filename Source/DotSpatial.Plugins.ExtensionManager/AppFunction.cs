@@ -15,7 +15,7 @@ namespace DotSpatial.Plugins.ExtensionManager
     /// </summary>
     public class AppFunction : MapFunctionGlyph
     {
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets or sets the Manager that the dialog uses to control Apps.

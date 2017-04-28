@@ -6,6 +6,8 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     internal partial class DownloadForm : Form
     {
+        #region  Constructors
+
         public DownloadForm()
         {
             InitializeComponent();
@@ -14,14 +16,46 @@ namespace DotSpatial.Plugins.ExtensionManager
             FormClosing += Download_FormClosing;
         }
 
+        #endregion
+
+        #region Methods
+
+        public void SetProgressBarPercent(int percent)
+        {
+            try
+            {
+                if (progressBar.InvokeRequired)
+                {
+                    progressBar.Invoke((Action)(() => { progressBar.Value = percent; }));
+                }
+                else
+                {
+                    progressBar.Value = percent;
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+        }
+
+        public void Show(string message)
+        {
+            if (uxDownloadStatus.InvokeRequired)
+            {
+                uxDownloadStatus.Invoke((Action)(() => { uxDownloadStatus.Text = message; }));
+            }
+            else
+            {
+                uxDownloadStatus.Text = message;
+            }
+        }
+
         public void ShowDownloadStatus(PackageDependency dependentPackage)
         {
             if (uxDownloadStatus.InvokeRequired)
             {
-                uxDownloadStatus.Invoke((Action)(() =>
-                {
-                    uxDownloadStatus.Text = "Downloading the dependencies\n" + "Downloading " + dependentPackage.Id;
-                }));
+                uxDownloadStatus.Invoke((Action)(() => { uxDownloadStatus.Text = "Downloading the dependencies\n" + "Downloading " + dependentPackage.Id; }));
             }
             else
             {
@@ -33,10 +67,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             if (uxDownloadStatus.InvokeRequired)
             {
-                uxDownloadStatus.Invoke((Action)(() =>
-                {
-                    uxDownloadStatus.Text = "Downloading " + pack.Id;
-                }));
+                uxDownloadStatus.Invoke((Action)(() => { uxDownloadStatus.Text = "Downloading " + pack.Id; }));
             }
             else
             {
@@ -44,44 +75,9 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        public void Show(String message)
+        private void button1_Click(object sender, EventArgs e)
         {
-            if (uxDownloadStatus.InvokeRequired)
-            {
-                uxDownloadStatus.Invoke((Action)(() =>
-                {
-                    uxDownloadStatus.Text = message;
-                }));
-            }
-            else
-            {
-                uxDownloadStatus.Text = message;
-            }
-        }
-
-        public void SetProgressBarPercent(int percent)
-        {
-            try
-            {
-                if (progressBar.InvokeRequired)
-                {
-                    progressBar.Invoke((Action)(() =>
-                    {
-
-                        progressBar.Value = percent;
-
-
-                    }));
-                }
-                else
-                {
-                        progressBar.Value = percent;       
-                }
-            }
-            catch (ObjectDisposedException)
-            {
-                return;
-            }
+            this.Close();
         }
 
         private void Download_FormClosing(object sender, FormClosingEventArgs e)
@@ -94,9 +90,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        #endregion
     }
 }

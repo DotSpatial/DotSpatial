@@ -10,163 +10,170 @@ using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
+    /// <summary>
+    /// Paging
+    /// </summary>
     internal class Paging
     {
-        public event EventHandler<PageSelectedEventArgs> PageChanged;
-        private readonly ListViewHelper add;
-        private readonly Packages packages;
-        private const string DotSpatialPluginTag = "DotSpatial.Plugin";
-        private string AppName;
+        #region Fields
 
+        /// <summary>
+        /// The page size.
+        /// </summary>
         public const int PageSize = 9;
+        private const string DotSpatialPluginTag = "DotSpatial.Plugin";
+        private readonly ListViewHelper _add;
+        private readonly Packages _packages;
+        private readonly string _appName;
 
-        private List<Button> listOfButtons = new List<Button>();
+        private readonly List<Button> _listOfButtons = new List<Button>();
+
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Paging"/> class.
+        /// </summary>
+        /// <param name="packageHelper">Contains all the packages.</param>
+        /// <param name="adder">Helper used for adding the packages to the listview.</param>
         public Paging(Packages packageHelper, ListViewHelper adder)
         {
-            this.packages = packageHelper;
-            this.add = adder;
+            _packages = packageHelper;
+            _add = adder;
 
             // find name of app
             string name = Assembly.GetEntryAssembly().GetName().Name;
             int i;
             for (i = 0; i < name.Length; i++)
             {
-                if (!Char.IsLetter(name[i]))
+                if (!char.IsLetter(name[i]))
                     break;
             }
-            AppName = name.Substring(0, i);
+
+            _appName = name.Substring(0, i);
         }
 
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// The page changed event.
+        /// </summary>
+        public event EventHandler<PageSelectedEventArgs> PageChanged;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Adds the buttons to the given tab page.
+        /// </summary>
+        /// <param name="tab">Tab page to add the buttons to.</param>
+        public void AddButtons(TabPage tab)
+        {
+            foreach (var button in _listOfButtons)
+            {
+                tab.Controls.Add(button);
+            }
+        }
+
+        /// <summary>
+        /// Called if the page change button is clicked.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        public void ButtonClick(object sender, EventArgs e)
+        {
+            if (PageChanged != null)
+            {
+                Button button = sender as Button;
+                if (button == null) return;
+
+                int page = Convert.ToInt32(button.Text);
+
+                var eventArgs = new PageSelectedEventArgs
+                {
+                    SelectedPage = page
+                };
+
+                PageChanged.Invoke(this, eventArgs);
+            }
+        }
+
+        /// <summary>
+        /// Creates the buttons.
+        /// </summary>
+        /// <param name="packageCount">Number of packages.</param>
         public void CreateButtons(int packageCount)
         {
             int buttonsToShow = HowManyPagesAreNeeded(packageCount);
+
             // hack: we only show the first 5 pages.
             buttonsToShow = Math.Min(5, buttonsToShow);
 
             for (int i = 1; i <= buttonsToShow; i++)
             {
-                Button button = new Button();
-                button.Text = i.ToString();
-                button.Location = new Point(50 * i, 510);
-                button.Size = new Size(41, 23);
-                listOfButtons.Add(button);
-                button.Click += new EventHandler(this.button_Click);
-            }
-        }
-
-        private int HowManyPagesAreNeeded(int itemsToDisplay)
-        {
-            return (int)Math.Ceiling(itemsToDisplay / (double)PageSize);
-        }
-
-        public void AddButtons(TabPage tab)
-        {
-                foreach (var button in listOfButtons)
+                Button button = new Button
                 {
-                    tab.Controls.Add(button);
-                }   
-        }
-
-        public void button_Click(object sender, EventArgs e)
-        {
-            if (PageChanged != null)
-            {
-                Button button = sender as Button;
-                int page = Convert.ToInt32(button.Text);
-
-                var eventArgs = new PageSelectedEventArgs();
-                eventArgs.SelectedPage = page;
-
-                if (PageChanged != null)
-                { PageChanged(this, eventArgs); }
+                    Text = i.ToString(),
+                    Location = new Point(50 * i, 510),
+                    Size = new Size(41, 23)
+                };
+                _listOfButtons.Add(button);
+                button.Click += ButtonClick;
             }
         }
 
-        public void ResetButtons(TabPage tab)
-        {
-            foreach (var button in listOfButtons)
-            {
-                tab.Controls.Remove(button);
-            }
-            listOfButtons.Clear();
-        }
-
-        private class PackageList
-        {
-            public IPackage[] packages { get; set; }
-
-            public int TotalPackageCount { get; set; }
-        }
-
-        public void DisplayPackages(ListView listview, int pagenumber, TabPage tab, AppManager App)
+        /// <summary>
+        /// Displays the packagese.
+        /// </summary>
+        /// <param name="listview">Listview  for status messages.</param>
+        /// <param name="pagenumber">Number of the page for which the packages are loaded.</param>
+        /// <param name="tab">The tab page.</param>
+        /// <param name="app">The AppManager.</param>
+        public void DisplayPackages(ListView listview, int pagenumber, TabPage tab, AppManager app)
         {
             ResetButtons(tab);
             listview.Items.Clear();
             listview.Items.Add("Loading...");
 
             Task<PackageList> task = GetPackages(pagenumber);
-            task.ContinueWith(t =>
-            {
-                listview.Items.Clear();
-                if (t.Result == null)
+            task.ContinueWith(
+                t =>
                 {
-                    listview.Items.Add("No packages could be retrieved for the selected feed.");
-                    listview.Items.Add("Try again later or Select another feed.");
-                }
-                else
-                {
-                    var packs = from pack in t.Result.packages
-                                        where App.GetExtension(pack.Id) == null
-                                        select pack;
-                    var localPacks = packages.Manager.LocalRepository.GetPackages();
-                    packs = from pack in packs where !localPacks.Where(p => p.Id == pack.Id).Any() select pack;
+                    listview.Items.Clear();
+                    if (t.Result == null)
+                    {
+                        listview.Items.Add("No packages could be retrieved for the selected feed.");
+                        listview.Items.Add("Try again later or Select another feed.");
+                    }
+                    else
+                    {
+                        var packs = from pack in t.Result.Packages where app.GetExtension(pack.Id) == null select pack;
+                        var localPacks = _packages.Manager.LocalRepository.GetPackages();
+                        packs = from pack in packs where !localPacks.Any(p => p.Id == pack.Id) select pack;
 
-                    add.AddPackages(packs.ToArray(), listview, pagenumber);
-                    CreateButtons(t.Result.TotalPackageCount);
-                    AddButtons(tab);
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                        _add.AddPackages(packs.ToArray(), listview, pagenumber);
+                        CreateButtons(t.Result.TotalPackageCount);
+                        AddButtons(tab);
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private Task<PackageList> GetPackages(int pagenumber)
+        /// <summary>
+        /// Clears the buttons of the given tab page.
+        /// </summary>
+        /// <param name="tab">Tab page whose buttons get cleared.</param>
+        public void ResetButtons(TabPage tab)
         {
-            var task = Task.Factory.StartNew(() =>
+            foreach (var button in _listOfButtons)
             {
-                try
-                {
-                    var result = from item in packages.Repo.GetPackages()
-                                 where item.Tags != null && item.Tags.Contains(DotSpatialPluginTag)
-                                 select item;
-                    result = result.OrderBy(item => item.Id)
-                                .ThenByDescending(item => item.Version);
+                tab.Controls.Remove(button);
+            }
 
-                    String id = "";
-                    List<IPackage> onlinePacks = new List<IPackage>();
-                    foreach (var item in result)
-                    {
-                        if (id != item.Id && AppDependencyCheck(item))
-                        {
-                            onlinePacks.Add(item);
-                            id = item.Id;
-                        }
-                    }
-                    if(onlinePacks.Count() == 0)
-                        throw new InvalidOperationException();
-
-                    var info = new PackageList();
-                    // info.TotalPackageCount = result.Count();
-                    // info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
-                    info.packages = onlinePacks.ToArray(); // Toggle comments here to reenable paging.
-
-                    return info;
-                }
-                catch (InvalidOperationException)
-                {
-                    // This usually means the url was bad.
-                    return null;
-                }
-            });
-            return task;
+            _listOfButtons.Clear();
         }
 
         private bool AppDependencyCheck(IPackage pack)
@@ -174,32 +181,102 @@ namespace DotSpatial.Plugins.ExtensionManager
             bool result = true;
             var programVersion = SemanticVersion.Parse(Assembly.GetEntryAssembly().GetName().Version.ToString());
 
-            foreach(var dependency in pack.Dependencies)
+            foreach (var dependency in pack.Dependencies)
             {
                 if (dependency.Id.ToLowerInvariant().Contains("sampleprojects"))
+                {
                     result = true;
+                }
                 else if (!dependency.Id.Contains("Plugins"))
                 {
-                    if (dependency.Id == AppName)
+                    if (dependency.Id == _appName)
                     {
                         if (dependency.VersionSpec.IsMaxInclusive)
                         {
                             if (programVersion > dependency.VersionSpec.MaxVersion)
                                 result = false;
                         }
+
                         if (result && dependency.VersionSpec.IsMinInclusive)
                         {
-                            if(programVersion < dependency.VersionSpec.MinVersion)
+                            if (programVersion < dependency.VersionSpec.MinVersion)
                                 result = false;
                         }
                     }
                     else
+                    {
                         result = false;
+                    }
 
                     break;
                 }
             }
+
             return result;
         }
+
+        private Task<PackageList> GetPackages(int pagenumber)
+        {
+            var task = Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        var result = from item in _packages.Repo.GetPackages() where item.Tags != null && item.Tags.Contains(DotSpatialPluginTag) select item;
+                        result = result.OrderBy(item => item.Id).ThenByDescending(item => item.Version);
+
+                        string id = string.Empty;
+                        List<IPackage> onlinePacks = new List<IPackage>();
+                        foreach (var item in result)
+                        {
+                            if (id != item.Id && AppDependencyCheck(item))
+                            {
+                                onlinePacks.Add(item);
+                                id = item.Id;
+                            }
+                        }
+
+                        if (onlinePacks.Count == 0)
+                            throw new InvalidOperationException();
+
+                        var info = new PackageList
+                        {
+                            // Toggle comments here to reenable paging.
+                            // info.TotalPackageCount = result.Count();
+                            // info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
+                            Packages = onlinePacks.ToArray()
+                        };
+
+                        return info;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // This usually means the url was bad.
+                        return null;
+                    }
+                });
+            return task;
+        }
+
+        private int HowManyPagesAreNeeded(int itemsToDisplay)
+        {
+            return (int)Math.Ceiling(itemsToDisplay / (double)PageSize);
+        }
+
+        #endregion
+
+        #region Classes
+
+        private class PackageList
+        {
+            #region Properties
+
+            public IPackage[] Packages { get; set; }
+
+            public int TotalPackageCount { get; set; }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

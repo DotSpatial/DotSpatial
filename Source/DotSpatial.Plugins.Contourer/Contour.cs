@@ -21,15 +21,19 @@ using NetTopologySuite.Operation.Polygonize;
 namespace DotSpatial.Plugins.Contourer
 {
     /// <summary>
-    /// 
+    /// Contour
     /// </summary>
     public class Contour
     {
-        private static ContourType type;
+        #region Fields
+
         private static double noData;
+        private static ContourType type;
+
+        #endregion
 
         /// <summary>
-        /// 
+        /// The contour type.
         /// </summary>
         public enum ContourType
         {
@@ -44,14 +48,85 @@ namespace DotSpatial.Plugins.Contourer
             Polygon
         }
 
+        #region Methods
+
         /// <summary>
-        /// 
+        /// Creates levels between minimum and maximum.
         /// </summary>
-        /// <param name="rst"></param>
-        /// <param name="contourType"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="levels"></param>
-        /// <returns></returns>
+        /// <param name="minContour">The minimum.</param>
+        /// <param name="maxContour">The maximum.</param>
+        /// <param name="every">The step width.</param>
+        /// <returns>An array with the created levels.</returns>
+        public static double[] CreateLevels(double minContour, double maxContour, double every)
+        {
+            int c = (int)((maxContour - minContour) / every) + 1;
+
+            double[] levels = new double[c];
+
+            for (int i = 0; i < c; i++)
+            {
+                levels[i] = minContour + every * i;
+            }
+
+            return levels;
+        }
+
+        /// <summary>
+        /// Creates minimum, maximum and step width from the given raster.
+        /// </summary>
+        /// <param name="r">The raster used for getting the values.</param>
+        /// <param name="contourType">The contour type used for creation.</param>
+        /// <param name="minContour">The output parameter that takes the minimum.</param>
+        /// <param name="maxContour">The output parameter that takes the maximum.</param>
+        /// <param name="every">The output parameter that takes the step width.</param>
+        public static void CreateMinMaxEvery(Raster r, ContourType contourType, out double minContour, out double maxContour, out double every)
+        {
+            double min = r.Minimum;
+            double max = r.Maximum;
+
+            if (min == max)
+            {
+                min = Math.Floor(min);
+                max = Math.Ceiling(max);
+                if (min == max)
+                {
+                    max += 1;
+                }
+            }
+
+            double dz = max - min;
+            double order = Math.Pow(10, Math.Floor(Math.Log10(dz)));
+
+            if (order == dz) order /= 10;
+            if (dz / order < 2) order /= 10;
+
+            minContour = Math.Floor(min / order) * order;
+            maxContour = Math.Ceiling(max / order) * order;
+
+            if (maxContour < max) maxContour += order;
+
+            every = order;
+
+            if (contourType == ContourType.Line)
+            {
+                minContour += every;
+                maxContour -= every;
+
+                if (maxContour <= minContour)
+                {
+                    maxContour = minContour + every;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates a featureset from the given raster.
+        /// </summary>
+        /// <param name="rst">Raster used for creation.</param>
+        /// <param name="contourType">The contour type used for creation.</param>
+        /// <param name="fieldName">Name of the field that gets added to the featureset to put the level values into.</param>
+        /// <param name="levels">The levels to sort the features into.</param>
+        /// <returns>The featureset that was created from the raster.</returns>
         public static FeatureSet Execute(Raster rst, ContourType contourType, string fieldName = "Value", double[] levels = null)
         {
             double[] lev = levels;
@@ -139,7 +214,7 @@ namespace DotSpatial.Plugins.Contourer
                         Polygonizer polygonizer = new Polygonizer();
                         polygonizer.Add(nodedContours);
 
-                        foreach (IPolygon p in polygonizer.GetPolygons())
+                        foreach (IPolygon p in polygonizer.GetPolygons().OfType<IPolygon>())
                         {
                             IPoint pnt = p.InteriorPoint;
 
@@ -168,136 +243,13 @@ namespace DotSpatial.Plugins.Contourer
         }
 
         /// <summary>
-        /// 
+        /// Gets the contours from the raster.
         /// </summary>
-        /// <param name="z"></param>
-        /// <param name="lev"></param>
-        /// <returns></returns>
-        public static int GetLevel(double z, double[] lev)
-        {
-            if (z < lev[0]) return -1;
-            if (z > lev[lev.Length - 1]) return lev.Length;
-
-            for (int i = 0; i < lev.Length - 1; i++)
-            {
-                if (z >= lev[i] & z <= lev[i + 1])
-                {
-                    return i;
-                }
-            }
-
-            return -9999;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="contourType"></param>
-        /// <param name="minContour"></param>
-        /// <param name="maxContour"></param>
-        /// <param name="every"></param>
-        public static void CreateMinMaxEvery(Raster r, ContourType contourType, out double minContour, out double maxContour, out double every)
-        {
-            double min = r.Minimum;
-            double max = r.Maximum;
-
-            if (min == max)
-            {
-                min = Math.Floor(min);
-                max = Math.Ceiling(max);
-                if (min == max)
-                {
-                    max += 1;
-                }
-            }
-
-            double dz = max - min;
-            double order = Math.Pow(10, Math.Floor(Math.Log10(dz)));
-
-            if (order == dz) order /= 10;
-            if (dz / order < 2) order /= 10;
-
-            minContour = Math.Floor(min / order) * order;
-            maxContour = Math.Ceiling(max / order) * order;
-
-            if (maxContour < max) maxContour += order;
-
-            every = order;
-
-            if (contourType == ContourType.Line)
-            {
-                minContour += every;
-                maxContour -= every;
-
-                if (maxContour <= minContour)
-                {
-                    maxContour = minContour + every;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="minContour"></param>
-        /// <param name="maxContour"></param>
-        /// <param name="every"></param>
-        /// <returns></returns>
-        public static double[] CreateLevels(double minContour, double maxContour, double every)
-        {
-            int c = (int)((maxContour - minContour) / every) + 1;
-
-            double[] levels = new double[c];
-
-            for (int i = 0; i < c; i++)
-            {
-                levels[i] = minContour + every * i;
-            }
-
-            return levels;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="raster"></param>
-        /// <param name="levels"></param>
-        /// <returns></returns>
-        public static Raster RasterCheck(Raster raster, double[] levels)
-        {
-            double eps = (raster.Maximum - raster.Minimum) / 1000;
-            int n = levels.Length;
-            Raster rst = raster;
-
-            for (int i = 0; i <= rst.NumRows - 1; i++)
-            {
-                for (int j = 0; j <= rst.NumColumns - 1; j++)
-                {
-                    if (rst.Value[i, j] != rst.NoDataValue)
-                    {
-                        for (int l = 0; l < n; l++)
-                        {
-                            if (rst.Value[i, j] == levels[l])
-                            {
-                                rst.Value[i, j] += eps;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return rst;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rst"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="zlev"></param>
-        /// <returns></returns>
+        /// <param name="rst">Raster to get the contours from.</param>
+        /// <param name="x">The x values.</param>
+        /// <param name="y">The y values.</param>
+        /// <param name="zlev">Level to get the contours for.</param>
+        /// <returns>The contours that were found.</returns>
         public static IList<IGeometry> GetContours(ref Raster rst, double[] x, double[] y, double zlev)
         {
             List<LineString> lsList = new List<LineString>();
@@ -403,13 +355,59 @@ namespace DotSpatial.Plugins.Contourer
         }
 
         /// <summary>
-        /// 
+        /// Gets the level that contains the given z value.
         /// </summary>
-        /// <param name="xx"></param>
-        /// <param name="yy"></param>
-        /// <param name="zz"></param>
-        /// <param name="zlevel"></param>
-        /// <returns></returns>
+        /// <param name="z">Z value to look for.</param>
+        /// <param name="lev">Levels that get searched.</param>
+        /// <returns>-9999 if no fitting level was found, otherwise the level that was found.</returns>
+        public static int GetLevel(double z, double[] lev)
+        {
+            if (z < lev[0]) return -1;
+            if (z > lev[lev.Length - 1]) return lev.Length;
+
+            for (int i = 0; i < lev.Length - 1; i++)
+            {
+                if (z >= lev[i] & z <= lev[i + 1])
+                {
+                    return i;
+                }
+            }
+
+            return -9999;
+        }
+
+        /// <summary>
+        /// Checks the raster.
+        /// </summary>
+        /// <param name="raster">Raster to check.</param>
+        /// <param name="levels">Levels needed for checking.</param>
+        /// <returns>The checked raster.</returns>
+        public static Raster RasterCheck(Raster raster, double[] levels)
+        {
+            double eps = (raster.Maximum - raster.Minimum) / 1000;
+            int n = levels.Length;
+            Raster rst = raster;
+
+            for (int i = 0; i <= rst.NumRows - 1; i++)
+            {
+                for (int j = 0; j <= rst.NumColumns - 1; j++)
+                {
+                    if (rst.Value[i, j] != rst.NoDataValue)
+                    {
+                        for (int l = 0; l < n; l++)
+                        {
+                            if (rst.Value[i, j] == levels[l])
+                            {
+                                rst.Value[i, j] += eps;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return rst;
+        }
+
         private static Coordinate[] Intersect(double[] xx, double[] yy, double[] zz, double zlevel)
         {
             List<Coordinate> coordinates = new List<Coordinate>();
@@ -466,5 +464,7 @@ namespace DotSpatial.Plugins.Contourer
 
             return coordinates.ToArray();
         }
+
+        #endregion
     }
 }

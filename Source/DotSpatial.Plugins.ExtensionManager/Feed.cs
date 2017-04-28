@@ -5,9 +5,15 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     internal class Feed
     {
+        #region Properties
+
         public string Name { get; set; }
 
         public string Url { get; set; }
+
+        #endregion
+
+        #region Methods
 
         public bool IsValid()
         {
@@ -28,5 +34,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             return true;
         }
+
+        #endregion
     }
 }
