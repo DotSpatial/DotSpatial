@@ -154,4 +154,110 @@
   <data name="NoHeaderControlErrorDownloadingRibbon" xml:space="preserve">
     <value>No HeaderControl was available, but we couldn't download the ribbon. Please make sure you are connected to the Internet.</value>
   </data>
+  <data name="ProjectSuccessfullyUninstalled" xml:space="preserve">
+    <value>The project was successfully uninstalled.</value>
+  </data>
+  <data name="SomeFilesCouldNotBeUninstalled" xml:space="preserve">
+    <value>Some files could not be uninstalled. {0}</value>
+  </data>
+  <data name="CannotUninstallProjectOpen" xml:space="preserve">
+    <value>Cannot uninstall {0}. The project is currently open. Please close current project and try again.</value>
+  </data>
+  <data name="ErrorFilePath" xml:space="preserve">
+    <value>{0} File: {1}</value>
+  </data>
+  <data name="SampleProjectsFormText" xml:space="preserve">
+    <value>Open Sample Project</value>
+  </data>
+  <data name="Installing" xml:space="preserve">
+    <value>Installing {0}</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready.</value>
+  </data>
+  <data name="CannotDownloadCheckInternetConnection" xml:space="preserve">
+    <value>We cannot download {0}. Please make sure you are connected to the Internet.</value>
+  </data>
+  <data name="DownloadingDependency" xml:space="preserve">
+    <value>Downloading Dependency {0}</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value> "Downloading {0}</value>
+  </data>
+  <data name="NoProjectTemplatesPleaseInstall" xml:space="preserve">
+    <value>No project templates were found. Please install the templates.</value>
+  </data>
+  <data name="NoPackagesRetrieved" xml:space="preserve">
+    <value>No packages could be retrieved for the selected feed.</value>
+  </data>
+  <data name="TryAgainLaterSelectAnotherFeed" xml:space="preserve">
+    <value>Try again later or Select another feed.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="SourceName0AlreadyExists" xml:space="preserve">
+    <value>Source name '{0}' already exists.</value>
+  </data>
+  <data name="SourceURL0AlreadyExists" xml:space="preserve">
+    <value>Source URL '{0}' already exists.</value>
+  </data>
+  <data name="EnterValidPackageFeedUrl" xml:space="preserve">
+    <value>Enter a valid package feed URL.</value>
+  </data>
+  <data name="ExtensionManager" xml:space="preserve">
+    <value>Extension Manager...</value>
+  </data>
+  <data name="OpenSampleProject" xml:space="preserve">
+    <value>Open sample project..</value>
+  </data>
+  <data name="LookingForUpdates" xml:space="preserve">
+    <value>Looking for updates</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished.</value>
+  </data>
+  <data name="TheFollowingPackagesAreInstalled" xml:space="preserve">
+    <value>The following packages are installed: {0}</value>
+  </data>
+  <data name="Uninstalling" xml:space="preserve">
+    <value>Uninstalling {0}</value>
+  </data>
+  <data name="ExtensionWillFinishUninstallingOnRestart" xml:space="preserve">
+    <value>The extension will finish uninstalling when you restart the application.</value>
+  </data>
+  <data name="ExtensionsFolderDoesNotExist" xml:space="preserve">
+    <value>The extensions folder {0} does not exist.</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="PleaseRestartBeforeDownloadingPlugins" xml:space="preserve">
+    <value>Please restart {0} before attempting to download any plugins.</value>
+  </data>
+  <data name="DownloadingTheDependencies" xml:space="preserve">
+    <value>Downloading the dependencies
+</value>
+  </data>
+  <data name="NoMatchingPackagesFound" xml:space="preserve">
+    <value>No packages matching your search terms were found.</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Downloads" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>Dependencies: </value>
+  </data>
 </root>

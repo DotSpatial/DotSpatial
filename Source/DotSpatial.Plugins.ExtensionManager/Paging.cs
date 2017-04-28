@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotSpatial.Controls;
+using DotSpatial.Plugins.ExtensionManager.Properties;
 using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
@@ -21,12 +22,13 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// The page size.
         /// </summary>
         public const int PageSize = 9;
+
         private const string DotSpatialPluginTag = "DotSpatial.Plugin";
         private readonly ListViewHelper _add;
-        private readonly Packages _packages;
         private readonly string _appName;
 
         private readonly List<Button> _listOfButtons = new List<Button>();
+        private readonly Packages _packages;
 
         #endregion
 
@@ -94,9 +96,9 @@ namespace DotSpatial.Plugins.ExtensionManager
                 int page = Convert.ToInt32(button.Text);
 
                 var eventArgs = new PageSelectedEventArgs
-                {
-                    SelectedPage = page
-                };
+                                    {
+                                        SelectedPage = page
+                                    };
 
                 PageChanged.Invoke(this, eventArgs);
             }
@@ -116,11 +118,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             for (int i = 1; i <= buttonsToShow; i++)
             {
                 Button button = new Button
-                {
-                    Text = i.ToString(),
-                    Location = new Point(50 * i, 510),
-                    Size = new Size(41, 23)
-                };
+                                    {
+                                        Text = i.ToString(),
+                                        Location = new Point(50 * i, 510),
+                                        Size = new Size(41, 23)
+                                    };
                 _listOfButtons.Add(button);
                 button.Click += ButtonClick;
             }
@@ -137,7 +139,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             ResetButtons(tab);
             listview.Items.Clear();
-            listview.Items.Add("Loading...");
+            listview.Items.Add(Resources.Loading);
 
             Task<PackageList> task = GetPackages(pagenumber);
             task.ContinueWith(
@@ -146,8 +148,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                     listview.Items.Clear();
                     if (t.Result == null)
                     {
-                        listview.Items.Add("No packages could be retrieved for the selected feed.");
-                        listview.Items.Add("Try again later or Select another feed.");
+                        listview.Items.Add(Resources.NoPackagesRetrieved);
+                        listview.Items.Add(Resources.TryAgainLaterSelectAnotherFeed);
                     }
                     else
                     {
@@ -239,12 +241,12 @@ namespace DotSpatial.Plugins.ExtensionManager
                             throw new InvalidOperationException();
 
                         var info = new PackageList
-                        {
-                            // Toggle comments here to reenable paging.
-                            // info.TotalPackageCount = result.Count();
-                            // info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
-                            Packages = onlinePacks.ToArray()
-                        };
+                                       {
+                                           // Toggle comments here to reenable paging.
+                                           // info.TotalPackageCount = result.Count();
+                                           // info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
+                                           Packages = onlinePacks.ToArray()
+                                       };
 
                         return info;
                     }

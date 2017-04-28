@@ -110,7 +110,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 },
                 CancellationToken.None,
                 TaskCreationOptions.None,
-                TaskScheduler.Default);  // Had to use TaskScheduler.Default so that the threads were not attached to the parent (Main UI thread for RefreshPackageList)
+                TaskScheduler.Default); // Had to use TaskScheduler.Default so that the threads were not attached to the parent (Main UI thread for RefreshPackageList)
 
             return task;
         }

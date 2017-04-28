@@ -18,11 +18,10 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
+using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
-using Point = System.Drawing.Point;
-using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -59,10 +58,10 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the MoveVertexFunction class where the Map will be defined.
+        /// Initializes a new instance of the <see cref="MoveVertexFunction"/> class where the Map will be defined.
         /// </summary>
         /// <param name="map">The map control that implements the IMap interface.</param>
         public MoveVertexFunction(IMap map)
@@ -75,6 +74,9 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         #region Events
 
+        /// <summary>
+        /// Is raised after a vertex was moved.
+        /// </summary>
         public event EventHandler<VertexMovedEventArgs> VertextMoved;
 
         #endregion
@@ -90,6 +92,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 return _layer;
             }
+
             set
             {
                 _layer = value;
@@ -103,10 +106,307 @@ namespace DotSpatial.Plugins.ShapeEditor
         #region Methods
 
         /// <summary>
+        /// Deselects the selected feature and removes the highlight from any highlighted feature.
+        /// </summary>
+        public void ClearSelection()
+        {
+            DeselectFeature();
+            RemoveHighlightFromFeature();
+            _oldCategory = null;
+        }
+
+        /// <summary>
+        /// This should be called if for some reason the layer gets un-selected or whatever so that the selection
+        /// should clear.
+        /// </summary>
+        public void DeselectFeature()
+        {
+            if (_selectedFeature != null)
+            {
+                _layer.SetCategory(_selectedFeature, _oldCategory);
+            }
+
+            _selectedFeature = null;
+            Map.MapFrame.Initialize();
+            Map.Invalidate();
+        }
+
+        /// <summary>
+        /// Removes the highlighting from the actively highlighted feature.
+        /// </summary>
+        public void RemoveHighlightFromFeature()
+        {
+            if (_activeFeature != null)
+            {
+                _layer.SetCategory(_activeFeature, _oldCategory);
+            }
+
+            _activeFeature = null;
+        }
+
+        /// <inheritdoc />
+        protected override void OnDeactivate()
+        {
+            ClearSelection();
+            base.OnDeactivate();
+        }
+
+        /// <inheritdoc />
+        protected override void OnDraw(MapDrawArgs e)
+        {
+            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+            if (_selectedFeature != null)
+            {
+                foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
+                {
+                    Point pt = e.GeoGraphics.ProjToPixel(c);
+                    if (e.GeoGraphics.ImageRectangle.Contains(pt))
+                    {
+                        e.Graphics.FillRectangle(Brushes.Blue, pt.X - 2, pt.Y - 2, 4, 4);
+                    }
+
+                    if (mouseRect.Contains(pt))
+                    {
+                        e.Graphics.FillRectangle(Brushes.Red, mouseRect);
+                    }
+                }
+            }
+
+            if (_dragging)
+            {
+                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
+                {
+                    Rectangle r = new Rectangle(_mousePosition.X - (_imageRect.Width / 2), _mousePosition.Y - (_imageRect.Height / 2), _imageRect.Width, _imageRect.Height);
+                    _selectedCategory.Symbolizer.Draw(e.Graphics, r);
+                }
+                else
+                {
+                    e.Graphics.FillRectangle(Brushes.Red, _mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+                    Point b = _mousePosition;
+                    Pen p = new Pen(Color.Blue)
+                    {
+                        DashStyle = DashStyle.Dash
+                    };
+                    if (_previousPoint != null)
+                    {
+                        Point a = e.GeoGraphics.ProjToPixel(_previousPoint);
+                        e.Graphics.DrawLine(p, a, b);
+                    }
+
+                    if (_nextPoint != null)
+                    {
+                        Point c = e.GeoGraphics.ProjToPixel(_nextPoint);
+                        e.Graphics.DrawLine(p, b, c);
+                    }
+
+                    p.Dispose();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void OnMouseDown(GeoMouseArgs e)
+        {
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
+            {
+                _mousePosition = e.Location;
+                if (_dragging)
+                {
+                    if (e.Button == MouseButtons.Right)
+                    {
+                        _dragging = false;
+                        Map.Invalidate();
+                        Map.IsBusy = false;
+                    }
+                }
+                else
+                {
+                    if (_selectedFeature != null)
+                    {
+                        Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+
+                        Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
+
+                        if (CheckForVertexDrag(e))
+                        {
+                            return;
+                        }
+
+                        // No vertex selection has occured.
+                        if (!_selectedFeature.Geometry.Intersects(env.ToPolygon()))
+                        {
+                            // We are clicking down outside of the given polygon, so clear our selected feature
+                            DeselectFeature();
+                            return;
+                        }
+                    }
+
+                    if (_activeFeature != null)
+                    {
+                        // Don't start dragging a vertices right away for polygons and lines.
+                        // First you select the polygon, which displays the vertices, then they can be moved.
+                        if (_featureSet.FeatureType == FeatureType.Polygon)
+                        {
+                            _selectedFeature = _activeFeature;
+                            _activeFeature = null;
+                            IPolygonCategory sc = _selectedCategory as IPolygonCategory;
+                            if (sc == null)
+                            {
+                                _selectedCategory = new PolygonCategory(Color.FromArgb(55, 0, 255, 255), Color.Blue, 1)
+                                {
+                                    LegendItemVisible = false
+                                };
+                            }
+
+                            _layer.SetCategory(_selectedFeature, _selectedCategory);
+                        }
+                        else if (_featureSet.FeatureType == FeatureType.Line)
+                        {
+                            _selectedFeature = _activeFeature;
+                            _activeFeature = null;
+                            ILineCategory sc = _selectedCategory as ILineCategory;
+                            if (sc == null)
+                            {
+                                _selectedCategory = new LineCategory(Color.Cyan, 1)
+                                {
+                                    LegendItemVisible = false
+                                };
+                            }
+
+                            _layer.SetCategory(_selectedFeature, _selectedCategory);
+                        }
+                        else
+                        {
+                            _dragging = true;
+                            Map.IsBusy = true;
+                            _dragCoord = _activeFeature.Geometry.Coordinates[0];
+                            MapPointLayer mpl = _layer as MapPointLayer;
+                            mpl?.SetVisible(_activeFeature, false);
+
+                            IPointCategory sc = _selectedCategory as IPointCategory;
+                            if (sc == null)
+                            {
+                                IPointSymbolizer ps = _layer.GetCategory(_activeFeature).Symbolizer.Copy() as IPointSymbolizer;
+                                if (ps != null)
+                                {
+                                    ps.SetFillColor(Color.Cyan);
+                                    _selectedCategory = new PointCategory(ps);
+                                }
+                            }
+                        }
+                    }
+
+                    Map.MapFrame.Initialize();
+                    Map.Invalidate();
+                }
+            }
+
+            base.OnMouseDown(e);
+        }
+
+        /// <inheritdoc />
+        protected override void OnMouseMove(GeoMouseArgs e)
+        {
+            _mousePosition = e.Location;
+            if (_dragging)
+            {
+                // Begin snapping changes
+                Coordinate snappedCoord = e.GeographicLocation;
+                if (ComputeSnappedLocation(e, ref snappedCoord))
+                {
+                    _mousePosition = Map.ProjToPixel(snappedCoord);
+                }
+
+                // End snapping changes
+                UpdateDragCoordinate(snappedCoord); // Snapping changes
+            }
+            else
+            {
+                if (_selectedFeature != null)
+                {
+                    VertexHighlight();
+                }
+                else
+                {
+                    // Before a shape is selected it should be possible to highlight shapes to indicate which one
+                    // will be selected.
+                    bool requiresInvalidate = false;
+                    if (_activeFeature != null)
+                    {
+                        if (ShapeRemoveHighlight(e))
+                        {
+                            requiresInvalidate = true;
+                        }
+                    }
+
+                    if (_activeFeature == null)
+                    {
+                        if (ShapeHighlight(e))
+                        {
+                            requiresInvalidate = true;
+                        }
+                    }
+
+                    if (requiresInvalidate)
+                    {
+                        Map.MapFrame.Initialize();
+                        Map.Invalidate();
+                    }
+                }
+
+                // check to see if the coordinates intersect with a shape in our current featureset.
+            }
+
+            base.OnMouseMove(e);
+        }
+
+        /// <inheritdoc />
+        protected override void OnMouseUp(GeoMouseArgs e)
+        {
+            if (e.Button == MouseButtons.Left && _dragging)
+            {
+                _dragging = false;
+                Map.IsBusy = false;
+                _featureSet.InvalidateVertices();
+
+                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
+                {
+                    if (_activeFeature == null)
+                    {
+                        return;
+                    }
+
+                    OnVertexMoved(new VertexMovedEventArgs(_activeFeature));
+                    if (_layer.GetCategory(_activeFeature) != _selectedCategory)
+                    {
+                        _layer.SetCategory(_activeFeature, _selectedCategory);
+                        _layer.SetVisible(_activeFeature, true);
+                    }
+                }
+                else
+                {
+                    if (_selectedFeature == null)
+                    {
+                        return;
+                    }
+
+                    OnVertexMoved(new VertexMovedEventArgs(_selectedFeature));
+                    if (_layer.GetCategory(_selectedFeature) != _selectedCategory)
+                    {
+                        _layer.SetCategory(_selectedFeature, _selectedCategory);
+                    }
+                }
+            }
+
+            Map.MapFrame.Initialize();
+            base.OnMouseUp(e);
+        }
+
+        /// <summary>
         /// This function checks to see if the current mouse location is over a vertex.
         /// </summary>
-        /// <param name="e">The GeoMouseArgs parameter contains information about the mouse
-        /// location and geographic coordinates.</param>
+        /// <param name="e">The GeoMouseArgs parameter contains information about the mouse location and geographic coordinates.</param>
+        /// <returns>True, if the current mouse location is over a vertex.</returns>
         private bool CheckForVertexDrag(GeoMouseArgs e)
         {
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
@@ -144,6 +444,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                                     _nextPoint = coords[ic + 1];
                                     _closedCircleCoord = null;
                                 }
+
                                 Map.Invalidate();
                                 return true;
                             }
@@ -179,6 +480,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                                     _previousPoint = coords[ic - 1];
                                     _nextPoint = coords[ic + 1];
                                 }
+
                                 Map.Invalidate();
                                 return true;
                             }
@@ -186,302 +488,34 @@ namespace DotSpatial.Plugins.ShapeEditor
                     }
                 }
             }
-            return false;
-        }
 
-        /// <summary>
-        /// Deselects the selected feature and removes the highlight from any highlighted feature.
-        /// </summary>
-        public void ClearSelection()
-        {
-            DeselectFeature();
-            RemoveHighlightFromFeature();
-            _oldCategory = null;
+            return false;
         }
 
         private void Configure()
         {
-            YieldStyle = (YieldStyles.LeftButton | YieldStyles.RightButton);
-        }
-
-        /// <summary>
-        /// This should be called if for some reason the layer gets un-selected or whatever so that the selection
-        /// should clear.
-        /// </summary>
-        public void DeselectFeature()
-        {
-            if (_selectedFeature != null)
-            {
-                _layer.SetCategory(_selectedFeature, _oldCategory);
-            }
-
-            _selectedFeature = null;
-            Map.MapFrame.Initialize();
-            Map.Invalidate();
-        }
-
-        /// <inheritdoc />
-        protected override void OnDeactivate()
-        {
-            ClearSelection();
-            base.OnDeactivate();
-        }
-
-        /// <inheritdoc />
-        protected override void OnDraw(MapDrawArgs e)
-        {
-            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
-            if (_selectedFeature != null)
-            {
-                foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
-                {
-                    Point pt = e.GeoGraphics.ProjToPixel(c);
-                    if (e.GeoGraphics.ImageRectangle.Contains(pt))
-                    {
-                        e.Graphics.FillRectangle(Brushes.Blue, pt.X - 2, pt.Y - 2, 4, 4);
-                    }
-                    if (mouseRect.Contains(pt))
-                    {
-                        e.Graphics.FillRectangle(Brushes.Red, mouseRect);
-                    }
-                }
-            }
-            if (_dragging)
-            {
-                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
-                {
-                    Rectangle r = new Rectangle(_mousePosition.X - (_imageRect.Width / 2), _mousePosition.Y - (_imageRect.Height / 2), _imageRect.Width, _imageRect.Height);
-                    _selectedCategory.Symbolizer.Draw(e.Graphics, r);
-                }
-                else
-                {
-                    e.Graphics.FillRectangle(Brushes.Red, _mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
-                    Point b = _mousePosition;
-                    Pen p = new Pen(Color.Blue) { DashStyle = DashStyle.Dash };
-                    if (_previousPoint != null)
-                    {
-                        Point a = e.GeoGraphics.ProjToPixel(_previousPoint);
-                        e.Graphics.DrawLine(p, a, b);
-                    }
-                    if (_nextPoint != null)
-                    {
-                        Point c = e.GeoGraphics.ProjToPixel(_nextPoint);
-                        e.Graphics.DrawLine(p, b, c);
-                    }
-                    p.Dispose();
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        protected override void OnMouseDown(GeoMouseArgs e)
-        {
-            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
-            {
-                _mousePosition = e.Location;
-                if (_dragging)
-                {
-                    if (e.Button == MouseButtons.Right)
-                    {
-                        _dragging = false;
-                        Map.Invalidate();
-                        Map.IsBusy = false;
-                    }
-                }
-                else
-                {
-                    if (_selectedFeature != null)
-                    {
-                        Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
-
-                        Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
-
-                        if (CheckForVertexDrag(e)) { return; }
-
-                        // No vertex selection has occured.
-                        if (!_selectedFeature.Geometry.Intersects(env.ToPolygon()))
-                        {
-                            // We are clicking down outside of the given polygon, so clear our selected feature
-                            DeselectFeature();
-                            return;
-                        }
-                    }
-
-                    if (_activeFeature != null)
-                    {
-                        // Don't start dragging a vertices right away for polygons and lines.
-                        // First you select the polygon, which displays the vertices, then they can be moved.
-                        if (_featureSet.FeatureType == FeatureType.Polygon)
-                        {
-                            _selectedFeature = _activeFeature;
-                            _activeFeature = null;
-                            IPolygonCategory sc = _selectedCategory as IPolygonCategory;
-                            if (sc == null)
-                            {
-                                _selectedCategory = new PolygonCategory(Color.FromArgb(55, 0, 255, 255), Color.Blue, 1)
-                                                        {
-                                                            LegendItemVisible = false
-                                                        };
-                            }
-
-                            _layer.SetCategory(_selectedFeature, _selectedCategory);
-                        }
-                        else if (_featureSet.FeatureType == FeatureType.Line)
-                        {
-                            _selectedFeature = _activeFeature;
-                            _activeFeature = null;
-                            ILineCategory sc = _selectedCategory as ILineCategory;
-                            if (sc == null)
-                            {
-                                _selectedCategory = new LineCategory(Color.Cyan, 1) { LegendItemVisible = false };
-                            }
-                            _layer.SetCategory(_selectedFeature, _selectedCategory);
-                        }
-                        else
-                        {
-                            _dragging = true;
-                            Map.IsBusy = true;
-                            _dragCoord = _activeFeature.Geometry.Coordinates[0];
-                            MapPointLayer mpl = _layer as MapPointLayer;
-                            if (mpl != null)
-                            {
-                                mpl.SetVisible(_activeFeature, false);
-                            }
-                            IPointCategory sc = _selectedCategory as IPointCategory;
-                            if (sc == null)
-                            {
-                                IPointSymbolizer ps =
-                                    _layer.GetCategory(_activeFeature).Symbolizer.Copy() as IPointSymbolizer;
-                                if (ps != null)
-                                {
-                                    ps.SetFillColor(Color.Cyan);
-                                    _selectedCategory = new PointCategory(ps);
-                                }
-                            }
-                        }
-                    }
-                    Map.MapFrame.Initialize();
-                    Map.Invalidate();
-                }
-            }
-            base.OnMouseDown(e);
-        }
-
-        /// <inheritdoc />
-        protected override void OnMouseMove(GeoMouseArgs e)
-        {
-            _mousePosition = e.Location;
-            if (_dragging)
-            {
-                // Begin snapping changes
-                Coordinate snappedCoord = e.GeographicLocation;
-                if (ComputeSnappedLocation(e, ref snappedCoord))
-                {
-                    _mousePosition = Map.ProjToPixel(snappedCoord);
-                }
-                // End snapping changes
-
-                UpdateDragCoordinate(snappedCoord); // Snapping changes
-            }
-            else
-            {
-                if (_selectedFeature != null)
-                {
-                    VertexHighlight();
-                }
-                else
-                {
-                    // Before a shape is selected it should be possible to highlight shapes to indicate which one
-                    // will be selected.
-                    bool requiresInvalidate = false;
-                    if (_activeFeature != null)
-                    {
-                        if (ShapeRemoveHighlight(e)) { requiresInvalidate = true; }
-                    }
-                    if (_activeFeature == null)
-                    {
-                        if (ShapeHighlight(e)) { requiresInvalidate = true; }
-                    }
-
-                    if (requiresInvalidate)
-                    {
-                        Map.MapFrame.Initialize();
-                        Map.Invalidate();
-                    }
-                }
-
-                // check to see if the coordinates intersect with a shape in our current featureset.
-            }
-            base.OnMouseMove(e);
-        }
-
-        /// <inheritdoc />
-        protected override void OnMouseUp(GeoMouseArgs e)
-        {
-            if (e.Button == MouseButtons.Left && _dragging)
-            {
-                _dragging = false;
-                Map.IsBusy = false;
-                _featureSet.InvalidateVertices();
-
-                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
-                {
-                    if (_activeFeature == null) { return; }
-                    OnVertexMoved(new VertexMovedEventArgs(_activeFeature));
-                    if (_layer.GetCategory(_activeFeature) != _selectedCategory)
-                    {
-                        _layer.SetCategory(_activeFeature, _selectedCategory);
-                        _layer.SetVisible(_activeFeature, true);
-                    }
-                }
-                else
-                {
-                    if (_selectedFeature == null) { return; }
-                    OnVertexMoved(new VertexMovedEventArgs(_selectedFeature));
-                    if (_layer.GetCategory(_selectedFeature) != _selectedCategory)
-                    {
-                        _layer.SetCategory(_selectedFeature, _selectedCategory);
-                    }
-                }
-            }
-            Map.MapFrame.Initialize();
-            base.OnMouseUp(e);
+            YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
         }
 
         /// <summary>
         /// Fires the VertexMoved event.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         private void OnVertexMoved(VertexMovedEventArgs e)
         {
-            EventHandler<VertexMovedEventArgs> handler = VertextMoved;
-            if (handler != null)
-                handler(this, e);
-        }
-
-        /// <summary>
-        /// Removes the highlighting from the actively highlighted feature.
-        /// </summary>
-        public void RemoveHighlightFromFeature()
-        {
-            if (_activeFeature != null)
-            {
-                _layer.SetCategory(_activeFeature, _oldCategory);
-            }
-            _activeFeature = null;
+            VertextMoved?.Invoke(this, e);
         }
 
         /// <summary>
         /// Before a shape is selected, moving the mouse over a shape will highlight that shape by changing
         /// its appearance. This tests features to determine the first feature to qualify as the highlight.
         /// </summary>
-        /// <param name="e">The GeoMouseArgs parameter contains information about the mouse location
-        /// and geographic coordinates.</param>
+        /// <param name="e">The GeoMouseArgs parameter contains information about the mouse location and geographic coordinates.</param>
         /// <returns>A value indicating whether the shape was successfully highlighted.</returns>
         private bool ShapeHighlight(GeoMouseArgs e)
         {
             if (e == null)
-                throw new ArgumentNullException("e", "e is null.");
+                throw new ArgumentNullException(nameof(e), "e is null.");
 
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
@@ -506,6 +540,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                                 h = (int)size.Height;
                             }
                         }
+
                         _imageRect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w, h);
                         if (_imageRect.Contains(Map.ProjToPixel(feature.Geometry.Coordinates[0])))
                         {
@@ -517,9 +552,11 @@ namespace DotSpatial.Plugins.ShapeEditor
                                 _selectedCategory.SetColor(Color.Red);
                                 _selectedCategory.LegendItemVisible = false;
                             }
+
                             mpl.SetCategory(_activeFeature, _selectedCategory);
                         }
                     }
+
                     requiresInvalidate = true;
                 }
                 else
@@ -534,22 +571,31 @@ namespace DotSpatial.Plugins.ShapeEditor
                             IPolygonCategory pc = _activeCategory as IPolygonCategory;
                             if (pc == null)
                             {
-                                _activeCategory = new PolygonCategory(Color.FromArgb(55, 255, 0, 0), Color.Red, 1) { LegendItemVisible = false };
+                                _activeCategory = new PolygonCategory(Color.FromArgb(55, 255, 0, 0), Color.Red, 1)
+                                {
+                                    LegendItemVisible = false
+                                };
                             }
                         }
+
                         if (_featureSet.FeatureType == FeatureType.Line)
                         {
                             ILineCategory pc = _activeCategory as ILineCategory;
                             if (pc == null)
                             {
-                                _activeCategory = new LineCategory(Color.Red, 3) { LegendItemVisible = false };
+                                _activeCategory = new LineCategory(Color.Red, 3)
+                                {
+                                    LegendItemVisible = false
+                                };
                             }
                         }
+
                         _layer.SetCategory(_activeFeature, _activeCategory);
                         requiresInvalidate = true;
                     }
                 }
             }
+
             return requiresInvalidate;
         }
 
@@ -562,7 +608,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         private bool ShapeRemoveHighlight(GeoMouseArgs e)
         {
             // If no shapes have ever been highlighted, this is meaningless.
-            if (_oldCategory == null) { return false; }
+            if (_oldCategory == null)
+            {
+                return false;
+            }
+
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
             MapPointLayer mpl = _layer as MapPointLayer;
@@ -581,6 +631,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                         h = (int)pc.Symbolizer.GetSize().Height;
                     }
                 }
+
                 Rectangle rect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w * 2, h * 2);
                 if (!rect.Contains(Map.ProjToPixel(_activeFeature.Geometry.Coordinates[0])))
                 {
@@ -598,6 +649,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     requiresInvalidate = true;
                 }
             }
+
             return requiresInvalidate;
         }
 
@@ -611,23 +663,21 @@ namespace DotSpatial.Plugins.ShapeEditor
                 _closedCircleCoord.X = loc.X;
                 _closedCircleCoord.Y = loc.Y;
             }
+
             Map.Invalidate();
         }
 
         private void VertexHighlight()
         {
-            // The feature is selected so color vertex that can be moved
-            // but don't highlight other shapes.
+            // The feature is selected so color vertex that can be moved but don't highlight other shapes.
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
-            if (!(_activeVertex == null))
+            if (_activeVertex != null && !ext.Contains(_activeVertex))
             {
-                if (!ext.Contains(_activeVertex))
-                {
-                    _activeVertex = null;
-                    Map.Invalidate();
-                }
+                _activeVertex = null;
+                Map.Invalidate();
             }
+
             foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
             {
                 if (ext.Contains(c))
@@ -637,25 +687,6 @@ namespace DotSpatial.Plugins.ShapeEditor
                 }
             }
         }
-
-        #endregion
-    }
-
-
-    public class VertexMovedEventArgs : EventArgs
-    {
-        #region Constructors
-
-        public VertexMovedEventArgs(IFeature affectedFeature)
-        {
-            AffectedFeature = affectedFeature;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public IFeature AffectedFeature { get; set; }
 
         #endregion
     }

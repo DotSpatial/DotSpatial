@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtensionManagerPlugin.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Threading;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -12,17 +6,23 @@ using DotSpatial.Plugins.ExtensionManager.Properties;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
+    /// <summary>
+    /// This plugin is used to add the extension manager.
+    /// </summary>
     public class ExtensionManagerPlugin : Extension
     {
         #region Fields
 
-        ExtensionManagerForm form = new ExtensionManagerForm();
-        Thread updateThread;
+        private readonly ExtensionManagerForm _form = new ExtensionManagerForm();
+        private Thread _updateThread;
 
         #endregion
 
         #region  Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtensionManagerPlugin"/> class.
+        /// </summary>
         public ExtensionManagerPlugin()
         {
             DeactivationAllowed = false;
@@ -36,11 +36,11 @@ namespace DotSpatial.Plugins.ExtensionManager
         public override void Activate()
         {
             AddButtons();
-            form.App = App;
+            _form.App = App;
 
-            updateThread = new Thread(() => Update.AutoUpdateController(App));
-            updateThread.Start();
-            App.UpdateSplashScreen("Looking for updates");
+            _updateThread = new Thread(() => Update.AutoUpdateController(App));
+            _updateThread.Start();
+            App.UpdateSplashScreen(Resources.LookingForUpdates);
             App.ExtensionsActivated += ExtensionsActivated;
 
             base.Activate();
@@ -58,51 +58,51 @@ namespace DotSpatial.Plugins.ExtensionManager
             switch (App.ShowExtensionsDialogMode)
             {
                 case ShowExtensionsDialogMode.Default:
-                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Extension Manager...", ExtensionManager_Click)
-                                           {
-                                               GroupCaption = HeaderControl.ApplicationMenuKey,
-                                               SmallImage = Resources.plugin_16x16,
-                                               LargeImage = Resources.plugin_32x32,
-                                               SortOrder = 100
-                                           };
+                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, Resources.ExtensionManager, ExtensionManagerClick)
+                    {
+                        GroupCaption = HeaderControl.ApplicationMenuKey,
+                        SmallImage = Resources.plugin_16x16,
+                        LargeImage = Resources.plugin_32x32,
+                        SortOrder = 100
+                    };
                     App.HeaderControl.Add(simpleAction);
 
                     // sample projects menu
-                    var simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenSampleProjects_Click)
-                                               {
-                                                   GroupCaption = HeaderControl.ApplicationMenuKey,
-                                                   SmallImage = Resources.plugin_16x16,
-                                                   LargeImage = Resources.plugin_32x32
-                                               };
+                    var simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, Resources.OpenSampleProject, OpenSampleProjectsClick)
+                    {
+                        GroupCaption = HeaderControl.ApplicationMenuKey,
+                        SmallImage = Resources.plugin_16x16,
+                        LargeImage = Resources.plugin_32x32
+                    };
                     App.HeaderControl.Add(simpleActionItem);
 
                     break;
 
                 case ShowExtensionsDialogMode.MapGlyph:
                     var fun = new AppFunction
-                                  {
-                                      Manager = App,
-                                      Map = App.Map
-                                  };
+                    {
+                        Manager = App,
+                        Map = App.Map
+                    };
                     App.Map.MapFunctions.Insert(0, fun);
                     fun.Activate();
                     break;
             }
         }
 
-        private void ExtensionManager_Click(object sender, EventArgs e)
+        private void ExtensionManagerClick(object sender, EventArgs e)
         {
-            form.Show();
+            _form.Show();
         }
 
         private void ExtensionsActivated(object sender, EventArgs e)
         {
-            App.UpdateSplashScreen("Looking for updates");
-            updateThread.Join();
-            App.UpdateSplashScreen("Finished.");
+            App.UpdateSplashScreen(Resources.LookingForUpdates);
+            _updateThread.Join();
+            App.UpdateSplashScreen(Resources.Finished);
         }
 
-        private void OpenSampleProjects_Click(object sender, EventArgs e)
+        private void OpenSampleProjectsClick(object sender, EventArgs e)
         {
             var sampleProjForm = new SampleProjectsForm(App);
             sampleProjForm.Show();

@@ -20,22 +20,32 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// </summary>
     public class ShapeEditorPlugin : Extension
     {
+        #region Fields
+
         private ButtonHandler _myHandler;
+
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc/>
         public override void Activate()
         {
-            _myHandler = new ButtonHandler(this.App) { Map = App.Map };
+            _myHandler = new ButtonHandler(App)
+                         {
+                             Map = App.Map
+                         };
             base.Activate();
         }
 
         /// <inheritdoc/>
         public override void Deactivate()
         {
-            if (App.HeaderControl != null) { App.HeaderControl.RemoveAll(); }
-
-            if (_myHandler != null) { _myHandler.Dispose(); }
+            App.HeaderControl?.RemoveAll();
+            _myHandler?.Dispose();
             base.Deactivate();
         }
+
+        #endregion
     }
 }

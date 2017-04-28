@@ -14,8 +14,10 @@ namespace DotSpatial.Plugins.ExtensionManager
     internal class Packages
     {
         #region Fields
+
         private const string PackageSourceUrl = "http://www.myget.org/F/cuahsi/";
         private PackageManager _packageManager;
+
         #endregion
 
         #region  Constructors
@@ -120,5 +122,4 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #endregion
     }
-
 }

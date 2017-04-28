@@ -49,8 +49,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\Plugins\DotSpatial.Plugins.ShapeEditor\DotSpatial.Plugins.ShapeEditor.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -111,8 +110,14 @@
     <Compile Include="CoordinateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CoordinateDialog.Designer.cs">
+      <DependentUpon>CoordinateDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="FeatureTypeDialog.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureTypeDialog.Designer.cs">
+      <DependentUpon>FeatureTypeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ShapeEditorPlugin.cs" />
     <Compile Include="MessageStrings.Designer.cs">
@@ -136,6 +141,7 @@
     <Compile Include="SnapSettingsDialog.Designer.cs">
       <DependentUpon>SnapSettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="VertexMovedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CoordinateDialog.resx">

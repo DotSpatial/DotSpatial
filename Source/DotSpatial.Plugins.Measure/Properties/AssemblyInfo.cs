@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("DotSpatial.Plugins.Measure")]
 [assembly: AssemblyDescription("Measure area and distance.")]
+
 // http://www.fatcow.com/free-icons provided some of the icons.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.Measure")]

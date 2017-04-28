@@ -14,34 +14,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
     /// </summary>
     public class LegacyLayerDeserializer
     {
-        /// <summary>
-        /// Opens the specified layer.
-        /// </summary>
-        /// <param name="layer">The layer.</param>
-        /// <param name="map">The map.</param>
-        public static void TryDeserialization(ILayer layer, IMap map)
-        {
-            // Is there a way to simplify this method, which requires use of different interfaces for different types?
-            FeatureLayer featureLayer = layer as FeatureLayer;
-            if (featureLayer != null)
-            {
-                if (featureLayer.DataSet != null && !String.IsNullOrEmpty(featureLayer.DataSet.Filename))
-                {
-                    Open(featureLayer.DataSet.Filename, map, featureLayer);
-                    return;
-                }
-            }
-
-            MapImageLayer imageLayer = layer as MapImageLayer;
-            if (imageLayer != null)
-            {
-                if (imageLayer.DataSet != null && !String.IsNullOrEmpty(imageLayer.DataSet.Filename))
-                {
-                    Open(imageLayer.DataSet.Filename, map, imageLayer);
-                    return;
-                }
-            }
-        }
+        #region Methods
 
         /// <summary>
         /// Opens the specified file name.
@@ -51,7 +24,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// <param name="layer">The layer.</param>
         public static void Open(string fileName, IMap map, Layer layer)
         {
-            Contract.Requires(!String.IsNullOrEmpty(fileName), "fileName is null or empty.");
+            Contract.Requires(!string.IsNullOrEmpty(fileName), "fileName is null or empty.");
             Contract.Requires(map != null, "map is null.");
             Contract.Requires(layer != null, "featureLayer is null.");
 
@@ -67,8 +40,8 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 {
                     Trace.WriteLine(ex.Message);
                 }
-
             }
+
             string mwsrFile = Path.ChangeExtension(fileName, "mwsr");
             if (File.Exists(mwsrFile))
             {
@@ -82,6 +55,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                     Trace.WriteLine(ex.Message);
                 }
             }
+
             string mwleg = Path.ChangeExtension(fileName, "mwleg");
             if (File.Exists(mwleg) && layer is MapImageLayer)
             {
@@ -94,6 +68,28 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 {
                     Trace.WriteLine(ex.Message);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Opens the specified layer.
+        /// </summary>
+        /// <param name="layer">The layer.</param>
+        /// <param name="map">The map.</param>
+        public static void TryDeserialization(ILayer layer, IMap map)
+        {
+            // Is there a way to simplify this method, which requires use of different interfaces for different types?
+            FeatureLayer featureLayer = layer as FeatureLayer;
+            if (featureLayer?.DataSet != null && !string.IsNullOrEmpty(featureLayer.DataSet.Filename))
+            {
+                Open(featureLayer.DataSet.Filename, map, featureLayer);
+                return;
+            }
+
+            MapImageLayer imageLayer = layer as MapImageLayer;
+            if (imageLayer?.DataSet != null && !string.IsNullOrEmpty(imageLayer.DataSet.Filename))
+            {
+                Open(imageLayer.DataSet.Filename, map, imageLayer);
             }
         }
 
@@ -146,83 +142,31 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 symbolizer.DropShadowEnabled = Convert.ToBoolean(labels["UseShadows"]);
                 symbolizer.DropShadowColor = LegacyDeserializer.GetColor(labels["Color"]);
             }
-            catch (RuntimeBinderException) { }
+            catch (RuntimeBinderException)
+            {
+            }
 
             // not entirely sure if Offset from MW4 translates to OffsetX.
-            try { symbolizer.OffsetX = Convert.ToInt32(labels["Offset"]); }
-            catch (RuntimeBinderException) { }
+            try
+            {
+                symbolizer.OffsetX = Convert.ToInt32(labels["Offset"]);
+            }
+            catch (RuntimeBinderException)
+            {
+            }
 
-            string expression = String.Format("[{0}]", fieldName);
+            string expression = $"[{fieldName}]";
 
             featureLayer.AddLabels(expression, null, symbolizer, expression);
             featureLayer.LabelLayer.UseDynamicVisibility = Convert.ToBoolean(labels["UseMinZoomLevel"]);
 
-            try { featureLayer.LabelLayer.DynamicVisibilityWidth = Convert.ToDouble(labels["Scale"]); }
-            catch (RuntimeBinderException) { }
-        }
-
-        private static void DeserializeLegend(dynamic layer, IMap map, Layer imageLayer)
-        {
-            // var polyLayer = imageLayer as MapImageLayer;
-
-            //// var imageSymbolizer = new ImageSymbolizer();
-            //// var outlineColor = LegacyDeserializer.GetColor(layer.ShapeFileProperties["OutLineColor"]);
-            //// var outlineWidth = Convert.ToDouble(layer.ShapeFileProperties["LineOrPointSize"]);
-            //// polySymbolizer.SetOutline(outlineColor, outlineWidth);
-            //// if (Convert.ToBoolean(layer.ShapeFileProperties["DrawFill"]))
-            ////{
-            ////    System.Drawing.Color color = LegacyDeserializer.GetColor(layer.ShapeFileProperties["Color"]);
-            ////    float transparency = Convert.ToSingle(layer.ShapeFileProperties["TransparencyPercent"]);
-            ////    color = color.ToTransparent(transparency);
-            ////    polySymbolizer.SetFillColor(color);
-            ////}
-            //// else
-            ////{
-            ////    polySymbolizer.SetFillColor(Color.Transparent);
-            ////}
-
-            //// layer.Symbolizer = imageSymbolizer;
-
-            // var j = layer.Break;
-            // try
-            //{
-            //    int fieldIndex = Convert.ToInt32(layer.ShapeFileProperties.Legend["FieldIndex"]);
-
-            //    // we have to clear the categories or the collection ends up with a default item
-            //    polyLayer.Symbology.Categories.Clear();
-
-            //    // foreach (var colorBreak in layer.ShapeFileProperties.Legend.ColorBreaks.Elements())
-            //    //{
-            //    //    PolygonCategory category;
-
-            //    //    string startValue = colorBreak["StartValue"];
-            //    //    string endValue = colorBreak["EndValue"];
-
-            //    //    if (startValue == endValue)
-            //    //    {
-            //    //        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["StartColor"]), 0);
-            //    //        category.FilterExpression = String.Format("[{0}] = '{1}'", polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName, startValue);
-            //    //        category.LegendText = startValue;
-            //    //    }
-            //    //    else
-            //    //    {
-            //    //        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["EndColor"]), 0, GradientType.Linear, outlineColor, outlineWidth);
-            //    //        category.FilterExpression = String.Format("'{2}' >= [{0}] >= '{1}'", polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName, startValue, endValue);
-            //    //        category.LegendText = String.Format("{0} - {1}", startValue, endValue); ;
-            //    //    }
-            //    //    category.LegendText = startValue;
-            //    //    category.LegendItemVisible = Convert.ToBoolean(colorBreak["Visible"]);
-            //    //    polyLayer.Symbology.AddCategory(category);
-            //    //}
-
-            //    // it took too a lot of work to figure out that we would need to do this...
-            //    polyLayer.ApplyScheme(polyLayer.Symbology);
-            //}
-            // catch (RuntimeBinderException)
-            //{
-            //    // ignore and continue.
-            //    // this means the legend is not available.
-            //}
+            try
+            {
+                featureLayer.LabelLayer.DynamicVisibilityWidth = Convert.ToDouble(labels["Scale"]);
+            }
+            catch (RuntimeBinderException)
+            {
+            }
         }
 
         private static void DeserializeLayer(dynamic layer, IMap map, Layer featureLayer)
@@ -254,5 +198,71 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
             LegacyDeserializer.DeserializeLayerProperties(layer, featureLayer);
         }
+
+        private static void DeserializeLegend(dynamic layer, IMap map, Layer imageLayer)
+        {
+            //// var polyLayer = imageLayer as MapImageLayer;
+
+            ////// var imageSymbolizer = new ImageSymbolizer();
+            ////// var outlineColor = LegacyDeserializer.GetColor(layer.ShapeFileProperties["OutLineColor"]);
+            ////// var outlineWidth = Convert.ToDouble(layer.ShapeFileProperties["LineOrPointSize"]);
+            ////// polySymbolizer.SetOutline(outlineColor, outlineWidth);
+            ////// if (Convert.ToBoolean(layer.ShapeFileProperties["DrawFill"]))
+            //////{
+            //////    System.Drawing.Color color = LegacyDeserializer.GetColor(layer.ShapeFileProperties["Color"]);
+            //////    float transparency = Convert.ToSingle(layer.ShapeFileProperties["TransparencyPercent"]);
+            //////    color = color.ToTransparent(transparency);
+            //////    polySymbolizer.SetFillColor(color);
+            //////}
+            ////// else
+            //////{
+            //////    polySymbolizer.SetFillColor(Color.Transparent);
+            //////}
+
+            ////// layer.Symbolizer = imageSymbolizer;
+
+            //// var j = layer.Break;
+            //// try
+            ////{
+            ////    int fieldIndex = Convert.ToInt32(layer.ShapeFileProperties.Legend["FieldIndex"]);
+
+            ////    // we have to clear the categories or the collection ends up with a default item
+            ////    polyLayer.Symbology.Categories.Clear();
+
+            ////    // foreach (var colorBreak in layer.ShapeFileProperties.Legend.ColorBreaks.Elements())
+            ////    //{
+            ////    //    PolygonCategory category;
+
+            ////    //    string startValue = colorBreak["StartValue"];
+            ////    //    string endValue = colorBreak["EndValue"];
+
+            ////    //    if (startValue == endValue)
+            ////    //    {
+            ////    //        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["StartColor"]), 0);
+            ////    //        category.FilterExpression = String.Format("[{0}] = '{1}'", polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName, startValue);
+            ////    //        category.LegendText = startValue;
+            ////    //    }
+            ////    //    else
+            ////    //    {
+            ////    //        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["EndColor"]), 0, GradientType.Linear, outlineColor, outlineWidth);
+            ////    //        category.FilterExpression = String.Format("'{2}' >= [{0}] >= '{1}'", polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName, startValue, endValue);
+            ////    //        category.LegendText = String.Format("{0} - {1}", startValue, endValue); ;
+            ////    //    }
+            ////    //    category.LegendText = startValue;
+            ////    //    category.LegendItemVisible = Convert.ToBoolean(colorBreak["Visible"]);
+            ////    //    polyLayer.Symbology.AddCategory(category);
+            ////    //}
+
+            ////    // it took too a lot of work to figure out that we would need to do this...
+            ////    polyLayer.ApplyScheme(polyLayer.Symbology);
+            ////}
+            //// catch (RuntimeBinderException)
+            ////{
+            ////    // ignore and continue.
+            ////    // this means the legend is not available.
+            ////}
+        }
+
+        #endregion
     }
 }

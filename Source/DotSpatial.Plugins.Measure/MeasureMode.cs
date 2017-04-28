@@ -22,6 +22,7 @@ namespace DotSpatial.Plugins.Measure
         /// Measuring linear distance
         /// </summary>
         Distance,
+
         /// <summary>
         /// Measuring square area
         /// </summary>

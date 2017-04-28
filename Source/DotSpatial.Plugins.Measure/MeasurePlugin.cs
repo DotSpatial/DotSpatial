@@ -6,33 +6,38 @@ using DotSpatial.Plugins.Measure.Properties;
 
 namespace DotSpatial.Plugins.Measure
 {
+    /// <summary>
+    /// This plugin adds the possibility to measure things.
+    /// </summary>
     public class MeasurePlugin : Extension
     {
-        private MapFunctionMeasure _Painter;
+        private MapFunctionMeasure _painter;
 
+        /// <inheritdoc />
         public override void Activate()
         {
-            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Measure", MeasureTool_Click) { GroupCaption = "Map Tool", SmallImage = Resources.measure_16x16, LargeImage = Resources.measure_32x32 });
+            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Measure", MeasureToolClick) { GroupCaption = "Map Tool", SmallImage = Resources.measure_16x16, LargeImage = Resources.measure_32x32 });
             base.Activate();
         }
 
+        /// <inheritdoc />
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
             base.Deactivate();
         }
 
-        private void MeasureTool_Click(object sender, EventArgs e)
+        private void MeasureToolClick(object sender, EventArgs e)
         {
-            if (_Painter == null)
-                _Painter = new MapFunctionMeasure(App.Map);
+            if (_painter == null)
+                _painter = new MapFunctionMeasure(App.Map);
 
-            if (!App.Map.MapFunctions.Contains(_Painter))
-                App.Map.MapFunctions.Add(_Painter);
+            if (!App.Map.MapFunctions.Contains(_painter))
+                App.Map.MapFunctions.Add(_painter);
 
             App.Map.FunctionMode = FunctionMode.None;
             App.Map.Cursor = Cursors.Cross;
-            _Painter.Activate();
+            _painter.Activate();
         }
     }
 }

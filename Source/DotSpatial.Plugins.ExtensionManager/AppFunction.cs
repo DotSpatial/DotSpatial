@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppFunction.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Plugins.ExtensionManager.Properties;
 

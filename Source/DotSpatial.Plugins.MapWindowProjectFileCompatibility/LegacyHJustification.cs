@@ -26,8 +26,8 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         None = 3,
 
         /// <summary>
-        ///
+        /// Raw
         /// </summary>
-        Raw = 4,
+        Raw = 4
     }
 }

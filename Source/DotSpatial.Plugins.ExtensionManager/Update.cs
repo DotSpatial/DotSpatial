@@ -18,9 +18,9 @@ namespace DotSpatial.Plugins.ExtensionManager
         #region Fields
 
         private const string SupportsAutoUpdate = "SupportsAutoUpdate";
-        private readonly Packages _packages;
         private readonly AppManager _app;
         private readonly string _appName;
+        private readonly Packages _packages;
         private GetPackage _getpack;
         private List<IPackage> _list;
 
@@ -63,7 +63,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         public static void AutoUpdateController(AppManager app)
         {
             Packages packages = new Packages();
-            var feeds = FeedManager.getAutoUpdateFeeds();
+            var feeds = FeedManager.GetAutoUpdateFeeds();
 
             if (feeds.Count > 0)
             {

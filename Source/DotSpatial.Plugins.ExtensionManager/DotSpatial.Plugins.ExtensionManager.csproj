@@ -29,6 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Debug\Windows Extensions\DotSpatial.Plugins.ExtensionManager\DotSpatial.Plugins.ExtensionManager.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,6 +53,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfoShared.cs">
@@ -92,6 +94,9 @@
     <Compile Include="SampleProjectInfo.cs" />
     <Compile Include="SampleProjectsForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SampleProjectsForm.Designer.cs">
+      <DependentUpon>SampleProjectsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SatisfyImportsOnStartupExtension.cs" />
     <Compile Include="Update.cs" />
