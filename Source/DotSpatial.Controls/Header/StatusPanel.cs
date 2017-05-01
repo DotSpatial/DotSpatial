@@ -17,6 +17,8 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
+        #region  Constructors
+
         /// <summary>
         /// Initializes a new instance of the StatusPanel class.
         /// </summary>
@@ -24,6 +26,19 @@ namespace DotSpatial.Controls.Header
         {
             Key = Guid.NewGuid().ToString();
         }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the caption.
@@ -37,11 +52,33 @@ namespace DotSpatial.Controls.Header
             {
                 return caption;
             }
+
             set
             {
                 if (caption == value) return;
                 caption = value;
                 OnPropertyChanged("Caption");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the key.
+        /// </summary>
+        /// <value>
+        /// The key.
+        /// </value>
+        public string Key
+        {
+            get
+            {
+                return key;
+            }
+
+            private set
+            {
+                if (key == value) return;
+                key = value;
+                OnPropertyChanged("Key");
             }
         }
 
@@ -57,6 +94,7 @@ namespace DotSpatial.Controls.Header
             {
                 return width;
             }
+
             set
             {
                 if (width == value) return;
@@ -65,31 +103,9 @@ namespace DotSpatial.Controls.Header
             }
         }
 
-        /// <summary>
-        /// Gets or sets the key.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        public string Key
-        {
-            get { return key; }
-            private set
-            {
-                if (key == value) return;
-                key = value;
-                OnPropertyChanged("Key");
-            }
-        }
-
-        #region INotifyPropertyChanged Members
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Triggers the PropertyChanged event.
@@ -102,5 +118,7 @@ namespace DotSpatial.Controls.Header
                 h(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        #endregion
     }
 }

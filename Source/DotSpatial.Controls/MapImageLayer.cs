@@ -26,23 +26,13 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapImageLayer : ImageLayer, IMapImageLayer
     {
-        #region Events
-
-        /// <summary>
-        /// Fires an event that indicates to the parent map-frame that it should first
-        /// redraw the specified clip.
-        /// </summary>
-        public event EventHandler<ClipArgs> BufferChanged;
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private Color _transparent;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new default instance of a MapImageLayer
@@ -55,7 +45,9 @@ namespace DotSpatial.Controls
         /// Creates a new instance of MapImageLayer.
         /// </summary>
         public MapImageLayer(IImageData baseImage)
-            : base(baseImage) { }
+            : base(baseImage)
+        {
+        }
 
         /// <summary>
         /// Creates a new instance of a MapImageLayer.
@@ -63,7 +55,9 @@ namespace DotSpatial.Controls
         /// <param name="baseImage">The image to draw as a layer</param>
         /// <param name="container">The Layers collection that keeps track of the image layer</param>
         public MapImageLayer(IImageData baseImage, ICollection<ILayer> container)
-            : base(baseImage, container) { }
+            : base(baseImage, container)
+        {
+        }
 
         /// <summary>
         /// Creates a new instance of a MapImageLayer.
@@ -78,39 +72,13 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Methods
+        #region Events
 
         /// <summary>
-        /// This updates the things that depend on the DataSet so that they fit to the changed DataSet.
+        /// Fires an event that indicates to the parent map-frame that it should first
+        /// redraw the specified clip.
         /// </summary>
-        /// <param name="value">DataSet that was changed.</param>
-        protected override void OnDataSetChanged(IImageData value)
-        {
-            base.OnDataSetChanged(value);
-
-            BufferRectangle = value == null ? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
-            BufferExtent = value == null ? null : value.Bounds.Extent;
-            MyExtent = value == null ? null : value.Extent;
-            OnFinishedLoading();
-        }
-
-        /// <summary>
-        /// This will draw any features that intersect this region. To specify the features directly, use OnDrawFeatures.
-        /// This will not clear existing buffer content. For that call Initialize instead.
-        /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
-        public void DrawRegions(MapArgs args, List<Extent> regions)
-        {
-            List<Rectangle> clipRects = args.ProjToPixel(regions);
-            for (int i = clipRects.Count - 1; i >= 0; i--)
-            {
-                if (clipRects[i].Width != 0 && clipRects[i].Height != 0) continue;
-                regions.RemoveAt(i);
-                clipRects.RemoveAt(i);
-            }
-            DrawWindows(args, regions, clipRects);
-        }
+        public event EventHandler<ClipArgs> BufferChanged;
 
         #endregion
 
@@ -146,7 +114,26 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
+
+        /// <summary>
+        /// This will draw any features that intersect this region. To specify the features directly, use OnDrawFeatures.
+        /// This will not clear existing buffer content. For that call Initialize instead.
+        /// </summary>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
+        /// <param name="regions">The geographic regions to draw</param>
+        public void DrawRegions(MapArgs args, List<Extent> regions)
+        {
+            List<Rectangle> clipRects = args.ProjToPixel(regions);
+            for (int i = clipRects.Count - 1; i >= 0; i--)
+            {
+                if (clipRects[i].Width != 0 && clipRects[i].Height != 0) continue;
+                regions.RemoveAt(i);
+                clipRects.RemoveAt(i);
+            }
+
+            DrawWindows(args, regions, clipRects);
+        }
 
         /// <summary>
         /// Fires the OnBufferChanged event.
@@ -160,9 +147,19 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion
+        /// <summary>
+        /// This updates the things that depend on the DataSet so that they fit to the changed DataSet.
+        /// </summary>
+        /// <param name="value">DataSet that was changed.</param>
+        protected override void OnDataSetChanged(IImageData value)
+        {
+            base.OnDataSetChanged(value);
 
-        #region Private Methods
+            BufferRectangle = value == null ? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
+            BufferExtent = value == null ? null : value.Bounds.Extent;
+            MyExtent = value == null ? null : value.Extent;
+            OnFinishedLoading();
+        }
 
         /// <summary>
         /// This draws to the back buffer. If the Backbuffer doesn't exist, this will create one.
@@ -183,6 +180,7 @@ namespace DotSpatial.Controls
                 if (BackBuffer == null) BackBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
                 g = Graphics.FromImage(BackBuffer);
             }
+
             int numBounds = Math.Min(regions.Count, clipRectangles.Count);
 
             for (int i = 0; i < numBounds; i++)
@@ -190,7 +188,6 @@ namespace DotSpatial.Controls
                 // For panning tiles, the region needs to be expanded.
                 // This is not always 1 pixel.  When very zoomed in, this could be many pixels,
                 // but should correspond to 1 pixel in the source image.
-
                 int dx = (int)Math.Ceiling(DataSet.Bounds.AffineCoefficients[1] * clipRectangles[i].Width / regions[i].Width);
                 int dy = (int)Math.Ceiling(-DataSet.Bounds.AffineCoefficients[5] * clipRectangles[i].Height / regions[i].Height);
 
@@ -204,13 +201,17 @@ namespace DotSpatial.Controls
                 try
                 {
                     bmp = DataSet.GetBitmap(env, r);
-                    if (!_transparent.Name.Equals("0")) { bmp.MakeTransparent(_transparent); }
+                    if (!_transparent.Name.Equals("0"))
+                    {
+                        bmp.MakeTransparent(_transparent);
+                    }
                 }
                 catch
                 {
                     if (bmp != null) bmp.Dispose();
                     continue;
                 }
+
                 if (bmp == null) continue;
 
                 if (this.Symbolizer != null && this.Symbolizer.Opacity < 1)
@@ -221,14 +222,16 @@ namespace DotSpatial.Controls
                     {
                         attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
                         g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
-                    }                    
+                    }
                 }
                 else
                 {
                     g.DrawImage(bmp, r);
                 }
+
                 bmp.Dispose();
             }
+
             if (args.Device == null) g.Dispose();
         }
 

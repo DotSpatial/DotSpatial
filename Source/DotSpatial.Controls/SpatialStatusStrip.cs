@@ -28,7 +28,13 @@ namespace DotSpatial.Controls
     [PartNotDiscoverable] // Do not allow discover this class by MEF
     public partial class SpatialStatusStrip : StatusStrip, IStatusControl
     {
+        #region Fields
+
         private readonly Dictionary<StatusPanel, PanelGuiElements> _panels = new Dictionary<StatusPanel, PanelGuiElements>();
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of the StatusStrip which has a built in, thread safe Progress handler
@@ -37,6 +43,10 @@ namespace DotSpatial.Controls
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the progress bar. By default, the first ToolStripProgressBar that is added to the tool strip.
@@ -56,7 +66,45 @@ namespace DotSpatial.Controls
         [Description("Gets or sets the progress label. By default, the first ToolStripStatusLabel that is added to the tool strip.")]
         public ToolStripStatusLabel ProgressLabel { get; set; }
 
-        #region IProgressHandler Members
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
+        public void Add(StatusPanel panel)
+        {
+            if (panel == null) throw new ArgumentNullException("panel");
+
+            ToolStripProgressBar pb = null;
+            var psp = panel as ProgressStatusPanel;
+            if (psp != null)
+            {
+                pb = new ToolStripProgressBar
+                     {
+                         Name = GetKeyName<ToolStripProgressBar>(panel.Key),
+                         Width = 100,
+                         Alignment = ToolStripItemAlignment.Left
+                     };
+                Items.Add(pb);
+            }
+
+            var sl = new ToolStripStatusLabel
+                     {
+                         Name = GetKeyName<ToolStripStatusLabel>(panel.Key),
+                         Text = panel.Caption,
+                         Spring = panel.Width == 0,
+                         TextAlign = ContentAlignment.MiddleLeft
+                     };
+            Items.Add(sl);
+
+            _panels.Add(panel, new PanelGuiElements
+                               {
+                                   Caption = sl,
+                                   Progress = pb
+                               });
+
+            panel.PropertyChanged += PanelOnPropertyChanged;
+        }
 
         /// <summary>
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
@@ -77,15 +125,20 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion
-
-        private void UpdateProgress(int percent, string message)
+        /// <inheritdoc />
+        public void Remove(StatusPanel panel)
         {
-            if (ProgressBar != null)
-                ProgressBar.Value = percent;
-            if (ProgressLabel != null)
-                ProgressLabel.Text = message;
-            Refresh();
+            if (panel == null) throw new ArgumentNullException("panel");
+
+            panel.PropertyChanged -= PanelOnPropertyChanged;
+
+            PanelGuiElements panelDesc;
+            if (!_panels.TryGetValue(panel, out panelDesc)) return;
+
+            if (panelDesc.Caption != null)
+                Items.Remove(panelDesc.Caption);
+            if (panelDesc.Progress != null)
+                Items.Remove(panelDesc.Progress);
         }
 
         /// <summary>
@@ -124,38 +177,9 @@ namespace DotSpatial.Controls
             if (ProgressLabel == e.Item) ProgressLabel = null;
         }
 
-        #region IStatusControl implementation
-
-        /// <inheritdoc />
-        public void Add(StatusPanel panel)
+        private static string GetKeyName<T>(string key)
         {
-            if (panel == null) throw new ArgumentNullException("panel");
-
-            ToolStripProgressBar pb = null;
-            var psp = panel as ProgressStatusPanel;
-            if (psp != null)
-            {
-                pb = new ToolStripProgressBar
-                {
-                    Name = GetKeyName<ToolStripProgressBar>(panel.Key),
-                    Width = 100,
-                    Alignment = ToolStripItemAlignment.Left
-                };
-                Items.Add(pb);
-            }
-
-            var sl = new ToolStripStatusLabel
-            {
-                Name = GetKeyName<ToolStripStatusLabel>(panel.Key),
-                Text = panel.Caption,
-                Spring = (panel.Width == 0),
-                TextAlign = ContentAlignment.MiddleLeft
-            };
-            Items.Add(sl);
-
-            _panels.Add(panel, new PanelGuiElements { Caption = sl, Progress = pb });
-
-            panel.PropertyChanged += PanelOnPropertyChanged;
+            return typeof(T).Name + key;
         }
 
         private void PanelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -183,44 +207,44 @@ namespace DotSpatial.Controls
                     {
                         panelDesc.Caption.Text = sender.Caption;
                     }
+
                     break;
                 case "Percent":
                     if (panelDesc.Progress != null && sender is ProgressStatusPanel)
                     {
                         panelDesc.Progress.Value = ((ProgressStatusPanel)sender).Percent;
                     }
+
                     break;
             }
+
             Refresh();
         }
 
-        /// <inheritdoc />
-        public void Remove(StatusPanel panel)
+        private void UpdateProgress(int percent, string message)
         {
-            if (panel == null) throw new ArgumentNullException("panel");
-
-            panel.PropertyChanged -= PanelOnPropertyChanged;
-
-            PanelGuiElements panelDesc;
-            if (!_panels.TryGetValue(panel, out panelDesc)) return;
-
-            if (panelDesc.Caption != null)
-                Items.Remove(panelDesc.Caption);
-            if (panelDesc.Progress != null)
-                Items.Remove(panelDesc.Progress);
-        }
-
-        private static string GetKeyName<T>(string key)
-        {
-            return typeof(T).Name + key;
+            if (ProgressBar != null)
+                ProgressBar.Value = percent;
+            if (ProgressLabel != null)
+                ProgressLabel.Text = message;
+            Refresh();
         }
 
         #endregion
 
+        #region Classes
+
         internal class PanelGuiElements
         {
+            #region Properties
+
             public ToolStripStatusLabel Caption { get; set; }
+
             public ToolStripProgressBar Progress { get; set; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

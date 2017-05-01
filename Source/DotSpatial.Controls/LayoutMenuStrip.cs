@@ -27,7 +27,7 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class LayoutMenuStrip : MenuStrip
     {
-        #region "Private Variables"
+        #region Fields
 
         private ToolStripMenuItem _close;
         private ToolStripMenuItem _docToolbar;
@@ -60,14 +60,9 @@ namespace DotSpatial.Controls
         private ToolStripMenuItem _zoomOut;
         private ToolStripMenuItem _zoomToolbar;
 
-        /// <summary>
-        /// Fires when the user clicks the close button on this menu strip
-        /// </summary>
-        public event EventHandler CloseClicked;
-
         #endregion
 
-        #region "Constructor"
+        #region  Constructors
 
         /// <summary>
         /// Creates an instance of the toolstrip
@@ -79,7 +74,16 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region "properties"
+        #region Events
+
+        /// <summary>
+        /// Fires when the user clicks the close button on this menu strip
+        /// </summary>
+        public event EventHandler CloseClicked;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// The layout control associated with this toolstrip
@@ -87,7 +91,11 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public LayoutControl LayoutControl
         {
-            get { return _layoutControl; }
+            get
+            {
+                return _layoutControl;
+            }
+
             set
             {
                 if (value == null) return;
@@ -126,7 +134,143 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Windows Form Designer generated code
+        #region Methods
+
+        private void _Close_Click(object sender, EventArgs e)
+        {
+            if (CloseClicked != null)
+                CloseClicked(this, null);
+        }
+
+        private void _DocToolbar_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_docToolbar.Checked)
+                _layoutControl.LayoutDocToolStrip.Visible = true;
+            else
+                _layoutControl.LayoutDocToolStrip.Visible = false;
+        }
+
+        private void _InsertToolbar_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_insertToolbar.Checked)
+                _layoutControl.LayoutInsertToolStrip.Visible = true;
+            else
+                _layoutControl.LayoutInsertToolStrip.Visible = false;
+        }
+
+        private void _MapToolbar_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_mapToolbar.Checked)
+                _layoutControl.LayoutMapToolStrip.Visible = true;
+            else
+                _layoutControl.LayoutMapToolStrip.Visible = false;
+        }
+
+        private void _New_Click(object sender, EventArgs e)
+        {
+            _layoutControl.NewLayout(true);
+        }
+
+        private void _Open_Click(object sender, EventArgs e)
+        {
+            _layoutControl.LoadLayout(true, true, true);
+        }
+
+        private void _PageSetup_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ShowPageSetupDialog();
+        }
+
+        private void _Print_Click(object sender, EventArgs e)
+        {
+            _layoutControl.Print();
+        }
+
+        private void _Refresh_Click(object sender, EventArgs e)
+        {
+            _layoutControl.RefreshElements();
+        }
+
+        private void _Save_Click(object sender, EventArgs e)
+        {
+            _layoutControl.SaveLayout(false);
+        }
+
+        private void _SaveAs_Click(object sender, EventArgs e)
+        {
+            _layoutControl.SaveLayout(true);
+        }
+
+        private void _SelectAll_Click(object sender, EventArgs e)
+        {
+            _layoutControl.SelectAll();
+        }
+
+        private void _SelectConvert_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ConvertSelectedToBitmap();
+        }
+
+        private void _SelectDelete_Click(object sender, EventArgs e)
+        {
+            _layoutControl.DeleteSelected();
+        }
+
+        private void _SelectInvert_Click(object sender, EventArgs e)
+        {
+            _layoutControl.InvertSelection();
+        }
+
+        private void _SelectMoveDown_Click(object sender, EventArgs e)
+        {
+            _layoutControl.MoveSelectionDown();
+        }
+
+        private void _SelectMoveUp_Click(object sender, EventArgs e)
+        {
+            _layoutControl.MoveSelectionUp();
+        }
+
+        private void _SelectNone_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ClearSelection();
+        }
+
+        private void _SelectPrinter_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ShowChoosePrinterDialog();
+        }
+
+        private void _showMargin_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showMargin.Checked)
+                _layoutControl.ShowMargin = true;
+            else
+                _layoutControl.ShowMargin = false;
+        }
+
+        private void _ZoomFit_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ZoomFitToScreen();
+        }
+
+        private void _ZoomIn_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ZoomIn();
+        }
+
+        private void _ZoomOut_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ZoomOut();
+        }
+
+        private void _ZoomToolbar_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_zoomToolbar.Checked)
+                _layoutControl.LayoutZoomToolStrip.Visible = true;
+            else
+                _layoutControl.LayoutZoomToolStrip.Visible = false;
+        }
 
         private void InitializeComponent()
         {
@@ -270,156 +414,6 @@ namespace DotSpatial.Controls
             this.ResumeLayout();
         }
 
-        #endregion
-
-        #region ---------------------- File Menu Events
-
-        private void _New_Click(object sender, EventArgs e)
-        {
-            _layoutControl.NewLayout(true);
-        }
-
-        private void _Open_Click(object sender, EventArgs e)
-        {
-            _layoutControl.LoadLayout(true, true, true);
-        }
-
-        private void _Save_Click(object sender, EventArgs e)
-        {
-            _layoutControl.SaveLayout(false);
-        }
-
-        private void _SaveAs_Click(object sender, EventArgs e)
-        {
-            _layoutControl.SaveLayout(true);
-        }
-
-        private void _SelectPrinter_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ShowChoosePrinterDialog();
-        }
-
-        private void _PageSetup_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ShowPageSetupDialog();
-        }
-
-        private void _Print_Click(object sender, EventArgs e)
-        {
-            _layoutControl.Print();
-        }
-
-        private void _Close_Click(object sender, EventArgs e)
-        {
-            if (CloseClicked != null)
-                CloseClicked(this, null);
-        }
-
-        #endregion
-
-        #region ---------------------- Selection Menu Events
-
-        private void _SelectConvert_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ConvertSelectedToBitmap();
-        }
-
-        private void _SelectDelete_Click(object sender, EventArgs e)
-        {
-            _layoutControl.DeleteSelected();
-        }
-
-        private void _SelectMoveDown_Click(object sender, EventArgs e)
-        {
-            _layoutControl.MoveSelectionDown();
-        }
-
-        private void _SelectMoveUp_Click(object sender, EventArgs e)
-        {
-            _layoutControl.MoveSelectionUp();
-        }
-
-        private void _SelectInvert_Click(object sender, EventArgs e)
-        {
-            _layoutControl.InvertSelection();
-        }
-
-        private void _SelectNone_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ClearSelection();
-        }
-
-        private void _SelectAll_Click(object sender, EventArgs e)
-        {
-            _layoutControl.SelectAll();
-        }
-
-        #endregion
-
-        #region ---------------------- View Menu Events
-
-        private void _Refresh_Click(object sender, EventArgs e)
-        {
-            _layoutControl.RefreshElements();
-        }
-
-        private void _InsertToolbar_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_insertToolbar.Checked)
-                _layoutControl.LayoutInsertToolStrip.Visible = true;
-            else
-                _layoutControl.LayoutInsertToolStrip.Visible = false;
-        }
-
-        private void _MapToolbar_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_mapToolbar.Checked)
-                _layoutControl.LayoutMapToolStrip.Visible = true;
-            else
-                _layoutControl.LayoutMapToolStrip.Visible = false;
-        }
-
-        private void _showMargin_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_showMargin.Checked)
-                _layoutControl.ShowMargin = true;
-            else
-                _layoutControl.ShowMargin = false;
-        }
-
-        private void _ZoomToolbar_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_zoomToolbar.Checked)
-                _layoutControl.LayoutZoomToolStrip.Visible = true;
-            else
-                _layoutControl.LayoutZoomToolStrip.Visible = false;
-        }
-
-        private void _DocToolbar_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_docToolbar.Checked)
-                _layoutControl.LayoutDocToolStrip.Visible = true;
-            else
-                _layoutControl.LayoutDocToolStrip.Visible = false;
-        }
-
-        private void _ZoomIn_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ZoomIn();
-        }
-
-        private void _ZoomOut_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ZoomOut();
-        }
-
-        private void _ZoomFit_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ZoomFitToScreen();
-        }
-
-        #endregion
-
         // Enables and disables the convert selected to bitmap option if the selection changes above or below 1
         private void LayoutControlSelectionChanged(object sender, EventArgs e)
         {
@@ -428,5 +422,7 @@ namespace DotSpatial.Controls
             else
                 _selectConvert.Enabled = false;
         }
+
+        #endregion
     }
 }

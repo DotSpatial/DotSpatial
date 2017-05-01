@@ -5,6 +5,8 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class SeparatorItem : GroupedItem
     {
+        #region  Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SeparatorItem"/> class.
         /// </summary>
@@ -19,5 +21,7 @@ namespace DotSpatial.Controls.Header
             : base(rootKey, groupCaption)
         {
         }
+
+        #endregion
     }
 }

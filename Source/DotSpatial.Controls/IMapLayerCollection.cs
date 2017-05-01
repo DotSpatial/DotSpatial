@@ -32,6 +32,31 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the map frame that this belongs to.  These are designed to only work with one map frame at a time.
+        /// </summary>
+        IMapFrame MapFrame { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ParentGroup for this layer collection, even if that parent group
+        /// is not actually a map frame.
+        /// </summary>
+        IMapGroup ParentGroup { get; set; }
+
+        /// <summary>
+        /// Gets or sets the progress handler to report progress for time consuming actions.
+        /// </summary>
+        IProgressHandler ProgressHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the currently active layer.
+        /// </summary>
+        IMapLayer SelectedLayer { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -80,31 +105,6 @@ namespace DotSpatial.Controls
         /// <param name="layer">Layer that is moved.</param>
         /// <param name="newPosition">Position the layer is moved to.</param>
         void Move(IMapLayer layer, int newPosition);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the map frame that this belongs to.  These are designed to only work with one map frame at a time.
-        /// </summary>
-        IMapFrame MapFrame { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ParentGroup for this layer collection, even if that parent group
-        /// is not actually a map frame.
-        /// </summary>
-        IMapGroup ParentGroup { get; set; }
-
-        /// <summary>
-        /// Gets or sets the progress handler to report progress for time consuming actions.
-        /// </summary>
-        IProgressHandler ProgressHandler { get; set; }
-
-        /// <summary>
-        /// Gets or sets the currently active layer.
-        /// </summary>
-        IMapLayer SelectedLayer { get; set; }
 
         #endregion
     }

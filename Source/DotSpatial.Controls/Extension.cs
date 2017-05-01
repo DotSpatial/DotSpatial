@@ -24,6 +24,62 @@ namespace DotSpatial.Controls
     [Serializable]
     public abstract class Extension : AssemblyInformation, IExtension
     {
+        #region Fields
+
+        private bool deactivationAllowed = true;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the AppManager that is responsible for activating and deactivating plugins as well as coordinating
+        /// all of the other properties.
+        /// </summary>
+        [Import]
+        public AppManager App { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether [deactivation is allowed].
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if [deactivation is allowed]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DeactivationAllowed
+        {
+            get
+            {
+                // Assemblies in the Application Extensions folder cannot be deactivated.
+                const string STR_ApplicationExtensionsDirectoryName = @"\Application Extensions\";
+                if (!(ReferenceAssembly.Location.IndexOf(STR_ApplicationExtensionsDirectoryName, StringComparison.OrdinalIgnoreCase) < 0))
+                    deactivationAllowed = false;
+                return deactivationAllowed;
+            }
+
+            set
+            {
+                deactivationAllowed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a boolean that is true if the extension is active and running.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Specifies the activation priority order
+        /// </summary>
+        public virtual int Priority
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -43,49 +99,5 @@ namespace DotSpatial.Controls
         }
 
         #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets a boolean that is true if the extension is active and running.
-        /// </summary>
-        public bool IsActive { get; set; }
-
-        private bool deactivationAllowed = true;
-        /// <summary>
-        /// Gets a value indicating whether [deactivation is allowed].
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if [deactivation is allowed]; otherwise, <c>false</c>.
-        /// </value>
-        public bool DeactivationAllowed
-        {
-            get
-            {
-                // Assemblies in the Application Extensions folder cannot be deactivated.
-                const string STR_ApplicationExtensionsDirectoryName = @"\Application Extensions\";
-                if(!(ReferenceAssembly.Location.IndexOf(STR_ApplicationExtensionsDirectoryName, StringComparison.OrdinalIgnoreCase) < 0))
-                    deactivationAllowed = false;
-                return deactivationAllowed;
-            }
-            set
-            {
-                deactivationAllowed = value;
-            }
-        }
-
-        /// <summary>
-        /// Specifies the activation priority order
-        /// </summary>
-        public virtual int Priority { get { return 0; } }
-
-        #endregion
-
-        /// <summary>
-        /// Gets the AppManager that is responsible for activating and deactivating plugins as well as coordinating
-        /// all of the other properties.
-        /// </summary>
-        [Import]
-        public AppManager App { get; set; }
     }
 }

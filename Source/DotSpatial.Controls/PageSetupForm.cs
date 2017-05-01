@@ -15,17 +15,17 @@
 // ********************************************************************************************************
 
 using System;
-using System.ComponentModel;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A dialog that allows users to modify the size of the layout paper and margins
+    /// A dialog that allows users to modify the size of the layout paper and margins.
     /// </summary>
-    public class PageSetupForm : Form
+    public partial class PageSetupForm : Form
     {
+        #region Fields
         private readonly PrinterSettings _printerSettings;
         private double _bottom;
         private GroupBox _groupBox2;
@@ -34,11 +34,14 @@ namespace DotSpatial.Controls
         private RadioButton _rdbPortrait;
         private double _right;
         private double _top;
+        #endregion
 
-        ///<summary>
-        /// Creates a new instance of the Page Setup Form
-        ///</summary>
-        ///<param name="settings"></param>
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageSetupForm"/> class.
+        /// </summary>
+        /// <param name="settings">PrinterSettings used for printing.</param>
         public PageSetupForm(PrinterSettings settings)
         {
             // This call is required by the Windows Form Designer.
@@ -48,13 +51,13 @@ namespace DotSpatial.Controls
             _printerSettings = settings;
 
             // Gets the list of available paper sizes
-            ComboPaperSizes.SuspendLayout();
+            comboPaperSizes.SuspendLayout();
             PrinterSettings.PaperSizeCollection paperSizes = settings.PaperSizes;
             foreach (PaperSize ps in paperSizes)
-                ComboPaperSizes.Items.Add(ps.PaperName);
-            ComboPaperSizes.SelectedItem = settings.DefaultPageSettings.PaperSize.PaperName;
-            if (ComboPaperSizes.SelectedIndex == -1) ComboPaperSizes.SelectedIndex = 1;
-            ComboPaperSizes.ResumeLayout();
+                comboPaperSizes.Items.Add(ps.PaperName);
+            comboPaperSizes.SelectedItem = settings.DefaultPageSettings.PaperSize.PaperName;
+            if (comboPaperSizes.SelectedIndex == -1) comboPaperSizes.SelectedIndex = 1;
+            comboPaperSizes.ResumeLayout();
 
             // Gets the paper orientation
             if (settings.DefaultPageSettings.Landscape)
@@ -64,83 +67,27 @@ namespace DotSpatial.Controls
 
             // Gets the margins
             _left = settings.DefaultPageSettings.Margins.Left / 100.0;
-            txtBoxLeft.Text = $"{_left:0.00}";
+            txtBoxLeft.Text = $@"{_left:0.00}";
             _top = settings.DefaultPageSettings.Margins.Top / 100.0;
-            txtBoxTop.Text = $"{_top:0.00}";
+            txtBoxTop.Text = $@"{_top:0.00}";
             _bottom = settings.DefaultPageSettings.Margins.Bottom / 100.0;
-            txtBoxBottom.Text = $"{_bottom:0.00}";
+            txtBoxBottom.Text = $@"{_bottom:0.00}";
             _right = settings.DefaultPageSettings.Margins.Right / 100.0;
-            txtBoxRight.Text = $"{_right:0.00}";
+            txtBoxRight.Text = $@"{_right:0.00}";
         }
 
-        private void UpdatePaperSize()
-        {
-            if (ComboPaperSizes.SelectedIndex == -1 && ComboPaperSizes.Items.Count > 0) ComboPaperSizes.SelectedIndex = 0;
-            lblPaperDimension.Text = ComboPaperSizes.SelectedIndex > -1 ? (_printerSettings.PaperSizes[ComboPaperSizes.SelectedIndex].Width / 100) + "\" x " + (_printerSettings.PaperSizes[ComboPaperSizes.SelectedIndex].Height / 100) + "\"" : "";
-        }
+        #endregion
 
-        private void ComboPaperSizes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdatePaperSize();
-        }
-
-        private void rdbLandscape_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdatePaperSize();
-        }
-
-        private void rdbPortrait_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdatePaperSize();
-        }
-
-        private void txtBoxRight_Leave(object sender, EventArgs e)
-        {
-            if (IsValidMargin(txtBoxRight.Text))
-                _right = Convert.ToDouble(txtBoxRight.Text);
-            txtBoxRight.Text = $"{_right:0.00}";
-        }
-
-        private void txtBoxLeft_Leave(object sender, EventArgs e)
-        {
-            if (IsValidMargin(txtBoxLeft.Text))
-                _left = Convert.ToDouble(txtBoxLeft.Text);
-            txtBoxLeft.Text = $"{_left:0.00}";
-        }
-
-        private void txtBoxTop_Leave(object sender, EventArgs e)
-        {
-            if (IsValidMargin(txtBoxTop.Text))
-                _top = Convert.ToDouble(txtBoxTop.Text);
-            txtBoxTop.Text = $"{_top:0.00}";
-        }
-
-        private void txtBoxBottom_Leave(object sender, EventArgs e)
-        {
-            if (IsValidMargin(txtBoxBottom.Text))
-                _bottom = Convert.ToDouble(txtBoxBottom.Text);
-            txtBoxBottom.Text = $"{_bottom:0.00}";
-        }
-
-        /// <summary>
-        /// Takes a string and returns true if it can be converted to a double
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        private static bool IsValidMargin(string input)
-        {
-            try { Convert.ToDouble(input); }
-            catch { return false; }
-            if (Convert.ToDouble(input) < 0) return false;
-            return true;
-        }
+        #region Methods
 
         /// <summary>
         /// Sets the printerSettings to the new settings and sets the result to OK
         /// </summary>
-        public void OK_Button_Click(object sender, EventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        public void OkButtonClick(object sender, EventArgs e)
         {
-            _printerSettings.DefaultPageSettings.PaperSize = _printerSettings.PaperSizes[ComboPaperSizes.SelectedIndex];
+            _printerSettings.DefaultPageSettings.PaperSize = _printerSettings.PaperSizes[comboPaperSizes.SelectedIndex];
             _printerSettings.DefaultPageSettings.Margins.Left = Convert.ToInt32(_left * 100);
             _printerSettings.DefaultPageSettings.Margins.Top = Convert.ToInt32(_top * 100);
             _printerSettings.DefaultPageSettings.Margins.Bottom = Convert.ToInt32(_bottom * 100);
@@ -151,224 +98,85 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Takes a string and returns true if it can be converted to a double.
+        /// </summary>
+        /// <param name="input">String that should be converted to double.</param>
+        /// <returns>True, if string can be converted.</returns>
+        private static bool IsValidMargin(string input)
+        {
+            try
+            {
+                Convert.ToDouble(input);
+            }
+            catch
+            {
+                return false;
+            }
+
+            if (Convert.ToDouble(input) < 0) return false;
+            return true;
+        }
+
+        /// <summary>
         /// Disgards the settings and sets dialogresult to cancel
         /// </summary>
-        private void Cancel_Button_Click(object sender, EventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void CancelButtonClick(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        #region Windows Form Designer generated code
-
-        internal Button Cancel_Button;
-        internal ComboBox ComboPaperSizes;
-        internal GroupBox GroupBox1;
-        internal Label Label1;
-        internal Label Label2;
-        internal Label Label3;
-        internal Label Label4;
-        internal Label Label5;
-        internal Label Label6;
-        internal Button OK_Button;
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
-
-        internal Label lblPaperDimension;
-        internal TextBox txtBoxBottom;
-        internal TextBox txtBoxLeft;
-        internal TextBox txtBoxRight;
-        internal TextBox txtBoxTop;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        private void ComboPaperSizesSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
+            UpdatePaperSize();
         }
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
+        private void RdbLandscapeCheckedChanged(object sender, EventArgs e)
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PageSetupForm));
-            this.Cancel_Button = new System.Windows.Forms.Button();
-            this.OK_Button = new System.Windows.Forms.Button();
-            this.GroupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtBoxBottom = new System.Windows.Forms.TextBox();
-            this.txtBoxTop = new System.Windows.Forms.TextBox();
-            this.txtBoxLeft = new System.Windows.Forms.TextBox();
-            this.Label5 = new System.Windows.Forms.Label();
-            this.txtBoxRight = new System.Windows.Forms.TextBox();
-            this.Label3 = new System.Windows.Forms.Label();
-            this.Label6 = new System.Windows.Forms.Label();
-            this.Label4 = new System.Windows.Forms.Label();
-            this.lblPaperDimension = new System.Windows.Forms.Label();
-            this.Label2 = new System.Windows.Forms.Label();
-            this.Label1 = new System.Windows.Forms.Label();
-            this.ComboPaperSizes = new System.Windows.Forms.ComboBox();
-            this._groupBox2 = new System.Windows.Forms.GroupBox();
-            this._rdbLandscape = new System.Windows.Forms.RadioButton();
-            this._rdbPortrait = new System.Windows.Forms.RadioButton();
-            this.GroupBox1.SuspendLayout();
-            this._groupBox2.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // Cancel_Button
-            // 
-            this.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            resources.ApplyResources(this.Cancel_Button, "Cancel_Button");
-            this.Cancel_Button.Name = "Cancel_Button";
-            this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
-            // 
-            // OK_Button
-            // 
-            resources.ApplyResources(this.OK_Button, "OK_Button");
-            this.OK_Button.Name = "OK_Button";
-            this.OK_Button.Click += new System.EventHandler(this.OK_Button_Click);
-            // 
-            // GroupBox1
-            // 
-            this.GroupBox1.Controls.Add(this.txtBoxBottom);
-            this.GroupBox1.Controls.Add(this.txtBoxTop);
-            this.GroupBox1.Controls.Add(this.txtBoxLeft);
-            this.GroupBox1.Controls.Add(this.Label5);
-            this.GroupBox1.Controls.Add(this.txtBoxRight);
-            this.GroupBox1.Controls.Add(this.Label3);
-            this.GroupBox1.Controls.Add(this.Label6);
-            this.GroupBox1.Controls.Add(this.Label4);
-            resources.ApplyResources(this.GroupBox1, "GroupBox1");
-            this.GroupBox1.Name = "GroupBox1";
-            this.GroupBox1.TabStop = false;
-            // 
-            // txtBoxBottom
-            // 
-            resources.ApplyResources(this.txtBoxBottom, "txtBoxBottom");
-            this.txtBoxBottom.Name = "txtBoxBottom";
-            this.txtBoxBottom.Leave += new System.EventHandler(this.txtBoxBottom_Leave);
-            // 
-            // txtBoxTop
-            // 
-            resources.ApplyResources(this.txtBoxTop, "txtBoxTop");
-            this.txtBoxTop.Name = "txtBoxTop";
-            this.txtBoxTop.Leave += new System.EventHandler(this.txtBoxTop_Leave);
-            // 
-            // txtBoxLeft
-            // 
-            resources.ApplyResources(this.txtBoxLeft, "txtBoxLeft");
-            this.txtBoxLeft.Name = "txtBoxLeft";
-            this.txtBoxLeft.Leave += new System.EventHandler(this.txtBoxLeft_Leave);
-            // 
-            // Label5
-            // 
-            resources.ApplyResources(this.Label5, "Label5");
-            this.Label5.Name = "Label5";
-            // 
-            // txtBoxRight
-            // 
-            resources.ApplyResources(this.txtBoxRight, "txtBoxRight");
-            this.txtBoxRight.Name = "txtBoxRight";
-            this.txtBoxRight.Leave += new System.EventHandler(this.txtBoxRight_Leave);
-            // 
-            // Label3
-            // 
-            resources.ApplyResources(this.Label3, "Label3");
-            this.Label3.Name = "Label3";
-            // 
-            // Label6
-            // 
-            resources.ApplyResources(this.Label6, "Label6");
-            this.Label6.Name = "Label6";
-            // 
-            // Label4
-            // 
-            resources.ApplyResources(this.Label4, "Label4");
-            this.Label4.Name = "Label4";
-            // 
-            // lblPaperDimension
-            // 
-            resources.ApplyResources(this.lblPaperDimension, "lblPaperDimension");
-            this.lblPaperDimension.Name = "lblPaperDimension";
-            // 
-            // Label2
-            // 
-            resources.ApplyResources(this.Label2, "Label2");
-            this.Label2.Name = "Label2";
-            // 
-            // Label1
-            // 
-            resources.ApplyResources(this.Label1, "Label1");
-            this.Label1.Name = "Label1";
-            // 
-            // ComboPaperSizes
-            // 
-            this.ComboPaperSizes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ComboPaperSizes.FormattingEnabled = true;
-            resources.ApplyResources(this.ComboPaperSizes, "ComboPaperSizes");
-            this.ComboPaperSizes.Name = "ComboPaperSizes";
-            this.ComboPaperSizes.SelectedIndexChanged += new System.EventHandler(this.ComboPaperSizes_SelectedIndexChanged);
-            // 
-            // _groupBox2
-            // 
-            this._groupBox2.Controls.Add(this._rdbLandscape);
-            this._groupBox2.Controls.Add(this._rdbPortrait);
-            resources.ApplyResources(this._groupBox2, "_groupBox2");
-            this._groupBox2.Name = "_groupBox2";
-            this._groupBox2.TabStop = false;
-            // 
-            // _rdbLandscape
-            // 
-            resources.ApplyResources(this._rdbLandscape, "_rdbLandscape");
-            this._rdbLandscape.Name = "_rdbLandscape";
-            this._rdbLandscape.TabStop = true;
-            this._rdbLandscape.UseVisualStyleBackColor = true;
-            this._rdbLandscape.CheckedChanged += new System.EventHandler(this.rdbLandscape_CheckedChanged);
-            // 
-            // _rdbPortrait
-            // 
-            resources.ApplyResources(this._rdbPortrait, "_rdbPortrait");
-            this._rdbPortrait.Name = "_rdbPortrait";
-            this._rdbPortrait.TabStop = true;
-            this._rdbPortrait.UseVisualStyleBackColor = true;
-            this._rdbPortrait.CheckedChanged += new System.EventHandler(this.rdbPortrait_CheckedChanged);
-            // 
-            // PageSetupForm
-            // 
-            this.AcceptButton = this.OK_Button;
-            this.CancelButton = this.Cancel_Button;
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this._groupBox2);
-            this.Controls.Add(this.Cancel_Button);
-            this.Controls.Add(this.OK_Button);
-            this.Controls.Add(this.GroupBox1);
-            this.Controls.Add(this.lblPaperDimension);
-            this.Controls.Add(this.Label2);
-            this.Controls.Add(this.Label1);
-            this.Controls.Add(this.ComboPaperSizes);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PageSetupForm";
-            this.ShowInTaskbar = false;
-            this.GroupBox1.ResumeLayout(false);
-            this.GroupBox1.PerformLayout();
-            this._groupBox2.ResumeLayout(false);
-            this._groupBox2.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            UpdatePaperSize();
         }
 
-        #endregion Windows Form Designer generated code
+        private void RdbPortraitCheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePaperSize();
+        }
+
+        private void TxtBoxBottomLeave(object sender, EventArgs e)
+        {
+            if (IsValidMargin(txtBoxBottom.Text))
+                _bottom = Convert.ToDouble(txtBoxBottom.Text);
+            txtBoxBottom.Text = $@"{_bottom:0.00}";
+        }
+
+        private void TxtBoxLeftLeave(object sender, EventArgs e)
+        {
+            if (IsValidMargin(txtBoxLeft.Text))
+                _left = Convert.ToDouble(txtBoxLeft.Text);
+            txtBoxLeft.Text = $@"{_left:0.00}";
+        }
+
+        private void TxtBoxRightLeave(object sender, EventArgs e)
+        {
+            if (IsValidMargin(txtBoxRight.Text))
+                _right = Convert.ToDouble(txtBoxRight.Text);
+            txtBoxRight.Text = $@"{_right:0.00}";
+        }
+
+        private void TxtBoxTopLeave(object sender, EventArgs e)
+        {
+            if (IsValidMargin(txtBoxTop.Text))
+                _top = Convert.ToDouble(txtBoxTop.Text);
+            txtBoxTop.Text = $@"{_top:0.00}";
+        }
+
+        private void UpdatePaperSize()
+        {
+            if (comboPaperSizes.SelectedIndex == -1 && comboPaperSizes.Items.Count > 0) comboPaperSizes.SelectedIndex = 0;
+            lblPaperDimension.Text = comboPaperSizes.SelectedIndex > -1 ? (_printerSettings.PaperSizes[comboPaperSizes.SelectedIndex].Width / 100) + "\" x " + (_printerSettings.PaperSizes[comboPaperSizes.SelectedIndex].Height / 100) + "\"" : string.Empty;
+        }
+
+        #endregion
     }
 }

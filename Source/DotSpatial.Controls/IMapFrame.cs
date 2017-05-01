@@ -26,10 +26,10 @@ namespace DotSpatial.Controls
         #region Events
 
         /// <summary>
-        /// Occurs after changes have been made to the back buffer that affect the viewing area of the screen,
-        /// thereby requiring an invalidation.
+        /// Occurs when the buffer content has been altered and any containing maps should quick-draw
+        /// from the buffer, followed by the tool drawing.
         /// </summary>
-        event EventHandler ScreenUpdated;
+        event EventHandler<ClipArgs> BufferChanged;
 
         /// <summary>
         /// Occurs after every one of the zones, chunks and stages has finished rendering to a stencil.
@@ -37,15 +37,78 @@ namespace DotSpatial.Controls
         event EventHandler FinishedRefresh;
 
         /// <summary>
-        /// Occurs when the buffer content has been altered and any containing maps should quick-draw
-        /// from the buffer, followed by the tool drawing.
+        /// Occurs after changes have been made to the back buffer that affect the viewing area of the screen,
+        /// thereby requiring an invalidation.
         /// </summary>
-        event EventHandler<ClipArgs> BufferChanged;
+        event EventHandler ScreenUpdated;
 
         /// <summary>
         /// Occurs when View changed
         /// </summary>
         event EventHandler<ViewChangedEventArgs> ViewChanged;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the buffered image.  Mess with this at your own risk.
+        /// </summary>
+        Image BufferImage { get; set; }
+
+        /// <summary>
+        /// Gets a rectangle indicating the size of the map frame image
+        /// </summary>
+        Rectangle ClientRectangle { get; }
+
+        /// <summary>
+        /// Gets or sets the integer that specifies the chunk that is actively being drawn
+        /// </summary>
+        int CurrentChunk { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether this map frame should define its buffer
+        /// region to be the same size as the client, or three times larger.
+        /// </summary>
+        bool ExtendBuffer { get; set; }
+
+        /// <summary>
+        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// </summary>
+        int ExtendBufferCoeff { get; }
+
+        /// <summary>
+        /// Gets or sets whether this map frame is currently in the process of redrawing the
+        /// stencils after a pan operation.  Drawing should not take place if this is true.
+        /// </summary>
+        bool IsPanning { get; set; }
+
+        /// <summary>
+        /// Gets or sets the layers
+        /// </summary>
+        new IMapLayerCollection Layers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parent control for this map frame.
+        /// </summary>
+        Control Parent { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PromptMode that determines how to warn users when attempting to add a layer without
+        /// a projection to a map that has a projection.
+        /// </summary>
+        ActionMode ProjectionModeDefine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PromptMode that determines how to warn users when attempting to add a layer with
+        /// a coordinate system that is different from the current projection.
+        /// </summary>
+        ActionMode ProjectionModeReproject { get; set; }
+
+        /// <summary>
+        /// gets or sets the rectangle in pixel coordinates that will be drawn to the entire screen.
+        /// </summary>
+        Rectangle View { get; set; }
 
         #endregion
 
@@ -76,12 +139,6 @@ namespace DotSpatial.Controls
         void Draw(PaintEventArgs pe);
 
         /// <summary>
-        /// This will cause an invalidation for each layer.  The actual rectangle to re-draw is not specified
-        /// here, but rather this simply indicates that some re-calculation is necessary.
-        /// </summary>
-        void InvalidateLayers();
-
-        /// <summary>
         /// Uses the current buffer and envelope to force each of the contained layers
         /// to re-draw their content.  This is useful after a zoom or size change.
         /// </summary>
@@ -94,12 +151,17 @@ namespace DotSpatial.Controls
         void Initialize(List<Extent> regions);
 
         /// <summary>
-        /// Obtains a rectangle relative to the background image by comparing
-        /// the current View rectangle with the parent control's size.
+        /// This will cause an invalidation for each layer.  The actual rectangle to re-draw is not specified
+        /// here, but rather this simply indicates that some re-calculation is necessary.
         /// </summary>
-        /// <param name="clip"></param>
-        /// <returns></returns>
-        Rectangle ParentToView(Rectangle clip);
+        void InvalidateLayers();
+
+        /// <summary>
+        /// Pans the image for this map frame.  Instead of drawing entirely new content, from all 5 zones,
+        /// just the slivers of newly revealed area need to be re-drawn.
+        /// </summary>
+        /// <param name="shift">A Point showing the amount to shift in pixels</param>
+        void Pan(Point shift);
 
         /// <summary>
         /// When the control is being resized, the view needs to change in order to preserve the aspect ratio,
@@ -108,27 +170,12 @@ namespace DotSpatial.Controls
         void ParentResize();
 
         /// <summary>
-        /// Converts a single geographic location into the equivalent point on the
-        /// screen relative to the top left corner of the map.
+        /// Obtains a rectangle relative to the background image by comparing
+        /// the current View rectangle with the parent control's size.
         /// </summary>
-        /// <param name="location">The geographic position to transform</param>
-        /// <returns>A Point with the new location.</returns>
-        Point ProjToBuffer(Coordinate location);
-
-        /// <summary>
-        /// Converts a single geographic envelope into an equivalent Rectangle
-        /// as it would be drawn on the screen.
-        /// </summary>
-        /// <param name="ext">The geographic Envelope</param>
-        /// <returns>A Rectangle</returns>
-        Rectangle ProjToBuffer(Extent ext);
-
-        /// <summary>
-        /// Pans the image for this map frame.  Instead of drawing entirely new content, from all 5 zones,
-        /// just the slivers of newly revealed area need to be re-drawn.
-        /// </summary>
-        /// <param name="shift">A Point showing the amount to shift in pixels</param>
-        void Pan(Point shift);
+        /// <param name="clip"></param>
+        /// <returns></returns>
+        Rectangle ParentToView(Rectangle clip);
 
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
@@ -149,16 +196,32 @@ namespace DotSpatial.Controls
         void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope);
 
         /// <summary>
-        /// This is not called during a resize, but rather after panning or zooming where the
-        /// view is used as a guide to update the extents.  This will also call ResetBuffer.
+        /// Converts a single geographic location into the equivalent point on the
+        /// screen relative to the top left corner of the map.
         /// </summary>
-        void ResetExtents();
+        /// <param name="location">The geographic position to transform</param>
+        /// <returns>A Point with the new location.</returns>
+        Point ProjToBuffer(Coordinate location);
+
+        /// <summary>
+        /// Converts a single geographic envelope into an equivalent Rectangle
+        /// as it would be drawn on the screen.
+        /// </summary>
+        /// <param name="ext">The geographic Envelope</param>
+        /// <returns>A Rectangle</returns>
+        Rectangle ProjToBuffer(Extent ext);
 
         /// <summary>
         /// Re-creates the buffer based on the size of the control without changing
         /// the geographic extents.  This is used after a resize operation.
         /// </summary>
         void ResetBuffer();
+
+        /// <summary>
+        /// This is not called during a resize, but rather after panning or zooming where the
+        /// view is used as a guide to update the extents.  This will also call ResetBuffer.
+        /// </summary>
+        void ResetExtents();
 
         /// <summary>
         /// Zooms in one notch, so that the scale becomes larger and the features become larger.
@@ -179,72 +242,6 @@ namespace DotSpatial.Controls
         /// Zooms to the previous extent of the map frame
         /// </summary>
         void ZoomToPrevious();
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the buffered image.  Mess with this at your own risk.
-        /// </summary>
-        Image BufferImage { get; set; }
-
-        /// <summary>
-        /// Gets a rectangle indicating the size of the map frame image
-        /// </summary>
-        Rectangle ClientRectangle { get; }
-
-        /// <summary>
-        /// Gets or sets the integer that specifies the chunk that is actively being drawn
-        /// </summary>
-        int CurrentChunk { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether this map frame should define its buffer
-        /// region to be the same size as the client, or three times larger.
-        /// </summary>
-        bool ExtendBuffer { get; set; }
-
-        /// <summary>
-        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
-        /// </summary>
-        int ExtendBufferCoeff
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets or sets whether this map frame is currently in the process of redrawing the
-        /// stencils after a pan operation.  Drawing should not take place if this is true.
-        /// </summary>
-        bool IsPanning { get; set; }
-
-        /// <summary>
-        /// Gets or sets the parent control for this map frame.
-        /// </summary>
-        Control Parent { get; set; }
-
-        /// <summary>
-        /// Gets or sets the PromptMode that determines how to warn users when attempting to add a layer with
-        /// a coordinate system that is different from the current projection.
-        /// </summary>
-        ActionMode ProjectionModeReproject { get; set; }
-
-        /// <summary>
-        /// Gets or sets the PromptMode that determines how to warn users when attempting to add a layer without
-        /// a projection to a map that has a projection.
-        /// </summary>
-        ActionMode ProjectionModeDefine { get; set; }
-
-        /// <summary>
-        /// Gets or sets the layers
-        /// </summary>
-        new IMapLayerCollection Layers { get; set; }
-
-        /// <summary>
-        /// gets or sets the rectangle in pixel coordinates that will be drawn to the entire screen.
-        /// </summary>
-        Rectangle View { get; set; }
 
         #endregion
     }

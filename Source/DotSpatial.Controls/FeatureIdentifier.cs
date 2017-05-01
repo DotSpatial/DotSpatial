@@ -26,15 +26,19 @@ namespace DotSpatial.Controls
     /// </summary>
     public partial class FeatureIdentifier : Form
     {
-        private Extent _activeRegion;
+        #region Fields
+
         private readonly Dictionary<string, string> _featureIdFields;
         private readonly MenuItem _mnuAssignIdField;
         private readonly MenuItem _mnuSelectMenu;
 
         private readonly ContextMenu _mnuTreeContext;
+        private Extent _activeRegion;
         private string _previouslySelectedLayerName;
 
-        #region Constructors
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of FeatureIdentifier
@@ -46,6 +50,7 @@ namespace DotSpatial.Controls
             _mnuTreeContext = new ContextMenu();
             _mnuSelectMenu = new MenuItem("Select Feature");
             _mnuSelectMenu.Click += selectMenu_Click;
+
             // The "ID Field" seems more like a display caption.
             _mnuAssignIdField = new MenuItem("Assign ID Field");
             _mnuAssignIdField.Click += _mnuAssignIdField_Click;
@@ -55,101 +60,6 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Methods
-
-        private void _mnuAssignIdField_Click(object sender, EventArgs e)
-        {
-            var fl = treFeatures.SelectedNode.Tag as IFeatureLayer;
-            if (fl != null)
-            {
-                var lstBox = new ListBoxDialog();
-
-                var count = fl.DataSet.DataTable.Columns.Count;
-                var obj = new object[count];
-                for (var i = 0; i < count; i++)
-                {
-                    obj[i] = fl.DataSet.DataTable.Columns[i].ColumnName;
-                }
-                lstBox.Clear();
-                lstBox.Add(obj);
-                if (lstBox.ShowDialog(this) != DialogResult.OK) return;
-                if (_featureIdFields.ContainsKey(fl.LegendText) == false)
-                {
-                    _featureIdFields.Add(fl.LegendText, (string)lstBox.SelectedItem);
-                }
-                else
-                {
-                    _featureIdFields[fl.LegendText] = (string)lstBox.SelectedItem;
-                }
-                SuspendLayout();
-
-                var oldLayers = new List<IFeatureLayer>();
-                foreach (TreeNode node in treFeatures.Nodes)
-                {
-                    oldLayers.Add(node.Tag as IFeatureLayer);
-                }
-
-                Clear();
-                foreach (var layer in oldLayers)
-                {
-                    Add(layer, _activeRegion);
-                }
-                ReSelect();
-                ResumeLayout();
-            }
-        }
-
-        private void selectMenu_Click(object sender, EventArgs e)
-        {
-            var feature = treFeatures.SelectedNode.Tag as IFeature;
-            var layer = treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
-            if (feature != null && layer != null)
-            {
-                layer.Select(feature);
-            }
-        }
-
-        private void treFeatures_MouseUp(object sender, MouseEventArgs e)
-        {
-            // Create a customized context menu on right click in the tree.
-            if (e.Button == MouseButtons.Right)
-            {
-                var clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
-                if (clickedNode != null)
-                {
-                    var f = clickedNode.Tag as IFeature;
-                    if (f != null)
-                    {
-                        treFeatures.SelectedNode = clickedNode;
-                        _mnuTreeContext.MenuItems.Clear();
-                        _mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
-                        _mnuTreeContext.Show(treFeatures, e.Location);
-                    }
-                    var fl = clickedNode.Tag as IFeatureLayer;
-                    if (fl != null)
-                    {
-                        treFeatures.SelectedNode = clickedNode;
-                        _mnuTreeContext.MenuItems.Clear();
-                        _mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
-                        _mnuTreeContext.Show(treFeatures, e.Location);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Clears the items in the tree
-        /// </summary>
-        public virtual void Clear()
-        {
-            if (treFeatures.SelectedNode != null)
-            {
-                var node = treFeatures.SelectedNode;
-                _previouslySelectedLayerName = node.Parent != null ? node.Parent.Text : node.Text;
-            }
-            treFeatures.SuspendLayout();
-            treFeatures.Nodes.Clear();
-            treFeatures.ResumeLayout();
-        }
 
         /// <summary>
         /// Adds a new node to the tree view with the layer name
@@ -163,6 +73,7 @@ namespace DotSpatial.Controls
             {
                 return false;
             }
+
             _activeRegion = bounds;
             treFeatures.SuspendLayout();
 
@@ -178,31 +89,28 @@ namespace DotSpatial.Controls
                 {
                     if (dr != null) name += " - " + dr[_featureIdFields[layer.LegendText]];
                 }
+
                 var node = nodeLayer.Nodes.Add(name);
                 node.Tag = feature;
             }
+
             treFeatures.ResumeLayout();
             return true;
         }
 
         /// <summary>
-        /// Adds a new node to the tree view with the layer name
+        /// Clears the items in the tree
         /// </summary>
-        /// <param name="layer">The layer.</param>
-        /// <param name="bounds">The bounds.</param>
-        internal void Add(IMapRasterLayer layer, Extent bounds)
+        public virtual void Clear()
         {
+            if (treFeatures.SelectedNode != null)
+            {
+                var node = treFeatures.SelectedNode;
+                _previouslySelectedLayerName = node.Parent != null ? node.Parent.Text : node.Text;
+            }
+
             treFeatures.SuspendLayout();
-
-            var index = layer.DataSet.ProjToCell(bounds.Center);
-            if (index == RcIndex.Empty) return;
-            var val = layer.DataSet.Value[index.Row, index.Column];
-
-            var text = string.Format("{0} = {1} ({2},{3})", layer.LegendText, val, index.Column, index.Row);
-            var nodeLayer = treFeatures.Nodes.Add(text);
-            nodeLayer.Tag = layer;
-            nodeLayer.Name = layer.LegendText;
-
+            treFeatures.Nodes.Clear();
             treFeatures.ResumeLayout();
         }
 
@@ -249,6 +157,82 @@ namespace DotSpatial.Controls
             treFeatures.HideSelection = false;
         }
 
+        /// <summary>
+        /// Adds a new node to the tree view with the layer name
+        /// </summary>
+        /// <param name="layer">The layer.</param>
+        /// <param name="bounds">The bounds.</param>
+        internal void Add(IMapRasterLayer layer, Extent bounds)
+        {
+            treFeatures.SuspendLayout();
+
+            var index = layer.DataSet.ProjToCell(bounds.Center);
+            if (index == RcIndex.Empty) return;
+            var val = layer.DataSet.Value[index.Row, index.Column];
+
+            var text = string.Format("{0} = {1} ({2},{3})", layer.LegendText, val, index.Column, index.Row);
+            var nodeLayer = treFeatures.Nodes.Add(text);
+            nodeLayer.Tag = layer;
+            nodeLayer.Name = layer.LegendText;
+
+            treFeatures.ResumeLayout();
+        }
+
+        private void _mnuAssignIdField_Click(object sender, EventArgs e)
+        {
+            var fl = treFeatures.SelectedNode.Tag as IFeatureLayer;
+            if (fl != null)
+            {
+                var lstBox = new ListBoxDialog();
+
+                var count = fl.DataSet.DataTable.Columns.Count;
+                var obj = new object[count];
+                for (var i = 0; i < count; i++)
+                {
+                    obj[i] = fl.DataSet.DataTable.Columns[i].ColumnName;
+                }
+
+                lstBox.Clear();
+                lstBox.Add(obj);
+                if (lstBox.ShowDialog(this) != DialogResult.OK) return;
+                if (_featureIdFields.ContainsKey(fl.LegendText) == false)
+                {
+                    _featureIdFields.Add(fl.LegendText, (string)lstBox.SelectedItem);
+                }
+                else
+                {
+                    _featureIdFields[fl.LegendText] = (string)lstBox.SelectedItem;
+                }
+
+                SuspendLayout();
+
+                var oldLayers = new List<IFeatureLayer>();
+                foreach (TreeNode node in treFeatures.Nodes)
+                {
+                    oldLayers.Add(node.Tag as IFeatureLayer);
+                }
+
+                Clear();
+                foreach (var layer in oldLayers)
+                {
+                    Add(layer, _activeRegion);
+                }
+
+                ReSelect();
+                ResumeLayout();
+            }
+        }
+
+        private void selectMenu_Click(object sender, EventArgs e)
+        {
+            var feature = treFeatures.SelectedNode.Tag as IFeature;
+            var layer = treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
+            if (feature != null && layer != null)
+            {
+                layer.Select(feature);
+            }
+        }
+
         private void treFeatures_AfterSelect(object sender, TreeViewEventArgs e)
         {
             var f = e.Node.Tag as IFeature;
@@ -257,6 +241,7 @@ namespace DotSpatial.Controls
                 dgvAttributes.DataSource = null;
                 return;
             }
+
             var dt = new DataTable();
             dt.Columns.Add("Field Name");
             dt.Columns.Add("Value");
@@ -265,6 +250,7 @@ namespace DotSpatial.Controls
             {
                 f.ParentFeatureSet.FillAttributes();
             }
+
             var columns = f.ParentFeatureSet.GetColumns();
             foreach (var fld in columns)
             {
@@ -273,7 +259,37 @@ namespace DotSpatial.Controls
                 if (f.DataRow != null) dr["Value"] = f.DataRow[fld.ColumnName].ToString();
                 dt.Rows.Add(dr);
             }
+
             dgvAttributes.DataSource = dt;
+        }
+
+        private void treFeatures_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Create a customized context menu on right click in the tree.
+            if (e.Button == MouseButtons.Right)
+            {
+                var clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
+                if (clickedNode != null)
+                {
+                    var f = clickedNode.Tag as IFeature;
+                    if (f != null)
+                    {
+                        treFeatures.SelectedNode = clickedNode;
+                        _mnuTreeContext.MenuItems.Clear();
+                        _mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
+                        _mnuTreeContext.Show(treFeatures, e.Location);
+                    }
+
+                    var fl = clickedNode.Tag as IFeatureLayer;
+                    if (fl != null)
+                    {
+                        treFeatures.SelectedNode = clickedNode;
+                        _mnuTreeContext.MenuItems.Clear();
+                        _mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
+                        _mnuTreeContext.Show(treFeatures, e.Location);
+                    }
+                }
+            }
         }
 
         #endregion

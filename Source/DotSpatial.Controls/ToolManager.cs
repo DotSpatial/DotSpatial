@@ -33,14 +33,14 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class ToolManager : TreeView, IPartImportsSatisfiedNotification
     {
-        #region Constants and Fields
+        #region Fields
 
         private readonly ToolTip _toolTipTree;
         private ITool _toolToExecute;
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolManager"/> class that scans the executables root path\ tools folder for tools.
@@ -59,7 +59,12 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Public Properties
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the current AppManager handle.
+        /// </summary>
+        public AppManager App { get; set; }
 
         /// <summary>
         /// Gets the data that are available by default to tools
@@ -91,11 +96,6 @@ namespace DotSpatial.Controls
         public ILegend Legend { get; set; }
 
         /// <summary>
-        /// Gets or sets the current AppManager handle.
-        /// </summary>
-        public AppManager App { get; set; }
-
-        /// <summary>
         /// Gets or sets the list of the available tools.
         /// </summary>
         [Browsable(false)]
@@ -106,17 +106,6 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Called when a part's imports have been satisfied and it is safe to use. Refreshes the tree of tools.
-        /// </summary>
-        public void OnImportsSatisfied()
-        {
-            if (InvokeRequired)
-                Invoke(new MethodInvoker(RefreshTree));
-            else
-                RefreshTree();
-        }
 
         /// <summary>
         /// Returns true if the Tool Manager can create the tool specified by the Name
@@ -141,9 +130,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Highlights the next tool
+        /// Highlights the next tool.
         /// </summary>
-        /// <param name="toolName"></param>
+        /// <param name="toolName">The name of the tool.</param>
         public void HighlightNextTool(string toolName)
         {
             TreeNode selectedNode = SelectedNode;
@@ -176,9 +165,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Locates a tool by its name in the tree and highlights it
+        /// Locates a tool by its name in the tree and highlights it.
         /// </summary>
-        /// <param name="toolName"></param>
+        /// <param name="toolName">The name of the tool.</param>
         public void HighlightTool(string toolName)
         {
             CollapseAll();
@@ -197,7 +186,19 @@ namespace DotSpatial.Controls
                     }
                 }
             }
+
             CollapseAll();
+        }
+
+        /// <summary>
+        /// Called when a part's imports have been satisfied and it is safe to use. Refreshes the tree of tools.
+        /// </summary>
+        public void OnImportsSatisfied()
+        {
+            if (InvokeRequired)
+                Invoke(new MethodInvoker(RefreshTree));
+            else
+                RefreshTree();
         }
 
         /// <summary>
@@ -212,9 +213,7 @@ namespace DotSpatial.Controls
             foreach (ITool tool in Tools)
             {
                 // If the tool's category doesn't exist we add it
-                string category = tool.Category;
-                if (category == null)
-                    category = "Default Category";
+                string category = tool.Category ?? "Default Category";
 
                 if (Nodes[category] == null)
                     Nodes.Add(category, category);
@@ -222,23 +221,14 @@ namespace DotSpatial.Controls
                 // we add the tool with the default icon
                 Nodes[category].Nodes.Add(tool.AssemblyQualifiedName, tool.Name, "Hammer", "Hammer");
             }
-            this.Refresh();
-        }
 
-        /// <summary>
-        /// Handles the NodeMouseDoubleClick event of the ToolManager control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.TreeNodeMouseClickEventArgs"/> instance containing the event data.</param>
-        protected void ToolManagerNodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            DoDoubleClick(e.Node);
+            Refresh();
         }
 
         /// <summary>
         /// Runs when an item gets dragged.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnItemDrag(ItemDragEventArgs e)
         {
             base.OnItemDrag(e);
@@ -253,9 +243,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Thie event fires when the mouse moves to change the ToolTip
+        /// Thie event fires when the mouse moves to change the ToolTip.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -288,6 +278,16 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Handles the NodeMouseDoubleClick event of the ToolManager control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.TreeNodeMouseClickEventArgs"/> instance containing the event data.</param>
+        protected void ToolManagerNodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            DoDoubleClick(e.Node);
+        }
+
         private static void BwDoWork(object sender, DoWorkEventArgs e)
         {
             object[] threadParameter = e.Argument as object[];
@@ -298,7 +298,7 @@ namespace DotSpatial.Controls
             if (progForm == null) return;
             if (toolToExecute == null) return;
             progForm.Progress(string.Empty, 0, "==================");
-            progForm.Progress(string.Empty, 0, string.Format("Executing Tool: {0}", toolToExecute.Name));
+            progForm.Progress(string.Empty, 0, string.Format(MessageStrings.ToolManager_ExecutingTool, toolToExecute.Name));
             progForm.Progress(string.Empty, 0, "==================");
             bool result = false;
             try
@@ -313,40 +313,8 @@ namespace DotSpatial.Controls
             e.Result = result;
             progForm.ExecutionComplete();
             progForm.Progress(string.Empty, 100, "==================");
-            progForm.Progress(string.Empty, 100, string.Format("Done Executing Tool: {0}", toolToExecute.Name));
+            progForm.Progress(string.Empty, 100, string.Format(MessageStrings.ToolManager_DoneExecutingTool, toolToExecute.Name));
             progForm.Progress(string.Empty, 100, "==================");
-        }
-
-        private void ExecutionComplete(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (_toolToExecute.OutputParameters == null || !(bool)e.Result) return;
-
-            // has Parameter AddToMap set to false -> don't add to map
-            if (_toolToExecute.OutputParameters.Any(_ => _.Name == "AddToMap" && !(bool)_.Value)) return;
-
-            foreach (var p in _toolToExecute.OutputParameters)
-            {
-                try
-                {
-                    var featureset = p.Value as IFeatureSet;
-                    if (featureset != null)
-                    {
-                        App.Map.AddLayer(featureset.Filename);
-                    }
-                    else
-                    {
-                        var rasterset = p.Value as IRaster;
-                        if (rasterset != null)
-                        {
-                            App.Map.AddLayer(rasterset.Filename);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Unable to add layer. Reason: " + ex.Message);
-                }
-            }
         }
 
         private void DoDoubleClick(TreeNode theNode)
@@ -364,11 +332,8 @@ namespace DotSpatial.Controls
                 Extent ex = new Extent(-180, -90, 180, 90);
 
                 // it wasn't a category?
-                if (Legend != null)
-                {
-                    IMapFrame mf = Legend.RootNodes[0] as IMapFrame;
-                    if (mf != null) ex = mf.ViewExtents;
-                }
+                IMapFrame mf = Legend?.RootNodes[0] as IMapFrame;
+                if (mf != null) ex = mf.ViewExtents;
 
                 ToolDialog td = new ToolDialog(_toolToExecute, DataSets, ex);
                 DialogResult tdResult = td.ShowDialog(this);
@@ -400,11 +365,43 @@ namespace DotSpatial.Controls
             }
         }
 
+        private void ExecutionComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (_toolToExecute.OutputParameters == null || !(bool)e.Result) return;
+
+            // has Parameter AddToMap set to false -> don't add to map
+            if (_toolToExecute.OutputParameters.Any(_ => _.Name == "AddToMap" && !(bool)_.Value)) return;
+
+            foreach (var p in _toolToExecute.OutputParameters)
+            {
+                try
+                {
+                    var featureset = p.Value as IFeatureSet;
+                    if (featureset != null)
+                    {
+                        App.Map.AddLayer(featureset.Filename);
+                    }
+                    else
+                    {
+                        var rasterset = p.Value as IRaster;
+                        if (rasterset != null)
+                        {
+                            App.Map.AddLayer(rasterset.Filename);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(string.Format(MessageStrings.ToolManager_UnableToAddLayer, ex.Message));
+                }
+            }
+        }
+
         /// <summary>
         /// Recursive function to add all datasets.
         /// </summary>
-        /// <param name="root"></param>
-        /// <returns></returns>
+        /// <param name="root">Root item to start searching.</param>
+        /// <returns>List of all the found datasets.</returns>
         private List<DataSetArray> PopulateDataSets(IGroup root)
         {
             List<DataSetArray> dataSets = new List<DataSetArray>();
@@ -420,7 +417,7 @@ namespace DotSpatial.Controls
                             dataSets.Add(new DataSetArray(fl.LegendText + " - Current Selection", fl.Selection.ToFeatureSet()));
                     }
 
-                    if (ml.GetType().Equals(Type.GetType("DotSpatial.Controls.MapGroup")))
+                    if (ml.GetType() == Type.GetType("DotSpatial.Controls.MapGroup"))
                         dataSets.AddRange(PopulateDataSets(ml as IGroup));
                 }
             }

@@ -7,8 +7,14 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class SelectedValueChangedEventArgs : EventArgs
     {
+        #region Fields
+
         // Fields...
         private object _SelectedItem;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedValueChangedEventArgs"/> class.
@@ -26,6 +32,10 @@ namespace DotSpatial.Controls.Header
             _SelectedItem = selectedItem;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the selected item.
         /// </summary>
@@ -34,8 +44,17 @@ namespace DotSpatial.Controls.Header
         /// </value>
         public object SelectedItem
         {
-            get { return _SelectedItem; }
-            set { _SelectedItem = value; }
+            get
+            {
+                return _SelectedItem;
+            }
+
+            set
+            {
+                _SelectedItem = value;
+            }
         }
+
+        #endregion
     }
 }

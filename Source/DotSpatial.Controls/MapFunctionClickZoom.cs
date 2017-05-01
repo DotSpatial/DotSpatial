@@ -26,7 +26,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionClickZoom : MapFunction
     {
-        #region Private Variables
+        #region Fields
 
         private readonly Pen _selectionPen;
         private Point _currentPoint;
@@ -36,7 +36,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of SelectTool
@@ -44,11 +44,16 @@ namespace DotSpatial.Controls
         public MapFunctionClickZoom(IMap inMap)
             : base(inMap)
         {
-            _selectionPen = new Pen(Color.Black) { DashStyle = DashStyle.Dash };
+            _selectionPen = new Pen(Color.Black)
+                            {
+                                DashStyle = DashStyle.Dash
+                            };
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
         }
 
         #endregion
+
+        #region Methods
 
         /// <inheritdoc />
         protected override void OnDraw(MapDrawArgs e)
@@ -61,6 +66,7 @@ namespace DotSpatial.Controls
                 e.Graphics.DrawRectangle(Pens.White, r);
                 e.Graphics.DrawRectangle(_selectionPen, r);
             }
+
             base.OnDraw(e);
         }
 
@@ -78,6 +84,7 @@ namespace DotSpatial.Controls
                 _isDragging = true;
                 Map.IsBusy = true;
             }
+
             base.OnMouseDown(e);
         }
 
@@ -96,6 +103,7 @@ namespace DotSpatial.Controls
                 _currentPoint = e.Location;
                 Map.Invalidate(new Rectangle(x, y, mx - x, my - y));
             }
+
             base.OnMouseMove(e);
         }
 
@@ -116,8 +124,7 @@ namespace DotSpatial.Controls
                 {
                     if (_geoStartPoint != null && _startPoint != e.Location)
                     {
-                        Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
-                                                     _geoStartPoint.Y, e.GeographicLocation.Y);
+                        Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
                         if (Math.Abs(e.X - _startPoint.X) > 1 && Math.Abs(e.Y - _startPoint.Y) > 1)
                         {
                             e.Map.ViewExtents = env.ToExtent();
@@ -125,6 +132,7 @@ namespace DotSpatial.Controls
                         }
                     }
                 }
+
                 _isDragging = false;
 
                 if (handled == false)
@@ -135,6 +143,7 @@ namespace DotSpatial.Controls
                     if (e.Button == MouseButtons.Left)
                     {
                         r.Inflate(-r.Width / 4, -r.Height / 4);
+
                         // The mouse cursor should anchor the geographic location during zoom.
                         r.X += (e.X / 2) - w / 4;
                         r.Y += (e.Y / 2) - h / 4;
@@ -145,6 +154,7 @@ namespace DotSpatial.Controls
                         r.X += w / 2 - e.X;
                         r.Y += h / 2 - e.Y;
                     }
+
                     e.Map.MapFrame.View = r;
                     e.Map.MapFrame.ResetExtents();
                 }
@@ -153,5 +163,7 @@ namespace DotSpatial.Controls
             base.OnMouseUp(e);
             Map.IsBusy = false;
         }
+
+        #endregion
     }
 }

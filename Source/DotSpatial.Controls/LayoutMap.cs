@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Constructor to build a new LayoutMap control with map control
@@ -56,6 +56,7 @@ namespace DotSpatial.Controls
                 // if ExtendBuffer, Envelope must be three times smaller
                 viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
             }
+
             _envelope = viewExtentEnvelope;
 
             ResizeStyle = ResizeStyle.NoScaling;
@@ -63,7 +64,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// The geographic envelope to be shown by the layout
@@ -71,7 +72,11 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public virtual Envelope Envelope
         {
-            get { return _envelope; }
+            get
+            {
+                return _envelope;
+            }
+
             set
             {
                 if (value.Width / value.Height < Size.Width / Size.Height)
@@ -86,6 +91,7 @@ namespace DotSpatial.Controls
                     double deltaX = (value.Height / Size.Height * Size.Width) / 2.0;
                     _envelope = new Envelope(xCenter - deltaX, xCenter + deltaX, value.MinY, value.MaxY);
                 }
+
                 _extentChanged = true;
                 OnThumbnailChanged();
                 OnInvalidate();
@@ -98,7 +104,11 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public Map MapControl
         {
-            get { return _mapControl; }
+            get
+            {
+                return _mapControl;
+            }
+
             set
             {
                 if (value == null) throw new ArgumentNullException("value");
@@ -115,18 +125,21 @@ namespace DotSpatial.Controls
             get
             {
                 if (_mapControl.Layers.Count < 1)
-                    return (100000);
+                    return 100000;
                 if (Resizing)
-                    return (100000);
+                    return 100000;
                 return Convert.ToInt64((UnitMeterConversion() * _envelope.Width * 39.3700787 * 100D) / Size.Width);
             }
+
             set
             {
                 if (_mapControl.Layers.Count < 1)
                     return;
+
                 // Envelope tempEnv = Envelope;
                 double xtl = Envelope.MinX;
                 double ytl = Envelope.MaxY;
+
                 // tempEnv.Width = (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D);
                 // tempEnv.Height = (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D);
                 // tempEnv.X = xtl;
@@ -136,112 +149,9 @@ namespace DotSpatial.Controls
             }
         }
 
-        private double UnitMeterConversion()
-        {
-            if (_mapControl.Layers.Count == 0) return 1;
-            if (_mapControl.Layers[0].DataSet == null) return 1;
-            if (_mapControl.Layers[0].DataSet.Projection == null) return 1;
-            if (_mapControl.Layers[0].DataSet.Projection.IsLatLon)
-                return _mapControl.Layers[0].DataSet.Projection.GeographicInfo.Unit.Radians * 6354101.943;
-            return _mapControl.Layers[0].DataSet.Projection.Unit.Meters;
-        }
-
         #endregion
 
-        #region Public methods
-
-        /// <summary>
-        /// Updates the size of the control
-        /// </summary>
-        protected override void OnSizeChanged()
-        {
-            if (Resizing == false)
-            {
-                // If the size has never been set before we set the maps extent to that of the map
-                if (_oldRectangle.Width == 0 && _oldRectangle.Height == 0)
-                {
-                    ZoomViewExtent();
-                }
-                else
-                {
-                    double dx = Envelope.Width / _oldRectangle.Width;
-                    double dy = Envelope.Height / _oldRectangle.Height;
-                    //// Envelope newEnv = Envelope.Clone();
-                    //// newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
-                    //// newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
-                    //// newEnv.X = Envelope.X;
-                    //// newEnv.Y = Envelope.Y;
-                    //// Envelope = newEnv;
-
-                    double xtl = Envelope.MinX;
-                    double ytl = Envelope.MaxY;
-                    double width = Envelope.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
-                    double height = Envelope.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
-
-                    Envelope.Init(xtl, xtl + width, ytl - height, ytl);
-                }
-                _oldRectangle = new RectangleF(LocationF, Size);
-            }
-
-            base.OnSizeChanged();
-        }
-
-        /// <summary>
-        /// Zooms the map to the fullextent of all available layers
-        /// </summary>
-        public virtual void ZoomToFullExtent()
-        {
-            Envelope = MapControl.Extent.ToEnvelope();
-            OnThumbnailChanged();
-            OnInvalidate();
-        }
-
-        /// <summary>
-        /// Zooms the map to the extent of the current view
-        /// </summary>
-        public virtual void ZoomViewExtent()
-        {
-            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
-            if (_mapControl.ExtendBuffer)
-            {
-                // if ExtendBuffer, Envelope must be three times smaller
-                viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
-            }
-            Envelope = viewExtentEnvelope;
-
-        }
-
-        /// <summary>
-        /// Zooms the map element in by 10%
-        /// </summary>
-        public virtual void ZoomInMap()
-        {
-            double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
-            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
-            Envelope envl = new Envelope(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
-            Envelope = envl;
-        }
-
-        /// <summary>
-        /// Zooms the map element out by 10%
-        /// </summary>
-        public virtual void ZoomOutMap()
-        {
-            double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
-            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
-            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
-            Envelope = envl;
-        }
-
-        /// <summary>
-        /// Pans the map
-        /// </summary>
-        /// <param name="x">The amount to pan the map in the X-axis in map coord</param>
-        /// <param name="y">The amount to pan the map in the Y-axis in map coord</param>
-        public virtual void PanMap(double x, double y)
-        {
-            Envelope = new Envelope(Envelope.MinX - x, Envelope.MaxX - x, Envelope.MinY - y, Envelope.MaxY - y);
-        }
+        #region Methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -270,12 +180,117 @@ namespace DotSpatial.Controls
                     MapControl.Print(graph, new Rectangle(0, 0, _buffer.Width, _buffer.Height), _envelope.ToExtent());
                     graph.Dispose();
                 }
+
                 g.DrawImage(_buffer, Rectangle);
             }
             else
             {
                 MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
             }
+        }
+
+        /// <summary>
+        /// Pans the map
+        /// </summary>
+        /// <param name="x">The amount to pan the map in the X-axis in map coord</param>
+        /// <param name="y">The amount to pan the map in the Y-axis in map coord</param>
+        public virtual void PanMap(double x, double y)
+        {
+            Envelope = new Envelope(Envelope.MinX - x, Envelope.MaxX - x, Envelope.MinY - y, Envelope.MaxY - y);
+        }
+
+        /// <summary>
+        /// Zooms the map element in by 10%
+        /// </summary>
+        public virtual void ZoomInMap()
+        {
+            double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
+            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
+            Envelope envl = new Envelope(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
+            Envelope = envl;
+        }
+
+        /// <summary>
+        /// Zooms the map element out by 10%
+        /// </summary>
+        public virtual void ZoomOutMap()
+        {
+            double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
+            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
+            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
+            Envelope = envl;
+        }
+
+        /// <summary>
+        /// Zooms the map to the fullextent of all available layers
+        /// </summary>
+        public virtual void ZoomToFullExtent()
+        {
+            Envelope = MapControl.Extent.ToEnvelope();
+            OnThumbnailChanged();
+            OnInvalidate();
+        }
+
+        /// <summary>
+        /// Zooms the map to the extent of the current view
+        /// </summary>
+        public virtual void ZoomViewExtent()
+        {
+            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+            if (_mapControl.ExtendBuffer)
+            {
+                // if ExtendBuffer, Envelope must be three times smaller
+                viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
+            }
+
+            Envelope = viewExtentEnvelope;
+        }
+
+        /// <summary>
+        /// Updates the size of the control
+        /// </summary>
+        protected override void OnSizeChanged()
+        {
+            if (Resizing == false)
+            {
+                // If the size has never been set before we set the maps extent to that of the map
+                if (_oldRectangle.Width == 0 && _oldRectangle.Height == 0)
+                {
+                    ZoomViewExtent();
+                }
+                else
+                {
+                    double dx = Envelope.Width / _oldRectangle.Width;
+                    double dy = Envelope.Height / _oldRectangle.Height;
+
+                    //// Envelope newEnv = Envelope.Clone();
+                    //// newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
+                    //// newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
+                    //// newEnv.X = Envelope.X;
+                    //// newEnv.Y = Envelope.Y;
+                    //// Envelope = newEnv;
+                    double xtl = Envelope.MinX;
+                    double ytl = Envelope.MaxY;
+                    double width = Envelope.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
+                    double height = Envelope.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
+
+                    Envelope.Init(xtl, xtl + width, ytl - height, ytl);
+                }
+
+                _oldRectangle = new RectangleF(LocationF, Size);
+            }
+
+            base.OnSizeChanged();
+        }
+
+        private double UnitMeterConversion()
+        {
+            if (_mapControl.Layers.Count == 0) return 1;
+            if (_mapControl.Layers[0].DataSet == null) return 1;
+            if (_mapControl.Layers[0].DataSet.Projection == null) return 1;
+            if (_mapControl.Layers[0].DataSet.Projection.IsLatLon)
+                return _mapControl.Layers[0].DataSet.Projection.GeographicInfo.Unit.Radians * 6354101.943;
+            return _mapControl.Layers[0].DataSet.Projection.Unit.Meters;
         }
 
         #endregion

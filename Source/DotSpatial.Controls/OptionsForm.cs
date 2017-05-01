@@ -8,10 +8,16 @@ namespace DotSpatial.Controls
     /// </summary>
     public partial class OptionsForm : Form
     {
+        #region Fields
+
         private readonly IMap _map;
 
+        #endregion
+
+        #region  Constructors
+
         /// <summary>
-        /// Creates a new instance of options form.
+        /// Initializes a new instance of the <see cref="OptionsForm"/> class.
         /// </summary>
         /// <param name="map">The IMap the options should be applied to.</param>
         public OptionsForm(IMap map)
@@ -22,10 +28,16 @@ namespace DotSpatial.Controls
             chkZoomOutFartherThanMaxExtent.Checked = _map.ZoomOutFartherThanMaxExtent;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Saves the changed settings.
         /// </summary>
-        private void btOk_Click(object sender, EventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void BtOkClick(object sender, EventArgs e)
         {
             _map.ZoomOutFartherThanMaxExtent = chkZoomOutFartherThanMaxExtent.Checked;
             if (!_map.ZoomOutFartherThanMaxExtent)
@@ -35,5 +47,7 @@ namespace DotSpatial.Controls
                     _map.ZoomToMaxExtent();
             }
         }
+
+        #endregion
     }
 }

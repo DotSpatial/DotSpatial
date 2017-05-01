@@ -36,6 +36,8 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region  Constructors
+
         /// <summary>
         /// use the mapFrame with this dialog
         /// </summary>
@@ -49,12 +51,20 @@ namespace DotSpatial.Controls
             ChangesApplied = true;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the map frame for this dialog
         /// </summary>
         public IMapFrame MapFrame
         {
-            get { return _mapFrame; }
+            get
+            {
+                return _mapFrame;
+            }
+
             set
             {
                 if (_mapFrame == value) return;
@@ -64,6 +74,7 @@ namespace DotSpatial.Controls
                 {
                     projection.CopyProperties(_mapFrame.Projection);
                 }
+
                 Projection = projection;
             }
         }
@@ -73,7 +84,11 @@ namespace DotSpatial.Controls
         /// </summary>
         public ProjectionInfo Projection
         {
-            get { return _projection; }
+            get
+            {
+                return _projection;
+            }
+
             set
             {
                 if (_projection == value) return;
@@ -91,7 +106,11 @@ namespace DotSpatial.Controls
 
         private bool ChangesApplied
         {
-            get { return _changesApplied; }
+            get
+            {
+                return _changesApplied;
+            }
+
             set
             {
                 if (_changesApplied == value) return;
@@ -100,6 +119,10 @@ namespace DotSpatial.Controls
             }
         }
 
+        #endregion
+
+        #region Methods
+
         private void ApplyChanges()
         {
             if (ChangesApplied) return;
@@ -107,35 +130,16 @@ namespace DotSpatial.Controls
             _mapFrame.ReprojectMapFrame(_projection, layer => ignoredLayers.AppendLine(layer.LegendText));
             if (ignoredLayers.Length > 0)
             {
-                MessageBox.Show(this, "These layers was skipped:" + Environment.NewLine + ignoredLayers,
-                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "These layers was skipped:" + Environment.NewLine + ignoredLayers, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
             _mapFrame.ResetExtents();
             ChangesApplied = true;
-        }
-
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-            ApplyChanges();
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
             ApplyChanges();
-        }
-
-        private void lnkSpatialReference_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Display the appropriate link based on the value of the  
-            // LinkData property of the Link object. 
-            var target = e.Link.LinkData as string;
-
-            // If the value looks like a URL, navigate to it. 
-            if (null != target && (target.StartsWith("www.") ||
-                                   target.StartsWith("http:")))
-            {
-                Process.Start(target);
-            }
         }
 
         private void btnChangeToSelected_Click(object sender, EventArgs e)
@@ -149,11 +153,31 @@ namespace DotSpatial.Controls
             }
         }
 
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            ApplyChanges();
+        }
+
+        private void lnkSpatialReference_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // Display the appropriate link based on the value of the  
+            // LinkData property of the Link object. 
+            var target = e.Link.LinkData as string;
+
+            // If the value looks like a URL, navigate to it. 
+            if (null != target && (target.StartsWith("www.") || target.StartsWith("http:")))
+            {
+                Process.Start(target);
+            }
+        }
+
         private void PfOnChangesApplied(object sender, EventArgs eventArgs)
         {
-            var pf = (ProjectionSelectDialog) sender;
+            var pf = (ProjectionSelectDialog)sender;
             Projection = pf.SelectedCoordinateSystem;
             ChangesApplied = false;
         }
+
+        #endregion
     }
 }

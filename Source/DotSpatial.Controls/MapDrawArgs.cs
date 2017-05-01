@@ -21,7 +21,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapDrawArgs : EventArgs
     {
-        #region Private Variables
+        #region Fields
 
         private Rectangle _clipRectangle;
         private MapArgs _geoGraphics;
@@ -29,7 +29,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of DrawArgs
@@ -60,14 +60,19 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets a Graphics object that is useful for drawing in client coordinates.  Coordinates
-        /// should be specified as though they were drawn to the client rectangle, even if
-        /// a clip rectangle is specified.
+        /// Gets the clip rectangle that defines the area on the region in client coordinates where drawing is taking place.
         /// </summary>
-        public virtual Graphics Graphics
+        public virtual Rectangle ClipRectangle
         {
-            get { return _graphics; }
-            protected set { _graphics = value; }
+            get
+            {
+                return _clipRectangle;
+            }
+
+            set
+            {
+                _clipRectangle = value;
+            }
         }
 
         /// <summary>
@@ -75,17 +80,33 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual MapArgs GeoGraphics
         {
-            get { return _geoGraphics; }
-            protected set { _geoGraphics = value; }
+            get
+            {
+                return _geoGraphics;
+            }
+
+            protected set
+            {
+                _geoGraphics = value;
+            }
         }
 
         /// <summary>
-        /// Gets the clip rectangle that defines the area on the region in client coordinates where drawing is taking place.
+        /// Gets a Graphics object that is useful for drawing in client coordinates.  Coordinates
+        /// should be specified as though they were drawn to the client rectangle, even if
+        /// a clip rectangle is specified.
         /// </summary>
-        public virtual Rectangle ClipRectangle
+        public virtual Graphics Graphics
         {
-            get { return _clipRectangle; }
-            set { _clipRectangle = value; }
+            get
+            {
+                return _graphics;
+            }
+
+            protected set
+            {
+                _graphics = value;
+            }
         }
 
         #endregion

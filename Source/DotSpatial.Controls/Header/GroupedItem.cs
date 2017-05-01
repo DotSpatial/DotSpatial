@@ -5,8 +5,14 @@
     /// </summary>
     public abstract class GroupedItem : HeaderItem
     {
+        #region Fields
+
         private string groupCaption;
         private string rootKey;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the GroupItem class.
@@ -34,6 +40,10 @@
         {
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the group. This is a logical unit.
         /// </summary>
@@ -44,6 +54,7 @@
             {
                 return groupCaption;
             }
+
             set
             {
                 if (groupCaption == value) return;
@@ -62,6 +73,7 @@
             {
                 return rootKey;
             }
+
             set
             {
                 if (rootKey == value) return;
@@ -69,5 +81,7 @@
                 OnPropertyChanged("RootKey");
             }
         }
+
+        #endregion
     }
 }

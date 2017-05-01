@@ -29,7 +29,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-
 using DotSpatial.Controls.DefaultRequiredImports;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
@@ -70,6 +69,8 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region  Constructors
+
         static AppManager()
         {
             BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -81,10 +82,16 @@ namespace DotSpatial.Controls
         public AppManager()
         {
             InitializeComponent();
-            Directories = new List<string> { "Application Extensions", "Plugins" };
+            Directories = new List<string>
+                          {
+                              "Application Extensions",
+                              "Plugins"
+                          };
             SerializationManager = new SerializationManager(this);
             Extensions = new List<IExtension>();
         }
+
+        #endregion
 
         #region Events
 

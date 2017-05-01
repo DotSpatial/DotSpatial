@@ -26,8 +26,14 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class LayoutPropertyGrid : UserControl
     {
+        #region Fields
+
         private LayoutControl _layoutControl;
         private PropertyGrid _propertyGrid;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of the Layout Property Grid
@@ -37,13 +43,21 @@ namespace DotSpatial.Controls
             InitializeComponent();
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the layout control associated with this property grid
         /// </summary>
         [Browsable(false)]
         public LayoutControl LayoutControl
         {
-            get { return _layoutControl; }
+            get
+            {
+                return _layoutControl;
+            }
+
             set
             {
                 _layoutControl = value;
@@ -52,7 +66,26 @@ namespace DotSpatial.Controls
             }
         }
 
-        #region ------------------- Event Handlers
+        #endregion
+
+        #region Methods
+
+        private void InitializeComponent()
+        {
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(LayoutPropertyGrid));
+            this._propertyGrid = new PropertyGrid();
+            this.SuspendLayout();
+
+            // _propertyGrid
+            resources.ApplyResources(this._propertyGrid, "_propertyGrid");
+            this._propertyGrid.Name = "_propertyGrid";
+
+            // LayoutPropertyGrid
+            this.Controls.Add(this._propertyGrid);
+            this.Name = "LayoutPropertyGrid";
+            this.KeyUp += new KeyEventHandler(this.LayoutPropertyGrid_KeyUp);
+            this.ResumeLayout(false);
+        }
 
         /// <summary>
         /// If the selection changes this event is called
@@ -72,12 +105,6 @@ namespace DotSpatial.Controls
                 _propertyGrid.SelectedObjects = null;
         }
 
-        private void SelecteElementInvalidated(object sender, EventArgs e)
-        {
-            // If there is no selection get the layoutControls properties otherwise show the selected elements properties
-            _propertyGrid.Refresh();
-        }
-
         private void LayoutPropertyGrid_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -91,27 +118,10 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        private void InitializeComponent()
+        private void SelecteElementInvalidated(object sender, EventArgs e)
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(LayoutPropertyGrid));
-            this._propertyGrid = new PropertyGrid();
-            this.SuspendLayout();
-            //
-            // _propertyGrid
-            //
-            resources.ApplyResources(this._propertyGrid, "_propertyGrid");
-            this._propertyGrid.Name = "_propertyGrid";
-            //
-            // LayoutPropertyGrid
-            //
-            this.Controls.Add(this._propertyGrid);
-            this.Name = "LayoutPropertyGrid";
-            this.KeyUp += new KeyEventHandler(this.LayoutPropertyGrid_KeyUp);
-            this.ResumeLayout(false);
+            // If there is no selection get the layoutControls properties otherwise show the selected elements properties
+            _propertyGrid.Refresh();
         }
 
         #endregion

@@ -30,18 +30,10 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapPointLayer : PointLayer, IMapPointLayer
     {
-        #region Events
+        #region  Constructors
 
         /// <summary>
-        /// Occurs when drawing content has changed on the buffer for this layer
-        /// </summary>
-        public event EventHandler<ClipArgs> BufferChanged;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
+        /// Initializes a new instance of the <see cref="MapPointLayer"/> class.
         /// This creates a blank MapPointLayer with the DataSet set to an empty new featureset of the Point featuretype.
         /// </summary>
         public MapPointLayer()
@@ -50,9 +42,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of a GeoPointLayer without sending any status messages
+        /// Initializes a new instance of the <see cref="MapPointLayer"/> class.
         /// </summary>
-        /// <param name="featureSet">The IFeatureLayer of data values to turn into a graphical GeoPointLayer</param>
+        /// <param name="featureSet">The point feature set used as data source.</param>
         public MapPointLayer(IFeatureSet featureSet)
             : base(featureSet)
         {
@@ -62,10 +54,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MapPointLayer"/> class.
         /// Creates a new instance of the point layer where the container is specified
         /// </summary>
-        /// <param name="featureSet"></param>
-        /// <param name="container"></param>
+        /// <param name="featureSet">The point feature set used as data source.</param>
+        /// <param name="container">An IContainer that the point layer should be created in.</param>
         public MapPointLayer(IFeatureSet featureSet, ICollection<ILayer> container)
             : base(featureSet, container, null)
         {
@@ -74,21 +67,81 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MapPointLayer"/> class.
         /// Creates a new instance of the point layer where the container is specified
         /// </summary>
-        /// <param name="featureSet"></param>
-        /// <param name="container"></param>
-        /// <param name="notFinished"></param>
+        /// <param name="featureSet">The point feature set used as data source.</param>
+        /// <param name="container">An IContainer that the point layer should be created in.</param>
+        /// <param name="notFinished">Indicates whether the OnFinishedLoading event should be suppressed after loading finished.</param>
         public MapPointLayer(IFeatureSet featureSet, ICollection<ILayer> container, bool notFinished)
             : base(featureSet, container, null)
         {
             Configure();
-            if (notFinished == false) OnFinishedLoading();
+            if (!notFinished) OnFinishedLoading();
         }
 
-        private void Configure()
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when drawing content has changed on the buffer for this layer
+        /// </summary>
+        public event EventHandler<ClipArgs> BufferChanged;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image BackBuffer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current buffer.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image Buffer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Envelope BufferEnvelope { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rectangle in pixels to use as the back buffer.
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Rectangle BufferRectangle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label layer that is associated with this point layer.
+        /// </summary>
+        [ShallowCopy]
+        public new IMapLabelLayer LabelLayer
         {
-            ChunkSize = 50000;
+            get
+            {
+                return base.LabelLayer as IMapLabelLayer;
+            }
+
+            set
+            {
+                base.LabelLayer = value;
+            }
         }
 
         #endregion
@@ -96,62 +149,28 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This will draw any features that intersect this region.  To specify the features
-        /// directly, use OnDrawFeatures.  This will not clear existing buffer content.
-        /// For that call Initialize instead.
+        /// Attempts to create a new GeoPointLayer using the specified file.  If the filetype is not
+        /// does not generate a point layer, an exception will be thrown.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
-        public virtual void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="fileName">A string fileName to create a point layer for.</param>
+        /// <param name="progressHandler">Any valid implementation of IProgressHandler for receiving progress messages</param>
+        /// <returns>A GeoPointLayer created from the specified fileName.</returns>
+        public static new MapPointLayer OpenFile(string fileName, IProgressHandler progressHandler)
         {
-            // First determine the number of features we are talking about based on region.
-            List<Rectangle> clipRects = args.ProjToPixel(regions);
-            if (EditMode)
-            {
-                List<IFeature> drawList = new List<IFeature>();
-                foreach (Extent region in regions)
-                {
-                    if (region != null)
-                    {
-                        // Use union to prevent duplicates.  No sense in drawing more than we have to.
-                        drawList = drawList.Union(DataSet.Select(region)).ToList();
-                    }
-                }
-                DrawFeatures(args, drawList, clipRects, true);
-            }
-            else
-            {
-                List<int> drawList = new List<int>();
-                double[] verts = DataSet.Vertex;
+            ILayer fl = LayerManager.DefaultLayerManager.OpenLayer(fileName, progressHandler);
+            return fl as MapPointLayer;
+        }
 
-                if (DataSet.FeatureType == FeatureType.Point)
-                {
-                    for (int shp = 0; shp < verts.Length / 2; shp++)
-                    {
-                        foreach (Extent extent in regions)
-                        {
-                            if (extent.Intersects(verts[shp * 2], verts[shp * 2 + 1]))
-                            {
-                                drawList.Add(shp);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    List<ShapeRange> shapes = DataSet.ShapeIndices;
-                    for (int shp = 0; shp < shapes.Count; shp++)
-                    {
-                        foreach (Extent region in regions)
-                        {
-                            if (!shapes[shp].Extent.Intersects(region)) continue;
-                            drawList.Add(shp);
-                            break;
-                        }
-                    }
-                }
-                DrawFeatures(args, drawList, clipRects, true);
-            }
+        /// <summary>
+        /// Attempts to create a new GeoPointLayer using the specified file.  If the filetype is not
+        /// does not generate a point layer, an exception will be thrown.
+        /// </summary>
+        /// <param name="fileName">A string fileName to create a point layer for.</param>
+        /// <returns>A GeoPointLayer created from the specified fileName.</returns>
+        public static new MapPointLayer OpenFile(string fileName)
+        {
+            IFeatureLayer fl = LayerManager.DefaultLayerManager.OpenVectorLayer(fileName);
+            return fl as MapPointLayer;
         }
 
         /// <summary>
@@ -172,6 +191,7 @@ namespace DotSpatial.Controls
                     g.Clear(color);
                 }
             }
+
             g.Dispose();
         }
 
@@ -223,7 +243,7 @@ namespace DotSpatial.Controls
             for (int chunk = 0; chunk < numChunks; chunk++)
             {
                 int groupSize = ChunkSize;
-                if (chunk == numChunks - 1) groupSize = count - chunk * ChunkSize;
+                if (chunk == numChunks - 1) groupSize = count - (chunk * ChunkSize);
                 List<IFeature> subset = features.GetRange(chunk * ChunkSize, groupSize);
                 DrawFeatures(args, subset);
                 if (numChunks <= 0 || chunk >= numChunks - 1) continue;
@@ -262,8 +282,70 @@ namespace DotSpatial.Controls
                     // FinishDrawing();
                     OnBufferChanged(clipRectangles);
                     Application.DoEvents();
+
                     // this.StartDrawing();
                 }
+            }
+        }
+
+        /// <summary>
+        /// This will draw any features that intersect this region.  To specify the features
+        /// directly, use OnDrawFeatures.  This will not clear existing buffer content.
+        /// For that call Initialize instead.
+        /// </summary>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
+        /// <param name="regions">The geographic regions to draw</param>
+        public virtual void DrawRegions(MapArgs args, List<Extent> regions)
+        {
+            // First determine the number of features we are talking about based on region.
+            List<Rectangle> clipRects = args.ProjToPixel(regions);
+            if (EditMode)
+            {
+                List<IFeature> drawList = new List<IFeature>();
+                foreach (Extent region in regions)
+                {
+                    if (region != null)
+                    {
+                        // Use union to prevent duplicates.  No sense in drawing more than we have to.
+                        drawList = drawList.Union(DataSet.Select(region)).ToList();
+                    }
+                }
+
+                DrawFeatures(args, drawList, clipRects, true);
+            }
+            else
+            {
+                List<int> drawList = new List<int>();
+                double[] verts = DataSet.Vertex;
+
+                if (DataSet.FeatureType == FeatureType.Point)
+                {
+                    for (int shp = 0; shp < verts.Length / 2; shp++)
+                    {
+                        foreach (Extent extent in regions)
+                        {
+                            if (extent.Intersects(verts[shp * 2], verts[(shp * 2) + 1]))
+                            {
+                                drawList.Add(shp);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    List<ShapeRange> shapes = DataSet.ShapeIndices;
+                    for (int shp = 0; shp < shapes.Count; shp++)
+                    {
+                        foreach (Extent region in regions)
+                        {
+                            if (!shapes[shp].Extent.Intersects(region)) continue;
+                            drawList.Add(shp);
+                            break;
+                        }
+                    }
+                }
+
+                DrawFeatures(args, drawList, clipRects, true);
             }
         }
 
@@ -288,25 +370,16 @@ namespace DotSpatial.Controls
         public void StartDrawing(bool preserve)
         {
             Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
-            if (Buffer != null)
+            if (Buffer?.Width == backBuffer.Width && Buffer.Height == backBuffer.Height && preserve)
             {
-                if (Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
-                {
-                    if (preserve)
-                    {
-                        Graphics g = Graphics.FromImage(backBuffer);
-                        g.DrawImageUnscaled(Buffer, 0, 0);
-                    }
-                }
+                Graphics g = Graphics.FromImage(backBuffer);
+                g.DrawImageUnscaled(Buffer, 0, 0);
             }
+
             if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
             BackBuffer = backBuffer;
             OnStartDrawing();
         }
-
-        #endregion
-
-        #region Protected Methods
 
         /// <summary>
         /// Fires the OnBufferChanged event
@@ -344,9 +417,11 @@ namespace DotSpatial.Controls
         {
         }
 
-        #endregion
+        private void Configure()
+        {
+            ChunkSize = 50000;
+        }
 
-        #region Private  Methods
         // This draws the individual point features
         private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
         {
@@ -359,8 +434,7 @@ namespace DotSpatial.Controls
                 if (Symbology == null || Symbology.Categories.Count == 0) return;
                 FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
                 IPointCategory pc = state.Category as IPointCategory;
-                if (pc == null) return;
-                IPointSymbolizer ps = pc.Symbolizer;
+                IPointSymbolizer ps = pc?.Symbolizer;
                 if (ps == null) return;
                 double[] vertices = DataSet.Vertex;
 
@@ -369,7 +443,7 @@ namespace DotSpatial.Controls
                     if (DrawnStates != null && DrawnStates.Length > index && !DrawnStates[index].Visible) continue;
                     if (featureType == FeatureType.Point)
                     {
-                        DrawPoint(vertices[index * 2], vertices[index * 2 + 1], e, ps, g, origTransform);
+                        DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
                     }
                     else
                     {
@@ -377,7 +451,7 @@ namespace DotSpatial.Controls
                         ShapeRange range = DataSet.ShapeIndices[index];
                         for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                         {
-                            DrawPoint(vertices[i * 2], vertices[i * 2 + 1], e, ps, g, origTransform);
+                            DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
                         }
                     }
                 }
@@ -400,14 +474,14 @@ namespace DotSpatial.Controls
 
                     if (featureType == FeatureType.Point)
                     {
-                        DrawPoint(vertices[index * 2], vertices[index * 2 + 1], e, ps, g, origTransform);
+                        DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
                     }
                     else
                     {
                         ShapeRange range = DataSet.ShapeIndices[index];
                         for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                         {
-                            DrawPoint(vertices[i * 2], vertices[i * 2 + 1], e, ps, g, origTransform);
+                            DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
                         }
                     }
                 }
@@ -469,76 +543,7 @@ namespace DotSpatial.Controls
             g.Transform = shift;
             ps.Draw(g, scaleSize);
         }
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
-        /// </summary>
-        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer { get; set; }
-
-        /// <summary>
-        /// Gets the current buffer.
-        /// </summary>
-        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the geographic region represented by the buffer
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Envelope BufferEnvelope { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rectangle in pixels to use as the back buffer.
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label layer that is associated with this point layer.
-        /// </summary>
-        [ShallowCopy]
-        public new IMapLabelLayer LabelLayer
-        {
-            get { return base.LabelLayer as IMapLabelLayer; }
-            set { base.LabelLayer = value; }
-        }
 
         #endregion
-
-        #region Static Methods
-
-        /// <summary>
-        /// Attempts to create a new GeoPointLayer using the specified file.  If the filetype is not
-        /// does not generate a point layer, an exception will be thrown.
-        /// </summary>
-        /// <param name="fileName">A string fileName to create a point layer for.</param>
-        /// <param name="progressHandler">Any valid implementation of IProgressHandler for receiving progress messages</param>
-        /// <returns>A GeoPointLayer created from the specified fileName.</returns>
-        public static new MapPointLayer OpenFile(string fileName, IProgressHandler progressHandler)
-        {
-            ILayer fl = LayerManager.DefaultLayerManager.OpenLayer(fileName, progressHandler);
-            return fl as MapPointLayer;
-        }
-
-        /// <summary>
-        /// Attempts to create a new GeoPointLayer using the specified file.  If the filetype is not
-        /// does not generate a point layer, an exception will be thrown.
-        /// </summary>
-        /// <param name="fileName">A string fileName to create a point layer for.</param>
-        /// <returns>A GeoPointLayer created from the specified fileName.</returns>
-        public static new MapPointLayer OpenFile(string fileName)
-        {
-            IFeatureLayer fl = LayerManager.DefaultLayerManager.OpenVectorLayer(fileName);
-            return fl as MapPointLayer;
-        }
-
-        #endregion
-       
     }
 }

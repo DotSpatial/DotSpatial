@@ -14,7 +14,7 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class SimpleActionItem : ActionItem
     {
-        #region Constants and Fields
+        #region Fields
 
         private Image largeImage;
         private string menuContainerKey;
@@ -25,7 +25,7 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the SimpleActionItem class.
@@ -56,7 +56,7 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        #region Public Events
+        #region Events
 
         /// <summary>
         /// Gets or sets the click event handler.
@@ -71,26 +71,7 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        #region Public Properties
-
-        /// <summary>
-        /// True if an associated quick-access button is shown.
-        /// False if the associated quick-access button is not shown.
-        /// </summary>
-        public bool ShowInQuickAccessToolbar
-        {
-            get
-            {
-                return showInQuickAccessToolbar;
-            }
-
-            set
-            {
-                if (showInQuickAccessToolbar == value) return;
-                showInQuickAccessToolbar = value;
-                OnPropertyChanged("ShowInQuickAccessToolbar");
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets or sets the large image.
@@ -121,11 +102,31 @@ namespace DotSpatial.Controls.Header
             {
                 return menuContainerKey;
             }
+
             set
             {
                 if (menuContainerKey == value) return;
                 menuContainerKey = value;
                 OnPropertyChanged("MenuContainerKey");
+            }
+        }
+
+        /// <summary>
+        /// True if an associated quick-access button is shown.
+        /// False if the associated quick-access button is not shown.
+        /// </summary>
+        public bool ShowInQuickAccessToolbar
+        {
+            get
+            {
+                return showInQuickAccessToolbar;
+            }
+
+            set
+            {
+                if (showInQuickAccessToolbar == value) return;
+                showInQuickAccessToolbar = value;
+                OnPropertyChanged("ShowInQuickAccessToolbar");
             }
         }
 
@@ -161,6 +162,7 @@ namespace DotSpatial.Controls.Header
             {
                 return sortOrder;
             }
+
             set
             {
                 if (sortOrder == value) return;
@@ -179,6 +181,7 @@ namespace DotSpatial.Controls.Header
             {
                 return toggleGroupKey;
             }
+
             set
             {
                 if (toggleGroupKey == value) return;
@@ -189,7 +192,7 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
         /// Triggers the Click event.
@@ -203,18 +206,6 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Checks the button it it is unchecked and unchecks the button it if is checked.
-        /// </summary>
-        /// <remarks>This method has no effect if ToggleGroupKey is null.</remarks>
-        public virtual void Toggle()
-        {
-            if (ToggleGroupKey != null)
-                OnToggle(EventArgs.Empty);
-        }
-
-        #region OnToggling
-
-        /// <summary>
         /// Triggers the Toggling event.
         /// </summary>
         public virtual void OnToggle(EventArgs ea)
@@ -223,7 +214,15 @@ namespace DotSpatial.Controls.Header
                 Toggling(this, ea);
         }
 
-        #endregion
+        /// <summary>
+        /// Checks the button it it is unchecked and unchecks the button it if is checked.
+        /// </summary>
+        /// <remarks>This method has no effect if ToggleGroupKey is null.</remarks>
+        public virtual void Toggle()
+        {
+            if (ToggleGroupKey != null)
+                OnToggle(EventArgs.Empty);
+        }
 
         #endregion
     }

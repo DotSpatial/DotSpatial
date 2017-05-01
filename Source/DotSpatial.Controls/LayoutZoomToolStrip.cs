@@ -27,7 +27,7 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class LayoutZoomToolStrip : ToolStrip
     {
-        #region "Private Variables"
+        #region Fields
 
         private ToolStripButton _btnZoomFullExtent;
         private ToolStripButton _btnZoomIn;
@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region "Constructor"
+        #region  Constructors
 
         /// <summary>
         /// Creates an instance of the toolstrip
@@ -49,7 +49,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region "properties"
+        #region Properties
 
         /// <summary>
         /// The layout control associated with this toolstrip
@@ -57,7 +57,11 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public LayoutControl LayoutControl
         {
-            get { return _layoutControl; }
+            get
+            {
+                return _layoutControl;
+            }
+
             set
             {
                 _layoutControl = value;
@@ -69,74 +73,24 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        private void InitializeComponent()
+        #region Methods
+
+        // Fires when the user clicks the zoom to full extent button
+        private void _btnZoomFullExtent_Click(object sender, EventArgs e)
         {
-            this._btnZoomIn = new ToolStripButton();
-            this._btnZoomOut = new ToolStripButton();
-            this._btnZoomFullExtent = new ToolStripButton();
-            this._comboZoom = new ToolStripComboBox();
-            this.SuspendLayout();
-            //
-            // _btnZoomIn
-            //
-            this._btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnZoomIn.Image = Images.layout_zoom_in.ToBitmap();
-            this._btnZoomIn.ImageTransparentColor = Color.Magenta;
-            this._btnZoomIn.Name = "_btnZoomIn";
-            this._btnZoomIn.Size = new Size(23, 22);
-            this._btnZoomIn.Text = MessageStrings.LayoutToolStripZoomIn;
-            this._btnZoomIn.Click += this._btnZoomIn_Click;
-            //
-            // _btnZoomOut
-            //
-            this._btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnZoomOut.Image = Images.layout_zoom_out.ToBitmap();
-            this._btnZoomOut.ImageTransparentColor = Color.Magenta;
-            this._btnZoomOut.Name = "_btnZoomOut";
-            this._btnZoomOut.Size = new Size(23, 22);
-            this._btnZoomOut.Text = MessageStrings.LayoutToolStripZoomOut;
-            this._btnZoomOut.Click += this._btnZoomOut_Click;
-            //
-            // _btnZoomFullExtent
-            //
-            this._btnZoomFullExtent.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnZoomFullExtent.Image = Images.layout_zoom_full_extent.ToBitmap();
-            this._btnZoomFullExtent.ImageTransparentColor = Color.Magenta;
-            this._btnZoomFullExtent.Name = "_btnZoomFullExtent";
-            this._btnZoomFullExtent.Size = new Size(23, 22);
-            this._btnZoomFullExtent.Text = MessageStrings.LayoutToolStripZoomFull;
-            this._btnZoomFullExtent.Click += this._btnZoomFullExtent_Click;
-            //
-            // _comboZoom
-            //
-            this._comboZoom.Items.AddRange(new object[] {
-            "50%",
-            "75%",
-            "100%",
-            "150%",
-            "200%",
-            "300%"});
-            this._comboZoom.Name = "_comboZoom";
-            this._comboZoom.Size = new Size(75, 21);
-            this._comboZoom.SelectedIndexChanged += this._comboZoom_SelectedIndexChanged;
-            this._comboZoom.KeyPress += this._comboZoom_KeyPress;
-            //
-            // LayoutToolStrip
-            //
-            this.Items.AddRange(new ToolStripItem[] {
-            this._btnZoomIn,
-            this._btnZoomOut,
-            this._btnZoomFullExtent,
-            this._comboZoom});
-            this.ResumeLayout(false);
+            _layoutControl.ZoomFitToScreen();
         }
 
-        #region "Envent Handlers"
-
-        private void _comboZoom_SelectedIndexChanged(object sender, EventArgs e)
+        // Fires the zoom in control on the modeler
+        private void _btnZoomIn_Click(object sender, EventArgs e)
         {
-            string input = _comboZoom.Text.Replace("%", string.Empty);
-            _layoutControl.Zoom = Convert.ToInt32(input) / 100F;
+            _layoutControl.ZoomIn();
+        }
+
+        // Fires the zoom out control on the modeler
+        private void _btnZoomOut_Click(object sender, EventArgs e)
+        {
+            _layoutControl.ZoomOut();
         }
 
         private void _comboZoom_KeyPress(object sender, KeyPressEventArgs e)
@@ -156,27 +110,62 @@ namespace DotSpatial.Controls
             }
         }
 
+        private void _comboZoom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string input = _comboZoom.Text.Replace("%", string.Empty);
+            _layoutControl.Zoom = Convert.ToInt32(input) / 100F;
+        }
+
         private void _layoutControl_ZoomChanged(object sender, EventArgs e)
         {
             _comboZoom.Text = string.Format("{0:0}", _layoutControl.Zoom * 100) + "%";
         }
 
-        // Fires when the user clicks the zoom to full extent button
-        private void _btnZoomFullExtent_Click(object sender, EventArgs e)
+        private void InitializeComponent()
         {
-            _layoutControl.ZoomFitToScreen();
-        }
+            this._btnZoomIn = new ToolStripButton();
+            this._btnZoomOut = new ToolStripButton();
+            this._btnZoomFullExtent = new ToolStripButton();
+            this._comboZoom = new ToolStripComboBox();
+            this.SuspendLayout();
 
-        // Fires the zoom in control on the modeler
-        private void _btnZoomIn_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ZoomIn();
-        }
+            // _btnZoomIn
+            this._btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            this._btnZoomIn.Image = Images.layout_zoom_in.ToBitmap();
+            this._btnZoomIn.ImageTransparentColor = Color.Magenta;
+            this._btnZoomIn.Name = "_btnZoomIn";
+            this._btnZoomIn.Size = new Size(23, 22);
+            this._btnZoomIn.Text = MessageStrings.LayoutToolStripZoomIn;
+            this._btnZoomIn.Click += this._btnZoomIn_Click;
 
-        // Fires the zoom out control on the modeler
-        private void _btnZoomOut_Click(object sender, EventArgs e)
-        {
-            _layoutControl.ZoomOut();
+            // _btnZoomOut
+            this._btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            this._btnZoomOut.Image = Images.layout_zoom_out.ToBitmap();
+            this._btnZoomOut.ImageTransparentColor = Color.Magenta;
+            this._btnZoomOut.Name = "_btnZoomOut";
+            this._btnZoomOut.Size = new Size(23, 22);
+            this._btnZoomOut.Text = MessageStrings.LayoutToolStripZoomOut;
+            this._btnZoomOut.Click += this._btnZoomOut_Click;
+
+            // _btnZoomFullExtent
+            this._btnZoomFullExtent.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            this._btnZoomFullExtent.Image = Images.layout_zoom_full_extent.ToBitmap();
+            this._btnZoomFullExtent.ImageTransparentColor = Color.Magenta;
+            this._btnZoomFullExtent.Name = "_btnZoomFullExtent";
+            this._btnZoomFullExtent.Size = new Size(23, 22);
+            this._btnZoomFullExtent.Text = MessageStrings.LayoutToolStripZoomFull;
+            this._btnZoomFullExtent.Click += this._btnZoomFullExtent_Click;
+
+            // _comboZoom
+            this._comboZoom.Items.AddRange(new object[] { "50%", "75%", "100%", "150%", "200%", "300%" });
+            this._comboZoom.Name = "_comboZoom";
+            this._comboZoom.Size = new Size(75, 21);
+            this._comboZoom.SelectedIndexChanged += this._comboZoom_SelectedIndexChanged;
+            this._comboZoom.KeyPress += this._comboZoom_KeyPress;
+
+            // LayoutToolStrip
+            this.Items.AddRange(new ToolStripItem[] { this._btnZoomIn, this._btnZoomOut, this._btnZoomFullExtent, this._comboZoom });
+            this.ResumeLayout(false);
         }
 
         #endregion

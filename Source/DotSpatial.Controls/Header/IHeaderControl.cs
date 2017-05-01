@@ -26,6 +26,15 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public interface IHeaderControl
     {
+        #region Events
+
+        /// <summary>
+        /// This event occurs when a root item is selected
+        /// </summary>
+        event EventHandler<RootItemEventArgs> RootItemSelected;
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -50,15 +59,6 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         /// <param name="key">The key.</param>
         void SelectRoot(string key);
-
-        #endregion Methods
-
-        #region Events
-
-        /// <summary>
-        /// This event occurs when a root item is selected
-        /// </summary>
-        event EventHandler<RootItemEventArgs> RootItemSelected;
 
         #endregion
     }

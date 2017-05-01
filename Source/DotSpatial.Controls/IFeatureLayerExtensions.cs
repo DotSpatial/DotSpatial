@@ -9,6 +9,8 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class IFeatureLayerExtensions
     {
+        #region Methods
+
         /// <summary>
         /// This activates the labels for the specified feature layer that will be the specified expression
         /// where field names are in square brackets like "[Name]: [Value]".  This will label all the features,
@@ -27,7 +29,10 @@ namespace DotSpatial.Controls
 
             var ll = new MapLabelLayer();
             ll.Symbology.Categories.Clear();
-            var lc = new LabelCategory { Expression = expression };
+            var lc = new LabelCategory
+                     {
+                         Expression = expression
+                     };
             ll.Symbology.Categories.Add(lc);
 
             var ls = ll.Symbolizer;
@@ -52,19 +57,18 @@ namespace DotSpatial.Controls
         /// category.</param>
         /// <param name="name">The name of the category.</param>
         /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
-        public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression,
-                              ILabelSymbolizer symbolizer, string name)
+        public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, string name)
         {
             if (featureLayer == null) throw new ArgumentNullException("featureLayer");
             if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
             featureLayer.ShowLabels = true;
             ILabelCategory lc = new LabelCategory
-            {
-                Expression = expression,
-                FilterExpression = filterExpression,
-                Symbolizer = symbolizer,
-                Name = name,
-            };
+                                {
+                                    Expression = expression,
+                                    FilterExpression = filterExpression,
+                                    Symbolizer = symbolizer,
+                                    Name = name,
+                                };
             featureLayer.LabelLayer.Symbology.Categories.Add(lc);
             featureLayer.LabelLayer.CreateLabels();
         }
@@ -82,18 +86,17 @@ namespace DotSpatial.Controls
         /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than
         /// this value, labels should appear.</param>
         /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
-        public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression,
-                              ILabelSymbolizer symbolizer, double width)
+        public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, double width)
         {
             if (featureLayer == null) throw new ArgumentNullException("featureLayer");
             if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
             featureLayer.ShowLabels = true;
             ILabelCategory lc = new LabelCategory
-            {
-                Expression = expression,
-                FilterExpression = filterExpression,
-                Symbolizer = symbolizer
-            };
+                                {
+                                    Expression = expression,
+                                    FilterExpression = filterExpression,
+                                    Symbolizer = symbolizer
+                                };
             featureLayer.LabelLayer.UseDynamicVisibility = true;
             featureLayer.LabelLayer.DynamicVisibilityWidth = width;
             featureLayer.LabelLayer.Symbology.Categories.Add(lc);
@@ -109,5 +112,7 @@ namespace DotSpatial.Controls
             if (featureLayer == null) throw new ArgumentNullException("featureLayer");
             featureLayer.ShowLabels = false;
         }
+
+        #endregion
     }
 }

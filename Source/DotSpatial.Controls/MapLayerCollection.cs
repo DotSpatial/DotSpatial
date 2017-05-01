@@ -24,22 +24,13 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapLayerCollection : LayerCollection, IMapLayerCollection
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs when the stencil for one of the layers has been updated in a specific region.
-        /// </summary>
-        public event EventHandler<ClipArgs> BufferChanged;
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private IProgressHandler _progressHandler;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new blank instance of a MapLayer collection.  This is especially useful
@@ -88,6 +79,28 @@ namespace DotSpatial.Controls
         {
         }
 
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when the stencil for one of the layers has been updated in a specific region.
+        /// </summary>
+        public event EventHandler<ClipArgs> BufferChanged;
+
+        #endregion
+
+        #region Properties
+
+        /// <inheritdoc />
+        public new bool IsReadOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Gets the map frame of this layer collection
         /// </summary>
@@ -97,17 +110,82 @@ namespace DotSpatial.Controls
             {
                 return base.MapFrame as IMapFrame;
             }
+
             set
             {
                 base.MapFrame = value;
             }
         }
 
+        /// <inheritdoc />
+        public new IMapGroup ParentGroup
+        {
+            get
+            {
+                return base.ParentGroup as IMapGroup;
+            }
+
+            set
+            {
+                base.ParentGroup = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the progress handler to report progress for time consuming actions.
+        /// </summary>
+        public IProgressHandler ProgressHandler
+        {
+            get
+            {
+                return _progressHandler;
+            }
+
+            set
+            {
+                _progressHandler = value;
+            }
+        }
+
+        /// <inheritdoc />
+        public new IMapLayer SelectedLayer
+        {
+            get
+            {
+                return base.SelectedLayer as IMapLayer;
+            }
+
+            set
+            {
+                base.SelectedLayer = value;
+            }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// The default, indexed value of type T
+        /// </summary>
+        /// <param name="index">The numeric index</param>
+        /// <returns>An object of type T corresponding to the index value specified</returns>
+        public new IMapLayer this[int index]
+        {
+            get
+            {
+                return base[index] as IMapLayer;
+            }
+
+            set
+            {
+                base[index] = value;
+            }
+        }
+
         #endregion
 
         #region Methods
-
-        #region Add
 
         /// <summary>
         /// This overload automatically constructs a new MapLayer from the specified
@@ -118,22 +196,7 @@ namespace DotSpatial.Controls
         /// <param name="layer">A pre-existing FeatureLayer that has already been created from a featureSet</param>
         public void Add(IMapLayer layer)
         {
-            base.Add(layer);
-        }
-
-        /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
-        /// </summary>
-        /// <param name="collection">collection: The collection whose elements should be added to the end of the
-        /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
-        /// if type T is a reference type.</param>
-        /// <exception cref="System.ApplicationException">Unable to add while the ReadOnly property is set to true.</exception>
-        public void AddRange(IEnumerable<IMapLayer> collection)
-        {
-            foreach (IMapLayer layer in collection)
-            {
-                base.Add(layer);
-            }
+            this.Add(layer);
         }
 
         /// <summary>
@@ -191,15 +254,15 @@ namespace DotSpatial.Controls
             {
                 res = new MapPolygonLayer(featureSet);
             }
+
             if (res != null)
             {
-                base.Add(res);
+                this.Add(res);
                 res.ProgressHandler = ProgressHandler;
             }
 
             return res;
         }
-
 
         /// <summary>
         /// Adds the raster to layer collection
@@ -227,11 +290,34 @@ namespace DotSpatial.Controls
 
             if (image.Height == 0 || image.Width == 0) return null;
             var il = new MapImageLayer(image);
-            base.Add(il);
+            this.Add(il);
             return il;
         }
 
-        #endregion
+        /// <summary>
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// </summary>
+        /// <param name="collection">collection: The collection whose elements should be added to the end of the
+        /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
+        /// if type T is a reference type.</param>
+        /// <exception cref="System.ApplicationException">Unable to add while the ReadOnly property is set to true.</exception>
+        public void AddRange(IEnumerable<IMapLayer> collection)
+        {
+            foreach (IMapLayer layer in collection)
+            {
+                this.Add(layer);
+            }
+        }
+
+        /// <summary>
+        /// Tests to see if the specified IGeoLayer exists in the current collection
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool Contains(IMapLayer item)
+        {
+            return Contains(item as ILayer);
+        }
 
         /// <summary>
         /// This copies the members of this collection to the specified array index, but
@@ -253,14 +339,10 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <summary>
-        /// Tests to see if the specified IGeoLayer exists in the current collection
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public bool Contains(IMapLayer item)
+        /// <inheritdoc />
+        public new IEnumerator<IMapLayer> GetEnumerator()
         {
-            return Contains(item as ILayer);
+            return new MapLayerEnumerator(base.GetEnumerator());
         }
 
         /// <summary>
@@ -282,46 +364,7 @@ namespace DotSpatial.Controls
         /// <exception cref="System.ApplicationException">Unable to insert while the ReadOnly property is set to true.</exception>
         public void Insert(int index, IMapLayer item)
         {
-            base.Insert(index, item);
-        }
-
-        /// <summary>
-        /// Moves the given layer to the given position.
-        /// </summary>
-        /// <param name="layer">Layer that gets moved.</param>
-        /// <param name="newPosition">Position, the layer is moved to.</param>
-        public void Move(IMapLayer layer, int newPosition)
-        {
-            base.Move(layer, newPosition);
-        }
-
-        /// <summary>
-        /// Removes the first occurrence of a specific object from the System.Collections.Generic.List&lt;T&gt;.
-        /// </summary>
-        /// <param name="item">The object to remove from the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
-        /// <returns>true if item is successfully removed; otherwise, false. This method also returns false if item was not
-        /// found in the System.Collections.Generic.List&lt;T&gt;.</returns>
-        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
-        public bool Remove(IMapLayer item)
-        {
-            return base.Remove(item);
-        }
-
-        /// <summary>
-        /// The default, indexed value of type T
-        /// </summary>
-        /// <param name="index">The numeric index</param>
-        /// <returns>An object of type T corresponding to the index value specified</returns>
-        public new IMapLayer this[int index]
-        {
-            get
-            {
-                return base[index] as IMapLayer;
-            }
-            set
-            {
-                base[index] = value;
-            }
+            this.Insert(index, item);
         }
 
         /// <summary>
@@ -342,70 +385,27 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <inheritdoc />
-        public new bool IsReadOnly
+        /// <summary>
+        /// Moves the given layer to the given position.
+        /// </summary>
+        /// <param name="layer">Layer that gets moved.</param>
+        /// <param name="newPosition">Position, the layer is moved to.</param>
+        public void Move(IMapLayer layer, int newPosition)
         {
-            get { return false; }
-        }
-
-        /// <inheritdoc />
-        public new IMapGroup ParentGroup
-        {
-            get
-            {
-                return base.ParentGroup as IMapGroup;
-            }
-            set
-            {
-                base.ParentGroup = value;
-            }
+            this.Move(layer, newPosition);
         }
 
         /// <summary>
-        /// Gets or sets the progress handler to report progress for time consuming actions.
+        /// Removes the first occurrence of a specific object from the System.Collections.Generic.List&lt;T&gt;.
         /// </summary>
-        public IProgressHandler ProgressHandler
+        /// <param name="item">The object to remove from the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
+        /// <returns>true if item is successfully removed; otherwise, false. This method also returns false if item was not
+        /// found in the System.Collections.Generic.List&lt;T&gt;.</returns>
+        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
+        public bool Remove(IMapLayer item)
         {
-            get
-            {
-                return _progressHandler;
-            }
-            set
-            {
-                _progressHandler = value;
-            }
+            return this.Remove(item);
         }
-
-        /// <inheritdoc />
-        public new IMapLayer SelectedLayer
-        {
-            get
-            {
-                return base.SelectedLayer as IMapLayer;
-            }
-            set
-            {
-                base.SelectedLayer = value;
-            }
-        }
-
-        #endregion
-
-        #region IMapLayerCollection Members
-
-        /// <inheritdoc />
-        public new IEnumerator<IMapLayer> GetEnumerator()
-        {
-            return new MapLayerEnumerator(base.GetEnumerator());
-        }
-
-        #endregion
-
-        #region Protected Methods
 
         /// <summary>
         /// This simply forwards the call from a layer to the container
@@ -420,11 +420,17 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Nested classes
+        #region Classes
 
         private class MapLayerEnumerator : IEnumerator<IMapLayer>
         {
+            #region Fields
+
             readonly IEnumerator<ILayer> _internalEnumerator;
+
+            #endregion
+
+            #region  Constructors
 
             /// <summary>
             /// Creates a new instance of LayerEnumerator
@@ -434,7 +440,9 @@ namespace DotSpatial.Controls
                 _internalEnumerator = source;
             }
 
-            #region IEnumerator<IMapLayer> Members
+            #endregion
+
+            #region Properties
 
             /// <summary>
             /// Retrieves the current member as an ILegendItem
@@ -449,8 +457,15 @@ namespace DotSpatial.Controls
 
             object IEnumerator.Current
             {
-                get { return _internalEnumerator.Current; }
+                get
+                {
+                    return _internalEnumerator.Current;
+                }
             }
+
+            #endregion
+
+            #region Methods
 
             /// <summary>
             /// Calls the Dispose method
@@ -471,6 +486,7 @@ namespace DotSpatial.Controls
                     var result = _internalEnumerator.Current as IMapLayer;
                     if (result != null) return true;
                 }
+
                 return false;
             }
 

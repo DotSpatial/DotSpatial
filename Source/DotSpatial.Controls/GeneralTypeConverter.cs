@@ -19,6 +19,16 @@ namespace DotSpatial.Controls
 {
     public class GeneralTypeConverter : StringConverter
     {
+        #region Methods
+
+        /// <inheritdoc />
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType != null) return true;
+
+            return false;
+        }
+
         /// <inheritdoc />
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
@@ -32,15 +42,10 @@ namespace DotSpatial.Controls
             {
                 return value == null ? "[None]" : "[Edit...]";
             }
+
             return null;
         }
 
-        /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType != null) return true;
-
-            return false;
-        }
+        #endregion
     }
 }

@@ -24,51 +24,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunction : IMapFunction
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs when the function is activated
-        /// </summary>
-        public event EventHandler FunctionActivated;
-
-        /// <summary>
-        /// Occurs when the function is deactivated.
-        /// </summary>
-        public event EventHandler FunctionDeactivated;
-
-        /// <summary>
-        /// Occurs during a mouse down event
-        /// </summary>
-        public event EventHandler<GeoMouseArgs> MouseDown;
-
-        /// <summary>
-        /// Occurs during a mouse move event
-        /// </summary>
-        public event EventHandler<GeoMouseArgs> MouseMove;
-
-        /// <summary>
-        /// Occurs during a mouse up event
-        /// </summary>
-        public event EventHandler<GeoMouseArgs> MouseUp;
-
-        /// <summary>
-        /// Occurs during a mousewheel event
-        /// </summary>
-        public event EventHandler<GeoMouseArgs> MouseWheel;
-
-        /// <summary>
-        /// Occurs during a double click event
-        /// </summary>
-        public event EventHandler<GeoMouseArgs> MouseDoubleClick;
-
-        /// <summary>
-        /// Occurs during a key up event
-        /// </summary>
-        public event EventHandler<KeyEventArgs> KeyUp;
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private bool _enabled;
         private IMap _map;
@@ -76,7 +32,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of the map function.
@@ -100,7 +56,159 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region Events
+
+        /// <summary>
+        /// Occurs when the function is activated
+        /// </summary>
+        public event EventHandler FunctionActivated;
+
+        /// <summary>
+        /// Occurs when the function is deactivated.
+        /// </summary>
+        public event EventHandler FunctionDeactivated;
+
+        /// <summary>
+        /// Occurs during a key up event
+        /// </summary>
+        public event EventHandler<KeyEventArgs> KeyUp;
+
+        /// <summary>
+        /// Occurs during a double click event
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> MouseDoubleClick;
+
+        /// <summary>
+        /// Occurs during a mouse down event
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> MouseDown;
+
+        /// <summary>
+        /// Occurs during a mouse move event
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> MouseMove;
+
+        /// <summary>
+        /// Occurs during a mouse up event
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> MouseUp;
+
+        /// <summary>
+        /// Occurs during a mousewheel event
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> MouseWheel;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Describes a button image
+        /// </summary>
+        [Category("Appearance"), Description("This controls is the image that will be used for buttons that activate this tool.")]
+        public Image ButtonImage { get; set; }
+
+        /// <summary>
+        /// This controls the cursor that this tool uses, unless the action has been cancelled by attempting
+        /// to use the tool outside the bounds of the image.
+        /// </summary>
+        [Category("Appearance"), Description("This controls the cursor that this tool uses, unless the action has been cancelled by " + "attempting to use the tool outside the bounds of the image.")]
+        public Bitmap CursorBitmap { get; set; }
+
+        /// <summary>
+        /// Gets or sets a boolean that is true if this tool should be handed drawing instructions
+        /// from the screen.
+        /// </summary>
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+
+            protected set
+            {
+                // Externally you can only Activate or Deactivate, not directly enable/disable
+                _enabled = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the basic map that this tool interacts with.  This can alternately be set using
+        /// the Init method.
+        /// </summary>
+        public IMap Map
+        {
+            get
+            {
+                return _map;
+            }
+
+            set
+            {
+                _map = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the name that attempts to identify this plugin uniquely.  If the
+        /// name is already in the tools list, this will modify the name stored here.
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+
+            set
+            {
+                _name = GetAvailableName(value);
+            }
+        }
+
+        /// <summary>
+        /// If this is false, then the typical contents from the map's back buffer are drawn first,
+        /// followed by the contents of this tool.
+        /// </summary>
+        public virtual bool PreventBackBuffer { get; protected set; }
+
+        /// <inheritdoc/>
+        public YieldStyles YieldStyle { get; set; }
+
+        #endregion
+
         #region Methods
+
+        /// <summary>
+        /// Forces activation
+        /// </summary>
+        public void Activate()
+        {
+            OnActivate();
+        }
+
+        /// <summary>
+        /// Cancels whatever drawing was being done by the tool and resets the cursor to an arrow.
+        /// </summary>
+        public virtual void Cancel()
+        {
+        }
+
+        /// <summary>
+        /// Deactivate is like when someone clicks on a different button.  It may not
+        /// involve the whole plugin being unloaded.
+        /// </summary>
+        public void Deactivate()
+        {
+            OnDeactivate();
+        }
+
+        /// <inheritdoc />
+        public void DoKeyDown(KeyEventArgs e)
+        {
+            OnKeyDown(e);
+        }
 
         /// <summary>
         /// Instructs this tool to
@@ -156,12 +264,6 @@ namespace DotSpatial.Controls
             OnMouseWheel(e);
         }
 
-        /// <inheritdoc />
-        public void DoKeyDown(KeyEventArgs e)
-        {
-            OnKeyDown(e);
-        }
-
         /// <summary>
         /// This is the method that is called by the drawPanel.  The graphics coordinates are
         /// in pixels relative to the image being edited.
@@ -170,21 +272,6 @@ namespace DotSpatial.Controls
         {
             // if (OnBeforeDrawing(args) == true) return; // handled
             OnDraw(args);
-        }
-
-        /// <summary>
-        /// Organizes the map that this tool will work with.
-        /// </summary>
-        /// <param name="inMap"></param>
-        public void Init(IMap inMap)
-        {
-        }
-
-        /// <summary>
-        /// Cancels whatever drawing was being done by the tool and resets the cursor to an arrow.
-        /// </summary>
-        public virtual void Cancel()
-        {
         }
 
         /// <summary>
@@ -211,7 +298,47 @@ namespace DotSpatial.Controls
                     }
                 }
             }
+
             return newName;
+        }
+
+        /// <summary>
+        /// Organizes the map that this tool will work with.
+        /// </summary>
+        /// <param name="inMap"></param>
+        public void Init(IMap inMap)
+        {
+        }
+
+        /// <summary>
+        /// Here, the entire plugin is unloading, so if there are any residual states
+        /// that are not taken care of, this should remove them.
+        /// </summary>
+        public void Unload()
+        {
+            OnUnload();
+        }
+
+        /// <summary>
+        /// This is fired when enabled is set to true, and firing this will set enabled to true
+        /// </summary>
+        protected virtual void OnActivate()
+        {
+            _enabled = true;
+
+            var h = FunctionActivated;
+            if (h != null) h(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// this is fired when enabled is set to false, and firing this will set enabled to false.
+        /// </summary>
+        protected virtual void OnDeactivate()
+        {
+            _enabled = false;
+
+            var h = FunctionDeactivated;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -220,6 +347,14 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="e">A PaintEventArgs where the graphics object is already in image coordinates</param>
         protected virtual void OnDraw(MapDrawArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Occurs when a key is pressed
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnKeyDown(KeyEventArgs e)
         {
         }
 
@@ -281,126 +416,6 @@ namespace DotSpatial.Controls
         {
             var h = MouseWheel;
             if (h != null) h(this, e);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Describes a button image
-        /// </summary>
-        [Category("Appearance"), Description("This controls is the image that will be used for buttons that activate this tool.")]
-        public Image ButtonImage { get; set; }
-
-        /// <summary>
-        /// This controls the cursor that this tool uses, unless the action has been cancelled by attempting
-        /// to use the tool outside the bounds of the image.
-        /// </summary>
-        [Category("Appearance"), Description(
-            "This controls the cursor that this tool uses, unless the action has been cancelled by " +
-            "attempting to use the tool outside the bounds of the image."
-            )]
-        public Bitmap CursorBitmap { get; set; }
-
-        /// <summary>
-        /// Gets or sets a boolean that is true if this tool should be handed drawing instructions
-        /// from the screen.
-        /// </summary>
-        public bool Enabled
-        {
-            get { return _enabled; }
-            protected set // Externally you can only Activate or Deactivate, not directly enable/disable
-            { _enabled = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the basic map that this tool interacts with.  This can alternately be set using
-        /// the Init method.
-        /// </summary>
-        public IMap Map
-        {
-            get { return _map; }
-            set { _map = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the name that attempts to identify this plugin uniquely.  If the
-        /// name is already in the tools list, this will modify the name stored here.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = GetAvailableName(value); }
-        }
-
-        /// <summary>
-        /// If this is false, then the typical contents from the map's back buffer are drawn first,
-        /// followed by the contents of this tool.
-        /// </summary>
-        public virtual bool PreventBackBuffer { get; protected set; }
-
-        /// <inheritdoc/>
-        public YieldStyles YieldStyle { get; set; }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Forces activation
-        /// </summary>
-        public void Activate()
-        {
-            OnActivate();
-        }
-
-        /// <summary>
-        /// Deactivate is like when someone clicks on a different button.  It may not
-        /// involve the whole plugin being unloaded.
-        /// </summary>
-        public void Deactivate()
-        {
-            OnDeactivate();
-        }
-
-        /// <summary>
-        /// Here, the entire plugin is unloading, so if there are any residual states
-        /// that are not taken care of, this should remove them.
-        /// </summary>
-        public void Unload()
-        {
-            OnUnload();
-        }
-
-        /// <summary>
-        /// This is fired when enabled is set to true, and firing this will set enabled to true
-        /// </summary>
-        protected virtual void OnActivate()
-        {
-            _enabled = true;
-
-            var h = FunctionActivated;
-            if (h != null) h(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// this is fired when enabled is set to false, and firing this will set enabled to false.
-        /// </summary>
-        protected virtual void OnDeactivate()
-        {
-            _enabled = false;
-
-            var h = FunctionDeactivated;
-            if (h != null) h(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Occurs when a key is pressed
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnKeyDown(KeyEventArgs e)
-        {
         }
 
         /// <summary>

@@ -25,7 +25,27 @@ namespace DotSpatial.Controls
     /// </summary>
     internal class LayoutLayerEditor : UITypeEditor
     {
+        #region Fields
+
         IWindowsFormsEditorService _dialogProvider;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Ensures that we can widen the drop-down without having to close the drop down,
+        /// widen the control, and re-open it again.
+        /// </summary>
+        public override bool IsDropDownResizable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        #endregion
 
         #region Methods
 
@@ -75,19 +95,6 @@ namespace DotSpatial.Controls
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Ensures that we can widen the drop-down without having to close the drop down,
-        /// widen the control, and re-open it again.
-        /// </summary>
-        public override bool IsDropDownResizable
-        {
-            get { return false; }
         }
 
         #endregion

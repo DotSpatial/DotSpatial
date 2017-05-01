@@ -13,11 +13,22 @@ namespace DotSpatial.Controls.DefaultRequiredImports
     internal class StatusControl : IStatusControl, ISatisfyImportsExtension
     {
         #region Fields
-        
-        private SpatialStatusStrip _statusStrip;
+
         private bool _isActivated;
 
+        private SpatialStatusStrip _statusStrip;
+
         #endregion
+
+        #region Properties
+
+        public int Priority
+        {
+            get
+            {
+                return 2;
+            }
+        }
 
         [Import]
         private AppManager App { get; set; }
@@ -25,8 +36,31 @@ namespace DotSpatial.Controls.DefaultRequiredImports
         [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
 
-        #region IStatusControl Members
-        
+        #endregion
+
+        #region Methods
+
+        public void Activate()
+        {
+            if (_isActivated) return;
+
+            var statusControls = App.CompositionContainer.GetExportedValues<IStatusControl>().ToList();
+
+            // Activate only if there are no other IStatusControl implementations and
+            // custom ProgressHandler not yet set
+            if (App.ProgressHandler == null && statusControls.Count == 1 && statusControls[0].GetType() == GetType())
+            {
+                _isActivated = true;
+
+                // adding the status strip control
+                _statusStrip = new SpatialStatusStrip();
+                Shell.Controls.Add(_statusStrip);
+
+                // adding initial status panel to the status strip control
+                Add(new ProgressStatusPanel());
+            }
+        }
+
         public void Add(StatusPanel panel)
         {
             if (!_isActivated) return;
@@ -46,29 +80,5 @@ namespace DotSpatial.Controls.DefaultRequiredImports
         }
 
         #endregion
-
-        public int Priority { get { return 2; } }
-
-        public void Activate()
-        {
-            if (_isActivated) return;
-
-            var statusControls = App.CompositionContainer.GetExportedValues<IStatusControl>().ToList();
-
-            // Activate only if there are no other IStatusControl implementations and
-            // custom ProgressHandler not yet set
-            if (App.ProgressHandler == null &&
-                statusControls.Count == 1 && statusControls[0].GetType() == GetType())
-            {
-                _isActivated = true;
-
-                // adding the status strip control
-                _statusStrip = new SpatialStatusStrip();
-                Shell.Controls.Add(_statusStrip);
-
-                // adding initial status panel to the status strip control
-                Add(new ProgressStatusPanel());
-            }
-        }
     }
 }

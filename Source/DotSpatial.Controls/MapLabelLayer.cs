@@ -52,7 +52,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of GeoLabelLayer
@@ -102,8 +102,15 @@ namespace DotSpatial.Controls
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image BackBuffer
         {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
+            get
+            {
+                return _backBuffer;
+            }
+
+            set
+            {
+                _backBuffer = value;
+            }
         }
 
         /// <summary>
@@ -112,8 +119,15 @@ namespace DotSpatial.Controls
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Buffer
         {
-            get { return _stencil; }
-            set { _stencil = value; }
+            get
+            {
+                return _stencil;
+            }
+
+            set
+            {
+                _stencil = value;
+            }
         }
 
         /// <summary>
@@ -123,8 +137,15 @@ namespace DotSpatial.Controls
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Envelope BufferEnvelope
         {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
+            get
+            {
+                return _bufferExtent;
+            }
+
+            set
+            {
+                _bufferExtent = value;
+            }
         }
 
         /// <summary>
@@ -134,8 +155,15 @@ namespace DotSpatial.Controls
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Rectangle BufferRectangle
         {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
+            get
+            {
+                return _bufferRectangle;
+            }
+
+            set
+            {
+                _bufferRectangle = value;
+            }
         }
 
         /// <summary>
@@ -145,8 +173,15 @@ namespace DotSpatial.Controls
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ChunkSize
         {
-            get { return _chunkSize; }
-            set { _chunkSize = value; }
+            get
+            {
+                return _chunkSize;
+            }
+
+            set
+            {
+                _chunkSize = value;
+            }
         }
 
         /// <summary>
@@ -155,8 +190,15 @@ namespace DotSpatial.Controls
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new IMapFeatureLayer FeatureLayer
         {
-            get { return base.FeatureLayer as IMapFeatureLayer; }
-            set { base.FeatureLayer = value; }
+            get
+            {
+                return base.FeatureLayer as IMapFeatureLayer;
+            }
+
+            set
+            {
+                base.FeatureLayer = value;
+            }
         }
 
         /// <summary>
@@ -165,8 +207,15 @@ namespace DotSpatial.Controls
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new bool IsInitialized
         {
-            get { return _isInitialized; }
-            set { _isInitialized = value; }
+            get
+            {
+                return _isInitialized;
+            }
+
+            set
+            {
+                _isInitialized = value;
+            }
         }
 
         #endregion
@@ -174,395 +223,11 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Call StartDrawing before using this.
-        /// </summary>
-        /// <param name="rectangles">The rectangular region in pixels to clear.</param>
-        /// <param name= "color">The color to use when clearing.  Specifying transparent
-        /// will replace content with transparent pixels.</param>
-        public void Clear(List<Rectangle> rectangles, Color color)
-        {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
-            foreach (Rectangle r in rectangles)
-            {
-                if (r.IsEmpty == false)
-                {
-                    g.Clip = new Region(r);
-                    g.Clear(color);
-                }
-            }
-            g.Dispose();
-        }
-
-        /// <summary>
         /// Cleaer all existing labels for all layers
         /// </summary>
         public static void ClearAllExistingLabels()
         {
             ExistingLabels.Clear();
-        }
-
-        /// <summary>
-        /// Checks whether the given rectangle collides with the drawnRectangles.
-        /// </summary>
-        /// <param name="rectangle">Rectangle that we want to draw next.</param>
-        /// <param name="drawnRectangles">Rectangle that were already drawn.</param>
-        /// <returns>True, if the rectangle collides with a rectancle that was already drawn.</returns>
-        private static bool Collides(RectangleF rectangle, IEnumerable<RectangleF> drawnRectangles)
-        {
-            return drawnRectangles.Any(rectangle.IntersectsWith);
-        }
-
-        /// <summary>
-        /// Draws the given text if it is on screen. If PreventCollision is set only labels that don't collide with existingLables are drawn. 
-        /// </summary>
-        /// <param name="txt">Text that should be drawn.</param>
-        /// <param name="g">Graphics object that does the drawing.</param>
-        /// <param name="symb">Symbolizer to figure out the look of the label.</param>
-        /// <param name="f">Feature, the label belongs to.</param>
-        /// <param name="e"></param>
-        /// <param name="labelBounds"></param>
-        /// <param name="existingLabels">List with labels that were already drawn.</param>
-        /// <param name="angle">Angle in degree the label gets rotated by.</param>
-        private static void CollisionDraw(string txt, Graphics g, ILabelSymbolizer symb, IFeature f, MapArgs e, RectangleF labelBounds, List<RectangleF> existingLabels, float angle)
-        {
-            if (labelBounds.IsEmpty || !e.ImageRectangle.IntersectsWith(labelBounds)) return;
-            if (symb.PreventCollisions)
-            {
-                if (!Collides(labelBounds, existingLabels))
-                {
-                    DrawLabel(g, txt, labelBounds, symb, f, angle);
-                    existingLabels.Add(labelBounds);
-                }
-            }
-            else
-            {
-                DrawLabel(g, txt, labelBounds, symb, f, angle);
-            }
-        }
-
-        private void Configure()
-        {
-            _chunkSize = 10000;
-        }
-
-        /// <summary>
-        /// Draws the labels for the given features.
-        /// </summary>
-        /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
-        /// <param name="features">The features that should be drawn.</param>
-        /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
-        /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
-        {
-            if (useChunks == false)
-            {
-                DrawFeatures(args, features);
-                return;
-            }
-
-            int count = features.Count;
-            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
-
-            for (int chunk = 0; chunk < numChunks; chunk++)
-            {
-                int numFeatures = ChunkSize;
-                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
-                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
-
-                if (numChunks > 0 && chunk < numChunks - 1)
-                {
-                    OnBufferChanged(clipRectangles);
-                    Application.DoEvents();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Draws the labels for the given features. 
-        /// </summary>
-        /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
-        /// <param name="features">The features that should be drawn.</param>
-        /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
-        /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<int> features, List<Rectangle> clipRectangles, bool useChunks)
-        {
-            if (useChunks == false)
-            {
-                DrawFeatures(args, features);
-                return;
-            }
-
-            int count = features.Count;
-            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
-
-            for (int chunk = 0; chunk < numChunks; chunk++)
-            {
-                int numFeatures = ChunkSize;
-                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
-                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
-
-                if (numChunks > 0 && chunk < numChunks - 1)
-                {
-                    OnBufferChanged(clipRectangles);
-                    Application.DoEvents();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Draws the labels for the given features.
-        /// </summary>
-        /// <param name="e">MapArgs to get Graphics object from.</param>
-        /// <param name="features">Indizes of the features whose labels get drawn.</param>
-        private void DrawFeatures(MapArgs e, IEnumerable<int> features)
-        {
-            // Check that exists at least one category with Expression
-            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
-
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
-            Matrix origTransform = g.Transform;
-
-            // Only draw features that are currently visible.
-            if (FastDrawnStates == null)
-            {
-                CreateIndexedLabels();
-            }
-            FastLabelDrawnState[] drawStates = FastDrawnStates;
-            if (drawStates == null) return;
-            // Sets the graphics objects smoothing modes
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-
-            Action<int, IFeature> drawFeature;
-            switch (FeatureSet.FeatureType)
-            {
-                case FeatureType.Polygon:
-                    drawFeature = (fid, feature) => DrawPolygonFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
-                    break;
-                case FeatureType.Line:
-                    drawFeature = (fid, feature) => DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
-                    break;
-                case FeatureType.Point:
-                case FeatureType.MultiPoint:
-                    drawFeature = (fid, feature) => DrawPointFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
-                    break;
-                default:
-                    return; // Can't draw something else
-            }
-
-            foreach (var category in Symbology.Categories)
-            {
-                category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
-                var catFeatures = new List<int>();
-                foreach (int fid in features)
-                {
-                    if (drawStates[fid] == null || drawStates[fid].Category == null) continue;
-                    if (drawStates[fid].Category == category)
-                    {
-                        catFeatures.Add(fid);
-                    }
-                }
-                // Now that we are restricted to a certain category, we can look at priority
-                if (category.Symbolizer.PriorityField != "FID")
-                {
-                    Feature.ComparisonField = category.Symbolizer.PriorityField;
-                    catFeatures.Sort();
-                    // When preventing collisions, we want to do high priority first.
-                    // Otherwise, do high priority last.
-                    if (category.Symbolizer.PreventCollisions)
-                    {
-                        if (!category.Symbolizer.PrioritizeLowValues)
-                        {
-                            catFeatures.Reverse();
-                        }
-                    }
-                    else
-                    {
-                        if (category.Symbolizer.PrioritizeLowValues)
-                        {
-                            catFeatures.Reverse();
-                        }
-                    }
-                }
-
-                foreach (var fid in catFeatures)
-                {
-                    if (!FeatureLayer.DrawnStates[fid].Visible) continue;
-                    var feature = FeatureSet.GetFeature(fid);
-                    drawFeature(fid, feature);
-                }
-            }
-
-            if (e.Device == null) g.Dispose();
-            else g.Transform = origTransform;
-        }
-
-        /// <summary>
-        /// Draws the labels for the given features.
-        /// </summary>
-        /// <param name="e">MapArgs to get Graphics object from.</param>
-        /// <param name="features">Features, whose labels get drawn.</param>
-        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
-        {
-            // Check that exists at least one category with Expression
-            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
-
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
-            Matrix origTransform = g.Transform;
-
-            // Only draw features that are currently visible.
-            if (DrawnStates == null || !DrawnStates.ContainsKey(features.First()))
-            {
-                CreateLabels();
-            }
-            Dictionary<IFeature, LabelDrawState> drawStates = DrawnStates;
-            if (drawStates == null) return;
-            // Sets the graphics objects smoothing modes
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-
-            Action<IFeature> drawFeature;
-            switch (features.First().FeatureType)
-            {
-                case FeatureType.Polygon:
-                    drawFeature = f => DrawPolygonFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
-                    break;
-                case FeatureType.Line:
-                    drawFeature = f => DrawLineFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
-                    break;
-                case FeatureType.Point:
-                case FeatureType.MultiPoint:
-                    drawFeature = f => DrawPointFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
-                    break;
-                default:
-                    return; // Can't draw something else
-            }
-
-
-            foreach (ILabelCategory category in Symbology.Categories)
-            {
-                category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
-                var cat = category; // prevent access to unmodified closure problems
-                List<IFeature> catFeatures = new List<IFeature>();
-                foreach (IFeature f in features)
-                {
-                    if (drawStates.ContainsKey(f) && drawStates[f].Category == cat)
-                    {
-                        catFeatures.Add(f);
-                    }
-                }
-                // Now that we are restricted to a certain category, we can look at
-                // priority
-                if (category.Symbolizer.PriorityField != "FID")
-                {
-                    Feature.ComparisonField = cat.Symbolizer.PriorityField;
-                    catFeatures.Sort();
-                    // When preventing collisions, we want to do high priority first.
-                    // otherwise, do high priority last.
-                    if (cat.Symbolizer.PreventCollisions)
-                    {
-                        if (!cat.Symbolizer.PrioritizeLowValues)
-                        {
-                            catFeatures.Reverse();
-                        }
-                    }
-                    else
-                    {
-                        if (cat.Symbolizer.PrioritizeLowValues)
-                        {
-                            catFeatures.Reverse();
-                        }
-                    }
-                }
-                for (int i = 0; i < catFeatures.Count; i++)
-                {
-                    if (!FeatureLayer.DrawnStates[i].Visible) continue;
-                    drawFeature(catFeatures[i]);
-                }
-            }
-
-            if (e.Device == null) g.Dispose();
-            else g.Transform = origTransform;
-        }
-
-        /// <summary>
-        /// Draws labels in a specified rectangle
-        /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="labelText">The label text to draw</param>
-        /// <param name="labelBounds">The rectangle of the label</param>
-        /// <param name="symb">the Label Symbolizer to use when drawing the label</param>
-        /// <param name="feature">Feature to draw</param>
-        /// <param name="angle">Angle in degree the label gets rotated by.</param>
-        private static void DrawLabel(Graphics g, string labelText, RectangleF labelBounds, ILabelSymbolizer symb, IFeature feature, float angle)
-        {
-            // Sets up the brushes and such for the labeling
-            Font textFont = _caches.GetFont(symb);
-            var format = new StringFormat { Alignment = symb.Alignment };
-
-            // Text graphics path
-            var gp = new GraphicsPath();
-            gp.AddString(labelText, textFont.FontFamily, (int)textFont.Style, textFont.SizeInPoints * 96F / 72F, labelBounds, format);
-
-            // Rotate text
-            RotateAt(g, labelBounds.X, labelBounds.Y, angle);
-
-            // Draws the text outline
-            if (symb.BackColorEnabled && symb.BackColor != Color.Transparent)
-            {
-                var backBrush = _caches.GetSolidBrush(symb.BackColor);
-                if (symb.FontColor == Color.Transparent)
-                {
-                    using (var backgroundGp = new GraphicsPath())
-                    {
-                        backgroundGp.AddRectangle(labelBounds);
-                        backgroundGp.FillMode = FillMode.Alternate;
-                        backgroundGp.AddPath(gp, true);
-                        g.FillPath(backBrush, backgroundGp);
-                    }
-                }
-                else
-                {
-                    g.FillRectangle(backBrush, labelBounds);
-                }
-            }
-
-            // Draws the border if its enabled
-            if (symb.BorderVisible && symb.BorderColor != Color.Transparent)
-            {
-                var borderPen = _caches.GetPen(symb.BorderColor);
-                g.DrawRectangle(borderPen, labelBounds.X, labelBounds.Y, labelBounds.Width, labelBounds.Height);
-            }
-
-            // Draws the drop shadow
-            if (symb.DropShadowEnabled && symb.DropShadowColor != Color.Transparent)
-            {
-                var shadowBrush = _caches.GetSolidBrush(symb.DropShadowColor);
-                var gpTrans = new Matrix();
-                gpTrans.Translate(symb.DropShadowPixelOffset.X, symb.DropShadowPixelOffset.Y);
-                gp.Transform(gpTrans);
-                g.FillPath(shadowBrush, gp);
-                gpTrans = new Matrix();
-                gpTrans.Translate(-symb.DropShadowPixelOffset.X, -symb.DropShadowPixelOffset.Y);
-                gp.Transform(gpTrans);
-                gpTrans.Dispose();
-            }
-
-            // Draws the text halo
-            if (symb.HaloEnabled && symb.HaloColor != Color.Transparent)
-            {
-                using (var haloPen = new Pen(symb.HaloColor) { Width = 2, Alignment = PenAlignment.Outset })
-                    g.DrawPath(haloPen, gp);
-            }
-
-            // Draws the text if its not transparent
-            if (symb.FontColor != Color.Transparent)
-            {
-                var foreBrush = _caches.GetSolidBrush(symb.FontColor);
-                g.FillPath(foreBrush, gp);
-            }
-            gp.Dispose();
         }
 
         /// <summary>
@@ -613,6 +278,7 @@ namespace DotSpatial.Controls
                             longestIndex = n;
                         }
                     }
+
                     var angle = GetAngleToRotate(symb, f, geo.GetGeometryN(longestIndex));
                     RectangleF labelBounds = PlaceLineLabel(geo.GetGeometryN(longestIndex), labelSize, e, symb, angle);
                     CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
@@ -700,8 +366,95 @@ namespace DotSpatial.Controls
                             largest = pg;
                         }
                     }
+
                     RectangleF labelBounds = PlacePolygonLabel(largest, e, labelSize, symb, angle);
                     CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Call StartDrawing before using this.
+        /// </summary>
+        /// <param name="rectangles">The rectangular region in pixels to clear.</param>
+        /// <param name= "color">The color to use when clearing.  Specifying transparent
+        /// will replace content with transparent pixels.</param>
+        public void Clear(List<Rectangle> rectangles, Color color)
+        {
+            if (_backBuffer == null) return;
+            Graphics g = Graphics.FromImage(_backBuffer);
+            foreach (Rectangle r in rectangles)
+            {
+                if (r.IsEmpty == false)
+                {
+                    g.Clip = new Region(r);
+                    g.Clear(color);
+                }
+            }
+
+            g.Dispose();
+        }
+
+        /// <summary>
+        /// Draws the labels for the given features.
+        /// </summary>
+        /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
+        /// <param name="features">The features that should be drawn.</param>
+        /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
+        /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
+        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
+        {
+            if (useChunks == false)
+            {
+                DrawFeatures(args, features);
+                return;
+            }
+
+            int count = features.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    OnBufferChanged(clipRectangles);
+                    Application.DoEvents();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws the labels for the given features. 
+        /// </summary>
+        /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
+        /// <param name="features">The features that should be drawn.</param>
+        /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
+        /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
+        public virtual void DrawFeatures(MapArgs args, List<int> features, List<Rectangle> clipRectangles, bool useChunks)
+        {
+            if (useChunks == false)
+            {
+                DrawFeatures(args, features);
+                return;
+            }
+
+            int count = features.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    OnBufferChanged(clipRectangles);
+                    Application.DoEvents();
                 }
             }
         }
@@ -732,10 +485,12 @@ namespace DotSpatial.Controls
                         // We need to consider labels that go off the screen. Figure a region that is larger.
                         Extent sur = region.Copy();
                         sur.ExpandBy(region.Width, region.Height);
+
                         // Use union to prevent duplicates. No sense in drawing more than we have to.
                         drawIndices = drawIndices.Union(FeatureSet.SelectIndices(sur)).ToList();
                     }
                 }
+
                 List<Rectangle> clips = args.ProjToPixel(regions);
                 DrawFeatures(args, drawIndices, clips, true);
             }
@@ -750,10 +505,12 @@ namespace DotSpatial.Controls
                         // We need to consider labels that go off the screen. Figure a region that is larger.
                         Extent r = region.Copy();
                         r.ExpandBy(region.Width, region.Height);
+
                         // Use union to prevent duplicates. No sense in drawing more than we have to.
                         drawList = drawList.Union(FeatureSet.Select(r)).ToList();
                     }
                 }
+
                 List<Rectangle> clipRects = args.ProjToPixel(regions);
                 DrawFeatures(args, drawList, clipRects, true);
             }
@@ -774,6 +531,181 @@ namespace DotSpatial.Controls
             if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
             _stencil = _backBuffer;
             FeatureLayer.Invalidate();
+        }
+
+        /// <summary>
+        /// Copies any current content to the back buffer so that drawing should occur on the
+        /// back buffer (instead of the fore-buffer).  Calling draw methods without
+        /// calling this may cause exceptions.
+        /// </summary>
+        /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer
+        /// where drawing will be taking place.</param>
+        public void StartDrawing(bool preserve)
+        {
+            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+            if (Buffer != null && preserve && Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
+            {
+                Graphics g = Graphics.FromImage(backBuffer);
+                g.DrawImageUnscaled(Buffer, 0, 0);
+            }
+
+            if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
+            BackBuffer = backBuffer;
+            OnStartDrawing();
+        }
+
+        /// <summary>
+        /// Fires the OnBufferChanged event
+        /// </summary>
+        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
+        {
+            var h = BufferChanged;
+            if (h != null)
+            {
+                h(this, new ClipArgs(clipRectangles));
+            }
+        }
+
+        /// <summary>
+        /// Indiciates that whatever drawing is going to occur has finished and the contents
+        /// are about to be flipped forward to the front buffer.
+        /// </summary>
+        protected virtual void OnFinishDrawing()
+        {
+        }
+
+        /// <summary>
+        /// Occurs when a new drawing is started, but after the BackBuffer has been established.
+        /// </summary>
+        protected virtual void OnStartDrawing()
+        {
+        }
+
+        /// <summary>
+        /// Checks whether the given rectangle collides with the drawnRectangles.
+        /// </summary>
+        /// <param name="rectangle">Rectangle that we want to draw next.</param>
+        /// <param name="drawnRectangles">Rectangle that were already drawn.</param>
+        /// <returns>True, if the rectangle collides with a rectancle that was already drawn.</returns>
+        private static bool Collides(RectangleF rectangle, IEnumerable<RectangleF> drawnRectangles)
+        {
+            return drawnRectangles.Any(rectangle.IntersectsWith);
+        }
+
+        /// <summary>
+        /// Draws the given text if it is on screen. If PreventCollision is set only labels that don't collide with existingLables are drawn. 
+        /// </summary>
+        /// <param name="txt">Text that should be drawn.</param>
+        /// <param name="g">Graphics object that does the drawing.</param>
+        /// <param name="symb">Symbolizer to figure out the look of the label.</param>
+        /// <param name="f">Feature, the label belongs to.</param>
+        /// <param name="e"></param>
+        /// <param name="labelBounds"></param>
+        /// <param name="existingLabels">List with labels that were already drawn.</param>
+        /// <param name="angle">Angle in degree the label gets rotated by.</param>
+        private static void CollisionDraw(string txt, Graphics g, ILabelSymbolizer symb, IFeature f, MapArgs e, RectangleF labelBounds, List<RectangleF> existingLabels, float angle)
+        {
+            if (labelBounds.IsEmpty || !e.ImageRectangle.IntersectsWith(labelBounds)) return;
+            if (symb.PreventCollisions)
+            {
+                if (!Collides(labelBounds, existingLabels))
+                {
+                    DrawLabel(g, txt, labelBounds, symb, f, angle);
+                    existingLabels.Add(labelBounds);
+                }
+            }
+            else
+            {
+                DrawLabel(g, txt, labelBounds, symb, f, angle);
+            }
+        }
+
+        /// <summary>
+        /// Draws labels in a specified rectangle
+        /// </summary>
+        /// <param name="g">The graphics object to draw to</param>
+        /// <param name="labelText">The label text to draw</param>
+        /// <param name="labelBounds">The rectangle of the label</param>
+        /// <param name="symb">the Label Symbolizer to use when drawing the label</param>
+        /// <param name="feature">Feature to draw</param>
+        /// <param name="angle">Angle in degree the label gets rotated by.</param>
+        private static void DrawLabel(Graphics g, string labelText, RectangleF labelBounds, ILabelSymbolizer symb, IFeature feature, float angle)
+        {
+            // Sets up the brushes and such for the labeling
+            Font textFont = _caches.GetFont(symb);
+            var format = new StringFormat
+                         {
+                             Alignment = symb.Alignment
+                         };
+
+            // Text graphics path
+            var gp = new GraphicsPath();
+            gp.AddString(labelText, textFont.FontFamily, (int)textFont.Style, textFont.SizeInPoints * 96F / 72F, labelBounds, format);
+
+            // Rotate text
+            RotateAt(g, labelBounds.X, labelBounds.Y, angle);
+
+            // Draws the text outline
+            if (symb.BackColorEnabled && symb.BackColor != Color.Transparent)
+            {
+                var backBrush = _caches.GetSolidBrush(symb.BackColor);
+                if (symb.FontColor == Color.Transparent)
+                {
+                    using (var backgroundGp = new GraphicsPath())
+                    {
+                        backgroundGp.AddRectangle(labelBounds);
+                        backgroundGp.FillMode = FillMode.Alternate;
+                        backgroundGp.AddPath(gp, true);
+                        g.FillPath(backBrush, backgroundGp);
+                    }
+                }
+                else
+                {
+                    g.FillRectangle(backBrush, labelBounds);
+                }
+            }
+
+            // Draws the border if its enabled
+            if (symb.BorderVisible && symb.BorderColor != Color.Transparent)
+            {
+                var borderPen = _caches.GetPen(symb.BorderColor);
+                g.DrawRectangle(borderPen, labelBounds.X, labelBounds.Y, labelBounds.Width, labelBounds.Height);
+            }
+
+            // Draws the drop shadow
+            if (symb.DropShadowEnabled && symb.DropShadowColor != Color.Transparent)
+            {
+                var shadowBrush = _caches.GetSolidBrush(symb.DropShadowColor);
+                var gpTrans = new Matrix();
+                gpTrans.Translate(symb.DropShadowPixelOffset.X, symb.DropShadowPixelOffset.Y);
+                gp.Transform(gpTrans);
+                g.FillPath(shadowBrush, gp);
+                gpTrans = new Matrix();
+                gpTrans.Translate(-symb.DropShadowPixelOffset.X, -symb.DropShadowPixelOffset.Y);
+                gp.Transform(gpTrans);
+                gpTrans.Dispose();
+            }
+
+            // Draws the text halo
+            if (symb.HaloEnabled && symb.HaloColor != Color.Transparent)
+            {
+                using (var haloPen = new Pen(symb.HaloColor)
+                                     {
+                                         Width = 2,
+                                         Alignment = PenAlignment.Outset
+                                     })
+                    g.DrawPath(haloPen, gp);
+            }
+
+            // Draws the text if its not transparent
+            if (symb.FontColor != Color.Transparent)
+            {
+                var foreBrush = _caches.GetSolidBrush(symb.FontColor);
+                g.FillPath(foreBrush, gp);
+            }
+
+            gp.Dispose();
         }
 
         /// <summary>
@@ -807,6 +739,7 @@ namespace DotSpatial.Controls
                     return ToSingle(-ls.Angle - 90);
                 }
             }
+
             return 0;
         }
 
@@ -818,8 +751,8 @@ namespace DotSpatial.Controls
         /// <returns>Null on unnown LineLabelPlacementMethod else the calculated segment. </returns>
         private static LineString GetSegment(LineString lineString, ILabelSymbolizer symb)
         {
-            if (lineString.Coordinates.Length <= 2)  return lineString;
-              
+            if (lineString.Coordinates.Length <= 2) return lineString;
+
             var coords = lineString.Coordinates;
             switch (symb.LineLabelPlacementMethod)
             {
@@ -842,37 +775,11 @@ namespace DotSpatial.Controls
                             temp = l;
                         }
                     }
+
                     return temp;
             }
+
             return null;
-        }
-
-        /// <summary>
-        /// Fires the OnBufferChanged event
-        /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
-        protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
-        {
-            var h = BufferChanged;
-            if (h != null)
-            {
-                h(this, new ClipArgs(clipRectangles));
-            }
-        }
-
-        /// <summary>
-        /// Indiciates that whatever drawing is going to occur has finished and the contents
-        /// are about to be flipped forward to the front buffer.
-        /// </summary>
-        protected virtual void OnFinishDrawing()
-        {
-        }
-
-        /// <summary>
-        /// Occurs when a new drawing is started, but after the BackBuffer has been established.
-        /// </summary>
-        protected virtual void OnStartDrawing()
-        {
         }
 
         /// <summary>
@@ -947,6 +854,7 @@ namespace DotSpatial.Controls
                     c = geom.EnvelopeInternal.Centre;
                     break;
             }
+
             return PlaceLabel(c, e, labelSize, symb, angle);
         }
 
@@ -982,6 +890,7 @@ namespace DotSpatial.Controls
                 case ContentAlignment.BottomRight:
                     return new PointF(0 + x, 0 + y);
             }
+
             return new PointF(0, 0);
         }
 
@@ -1001,30 +910,10 @@ namespace DotSpatial.Controls
         private static void RotatePoint(ref PointF point, double angle)
         {
             double rad = angle * Math.PI / 180;
-            double x = (Math.Cos(rad) * (point.X) - Math.Sin(rad) * (point.Y));
-            double y = (Math.Sin(rad) * (point.X) + Math.Cos(rad) * (point.Y));
+            double x = Math.Cos(rad) * (point.X) - Math.Sin(rad) * (point.Y);
+            double y = Math.Sin(rad) * (point.X) + Math.Cos(rad) * (point.Y);
             point.X = (float)x;
             point.Y = (float)y;
-        }
-
-        /// <summary>
-        /// Copies any current content to the back buffer so that drawing should occur on the
-        /// back buffer (instead of the fore-buffer).  Calling draw methods without
-        /// calling this may cause exceptions.
-        /// </summary>
-        /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer
-        /// where drawing will be taking place.</param>
-        public void StartDrawing(bool preserve)
-        {
-            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
-            if (Buffer != null && preserve && Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
-            {
-                Graphics g = Graphics.FromImage(backBuffer);
-                g.DrawImageUnscaled(Buffer, 0, 0);
-            }
-            if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
-            BackBuffer = backBuffer;
-            OnStartDrawing();
         }
 
         /// <summary>
@@ -1042,6 +931,195 @@ namespace DotSpatial.Controls
             {
                 return 0;
             }
+        }
+
+        private void Configure()
+        {
+            _chunkSize = 10000;
+        }
+
+        /// <summary>
+        /// Draws the labels for the given features.
+        /// </summary>
+        /// <param name="e">MapArgs to get Graphics object from.</param>
+        /// <param name="features">Indizes of the features whose labels get drawn.</param>
+        private void DrawFeatures(MapArgs e, IEnumerable<int> features)
+        {
+            // Check that exists at least one category with Expression
+            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
+
+            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Matrix origTransform = g.Transform;
+
+            // Only draw features that are currently visible.
+            if (FastDrawnStates == null)
+            {
+                CreateIndexedLabels();
+            }
+
+            FastLabelDrawnState[] drawStates = FastDrawnStates;
+            if (drawStates == null) return;
+
+            // Sets the graphics objects smoothing modes
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            Action<int, IFeature> drawFeature;
+            switch (FeatureSet.FeatureType)
+            {
+                case FeatureType.Polygon:
+                    drawFeature = (fid, feature) => DrawPolygonFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
+                    break;
+                case FeatureType.Line:
+                    drawFeature = (fid, feature) => DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
+                    break;
+                case FeatureType.Point:
+                case FeatureType.MultiPoint:
+                    drawFeature = (fid, feature) => DrawPointFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
+                    break;
+                default:
+                    return; // Can't draw something else
+            }
+
+            foreach (var category in Symbology.Categories)
+            {
+                category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
+                var catFeatures = new List<int>();
+                foreach (int fid in features)
+                {
+                    if (drawStates[fid] == null || drawStates[fid].Category == null) continue;
+                    if (drawStates[fid].Category == category)
+                    {
+                        catFeatures.Add(fid);
+                    }
+                }
+
+                // Now that we are restricted to a certain category, we can look at priority
+                if (category.Symbolizer.PriorityField != "FID")
+                {
+                    Feature.ComparisonField = category.Symbolizer.PriorityField;
+                    catFeatures.Sort();
+
+                    // When preventing collisions, we want to do high priority first.
+                    // Otherwise, do high priority last.
+                    if (category.Symbolizer.PreventCollisions)
+                    {
+                        if (!category.Symbolizer.PrioritizeLowValues)
+                        {
+                            catFeatures.Reverse();
+                        }
+                    }
+                    else
+                    {
+                        if (category.Symbolizer.PrioritizeLowValues)
+                        {
+                            catFeatures.Reverse();
+                        }
+                    }
+                }
+
+                foreach (var fid in catFeatures)
+                {
+                    if (!FeatureLayer.DrawnStates[fid].Visible) continue;
+                    var feature = FeatureSet.GetFeature(fid);
+                    drawFeature(fid, feature);
+                }
+            }
+
+            if (e.Device == null) g.Dispose();
+            else g.Transform = origTransform;
+        }
+
+        /// <summary>
+        /// Draws the labels for the given features.
+        /// </summary>
+        /// <param name="e">MapArgs to get Graphics object from.</param>
+        /// <param name="features">Features, whose labels get drawn.</param>
+        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
+        {
+            // Check that exists at least one category with Expression
+            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
+
+            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Matrix origTransform = g.Transform;
+
+            // Only draw features that are currently visible.
+            if (DrawnStates == null || !DrawnStates.ContainsKey(features.First()))
+            {
+                CreateLabels();
+            }
+
+            Dictionary<IFeature, LabelDrawState> drawStates = DrawnStates;
+            if (drawStates == null) return;
+
+            // Sets the graphics objects smoothing modes
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            Action<IFeature> drawFeature;
+            switch (features.First().FeatureType)
+            {
+                case FeatureType.Polygon:
+                    drawFeature = f => DrawPolygonFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    break;
+                case FeatureType.Line:
+                    drawFeature = f => DrawLineFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    break;
+                case FeatureType.Point:
+                case FeatureType.MultiPoint:
+                    drawFeature = f => DrawPointFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    break;
+                default:
+                    return; // Can't draw something else
+            }
+
+            foreach (ILabelCategory category in Symbology.Categories)
+            {
+                category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
+                var cat = category; // prevent access to unmodified closure problems
+                List<IFeature> catFeatures = new List<IFeature>();
+                foreach (IFeature f in features)
+                {
+                    if (drawStates.ContainsKey(f) && drawStates[f].Category == cat)
+                    {
+                        catFeatures.Add(f);
+                    }
+                }
+
+                // Now that we are restricted to a certain category, we can look at
+                // priority
+                if (category.Symbolizer.PriorityField != "FID")
+                {
+                    Feature.ComparisonField = cat.Symbolizer.PriorityField;
+                    catFeatures.Sort();
+
+                    // When preventing collisions, we want to do high priority first.
+                    // otherwise, do high priority last.
+                    if (cat.Symbolizer.PreventCollisions)
+                    {
+                        if (!cat.Symbolizer.PrioritizeLowValues)
+                        {
+                            catFeatures.Reverse();
+                        }
+                    }
+                    else
+                    {
+                        if (cat.Symbolizer.PrioritizeLowValues)
+                        {
+                            catFeatures.Reverse();
+                        }
+                    }
+                }
+
+                for (int i = 0; i < catFeatures.Count; i++)
+                {
+                    if (!FeatureLayer.DrawnStates[i].Visible) continue;
+                    drawFeature(catFeatures[i]);
+                }
+            }
+
+            if (e.Device == null) g.Dispose();
+            else g.Transform = origTransform;
         }
 
         #endregion
@@ -1094,6 +1172,7 @@ namespace DotSpatial.Controls
                 value = valueFactory(key);
                 dic.Add(key, value);
             }
+
             return value;
         }
 

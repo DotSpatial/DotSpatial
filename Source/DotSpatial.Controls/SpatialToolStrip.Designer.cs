@@ -38,7 +38,7 @@ namespace DotSpatial.Controls
             this.cmdLabel.Name = "cmdLabel";
             this.cmdLabel.Size = new System.Drawing.Size(23, 20);
             this.cmdLabel.ToolTipText = "Select Label";
-            this.cmdLabel.Click += new System.EventHandler(this.cmdLabel_Click);
+            this.cmdLabel.Click += new System.EventHandler(this.CmdLabelClick);
             // 
             // cmdNew
             // 
@@ -48,7 +48,7 @@ namespace DotSpatial.Controls
             this.cmdNew.Name = "cmdNew";
             this.cmdNew.Size = new System.Drawing.Size(23, 69);
             this.cmdNew.ToolTipText = "New";
-            this.cmdNew.Click += new System.EventHandler(this.cmdNew_Click);
+            this.cmdNew.Click += new System.EventHandler(this.CmdNewClick);
             // 
             // cmdOpen
             // 
@@ -56,7 +56,7 @@ namespace DotSpatial.Controls
             this.cmdOpen.Name = "cmdOpen";
             this.cmdOpen.Size = new System.Drawing.Size(23, 69);
             this.cmdOpen.ToolTipText = "Open Project";
-            this.cmdOpen.Click += new System.EventHandler(this.cmdOpen_Click);
+            this.cmdOpen.Click += new System.EventHandler(this.CmdOpenClick);
             // 
             // cmdSave
             // 
@@ -64,7 +64,7 @@ namespace DotSpatial.Controls
             this.cmdSave.Name = "cmdSave";
             this.cmdSave.Size = new System.Drawing.Size(23, 69);
             this.cmdSave.ToolTipText = "Save Project";
-            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            this.cmdSave.Click += new System.EventHandler(this.CmdSaveClick);
             // 
             // cmdPrint
             // 
@@ -72,7 +72,7 @@ namespace DotSpatial.Controls
             this.cmdPrint.Name = "cmdPrint";
             this.cmdPrint.Size = new System.Drawing.Size(23, 20);
             this.cmdPrint.ToolTipText = "Print";
-            this.cmdPrint.Click += new System.EventHandler(this.cmdPrint_Click);
+            this.cmdPrint.Click += new System.EventHandler(this.CmdPrintClick);
             // 
             // cmdAddData
             // 
@@ -80,7 +80,7 @@ namespace DotSpatial.Controls
             this.cmdAddData.Name = "cmdAddData";
             this.cmdAddData.Size = new System.Drawing.Size(23, 20);
             this.cmdAddData.ToolTipText = "Add Data";
-            this.cmdAddData.Click += new System.EventHandler(this.cmdAddData_Click);
+            this.cmdAddData.Click += new System.EventHandler(this.CmdAddDataClick);
             // 
             // cmdPan
             // 
@@ -88,7 +88,7 @@ namespace DotSpatial.Controls
             this.cmdPan.Name = "cmdPan";
             this.cmdPan.Size = new System.Drawing.Size(23, 20);
             this.cmdPan.ToolTipText = "Pan";
-            this.cmdPan.Click += new System.EventHandler(this.cmdPan_Click);
+            this.cmdPan.Click += new System.EventHandler(this.CmdPanClick);
             // 
             // cmdSelect
             // 
@@ -96,7 +96,7 @@ namespace DotSpatial.Controls
             this.cmdSelect.Name = "cmdSelect";
             this.cmdSelect.Size = new System.Drawing.Size(23, 20);
             this.cmdSelect.ToolTipText = "Select";
-            this.cmdSelect.Click += new System.EventHandler(this.cmdSelect_Click);
+            this.cmdSelect.Click += new System.EventHandler(this.CmdSelectClick);
             // 
             // cmdZoom
             // 
@@ -104,7 +104,7 @@ namespace DotSpatial.Controls
             this.cmdZoom.Name = "cmdZoom";
             this.cmdZoom.Size = new System.Drawing.Size(23, 20);
             this.cmdZoom.ToolTipText = "Zoom In";
-            this.cmdZoom.Click += new System.EventHandler(this.cmdZoom_Click);
+            this.cmdZoom.Click += new System.EventHandler(this.CmdZoomClick);
             // 
             // cmdZoomOut
             // 
@@ -112,7 +112,7 @@ namespace DotSpatial.Controls
             this.cmdZoomOut.Name = "cmdZoomOut";
             this.cmdZoomOut.Size = new System.Drawing.Size(23, 20);
             this.cmdZoomOut.ToolTipText = "Zoom Out";
-            this.cmdZoomOut.Click += new System.EventHandler(this.cmdZoomOut_Click);
+            this.cmdZoomOut.Click += new System.EventHandler(this.CmdZoomOutClick);
             // 
             // cmdZoomPrevious
             // 
@@ -122,7 +122,7 @@ namespace DotSpatial.Controls
             this.cmdZoomPrevious.Name = "cmdZoomPrevious";
             this.cmdZoomPrevious.Size = new System.Drawing.Size(23, 20);
             this.cmdZoomPrevious.ToolTipText = "Zoom to Previous Extents";
-            this.cmdZoomPrevious.Click += new System.EventHandler(this.cmdZoomPrevious_Click);
+            this.cmdZoomPrevious.Click += new System.EventHandler(this.CmdZoomPreviousClick);
             // 
             // cmdZoomNext
             // 
@@ -132,7 +132,7 @@ namespace DotSpatial.Controls
             this.cmdZoomNext.Name = "cmdZoomNext";
             this.cmdZoomNext.Size = new System.Drawing.Size(23, 20);
             this.cmdZoomNext.ToolTipText = "Zoom to Next Extent";
-            this.cmdZoomNext.Click += new System.EventHandler(this.cmdZoomNext_Click);
+            this.cmdZoomNext.Click += new System.EventHandler(this.CmdZoomNextClick);
             // 
             // cmdInfo
             // 
@@ -141,7 +141,7 @@ namespace DotSpatial.Controls
             this.cmdInfo.Name = "cmdInfo";
             this.cmdInfo.Size = new System.Drawing.Size(23, 20);
             this.cmdInfo.ToolTipText = "Identifier";
-            this.cmdInfo.Click += new System.EventHandler(this.cmdInfo_Click);
+            this.cmdInfo.Click += new System.EventHandler(this.CmdInfoClick);
             // 
             // cmdTable
             // 
@@ -149,7 +149,7 @@ namespace DotSpatial.Controls
             this.cmdTable.Name = "cmdTable";
             this.cmdTable.Size = new System.Drawing.Size(23, 20);
             this.cmdTable.ToolTipText = "Attribute Table";
-            this.cmdTable.Click += new System.EventHandler(this.cmdTable_Click);
+            this.cmdTable.Click += new System.EventHandler(this.CmdTableClick);
             // 
             // cmdMaxExtents
             // 
@@ -157,7 +157,7 @@ namespace DotSpatial.Controls
             this.cmdMaxExtents.Name = "cmdMaxExtents";
             this.cmdMaxExtents.Size = new System.Drawing.Size(23, 20);
             this.cmdMaxExtents.ToolTipText = "Zoom to Maximum Extents";
-            this.cmdMaxExtents.Click += new System.EventHandler(this.cmdMaxExtents_Click);
+            this.cmdMaxExtents.Click += new System.EventHandler(this.CmdMaxExtentsClick);
             // 
             // cmdZoomToCoordinates
             // 
@@ -167,7 +167,7 @@ namespace DotSpatial.Controls
             this.cmdZoomToCoordinates.Name = "cmdZoomToCoordinates";
             this.cmdZoomToCoordinates.Size = new System.Drawing.Size(23, 20);
             this.cmdZoomToCoordinates.ToolTipText = "Zoom To Coordinates";
-            this.cmdZoomToCoordinates.Click += new System.EventHandler(this.cmdZoomToCoordinates_Click);
+            this.cmdZoomToCoordinates.Click += new System.EventHandler(this.CmdZoomToCoordinatesClick);
             // 
             // toolStripSeparator1
             // 

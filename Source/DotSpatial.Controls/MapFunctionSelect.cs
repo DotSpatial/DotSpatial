@@ -24,7 +24,7 @@ namespace DotSpatial.Controls
 {
     public class MapFunctionSelect : MapFunction
     {
-        #region Private Variables
+        #region Fields
 
         private readonly Pen _selectionPen;
         private Point _currentPoint;
@@ -35,7 +35,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of SelectTool
@@ -43,11 +43,16 @@ namespace DotSpatial.Controls
         public MapFunctionSelect(IMap inMap)
             : base(inMap)
         {
-            _selectionPen = new Pen(Color.Black) { DashStyle = DashStyle.Dash };
+            _selectionPen = new Pen(Color.Black)
+                            {
+                                DashStyle = DashStyle.Dash
+                            };
             YieldStyle = YieldStyles.LeftButton | YieldStyles.Keyboard;
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -64,24 +69,8 @@ namespace DotSpatial.Controls
                 e.Graphics.DrawRectangle(Pens.White, r);
                 e.Graphics.DrawRectangle(_selectionPen, r);
             }
-            base.OnDraw(e);
-        }
 
-        /// <summary>
-        /// Handles the MouseDown
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnMouseDown(GeoMouseArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                _startPoint = e.Location;
-                _currentPoint = _startPoint;
-                _geoStartPoint = e.GeographicLocation;
-                _isDragging = true;
-                Map.IsBusy = true;
-            }
-            base.OnMouseDown(e);
+            base.OnDraw(e);
         }
 
         /// <summary>
@@ -107,13 +96,33 @@ namespace DotSpatial.Controls
                         break;
                     }
                 }
+
                 if (selectable == false)
                 {
                     MessageBox.Show(MessageStrings.MapFunctionSelect_OnKeyDown_No_Deletable_Layers);
                 }
             }
+
             base.OnKeyDown(e);
             if (changed && Map != null) Map.MapFrame.Invalidate();
+        }
+
+        /// <summary>
+        /// Handles the MouseDown
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseDown(GeoMouseArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                _startPoint = e.Location;
+                _currentPoint = _startPoint;
+                _geoStartPoint = e.GeographicLocation;
+                _isDragging = true;
+                Map.IsBusy = true;
+            }
+
+            base.OnMouseDown(e);
         }
 
         /// <summary>
@@ -131,6 +140,7 @@ namespace DotSpatial.Controls
             {
                 Map.Invalidate(new Rectangle(x, y, mx - x, my - y));
             }
+
             base.OnMouseMove(e);
         }
 
@@ -148,10 +158,10 @@ namespace DotSpatial.Controls
 #endif
             _currentPoint = e.Location;
             _isDragging = false;
+
             // Map.Invalidate(); // Get rid of the selection box
             // Application.DoEvents();
-            Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
-                _geoStartPoint.Y, e.GeographicLocation.Y);
+            Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
             Envelope tolerant = env;
 
             if (_startPoint.X == e.X && _startPoint.Y == e.Y)
@@ -177,10 +187,12 @@ namespace DotSpatial.Controls
                     l.IsSelected = false;
                 }
             }
+
             if (former == null && Map.MapFrame.IsSelected)
             {
                 former = Map.MapFrame;
             }
+
             Map.MapFrame.IsSelected = true;
             Map.MapFrame.SuspendEvents();
             HandleSelection(tolerant, env);
@@ -189,9 +201,12 @@ namespace DotSpatial.Controls
             {
                 former.IsSelected = true;
             }
+
             Map.MapFrame.ResumeEvents();
+
             // Force an invalidate to clear the dotted lines, even if we haven't changed anything.
             e.Map.Invalidate();
+
             // e.Map.MapFrame.Initialize();
 #if DEBUG
             sw.Stop();
@@ -204,8 +219,7 @@ namespace DotSpatial.Controls
         private void HandleSelection(Envelope tolerant, Envelope strict)
         {
             Keys key = Control.ModifierKeys;
-            if ((((key & Keys.Shift) == Keys.Shift) == false)
-                && (((key & Keys.Control) == Keys.Control) == false))
+            if ((((key & Keys.Shift) == Keys.Shift) == false) && (((key & Keys.Control) == Keys.Control) == false))
             {
                 // If they are not pressing shift, then first clear the selection before adding new members to it.
                 Envelope region;
@@ -236,13 +250,17 @@ namespace DotSpatial.Controls
                         break;
                     }
                 }
+
                 if (selectable == false)
                 {
                     MessageBox.Show(MessageStrings.MapFunctionSelect_NoSelectableLayer);
                 }
+
                 Envelope region;
                 Map.Select(tolerant, strict, SelectionMode.Intersects, out region);
             }
         }
+
+        #endregion
     }
 }

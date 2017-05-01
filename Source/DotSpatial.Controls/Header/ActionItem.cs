@@ -7,10 +7,16 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public abstract class ActionItem : GroupedItem
     {
+        #region Fields
+
         private string caption;
         private bool enabled = true;
         private string toolTipText;
         private bool visible = true;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the ActionItem class.
@@ -38,6 +44,10 @@ namespace DotSpatial.Controls.Header
             this.Caption = caption;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the caption.
         /// </summary>
@@ -48,11 +58,33 @@ namespace DotSpatial.Controls.Header
             {
                 return caption;
             }
+
             set
             {
                 if (caption == value) return;
                 caption = value;
                 OnPropertyChanged("Caption");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ActionItem"/> is enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool Enabled
+        {
+            get
+            {
+                return enabled;
+            }
+
+            set
+            {
+                if (enabled == value) return;
+                enabled = value;
+                OnPropertyChanged("Enabled");
             }
         }
 
@@ -66,28 +98,12 @@ namespace DotSpatial.Controls.Header
             {
                 return toolTipText;
             }
+
             set
             {
                 if (toolTipText == value) return;
                 toolTipText = value;
                 OnPropertyChanged("ToolTipText");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ActionItem"/> is enabled.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if enabled; otherwise, <c>false</c>.
-        /// </value>
-        public bool Enabled
-        {
-            get { return enabled; }
-            set
-            {
-                if (enabled == value) return;
-                enabled = value;
-                OnPropertyChanged("Enabled");
             }
         }
 
@@ -99,7 +115,11 @@ namespace DotSpatial.Controls.Header
         /// </value>
         public bool Visible
         {
-            get { return visible; }
+            get
+            {
+                return visible;
+            }
+
             set
             {
                 if (visible == value) return;
@@ -107,5 +127,7 @@ namespace DotSpatial.Controls.Header
                 OnPropertyChanged("Visible");
             }
         }
+
+        #endregion
     }
 }

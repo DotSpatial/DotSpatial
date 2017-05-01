@@ -25,7 +25,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutRectangle : LayoutElement
     {
-        #region ------------------- public methods
+        #region  Constructors
 
         /// <summary>
         /// Constructor
@@ -36,6 +36,10 @@ namespace DotSpatial.Controls
             Background = new PolygonSymbolizer(Color.Transparent, Color.Black, 2.0);
             ResizeStyle = ResizeStyle.HandledInternally;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Doesn't need to do anything now because the drawing code is in the background property of the base class

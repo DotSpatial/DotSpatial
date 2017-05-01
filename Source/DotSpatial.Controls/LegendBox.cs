@@ -22,7 +22,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LegendBox
     {
-        #region Private Variables
+        #region Fields
 
         private Rectangle _bounds;
         private Rectangle _checkbox;
@@ -34,10 +34,6 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -45,17 +41,15 @@ namespace DotSpatial.Controls
         /// </summary>
         public Rectangle Bounds
         {
-            get { return _bounds; }
-            set { _bounds = value; }
-        }
+            get
+            {
+                return _bounds;
+            }
 
-        /// <summary>
-        /// Gets or sets the actual item that this bounds is associated with
-        /// </summary>
-        public ILegendItem Item
-        {
-            get { return _item; }
-            set { _item = value; }
+            set
+            {
+                _bounds = value;
+            }
         }
 
         /// <summary>
@@ -63,8 +57,15 @@ namespace DotSpatial.Controls
         /// </summary>
         public Rectangle CheckBox
         {
-            get { return _checkbox; }
-            set { _checkbox = value; }
+            get
+            {
+                return _checkbox;
+            }
+
+            set
+            {
+                _checkbox = value;
+            }
         }
 
         /// <summary>
@@ -72,26 +73,15 @@ namespace DotSpatial.Controls
         /// </summary>
         public Rectangle ExpandBox
         {
-            get { return _expandBox; }
-            set { _expandBox = value; }
-        }
+            get
+            {
+                return _expandBox;
+            }
 
-        /// <summary>
-        /// Gets or sets the rectangle that corresponds with text.
-        /// </summary>
-        public Rectangle Textbox
-        {
-            get { return _textBox; }
-            set { _textBox = value; }
-        }
-
-        /// <summary>
-        /// gets or sets the symbol box
-        /// </summary>
-        public Rectangle SymbolBox
-        {
-            get { return _symbolBox; }
-            set { _symbolBox = value; }
+            set
+            {
+                _expandBox = value;
+            }
         }
 
         /// <summary>
@@ -100,8 +90,63 @@ namespace DotSpatial.Controls
         /// </summary>
         public int Indent
         {
-            get { return _indent; }
-            set { _indent = value; }
+            get
+            {
+                return _indent;
+            }
+
+            set
+            {
+                _indent = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the actual item that this bounds is associated with
+        /// </summary>
+        public ILegendItem Item
+        {
+            get
+            {
+                return _item;
+            }
+
+            set
+            {
+                _item = value;
+            }
+        }
+
+        /// <summary>
+        /// gets or sets the symbol box
+        /// </summary>
+        public Rectangle SymbolBox
+        {
+            get
+            {
+                return _symbolBox;
+            }
+
+            set
+            {
+                _symbolBox = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the rectangle that corresponds with text.
+        /// </summary>
+        public Rectangle Textbox
+        {
+            get
+            {
+                return _textBox;
+            }
+
+            set
+            {
+                _textBox = value;
+            }
         }
 
         #endregion

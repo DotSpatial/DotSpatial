@@ -9,14 +9,20 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class DropDownActionItem : ActionItem
     {
+        #region Fields
+
         private readonly List<object> _Items = new List<object>();
         private bool allowEditingText;
+        private string displayText;
+        private Color fontColor;
+        private bool multiSelect;
         private string nullValuePrompt;
         private object selectedItem;
         private int width;
-        private Color fontColor;
-        private bool multiSelect;
-        private string displayText;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the DropDownActionItem class.
@@ -33,6 +39,22 @@ namespace DotSpatial.Controls.Header
         {
         }
 
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Gets or sets an event handler fired on selected value changed.
+        /// </summary>
+        /// <value>
+        /// The on selected value changed.
+        /// </value>
+        public event EventHandler<SelectedValueChangedEventArgs> SelectedValueChanged;
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether the user may enter their own value into the dropdown.
         /// </summary>
@@ -45,11 +67,48 @@ namespace DotSpatial.Controls.Header
             {
                 return allowEditingText;
             }
+
             set
             {
                 if (allowEditingText == value) return;
                 allowEditingText = value;
                 OnPropertyChanged("AllowEditingText");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the display text in the dropdownbox
+        /// </summary>
+        public string DisplayText
+        {
+            get
+            {
+                return displayText;
+            }
+
+            set
+            {
+                if (displayText == value) return;
+                displayText = value;
+                OnPropertyChanged("DisplayText");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the color of the text in the dropdownbox
+        /// </summary>
+        public Color FontColor
+        {
+            get
+            {
+                return fontColor;
+            }
+
+            set
+            {
+                if (fontColor == value) return;
+                fontColor = value;
+                OnPropertyChanged("FontColor");
             }
         }
 
@@ -73,66 +132,12 @@ namespace DotSpatial.Controls.Header
             {
                 return multiSelect;
             }
+
             set
             {
                 if (multiSelect == value) return;
                 multiSelect = value;
                 OnPropertyChanged("MultiSelect");
-            }
-        }
-
-
-        /// <summary>
-        /// Gets or sets a value indicating the color of the text in the dropdownbox
-        /// </summary>
-        public Color FontColor
-        {
-            get
-            {
-                return fontColor;
-            }
-            set
-            {
-                if (fontColor == value) return;
-                fontColor = value;
-                OnPropertyChanged("FontColor");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating the display text in the dropdownbox
-        /// </summary>
-        public string DisplayText
-        {
-            get
-            {
-                return displayText;
-            }
-            set
-            {
-                if (displayText == value) return;
-                displayText = value;
-                OnPropertyChanged("DisplayText");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the width of the item displayed in the header control.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public int Width
-        {
-            get
-            {
-                return width;
-            }
-            set
-            {
-                if (width == value) return;
-                width = value;
-                OnPropertyChanged("Width");
             }
         }
 
@@ -148,6 +153,7 @@ namespace DotSpatial.Controls.Header
             {
                 return nullValuePrompt;
             }
+
             set
             {
                 if (nullValuePrompt == value) return;
@@ -168,6 +174,7 @@ namespace DotSpatial.Controls.Header
             {
                 return selectedItem;
             }
+
             set
             {
                 if (selectedItem == value) return;
@@ -178,14 +185,29 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Gets or sets an event handler fired on selected value changed.
+        /// Gets or sets the width of the item displayed in the header control.
         /// </summary>
         /// <value>
-        /// The on selected value changed.
+        /// The width.
         /// </value>
-        public event EventHandler<SelectedValueChangedEventArgs> SelectedValueChanged;
+        public int Width
+        {
+            get
+            {
+                return width;
+            }
 
-        #region OnSelectedValueChanged
+            set
+            {
+                if (width == value) return;
+                width = value;
+                OnPropertyChanged("Width");
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Triggers the SelectedValueChanged event.

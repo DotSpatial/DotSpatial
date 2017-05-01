@@ -24,68 +24,17 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutText : LayoutElement
     {
+        #region Fields
+
         private Color _color;
         private ContentAlignment _contentAlignment;
         private Font _font;
         private string _text;
         private TextRenderingHint _textHint = TextRenderingHint.SystemDefault;
 
-        #region ------------------ Public Properties
-
-        /// <summary>
-        /// Gets or sets the text thats drawn in the graphics object
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design", typeof(UITypeEditor))]
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the content alignment
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public ContentAlignment ContentAlignment
-        {
-            get { return _contentAlignment; }
-            set { _contentAlignment = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the font used to draw this text
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public Font Font
-        {
-            get { return _font; }
-            set { _font = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the text
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public Color Color
-        {
-            get { return _color; }
-            set { _color = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the hinting used to draw the text
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public TextRenderingHint TextHint
-        {
-            get { return _textHint; }
-            set { _textHint = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
         #endregion
 
-        #region ------------------- public methods
+        #region  Constructors
 
         /// <summary>
         /// Constructor
@@ -100,6 +49,110 @@ namespace DotSpatial.Controls
             ResizeStyle = ResizeStyle.HandledInternally;
             _contentAlignment = ContentAlignment.TopLeft;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the color of the text
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public Color Color
+        {
+            get
+            {
+                return _color;
+            }
+
+            set
+            {
+                _color = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the content alignment
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public ContentAlignment ContentAlignment
+        {
+            get
+            {
+                return _contentAlignment;
+            }
+
+            set
+            {
+                _contentAlignment = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font used to draw this text
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public Font Font
+        {
+            get
+            {
+                return _font;
+            }
+
+            set
+            {
+                _font = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the text thats drawn in the graphics object
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design", typeof(UITypeEditor))]
+        public string Text
+        {
+            get
+            {
+                return _text;
+            }
+
+            set
+            {
+                _text = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the hinting used to draw the text
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public TextRenderingHint TextHint
+        {
+            get
+            {
+                return _textHint;
+            }
+
+            set
+            {
+                _textHint = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -153,6 +206,7 @@ namespace DotSpatial.Controls
                     sf.LineAlignment = StringAlignment.Far;
                     break;
             }
+
             // Letters were getting truncated or else bumped to the
             // next line when printing that were not being bumped while
             // in the view.  the added letter, here hopefully will prevent

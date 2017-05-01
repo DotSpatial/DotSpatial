@@ -18,33 +18,16 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Windows.Forms;
-
-using DotSpatial.Controls.DefaultRequiredImports;
-using DotSpatial.Controls.Docking;
-using DotSpatial.Controls.Header;
-using DotSpatial.Data;
-using DotSpatial.Extensions;
-using DotSpatial.Extensions.SplashScreens;
 
 namespace DotSpatial.Controls
 {
-
     /// <summary>
     /// Provides data for the <see langword='MapChanged'/> event.
     /// </summary>
     public class MapChangedEventArgs : EventArgs
     {
+        #region  Constructors
+
         /// <summary>
         /// Create new instance of <see cref="MapChangedEventArgs"/>.
         /// </summary>
@@ -53,6 +36,8 @@ namespace DotSpatial.Controls
             OldValue = oldValue;
             NewValue = newValue;
         }
+
+        #endregion
 
         #region Properties
 

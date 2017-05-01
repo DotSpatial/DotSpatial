@@ -22,99 +22,7 @@ namespace DotSpatial.Controls
 {
     public interface IBasicMap : ISelectable
     {
-        #region Methods
-
-        /// <summary>
-        /// Converts a single point location into an equivalent geographic coordinate
-        /// </summary>
-        /// <param name="position">The client coordinate relative to the map control</param>
-        /// <returns>The geographic ICoordinate interface</returns>
-        Coordinate PixelToProj(Point position);
-
-        /// <summary>
-        /// Converts a rectangle in pixel coordinates relative to the map control into
-        /// a geographic envelope.
-        /// </summary>
-        /// <param name="rect">The rectangle to convert</param>
-        /// <returns>An Envelope interface</returns>
-        Extent PixelToProj(Rectangle rect);
-
-        /// <summary>
-        /// Converts a single geographic location into the equivalent point on the
-        /// screen relative to the top left corner of the map.
-        /// </summary>
-        /// <param name="location">The geographic position to transform</param>
-        /// <returns>A Point with the new location.</returns>
-        Point ProjToPixel(Coordinate location);
-
-        /// <summary>
-        /// Converts a single geographic envelope into an equivalent Rectangle
-        /// as it would be drawn on the screen.
-        /// </summary>
-        /// <param name="env">The geographic Envelope</param>
-        /// <returns>A Rectangle</returns>
-        Rectangle ProjToPixel(Extent env);
-
-        /// <summary>
-        /// Adds a new layer to the map using an open file dialog.
-        /// </summary>
-        ILayer AddLayer();
-
-        /// <summary>
-        /// Converts a point from client coordinates to screen coordinates.
-        /// </summary>
-        /// <param name="position">The client location.</param>
-        /// <returns>A Point in screen coordinates</returns>
-        Point PointToScreen(Point position);
-
-        /// <summary>
-        /// Converts a point from screen coordinates to client coordinates
-        /// </summary>
-        /// <param name="position">The Point representing the screen position</param>
-        /// <returns>The Point</returns>
-        Point PointToClient(Point position);
-
-        /// <summary>
-        /// Invalidates the entire Map control, forcing it to redraw itself from the back buffer stencils.
-        /// This is good for drawing on top of the map, or when a layer is visible or not.  If you need
-        /// to change the colorscheme as well
-        /// </summary>
-        void Invalidate();
-
-        /// <summary>
-        /// Invalidates the specified clipRectangle so that only that small region needs
-        /// to redraw itself.
-        /// </summary>
-        /// <param name="clipRectangle"></param>
-        void Invalidate(Rectangle clipRectangle);
-
-        /// <summary>
-        /// Instructs the map to update the specified clipRectangle by drawing it to the back buffer.
-        /// </summary>
-        /// <param name="clipRectangle"></param>
-        void RefreshMap(Rectangle clipRectangle);
-
-        /// <summary>
-        /// Instructs the map to change the perspective to include the entire drawing content, and
-        /// in the case of 3D maps, changes the perspective to look from directly overhead.
-        /// </summary>
-        void ZoomToMaxExtent();
-
-        /// <summary> 
-        /// //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
-        /// Gets the MaxExtents of current Map.
-        /// </summary>
-        /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%). </param>
-        Extent GetMaxExtent(bool expand = false);
-
-        #endregion
-
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the geographic extents to show in the view.
-        /// </summary>
-        Extent ViewExtents { get; set; }
 
         /// <summary>
         /// Gets the bounding rectangle representing this map in screen coordinates
@@ -132,17 +40,17 @@ namespace DotSpatial.Controls
         Rectangle ClientRectangle { get; }
 
         /// <summary>
+        /// Gets the geographic bounds of all of the different data layers currently visible on the map.
+        /// </summary>
+        Extent Extent { get; }
+
+        /// <summary>
         /// Gets or sets the current tool mode.  This rapidly enables or disables specific tools to give
         /// a combination of functionality.  Selecting None will disable all the tools, which can be
         /// enabled manually by enabling the specific tool in the GeoTools dictionary.
         /// </summary>
         [Category("Behavior"), Description("Gets or sets which tool or combination of tools are enabled on the map.")]
         FunctionMode FunctionMode { get; set; }
-
-        /// <summary>
-        /// Gets the geographic bounds of all of the different data layers currently visible on the map.
-        /// </summary>
-        Extent Extent { get; }
 
         /// <summary>
         /// Gets the height of the control
@@ -184,9 +92,28 @@ namespace DotSpatial.Controls
         int Top { get; }
 
         /// <summary>
+        /// Gets or sets the geographic extents to show in the view.
+        /// </summary>
+        Extent ViewExtents { get; set; }
+
+        /// <summary>
         /// Gets the width of the control
         /// </summary>
         int Width { get; }
+
+        /// <summary>
+        /// This allows to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
+        /// </summary>
+        bool ZoomOutFartherThanMaxExtent { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Adds a new layer to the map using an open file dialog.
+        /// </summary>
+        ILayer AddLayer();
 
         /// <summary>
         /// Instructs the map to clear the layers.
@@ -201,10 +128,83 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         List<ILayer> GetLayers();
 
-        /// <summary>
-        /// This allows to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
+        /// <summary> 
+        /// //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
+        /// Gets the MaxExtents of current Map.
         /// </summary>
-        bool ZoomOutFartherThanMaxExtent { get; set; }
+        /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%). </param>
+        Extent GetMaxExtent(bool expand = false);
+
+        /// <summary>
+        /// Invalidates the entire Map control, forcing it to redraw itself from the back buffer stencils.
+        /// This is good for drawing on top of the map, or when a layer is visible or not.  If you need
+        /// to change the colorscheme as well
+        /// </summary>
+        void Invalidate();
+
+        /// <summary>
+        /// Invalidates the specified clipRectangle so that only that small region needs
+        /// to redraw itself.
+        /// </summary>
+        /// <param name="clipRectangle"></param>
+        void Invalidate(Rectangle clipRectangle);
+
+        /// <summary>
+        /// Converts a single point location into an equivalent geographic coordinate
+        /// </summary>
+        /// <param name="position">The client coordinate relative to the map control</param>
+        /// <returns>The geographic ICoordinate interface</returns>
+        Coordinate PixelToProj(Point position);
+
+        /// <summary>
+        /// Converts a rectangle in pixel coordinates relative to the map control into
+        /// a geographic envelope.
+        /// </summary>
+        /// <param name="rect">The rectangle to convert</param>
+        /// <returns>An Envelope interface</returns>
+        Extent PixelToProj(Rectangle rect);
+
+        /// <summary>
+        /// Converts a point from screen coordinates to client coordinates
+        /// </summary>
+        /// <param name="position">The Point representing the screen position</param>
+        /// <returns>The Point</returns>
+        Point PointToClient(Point position);
+
+        /// <summary>
+        /// Converts a point from client coordinates to screen coordinates.
+        /// </summary>
+        /// <param name="position">The client location.</param>
+        /// <returns>A Point in screen coordinates</returns>
+        Point PointToScreen(Point position);
+
+        /// <summary>
+        /// Converts a single geographic location into the equivalent point on the
+        /// screen relative to the top left corner of the map.
+        /// </summary>
+        /// <param name="location">The geographic position to transform</param>
+        /// <returns>A Point with the new location.</returns>
+        Point ProjToPixel(Coordinate location);
+
+        /// <summary>
+        /// Converts a single geographic envelope into an equivalent Rectangle
+        /// as it would be drawn on the screen.
+        /// </summary>
+        /// <param name="env">The geographic Envelope</param>
+        /// <returns>A Rectangle</returns>
+        Rectangle ProjToPixel(Extent env);
+
+        /// <summary>
+        /// Instructs the map to update the specified clipRectangle by drawing it to the back buffer.
+        /// </summary>
+        /// <param name="clipRectangle"></param>
+        void RefreshMap(Rectangle clipRectangle);
+
+        /// <summary>
+        /// Instructs the map to change the perspective to include the entire drawing content, and
+        /// in the case of 3D maps, changes the perspective to look from directly overhead.
+        /// </summary>
+        void ZoomToMaxExtent();
 
         #endregion
     }

@@ -951,4 +951,31 @@ Reproject the layer to match the map coordinate system? This will not affect the
   <data name="ProjectDirectoryMayNotBeARootDirectory" xml:space="preserve">
     <value>The path resulting from {0} was null. The project directory may not be a root directory.</value>
   </data>
+  <data name="LayoutControl_NoPrinterFound" xml:space="preserve">
+    <value>The default printer settings seem to indicate No printers are installed or the Print Spooler service is not running.</value>
+  </data>
+  <data name="LayoutControl_DotSpatialPrintLayout" xml:space="preserve">
+    <value>DotSpatial Print Layout</value>
+  </data>
+  <data name="LayoutControl_CurrentPrinterDoesNotSupportPapersize" xml:space="preserve">
+    <value>The currently selected printer "{0}"
+does not support the paper size "{1}" used by the layout being loaded.
+
+Load the layout with the printer's current paper settings?</value>
+  </data>
+  <data name="LayoutControl_PaperSizeMismatch" xml:space="preserve">
+    <value>Paper size mismatch</value>
+  </data>
+  <data name="ModelerForm_DotSpatialModelerFileName" xml:space="preserve">
+    <value>DotSpatial Modeler - {0}</value>
+  </data>
+  <data name="ToolManager_UnableToAddLayer" xml:space="preserve">
+    <value>Unable to add layer. Reason: {0}</value>
+  </data>
+  <data name="ToolManager_DoneExecutingTool" xml:space="preserve">
+    <value>Done Executing Tool: {0}</value>
+  </data>
+  <data name="ToolManager_ExecutingTool" xml:space="preserve">
+    <value>Executing Tool: {0}</value>
+  </data>
 </root>

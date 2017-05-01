@@ -18,7 +18,7 @@ namespace DotSpatial.Controls
 {
     public class GeoMouseArgs : MouseEventArgs
     {
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of MouseArgs
@@ -41,15 +41,15 @@ namespace DotSpatial.Controls
         public Coordinate GeographicLocation { get; protected set; }
 
         /// <summary>
-        /// Gets a simple interface for the map where these events were generated
-        /// </summary>
-        public IMap Map { get; protected set; }
-
-        /// <summary>
         /// Gets or sets a handled.  If this is set to true, then the mouse event is considered to
         /// be handled and will not be passed to any other functions in the stack.
         /// </summary>
         public bool Handled { get; set; }
+
+        /// <summary>
+        /// Gets a simple interface for the map where these events were generated
+        /// </summary>
+        public IMap Map { get; protected set; }
 
         #endregion
     }

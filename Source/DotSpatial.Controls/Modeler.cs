@@ -36,6 +36,7 @@ namespace DotSpatial.Controls
     public partial class Modeler : UserControl
     {
         #region Fields
+
         // These lists contain all the selected and unselected elements in the model
         private readonly Color _arrowColor = Color.Black;
         private readonly List<ModelElement> _modelElements = new List<ModelElement>(); // All the model elements, selected or otherwise
@@ -108,14 +109,14 @@ namespace DotSpatial.Controls
             _horScroll.SmallChange = 10;
             _horScroll.ValueChanged += HorScrollValueChanged;
             _scrollTimerHorizontal = new Timer
-            {
-                Interval = 100
-            };
+                                     {
+                                         Interval = 100
+                                     };
             _scrollTimerHorizontal.Tick += ScrollTimerHorizontalTick;
             _scrollTimerVertical = new Timer
-            {
-                Interval = 100
-            };
+                                   {
+                                       Interval = 100
+                                   };
             _scrollTimerVertical.Tick += ScrollTimerVerticalTick;
             _scrollLock = false;
 
@@ -583,30 +584,30 @@ namespace DotSpatial.Controls
             {
                 case "DotSpatial FeatureSet Param":
                     addedFeatureSet = new FeatureSet
-                    {
-                        Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
-                    };
+                                      {
+                                          Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
+                                      };
                     par.Value = addedFeatureSet;
                     break;
                 case "DotSpatial LineFeatureSet Param":
                     addedFeatureSet = new LineShapefile
-                    {
-                        Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
-                    };
+                                      {
+                                          Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
+                                      };
                     par.Value = addedFeatureSet;
                     break;
                 case "DotSpatial PointFeatureSet Param":
                     addedFeatureSet = new PointShapefile
-                    {
-                        Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
-                    };
+                                      {
+                                          Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
+                                      };
                     par.Value = addedFeatureSet;
                     break;
                 case "DotSpatial PolygonFeatureSet Param":
                     addedFeatureSet = new PolygonShapefile
-                    {
-                        Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
-                    };
+                                      {
+                                          Filename = Path.GetTempPath() + Path.DirectorySeparatorChar + par.ModelName + ".shp"
+                                      };
                     par.Value = addedFeatureSet;
                     break;
                 case "DotSpatial Raster Param":
@@ -631,12 +632,12 @@ namespace DotSpatial.Controls
 
             // Prompts user to pick file
             using (OpenFileDialog ofd = new OpenFileDialog
-            {
-                Filter = $@"Model *.{DefaultFileExtension}|*.{DefaultFileExtension}",
-                DefaultExt = DefaultFileExtension,
-                AddExtension = true,
-                CheckPathExists = true
-            })
+                                        {
+                                            Filter = $@"Model *.{DefaultFileExtension}|*.{DefaultFileExtension}",
+                                            DefaultExt = DefaultFileExtension,
+                                            AddExtension = true,
+                                            CheckPathExists = true
+                                        })
             {
                 if (ofd.ShowDialog(this) == DialogResult.Cancel)
                     return;
@@ -787,14 +788,14 @@ namespace DotSpatial.Controls
             if (promptSaveAs)
             {
                 using (var sfd = new SaveFileDialog
-                {
-                    OverwritePrompt = promptOverwrite,
-                    Filter = $@"Model *.{DefaultFileExtension}|*.{DefaultFileExtension}",
-                    DefaultExt = DefaultFileExtension,
-                    AddExtension = true,
-                    CheckPathExists = true,
-                    FileName = ModelFilename
-                })
+                                 {
+                                     OverwritePrompt = promptOverwrite,
+                                     Filter = $@"Model *.{DefaultFileExtension}|*.{DefaultFileExtension}",
+                                     DefaultExt = DefaultFileExtension,
+                                     AddExtension = true,
+                                     CheckPathExists = true,
+                                     FileName = ModelFilename
+                                 })
                 {
                     if (sfd.ShowDialog(this) == DialogResult.Cancel)
                         return;
@@ -1585,10 +1586,10 @@ namespace DotSpatial.Controls
         private ArrowElement AddArrow(ModelElement sourceElement, ModelElement destElement)
         {
             ArrowElement ae = new ArrowElement(sourceElement, destElement, _modelElements)
-            {
-                Color = _arrowColor,
-                Name = sourceElement.Name + "_" + destElement.Name
-            };
+                              {
+                                  Color = _arrowColor,
+                                  Name = sourceElement.Name + "_" + destElement.Name
+                              };
             AddElement(ae, ae.Location);
             return ae;
         }
@@ -1614,12 +1615,12 @@ namespace DotSpatial.Controls
         private DataElement AddData(Parameter par, Point location, string name)
         {
             DataElement de = new DataElement(par, _modelElements)
-            {
-                Color = DataColor,
-                Font = DataFont,
-                Shape = DataShape,
-                Name = name
-            };
+                             {
+                                 Color = DataColor,
+                                 Font = DataFont,
+                                 Shape = DataShape,
+                                 Name = name
+                             };
             de.Name = string.IsNullOrEmpty(par.ModelName) ? par.Name : par.ModelName;
             AddElement(de, location);
             par.ModelName = de.Name;
@@ -1697,12 +1698,12 @@ namespace DotSpatial.Controls
                 return null;
 
             ToolElement te = new ToolElement(tool, _modelElements)
-            {
-                Font = _toolFont,
-                Color = _toolColor,
-                Shape = _toolShape,
-                Name = modelName
-            };
+                             {
+                                 Font = _toolFont,
+                                 Color = _toolColor,
+                                 Shape = _toolShape,
+                                 Name = modelName
+                             };
             AddElement(te, location);
             int j = 0;
             foreach (Parameter par in te.Tool.OutputParameters)

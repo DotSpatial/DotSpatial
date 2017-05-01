@@ -1132,6 +1132,45 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The currently selected printer &quot;{0}&quot;
+        ///does not support the paper size &quot;{1}&quot; used by the layout being loaded.
+        ///
+        ///Load the layout with the printer&apos;s current paper settings?.
+        /// </summary>
+        internal static string LayoutControl_CurrentPrinterDoesNotSupportPapersize {
+            get {
+                return ResourceManager.GetString("LayoutControl_CurrentPrinterDoesNotSupportPapersize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DotSpatial Print Layout.
+        /// </summary>
+        internal static string LayoutControl_DotSpatialPrintLayout {
+            get {
+                return ResourceManager.GetString("LayoutControl_DotSpatialPrintLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default printer settings seem to indicate No printers are installed or the Print Spooler service is not running..
+        /// </summary>
+        internal static string LayoutControl_NoPrinterFound {
+            get {
+                return ResourceManager.GetString("LayoutControl_NoPrinterFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paper size mismatch.
+        /// </summary>
+        internal static string LayoutControl_PaperSizeMismatch {
+            get {
+                return ResourceManager.GetString("LayoutControl_PaperSizeMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error opening layout file: .
         /// </summary>
         internal static string LayoutErrorLoad {
@@ -1764,24 +1803,6 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool could not be created..
-        /// </summary>
-        internal static string Modeler_ToolCouldNotBeCreated {
-            get {
-                return ResourceManager.GetString("Modeler_ToolCouldNotBeCreated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tool version mismatch.
-        /// </summary>
-        internal static string Modeler_ToolVersionMismatch {
-            get {
-                return ResourceManager.GetString("Modeler_ToolVersionMismatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete elements?.
         /// </summary>
         internal static string ModelerConfirmDelete {
@@ -1800,11 +1821,11 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DotSpatial Modeler.
+        ///   Looks up a localized string similar to DotSpatial Modeler - {0}.
         /// </summary>
-        internal static string ModelerSaveDialogTitle {
+        internal static string ModelerForm_DotSpatialModelerFileName {
             get {
-                return ResourceManager.GetString("ModelerSaveDialogTitle", resourceCulture);
+                return ResourceManager.GetString("ModelerForm_DotSpatialModelerFileName", resourceCulture);
             }
         }
         
@@ -2394,11 +2415,38 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done Executing Tool: {0}.
+        /// </summary>
+        internal static string ToolManager_DoneExecutingTool {
+            get {
+                return ResourceManager.GetString("ToolManager_DoneExecutingTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executing Tool: {0}.
+        /// </summary>
+        internal static string ToolManager_ExecutingTool {
+            get {
+                return ResourceManager.GetString("ToolManager_ExecutingTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to add layer. Reason: .
         /// </summary>
         internal static string ToolManager_ExecutionComplete_UnableToAddLayerReason {
             get {
                 return ResourceManager.GetString("ToolManager_ExecutionComplete_UnableToAddLayerReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to add layer. Reason: {0}.
+        /// </summary>
+        internal static string ToolManager_UnableToAddLayer {
+            get {
+                return ResourceManager.GetString("ToolManager_UnableToAddLayer", resourceCulture);
             }
         }
         

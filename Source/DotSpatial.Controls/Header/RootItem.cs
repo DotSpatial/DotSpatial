@@ -5,9 +5,15 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class RootItem : HeaderItem
     {
+        #region Fields
+
         private string caption;
         private short sortOrder;
         private bool visible;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of RootItem MenuContainerItem class.
@@ -27,13 +33,21 @@ namespace DotSpatial.Controls.Header
             visible = true;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the caption.
         /// </summary>
         /// <value>The caption.</value>
         public string Caption
         {
-            get { return caption; }
+            get
+            {
+                return caption;
+            }
+
             set
             {
                 if (caption == value) return;
@@ -51,7 +65,11 @@ namespace DotSpatial.Controls.Header
         /// </value>
         public short SortOrder
         {
-            get { return sortOrder; }
+            get
+            {
+                return sortOrder;
+            }
+
             set
             {
                 if (sortOrder == value) return;
@@ -69,7 +87,11 @@ namespace DotSpatial.Controls.Header
         /// <remarks>Will generally bring this <see cref="RootItem"/> into focus when Visible is set to true.</remarks>
         public bool Visible
         {
-            get { return visible; }
+            get
+            {
+                return visible;
+            }
+
             set
             {
                 if (visible == value) return;
@@ -77,5 +99,7 @@ namespace DotSpatial.Controls.Header
                 OnPropertyChanged("Visible");
             }
         }
+
+        #endregion
     }
 }

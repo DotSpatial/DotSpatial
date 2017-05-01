@@ -7,6 +7,8 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class RootItemEventArgs : EventArgs
     {
+        #region  Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RootItemEventArgs"/> class.
         /// </summary>
@@ -23,6 +25,10 @@ namespace DotSpatial.Controls.Header
             SelectedRootKey = selectedKey;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the selected root item key.
         /// </summary>
@@ -30,5 +36,7 @@ namespace DotSpatial.Controls.Header
         /// The selected root item key
         /// </value>
         public string SelectedRootKey { get; set; }
+
+        #endregion
     }
 }

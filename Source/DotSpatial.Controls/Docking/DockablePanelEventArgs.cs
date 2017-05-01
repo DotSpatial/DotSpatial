@@ -12,7 +12,7 @@ namespace DotSpatial.Controls.Docking
     /// </summary>
     public class DockablePanelEventArgs : EventArgs
     {
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the ActivePanelChangedEventArgs class.
@@ -27,7 +27,7 @@ namespace DotSpatial.Controls.Docking
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         ///   Gets or sets the active panel key.

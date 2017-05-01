@@ -21,15 +21,16 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionKeyNavigation : MapFunction
     {
-        #region Private Variables
+        #region Fields
 
-        private FunctionMode previousFunction = FunctionMode.None;
         private bool isPanningTemporarily;
         private int KeyPanCount;
 
+        private FunctionMode previousFunction = FunctionMode.None;
+
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of SelectTool
@@ -43,56 +44,13 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Keyboard Input Handlers
+        #region Properties
 
-        /// <summary>
-        /// Handles the Key Up situation
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            // Allow panning if the space is pressed.
-            if (e.KeyCode == Keys.Space && isPanningTemporarily)
-            {
-                Map.FunctionMode = previousFunction;
-                isPanningTemporarily = false;
-            }
+        public bool BusySet { get; set; }
 
-            // Arrow-Key Panning
-            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
-            {
-                Map.MapFrame.ResetExtents();
-                Map.IsBusy = false;
-                BusySet = false;
-                KeyPanCount = 0;
-            }
+        #endregion
 
-            // Large Step Panning
-            if (e.KeyCode == Keys.PageUp || e.KeyCode == Keys.PageDown || e.KeyCode == Keys.Home || e.KeyCode == Keys.End)
-            {
-                Map.IsBusy = true;
-                var _source = Map.MapFrame.View;
-
-                switch (e.KeyCode)
-                {
-                    case Keys.PageUp:
-                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y - (int)(_source.Height * 0.75), _source.Width, _source.Height);
-                        break;
-                    case Keys.PageDown:
-                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y + (int)(_source.Height * 0.75), _source.Width, _source.Height);
-                        break;
-                    case Keys.Home:
-                        Map.MapFrame.View = new Rectangle(_source.X - (int)(_source.Width * 0.75), _source.Y, _source.Width, _source.Height);
-                        break;
-                    case Keys.End:
-                        Map.MapFrame.View = new Rectangle(_source.X + (int)(_source.Width * 0.75), _source.Y, _source.Width, _source.Height);
-                        break;
-                }
-
-                Map.MapFrame.ResetExtents();
-                Map.IsBusy = false;
-            }
-        }
+        #region Methods
 
         /// <summary>
         /// Handles the Key Down situation
@@ -144,7 +102,6 @@ namespace DotSpatial.Controls
                 }
                 else
                     Map.Invalidate();
-
             }
 
             // Zoom Out
@@ -180,8 +137,55 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Handles the Key Up situation
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            // Allow panning if the space is pressed.
+            if (e.KeyCode == Keys.Space && isPanningTemporarily)
+            {
+                Map.FunctionMode = previousFunction;
+                isPanningTemporarily = false;
+            }
 
-        public bool BusySet { get; set; }
+            // Arrow-Key Panning
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
+            {
+                Map.MapFrame.ResetExtents();
+                Map.IsBusy = false;
+                BusySet = false;
+                KeyPanCount = 0;
+            }
+
+            // Large Step Panning
+            if (e.KeyCode == Keys.PageUp || e.KeyCode == Keys.PageDown || e.KeyCode == Keys.Home || e.KeyCode == Keys.End)
+            {
+                Map.IsBusy = true;
+                var _source = Map.MapFrame.View;
+
+                switch (e.KeyCode)
+                {
+                    case Keys.PageUp:
+                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y - (int)(_source.Height * 0.75), _source.Width, _source.Height);
+                        break;
+                    case Keys.PageDown:
+                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y + (int)(_source.Height * 0.75), _source.Width, _source.Height);
+                        break;
+                    case Keys.Home:
+                        Map.MapFrame.View = new Rectangle(_source.X - (int)(_source.Width * 0.75), _source.Y, _source.Width, _source.Height);
+                        break;
+                    case Keys.End:
+                        Map.MapFrame.View = new Rectangle(_source.X + (int)(_source.Width * 0.75), _source.Y, _source.Width, _source.Height);
+                        break;
+                }
+
+                Map.MapFrame.ResetExtents();
+                Map.IsBusy = false;
+            }
+        }
+
+        #endregion
     }
 }

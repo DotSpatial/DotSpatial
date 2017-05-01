@@ -29,15 +29,24 @@ namespace DotSpatial.Controls
     /// <remarks>Dateline crossing map works correctly only with WGS84 datum Mercator projection.</remarks>
     public class DatelineCrossingMap : Map
     {
+        #region Fields
+
         private readonly MapFrame _geoSlaveMapFrame;
         private bool _viewExtentsBeingChanged;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatelineCrossingMap"/> class.
         /// </summary>
         public DatelineCrossingMap()
         {
-            _geoSlaveMapFrame = new MapFrame(this, new Extent(0, 0, 0, 0)) { Layers = MapFrame.Layers };  // give the slave frame something to draw.
+            _geoSlaveMapFrame = new MapFrame(this, new Extent(0, 0, 0, 0))
+                                {
+                                    Layers = MapFrame.Layers
+                                }; // give the slave frame something to draw.
 
             // Changing layers causes a resize event to be fired. If that event reaches the slave frame after the main frame, then it can get misaligned.
             // So, re-assign the layers to the main frame, causing the main frame to re-register its event handlers so that the main frame resize happens second.
@@ -46,13 +55,24 @@ namespace DotSpatial.Controls
             _viewExtentsBeingChanged = false;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets the map frame that is used to show the second part of the map.
         /// </summary>
         public IMapFrame SecondaryMapFrame
         {
-            get { return _geoSlaveMapFrame; }
+            get
+            {
+                return _geoSlaveMapFrame;
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Clips the view extents so each map frame shows what it is supposed to.
@@ -69,19 +89,6 @@ namespace DotSpatial.Controls
                 int slaveScreenWidth = Convert.ToInt32(Width * visibleSlaveWidth / _geoSlaveMapFrame.ViewExtents.Width);
                 ((MapFrame)MapFrame).ClipRectangle = new Rectangle(0, 0, Width - slaveScreenWidth, Height);
                 _geoSlaveMapFrame.ClipRectangle = new Rectangle(Width - slaveScreenWidth, 0, slaveScreenWidth, Height);
-            }
-        }
-
-        /// <inheritdoc />
-        protected override void OnViewExtentsChanged(object sender, ExtentArgs args)
-        {
-            if (!_viewExtentsBeingChanged)
-            {
-                _viewExtentsBeingChanged = true;
-                ClipViewExtents();
-                base.OnViewExtentsChanged(sender, args);
-                _viewExtentsBeingChanged = false;
-                Invalidate();
             }
         }
 
@@ -116,6 +123,19 @@ namespace DotSpatial.Controls
             base.OnIncludeMapFrame(mapFrame);
         }
 
+        /// <inheritdoc />
+        protected override void OnViewExtentsChanged(object sender, ExtentArgs args)
+        {
+            if (!_viewExtentsBeingChanged)
+            {
+                _viewExtentsBeingChanged = true;
+                ClipViewExtents();
+                base.OnViewExtentsChanged(sender, args);
+                _viewExtentsBeingChanged = false;
+                Invalidate();
+            }
+        }
+
         private void MapFrameViewChanged(object sender, ViewChangedEventArgs e)
         {
             int xDiff = e.NewView.X - e.OldView.X;
@@ -133,5 +153,7 @@ namespace DotSpatial.Controls
             Rectangle currMasterClipRect = mf.ClipRectangle;
             mf.ClipRectangle = new Rectangle(currMasterClipRect.X - xDiff, currMasterClipRect.Y - yDiff, currMasterClipRect.Width - wDiff, currMasterClipRect.Height - hDiff);
         }
+
+        #endregion
     }
 }

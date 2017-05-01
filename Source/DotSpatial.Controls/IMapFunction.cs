@@ -36,6 +36,54 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Describes a button image
+        /// </summary>
+        Image ButtonImage { get; }
+
+        /// <summary>
+        /// This controls the cursor that this tool uses, unless the action has been cancelled by attempting
+        /// to use the tool outside the bounds of the image.
+        /// </summary>
+        Bitmap CursorBitmap { get; set; }
+
+        /// <summary>
+        /// Gets or sets a boolean that is true if this tool should be active.  If it is false,
+        /// then this tool will not be sent mouse movement information.
+        /// </summary>
+        bool Enabled { get; }
+
+        /// <summary>
+        /// Gets or sets the basic map that this tool interacts with.  This can alternately be set using
+        /// the Init method.
+        /// </summary>
+        IMap Map { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name that attempts to identify this plugin uniquely.  If the
+        /// name is already in the tools list, this will modify the name set here by
+        /// appending a number.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// If this is false, then the typical contents from the map's back buffer are drawn first,
+        /// followed by the contents of this tool.
+        /// </summary>
+        bool PreventBackBuffer { get; }
+
+        /// <summary>
+        /// Different Pathways that allow functions to deactivate if another function that uses
+        /// the specified UI domain activates.  This allows a scrolling zoom function to stay
+        /// active while changing between pan and select functions which use the left mouse
+        /// button.  The enumeration is flagged, and so can support multiple options.
+        /// </summary>
+        YieldStyles YieldStyle { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -49,10 +97,16 @@ namespace DotSpatial.Controls
         void Deactivate();
 
         /// <summary>
-        /// This is the method that is called by the drawPanel.  The graphics coordinates are
-        /// in pixels relative to the image being edited.
+        /// When a key is pressed while the map has the focus, this occurs.
         /// </summary>
-        void Draw(MapDrawArgs e);
+        /// <param name="e"></param>
+        void DoKeyDown(KeyEventArgs e);
+
+        /// <summary>
+        /// When a key returns to the up position, this occurs.
+        /// </summary>
+        /// <param name="e"></param>
+        void DoKeyUp(KeyEventArgs e);
 
         /// <summary>
         /// Forces this tool to execute whatever behavior should occur during a double click even on the panel
@@ -67,16 +121,16 @@ namespace DotSpatial.Controls
         void DoMouseDown(GeoMouseArgs e);
 
         /// <summary>
-        /// Instructs this tool to perform any actions that should occur on the MouseUp event
-        /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
-        void DoMouseUp(GeoMouseArgs e);
-
-        /// <summary>
         /// Instructs this tool to perform any actions that should occur on the MouseMove event
         /// </summary>
         /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
         void DoMouseMove(GeoMouseArgs e);
+
+        /// <summary>
+        /// Instructs this tool to perform any actions that should occur on the MouseUp event
+        /// </summary>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        void DoMouseUp(GeoMouseArgs e);
 
         /// <summary>
         /// Instructs this tool to perform any actions that should occur on the MouseWheel event
@@ -85,52 +139,10 @@ namespace DotSpatial.Controls
         void DoMouseWheel(GeoMouseArgs e);
 
         /// <summary>
-        /// Here, the entire plugin is unloading, so if there are any residual states
-        /// that are not taken care of, this should remove them.
+        /// This is the method that is called by the drawPanel.  The graphics coordinates are
+        /// in pixels relative to the image being edited.
         /// </summary>
-        void Unload();
-
-        /// <summary>
-        /// When a key is pressed while the map has the focus, this occurs.
-        /// </summary>
-        /// <param name="e"></param>
-        void DoKeyDown(KeyEventArgs e);
-
-        /// <summary>
-        /// When a key returns to the up position, this occurs.
-        /// </summary>
-        /// <param name="e"></param>
-        void DoKeyUp(KeyEventArgs e);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// This controls the cursor that this tool uses, unless the action has been cancelled by attempting
-        /// to use the tool outside the bounds of the image.
-        /// </summary>
-        Bitmap CursorBitmap { get; set; }
-
-        /// <summary>
-        /// If this is false, then the typical contents from the map's back buffer are drawn first,
-        /// followed by the contents of this tool.
-        /// </summary>
-        bool PreventBackBuffer { get; }
-
-        /// <summary>
-        /// Gets or sets a boolean that is true if this tool should be active.  If it is false,
-        /// then this tool will not be sent mouse movement information.
-        /// </summary>
-        bool Enabled { get; }
-
-        /// <summary>
-        /// Different Pathways that allow functions to deactivate if another function that uses
-        /// the specified UI domain activates.  This allows a scrolling zoom function to stay
-        /// active while changing between pan and select functions which use the left mouse
-        /// button.  The enumeration is flagged, and so can support multiple options.
-        /// </summary>
-        YieldStyles YieldStyle { get; set; }
+        void Draw(MapDrawArgs e);
 
         /// <summary>
         /// Organizes the map that this tool will work with.
@@ -138,27 +150,11 @@ namespace DotSpatial.Controls
         /// <param name="inMap"></param>
         void Init(IMap inMap);
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Describes a button image
+        /// Here, the entire plugin is unloading, so if there are any residual states
+        /// that are not taken care of, this should remove them.
         /// </summary>
-        Image ButtonImage { get; }
-
-        /// <summary>
-        /// Gets or sets the basic map that this tool interacts with.  This can alternately be set using
-        /// the Init method.
-        /// </summary>
-        IMap Map { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name that attempts to identify this plugin uniquely.  If the
-        /// name is already in the tools list, this will modify the name set here by
-        /// appending a number.
-        /// </summary>
-        string Name { get; set; }
+        void Unload();
 
         #endregion
     }

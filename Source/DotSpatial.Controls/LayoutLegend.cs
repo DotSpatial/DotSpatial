@@ -29,6 +29,8 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutLegend : LayoutElement
     {
+        #region Fields
+
         private readonly List<IMapLayer> _layers;
         private Color _color;
         private Font _font;
@@ -37,39 +39,63 @@ namespace DotSpatial.Controls
         private int _numCol;
         private TextRenderingHint _textHint;
 
-        #region Public Properties
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
-        /// Gets or sets the layoutmap to use to base the legend on
+        /// Constructor
         /// </summary>
-        [Browsable(true), Category("Symbol"), Editor(typeof(LayoutMapEditor), typeof(UITypeEditor))]
-        public virtual LayoutMap Map
+        public LayoutLegend()
         {
-            get { return _layoutMap; }
+            Name = "Legend";
+            _font = new Font("Arial", 10);
+            _color = Color.Black;
+            _textHint = TextRenderingHint.AntiAliasGridFit;
+            _numCol = 1;
+            _layers = new List<IMapLayer>();
+            ResizeStyle = ResizeStyle.NoScaling;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the color of the text
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public virtual Color Color
+        {
+            get
+            {
+                return _color;
+            }
+
             set
             {
-                if (value != null && value != _layoutMap)
-                {
-                    _layoutMap = value;
-                    _layers.Clear();
-                    if (Map.MapControl != null)
-                    {
-                        for (int i = Map.MapControl.Layers.Count - 1; i >= 0; i--)
-                        {
-                            if (Map.MapControl.Layers[i].Checked)
-                            {
-                                _layers.Add(Map.MapControl.Layers[i]);
-                            }
-                        }
-                    }
+                _color = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
 
-                    base.UpdateThumbnail();
-                    base.OnInvalidate();
-                }
-                else if (value == null)
-                {
-                    _layers.Clear();
-                }
+        /// <summary>
+        /// Gets or sets the font used to draw this text
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public virtual Font Font
+        {
+            get
+            {
+                return _font;
+            }
+
+            set
+            {
+                _font = value;
+                UpdateThumbnail();
+                OnInvalidate();
             }
         }
 
@@ -88,6 +114,7 @@ namespace DotSpatial.Controls
                     if (_layers.Contains(Map.MapControl.Layers[i])) layerInts.Add(i);
                 return layerInts;
             }
+
             set
             {
                 _layers.Clear();
@@ -103,29 +130,73 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                base.UpdateThumbnail();
-                base.OnInvalidate();
+                UpdateThumbnail();
+                OnInvalidate();
             }
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw this text
+        /// Gets or sets a layout control
         /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public virtual Font Font
+        [Browsable(false)]
+        public virtual LayoutControl LayoutControl
         {
-            get { return _font; }
-            set { _font = value; base.UpdateThumbnail(); base.OnInvalidate(); }
+            get
+            {
+                return _layoutControl;
+            }
+
+            set
+            {
+                if (_layoutControl != null)
+                {
+                    _layoutControl.ElementsChanged -= LayoutControlElementsChanged;
+                }
+
+                _layoutControl = value;
+                if (_layoutControl != null)
+                {
+                    _layoutControl.ElementsChanged += LayoutControlElementsChanged;
+                }
+            }
         }
 
         /// <summary>
-        /// Gets or sets the color of the text
+        /// Gets or sets the layoutmap to use to base the legend on
         /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public virtual Color Color
+        [Browsable(true), Category("Symbol"), Editor(typeof(LayoutMapEditor), typeof(UITypeEditor))]
+        public virtual LayoutMap Map
         {
-            get { return _color; }
-            set { _color = value; base.UpdateThumbnail(); base.OnInvalidate(); }
+            get
+            {
+                return _layoutMap;
+            }
+
+            set
+            {
+                if (value != null && value != _layoutMap)
+                {
+                    _layoutMap = value;
+                    _layers.Clear();
+                    if (Map.MapControl != null)
+                    {
+                        for (int i = Map.MapControl.Layers.Count - 1; i >= 0; i--)
+                        {
+                            if (Map.MapControl.Layers[i].Checked)
+                            {
+                                _layers.Add(Map.MapControl.Layers[i]);
+                            }
+                        }
+                    }
+
+                    UpdateThumbnail();
+                    OnInvalidate();
+                }
+                else if (value == null)
+                {
+                    _layers.Clear();
+                }
+            }
         }
 
         /// <summary>
@@ -134,7 +205,11 @@ namespace DotSpatial.Controls
         [Browsable(true), Category("Symbol")]
         public virtual int NumColumns
         {
-            get { return _numCol; }
+            get
+            {
+                return _numCol;
+            }
+
             set
             {
                 _numCol = value < 1 ? 1 : value;
@@ -149,61 +224,22 @@ namespace DotSpatial.Controls
         [Browsable(true), Category("Symbol")]
         public virtual TextRenderingHint TextHint
         {
-            get { return _textHint; }
-            set { _textHint = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
+            get
+            {
+                return _textHint;
+            }
 
-        /// <summary>
-        /// Gets or sets a layout control
-        /// </summary>
-        [Browsable(false)]
-        public virtual LayoutControl LayoutControl
-        {
-            get { return _layoutControl; }
             set
             {
-                if (_layoutControl != null)
-                {
-                    _layoutControl.ElementsChanged -= LayoutControlElementsChanged;
-                }
-                _layoutControl = value;
-                if (_layoutControl != null)
-                {
-                    _layoutControl.ElementsChanged += LayoutControlElementsChanged;
-                }
+                _textHint = value;
+                UpdateThumbnail();
+                OnInvalidate();
             }
         }
 
         #endregion
 
-        #region event handlers
-
-        /// <summary>
-        /// Updates the scale bar if the map is deleted
-        /// </summary>
-        private void LayoutControlElementsChanged(object sender, EventArgs e)
-        {
-            if (_layoutControl.LayoutElements.Contains(_layoutMap) == false)
-                Map = null;
-        }
-
-        #endregion
-
-        #region public methods
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public LayoutLegend()
-        {
-            Name = "Legend";
-            _font = new Font("Arial", 10);
-            _color = Color.Black;
-            _textHint = TextRenderingHint.AntiAliasGridFit;
-            _numCol = 1;
-            _layers = new List<IMapLayer>();
-            ResizeStyle = ResizeStyle.NoScaling;
-        }
+        #region Methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -244,6 +280,22 @@ namespace DotSpatial.Controls
             g.TextRenderingHint = oldTextHint;
         }
 
+        private void DrawLegendItem(Graphics g, ILegendItem item, SizeF itemSize, ref int col, ref int row, ref int maxCol, ref int maxRow)
+        {
+            if (row >= maxRow)
+            {
+                row = 0;
+                col++;
+                if (col > maxCol)
+                    return;
+            }
+
+            g.TranslateTransform(LocationF.X + (col * itemSize.Width), LocationF.Y + (row * itemSize.Height));
+            item.PrintLegendItem(g, _font, _color, itemSize);
+            g.TranslateTransform(-(LocationF.X + (col * itemSize.Width)), -(LocationF.Y + (row * itemSize.Height)));
+            row++;
+        }
+
         private void DrawLegendList(Graphics g, IEnumerable<ILegendItem> items, SizeF itemSize, ref int col, ref int row, ref int maxCol, ref int maxRow)
         {
             // If we are passed the max size return;
@@ -264,20 +316,13 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void DrawLegendItem(Graphics g, ILegendItem item, SizeF itemSize, ref int col, ref int row, ref int maxCol, ref int maxRow)
+        /// <summary>
+        /// Updates the scale bar if the map is deleted
+        /// </summary>
+        private void LayoutControlElementsChanged(object sender, EventArgs e)
         {
-            if (row >= maxRow)
-            {
-                row = 0;
-                col++;
-                if (col > maxCol)
-                    return;
-            }
-
-            g.TranslateTransform(LocationF.X + (col * itemSize.Width), LocationF.Y + (row * itemSize.Height));
-            item.PrintLegendItem(g, _font, _color, itemSize);
-            g.TranslateTransform(-(LocationF.X + (col * itemSize.Width)), -(LocationF.Y + (row * itemSize.Height)));
-            row++;
+            if (_layoutControl.LayoutElements.Contains(_layoutMap) == false)
+                Map = null;
         }
 
         #endregion

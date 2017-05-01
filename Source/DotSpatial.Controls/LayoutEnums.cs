@@ -93,10 +93,12 @@ namespace DotSpatial.Controls
         /// The resize style is determined automatically
         /// </summary>
         HandledInternally,
+
         /// <summary>
         /// The element is adjusted to fit the extents even if it is distorted
         /// </summary>
         StretchToFit,
+
         /// <summary>
         /// No scaling occurs whatsoever, and the element is drawn at its original size
         /// </summary>
@@ -112,30 +114,37 @@ namespace DotSpatial.Controls
         /// Kilometers
         /// </summary>
         Kilometers,
+
         /// <summary>
         /// Meters
         /// </summary>
         Meters,
+
         /// <summary>
         /// Centimeters
         /// </summary>
         Centimeters,
+
         /// <summary>
         /// Millimeters
         /// </summary>
         Millimeters,
+
         /// <summary>
         /// Miles
         /// </summary>
         Miles,
+
         /// <summary>
         /// Yards
         /// </summary>
         Yards,
+
         /// <summary>
         /// Feet
         /// </summary>
         Feet,
+
         /// <summary>
         /// Inches
         /// </summary>
@@ -151,22 +160,27 @@ namespace DotSpatial.Controls
         /// Left
         /// </summary>
         Left,
+
         /// <summary>
         /// Right
         /// </summary>
         Right,
+
         /// <summary>
         /// Top
         /// </summary>
         Top,
+
         /// <summary>
         /// Bottom
         /// </summary>
         Bottom,
+
         /// <summary>
         /// Horizontal
         /// </summary>
         Horizontal,
+
         /// <summary>
         /// Vertical
         /// </summary>
@@ -182,6 +196,7 @@ namespace DotSpatial.Controls
         /// Width
         /// </summary>
         Width,
+
         /// <summary>
         /// Height
         /// </summary>

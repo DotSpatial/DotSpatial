@@ -8,7 +8,13 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public abstract class HeaderItem : INotifyPropertyChanged
     {
+        #region Fields
+
         private string key;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HeaderItem"/> class.
@@ -27,13 +33,30 @@ namespace DotSpatial.Controls.Header
             Key = Guid.NewGuid().ToString();
         }
 
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
         /// <value>The unique identifier.</value>
         public string Key
         {
-            get { return key; }
+            get
+            {
+                return key;
+            }
+
             set
             {
                 if (key == value)
@@ -44,22 +67,17 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// An <see cref="Object"/> that contains data about the HeaderItem. The default is null.
+        /// An <see cref="object"/> that contains data about the HeaderItem. The default is null.
         /// </summary>
         /// <remarks>
-        /// Any type derived from the <see cref="Object"/> class can be assigned to this property. 
+        /// Any type derived from the <see cref="object"/> class can be assigned to this property. 
         /// A common use for the Tag property is to store data that is closely associated with the item. 
         /// </remarks>
         public object Tag { get; set; }
 
-        #region INotifyPropertyChanged Members
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Triggers the PropertyChanged event.
@@ -72,5 +90,7 @@ namespace DotSpatial.Controls.Header
                 h(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        #endregion
     }
 }

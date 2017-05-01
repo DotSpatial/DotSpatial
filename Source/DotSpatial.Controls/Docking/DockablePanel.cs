@@ -14,7 +14,7 @@ namespace DotSpatial.Controls.Docking
     /// </summary>
     public class DockablePanel : INotifyPropertyChanged
     {
-        #region Constants and Fields
+        #region Fields
 
         private string caption;
         private short defaultSortOrder;
@@ -29,7 +29,7 @@ namespace DotSpatial.Controls.Docking
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "DockablePanel" /> class.
@@ -55,7 +55,7 @@ namespace DotSpatial.Controls.Docking
 
         #endregion
 
-        #region Public Events
+        #region Events
 
         /// <summary>
         ///   Occurs when a property value changes.
@@ -64,7 +64,7 @@ namespace DotSpatial.Controls.Docking
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         ///   Gets or sets the caption of the panel and any tab button.
@@ -88,6 +88,32 @@ namespace DotSpatial.Controls.Docking
 
                 caption = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("Caption"));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the sort order. Lower values will suggest that an item should appear further left in a LeftToRight environment. Or higher up in a top to bottom environment.
+        /// </summary>
+        /// <remarks>Use a multiple of 100 or so to allow other developers some 'space' to place their panels.</remarks>
+        /// <value>
+        /// The sort order.
+        /// </value>
+        public short DefaultSortOrder
+        {
+            get
+            {
+                return defaultSortOrder;
+            }
+
+            set
+            {
+                if (defaultSortOrder == value)
+                {
+                    return;
+                }
+
+                defaultSortOrder = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("DefaultSortOrder"));
             }
         }
 
@@ -179,32 +205,6 @@ namespace DotSpatial.Controls.Docking
             {
                 smallImage = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SmallImage"));
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the sort order. Lower values will suggest that an item should appear further left in a LeftToRight environment. Or higher up in a top to bottom environment.
-        /// </summary>
-        /// <remarks>Use a multiple of 100 or so to allow other developers some 'space' to place their panels.</remarks>
-        /// <value>
-        /// The sort order.
-        /// </value>
-        public short DefaultSortOrder
-        {
-            get
-            {
-                return defaultSortOrder;
-            }
-
-            set
-            {
-                if (defaultSortOrder == value)
-                {
-                    return;
-                }
-
-                defaultSortOrder = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("DefaultSortOrder"));
             }
         }
 

@@ -20,7 +20,18 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class CohenSutherland
     {
-        #region LineClipStatus enum
+        #region Fields
+
+        private const int Bottom = 4;
+
+        private const int Left = 1;
+        private const int Right = 2;
+        private const int Top = 8;
+
+        private const int X = 0;
+        private const int Y = 1;
+
+        #endregion
 
         /// <summary>
         /// Result of individual line segment clip
@@ -32,47 +43,29 @@ namespace DotSpatial.Controls
             /// Initial untested value
             ///</summary>
             Unknown = 0,
+
             ///<summary>
             /// Line is completely inside the clip area
             ///</summary>
             Inside = 1,
+
             ///<summary>
             /// Line is completely outside the clip area
             ///</summary>
             Outside = 2,
+
             ///<summary>
             /// Line was partially contained and first vertex was clipped
             ///</summary>
             ClippedFirst = 4,
+
             ///<summary>
             /// Line was partially contained and last vertex was clipped
             ///</summary>
             ClippedLast = 8
         };
 
-        #endregion
-
-        private const int Left = 1;
-        private const int Right = 2;
-        private const int Bottom = 4;
-        private const int Top = 8;
-
-        private const int X = 0;
-        private const int Y = 1;
-
-        private static int ComputeOutCode(double x, double y, double xmin, double ymin, double xmax, double ymax)
-        {
-            int code = 0;
-            if (y > ymax)
-                code |= Top;
-            else if (y < ymin)
-                code |= Bottom;
-            if (x > xmax)
-                code |= Right;
-            else if (x < xmin)
-                code |= Left;
-            return code;
-        }
+        #region Methods
 
         ///<summary>
         /// Clip a line segment.  Coordinates are modified in place.
@@ -94,6 +87,7 @@ namespace DotSpatial.Controls
             int hhh = 0;
             bool done = false;
             LineClipStatus returnValue = LineClipStatus.Unknown;
+
             // compute outcodes
             int outcode0 = ComputeOutCode(x1, y1, xmin, ymin, xmax, ymax);
             int outcode1 = ComputeOutCode(x2, y2, xmin, ymin, xmax, ymax);
@@ -116,6 +110,7 @@ namespace DotSpatial.Controls
                     // failed both tests, so calculate the line segment to clip
                     // from an outside point to an intersection with clip edge
                     double x = 0, y = 0;
+
                     // At least one endpoint is outside the clip rectangle; pick it.
                     int outcodeOut;
                     if (outcode0 != 0)
@@ -128,6 +123,7 @@ namespace DotSpatial.Controls
                         outcodeOut = outcode1;
                         returnValue |= LineClipStatus.ClippedLast;
                     }
+
                     // Now find the intersection point;
                     // use formulas y = y0 + slope * (x - x0), x = x0 + (1/slope)* (y - y0)
                     if ((outcodeOut & Top) > 0)
@@ -150,6 +146,7 @@ namespace DotSpatial.Controls
                         y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1);
                         x = xmin;
                     }
+
                     // Now we move outside point to intersection point to clip
                     // and get ready for next pass.
                     if (outcodeOut == outcode0)
@@ -165,6 +162,7 @@ namespace DotSpatial.Controls
                         outcode1 = ComputeOutCode(x2, y2, xmin, ymin, xmax, ymax);
                     }
                 }
+
                 hhh++;
             }
             while (done != true && hhh < 5000);
@@ -198,20 +196,20 @@ namespace DotSpatial.Controls
                 double y0 = p0[Y];
                 double x1 = p1[X];
                 double y1 = p1[Y];
-                LineClipStatus clipStatus = ClipLine(ref x0, ref y0, ref x1, ref y1, xmin,
-                                                                    ymin, xmax, ymax);
+                LineClipStatus clipStatus = ClipLine(ref x0, ref y0, ref x1, ref y1, xmin, ymin, xmax, ymax);
 
                 // See if we need to add no points, last point, or both points
                 if (clipStatus != LineClipStatus.Outside)
                 {
-                    if (prevClipStatus == LineClipStatus.Outside ||
-                        (prevClipStatus & LineClipStatus.ClippedLast) == LineClipStatus.ClippedLast)
+                    if (prevClipStatus == LineClipStatus.Outside || (prevClipStatus & LineClipStatus.ClippedLast) == LineClipStatus.ClippedLast)
                     {
                         // Add both
                         returnLinestring.Add(new[] { x0, y0 });
                     }
+
                     returnLinestring.Add(new[] { x1, y1 });
                 }
+
                 if ((clipStatus & LineClipStatus.ClippedLast) == LineClipStatus.ClippedLast)
                 {
                     returnLinestrings.Add(returnLinestring);
@@ -229,5 +227,21 @@ namespace DotSpatial.Controls
 
             return returnLinestrings;
         }
+
+        private static int ComputeOutCode(double x, double y, double xmin, double ymin, double xmax, double ymax)
+        {
+            int code = 0;
+            if (y > ymax)
+                code |= Top;
+            else if (y < ymin)
+                code |= Bottom;
+            if (x > xmax)
+                code |= Right;
+            else if (x < xmin)
+                code |= Left;
+            return code;
+        }
+
+        #endregion
     }
 }

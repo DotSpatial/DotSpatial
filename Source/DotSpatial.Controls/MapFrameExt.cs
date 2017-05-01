@@ -22,16 +22,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class MapFrameExt
     {
-        /// <summary>
-        /// Gets all layers of the map frame including layers which are nested
-        /// within groups. The group objects themselves are not included in this list,
-        /// but all FeatureLayers, RasterLayers, ImageLayers and other layers are included.
-        /// </summary>
-        /// <returns>The list of the layers</returns>
-        public static List<ILayer> GetAllLayers(this IMapFrame mapFrame)
-        {
-            return GetAllTypeLayers<ILayer>(mapFrame);
-        }
+        #region Methods
 
         /// <summary>
         /// Gets all feature layers of the map frame including feature layers which are nested
@@ -44,13 +35,35 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets all point layers of the map frame including point layers which are nested
+        /// Gets all map groups in the map including the nested groups.
+        /// </summary>
+        /// <returns>the list of the groups</returns>
+        public static List<IMapGroup> GetAllGroups(this IMapFrame mapFrame)
+        {
+            var groupList = new List<IMapGroup>();
+            GetNestedGroups(mapFrame, groupList);
+            return groupList;
+        }
+
+        /// <summary>
+        /// Gets all image layers of the map frame including image layers which are nested
         /// within groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the point layers</returns>
-        public static List<IMapPointLayer> GetAllPointLayers(this IMapFrame mapFrame)
+        /// <returns>The list of the image layers</returns>
+        public static List<IMapImageLayer> GetAllImageLayers(this IMapFrame mapFrame)
         {
-            return GetAllTypeLayers<IMapPointLayer>(mapFrame);
+            return GetAllTypeLayers<IMapImageLayer>(mapFrame);
+        }
+
+        /// <summary>
+        /// Gets all layers of the map frame including layers which are nested
+        /// within groups. The group objects themselves are not included in this list,
+        /// but all FeatureLayers, RasterLayers, ImageLayers and other layers are included.
+        /// </summary>
+        /// <returns>The list of the layers</returns>
+        public static List<ILayer> GetAllLayers(this IMapFrame mapFrame)
+        {
+            return GetAllTypeLayers<ILayer>(mapFrame);
         }
 
         /// <summary>
@@ -61,6 +74,16 @@ namespace DotSpatial.Controls
         public static List<IMapLineLayer> GetAllLineLayers(this IMapFrame mapFrame)
         {
             return GetAllTypeLayers<IMapLineLayer>(mapFrame);
+        }
+
+        /// <summary>
+        /// Gets all point layers of the map frame including point layers which are nested
+        /// within groups. The group objects themselves are not included in this list.
+        /// </summary>
+        /// <returns>The list of the point layers</returns>
+        public static List<IMapPointLayer> GetAllPointLayers(this IMapFrame mapFrame)
+        {
+            return GetAllTypeLayers<IMapPointLayer>(mapFrame);
         }
 
         /// <summary>
@@ -84,16 +107,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets all image layers of the map frame including image layers which are nested
-        /// within groups. The group objects themselves are not included in this list.
-        /// </summary>
-        /// <returns>The list of the image layers</returns>
-        public static List<IMapImageLayer> GetAllImageLayers(this IMapFrame mapFrame)
-        {
-            return GetAllTypeLayers<IMapImageLayer>(mapFrame);
-        }
-        
-        /// <summary>
         /// Gets all the layers of the given type.
         /// </summary>
         /// <typeparam name="T">Type of the layers that should be included.</typeparam>
@@ -104,44 +117,6 @@ namespace DotSpatial.Controls
             var layerList = new List<T>();
             GetNestedLayers<T>(mapFrame, layerList);
             return layerList;
-        }
-
-        /// <summary>
-        /// Recursively adds all the layers of the given type that are found in group to layerList.
-        /// </summary>
-        /// <typeparam name="T">Type of the layers that should be included.</typeparam>
-        /// <param name="group">Group that contains the layers.</param>
-        /// <param name="layerList">The list the layers should be added to.</param>
-        private static void GetNestedLayers<T>(IMapGroup group, List<T> layerList) where T : class
-        {
-            if (layerList == null) layerList = new List<T>();
-            foreach (var layer in group.Layers)
-            {
-                var grp = layer as IMapGroup;
-                if (grp != null)
-                {
-                    GetNestedLayers<T>(grp, layerList);
-                }
-                else
-                {
-                    var tlayer = (layer) as T;
-                    if (tlayer != null)
-                    {
-                        layerList.Add(tlayer);
-                    } 
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets all map groups in the map including the nested groups.
-        /// </summary>
-        /// <returns>the list of the groups</returns>
-        public static List<IMapGroup> GetAllGroups(this IMapFrame mapFrame)
-        {
-            var groupList = new List<IMapGroup>();
-            GetNestedGroups(mapFrame, groupList);
-            return groupList;
         }
 
         /// <summary>
@@ -165,5 +140,34 @@ namespace DotSpatial.Controls
                 }
             }
         }
+
+        /// <summary>
+        /// Recursively adds all the layers of the given type that are found in group to layerList.
+        /// </summary>
+        /// <typeparam name="T">Type of the layers that should be included.</typeparam>
+        /// <param name="group">Group that contains the layers.</param>
+        /// <param name="layerList">The list the layers should be added to.</param>
+        private static void GetNestedLayers<T>(IMapGroup group, List<T> layerList) where T : class
+        {
+            if (layerList == null) layerList = new List<T>();
+            foreach (var layer in group.Layers)
+            {
+                var grp = layer as IMapGroup;
+                if (grp != null)
+                {
+                    GetNestedLayers<T>(grp, layerList);
+                }
+                else
+                {
+                    var tlayer = layer as T;
+                    if (tlayer != null)
+                    {
+                        layerList.Add(tlayer);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

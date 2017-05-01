@@ -21,7 +21,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionPan : MapFunction
     {
-        #region Private Variables
+        #region Fields
 
         private Point _dragStart;
         private bool _isDragging;
@@ -30,7 +30,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the MapFunctionPan class.
@@ -44,23 +44,24 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
         #region Properties
+
+        public bool BusySet { get; set; }
 
         /// <summary>
         /// This indicates that this tool is currently being used.
         /// </summary>
         public bool IsDragging
         {
-            get { return _isDragging; }
+            get
+            {
+                return _isDragging;
+            }
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
 
         /// <summary>
         /// Handles the actions that the tool controls during the OnMouseDown event
@@ -74,6 +75,7 @@ namespace DotSpatial.Controls
                 _dragStart = e.Location;
                 _source = e.Map.MapFrame.View;
             }
+
             base.OnMouseDown(e);
         }
 
@@ -93,11 +95,15 @@ namespace DotSpatial.Controls
                 }
 
                 _isDragging = true;
-                Point diff = new Point { X = _dragStart.X - e.X, Y = _dragStart.Y - e.Y };
-                e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width,
-                                                    _source.Height);
+                Point diff = new Point
+                             {
+                                 X = _dragStart.X - e.X,
+                                 Y = _dragStart.Y - e.Y
+                             };
+                e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width, _source.Height);
                 Map.Invalidate();
             }
+
             base.OnMouseMove(e);
         }
 
@@ -117,13 +123,12 @@ namespace DotSpatial.Controls
                 Map.IsBusy = false;
                 BusySet = false;
             }
+
             _dragStart = Point.Empty;
 
             base.OnMouseUp(e);
         }
 
         #endregion
-
-        public bool BusySet { get; set; }
     }
 }

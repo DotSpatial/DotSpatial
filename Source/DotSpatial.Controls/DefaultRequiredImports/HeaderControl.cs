@@ -13,7 +13,21 @@ namespace DotSpatial.Controls.DefaultRequiredImports
     [DefaultRequiredImport]
     internal class HeaderControl : MenuBarHeaderControl, ISatisfyImportsExtension
     {
+        #region Fields
+
         private bool _isActivated;
+
+        #endregion
+
+        #region Properties
+
+        public int Priority
+        {
+            get
+            {
+                return 1;
+            }
+        }
 
         [Import]
         private AppManager App { get; set; }
@@ -21,7 +35,9 @@ namespace DotSpatial.Controls.DefaultRequiredImports
         [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
 
-        public int Priority { get { return 1; } }
+        #endregion
+
+        #region Methods
 
         public void Activate()
         {
@@ -31,17 +47,23 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
             // Activate only if there are no other IHeaderControl implementations and
             // custom HeaderControl not yet set
-            if (App.HeaderControl == null &&
-                headerControls.Count == 1 && headerControls[0].GetType() == GetType())
+            if (App.HeaderControl == null && headerControls.Count == 1 && headerControls[0].GetType() == GetType())
             {
                 _isActivated = true;
 
-                var container = new ToolStripPanel {Dock = DockStyle.Top};
+                var container = new ToolStripPanel
+                                {
+                                    Dock = DockStyle.Top
+                                };
                 Shell.Controls.Add(container);
 
-                var menuStrip = new MenuStrip { Name = DEFAULT_GROUP_NAME, Dock = DockStyle.Top };
+                var menuStrip = new MenuStrip
+                                {
+                                    Name = DEFAULT_GROUP_NAME,
+                                    Dock = DockStyle.Top
+                                };
                 Shell.Controls.Add(menuStrip);
-               
+
                 Initialize(container, menuStrip);
                 App.ExtensionsActivated += delegate { LoadToolstrips(); };
 
@@ -49,5 +71,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
                 new DefaultMenuBars(App).Initialize(this);
             }
         }
+
+        #endregion
     }
 }

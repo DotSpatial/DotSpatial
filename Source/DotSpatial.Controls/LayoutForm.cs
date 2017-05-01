@@ -25,6 +25,8 @@ namespace DotSpatial.Controls
     /// </summary>
     public partial class LayoutForm : Form
     {
+        #region  Constructors
+
         /// <summary>
         /// Default constructor for creating a new instance of hte Layout form
         /// </summary>
@@ -44,33 +46,44 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the map that will be used in the layout
-        /// </summary>
-        public Map MapControl
-        {
-            get { return _layoutControl1.MapControl; }
-            set { _layoutControl1.MapControl = value; }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets layout control.
         /// </summary>
         public LayoutControl LayoutControl
         {
-            get { return _layoutControl1; }
+            get
+            {
+                return _layoutControl1;
+            }
         }
 
-        private void layoutMenuStrip1_CloseClicked(object sender, EventArgs e)
+        /// <summary>
+        /// Gets or sets the map that will be used in the layout
+        /// </summary>
+        public Map MapControl
         {
-            this.Close();
+            get
+            {
+                return _layoutControl1.MapControl;
+            }
+
+            set
+            {
+                _layoutControl1.MapControl = value;
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         private void layoutControl1_FilenameChanged(object sender, EventArgs e)
         {
-            Text = !string.IsNullOrEmpty(_layoutControl1.Filename)
-                ? "DotSpatial Print Layout - " + Path.GetFileName(this._layoutControl1.Filename)
-                : "DotSpatial Print Layout";
+            Text = !string.IsNullOrEmpty(_layoutControl1.Filename) ? "DotSpatial Print Layout - " + Path.GetFileName(this._layoutControl1.Filename) : "DotSpatial Print Layout";
         }
 
         private void LayoutForm_Load(object sender, EventArgs e)
@@ -82,5 +95,12 @@ namespace DotSpatial.Controls
                 _layoutControl1.AddToLayout(mapElement);
             }
         }
+
+        private void layoutMenuStrip1_CloseClicked(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #endregion
     }
 }

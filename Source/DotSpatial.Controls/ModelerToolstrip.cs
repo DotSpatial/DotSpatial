@@ -25,7 +25,7 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class ModelerToolStrip : ToolStrip
     {
-        #region "Private Variables"
+        #region Fields
 
         private ToolStripButton _btnAddData;
         private ToolStripButton _btnDelete;
@@ -42,7 +42,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region "Constructor"
+        #region  Constructors
 
         /// <summary>
         /// Creates an instance of the toolstrip
@@ -54,18 +54,84 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region "properties"
+        #region Properties
 
         /// <summary>
         /// Gets or sets the modeler currently associated with the toolstrip
         /// </summary>
         public Modeler Modeler
         {
-            get { return _modeler; }
-            set { _modeler = value; }
+            get
+            {
+                return _modeler;
+            }
+
+            set
+            {
+                _modeler = value;
+            }
         }
 
         #endregion
+
+        #region Methods
+
+        // Fires when the user clicks the delete button
+        private void BtnDeleteClick(object sender, EventArgs e)
+        {
+            _modeler.DeleteSelectedElements();
+        }
+
+        // Fires when the user clicks the link button
+        private void BtnLinkClick(object sender, EventArgs e)
+        {
+            if (_modeler.EnableLinking)
+            {
+                _btnLink.Checked = false;
+                _modeler.EnableLinking = false;
+            }
+            else
+            {
+                _btnLink.Checked = true;
+                _modeler.EnableLinking = true;
+            }
+        }
+
+        private void BtnLoadModelClick(object sender, EventArgs e)
+        {
+            _modeler.LoadModel();
+        }
+
+        private void BtnRunClick(object sender, EventArgs e)
+        {
+            Parent.Enabled = false;
+            string error;
+            _modeler.ExecuteModel(out error);
+            Parent.Enabled = true;
+        }
+
+        private void BtnSaveModelClick(object sender, EventArgs e)
+        {
+            _modeler.SaveModel();
+        }
+
+        // Fires when the user clicks the zoom to full extent button
+        private void BtnZoomFullExtentClick(object sender, EventArgs e)
+        {
+            _modeler.ZoomFullExtent();
+        }
+
+        // Fires the zoom in control on the modeler
+        private void BtnZoomInClick(object sender, EventArgs e)
+        {
+            _modeler.ZoomIn();
+        }
+
+        // Fires the zoom out control on the modeler
+        private void BtnZoomOutClick(object sender, EventArgs e)
+        {
+            _modeler.ZoomOut();
+        }
 
         private void InitializeComponent()
         {
@@ -79,6 +145,7 @@ namespace DotSpatial.Controls
             _btnNewModel.Name = "btnNewModel";
             _btnNewModel.Size = new Size(23, 22);
             _btnNewModel.Text = MessageStrings.ModelTipNew;
+
             // _btnNewModel.Click
 
             // save model button
@@ -139,6 +206,7 @@ namespace DotSpatial.Controls
             _btnAddData.Name = "btnLink";
             _btnAddData.Size = new Size(23, 22);
             _btnAddData.Text = MessageStrings.ModelTipAddData;
+
             // _btnAddData.Click += new EventHandler(BtnLinkClick);
 
             // Zoom link tools
@@ -187,65 +255,6 @@ namespace DotSpatial.Controls
             Items.Add(_btnRun);
 
             ResumeLayout();
-        }
-
-        private void BtnRunClick(object sender, EventArgs e)
-        {
-            Parent.Enabled = false;
-            string error;
-            _modeler.ExecuteModel(out error);
-            Parent.Enabled = true;
-        }
-
-        private void BtnLoadModelClick(object sender, EventArgs e)
-        {
-            _modeler.LoadModel();
-        }
-
-        private void BtnSaveModelClick(object sender, EventArgs e)
-        {
-            _modeler.SaveModel();
-        }
-
-        #region "Envent Handlers"
-
-        // Fires when the user clicks the delete button
-        private void BtnDeleteClick(object sender, EventArgs e)
-        {
-            _modeler.DeleteSelectedElements();
-        }
-
-        // Fires when the user clicks the link button
-        private void BtnLinkClick(object sender, EventArgs e)
-        {
-            if (_modeler.EnableLinking)
-            {
-                _btnLink.Checked = false;
-                _modeler.EnableLinking = false;
-            }
-            else
-            {
-                _btnLink.Checked = true;
-                _modeler.EnableLinking = true;
-            }
-        }
-
-        // Fires when the user clicks the zoom to full extent button
-        private void BtnZoomFullExtentClick(object sender, EventArgs e)
-        {
-            _modeler.ZoomFullExtent();
-        }
-
-        // Fires the zoom in control on the modeler
-        private void BtnZoomInClick(object sender, EventArgs e)
-        {
-            _modeler.ZoomIn();
-        }
-
-        // Fires the zoom out control on the modeler
-        private void BtnZoomOutClick(object sender, EventArgs e)
-        {
-            _modeler.ZoomOut();
         }
 
         #endregion

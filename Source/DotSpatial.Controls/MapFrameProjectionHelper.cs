@@ -10,6 +10,8 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class MapFrameProjectionHelper
     {
+        #region Methods
+
         /// <summary>
         /// Reprojects all layers in the map frame so that they use the new
         /// projection Esri string
@@ -32,8 +34,7 @@ namespace DotSpatial.Controls
         /// <param name="mapFrame">The map frame that contains all layers that should be reprojected</param>
         /// <param name="newProjection">New projection</param>
         /// <param name="onCantReproject">Callback when layer can't be reprojected. Maybe null.</param>
-        public static void ReprojectMapFrame(this IMapFrame mapFrame, ProjectionInfo newProjection, 
-            Action<ILayer> onCantReproject = null)
+        public static void ReprojectMapFrame(this IMapFrame mapFrame, ProjectionInfo newProjection, Action<ILayer> onCantReproject = null)
         {
             if (mapFrame == null) throw new ArgumentNullException("mapFrame");
             if (newProjection == null) throw new ArgumentNullException("newProjection");
@@ -49,10 +50,12 @@ namespace DotSpatial.Controls
                     if (onCantReproject != null) onCantReproject(layer);
                 }
             }
+
             foreach (var grp in mapFrame.GetAllGroups())
             {
                 grp.Projection = newProjection;
             }
+
             mapFrame.Projection = newProjection;
 
             var parent = mapFrame.Parent as IMap;
@@ -62,5 +65,7 @@ namespace DotSpatial.Controls
                 parent.Projection = newProjection;
             }
         }
+
+        #endregion
     }
 }

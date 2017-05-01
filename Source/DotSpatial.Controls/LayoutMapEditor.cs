@@ -26,7 +26,27 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutMapEditor : UITypeEditor
     {
+        #region Fields
+
         IWindowsFormsEditorService _dialogProvider;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Ensures that we can widen the drop-down without having to close the drop down,
+        /// widen the control, and re-open it again.
+        /// </summary>
+        public override bool IsDropDownResizable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        #endregion
 
         #region Methods
 
@@ -61,11 +81,6 @@ namespace DotSpatial.Controls
             return lb.SelectedItem;
         }
 
-        private void LbSelectedValueChanged(object sender, EventArgs e)
-        {
-            _dialogProvider.CloseDropDown();
-        }
-
         /// <summary>
         /// Gets the UITypeEditorEditStyle, which in this case is drop down.
         /// </summary>
@@ -76,17 +91,9 @@ namespace DotSpatial.Controls
             return UITypeEditorEditStyle.DropDown;
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Ensures that we can widen the drop-down without having to close the drop down,
-        /// widen the control, and re-open it again.
-        /// </summary>
-        public override bool IsDropDownResizable
+        private void LbSelectedValueChanged(object sender, EventArgs e)
         {
-            get { return false; }
+            _dialogProvider.CloseDropDown();
         }
 
         #endregion

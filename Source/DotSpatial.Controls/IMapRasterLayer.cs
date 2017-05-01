@@ -32,33 +32,6 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        /// Call StartDrawing before using this.
-        /// </summary>
-        /// <param name="rectangles">The rectangular region in pixels to clear.</param>
-        /// <param name= "color">The color to use when clearing.  Specifying transparent
-        /// will replace content with transparent pixels.</param>
-        void Clear(List<Rectangle> rectangles, Color color);
-
-        /// <summary>
-        /// Indicates that the drawing process has been finalized and swaps the back buffer
-        /// to the front buffer.
-        /// </summary>
-        void FinishDrawing();
-
-        /// <summary>
-        /// Copies any current content to the back buffer so that drawing should occur on the
-        /// back buffer (instead of the fore-buffer).  Calling draw methods without
-        /// calling this may cause exceptions.
-        /// </summary>
-        /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer
-        /// where drawing will be taking place.</param>
-        void StartDrawing(bool preserve);
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -88,6 +61,33 @@ namespace DotSpatial.Controls
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         new bool IsInitialized { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Call StartDrawing before using this.
+        /// </summary>
+        /// <param name="rectangles">The rectangular region in pixels to clear.</param>
+        /// <param name= "color">The color to use when clearing.  Specifying transparent
+        /// will replace content with transparent pixels.</param>
+        void Clear(List<Rectangle> rectangles, Color color);
+
+        /// <summary>
+        /// Indicates that the drawing process has been finalized and swaps the back buffer
+        /// to the front buffer.
+        /// </summary>
+        void FinishDrawing();
+
+        /// <summary>
+        /// Copies any current content to the back buffer so that drawing should occur on the
+        /// back buffer (instead of the fore-buffer).  Calling draw methods without
+        /// calling this may cause exceptions.
+        /// </summary>
+        /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer
+        /// where drawing will be taking place.</param>
+        void StartDrawing(bool preserve);
 
         #endregion
     }

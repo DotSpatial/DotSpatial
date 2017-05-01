@@ -12,30 +12,58 @@ namespace DotSpatial.Controls
     /// </summary>
     internal class ProjectChangeTracker
     {
+        #region Fields
+
         // the main map where changes are tracked
         private IMap _map;
 
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProjectChangeTracker"/> class.
+        /// </summary>
+        /// <param name="mainMap">Map used for tracking.</param>
         public ProjectChangeTracker(IMap mainMap)
         {
             Map = mainMap;
         }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// This event fires if some visible properties of the map such as view extent or
+        /// map layer appearance is changed.
+        /// </summary>
+        public event EventHandler MapPropertyChanged;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the map where changes are tracked
         /// </summary>
         public IMap Map
         {
-            get { return _map; }
+            get
+            {
+                return _map;
+            }
+
             set
             {
                 if (_map != null)
                 {
                     // remove previous event handlers
-                    _map.MapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
-                    _map.LayerAdded -= map_LayerAdded;
-                    _map.MapFrame.LayerRemoved -= MapFrame_LayerRemoved;
-                    _map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
-                    _map.MapFrame.Invalidated -= MapFrame_Invalidated;
+                    _map.MapFrame.ViewExtentsChanged -= MapFrameViewExtentsChanged;
+                    _map.LayerAdded -= MapLayerAdded;
+                    _map.MapFrame.LayerRemoved -= MapFrameLayerRemoved;
+                    _map.MapFrame.LayerSelected -= MapFrameLayerSelected;
+                    _map.MapFrame.Invalidated -= MapFrameInvalidated;
                 }
 
                 // attach new event handlers
@@ -43,40 +71,44 @@ namespace DotSpatial.Controls
 
                 if (_map != null)
                 {
-                    _map.MapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
-                    _map.LayerAdded += map_LayerAdded;
-                    _map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
-                    _map.MapFrame.LayerSelected += MapFrame_LayerSelected;
-                    _map.MapFrame.Invalidated += MapFrame_Invalidated;
+                    _map.MapFrame.ViewExtentsChanged += MapFrameViewExtentsChanged;
+                    _map.LayerAdded += MapLayerAdded;
+                    _map.MapFrame.LayerRemoved += MapFrameLayerRemoved;
+                    _map.MapFrame.LayerSelected += MapFrameLayerSelected;
+                    _map.MapFrame.Invalidated += MapFrameInvalidated;
                 }
             }
         }
 
-        private void MapFrame_Invalidated(object sender, EventArgs e)
-        {
-            Debug.WriteLine("Map Frame Invalidated");
-            OnMapPropertyChanged();
-        }
+        #endregion
 
-        private void MapFrame_LayerSelected(object sender, LayerSelectedEventArgs e)
-        {
-            Debug.WriteLine("Layer Selected");
-            OnMapPropertyChanged();
-        }
+        #region Methods
 
-        private void MapFrame_LayerRemoved(object sender, LayerEventArgs e)
-        {
-            Debug.WriteLine("Layer Removed");
-            OnMapPropertyChanged();
-        }
-
-        private void map_LayerAdded(object sender, LayerEventArgs e)
+        private void MapLayerAdded(object sender, LayerEventArgs e)
         {
             Debug.WriteLine("Layer Added");
             OnMapPropertyChanged();
         }
 
-        private void MapFrame_ViewExtentsChanged(object sender, ExtentArgs e)
+        private void MapFrameInvalidated(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Map Frame Invalidated");
+            OnMapPropertyChanged();
+        }
+
+        private void MapFrameLayerRemoved(object sender, LayerEventArgs e)
+        {
+            Debug.WriteLine("Layer Removed");
+            OnMapPropertyChanged();
+        }
+
+        private void MapFrameLayerSelected(object sender, LayerSelectedEventArgs e)
+        {
+            Debug.WriteLine("Layer Selected");
+            OnMapPropertyChanged();
+        }
+
+        private void MapFrameViewExtentsChanged(object sender, ExtentArgs e)
         {
             Debug.WriteLine("View Extents Changed");
             OnMapPropertyChanged();
@@ -87,10 +119,6 @@ namespace DotSpatial.Controls
             MapPropertyChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// This event fires if some visible properties of the map such as view extent or
-        /// map layer appearance is changed.
-        /// </summary>
-        public event EventHandler MapPropertyChanged;
+        #endregion
     }
 }

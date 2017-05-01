@@ -22,10 +22,16 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionGlyph : MapFunction
     {
+        #region Fields
+
         /// <summary>
         /// This is the cursor that was the cursor before we did anything.
         /// </summary>
         private Cursor _previousCursor;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of the GlyphFunction
@@ -47,6 +53,10 @@ namespace DotSpatial.Controls
             Cursor = Cursors.Hand;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// The cursor to use when the mouse is over this glyph.
         /// </summary>
@@ -57,7 +67,10 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual Rectangle GlpyhBounds
         {
-            get { return new Rectangle(Map.Bounds.Right - 25, Map.Bounds.Bottom - 25, 25, 25); }
+            get
+            {
+                return new Rectangle(Map.Bounds.Right - 25, Map.Bounds.Bottom - 25, 25, 25);
+            }
         }
 
         /// <summary>
@@ -75,6 +88,10 @@ namespace DotSpatial.Controls
         /// then this image will be drawn also for the LitImage case.
         /// </summary>
         public Image NormalImage { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Draws the glyph on the map.
@@ -99,6 +116,7 @@ namespace DotSpatial.Controls
                     OnDrawGlyph(new PaintEventArgs(g, r));
                 }
             }
+
             e.Graphics.DrawImageUnscaled(bmp, glyph.X, glyph.Y);
             base.OnDraw(e);
         }
@@ -113,6 +131,7 @@ namespace DotSpatial.Controls
             {
                 return;
             }
+
             e.Graphics.DrawImageUnscaled(NormalImage, 0, 0);
         }
 
@@ -127,9 +146,11 @@ namespace DotSpatial.Controls
                 {
                     return;
                 }
+
                 e.Graphics.DrawImageUnscaled(NormalImage, 0, 0);
                 return;
             }
+
             e.Graphics.DrawImageUnscaled(LitImage, 0, 0);
         }
 
@@ -193,6 +214,7 @@ namespace DotSpatial.Controls
                     HasMouse = true;
                     OnGlyphMouseEnter(e);
                 }
+
                 e.Handled = true;
             }
             else
@@ -212,9 +234,12 @@ namespace DotSpatial.Controls
             if (glyph.Contains(e.Location))
             {
                 OnGlpyhClick(e);
+
                 // whether they do anything or not, the glyph is the only thing that should happen in this window.
                 e.Handled = true;
             }
         }
+
+        #endregion
     }
 }

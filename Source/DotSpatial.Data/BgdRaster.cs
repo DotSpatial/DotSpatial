@@ -19,6 +19,10 @@ using System.Text;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// BgdRaster
+    /// </summary>
+    /// <typeparam name="T">Type of the raster.</typeparam>
     public class BgdRaster<T> : Raster<T>
         where T : IComparable<T>, IEquatable<T>
     {
@@ -53,9 +57,9 @@ namespace DotSpatial.Data
             : base(numRows, numColumns)
         {
             if (File.Exists(fileName)) File.Delete(fileName);
-            base.Filename = fileName;
-            base.NumRowsInFile = numRows;
-            base.NumColumnsInFile = numColumns;
+            Filename = fileName;
+            NumRowsInFile = numRows;
+            NumColumnsInFile = numColumns;
             WriteHeader(fileName);
         }
 
@@ -66,10 +70,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the size of the header. There is one no-data value in the header.
         /// </summary>
-        public virtual int HeaderSize
-        {
-            get { return 554 + ByteSize; }
-        }
+        public virtual int HeaderSize => 554 + ByteSize;
 
         #endregion
 
@@ -98,7 +99,7 @@ namespace DotSpatial.Data
                 {
                     foreach (long index in indices)
                     {
-                        var offset = HeaderSize + index * ByteSize;
+                        var offset = HeaderSize + (index * ByteSize);
 
                         // Position the binary reader at the top of the "window"
                         fs.Seek(offset, SeekOrigin.Begin);
@@ -426,7 +427,7 @@ namespace DotSpatial.Data
                 FileInfo fi = new FileInfo(Filename);
 
                 // if the following test fails, then the target raster doesn't fit the bill for pasting into, so clear it and write a new one.
-                if (fi.Length == HeaderSize + ByteSize * NumColumnsInFile * NumRowsInFile)
+                if (fi.Length == HeaderSize + (ByteSize * (NumColumnsInFile * NumRowsInFile)))
                 {
                     WriteHeader(fileName);
                     WriteRaster(Data);
@@ -435,7 +436,7 @@ namespace DotSpatial.Data
 
                 // If we got here, either the file didn't exist or didn't match the specifications correctly, so write a new one.
                 Debug.WriteLine("The size of the file was " + fi.Length + " which didn't match the expected " +
-                                HeaderSize + ByteSize * NumColumnsInFile * NumRowsInFile);
+                                HeaderSize + (ByteSize * (NumColumnsInFile * NumRowsInFile)));
             }
 
             if (File.Exists(Filename)) File.Delete(Filename);

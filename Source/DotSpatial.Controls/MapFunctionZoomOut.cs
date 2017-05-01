@@ -21,7 +21,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionZoomOut : MapFunction
     {
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of SelectTool
@@ -33,6 +33,8 @@ namespace DotSpatial.Controls
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Handles the Mouse Up situation
@@ -60,6 +62,7 @@ namespace DotSpatial.Controls
                 else if (e.Button == MouseButtons.Right)
                 {
                     r.Inflate(-r.Width / 4, -r.Height / 4);
+
                     // The mouse cursor should anchor the geographic location during zoom.
                     r.X += (e.X / 2) - w / 4;
                     r.Y += (e.Y / 2) - h / 4;
@@ -70,5 +73,7 @@ namespace DotSpatial.Controls
                 base.OnMouseUp(e);
             }
         }
+
+        #endregion
     }
 }

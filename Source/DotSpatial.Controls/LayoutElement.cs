@@ -31,22 +31,7 @@ namespace DotSpatial.Controls
     [Serializable]
     public abstract class LayoutElement
     {
-        #region Events
-
-        /// <summary>
-        /// Fires when the layout element is invalidated
-        /// </summary>
-        public event EventHandler Invalidated;
-        /// <summary>
-        /// Fires when the preview thumbnail for this element has been updated
-        /// </summary>
-        public event EventHandler ThumbnailChanged;
-        /// <summary>
-        /// Fires when the size of this element has been adjusted by the user
-        /// </summary>
-        public event EventHandler SizeChanged;
-
-        #endregion
+        #region Fields
 
         private IPolygonSymbolizer _background = new PolygonSymbolizer(Color.Transparent, Color.Transparent);
         private PointF _location;
@@ -56,6 +41,10 @@ namespace DotSpatial.Controls
         private SizeF _size;
         private Bitmap _thumbNail;
 
+        #endregion
+
+        #region  Constructors
+
         /// <summary>
         /// Creates an instance of the layout element
         /// </summary>
@@ -64,16 +53,79 @@ namespace DotSpatial.Controls
             _background.ItemChanged += _background_ItemChanged;
         }
 
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Fires when the layout element is invalidated
+        /// </summary>
+        public event EventHandler Invalidated;
+
+        /// <summary>
+        /// Fires when the size of this element has been adjusted by the user
+        /// </summary>
+        public event EventHandler SizeChanged;
+
+        /// <summary>
+        /// Fires when the preview thumbnail for this element has been updated
+        /// </summary>
+        public event EventHandler ThumbnailChanged;
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the line symbolizer that draws the outline
         /// </summary>
         [TypeConverter(typeof(GeneralTypeConverter)), Browsable(true), Category("Symbol"), Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
         public IPolygonSymbolizer Background
         {
-            get { return _background; }
+            get
+            {
+                return _background;
+            }
+
             set
             {
                 _background = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants
+        /// </summary>
+        [Browsable(true), Category("Layout")]
+        public Point Location
+        {
+            get
+            {
+                return new Point(Convert.ToInt32(_location.X), Convert.ToInt32(_location.Y));
+            }
+
+            set
+            {
+                _location = new PointF(value.X, value.Y);
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants
+        /// </summary>
+        [Browsable(false)]
+        public PointF LocationF
+        {
+            get
+            {
+                return _location;
+            }
+
+            set
+            {
+                _location = value;
+                OnInvalidate();
             }
         }
 
@@ -83,81 +135,15 @@ namespace DotSpatial.Controls
         [Browsable(true), Category("Layout")]
         public string Name
         {
-            get { return _name; }
-            set { _name = value; OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets the thumbnail that appears in the LayoutListView
-        /// </summary>
-        [Browsable(false)]
-        public Bitmap ThumbNail
-        {
-            get { return _thumbNail; }
-            private set
+            get
             {
-                if (_thumbNail != null) _thumbNail.Dispose();
-                _thumbNail = value;
-                OnThumbnailChanged();
+                return _name;
             }
-        }
 
-        /// <summary>
-        /// Disables updating redraw when resizing.
-        /// </summary>
-        [Browsable(false)]
-        public bool Resizing
-        {
-            get { return _resizing; }
-            set { _resizing = value; }
-        }
-
-        /// <summary>
-        /// Indicates if this element can handle redraw events on resize
-        /// </summary>
-        [Browsable(false)]
-        public ResizeStyle ResizeStyle
-        {
-            get { return _resizeStyle; }
-            set { _resizeStyle = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants
-        /// </summary>
-        [Browsable(false)]
-        public PointF LocationF
-        {
-            get { return _location; }
-            set { _location = value; OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants
-        /// </summary>
-        [Browsable(true), Category("Layout")]
-        public Point Location
-        {
-            get { return new Point(Convert.ToInt32(_location.X), Convert.ToInt32(_location.Y)); }
-            set { _location = new PointF(value.X, value.Y); OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the size of the element in 1/100 of an inch paper coordinants
-        /// </summary>
-        [Browsable(true), Category("Layout")]
-        public SizeF Size
-        {
-            get { return new SizeF(_size.Width, _size.Height); }
             set
             {
-                if (value.Width < 10)
-                    value.Width = 10;
-                if (value.Height < 10)
-                    value.Height = 10;
-                _size = value;
-
-                RefreshElement();
+                _name = value;
+                OnInvalidate();
             }
         }
 
@@ -167,7 +153,11 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public RectangleF Rectangle
         {
-            get { return new RectangleF(_location, _size); }
+            get
+            {
+                return new RectangleF(_location, _size);
+            }
+
             set
             {
                 if (value.Width < 10)
@@ -176,6 +166,7 @@ namespace DotSpatial.Controls
                     if (value.X != _location.X)
                         value.X = _location.X + _size.Width - 10;
                 }
+
                 if (value.Height < 10)
                 {
                     value.Height = 10;
@@ -191,35 +182,84 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires when the background is modified
+        /// Indicates if this element can handle redraw events on resize
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _background_ItemChanged(object sender, EventArgs e)
+        [Browsable(false)]
+        public ResizeStyle ResizeStyle
         {
-            OnInvalidate();
-            UpdateThumbnail();
+            get
+            {
+                return _resizeStyle;
+            }
+
+            set
+            {
+                _resizeStyle = value;
+            }
         }
 
         /// <summary>
-        /// Returns true if the point in paper coordinants intersects with the rectangle of the element
+        /// Disables updating redraw when resizing.
         /// </summary>
-        /// <param name="paperPoint"></param>
-        /// <returns></returns>
-        public bool IntersectsWith(PointF paperPoint)
+        [Browsable(false)]
+        public bool Resizing
         {
-            return IntersectsWith(new RectangleF(paperPoint.X, paperPoint.Y, 0F, 0F));
+            get
+            {
+                return _resizing;
+            }
+
+            set
+            {
+                _resizing = value;
+            }
         }
 
         /// <summary>
-        /// Returns true if the rectangle in paper coordinants intersects with the rectangle of the the element
+        /// Gets or sets the size of the element in 1/100 of an inch paper coordinants
         /// </summary>
-        /// <param name="paperRectangle"></param>
-        /// <returns></returns>
-        public bool IntersectsWith(RectangleF paperRectangle)
+        [Browsable(true), Category("Layout")]
+        public SizeF Size
         {
-            return new RectangleF(LocationF, Size).IntersectsWith(paperRectangle);
+            get
+            {
+                return new SizeF(_size.Width, _size.Height);
+            }
+
+            set
+            {
+                if (value.Width < 10)
+                    value.Width = 10;
+                if (value.Height < 10)
+                    value.Height = 10;
+                _size = value;
+
+                RefreshElement();
+            }
         }
+
+        /// <summary>
+        /// Gets the thumbnail that appears in the LayoutListView
+        /// </summary>
+        [Browsable(false)]
+        public Bitmap ThumbNail
+        {
+            get
+            {
+                return _thumbNail;
+            }
+
+            private set
+            {
+                if (_thumbNail != null) _thumbNail.Dispose();
+                _thumbNail = value;
+                OnThumbnailChanged();
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -265,9 +305,9 @@ namespace DotSpatial.Controls
                     // normal ClipBounds are big enough for the whole outline to be painted
                     // when printing ClipBounds get set to Rectangle -> parts of the Rectangle get printed outside of the Clip
                     RectangleF clip = this.Rectangle;
-                    float w = (float)(this.Background.GetOutlineWidth()); 
+                    float w = (float)this.Background.GetOutlineWidth();
                     clip.Inflate(w, w);
-                    g.Clip = new Region(clip); 
+                    g.Clip = new Region(clip);
                 }
 
                 // Makes sure the rectangle is big enough to draw
@@ -288,6 +328,26 @@ namespace DotSpatial.Controls
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns true if the point in paper coordinants intersects with the rectangle of the element
+        /// </summary>
+        /// <param name="paperPoint"></param>
+        /// <returns></returns>
+        public bool IntersectsWith(PointF paperPoint)
+        {
+            return IntersectsWith(new RectangleF(paperPoint.X, paperPoint.Y, 0F, 0F));
+        }
+
+        /// <summary>
+        /// Returns true if the rectangle in paper coordinants intersects with the rectangle of the the element
+        /// </summary>
+        /// <param name="paperRectangle"></param>
+        /// <returns></returns>
+        public bool IntersectsWith(RectangleF paperRectangle)
+        {
+            return new RectangleF(LocationF, Size).IntersectsWith(paperRectangle);
         }
 
         /// <summary>
@@ -355,6 +415,7 @@ namespace DotSpatial.Controls
                 graph.ScaleTransform(32F / Size.Height, 32F / Size.Height);
                 graph.TranslateTransform(-LocationF.X, -LocationF.Y);
             }
+
             graph.Clip = new Region(Rectangle);
             DrawBackground(graph, false);
             Draw(graph, false);
@@ -362,5 +423,18 @@ namespace DotSpatial.Controls
             graph.Dispose();
             ThumbNail = tempThumbNail;
         }
+
+        /// <summary>
+        /// Fires when the background is modified
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _background_ItemChanged(object sender, EventArgs e)
+        {
+            OnInvalidate();
+            UpdateThumbnail();
+        }
+
+        #endregion
     }
 }

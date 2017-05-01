@@ -24,45 +24,15 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutNorthArrow : LayoutElement
     {
+        #region Fields
+
         private Color _color;
         private NorthArrowStyle _northArrowStyle;
         private float _rotation;
 
-        #region ------------------ Public Properties
-
-        /// <summary>
-        /// Gets or sets the color of the text
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public Color Color
-        {
-            get { return _color; }
-            set { _color = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the style of the north arrow to draw
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public NorthArrowStyle NorthArrowStyle
-        {
-            get { return _northArrowStyle; }
-            set { _northArrowStyle = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the rotations of the north arrow
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public float Rotation
-        {
-            get { return _rotation; }
-            set { _rotation = (value % 360F); base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
         #endregion
 
-        #region ------------------- public methods
+        #region  Constructors
 
         /// <summary>
         /// Constructor
@@ -75,18 +45,70 @@ namespace DotSpatial.Controls
             Name = "North Arrow";
         }
 
-        private static void DrawOutline(GraphicsPath gp)
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the color of the text
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public Color Color
         {
-            gp.AddLine(40, 40, 5, 50);
-            gp.AddLine(5, 50, 40, 60);
-            gp.AddLine(40, 60, 50, 95);
-            gp.AddLine(50, 95, 60, 60);
-            gp.AddLine(60, 60, 95, 50);
-            gp.AddLine(95, 50, 60, 40);
-            gp.AddBezier(60F, 40F, 65F, 45F, 65F, 55F, 60F, 60F);
-            gp.AddBezier(60F, 60F, 55F, 65F, 45F, 65F, 40F, 60F);
-            gp.AddBezier(40F, 60F, 35F, 55F, 35F, 45F, 40F, 40F);
+            get
+            {
+                return _color;
+            }
+
+            set
+            {
+                _color = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
         }
+
+        /// <summary>
+        /// Gets or sets the style of the north arrow to draw
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public NorthArrowStyle NorthArrowStyle
+        {
+            get
+            {
+                return _northArrowStyle;
+            }
+
+            set
+            {
+                _northArrowStyle = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the rotations of the north arrow
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        public float Rotation
+        {
+            get
+            {
+                return _rotation;
+            }
+
+            set
+            {
+                _rotation = value % 360F;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -105,10 +127,11 @@ namespace DotSpatial.Controls
             mypen.LineJoin = LineJoin.Round;
             mypen.StartCap = LineCap.Round;
             mypen.EndCap = LineCap.Round;
+
             // All north arrows are defined as a graphics path in 100x100 size which is then scaled to fit the rectangle of the element
             switch (_northArrowStyle)
             {
-                case (NorthArrowStyle.BlackArrow):
+                case NorthArrowStyle.BlackArrow:
 
                     gp.AddLine(50, 5, 5, 50);
                     gp.AddLine(5, 50, 30, 50);
@@ -135,7 +158,7 @@ namespace DotSpatial.Controls
                     g.DrawPath(mypen, gp);
                     break;
 
-                case (NorthArrowStyle.Default):
+                case NorthArrowStyle.Default:
 
                     // draw the outline
                     DrawOutline(gp);
@@ -162,7 +185,7 @@ namespace DotSpatial.Controls
 
                     break;
 
-                case (NorthArrowStyle.CenterStar):
+                case NorthArrowStyle.CenterStar:
 
                     // Outline
                     DrawOutline(gp);
@@ -196,7 +219,7 @@ namespace DotSpatial.Controls
 
                     break;
 
-                case (NorthArrowStyle.TriangleN):
+                case NorthArrowStyle.TriangleN:
                     pts = new Point[3];
                     pts[0] = new Point(50, 5);
                     pts[1] = new Point(5, 95);
@@ -213,7 +236,7 @@ namespace DotSpatial.Controls
                     g.DrawPath(mypen, gp);
                     break;
 
-                case (NorthArrowStyle.TriangleHat):
+                case NorthArrowStyle.TriangleHat:
                     pts = new Point[3];
                     pts[0] = new Point(50, 5);
                     pts[1] = new Point(5, 60);
@@ -230,7 +253,7 @@ namespace DotSpatial.Controls
                     g.DrawPath(mypen, gp);
                     break;
 
-                case (NorthArrowStyle.ArrowN):
+                case NorthArrowStyle.ArrowN:
                     pts = new Point[3];
                     pts[0] = new Point(5, 25);
                     pts[1] = new Point(50, 5);
@@ -249,7 +272,21 @@ namespace DotSpatial.Controls
                     g.DrawPath(mypen, gp);
                     break;
             }
+
             gp.Dispose();
+        }
+
+        private static void DrawOutline(GraphicsPath gp)
+        {
+            gp.AddLine(40, 40, 5, 50);
+            gp.AddLine(5, 50, 40, 60);
+            gp.AddLine(40, 60, 50, 95);
+            gp.AddLine(50, 95, 60, 60);
+            gp.AddLine(60, 60, 95, 50);
+            gp.AddLine(95, 50, 60, 40);
+            gp.AddBezier(60F, 40F, 65F, 45F, 65F, 55F, 60F, 60F);
+            gp.AddBezier(60F, 60F, 55F, 65F, 45F, 65F, 40F, 60F);
+            gp.AddBezier(40F, 60F, 35F, 55F, 35F, 45F, 40F, 40F);
         }
 
         #endregion
@@ -264,22 +301,27 @@ namespace DotSpatial.Controls
         /// A four point triangle with a circle in the middle and the letter N
         /// </summary>
         Default,
+
         /// <summary>
         /// A black arrow pointing north
         /// </summary>
         BlackArrow,
+
         /// <summary>
         /// Compas Rose style north arrow
         /// </summary>
         CenterStar,
+
         /// <summary>
         /// A triangle around the letter N
         /// </summary>
         TriangleN,
+
         /// <summary>
         /// A triangle with a hat-like adornment
         /// </summary>
         TriangleHat,
+
         /// <summary>
         /// An arrow with the letter N
         /// </summary>

@@ -1,4 +1,4 @@
-﻿﻿// ********************************************************************************************************
+﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Controls.dll
 // Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
 // ********************************************************************************************************
@@ -21,6 +21,8 @@ namespace DotSpatial.Controls
     /// </summary>
     public class ViewChangedEventArgs : EventArgs
     {
+        #region  Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewChangedEventArgs"/> class.
         /// </summary>
@@ -32,14 +34,20 @@ namespace DotSpatial.Controls
             NewView = newView;
         }
 
-        /// <summary>
-        /// Gets the view before the change.
-        /// </summary>
-        public Rectangle OldView { get;  }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets the view after the change.
         /// </summary>
-        public Rectangle NewView { get;  }
+        public Rectangle NewView { get; }
+
+        /// <summary>
+        /// Gets the view before the change.
+        /// </summary>
+        public Rectangle OldView { get; }
+
+        #endregion
     }
 }

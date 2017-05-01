@@ -8,6 +8,18 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class DatelineCrossingExtentExtension
     {
+        #region Methods
+
+        /// <summary>
+        /// Indicates whether the extent crosses the date line.
+        /// </summary>
+        /// <param name="extent">Extent that is checked.</param>
+        /// <returns>True, if the extent crosses the date line.</returns>
+        public static bool IsCrossDateline(this Extent extent)
+        {
+            return extent.MaxX > 180.0;
+        }
+
         /// <summary>Modifies the extent such that its left edge is normalised into the range [-180..180] degrees.
         /// Its width remains constant unless it was originally greater than 360 degrees,
         /// in which case it is scaled to 360 degrees width and retains its aspect ratio.</summary>
@@ -47,14 +59,6 @@ namespace DotSpatial.Controls
             return newExtent;
         }
 
-        /// <summary>
-        /// Indicates whether the extent crosses the date line.
-        /// </summary>
-        /// <param name="extent">Extent that is checked.</param>
-        /// <returns>True, if the extent crosses the date line.</returns>
-        public static bool IsCrossDateline(this Extent extent)
-        {
-            return extent.MaxX > 180.0;
-        }
+        #endregion
     }
 }

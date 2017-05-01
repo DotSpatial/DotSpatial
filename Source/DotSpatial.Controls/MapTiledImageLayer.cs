@@ -25,11 +25,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapTiledImageLayer : TiledImageLayer
     {
-        #region Private Variables
-
-        #endregion
-
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of MapTiledImageLayer
@@ -38,13 +34,6 @@ namespace DotSpatial.Controls
             : base(baseImage)
         {
             Configure(baseImage);
-        }
-
-        private void Configure(ITiledImage baseImage)
-        {
-            base.IsVisible = true;
-            base.LegendText = Path.GetFileName(baseImage.Filename);
-            OnFinishedLoading();
         }
 
         #endregion
@@ -64,6 +53,13 @@ namespace DotSpatial.Controls
             DrawWindows(args, regions, clipRects);
         }
 
+        private void Configure(ITiledImage baseImage)
+        {
+            IsVisible = true;
+            LegendText = Path.GetFileName(baseImage.Filename);
+            OnFinishedLoading();
+        }
+
         /// <summary>
         /// This draws to the back buffer.  If the Backbuffer doesn't exist, this will create one.
         /// This will not flip the back buffer to the front.
@@ -81,12 +77,9 @@ namespace DotSpatial.Controls
                 Bitmap bmp = DataSet.GetBitmap(regions[i], clipRectangles[i].Size);
                 if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
             }
+
             if (args.Device == null) g.Dispose();
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

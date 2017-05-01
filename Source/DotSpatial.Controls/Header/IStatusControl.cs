@@ -15,6 +15,8 @@ namespace DotSpatial.Controls.Header
     [InheritedExport]
     public interface IStatusControl : IProgressHandler
     {
+        #region Methods
+
         /// <summary>
         /// Adds the specified panel.
         /// </summary>
@@ -26,5 +28,7 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         /// <param name="panel">The panel.</param>
         void Remove(StatusPanel panel);
+
+        #endregion
     }
 }

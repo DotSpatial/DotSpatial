@@ -19,11 +19,56 @@ namespace DotSpatial.Controls
 {
     public class ShapefileLayerProvider : ILayerProvider
     {
-        #region Private Variables
+        #region Properties
 
-        #endregion
+        /// <summary>
+        /// This is a basic description that will fall next to your plugin in the Add Other Data dialog.
+        /// This will only be shown if your plugin does not supply a DialogReadFilter.
+        /// </summary>
+        public virtual string Description
+        {
+            get
+            {
+                return "This data provider gives a simple version of .shp reading for now.";
+            }
+        }
 
-        #region Constructors
+        /// <summary>
+        /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
+        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
+        /// on this object.
+        /// </summary>
+        public virtual string DialogReadFilter
+        {
+            get
+            {
+                return "Shapefiles (*.shp)|*.shp";
+            }
+        }
+
+        /// <summary>
+        /// Gets a dialog filter that lists each of the file type descriptions and extensions for a Save File Dialog.
+        /// Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided on this object.
+        /// </summary>
+        public virtual string DialogWriteFilter
+        {
+            get
+            {
+                return "Shapefiles (*.shp)|*.shp";
+            }
+        }
+
+        /// <summary>
+        /// Gets a prefereably short name that identifies this data provider.  Example might be GDAL.
+        /// This will be prepended to each of the DialogReadFilter members from this plugin.
+        /// </summary>
+        public virtual string Name
+        {
+            get
+            {
+                return "DotSpatial";
+            }
+        }
 
         #endregion
 
@@ -50,14 +95,17 @@ namespace DotSpatial.Controls
             {
                 return new MapLineLayer(fs, container);
             }
+
             if (fs.FeatureType == FeatureType.Polygon)
             {
                 return new MapPolygonLayer(fs, container);
             }
+
             if (fs.FeatureType == FeatureType.Point || fs.FeatureType == FeatureType.MultiPoint)
             {
                 return new MapPointLayer(fs, container);
             }
+
             return null;
         }
 
@@ -80,57 +128,19 @@ namespace DotSpatial.Controls
                 {
                     return new MapLineLayer(fs, container);
                 }
+
                 if (fs.FeatureType == FeatureType.Polygon)
                 {
                     return new MapPolygonLayer(fs, container);
                 }
+
                 if (fs.FeatureType == FeatureType.Point || fs.FeatureType == FeatureType.MultiPoint)
                 {
                     return new MapPointLayer(fs, container);
                 }
             }
+
             return null;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
-        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
-        /// on this object.
-        /// </summary>
-        public virtual string DialogReadFilter
-        {
-            get { return "Shapefiles (*.shp)|*.shp"; }
-        }
-
-        /// <summary>
-        /// Gets a dialog filter that lists each of the file type descriptions and extensions for a Save File Dialog.
-        /// Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided on this object.
-        /// </summary>
-        public virtual string DialogWriteFilter
-        {
-            get { return "Shapefiles (*.shp)|*.shp"; }
-        }
-
-        /// <summary>
-        /// Gets a prefereably short name that identifies this data provider.  Example might be GDAL.
-        /// This will be prepended to each of the DialogReadFilter members from this plugin.
-        /// </summary>
-        public virtual string Name
-        {
-            get { return "DotSpatial"; }
-        }
-
-        /// <summary>
-        /// This is a basic description that will fall next to your plugin in the Add Other Data dialog.
-        /// This will only be shown if your plugin does not supply a DialogReadFilter.
-        /// </summary>
-        public virtual string Description
-        {
-            get { return "This data provider gives a simple version of .shp reading for now."; }
         }
 
         #endregion

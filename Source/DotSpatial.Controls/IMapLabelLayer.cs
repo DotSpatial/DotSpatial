@@ -17,14 +17,22 @@ namespace DotSpatial.Controls
 {
     public interface IMapLabelLayer : ILabelLayer, IMapLayer
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the feature layer that this label layer is attached to.
         /// </summary>
         new IMapFeatureLayer FeatureLayer { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Resolves ambiguity
         /// </summary>
         new void Invalidate();
+
+        #endregion
     }
 }

@@ -22,8 +22,12 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class DuplicationPreventer
     {
+        #region Fields
+
         const int X = 0;
         const int Y = 1;
+
+        #endregion
 
         #region Methods
 
@@ -38,7 +42,11 @@ namespace DotSpatial.Controls
             foreach (var point in points)
             {
                 if (float.IsNaN(point.X) || float.IsNaN(point.Y)) continue;
-                var pt = new Point {X = Convert.ToInt32(point.X), Y = Convert.ToInt32(point.Y)};
+                var pt = new Point
+                         {
+                             X = Convert.ToInt32(point.X),
+                             Y = Convert.ToInt32(point.Y)
+                         };
                 if (isFirst || pt.X != previous.X || pt.Y != previous.Y)
                 {
                     isFirst = false;
@@ -58,7 +66,11 @@ namespace DotSpatial.Controls
             foreach (var point in points)
             {
                 if (double.IsNaN(point[X]) || double.IsNaN(point[Y])) continue;
-                var pt = new Point {X = Convert.ToInt32(point[X]), Y = Convert.ToInt32(point[Y])};
+                var pt = new Point
+                         {
+                             X = Convert.ToInt32(point[X]),
+                             Y = Convert.ToInt32(point[Y])
+                         };
                 if (isFirst || pt.X != previous.X || pt.Y != previous.Y)
                 {
                     isFirst = false;

@@ -7,7 +7,13 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class MenuContainerItem : ActionItem
     {
+        #region Fields
+
         private Image largeImage;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuContainerItem"/> class.
@@ -33,13 +39,21 @@ namespace DotSpatial.Controls.Header
             RootKey = rootKey;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the large image.
         /// </summary>
         /// <value>The large image.</value>
         public Image LargeImage
         {
-            get { return largeImage; }
+            get
+            {
+                return largeImage;
+            }
+
             set
             {
                 if (largeImage == value) return;
@@ -47,5 +61,7 @@ namespace DotSpatial.Controls.Header
                 OnPropertyChanged("LargeImage");
             }
         }
+
+        #endregion
     }
 }

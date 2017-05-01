@@ -25,10 +25,11 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionLabelSelect : MapFunction
     {
-        #region Private Variables
+        #region Fields
+
+        private readonly Pen _selectionPen;
 
         private readonly Timer _selectTimer;
-        private readonly Pen _selectionPen;
         private Point _currentPoint;
         private bool _doSelect;
         private Coordinate _geoStartPoint;
@@ -38,7 +39,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the MapFunctionLabelSelect class.
@@ -46,28 +47,37 @@ namespace DotSpatial.Controls
         public MapFunctionLabelSelect(IMap inMap)
             : base(inMap)
         {
-            _selectionPen = new Pen(Color.Black) { DashStyle = DashStyle.Dash };
+            _selectionPen = new Pen(Color.Black)
+                            {
+                                DashStyle = DashStyle.Dash
+                            };
             _doSelect = false;
-            _selectTimer = new Timer { Interval = 10 };
+            _selectTimer = new Timer
+                           {
+                               Interval = 10
+                           };
             _selectTimer.Tick += SelectTimerTick;
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton | YieldStyles.Keyboard;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Selection envelope
         /// </summary>
         public Envelope SelectionEnvelope
         {
-            get { return _selectionEnvelope; }
-        }
-
-        private void SelectTimerTick(object sender, EventArgs e)
-        {
-            _selectTimer.Stop();
-            Map.ResetBuffer();
+            get
+            {
+                return _selectionEnvelope;
+            }
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -83,6 +93,7 @@ namespace DotSpatial.Controls
                 e.Graphics.DrawRectangle(Pens.White, r);
                 e.Graphics.DrawRectangle(_selectionPen, r);
             }
+
             if (_doSelect)
             {
                 foreach (IMapLayer lyr in Map.MapFrame.Layers)
@@ -92,16 +103,20 @@ namespace DotSpatial.Controls
                     {
                         continue;
                     }
+
                     IMapLabelLayer gll = fl.LabelLayer;
+
                     // gll.Select(_selectionEnvelope, e); // using this form of selection can test the actual pixel rectangles
                     if (gll != null)
                     {
                         gll.Invalidate();
                     }
                 }
+
                 _doSelect = false;
                 _selectTimer.Start();
             }
+
             base.OnDraw(e);
         }
 
@@ -117,6 +132,7 @@ namespace DotSpatial.Controls
                 _geoStartPoint = e.GeographicLocation;
                 _isDragging = true;
             }
+
             base.OnMouseDown(e);
         }
 
@@ -142,8 +158,7 @@ namespace DotSpatial.Controls
             Map.Invalidate();
             if (_geoStartPoint != null)
             {
-                _selectionEnvelope = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y,
-                                                  e.GeographicLocation.Y);
+                _selectionEnvelope = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
             }
 
             // If they are not pressing shift, then first clear the selection before adding new members to it.
@@ -156,6 +171,7 @@ namespace DotSpatial.Controls
                     {
                         continue;
                     }
+
                     IMapLabelLayer gll = fl.LabelLayer;
                     if (gll != null)
                     {
@@ -170,14 +186,23 @@ namespace DotSpatial.Controls
             base.OnMouseUp(e);
         }
 
-        ///// <summary>
-        ///// Disposes the selection pen
-        ///// </summary>
-        ///// <param name="disposing"></param>
-        // protected override void Dispose(bool disposing)
-        //{
-        //    _selectionPen.Dispose();
-        //    base.Dispose(disposing);
+        private void SelectTimerTick(object sender, EventArgs e)
+        {
+            _selectTimer.Stop();
+            Map.ResetBuffer();
+        }
+
+        #endregion
+
         //}
+        //    base.Dispose(disposing);
+        //    _selectionPen.Dispose();
+        //{
+        // protected override void Dispose(bool disposing)
+        ///// <param name="disposing"></param>
+        ///// </summary>
+        ///// Disposes the selection pen
+
+        ///// <summary>
     }
 }

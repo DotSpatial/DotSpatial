@@ -7,9 +7,54 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class TextEntryActionItem : ActionItem
     {
+        #region Fields
+
+        private Color fontColor;
         private string text;
         private int width;
-        private Color fontColor;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating the color of the text in the dropdownbox
+        /// </summary>
+        public Color FontColor
+        {
+            get
+            {
+                return fontColor;
+            }
+
+            set
+            {
+                if (fontColor == value) return;
+                fontColor = value;
+                OnPropertyChanged("FontColor");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the text.
+        /// </summary>
+        /// <value>
+        /// The text.
+        /// </value>
+        public string Text
+        {
+            get
+            {
+                return text;
+            }
+
+            set
+            {
+                if (text == value) return;
+                text = value;
+                OnPropertyChanged("Text");
+            }
+        }
 
         /// <summary>
         /// Gets or sets the width of the item displayed in the header control.
@@ -23,6 +68,7 @@ namespace DotSpatial.Controls.Header
             {
                 return width;
             }
+
             set
             {
                 if (width == value) return;
@@ -31,35 +77,6 @@ namespace DotSpatial.Controls.Header
             }
         }
 
-        /// <summary>
-        /// Gets or sets the text.
-        /// </summary>
-        /// <value>
-        /// The text.
-        /// </value>
-        public string Text
-        {
-            get { return text; }
-            set
-            {
-                if (text == value) return;
-                text = value;
-                OnPropertyChanged("Text");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating the color of the text in the dropdownbox
-        /// </summary>
-        public Color FontColor
-        {
-            get { return fontColor; }
-            set
-            {
-                if (fontColor == value) return;
-                fontColor = value;
-                OnPropertyChanged("FontColor");
-            }
-        }
+        #endregion
     }
 }

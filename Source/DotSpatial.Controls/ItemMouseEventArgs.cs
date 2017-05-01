@@ -17,13 +17,13 @@ namespace DotSpatial.Controls
 {
     public class ItemMouseEventArgs : MouseEventArgs
     {
-        #region Private Variables
+        #region Fields
 
         LegendBox _box;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Creates a new instance of an ItemMouseEventArgs
@@ -34,8 +34,7 @@ namespace DotSpatial.Controls
         /// <param name="inY">The Y coordinate</param>
         /// <param name="inDelta">The delta of the mouse wheel</param>
         /// <param name="inItemBox">A LegendBox for comparision</param>
-        public ItemMouseEventArgs(MouseButtons inButton, int inClicks, int inX, int inY, int inDelta,
-            LegendBox inItemBox)
+        public ItemMouseEventArgs(MouseButtons inButton, int inClicks, int inX, int inY, int inDelta, LegendBox inItemBox)
             : base(inButton, inClicks, inX, inY, inDelta)
         {
             _box = inItemBox;
@@ -61,8 +60,15 @@ namespace DotSpatial.Controls
         /// </summary>
         public LegendBox ItemBox
         {
-            get { return _box; }
-            protected set { _box = value; }
+            get
+            {
+                return _box;
+            }
+
+            protected set
+            {
+                _box = value;
+            }
         }
 
         #endregion

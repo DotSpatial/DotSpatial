@@ -11,11 +11,17 @@ namespace DotSpatial.Controls
     /// </summary>
     public partial class ZoomToCoordinatesDialog : Form
     {
-        private const string RegExpression = "(-?\\d{1,3})[\\.\\,°]{0,1}\\s*(\\d{0,2})[\\.\\,\']{0,1}\\s*(\\d*)[\\.\\,°]{0,1}\\s*([NSnsEeWw]?)";
+        #region Fields
 
-        private readonly IMap _map;
+        private const string RegExpression = "(-?\\d{1,3})[\\.\\,°]{0,1}\\s*(\\d{0,2})[\\.\\,\']{0,1}\\s*(\\d*)[\\.\\,°]{0,1}\\s*([NSnsEeWw]?)";
         private readonly double[] _lat;
         private readonly double[] _lon;
+
+        private readonly IMap _map;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomToCoordinatesDialog"/> class with the given map.
@@ -31,6 +37,32 @@ namespace DotSpatial.Controls
             latStatus.Text = string.Empty;
             _lat = new double[3];
             _lon = new double[3];
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Turnes the given Degrees-Minutes-Seconds from ParseCoordinates into doubles.
+        /// </summary>
+        /// <param name="values">A list of values that containes the degrees, minutes and seconds that are converted to doubles.</param>
+        /// <returns>The double coordinate that was calculated from the given drees, minutes, seconds.</returns>
+        private static double LoadCoordinates(IList<double> values)
+        {
+            // Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
+            var coor = values[2] / 100;
+            coor += values[1];
+            coor = coor / 100;
+            coor += Math.Abs(values[0]);
+
+            // Change signs to get to the right quadrant.
+            if (values[0] < 0)
+            {
+                coor *= -1;
+            }
+
+            return coor;
         }
 
         /// <summary>ParseCoordinates will understand lat-lon coordinates in a variety of formats and separate them into Degrees, Minutes, and Seconds.
@@ -63,33 +95,12 @@ namespace DotSpatial.Controls
                 return false;
             }
 
-            if ((groups[4].ToString().Equals("S", StringComparison.OrdinalIgnoreCase)
-                || groups[4].ToString().Equals("W", StringComparison.OrdinalIgnoreCase))
-                && values[0] > 0)
+            if ((groups[4].ToString().Equals("S", StringComparison.OrdinalIgnoreCase) || groups[4].ToString().Equals("W", StringComparison.OrdinalIgnoreCase)) && values[0] > 0)
             {
                 values[0] *= -1;
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Turnes the given Degrees-Minutes-Seconds from ParseCoordinates into doubles.
-        /// </summary>
-        /// <param name="values">A list of values that containes the degrees, minutes and seconds that are converted to doubles.</param>
-        /// <returns>The double coordinate that was calculated from the given drees, minutes, seconds.</returns>
-        private static double LoadCoordinates(IList<double> values)
-        {
-            // Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
-            var coor = values[2] / 100;
-            coor += values[1];
-            coor = coor / 100;
-            coor += Math.Abs(values[0]);
-
-            // Change signs to get to the right quadrant.
-            if (values[0] < 0) { coor *= -1; }
-
-            return coor;
         }
 
         private void AcceptButtonClick(object sender, EventArgs e)
@@ -113,6 +124,17 @@ namespace DotSpatial.Controls
 
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private bool CheckCoordinates()
+        {
+            var latCheck = ParseCoordinates(_lat, d1.Text);
+            var lonCheck = ParseCoordinates(_lon, d2.Text);
+
+            latStatus.Text = !latCheck ? "Invalid Latitude (Valid example: \"41.1939 N\")" : string.Empty;
+            lonStatus.Text = !lonCheck ? "Invalid Longitude (Valid example: \"19.4908 E\")" : string.Empty;
+
+            return latCheck && lonCheck;
         }
 
         private double[] LatLonReproject(double x, double y)
@@ -141,15 +163,6 @@ namespace DotSpatial.Controls
             return xy;
         }
 
-        private bool CheckCoordinates()
-        {
-            var latCheck = ParseCoordinates(_lat, d1.Text);
-            var lonCheck = ParseCoordinates(_lon, d2.Text);
-
-            latStatus.Text = !latCheck ? "Invalid Latitude (Valid example: \"41.1939 N\")" : string.Empty;
-            lonStatus.Text = !lonCheck ? "Invalid Longitude (Valid example: \"19.4908 E\")" : string.Empty;
-
-            return latCheck && lonCheck;
-        }
+        #endregion
     }
 }

@@ -8,6 +8,5 @@ namespace DotSpatial.Controls.DefaultRequiredImports
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     internal class DefaultRequiredImportAttribute : Attribute
     {
-
     }
 }

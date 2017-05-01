@@ -1,9 +1,4 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SerializationManager.cs" company="DotSpatial Team">
-//
-// </copyright>
-// -----------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -13,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
-
 using DotSpatial.Data.Properties;
 using DotSpatial.Extensions;
 using DotSpatial.Serialization;
@@ -38,6 +32,8 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region  Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializationManager"/> class.
         /// </summary>
@@ -54,6 +50,8 @@ namespace DotSpatial.Controls
             SaveProjectFileProviders = new List<ISaveProjectFileProvider>(0);
             OpenProjectFileProviders = new List<IOpenProjectFileProvider>(0);
         }
+
+        #endregion
 
         #region Events
 

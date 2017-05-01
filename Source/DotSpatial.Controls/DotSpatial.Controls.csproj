@@ -90,6 +90,9 @@
     <Compile Include="Modeler.Designer.cs">
       <DependentUpon>Modeler.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelerForm.Designer.cs">
+      <DependentUpon>ModelerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +100,9 @@
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PackageManager.cs" />
+    <Compile Include="PageSetupForm.Designer.cs">
+      <DependentUpon>PageSetupForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShowExtensionsDialogMode.cs" />
     <Compile Include="AppManager.cs">
       <SubType>Component</SubType>
@@ -423,6 +429,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PageSetupForm.de-DE.resx">
       <DependentUpon>PageSetupForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PageSetupForm.resx">
       <DependentUpon>PageSetupForm.cs</DependentUpon>

@@ -31,6 +31,8 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class IconMenuItem : MenuItem
     {
+        #region  Constructors
+
         /// <summary>
         /// Creates a new instance of the Icon Menu Item with the specified name
         /// </summary>
@@ -68,6 +70,10 @@ namespace DotSpatial.Controls
             OwnerDraw = true;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the icon to be drawn to the left of this menu item.
         /// </summary>
@@ -77,6 +83,10 @@ namespace DotSpatial.Controls
         /// Gets or sets the image to be drawn to the left of this menu item
         /// </summary>
         public Image Image { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc/>
         protected override void OnDrawItem(DrawItemEventArgs e)
@@ -105,6 +115,7 @@ namespace DotSpatial.Controls
                 e.Graphics.FillRectangle(iconBack, e.Bounds.X, e.Bounds.Y, 22, e.Bounds.Height);
                 iconBack.Dispose();
             }
+
             Rectangle tight = new Rectangle(e.Bounds.Left + 2, e.Bounds.Top + 2, 16, 16);
             if (Icon != null) e.Graphics.DrawIcon(Icon, e.Bounds.Left + 2, e.Bounds.Top + 2);
             if (Image != null) e.Graphics.DrawImage(Image, tight);
@@ -121,5 +132,7 @@ namespace DotSpatial.Controls
             e.ItemWidth = (int)Math.Ceiling(sizef.Width) + 20;
             e.ItemHeight = (int)Math.Max(Math.Ceiling(sizef.Height), 20);
         }
+
+        #endregion
     }
 }

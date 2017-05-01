@@ -26,7 +26,7 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class LayoutDocToolStrip : ToolStrip
     {
-        #region "Private Variables"
+        #region Fields
 
         private ToolStripButton _btnNew;
         private ToolStripButton _btnOpen;
@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region "Constructor"
+        #region  Constructors
 
         /// <summary>
         /// Creates an instance of the toolstrip
@@ -49,7 +49,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region "properties"
+        #region Properties
 
         /// <summary>
         /// The layout control associated with this toolstrip
@@ -57,11 +57,51 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public LayoutControl LayoutControl
         {
-            get { return _layoutControl; }
-            set { _layoutControl = value; if (_layoutControl == null) return; }
+            get
+            {
+                return _layoutControl;
+            }
+
+            set
+            {
+                _layoutControl = value;
+                if (_layoutControl == null) return;
+            }
         }
 
         #endregion
+
+        #region Methods
+
+        // Fires the new method on the layoutcontrol
+        private void _btnNew_Click(object sender, EventArgs e)
+        {
+            _layoutControl.NewLayout(true);
+        }
+
+        // Fires the open method on the layoutcontrol
+        private void _btnOpen_Click(object sender, EventArgs e)
+        {
+            _layoutControl.LoadLayout(true, true, true);
+        }
+
+        // Fires the print method on the layoutcontrol
+        private void _btnPrint_Click(object sender, EventArgs e)
+        {
+            _layoutControl.Print();
+        }
+
+        // Fires the save method on the layoutcontrol
+        private void _btnSave_Click(object sender, EventArgs e)
+        {
+            _layoutControl.SaveLayout(false);
+        }
+
+        // Fires the saveas method on the layoutcontrol
+        private void _btnSaveAs_Click(object sender, EventArgs e)
+        {
+            _layoutControl.SaveLayout(true);
+        }
 
         private void InitializeComponent()
         {
@@ -71,33 +111,29 @@ namespace DotSpatial.Controls
             this._btnSaveAs = new ToolStripButton();
             this._btnPrint = new ToolStripButton();
             this.SuspendLayout();
-            //
+
             // _btnZoomIn
-            //
             this._btnNew.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this._btnNew.Image = Images.file_new;
             this._btnNew.Size = new Size(23, 22);
             this._btnNew.Text = MessageStrings.LayoutMenuStripNew;
             this._btnNew.Click += this._btnNew_Click;
-            //
+
             // _btnZoomOut
-            //
             this._btnOpen.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this._btnOpen.Image = Images.FolderOpen;
             this._btnOpen.Size = new Size(23, 22);
             this._btnOpen.Text = MessageStrings.LayoutMenuStripOpen;
             this._btnOpen.Click += this._btnOpen_Click;
-            //
+
             // _btnZoomFullExtent
-            //
             this._btnSave.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this._btnSave.Image = Images.save.ToBitmap();
             this._btnSave.Size = new Size(23, 22);
             this._btnSave.Text = MessageStrings.LayoutMenuStripSave;
             this._btnSave.Click += this._btnSave_Click;
-            //
+
             // _comboZoom
-            //
             this._btnSaveAs.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this._btnSaveAs.Image = Images.file_saveas;
             this._btnSaveAs.Size = new Size(23, 22);
@@ -110,49 +146,9 @@ namespace DotSpatial.Controls
             this._btnPrint.Text = MessageStrings.LayoutMenuStripPrint;
             this._btnPrint.Click += _btnPrint_Click;
 
-            //
             // LayoutToolStrip
-            //
-            this.Items.AddRange(new ToolStripItem[] {
-            this._btnNew,
-            this._btnOpen,
-            this._btnSave,
-            this._btnSaveAs,
-            new ToolStripSeparator(),
-            this._btnPrint});
+            this.Items.AddRange(new ToolStripItem[] { this._btnNew, this._btnOpen, this._btnSave, this._btnSaveAs, new ToolStripSeparator(), this._btnPrint });
             this.ResumeLayout(false);
-        }
-
-        #region "Envent Handlers"
-
-        // Fires the print method on the layoutcontrol
-        private void _btnPrint_Click(object sender, EventArgs e)
-        {
-            _layoutControl.Print();
-        }
-
-        // Fires the saveas method on the layoutcontrol
-        private void _btnSaveAs_Click(object sender, EventArgs e)
-        {
-            _layoutControl.SaveLayout(true);
-        }
-
-        // Fires the save method on the layoutcontrol
-        private void _btnSave_Click(object sender, EventArgs e)
-        {
-            _layoutControl.SaveLayout(false);
-        }
-
-        // Fires the new method on the layoutcontrol
-        private void _btnNew_Click(object sender, EventArgs e)
-        {
-            _layoutControl.NewLayout(true);
-        }
-
-        // Fires the open method on the layoutcontrol
-        private void _btnOpen_Click(object sender, EventArgs e)
-        {
-            _layoutControl.LoadLayout(true, true, true);
         }
 
         #endregion

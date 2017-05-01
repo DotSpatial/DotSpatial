@@ -22,10 +22,14 @@ namespace DotSpatial.Controls
     /// </summary>
     public interface IMapLayer : ILayer
     {
+        #region Methods
+
         /// <summary>
         /// This draws content from the specified geographic regions onto the specified graphics
         /// object specified by MapArgs.
         /// </summary>
         void DrawRegions(MapArgs args, List<Extent> regions);
+
+        #endregion
     }
 }

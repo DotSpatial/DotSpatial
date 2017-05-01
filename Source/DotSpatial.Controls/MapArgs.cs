@@ -19,7 +19,7 @@ namespace DotSpatial.Controls
 {
     public class MapArgs : EventArgs, IProj
     {
-        #region Private Variables
+        #region Fields
 
         private readonly Extent _bufferEnvelope;
         private readonly Graphics _graphics;
@@ -27,7 +27,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapArgs"/> class.
@@ -62,7 +62,10 @@ namespace DotSpatial.Controls
         /// </summary>
         public Graphics Device
         {
-            get { return _graphics; }
+            get
+            {
+                return _graphics;
+            }
         }
 
         /// <summary>
@@ -72,7 +75,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                return _bufferEnvelope.Width != 0.0? _bufferRectangle.Width / _bufferEnvelope.Width : 0.0;
+                return _bufferEnvelope.Width != 0.0 ? _bufferRectangle.Width / _bufferEnvelope.Width : 0.0;
             }
         }
 
@@ -81,31 +84,10 @@ namespace DotSpatial.Controls
         /// </summary>
         public double Dy
         {
-            get { return _bufferEnvelope.Height != 0.0? _bufferRectangle.Height / _bufferEnvelope.Height : 0.0; }
-        }
-
-        /// <summary>
-        /// Gets the minimum X value
-        /// </summary>
-        public double MinX
-        {
-            get { return _bufferEnvelope.MinX; }
-        }
-
-        /// <summary>
-        /// Gets the maximum Y value
-        /// </summary>
-        public double MaxY
-        {
-            get { return _bufferEnvelope.MaxY; }
-        }
-
-        /// <summary>
-        /// Gets the rectangle dimensions of what the buffer should be in pixels
-        /// </summary>
-        public Rectangle ImageRectangle
-        {
-            get { return _bufferRectangle; }
+            get
+            {
+                return _bufferEnvelope.Height != 0.0 ? _bufferRectangle.Height / _bufferEnvelope.Height : 0.0;
+            }
         }
 
         /// <summary>
@@ -113,7 +95,43 @@ namespace DotSpatial.Controls
         /// </summary>
         public Extent GeographicExtents
         {
-            get { return _bufferEnvelope; }
+            get
+            {
+                return _bufferEnvelope;
+            }
+        }
+
+        /// <summary>
+        /// Gets the rectangle dimensions of what the buffer should be in pixels
+        /// </summary>
+        public Rectangle ImageRectangle
+        {
+            get
+            {
+                return _bufferRectangle;
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum Y value
+        /// </summary>
+        public double MaxY
+        {
+            get
+            {
+                return _bufferEnvelope.MaxY;
+            }
+        }
+
+        /// <summary>
+        /// Gets the minimum X value
+        /// </summary>
+        public double MinX
+        {
+            get
+            {
+                return _bufferEnvelope.MinX;
+            }
         }
 
         #endregion
