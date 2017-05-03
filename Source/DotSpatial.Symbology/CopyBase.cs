@@ -25,7 +25,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of CopyBase
+        /// Initializes a new instance of the <see cref="CopyBase"/> class.
         /// </summary>
         protected CopyBase()
         {
@@ -67,6 +67,7 @@ namespace DotSpatial.Symbology
                 result.Add(property);
                 names.Add(property.Name);
             }
+
             return result.ToArray();
         }
 

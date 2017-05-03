@@ -20,6 +20,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// The map raster layer is used for drawing rasters.
+    /// </summary>
     public interface IMapRasterLayer : IRasterLayer, IMapLayer
     {
         #region Events
@@ -40,7 +43,7 @@ namespace DotSpatial.Controls
         Image BackBuffer { get; set; }
 
         /// <summary>
-        /// Gets the current buffer.
+        /// Gets or sets the current buffer.
         /// </summary>
         Image Buffer { get; set; }
 
@@ -57,9 +60,10 @@ namespace DotSpatial.Controls
         Rectangle BufferRectangle { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the image layer is initialized
+        /// Gets or sets a value indicating whether the image layer is initialized.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         new bool IsInitialized { get; set; }
 
         #endregion
@@ -70,7 +74,7 @@ namespace DotSpatial.Controls
         /// Call StartDrawing before using this.
         /// </summary>
         /// <param name="rectangles">The rectangular region in pixels to clear.</param>
-        /// <param name= "color">The color to use when clearing.  Specifying transparent
+        /// <param name= "color">The color to use when clearing. Specifying transparent
         /// will replace content with transparent pixels.</param>
         void Clear(List<Rectangle> rectangles, Color color);
 
@@ -82,7 +86,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Copies any current content to the back buffer so that drawing should occur on the
-        /// back buffer (instead of the fore-buffer).  Calling draw methods without
+        /// back buffer (instead of the fore-buffer). Calling draw methods without
         /// calling this may cause exceptions.
         /// </summary>
         /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer

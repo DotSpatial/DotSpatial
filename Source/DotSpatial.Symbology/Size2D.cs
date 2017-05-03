@@ -20,7 +20,8 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// 2D size: Height, Width.
     /// </summary>
-    [Serializable, TypeConverter(typeof(Size2DConverter))]
+    [Serializable]
+    [TypeConverter(typeof(Size2DConverter))]
     public class Size2D : Descriptor
     {
         #region Private Variables

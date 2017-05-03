@@ -28,8 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\DotSpatial.Controls.XML</DocumentationFile>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -78,6 +77,7 @@
     <Compile Include="DefaultRequiredImports\DockManager.cs" />
     <Compile Include="DefaultRequiredImports\HeaderControl.cs" />
     <Compile Include="DefaultRequiredImports\StatusControl.cs" />
+    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />
     <Compile Include="Extension.cs" />
@@ -85,7 +85,30 @@
       <DependentUpon>FeatureIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Header\ProgressStatusPanel.cs" />
+    <Compile Include="Header\ToolstripPosition.cs" />
     <Compile Include="IFeatureLayerExtensions.cs" />
+    <Compile Include="LayoutDocToolStrip.Designer.cs">
+      <DependentUpon>LayoutDocToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutListBox.Designer.cs">
+      <DependentUpon>LayoutListBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutMapToolStrip.Designer.cs">
+      <DependentUpon>LayoutMapToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutMenuStrip.Designer.cs">
+      <DependentUpon>LayoutMenuStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutPropertyGrid.Designer.cs">
+      <DependentUpon>LayoutPropertyGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutZoomToolStrip.Designer.cs">
+      <DependentUpon>LayoutZoomToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LimitedStack.cs" />
+    <Compile Include="ListBoxDialog.Designer.cs">
+      <DependentUpon>ListBoxDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapChangedEventArgs.cs" />
     <Compile Include="Modeler.Designer.cs">
       <DependentUpon>Modeler.cs</DependentUpon>
@@ -93,6 +116,10 @@
     <Compile Include="ModelerForm.Designer.cs">
       <DependentUpon>ModelerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelerToolstrip.Designer.cs">
+      <DependentUpon>ModelerToolstrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NorthArrowStyle.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>

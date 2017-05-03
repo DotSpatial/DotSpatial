@@ -73,31 +73,34 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the background color
         /// </summary>
-        [Category("General"), Description("Gets or sets the background color of a rectangle around the label"),
-         Serialize("BackColor")]
+        [Category("General")]
+        [Description("Gets or sets the background color of a rectangle around the label")]
+        [Serialize("BackColor")]
         public Color BackColor { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not a background color should be used
         /// </summary>
-        [Category("General"),
-         Description("Gets or sets a boolean indicating whether or not a background color should be used"),
-         Serialize("BackColorEnabled")]
+        [Category("General")]
+        [Description("Gets or sets a boolean indicating whether or not a background color should be used")]
+        [Serialize("BackColorEnabled")]
         public bool BackColorEnabled { get; set; }
 
      /// <summary>
         /// Gets or sets the border color
         /// </summary>
-        [Category("Border"), Description("Gets or sets the border color"), Serialize("BorderColor")]
-        public Color BorderColor { get; set; }
+     [Category("Border")]
+     [Description("Gets or sets the border color")]
+     [Serialize("BorderColor")]
+     public Color BorderColor { get; set; }
 
     /// <summary>
         /// Gets or sets a boolean indicating whether or not a border should be drawn around the label.
         /// </summary>
-        [Category("Border"),
-         Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label."),
-         Serialize("BorderVisible")]
-        public bool BorderVisible { get; set; }
+    [Category("Border")]
+    [Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label.")]
+    [Serialize("BorderVisible")]
+    public bool BorderVisible { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.

@@ -8,7 +8,7 @@ using DotSpatial.Extensions;
 namespace DotSpatial.Controls.DefaultRequiredImports
 {
     /// <summary>
-    /// Default Dock Manager. It will used when no custom implementation of IDockManager where found.
+    /// Default Dock Manager. It will be used when no custom implementation of IDockManager was found.
     /// </summary>
     [DefaultRequiredImport]
     internal class DockManager : IDockManager, ISatisfyImportsExtension
@@ -22,27 +22,39 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
         #region Events
 
+        /// <summary>
+        /// Event that is rased after the active panel changes.
+        /// </summary>
         public event EventHandler<DockablePanelEventArgs> ActivePanelChanged;
 
+        /// <summary>
+        /// Event that is rased after a panel was added.
+        /// </summary>
         public event EventHandler<DockablePanelEventArgs> PanelAdded;
 
+        /// <summary>
+        /// Event that is rased after a panel was closed.
+        /// </summary>
         public event EventHandler<DockablePanelEventArgs> PanelClosed;
 
+        /// <summary>
+        /// Event that is rased after a panel was hidden.
+        /// </summary>
         public event EventHandler<DockablePanelEventArgs> PanelHidden;
 
+        /// <summary>
+        /// Event that is rased after a panel was removed.
+        /// </summary>
         public event EventHandler<DockablePanelEventArgs> PanelRemoved;
 
         #endregion
 
         #region Properties
 
-        public int Priority
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        /// <summary>
+        /// Gets the priority.
+        /// </summary>
+        public int Priority => 0;
 
         [Import]
         private AppManager App { get; set; }
@@ -54,6 +66,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
         #region Methods
 
+        /// <inheritdoc />
         public void Activate()
         {
             if (_isActivated) return;
@@ -66,9 +79,9 @@ namespace DotSpatial.Controls.DefaultRequiredImports
                 _isActivated = true;
 
                 _dockManager = new SpatialDockManager
-                               {
-                                   Dock = DockStyle.Fill
-                               };
+                {
+                    Dock = DockStyle.Fill
+                };
                 _dockManager.AddDefaultTabControls();
                 _dockManager.ActivePanelChanged += (sender, args) => RaiseDockableEvent(ActivePanelChanged, args);
                 _dockManager.PanelClosed += (sender, args) => RaiseDockableEvent(PanelClosed, args);
@@ -80,36 +93,59 @@ namespace DotSpatial.Controls.DefaultRequiredImports
             }
         }
 
+        /// <summary>
+        /// Adds the given panel .
+        /// </summary>
+        /// <param name="panel">Panel that should be added.</param>
         public void Add(DockablePanel panel)
         {
             if (!_isActivated) return;
             _dockManager.Add(panel);
         }
 
+        /// <summary>
+        /// Hides the panel with the given key.
+        /// </summary>
+        /// <param name="key">Key of the panel that should be hidden.</param>
         public void HidePanel(string key)
         {
             if (!_isActivated) return;
             _dockManager.HidePanel(key);
         }
 
+        /// <summary>
+        /// Removes the item with the given key.
+        /// </summary>
+        /// <param name="key">Key of the item that should be removed.</param>
         public void Remove(string key)
         {
             if (!_isActivated) return;
             _dockManager.Remove(key);
         }
 
+        /// <summary>
+        /// Resets the layout.
+        /// </summary>
         public void ResetLayout()
         {
             if (!_isActivated) return;
             _dockManager.ResetLayout();
         }
 
+        /// <summary>
+        /// Selects the panel with the given key.
+        /// </summary>
+        /// <param name="key">Key of the panel that should be selected.</param>
         public void SelectPanel(string key)
         {
             if (!_isActivated) return;
             _dockManager.SelectPanel(key);
         }
 
+        /// <summary>
+        /// Shows the panel with the given key.
+        /// </summary>
+        /// <param name="key">Key of the panel that should be shown.</param>
         public void ShowPanel(string key)
         {
             if (!_isActivated) return;
@@ -118,8 +154,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
         private void RaiseDockableEvent(EventHandler<DockablePanelEventArgs> handler, DockablePanelEventArgs ea)
         {
-            if (handler != null)
-                handler(this, ea);
+            handler?.Invoke(this, ea);
         }
 
         #endregion

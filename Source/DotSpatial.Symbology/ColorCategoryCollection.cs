@@ -45,7 +45,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the parent scheme for this collection
         /// </summary>
-        [Serialize("Scheme", ConstructorArgumentIndex = 0), ShallowCopy]
+        [Serialize("Scheme", ConstructorArgumentIndex = 0)]
+        [ShallowCopy]
         public IColorScheme Scheme
         {
             get { return _scheme; }

@@ -22,19 +22,17 @@ namespace DotSpatial.Controls
     public class MapFunctionKeyNavigation : MapFunction
     {
         #region Fields
-
-        private bool isPanningTemporarily;
-        private int KeyPanCount;
-
-        private FunctionMode previousFunction = FunctionMode.None;
-
+        private bool _isPanningTemporarily;
+        private int _keyPanCount;
+        private FunctionMode _previousFunction = FunctionMode.None;
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of SelectTool
+        /// Initializes a new instance of the <see cref="MapFunctionKeyNavigation"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionKeyNavigation(IMap inMap)
             : base(inMap)
         {
@@ -46,6 +44,9 @@ namespace DotSpatial.Controls
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the map function is currently interacting with the map.
+        /// </summary>
         public bool BusySet { get; set; }
 
         #endregion
@@ -53,17 +54,17 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Handles the Key Down situation
+        /// Handles the Key Down situation.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             // Allow panning if the space is pressed.
-            if (e.KeyCode == Keys.Space && !isPanningTemporarily)
+            if (e.KeyCode == Keys.Space && !_isPanningTemporarily)
             {
-                previousFunction = Map.FunctionMode;
+                _previousFunction = Map.FunctionMode;
                 Map.FunctionMode = FunctionMode.Pan;
-                isPanningTemporarily = true;
+                _isPanningTemporarily = true;
             }
 
             // Arrow-Key Panning
@@ -75,33 +76,35 @@ namespace DotSpatial.Controls
                     BusySet = true;
                 }
 
-                var _source = Map.MapFrame.View;
+                var source = Map.MapFrame.View;
 
                 switch (e.KeyCode)
                 {
                     case Keys.Up:
-                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y - 20, _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X, source.Y - 20, source.Width, source.Height);
                         break;
                     case Keys.Down:
-                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y + 20, _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X, source.Y + 20, source.Width, source.Height);
                         break;
                     case Keys.Left:
-                        Map.MapFrame.View = new Rectangle(_source.X - 20, _source.Y, _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X - 20, source.Y, source.Width, source.Height);
                         break;
                     case Keys.Right:
-                        Map.MapFrame.View = new Rectangle(_source.X + 20, _source.Y, _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X + 20, source.Y, source.Width, source.Height);
                         break;
                 }
 
-                KeyPanCount++;
+                _keyPanCount++;
 
-                if (KeyPanCount == 16)
+                if (_keyPanCount == 16)
                 {
                     Map.MapFrame.ResetExtents();
-                    KeyPanCount = 0;
+                    _keyPanCount = 0;
                 }
                 else
+                {
                     Map.Invalidate();
+                }
             }
 
             // Zoom Out
@@ -138,16 +141,16 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Handles the Key Up situation
+        /// Handles the Key Up situation.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnKeyUp(KeyEventArgs e)
         {
             // Allow panning if the space is pressed.
-            if (e.KeyCode == Keys.Space && isPanningTemporarily)
+            if (e.KeyCode == Keys.Space && _isPanningTemporarily)
             {
-                Map.FunctionMode = previousFunction;
-                isPanningTemporarily = false;
+                Map.FunctionMode = _previousFunction;
+                _isPanningTemporarily = false;
             }
 
             // Arrow-Key Panning
@@ -156,28 +159,28 @@ namespace DotSpatial.Controls
                 Map.MapFrame.ResetExtents();
                 Map.IsBusy = false;
                 BusySet = false;
-                KeyPanCount = 0;
+                _keyPanCount = 0;
             }
 
             // Large Step Panning
             if (e.KeyCode == Keys.PageUp || e.KeyCode == Keys.PageDown || e.KeyCode == Keys.Home || e.KeyCode == Keys.End)
             {
                 Map.IsBusy = true;
-                var _source = Map.MapFrame.View;
+                var source = Map.MapFrame.View;
 
                 switch (e.KeyCode)
                 {
                     case Keys.PageUp:
-                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y - (int)(_source.Height * 0.75), _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X, source.Y - (int)(source.Height * 0.75), source.Width, source.Height);
                         break;
                     case Keys.PageDown:
-                        Map.MapFrame.View = new Rectangle(_source.X, _source.Y + (int)(_source.Height * 0.75), _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X, source.Y + (int)(source.Height * 0.75), source.Width, source.Height);
                         break;
                     case Keys.Home:
-                        Map.MapFrame.View = new Rectangle(_source.X - (int)(_source.Width * 0.75), _source.Y, _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X - (int)(source.Width * 0.75), source.Y, source.Width, source.Height);
                         break;
                     case Keys.End:
-                        Map.MapFrame.View = new Rectangle(_source.X + (int)(_source.Width * 0.75), _source.Y, _source.Width, _source.Height);
+                        Map.MapFrame.View = new Rectangle(source.X + (int)(source.Width * 0.75), source.Y, source.Width, source.Height);
                         break;
                 }
 

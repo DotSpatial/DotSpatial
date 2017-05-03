@@ -25,32 +25,22 @@ namespace DotSpatial.Controls
     /// </summary>
     // This control will no longer be visible
     [ToolboxItem(false)]
-    public class LayoutListBox : UserControl
+    public partial class LayoutListBox : UserControl
     {
         #region Fields
-
-        // Internal Variables
-        private Button _btnDown;
-        private Panel _btnPanel;
-        private Button _btnRemove;
-        private Button _btnUp;
-        private LayoutControl _layoutControl;
-        private ListBox _lbxItems;
-        private Panel _listPanel;
         private bool _suppressSelectionChange;
-
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the Collection Control
+        /// Initializes a new instance of the <see cref="LayoutListBox"/> class.
         /// </summary>
         public LayoutListBox()
         {
             InitializeComponent();
             _suppressSelectionChange = false;
-            _lbxItems.DrawItem += lbxItems_DrawItem;
+            _lbxItems.DrawItem += LbxItemsDrawItem;
         }
 
         #endregion
@@ -72,8 +62,8 @@ namespace DotSpatial.Controls
             {
                 if (value == null) return;
                 _layoutControl = value;
-                _layoutControl.SelectionChanged += _layoutControl_SelectionChanged;
-                _layoutControl.ElementsChanged += _layoutControl_ElementsChanged;
+                _layoutControl.SelectionChanged += LayoutControlSelectionChanged;
+                _layoutControl.ElementsChanged += LayoutControlElementsChanged;
                 RefreshList();
             }
         }
@@ -96,7 +86,7 @@ namespace DotSpatial.Controls
             foreach (LayoutElement le in _layoutControl.LayoutElements.ToArray())
             {
                 _lbxItems.Items.Add(le);
-                le.ThumbnailChanged += le_ThumbnailChanged;
+                le.ThumbnailChanged += LeThumbnailChanged;
             }
 
             // Updates the selection list
@@ -106,7 +96,7 @@ namespace DotSpatial.Controls
             _lbxItems.ResumeLayout();
         }
 
-        private void _layoutControl_ElementsChanged(object sender, EventArgs e)
+        private void LayoutControlElementsChanged(object sender, EventArgs e)
         {
             if (_suppressSelectionChange) return;
             _suppressSelectionChange = true;
@@ -114,7 +104,7 @@ namespace DotSpatial.Controls
             _suppressSelectionChange = false;
         }
 
-        private void _layoutControl_SelectionChanged(object sender, EventArgs e)
+        private void LayoutControlSelectionChanged(object sender, EventArgs e)
         {
             if (_suppressSelectionChange) return;
             _suppressSelectionChange = true;
@@ -122,91 +112,22 @@ namespace DotSpatial.Controls
             _suppressSelectionChange = false;
         }
 
-        private void btnDown_Click(object sender, EventArgs e)
+        private void BtnDownClick(object sender, EventArgs e)
         {
             _layoutControl.MoveSelectionDown();
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void BtnRemoveClick(object sender, EventArgs e)
         {
             _layoutControl.DeleteSelected();
         }
 
-        private void btnUp_Click(object sender, EventArgs e)
+        private void BtnUpClick(object sender, EventArgs e)
         {
             _layoutControl.MoveSelectionUp();
         }
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(LayoutListBox));
-            this._lbxItems = new ListBox();
-            this._btnPanel = new Panel();
-            this._btnDown = new Button();
-            this._btnUp = new Button();
-            this._btnRemove = new Button();
-            this._listPanel = new Panel();
-            this._btnPanel.SuspendLayout();
-            this._listPanel.SuspendLayout();
-            this.SuspendLayout();
-
-            // _lbxItems
-            resources.ApplyResources(this._lbxItems, "_lbxItems");
-            this._lbxItems.DrawMode = DrawMode.OwnerDrawFixed;
-            this._lbxItems.FormattingEnabled = true;
-            this._lbxItems.Name = "_lbxItems";
-            this._lbxItems.SelectionMode = SelectionMode.MultiExtended;
-            this._lbxItems.SelectedIndexChanged += lbxItems_SelectedIndexChanged;
-
-            // _btnPanel
-            resources.ApplyResources(this._btnPanel, "_btnPanel");
-            this._btnPanel.Controls.Add(this._btnDown);
-            this._btnPanel.Controls.Add(this._btnUp);
-            this._btnPanel.Controls.Add(this._btnRemove);
-            this._btnPanel.Name = "_btnPanel";
-
-            // _btnDown
-            resources.ApplyResources(this._btnDown, "_btnDown");
-            this._btnDown.Image = Images.down;
-            this._btnDown.Name = "_btnDown";
-            this._btnDown.UseVisualStyleBackColor = true;
-            this._btnDown.Click += btnDown_Click;
-
-            // _btnUp
-            resources.ApplyResources(this._btnUp, "_btnUp");
-            this._btnUp.Image = Images.up;
-            this._btnUp.Name = "_btnUp";
-            this._btnUp.UseVisualStyleBackColor = true;
-            this._btnUp.Click += btnUp_Click;
-
-            // _btnRemove
-            resources.ApplyResources(this._btnRemove, "_btnRemove");
-            this._btnRemove.Image = Images.mnuLayerClear;
-            this._btnRemove.Name = "_btnRemove";
-            this._btnRemove.UseVisualStyleBackColor = true;
-            this._btnRemove.Click += btnRemove_Click;
-
-            // _listPanel
-            resources.ApplyResources(this._listPanel, "_listPanel");
-            this._listPanel.BackColor = Color.White;
-            this._listPanel.Controls.Add(this._lbxItems);
-            this._listPanel.Name = "_listPanel";
-
-            // LayoutListBox
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this._listPanel);
-            this.Controls.Add(this._btnPanel);
-            this.Name = "LayoutListBox";
-            this._btnPanel.ResumeLayout(false);
-            this._listPanel.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-
-        private void LayoutListBox_KeyUp(object sender, KeyEventArgs e)
+        private void LayoutListBoxKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -219,7 +140,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void lbxItems_DrawItem(object sender, DrawItemEventArgs e)
+        private void LbxItemsDrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index == -1) return;
             Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
@@ -263,7 +184,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void lbxItems_SelectedIndexChanged(object sender, EventArgs e)
+        private void LbxItemsSelectedIndexChanged(object sender, EventArgs e)
         {
             if (_suppressSelectionChange) return;
             _suppressSelectionChange = true;
@@ -274,7 +195,7 @@ namespace DotSpatial.Controls
             _suppressSelectionChange = false;
         }
 
-        private void le_ThumbnailChanged(object sender, EventArgs e)
+        private void LeThumbnailChanged(object sender, EventArgs e)
         {
             _lbxItems.Invalidate();
         }

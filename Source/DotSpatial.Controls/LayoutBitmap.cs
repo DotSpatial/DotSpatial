@@ -39,7 +39,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutBitmap"/> class.
         /// </summary>
         public LayoutBitmap()
         {
@@ -67,7 +67,7 @@ namespace DotSpatial.Controls
             set
             {
                 if (_bitmap == value) return;
-                if (_bitmap != null) _bitmap.Dispose();
+                _bitmap?.Dispose();
                 _bitmap = value;
                 UpdateThumbnail();
                 OnInvalidate();
@@ -75,9 +75,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Modifies the brightness of the bitmap relative to its original brightness +/- 255 Doesn't modify original bitmap
+        /// Gets or sets the brightness of the bitmap relative to its original brightness +/- 255. Doesn't modify original bitmap.
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public int Brightness
         {
             get
@@ -97,9 +98,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Modifies the contrast of the bitmap relative to its original contrast +/- 255 Doesn't modify original bitmap
+        /// Gets or sets the contrast of the bitmap relative to its original contrast +/- 255. Doesn't modify original bitmap.
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public int Contrast
         {
             get
@@ -121,7 +123,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the string fileName of the bitmap to use
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         [Editor("System.Windows.Forms.Design.FileNameEditor, System.Design", typeof(UITypeEditor))]
         public string Filename
         {
@@ -139,10 +142,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Preserves the aspect ratio if this boolean is true, otherwise it allows stretching of
-        /// the bitmap to occur
+        /// Gets or sets a value indicating whether the aspect ratio is preserved. If false stretching of
+        /// the bitmap is allowed to occur.
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public bool PreserveAspectRatio
         {
             get

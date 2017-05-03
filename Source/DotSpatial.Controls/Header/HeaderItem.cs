@@ -4,13 +4,13 @@ using System.ComponentModel;
 namespace DotSpatial.Controls.Header
 {
     /// <summary>
-    /// An item that has a visible presence in the <see cref="HeaderControl"/>
+    /// An item that has a visible presence in the <see cref="HeaderControl"/>.
     /// </summary>
     public abstract class HeaderItem : INotifyPropertyChanged
     {
         #region Fields
 
-        private string key;
+        private string _key;
 
         #endregion
 
@@ -54,24 +54,24 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return key;
+                return _key;
             }
 
             set
             {
-                if (key == value)
+                if (_key == value)
                     return;
-                key = value;
+                _key = value;
                 OnPropertyChanged("Key");
             }
         }
 
         /// <summary>
-        /// An <see cref="object"/> that contains data about the HeaderItem. The default is null.
+        /// Gets or sets an <see cref="object"/> that contains data about the HeaderItem. The default is null.
         /// </summary>
         /// <remarks>
-        /// Any type derived from the <see cref="object"/> class can be assigned to this property. 
-        /// A common use for the Tag property is to store data that is closely associated with the item. 
+        /// Any type derived from the <see cref="object"/> class can be assigned to this property.
+        /// A common use for the Tag property is to store data that is closely associated with the item.
         /// </remarks>
         public object Tag { get; set; }
 
@@ -82,13 +82,10 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Triggers the PropertyChanged event.
         /// </summary>
+        /// <param name="propertyName">Name of the property that changed.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            var h = PropertyChanged;
-            if (h != null)
-            {
-                h(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

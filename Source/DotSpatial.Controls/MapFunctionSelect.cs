@@ -22,6 +22,9 @@ using SelectionMode = DotSpatial.Symbology.SelectionMode;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// A map function that can be used to select features.
+    /// </summary>
     public class MapFunctionSelect : MapFunction
     {
         #region Fields
@@ -31,22 +34,23 @@ namespace DotSpatial.Controls
         private Coordinate _geoStartPoint;
         private bool _isDragging;
         private Point _startPoint;
-        private ILayer former;
+        private ILayer _former;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of SelectTool
+        /// Initializes a new instance of the <see cref="MapFunctionSelect"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionSelect(IMap inMap)
             : base(inMap)
         {
             _selectionPen = new Pen(Color.Black)
-                            {
-                                DashStyle = DashStyle.Dash
-                            };
+            {
+                DashStyle = DashStyle.Dash
+            };
             YieldStyle = YieldStyles.LeftButton | YieldStyles.Keyboard;
         }
 
@@ -55,9 +59,9 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        ///
+        /// Draws the selection rectangle.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The map draw args.</param>
         protected override void OnDraw(MapDrawArgs e)
         {
             if (_isDragging)
@@ -76,7 +80,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles pressing the delete key to remove features from the specified layer.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             bool changed = false;
@@ -104,13 +108,13 @@ namespace DotSpatial.Controls
             }
 
             base.OnKeyDown(e);
-            if (changed && Map != null) Map.MapFrame.Invalidate();
+            if (changed) Map?.MapFrame.Invalidate();
         }
 
         /// <summary>
-        /// Handles the MouseDown
+        /// Handles the MouseDown.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The eventargs.</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -126,9 +130,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Handles MouseMove
+        /// Handles MouseMove.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             int x = Math.Min(Math.Min(_startPoint.X, _currentPoint.X), e.X);
@@ -145,9 +149,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Handles the Mouse Up situation
+        /// Handles the Mouse Up situation.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (Map == null) Map = e.Map;
@@ -178,28 +182,28 @@ namespace DotSpatial.Controls
                 tolerant = new Envelope(c1, c2);
             }
 
-            former = null;
+            _former = null;
             foreach (var l in Map.MapFrame.GetAllLayers())
             {
                 if (l.IsSelected)
                 {
-                    former = l;
+                    _former = l;
                     l.IsSelected = false;
                 }
             }
 
-            if (former == null && Map.MapFrame.IsSelected)
+            if (_former == null && Map.MapFrame.IsSelected)
             {
-                former = Map.MapFrame;
+                _former = Map.MapFrame;
             }
 
             Map.MapFrame.IsSelected = true;
             Map.MapFrame.SuspendEvents();
             HandleSelection(tolerant, env);
             Map.MapFrame.IsSelected = false;
-            if (former != null)
+            if (_former != null)
             {
-                former.IsSelected = true;
+                _former.IsSelected = true;
             }
 
             Map.MapFrame.ResumeEvents();

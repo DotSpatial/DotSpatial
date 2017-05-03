@@ -1,9 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="IDockManager.cs" company="DotSpatial Team">
-// </copyright>
-// -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.ComponentModel.Composition;
 
 namespace DotSpatial.Controls.Docking
@@ -81,7 +76,7 @@ namespace DotSpatial.Controls.Docking
         void SelectPanel(string key);
 
         /// <summary>
-        /// Shows the panel but does not select it. 
+        /// Shows the panel but does not select it.
         /// </summary>
         /// <param name="key">The key.</param>
         void ShowPanel(string key);

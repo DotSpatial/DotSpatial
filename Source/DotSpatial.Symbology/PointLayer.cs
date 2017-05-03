@@ -98,10 +98,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the pointSymbolizer characteristics to use for the selected features.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets the symbolic characteristics to use for the selected features."),
-            // TypeConverter(typeof(GeneralTypeConverter)),
-            // Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
-         ShallowCopy]
+        [Category("Appearance")]
+        [Description("Gets or sets the symbolic characteristics to use for the selected features.")]
+        [ShallowCopy]
         public new IPointSymbolizer SelectionSymbolizer
         {
             get { return base.SelectionSymbolizer as IPointSymbolizer; }
@@ -114,10 +113,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolic characteristics for this layer.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets the symbolic characteristics for this layer."),
-            // TypeConverter(typeof(GeneralTypeConverter)),
-            // Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
-         ShallowCopy]
+        [Category("Appearance")]
+        [Description("Gets or sets the symbolic characteristics for this layer.")]
+        [ShallowCopy]
         public new IPointSymbolizer Symbolizer
         {
             get
@@ -135,10 +133,9 @@ namespace DotSpatial.Symbology
         /// method, we use the ApplyScheme method for assigning a new scheme.  This allows access
         /// to editing the members of an existing scheme directly, however.
         /// </summary>
-        [Category("Appearance"), Description("Gets the currently applied scheme."),
-            // TypeConverter(typeof(GeneralTypeConverter)),
-            // Editor(typeof(PointSchemePropertyGridEditor), typeof(UITypeEditor)),
-         Serialize("Symbology")]
+        [Category("Appearance")]
+        [Description("Gets the currently applied scheme.")]
+        [Serialize("Symbology")]
         public new IPointScheme Symbology
         {
             get { return base.Symbology as IPointScheme; }

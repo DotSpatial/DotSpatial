@@ -15,8 +15,10 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the SeparatorItem class.
+        /// Initializes a new instance of the <see cref="SeparatorItem"/> class.
         /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="groupCaption">The groups caption.</param>
         public SeparatorItem(string rootKey, string groupCaption)
             : base(rootKey, groupCaption)
         {

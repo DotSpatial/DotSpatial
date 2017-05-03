@@ -46,11 +46,11 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the layout element
+        /// Initializes a new instance of the <see cref="LayoutElement"/> class.
         /// </summary>
         protected LayoutElement()
         {
-            _background.ItemChanged += _background_ItemChanged;
+            _background.ItemChanged += BackgroundItemChanged;
         }
 
         #endregion
@@ -79,7 +79,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the line symbolizer that draws the outline
         /// </summary>
-        [TypeConverter(typeof(GeneralTypeConverter)), Browsable(true), Category("Symbol"), Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(GeneralTypeConverter))]
+        [Browsable(true)]
+        [Category("Symbol")]
+        [Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
         public IPolygonSymbolizer Background
         {
             get
@@ -96,7 +99,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants
         /// </summary>
-        [Browsable(true), Category("Layout")]
+        [Browsable(true)]
+        [Category("Layout")]
         public Point Location
         {
             get
@@ -132,7 +136,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the name of the element
         /// </summary>
-        [Browsable(true), Category("Layout")]
+        [Browsable(true)]
+        [Category("Layout")]
         public string Name
         {
             get
@@ -182,7 +187,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Indicates if this element can handle redraw events on resize
+        /// Gets or sets if this element can handle redraw events on resize.
         /// </summary>
         [Browsable(false)]
         public ResizeStyle ResizeStyle
@@ -199,7 +204,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Disables updating redraw when resizing.
+        /// Gets or sets a value indicating whether whether the control is resizing.
         /// </summary>
         [Browsable(false)]
         public bool Resizing
@@ -216,9 +221,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the size of the element in 1/100 of an inch paper coordinants
+        /// Gets or sets the size of the element in 1/100 of an inch paper coordinants.
         /// </summary>
-        [Browsable(true), Category("Layout")]
+        [Browsable(true)]
+        [Category("Layout")]
         public SizeF Size
         {
             get
@@ -239,7 +245,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets the thumbnail that appears in the LayoutListView
+        /// Gets the thumbnail that appears in the LayoutListView.
         /// </summary>
         [Browsable(false)]
         public Bitmap ThumbNail
@@ -251,7 +257,7 @@ namespace DotSpatial.Controls
 
             private set
             {
-                if (_thumbNail != null) _thumbNail.Dispose();
+                _thumbNail?.Dispose();
                 _thumbNail = value;
                 OnThumbnailChanged();
             }
@@ -269,82 +275,82 @@ namespace DotSpatial.Controls
         public abstract void Draw(Graphics g, bool printing);
 
         /// <summary>
-        /// Draws the elements background behind everything else
+        /// Draws the elements background behind everything else.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="printing"></param>
+        /// <param name="g">Graphics object used for painting.</param>
+        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible</param>
         public void DrawBackground(Graphics g, bool printing)
         {
-            if (this.Background != null)
+            if (Background != null)
             {
                 GraphicsPath gp = new GraphicsPath();
-                gp.AddRectangle(this.Rectangle);
-                foreach (IPattern myPattern in this.Background.Patterns)
+                gp.AddRectangle(Rectangle);
+                foreach (IPattern myPattern in Background.Patterns)
                 {
-                    myPattern.Bounds = this.Rectangle;
+                    myPattern.Bounds = Rectangle;
                     myPattern.FillPath(g, gp);
                 }
             }
         }
 
         /// <summary>
-        /// Draws the elements outline on top of everything else
+        /// Draws the elements outline on top of everything else.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="printing"></param>
+        /// <param name="g">Graphics object used for painting.</param>
+        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible</param>
         public void DrawOutline(Graphics g, bool printing)
         {
-            if (this.Background.OutlineSymbolizer != null && this.Background.Patterns.Count >= 1)
+            if (Background.OutlineSymbolizer == null || Background.Patterns.Count < 1) return;
+
+            RectangleF tempRect = Rectangle;
+            float width = (float)(Background.GetOutlineWidth() / 2.0D);
+            tempRect.Inflate(width, width);
+
+            if (printing)
             {
-                RectangleF tempRect = this.Rectangle;
-                float width = (float)(this.Background.GetOutlineWidth() / 2.0D);
-                tempRect.Inflate(width, width);
-                if (printing)
-                {
-                    // Changed by jany_ 2014-08-20
-                    // normal ClipBounds are big enough for the whole outline to be painted
-                    // when printing ClipBounds get set to Rectangle -> parts of the Rectangle get printed outside of the Clip
-                    RectangleF clip = this.Rectangle;
-                    float w = (float)this.Background.GetOutlineWidth();
-                    clip.Inflate(w, w);
-                    g.Clip = new Region(clip);
-                }
+                // Changed by jany_ 2014-08-20
+                // normal ClipBounds are big enough for the whole outline to be painted
+                // when printing ClipBounds get set to Rectangle -> parts of the Rectangle get printed outside of the Clip
+                RectangleF clip = Rectangle;
+                float w = (float)Background.GetOutlineWidth();
+                clip.Inflate(w, w);
+                g.Clip = new Region(clip);
+            }
 
-                // Makes sure the rectangle is big enough to draw
-                if (tempRect.Width > 0 && tempRect.Height > 0)
-                {
-                    foreach (IPattern outlineSymbol in this.Background.Patterns)
-                    {
-                        if (!outlineSymbol.UseOutline)
-                            continue;
+            // Makes sure the rectangle is big enough to draw
+            if (!(tempRect.Width > 0) || !(tempRect.Height > 0)) return;
 
-                        GraphicsPath gp = new GraphicsPath();
-                        gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
-                        gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
-                        gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
-                        gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
-                        outlineSymbol.Outline.DrawPath(g, gp, 1D);
-                        gp.Dispose();
-                    }
+            foreach (IPattern outlineSymbol in Background.Patterns)
+            {
+                if (!outlineSymbol.UseOutline)
+                    continue;
+
+                using (GraphicsPath gp = new GraphicsPath())
+                {
+                    gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
+                    gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
+                    gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
+                    gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
+                    outlineSymbol.Outline.DrawPath(g, gp, 1D);
                 }
             }
         }
 
         /// <summary>
-        /// Returns true if the point in paper coordinants intersects with the rectangle of the element
+        /// Returns true if the point in paper coordinants intersects with the rectangle of the element.
         /// </summary>
-        /// <param name="paperPoint"></param>
-        /// <returns></returns>
+        /// <param name="paperPoint">Point to check for intersection.</param>
+        /// <returns>True if the point intersects with this.</returns>
         public bool IntersectsWith(PointF paperPoint)
         {
             return IntersectsWith(new RectangleF(paperPoint.X, paperPoint.Y, 0F, 0F));
         }
 
         /// <summary>
-        /// Returns true if the rectangle in paper coordinants intersects with the rectangle of the the element
+        /// Returns true if the rectangle in paper coordinants intersects with the rectangle of the element.
         /// </summary>
-        /// <param name="paperRectangle"></param>
-        /// <returns></returns>
+        /// <param name="paperRectangle">Rectangle to check for intersection.</param>
+        /// <returns>True, if the rectangle intersects with this.</returns>
         public bool IntersectsWith(RectangleF paperRectangle)
         {
             return new RectangleF(LocationF, Size).IntersectsWith(paperRectangle);
@@ -361,8 +367,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This returns the objects name as a string
+        /// This returns the objects name as a string.
         /// </summary>
+        /// <returns>The objects name.</returns>
         public override string ToString()
         {
             return _name;
@@ -373,8 +380,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnInvalidate()
         {
-            var h = Invalidated;
-            if (h != null) h(this, EventArgs.Empty);
+            Invalidated?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -382,8 +388,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnSizeChanged()
         {
-            var h = SizeChanged;
-            if (h != null) h(this, EventArgs.Empty);
+            SizeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -391,12 +396,11 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnThumbnailChanged()
         {
-            var h = ThumbnailChanged;
-            if (h != null) h(this, EventArgs.Empty);
+            ThumbnailChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// Updates the thumbnail when needed
+        /// Updates the thumbnail when needed.
         /// </summary>
         protected virtual void UpdateThumbnail()
         {
@@ -427,9 +431,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires when the background is modified
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _background_ItemChanged(object sender, EventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void BackgroundItemChanged(object sender, EventArgs e)
         {
             OnInvalidate();
             UpdateThumbnail();

@@ -35,19 +35,13 @@ using OSGeo.OGR;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
+    /// <summary>
+    /// GDAL configuration.
+    /// </summary>
     public static partial class GdalConfiguration
     {
         private static volatile bool _configuredOgr;
         private static volatile bool _configuredGdal;
-
-        /// <summary>
-        /// Function to determine which platform we're on
-        /// </summary>
-        private static string GetPlatform()
-        {
-            return IntPtr.Size == 4 ? "x86" : "x64";
-        }
-
 
         /// <summary>
         /// Construction of Gdal/Ogr
@@ -59,7 +53,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
             if (string.IsNullOrEmpty(executingDirectory))
                 throw new InvalidOperationException("cannot get executing directory");
-
 
             var gdalPath = Path.Combine(executingDirectory, "gdal");
             var nativePath = Path.Combine(gdalPath, GetPlatform());
@@ -115,6 +108,15 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             _configuredGdal = true;
 
             PrintDriversGdal();
+        }
+
+        /// <summary>
+        /// Function to determine which platform we're on.
+        /// </summary>
+        /// <returns>The plattform string</returns>
+        private static string GetPlatform()
+        {
+            return IntPtr.Size == 4 ? "x86" : "x64";
         }
 
         private static void PrintDriversOgr()

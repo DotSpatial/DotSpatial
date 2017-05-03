@@ -44,7 +44,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutLegend"/> class.
         /// </summary>
         public LayoutLegend()
         {
@@ -64,7 +64,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the color of the text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public virtual Color Color
         {
             get
@@ -83,7 +84,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the font used to draw this text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public virtual Font Font
         {
             get
@@ -102,7 +104,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the layers to include in the legend
         /// </summary>
-        [Browsable(true), Category("Symbol"), Editor(typeof(LayoutLayerEditor), typeof(UITypeEditor))]
+        [Browsable(true)]
+        [Category("Symbol")]
+        [Editor(typeof(LayoutLayerEditor), typeof(UITypeEditor))]
         public virtual List<int> Layers
         {
             get
@@ -164,7 +168,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the layoutmap to use to base the legend on
         /// </summary>
-        [Browsable(true), Category("Symbol"), Editor(typeof(LayoutMapEditor), typeof(UITypeEditor))]
+        [Browsable(true)]
+        [Category("Symbol")]
+        [Editor(typeof(LayoutMapEditor), typeof(UITypeEditor))]
         public virtual LayoutMap Map
         {
             get
@@ -202,7 +208,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the number of columns to use when rendering the legend
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public virtual int NumColumns
         {
             get
@@ -221,7 +228,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the hinting used to draw the text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public virtual TextRenderingHint TextHint
         {
             get
@@ -242,14 +250,14 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
+        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
         /// <param name="g">The graphics object to draw to</param>
         /// <param name="printing">A boolean value indicating if the Draw code is being called to print</param>
         public override void Draw(Graphics g, bool printing)
         {
             // Make sure we don't get any null reference exceptions
-            if (_layoutMap == null || _layoutMap.MapControl == null || _layoutMap.MapControl.Legend == null) return;
+            if (_layoutMap?.MapControl?.Legend == null) return;
 
             // Makes sure that it is big enough to be drawn to
             if (Size.Width < 1 || Size.Height < 1) return;
@@ -298,30 +306,33 @@ namespace DotSpatial.Controls
 
         private void DrawLegendList(Graphics g, IEnumerable<ILegendItem> items, SizeF itemSize, ref int col, ref int row, ref int maxCol, ref int maxRow)
         {
-            // If we are passed the max size return;
-            if (col > maxCol)
+            // If items are null or we are passed the max size return;
+            if (items == null || col > maxCol)
                 return;
 
-            if (items == null || !items.Any()) return;
             List<ILegendItem> itemList = items.ToList();
 
-            for (int i = 0; i < itemList.Count; i++)
+            foreach (ILegendItem item in itemList)
             {
-                if (itemList[i].LegendItems == null)
+                if (item.LegendItems == null)
                 {
-                    DrawLegendItem(g, itemList[i], itemSize, ref col, ref row, ref maxCol, ref maxRow);
+                    DrawLegendItem(g, item, itemSize, ref col, ref row, ref maxCol, ref maxRow);
                 }
                 else
-                    DrawLegendList(g, itemList[i].LegendItems, itemSize, ref col, ref row, ref maxCol, ref maxRow);
+                {
+                    DrawLegendList(g, item.LegendItems, itemSize, ref col, ref row, ref maxCol, ref maxRow);
+                }
             }
         }
 
         /// <summary>
-        /// Updates the scale bar if the map is deleted
+        /// Updates the scale bar if the map is deleted.
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void LayoutControlElementsChanged(object sender, EventArgs e)
         {
-            if (_layoutControl.LayoutElements.Contains(_layoutMap) == false)
+            if (!_layoutControl.LayoutElements.Contains(_layoutMap))
                 Map = null;
         }
 

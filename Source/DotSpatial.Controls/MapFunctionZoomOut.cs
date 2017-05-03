@@ -24,8 +24,9 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of SelectTool
+        /// Initializes a new instance of the <see cref="MapFunctionZoomOut"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionZoomOut(IMap inMap)
             : base(inMap)
         {
@@ -39,7 +40,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles the Mouse Up situation
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (!(e.Map.IsZoomedToMaxExtent && e.Button == MouseButtons.Left))

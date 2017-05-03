@@ -21,29 +21,23 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Layout Layer Editor allows the user to select which layers appear in the legend
+    /// Layout Layer Editor allows the user to select which layers appear in the legend.
     /// </summary>
     internal class LayoutLayerEditor : UITypeEditor
     {
         #region Fields
 
-        IWindowsFormsEditorService _dialogProvider;
+        private IWindowsFormsEditorService _dialogProvider;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Ensures that we can widen the drop-down without having to close the drop down,
+        /// Gets a value indicating whether we can widen the drop-down without having to close the drop down,
         /// widen the control, and re-open it again.
         /// </summary>
-        public override bool IsDropDownResizable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsDropDownResizable => false;
 
         #endregion
 
@@ -52,15 +46,15 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Edits a value based on some user input which is collected from a character control.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="provider"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="context">Contains the layout legend.</param>
+        /// <param name="provider">The service provider.</param>
+        /// <param name="value">List with the items that should be added to the CheckedListBox.</param>
+        /// <returns>List with the items.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _dialogProvider = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+            _dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             List<int> layerList = new List<int>();
-            LayoutLegend legend = context.Instance as LayoutLegend;
+            LayoutLegend legend = context?.Instance as LayoutLegend;
             LayoutMap map = null;
             if (legend != null)
                 map = legend.Map;
@@ -76,7 +70,7 @@ namespace DotSpatial.Controls
                     lb.Items.Add(map.MapControl.Layers[i].LegendText, originalList.Contains(i));
             }
 
-            if (_dialogProvider != null) _dialogProvider.DropDownControl(lb);
+            _dialogProvider?.DropDownControl(lb);
 
             for (int i = 0; i < lb.Items.Count; i++)
             {
@@ -90,8 +84,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the UITypeEditorEditStyle, which in this case is drop down.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">not used</param>
+        /// <returns>The UITypeEditorEditStyle</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;

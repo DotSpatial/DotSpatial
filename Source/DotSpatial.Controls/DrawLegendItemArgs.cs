@@ -24,7 +24,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawLegendItemArgs.
+        /// Initializes a new instance of the <see cref="DrawLegendItemArgs"/> class.
         /// </summary>
         /// <param name="g">A Graphics surface to draw on.</param>
         /// <param name="item">The legend item to draw.</param>
@@ -43,17 +43,17 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the rectangle that limits where drawing should occur.
+        /// Gets or sets the rectangle that limits where drawing should occur.
         /// </summary>
         public Rectangle ClipRectangle { get; protected set; }
 
         /// <summary>
-        /// Gets the graphics object for drawing to.
+        /// Gets or sets the graphics object for drawing to.
         /// </summary>
         public Graphics Graphics { get; protected set; }
 
         /// <summary>
-        /// Gets the interface for the legend item being drawn.
+        /// Gets or sets the interface for the legend item being drawn.
         /// </summary>
         public ILegendItem Item { get; protected set; }
 

@@ -151,7 +151,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The argument %S was null.  Try testing for the null case before calling this method..
+        ///   Looks up a localized string similar to The argument %S was null. Try testing for the null case before calling this method..
         /// </summary>
         internal static string ArgumentNull_S {
             get {
@@ -367,7 +367,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The current element was not defined.  Before attempting to read the element, first assign the value of the current XML Element to read..
+        ///   Looks up a localized string similar to The current element was not defined. Before attempting to read the element, first assign the value of the current XML Element to read..
         /// </summary>
         internal static string CurrentElementNotSpecified {
             get {
@@ -628,7 +628,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The feature type cannot be changed here.  Try creating a new feature of the appropriate type..
+        ///   Looks up a localized string similar to The feature type cannot be changed here. Try creating a new feature of the appropriate type..
         /// </summary>
         internal static string FeatureTypeCannotChange {
             get {
@@ -682,7 +682,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The FeatureType was not specified.  Please specify a featuretype before attempting to call this method..
+        ///   Looks up a localized string similar to The FeatureType was not specified. Please specify a featuretype before attempting to call this method..
         /// </summary>
         internal static string FeaturetypeUnspecified {
             get {
@@ -790,7 +790,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The fileName %S already exists.  Do you wish to overwrite it?.
+        ///   Looks up a localized string similar to The fileName %S already exists. Do you wish to overwrite it?.
         /// </summary>
         internal static string FileExists_S {
             get {
@@ -862,7 +862,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file was too large to fit into memory all at once.  Try using a DataSource instead..
+        ///   Looks up a localized string similar to The file was too large to fit into memory all at once. Try using a DataSource instead..
         /// </summary>
         internal static string FileTooLarge {
             get {
@@ -979,7 +979,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value entered was not understood.  Please use either numbers or syntax &apos;start - end&apos;, e.g. &apos;1-5&apos;.
+        ///   Looks up a localized string similar to The value entered was not understood. Please use either numbers or syntax &apos;start - end&apos;, e.g. &apos;1-5&apos;.
         /// </summary>
         internal static string InvalidNumberFormat {
             get {
@@ -1212,6 +1212,24 @@ namespace DotSpatial.Controls {
         internal static string LayoutInsertMenuStripScaleBar {
             get {
                 return ResourceManager.GetString("LayoutInsertMenuStripScaleBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing MapControl.
+        /// </summary>
+        internal static string LayoutInsertToolStrip_MissingMapControl {
+            get {
+                return ResourceManager.GetString("LayoutInsertToolStrip_MissingMapControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to add map without associated MapControl..
+        /// </summary>
+        internal static string LayoutInsertToolStrip_UnableToAddMapWithoutAssociatedMapControl {
+            get {
+                return ResourceManager.GetString("LayoutInsertToolStrip_UnableToAddMapWithoutAssociatedMapControl", resourceCulture);
             }
         }
         
@@ -1776,7 +1794,17 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No layers are currently selectable layers active in the legend.  Select the layer or group in the legend for which selection should occur..
+        ///   Looks up a localized string similar to These layers were skipped:
+        ///{0}.
+        /// </summary>
+        internal static string MapFrameProjectionDialog_LayersWereSkipped {
+            get {
+                return ResourceManager.GetString("MapFrameProjectionDialog_LayersWereSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No layers are currently selectable layers active in the legend. Select the layer or group in the legend for which selection should occur..
         /// </summary>
         internal static string MapFunctionSelect_NoSelectableLayer {
             get {
@@ -1785,7 +1813,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was no selected feature layer in the legend to clarify which features to delete.  Please select a layer or group in the legend..
+        ///   Looks up a localized string similar to There was no selected feature layer in the legend to clarify which features to delete. Please select a layer or group in the legend..
         /// </summary>
         internal static string MapFunctionSelect_OnKeyDown_No_Deletable_Layers {
             get {
@@ -1799,6 +1827,24 @@ namespace DotSpatial.Controls {
         internal static string MapLayers {
             get {
                 return ResourceManager.GetString("MapLayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool could not be created.
+        /// </summary>
+        internal static string Modeler_ToolCouldNotBeCreated {
+            get {
+                return ResourceManager.GetString("Modeler_ToolCouldNotBeCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool version mismatch.
+        /// </summary>
+        internal static string Modeler_ToolVersionMismatch {
+            get {
+                return ResourceManager.GetString("Modeler_ToolVersionMismatch", resourceCulture);
             }
         }
         
@@ -1826,6 +1872,15 @@ namespace DotSpatial.Controls {
         internal static string ModelerForm_DotSpatialModelerFileName {
             get {
                 return ResourceManager.GetString("ModelerForm_DotSpatialModelerFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DotSpatial Modeler.
+        /// </summary>
+        internal static string ModelerSaveDialogTitle {
+            get {
+                return ResourceManager.GetString("ModelerSaveDialogTitle", resourceCulture);
             }
         }
         
@@ -1929,7 +1984,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are more than 100 unique values.  Are you sure you want to continue?.
+        ///   Looks up a localized string similar to There are more than 100 unique values. Are you sure you want to continue?.
         /// </summary>
         internal static string MoreThan100UniqueValues {
             get {
@@ -2046,7 +2101,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opacity controls how transparent the item is.  A 0 is fully transparent, while 1 is fully opaque..
+        ///   Looks up a localized string similar to Opacity controls how transparent the item is. A 0 is fully transparent, while 1 is fully opaque..
         /// </summary>
         internal static string Opacity {
             get {
@@ -2118,7 +2173,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value you entered could not be parsed into a %S.  Make sure the value is in the valid range..
+        ///   Looks up a localized string similar to The value you entered could not be parsed into a %S. Make sure the value is in the valid range..
         /// </summary>
         internal static string ParseFailed_S {
             get {
@@ -2136,7 +2191,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The desired length of %S1 was too long.  The total length was %S2 and the offset was %S3..
+        ///   Looks up a localized string similar to The desired length of %S1 was too long. The total length was %S2 and the offset was %S3..
         /// </summary>
         internal static string PngInsuficientLengthException {
             get {
@@ -2361,7 +2416,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No feature layers were selected in the legend.  Select the layer to use..
+        ///   Looks up a localized string similar to No feature layers were selected in the legend. Select the layer to use..
         /// </summary>
         internal static string SelectFeatures {
             get {
@@ -2397,7 +2452,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fields that are the string datatype cannot be converted to a raster.  Do you wish to use the FID value instead?.
+        ///   Looks up a localized string similar to Fields that are the string datatype cannot be converted to a raster. Do you wish to use the FID value instead?.
         /// </summary>
         internal static string StringFieldInvalid {
             get {
@@ -2501,6 +2556,15 @@ namespace DotSpatial.Controls {
         internal static string View_Group {
             get {
                 return ResourceManager.GetString("View_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         

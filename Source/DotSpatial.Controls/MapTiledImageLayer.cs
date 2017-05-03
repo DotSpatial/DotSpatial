@@ -28,8 +28,9 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of MapTiledImageLayer
+        /// Initializes a new instance of the <see cref="MapTiledImageLayer"/> class.
         /// </summary>
+        /// <param name="baseImage">The image that is the base of this layer.</param>
         public MapTiledImageLayer(ITiledImage baseImage)
             : base(baseImage)
         {
@@ -41,8 +42,8 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This will draw any features that intersect this region.  To specify the features
-        /// directly, use OnDrawFeatures.  This will not clear existing buffer content.
+        /// This will draw any features that intersect this region. To specify the features
+        /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
@@ -61,12 +62,12 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This draws to the back buffer.  If the Backbuffer doesn't exist, this will create one.
+        /// This draws to the back buffer. If the back buffer doesn't exist, this will create one.
         /// This will not flip the back buffer to the front.
         /// </summary>
-        /// <param name="args"></param>
-        /// <param name="regions"></param>
-        /// <param name="clipRectangles"></param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
+        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="clipRectangles">The clip rectangles.</param>
         private void DrawWindows(MapArgs args, IList<Extent> regions, IList<Rectangle> clipRectangles)
         {
             Graphics g = args.Device;

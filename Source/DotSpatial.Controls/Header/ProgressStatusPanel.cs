@@ -1,5 +1,8 @@
 ﻿namespace DotSpatial.Controls.Header
 {
+    /// <summary>
+    /// Status panel that can show a progress.
+    /// </summary>
     public class ProgressStatusPanel : StatusPanel
     {
         #region Fields

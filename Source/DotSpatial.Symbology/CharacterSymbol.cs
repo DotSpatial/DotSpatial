@@ -203,7 +203,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Supports serialization even though Colors can't be serialized
         /// </summary>
-        [XmlElement("Color"), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [XmlElement("Color")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Serialize("XmlColor")]
         public string XmlColor
         {
@@ -214,8 +216,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the unicode category for this character.
         /// </summary>
-        [XmlIgnore, DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-         Description("Gets the unicode category for this character.")]
+        [XmlIgnore]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("Gets the unicode category for this character.")]
         public UnicodeCategory Category
         {
             get { return char.GetUnicodeCategory(_character); }
@@ -236,8 +239,9 @@ namespace DotSpatial.Symbology
         /// Unicode characters consist of 2 bytes.  This represents the first byte,
         /// which can be thought of as specifying a typeset.
         /// </summary>
-        [XmlIgnore, DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-         Description("Gets or sets the upper unicode byte, or character set.")]
+        [XmlIgnore]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("Gets or sets the upper unicode byte, or character set.")]
         public byte CharacterSet
         {
             get { return (byte)(_character / 256); }
@@ -271,7 +275,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the color
         /// </summary>
-        [XmlIgnore, Description("Gets or sets the color")]
+        [XmlIgnore]
+        [Description("Gets or sets the color")]
         public Color Color
         {
             get { return _color; }

@@ -129,8 +129,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a float specifying how strong the ambient directional light is.  This should probably be about 1.
         /// </summary>
-        [Category("Shaded Relief"), Description("Gets or sets a float specifying how strong the ambient directional light is.  This should probably be about 1."),
-         Serialize("AmbientIntensity")]
+        [Category("Shaded Relief")]
+        [Description("Gets or sets a float specifying how strong the ambient directional light is.  This should probably be about 1.")]
+        [Serialize("AmbientIntensity")]
         public float AmbientIntensity
         {
             get { return _ambientIntensity; }
@@ -147,8 +148,9 @@ namespace DotSpatial.Symbology
         /// convert the units of elevation into the same units that the latitude and longitude are stored in.
         /// To convert feet to decimal degrees is around a factor of .00000274
         /// </summary>
-        [Category("Shaded Relief"), Description("This is kept separate from extrusion to reduce confusion.  This is a conversion factor that will convert the units of elevation into the same units that the latitude and longitude are stored in.  To convert feet to decimal degrees is around a factor of .00000274"),
-         Serialize("ElevationFactor")]
+        [Category("Shaded Relief")]
+        [Description("This is kept separate from extrusion to reduce confusion.  This is a conversion factor that will convert the units of elevation into the same units that the latitude and longitude are stored in.  To convert feet to decimal degrees is around a factor of .00000274")]
+        [Serialize("ElevationFactor")]
         public float ElevationFactor
         {
             get { return _elevationFactor; }
@@ -165,8 +167,9 @@ namespace DotSpatial.Symbology
         /// of 1 should show the mountains at their true elevations, presuming the ElevationFactor is
         /// correct.  A value of 0 would be totally flat, while 2 would be twice the value.
         /// </summary>
-        [Category("Shaded Relief"), Serialize("Extrusion"),
-         Description("A float value expression that modifies the height of the apparent shaded relief.  A value of 1 should show the mountains at their true elevations, presuming the ElevationFactor is correct.  A value of 0 would be totally flat, while 2 would be twice the value.")]
+        [Category("Shaded Relief")]
+        [Serialize("Extrusion")]
+        [Description("A float value expression that modifies the height of the apparent shaded relief.  A value of 1 should show the mountains at their true elevations, presuming the ElevationFactor is correct.  A value of 0 would be totally flat, while 2 would be twice the value.")]
         public float Extrusion
         {
             get { return _extrusion; }
@@ -181,8 +184,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean value indicating whether the ShadedRelief should be used or not.
         /// </summary>
-        [Category("Shaded Relief"), Serialize("IsUsed"),
-         Description("Gets or sets a boolean value indicating whether the ShadedRelief should be used or not.")]
+        [Category("Shaded Relief")]
+        [Serialize("IsUsed")]
+        [Description("Gets or sets a boolean value indicating whether the ShadedRelief should be used or not.")]
         public bool IsUsed
         {
             get { return _isUsed; }
@@ -196,9 +200,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the zenith angle for the light direction in degrees from 0 (at the horizon) to 90 (straight up).
         /// </summary>
-        [Category("Shaded Relief"), Serialize("ZenithAngle"),
-            // Editor(typeof(ZenithEditor), typeof(UITypeEditor)),
-         Description("Gets or sets the zenith angle for the light direction in degrees from 0 (at the horizon) to 90 (straight up).")]
+        [Category("Shaded Relief")]
+        [Serialize("ZenithAngle")]
+        [Description("Gets or sets the zenith angle for the light direction in degrees from 0 (at the horizon) to 90 (straight up).")]
         public double ZenithAngle
         {
             get { return _zenithAngle; }
@@ -213,9 +217,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a double that represents the light direction in degrees clockwise from North
         /// </summary>
-        [Category("Shaded Relief"),
-            // Editor(typeof(AzimuthAngleEditor), typeof(UITypeEditor)), Serialize("LightDirection"),
-         Description("The azimuth angle in degrees for the light direction.  The angle is measured clockwise from North.")]
+        [Category("Shaded Relief")]
+        [Description("The azimuth angle in degrees for the light direction.  The angle is measured clockwise from North.")]
         public double LightDirection
         {
             get { return _lightDirection; }
@@ -230,8 +233,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This specifies a float that should probably be around 1, which controls the light intensity.
         /// </summary>
-        [Category("Shaded Relief"), Serialize("LightIntensity"),
-         Description("This specifies a float that should probably be around 1, which controls the light intensity.")]
+        [Category("Shaded Relief")]
+        [Serialize("LightIntensity")]
+        [Description("This specifies a float that should probably be around 1, which controls the light intensity.")]
         public float LightIntensity
         {
             get { return _lightIntensity; }
@@ -247,7 +251,8 @@ namespace DotSpatial.Symbology
         /// Gets whether or not the values have been changed on this ShadedRelief more recently than
         /// a HillShade map has been calculated from it.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool HasChanged
         {
             get { return _hasChanged; }

@@ -59,7 +59,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of Legend.
+        /// Initializes a new instance of the <see cref="Legend"/> class.
         /// </summary>
         public Legend()
         {
@@ -69,10 +69,10 @@ namespace DotSpatial.Controls
             _contextMenu = new ContextMenu();
             _selection = new HashSet<ILegendItem>();
             _editBox = new TextBox
-                       {
-                           Parent = this,
-                           Visible = false
-                       };
+            {
+                Parent = this,
+                Visible = false
+            };
             _editBox.LostFocus += EditBoxLostFocus;
             Indentation = 30;
             _legendBoxes = new List<LegendBox>();
@@ -84,9 +84,9 @@ namespace DotSpatial.Controls
             // Adding a legend ensures that symbology dialogs will be properly launched.
             // Otherwise, an ordinary map may not even need them.
             SharedEventHandlers = new SymbologyEventManager
-                                  {
-                                      Owner = FindForm()
-                                  };
+            {
+                Owner = FindForm()
+            };
         }
 
         #endregion
@@ -131,13 +131,15 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets an integer representing how far child nodes are indented when compared to the parent nodes.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets the indentation in pixels between a parent item and its children.")]
+        [Category("Appearance")]
+        [Description("Gets or sets the indentation in pixels between a parent item and its children.")]
         public int Indentation { get; set; }
 
         /// <summary>
-        /// This calculates a height for each item based on the height of the font.
+        /// Gets a height for each item based on the height of the font.
         /// </summary>
-        [Category("Appearance"), Description("Gets the height (which depends on the font) for each item.")]
+        [Category("Appearance")]
+        [Description("Gets the height (which depends on the font) for each item.")]
         public int ItemHeight
         {
             get
@@ -150,19 +152,22 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the progress handler for any progress messages like re-drawing images for rasters
         /// </summary>
-        [Category("Controls"), Description("Gets or sets the progress handler for any progress messages like re-drawing images for rasters")]
+        [Category("Controls")]
+        [Description("Gets or sets the progress handler for any progress messages like re-drawing images for rasters")]
         public IProgressHandler ProgressHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the list of map frames being displayed by this legend.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<ILegendItem> RootNodes { get; set; }
 
         /// <summary>
         /// Gets or sets the selection font color
         /// </summary>
-        [Category("Appearance"), Description("Specifies the color of the font in selected legend items.")]
+        [Category("Appearance")]
+        [Description("Specifies the color of the font in selected legend items.")]
         public Color SelectionFontColor
         {
             get
@@ -173,16 +178,17 @@ namespace DotSpatial.Controls
             set
             {
                 _selectionFontColor = value;
-                if (_selectionFontBrush != null) _selectionFontBrush.Dispose();
+                _selectionFontBrush?.Dispose();
                 _selectionFontBrush = new SolidBrush(_selectionFontColor);
                 IsInitialized = false;
             }
         }
 
         /// <summary>
-        /// Specifies the principal color that a selected text box is highlighted with.
+        /// Gets or sets the principal color that a selected text box is highlighted with.
         /// </summary>
-        [Category("Appearance"), Description("Specifies the color that a selected text box is highlighted with.")]
+        [Category("Appearance")]
+        [Description("Specifies the color that a selected text box is highlighted with.")]
         public Color SelectionHighlight
         {
             get
@@ -193,7 +199,7 @@ namespace DotSpatial.Controls
             set
             {
                 _selectionHighlight = value;
-                if (_highlightBorderPen != null) _highlightBorderPen.Dispose();
+                _highlightBorderPen?.Dispose();
                 float med = _selectionHighlight.GetBrightness();
                 float border = med - .25f;
                 if (border < 0f) border = 0f;
@@ -204,19 +210,14 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the SharedEventHandler that is used for working with shared layer events.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SymbologyEventManager SharedEventHandlers { get; set; }
 
         /// <summary>
-        /// Retrieves the bottom box in the legend
+        /// Gets the bottom box in the legend.
         /// </summary>
-        private LegendBox BottomBox
-        {
-            get
-            {
-                return _legendBoxes[_legendBoxes.Count - 1];
-            }
-        }
+        private LegendBox BottomBox => _legendBoxes[_legendBoxes.Count - 1];
 
         #endregion
 
@@ -226,7 +227,7 @@ namespace DotSpatial.Controls
         /// Adds a map frame as a root node, and links an event handler to update
         /// when the mapframe triggers an ItemChanged event.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">The map frame that gets added.</param>
         public void AddMapFrame(IFrame mapFrame)
         {
             mapFrame.IsSelected = true;
@@ -240,7 +241,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Un-selectes any selected items in the legend
+        /// Un-selectes any selected items in the legend.
         /// </summary>
         public void ClearSelection()
         {
@@ -249,10 +250,7 @@ namespace DotSpatial.Controls
             if (list.Count > 0)
             {
                 parentMap = list[0].ParentMapFrame();
-                if (parentMap != null)
-                {
-                    parentMap.SuspendEvents();
-                }
+                parentMap?.SuspendEvents();
             }
 
             foreach (var lb in list)
@@ -261,18 +259,12 @@ namespace DotSpatial.Controls
             }
 
             _selection.Clear();
-
-            if (parentMap != null)
-            {
-                parentMap.ResumeEvents();
-            }
-
+            parentMap?.ResumeEvents();
             RefreshNodes();
         }
 
         /// <summary>
-        /// Given the current list of Maps or 3DMaps, it
-        /// rebuilds the treeview nodes
+        /// Given the current list of Maps or 3DMaps, it rebuilds the treeview nodes.
         /// </summary>
         public void RefreshNodes()
         {
@@ -286,31 +278,22 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Removes the specified map frame if it is a root node.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">Map frame that gets removed.</param>
         /// <param name="preventRefresh">Boolean, if true, removing the map frame will not automatically force a refresh of the legend.</param>
         public void RemoveMapFrame(IFrame mapFrame, bool preventRefresh)
         {
             RootNodes.Remove(mapFrame);
-            if (RootNodes.Contains(mapFrame) == false) OnExcludeMapFrame(mapFrame);
+            if (!RootNodes.Contains(mapFrame)) OnExcludeMapFrame(mapFrame);
             if (preventRefresh) return;
             RefreshNodes();
         }
 
         /// <summary>
-        /// Overrides the drawing method to account for drawing lines
-        /// when an item is being dragged to a new position.
+        /// Overrides the drawing method to account for drawing lines when an item is being dragged to a new position.
         /// </summary>
         /// <param name="e">A PaintEventArgs</param>
         protected override void OnDraw(PaintEventArgs e)
         {
-            // MessageBox.Show("OnDraw");
-            // Rectangle clip = e.ClipRectangle;
-            // if (clip.IsEmpty || _isResizing) clip = ClientRectangle;
-            // Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
-            // Graphics g = Graphics.FromImage(stencil);
-            // Brush b = new SolidBrush(BackColor);
-            // g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
-            // b.Dispose();
             base.OnDraw(e);
 
             using (var pen = new Pen(BackColor))
@@ -328,9 +311,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Occurs when we need to no longer listen to the map frame events
+        /// Occurs when we need to no longer listen to the map frame events.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">Map frame that gets excluded.</param>
         protected virtual void OnExcludeMapFrame(IFrame mapFrame)
         {
             mapFrame.ItemChanged -= MapFrameItemChanged;
@@ -341,8 +324,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Also hides the edit box so that it doesn't seem displaced from the item
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         protected override void OnHorizontalScroll(object sender, ScrollEventArgs e)
         {
             HideEditBox();
@@ -350,9 +333,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Occurs when linking the map frame
+        /// Occurs when linking the map frame.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">Map frame that gets included.</param>
         protected virtual void OnIncludeMapFrame(IFrame mapFrame)
         {
             mapFrame.ItemChanged += MapFrameItemChanged;
@@ -363,7 +346,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Extends initialize to draw "non-selected" elements.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnInitialize(PaintEventArgs e)
         {
             // draw standard background image to buffer
@@ -436,7 +419,7 @@ namespace DotSpatial.Controls
                     tempTopLeft.Y += dY;
                 }
 
-                tempTopLeft.Y += (ih - Font.Height) / (float)2;
+                tempTopLeft.Y += (ih - Font.Height) / 2F;
 
                 itemBox.Textbox = new Rectangle((int)tempTopLeft.X, (int)topLeft.Y + dY, width, ItemHeight);
                 if (itemBox.Item.IsSelected)
@@ -495,7 +478,7 @@ namespace DotSpatial.Controls
         /// <param name="e">An ItemMouseEventArgs</param>
         protected virtual void OnItemMouseDown(ItemMouseEventArgs e)
         {
-            if (ItemMouseDown != null) ItemMouseDown(this, e);
+            ItemMouseDown?.Invoke(this, e);
         }
 
         /// <summary>
@@ -504,22 +487,19 @@ namespace DotSpatial.Controls
         /// <param name="e">An ItemMouseEventArgs</param>
         protected virtual void OnItemMouseMove(ItemMouseEventArgs e)
         {
-            if (ItemMouseMove != null) ItemMouseMove(this, e);
+            ItemMouseMove?.Invoke(this, e);
         }
 
         /// <summary>
         /// Checks for checkbox changes and fires the ItemMouseUp event.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event  args.</param>
         protected virtual void OnItemMouseUp(ItemMouseEventArgs e)
         {
-            if (ItemMouseUp != null) ItemMouseUp(this, e);
+            ItemMouseUp?.Invoke(this, e);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
+        /// <inheritdoc />
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
             _wasDoubleClick = true;
@@ -638,12 +618,11 @@ namespace DotSpatial.Controls
                     if (currentBox == null) _dragTarget = BottomBox;
                 }
 
-                if (_previousLine.IsEmpty == false) Invalidate(_previousLine);
+                if (!_previousLine.IsEmpty) Invalidate(_previousLine);
                 _previousLine = Rectangle.Empty;
 
                 if (_dragTarget != null && _dragItem != null && _dragTarget != _dragItem)
                 {
-                    LegendBox boxOverLine;
                     int left = 0;
                     LegendBox container = BoxFromItem(_dragTarget.Item.GetValidContainerFor(_dragItem.Item));
                     if (container != null)
@@ -651,15 +630,7 @@ namespace DotSpatial.Controls
                         left = (container.Indent + 1) * Indentation;
                     }
 
-                    if (_dragTarget.Item.CanReceiveItem(_dragItem.Item))
-                    {
-                        boxOverLine = _dragTarget;
-                    }
-                    else
-                    {
-                        boxOverLine = BoxFromItem(_dragTarget.Item.BottomMember());
-                    }
-
+                    LegendBox boxOverLine = _dragTarget.Item.CanReceiveItem(_dragItem.Item) ? _dragTarget : BoxFromItem(_dragTarget.Item.BottomMember());
                     if (boxOverLine == null)
                     {
                         _previousLine = Rectangle.Empty;
@@ -675,14 +646,14 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                if (cursorHandled == false)
+                if (!cursorHandled)
                 {
                     Cursor = Cursors.No;
                     cursorHandled = true;
                 }
             }
 
-            if (cursorHandled == false)
+            if (!cursorHandled)
             {
                 Cursor = Cursors.Arrow;
             }
@@ -693,7 +664,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Checks the Mouse Up event to see if it occurs inside a legend item.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
             Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
@@ -724,7 +695,7 @@ namespace DotSpatial.Controls
                             lyr.LockDispose();
 
                             // when original location is inside group, remove layer from the group.
-                            if (grp != null) grp.Remove(lyr);
+                            grp?.Remove(lyr);
                             int index = _dragTarget.Item.InsertIndex(_dragItem.Item);
                             if (index == -1) index = 0;
                             grp = potentialParent as IGroup;
@@ -756,19 +727,18 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OrderChanged Event
+        /// Fires the OrderChanged Event.
         /// </summary>
         protected virtual void OnOrderChanged()
         {
-            var h = OrderChanged;
-            if (h != null) h(this, EventArgs.Empty);
+            OrderChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// Also hides the edit box so that it doesn't seme displaced from the item
+        /// Also hides the edit box so that it doesn't seme displaced from the item.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         protected override void OnVerticalScroll(object sender, ScrollEventArgs e)
         {
             HideEditBox();
@@ -778,8 +748,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Recursive add method to handle nesting of menu items.
         /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="mi"></param>
+        /// <param name="parent">The parent</param>
+        /// <param name="mi">The menu item.</param>
         private static void AddMenuItem(Menu.MenuItemCollection parent, SymbologyMenuItem mi)
         {
             MenuItem m;
@@ -821,7 +791,7 @@ namespace DotSpatial.Controls
             if (e.ItemBox.ExpandBox.Contains(loc))
             {
                 e.ItemBox.Item.IsExpanded = !e.ItemBox.Item.IsExpanded;
-                if (ExpandBoxMouseDown != null) ExpandBoxMouseDown(this, e);
+                ExpandBoxMouseDown?.Invoke(this, e);
 
                 ResetLegend();
                 return;
@@ -892,7 +862,7 @@ namespace DotSpatial.Controls
                         e.ItemBox.Item.Checked = !e.ItemBox.Item.Checked;
                     }
 
-                    if (CheckBoxMouseUp != null) CheckBoxMouseUp(this, e);
+                    CheckBoxMouseUp?.Invoke(this, e);
                     RefreshNodes();
                 }
 
@@ -935,8 +905,7 @@ namespace DotSpatial.Controls
         private void DrawCheckBoxes(Graphics g, ref PointF topLeft, LegendBox itemBox)
         {
             ILegendItem item = itemBox.Item;
-            if (item == null) return;
-            if (item.LegendSymbolMode != SymbolMode.Checkbox) return;
+            if (item?.LegendSymbolMode != SymbolMode.Checkbox) return;
 
             if (item.Checked)
             {
@@ -1016,7 +985,7 @@ namespace DotSpatial.Controls
             if (tH > h) y += (tH - h) / 2;
             Rectangle box = new Rectangle(x, y, w, h);
             itemBox.SymbolBox = box;
-            item.LegendSymbol_Painted(g, box);
+            item.LegendSymbolPainted(g, box);
             topLeft.X += tH + 6;
         }
 
@@ -1067,8 +1036,8 @@ namespace DotSpatial.Controls
         /// <summary>
         ///  This isn't the best way to catch this. Only items in view should trigger a refresh.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void MapFrameItemChanged(object sender, EventArgs e)
         {
             ResetLegend();
@@ -1114,7 +1083,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Checks all the legend items and calculates a "page" large enough to contain everything currently visible. 
+        /// Checks all the legend items and calculates a "page" large enough to contain everything currently visible.
         /// </summary>
         private void SizePage()
         {
@@ -1140,10 +1109,7 @@ namespace DotSpatial.Controls
             _editCategory.HighColor = _tabColorDialog.EndColor;
             ILegendItem test = _editCategory.GetParentItem();
             IRasterLayer rl = test as IRasterLayer;
-            if (rl != null)
-            {
-                rl.WriteBitmap();
-            }
+            rl?.WriteBitmap();
         }
 
         private void UpdateActions(ILegendItem mapLayer)
@@ -1153,31 +1119,31 @@ namespace DotSpatial.Controls
             var layer = mapLayer as Layer;
             if (layer != null)
             {
-                layer.LayerActions = manager == null ? null : manager.LayerActions;
+                layer.LayerActions = manager?.LayerActions;
             }
 
             var cc = mapLayer as ColorCategory;
             if (cc != null)
             {
-                cc.ColorCategoryActions = manager == null ? null : manager.ColorCategoryActions;
+                cc.ColorCategoryActions = manager?.ColorCategoryActions;
             }
 
             var fl = mapLayer as FeatureLayer;
             if (fl != null)
             {
-                fl.FeatureLayerActions = manager == null ? null : manager.FeatureLayerActions;
+                fl.FeatureLayerActions = manager?.FeatureLayerActions;
             }
 
             var il = mapLayer as ImageLayer;
             if (il != null)
             {
-                il.ImageLayerActions = manager == null ? null : manager.ImageLayerActions;
+                il.ImageLayerActions = manager?.ImageLayerActions;
             }
 
             var rl = mapLayer as RasterLayer;
             if (rl != null)
             {
-                rl.RasterLayerActions = manager == null ? null : manager.RasterLayerActions;
+                rl.RasterLayerActions = manager?.RasterLayerActions;
             }
         }
 

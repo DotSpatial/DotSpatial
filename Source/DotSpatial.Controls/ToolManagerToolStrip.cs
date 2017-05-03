@@ -28,7 +28,6 @@ namespace DotSpatial.Controls
 
         private ToolStripButton _btnNewModel;
         private bool _enableFind;
-        private ToolManager _toolManager;
         private ToolStripTextBox _txtBoxSearch;
 
         #endregion
@@ -36,7 +35,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the toolstrip
+        /// Initializes a new instance of the <see cref="ToolManagerToolStrip"/> class.
         /// </summary>
         public ToolManagerToolStrip()
         {
@@ -50,18 +49,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the ToolManager currently associated with the toolstrip
         /// </summary>
-        public ToolManager ToolManager
-        {
-            get
-            {
-                return _toolManager;
-            }
-
-            set
-            {
-                _toolManager = value;
-            }
-        }
+        public ToolManager ToolManager { get; set; }
 
         #endregion
 
@@ -71,7 +59,7 @@ namespace DotSpatial.Controls
         private void BtnNewModelClick(object sender, EventArgs e)
         {
             ModelerForm aModelerFormForm = new ModelerForm();
-            aModelerFormForm.Modeler.ToolManager = _toolManager;
+            aModelerFormForm.Modeler.ToolManager = ToolManager;
             aModelerFormForm.Modeler.CreateNewModel(false);
             aModelerFormForm.Show(this);
         }
@@ -80,14 +68,18 @@ namespace DotSpatial.Controls
         {
             SuspendLayout();
 
-            _btnNewModel = new ToolStripButton();
-            _btnNewModel.ToolTipText = MessageStrings.NewModel;
-            _btnNewModel.Image = Images.NewModel.ToBitmap();
+            _btnNewModel = new ToolStripButton
+            {
+                ToolTipText = MessageStrings.NewModel,
+                Image = Images.NewModel.ToBitmap()
+            };
             _btnNewModel.Click += BtnNewModelClick;
             Items.Add(_btnNewModel);
 
-            _txtBoxSearch = new ToolStripTextBox();
-            _txtBoxSearch.Text = MessageStrings.FindToolByName;
+            _txtBoxSearch = new ToolStripTextBox
+            {
+                Text = MessageStrings.FindToolByName
+            };
             _txtBoxSearch.TextChanged += TxtBoxSearchTextChanged;
             _txtBoxSearch.Leave += TxtBoxSearchLeave;
             _txtBoxSearch.Enter += TxtBoxSearchEnter;
@@ -108,7 +100,7 @@ namespace DotSpatial.Controls
         private void TxtBoxSearchKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
-                _toolManager.HighlightNextTool(_txtBoxSearch.Text);
+                ToolManager.HighlightNextTool(_txtBoxSearch.Text);
         }
 
         // Fires when the user leaves the find tool text box
@@ -122,7 +114,7 @@ namespace DotSpatial.Controls
         private void TxtBoxSearchTextChanged(object sender, EventArgs e)
         {
             if (_enableFind)
-                _toolManager.HighlightTool(_txtBoxSearch.Text);
+                ToolManager.HighlightTool(_txtBoxSearch.Text);
         }
 
         #endregion

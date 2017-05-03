@@ -35,7 +35,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the toolstrip
+        /// Initializes a new instance of the <see cref="LayoutInsertToolStrip"/> class.
         /// </summary>
         public LayoutInsertToolStrip()
         {
@@ -47,7 +47,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// The layout control associated with this toolstrip
+        /// Gets or sets the layout control associated with this toolstrip.
         /// </summary>
         [Browsable(false)]
         public LayoutControl LayoutControl
@@ -61,7 +61,7 @@ namespace DotSpatial.Controls
             {
                 if (value == null)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 _layoutControl = value;
@@ -73,32 +73,34 @@ namespace DotSpatial.Controls
         #region Methods
 
         // Fires the open method on the layoutcontrol
-        private void _btnBitmap_Click(object sender, EventArgs e)
+        private void BtnBitmapClick(object sender, EventArgs e)
         {
-            var ofd = new OpenFileDialog
-                      {
-                          Filter = "Images (*.png, *.jpg, *.bmp, *.gif, *.tif)|*.png;*.jpg;*.bmp;*.gif;*.tif",
-                          FilterIndex = 1,
-                          CheckFileExists = true
-                      };
-            if (ofd.ShowDialog(Parent) == DialogResult.OK)
+            using (var ofd = new OpenFileDialog
             {
-                var newBitmap = new LayoutBitmap
-                                {
-                                    Size = new SizeF(100, 100),
-                                    Filename = ofd.FileName
-                                };
-                _layoutControl.AddElementWithMouse(newBitmap);
+                Filter = @"Images (*.png, *.jpg, *.bmp, *.gif, *.tif)|*.png;*.jpg;*.bmp;*.gif;*.tif",
+                FilterIndex = 1,
+                CheckFileExists = true
+            })
+            {
+                if (ofd.ShowDialog(Parent) == DialogResult.OK)
+                {
+                    var newBitmap = new LayoutBitmap
+                    {
+                        Size = new SizeF(100, 100),
+                        Filename = ofd.FileName
+                    };
+                    _layoutControl.AddElementWithMouse(newBitmap);
+                }
             }
         }
 
-        private void _btnLegend_Click(object sender, EventArgs e)
+        private void BtnLegendClick(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(_layoutControl.CreateLegendElement());
         }
 
         // Fires the print method on the layoutcontrol
-        private void _btnMap_Click(object sender, EventArgs e)
+        private void BtnMapClick(object sender, EventArgs e)
         {
             if (_layoutControl.MapControl != null)
             {
@@ -106,30 +108,30 @@ namespace DotSpatial.Controls
             }
             else
             {
-                MessageBox.Show(Parent, "Unable to add map without associated MapControl.", "Missing MapControl", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Parent, MessageStrings.LayoutInsertToolStrip_UnableToAddMapWithoutAssociatedMapControl, MessageStrings.LayoutInsertToolStrip_MissingMapControl, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         // Fires the new method on the layoutcontrol
-        private void _btnNorthArrow_Click(object sender, EventArgs e)
+        private void BtnNorthArrowClick(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(new LayoutNorthArrow());
         }
 
         // Fires the save method on the layoutcontrol
-        private void _btnRectangle_Click(object sender, EventArgs e)
+        private void BtnRectangleClick(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(new LayoutRectangle());
         }
 
         // Adds a scale bar element to the layout and if there is already a map on the form we link it to the first one
-        private void _btnScaleBar_Click(object sender, EventArgs e)
+        private void BtnScaleBarClick(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(_layoutControl.CreateScaleBarElement());
         }
 
         // Fires the saveas method on the layoutcontrol
-        private void _btnText_Click(object sender, EventArgs e)
+        private void BtnTextClick(object sender, EventArgs e)
         {
             _layoutControl.AddElementWithMouse(new LayoutText());
         }

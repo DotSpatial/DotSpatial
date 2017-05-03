@@ -14,7 +14,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace DotSpatial.Controls
@@ -23,29 +22,12 @@ namespace DotSpatial.Controls
     /// A Brian Marchioni original toolstrip... preloaded with content.
     /// </summary>
     [ToolboxItem(false)]
-    public class ModelerToolStrip : ToolStrip
+    public partial class ModelerToolStrip : ToolStrip
     {
-        #region Fields
-
-        private ToolStripButton _btnAddData;
-        private ToolStripButton _btnDelete;
-        private ToolStripButton _btnLink;
-        private ToolStripButton _btnLoadModel;
-        private ToolStripButton _btnNewModel;
-        private ToolStripButton _btnRun;
-        private ToolStripButton _btnSaveModel;
-        private ToolStripButton _btnZoomFullExtent;
-
-        private ToolStripButton _btnZoomIn;
-        private ToolStripButton _btnZoomOut;
-        private Modeler _modeler;
-
-        #endregion
-
         #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the toolstrip
+        /// Initializes a new instance of the <see cref="ModelerToolStrip"/> class.
         /// </summary>
         public ModelerToolStrip()
         {
@@ -57,20 +39,9 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the modeler currently associated with the toolstrip
+        /// Gets or sets the modeler currently associated with the toolstrip.
         /// </summary>
-        public Modeler Modeler
-        {
-            get
-            {
-                return _modeler;
-            }
-
-            set
-            {
-                _modeler = value;
-            }
-        }
+        public Modeler Modeler { get; set; }
 
         #endregion
 
@@ -79,182 +50,58 @@ namespace DotSpatial.Controls
         // Fires when the user clicks the delete button
         private void BtnDeleteClick(object sender, EventArgs e)
         {
-            _modeler.DeleteSelectedElements();
+            Modeler.DeleteSelectedElements();
         }
 
         // Fires when the user clicks the link button
         private void BtnLinkClick(object sender, EventArgs e)
         {
-            if (_modeler.EnableLinking)
+            if (Modeler.EnableLinking)
             {
                 _btnLink.Checked = false;
-                _modeler.EnableLinking = false;
+                Modeler.EnableLinking = false;
             }
             else
             {
                 _btnLink.Checked = true;
-                _modeler.EnableLinking = true;
+                Modeler.EnableLinking = true;
             }
         }
 
         private void BtnLoadModelClick(object sender, EventArgs e)
         {
-            _modeler.LoadModel();
+            Modeler.LoadModel();
         }
 
         private void BtnRunClick(object sender, EventArgs e)
         {
             Parent.Enabled = false;
             string error;
-            _modeler.ExecuteModel(out error);
+            Modeler.ExecuteModel(out error);
             Parent.Enabled = true;
         }
 
         private void BtnSaveModelClick(object sender, EventArgs e)
         {
-            _modeler.SaveModel();
+            Modeler.SaveModel();
         }
 
         // Fires when the user clicks the zoom to full extent button
         private void BtnZoomFullExtentClick(object sender, EventArgs e)
         {
-            _modeler.ZoomFullExtent();
+            Modeler.ZoomFullExtent();
         }
 
         // Fires the zoom in control on the modeler
         private void BtnZoomInClick(object sender, EventArgs e)
         {
-            _modeler.ZoomIn();
+            Modeler.ZoomIn();
         }
 
         // Fires the zoom out control on the modeler
         private void BtnZoomOutClick(object sender, EventArgs e)
         {
-            _modeler.ZoomOut();
-        }
-
-        private void InitializeComponent()
-        {
-            SuspendLayout();
-
-            // New model button
-            _btnNewModel = new ToolStripButton();
-            _btnNewModel.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnNewModel.Image = Images.file_new;
-            _btnNewModel.ImageTransparentColor = Color.Magenta;
-            _btnNewModel.Name = "btnNewModel";
-            _btnNewModel.Size = new Size(23, 22);
-            _btnNewModel.Text = MessageStrings.ModelTipNew;
-
-            // _btnNewModel.Click
-
-            // save model button
-            _btnSaveModel = new ToolStripButton();
-            _btnSaveModel.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnSaveModel.Image = Images.file_saveas;
-            _btnSaveModel.ImageTransparentColor = Color.Magenta;
-            _btnSaveModel.Name = "btnSaveModel";
-            _btnSaveModel.Size = new Size(23, 22);
-            _btnSaveModel.Text = MessageStrings.ModelTipSave;
-            _btnSaveModel.Click += BtnSaveModelClick;
-
-            // Load model button
-            _btnLoadModel = new ToolStripButton();
-            _btnLoadModel.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnLoadModel.Image = Images.FolderOpen;
-            _btnLoadModel.ImageTransparentColor = Color.Magenta;
-            _btnLoadModel.Name = "btnLoadModel";
-            _btnLoadModel.Size = new Size(23, 22);
-            _btnLoadModel.Text = MessageStrings.ModelTipLoad;
-            _btnLoadModel.Click += BtnLoadModelClick;
-
-            // Zoom In button
-            _btnZoomIn = new ToolStripButton();
-            _btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnZoomIn.Image = Images.zoom_in.ToBitmap();
-            _btnZoomIn.ImageTransparentColor = Color.Magenta;
-            _btnZoomIn.Name = "btnZoomIn";
-            _btnZoomIn.Size = new Size(23, 22);
-            _btnZoomIn.Text = MessageStrings.ModelTipZoonIn;
-            _btnZoomIn.Click += BtnZoomInClick;
-
-            // Zoom out button
-            _btnZoomOut = new ToolStripButton();
-            _btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnZoomOut.Image = Images.zoom_out.ToBitmap();
-            _btnZoomOut.ImageTransparentColor = Color.Magenta;
-            _btnZoomOut.Name = "btnZoomOut";
-            _btnZoomOut.Size = new Size(23, 22);
-            _btnZoomOut.Text = MessageStrings.ModelTipZoomOut;
-            _btnZoomOut.Click += BtnZoomOutClick;
-
-            // Zoom full extent
-            _btnZoomFullExtent = new ToolStripButton();
-            _btnZoomFullExtent.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnZoomFullExtent.Image = Images.zoom_full_extent.ToBitmap();
-            _btnZoomFullExtent.ImageTransparentColor = Color.Magenta;
-            _btnZoomFullExtent.Name = "btnZoomOut";
-            _btnZoomFullExtent.Size = new Size(23, 22);
-            _btnZoomFullExtent.Text = MessageStrings.ModelTipFullExtent;
-            _btnZoomFullExtent.Click += BtnZoomFullExtentClick;
-
-            // Add data button
-            _btnAddData = new ToolStripButton();
-            _btnAddData.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnAddData.Image = Images.AddLayer;
-            _btnAddData.ImageTransparentColor = Color.Magenta;
-            _btnAddData.Name = "btnLink";
-            _btnAddData.Size = new Size(23, 22);
-            _btnAddData.Text = MessageStrings.ModelTipAddData;
-
-            // _btnAddData.Click += new EventHandler(BtnLinkClick);
-
-            // Zoom link tools
-            _btnLink = new ToolStripButton();
-            _btnLink.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnLink.Image = Images.LinkData;
-            _btnLink.ImageTransparentColor = Color.Magenta;
-            _btnLink.Name = "btnLink";
-            _btnLink.Size = new Size(23, 22);
-            _btnLink.Text = MessageStrings.ModelTipLink;
-            _btnLink.Click += BtnLinkClick;
-
-            // delete stuff
-            _btnDelete = new ToolStripButton();
-            _btnDelete.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnDelete.Image = Images.mnuLayerClear;
-            _btnDelete.ImageTransparentColor = Color.Magenta;
-            _btnDelete.Name = "btnLink";
-            _btnDelete.Size = new Size(23, 22);
-            _btnDelete.Text = MessageStrings.ModelTipDelete;
-            _btnDelete.Click += BtnDeleteClick;
-
-            // delete stuff
-            _btnRun = new ToolStripButton();
-            _btnRun.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _btnRun.Image = Images.RunModel;
-            _btnRun.ImageTransparentColor = Color.Magenta;
-            _btnRun.Name = "btnLink";
-            _btnRun.Size = new Size(23, 22);
-            _btnRun.Text = MessageStrings.ModelTipRunModel;
-            _btnRun.Click += BtnRunClick;
-
-            // Adds all the buttons to the toolstrip
-            Items.Add(_btnNewModel);
-            Items.Add(_btnLoadModel);
-            Items.Add(_btnSaveModel);
-            Items.Add(new ToolStripSeparator());
-            Items.Add(_btnZoomIn);
-            Items.Add(_btnZoomOut);
-            Items.Add(_btnZoomFullExtent);
-            Items.Add(new ToolStripSeparator());
-            Items.Add(_btnAddData);
-            Items.Add(_btnLink);
-            Items.Add(_btnDelete);
-            Items.Add(new ToolStripSeparator());
-            Items.Add(_btnRun);
-
-            ResumeLayout();
+            Modeler.ZoomOut();
         }
 
         #endregion

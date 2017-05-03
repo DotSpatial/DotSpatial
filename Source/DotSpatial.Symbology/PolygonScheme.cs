@@ -205,7 +205,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets the symbolic categories as a valid IPointSchemeCategoryCollection.
         /// </summary>
         [Serialize("Categories")]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PolygonCategoryCollection Categories
         {
             get { return _categories; }
@@ -220,7 +221,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of categories in this scheme
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override int NumCategories
         {
             get

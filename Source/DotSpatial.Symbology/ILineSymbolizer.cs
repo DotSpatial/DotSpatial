@@ -18,7 +18,7 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    [TypeConverter(typeof (ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface ILineSymbolizer : IFeatureSymbolizer
     {
         #region Methods

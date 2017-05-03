@@ -7,13 +7,14 @@ namespace DotSpatial.Controls
     /// <summary>
     /// Contains extension methods for <see cref="IFeatureLayer"/>
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public static class IFeatureLayerExtensions
     {
         #region Methods
 
         /// <summary>
         /// This activates the labels for the specified feature layer that will be the specified expression
-        /// where field names are in square brackets like "[Name]: [Value]".  This will label all the features,
+        /// where field names are in square brackets like "[Name]: [Value]". This will label all the features,
         /// and remove any previous labeling.
         /// </summary>
         /// <param name="featureLayer">The FeatureLayer to apply the labels to.</param>
@@ -24,15 +25,15 @@ namespace DotSpatial.Controls
         /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void AddLabels(this IFeatureLayer featureLayer, string expression, Font font, Color fontColor)
         {
-            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
+            if (featureLayer == null) throw new ArgumentNullException(nameof(featureLayer));
             featureLayer.ShowLabels = true;
 
             var ll = new MapLabelLayer();
             ll.Symbology.Categories.Clear();
             var lc = new LabelCategory
-                     {
-                         Expression = expression
-                     };
+            {
+                Expression = expression
+            };
             ll.Symbology.Categories.Add(lc);
 
             var ls = ll.Symbolizer;
@@ -59,22 +60,22 @@ namespace DotSpatial.Controls
         /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, string name)
         {
-            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
+            if (featureLayer == null) throw new ArgumentNullException(nameof(featureLayer));
             if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
             featureLayer.ShowLabels = true;
             ILabelCategory lc = new LabelCategory
-                                {
-                                    Expression = expression,
-                                    FilterExpression = filterExpression,
-                                    Symbolizer = symbolizer,
-                                    Name = name,
-                                };
+            {
+                Expression = expression,
+                FilterExpression = filterExpression,
+                Symbolizer = symbolizer,
+                Name = name,
+            };
             featureLayer.LabelLayer.Symbology.Categories.Add(lc);
             featureLayer.LabelLayer.CreateLabels();
         }
 
         /// <summary>
-        /// This will add a new label category that will only apply to the specified filter expression.  This will
+        /// This will add a new label category that will only apply to the specified filter expression. This will
         /// not remove any existing categories.
         /// </summary>
         /// <param name="featureLayer">The feature layer that the labels should be applied to</param>
@@ -88,15 +89,15 @@ namespace DotSpatial.Controls
         /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void AddLabels(this IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, double width)
         {
-            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
+            if (featureLayer == null) throw new ArgumentNullException(nameof(featureLayer));
             if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
             featureLayer.ShowLabels = true;
             ILabelCategory lc = new LabelCategory
-                                {
-                                    Expression = expression,
-                                    FilterExpression = filterExpression,
-                                    Symbolizer = symbolizer
-                                };
+            {
+                Expression = expression,
+                FilterExpression = filterExpression,
+                Symbolizer = symbolizer
+            };
             featureLayer.LabelLayer.UseDynamicVisibility = true;
             featureLayer.LabelLayer.DynamicVisibilityWidth = width;
             featureLayer.LabelLayer.Symbology.Categories.Add(lc);
@@ -104,12 +105,13 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Removes any existing label categories
+        /// Removes any existing label categories.
         /// </summary>
+        /// <param name="featureLayer">Featurelayers whose labels get cleared.</param>
         /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void ClearLabels(this IFeatureLayer featureLayer)
         {
-            if (featureLayer == null) throw new ArgumentNullException("featureLayer");
+            if (featureLayer == null) throw new ArgumentNullException(nameof(featureLayer));
             featureLayer.ShowLabels = false;
         }
 

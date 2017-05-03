@@ -26,57 +26,49 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private bool deactivationAllowed = true;
+        private bool _deactivationAllowed = true;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the AppManager that is responsible for activating and deactivating plugins as well as coordinating
+        /// Gets or sets the AppManager that is responsible for activating and deactivating plugins as well as coordinating
         /// all of the other properties.
         /// </summary>
         [Import]
         public AppManager App { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether [deactivation is allowed].
+        /// Gets or sets a value indicating whether [deactivation is allowed].
         /// </summary>
-        /// <value>
-        /// 	<c>true</c> if [deactivation is allowed]; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if [deactivation is allowed]; otherwise, <c>false</c>.</value>
         public bool DeactivationAllowed
         {
             get
             {
                 // Assemblies in the Application Extensions folder cannot be deactivated.
-                const string STR_ApplicationExtensionsDirectoryName = @"\Application Extensions\";
-                if (!(ReferenceAssembly.Location.IndexOf(STR_ApplicationExtensionsDirectoryName, StringComparison.OrdinalIgnoreCase) < 0))
-                    deactivationAllowed = false;
-                return deactivationAllowed;
+                const string StrApplicationExtensionsDirectoryName = @"\Application Extensions\";
+                if (ReferenceAssembly.Location != null && ReferenceAssembly.Location.IndexOf(StrApplicationExtensionsDirectoryName, StringComparison.OrdinalIgnoreCase) >= 0)
+                    _deactivationAllowed = false;
+                return _deactivationAllowed;
             }
 
             set
             {
-                deactivationAllowed = value;
+                _deactivationAllowed = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets a boolean that is true if the extension is active and running.
+        /// Gets or sets a value indicating whether the extension is active and running.
         /// </summary>
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// Specifies the activation priority order
+        /// Gets the activation priority order.
         /// </summary>
-        public virtual int Priority
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int Priority => 0;
 
         #endregion
 

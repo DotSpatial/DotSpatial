@@ -7,17 +7,19 @@ namespace DotSpatial.Controls.Header
     {
         #region Fields
 
-        private string caption;
-        private short sortOrder;
-        private bool visible;
+        private string _caption;
+        private short _sortOrder;
+        private bool _visible;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of RootItem MenuContainerItem class.
+        /// Initializes a new instance of the <see cref="RootItem"/> class.
         /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         public RootItem(string key, string caption)
             : this()
         {
@@ -26,11 +28,11 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// Initializes a new instance of the <see cref="RootItem"/> class.
         /// </summary>
         public RootItem()
         {
-            visible = true;
+            _visible = true;
         }
 
         #endregion
@@ -45,13 +47,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return caption;
+                return _caption;
             }
 
             set
             {
-                if (caption == value) return;
-                caption = value;
+                if (_caption == value) return;
+                _caption = value;
                 OnPropertyChanged("Caption");
             }
         }
@@ -67,13 +69,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return sortOrder;
+                return _sortOrder;
             }
 
             set
             {
-                if (sortOrder == value) return;
-                sortOrder = value;
+                if (_sortOrder == value) return;
+                _sortOrder = value;
                 OnPropertyChanged("SortOrder");
             }
         }
@@ -89,13 +91,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return visible;
+                return _visible;
             }
 
             set
             {
-                if (visible == value) return;
-                visible = value;
+                if (_visible == value) return;
+                _visible = value;
                 OnPropertyChanged("Visible");
             }
         }

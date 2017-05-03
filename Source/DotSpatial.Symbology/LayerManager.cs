@@ -395,8 +395,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when using this data manager is used to open images.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when using this data manager is used to open images.")]
         public virtual string ImageReadFilter
         {
             get
@@ -411,8 +411,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving data files.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when this data manager is used to save images.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when this data manager is used to save images.")]
         public virtual string ImageWriteFilter
         {
             get
@@ -427,8 +427,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the list of ILayerProviders that should be used in the project.
         /// </summary>
-        [Browsable(false),
-         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual List<ILayerProvider> LayerProviders
         {
             get { return _layerProviders; }
@@ -442,8 +442,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets the path (either as a full path or as a path relative to
         /// the DotSpatial.dll) to search for plugins that implement the ILayerProvider interface.
         /// </summary>
-        [Category("Providers"),
-         Description("Gets or sets the list of string path names that should be used to search for ILayerProvider interfaces.")]
+        [Category("Providers")]
+        [Description("Gets or sets the list of string path names that should be used to search for ILayerProvider interfaces.")]
         public virtual List<string> LayerProviderDirectories
         {
             get { return _layerProviderDirectories; }
@@ -453,8 +453,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when using this data manager is used to open files.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when using this data manager is used to open files.")]
         public virtual string DialogReadFilter
         {
             get
@@ -550,8 +550,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving data files.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when this data manager is used to save files.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when this data manager is used to save files.")]
         public virtual string DialogWriteFilter
         {
             get
@@ -654,8 +654,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files that are specifically raster formats.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when using this data manager is used to open rasters.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when using this data manager is used to open rasters.")]
         public virtual string RasterReadFilter
         {
             get
@@ -670,8 +670,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving data files.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when this data manager is used to save rasters.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when this data manager is used to save rasters.")]
         public virtual string RasterWriteFilter
         {
             get
@@ -686,8 +686,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when using this data manager is used to open vectors.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when using this data manager is used to open vectors.")]
         public virtual string VectorReadFilter
         {
             get
@@ -702,8 +702,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving data files.
         /// </summary>
-        [Category("Filters"),
-         Description("Gets or sets the string that should be used when this data manager is used to save vectors.")]
+        [Category("Filters")]
+        [Description("Gets or sets the string that should be used when this data manager is used to save vectors.")]
         public virtual string VectorWriteFilter
         {
             get
@@ -719,8 +719,8 @@ namespace DotSpatial.Symbology
         /// Sets the default condition for how this data manager should try to load layers.
         /// This will be overridden if the inRam property is specified as a parameter.
         /// </summary>
-        [Category("Behavior"),
-         Description("Gets or sets the default condition for subsequent load operations which may be overridden by specifying inRam in the parameters.")]
+        [Category("Behavior")]
+        [Description("Gets or sets the default condition for subsequent load operations which may be overridden by specifying inRam in the parameters.")]
         public bool LoadInRam
         {
             get { return _loadInRam; }
@@ -733,7 +733,8 @@ namespace DotSpatial.Symbology
         /// fails, then it will check the list of dataProviders, and finally, if that fails,
         /// it will check the plugin Layer Providers in directories.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual Dictionary<string, ILayerProvider> PreferredProviders
         {
             get { return _preferredProviders; }

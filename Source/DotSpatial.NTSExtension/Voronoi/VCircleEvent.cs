@@ -19,11 +19,8 @@
 // Ted Dunsford      | August 26, 2009    |  Ported and cleaned up the raw source from code project
 // ********************************************************************************************************
 
-using System;
-
 namespace DotSpatial.NTSExtension.Voronoi
 {
-
     /// <summary>
     /// The VCircleEvent.
     /// </summary>

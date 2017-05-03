@@ -1,8 +1,4 @@
 // -----------------------------------------------------------------------
-// <copyright file="DockablePanel.cs" company="DotSpatial Team">
-// </copyright>
-// -----------------------------------------------------------------------
-
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -15,24 +11,18 @@ namespace DotSpatial.Controls.Docking
     public class DockablePanel : INotifyPropertyChanged
     {
         #region Fields
-
-        private string caption;
-        private short defaultSortOrder;
-
-        private DockStyle dock;
-
-        private Control innerControl;
-
-        private string key;
-
-        private Image smallImage;
-
+        private string _caption;
+        private short _defaultSortOrder;
+        private DockStyle _dock;
+        private Control _innerControl;
+        private string _key;
+        private Image _smallImage;
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DockablePanel" /> class.
+        /// Initializes a new instance of the <see cref = "DockablePanel" /> class.
         /// </summary>
         public DockablePanel()
         {
@@ -58,7 +48,7 @@ namespace DotSpatial.Controls.Docking
         #region Events
 
         /// <summary>
-        ///   Occurs when a property value changes.
+        /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -67,26 +57,24 @@ namespace DotSpatial.Controls.Docking
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the caption of the panel and any tab button.
+        /// Gets or sets the caption of the panel and any tab button.
         /// </summary>
-        /// <value>
-        ///   The caption.
-        /// </value>
+        /// <value>The caption.</value>
         public string Caption
         {
             get
             {
-                return caption;
+                return _caption;
             }
 
             set
             {
-                if (caption == value)
+                if (_caption == value)
                 {
                     return;
                 }
 
-                caption = value;
+                _caption = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("Caption"));
             }
         }
@@ -95,97 +83,91 @@ namespace DotSpatial.Controls.Docking
         /// Gets or sets the sort order. Lower values will suggest that an item should appear further left in a LeftToRight environment. Or higher up in a top to bottom environment.
         /// </summary>
         /// <remarks>Use a multiple of 100 or so to allow other developers some 'space' to place their panels.</remarks>
-        /// <value>
-        /// The sort order.
-        /// </value>
+        /// <value>The sort order.</value>
         public short DefaultSortOrder
         {
             get
             {
-                return defaultSortOrder;
+                return _defaultSortOrder;
             }
 
             set
             {
-                if (defaultSortOrder == value)
+                if (_defaultSortOrder == value)
                 {
                     return;
                 }
 
-                defaultSortOrder = value;
+                _defaultSortOrder = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("DefaultSortOrder"));
             }
         }
 
         /// <summary>
-        ///   Gets or sets The dock location.
+        /// Gets or sets The dock location.
         /// </summary>
-        /// <value>
-        ///   The dock location.
-        /// </value>
+        /// <value>The dock location.</value>
         public DockStyle Dock
         {
             get
             {
-                return dock;
+                return _dock;
             }
 
             set
             {
-                if (dock == value)
+                if (_dock == value)
                 {
                     return;
                 }
 
-                dock = value;
+                _dock = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("Dock"));
             }
         }
 
         /// <summary>
-        ///   Gets or sets the InnerControl.
+        /// Gets or sets the InnerControl.
         /// </summary>
-        /// <value>
-        ///   The InnerControl.
-        /// </value>
+        /// <value>The InnerControl.</value>
         public Control InnerControl
         {
             get
             {
-                return innerControl;
+                return _innerControl;
             }
 
             set
             {
-                if (innerControl == value)
+                if (_innerControl == value)
                 {
                     return;
                 }
 
-                innerControl = value;
+                _innerControl = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("InnerControl"));
             }
         }
 
         /// <summary>
-        ///   Gets or sets the key.
+        /// Gets or sets the key.
         /// </summary>
         /// <value>The unique identifier.</value>
         public string Key
         {
             get
             {
-                return key;
+                return _key;
             }
 
             set
             {
-                if (key == value)
+                if (_key == value)
                 {
                     return;
                 }
 
-                key = value;
+                _key = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("Key"));
             }
         }
@@ -198,12 +180,12 @@ namespace DotSpatial.Controls.Docking
         {
             get
             {
-                return smallImage;
+                return _smallImage;
             }
 
             set
             {
-                smallImage = value;
+                _smallImage = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SmallImage"));
             }
         }
@@ -215,9 +197,7 @@ namespace DotSpatial.Controls.Docking
         /// <summary>
         /// Triggers the PropertyChanged event.
         /// </summary>
-        /// <param name="ea">
-        /// The ea.
-        /// </param>
+        /// <param name="ea">The event args.</param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs ea)
         {
             PropertyChanged?.Invoke(this, ea);

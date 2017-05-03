@@ -9,9 +9,9 @@ namespace DotSpatial.Controls.Header
     {
         #region Fields
 
-        private Color fontColor;
-        private string text;
-        private int width;
+        private Color _fontColor;
+        private string _text;
+        private int _width;
 
         #endregion
 
@@ -24,13 +24,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return fontColor;
+                return _fontColor;
             }
 
             set
             {
-                if (fontColor == value) return;
-                fontColor = value;
+                if (_fontColor == value) return;
+                _fontColor = value;
                 OnPropertyChanged("FontColor");
             }
         }
@@ -45,13 +45,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return text;
+                return _text;
             }
 
             set
             {
-                if (text == value) return;
-                text = value;
+                if (_text == value) return;
+                _text = value;
                 OnPropertyChanged("Text");
             }
         }
@@ -66,13 +66,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return width;
+                return _width;
             }
 
             set
             {
-                if (width == value) return;
-                width = value;
+                if (_width == value) return;
+                _width = value;
                 OnPropertyChanged("Width");
             }
         }

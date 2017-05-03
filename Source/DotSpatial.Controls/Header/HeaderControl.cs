@@ -1,9 +1,4 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="HeaderControl.cs" company="DotSpatial Team">
-//
-// </copyright>
-// -----------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -58,7 +53,9 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// This will add a new item that will appear on the standard toolbar or ribbon control.
         /// </summary>
+        /// <param name="item">Item taht gets added.</param>
         /// <remarks>Should only be called by the plugin (from the plugin assembly).</remarks>
+        /// <returns>The added item.</returns>
         public virtual object Add(HeaderItem item)
         {
             Contract.Requires(item != null, "item is null.");
@@ -89,12 +86,14 @@ namespace DotSpatial.Controls.Header
         /// Adds the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
         public abstract object Add(SimpleActionItem item);
 
         /// <summary>
         /// Adds the menu container item.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
         public abstract object Add(MenuContainerItem item);
 
         /// <summary>
@@ -102,24 +101,28 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         /// <param name="item">The root item.</param>
         /// <remarks>The RootItem should not be visible until it contains other items.</remarks>
+        /// <returns>The added item.</returns>
         public abstract object Add(RootItem item);
 
         /// <summary>
         /// Adds a combo box style item
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
         public abstract object Add(DropDownActionItem item);
 
         /// <summary>
         /// Adds a visible separator.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
         public abstract object Add(SeparatorItem item);
 
         /// <summary>
         /// Adds the specified textbox item.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
         public abstract object Add(TextEntryActionItem item);
 
         /// <summary>
@@ -177,9 +180,7 @@ namespace DotSpatial.Controls.Header
         /// <param name="key">The key of the new selected root item</param>
         protected void OnRootItemSelected(string key)
         {
-            var h = RootItemSelected;
-            if (h != null)
-                h(this, new RootItemEventArgs(key));
+            RootItemSelected?.Invoke(this, new RootItemEventArgs(key));
         }
 
         /// <summary>
@@ -213,9 +214,9 @@ namespace DotSpatial.Controls.Header
 
             #region Properties
 
-            public string AssemblyName { get; private set; }
+            public string AssemblyName { get; }
 
-            public HeaderItem HeaderItem { get; private set; }
+            public HeaderItem HeaderItem { get; }
 
             #endregion
         }

@@ -225,7 +225,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the Symbolizer for the borders of this polygon as they appear on the top-most pattern.
         /// </summary>
-        [ShallowCopy, Serialize("OutlineSymbolizer")]
+        [ShallowCopy]
+        [Serialize("OutlineSymbolizer")]
         public ILineSymbolizer OutlineSymbolizer
         {
             get

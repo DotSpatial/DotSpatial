@@ -24,48 +24,43 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapLayerCollection : LayerCollection, IMapLayerCollection
     {
-        #region Fields
-
-        private IProgressHandler _progressHandler;
-
-        #endregion
-
-        #region  Constructors
+        #region Constructors
 
         /// <summary>
-        /// Creates a new blank instance of a MapLayer collection.  This is especially useful
-        /// for tracking layers that can draw themselves.  This does not concern itself with
-        /// view extents like a dataframe, but rather is a grouping of layers that is itself
-        /// also an IMapLayer.
+        /// Initializes a new instance of the <see cref="MapLayerCollection"/> class that is blank.
+        /// This is especially useful for tracking layers that can draw themselves. This does not concern itself with
+        /// view extents like a dataframe, but rather is a grouping of layers that is itself also an IMapLayer.
         /// </summary>
+        /// <param name="containerFrame">The map frame.</param>
+        /// <param name="progressHandler">The progress handler.</param>
         public MapLayerCollection(IMapFrame containerFrame, IProgressHandler progressHandler)
         {
             base.MapFrame = containerFrame;
             base.ParentGroup = containerFrame;
-            _progressHandler = progressHandler;
+            ProgressHandler = progressHandler;
         }
 
         /// <summary>
-        /// Creates the Collection in the situation where the map frame is not the immediate parent,
-        /// but rather the group is the immediate parent, while frame is the ultimate map frame that
-        /// contains this geo layer collection.
+        /// Initializes a new instance of the <see cref="MapLayerCollection"/> class in the situation
+        /// where the map frame is not the immediate parent, but rather the group is the immediate parent,
+        /// while frame is the ultimate map frame that contains this geo layer collection.
         /// </summary>
-        /// <param name="frame"></param>
-        /// <param name="group"></param>
-        /// <param name="progressHandler"></param>
+        /// <param name="frame">The map frame.</param>
+        /// <param name="group">The parent of this.</param>
+        /// <param name="progressHandler">The progress handler.</param>
         public MapLayerCollection(IMapFrame frame, IMapGroup group, IProgressHandler progressHandler)
         {
             base.MapFrame = frame;
             ParentGroup = group;
-            _progressHandler = progressHandler;
+            ProgressHandler = progressHandler;
         }
 
         /// <summary>
-        /// Creates a new blank instance of a MapLayer collection.  This is especially useful
-        /// for tracking layers that can draw themselves.  This does not concern itself with
-        /// view extents like a dataframe, but rather is a grouping of layers that is itself
-        /// also an IMapLayer.
+        /// Initializes a new instance of the <see cref="MapLayerCollection"/> class that is blank.
+        /// This is especially useful for tracking layers that can draw themselves. This does not concern itself with
+        /// view extents like a dataframe, but rather is a grouping of layers that is itself also an IMapLayer.
         /// </summary>
+        /// <param name="containerFrame">The map frame.</param>
         public MapLayerCollection(IMapFrame containerFrame)
         {
             base.MapFrame = containerFrame;
@@ -73,7 +68,8 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new layer collection that is free-floating.  This will not be contained in a map frame.
+        /// Initializes a new instance of the <see cref="MapLayerCollection"/> class
+        /// that is free-floating. This will not be contained in a map frame.
         /// </summary>
         public MapLayerCollection()
         {
@@ -92,17 +88,8 @@ namespace DotSpatial.Controls
 
         #region Properties
 
-        /// <inheritdoc />
-        public new bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         /// <summary>
-        /// Gets the map frame of this layer collection
+        /// Gets or sets the map frame of this layer collection.
         /// </summary>
         public new IMapFrame MapFrame
         {
@@ -116,6 +103,9 @@ namespace DotSpatial.Controls
                 base.MapFrame = value;
             }
         }
+
+        /// <inheritdoc />
+        public new bool IsReadOnly => false;
 
         /// <inheritdoc />
         public new IMapGroup ParentGroup
@@ -134,18 +124,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the progress handler to report progress for time consuming actions.
         /// </summary>
-        public IProgressHandler ProgressHandler
-        {
-            get
-            {
-                return _progressHandler;
-            }
-
-            set
-            {
-                _progressHandler = value;
-            }
-        }
+        public IProgressHandler ProgressHandler { get; set; }
 
         /// <inheritdoc />
         public new IMapLayer SelectedLayer
@@ -162,8 +141,6 @@ namespace DotSpatial.Controls
         }
 
         #endregion
-
-        #region Indexers
 
         /// <summary>
         /// The default, indexed value of type T
@@ -183,8 +160,6 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -196,7 +171,22 @@ namespace DotSpatial.Controls
         /// <param name="layer">A pre-existing FeatureLayer that has already been created from a featureSet</param>
         public void Add(IMapLayer layer)
         {
-            this.Add(layer);
+            base.Add(layer);
+        }
+
+        /// <summary>
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// </summary>
+        /// <param name="collection">collection: The collection whose elements should be added to the end of the
+        /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
+        /// if type T is a reference type.</param>
+        /// <exception cref="System.ApplicationException">Unable to add while the ReadOnly property is set to true.</exception>
+        public void AddRange(IEnumerable<IMapLayer> collection)
+        {
+            foreach (IMapLayer layer in collection)
+            {
+                base.Add(layer);
+            }
         }
 
         /// <summary>
@@ -211,7 +201,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Adds the dataset specified to the file.  Depending on whether this is a featureSet,
+        /// Adds the dataset specified to the file. Depending on whether this is a featureSet,
         /// Raster, or ImageData, this will return the appropriate layer for the map.
         /// </summary>
         /// <param name="dataSet">A dataset</param>
@@ -257,7 +247,7 @@ namespace DotSpatial.Controls
 
             if (res != null)
             {
-                this.Add(res);
+                base.Add(res);
                 res.ProgressHandler = ProgressHandler;
             }
 
@@ -265,10 +255,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Adds the raster to layer collection
+        /// Adds the raster to layer collection.
         /// </summary>
-        /// <param name="raster"></param>
-        /// <returns></returns>
+        /// <param name="raster">Raster that gets added.</param>
+        /// <returns>The IMapRasterLayer that was created.</returns>
         public virtual IMapRasterLayer Add(IRaster raster)
         {
             if (raster == null) return null;
@@ -290,38 +280,13 @@ namespace DotSpatial.Controls
 
             if (image.Height == 0 || image.Width == 0) return null;
             var il = new MapImageLayer(image);
-            this.Add(il);
+            base.Add(il);
             return il;
         }
 
         /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
-        /// </summary>
-        /// <param name="collection">collection: The collection whose elements should be added to the end of the
-        /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
-        /// if type T is a reference type.</param>
-        /// <exception cref="System.ApplicationException">Unable to add while the ReadOnly property is set to true.</exception>
-        public void AddRange(IEnumerable<IMapLayer> collection)
-        {
-            foreach (IMapLayer layer in collection)
-            {
-                this.Add(layer);
-            }
-        }
-
-        /// <summary>
-        /// Tests to see if the specified IGeoLayer exists in the current collection
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public bool Contains(IMapLayer item)
-        {
-            return Contains(item as ILayer);
-        }
-
-        /// <summary>
         /// This copies the members of this collection to the specified array index, but
-        /// only if they match the IGeoLayer interface.  (Other kinds of layers can be
+        /// only if they match the IGeoLayer interface. (Other kinds of layers can be
         /// added to this collection by casting it to a LayerCollection)
         /// </summary>
         /// <param name="inArray">The array of IGeoLayer interfaces to copy values to</param>
@@ -339,17 +304,21 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <inheritdoc />
-        public new IEnumerator<IMapLayer> GetEnumerator()
+        /// <summary>
+        /// Tests to see if the specified IMapLayer exists in the current collection.
+        /// </summary>
+        /// <param name="item">Layer that gets checked.</param>
+        /// <returns>True, if its contained.</returns>
+        public bool Contains(IMapLayer item)
         {
-            return new MapLayerEnumerator(base.GetEnumerator());
+            return Contains(item as ILayer);
         }
 
         /// <summary>
-        /// Gets the zero-based integer index of the specified IGeoLayer in this collection
+        /// Gets the zero-based integer index of the specified IMapLayer in this collection.
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">Layer whose index should be returned.</param>
+        /// <returns>-1 if the layer is not contained otherweise the zero-based index.</returns>
         public int IndexOf(IMapLayer item)
         {
             return IndexOf(item as ILayer);
@@ -364,7 +333,29 @@ namespace DotSpatial.Controls
         /// <exception cref="System.ApplicationException">Unable to insert while the ReadOnly property is set to true.</exception>
         public void Insert(int index, IMapLayer item)
         {
-            this.Insert(index, item);
+            base.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Moves the given layer to the given position.
+        /// </summary>
+        /// <param name="layer">Layer that gets moved.</param>
+        /// <param name="newPosition">Position, the layer is moved to.</param>
+        public void Move(IMapLayer layer, int newPosition)
+        {
+            base.Move(layer, newPosition);
+        }
+
+        /// <summary>
+        /// Removes the first occurrence of a specific object from the System.Collections.Generic.List&lt;T&gt;.
+        /// </summary>
+        /// <param name="item">The object to remove from the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
+        /// <returns>true if item is successfully removed; otherwise, false. This method also returns false if item was not
+        /// found in the System.Collections.Generic.List&lt;T&gt;.</returns>
+        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
+        public bool Remove(IMapLayer item)
+        {
+            return base.Remove(item);
         }
 
         /// <summary>
@@ -380,42 +371,25 @@ namespace DotSpatial.Controls
             int i = index;
             foreach (IMapLayer gl in collection)
             {
-                Insert(i, gl as ILayer);
+                Insert(i, (ILayer)gl);
                 i++;
             }
         }
 
-        /// <summary>
-        /// Moves the given layer to the given position.
-        /// </summary>
-        /// <param name="layer">Layer that gets moved.</param>
-        /// <param name="newPosition">Position, the layer is moved to.</param>
-        public void Move(IMapLayer layer, int newPosition)
+        /// <inheritdoc />
+        public new IEnumerator<IMapLayer> GetEnumerator()
         {
-            this.Move(layer, newPosition);
+            return new MapLayerEnumerator(base.GetEnumerator());
         }
 
         /// <summary>
-        /// Removes the first occurrence of a specific object from the System.Collections.Generic.List&lt;T&gt;.
-        /// </summary>
-        /// <param name="item">The object to remove from the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
-        /// <returns>true if item is successfully removed; otherwise, false. This method also returns false if item was not
-        /// found in the System.Collections.Generic.List&lt;T&gt;.</returns>
-        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
-        public bool Remove(IMapLayer item)
-        {
-            return this.Remove(item);
-        }
-
-        /// <summary>
-        /// This simply forwards the call from a layer to the container
-        /// of this collection (like a MapFrame).
+        /// This simply forwards the call from a layer to the container of this collection (like a MapFrame).
         /// </summary>
         /// <param name="sender">The layer that actually changed</param>
-        /// <param name="e"></param>
+        /// <param name="e">The clip args.</param>
         protected virtual void OnBufferChanged(object sender, ClipArgs e)
         {
-            if (BufferChanged != null) BufferChanged(sender, e);
+            BufferChanged?.Invoke(sender, e);
         }
 
         #endregion
@@ -424,48 +398,25 @@ namespace DotSpatial.Controls
 
         private class MapLayerEnumerator : IEnumerator<IMapLayer>
         {
-            #region Fields
-
-            readonly IEnumerator<ILayer> _internalEnumerator;
-
-            #endregion
-
-            #region  Constructors
+            private readonly IEnumerator<ILayer> _internalEnumerator;
 
             /// <summary>
-            /// Creates a new instance of LayerEnumerator
+            /// Initializes a new instance of the <see cref="MapLayerEnumerator"/> class.
             /// </summary>
+            /// <param name="source">Source used as internal enumerator.</param>
             public MapLayerEnumerator(IEnumerator<ILayer> source)
             {
                 _internalEnumerator = source;
             }
 
-            #endregion
-
-            #region Properties
+            #region IEnumerator<IMapLayer> Members
 
             /// <summary>
-            /// Retrieves the current member as an ILegendItem
+            /// Gets the current member as an IMapLayer.
             /// </summary>
-            public IMapLayer Current
-            {
-                get
-                {
-                    return _internalEnumerator.Current as IMapLayer;
-                }
-            }
+            public IMapLayer Current => _internalEnumerator.Current as IMapLayer;
 
-            object IEnumerator.Current
-            {
-                get
-                {
-                    return _internalEnumerator.Current;
-                }
-            }
-
-            #endregion
-
-            #region Methods
+            object IEnumerator.Current => _internalEnumerator.Current;
 
             /// <summary>
             /// Calls the Dispose method

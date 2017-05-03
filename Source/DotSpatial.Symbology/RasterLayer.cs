@@ -347,7 +347,8 @@ namespace DotSpatial.Symbology
         /// extent.  This could later be redesigned to generate the bitmap on the fly, but I think
         /// that that would be slow, so caching is probably better.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IGetBitmap BitmapGetter
         {
             get { return _bitmapGetter; }
@@ -362,7 +363,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the geographic height of the cells for this raster (North-South)
         /// </summary>
-        [Category("Raster Properties"), Description("The geographic width of each cell in this raster.")]
+        [Category("Raster Properties")]
+        [Description("The geographic width of each cell in this raster.")]
         public virtual double CellHeight
         {
             get
@@ -375,7 +377,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the geographic width of the cells for this raster (East-West)
         /// </summary>
-        [Category("Raster Properties"), Description("The geographic width of each cell in this raster.")]
+        [Category("Raster Properties")]
+        [Description("The geographic width of each cell in this raster.")]
         public virtual double CellWidth
         {
             get
@@ -389,7 +392,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets whether this should appear as checked in the legend.  This is also how the
         /// layer will
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override bool Checked
         {
             get
@@ -410,7 +414,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the data type of the values in this raster.
         /// </summary>
-        [Category("Raster Properties"), Description("The numeric data type of the values in this raster.")]
+        [Category("Raster Properties")]
+        [Description("The numeric data type of the values in this raster.")]
         public Type DataType
         {
             get
@@ -423,7 +428,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the eastern boundary of this raster.
         /// </summary>
-        [Category("Bounds"), Description("The East boundary of this raster.")]
+        [Category("Bounds")]
+        [Description("The East boundary of this raster.")]
         public virtual double East
         {
             get
@@ -435,7 +441,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This is a conversion factor that is required in order to convert the elevation units into the same units as the geospatial projection for the latitude and logitude values of the grid.
         /// </summary>
-        [DisplayName(@"Elevation Factor"), Category("Symbology"), Description("This is a conversion factor that is required in order to convert the elevation units into the same units as the geospatial projection for the latitude and logitude values of the grid.")]
+        [DisplayName(@"Elevation Factor")]
+        [Category("Symbology")]
+        [Description("This is a conversion factor that is required in order to convert the elevation units into the same units as the geospatial projection for the latitude and logitude values of the grid.")]
         public virtual float ElevationFactor
         {
             get
@@ -454,7 +462,8 @@ namespace DotSpatial.Symbology
         /// Obtains an envelope
         /// </summary>
         /// <returns></returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override Extent Extent
         {
             get
@@ -505,7 +514,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the relative file path to where this raster is saved.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Serialize("FilePath", ConstructorArgumentIndex = 0)]
         public string FilePath
         {
@@ -543,7 +553,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the complete list of legend items contained within this legend item
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override IEnumerable<ILegendItem> LegendItems
         {
             get
@@ -556,7 +567,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// The text that will appear in the legend
         /// </summary>
-        [Category("Appearance"), DisplayName(@"Caption"), Description(" The text that will appear in the legend")]
+        [Category("Appearance")]
+        [DisplayName(@"Caption")]
+        [Description(" The text that will appear in the legend")]
         public override string LegendText
         {
             get
@@ -571,8 +584,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the maximum value of this raster.  If this is an elevation raster, this is also the top.
         /// </summary>
-        [Category("Raster Properties"),
-         Description("The maximum value of this raster.  If this is an elevation raster, this is also the top.")]
+        [Category("Raster Properties")]
+        [Description("The maximum value of this raster.  If this is an elevation raster, this is also the top.")]
         public virtual double Maximum
         {
             get
@@ -585,8 +598,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the minimum value of this raster.  If this is an elevation raster, this is also the bottom.
         /// </summary>
-        [Category("Raster Properties"),
-         Description("The minimum value of this raster.  If this is an elevation raster, this is also the bottom.")]
+        [Category("Raster Properties")]
+        [Description("The minimum value of this raster.  If this is an elevation raster, this is also the bottom.")]
         public virtual double Minimum
         {
             get
@@ -599,8 +612,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the value that is used when no actual data exists for the specified location.
         /// </summary>
-        [Category("Raster Properties"),
-         Description("The value that is used when no actual data exists for the specified location.")]
+        [Category("Raster Properties")]
+        [Description("The value that is used when no actual data exists for the specified location.")]
         public virtual double NoDataValue
         {
             get
@@ -613,7 +626,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the northern boundary of this raster.
         /// </summary>
-        [Category("Bounds"), Description("The North boundary of this raster.")]
+        [Category("Bounds")]
+        [Description("The North boundary of this raster.")]
         public virtual double North
         {
             get
@@ -627,8 +641,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of bands in this raster.
         /// </summary>
-        [DisplayName(@"Number of Bands"), Category("Raster Properties"),
-         Description("Gets the number of bands in this raster.")]
+        [DisplayName(@"Number of Bands")]
+        [Category("Raster Properties")]
+        [Description("Gets the number of bands in this raster.")]
         public virtual int NumBands
         {
             get
@@ -641,8 +656,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of columns in this raster.
         /// </summary>
-        [DisplayName(@"Number of Columns"), Category("Raster Properties"),
-         Description("Gets the number of columns in this raster.")]
+        [DisplayName(@"Number of Columns")]
+        [Category("Raster Properties")]
+        [Description("Gets the number of columns in this raster.")]
         public virtual int NumColumns
         {
             get
@@ -655,8 +671,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of rows in this raster.
         /// </summary>
-        [DisplayName(@"Number of Rows"), Category("Raster Properties"),
-         Description("Gets the number of rows in this raster.")]
+        [DisplayName(@"Number of Rows")]
+        [Category("Raster Properties")]
+        [Description("Gets the number of rows in this raster.")]
         public virtual int NumRows
         {
             get
@@ -712,7 +729,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the southern boundary of this raster.
         /// </summary>
-        [Category("Bounds"), Description("The South boundary of this raster.")]
+        [Category("Bounds")]
+        [Description("The South boundary of this raster.")]
         public virtual double South
         {
             get
@@ -726,7 +744,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the western boundary of this raster.
         /// </summary>
-        [Category("Bounds"), Description("The West boundary of this raster.")]
+        [Category("Bounds")]
+        [Description("The West boundary of this raster.")]
         public virtual double West
         {
             get

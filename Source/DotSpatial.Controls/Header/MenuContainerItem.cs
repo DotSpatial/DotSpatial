@@ -9,7 +9,7 @@ namespace DotSpatial.Controls.Header
     {
         #region Fields
 
-        private Image largeImage;
+        private Image _largeImage;
 
         #endregion
 
@@ -23,16 +23,21 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the MenuContainerItem class.
+        /// Initializes a new instance of the <see cref="MenuContainerItem"/> class.
         /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         public MenuContainerItem(string key, string caption)
             : base(key, caption)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the MenuContainerItem class.
+        /// Initializes a new instance of the <see cref="MenuContainerItem"/> class.
         /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         public MenuContainerItem(string rootKey, string key, string caption)
             : this(key, caption)
         {
@@ -51,13 +56,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return largeImage;
+                return _largeImage;
             }
 
             set
             {
-                if (largeImage == value) return;
-                largeImage = value;
+                if (_largeImage == value) return;
+                _largeImage = value;
                 OnPropertyChanged("LargeImage");
             }
         }

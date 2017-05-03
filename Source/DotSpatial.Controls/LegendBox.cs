@@ -22,132 +22,43 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LegendBox
     {
-        #region Fields
-
-        private Rectangle _bounds;
-        private Rectangle _checkbox;
-        private Rectangle _expandBox;
-        private int _indent;
-        private ILegendItem _item;
-        private Rectangle _symbolBox;
-        private Rectangle _textBox;
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets or sets the bounds for this LegendBox
+        /// Gets or sets the bounds for this LegendBox.
         /// </summary>
-        public Rectangle Bounds
-        {
-            get
-            {
-                return _bounds;
-            }
-
-            set
-            {
-                _bounds = value;
-            }
-        }
+        public Rectangle Bounds { get; set; }
 
         /// <summary>
-        /// If this item is in checkbox mode, then this is the physical location of the checkbox
+        /// Gets or sets the physical location of the checkbox.
         /// </summary>
-        public Rectangle CheckBox
-        {
-            get
-            {
-                return _checkbox;
-            }
-
-            set
-            {
-                _checkbox = value;
-            }
-        }
+        public Rectangle CheckBox { get; set; }
 
         /// <summary>
-        /// IF this item is a groupable item, this is the region for the expanding box for the item
+        /// Gets or sets the region for the expanding box for the item.
         /// </summary>
-        public Rectangle ExpandBox
-        {
-            get
-            {
-                return _expandBox;
-            }
-
-            set
-            {
-                _expandBox = value;
-            }
-        }
+        public Rectangle ExpandBox { get; set; }
 
         /// <summary>
-        /// Gets or sets the integer number of indentations.  This should be used
+        /// Gets or sets the integer number of indentations. This should be used
         /// in coordination with whatever the indentation amount is for the specific legend.
         /// </summary>
-        public int Indent
-        {
-            get
-            {
-                return _indent;
-            }
-
-            set
-            {
-                _indent = value;
-            }
-        }
+        public int Indent { get; set; }
 
         /// <summary>
-        /// Gets or sets the actual item that this bounds is associated with
+        /// Gets or sets the actual item that this bounds is associated with.
         /// </summary>
-        public ILegendItem Item
-        {
-            get
-            {
-                return _item;
-            }
-
-            set
-            {
-                _item = value;
-            }
-        }
+        public ILegendItem Item { get; set; }
 
         /// <summary>
-        /// gets or sets the symbol box
+        /// Gets or sets the symbol box.
         /// </summary>
-        public Rectangle SymbolBox
-        {
-            get
-            {
-                return _symbolBox;
-            }
-
-            set
-            {
-                _symbolBox = value;
-            }
-        }
+        public Rectangle SymbolBox { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle that corresponds with text.
         /// </summary>
-        public Rectangle Textbox
-        {
-            get
-            {
-                return _textBox;
-            }
-
-            set
-            {
-                _textBox = value;
-            }
-        }
+        public Rectangle Textbox { get; set; }
 
         #endregion
     }

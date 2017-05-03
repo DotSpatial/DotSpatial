@@ -14,7 +14,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace DotSpatial.Controls
@@ -24,23 +23,12 @@ namespace DotSpatial.Controls
     /// </summary>
     // This control will no longer be visible
     [ToolboxItem(false)]
-    public class LayoutMapToolStrip : ToolStrip
+    public partial class LayoutMapToolStrip : ToolStrip
     {
-        #region Fields
-
-        private ToolStripButton _btnPan;
-        private ToolStripButton _btnZoomFullExtent;
-        private ToolStripButton _btnZoomIn;
-        private ToolStripButton _btnZoomOut;
-        private ToolStripButton _btnZoomViewExtent;
-        private LayoutControl _layoutControl;
-
-        #endregion
-
         #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the toolstrip
+        /// Initializes a new instance of the <see cref="LayoutMapToolStrip"/> class.
         /// </summary>
         public LayoutMapToolStrip()
         {
@@ -52,125 +40,47 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// The layout control associated with this toolstrip
+        /// Gets or sets the layout control associated with this toolstrip.
         /// </summary>
         [Browsable(false)]
-        public LayoutControl LayoutControl
-        {
-            get
-            {
-                return _layoutControl;
-            }
-
-            set
-            {
-                _layoutControl = value;
-                if (_layoutControl == null) return;
-            }
-        }
+        public LayoutControl LayoutControl { get; set; }
 
         #endregion
 
         #region Methods
 
         // Fires when the user clicks the pan button
-        private void _btnPan_Click(object sender, EventArgs e)
+        private void BtnPanClick(object sender, EventArgs e)
         {
-            if (_btnPan.Checked)
-                _layoutControl.MapPanMode = true;
-            else
-                _layoutControl.MapPanMode = false;
+            LayoutControl.MapPanMode = _btnPan.Checked;
         }
 
         // Fires when the user clicks the zoom to full extent button
-        private void _btnZoomFullExtent_Click(object sender, EventArgs e)
+        private void BtnZoomFullExtentClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomFullExtentMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);
+            LayoutControl.ZoomFullExtentMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
         }
 
         // Fires the zoom in control on the modeler
-        private void _btnZoomIn_Click(object sender, EventArgs e)
+        private void BtnZoomInClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomInMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);
+            LayoutControl.ZoomInMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
         }
 
         // Fires the zoom out control on the modeler
-        private void _btnZoomOut_Click(object sender, EventArgs e)
+        private void BtnZoomOutClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomOutMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);
+            LayoutControl.ZoomOutMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
         }
 
         // Zoom the map to the extent of the layout
-        private void _btnZoomViewExtent_Click(object sender, EventArgs e)
+        private void BtnZoomViewExtentClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomFullViewExtentMap(_layoutControl.SelectedLayoutElements[0] as LayoutMap);
-        }
-
-        private void InitializeComponent()
-        {
-            this._btnZoomIn = new ToolStripButton();
-            this._btnZoomOut = new ToolStripButton();
-            this._btnZoomFullExtent = new ToolStripButton();
-            this._btnZoomViewExtent = new ToolStripButton();
-            this._btnPan = new ToolStripButton();
-            this.SuspendLayout();
-
-            // _btnZoomIn
-            this._btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnZoomIn.Image = Images.ZoomInMap;
-            this._btnZoomIn.ImageTransparentColor = Color.Magenta;
-            this._btnZoomIn.Name = "_btnZoomIn";
-            this._btnZoomIn.Size = new Size(23, 22);
-            this._btnZoomIn.Text = MessageStrings.LayoutMapToolStripZoomIn;
-            this._btnZoomIn.Click += this._btnZoomIn_Click;
-
-            // _btnZoomOut
-            this._btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnZoomOut.Image = Images.ZoomOutMap;
-            this._btnZoomOut.ImageTransparentColor = Color.Magenta;
-            this._btnZoomOut.Name = "_btnZoomOut";
-            this._btnZoomOut.Size = new Size(23, 22);
-            this._btnZoomOut.Text = MessageStrings.LayoutMapToolStripZoomOut;
-            this._btnZoomOut.Click += this._btnZoomOut_Click;
-
-            // _btnZoomFullExtent
-            this._btnZoomFullExtent.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnZoomFullExtent.Image = Images.ZoomFullMap;
-            this._btnZoomFullExtent.ImageTransparentColor = Color.Magenta;
-            this._btnZoomFullExtent.Name = "_btnZoomFullExtent";
-            this._btnZoomFullExtent.Size = new Size(23, 22);
-            this._btnZoomFullExtent.Text = MessageStrings.LayoutMapToolStripMaxExtent;
-            this._btnZoomFullExtent.Click += this._btnZoomFullExtent_Click;
-
-            // _btnZoomFullExtent
-            this._btnZoomViewExtent.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnZoomViewExtent.Image = Images.ZoomFullView;
-            this._btnZoomViewExtent.ImageTransparentColor = Color.Magenta;
-            this._btnZoomViewExtent.Name = "_btnZoomViewExtent";
-            this._btnZoomViewExtent.Size = new Size(23, 22);
-            this._btnZoomViewExtent.Text = MessageStrings.LayoutMapToolStripViewExtent;
-            this._btnZoomViewExtent.Click += _btnZoomViewExtent_Click;
-
-            // _btnPan
-            this._btnPan.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this._btnPan.Image = Images.PanMap;
-            this._btnPan.CheckOnClick = true;
-            this._btnPan.Checked = false;
-            this._btnPan.ImageTransparentColor = Color.Magenta;
-            this._btnPan.Name = "_btnZoomFullExtent";
-            this._btnPan.Size = new Size(23, 22);
-            this._btnPan.Text = MessageStrings.LayoutMapToolStripPan;
-            this._btnPan.Click += _btnPan_Click;
-
-            // LayoutToolStrip
-            this.Items.AddRange(new ToolStripItem[] { this._btnZoomIn, this._btnZoomOut, this._btnZoomFullExtent, this._btnZoomViewExtent, this._btnPan });
-            this.EnabledChanged += LayoutMapToolStrip_EnabledChanged;
-            this.Enabled = false;
-            this.ResumeLayout(false);
+            LayoutControl.ZoomFullViewExtentMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
         }
 
         // If the toolbar is disabled we disable the pan checked button state
-        private void LayoutMapToolStrip_EnabledChanged(object sender, EventArgs e)
+        private void LayoutMapToolStripEnabledChanged(object sender, EventArgs e)
         {
             _btnPan.Checked = false;
         }

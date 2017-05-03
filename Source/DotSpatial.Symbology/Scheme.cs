@@ -528,14 +528,16 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the editor settings that control how this scheme operates.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public EditorSettings EditorSettings { get; set; }
 
         /// <summary>
         /// This is cached until a GetValues call is made, at which time the statistics will
         /// be re-calculated from the values.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Statistics Statistics { get; protected set; }
 
         /// <summary>
@@ -548,7 +550,8 @@ namespace DotSpatial.Symbology
         /// This includes only members that are not excluded by the exclude expression,
         /// and have a valid numeric value.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<double> Values { get; protected set; }
 
         #endregion

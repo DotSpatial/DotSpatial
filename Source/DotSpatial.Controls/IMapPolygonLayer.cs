@@ -15,6 +15,9 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Interface for the map polygon layer.
+    /// </summary>
     public interface IMapPolygonLayer : IPolygonLayer, IMapFeatureLayer
     {
     }

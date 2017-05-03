@@ -25,8 +25,8 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// PointScheme
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)),
-    Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class LineScheme : FeatureScheme, ILineScheme
     {
         #region Private Variables
@@ -219,7 +219,8 @@ namespace DotSpatial.Symbology
         /// </remarks>
         [Description("Gets the list of categories.")]
         [Serialize("Categories")]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public LineCategoryCollection Categories
         {
             get { return _categories; }
@@ -234,7 +235,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of categories in this scheme
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override int NumCategories
         {
             get

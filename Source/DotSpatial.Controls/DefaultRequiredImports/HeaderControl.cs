@@ -7,7 +7,7 @@ using DotSpatial.Extensions;
 namespace DotSpatial.Controls.DefaultRequiredImports
 {
     /// <summary>
-    /// Default Header control. It will used when no custom implementation of IHeaderControl where found.
+    /// Default Header control. It will be used when no custom implementation of IHeaderControl can be found.
     /// </summary>
     [Export(typeof(IHeaderControl))]
     [DefaultRequiredImport]
@@ -21,13 +21,8 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
         #region Properties
 
-        public int Priority
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        /// <inheritdoc />
+        public int Priority => 1;
 
         [Import]
         private AppManager App { get; set; }
@@ -39,6 +34,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
         #region Methods
 
+        /// <inheritdoc />
         public void Activate()
         {
             if (_isActivated) return;
@@ -52,20 +48,20 @@ namespace DotSpatial.Controls.DefaultRequiredImports
                 _isActivated = true;
 
                 var container = new ToolStripPanel
-                                {
-                                    Dock = DockStyle.Top
-                                };
+                {
+                    Dock = DockStyle.Top
+                };
                 Shell.Controls.Add(container);
 
                 var menuStrip = new MenuStrip
-                                {
-                                    Name = DEFAULT_GROUP_NAME,
-                                    Dock = DockStyle.Top
-                                };
+                {
+                    Name = DefaultGroupName,
+                    Dock = DockStyle.Top
+                };
                 Shell.Controls.Add(menuStrip);
 
                 Initialize(container, menuStrip);
-                App.ExtensionsActivated += delegate { LoadToolstrips(); };
+                App.ExtensionsActivated += (sender, args) => LoadToolstrips();
 
                 // Add default buttons
                 new DefaultMenuBars(App).Initialize(this);

@@ -59,7 +59,7 @@ namespace DotSpatial.Controls
             // 
             resources.ApplyResources(this.treFeatures, "treFeatures");
             this.treFeatures.Name = "treFeatures";
-            this.treFeatures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treFeatures_AfterSelect);
+            this.treFeatures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreFeaturesAfterSelect);
             // 
             // dgvAttributes
             // 

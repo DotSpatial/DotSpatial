@@ -21,6 +21,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Interface for the map frame.
+    /// </summary>
     public interface IMapFrame : IFrame, IMapGroup, IProj
     {
         #region Events
@@ -52,7 +55,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the buffered image.  Mess with this at your own risk.
+        /// Gets or sets the buffered image. Mess with this at your own risk.
         /// </summary>
         Image BufferImage { get; set; }
 
@@ -67,7 +70,7 @@ namespace DotSpatial.Controls
         int CurrentChunk { get; set; }
 
         /// <summary>
-        /// Gets or sets whether this map frame should define its buffer
+        /// Gets or sets a value indicating whether this map frame should define its buffer
         /// region to be the same size as the client, or three times larger.
         /// </summary>
         bool ExtendBuffer { get; set; }
@@ -78,8 +81,8 @@ namespace DotSpatial.Controls
         int ExtendBufferCoeff { get; }
 
         /// <summary>
-        /// Gets or sets whether this map frame is currently in the process of redrawing the
-        /// stencils after a pan operation.  Drawing should not take place if this is true.
+        /// Gets or sets a value indicating whether this map frame is currently in the process of redrawing the
+        /// stencils after a pan operation. Drawing should not take place if this is true.
         /// </summary>
         bool IsPanning { get; set; }
 
@@ -132,15 +135,14 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Using the standard independent paint method would potentially cause for dis-synchrony between
-        /// the parents state and the state of this control.  This way, the drawing is all done at the
-        /// same time.
+        /// the parents state and the state of this control. This way, the drawing is all done at the same time.
         /// </summary>
-        /// <param name="pe"></param>
-        void Draw(PaintEventArgs pe);
+        /// <param name="e">The event args.</param>
+        void Draw(PaintEventArgs e);
 
         /// <summary>
         /// Uses the current buffer and envelope to force each of the contained layers
-        /// to re-draw their content.  This is useful after a zoom or size change.
+        /// to re-draw their content. This is useful after a zoom or size change.
         /// </summary>
         void Initialize();
 
@@ -151,13 +153,13 @@ namespace DotSpatial.Controls
         void Initialize(List<Extent> regions);
 
         /// <summary>
-        /// This will cause an invalidation for each layer.  The actual rectangle to re-draw is not specified
+        /// This will cause an invalidation for each layer. The actual rectangle to re-draw is not specified
         /// here, but rather this simply indicates that some re-calculation is necessary.
         /// </summary>
         void InvalidateLayers();
 
         /// <summary>
-        /// Pans the image for this map frame.  Instead of drawing entirely new content, from all 5 zones,
+        /// Pans the image for this map frame. Instead of drawing entirely new content, from all 5 zones,
         /// just the slivers of newly revealed area need to be re-drawn.
         /// </summary>
         /// <param name="shift">A Point showing the amount to shift in pixels</param>
@@ -173,14 +175,14 @@ namespace DotSpatial.Controls
         /// Obtains a rectangle relative to the background image by comparing
         /// the current View rectangle with the parent control's size.
         /// </summary>
-        /// <param name="clip"></param>
-        /// <returns></returns>
+        /// <param name="clip">Rectangle used for clipping.</param>
+        /// <returns>The resulting rectangle.</returns>
         Rectangle ParentToView(Rectangle clip);
 
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
-        /// to draw directly to the specified target rectangle on the graphics object.  This is useful
-        /// for doing vector drawing on much larger pages.  The result will be centered in the
+        /// to draw directly to the specified target rectangle on the graphics object. This is useful
+        /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
         /// <param name="device">Graphics device to print to</param>
@@ -189,10 +191,13 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
-        /// to draw directly to the specified target rectangle on the graphics object.  This is useful
-        /// for doing vector drawing on much larger pages.  The result will be centered in the
+        /// to draw directly to the specified target rectangle on the graphics object. This is useful
+        /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
+        /// <param name="device">Graphics object used for drawing.</param>
+        /// <param name="targetRectangle">Rectangle to draw the content to.</param>
+        /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
         void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope);
 
         /// <summary>
@@ -213,13 +218,13 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Re-creates the buffer based on the size of the control without changing
-        /// the geographic extents.  This is used after a resize operation.
+        /// the geographic extents. This is used after a resize operation.
         /// </summary>
         void ResetBuffer();
 
         /// <summary>
         /// This is not called during a resize, but rather after panning or zooming where the
-        /// view is used as a guide to update the extents.  This will also call ResetBuffer.
+        /// view is used as a guide to update the extents. This will also call ResetBuffer.
         /// </summary>
         void ResetExtents();
 

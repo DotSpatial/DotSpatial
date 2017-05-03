@@ -32,9 +32,9 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A MapFrame accomplishes two things.  Firstly, it organizes the layers to be drawn, and establishes the geographic
-    /// extents.  Secondly, it hosts the back-buffer image that can be larger than the component that
-    /// this map frame would normally be drawn to.  When it receives instructions to paint itself, the client rectangle
+    /// A MapFrame accomplishes two things. Firstly, it organizes the layers to be drawn, and establishes the geographic
+    /// extents. Secondly, it hosts the back-buffer image that can be larger than the component that
+    /// this map frame would normally be drawn to. When it receives instructions to paint itself, the client rectangle
     /// will automatically end up behaving like a clip rectangle.
     /// </summary>
     [Serializable]
@@ -51,6 +51,7 @@ namespace DotSpatial.Controls
         private List<Rectangle> _clipRegions;
         private int _currentChunk;
         private bool _extendBuffer;
+        private ILayer _former;
         private int _height;
         private bool _isPanning;
 
@@ -65,14 +66,13 @@ namespace DotSpatial.Controls
         private bool _resizing;
         private Rectangle _view;
         private int _width;
-        private ILayer former;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Creates the default map frame, allowing the control that it belongs to to be set later.
+        /// Initializes a new instance of the <see cref="MapFrame"/> class, allowing the control that it belongs to to be set later.
         /// </summary>
         public MapFrame()
         {
@@ -88,11 +88,11 @@ namespace DotSpatial.Controls
             IsSelected = true; // by default allow the map frame to be selected
 
             // add properties context menu item
-            ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
+            ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, ProjectionClick));
         }
 
         /// <summary>
-        /// Creates a new instance of a MapFrame without specifying the extents.  The
+        /// Initializes a new instance of the <see cref="MapFrame"/> class without specifying the extents. The
         /// geographic extents of the world will be used.
         /// </summary>
         /// <param name="inParent">The parent control that should own this map frame.</param>
@@ -103,8 +103,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of MapFrame
+        /// Initializes a new instance of the <see cref="MapFrame"/> class.
         /// </summary>
+        /// <param name="inParent">The parent control that should own this map frame.</param>
+        /// <param name="inExtent">The geographic extent visible in this map frame.</param>
         public MapFrame(Control inParent, Extent inExtent)
             : this()
         {
@@ -143,18 +145,12 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// The bottom (or height) of this client rectangle
+        /// Gets the bottom (or height) of this client rectangle
         /// </summary>
-        public int Bottom
-        {
-            get
-            {
-                return ClientRectangle.Bottom;
-            }
-        }
+        public int Bottom => ClientRectangle.Bottom;
 
         /// <summary>
-        /// Gets or sets the buffered image.  Mess with this at your own risk.
+        /// Gets or sets the buffered image. Mess with this at your own risk.
         /// </summary>
         public Image BufferImage
         {
@@ -170,18 +166,12 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the client rectangle
+        /// Gets the client rectangle.
         /// </summary>
-        public Rectangle ClientRectangle
-        {
-            get
-            {
-                return new Rectangle(0, 0, _width, _height);
-            }
-        }
+        public Rectangle ClientRectangle => new Rectangle(0, 0, _width, _height);
 
         /// <summary>
-        /// This gets or sets the first clipRegion.  If more than one region needs to be set,
+        /// Gets or sets the first clipRegion. If more than one region needs to be set,
         /// the ClipRegions list should be used instead.
         /// </summary>
         public Rectangle ClipRectangle
@@ -190,10 +180,7 @@ namespace DotSpatial.Controls
             {
                 if (_clipRegions == null)
                 {
-                    _clipRegions = new List<Rectangle>
-                                   {
-                                       ClientRectangle
-                                   };
+                    _clipRegions = new List<Rectangle> { ClientRectangle };
                 }
 
                 return _clipRegions[0];
@@ -244,16 +231,10 @@ namespace DotSpatial.Controls
         }
 
         /// <inheritdoc />
-        public override bool EventsSuspended
-        {
-            get
-            {
-                return _layers.EventsSuspended;
-            }
-        }
+        public override bool EventsSuspended => _layers.EventsSuspended;
 
         /// <summary>
-        /// Gets or sets whether this map frame should define its buffer
+        /// Gets or sets a value indicating whether this map frame should define its buffer
         /// region to be the same size as the client, or three times larger.
         /// </summary>
         [Serialize("ExtendBuffer")]
@@ -272,7 +253,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// Gets or sets the coefficient used for ExtendBuffer. This coefficient should not be modified.
         /// </summary>
         public int ExtendBufferCoeff
         {
@@ -290,16 +271,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the geographic extents
         /// </summary>
-        public Extent GeographicExtents
-        {
-            get
-            {
-                return BufferToProj(View);
-            }
-        }
+        public Extent GeographicExtents => BufferToProj(View);
 
         /// <summary>
-        /// Gets or sets the height
+        /// Gets or sets the height.
         /// </summary>
         public int Height
         {
@@ -315,7 +290,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the ImageRectangle for drawing the buffer
+        /// Gets the ImageRectangle for drawing the buffer.
         /// </summary>
         public Rectangle ImageRectangle
         {
@@ -327,8 +302,8 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets whether this map frame is currently in the process of redrawing the
-        /// stencils after a pan operation.  Drawing should not take place if this is true.
+        /// Gets or sets a value indicating whether this map frame is currently in the process of redrawing the
+        /// stencils after a pan operation. Drawing should not take place if this is true.
         /// </summary>
         public bool IsPanning
         {
@@ -358,14 +333,15 @@ namespace DotSpatial.Controls
             {
                 if (Layers != null)
                 {
-                    Ignore_Layer_Events(_layers);
+                    IgnoreLayerEvents(_layers);
                 }
 
                 _layers = value;
-                _layers.ProgressHandler = ProgressHandler;
+
                 if (_layers != null)
                 {
-                    Handle_Layer_Events(value);
+                    _layers.ProgressHandler = ProgressHandler;
+                    HandleLayerEvents(value);
                     _layers.MapFrame = this;
                     _layers.ParentGroup = this;
                 }
@@ -373,7 +349,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This is a different view of the layers cast as legend items.  This allows
+        /// Gets the layers cast as legend items. This allows
         /// easier cycling in recursive legend code.
         /// </summary>
         public override IEnumerable<ILegendItem> LegendItems
@@ -403,16 +379,10 @@ namespace DotSpatial.Controls
         }
 
         /// <inheritdoc />
-        public IMapFrame ParentMapFrame
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public IMapFrame ParentMapFrame => this;
 
         /// <summary>
-        /// Gets or sets the progress handler to use.  Setting this will set the progress handler for
+        /// Gets or sets the progress handler to use. Setting this will set the progress handler for
         /// each of the layers in this map frame.
         /// </summary>
         public override IProgressHandler ProgressHandler
@@ -463,18 +433,12 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// The right in client rectangle coordinates
+        /// Gets the right in client rectangle coordinates.
         /// </summary>
-        public int Right
-        {
-            get
-            {
-                return ClientRectangle.Right;
-            }
-        }
+        public int Right => ClientRectangle.Right;
 
         /// <summary>
-        /// gets or sets the rectangle in pixel coordinates that will be drawn to the entire screen.
+        /// Gets or sets the rectangle in pixel coordinates that will be drawn to the entire screen.
         /// </summary>
         public Rectangle View
         {
@@ -516,7 +480,7 @@ namespace DotSpatial.Controls
                 Extent ext = CloneableEM.Copy(value);
                 ResetAspectRatio(ext);
 
-                // reset buffer initializes with correct buffer.  Don't allow initialization yet.
+                // reset buffer initializes with correct buffer. Don't allow initialization yet.
                 SuspendExtentChanged();
                 base.ViewExtents = ext;
                 ResetBuffer();
@@ -651,29 +615,30 @@ namespace DotSpatial.Controls
             _layers.Clear();
         }
 
+        /// <inheritdoc />
         public override bool ClearSelection(out Envelope affectedAreas)
         {
-            former = null;
+            _former = null;
             foreach (var l in this.GetAllLayers())
             {
                 if (l.IsSelected)
                 {
-                    former = l;
+                    _former = l;
                     l.IsSelected = false;
                 }
             }
 
-            if (former == null && IsSelected)
+            if (_former == null && IsSelected)
             {
-                former = this;
+                _former = this;
             }
 
             IsSelected = true;
             bool cleared = base.ClearSelection(out affectedAreas);
             IsSelected = false;
-            if (former != null)
+            if (_former != null)
             {
-                former.IsSelected = true;
+                _former.IsSelected = true;
             }
 
             return cleared;
@@ -689,7 +654,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Draws from the buffer.
         /// </summary>
-        /// <param name="pe"></param>
+        /// <param name="pe">The event args.</param>
         public void Draw(PaintEventArgs pe)
         {
             if (_buffer == null) return;
@@ -725,11 +690,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Converts the internal list of layers into a list of ILayer interfaces
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of layers.</returns>
         public override IList<ILayer> GetLayers()
         {
-            if (_layers == null) return null;
-            return _layers.Cast<ILayer>().ToList();
+            return _layers?.Cast<ILayer>().ToList();
         }
 
         /// <inheritdoc />
@@ -745,7 +709,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Instructs the map frame to draw content from the specified regions to the buffer..
+        /// Instructs the map frame to draw content from the specified regions to the buffer.
         /// </summary>
         /// <param name="regions">The regions to initialize.</param>
         public virtual void Initialize(List<Extent> regions)
@@ -773,8 +737,7 @@ namespace DotSpatial.Controls
             bufferDevice.Clip = new Region(gp);
 
             // Draw the background color
-            if (null != _parent) bufferDevice.Clear(_parent.BackColor);
-            else bufferDevice.Clear(Color.White);
+            bufferDevice.Clear(_parent?.BackColor ?? Color.White);
 
             // First draw all the vector content
             foreach (IMapLayer layer in Layers)
@@ -812,7 +775,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Uses the current buffer and envelope to force each of the contained layers
-        /// to re-draw their content.  This is useful after a zoom or size change.
+        /// to re-draw their content. This is useful after a zoom or size change.
         /// </summary>
         public virtual void Initialize()
         {
@@ -840,9 +803,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When content in a geographic region needs to be invalidated
+        /// When content in a geographic region needs to be invalidated.
         /// </summary>
-        /// <param name="region"></param>
+        /// <param name="region">Region that gets invalidated.</param>
         public override void Invalidate(Extent region)
         {
             foreach (IMapLayer layer in Layers)
@@ -860,7 +823,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This will cause an invalidation for each layer.  The actual rectangle to re-draw is not specified
+        /// This will cause an invalidation for each layer. The actual rectangle to re-draw is not specified
         /// here, but rather this simply indicates that some re-calculation is necessary.
         /// </summary>
         public void InvalidateLayers()
@@ -873,7 +836,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Pans the image for this map frame.  Instead of drawing entirely new content, from all 5 zones,
+        /// Pans the image for this map frame. Instead of drawing entirely new content, from all 5 zones,
         /// just the slivers of newly revealed area need to be re-drawn.
         /// </summary>
         /// <param name="shift">A Point showing the amount to shift in pixels</param>
@@ -920,28 +883,28 @@ namespace DotSpatial.Controls
         /// Obtains a rectangle relative to the background image by comparing
         /// the current View rectangle with the parent control's size.
         /// </summary>
-        /// <param name="clip"></param>
-        /// <returns></returns>
+        /// <param name="clip">Rectangle used for clipping.</param>
+        /// <returns>The resulting rectangle.</returns>
         public Rectangle ParentToView(Rectangle clip)
         {
             Rectangle result = new Rectangle
-                               {
-                                   X = View.X + (clip.X * View.Width) / _parent.ClientRectangle.Width,
-                                   Y = View.Y + (clip.Y * View.Height) / _parent.ClientRectangle.Height,
-                                   Width = clip.Width * View.Width / _parent.ClientRectangle.Width,
-                                   Height = clip.Height * View.Height / _parent.ClientRectangle.Height
-                               };
+            {
+                X = View.X + (clip.X * View.Width) / _parent.ClientRectangle.Width,
+                Y = View.Y + (clip.Y * View.Height) / _parent.ClientRectangle.Height,
+                Width = clip.Width * View.Width / _parent.ClientRectangle.Width,
+                Height = clip.Height * View.Height / _parent.ClientRectangle.Height
+            };
             return result;
         }
 
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
-        /// to draw directly to the specified target rectangle on the graphics object.  This is useful
-        /// for doing vector drawing on much larger pages.  The result will be centered in the
+        /// to draw directly to the specified target rectangle on the graphics object. This is useful
+        /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="targetRectangle"></param>
+        /// <param name="device">Graphics object used for drawing.</param>
+        /// <param name="targetRectangle">Rectangle to draw the content to.</param>
         public void Print(Graphics device, Rectangle targetRectangle)
         {
             Print(device, targetRectangle, ViewExtents);
@@ -949,12 +912,12 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
-        /// to draw directly to the specified target rectangle on the graphics object.  This is useful
-        /// for doing vector drawing on much larger pages.  The result will be centered in the
+        /// to draw directly to the specified target rectangle on the graphics object. This is useful
+        /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="targetRectangle"></param>
+        /// <param name="device">Graphics object used for drawing.</param>
+        /// <param name="targetRectangle">Rectangle to draw the content to.</param>
         /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
         public virtual void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope)
         {
@@ -1024,7 +987,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Re-creates the buffer based on the size of the control without changing
-        /// the geographic extents.  This is used after a resize operation.
+        /// the geographic extents. This is used after a resize operation.
         /// </summary>
         public virtual void ResetBuffer()
         {
@@ -1037,7 +1000,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// This is not called during a resize, but rather after panning or zooming where the
-        /// view is used as a guide to update the extents.  This will also call ResetBuffer.
+        /// view is used as a guide to update the extents. This will also call ResetBuffer.
         /// </summary>
         public virtual void ResetExtents()
         {
@@ -1119,37 +1082,38 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Wires each of the layer events that the MapFrame should be listening to.
         /// </summary>
-        /// <param name="collection"></param>
-        protected override void Handle_Layer_Events(ILayerEvents collection)
+        /// <param name="collection">Collection the events get added to.</param>
+        protected override void HandleLayerEvents(ILayerEvents collection)
         {
-            if (collection == null) return;
             IMapLayerCollection glc = collection as IMapLayerCollection;
             if (glc == null) return;
             glc.BufferChanged += GeoLayerBufferChanged;
-            glc.LayerAdded += LayerColection_LayerAdded;
-            glc.LayerVisibleChanged += LayerCollection_LayerVisibleChanged;
-            glc.ItemChanged += LayerCollection_MembersChanged;
-            base.Handle_Layer_Events(collection);
+            glc.LayerAdded += LayerColectionLayerAdded;
+            glc.LayerVisibleChanged += LayerCollectionLayerVisibleChanged;
+            glc.ItemChanged += LayerCollectionMembersChanged;
+            base.HandleLayerEvents(collection);
         }
 
         /// <summary>
-        /// Unwires events from the layer collection
+        /// Unwires events from the layer collection.
         /// </summary>
-        /// <param name="collection"></param>
-        protected override void Ignore_Layer_Events(ILayerEvents collection)
+        /// <param name="collection">Collection the events get removed from.</param>
+        protected override void IgnoreLayerEvents(ILayerEvents collection)
         {
-            if (collection == null) return;
             IMapLayerCollection glc = collection as IMapLayerCollection;
             if (glc == null) return;
             glc.BufferChanged -= GeoLayerBufferChanged;
-            glc.LayerAdded -= LayerColection_LayerAdded;
-            glc.LayerVisibleChanged -= LayerCollection_LayerVisibleChanged;
-            base.Ignore_Layer_Events(collection);
+            glc.LayerAdded -= LayerColectionLayerAdded;
+            glc.LayerVisibleChanged -= LayerCollectionLayerVisibleChanged;
+            base.IgnoreLayerEvents(collection);
         }
 
         /// <summary>
-        /// Draw label content for a Map Layer
+        /// Draw label content for a Map Layer.
         /// </summary>
+        /// <param name="regions">Regions that should be drawn.</param>
+        /// <param name="args">The map args.</param>
+        /// <param name="layer">The layer whose labels should be drawn.</param>
         protected virtual void InitializeLabels(List<Extent> regions, MapArgs args, IRenderable layer)
         {
             if (!layer.IsVisible) return;
@@ -1166,15 +1130,9 @@ namespace DotSpatial.Controls
             }
 
             var mfl = layer as IMapFeatureLayer;
-            if (mfl != null)
+            if (mfl != null && mfl.ShowLabels && mfl.LabelLayer != null && mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
             {
-                if (mfl.ShowLabels && mfl.LabelLayer != null)
-                {
-                    if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
-                    {
-                        mfl.LabelLayer.DrawRegions(args, regions);
-                    }
-                }
+                mfl.LabelLayer.DrawRegions(args, regions);
             }
         }
 
@@ -1182,22 +1140,22 @@ namespace DotSpatial.Controls
         /// Modifies the ZoomToLayer behavior to account for the possibility of an expanded
         /// MapFrame.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected override void Layers_ZoomToLayer(object sender, EnvelopeArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        protected override void LayersZoomToLayer(object sender, EnvelopeArgs e)
         {
             ZoomToLayerEnvelope(e.Envelope);
         }
 
         /// <summary>
-        /// Fires the BufferChanged event.  This is fired even if the new content is not currently
+        /// Fires the BufferChanged event. This is fired even if the new content is not currently
         /// in the view rectangle.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         protected void OnBufferChanged(object sender, ClipArgs e)
         {
-            if (BufferChanged != null) BufferChanged(this, e);
+            BufferChanged?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1213,9 +1171,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the ExtentsChanged event
+        /// Fires the ExtentsChanged event.
         /// </summary>
-        /// <param name="ext"></param>
+        /// <param name="ext">The new extent.</param>
         protected override void OnExtentsChanged(Extent ext)
         {
             if (ext.IsEmpty() || (ext.X == -180 && ext.Y == 90))
@@ -1253,10 +1211,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnFinishedRefresh()
         {
-            if (FinishedRefresh != null)
-            {
-                FinishedRefresh(this, EventArgs.Empty);
-            }
+            FinishedRefresh?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1264,18 +1219,17 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnScreenUpdated()
         {
-            if (ScreenUpdated == null) return;
-            ScreenUpdated(this, EventArgs.Empty);
+            ScreenUpdated?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
         /// If a BackBuffer.Extents exists, this will enlarge those extents to match the aspect ratio
-        /// of the pixel view.  If one doesn't exist, the _mapFrame.Extents will be used instead.
+        /// of the pixel view. If one doesn't exist, the _mapFrame.Extents will be used instead.
         /// </summary>
         /// <param name="newEnv">The envelope to adjust</param>
         protected void ResetAspectRatio(Extent newEnv)
         {
-            // ---------- Aspect Ratio Handling
+            // Aspect Ratio Handling
             if (newEnv == null) return;
             double h = Parent.Height;
             double w = Parent.Width;
@@ -1342,7 +1296,7 @@ namespace DotSpatial.Controls
         /// <returns>True if the layer doesn't have a projection.</returns>
         private bool DefineProjection(IMapLayer layer)
         {
-            if (layer.DataSet.Projection == null || layer.DataSet.Projection.Transform == null)
+            if (layer.DataSet.Projection?.Transform == null)
             {
                 if (ProjectionModeDefine == ActionMode.Always && _chosenProjection == null)
                 {
@@ -1353,11 +1307,11 @@ namespace DotSpatial.Controls
                 if (ProjectionModeDefine == ActionMode.Prompt || ProjectionModeDefine == ActionMode.PromptOnce)
                 {
                     var dlg = new UndefinedProjectionDialog
-                              {
-                                  OriginalString = layer.DataSet.ProjectionString,
-                                  MapProjection = Projection,
-                                  LayerName = layer.DataSet.Name,
-                              };
+                    {
+                        OriginalString = layer.DataSet.ProjectionString,
+                        MapProjection = Projection,
+                        LayerName = layer.DataSet.Name
+                    };
 
                     if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;
                     dlg.AlwaysUse = ProjectionModeDefine == ActionMode.PromptOnce;
@@ -1383,15 +1337,17 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// When any region for the stencil of any layers is changed, we should update the
-        /// image that we have in that region.  This activity will be suspended in the
+        /// image that we have in that region. This activity will be suspended in the
         /// case of a large scale update for all the layers until they have all updated.
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void GeoLayerBufferChanged(object sender, ClipArgs e)
         {
             OnBufferChanged(this, e);
         }
 
-        private void LayerColection_LayerAdded(object sender, LayerEventArgs e)
+        private void LayerColectionLayerAdded(object sender, LayerEventArgs e)
         {
             IMapLayer layer = e.Layer as IMapLayer;
             if (layer == null) return;
@@ -1426,13 +1382,13 @@ namespace DotSpatial.Controls
             Initialize();
         }
 
-        private void LayerCollection_LayerVisibleChanged(object sender, EventArgs e)
+        private void LayerCollectionLayerVisibleChanged(object sender, EventArgs e)
         {
             Initialize();
             OnUpdateMap();
         }
 
-        private void LayerCollection_MembersChanged(object sender, EventArgs e)
+        private void LayerCollectionMembersChanged(object sender, EventArgs e)
         {
             Initialize();
             OnUpdateMap();
@@ -1451,51 +1407,41 @@ namespace DotSpatial.Controls
             }
 
             IMapLayer geoLayer = layer;
-            if (geoLayer != null)
+            if (geoLayer == null || (geoLayer.UseDynamicVisibility && ViewExtents.Width > geoLayer.DynamicVisibilityWidth))
             {
-                if (geoLayer.UseDynamicVisibility)
+                return; // skip the geoLayer if its no map layer or we are zoomed out too far.
+            }
+
+            if (!geoLayer.IsVisible) return;
+
+            geoLayer.DrawRegions(args, new List<Extent>
+                                       {
+                                           args.GeographicExtents
+                                       });
+
+            IMapFeatureLayer mfl = geoLayer as IMapFeatureLayer;
+            if (mfl == null || (mfl.UseDynamicVisibility && ViewExtents.Width > mfl.DynamicVisibilityWidth)) return;
+
+            if (mfl.ShowLabels && mfl.LabelLayer != null)
+            {
+                if (mfl.LabelLayer.UseDynamicVisibility && ViewExtents.Width > mfl.LabelLayer.DynamicVisibilityWidth)
                 {
-                    if (ViewExtents.Width > geoLayer.DynamicVisibilityWidth)
-                    {
-                        return; // skip the geoLayer if we are zoomed out too far.
-                    }
+                    return;
                 }
 
-                if (geoLayer.IsVisible == false) return;
-
-                geoLayer.DrawRegions(args, new List<Extent>
-                                           {
-                                               args.GeographicExtents
-                                           });
-
-                IMapFeatureLayer mfl = geoLayer as IMapFeatureLayer;
-                if (mfl != null)
-                {
-                    if (mfl.UseDynamicVisibility)
-                    {
-                        if (ViewExtents.Width > mfl.DynamicVisibilityWidth) return;
-                    }
-
-                    if (mfl.ShowLabels && mfl.LabelLayer != null)
-                    {
-                        if (mfl.LabelLayer.UseDynamicVisibility)
-                        {
-                            if (ViewExtents.Width > mfl.LabelLayer.DynamicVisibilityWidth) return;
-                        }
-
-                        mfl.LabelLayer.DrawRegions(args, new List<Extent>
-                                                         {
-                                                             args.GeographicExtents
-                                                         });
-                    }
-                }
+                mfl.LabelLayer.DrawRegions(args, new List<Extent>
+                                                 {
+                                                     args.GeographicExtents
+                                                 });
             }
         }
 
         /// <summary>
         /// When the Projection context menu is clicked
         /// </summary>
-        private void Projection_Click(object sender, EventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void ProjectionClick(object sender, EventArgs e)
         {
             // Launches a MapFrameProjectionDialog
             using (var dialog = new MapFrameProjectionDialog(this))
@@ -1524,7 +1470,7 @@ namespace DotSpatial.Controls
                 string message = string.Format(MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch, layer.DataSet.Name, layer.Projection.Name, Projection.Name);
                 if (ProjectionModeReproject == ActionMode.PromptOnce)
                 {
-                    message = "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map.  Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
+                    message = "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map. Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
                 }
 
                 DialogResult result = MessageBox.Show(message, MessageStrings.MapFrame_GlcLayerAdded_Projection_Mismatch, MessageBoxButtons.YesNo);
@@ -1552,8 +1498,8 @@ namespace DotSpatial.Controls
                 layerEnvelope.ExpandBy(layerEnvelope.Width, layerEnvelope.Height);
             }
 
-            const double eps = 1e-7;
-            if (layerEnvelope.Width > eps && layerEnvelope.Height > eps)
+            const double Eps = 1e-7;
+            if (layerEnvelope.Width > Eps && layerEnvelope.Height > Eps)
             {
                 layerEnvelope.ExpandBy(layerEnvelope.Width / 10, layerEnvelope.Height / 10); // work item #84
             }
@@ -1586,9 +1532,9 @@ namespace DotSpatial.Controls
             #region  Constructors
 
             /// <summary>
-            /// Creates a new instance of the MapLayerEnumerator
+            /// Initializes a new instance of the <see cref="MapLayerEnumerator"/> class.
             /// </summary>
-            /// <param name="subEnumerator"></param>
+            /// <param name="subEnumerator">Enumerator used inside class.</param>
             public MapLayerEnumerator(IEnumerator<IMapLayer> subEnumerator)
             {
                 _enumerator = subEnumerator;
@@ -1599,21 +1545,9 @@ namespace DotSpatial.Controls
             #region Properties
 
             /// <inheritdoc />
-            public ILayer Current
-            {
-                get
-                {
-                    return _enumerator.Current;
-                }
-            }
+            public ILayer Current => _enumerator.Current;
 
-            object IEnumerator.Current
-            {
-                get
-                {
-                    return _enumerator.Current;
-                }
-            }
+            object IEnumerator.Current => _enumerator.Current;
 
             #endregion
 
@@ -1638,61 +1572,6 @@ namespace DotSpatial.Controls
             }
 
             #endregion
-        }
-
-        #endregion
-    }
-
-    internal class LimitedStack<T>
-    {
-        #region Fields
-
-        public readonly int Limit;
-        private readonly List<T> _stack;
-
-        #endregion
-
-        #region  Constructors
-
-        public LimitedStack(int limit = 32)
-        {
-            Limit = limit;
-            _stack = new List<T>(limit);
-        }
-
-        #endregion
-
-        #region Properties
-
-        public int Count
-        {
-            get
-            {
-                return _stack.Count;
-            }
-        }
-
-        #endregion
-
-        #region Methods
-
-        public T Peek()
-        {
-            if (_stack.Count == 0) return default(T);
-            return _stack[_stack.Count - 1];
-        }
-
-        public T Pop()
-        {
-            var item = _stack[_stack.Count - 1];
-            _stack.RemoveAt(_stack.Count - 1);
-            return item;
-        }
-
-        public void Push(T item)
-        {
-            if (_stack.Count == Limit) _stack.RemoveAt(0);
-            _stack.Add(item);
         }
 
         #endregion

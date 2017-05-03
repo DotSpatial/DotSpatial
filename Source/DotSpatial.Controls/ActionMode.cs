@@ -8,7 +8,7 @@
 // The Initial Developer of this Original Code is Keenedge Created 2010-10-22 09:17:34 -0700
 //
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Renamed and changed from "Flags" characteristic to normal enum.  These states do not combine. 11/25/2010
+// Renamed and changed from "Flags" characteristic to normal enum. These states do not combine. 11/25/2010
 // ********************************************************************************************************
 
 namespace DotSpatial.Controls

@@ -21,20 +21,16 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PointSchemeCategory
+    /// LineCategory
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)),
-    Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class LineCategory : FeatureCategory, ILineCategory
     {
-        #region Private Variables
-
-        #endregion
-
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of PointSchemeCategory
+        /// Initializes a new instance of the <see cref="LineCategory"/> class.
         /// </summary>
         public LineCategory()
         {
@@ -43,7 +39,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new set of cartographic lines that together form a line with a border.  Since a compound
+        /// Initializes a new instance of the <see cref="LineCategory"/> class. Since a compound
         /// pen is used, it is possible to use this to create a transparent line with just two border parts.
         /// The selection symbolizer will be dark cyan bordering light cyan, but use the same dash and cap
         /// patterns.
@@ -60,7 +56,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new line category with the specified color and width
+        /// Initializes a new instance of the <see cref="LineCategory"/> class with the specified color and width.
         /// </summary>
         /// <param name="color">The color of the unselected line</param>
         /// <param name="width">The width of both the selected and unselected lines.</param>
@@ -71,7 +67,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instanec of a default point scheme category where the geographic symbol size has been
+        /// Initializes a new instance of the <see cref="LineCategory"/> class where the geographic symbol size has been
         /// scaled to the specified extent.
         /// </summary>
         /// <param name="extent">The geographic extent that is 100 times wider than the geographic size of the points.</param>
@@ -82,8 +78,8 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new category based on a symbolizer, and uses the same symbolizer, but with a fill and border color of light cyan
-        /// for the selection symbolizer
+        /// Initializes a new instance of the <see cref="LineCategory"/> class based on a symbolizer.
+        /// This uses the same symbolizer, but with a fill and border color of light cyan for the selection symbolizer.
         /// </summary>
         /// <param name="lineSymbolizer">The symbolizer to use in order to create a category</param>
         public LineCategory(ILineSymbolizer lineSymbolizer)
@@ -100,17 +96,53 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the symbolizer to use to draw selected features from this category.
+        /// </summary>
+        public new ILineSymbolizer SelectionSymbolizer
+        {
+            get
+            {
+                return base.SelectionSymbolizer as ILineSymbolizer;
+            }
+
+            set
+            {
+                base.SelectionSymbolizer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the symbolizer for this category
+        /// </summary>
+        public new ILineSymbolizer Symbolizer
+        {
+            get
+            {
+                return base.Symbolizer as ILineSymbolizer;
+            }
+
+            set
+            {
+                base.Symbolizer = value;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// This gets a single color that attempts to represent the specified
-        /// category.  For polygons, for example, this is the fill color (or central fill color)
-        /// of the top pattern.  If an image is being used, the color will be gray.
+        /// This gets a single color that attempts to represent the specified category.
+        /// For polygons, for example, this is the fill color (or central fill color)
+        /// of the top pattern. If an image is being used, the color will be gray.
         /// </summary>
         /// <returns>The System.Color that can be used as an approximation to represent this category.</returns>
         public override Color GetColor()
         {
-            if (Symbolizer == null || Symbolizer.Strokes == null || Symbolizer.Strokes.Count == 0) return Color.Gray;
+            if (Symbolizer?.Strokes == null || Symbolizer.Strokes.Count == 0) return Color.Gray;
             IStroke p = Symbolizer.Strokes[0];
             return p.GetColor();
         }
@@ -118,6 +150,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the legend symbol size of the symbolizer for this category.
         /// </summary>
+        /// <returns>The legend symbol size.</returns>
         public override Size GetLegendSymbolSize()
         {
             return Symbolizer.GetLegendSymbolSize();
@@ -126,11 +159,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Controls what happens in the legend when this item is instructed to draw a symbol.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="box"></param>
-        public override void LegendSymbol_Painted(Graphics g, Rectangle box)
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="box">The rectangle used for drawing.</param>
+        public override void LegendSymbolPainted(Graphics g, Rectangle box)
         {
-            this.Symbolizer.DrawLegendSymbol(g, box);
+            Symbolizer.DrawLegendSymbol(g, box);
         }
 
         /// <summary>
@@ -139,33 +172,8 @@ namespace DotSpatial.Symbology
         /// <param name="color">The color to apply</param>
         public override void SetColor(Color color)
         {
-            if (Symbolizer == null || Symbolizer.Strokes == null || Symbolizer.Strokes.Count == 0) return;
+            if (Symbolizer?.Strokes == null || Symbolizer.Strokes.Count == 0) return;
             Symbolizer.Strokes[0].SetColor(color);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the symbolizer for this category
-        /// </summary>
-        public new ILineSymbolizer Symbolizer
-        {
-            get { return base.Symbolizer as ILineSymbolizer; }
-            set
-            {
-                base.Symbolizer = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the symbolizer to use to draw selected features from this category.
-        /// </summary>
-        public new ILineSymbolizer SelectionSymbolizer
-        {
-            get { return base.SelectionSymbolizer as ILineSymbolizer; }
-            set { base.SelectionSymbolizer = value; }
         }
 
         #endregion

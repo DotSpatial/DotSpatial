@@ -15,6 +15,9 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Interface for the map image layer.
+    /// </summary>
     public interface IMapImageLayer : IImageLayer, IMapLayer
     {
     }

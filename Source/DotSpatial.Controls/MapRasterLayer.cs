@@ -170,7 +170,7 @@ namespace DotSpatial.Controls
         /// Call StartDrawing before using this.
         /// </summary>
         /// <param name="rectangles">The rectangular region in pixels to clear.</param>
-        /// <param name= "color">The color to use when clearing.  Specifying transparent
+        /// <param name= "color">The color to use when clearing. Specifying transparent
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
@@ -189,8 +189,8 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This will draw any features that intersect this region.  To specify the features
-        /// directly, use OnDrawFeatures.  This will not clear existing buffer content.
+        /// This will draw any features that intersect this region. To specify the features
+        /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
@@ -214,7 +214,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Copies any current content to the back buffer so that drawing should occur on the
-        /// back buffer (instead of the fore-buffer).  Calling draw methods without
+        /// back buffer (instead of the fore-buffer). Calling draw methods without
         /// calling this may cause exceptions.
         /// </summary>
         /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer

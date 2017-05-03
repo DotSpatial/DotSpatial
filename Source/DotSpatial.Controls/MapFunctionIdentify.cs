@@ -35,8 +35,9 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of IdentifyFunction
+        /// Initializes a new instance of the <see cref="MapFunctionIdentify"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionIdentify(IMap inMap)
             : base(inMap)
         {
@@ -51,6 +52,7 @@ namespace DotSpatial.Controls
         /// Overrides the OnMouseUp event to handle the situation where we are trying to
         /// identify the vector features in the specified area.
         /// </summary>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (e.Button != MouseButtons.Left) return;
@@ -79,7 +81,7 @@ namespace DotSpatial.Controls
 
             if (!_frmFeatureIdentifier.Visible)
             {
-                _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
+                _frmFeatureIdentifier.Show(Map.MapFrame?.Parent);
             }
 
             base.OnMouseUp(e);
@@ -116,7 +118,7 @@ namespace DotSpatial.Controls
         private void SetSelectToSelectedNode(IMap map)
         {
             // todo: Maxim: not sure that we need this...
-            // Why we are selecting only one layer when the tool can return more than one? 
+            // Why we are selecting only one layer when the tool can return more than one?
             // Maybe need to do this selecting stuff optional?
 
             /* This logic is used to clear all selections on the entire map and only select a single feature when using the identify tool
@@ -145,7 +147,7 @@ namespace DotSpatial.Controls
             tempLayer.IsSelected = true;
 
             var selectedNode = _frmFeatureIdentifier.treFeatures.SelectedNode;
-            if (selectedNode == null || selectedNode.Parent == null) return;
+            if (selectedNode?.Parent == null) return;
             var feature = selectedNode.Tag as IFeature;
             var layer = selectedNode.Parent.Tag as IFeatureLayer;
             if (feature != null && layer != null && layer.IsVisible)

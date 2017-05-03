@@ -15,18 +15,19 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Event args of a mouse event on an item.
+    /// </summary>
     public class ItemMouseEventArgs : MouseEventArgs
     {
         #region Fields
-
-        LegendBox _box;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of an ItemMouseEventArgs
+        /// Initializes a new instance of the <see cref="ItemMouseEventArgs"/> class.
         /// </summary>
         /// <param name="inButton">The Mouse Buttons</param>
         /// <param name="inClicks">The number of clicks</param>
@@ -37,18 +38,18 @@ namespace DotSpatial.Controls
         public ItemMouseEventArgs(MouseButtons inButton, int inClicks, int inX, int inY, int inDelta, LegendBox inItemBox)
             : base(inButton, inClicks, inX, inY, inDelta)
         {
-            _box = inItemBox;
+            ItemBox = inItemBox;
         }
 
         /// <summary>
-        /// Creates a new instance of ItemMouseEventArgs from an existing MouseEventArgs.
+        /// Initializes a new instance of the <see cref="ItemMouseEventArgs"/> class from an existing MouseEventArgs.
         /// </summary>
         /// <param name="args">The existing arguments</param>
         /// <param name="inItemBox">A LegendBox for comparison</param>
         public ItemMouseEventArgs(MouseEventArgs args, LegendBox inItemBox)
             : base(args.Button, args.Clicks, args.X, args.Y, args.Delta)
         {
-            _box = inItemBox;
+            ItemBox = inItemBox;
         }
 
         #endregion
@@ -56,20 +57,9 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the item that received the mouse down, plus the various rectangular extents encoded in the various boxes.
+        /// Gets or sets the item that received the mouse down, plus the various rectangular extents encoded in the various boxes.
         /// </summary>
-        public LegendBox ItemBox
-        {
-            get
-            {
-                return _box;
-            }
-
-            protected set
-            {
-                _box = value;
-            }
-        }
+        public LegendBox ItemBox { get; protected set; }
 
         #endregion
     }

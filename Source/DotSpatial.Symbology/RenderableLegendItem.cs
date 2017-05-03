@@ -87,7 +87,8 @@ namespace DotSpatial.Symbology
         /// will usually be reconfigured in subclasses to simply show the dataset extent.
         /// </summary>
         /// <returns></returns>
-        [Category("General"), Description("Obtains an Envelope that contains this object")]
+        [Category("General")]
+        [Description("Obtains an Envelope that contains this object")]
         public virtual Extent Extent
         {
             get { return _extent; }
@@ -96,7 +97,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets whether or not the unmanaged drawing structures have been created for this item
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool IsInitialized
         {
             get { return _isInitialized; }
@@ -112,7 +114,8 @@ namespace DotSpatial.Symbology
         /// as part of the drawing methods and will also abort the drawing methods of any
         /// sub-members to this IRenderable.
         /// </summary>
-        [Category("General"), Description("Gets or sets whether or not this object will be drawn or painted.")]
+        [Category("General")]
+        [Description("Gets or sets whether or not this object will be drawn or painted.")]
         public virtual bool IsVisible
         {
             get { return base.Checked; }

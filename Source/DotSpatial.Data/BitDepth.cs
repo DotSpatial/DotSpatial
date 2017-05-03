@@ -22,18 +22,22 @@ namespace DotSpatial.Data
         /// One bit per band pixel
         /// </summary>
         One = 1,
+
         /// <summary>
         /// Two bits per band pixel
         /// </summary>
         Two = 2,
+
         /// <summary>
         /// Four bits per band pixel
         /// </summary>
         Four = 4,
+
         /// <summary>
         /// Eight bits per band pixel (normal)
         /// </summary>
         Eight = 8,
+
         /// <summary>
         /// Sixteen bits per band pixel
         /// </summary>

@@ -153,8 +153,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Only provided because XML Serialization doesn't work for colors
         /// </summary>
-        [XmlElement("Color"), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Serialize("XmlColor"), ShallowCopy]
+        [XmlElement("Color")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Serialize("XmlColor")]
+        [ShallowCopy]
         public string XmlColor
         {
             get { return ColorTranslator.ToHtml(_color); }
@@ -175,7 +178,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets the opacity as a floating point value ranging from 0 to 1, where
         /// 0 is fully transparent and 1 is fully opaque.  This actually adjusts the alpha of the color value.
         /// </summary>
-        [Serialize("Opacity"), ShallowCopy]
+        [Serialize("Opacity")]
+        [ShallowCopy]
         public float Opacity
         {
             get { return _color.A / 255F; }

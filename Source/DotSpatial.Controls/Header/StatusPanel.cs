@@ -11,16 +11,16 @@ namespace DotSpatial.Controls.Header
     {
         #region Fields
 
-        private string caption;
-        private string key;
-        private int width;
+        private string _caption;
+        private string _key;
+        private int _width;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the StatusPanel class.
+        /// Initializes a new instance of the <see cref="StatusPanel"/> class.
         /// </summary>
         public StatusPanel()
         {
@@ -43,41 +43,37 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Gets or sets the caption.
         /// </summary>
-        /// <value>
-        /// The caption.
-        /// </value>
+        /// <value>The caption.</value>
         public string Caption
         {
             get
             {
-                return caption;
+                return _caption;
             }
 
             set
             {
-                if (caption == value) return;
-                caption = value;
+                if (_caption == value) return;
+                _caption = value;
                 OnPropertyChanged("Caption");
             }
         }
 
         /// <summary>
-        /// Gets or sets the key.
+        /// Gets the key.
         /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
+        /// <value>The key.</value>
         public string Key
         {
             get
             {
-                return key;
+                return _key;
             }
 
             private set
             {
-                if (key == value) return;
-                key = value;
+                if (_key == value) return;
+                _key = value;
                 OnPropertyChanged("Key");
             }
         }
@@ -85,20 +81,18 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Gets or sets the width.
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
+        /// <value>The width.</value>
         public int Width
         {
             get
             {
-                return width;
+                return _width;
             }
 
             set
             {
-                if (width == value) return;
-                width = value;
+                if (_width == value) return;
+                _width = value;
                 OnPropertyChanged("Width");
             }
         }
@@ -110,13 +104,10 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Triggers the PropertyChanged event.
         /// </summary>
+        /// <param name="propertyName">Name of the property that changed.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            var h = PropertyChanged;
-            if (h != null)
-            {
-                h(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

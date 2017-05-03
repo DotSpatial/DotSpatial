@@ -35,22 +35,23 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new default instance of a MapImageLayer
+        /// Initializes a new instance of the <see cref="MapImageLayer"/> class.
         /// </summary>
         public MapImageLayer()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of MapImageLayer.
+        /// Initializes a new instance of the <see cref="MapImageLayer"/> class.
         /// </summary>
+        /// <param name="baseImage">The image to draw as a layer</param>
         public MapImageLayer(IImageData baseImage)
             : base(baseImage)
         {
         }
 
         /// <summary>
-        /// Creates a new instance of a MapImageLayer.
+        /// Initializes a new instance of the <see cref="MapImageLayer"/> class.
         /// </summary>
         /// <param name="baseImage">The image to draw as a layer</param>
         /// <param name="container">The Layers collection that keeps track of the image layer</param>
@@ -60,14 +61,14 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of a MapImageLayer.
+        /// Initializes a new instance of the <see cref="MapImageLayer"/> class.
         /// </summary>
         /// <param name="baseImage">The image to draw as a layer</param>
         /// <param name="transparent">The color to make transparent when drawing the image.</param>
         public MapImageLayer(IImageData baseImage, Color transparent)
             : base(baseImage)
         {
-            this._transparent = transparent;
+            _transparent = transparent;
         }
 
         #endregion
@@ -90,7 +91,7 @@ namespace DotSpatial.Controls
         public Image BackBuffer { get; set; }
 
         /// <summary>
-        /// Gets the current buffer.
+        /// Gets or sets the current buffer.
         /// </summary>
         public Image Buffer { get; set; }
 
@@ -107,9 +108,10 @@ namespace DotSpatial.Controls
         public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the image layer is initialized
+        /// Gets or sets a value indicating whether the image layer is initialized.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new bool IsInitialized { get; set; }
 
         #endregion
@@ -141,10 +143,7 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">The Rectangle in pixels</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
-            if (BufferChanged != null)
-            {
-                BufferChanged(this, new ClipArgs(clipRectangles));
-            }
+            BufferChanged?.Invoke(this, new ClipArgs(clipRectangles));
         }
 
         /// <summary>
@@ -156,8 +155,8 @@ namespace DotSpatial.Controls
             base.OnDataSetChanged(value);
 
             BufferRectangle = value == null ? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
-            BufferExtent = value == null ? null : value.Bounds.Extent;
-            MyExtent = value == null ? null : value.Extent;
+            BufferExtent = value?.Bounds.Extent;
+            MyExtent = value?.Extent;
             OnFinishedLoading();
         }
 
@@ -165,9 +164,9 @@ namespace DotSpatial.Controls
         /// This draws to the back buffer. If the Backbuffer doesn't exist, this will create one.
         /// This will not flip the back buffer to the front.
         /// </summary>
-        /// <param name="args"></param>
-        /// <param name="regions"></param>
-        /// <param name="clipRectangles"></param>
+        /// <param name="args">The map args.</param>
+        /// <param name="regions">The regions.</param>
+        /// <param name="clipRectangles">The clip rectangles.</param>
         private void DrawWindows(MapArgs args, IList<Extent> regions, IList<Rectangle> clipRectangles)
         {
             Graphics g;
@@ -186,7 +185,7 @@ namespace DotSpatial.Controls
             for (int i = 0; i < numBounds; i++)
             {
                 // For panning tiles, the region needs to be expanded.
-                // This is not always 1 pixel.  When very zoomed in, this could be many pixels,
+                // This is not always 1 pixel. When very zoomed in, this could be many pixels,
                 // but should correspond to 1 pixel in the source image.
                 int dx = (int)Math.Ceiling(DataSet.Bounds.AffineCoefficients[1] * clipRectangles[i].Width / regions[i].Width);
                 int dy = (int)Math.Ceiling(-DataSet.Bounds.AffineCoefficients[5] * clipRectangles[i].Height / regions[i].Height);
@@ -208,16 +207,18 @@ namespace DotSpatial.Controls
                 }
                 catch
                 {
-                    if (bmp != null) bmp.Dispose();
+                    bmp?.Dispose();
                     continue;
                 }
 
                 if (bmp == null) continue;
 
-                if (this.Symbolizer != null && this.Symbolizer.Opacity < 1)
+                if (Symbolizer != null && Symbolizer.Opacity < 1)
                 {
-                    ColorMatrix matrix = new ColorMatrix(); // draws the image not completely opaque
-                    matrix.Matrix33 = Symbolizer.Opacity;
+                    ColorMatrix matrix = new ColorMatrix
+                    {
+                        Matrix33 = Symbolizer.Opacity // draws the image not completely opaque
+                    };
                     using (var attributes = new ImageAttributes())
                     {
                         attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);

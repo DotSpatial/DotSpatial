@@ -40,12 +40,13 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Constructor to build a new LayoutMap control with map control
+        /// Initializes a new instance of the <see cref="LayoutMap"/> class.
         /// </summary>
+        /// <param name="mapControl">The map control that generates the printable content.</param>
         /// <exception cref="ArgumentNullException">Throws if mapControl is null.</exception>
         public LayoutMap(Map mapControl)
         {
-            if (mapControl == null) throw new ArgumentNullException("mapControl");
+            if (mapControl == null) throw new ArgumentNullException(nameof(mapControl));
 
             Name = "Map";
             _mapControl = mapControl;
@@ -67,7 +68,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// The geographic envelope to be shown by the layout
+        /// Gets or sets the geographic envelope to be shown by the layout.
         /// </summary>
         [Browsable(false)]
         public virtual Envelope Envelope
@@ -99,7 +100,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// The map control that generates the printable content
+        /// Gets or sets the map control that generates the printable content.
         /// </summary>
         [Browsable(false)]
         public Map MapControl
@@ -111,15 +112,16 @@ namespace DotSpatial.Controls
 
             set
             {
-                if (value == null) throw new ArgumentNullException("value");
+                if (value == null) throw new ArgumentNullException(nameof(value));
                 _mapControl = value;
             }
         }
 
         /// <summary>
-        /// A mathematical calculation using the map
+        /// Gets or sets the scale of the map.
         /// </summary>
-        [Browsable(true), Category("Map")]
+        [Browsable(true)]
+        [Category("Map")]
         public virtual long Scale
         {
             get
@@ -136,15 +138,8 @@ namespace DotSpatial.Controls
                 if (_mapControl.Layers.Count < 1)
                     return;
 
-                // Envelope tempEnv = Envelope;
                 double xtl = Envelope.MinX;
                 double ytl = Envelope.MaxY;
-
-                // tempEnv.Width = (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D);
-                // tempEnv.Height = (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D);
-                // tempEnv.X = xtl;
-                // tempEnv.Y = ytl;
-                // Envelope = tempEnv;
                 Envelope.Init(xtl, xtl + (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D), ytl - (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D), ytl);
             }
         }
@@ -286,8 +281,7 @@ namespace DotSpatial.Controls
         private double UnitMeterConversion()
         {
             if (_mapControl.Layers.Count == 0) return 1;
-            if (_mapControl.Layers[0].DataSet == null) return 1;
-            if (_mapControl.Layers[0].DataSet.Projection == null) return 1;
+            if (_mapControl.Layers[0].DataSet?.Projection == null) return 1;
             if (_mapControl.Layers[0].DataSet.Projection.IsLatLon)
                 return _mapControl.Layers[0].DataSet.Projection.GeographicInfo.Unit.Radians * 6354101.943;
             return _mapControl.Layers[0].DataSet.Projection.Unit.Meters;

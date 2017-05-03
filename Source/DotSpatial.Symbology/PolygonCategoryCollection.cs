@@ -43,7 +43,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the parent scheme for this collection
         /// </summary>
-        [Serialize("Scheme", ConstructorArgumentIndex = 0), ShallowCopy]
+        [Serialize("Scheme", ConstructorArgumentIndex = 0)]
+        [ShallowCopy]
         public IPolygonScheme Scheme
         {
             get { return _scheme; }

@@ -16,21 +16,17 @@ using System.Collections.Generic;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// CohenSutherland Line(string) clipping algorithm
+    /// CohenSutherland Line(string) clipping algorithm.
     /// </summary>
     public static class CohenSutherland
     {
         #region Fields
-
         private const int Bottom = 4;
-
         private const int Left = 1;
         private const int Right = 2;
         private const int Top = 8;
-
         private const int X = 0;
         private const int Y = 1;
-
         #endregion
 
         /// <summary>
@@ -39,48 +35,46 @@ namespace DotSpatial.Controls
         [Flags]
         public enum LineClipStatus
         {
-            ///<summary>
+            /// <summary>
             /// Initial untested value
-            ///</summary>
+            /// </summary>
             Unknown = 0,
 
-            ///<summary>
+            /// <summary>
             /// Line is completely inside the clip area
-            ///</summary>
+            /// </summary>
             Inside = 1,
 
-            ///<summary>
+            /// <summary>
             /// Line is completely outside the clip area
-            ///</summary>
+            /// </summary>
             Outside = 2,
 
-            ///<summary>
+            /// <summary>
             /// Line was partially contained and first vertex was clipped
-            ///</summary>
+            /// </summary>
             ClippedFirst = 4,
 
-            ///<summary>
+            /// <summary>
             /// Line was partially contained and last vertex was clipped
-            ///</summary>
+            /// </summary>
             ClippedLast = 8
-        };
+        }
 
         #region Methods
 
-        ///<summary>
-        /// Clip a line segment.  Coordinates are modified in place.
-        ///</summary>
-        ///<param name="x1"></param>
-        ///<param name="y1"></param>
-        ///<param name="x2"></param>
-        ///<param name="y2"></param>
-        ///<param name="xmin"></param>
-        ///<param name="ymin"></param>
-        ///<param name="xmax"></param>
-        ///<param name="ymax"></param>
-        ///<returns>
-        /// Clip status indicating how the line was clipped.
-        /// </returns>
+        /// <summary>
+        /// Clip a line segment. Coordinates are modified in place.
+        /// </summary>
+        /// <param name="x1">The x value of the lines start point.</param>
+        /// <param name="y1">The y value of the lines start point.</param>
+        /// <param name="x2">The x value of the lines end point.</param>
+        /// <param name="y2">The y value of the lines end point.</param>
+        /// <param name="xmin">The minimum x of the clip rect.</param>
+        /// <param name="ymin">The minimum y of the clip rect.</param>
+        /// <param name="xmax">The maximum x of the clip rect.</param>
+        /// <param name="ymax">The maximum y of the clip rect.</param>
+        /// <returns> Clip status indicating how the line was clipped.</returns>
         public static LineClipStatus ClipLine(ref double x1, ref double y1, ref double x2, ref double y2, double xmin, double ymin, double xmax, double ymax)
         {
             // Outcodes for P0, P1, and whatever point lies outside the clip rectangle
@@ -170,17 +164,15 @@ namespace DotSpatial.Controls
             return returnValue;
         }
 
-        ///<summary>
+        /// <summary>
         /// Clip a linestring
-        ///</summary>
-        ///<param name="linestring"></param>
-        ///<param name="xmin"></param>
-        ///<param name="ymin"></param>
-        ///<param name="xmax"></param>
-        ///<param name="ymax"></param>
-        ///<returns>
-        /// List of clipped linestrings.
-        /// </returns>
+        /// </summary>
+        /// <param name="linestring">Linestrings that should be clipped.</param>
+        /// <param name="xmin">The minimum x of the clip rect.</param>
+        /// <param name="ymin">The minimum y of the clip rect.</param>
+        /// <param name="xmax">The maximum x of the clip rect.</param>
+        /// <param name="ymax">The maximum y of the clip rect.</param>
+        /// <returns> List of clipped linestrings.</returns>
         public static List<List<double[]>> ClipLinestring(List<double[]> linestring, double xmin, double ymin, double xmax, double ymax)
         {
             List<List<double[]>> returnLinestrings = new List<List<double[]>>();

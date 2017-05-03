@@ -39,9 +39,9 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// use the mapFrame with this dialog
+        /// Initializes a new instance of the <see cref="MapFrameProjectionDialog"/> class.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">Map frame for this dialog.</param>
         public MapFrameProjectionDialog(IMapFrame mapFrame)
         {
             InitializeComponent();
@@ -56,7 +56,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the map frame for this dialog
+        /// Gets or sets the map frame for this dialog.
         /// </summary>
         public IMapFrame MapFrame
         {
@@ -130,19 +130,19 @@ namespace DotSpatial.Controls
             _mapFrame.ReprojectMapFrame(_projection, layer => ignoredLayers.AppendLine(layer.LegendText));
             if (ignoredLayers.Length > 0)
             {
-                MessageBox.Show(this, "These layers was skipped:" + Environment.NewLine + ignoredLayers, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, string.Format(MessageStrings.MapFrameProjectionDialog_LayersWereSkipped, ignoredLayers), MessageStrings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             _mapFrame.ResetExtents();
             ChangesApplied = true;
         }
 
-        private void btnApply_Click(object sender, EventArgs e)
+        private void BtnApplyClick(object sender, EventArgs e)
         {
             ApplyChanges();
         }
 
-        private void btnChangeToSelected_Click(object sender, EventArgs e)
+        private void BtnChangeToSelectedClick(object sender, EventArgs e)
         {
             using (var pf = new ProjectionSelectDialog())
             {
@@ -153,19 +153,18 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnOkClick(object sender, EventArgs e)
         {
             ApplyChanges();
         }
 
-        private void lnkSpatialReference_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LnkSpatialReferenceLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // Display the appropriate link based on the value of the  
-            // LinkData property of the Link object. 
+            // Display the appropriate link based on the value of the LinkData property of the Link object.
             var target = e.Link.LinkData as string;
 
-            // If the value looks like a URL, navigate to it. 
-            if (null != target && (target.StartsWith("www.") || target.StartsWith("http:")))
+            // If the value looks like a URL, navigate to it.
+            if (target != null && (target.StartsWith("www.") || target.StartsWith("http:")))
             {
                 Process.Start(target);
             }

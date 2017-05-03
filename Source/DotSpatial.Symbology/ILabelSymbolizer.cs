@@ -18,7 +18,7 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    [TypeConverter(typeof (ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface ILabelSymbolizer : ICloneable
     {
         #region Properties
@@ -26,68 +26,71 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the the multi-line text alignment in the box.
         /// </summary>
-        [Category("General"), Description("Gets or sets the horizontal relationship of the text to the anchorpoint.")]
+        [Category("General")]
+        [Description("Gets or sets the horizontal relationship of the text to the anchorpoint.")]
         StringAlignment Alignment { get; set; }
 
         /// <summary>
         /// Gets or set the angle that the font should be drawn in
         /// </summary>
-        [Category("General"), Description("Gets or sets the angle that the font should be drawn in.")]
+        [Category("General")]
+        [Description("Gets or sets the angle that the font should be drawn in.")]
         double Angle { get; set; }
 
         /// <summary>
         /// Gets or sets the background color
         /// </summary>
-        [Category("General"), Description("Gets or sets the background color of a rectangle around the label.")]
+        [Category("General")]
+        [Description("Gets or sets the background color of a rectangle around the label.")]
         Color BackColor { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not a background color should be used
         /// </summary>
-        [Category("General"),
-         Description("Gets or sets a boolean indicating whether or not a background color should be used.")]
+        [Category("General")]
+        [Description("Gets or sets a boolean indicating whether or not a background color should be used.")]
         bool BackColorEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the border color
         /// </summary>
-        [Category("Border"), Description("Gets or sets the border color")]
+        [Category("Border")]
+        [Description("Gets or sets the border color")]
         Color BorderColor { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not a border should be drawn around the label.
         /// </summary>
-        [Category("Border"),
-         Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label.")]
+        [Category("Border")]
+        [Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label.")]
         bool BorderVisible { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.
         /// </summary>
-        [Category("Shadow"),
-         Description("Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.")]
+        [Category("Shadow")]
+        [Description("Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.")]
         Color DropShadowColor { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that will force a shadow to be drawn if this is true.
         /// </summary>
-        [Category("Shadow"), Description("Gets or sets a boolean that will force a shadow to be drawn if this is true.")
-        ]
+        [Category("Shadow")]
+        [Description("Gets or sets a boolean that will force a shadow to be drawn if this is true.")]
         bool DropShadowEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic
         /// </summary>
-        [Category("Shadow"),
-         Description("Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic.")]
+        [Category("Shadow")]
+        [Description("Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic.")]
         Coordinate DropShadowGeographicOffset { get; set; }
 
         /// <summary>
         /// Gets or sets an X and Y pixel offset that is used if the ScaleMode is set to Symbolic or Simple.
         /// </summary>
-        [Category("Shadow"),
-         Description("Gets or sets an X and Y pixel offset that is used if the ScaleMode is set to Symbolic or Simple.")
-        ]
+        [Category("Shadow")]
+        [Description("Gets or sets an X and Y pixel offset that is used if the ScaleMode is set to Symbolic or Simple.")]
         PointF DropShadowPixelOffset { get; set; }
 
         /// <summary>
@@ -99,7 +102,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or set the color that the font should be drawn in.
         /// </summary>
-        [Category("General"), Description("Gets or sets the color that the font should be drawn in.")]
+        [Category("General")]
+        [Description("Gets or sets the color that the font should be drawn in.")]
         Color FontColor { get; set; }
 
         /// <summary>
@@ -120,61 +124,71 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the color of the halo that surrounds the text.
         /// </summary>
-        [Category("Halo"), Description("Gets or sets the color of the halo that surrounds the text.")]
+        [Category("Halo")]
+        [Description("Gets or sets the color of the halo that surrounds the text.")]
         Color HaloColor { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that governs whether or not to draw a halo.
         /// </summary>
-        [Category("Halo"), Description("Gets or sets a boolean that governs whether or not to draw a halo.")]
+        [Category("Halo")]
+        [Description("Gets or sets a boolean that governs whether or not to draw a halo.")]
         bool HaloEnabled { get; set; }
 
         /// <summary>
         /// Gets or set the field with angle to draw label
         /// </summary>
-        [Category("General"), Description("Gets or set the field with angle to draw label.")]
+        [Category("General")]
+        [Description("Gets or set the field with angle to draw label.")]
         string LabelAngleField { get; set; }
 
         /// <summary>
         /// Gets or sets the labeling method
         /// </summary>
-        [Category("General"), Description("Gets or sets the labeling method.")]
+        [Category("General")]
+        [Description("Gets or sets the labeling method.")]
         LabelPlacementMethod LabelPlacementMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the labeling method
         /// </summary>
-        [Category("General"), Description("Gets or sets the labeling method for line labels.")]
+        [Category("General")]
+        [Description("Gets or sets the labeling method for line labels.")]
         LineLabelPlacementMethod LineLabelPlacementMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the orientation of line labels.
         /// </summary>
-        [Category("General"), Description("Gets or sets the orientation of line labels.")]
+        [Category("General")]
+        [Description("Gets or sets the orientation of line labels.")]
         LineOrientation LineOrientation { get; set; }
 
         /// <summary>
         /// Gets or sets the X offset in pixels from the center of each feature.
         /// </summary>
-        [Category("General"), Description("Gets or sets the X offset in pixels from the center of each feature.")]
+        [Category("General")]
+        [Description("Gets or sets the X offset in pixels from the center of each feature.")]
         float OffsetX { get; set; }
 
         /// <summary>
         /// Gets or sets the Y offset in pixels from the center of each feature.
         /// </summary>
-        [Category("General"), Description("Gets or sets the Y offset in pixels from the center of each feature.")]
+        [Category("General")]
+        [Description("Gets or sets the Y offset in pixels from the center of each feature.")]
         float OffsetY { get; set; }
 
         /// <summary>
         /// Gets or sets the position of the label relative to the placement point
         /// </summary>
-        [Category("General"), Description("Gets or sets the position of the label relative to the placement point.")]
+        [Category("General")]
+        [Description("Gets or sets the position of the label relative to the placement point.")]
         ContentAlignment Orientation { get; set; }
 
         /// <summary>
         /// Gets or sets the way features with multiple parts are labeled
         /// </summary>
-        [Category("General"), Description("Gets or sets the way features with multiple parts are labeled.")]
+        [Category("General")]
+        [Description("Gets or sets the way features with multiple parts are labeled.")]
         PartLabelingMethod PartsLabelingMethod { get; set; }
 
         /// <summary>
@@ -201,27 +215,29 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the scaling behavior for the text
         /// </summary>
-        [Category("General"), Description(" Gets or sets the scaling behavior for the text.")]
+        [Category("General")]
+        [Description(" Gets or sets the scaling behavior for the text.")]
         ScaleMode ScaleMode { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not <see cref="Angle"/> should be used
         /// </summary>
-        [Category("General"), Description("Gets or sets a boolean indicating whether or not Angle should be used.")]
+        [Category("General")]
+        [Description("Gets or sets a boolean indicating whether or not Angle should be used.")]
         bool UseAngle { get; set; }
 
         /// <summary>
         /// Gets or set a boolean indicating whether or not <see cref="LabelAngleField"/> should be used
         /// </summary>
-        [Category("General"),
-         Description("Gets or set a boolean indicating whether or not LabelAngleField should be used.")]
+        [Category("General")]
+        [Description("Gets or set a boolean indicating whether or not LabelAngleField should be used.")]
         bool UseLabelAngleField { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not the LineOrientation gets used.
         /// </summary>
-        [Category("General"),
-         Description("Gets or sets a boolean indicating whether or not LineOrientation should be used.")]
+        [Category("General")]
+        [Description("Gets or sets a boolean indicating whether or not LineOrientation should be used.")]
         bool UseLineOrientation { get; set; }
 
         #endregion

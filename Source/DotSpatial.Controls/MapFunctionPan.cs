@@ -24,7 +24,6 @@ namespace DotSpatial.Controls
         #region Fields
 
         private Point _dragStart;
-        private bool _isDragging;
         private bool _preventDrag;
         private Rectangle _source;
 
@@ -33,8 +32,9 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the MapFunctionPan class.
+        /// Initializes a new instance of the <see cref="MapFunctionPan"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionPan(IMap inMap)
             : base(inMap)
         {
@@ -46,18 +46,15 @@ namespace DotSpatial.Controls
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the map function is currently interacting with the map.
+        /// </summary>
         public bool BusySet { get; set; }
 
         /// <summary>
-        /// This indicates that this tool is currently being used.
+        /// Gets a value indicating whether this tool is currently being used.
         /// </summary>
-        public bool IsDragging
-        {
-            get
-            {
-                return _isDragging;
-            }
-        }
+        public bool IsDragging { get; private set; }
 
         #endregion
 
@@ -66,12 +63,11 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles the actions that the tool controls during the OnMouseDown event
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left && _preventDrag == false)
             {
-                // PreventBackBuffer = true;
                 _dragStart = e.Location;
                 _source = e.Map.MapFrame.View;
             }
@@ -83,7 +79,7 @@ namespace DotSpatial.Controls
         /// Handles the mouse move event, changing the viewing extents to match the movements
         /// of the mouse if the left mouse button is down.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_dragStart != Point.Empty && _preventDrag == false)
@@ -94,7 +90,7 @@ namespace DotSpatial.Controls
                     BusySet = true;
                 }
 
-                _isDragging = true;
+                IsDragging = true;
                 Point diff = new Point
                              {
                                  X = _dragStart.X - e.X,
@@ -110,12 +106,12 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Mouse Up
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
-            if (e.Button == MouseButtons.Left && _isDragging)
+            if (e.Button == MouseButtons.Left && IsDragging)
             {
-                _isDragging = false;
+                IsDragging = false;
 
                 _preventDrag = true;
                 e.Map.MapFrame.ResetExtents();

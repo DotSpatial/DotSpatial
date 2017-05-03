@@ -17,6 +17,9 @@ using System.Globalization;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// General type converter.
+    /// </summary>
     public class GeneralTypeConverter : StringConverter
     {
         #region Methods
@@ -24,9 +27,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType != null) return true;
-
-            return false;
+            return sourceType != null;
         }
 
         /// <inheritdoc />

@@ -352,8 +352,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the editor settings class to help setup up the symbology controls appropriately.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-         Serialize("EditorSettings")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Serialize("EditorSettings")]
         public RasterEditorSettings EditorSettings
         {
             get { return _scheme.EditorSettings; }
@@ -366,8 +367,9 @@ namespace DotSpatial.Symbology
         /// To convert feet to decimal degrees is around a factor of .00000274.  This is used only in the
         /// 3D-context and does not affect ShadedRelief.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets the factor required to change elevation into the same horizontal and vertical units."),
-         Serialize("Elevation Factor")]
+        [Category("Behavior")]
+        [Description("Gets or sets the factor required to change elevation into the same horizontal and vertical units.")]
+        [Serialize("Elevation Factor")]
         public virtual float ElevationFactor
         {
             get { return _elevationFactor; }
@@ -384,8 +386,9 @@ namespace DotSpatial.Symbology
         /// correct.  A value of 0 would be totally flat, while 2 would be twice the value.  This controls
         /// the 3D effects and has nothing to do with the creation of shaded releif on the texture.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets the exageration of the natural elevation values."),
-         Serialize("Extrusion")]
+        [Category("Behavior")]
+        [Description("Gets or sets the exageration of the natural elevation values.")]
+        [Serialize("Extrusion")]
         public virtual float Extrusion
         {
             get { return _extrusion; }
@@ -399,7 +402,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the calculated hillshade map, or re-calculates it if something has changed
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float[][] HillShade
         {
             get
@@ -420,10 +424,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbol characteristics for the border of this raster
         /// </summary>
-        [Category("Symbology"),
-         TypeConverter(typeof(FeatureSymbolizerOld)),
-         Description("Gets or sets the characteristics that control the features of the border around this raster."),
-         Serialize("ImageOutline")]
+        [Category("Symbology")]
+        [TypeConverter(typeof(FeatureSymbolizerOld))]
+        [Description("Gets or sets the characteristics that control the features of the border around this raster.")]
+        [Serialize("ImageOutline")]
         public virtual IFeatureSymbolizerOld ImageOutline
         {
             get { return _imageOutline; }
@@ -439,8 +443,9 @@ namespace DotSpatial.Symbology
         /// in the 3-D context.  If this is true, then it will automatically use this grid for
         /// calculating elevation values.  This does not affect ShadedRelief texture creation.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets whether this raster is an elevation raster and should use itself as the source for elevations."),
-         Serialize("IsElevation")]
+        [Category("Behavior")]
+        [Description("Gets or sets whether this raster is an elevation raster and should use itself as the source for elevations.")]
+        [Serialize("IsElevation")]
         public virtual bool IsElevation
         {
             get { return _isElevation; }
@@ -454,7 +459,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets whether or not this raster should render itself
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets whether this raster should render itself"), Serialize("IsVisible")]
+        [Category("Behavior")]
+        [Description("Gets or sets whether this raster should render itself")]
+        [Serialize("IsVisible")]
         public virtual bool IsVisible
         {
             get { return _isVisible; }
@@ -467,8 +474,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the color to use if the value of the cell corresponds to a No-Data value
         /// </summary>
-        [Category("Symbology"), Description("Gets or sets the color to use if the value of the cell corresponds to a No-Data value."),
-         Serialize("NoDataColor")]
+        [Category("Symbology")]
+        [Description("Gets or sets the color to use if the value of the cell corresponds to a No-Data value.")]
+        [Serialize("NoDataColor")]
         public Color NoDataColor
         {
             get { return _noDataColor; }
@@ -482,8 +490,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the raster that should provide elevation values, but only if "IsElevation" is false.
         /// </summary>
-        [ReadOnly(true), DisplayName(@"Elevation Raster"), Description("The raster object to use as an Elevation Grid"),
-         ShallowCopy]
+        [ReadOnly(true)]
+        [DisplayName(@"Elevation Raster")]
+        [Description("The raster object to use as an Elevation Grid")]
+        [ShallowCopy]
         public virtual IRaster Raster
         {
             get { return _raster; }
@@ -525,8 +535,9 @@ namespace DotSpatial.Symbology
         /// Gets or sets the characteristics of the shaded relief.  This is specifically used
         /// to control HillShade characteristics of the BitMap texture creation.
         /// </summary>
-        [Category("Symbology"), Description("Gets or sets the set of characteristics that control the HillShade characteristics for the visual texture."),
-         Serialize("ShadedRelief")]
+        [Category("Symbology")]
+        [Description("Gets or sets the set of characteristics that control the HillShade characteristics for the visual texture.")]
+        [Serialize("ShadedRelief")]
         public virtual IShadedRelief ShadedRelief
         {
             get { return _shadedRelief; }

@@ -45,7 +45,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutScaleBar"/> class.
         /// </summary>
         public LayoutScaleBar()
         {
@@ -64,9 +64,10 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets a property indicating is break should be present before the 0
+        /// Gets or sets a value indicating whether a break should be present before the 0.
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public bool BreakBeforeZero
         {
             get
@@ -85,7 +86,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the color of the text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public Color Color
         {
             get
@@ -104,7 +106,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the font used to draw this text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public Font Font
         {
             get
@@ -141,7 +144,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the Map control that the scale bar uses for measurement decisions
         /// </summary>
-        [Browsable(true), Category("Symbol"), Editor(typeof(LayoutMapEditor), typeof(UITypeEditor))]
+        [Browsable(true)]
+        [Category("Symbol")]
+        [Editor(typeof(LayoutMapEditor), typeof(UITypeEditor))]
         public virtual LayoutMap Map
         {
             get
@@ -160,7 +165,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the number of breaks the scale bar should have
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public int NumberOfBreaks
         {
             get
@@ -179,7 +185,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the hinting used to draw the text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public TextRenderingHint TextHint
         {
             get
@@ -198,7 +205,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the unit to use for the scale bar
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public ScaleBarUnit Unit
         {
             get
@@ -217,7 +225,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the unit text to display after the scale bar
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public string UnitText
         {
             get
@@ -329,9 +338,11 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Updates the scale bar if the map is deleted
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void LayoutControlElementsChanged(object sender, EventArgs e)
         {
-            if (_layoutControl.LayoutElements.Contains(_layoutMap) == false)
+            if (!_layoutControl.LayoutElements.Contains(_layoutMap))
                 Map = null;
         }
 

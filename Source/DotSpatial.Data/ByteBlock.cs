@@ -17,46 +17,70 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// ByteBlock
+    /// </summary>
     public class ByteBlock
     {
-        #region Private Variables
+        #region  Constructors
 
         /// <summary>
-        /// The block size of the arrays
+        /// Initializes a new instance of the <see cref="ByteBlock"/> class.
         /// </summary>
-        public readonly int BlockSize;
-
-        /// <summary>
-        /// All the blocks
-        /// </summary>
-        public List<Byte[]> Blocks;
-
-        /// <summary>
-        /// The current block index
-        /// </summary>
-        public int CurrentBlock;
-
-        /// <summary>
-        /// The offset
-        /// </summary>
-        public int Offset;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of ByteBlock
-        /// </summary>
+        /// <param name="blockSize">Block size of the arrays.</param>
         public ByteBlock(int blockSize)
         {
             BlockSize = blockSize;
-            Blocks = new List<byte[]> {new byte[BlockSize]};
+            Blocks = new List<byte[]> { new byte[BlockSize] };
         }
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets all the blocks.
+        /// </summary>
+        public List<byte[]> Blocks { get; set; }
+
+        /// <summary>
+        /// Gets the block size of the arrays.
+        /// </summary>
+        public int BlockSize { get; }
+
+        /// <summary>
+        /// Gets or sets the current block index
+        /// </summary>
+        public int CurrentBlock { get; set; }
+
+        /// <summary>
+        /// Gets or sets the offset.
+        /// </summary>
+        public int Offset { get; set; }
+
+        #endregion
+
         #region Methods
+
+        /// <summary>
+        /// If the bytes were converted to a single contiguous double array, this returns
+        /// the offset in that array.
+        /// </summary>
+        /// <returns>Current offset in the array.</returns>
+        public int DoubleOffset()
+        {
+            return ((Blocks.Count - 1) * BlockSize + Offset) / 8;
+        }
+
+        /// <summary>
+        /// If the bytes were converted to a single, contiguous integer array, this returns
+        /// the current offset in that array.
+        /// </summary>
+        /// <returns>Current offset in the array.</returns>
+        public int IntOffset()
+        {
+            return ((Blocks.Count - 1) * BlockSize + Offset) / 4;
+        }
 
         /// <summary>
         /// Reads the number of bytes using the specified reader.
@@ -73,11 +97,52 @@ namespace DotSpatial.Data
         /// Reads the number of bytes using the specified reader.
         /// This handles copying across blocks if necessary.
         /// </summary>
-        /// <param name="numBytes"></param>
-        /// <param name="reader"></param>
+        /// <param name="numBytes">Number of bytes that should be read.</param>
+        /// <param name="reader">Reader used for reading.</param>
         public void Read(int numBytes, BufferedBinaryReader reader)
         {
             DoRead(numBytes, reader.Read);
+        }
+
+        /// <summary>
+        /// Resets the indices
+        /// </summary>
+        public void Reset()
+        {
+            Offset = 0;
+            CurrentBlock = 0;
+        }
+
+        /// <summary>
+        /// Combines all the blocks into a single array of the specified datatype.
+        /// </summary>
+        /// <returns>The combined array.</returns>
+        public double[] ToDoubleArray()
+        {
+            var result = new double[DoubleOffset()];
+            CopyBlocksToArray(result);
+            return result;
+        }
+
+        /// <summary>
+        /// Combines all the blocks into a single array of the specified datatype.
+        /// </summary>
+        /// <returns>The combined array.</returns>
+        public int[] ToIntArray()
+        {
+            var result = new int[IntOffset()];
+            CopyBlocksToArray(result);
+            return result;
+        }
+
+        private void CopyBlocksToArray(Array dest)
+        {
+            for (var iblock = 0; iblock < CurrentBlock; iblock++)
+            {
+                Buffer.BlockCopy(Blocks[iblock], 0, dest, BlockSize * iblock, BlockSize);
+            }
+
+            Buffer.BlockCopy(Blocks[CurrentBlock], 0, dest, BlockSize * CurrentBlock, Offset);
         }
 
         private void DoRead(int numBytes, Action<byte[], int, int> reader)
@@ -91,8 +156,10 @@ namespace DotSpatial.Data
                         reader(Blocks[CurrentBlock], Offset, numBytes);
                         Offset += numBytes;
                     }
+
                     return;
                 }
+
                 var firstLen = BlockSize - Offset;
                 var secondLen = numBytes - firstLen;
                 reader(Blocks[CurrentBlock], Offset, firstLen);
@@ -103,66 +170,6 @@ namespace DotSpatial.Data
                 // Read remaining parts
                 numBytes = secondLen;
             }
-        }
-
-        /// <summary>
-        /// If the bytes were converted to a single, contiguous integer array, this returns
-        /// the current offset in that array.
-        /// </summary>
-        /// <returns></returns>
-        public int IntOffset()
-        {
-            return ((Blocks.Count - 1) * BlockSize + Offset) / 4;
-        }
-
-        /// <summary>
-        /// If the bytes were converted to a single contiguous double array, this returns
-        /// the offset in that array.
-        /// </summary>
-        /// <returns></returns>
-        public int DoubleOffset()
-        {
-            return ((Blocks.Count - 1) * BlockSize + Offset) / 8;
-        }
-
-        /// <summary>
-        /// Resets the indices
-        /// </summary>
-        public void Reset()
-        {
-            Offset = 0;
-            CurrentBlock = 0;
-        }
-
-        /// <summary>
-        /// Combines all the blocks into a single array of the specified datatype
-        /// </summary>
-        /// <returns></returns>
-        public int[] ToIntArray()
-        {
-            var result = new int[IntOffset()];
-            CopyBlocksToArray(result);
-            return result;
-        }
-
-        /// <summary>
-        /// Combines all the blocks into a single array of the specified datatype
-        /// </summary>
-        /// <returns></returns>
-        public double[] ToDoubleArray()
-        {
-            var result = new double[DoubleOffset()];
-            CopyBlocksToArray(result);
-            return result;
-        }
-
-        private void CopyBlocksToArray(Array dest)
-        {
-            for (var iblock = 0; iblock < CurrentBlock; iblock++)
-            {
-                Buffer.BlockCopy(Blocks[iblock], 0, dest, (BlockSize * iblock), BlockSize);
-            }
-            Buffer.BlockCopy(Blocks[CurrentBlock], 0, dest, (BlockSize * CurrentBlock), Offset);   
         }
 
         #endregion

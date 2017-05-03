@@ -15,7 +15,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
-    [TypeConverter(typeof (ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface IPointScheme : IFeatureScheme
     {
         #region Methods

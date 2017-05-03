@@ -20,6 +20,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// A basic map interface.
+    /// </summary>
     public interface IBasicMap : ISelectable
     {
         #region Properties
@@ -45,11 +48,12 @@ namespace DotSpatial.Controls
         Extent Extent { get; }
 
         /// <summary>
-        /// Gets or sets the current tool mode.  This rapidly enables or disables specific tools to give
-        /// a combination of functionality.  Selecting None will disable all the tools, which can be
+        /// Gets or sets the current tool mode. This rapidly enables or disables specific tools to give
+        /// a combination of functionality. Selecting None will disable all the tools, which can be
         /// enabled manually by enabling the specific tool in the GeoTools dictionary.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets which tool or combination of tools are enabled on the map.")]
+        [Category("Behavior")]
+        [Description("Gets or sets which tool or combination of tools are enabled on the map.")]
         FunctionMode FunctionMode { get; set; }
 
         /// <summary>
@@ -58,15 +62,15 @@ namespace DotSpatial.Controls
         int Height { get; }
 
         /// <summary>
-        /// Gets or sets a boolean that indicates whether a map-function is currently interacting with the map.
+        /// Gets or sets a value indicating whether a map-function is currently interacting with the map.
         /// If this is true, then any tool-tip like popups or other mechanisms that require lots of re-drawing
-        /// should suspend themselves to prevent conflict.  Setting this actually increments an internal integer,
+        /// should suspend themselves to prevent conflict. Setting this actually increments an internal integer,
         /// so when that integer is 0, the map is "Not" busy, but multiple busy processes can work independently.
         /// </summary>
         bool IsBusy { get; set; }
 
         /// <summary>
-        /// Indicates whether the Map is Zoomed out to full extent or not.
+        /// Gets or sets a value indicating whether the Map is Zoomed out to full extent or not.
         /// Added 1/3/2013 by Eric Hullinger
         /// </summary>
         bool IsZoomedToMaxExtent { get; set; }
@@ -77,17 +81,17 @@ namespace DotSpatial.Controls
         int Left { get; }
 
         /// <summary>
-        /// Gets the legend, if any, associated with this map control.
+        /// Gets or sets the legend, if any, associated with this map control.
         /// </summary>
         ILegend Legend { get; set; }
 
         /// <summary>
-        /// A MapFrame
+        /// Gets the MapFrame.
         /// </summary>
         IFrame MapFrame { get; }
 
         /// <summary>
-        /// Gets the screen coordinates of the top of this control
+        /// Gets the screen coordinates of the top of this control.
         /// </summary>
         int Top { get; }
 
@@ -97,12 +101,12 @@ namespace DotSpatial.Controls
         Extent ViewExtents { get; set; }
 
         /// <summary>
-        /// Gets the width of the control
+        /// Gets the width of the control.
         /// </summary>
         int Width { get; }
 
         /// <summary>
-        /// This allows to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
+        /// Gets or sets a value indicating whether it is allowed to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
         /// </summary>
         bool ZoomOutFartherThanMaxExtent { get; set; }
 
@@ -113,6 +117,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Adds a new layer to the map using an open file dialog.
         /// </summary>
+        /// <returns>The added layer.</returns>
         ILayer AddLayer();
 
         /// <summary>
@@ -121,51 +126,49 @@ namespace DotSpatial.Controls
         void ClearLayers();
 
         /// <summary>
-        /// returns a functional list of the ILayer members.  This list will be
-        /// separate from the actual list stored, but contains a shallow copy
-        /// of the members, so the layers themselves can be accessed directly.
+        /// Returns a functional list of the ILayer members. This list will be separate from the actual list stored,
+        /// but contains a shallow copy of the members, so the layers themselves can be accessed directly.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of layers.</returns>
         List<ILayer> GetLayers();
 
-        /// <summary> 
-        /// //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
+        /// <summary>
         /// Gets the MaxExtents of current Map.
         /// </summary>
-        /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%). </param>
+        /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%).</param>
+        /// <returns>The maximum extent of the map.</returns>
+        // Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
         Extent GetMaxExtent(bool expand = false);
 
         /// <summary>
         /// Invalidates the entire Map control, forcing it to redraw itself from the back buffer stencils.
-        /// This is good for drawing on top of the map, or when a layer is visible or not.  If you need
-        /// to change the colorscheme as well
+        /// This is good for drawing on top of the map, or when a layer is visible or not. If you need
+        /// to change the colorscheme as well.
         /// </summary>
         void Invalidate();
 
         /// <summary>
-        /// Invalidates the specified clipRectangle so that only that small region needs
-        /// to redraw itself.
+        /// Invalidates the specified clipRectangle so that only that small region needs to redraw itself.
         /// </summary>
-        /// <param name="clipRectangle"></param>
+        /// <param name="clipRectangle">Clip rectangle that gets invalidated.</param>
         void Invalidate(Rectangle clipRectangle);
 
         /// <summary>
-        /// Converts a single point location into an equivalent geographic coordinate
+        /// Converts a single point location into an equivalent geographic coordinate.
         /// </summary>
         /// <param name="position">The client coordinate relative to the map control</param>
         /// <returns>The geographic ICoordinate interface</returns>
         Coordinate PixelToProj(Point position);
 
         /// <summary>
-        /// Converts a rectangle in pixel coordinates relative to the map control into
-        /// a geographic envelope.
+        /// Converts a rectangle in pixel coordinates relative to the map control into a geographic envelope.
         /// </summary>
         /// <param name="rect">The rectangle to convert</param>
         /// <returns>An Envelope interface</returns>
         Extent PixelToProj(Rectangle rect);
 
         /// <summary>
-        /// Converts a point from screen coordinates to client coordinates
+        /// Converts a point from screen coordinates to client coordinates.
         /// </summary>
         /// <param name="position">The Point representing the screen position</param>
         /// <returns>The Point</returns>
@@ -197,7 +200,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Instructs the map to update the specified clipRectangle by drawing it to the back buffer.
         /// </summary>
-        /// <param name="clipRectangle"></param>
+        /// <param name="clipRectangle">The clip rectangle that gets updated.</param>
         void RefreshMap(Rectangle clipRectangle);
 
         /// <summary>

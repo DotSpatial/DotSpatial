@@ -89,7 +89,8 @@ namespace DotSpatial.Symbology
         /// tier in the legend.  If so, it will allow the LegendText to be visible as a kind of group for the
         /// categories.  If not, the categories will appear directly below the layer.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets a boolean that indicates whether or not the legend should draw this item as a grouping")]
+        [Category("Behavior")]
+        [Description("Gets or sets a boolean that indicates whether or not the legend should draw this item as a grouping")]
         [Serialize("AppearsInLegend")]
         public bool AppearsInLegend
         {
@@ -106,7 +107,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog settings
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new FeatureEditorSettings EditorSettings
         {
             get { return base.EditorSettings as FeatureEditorSettings; }
@@ -116,7 +118,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the UITypeEditor to use for editing this FeatureScheme
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UITypeEditor PropertyEditor
         {
             get { return _propertyEditor; }
@@ -126,7 +129,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of categories in this scheme
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int NumCategories
         {
             get { return 0; }

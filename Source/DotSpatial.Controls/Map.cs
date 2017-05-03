@@ -63,7 +63,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of a map component that can be dropped on a form.
+        /// Initializes a new instance of the <see cref="Map"/> class that can be dropped on a form.
         /// </summary>
         public Map()
         {
@@ -124,10 +124,11 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the back buffer.  The back buffer should be in Format32bbpArgb bitmap.
+        /// Gets or sets the back buffer. The back buffer should be in Format32bbpArgb bitmap.
         /// If it is not, then the image on the back buffer will be copied from the supplied image.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image BufferedImage
         {
             get
@@ -142,14 +143,13 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// If this is true, then point layers in the map will only draw points that are
-        /// more than 50% revealed.  This should increase drawing speed for layers that have
-        /// a large number of points.
+        /// Gets or sets a value indicating whether point layers in the map will only draw points that are
+        /// more than 50% revealed. This should increase drawing speed for layers that have a large number of points.
         /// </summary>
         public bool CollisionDetection { get; set; }
 
         /// <summary>
-        /// Cursor hiding from designer
+        /// Gets or sets the Cursor.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override Cursor Cursor
@@ -166,13 +166,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a boolean that indicates whether or not
-        /// the drawing layers should cache off-screen data to
-        /// the buffer.  Panning will be much more elegant,
-        /// but zooming, selecting and resizing will take a
-        /// performance penalty.
+        /// Gets or sets a value indicating whether or not the drawing layers should cache off-screen data to
+        /// the buffer. Panning will be much more elegant, but zooming, selecting and resizing will take a performance penalty.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets a boolean that indicates whether or not zooming will also retrieve content immediately around the map so that panning pulls new content onto the screen.")]
+        [Category("Behavior")]
+        [Description("Gets or sets a boolean that indicates whether or not zooming will also retrieve content immediately around the map so that panning pulls new content onto the screen.")]
         public bool ExtendBuffer
         {
             get
@@ -189,12 +187,15 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the geographic bounds of all of the different data layers currently visible on the map.
         /// </summary>
-        [Category("Bounds"), Description("Gets the geographic bounds of all of the different data layers currently visible on the map."), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Category("Bounds")]
+        [Description("Gets the geographic bounds of all of the different data layers currently visible on the map.")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Extent Extent => _geoMapFrame.Extent;
 
         /// <summary>
-        /// Gets or sets the current tool mode.  This rapidly enables or disables specific tools to give
-        /// a combination of functionality.  Selecting None will disable all the tools, which can be
+        /// Gets or sets the current tool mode. This rapidly enables or disables specific tools to give
+        /// a combination of functionality. Selecting None will disable all the tools, which can be
         /// enabled manually by enabling the specific tool in the GeoTools dictionary.
         /// </summary>
         public FunctionMode FunctionMode
@@ -297,9 +298,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a boolean that indicates whether a map-function is currently interacting with the map.
+        /// Gets or sets a value indicating whether a map-function is currently interacting with the map.
         /// If this is true, then any tool-tip like popups or other mechanisms that require lots of re-drawing
-        /// should suspend themselves to prevent conflict.  Setting this actually increments an internal integer,
+        /// should suspend themselves to prevent conflict. Setting this actually increments an internal integer,
         /// so when that integer is 0, the map is "Not" busy, but multiple busy processess can work independantly.
         /// </summary>
         public bool IsBusy
@@ -321,15 +322,16 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// If true then the map is zoomed to its full extents
+        /// Gets or sets a value indicating whether the map is zoomed to its full extents.
         /// Added by Eric Hullinger 1/3/2013
         /// </summary>
         public bool IsZoomedToMaxExtent { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of layers
+        /// Gets the collection of layers.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IMapLayerCollection Layers => _geoMapFrame?.Layers;
 
         /// <summary>
@@ -352,7 +354,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the MapFrame that should be displayed in this map.
         /// </summary>
-        [Serialize("MapFrame"), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Serialize("MapFrame")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IMapFrame MapFrame
         {
             get
@@ -377,7 +381,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the dictionary of tools built into this project
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<IMapFunction> MapFunctions { get; set; }
 
         /// <summary>
@@ -398,7 +403,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the projection.  This should reflect the projection of the first data layer loaded.
+        /// Gets or sets the projection. This should reflect the projection of the first data layer loaded.
         /// Loading subsequent, but non-matching projections should throw an alert, and allow reprojection.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -425,12 +430,13 @@ namespace DotSpatial.Controls
         /// the projection string to the project file.
         /// </summary>
         [Serialize("ProjectionEsriString")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public string ProjectionEsriString
         {
             get
             {
-                return Projection != null ? Projection.ToEsriString() : null;
+                return Projection?.ToEsriString();
             }
 
             set
@@ -441,13 +447,10 @@ namespace DotSpatial.Controls
                     {
                         Projection = null;
                     }
-                    else
+                    else if (Projection.ToEsriString() != value)
                     {
-                        if (Projection.ToEsriString() != value)
-                        {
-                            Projection = ProjectionInfo.FromEsriString(value);
-                            OnProjectionChanged();
-                        }
+                        Projection = ProjectionInfo.FromEsriString(value);
+                        OnProjectionChanged();
                     }
                 }
             }
@@ -490,14 +493,14 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether layers should draw during the actual resize itself.  The
+        /// Gets or sets a value indicating whether layers should draw during the actual resize itself. The
         /// normal behavior is to draw the existing image buffer in the new size and position which is much
         /// faster for large datasets, but is not as visually appealing if you only work with small datasets.
         /// </summary>
         public bool RedrawLayersWhileResizing { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not the sel
+        /// Gets or sets a value indicating whether or not the selection is enabled.
         /// </summary>
         public bool SelectionEnabled
         {
@@ -517,7 +520,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the geographic extents to show in the view.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Extent ViewExtents
         {
             get
@@ -533,18 +537,16 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This allows to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
+        /// Gets or sets a value indicating whether zooming out farther than the extent of the map is allowed.
+        /// This is useful if we have only layers with small extents and want to look at them from farther out.
         /// </summary>
         [Serialize("ZoomOutFartherThanMaxExtent")]
         public bool ZoomOutFartherThanMaxExtent { get; set; }
 
-        IFrame IBasicMap.MapFrame
-        {
-            get
-            {
-                return _geoMapFrame;
-            }
-        }
+        /// <summary>
+        /// Gets the map frame.
+        /// </summary>
+        IFrame IBasicMap.MapFrame => _geoMapFrame;
 
         #endregion
 
@@ -552,10 +554,10 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// If the specified function is already in the list of functions, this will properly test the yield style of various
-        /// map functions that are currently on and then activate the function.  If this function is not in the list, then
-        /// it will add it to the list.  If you need to control the position, then insert the function before using this
-        /// method to activate.  Be warned that calling "Activate" directly on your function will activate your function
-        /// but not disable any other functions.  You can set "Map.FunctionMode = FunctionModes.None" first, and then
+        /// map functions that are currently on and then activate the function. If this function is not in the list, then
+        /// it will add it to the list. If you need to control the position, then insert the function before using this
+        /// method to activate. Be warned that calling "Activate" directly on your function will activate your function
+        /// but not disable any other functions. You can set "Map.FunctionMode = FunctionModes.None" first, and then
         /// specifically activate the function that you want.
         /// </summary>
         /// <param name="function">The MapFunction to activate, or add.</param>
@@ -637,12 +639,9 @@ namespace DotSpatial.Controls
         /// <returns>The newly opened IMapLayer</returns>
         public virtual IMapLayer AddLayer()
         {
-            if (DataManager.DefaultDataManager.ProgressHandler == null)
+            if (DataManager.DefaultDataManager.ProgressHandler == null && ProgressHandler != null)
             {
-                if (ProgressHandler != null)
-                {
-                    DataManager.DefaultDataManager.ProgressHandler = ProgressHandler;
-                }
+                DataManager.DefaultDataManager.ProgressHandler = ProgressHandler;
             }
 
             try
@@ -661,6 +660,7 @@ namespace DotSpatial.Controls
         /// Allows the user to add a new layer to the map using an open file dialog to choose a layer file.
         /// Multi-select is an option, so this return a list with all the layers.
         /// </summary>
+        /// <returns>Layers that were added.</returns>
         public virtual List<IMapLayer> AddLayers()
         {
             var results = new List<IMapLayer>();
@@ -721,8 +721,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Removes any members from existing in the selected state
+        /// Removes any members from existing in the selected state.
         /// </summary>
+        /// <param name="affectedArea">The area affected by the clear operation.</param>
+        /// <returns>True, if run successfully.</returns>
         public bool ClearSelection(out Envelope affectedArea)
         {
             affectedArea = new Envelope();
@@ -763,27 +765,27 @@ namespace DotSpatial.Controls
         /// Gets the subset of layers that are specifically raster layers, allowing
         /// you to control their symbology.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The image layers.</returns>
         public IMapImageLayer[] GetImageLayers()
         {
             return MapFrame.Layers.OfType<IMapImageLayer>().ToArray();
         }
 
         /// <summary>
-        /// returns a functional list of the ILayer members.  This list will be
+        /// Returns a functional list of the ILayer members. This list will be
         /// separate from the actual list stored, but contains a shallow copy
         /// of the members, so the layers themselves can be accessed directly.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All layers of the map.</returns>
         public List<ILayer> GetLayers()
         {
             return _geoMapFrame?.Layers.Cast<ILayer>().ToList() ?? Enumerable.Empty<ILayer>().ToList();
         }
 
         /// <summary>
-        /// Gets a list of just the line layers (and not the general layers)
+        /// Gets a list of just the line layers (and not the general layers).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The line layers</returns>
         public IMapLineLayer[] GetLineLayers()
         {
             return MapFrame.Layers.OfType<IMapLineLayer>().ToArray();
@@ -799,16 +801,16 @@ namespace DotSpatial.Controls
             return MapFunctions.First(f => f.Name == name);
         }
 
-        //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
-        /// <summary> 
+        /// <summary>
         /// Gets the MaxExtent Window of the current Map.
         /// </summary>
         /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%). </param>
+        /// <returns>The maximal extent of the map.</returns>
         public Extent GetMaxExtent(bool expand = false)
         {
             // to prevent exception when zoom to map with one layer with one point
-            const double eps = 1e-7;
-            var maxExtent = Extent.Width < eps || Extent.Height < eps ? new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps) : Extent;
+            const double Eps = 1e-7;
+            var maxExtent = Extent.Width < Eps || Extent.Height < Eps ? new Extent(Extent.MinX - Eps, Extent.MinY - Eps, Extent.MaxX + Eps, Extent.MaxY + Eps) : Extent;
 
             if (ExtendBuffer) maxExtent.ExpandBy(maxExtent.Width, maxExtent.Height);
 
@@ -818,18 +820,18 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets a list of just the line layers (and not the general layers)
+        /// Gets a list of just the point layers (and not the general layers).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The point layers.</returns>
         public IMapPointLayer[] GetPointLayers()
         {
             return MapFrame.Layers.OfType<IMapPointLayer>().ToArray();
         }
 
         /// <summary>
-        /// Gets a list of just the polygon layers (and not the general layers)
+        /// Gets a list of just the polygon layers (and not the general layers).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The polygon layers.</returns>
         public IMapPolygonLayer[] GetPolygonLayers()
         {
             return MapFrame.Layers.OfType<IMapPolygonLayer>().ToArray();
@@ -839,7 +841,7 @@ namespace DotSpatial.Controls
         /// Gets the subset of layers that are specifically raster layers, allowing
         /// you to control their symbology.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The raster layers.</returns>
         public IMapRasterLayer[] GetRasterLayers()
         {
             return MapFrame.Layers.OfType<IMapRasterLayer>().ToArray();
@@ -900,8 +902,8 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
-        /// to draw directly to the specified target rectangle on the graphics object.  This is useful
-        /// for doing vector drawing on much larger pages.  The result will be centered in the
+        /// to draw directly to the specified target rectangle on the graphics object. This is useful
+        /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
         /// <param name="device">The graphics device to print to</param>
@@ -913,8 +915,8 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
-        /// to draw directly to the specified target rectangle on the graphics object.  This is useful
-        /// for doing vector drawing on much larger pages.  The result will be centered in the
+        /// to draw directly to the specified target rectangle on the graphics object. This is useful
+        /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
         /// <param name="device">The graphics device to print to</param>
@@ -961,7 +963,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Instructs the map to update the specified clipRectangle by drawing it to the back buffer.
         /// </summary>
-        /// <param name="clipRectangle"></param>
+        /// <param name="clipRectangle">Rectangle that gets updated.</param>
         public void RefreshMap(Rectangle clipRectangle)
         {
             Extent region = _geoMapFrame.BufferToProj(clipRectangle);
@@ -974,10 +976,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ResetBuffer()
         {
-            if (_geoMapFrame != null)
-            {
-                _geoMapFrame.ResetBuffer();
-            }
+            _geoMapFrame?.ResetBuffer();
         }
 
         /// <summary>
@@ -1047,7 +1046,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Captures an image of whatever the contents of the back buffer would be at the size of the screen.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A bitmap with the snap shot.</returns>
         public Bitmap SnapShot()
         {
             var clip = ClientRectangle;
@@ -1146,14 +1145,19 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This is so that if you have a basic map interface you can still prompt
-        /// to add a layer, you just won't get an IMapLayer back.
+        /// This is so that if you have a basic map interface you can still prompt to add a layer, you just won't get an IMapLayer back.
         /// </summary>
+        /// <returns>The added layer.</returns>
         ILayer IBasicMap.AddLayer()
         {
             return AddLayer();
         }
 
+        /// <summary>
+        /// Draws the content.
+        /// </summary>
+        /// <param name="g">Graphics object used for drawing.</param>
+        /// <param name="e">The event args.</param>
         protected virtual void Draw(Graphics g, PaintEventArgs e)
         {
             _geoMapFrame.Draw(new PaintEventArgs(g, e.ClipRectangle));
@@ -1202,22 +1206,24 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles removing event handlers for the map frame
         /// </summary>
+        /// <param name="mapFrame">MapFrame the event handlers get removed from.</param>
         protected virtual void OnExcludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null) return;
             mapFrame.UpdateMap -= MapFrameUpdateMap;
             mapFrame.ScreenUpdated -= MapFrameScreenUpdated;
             mapFrame.ItemChanged -= MapFrameItemChanged;
-            mapFrame.BufferChanged -= MapFrame_BufferChanged;
-            mapFrame.SelectionChanged -= MapFrame_SelectionChanged;
-            mapFrame.LayerAdded -= MapFrame_LayerAdded;
-            mapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
+            mapFrame.BufferChanged -= MapFrameBufferChanged;
+            mapFrame.SelectionChanged -= MapFrameSelectionChanged;
+            mapFrame.LayerAdded -= MapFrameLayerAdded;
+            mapFrame.ViewExtentsChanged -= MapFrameViewExtentsChanged;
             Legend?.RemoveMapFrame(mapFrame, true);
         }
 
         /// <summary>
         /// Raises <see cref="FinishedRefresh"/> event.
         /// </summary>
+        /// <param name="e">The event args.</param>
         protected virtual void OnFinishedRefresh(EventArgs e)
         {
             FinishedRefresh?.Invoke(this, e);
@@ -1226,14 +1232,17 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the FunctionModeChanged event.
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         protected virtual void OnFunctionModeChanged(object sender, EventArgs e)
         {
             FunctionModeChanged?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Handles adding new event handlers to the map frame
+        /// Handles adding new event handlers to the map frame.
         /// </summary>
+        /// <param name="mapFrame">MapFrame the event handler get added to.</param>
         protected virtual void OnIncludeMapFrame(IMapFrame mapFrame)
         {
             if (mapFrame == null)
@@ -1246,16 +1255,18 @@ namespace DotSpatial.Controls
             mapFrame.UpdateMap += MapFrameUpdateMap;
             mapFrame.ScreenUpdated += MapFrameScreenUpdated;
             mapFrame.ItemChanged += MapFrameItemChanged;
-            mapFrame.BufferChanged += MapFrame_BufferChanged;
-            mapFrame.SelectionChanged += MapFrame_SelectionChanged;
-            mapFrame.LayerAdded += MapFrame_LayerAdded;
-            mapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
+            mapFrame.BufferChanged += MapFrameBufferChanged;
+            mapFrame.SelectionChanged += MapFrameSelectionChanged;
+            mapFrame.LayerAdded += MapFrameLayerAdded;
+            mapFrame.ViewExtentsChanged += MapFrameViewExtentsChanged;
             Legend?.AddMapFrame(mapFrame);
         }
 
         /// <summary>
         /// Fires the LayerAdded event
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
             LayerAdded?.Invoke(sender, e);
@@ -1265,20 +1276,20 @@ namespace DotSpatial.Controls
         /// Handles the resizing in the case where the map uses docking, and therefore
         /// needs to be updated whenever the form changes size.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnLoad(EventArgs e)
         {
-            KeyUp += Map_KeyUp;
-            KeyDown += Map_KeyDown;
+            KeyUp += MapKeyUp;
+            KeyDown += MapKeyDown;
 
             SizeChanged += OnSizeChanged;
             _oldSize = Size;
         }
 
         /// <summary>
-        /// Fires the DoMouseDoubleClick method on the ActiveTools
+        /// Fires the DoMouseDoubleClick method on the ActiveTools.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
@@ -1294,7 +1305,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the OnMouseDown event on the Active Tools
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
@@ -1308,9 +1319,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnMouseMove event on the Active Tools
+        /// Fires the OnMouseMove event on the Active Tools.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
@@ -1326,9 +1337,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnMouseUp event on the Active Tools
+        /// Fires the OnMouseUp event on the Active Tools.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
@@ -1344,6 +1355,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the OnMouseWheel event for the active tools
         /// </summary>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
@@ -1357,9 +1369,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Perform custom drawing
+        /// Perform custom drawing.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             if (_geoMapFrame.IsPanning) return;
@@ -1401,7 +1413,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Occurs when this control tries to paint the background.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             // This is done deliberately to prevent flicker.
@@ -1425,7 +1437,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Occurs after the selection is updated on all the layers
+        /// Occurs after the selection is updated on all the layers.
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
@@ -1433,11 +1445,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the ViewExtentsChanged event. Corrects the ViewExtent if it is smaller than 1e-7. If ZoomOutFartherThanMaxExtent is set, it corrects the 
+        /// Fires the ViewExtentsChanged event. Corrects the ViewExtent if it is smaller than 1e-7. If ZoomOutFartherThanMaxExtent is set, it corrects the
         /// ViewExtent if it is bigger then 1e+9. Otherwise it corrects the ViewExtent if it is bigger than the Maps extent + 10%.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="args">The extent args.</param>
         protected virtual void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
             double minExt = 1e-7;
@@ -1531,7 +1543,7 @@ namespace DotSpatial.Controls
             FunctionMode = FunctionMode.None;
         }
 
-        private void Map_KeyDown(object sender, KeyEventArgs e)
+        private void MapKeyDown(object sender, KeyEventArgs e)
         {
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
@@ -1540,7 +1552,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void Map_KeyUp(object sender, KeyEventArgs e)
+        private void MapKeyUp(object sender, KeyEventArgs e)
         {
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
@@ -1549,7 +1561,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void MapFrame_BufferChanged(object sender, ClipArgs e)
+        private void MapFrameBufferChanged(object sender, ClipArgs e)
         {
             Rectangle view = MapFrame.View;
             foreach (Rectangle clip in e.ClipRectangles)
@@ -1562,17 +1574,17 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void MapFrame_LayerAdded(object sender, LayerEventArgs e)
+        private void MapFrameLayerAdded(object sender, LayerEventArgs e)
         {
             OnLayerAdded(sender, e);
         }
 
-        private void MapFrame_SelectionChanged(object sender, EventArgs e)
+        private void MapFrameSelectionChanged(object sender, EventArgs e)
         {
             OnSelectionChanged();
         }
 
-        private void MapFrame_ViewExtentsChanged(object sender, ExtentArgs args)
+        private void MapFrameViewExtentsChanged(object sender, ExtentArgs args)
         {
             OnViewExtentsChanged(sender, args);
         }
@@ -1597,10 +1609,10 @@ namespace DotSpatial.Controls
             if (_geoMapFrame != null)
             {
                 var diff = new Point
-                           {
-                               X = Size.Width - _oldSize.Width,
-                               Y = Size.Height - _oldSize.Height
-                           };
+                {
+                    X = Size.Width - _oldSize.Width,
+                    Y = Size.Height - _oldSize.Height
+                };
                 var newView = new Rectangle(_geoMapFrame.View.X, _geoMapFrame.View.Y, _geoMapFrame.View.Width + diff.X, _geoMapFrame.View.Height + diff.Y);
 
                 // Check for minimal size of view.

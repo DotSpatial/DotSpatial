@@ -1,9 +1,4 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IStatusControl.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
 using System.ComponentModel.Composition;
 using DotSpatial.Data;
 

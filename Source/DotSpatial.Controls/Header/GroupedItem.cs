@@ -7,23 +7,25 @@
     {
         #region Fields
 
-        private string groupCaption;
-        private string rootKey;
+        private string _groupCaption;
+        private string _rootKey;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the GroupItem class.
+        /// Initializes a new instance of the <see cref="GroupedItem"/> class.
         /// </summary>
         protected GroupedItem()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the HeaderItem class.
+        /// Initializes a new instance of the <see cref="GroupedItem"/> class.
         /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="groupCaption">The groups caption.</param>
         protected GroupedItem(string rootKey, string groupCaption)
             : this()
         {
@@ -52,13 +54,13 @@
         {
             get
             {
-                return groupCaption;
+                return _groupCaption;
             }
 
             set
             {
-                if (groupCaption == value) return;
-                groupCaption = value;
+                if (_groupCaption == value) return;
+                _groupCaption = value;
                 OnPropertyChanged("GroupCaption");
             }
         }
@@ -71,13 +73,13 @@
         {
             get
             {
-                return rootKey;
+                return _rootKey;
             }
 
             set
             {
-                if (rootKey == value) return;
-                rootKey = value;
+                if (_rootKey == value) return;
+                _rootKey = value;
                 OnPropertyChanged("RootKey");
             }
         }

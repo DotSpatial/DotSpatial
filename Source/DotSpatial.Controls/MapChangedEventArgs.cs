@@ -29,8 +29,10 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Create new instance of <see cref="MapChangedEventArgs"/>.
+        /// Initializes a new instance of the <see cref="MapChangedEventArgs"/> class.
         /// </summary>
+        /// <param name="oldValue">The old map.</param>
+        /// <param name="newValue">The new map.</param>
         public MapChangedEventArgs(IMap oldValue, IMap newValue)
         {
             OldValue = oldValue;
@@ -42,12 +44,12 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets new map.
+        /// Gets the new map.
         /// </summary>
         public IMap NewValue { get; private set; }
 
         /// <summary>
-        /// Gets old map.
+        /// Gets the old map.
         /// </summary>
         public IMap OldValue { get; private set; }
 

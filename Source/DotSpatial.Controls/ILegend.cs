@@ -49,7 +49,7 @@ namespace DotSpatial.Controls
         /// Adds a map frame as a root node, and links an event handler to update
         /// when the mapframe triggers an ItemChanged event.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">MapFrame that gets added.</param>
         void AddMapFrame(IFrame mapFrame);
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Removes the specified map frame if it is a root node.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">MapFrame that gets removed.</param>
         /// <param name="preventRefresh">Boolean, if true, removing the map frame will not automatically force a refresh of the legend.</param>
         void RemoveMapFrame(IFrame mapFrame, bool preventRefresh);
 

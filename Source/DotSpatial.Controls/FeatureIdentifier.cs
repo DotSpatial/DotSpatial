@@ -41,19 +41,19 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of FeatureIdentifier
+        /// Initializes a new instance of the <see cref="FeatureIdentifier"/> class.
         /// </summary>
         public FeatureIdentifier()
         {
             InitializeComponent();
-            treFeatures.MouseUp += treFeatures_MouseUp;
+            treFeatures.MouseUp += TreFeaturesMouseUp;
             _mnuTreeContext = new ContextMenu();
             _mnuSelectMenu = new MenuItem("Select Feature");
-            _mnuSelectMenu.Click += selectMenu_Click;
+            _mnuSelectMenu.Click += SelectMenuClick;
 
             // The "ID Field" seems more like a display caption.
             _mnuAssignIdField = new MenuItem("Assign ID Field");
-            _mnuAssignIdField.Click += _mnuAssignIdField_Click;
+            _mnuAssignIdField.Click += MnuAssignIdFieldClick;
             _featureIdFields = new Dictionary<string, string>();
         }
 
@@ -62,10 +62,11 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Adds a new node to the tree view with the layer name
+        /// Adds a new node to the tree view with the layer name.
         /// </summary>
-        /// <param name="layer"></param>
-        /// <param name="bounds"></param>
+        /// <param name="layer">Layer that gets added.</param>
+        /// <param name="bounds">Region the features get selected from.</param>
+        /// <returns>True, if the node was added to the tree.</returns>
         public virtual bool Add(IFeatureLayer layer, Extent bounds)
         {
             var result = ((FeatureSet)layer.DataSet).Select(bounds);
@@ -106,7 +107,7 @@ namespace DotSpatial.Controls
             if (treFeatures.SelectedNode != null)
             {
                 var node = treFeatures.SelectedNode;
-                _previouslySelectedLayerName = node.Parent != null ? node.Parent.Text : node.Text;
+                _previouslySelectedLayerName = node.Parent?.Text ?? node.Text;
             }
 
             treFeatures.SuspendLayout();
@@ -178,7 +179,7 @@ namespace DotSpatial.Controls
             treFeatures.ResumeLayout();
         }
 
-        private void _mnuAssignIdField_Click(object sender, EventArgs e)
+        private void MnuAssignIdFieldClick(object sender, EventArgs e)
         {
             var fl = treFeatures.SelectedNode.Tag as IFeatureLayer;
             if (fl != null)
@@ -223,17 +224,17 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void selectMenu_Click(object sender, EventArgs e)
+        private void SelectMenuClick(object sender, EventArgs e)
         {
             var feature = treFeatures.SelectedNode.Tag as IFeature;
             var layer = treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
-            if (feature != null && layer != null)
+            if (feature != null)
             {
-                layer.Select(feature);
+                layer?.Select(feature);
             }
         }
 
-        private void treFeatures_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TreFeaturesAfterSelect(object sender, TreeViewEventArgs e)
         {
             var f = e.Node.Tag as IFeature;
             if (f == null)
@@ -263,7 +264,7 @@ namespace DotSpatial.Controls
             dgvAttributes.DataSource = dt;
         }
 
-        private void treFeatures_MouseUp(object sender, MouseEventArgs e)
+        private void TreFeaturesMouseUp(object sender, MouseEventArgs e)
         {
             // Create a customized context menu on right click in the tree.
             if (e.Button == MouseButtons.Right)

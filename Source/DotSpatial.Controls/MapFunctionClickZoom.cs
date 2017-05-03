@@ -39,8 +39,9 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of SelectTool
+        /// Initializes a new instance of the <see cref="MapFunctionClickZoom"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionClickZoom(IMap inMap)
             : base(inMap)
         {
@@ -73,7 +74,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles the MouseDown
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -91,7 +92,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles MouseMove
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_isDragging)
@@ -110,7 +111,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles the Mouse Up situation
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (!(e.Map.IsZoomedToMaxExtent && e.Button == MouseButtons.Right))

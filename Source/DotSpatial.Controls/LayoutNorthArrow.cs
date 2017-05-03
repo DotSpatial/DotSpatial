@@ -20,7 +20,7 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// North Arrow control for the Layout
+    /// North Arrow control for the Layout.
     /// </summary>
     public class LayoutNorthArrow : LayoutElement
     {
@@ -35,9 +35,10 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutNorthArrow"/> class.
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public LayoutNorthArrow()
         {
             _color = Color.Black;
@@ -52,7 +53,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the color of the text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public Color Color
         {
             get
@@ -71,7 +73,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the style of the north arrow to draw
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public NorthArrowStyle NorthArrowStyle
         {
             get
@@ -90,7 +93,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the rotations of the north arrow
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public float Rotation
         {
             get
@@ -290,41 +294,5 @@ namespace DotSpatial.Controls
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// An enumeration listing the different built in styles for the north arrow
-    /// </summary>
-    public enum NorthArrowStyle
-    {
-        /// <summary>
-        /// A four point triangle with a circle in the middle and the letter N
-        /// </summary>
-        Default,
-
-        /// <summary>
-        /// A black arrow pointing north
-        /// </summary>
-        BlackArrow,
-
-        /// <summary>
-        /// Compas Rose style north arrow
-        /// </summary>
-        CenterStar,
-
-        /// <summary>
-        /// A triangle around the letter N
-        /// </summary>
-        TriangleN,
-
-        /// <summary>
-        /// A triangle with a hat-like adornment
-        /// </summary>
-        TriangleHat,
-
-        /// <summary>
-        /// An arrow with the letter N
-        /// </summary>
-        ArrowN,
     }
 }

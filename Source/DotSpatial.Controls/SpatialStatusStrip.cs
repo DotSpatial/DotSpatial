@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the StatusStrip which has a built in, thread safe Progress handler
+        /// Initializes a new instance of the <see cref="SpatialStatusStrip"/> class which has a built in, thread safe Progress handler.
         /// </summary>
         public SpatialStatusStrip()
         {
@@ -73,35 +73,35 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public void Add(StatusPanel panel)
         {
-            if (panel == null) throw new ArgumentNullException("panel");
+            if (panel == null) throw new ArgumentNullException(nameof(panel));
 
             ToolStripProgressBar pb = null;
             var psp = panel as ProgressStatusPanel;
             if (psp != null)
             {
                 pb = new ToolStripProgressBar
-                     {
-                         Name = GetKeyName<ToolStripProgressBar>(panel.Key),
-                         Width = 100,
-                         Alignment = ToolStripItemAlignment.Left
-                     };
+                {
+                    Name = GetKeyName<ToolStripProgressBar>(panel.Key),
+                    Width = 100,
+                    Alignment = ToolStripItemAlignment.Left
+                };
                 Items.Add(pb);
             }
 
             var sl = new ToolStripStatusLabel
-                     {
-                         Name = GetKeyName<ToolStripStatusLabel>(panel.Key),
-                         Text = panel.Caption,
-                         Spring = panel.Width == 0,
-                         TextAlign = ContentAlignment.MiddleLeft
-                     };
+            {
+                Name = GetKeyName<ToolStripStatusLabel>(panel.Key),
+                Text = panel.Caption,
+                Spring = panel.Width == 0,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
             Items.Add(sl);
 
             _panels.Add(panel, new PanelGuiElements
-                               {
-                                   Caption = sl,
-                                   Progress = pb
-                               });
+            {
+                Caption = sl,
+                Progress = pb
+            });
 
             panel.PropertyChanged += PanelOnPropertyChanged;
         }
@@ -128,7 +128,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public void Remove(StatusPanel panel)
         {
-            if (panel == null) throw new ArgumentNullException("panel");
+            if (panel == null) throw new ArgumentNullException(nameof(panel));
 
             panel.PropertyChanged -= PanelOnPropertyChanged;
 
@@ -234,12 +234,21 @@ namespace DotSpatial.Controls
 
         #region Classes
 
+        /// <summary>
+        /// PanelGuiElements
+        /// </summary>
         internal class PanelGuiElements
         {
             #region Properties
 
+            /// <summary>
+            /// Gets or sets the caption.
+            /// </summary>
             public ToolStripStatusLabel Caption { get; set; }
 
+            /// <summary>
+            /// Gets or sets the progress bar.
+            /// </summary>
             public ToolStripProgressBar Progress { get; set; }
 
             #endregion

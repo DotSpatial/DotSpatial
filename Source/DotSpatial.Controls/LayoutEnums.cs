@@ -15,76 +15,6 @@
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// An enumeration that defines the Mouses current behavior
-    /// </summary>
-    internal enum MouseMode
-    {
-        /// <summary>
-        /// The cursor is currently in default mode
-        /// </summary>
-        Default,
-
-        /// <summary>
-        /// The cursor is currently being used to create a new selection
-        /// </summary>
-        CreateSelection,
-
-        /// <summary>
-        /// The cursor is currently is move selection mode
-        /// </summary>
-        MoveSelection,
-
-        /// <summary>
-        /// The cursor is in resize mode because its over the edge of a selected item
-        /// </summary>
-        ResizeSelected,
-
-        /// <summary>
-        /// When in this mode the user can click on the map select an area and an element is inserted at that spot
-        /// </summary>
-        InsertNewElement,
-
-        /// <summary>
-        /// In this mode a cross hair is shown letting the user create a new Insert rectangle
-        /// </summary>
-        StartInsertNewElement,
-
-        /// <summary>
-        /// Puts the mouse into a mode that allows map panning
-        /// </summary>
-        StartPanMap,
-
-        /// <summary>
-        /// The mouse is actually panning a map
-        /// </summary>
-        PanMap
-    }
-
-    /// <summary>
-    /// Enumerates all the possible resize direction
-    /// </summary>
-    internal enum Edge
-    {
-        None,
-
-        TopLeft,
-
-        Top,
-
-        TopRight,
-
-        Right,
-
-        BottomRight,
-
-        Bottom,
-
-        BottomLeft,
-
-        Left,
-    }
-
-    /// <summary>
     /// Enumarates the different ways that a a LayoutElement can handle resize events
     /// </summary>
     public enum ResizeStyle
@@ -201,5 +131,102 @@ namespace DotSpatial.Controls
         /// Height
         /// </summary>
         Height
+    }
+
+    /// <summary>
+    /// An enumeration that defines the Mouses current behavior
+    /// </summary>
+    internal enum MouseMode
+    {
+        /// <summary>
+        /// The cursor is currently in default mode
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// The cursor is currently being used to create a new selection
+        /// </summary>
+        CreateSelection,
+
+        /// <summary>
+        /// The cursor is currently is move selection mode
+        /// </summary>
+        MoveSelection,
+
+        /// <summary>
+        /// The cursor is in resize mode because its over the edge of a selected item
+        /// </summary>
+        ResizeSelected,
+
+        /// <summary>
+        /// When in this mode the user can click on the map select an area and an element is inserted at that spot
+        /// </summary>
+        InsertNewElement,
+
+        /// <summary>
+        /// In this mode a cross hair is shown letting the user create a new Insert rectangle
+        /// </summary>
+        StartInsertNewElement,
+
+        /// <summary>
+        /// Puts the mouse into a mode that allows map panning
+        /// </summary>
+        StartPanMap,
+
+        /// <summary>
+        /// The mouse is actually panning a map
+        /// </summary>
+        PanMap
+    }
+
+    /// <summary>
+    /// Enumerates all the possible resize direction.
+    /// </summary>
+    internal enum Edge
+    {
+        /// <summary>
+        /// None
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// TopLeft
+        /// </summary>
+        TopLeft,
+
+        /// <summary>
+        /// Top
+        /// </summary>
+        Top,
+
+        /// <summary>
+        /// TopRight
+        /// </summary>
+        TopRight,
+
+        /// <summary>
+        /// Right
+        /// </summary>
+        Right,
+
+        /// <summary>
+        /// BottomRight
+        /// </summary>
+        BottomRight,
+
+        /// <summary>
+        /// Bottom
+        /// </summary>
+        Bottom,
+
+        /// <summary>
+        /// BottomLeft
+        /// </summary>
+        BottomLeft,
+
+        /// <summary>
+        /// Left
+        /// </summary>
+        Left,
     }
 }

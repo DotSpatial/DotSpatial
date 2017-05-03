@@ -21,7 +21,8 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Common symbolizer for features.
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)), Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class FeatureSymbolizer : LegendItem, IFeatureSymbolizer
     {
         #region Private Variables
@@ -89,7 +90,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean indicating whether or not this specific feature should be drawn.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets a boolean indicating whether or not this should be drawn.")]
+        [Category("Appearance")]
+        [Description("Gets or sets a boolean indicating whether or not this should be drawn.")]
         [Serialize("IsVisible")]
         public virtual bool IsVisible
         {

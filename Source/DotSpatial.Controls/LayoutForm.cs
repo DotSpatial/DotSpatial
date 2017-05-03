@@ -21,14 +21,14 @@ using DotSpatial.Data;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// This is the primary form where the print layout content is organized before printing
+    /// This is the primary form where the print layout content is organized before printing.
     /// </summary>
     public partial class LayoutForm : Form
     {
         #region  Constructors
 
         /// <summary>
-        /// Default constructor for creating a new instance of hte Layout form
+        /// Initializes a new instance of the <see cref="LayoutForm"/> class.
         /// </summary>
         public LayoutForm()
         {
@@ -51,15 +51,9 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets layout control.
+        /// Gets the layout control.
         /// </summary>
-        public LayoutControl LayoutControl
-        {
-            get
-            {
-                return _layoutControl1;
-            }
-        }
+        public LayoutControl LayoutControl => _layoutControl1;
 
         /// <summary>
         /// Gets or sets the map that will be used in the layout
@@ -81,12 +75,12 @@ namespace DotSpatial.Controls
 
         #region Methods
 
-        private void layoutControl1_FilenameChanged(object sender, EventArgs e)
+        private void LayoutControl1FilenameChanged(object sender, EventArgs e)
         {
-            Text = !string.IsNullOrEmpty(_layoutControl1.Filename) ? "DotSpatial Print Layout - " + Path.GetFileName(this._layoutControl1.Filename) : "DotSpatial Print Layout";
+            Text = !string.IsNullOrEmpty(_layoutControl1.Filename) ? "DotSpatial Print Layout - " + Path.GetFileName(_layoutControl1.Filename) : "DotSpatial Print Layout";
         }
 
-        private void LayoutForm_Load(object sender, EventArgs e)
+        private void LayoutFormLoad(object sender, EventArgs e)
         {
             if (MapControl != null)
             {
@@ -96,9 +90,9 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void layoutMenuStrip1_CloseClicked(object sender, EventArgs e)
+        private void LayoutMenuStrip1CloseClicked(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         #endregion

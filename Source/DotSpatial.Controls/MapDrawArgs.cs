@@ -17,7 +17,7 @@ using System.Drawing;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// DrawArgs contains the parameters necessary for 2D drawing
+    /// MapDrawArgs contains the parameters necessary for 2D drawing.
     /// </summary>
     public class MapDrawArgs : EventArgs
     {
@@ -32,8 +32,11 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawArgs
+        /// Initializes a new instance of the <see cref="MapDrawArgs"/> class.
         /// </summary>
+        /// <param name="inGraphics">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
+        /// <param name="inMapFrame">The map frame.</param>
         public MapDrawArgs(Graphics inGraphics, Rectangle clipRectangle, IMapFrame inMapFrame)
         {
             _graphics = inGraphics;
@@ -43,11 +46,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of GeoDrawArgs
+        /// Initializes a new instance of the <see cref="MapDrawArgs"/> class.
         /// </summary>
-        /// <param name="inGraphics"></param>
-        /// <param name="clipRectangle"></param>
-        /// <param name="inGeoGraphics"></param>
+        /// <param name="inGraphics">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
+        /// <param name="inGeoGraphics">The map args.</param>
         public MapDrawArgs(Graphics inGraphics, Rectangle clipRectangle, MapArgs inGeoGraphics)
         {
             _graphics = inGraphics;
@@ -60,7 +63,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the clip rectangle that defines the area on the region in client coordinates where drawing is taking place.
+        /// Gets or sets the clip rectangle that defines the area on the region in client coordinates where drawing is taking place.
         /// </summary>
         public virtual Rectangle ClipRectangle
         {
@@ -76,7 +79,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets a GeoGraphics wrapper that makes it easy to draw things in geographic coordinates.
+        /// Gets or sets a GeoGraphics wrapper that makes it easy to draw things in geographic coordinates.
         /// </summary>
         public virtual MapArgs GeoGraphics
         {
@@ -92,7 +95,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets a Graphics object that is useful for drawing in client coordinates.  Coordinates
+        /// Gets or sets a Graphics object that is useful for drawing in client coordinates. Coordinates
         /// should be specified as though they were drawn to the client rectangle, even if
         /// a clip rectangle is specified.
         /// </summary>

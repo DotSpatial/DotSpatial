@@ -35,7 +35,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the map frame that this belongs to.  These are designed to only work with one map frame at a time.
+        /// Gets or sets the map frame that this belongs to. These are designed to only work with one map frame at a time.
         /// </summary>
         IMapFrame MapFrame { get; set; }
 
@@ -67,7 +67,7 @@ namespace DotSpatial.Controls
         IMapLayer Add(string fileName);
 
         /// <summary>
-        /// Adds the dataset specified to the file.  Depending on whether this is a featureSet,
+        /// Adds the dataset specified to the file. Depending on whether this is a featureSet,
         /// Raster, or ImageData, this will return the appropriate layer for the map.
         /// </summary>
         /// <param name="dataSet">A dataset</param>

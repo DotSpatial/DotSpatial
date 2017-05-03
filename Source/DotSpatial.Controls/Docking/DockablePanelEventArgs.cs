@@ -1,9 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright company="DotSpatial Team">
-// </copyright>
-// -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 
 namespace DotSpatial.Controls.Docking
 {
@@ -15,11 +10,9 @@ namespace DotSpatial.Controls.Docking
         #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ActivePanelChangedEventArgs class.
+        /// Initializes a new instance of the <see cref="DockablePanelEventArgs"/> class.
         /// </summary>
-        /// <param name="activePanelKey">
-        /// The active Panel Key.
-        /// </param>
+        /// <param name="activePanelKey">The active Panel Key.</param>
         public DockablePanelEventArgs(string activePanelKey)
         {
             ActivePanelKey = activePanelKey;
@@ -30,11 +23,9 @@ namespace DotSpatial.Controls.Docking
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the active panel key.
+        /// Gets or sets the active panel key.
         /// </summary>
-        /// <value>
-        ///   The active panel key.
-        /// </value>
+        /// <value>The active panel key.</value>
         public string ActivePanelKey { get; set; }
 
         #endregion

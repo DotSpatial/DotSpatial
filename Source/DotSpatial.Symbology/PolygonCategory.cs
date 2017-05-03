@@ -22,8 +22,8 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// PointSchemeCategory
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)),
-    Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class PolygonCategory : FeatureCategory, IPolygonCategory
     {
         #region Private Variables

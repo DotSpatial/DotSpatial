@@ -9,17 +9,17 @@ namespace DotSpatial.Controls.Header
     {
         #region Fields
 
-        private string caption;
-        private bool enabled = true;
-        private string toolTipText;
-        private bool visible = true;
+        private string _caption;
+        private bool _enabled = true;
+        private string _toolTipText;
+        private bool _visible = true;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ActionItem class.
+        /// Initializes a new instance of the <see cref="ActionItem"/> class.
         /// </summary>
         protected ActionItem()
         {
@@ -36,12 +36,14 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the ActionItem class.
+        /// Initializes a new instance of the <see cref="ActionItem"/> class.
         /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         protected ActionItem(string key, string caption)
         {
-            this.Key = key;
-            this.Caption = caption;
+            Key = key;
+            Caption = caption;
         }
 
         #endregion
@@ -56,13 +58,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return caption;
+                return _caption;
             }
 
             set
             {
-                if (caption == value) return;
-                caption = value;
+                if (_caption == value) return;
+                _caption = value;
                 OnPropertyChanged("Caption");
             }
         }
@@ -77,13 +79,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return enabled;
+                return _enabled;
             }
 
             set
             {
-                if (enabled == value) return;
-                enabled = value;
+                if (_enabled == value) return;
+                _enabled = value;
                 OnPropertyChanged("Enabled");
             }
         }
@@ -96,13 +98,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return toolTipText;
+                return _toolTipText;
             }
 
             set
             {
-                if (toolTipText == value) return;
-                toolTipText = value;
+                if (_toolTipText == value) return;
+                _toolTipText = value;
                 OnPropertyChanged("ToolTipText");
             }
         }
@@ -117,13 +119,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return visible;
+                return _visible;
             }
 
             set
             {
-                if (visible == value) return;
-                visible = value;
+                if (_visible == value) return;
+                _visible = value;
                 OnPropertyChanged("Visible");
             }
         }

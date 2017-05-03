@@ -17,7 +17,7 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the RootItemEventArgs class.
+        /// Initializes a new instance of the <see cref="RootItemEventArgs"/> class.
         /// </summary>
         /// <param name="selectedKey">The key of the selected root item</param>
         public RootItemEventArgs(string selectedKey)

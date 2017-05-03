@@ -3,17 +3,10 @@ using System;
 namespace DotSpatial.Controls.Header
 {
     /// <summary>
-    ///
+    /// Event args of the SelectedValueChanged event.
     /// </summary>
     public class SelectedValueChangedEventArgs : EventArgs
     {
-        #region Fields
-
-        // Fields...
-        private object _SelectedItem;
-
-        #endregion
-
         #region  Constructors
 
         /// <summary>
@@ -24,12 +17,12 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the SelectedValueChangedEventArgs class.
+        /// Initializes a new instance of the <see cref="SelectedValueChangedEventArgs"/> class.
         /// </summary>
-        /// <param name="selectedItem"></param>
+        /// <param name="selectedItem">The selected item.</param>
         public SelectedValueChangedEventArgs(object selectedItem)
         {
-            _SelectedItem = selectedItem;
+            SelectedItem = selectedItem;
         }
 
         #endregion
@@ -42,18 +35,7 @@ namespace DotSpatial.Controls.Header
         /// <value>
         /// The selected item.
         /// </value>
-        public object SelectedItem
-        {
-            get
-            {
-                return _SelectedItem;
-            }
-
-            set
-            {
-                _SelectedItem = value;
-            }
-        }
+        public object SelectedItem { get; set; }
 
         #endregion
     }

@@ -22,52 +22,20 @@ namespace DotSpatial.Symbology
     [ToolboxItem(false)]
     public class LegendIcon : LegendItem
     {
-        #region Private Variables
+        #region Fields
 
         private Icon _icon;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of LegendIcon
+        /// Initializes a new instance of the <see cref="LegendIcon"/> class.
         /// </summary>
         public LegendIcon()
         {
             Configure();
-        }
-
-        private void Configure()
-        {
-            base.LegendSymbolMode = SymbolMode.Symbol;
-            LegendType = LegendType.Symbol;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Gets the legend symbol size (as an icon size)
-        /// </summary>
-        /// <returns></returns>
-        public override Size GetLegendSymbolSize()
-        {
-            return _icon != null ? _icon.Size : new Size(16, 16);
-        }
-
-        /// <summary>
-        /// Draws the icon to the legend
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="box"></param>
-        public override void LegendSymbol_Painted(Graphics g, Rectangle box)
-        {
-            if (_icon != null)
-            {
-                g.DrawIcon(_icon, box);
-            }
         }
 
         #endregion
@@ -79,11 +47,47 @@ namespace DotSpatial.Symbology
         /// </summary>
         public virtual Icon Icon
         {
-            get { return _icon; }
+            get
+            {
+                return _icon;
+            }
+
             set
             {
                 _icon = value;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets the legend symbol size (as an icon size)
+        /// </summary>
+        /// <returns>The legend symbol size</returns>
+        public override Size GetLegendSymbolSize()
+        {
+            return _icon?.Size ?? new Size(16, 16);
+        }
+
+        /// <summary>
+        /// Draws the icon to the legend.
+        /// </summary>
+        /// <param name="g">Graphics object used for drawing.</param>
+        /// <param name="box">The rectangle used for drawing the icon.</param>
+        public override void LegendSymbolPainted(Graphics g, Rectangle box)
+        {
+            if (_icon != null)
+            {
+                g.DrawIcon(_icon, box);
+            }
+        }
+
+        private void Configure()
+        {
+            LegendSymbolMode = SymbolMode.Symbol;
+            LegendType = LegendType.Symbol;
         }
 
         #endregion

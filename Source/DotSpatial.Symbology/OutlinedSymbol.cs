@@ -97,7 +97,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Provided for XML serialization
         /// </summary>
-        [XmlElement("OutlineColor"), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [XmlElement("OutlineColor")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Serialize("XmlOutlineColor")]
         public string XmlOutlineColor
         {

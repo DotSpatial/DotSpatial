@@ -2,8 +2,8 @@
 // Product Name: DotSpatial.Ribbon.dll
 // Description:  Original new code created by Ted Dunsford to help add items to panels
 // ********************************************************************************************************
-// The license is the Microsoft Public License (Ms-PL).  A copy of the license can be found
-// here: http://www.opensource.org/licenses/ms-pl.html.  This is to keep it consistent with the
+// The license is the Microsoft Public License (Ms-PL). A copy of the license can be found
+// here: http://www.opensource.org/licenses/ms-pl.html. This is to keep it consistent with the
 // rest of the ribbon code content.
 //
 // Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
@@ -34,11 +34,11 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the Icon Menu Item with the specified name
+        /// Initializes a new instance of the <see cref="IconMenuItem"/> class with the specified name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="icon"></param>
-        /// <param name="onClick"></param>
+        /// <param name="name">Name of the menu item.</param>
+        /// <param name="icon">Icon of the menu item.</param>
+        /// <param name="onClick">The click event handler.</param>
         public IconMenuItem(string name, Icon icon, EventHandler onClick)
             : base(name, onClick)
         {
@@ -47,11 +47,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of the Icon Menu Item with the specified name
+        /// Initializes a new instance of the <see cref="IconMenuItem"/> class with the specified name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="image"></param>
-        /// <param name="onClick"></param>
+        /// <param name="name">Name of the menu item.</param>
+        /// <param name="image">Image of the menu item.</param>
+        /// <param name="onClick">The click event handler.</param>
         public IconMenuItem(string name, Image image, EventHandler onClick)
             : base(name, onClick)
         {
@@ -60,10 +60,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of the Icon Menu Item with the specified name
+        /// Initializes a new instance of the <see cref="IconMenuItem"/> class with the specified name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="onClick"></param>
+        /// <param name="name">Name of the menu item.</param>
+        /// <param name="onClick">The click event handler.</param>
         public IconMenuItem(string name, EventHandler onClick)
             : base(name, onClick)
         {

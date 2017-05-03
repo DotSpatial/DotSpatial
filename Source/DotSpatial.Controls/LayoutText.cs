@@ -9,7 +9,7 @@
 // The Initial Developer of this Original Code is Brian Marchionni. Created in Jul, 2009.
 //
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
-
+//
 // ********************************************************************************************************
 
 using System.ComponentModel;
@@ -20,7 +20,7 @@ using System.Drawing.Text;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Controls a rectangle
+    /// Element that allows adding text to the layout.
     /// </summary>
     public class LayoutText : LayoutElement
     {
@@ -30,14 +30,14 @@ namespace DotSpatial.Controls
         private ContentAlignment _contentAlignment;
         private Font _font;
         private string _text;
-        private TextRenderingHint _textHint = TextRenderingHint.SystemDefault;
+        private TextRenderingHint _textHint;
 
         #endregion
 
         #region  Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutText"/> class.
         /// </summary>
         public LayoutText()
         {
@@ -57,7 +57,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the color of the text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public Color Color
         {
             get
@@ -76,7 +77,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the content alignment
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public ContentAlignment ContentAlignment
         {
             get
@@ -95,7 +97,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the font used to draw this text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public Font Font
         {
             get
@@ -114,7 +117,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the text thats drawn in the graphics object
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design", typeof(UITypeEditor))]
         public string Text
         {
@@ -134,7 +138,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the hinting used to draw the text
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public TextRenderingHint TextHint
         {
             get
@@ -207,10 +212,8 @@ namespace DotSpatial.Controls
                     break;
             }
 
-            // Letters were getting truncated or else bumped to the
-            // next line when printing that were not being bumped while
-            // in the view.  the added letter, here hopefully will prevent
-            // the discrepency.
+            // Letters were getting truncated or else bumped to the next line when printing that were not being bumped while
+            // in the view. The added letter, here hopefully will prevent the discrepancy.
             SizeF f = g.MeasureString("0", _font);
             RectangleF r = Rectangle;
             r.Width += f.Width;

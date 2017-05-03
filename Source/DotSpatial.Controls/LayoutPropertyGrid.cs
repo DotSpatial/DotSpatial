@@ -24,19 +24,12 @@ namespace DotSpatial.Controls
     /// </summary>
     // This control will no longer be visible
     [ToolboxItem(false)]
-    public class LayoutPropertyGrid : UserControl
+    public partial class LayoutPropertyGrid : UserControl
     {
-        #region Fields
-
-        private LayoutControl _layoutControl;
-        private PropertyGrid _propertyGrid;
-
-        #endregion
-
         #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the Layout Property Grid
+        /// Initializes a new instance of the <see cref="LayoutPropertyGrid"/> class.
         /// </summary>
         public LayoutPropertyGrid()
         {
@@ -70,26 +63,11 @@ namespace DotSpatial.Controls
 
         #region Methods
 
-        private void InitializeComponent()
-        {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(LayoutPropertyGrid));
-            this._propertyGrid = new PropertyGrid();
-            this.SuspendLayout();
-
-            // _propertyGrid
-            resources.ApplyResources(this._propertyGrid, "_propertyGrid");
-            this._propertyGrid.Name = "_propertyGrid";
-
-            // LayoutPropertyGrid
-            this.Controls.Add(this._propertyGrid);
-            this.Name = "LayoutPropertyGrid";
-            this.KeyUp += new KeyEventHandler(this.LayoutPropertyGrid_KeyUp);
-            this.ResumeLayout(false);
-        }
-
         /// <summary>
         /// If the selection changes this event is called
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void LayoutControlSelectionChanged(object sender, EventArgs e)
         {
             // This code is so that the property grid gets updates if one of the properties changes
@@ -99,13 +77,10 @@ namespace DotSpatial.Controls
                 selecteElement.Invalidated += SelecteElementInvalidated;
 
             // If there is no selection get the layoutControls properties otherwise show the selected elements properties
-            if (_layoutControl.SelectedLayoutElements.Count > 0)
-                _propertyGrid.SelectedObjects = _layoutControl.SelectedLayoutElements.ToArray();
-            else
-                _propertyGrid.SelectedObjects = null;
+            _propertyGrid.SelectedObjects = _layoutControl.SelectedLayoutElements.Count > 0 ? _layoutControl.SelectedLayoutElements.ToArray() : null;
         }
 
-        private void LayoutPropertyGrid_KeyUp(object sender, KeyEventArgs e)
+        private void LayoutPropertyGridKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {

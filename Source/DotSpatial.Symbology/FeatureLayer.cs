@@ -167,7 +167,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets the Boolean flag that controls whether the DrawnStates are needed.  If nothing is selected,
         /// and there is only one category, and there is no filter expression on that category, then this should be false.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DrawnStatesNeeded
         {
             get { return _drawnStatesNeeded; }
@@ -1251,7 +1252,8 @@ namespace DotSpatial.Symbology
         /// when the scheme is applied, and then the cached value is used to help drawing symbols that
         /// are modified by the categorical boundaries.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDictionary<IFeatureCategory, Extent> CategoryExtents
         {
             get { return _categoryExtents; }
@@ -1261,7 +1263,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets a rectangle that gives the maximal extent for 2D GDI+ drawing in pixels.
         /// Coordinates outside this range will cause overflow exceptions to occur.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Rectangle DrawingBounds { get; set; }
 
         /// <summary>
@@ -1269,7 +1272,8 @@ namespace DotSpatial.Symbology
         /// cycle through those features.  Using a for-each expression on the filter will automatically
         /// apply the constraints specified by the characteristics.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [ShallowCopy]
         public IDrawingFilter DrawingFilter
         {
@@ -1280,7 +1284,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         ///  Gets or sets a string name for this layer.  This is not necessarily the same as the legend text.
         /// </summary>
-        [Category("General"), Description("Gets or sets a string name for this layer.  This is not necessarily the same as the legend text.")]
+        [Category("General")]
+        [Description("Gets or sets a string name for this layer.  This is not necessarily the same as the legend text.")]
         public virtual string Name { get; set; }
 
         /// <summary>
@@ -1293,7 +1298,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet
         /// </summary>
         [Serialize("DataSet", ConstructorArgumentIndex = 0)]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new IFeatureSet DataSet
         {
             get { return base.DataSet as IFeatureSet; }
@@ -1326,7 +1332,8 @@ namespace DotSpatial.Symbology
         /// Controls the drawn states according to a feature index.  This is used if the EditMode is
         /// false.  When EditMode is true, then drawn states are tied to the features instead.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FastDrawnState[] DrawnStates
         {
             get
@@ -1371,7 +1378,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the envelope of the DataSet supporting this FeatureLayer
         /// </summary>
-        [Category("General"), Description("Gets the envelope of the DataSet supporting this FeatureLayer")]
+        [Category("General")]
+        [Description("Gets the envelope of the DataSet supporting this FeatureLayer")]
         public override Extent Extent
         {
             get
@@ -1383,7 +1391,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the label layer
         /// </summary>
-        [Category("General"), Description("Gets or sets the label layer associated with this feature layer.")]
+        [Category("General")]
+        [Description("Gets or sets the label layer associated with this feature layer.")]
         [ShallowCopy]
         [Serialize("LabelLayer")]
         public virtual ILabelLayer LabelLayer
@@ -1402,7 +1411,8 @@ namespace DotSpatial.Symbology
         /// Restructures the LegendItems based on whether or not the symbology makes use
         /// of schemes.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override IEnumerable<ILegendItem> LegendItems
         {
             get
@@ -1421,7 +1431,8 @@ namespace DotSpatial.Symbology
         /// Gets a Selection class that is allows the user to cycle through all the selected features with
         /// a foreach method.  This can be null.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ISelection Selection
         {
             get { return _selection; }
@@ -1430,8 +1441,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the shared characteristics to use with the selected features.
         /// </summary>
-        [Category("Symbology"), Description("Gets or sets a collection of feature characteristics for this layer."),
-         ShallowCopy]
+        [Category("Symbology")]
+        [Description("Gets or sets a collection of feature characteristics for this layer.")]
+        [ShallowCopy]
         public virtual IFeatureSymbolizer SelectionSymbolizer
         {
             get
@@ -1478,7 +1490,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets whether labels should be drawn.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets whether labels should be drawn."), Serialize("ShowLabels")]
+        [Category("Behavior")]
+        [Description("Gets or sets whether labels should be drawn.")]
+        [Serialize("ShowLabels")]
         public virtual bool ShowLabels
         {
             get { return _showLabels; }
@@ -1493,8 +1507,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets a collection of feature characteristics for this layer."),
-         ShallowCopy]
+        [Category("Appearance")]
+        [Description("Gets or sets a collection of feature characteristics for this layer.")]
+        [ShallowCopy]
         public virtual IFeatureSymbolizer Symbolizer
         {
             get

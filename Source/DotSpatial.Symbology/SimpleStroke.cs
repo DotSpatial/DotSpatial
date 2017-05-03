@@ -22,7 +22,8 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Represents stroke using specified <see cref="Color"/> and  <see cref="DashStyle"/>.
     /// </summary>
-    [Serializable, XmlRoot("SimpleStroke")]
+    [Serializable]
+    [XmlRoot("SimpleStroke")]
     public class SimpleStroke : Stroke, ISimpleStroke
     {
         #region Private Variables

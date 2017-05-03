@@ -40,8 +40,9 @@ namespace DotSpatial.Controls
         #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the MapFunctionZoom class.
+        /// Initializes a new instance of the <see cref="MapFunctionZoom"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionZoom(IMap inMap)
             : base(inMap)
         {
@@ -53,10 +54,13 @@ namespace DotSpatial.Controls
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the map function is currently interacting with the map.
+        /// </summary>
         public bool BusySet { get; set; }
 
         /// <summary>
-        /// Controls the sense (direction) of zoom (in or out) as you roll the mouse wheel
+        /// Gets or sets a value indicating whether forward zooms in. This controls the sense (direction) of zoom (in or out) as you roll the mouse wheel.
         /// </summary>
         public bool ForwardZoomsIn
         {
@@ -72,7 +76,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the wheel zoom sensitivity.  Increasing makes it more sensitive.  Maximum is 0.5, Minimum is 0.01
+        /// Gets or sets the wheel zoom sensitivity. Increasing makes it more sensitive. Maximum is 0.5, Minimum is 0.01
         /// </summary>
         public double Sensitivity
         {
@@ -115,7 +119,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles the actions that the tool controls during the OnMouseDown event
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Middle && !_preventDrag)
@@ -131,7 +135,7 @@ namespace DotSpatial.Controls
         /// Handles the mouse move event, changing the viewing extents to match the movements
         /// of the mouse if the left mouse button is down.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_dragStart != Point.Empty && !_preventDrag)
@@ -158,7 +162,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Mouse Up
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Middle && _isDragging)
@@ -179,7 +183,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Mouse Wheel
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseWheel(GeoMouseArgs e)
         {
             // Fix this

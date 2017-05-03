@@ -325,14 +325,16 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the label layer
         /// </summary>
-        [Category("General"), Description("Gets or sets the label layer associated with this feature layer.")]
+        [Category("General")]
+        [Description("Gets or sets the label layer associated with this feature layer.")]
         ILabelLayer LabelLayer { get; set; }
 
         /// <summary>
         /// Gets a Selection class that is allows the user to cycle through all the unselected features with
         /// a for each method, even if the features are in many categories.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         ISelection Selection { get; }
 
         /// <summary>
@@ -343,7 +345,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets whether labels should be drawn.
         /// </summary>
-        [Category("Behavior"), Description("Gets or sets whether labels should be drawn.")]
+        [Category("Behavior")]
+        [Description("Gets or sets whether labels should be drawn.")]
         bool ShowLabels { get; set; }
 
         /// <summary>

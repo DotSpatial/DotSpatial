@@ -27,17 +27,17 @@ namespace DotSpatial.Symbology
     [Serializable]
     public class ColorScheme : Scheme, IColorScheme
     {
-        #region Private Variables
+        #region Fields
 
         private ColorCategoryCollection _categories;
         private float _opacity;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of ColorScheme
+        /// Initializes a new instance of the <see cref="ColorScheme"/> class.
         /// </summary>
         public ColorScheme()
         {
@@ -45,8 +45,8 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of a color scheme using a predefined color scheme and the minimum and maximum specified
-        /// from the raster itself
+        /// Initializes a new instance of the <see cref="ColorScheme"/> class using a predefined color scheme and the minimum and maximum specified
+        /// from the raster itself.
         /// </summary>
         /// <param name="schemeType">The predefined scheme to use</param>
         /// <param name="raster">The raster to obtain the minimum and maximum settings from</param>
@@ -57,7 +57,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This creates a new scheme, applying the specified color scheme, and using the minimum and maximum values indicated.
+        /// Initializes a new instance of the <see cref="ColorScheme"/> class, applying the specified color scheme, and using the minimum and maximum values indicated.
         /// </summary>
         /// <param name="schemeType">The predefined color scheme</param>
         /// <param name="min">The minimum</param>
@@ -68,11 +68,65 @@ namespace DotSpatial.Symbology
             ApplyScheme(schemeType, min, max);
         }
 
-        private void Configure()
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the raster categories.
+        /// </summary>
+        [Serialize("Categories")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ColorCategoryCollection Categories
         {
-            _categories = new ColorCategoryCollection(this);
-            _opacity = 1;
-            EditorSettings = new RasterEditorSettings();
+            get
+            {
+                return _categories;
+            }
+
+            set
+            {
+                if (_categories != null) _categories.Scheme = null;
+                _categories = value;
+                if (_categories != null) _categories.Scheme = this;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the raster editor settings associated with this scheme.
+        /// </summary>
+        [Serialize("EditorSettings")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new RasterEditorSettings EditorSettings
+        {
+            get
+            {
+                return base.EditorSettings as RasterEditorSettings;
+            }
+
+            set
+            {
+                base.EditorSettings = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the floating point value for the opacity
+        /// </summary>
+        [Serialize("Opacity")]
+        public float Opacity
+        {
+            get
+            {
+                return _opacity;
+            }
+
+            set
+            {
+                _opacity = value;
+            }
         }
 
         #endregion
@@ -80,11 +134,21 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
+        /// Adds the specified category.
+        /// </summary>
+        /// <param name="category">Category that gets added.</param>
+        public override void AddCategory(ICategory category)
+        {
+            IColorCategory cc = category as IColorCategory;
+            if (cc != null) _categories.Add(cc);
+        }
+
+        /// <summary>
         /// Applies the specified color scheme and uses the specified raster to define the
         /// minimum and maximum to use for the scheme.
         /// </summary>
-        /// <param name="schemeType"></param>
-        /// <param name="raster"></param>
+        /// <param name="schemeType">Color scheme that gets applied.</param>
+        /// <param name="raster">Raster that is used to define the minimum and maximum for the scheme.</param>
         public void ApplyScheme(ColorSchemeType schemeType, IRaster raster)
         {
             double min, max;
@@ -97,47 +161,10 @@ namespace DotSpatial.Symbology
             else
             {
                 min = raster.Minimum;
-                max = raster.Maximum;   
+                max = raster.Maximum;
             }
 
             ApplyScheme(schemeType, min, max);
-        }
-
-        /// <summary>
-        /// Creates the category using a random fill color
-        /// </summary>
-        /// <param name="fillColor">The base color to use for creating the category</param>
-        /// <param name="size">For points this is the larger dimension, for lines this is the largest width</param>
-        /// <returns>A new IFeatureCategory that matches the type of this scheme</returns>
-        public override ICategory CreateNewCategory(Color fillColor, double size)
-        {
-            return new ColorCategory(null, null, fillColor, fillColor);
-        }
-
-        /// <summary>
-        /// Creates the categories for this scheme based on statistics and values
-        /// sampled from the specified raster.
-        /// </summary>
-        /// <param name="raster">The raster to use when creating categories</param>
-        public void CreateCategories(IRaster raster)
-        {
-            GetValues(raster);
-            CreateBreakCategories();
-            OnItemChanged(this);
-        }
-
-        /// <summary>
-        /// Gets the values from the raster.  If MaxSampleCount is less than the
-        /// number of cells, then it randomly samples the raster with MaxSampleCount
-        /// values.  Otherwise it gets all the values in the raster.
-        /// </summary>
-        /// <param name="raster">The raster to sample</param>
-        public void GetValues(IRaster raster)
-        {
-            Values = raster.GetRandomValues(EditorSettings.MaxSampleCount);
-            var keepers = Values.Where(val => val != raster.NoDataValue).ToList();
-            Values = keepers;
-            Statistics.Calculate(Values, raster.Minimum, raster.Maximum);
         }
 
         /// <summary>
@@ -155,26 +182,26 @@ namespace DotSpatial.Symbology
             }
             else
             {
-                Categories.Clear();    
+                Categories.Clear();
             }
 
             IColorCategory eqCat = null, low = null, high = null;
             if (min == max)
             {
                 // Create one category
-                eqCat = new ColorCategory(min, max) {Range = {MaxIsInclusive = true, MinIsInclusive = true}};
+                eqCat = new ColorCategory(min, max) { Range = { MaxIsInclusive = true, MinIsInclusive = true } };
                 eqCat.ApplyMinMax(EditorSettings);
                 Categories.Add(eqCat);
             }
             else
             {
                 // Create two categories
-                low = new ColorCategory(min, (min + max) / 2) {Range = {MaxIsInclusive = true}};
-                high = new ColorCategory((min + max) / 2, max) {Range = {MaxIsInclusive = true}};
+                low = new ColorCategory(min, (min + max) / 2) { Range = { MaxIsInclusive = true } };
+                high = new ColorCategory((min + max) / 2, max) { Range = { MaxIsInclusive = true } };
                 low.ApplyMinMax(EditorSettings);
                 high.ApplyMinMax(EditorSettings);
                 Categories.Add(low);
-                Categories.Add(high);    
+                Categories.Add(high);
             }
 
             Color lowColor, midColor, highColor;
@@ -232,8 +259,8 @@ namespace DotSpatial.Symbology
             }
             else
             {
-                Debug.Assert(low != null);
-                Debug.Assert(high != null);
+                Debug.Assert(low != null, "low may not be null");
+                Debug.Assert(high != null, "high may not be null");
 
                 low.LowColor = lowColor;
                 low.HighColor = midColor;
@@ -244,45 +271,35 @@ namespace DotSpatial.Symbology
             OnItemChanged(this);
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the floating point value for the opacity
+        /// Clears the categories
         /// </summary>
-        [Serialize("Opacity")]
-        public float Opacity
+        public override void ClearCategories()
         {
-            get { return _opacity; }
-            set { _opacity = value; }
+            _categories.Clear();
         }
 
         /// <summary>
-        /// Gets or sets the raster categories
+        /// Creates the categories for this scheme based on statistics and values
+        /// sampled from the specified raster.
         /// </summary>
-        [Serialize("Categories")]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ColorCategoryCollection Categories
+        /// <param name="raster">The raster to use when creating categories</param>
+        public void CreateCategories(IRaster raster)
         {
-            get { return _categories; }
-            set
-            {
-                if (_categories != null) _categories.Scheme = null;
-                _categories = value;
-                if (_categories != null) _categories.Scheme = this;
-            }
+            GetValues(raster);
+            CreateBreakCategories();
+            OnItemChanged(this);
         }
 
         /// <summary>
-        /// Gets or sets the raster editor settings associated with this scheme.
+        /// Creates the category using a random fill color
         /// </summary>
-        [Serialize("EditorSettings")]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new RasterEditorSettings EditorSettings
+        /// <param name="fillColor">The base color to use for creating the category</param>
+        /// <param name="size">For points this is the larger dimension, for lines this is the largest width</param>
+        /// <returns>A new IFeatureCategory that matches the type of this scheme</returns>
+        public override ICategory CreateNewCategory(Color fillColor, double size)
         {
-            get { return base.EditorSettings as RasterEditorSettings; }
-            set { base.EditorSettings = value; }
+            return new ColorCategory(null, null, fillColor, fillColor);
         }
 
         /// <summary>
@@ -296,46 +313,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Occurs when setting the parent item and updates the parent item pointers
-        /// </summary>
-        /// <param name="value"></param>
-        protected override void OnSetParentItem(ILegendItem value)
-        {
-            base.OnSetParentItem(value);
-            _categories.UpdateItemParentPointers();
-        }
-
-        #endregion
-
-        #region IColorScheme Members
-
-        /// <summary>
-        /// Draws the category in the specified location.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="g"></param>
-        /// <param name="bounds"></param>
-        public override void DrawCategory(int index, Graphics g, Rectangle bounds)
-        {
-            _categories[index].LegendSymbol_Painted(g, bounds);
-        }
-
-        /// <summary>
-        /// Adds the specified category
-        /// </summary>
-        /// <param name="category"></param>
-        public override void AddCategory(ICategory category)
-        {
-            IColorCategory cc = category as IColorCategory;
-            if (cc != null) _categories.Add(cc);
-        }
-
-        /// <summary>
         /// Attempts to decrease the index value of the specified category, and returns
-        /// true if the move was successful.
+        /// true if the move was successfull.
         /// </summary>
         /// <param name="category">The category to decrease the index of</param>
-        /// <returns></returns>
+        /// <returns>True, if the move was successfull.</returns>
         public override bool DecreaseCategoryIndex(ICategory category)
         {
             IColorCategory cc = category as IColorCategory;
@@ -343,24 +325,28 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Removes the specified category
+        /// Draws the category in the specified location.
         /// </summary>
-        /// <param name="category"></param>
-        public override void RemoveCategory(ICategory category)
+        /// <param name="index">Index of the category that gets drawn.</param>
+        /// <param name="g">graphics object used for drawing.</param>
+        /// <param name="bounds">Rectangle to draw the category to.</param>
+        public override void DrawCategory(int index, Graphics g, Rectangle bounds)
         {
-            IColorCategory cc = category as IColorCategory;
-            if (cc != null) _categories.Remove(cc);
+            _categories[index].LegendSymbolPainted(g, bounds);
         }
 
         /// <summary>
-        /// Inserts the item at the specified index
+        /// Gets the values from the raster. If MaxSampleCount is less than the
+        /// number of cells, then it randomly samples the raster with MaxSampleCount
+        /// values. Otherwise it gets all the values in the raster.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="category"></param>
-        public override void InsertCategory(int index, ICategory category)
+        /// <param name="raster">The raster to sample</param>
+        public void GetValues(IRaster raster)
         {
-            IColorCategory cc = category as IColorCategory;
-            if (cc != null) _categories.Insert(index, cc);
+            Values = raster.GetRandomValues(EditorSettings.MaxSampleCount);
+            var keepers = Values.Where(val => val != raster.NoDataValue).ToList();
+            Values = keepers;
+            Statistics.Calculate(Values, raster.Minimum, raster.Maximum);
         }
 
         /// <summary>
@@ -376,15 +362,28 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Suspends the change item event from firing as the list is being changed
+        /// Inserts the item at the specified index.
         /// </summary>
-        public override void SuspendEvents()
+        /// <param name="index">Index where the category gets inserted.</param>
+        /// <param name="category">Category that gets inserted.</param>
+        public override void InsertCategory(int index, ICategory category)
         {
-            _categories.SuspendEvents();
+            IColorCategory cc = category as IColorCategory;
+            if (cc != null) _categories.Insert(index, cc);
         }
 
         /// <summary>
-        /// Allows the ChangeItem event to get passed on when changes are made
+        /// Removes the specified category.
+        /// </summary>
+        /// <param name="category">Category that gets removed.</param>
+        public override void RemoveCategory(ICategory category)
+        {
+            IColorCategory cc = category as IColorCategory;
+            if (cc != null) _categories.Remove(cc);
+        }
+
+        /// <summary>
+        /// Allows the ChangeItem event to get passed on when changes are made.
         /// </summary>
         public override void ResumeEvents()
         {
@@ -392,11 +391,28 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Clears the categories
+        /// Suspends the change item event from firing as the list is being changed.
         /// </summary>
-        public override void ClearCategories()
+        public override void SuspendEvents()
         {
-            _categories.Clear();
+            _categories.SuspendEvents();
+        }
+
+        /// <summary>
+        /// Occurs when setting the parent item and updates the parent item pointers.
+        /// </summary>
+        /// <param name="value">The parent item.</param>
+        protected override void OnSetParentItem(ILegendItem value)
+        {
+            base.OnSetParentItem(value);
+            _categories.UpdateItemParentPointers();
+        }
+
+        private void Configure()
+        {
+            _categories = new ColorCategoryCollection(this);
+            _opacity = 1;
+            EditorSettings = new RasterEditorSettings();
         }
 
         #endregion

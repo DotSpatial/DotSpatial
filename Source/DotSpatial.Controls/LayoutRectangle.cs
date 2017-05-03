@@ -21,14 +21,14 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A control that draws a standard colored rectangle to the print layout
+    /// A control that draws a standard colored rectangle to the print layout.
     /// </summary>
     public class LayoutRectangle : LayoutElement
     {
         #region  Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutRectangle"/> class.
         /// </summary>
         public LayoutRectangle()
         {
@@ -42,10 +42,10 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Doesn't need to do anything now because the drawing code is in the background property of the base class
+        /// Doesn't need to do anything now because the drawing code is in the background property of the base class.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="printing"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="printing">Indicates whether the content is printed or previewed.</param>
         public override void Draw(Graphics g, bool printing)
         {
         }

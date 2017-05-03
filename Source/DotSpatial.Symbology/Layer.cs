@@ -23,7 +23,7 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-   [ToolboxItem(false)]
+    [ToolboxItem(false)]
     public class Layer : RenderableLegendItem, ILayer
     {
         #region Events
@@ -262,7 +262,8 @@ namespace DotSpatial.Symbology
         /// original dataset.  The ShallowCopy attribute is used so even though the DataSet itself may be cloneable,
         /// cloning a layer will treat the dataset like a shallow copy.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [ShallowCopy]
         public IDataSet DataSet
         {
@@ -290,20 +291,25 @@ namespace DotSpatial.Symbology
         /// Dynamic visibility represents layers that only appear when you zoom in close enough.
         /// This value represents the geographic width where that happens.
         /// </summary>
-        [Serialize("DynamicVisibilityWidth"), Category("Behavior"), Description("Dynamic visibility represents layers that only appear when the zoom scale is closer (or further) from a set scale.  This value represents the geographic width where the change takes place.")]
+        [Serialize("DynamicVisibilityWidth")]
+        [Category("Behavior")]
+        [Description("Dynamic visibility represents layers that only appear when the zoom scale is closer (or further) from a set scale.  This value represents the geographic width where the change takes place.")]
         public double DynamicVisibilityWidth { get; set; }
 
         /// <summary>
         /// This controls whether the layer is visible when zoomed in closer than the dynamic
         /// visibility width or only when further away from the dynamic visibility width
         /// </summary>
-        [Serialize("DynamicVisibilityMode"), Category("Behavior"), Description("This controls whether the layer is visible when zoomed in closer than the dynamic visiblity width or only when further away from the dynamic visibility width")]
+        [Serialize("DynamicVisibilityMode")]
+        [Category("Behavior")]
+        [Description("This controls whether the layer is visible when zoomed in closer than the dynamic visiblity width or only when further away from the dynamic visibility width")]
         public DynamicVisibilityMode DynamicVisibilityMode { get; set; }
 
         /// <summary>
         /// Gets the currently invalidated region.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual Extent InvalidRegion
         {
             get { return _invalidatedRegion; }
@@ -313,14 +319,16 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the map frame of the parent LayerCollection.
         /// </summary>
-        [Browsable(false), ShallowCopy]
+        [Browsable(false)]
+        [ShallowCopy]
         public virtual IFrame MapFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the ProgressHandler for this layer.  Setting this overrides the default
         /// behavior which is to use the
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IProgressHandler ProgressHandler
         {
             get
@@ -340,11 +348,14 @@ namespace DotSpatial.Symbology
         /// Gets or sets a boolean indicating whether to allow the dynamic visibility
         /// envelope to control visibility.
         /// </summary>
-        [Serialize("UseDynamicVisibility"), Category("Behavior"), Description("Gets or sets a boolean indicating whether to allow the dynamic visibility envelope to control visibility.")]
+        [Serialize("UseDynamicVisibility")]
+        [Category("Behavior")]
+        [Description("Gets or sets a boolean indicating whether to allow the dynamic visibility envelope to control visibility.")]
         public bool UseDynamicVisibility { get; set; }
 
         /// <inheritdoc />
-        [Category("Behavior"), Description("Gets or sets a boolean indicating whether this layer is selected in the legend.")]
+        [Category("Behavior")]
+        [Description("Gets or sets a boolean indicating whether this layer is selected in the legend.")]
         public override bool IsSelected
         {
             get
@@ -363,7 +374,8 @@ namespace DotSpatial.Symbology
 
         /// <inheritdoc />
         [Serialize("IsVisible")]
-        [Category("Behavior"), Description("Gets or sets a boolean indicating whether this layer is visible in the map.")]
+        [Category("Behavior")]
+        [Description("Gets or sets a boolean indicating whether this layer is visible in the map.")]
         public override bool IsVisible
         {
             get
@@ -436,7 +448,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Layers launch a "Property Grid" by default.  However, this can be overridden with a different UIEditor by this
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IPropertyDialogProvider PropertyDialogProvider
         {
             get
@@ -583,7 +596,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the progress meter being used internally by layer classes.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected ProgressMeter ProgressMeter
         {
             get { return _progressMeter ?? (_progressMeter = new ProgressMeter(ProgressHandler)); }
@@ -650,7 +664,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean indicating whether the memory objects have already been disposed of.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDisposed
         {
             get { return _isDisposed; }
@@ -715,8 +730,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the boolean that controls whether or not items from the layer can be selected
         /// </summary>
-        [Serialize("SelectionEnabled")] 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Serialize("SelectionEnabled")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool SelectionEnabled
         {
             get
@@ -755,7 +771,8 @@ namespace DotSpatial.Symbology
         /// Automatic disposal, as is the case when a layer is removed from the map, will not take place until
         /// all the locks on dispose have been removed.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDisposeLocked
         {
             get { return _disposeLockCount > 0; }
@@ -772,7 +789,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets a Boolean indicating if this layer can be reprojected.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanReproject
         {
             get
@@ -786,7 +804,8 @@ namespace DotSpatial.Symbology
         /// Gets the or sets the projection information for the dataset of this layer.
         /// This only defines the projection information and does not reproject the dataset or the layer.
         /// </summary>
-        [Category("DataSet Properties"), Description("The geographic projection that this raster is using.")]
+        [Category("DataSet Properties")]
+        [Description("The geographic projection that this raster is using.")]
         public ProjectionInfo Projection
         {
             get
@@ -813,7 +832,8 @@ namespace DotSpatial.Symbology
         /// EsriString format. Setting the Projection string only defines projection information.
         /// Call the Reproject() method to actually reproject the dataset and layer.
         /// </summary>
-        [Category("DataSet Properties"), Description("The geographic projection that this raster is using.")]
+        [Category("DataSet Properties")]
+        [Description("The geographic projection that this raster is using.")]
         public string ProjectionString
         {
             get
