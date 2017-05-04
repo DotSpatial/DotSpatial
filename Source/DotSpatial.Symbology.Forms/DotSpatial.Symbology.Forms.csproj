@@ -28,8 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\DotSpatial.Symbology.Forms.XML</DocumentationFile>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -82,12 +81,21 @@
     <Compile Include="AddCustomSymbolDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AddCustomSymbolDialog.Designer.cs">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="AngleControl.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AngleControl.Designer.cs">
+      <DependentUpon>AngleControl.cs</DependentUpon>
     </Compile>
     <Compile Include="AngleEditor.cs" />
     <Compile Include="AnglePicker.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AnglePicker.Designer.cs">
+      <DependentUpon>AnglePicker.cs</DependentUpon>
     </Compile>
     <Compile Include="AngleTextBox.cs">
       <SubType>Component</SubType>
@@ -116,12 +124,24 @@
     <Compile Include="CalculatorUserGuide.Designer.cs">
       <DependentUpon>CalculatorUserGuide.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollectionControl.Designer.cs">
+      <DependentUpon>CollectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CollectionPropertyGrid.Designer.cs">
+      <DependentUpon>CollectionPropertyGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="ColorCategoryActions.cs" />
+    <Compile Include="DecorationCollectionControl.Designer.cs">
+      <DependentUpon>DecorationCollectionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DetailedLineSymbolControl.Designer.cs">
       <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
     </Compile>
     <Compile Include="DetailedPolygonSymbolControl.Designer.cs">
       <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExportFeature.Designer.cs">
+      <DependentUpon>ExportFeature.cs</DependentUpon>
     </Compile>
     <Compile Include="ExpressionControl.cs">
       <SubType>UserControl</SubType>
@@ -142,6 +162,9 @@
       <DependentUpon>ImageCategoryControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageLayerActions.cs" />
+    <Compile Include="LabelAlignmentControl.Designer.cs">
+      <DependentUpon>LabelAlignmentControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LabelSetup.Designer.cs">
       <DependentUpon>LabelSetup.cs</DependentUpon>
     </Compile>
@@ -154,6 +177,12 @@
       <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="FunClass.cs" />
+    <Compile Include="LineSymbolDialog.Designer.cs">
+      <DependentUpon>LineSymbolDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgressCancelDialog.Designer.cs">
+      <DependentUpon>ProgressCancelDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -187,6 +216,24 @@
     </Compile>
     <Compile Include="SQLQueryControl.Designer.cs">
       <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticalBreaksDialog.Designer.cs">
+      <DependentUpon>StatisticalBreaksDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StrokeCollectionControl.Designer.cs">
+      <DependentUpon>StrokeCollectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SymbolCollectionControl.Designer.cs">
+      <DependentUpon>SymbolCollectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SymbolizerCollectionControl.Designer.cs">
+      <DependentUpon>SymbolizerCollectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabColorControl.Designer.cs">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabColorDialog.Designer.cs">
+      <DependentUpon>TabColorDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="TableEditorControl.cs">
       <SubType>UserControl</SubType>
@@ -441,6 +488,9 @@
     </Compile>
     <Compile Include="VerticalScrollControl.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="VerticalScrollControl.Designer.cs">
+      <DependentUpon>VerticalScrollControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ZenithEditor.cs" />
   </ItemGroup>

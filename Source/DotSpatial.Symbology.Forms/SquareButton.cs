@@ -21,30 +21,94 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class SquareButton
     {
-        #region Private Variables
-
-        private RectangleF _bounds;
-        private Color _colorDownDark;
-        private Color _colorDownLit;
-        private Color _colorUpDark;
-        private Color _colorUpLit;
-        private ButtonStates _state;
+        #region Fields
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of SquareButton
+        /// Initializes a new instance of the <see cref="SquareButton"/> class.
         /// </summary>
         public SquareButton()
         {
-            _colorUpDark = SystemColors.ControlDark;
-            _colorUpLit = SystemColors.Control;
-            _colorDownDark = SystemColors.ControlDark;
-            _colorDownLit = SystemColors.ControlDark;
-            _state = ButtonStates.None;
+            ColorUpDark = SystemColors.ControlDark;
+            ColorUpLit = SystemColors.Control;
+            ColorDownDark = SystemColors.ControlDark;
+            ColorDownLit = SystemColors.ControlDark;
+            State = ButtonStates.None;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the rectangular bounds for this button.
+        /// </summary>
+        public virtual RectangleF Bounds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color for this button control when it is pressed but is not
+        /// capturing the mouse.
+        /// </summary>
+        public Color ColorDownDark { get; set; }
+
+        /// <summary>
+        /// Gets or sets the primary color for this button control when it is pressed
+        /// and is capturing the mouse.
+        /// </summary>
+        public Color ColorDownLit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color for this button control when it is not pressed and is not
+        /// capturing the mouse.
+        /// </summary>
+        public Color ColorUpDark { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color for this button control when it is not pressed, but is
+        /// currently capturing the mouse
+        /// </summary>
+        public Color ColorUpLit { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this button is currently pressed.
+        /// </summary>
+        public bool IsDown
+        {
+            get
+            {
+                return State.IsPressed();
+            }
+
+            set
+            {
+                State = value ? State.Pressed() : State.Raised();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this button is currently lit.
+        /// </summary>
+        public bool IsLit
+        {
+            get
+            {
+                return State.IsLit();
+            }
+
+            set
+            {
+                State = value ? State.Lit() : State.Darkened();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the state of the button, including whether it is pressed and whether
+        /// it is illuminated.
+        /// </summary>
+        public ButtonStates State { get; set; }
 
         #endregion
 
@@ -53,50 +117,25 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Instructs this button to draw itself.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="clipRectangle"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
         public void Draw(Graphics g, Rectangle clipRectangle)
         {
-            // Rectangle clip = Rectangle.Intersect(clipRectangle, Bounds.ToRectangle());
-            // if (clip.IsEmpty) return;
-            // g.TranslateTransform(Bounds.X, Bounds.Y);
-            // clip.X -= (int)Bounds.X;
-            // clip.Y -= (int)Bounds.Y;
             OnDraw(g, clipRectangle);
-            // g.TranslateTransform(-Bounds.X, -Bounds.Y);
         }
 
         /// <summary>
         /// Gets the current color based on the current state.
         /// </summary>
+        /// <returns>The current color.</returns>
         public Color GetCurrentColor()
         {
-            Color baseColor;
-
-            if (_state.IsPressed())
+            if (State.IsPressed())
             {
-                if (_state.IsLit())
-                {
-                    baseColor = _colorDownLit;
-                }
-                else
-                {
-                    baseColor = _colorDownDark;
-                }
-            }
-            else
-            {
-                if (_state.IsLit())
-                {
-                    baseColor = _colorUpLit;
-                }
-                else
-                {
-                    baseColor = _colorUpDark;
-                }
+                return State.IsLit() ? ColorDownLit : ColorDownDark;
             }
 
-            return baseColor;
+            return State.IsLit() ? ColorUpLit : ColorUpDark;
         }
 
         /// <summary>
@@ -109,169 +148,70 @@ namespace DotSpatial.Symbology.Forms
             PointF pt = new PointF(mouseLocation.X, mouseLocation.Y);
             if (Bounds.Contains(pt))
             {
-                if (_state.IsLit() == false)
+                if (State.IsLit() == false)
                 {
-                    _state = _state.Lit();
+                    State = State.Lit();
                     return true;
                 }
             }
             else
             {
-                if (_state.IsLit())
+                if (State.IsLit())
                 {
-                    _state = _state.Darkened();
+                    State = State.Darkened();
                     return true;
                 }
             }
+
             return false;
         }
 
         /// <summary>
-        /// Updates the depressed nature of the button based on a mouse click in the specified location
+        /// Updates the depressed nature of the button based on a mouse click in the specified location.
         /// </summary>
-        /// <param name="mouseLocation"></param>
-        /// <returns></returns>
+        /// <param name="mouseLocation">The location where the mouse was clicked.</param>
+        /// <returns>True, if the mouse was clicked inside the button.</returns>
         public bool UpdatePressed(Point mouseLocation)
         {
             PointF pt = new PointF(mouseLocation.X, mouseLocation.Y);
             if (Bounds.Contains(pt))
             {
-                _state = _state.InverseDepression();
+                State = State.InverseDepression();
                 return true;
             }
+
             return false;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the rectangular bounds for this button
+        /// Creates a Gradient Brush.
         /// </summary>
-        public virtual RectangleF Bounds
+        /// <param name="color">The color.</param>
+        /// <param name="topLeft">The top left point.</param>
+        /// <param name="bottomRight">The bottom right point.</param>
+        /// <returns>A linear gradient brush.</returns>
+        protected static LinearGradientBrush CreateGradientBrush(Color color, PointF topLeft, PointF bottomRight)
         {
-            get { return _bounds; }
-            set { _bounds = value; }
+            float b = color.GetBrightness();
+            b += .3F;
+            if (b > 1F) b = 1F;
+            Color light = SymbologyGlobal.ColorFromHsl(color.GetHue(), color.GetSaturation(), b);
+            float d = color.GetBrightness();
+            d -= .3F;
+            if (d < 0F) d = 0F;
+            Color dark = SymbologyGlobal.ColorFromHsl(color.GetHue(), color.GetSaturation(), d);
+            return new LinearGradientBrush(topLeft, bottomRight, light, dark);
         }
-
-        /// <summary>
-        /// Gets or sets the color for this button control when it is pressed but is not
-        /// capturing the mouse.
-        /// </summary>
-        public Color ColorDownDark
-        {
-            get { return _colorDownDark; }
-            set { _colorDownDark = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the primary color for this button control when it is pressed
-        /// and is capturing the mouse.
-        /// </summary>
-        public Color ColorDownLit
-        {
-            get { return _colorDownLit; }
-            set { _colorDownLit = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the color for this button control when it is not pressed and is not
-        /// capturing the mouse.
-        /// </summary>
-        public Color ColorUpDark
-        {
-            get { return _colorUpDark; }
-            set { _colorUpDark = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the color for this button control when it is not pressed, but is
-        /// currently capturing the mouse
-        /// </summary>
-        public Color ColorUpLit
-        {
-            get { return _colorUpLit; }
-            set { _colorUpLit = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the state of the button, including whether it is pressed and whether
-        /// it is illuminated.
-        /// </summary>
-        public ButtonStates State
-        {
-            get { return _state; }
-            set { _state = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean indicating if this button is currently pressed
-        /// </summary>
-        public bool IsDown
-        {
-            get { return _state.IsPressed(); }
-            set
-            {
-                if (value)
-                {
-                    _state = _state.Pressed();
-                }
-                else
-                {
-                    _state = _state.Raised();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean indicating if this button is currently lit
-        /// </summary>
-        public bool IsLit
-        {
-            get { return _state.IsLit(); }
-            set
-            {
-                _state = value ? _state.Lit() : _state.Darkened();
-            }
-        }
-
-        #endregion
-
-        #region Protected Methods
 
         /// <summary>
         /// Draws this square button.  The graphics object should be in client coordinates.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="clipRectangle"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
         protected virtual void OnDraw(Graphics g, Rectangle clipRectangle)
         {
             Color baseColor = GetCurrentColor();
-
             DrawFill(g, baseColor);
-
-            // Draw the rounded outline.
-
-            // DrawBorders(g, baseColor);
-        }
-
-        private void DrawFill(Graphics g, Color baseColor)
-        {
-            PointF topLeft = new PointF(Bounds.X, Bounds.Y);
-            PointF bottomRight = new PointF(Bounds.Right, Bounds.Bottom);
-            LinearGradientBrush br;
-            if (_state.IsPressed())
-            {
-                br = CreateGradientBrush(baseColor, bottomRight, topLeft);
-            }
-            else
-            {
-                br = CreateGradientBrush(baseColor, topLeft, bottomRight);
-            }
-            RectangleF inner = RectangleF.Inflate(Bounds, -1F, -1F);
-            g.FillRectangle(br, inner);
-            br.Dispose();
         }
 
         private void DrawBorders(Graphics g, Color baseColor)
@@ -280,11 +220,12 @@ namespace DotSpatial.Symbology.Forms
             Color dark = baseColor.Darker(.3F);
             Color topLeftColor = light;
             Color bottomRightColor = dark;
-            if (_state.IsPressed())
+            if (State.IsPressed())
             {
                 topLeftColor = dark;
                 bottomRightColor = light;
             }
+
             Pen topLeftPen = new Pen(topLeftColor);
             Pen bottomRightPen = new Pen(bottomRightColor);
             Pen middlePen = new Pen(baseColor);
@@ -310,24 +251,15 @@ namespace DotSpatial.Symbology.Forms
             middlePen.Dispose();
         }
 
-        /// <summary>
-        /// Creates a Gradient Brush
-        /// </summary>
-        /// <param name="color"></param>
-        /// <param name="topLeft"></param>
-        /// <param name="bottomRight"></param>
-        /// <returns></returns>
-        protected static LinearGradientBrush CreateGradientBrush(Color color, PointF topLeft, PointF bottomRight)
+        private void DrawFill(Graphics g, Color baseColor)
         {
-            float b = color.GetBrightness();
-            b += .3F;
-            if (b > 1F) b = 1F;
-            Color light = SymbologyGlobal.ColorFromHsl(color.GetHue(), color.GetSaturation(), b);
-            float d = color.GetBrightness();
-            d -= .3F;
-            if (d < 0F) d = 0F;
-            Color dark = SymbologyGlobal.ColorFromHsl(color.GetHue(), color.GetSaturation(), d);
-            return new LinearGradientBrush(topLeft, bottomRight, light, dark);
+            PointF topLeft = new PointF(Bounds.X, Bounds.Y);
+            PointF bottomRight = new PointF(Bounds.Right, Bounds.Bottom);
+            RectangleF inner = RectangleF.Inflate(Bounds, -1F, -1F);
+            using (var br = State.IsPressed() ? CreateGradientBrush(baseColor, bottomRight, topLeft) : CreateGradientBrush(baseColor, topLeft, bottomRight))
+            {
+                g.FillRectangle(br, inner);
+            }
         }
 
         #endregion

@@ -13,44 +13,17 @@ using NetTopologySuite.IO;
 namespace DotSpatial.Plugins.SpatiaLite
 {
     /// <summary>
-    /// Helper class with SpatiaLite specific operations
+    /// Helper class with SpatiaLite specific operations.
     /// </summary>
     public class SpatiaLiteHelper
     {
-        /// <summary>
-        /// Sets the environment variables so that SpatiaLite can find the dll's
-        /// </summary>
-        /// <returns>true if successful</returns>
-        public static bool SetEnvironmentVars()
-        {
-            try
-            {
-                var pathVar = Environment.GetEnvironmentVariable("path", EnvironmentVariableTarget.User);
-                var sqLitePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var pathVariableExists = false;
-                if (!String.IsNullOrEmpty(pathVar))
-                {
-                    if (pathVar.ToLower().Contains(sqLitePath.ToLower() + ";"))
-                        pathVariableExists = true;
-                }
-                if (!pathVariableExists)
-                {
-                    pathVar = pathVar + ";" + sqLitePath;
-                    Environment.SetEnvironmentVariable("path", pathVar, EnvironmentVariableTarget.User);
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-                return false;
-            }
-            return false;
-        }
+        #region Methods
 
         /// <summary>
         /// Returns true if the schema is a valid schema (has a geometry_columns table)
         /// </summary>
+        /// <param name="connString">The connectionstring for the database.</param>
+        /// <returns>True, if the schema has a geometry_columns table.</returns>
         public static bool CheckSpatiaLiteSchema(string connString)
         {
             var qry = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'geometry_columns'";
@@ -69,7 +42,123 @@ namespace DotSpatial.Plugins.SpatiaLite
         }
 
         /// <summary>
-        /// Finds all table names in the SpatiaLite database
+        /// Sets the environment variables so that SpatiaLite can find the dll's.
+        /// </summary>
+        /// <returns>true if successful</returns>
+        public static bool SetEnvironmentVars()
+        {
+            try
+            {
+                var pathVar = Environment.GetEnvironmentVariable("path", EnvironmentVariableTarget.User);
+                var sqLitePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                if (sqLitePath == null) return false;
+
+                var pathVariableExists = false;
+                if (!string.IsNullOrEmpty(pathVar))
+                {
+                    if (pathVar.ToLower().Contains(sqLitePath.ToLower() + ";"))
+                        pathVariableExists = true;
+                }
+
+                if (!pathVariableExists)
+                {
+                    pathVar = pathVar + ";" + sqLitePath;
+                    Environment.SetEnvironmentVariable("path", pathVar, EnvironmentVariableTarget.User);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+                return false;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Finds all column names in the database table.
+        /// </summary>
+        /// <param name="connString">connection string</param>
+        /// <param name="tableName">table name</param>
+        /// <returns>list of all column names</returns>
+        public List<string> GetColumnNames(string connString, string tableName)
+        {
+            var columnNameList = new List<string>();
+
+            var qry = $"PRAGMA table_info({tableName})";
+            using (var cmd = CreateCommand(connString, qry))
+            {
+                cmd.Connection.Open();
+                var r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    columnNameList.Add(r["name"].ToString());
+                }
+
+                cmd.Connection.Close();
+            }
+
+            return columnNameList;
+        }
+
+        /// <summary>
+        /// Finds a list of all valid geometry columns in the database
+        /// </summary>
+        /// <param name="connString">connection string</param>
+        /// <returns>the list of geometry columns</returns>
+        public List<GeometryColumnInfo> GetGeometryColumns(string connString)
+        {
+            var lst = new List<GeometryColumnInfo>();
+            var sql = "SELECT f_table_name, f_geometry_column, type, coord_dimension, srid, spatial_index_enabled FROM geometry_columns";
+            using (var cmd = CreateCommand(connString, sql))
+            {
+                cmd.Connection.Open();
+
+                var r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    var gci = new GeometryColumnInfo
+                    {
+                        TableName = Convert.ToString(r["f_table_name"]),
+                        GeometryColumnName = Convert.ToString(r["f_geometry_column"]),
+                        GeometryType = Convert.ToString(r["type"])
+                    };
+                    try
+                    {
+                        gci.CoordDimension = Convert.ToInt32(r["coord_dimension"]);
+                    }
+                    catch (Exception)
+                    {
+                        var coords = Convert.ToString(r["coord_dimension"]);
+                        switch (coords)
+                        {
+                            case "XY":
+                                gci.CoordDimension = 2;
+                                break;
+                            case "XYZ":
+                            case "XYM":
+                                gci.CoordDimension = 3;
+                                break;
+                            case "XYZM":
+                                gci.CoordDimension = 4;
+                                break;
+                        }
+                    }
+
+                    gci.Srid = Convert.ToInt32(r["srid"]);
+                    gci.SpatialIndexEnabled = false;
+                    lst.Add(gci);
+                }
+
+                cmd.Connection.Close();
+            }
+
+            return lst;
+        }
+
+        /// <summary>
+        /// Finds all table names in the SpatiaLite database.
         /// </summary>
         /// <param name="connString">connection string</param>
         /// <returns>a list of all table names</returns>
@@ -88,87 +177,12 @@ namespace DotSpatial.Plugins.SpatiaLite
                     {
                         tableNameList.Add(r[0].ToString());
                     }
+
                     cmd.Connection.Close();
                 }
             }
+
             return tableNameList;
-        }
-
-        /// <summary>
-        /// Finds all column names in the database table
-        /// </summary>
-        /// <param name="connString">connection string</param>
-        /// <param name="tableName">table name</param>
-        /// <returns>list of all column names</returns>
-        public List<string> GetColumnNames(string connString, string tableName)
-        {
-            var columnNameList = new List<string>();
-
-            var qry = String.Format("PRAGMA table_info({0})", tableName);
-            using (var cmd = CreateCommand(connString, qry))
-            {
-                cmd.Connection.Open();
-                var r = cmd.ExecuteReader();
-                while (r.Read())
-                {
-                    columnNameList.Add(r["name"].ToString());
-                }
-                cmd.Connection.Close();
-            }
-            return columnNameList;
-        }
-
-        /// <summary>
-        /// Finds a list of all valid geometry columns in the database
-        /// </summary>
-        /// <param name="connString">connection string</param>
-        /// <returns>the list of geometry columns</returns>
-        public List<GeometryColumnInfo> GetGeometryColumns(string connString)
-        {
-            var lst = new List<GeometryColumnInfo>();
-            var sql =
-            "SELECT f_table_name, f_geometry_column, type, coord_dimension, srid, spatial_index_enabled FROM geometry_columns";
-            using (var cmd = CreateCommand(connString, sql))
-            {
-                cmd.Connection.Open();
-
-                var r = cmd.ExecuteReader();
-                while (r.Read())
-                {
-                    var gci = new GeometryColumnInfo();
-                    gci.TableName = Convert.ToString(r["f_table_name"]);
-                    gci.GeometryColumnName = Convert.ToString(r["f_geometry_column"]);
-                    gci.GeometryType = Convert.ToString(r["type"]);
-                     try
-                    {
-                        gci.CoordDimension = Convert.ToInt32(r["coord_dimension"]);
-                    }
-                    catch (Exception)
-                    {
-                        var coords = Convert.ToString(r["coord_dimension"]);
-                        switch (coords)
-                        {
-                            case "XY":
-                                gci.CoordDimension = 2;
-                                break;
-                            case "XYZ":
-                            case "XYM":
-                                gci.CoordDimension = 3;
-                                break;
-                            case "XYZ;":
-                                gci.CoordDimension = 4;
-                                break;
-
-                        }
-                    }
-                    gci.SRID = Convert.ToInt32(r["srid"]);
-                    gci.SpatialIndexEnabled = false;
-                    lst.Add(gci);
-                }
-
-                cmd.Connection.Close();
-            }
-            return lst;
         }
 
         /// <summary>
@@ -179,7 +193,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <returns>the resulting feature set</returns>
         public IFeatureSet ReadFeatureSet(string connString, GeometryColumnInfo featureSetInfo)
         {
-            var sql = String.Format("SELECT * FROM {0}", featureSetInfo.TableName);
+            var sql = $"SELECT * FROM {featureSetInfo.TableName}";
             return ReadFeatureSet(connString, featureSetInfo, sql);
         }
 
@@ -221,6 +235,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                         newFeature.DataRow[colName] = rdr[colName];
                     }
                 }
+
                 cmd.Connection.Close();
                 fs.Name = featureSetInfo.TableName;
 
@@ -228,7 +243,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                 fs.IndexMode = true;
 
                 // assign projection
-                var proj = ProjectionInfo.FromEpsgCode(featureSetInfo.SRID);
+                var proj = ProjectionInfo.FromEpsgCode(featureSetInfo.Srid);
                 fs.Projection = proj;
 
                 return fs;
@@ -250,26 +265,16 @@ namespace DotSpatial.Plugins.SpatiaLite
             return ReadFeatureSet(connString, geomInfo, sqlQuery);
         }
 
-        private void RunInitialCommands(SQLiteConnection connection)
+        /// <summary>
+        /// Creates a SQLite command
+        /// </summary>
+        /// <param name="conString">connection string</param>
+        /// <param name="cmdText">command text</param>
+        /// <returns>the SpatiaLite command object</returns>
+        private static SQLiteCommand CreateCommand(string conString, string cmdText)
         {
-            //(new SQLiteConnection("vole"))
-
-            // string cmdText = "SELECT load_extension('E:/dev/DotSpatial/Debug/x86/Plugins/SpatiaLite/libspatialite-2.dll');";
-
-            var cmdText = "SELECT load_extension('libspatialite-2.dll')";
-
-            using (var cmd = new SQLiteCommand(cmdText, connection))
-            {
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex.Message);
-                    Debug.WriteLine("Warning: error loading spatiaLite extensions. Spatial queries won't be enabled.");
-                }
-            }
+            var con = new SQLiteConnection(conString);
+            return new SQLiteCommand(cmdText, con);
         }
 
         // finds out the geometry column information..
@@ -288,15 +293,17 @@ namespace DotSpatial.Plugins.SpatiaLite
                 var rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
 
                 var schemaTable = rdr.GetSchemaTable();
+                if (schemaTable == null) return null;
+
                 foreach (DataRow r in schemaTable.Rows)
                 {
                     var colName = Convert.ToString(r["ColumnName"]);
                     var colDataType = Convert.ToString(r["DataType"]);
+
                     // if BLOB, then assume geometry column
                     if (Type.GetType(colDataType) == typeof(byte[]))
                     {
-                        result = new GeometryColumnInfo();
-                        result.GeometryColumnName = colName;
+                        result = new GeometryColumnInfo { GeometryColumnName = colName };
                         break;
                     }
                 }
@@ -314,23 +321,49 @@ namespace DotSpatial.Plugins.SpatiaLite
             }
         }
 
+        private FeatureType GetGeometryType(string geometryTypeStr)
+        {
+            switch (geometryTypeStr.ToLower())
+            {
+                case "point":
+                case "multipoint":
+                    return FeatureType.Point;
+                case "linestring":
+                case "multilinestring":
+                    return FeatureType.Line;
+                case "polygon":
+                case "multipolygon":
+                    return FeatureType.Polygon;
+                default:
+                    return FeatureType.Unspecified;
+            }
+        }
+
         private string[] PopulateTableSchema(IFeatureSet fs, string geomColumnName, SQLiteDataReader rdr)
         {
             var schemaTable = rdr.GetSchemaTable();
             var columnNameList = new List<string>();
-            foreach (DataRow r in schemaTable.Rows)
+
+            if (schemaTable != null)
             {
-                if (r["ColumnName"].ToString() != geomColumnName)
+                foreach (DataRow r in schemaTable.Rows)
                 {
-                    var colName = Convert.ToString(r["ColumnName"]);
-                    var colDataType = Convert.ToString(r["DataType"]);
-                    fs.DataTable.Columns.Add(colName, Type.GetType(colDataType));
-                    columnNameList.Add(colName);
+                    if (r["ColumnName"].ToString() != geomColumnName)
+                    {
+                        var colName = Convert.ToString(r["ColumnName"]);
+                        var colDataType = Convert.ToString(r["DataType"]);
+                        var t = Type.GetType(colDataType);
+                        if (t != null)
+                        {
+                            fs.DataTable.Columns.Add(colName, t);
+                            columnNameList.Add(colName);
+                        }
+                    }
                 }
             }
+
             return columnNameList.ToArray();
         }
-       
 
         private Point ReadPoint(byte[] blob)
         {
@@ -357,40 +390,29 @@ namespace DotSpatial.Plugins.SpatiaLite
                 }
                 finally
                 {
-                    if (reader != null)
-                        reader.Close();
+                    reader?.Close();
                 }
             }
         }
 
-        private FeatureType GetGeometryType(string geometryTypeStr)
+        private void RunInitialCommands(SQLiteConnection connection)
         {
-            switch (geometryTypeStr.ToLower())
+            var cmdText = "SELECT load_extension('libspatialite-2.dll')";
+
+            using (var cmd = new SQLiteCommand(cmdText, connection))
             {
-                case "point":
-                case "multipoint":
-                    return FeatureType.Point;
-                case "linestring":
-                case "multilinestring":
-                    return FeatureType.Line;
-                case "polygon":
-                case "multipolygon":
-                    return FeatureType.Polygon;
-                default:
-                    return FeatureType.Unspecified;
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex.Message);
+                    Debug.WriteLine("Warning: error loading spatiaLite extensions. Spatial queries won't be enabled.");
+                }
             }
         }
 
-        /// <summary>
-        /// Creates a SQLite command
-        /// </summary>
-        /// <param name="conString">connection string</param>
-        /// <param name="cmdText">command text</param>
-        /// <returns>the SpatiaLite command object</returns>
-        private static SQLiteCommand CreateCommand(string conString, string cmdText)
-        {
-            var con = new SQLiteConnection(conString);
-            return new SQLiteCommand(cmdText, con);
-        }
+        #endregion
     }
 }

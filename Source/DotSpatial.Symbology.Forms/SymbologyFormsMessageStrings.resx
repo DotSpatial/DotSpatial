@@ -300,4 +300,10 @@
   <data name="DetailedPolygonSymbolControl_CenterColor" xml:space="preserve">
     <value>Center Color</value>
   </data>
+  <data name="ExportFeature_ExtensionNotSupported" xml:space="preserve">
+    <value>The path you entered does not have an extension that matches a supported format. Please check the filename to ensure that it has a supported extension like .shp and try again.</value>
+  </data>
+  <data name="ExportFeature_InvalidFileFormat" xml:space="preserve">
+    <value>Invalid file format</value>
+  </data>
 </root>

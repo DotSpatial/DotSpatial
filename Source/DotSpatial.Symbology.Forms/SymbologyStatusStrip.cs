@@ -18,40 +18,44 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// A pre-configured status strip with a thread safe Progress function
+    /// A pre-configured status strip with a thread safe Progress function.
     /// </summary>
     [ToolboxItem(false)]
     public partial class SymbologyStatusStrip : StatusStrip, IProgressHandler
     {
+        #region Constructors
+
         /// <summary>
-        /// Creates a new instance of the StatusStrip which has a built in, thread safe Progress handler
+        /// Initializes a new instance of the <see cref="SymbologyStatusStrip"/> class which has a built in, thread safe Progress handler.
         /// </summary>
         public SymbologyStatusStrip()
         {
             InitializeComponent();
         }
 
+        #endregion
+
+        private delegate void UpdateProg(string key, int percent, string message);
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the progress bar. By default, the first ToolStripProgressBar that is added to the tool strip.
         /// </summary>
-        /// <value>
-        /// The progress bar.
-        /// </value>
         public ToolStripProgressBar ProgressBar { get; set; }
 
         /// <summary>
         /// Gets or sets the progress label. By default, the first ToolStripStatusLabel that is added to the tool strip.
         /// </summary>
-        /// <value>
-        /// The progress label.
-        /// </value>
         public ToolStripStatusLabel ProgressLabel { get; set; }
 
-        #region IProgressHandler Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
-        /// by updating the progress indicator from a different thread
+        /// by updating the progress indicator from a different thread.
         /// </summary>
         /// <param name="key">A string message with just a description of what is happening, but no percent completion information</param>
         /// <param name="percent">The integer percent from 0 to 100</param>
@@ -61,25 +65,12 @@ namespace DotSpatial.Symbology.Forms
             if (InvokeRequired)
             {
                 UpdateProg prg = UpdateProgress;
-                BeginInvoke(prg, new object[] { key, percent, message });
+                BeginInvoke(prg, key, percent, message);
             }
             else
             {
                 UpdateProgress(key, percent, message);
             }
-        }
-
-        #endregion
-
-        private void UpdateProgress(string key, int percent, string message)
-        {
-            if (ProgressBar != null)
-                ProgressBar.Value = percent;
-            if (ProgressLabel != null)
-                ProgressLabel.Text = message;
-
-            // hack: I think there is a bug somewhere if we need to call DoEvents at the end of this event handler.
-            Application.DoEvents();
         }
 
         /// <summary>
@@ -109,9 +100,16 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        #region Nested type: UpdateProg
+        private void UpdateProgress(string key, int percent, string message)
+        {
+            if (ProgressBar != null)
+                ProgressBar.Value = percent;
+            if (ProgressLabel != null)
+                ProgressLabel.Text = message;
 
-        private delegate void UpdateProg(string key, int percent, string message);
+            // hack: I think there is a bug somewhere if we need to call DoEvents at the end of this event handler.
+            Application.DoEvents();
+        }
 
         #endregion
     }

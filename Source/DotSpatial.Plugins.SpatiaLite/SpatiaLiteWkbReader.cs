@@ -6,7 +6,7 @@ using NetTopologySuite.IO;
 namespace DotSpatial.Plugins.SpatiaLite
 {
     /// <summary>
-    /// Helper class for reading binary data from the SpatiaLite database
+    /// Helper class for reading binary data from the SpatiaLite database.
     /// </summary>
     public class SpatiaLiteWkbReader : WKBReader
     {
@@ -40,8 +40,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                 }
                 finally
                 {
-                    if (reader != null)
-                        reader.Close();
+                    reader?.Close();
                 }
             }
         }

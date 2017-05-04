@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
-    partial class frmQuery
+    partial class FrmQuery
     {
         /// <summary>
         /// Required designer variable.
@@ -62,7 +62,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             this.btnRunQuery.TabIndex = 4;
             this.btnRunQuery.Text = "Run Query";
             this.btnRunQuery.UseVisualStyleBackColor = true;
-            this.btnRunQuery.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnRunQuery.Click += new System.EventHandler(this.BtnOkClick);
             // 
             // treeTables
             // 
@@ -161,7 +161,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             this.btnAddToMap.TabIndex = 7;
             this.btnAddToMap.Text = "Add To Map";
             this.btnAddToMap.UseVisualStyleBackColor = true;
-            this.btnAddToMap.Click += new System.EventHandler(this.btnAddToMap_Click);
+            this.btnAddToMap.Click += new System.EventHandler(this.BtnAddToMapClick);
             // 
             // frmQuery
             // 
@@ -169,7 +169,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(645, 367);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "frmQuery";
+            this.Name = "FrmQuery";
             this.Text = "SpatiaLite Query";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

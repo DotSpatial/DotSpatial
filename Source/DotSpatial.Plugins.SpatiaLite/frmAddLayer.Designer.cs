@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
-    partial class frmAddLayer
+    partial class FrmAddLayer
     {
         /// <summary>
         /// Required designer variable.
@@ -64,7 +64,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             this.btnOK.TabIndex = 4;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new System.EventHandler(this.BtnOkClick);
             // 
             // label2
             // 
@@ -85,7 +85,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.dgGeometryColumns);
             this.Controls.Add(this.label1);
-            this.Name = "frmAddLayer";
+            this.Name = "FrmAddLayer";
             this.Text = "Add SpatiaLite Layers";
             ((System.ComponentModel.ISupportInitialize)(this.dgGeometryColumns)).EndInit();
             this.ResumeLayout(false);

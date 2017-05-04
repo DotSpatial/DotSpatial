@@ -20,19 +20,21 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// mwProgressBar
+    /// SymbologyProgressBar
     /// </summary>
     [ToolboxItem(false)]
     public class SymbologyProgressBar : ProgressBar, IProgressHandler
     {
-        #region Private Variables
+        #region Fields
 
         private string _message;
 
         #endregion
 
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the Symbology Progress Bar.
+        /// Initializes a new instance of the <see cref="SymbologyProgressBar"/> class.
         /// </summary>
         public SymbologyProgressBar()
         {
@@ -41,11 +43,40 @@ namespace DotSpatial.Symbology.Forms
             FontColor = Color.Black;
         }
 
+        #endregion
+
+        private delegate void UpdateProg(string key, int percent, string message);
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the font color.
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Gets or sets the color of the message text.")]
+        public Color FontColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the progress message.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string Message { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to draw the status message on the progress bar.
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Gets or sets a value indicating whether to draw the current message on the bar.")]
+        public bool ShowMessage { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
-        /// by updating the progress indicator from a different thread
+        /// by updating the progress indicator from a different thread.
         /// </summary>
         /// <param name="key">A string message with just a description of what is happening, but no percent completion information</param>
         /// <param name="percent">The integer percent from 0 to 100</param>
@@ -55,27 +86,12 @@ namespace DotSpatial.Symbology.Forms
             if (InvokeRequired)
             {
                 UpdateProg prg = UpdateProgress;
-                BeginInvoke(prg, new object[] { key, percent, message });
+                BeginInvoke(prg, key, percent, message);
             }
             else
             {
                 UpdateProgress(key, percent, message);
             }
-        }
-
-        private void UpdateProgress(string key, int percent, string message)
-        {
-            Value = percent;
-            _message = message;
-        }
-
-        /// <summary>
-        /// Prevent flicker
-        /// </summary>
-        /// <param name="pevent"></param>
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            // no code here
         }
 
         /// <summary>
@@ -92,6 +108,7 @@ namespace DotSpatial.Symbology.Forms
                 {
                     g.FillRectangle(b, ClientRectangle);
                 }
+
                 RectangleF r = new RectangleF(0f, 0f, Width - 1, Height - 1);
                 using (GraphicsPath gp = new GraphicsPath())
                 {
@@ -104,16 +121,17 @@ namespace DotSpatial.Symbology.Forms
                         g.FillPath(lgb, gp);
                         g.SetClip(backup, CombineMode.Replace);
                     }
+
                     g.DrawPath(Pens.Gray, gp);
                 }
 
                 if (!ShowMessage) return;
 
                 StringFormat fmt = new StringFormat
-                                       {
-                                           Alignment = StringAlignment.Center,
-                                           LineAlignment = StringAlignment.Center
-                                       };
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
 
                 using (Brush fontBrush = new SolidBrush(FontColor))
                 {
@@ -124,29 +142,20 @@ namespace DotSpatial.Symbology.Forms
             e.Graphics.DrawImageUnscaled(bmp, 0, 0);
         }
 
-        private delegate void UpdateProg(string key, int percent, string message);
-
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the progress message.
+        /// Prevent flicker
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string Message { get; set; }
+        /// <param name="e">The event args.</param>
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // no code here
+        }
 
-        /// <summary>
-        /// Gets or sets a boolean indicating whether or not to draw the status message on the progress bar.
-        /// </summary>
-        [Category("Appearance"), Description("Gets or sets a value indicating whether to draw the current message on the bar.")]
-        public bool ShowMessage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the font color.
-        /// </summary>
-        [Category("Appearance"), Description("Gets or sets the color of the message text.")]
-        public Color FontColor { get; set; }
+        private void UpdateProgress(string key, int percent, string message)
+        {
+            Value = percent;
+            _message = message;
+        }
 
         #endregion
     }
