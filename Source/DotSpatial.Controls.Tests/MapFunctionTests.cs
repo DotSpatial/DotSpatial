@@ -2,13 +2,17 @@
 
 namespace DotSpatial.Controls.Tests
 {
+    public class TestMapFunction : MapFunction
+    {
+    }
+
     [TestFixture]
     class MapFunctionTests
     {
         [Test]
         public void FunctionActivatedRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.FunctionActivated += (sender, args) => flag = true;
             target.Activate();
@@ -18,7 +22,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void FunctionDeActivatedRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.FunctionDeactivated += (sender, args) => flag = true;
             target.Deactivate();
@@ -28,7 +32,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void MouseDownRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.MouseDown += (sender, args) => flag = true;
             target.DoMouseDown(null);
@@ -38,7 +42,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void MouseMoveRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.MouseMove += (sender, args) => flag = true;
             target.DoMouseMove(null);
@@ -48,7 +52,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void MouseUpRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.MouseUp += (sender, args) => flag = true;
             target.DoMouseUp(null);
@@ -58,7 +62,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void MouseWheelRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.MouseWheel += (sender, args) => flag = true;
             target.DoMouseWheel(null);
@@ -68,7 +72,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void MouseDoubleClickRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.MouseDoubleClick += (sender, args) => flag = true;
             target.DoMouseDoubleClick(null);
@@ -78,11 +82,14 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void KeyUpRaised()
         {
-            var target = new MapFunction();
+            var target = new TestMapFunction();
             var flag = false;
             target.KeyUp += (sender, args) => flag = true;
             target.DoKeyUp(null);
             Assert.AreEqual(true, flag);
         }
+        
     }
+
+    
 }
