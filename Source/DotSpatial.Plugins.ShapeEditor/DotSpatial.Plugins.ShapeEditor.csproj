@@ -63,6 +63,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>

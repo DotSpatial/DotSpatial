@@ -59,6 +59,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\Tools\DotSpatial.Tools.XML</DocumentationFile>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

@@ -39,6 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\Windows Extensions\DotSpatial.Plugins.ExtensionManager\DotSpatial.Plugins.ExtensionManager.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NuGet.Core, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">

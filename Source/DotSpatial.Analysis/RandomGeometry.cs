@@ -2,13 +2,13 @@
 // Product: DotSpatial.Analysis.RandomGeometry.cs
 // Description: Class for random data generation. Put other random geometry functions here such as new
 // methods for random point generation in a polygon, random points in a raster, etc.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------
 // Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
+// -------------------|--------------------|--------------------------------------------------------------
 // Dan Ames           |  2/26/2013         |  Initially written.
 // *******************************************************************************************************
 
@@ -49,17 +49,19 @@ namespace DotSpatial.Analysis
             int i = 0;
             while (i < numberOfPoints)
             {
-                var c = new Coordinate();
-
                 // make a random point somewhere in the rectangular extents of the feature set
                 double rndx = r.Next(0, 100000) / 100000.0;
                 double rndy = r.Next(0, 100000) / 100000.0;
-                c.X = rndx * (constrainingFeatures.Extent.MaxX - constrainingFeatures.Extent.MinX) + constrainingFeatures.Extent.MinX;
-                c.Y = rndy * (constrainingFeatures.Extent.MaxY - constrainingFeatures.Extent.MinY) + constrainingFeatures.Extent.MinY;
+                var ext = constrainingFeatures.Extent;
 
-                Point p = new Point(c);
+                var c = new Coordinate
+                {
+                    X = (rndx * (ext.MaxX - ext.MinX)) + ext.MinX,
+                    Y = (rndy * (ext.MaxY - ext.MinY)) + ext.MinY
+                };
 
                 // check if the point falls within the polygon featureset
+                Point p = new Point(c);
                 if (constrainingFeatures.Features.Any(f => f.Geometry.Intersects(p)))
                 {
                     fsOut.AddFeature(p);
@@ -89,19 +91,22 @@ namespace DotSpatial.Analysis
         /// <returns>A point feature set with the randomly created features.</returns>
         public static FeatureSet RandomPoints(Feature constrainingFeature, int numberOfPoints)
         {
-            // \1his function generates random points within the boundaries of one polygon feature
+            // this function generates random points within the boundaries of one polygon feature
             FeatureSet fsOut = new FeatureSet(FeatureType.Point);
             Random r = new Random();
             int i = 0;
             while (i < numberOfPoints)
             {
-                var c = new Coordinate();
-
                 // make a random point somewhere in the rectangular extents of the feature
                 double rndx = r.Next(0, 100000) / 100000.0;
                 double rndy = r.Next(0, 100000) / 100000.0;
-                c.X = rndx * (constrainingFeature.Geometry.EnvelopeInternal.Right() - constrainingFeature.Geometry.EnvelopeInternal.MinX) + constrainingFeature.Geometry.EnvelopeInternal.MinX;
-                c.Y = rndy * (constrainingFeature.Geometry.EnvelopeInternal.MaxY - constrainingFeature.Geometry.EnvelopeInternal.Bottom()) + constrainingFeature.Geometry.EnvelopeInternal.Bottom();
+                var env = constrainingFeature.Geometry.EnvelopeInternal;
+
+                var c = new Coordinate
+                {
+                    X = (rndx * (env.Right() - env.MinX)) + env.MinX,
+                    Y = (rndy * (env.MaxY - env.Bottom())) + env.Bottom()
+                };
 
                 // check if the point falls within the polygon featureset
                 Point p = new Point(c);

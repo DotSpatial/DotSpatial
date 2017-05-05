@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Analysis.ClipRaster.cs
 // Description:  Class for clipping rasters with polygons
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
@@ -86,7 +86,7 @@ namespace DotSpatial.Analysis
             int col = 0;
             for (int columnCurrent = columnStart; columnCurrent < output.NumColumns; columnCurrent++)
             {
-                var xCurrent = xStart + col * output.CellWidth;
+                var xCurrent = xStart + (col * output.CellWidth);
 
                 var intersections = GetYIntersections(borders, xCurrent);
                 intersections.Sort();
@@ -184,7 +184,7 @@ namespace DotSpatial.Analysis
         /// or the last raster column (if raster ends before right edge of the polygon).</returns>
         private static int GetEndColumn(IFeature polygon, IRaster inputRaster)
         {
-            double rasterMaxXCenter = inputRaster.Extent.MaxX - inputRaster.CellWidth / 2;
+            double rasterMaxXCenter = inputRaster.Extent.MaxX - (inputRaster.CellWidth / 2);
 
             // Does the poly sit to the right of the raster or does the raster end after the right edge of the poly
             if (polygon.Geometry.EnvelopeInternal.Right() > rasterMaxXCenter) return inputRaster.NumColumns - 1;
@@ -242,7 +242,7 @@ namespace DotSpatial.Analysis
                 // determine if the point lies inside of the border
                 if (((x >= x1) && (x < x2)) || ((x >= x2) && (x < x1)))
                 {
-                    intersections.Add(border.M * x + border.Q);
+                    intersections.Add((border.M * x) + border.Q);
                 }
             }
 

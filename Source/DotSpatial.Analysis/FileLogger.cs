@@ -1,7 +1,7 @@
 // *******************************************************************************************************
 // Product: DotSpatial.Analysis.FileLogger.cs
 // Description: This is a default file logger in DotSpatial illustrating how to implement the interface for logging.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.

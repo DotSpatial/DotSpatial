@@ -1,7 +1,7 @@
 // *******************************************************************************************************
 // Product: DotSpatial.Analysis.Slope.cs
 // Description: Class for computing slope on a raster terrain dataset (e.g. DEM)
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.

@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Analysis.RasterBin.cs
 // Description: Class for binning raster data, for example into a histogram of values.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
@@ -122,7 +122,7 @@ namespace DotSpatial.Analysis
                     int sign = Math.Sign(value);
                     value = (value - BaseValue) / BinSize;
                     value = Math.Floor(value);
-                    value = BinSize * value + sign * BinSize / 2;
+                    value = (BinSize * value) + (sign * BinSize / 2);
                     result.Data[row][col] = (T)Convert.ChangeType(value, typeof(T));
                 }
 
@@ -144,7 +144,7 @@ namespace DotSpatial.Analysis
                     int sign = Math.Sign(value);
                     value = (value - BaseValue) / BinSize;
                     value = Math.Floor(value);
-                    value = BinSize * value + sign * BinSize / 2;
+                    value = (BinSize * value) + (sign * BinSize / 2);
                     result.Value[row, col] = value;
                 }
 
