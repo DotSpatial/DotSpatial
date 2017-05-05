@@ -229,13 +229,13 @@
     <value>righe</value>
   </data>
   <data name="LabelSetup_Help1" xml:space="preserve">
-    <value>Ogni gruppo simbolo può definire un'espressione stringa separata che include i valori di attributo.  Fare doppio clic su campi per aggiungerlo all'espressione.</value>
+    <value>Ogni gruppo simbolo può definire un'espressione stringa separata che include i valori di attributo. Fare doppio clic su campi per aggiungerlo all'espressione.</value>
   </data>
   <data name="LabelSetup_Help2" xml:space="preserve">
     <value>Utilizzare la scheda membri a un'espressione di filtro che limita le funzioni sarà assegnata a un'etichetta specifica progettazione.</value>
   </data>
   <data name="LabelSetup_Help3" xml:space="preserve">
-    <value>Utilizzare la scheda di espressione per progettare il testo che deve apparire in un'etichetta.  Campi indicati con staffe verranno sostituiti con i valori reali.</value>
+    <value>Utilizzare la scheda di espressione per progettare il testo che deve apparire in un'etichetta. Campi indicati con staffe verranno sostituiti con i valori reali.</value>
   </data>
   <data name="LabelSetup_Help4" xml:space="preserve">
     <value>Ogni gruppo può specificare le proprie caratteristiche di base di disegno.</value>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -92,7 +88,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnAddToCustom.Name = "btnAddToCustom";
             this.helpProvider1.SetShowHelp(this.btnAddToCustom, ((bool)(resources.GetObject("btnAddToCustom.ShowHelp"))));
             this.btnAddToCustom.UseVisualStyleBackColor = true;
-            this.btnAddToCustom.Click += new System.EventHandler(this.btnAddToCustom_Click);
+            this.btnAddToCustom.Click += new System.EventHandler(this.BtnAddToCustomClick);
             //
             // groupBox1
             //
@@ -124,7 +120,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbUnits, "cmbUnits");
             this.cmbUnits.Name = "cmbUnits";
             this.helpProvider1.SetShowHelp(this.cmbUnits, ((bool)(resources.GetObject("cmbUnits.ShowHelp"))));
-            this.cmbUnits.SelectedIndexChanged += new System.EventHandler(this.cmbUnits_SelectedIndexChanged);
+            this.cmbUnits.SelectedIndexChanged += new System.EventHandler(this.CmbUnitsSelectedIndexChanged);
             //
             // lblUnits
             //
@@ -163,7 +159,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbScaleMode, "cmbScaleMode");
             this.cmbScaleMode.Name = "cmbScaleMode";
             this.helpProvider1.SetShowHelp(this.cmbScaleMode, ((bool)(resources.GetObject("cmbScaleMode.ShowHelp"))));
-            this.cmbScaleMode.SelectedIndexChanged += new System.EventHandler(this.cmbScaleMode_SelectedIndexChanged);
+            this.cmbScaleMode.SelectedIndexChanged += new System.EventHandler(this.CmbScaleModeSelectedIndexChanged);
             //
             // chkSmoothing
             //
@@ -171,7 +167,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkSmoothing.Name = "chkSmoothing";
             this.helpProvider1.SetShowHelp(this.chkSmoothing, ((bool)(resources.GetObject("chkSmoothing.ShowHelp"))));
             this.chkSmoothing.UseVisualStyleBackColor = true;
-            this.chkSmoothing.CheckedChanged += new System.EventHandler(this.chkSmoothing_CheckedChanged);
+            this.chkSmoothing.CheckedChanged += new System.EventHandler(this.ChkSmoothingCheckedChanged);
             //
             // lblPatternType
             //
@@ -191,7 +187,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbPatternType, "cmbPatternType");
             this.cmbPatternType.Name = "cmbPatternType";
             this.helpProvider1.SetShowHelp(this.cmbPatternType, ((bool)(resources.GetObject("cmbPatternType.ShowHelp"))));
-            this.cmbPatternType.SelectedIndexChanged += new System.EventHandler(this.cmbPatternType_SelectedIndexChanged);
+            this.cmbPatternType.SelectedIndexChanged += new System.EventHandler(this.CmbPatternTypeSelectedIndexChanged);
             //
             // tabPatternProperties
             //
@@ -229,7 +225,7 @@ namespace DotSpatial.Symbology.Forms
             this.cbColorSimple.Name = "cbColorSimple";
             this.cbColorSimple.RoundingRadius = 10;
             this.helpProvider1.SetShowHelp(this.cbColorSimple, ((bool)(resources.GetObject("cbColorSimple.ShowHelp"))));
-            this.cbColorSimple.ColorChanged += new System.EventHandler(this.cbColorSimple_ColorChanged);
+            this.cbColorSimple.ColorChanged += new System.EventHandler(this.CbColorSimpleColorChanged);
             //
             // sldOpacitySimple
             //
@@ -261,7 +257,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldOpacitySimple.TickColor = System.Drawing.Color.DarkGray;
             this.sldOpacitySimple.TickSpacing = 5F;
             this.sldOpacitySimple.Value = 0D;
-            this.sldOpacitySimple.ValueChanged += new System.EventHandler(this.sldOpacitySimple_ValueChanged);
+            this.sldOpacitySimple.ValueChanged += new System.EventHandler(this.SldOpacitySimpleValueChanged);
             //
             // tabPicture
             //
@@ -291,7 +287,7 @@ namespace DotSpatial.Symbology.Forms
             this.dbxScaleY.RegularHelp = "Enter a double precision floating point value.";
             this.helpProvider1.SetShowHelp(this.dbxScaleY, ((bool)(resources.GetObject("dbxScaleY.ShowHelp"))));
             this.dbxScaleY.Value = 0D;
-            this.dbxScaleY.TextChanged += new System.EventHandler(this.dbxScaleY_TextChanged);
+            this.dbxScaleY.TextChanged += new System.EventHandler(this.DbxScaleYTextChanged);
             //
             // dbxScaleX
             //
@@ -306,7 +302,7 @@ namespace DotSpatial.Symbology.Forms
             this.dbxScaleX.RegularHelp = "Enter a double precision floating point value.";
             this.helpProvider1.SetShowHelp(this.dbxScaleX, ((bool)(resources.GetObject("dbxScaleX.ShowHelp"))));
             this.dbxScaleX.Value = 0D;
-            this.dbxScaleX.TextChanged += new System.EventHandler(this.dbxScaleX_TextChanged);
+            this.dbxScaleX.TextChanged += new System.EventHandler(this.DbxScaleXTextChanged);
             //
             // angTileAngle
             //
@@ -318,7 +314,7 @@ namespace DotSpatial.Symbology.Forms
             this.angTileAngle.Name = "angTileAngle";
             this.helpProvider1.SetShowHelp(this.angTileAngle, ((bool)(resources.GetObject("angTileAngle.ShowHelp"))));
             this.angTileAngle.StartAngle = 0;
-            this.angTileAngle.AngleChanged += new System.EventHandler(this.angTileAngle_AngleChanged);
+            this.angTileAngle.AngleChanged += new System.EventHandler(this.AngTileAngleAngleChanged);
             //
             // lblTileMode
             //
@@ -339,7 +335,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbTileMode, "cmbTileMode");
             this.cmbTileMode.Name = "cmbTileMode";
             this.helpProvider1.SetShowHelp(this.cmbTileMode, ((bool)(resources.GetObject("cmbTileMode.ShowHelp"))));
-            this.cmbTileMode.SelectedIndexChanged += new System.EventHandler(this.cmbTileMode_SelectedIndexChanged);
+            this.cmbTileMode.SelectedIndexChanged += new System.EventHandler(this.CmbTileModeSelectedIndexChanged);
             //
             // btnLoadImage
             //
@@ -347,7 +343,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnLoadImage.Name = "btnLoadImage";
             this.helpProvider1.SetShowHelp(this.btnLoadImage, ((bool)(resources.GetObject("btnLoadImage.ShowHelp"))));
             this.btnLoadImage.UseVisualStyleBackColor = true;
-            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
+            this.btnLoadImage.Click += new System.EventHandler(this.BtnLoadImageClick);
             //
             // txtImage
             //
@@ -383,7 +379,7 @@ namespace DotSpatial.Symbology.Forms
             this.helpProvider1.SetShowHelp(this.sliderGradient, ((bool)(resources.GetObject("sliderGradient.ShowHelp"))));
             this.sliderGradient.SlidersEnabled = true;
             this.sliderGradient.StartValue = 0.2F;
-            this.sliderGradient.GradientChanging += new System.EventHandler(this.sliderGradient_GradientChanging);
+            this.sliderGradient.GradientChanging += new System.EventHandler(this.SliderGradientGradientChanging);
             //
             // cmbGradientType
             //
@@ -396,7 +392,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbGradientType, "cmbGradientType");
             this.cmbGradientType.Name = "cmbGradientType";
             this.helpProvider1.SetShowHelp(this.cmbGradientType, ((bool)(resources.GetObject("cmbGradientType.ShowHelp"))));
-            this.cmbGradientType.SelectedIndexChanged += new System.EventHandler(this.cmbGradientType_SelectedIndexChanged);
+            this.cmbGradientType.SelectedIndexChanged += new System.EventHandler(this.CmbGradientTypeSelectedIndexChanged);
             //
             // lblEndColor
             //
@@ -420,7 +416,7 @@ namespace DotSpatial.Symbology.Forms
             this.angGradientAngle.Name = "angGradientAngle";
             this.helpProvider1.SetShowHelp(this.angGradientAngle, ((bool)(resources.GetObject("angGradientAngle.ShowHelp"))));
             this.angGradientAngle.StartAngle = 0;
-            this.angGradientAngle.AngleChanged += new System.EventHandler(this.angGradientAngle_AngleChanged);
+            this.angGradientAngle.AngleChanged += new System.EventHandler(this.AngGradientAngleAngleChanged);
             //
             // tabHatch
             //
@@ -450,7 +446,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbHatchStyle, "cmbHatchStyle");
             this.cmbHatchStyle.Name = "cmbHatchStyle";
             this.helpProvider1.SetShowHelp(this.cmbHatchStyle, ((bool)(resources.GetObject("cmbHatchStyle.ShowHelp"))));
-            this.cmbHatchStyle.SelectedIndexChanged += new System.EventHandler(this.cmbHatchStyle_SelectedIndexChanged);
+            this.cmbHatchStyle.SelectedIndexChanged += new System.EventHandler(this.CmbHatchStyleSelectedIndexChanged);
             //
             // label2
             //
@@ -488,7 +484,7 @@ namespace DotSpatial.Symbology.Forms
             this.hatchBackOpacity.TickColor = System.Drawing.Color.DarkGray;
             this.hatchBackOpacity.TickSpacing = 5F;
             this.hatchBackOpacity.Value = 0D;
-            this.hatchBackOpacity.ValueChanged += new System.EventHandler(this.hatchBackOpacity_ValueChanged);
+            this.hatchBackOpacity.ValueChanged += new System.EventHandler(this.HatchBackOpacityValueChanged);
             //
             // hatchBackColor
             //
@@ -499,7 +495,7 @@ namespace DotSpatial.Symbology.Forms
             this.hatchBackColor.Name = "hatchBackColor";
             this.hatchBackColor.RoundingRadius = 10;
             this.helpProvider1.SetShowHelp(this.hatchBackColor, ((bool)(resources.GetObject("hatchBackColor.ShowHelp"))));
-            this.hatchBackColor.ColorChanged += new System.EventHandler(this.hatchBackColor_ColorChanged);
+            this.hatchBackColor.ColorChanged += new System.EventHandler(this.HatchBackColorColorChanged);
             //
             // label1
             //
@@ -537,7 +533,7 @@ namespace DotSpatial.Symbology.Forms
             this.hatchForeOpacity.TickColor = System.Drawing.Color.DarkGray;
             this.hatchForeOpacity.TickSpacing = 5F;
             this.hatchForeOpacity.Value = 0D;
-            this.hatchForeOpacity.ValueChanged += new System.EventHandler(this.hatchForeOpacity_ValueChanged);
+            this.hatchForeOpacity.ValueChanged += new System.EventHandler(this.HatchForeOpacityValueChanged);
             //
             // hatchForeColor
             //
@@ -548,7 +544,7 @@ namespace DotSpatial.Symbology.Forms
             this.hatchForeColor.Name = "hatchForeColor";
             this.hatchForeColor.RoundingRadius = 10;
             this.helpProvider1.SetShowHelp(this.hatchForeColor, ((bool)(resources.GetObject("hatchForeColor.ShowHelp"))));
-            this.hatchForeColor.ColorChanged += new System.EventHandler(this.hatchForeColor_ColorChanged);
+            this.hatchForeColor.ColorChanged += new System.EventHandler(this.HatchForeColorColorChanged);
             //
             // ocOutline
             //
@@ -556,7 +552,7 @@ namespace DotSpatial.Symbology.Forms
             this.ocOutline.Name = "ocOutline";
             this.ocOutline.Pattern = null;
             this.helpProvider1.SetShowHelp(this.ocOutline, ((bool)(resources.GetObject("ocOutline.ShowHelp"))));
-            this.ocOutline.OutlineChanged += new System.EventHandler(this.ocOutline_OutlineChanged);
+            this.ocOutline.OutlineChanged += new System.EventHandler(this.OcOutlineOutlineChanged);
             //
             // ccPatterns
             //

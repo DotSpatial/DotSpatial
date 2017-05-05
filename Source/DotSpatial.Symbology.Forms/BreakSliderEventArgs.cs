@@ -20,20 +20,15 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class BreakSliderEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private BreakSlider _slider;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of BreakSliderEventArgs
+        /// Initializes a new instance of the <see cref="BreakSliderEventArgs"/> class.
         /// </summary>
+        /// <param name="slider">The break slider.</param>
         public BreakSliderEventArgs(BreakSlider slider)
         {
-            _slider = slider;
+            Slider = slider;
         }
 
         #endregion
@@ -43,11 +38,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the protected break slider
         /// </summary>
-        public BreakSlider Slider
-        {
-            get { return _slider; }
-            protected set { _slider = value; }
-        }
+        public BreakSlider Slider { get; protected set; }
 
         #endregion
     }

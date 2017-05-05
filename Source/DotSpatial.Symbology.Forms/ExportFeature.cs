@@ -49,7 +49,7 @@ namespace DotSpatial.Symbology.Forms
         public int FeaturesIndex => cmbFeatureSpecification.SelectedIndex;
 
         /// <summary>
-        /// Gets or sets the string fileName.  Setting this will not actually use this value,
+        /// Gets or sets the string fileName. Setting this will not actually use this value,
         /// but will make up a new value based on the entered value.
         /// </summary>
         public string Filename

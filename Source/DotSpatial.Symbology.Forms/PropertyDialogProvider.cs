@@ -20,6 +20,12 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class PropertyDialogProvider : IPropertyDialogProvider
     {
+        #region Fields
+
+        private PropertyDialog _frmDialog;
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -29,56 +35,43 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Private Variables
+        #region Properties
 
-        private PropertyDialog _frmDialog;
+        /// <summary>
+        /// Gets the item that was changed by this operation.
+        /// </summary>
+        public object ChangeItem => _frmDialog.PropertyGrid.SelectedObject;
 
         #endregion
-      
 
         #region Methods
 
         /// <summary>
         /// Shows a PropertyGrid Dialog and uses the specified object as the edit copy.
         /// </summary>
+        /// <param name="editCopy">Object that should be used as edit copy.</param>
         public void ShowDialog(object editCopy)
         {
-            _frmDialog = new PropertyDialog {PropertyGrid = {SelectedObject = editCopy}};
-            _frmDialog.ChangesApplied += frmDialog_ChangesApplied;
+            _frmDialog = new PropertyDialog
+            {
+                PropertyGrid = { SelectedObject = editCopy }
+            };
+            _frmDialog.ChangesApplied += FrmDialogChangesApplied;
             _frmDialog.ShowDialog();
         }
 
-        private void frmDialog_ChangesApplied(object sender, EventArgs e)
-        {
-            OnChangesApplied(_frmDialog.PropertyGrid.SelectedObject);
-        }
-
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets the item that was changed by this operation.
+        /// Fires a the ChangesApplied event.
         /// </summary>
-        public object ChangeItem
-        {
-            get
-            {
-                return _frmDialog.PropertyGrid.SelectedObject;
-            }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Fires a the ChangesApplied event
-        /// </summary>
-        /// <param name="changedItem"></param>
+        /// <param name="changedItem">Item that was changed.</param>
         protected virtual void OnChangesApplied(object changedItem)
         {
-            if (ChangesApplied != null) ChangesApplied(this, new ChangedObjectEventArgs(changedItem));
+            ChangesApplied?.Invoke(this, new ChangedObjectEventArgs(changedItem));
+        }
+
+        private void FrmDialogChangesApplied(object sender, EventArgs e)
+        {
+            OnChangesApplied(_frmDialog.PropertyGrid.SelectedObject);
         }
 
         #endregion

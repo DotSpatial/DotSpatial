@@ -21,15 +21,14 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// This will Pop when user want to rename the field
+    /// This will pop when user want to rename the field.
     /// </summary>
     public partial class RenameFieldDialog : Form
     {
-        private readonly List<string> _field = new List<string>();
-        private string[] _compinationName = { string.Empty, string.Empty };
+        #region Constructors
 
         /// <summary>
-        /// Constructs a new instance of the form for renaming a field
+        /// Initializes a new instance of the <see cref="RenameFieldDialog"/> class.
         /// </summary>
         public RenameFieldDialog()
         {
@@ -37,36 +36,41 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Creates a new instance of the form for renaming a field
+        /// Initializes a new instance of the <see cref="RenameFieldDialog"/> class.
         /// </summary>
-        /// <param name="field"></param>
+        /// <param name="field">List of fields that get added to the combobox.</param>
         public RenameFieldDialog(List<string> field)
         {
             InitializeComponent();
-            _field = field;
-            foreach (string st in _field)
+            foreach (string st in field)
                 cmbField.Items.Add(st);
         }
 
-        /// <summary>
-        /// get or set ResultCombination
-        /// </summary>
-        public string[] ResultCombination
-        {
-            get { return _compinationName; }
-            set { _compinationName = value; }
-        }
+        #endregion
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the ResultCombination consisting of the field that gets renamed and the new name.
+        /// </summary>
+        public string[] ResultCombination { get; set; } = { string.Empty, string.Empty };
+
+        #endregion
+
+        #region Methods
+
+        private void BtnCancelClick(object sender, EventArgs e)
         {
             Hide();
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void BtnOkClick(object sender, EventArgs e)
         {
-            _compinationName[0] = cmbField.SelectedItem as string;
-            _compinationName[1] = txtName.Text;
+            ResultCombination[0] = cmbField.SelectedItem as string;
+            ResultCombination[1] = txtName.Text;
             DialogResult = DialogResult.OK;
         }
+
+        #endregion
     }
 }

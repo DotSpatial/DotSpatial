@@ -19,17 +19,16 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// Atrribute Table editor form
+    /// Atrribute Table editor form.
     /// </summary>
     public partial class AttributeDialog : Form
     {
-       #region Constructor
+        #region Constructor
 
         /// <summary>
-        /// Creates a new instance of the attribute Table editor form
-        /// <param name="featureLayer">The feature layer associated with
-        /// this instance and displayed in the editor</param>
+        /// Initializes a new instance of the <see cref="AttributeDialog"/> class.
         /// </summary>
+        /// <param name="featureLayer">The feature layer associated with this instance and displayed in the editor</param>
         public AttributeDialog(IFeatureLayer featureLayer)
         {
             InitializeComponent();
@@ -43,7 +42,7 @@ namespace DotSpatial.Symbology.Forms
 
         #region Event Handlers
 
-        private void btnClose_Click_1(object sender, EventArgs e)
+        private void BtnCloseClick1(object sender, EventArgs e)
         {
             Close();
         }

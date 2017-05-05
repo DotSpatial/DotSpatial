@@ -22,23 +22,15 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class DashSliderHorizontal : DashSlider
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DashSliderHorizontal
+        /// Initializes a new instance of the <see cref="DashSliderHorizontal"/> class.
         /// </summary>
         public DashSliderHorizontal()
             : base(Orientation.Horizontal)
         {
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -51,49 +43,35 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                RectangleF result = new RectangleF();
                 if (Image != null)
                 {
-                    result.X = Position.X - Image.Width / 2;
-                    result.Y = 0;
-                    result.Width = Image.Width;
-                    result.Height = Image.Height;
+                    return new RectangleF(Position.X - (Image.Width / 2), 0, Image.Width, Image.Height);
                 }
-                else
-                {
-                    result.X = Position.X - Size.Width / 2;
-                    result.Y = 0;
-                    result.Width = Size.Width;
-                    result.Height = Size.Height * 3 / 2;
-                }
-                return result;
+
+                return new RectangleF(Position.X - (Size.Width / 2), 0, Size.Width, Size.Height * 3 / 2);
             }
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
 
         /// <summary>
         /// Draws the dash slider
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="clipRectangle"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
         public override void Draw(Graphics g, Rectangle clipRectangle)
         {
             DrawHorizontal(g, clipRectangle);
         }
-
-        #endregion
-
-        #region Private Functions
 
         private void DrawHorizontal(Graphics g, Rectangle clipRectangle)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
             if (Image != null)
             {
-                g.DrawImage(Image, new PointF(Position.X - Image.Width / 2, 0));
+                g.DrawImage(Image, new PointF(Position.X - (Image.Width / 2), 0));
             }
             else
             {

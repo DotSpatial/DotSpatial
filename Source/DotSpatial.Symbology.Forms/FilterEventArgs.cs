@@ -20,26 +20,26 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class FilterEventArgs : EventArgs
     {
-        private readonly string _filterExpression;
+        #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the FilterEventArgs class.
+        /// Initializes a new instance of the <see cref="FilterEventArgs"/> class.
         /// </summary>
         /// <param name="filterExpression">String, the filter expression to add.</param>
         public FilterEventArgs(string filterExpression)
         {
-            _filterExpression = filterExpression;
+            FilterExpression = filterExpression;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets the string filter expression.
         /// </summary>
-        public string FilterExpression
-        {
-            get
-            {
-                return _filterExpression;
-            }
-        }
+        public string FilterExpression { get; }
+
+        #endregion
     }
 }

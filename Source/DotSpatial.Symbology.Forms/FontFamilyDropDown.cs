@@ -22,20 +22,12 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     internal class FontFamilyDropDown : ComboBox
     {
-        #region Private Variables
-
-        #endregion
-
-        #region Constructors
-
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// Occurs during the drawing of an item
+        /// Occurs during the drawing of an item.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             Rectangle outer = e.Bounds;
@@ -63,14 +55,11 @@ namespace DotSpatial.Symbology.Forms
             {
                 fnt = new Font(name, 10, FontStyle.Italic);
             }
+
             SizeF box = e.Graphics.MeasureString(name, Font);
             e.Graphics.DrawString(name, Font, fontBrush, e.Bounds.X, e.Bounds.Y);
             e.Graphics.DrawString("ABC", fnt, fontBrush, e.Bounds.X + box.Width, e.Bounds.Y);
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

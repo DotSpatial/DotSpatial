@@ -22,10 +22,12 @@ namespace DotSpatial.Symbology.Forms
         /// This panel draws color boxes
         /// </summary>
         Colors,
+
         /// <summary>
         /// This panel draws values
         /// </summary>
         Values,
+
         /// <summary>
         /// This panel draws captions
         /// </summary>

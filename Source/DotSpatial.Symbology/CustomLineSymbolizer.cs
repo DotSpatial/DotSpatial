@@ -16,11 +16,14 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// CustomLineSymbolizer
+    /// </summary>
     [Serializable]
     public class CustomLineSymbolizer : CustomSymbolizer
     {
         /// <summary>
-        /// Creates a new CustomSymbolizer for symbolizing lines
+        /// Initializes a new instance of the <see cref="CustomLineSymbolizer"/> class.
         /// </summary>
         public CustomLineSymbolizer()
         {
@@ -28,7 +31,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new Custom Line symbolizer with the specified properties
+        /// Initializes a new instance of the <see cref="CustomLineSymbolizer"/> class.
         /// </summary>
         /// <param name="uniqueName">the unique name</param>
         /// <param name="name">the name of the custom symbolizer</param>

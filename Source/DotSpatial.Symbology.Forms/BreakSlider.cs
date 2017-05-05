@@ -22,26 +22,20 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class BreakSlider : IComparable<BreakSlider>
     {
-        #region Private Variables
+        #region Fields
 
-        private ICategory _category;
         private Color _color;
-        private int _count;
         private Rectangle _graphBounds;
         private double _max;
         private double _min;
-        private ICategory _nextCategory;
-        private ColorRange _range;
         private Color _selectColor;
-        private bool _selected;
-        private double _value;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of BreakSlider
+        /// Initializes a new instance of the <see cref="BreakSlider"/> class.
         /// </summary>
         /// <param name="graphBounds">The bounds of the graph to draw in relative to the control.</param>
         /// <param name="minimum">The minimum value currently in view</param>
@@ -54,8 +48,103 @@ namespace DotSpatial.Symbology.Forms
             _graphBounds = graphBounds;
             _min = minimum;
             _max = maximum;
-            _range = range;
+            Range = range;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a bounding rectangle in coordinates relative to the parent
+        /// </summary>
+        public Rectangle Bounds => new Rectangle((int)Position - 5, _graphBounds.Top + 5, 10, _graphBounds.Height - 5);
+
+        /// <summary>
+        /// Gets or sets the category that has a maximum value equal to this break.
+        /// </summary>
+        public ICategory Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of this slider.
+        /// </summary>
+        public Color Color
+        {
+            get
+            {
+                return _color;
+            }
+
+            set
+            {
+                _color = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the integer count representing the number of members in the class.
+        /// (Technically represented left of the line.
+        /// </summary>
+        public int Count { get; set; }
+
+        /// <summary>
+        /// Gets the bounds of the handle that extends above the graph
+        /// </summary>
+        public Rectangle HandleBounds => new Rectangle((int)Position - 4, _graphBounds.Y - 8, 8, 8);
+
+        /// <summary>
+        /// Gets or sets the next category, which should have a minimum corresponding to this break.
+        /// </summary>
+        public ICategory NextCategory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of this slider.
+        /// </summary>
+        public float Position
+        {
+            get
+            {
+                return (float)((_graphBounds.Width * (Value - _min) / (_max - _min)) + _graphBounds.X);
+            }
+
+            set
+            {
+                Value = (((value - _graphBounds.X) / _graphBounds.Width) * (_max - _min)) + _min;
+                Range.Range.Maximum = Value;
+                if (NextCategory != null) NextCategory.Range.Minimum = Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color range that this break is the maximum value for.
+        /// </summary>
+        public ColorRange Range { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selected color.
+        /// </summary>
+        public Color SelectColor
+        {
+            get
+            {
+                return _selectColor;
+            }
+
+            set
+            {
+                _selectColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this slider is selected.
+        /// </summary>
+        public bool Selected { get; set; }
+
+        /// <summary>
+        /// Gets or sets the double value where this break should occur.
+        /// </summary>
+        public double Value { get; set; }
 
         #endregion
 
@@ -64,20 +153,29 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Compares this value to the other value.
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">The other break slider for comparison.</param>
+        /// <returns>An integer that indicates whether the value of this instance is less, equal to, or greather than the other value.</returns>
         public int CompareTo(BreakSlider other)
         {
-            return _value.CompareTo(other._value);
+            return Value.CompareTo(other.Value);
+        }
+
+        /// <summary>
+        /// Causes this slider to draw itself to the specified graphics surface.
+        /// </summary>
+        /// <param name="g">The graphics object used for drawing.</param>
+        public void Draw(Graphics g)
+        {
+            OnDraw(g);
         }
 
         /// <summary>
         /// This sets the values for the parental bounds, as well as the double
         /// values for the maximum and minimum values visible on the graph.
         /// </summary>
-        /// <param name="graphBounds"></param>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
+        /// <param name="graphBounds">The graphic bounds.</param>
+        /// <param name="min">The minimum value.</param>
+        /// <param name="max">The maximum value.</param>
         public void Setup(Rectangle graphBounds, double min, double max)
         {
             _min = min;
@@ -86,157 +184,39 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Causes this slider to draw itself to the specified graphics surface.
-        /// </summary>
-        /// <param name="g"></param>
-        public void Draw(Graphics g)
-        {
-            OnDraw(g);
-        }
-
-        /// <summary>
         /// Custom drawing
         /// </summary>
         /// <param name="g">The Graphics surface to draw to</param>
         protected virtual void OnDraw(Graphics g)
         {
-            if (_value < _min || _value > _max) return;
+            if (Value < _min || Value > _max) return;
             float pos = Position;
             RectangleF rectF = new RectangleF(pos - 1, _graphBounds.Y, 3, _graphBounds.Height);
             RectangleF topF = new RectangleF(pos - 4, _graphBounds.Y - 8, 8, 8);
-            if (_selected)
+            if (Selected)
             {
-                LinearGradientBrush top = new LinearGradientBrush(topF, _selectColor.Lighter(.2F), _selectColor.Darker(.2F), LinearGradientMode.ForwardDiagonal);
-                g.FillEllipse(top, topF);
-                top.Dispose();
+                using (LinearGradientBrush top = new LinearGradientBrush(topF, _selectColor.Lighter(.2F), _selectColor.Darker(.2F), LinearGradientMode.ForwardDiagonal))
+                {
+                    g.FillEllipse(top, topF);
+                }
 
-                LinearGradientBrush lgb = new LinearGradientBrush(rectF, _selectColor.Lighter(.2f), _selectColor.Darker(.2f), LinearGradientMode.Horizontal);
-                g.FillRectangle(lgb, rectF);
-                lgb.Dispose();
+                using (LinearGradientBrush lgb = new LinearGradientBrush(rectF, _selectColor.Lighter(.2f), _selectColor.Darker(.2f), LinearGradientMode.Horizontal))
+                {
+                    g.FillRectangle(lgb, rectF);
+                }
             }
             else
             {
-                LinearGradientBrush top = new LinearGradientBrush(topF, _color.Lighter(.2F), _color.Darker(.2F), LinearGradientMode.ForwardDiagonal);
-                g.FillEllipse(top, topF);
-                top.Dispose();
+                using (LinearGradientBrush top = new LinearGradientBrush(topF, _color.Lighter(.2F), _color.Darker(.2F), LinearGradientMode.ForwardDiagonal))
+                {
+                    g.FillEllipse(top, topF);
+                }
 
-                LinearGradientBrush lgb = new LinearGradientBrush(rectF, _color.Lighter(.2f), _color.Darker(.2f), LinearGradientMode.Horizontal);
-                g.FillRectangle(lgb, rectF);
-                lgb.Dispose();
+                using (LinearGradientBrush lgb = new LinearGradientBrush(rectF, _color.Lighter(.2f), _color.Darker(.2f), LinearGradientMode.Horizontal))
+                {
+                    g.FillRectangle(lgb, rectF);
+                }
             }
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the color range that this break is the maximum value for.
-        /// </summary>
-        public ColorRange Range
-        {
-            get { return _range; }
-            set { _range = value; }
-        }
-
-        /// <summary>
-        /// Gets the bounds of the handle that extends above the graph
-        /// </summary>
-        public Rectangle HandleBounds
-        {
-            get
-            {
-                return new Rectangle((int)Position - 4, _graphBounds.Y - 8, 8, 8);
-            }
-        }
-
-        /// <summary>
-        /// Gets a bounding rectangle in coordinates relative to the parent
-        /// </summary>
-        public Rectangle Bounds
-        {
-            get
-            {
-                return new Rectangle((int)Position - 5, _graphBounds.Top + 5, 10, _graphBounds.Height - 5);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the category that has a maximum value equal to this break.
-        /// </summary>
-        public ICategory Category
-        {
-            get { return _category; }
-            set { _category = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of this slider
-        /// </summary>
-        public Color Color
-        {
-            get { return _color; }
-            set { _color = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the integer count representing the number of members in the class.
-        /// (Technically represented left of the line.
-        /// </summary>
-        public int Count
-        {
-            get { return _count; }
-            set { _count = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the next category, which should have a minimum corresponding to this break.
-        /// </summary>
-        public ICategory NextCategory
-        {
-            get { return _nextCategory; }
-            set { _nextCategory = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the position of this slider
-        /// </summary>
-        public float Position
-        {
-            get { return (float)(_graphBounds.Width * (_value - _min) / (_max - _min) + _graphBounds.X); }
-            set
-            {
-                _value = ((value - _graphBounds.X) / _graphBounds.Width) * (_max - _min) + _min;
-                _range.Range.Maximum = _value;
-                if (_nextCategory != null) _nextCategory.Range.Minimum = _value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets whether or not this slider is selected.
-        /// </summary>
-        public bool Selected
-        {
-            get { return _selected; }
-            set { _selected = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the selected color
-        /// </summary>
-        public Color SelectColor
-        {
-            get { return _selectColor; }
-            set { _selectColor = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the double value where this break should occur.
-        /// </summary>
-        public double Value
-        {
-            get { return _value; }
-            set { _value = value; }
         }
 
         #endregion

@@ -16,42 +16,41 @@ using System;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// PointSizeRangeEventArgs
+    /// SizeRangeEventArgs
     /// </summary>
     public class SizeRangeEventArgs : EventArgs
     {
         #region Private Variables
-
-        private double _endSize;
-        private double _startSize;
-        private IFeatureSymbolizer _template;
-        private bool _useSizeRange;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PointSizeRangeEventArgs
+        /// Initializes a new instance of the <see cref="SizeRangeEventArgs"/> class.
         /// </summary>
+        /// <param name="startSize">The start size of the size range.</param>
+        /// <param name="endSize">The end size of the size range.</param>
+        /// <param name="template">The feature symbolizer.</param>
+        /// <param name="useSizeRange">Indicates whether the size range should be used.</param>
         public SizeRangeEventArgs(double startSize, double endSize, IFeatureSymbolizer template, bool useSizeRange)
         {
-            _startSize = startSize;
-            _endSize = endSize;
-            _template = template;
-            _useSizeRange = useSizeRange;
+            StartSize = startSize;
+            EndSize = endSize;
+            Template = template;
+            UseSizeRange = useSizeRange;
         }
 
         /// <summary>
-        /// Creates a new instance of the PointSizeRangeEventArgs derived from a PointSizeRange
+        /// Initializes a new instance of the <see cref="SizeRangeEventArgs"/> class.
         /// </summary>
-        /// <param name="range"></param>
+        /// <param name="range">The feature size range.</param>
         public SizeRangeEventArgs(FeatureSizeRange range)
         {
-            _startSize = range.Start;
-            _endSize = range.End;
-            _template = range.Symbolizer;
-            _useSizeRange = range.UseSizeRange;
+            StartSize = range.Start;
+            EndSize = range.End;
+            Template = range.Symbolizer;
+            UseSizeRange = range.UseSizeRange;
         }
 
         #endregion
@@ -59,40 +58,24 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets the start size of the size range
+        /// Gets or sets the start size of the size range.
         /// </summary>
-        public double StartSize
-        {
-            get { return _startSize; }
-            protected set { _startSize = value; }
-        }
+        public double StartSize { get; protected set; }
 
         /// <summary>
-        /// Gets the end size of the range
+        /// Gets or sets the end size of the range.
         /// </summary>
-        public double EndSize
-        {
-            get { return _endSize; }
-            protected set { _endSize = value; }
-        }
+        public double EndSize { get; protected set; }
 
         /// <summary>
-        /// Gets a boolean indicating whether the size range should be used
+        /// Gets or sets a value indicating whether the size range should be used.
         /// </summary>
-        public bool UseSizeRange
-        {
-            get { return _useSizeRange; }
-            protected set { _useSizeRange = value; }
-        }
+        public bool UseSizeRange { get; protected set; }
 
         /// <summary>
-        /// Gets the symbolizer template that describes everything not covered by a range parameter
+        /// Gets or sets the symbolizer template that describes everything not covered by a range parameter.
         /// </summary>
-        public IFeatureSymbolizer Template
-        {
-            get { return _template; }
-            protected set { _template = value; }
-        }
+        public IFeatureSymbolizer Template { get; protected set; }
 
         #endregion
     }

@@ -149,7 +149,7 @@ namespace DotSpatial.Symbology.Forms
         public bool ShowStandardDeviation { get; set; }
 
         /// <summary>
-        /// Gets or sets the double standard deviation.  If ShowStandardDeviation is true, then
+        /// Gets or sets the double standard deviation. If ShowStandardDeviation is true, then
         /// they will be represented by red lines on either side of the mean.
         /// </summary>
         public double StandardDeviation { get; set; }
@@ -238,7 +238,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws only the text for this bar graph.  This will also calculate some critical
+        /// Draws only the text for this bar graph. This will also calculate some critical
         /// font measurements to help size the internal part of the graph.
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>

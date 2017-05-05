@@ -18,13 +18,36 @@ namespace DotSpatial.Symbology
     /// </summary>
     public interface ICustomSymbolizer
     {
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// Jiri's code to save to XML
+        /// Gets or sets the string group for this predefined symbolizer.
         /// </summary>
-        /// <param name="xmlDataSource">The xml data source to load the symbology from</param>
-        void SaveToXml(string xmlDataSource);
+        string Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets the string name for this predefined symbolizer.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the symbolizer for this predifined symbolizer.
+        /// </summary>
+        IFeatureSymbolizer Symbolizer { get; set; }
+
+        /// <summary>
+        /// Gets the symbolizer type of this predefined symbolizer.
+        /// </summary>
+        SymbolizerType SymbolType { get; }
+
+        /// <summary>
+        /// Gets or sets the unique name for this predefined symbolizer.
+        /// </summary>
+        string UniqueName { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Jiri's code to load from XML
@@ -41,34 +64,11 @@ namespace DotSpatial.Symbology
         /// <param name="name">The string name within the specified group or category</param>
         void LoadFromXml(string xmlDataSource, string group, string name);
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the symbolizer for this predifined symbolizer
+        /// Jiri's code to save to XML
         /// </summary>
-        IFeatureSymbolizer Symbolizer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the string name for this predefined symbolizer
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the string group for this predefined symbolizer
-        /// </summary>
-        string Category { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique name for this predefined symbolizer.
-        /// </summary>
-        string UniqueName { get; set; }
-
-        /// <summary>
-        /// Gets the symbolizer type of this predefined symbolizer
-        /// </summary>
-        SymbolizerType SymbolType { get; }
+        /// <param name="xmlDataSource">The xml data source to load the symbology from</param>
+        void SaveToXml(string xmlDataSource);
 
         #endregion
     }

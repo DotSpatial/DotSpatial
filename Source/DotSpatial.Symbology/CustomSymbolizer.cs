@@ -21,12 +21,11 @@ namespace DotSpatial.Symbology
     [Serializable]
     public class CustomSymbolizer : ICustomSymbolizer
     {
-        #region Private Variables
+        #region Fields
 
         private string _categoryName;
         private string _name;
         private IFeatureSymbolizer _symbolizer;
-        private SymbolizerType _type;
         private string _uniqueName;
 
         #endregion
@@ -34,7 +33,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Constructs a new instance of a custom symbolizer
+        /// Initializes a new instance of the <see cref="CustomSymbolizer"/> class.
         /// </summary>
         public CustomSymbolizer()
         {
@@ -42,58 +41,102 @@ namespace DotSpatial.Symbology
             _uniqueName = "symbol 001";
             _name = "symbol 001";
             _categoryName = "default";
-            _type = GetSymbolType(_symbolizer);
+            SymbolType = GetSymbolType(_symbolizer);
         }
 
         /// <summary>
-        /// Creates a new instance of CustomSymbolizer
+        /// Initializes a new instance of the <see cref="CustomSymbolizer"/> class.
         /// </summary>
+        /// <param name="symbolizer">The symbolizer.</param>
+        /// <param name="uniqueName">The unique name.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="categoryName">The category name.</param>
         public CustomSymbolizer(IFeatureSymbolizer symbolizer, string uniqueName, string name, string categoryName)
         {
             _symbolizer = symbolizer;
             _uniqueName = uniqueName;
             _name = name;
             _categoryName = categoryName;
-            _type = GetSymbolType(_symbolizer);
-        }
-
-        #endregion
-
-        #region Methods
-
-        private static SymbolizerType GetSymbolType(IFeatureSymbolizer symbolizer)
-        {
-            if (symbolizer is PointSymbolizer)
-            {
-                return SymbolizerType.Point;
-            }
-            if (symbolizer is LineSymbolizer)
-            {
-                return SymbolizerType.Line;
-            }
-            if (symbolizer is PolygonSymbolizer)
-            {
-                return SymbolizerType.Polygon;
-            }
-            return SymbolizerType.Unknown;
+            SymbolType = GetSymbolType(_symbolizer);
         }
 
         #endregion
 
         #region Properties
 
-        #endregion
+        /// <summary>
+        /// Gets or sets the string group for this predefined symbolizer
+        /// </summary>
+        public string Category
+        {
+            get
+            {
+                return _categoryName;
+            }
 
-        #region ICustomSymbolizer Members
+            set
+            {
+                _categoryName = value;
+            }
+        }
 
         /// <summary>
-        /// Jiri's code to save to XML
+        /// Gets or sets the string name for this predefined symbolizer
         /// </summary>
-        /// <param name="xmlDataSource">The xml data source to load the symbology from</param>
-        public void SaveToXml(string xmlDataSource)
+        public string Name
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _name;
+            }
+
+            set
+            {
+                _name = value;
+            }
         }
+
+        /// <summary>
+        /// Gets or sets the symbolizer for this predifined symbolizer
+        /// </summary>
+        public IFeatureSymbolizer Symbolizer
+        {
+            get
+            {
+                return _symbolizer;
+            }
+
+            set
+            {
+                _symbolizer = value;
+                SymbolType = GetSymbolType(_symbolizer);
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the symbolizer (point, line, polygon)
+        /// </summary>
+        public SymbolizerType SymbolType { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the unique name for this predefined symbolizer.
+        /// </summary>
+        public string UniqueName
+        {
+            get
+            {
+                return _uniqueName;
+            }
+
+            set
+            {
+                _uniqueName = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Jiri's code to load from XML
@@ -117,75 +160,32 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the symbolizer for this predifined symbolizer
+        /// Jiri's code to save to XML
         /// </summary>
-        public IFeatureSymbolizer Symbolizer
+        /// <param name="xmlDataSource">The xml data source to load the symbology from</param>
+        public void SaveToXml(string xmlDataSource)
         {
-            get
-            {
-                return _symbolizer;
-            }
-            set
-            {
-                _symbolizer = value;
-                _type = GetSymbolType(_symbolizer);
-            }
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Gets or sets the string name for this predefined symbolizer
-        /// </summary>
-        public string Name
+        private static SymbolizerType GetSymbolType(IFeatureSymbolizer symbolizer)
         {
-            get
+            if (symbolizer is PointSymbolizer)
             {
-                return _name;
+                return SymbolizerType.Point;
             }
-            set
-            {
-                _name = value;
-            }
-        }
 
-        /// <summary>
-        /// Gets or sets the string group for this predefined symbolizer
-        /// </summary>
-        public string Category
-        {
-            get
+            if (symbolizer is LineSymbolizer)
             {
-                return _categoryName;
+                return SymbolizerType.Line;
             }
-            set
-            {
-                _categoryName = value;
-            }
-        }
 
-        /// <summary>
-        /// Gets or sets the unique name for this predefined symbolizer.
-        /// </summary>
-        public string UniqueName
-        {
-            get
+            if (symbolizer is PolygonSymbolizer)
             {
-                return _uniqueName;
+                return SymbolizerType.Polygon;
             }
-            set
-            {
-                _uniqueName = value;
-            }
-        }
 
-        /// <summary>
-        /// The type of the symbolizer (point, line, polygon)
-        /// </summary>
-        public SymbolizerType SymbolType
-        {
-            get
-            {
-                return _type;
-            }
+            return SymbolizerType.Unknown;
         }
 
         #endregion

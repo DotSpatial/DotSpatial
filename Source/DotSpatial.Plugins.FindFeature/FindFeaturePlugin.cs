@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Plugins.FindFeature.Properties;
-using DotSpatial.Symbology;
 using DotSpatial.Symbology.Forms;
 
 namespace DotSpatial.Plugins.FindFeature
@@ -15,9 +14,12 @@ namespace DotSpatial.Plugins.FindFeature
     /// </summary>
     public class FindFeaturePlugin : Extension
     {
+        #region Methods
+
+        /// <inheritdoc />
         public override void Activate()
         {
-            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Find", FindTool_Click)
+            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Find", FindToolClick)
             {
                 GroupCaption = "Map Tool",
                 SmallImage = Resources.page_white_find_16x16,
@@ -27,6 +29,7 @@ namespace DotSpatial.Plugins.FindFeature
             base.Activate();
         }
 
+        /// <inheritdoc />
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
@@ -34,55 +37,44 @@ namespace DotSpatial.Plugins.FindFeature
         }
 
         /// <summary>
-        /// Find a feature by query expression
+        /// Find a feature by query expression.
         /// </summary>
-        private void FindTool_Click(object sender, EventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void FindToolClick(object sender, EventArgs e)
         {
-            Map mainMap = App.Map as Map;
-            List<ILayer> layers;
-
-            if (mainMap != null)
-                layers = mainMap.GetAllLayers();
-            else
-                layers = mainMap.GetLayers();
-
-            IFeatureLayer fl = null;
-            foreach (ILayer layer in layers)
-            {
-                if (layer.IsSelected)
-                {
-                    fl = layer as IFeatureLayer;
-                    break;
-                }
-            }
-
+            var fl = App.Map.GetFeatureLayers().FirstOrDefault(_ => _.IsSelected);
             if (fl == null)
             {
-                MessageBox.Show("Please select a feature layer.");
+                MessageBox.Show(Resources.PleaseSelectAFeatureLayer);
                 return;
             }
 
-            SQLExpressionDialog qd = new SQLExpressionDialog();
-            if (fl.DataSet.AttributesPopulated)
-                qd.Table = fl.DataSet.DataTable;
-            else
-                qd.AttributeSource = fl.DataSet;
-
-            // Note: User must click ok button to see anything.
-            if (qd.ShowDialog() == DialogResult.Cancel)
-                return;
-
-            if (!String.IsNullOrWhiteSpace(qd.Expression))
+            using (SqlExpressionDialog qd = new SqlExpressionDialog())
             {
-                try
+                if (fl.DataSet.AttributesPopulated)
+                    qd.Table = fl.DataSet.DataTable;
+                else
+                    qd.AttributeSource = fl.DataSet;
+
+                // Note: User must click ok button to see anything.
+                if (qd.ShowDialog() == DialogResult.Cancel)
+                    return;
+
+                if (!string.IsNullOrWhiteSpace(qd.Expression))
                 {
-                    fl.SelectByAttribute(qd.Expression);
-                }
-                catch (SyntaxErrorException ex)
-                {
-                    MessageBox.Show("The syntax of that query isn't quite right: " + ex.Message);
+                    try
+                    {
+                        fl.SelectByAttribute(qd.Expression);
+                    }
+                    catch (SyntaxErrorException ex)
+                    {
+                        MessageBox.Show(string.Format(Resources.IncorrectSyntax, ex.Message));
+                    }
                 }
             }
         }
+
+        #endregion
     }
 }

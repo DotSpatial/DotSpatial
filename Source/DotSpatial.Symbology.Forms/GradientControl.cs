@@ -19,8 +19,28 @@ namespace DotSpatial.Symbology.Forms
     /// A Control that can be used to create custom gradients.
     /// </summary>
     [DefaultEvent("GradientChanging")]
-    public class GradientControl : UserControl
+    public partial class GradientControl : UserControl
     {
+        #region Fields
+
+        private GradientSlider _gradientSlider1;
+        private ColorLever _leverMaximum;
+        private ColorLever _leverMinimum;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GradientControl"/> class.
+        /// </summary>
+        public GradientControl()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -36,133 +56,21 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Private Variables
-
-        private GradientSlider _gradientSlider1;
-        private ColorLever _leverMaximum;
-        private ColorLever _leverMinimum;
-
-        #endregion
-
-        #region Component Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GradientControl));
-            this._gradientSlider1 = new DotSpatial.Symbology.Forms.GradientSlider();
-            this._leverMinimum = new DotSpatial.Symbology.Forms.ColorLever();
-            this._leverMaximum = new DotSpatial.Symbology.Forms.ColorLever();
-            this.SuspendLayout();
-            //
-            // _gradientSlider1
-            //
-            this._gradientSlider1.LeftHandle.Color = System.Drawing.Color.SteelBlue;
-            this._gradientSlider1.LeftHandle.Position = 0.2F;
-            this._gradientSlider1.LeftHandle.RoundingRadius = 4;
-            this._gradientSlider1.LeftHandle.Visible = true;
-            this._gradientSlider1.LeftHandle.Width = 10;
-            resources.ApplyResources(this._gradientSlider1, "_gradientSlider1");
-            this._gradientSlider1.Maximum = 1F;
-            this._gradientSlider1.MaximumColor = System.Drawing.Color.Blue;
-            this._gradientSlider1.Minimum = 0F;
-            this._gradientSlider1.MinimumColor = System.Drawing.Color.Lime;
-            this._gradientSlider1.Name = "_gradientSlider1";
-            this._gradientSlider1.RightHandle.Color = System.Drawing.Color.SteelBlue;
-            this._gradientSlider1.RightHandle.Position = 0.8F;
-            this._gradientSlider1.RightHandle.RoundingRadius = 4;
-            this._gradientSlider1.RightHandle.Visible = true;
-            this._gradientSlider1.RightHandle.Width = 10;
-            this._gradientSlider1.PositionChanging += new System.EventHandler(this.gradientSlider1_PositionChanging);
-            this._gradientSlider1.PositionChanged += new System.EventHandler(this.gradientSlider1_PositionChanged);
-            //
-            // _leverMinimum
-            //
-            this._leverMinimum.Angle = 0D;
-            this._leverMinimum.BackColor = System.Drawing.SystemColors.Control;
-            this._leverMinimum.BarLength = 5;
-            this._leverMinimum.BarWidth = 5;
-            this._leverMinimum.BorderWidth = 5;
-            this._leverMinimum.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this._leverMinimum.Flip = true;
-            this._leverMinimum.KnobColor = System.Drawing.Color.SteelBlue;
-            this._leverMinimum.KnobRadius = 7;
-            resources.ApplyResources(this._leverMinimum, "_leverMinimum");
-            this._leverMinimum.Name = "_leverMinimum";
-            this._leverMinimum.Opacity = 0F;
-            this._leverMinimum.ColorChanged += new System.EventHandler(this.leverMinimum_ColorChanged);
-            this._leverMinimum.ColorChanging += new System.EventHandler(this.leverMinimum_ColorChanging);
-            //
-            // _leverMaximum
-            //
-            this._leverMaximum.Angle = 0D;
-            this._leverMaximum.BackColor = System.Drawing.SystemColors.Control;
-            this._leverMaximum.BarLength = 5;
-            this._leverMaximum.BarWidth = 5;
-            this._leverMaximum.BorderWidth = 5;
-            this._leverMaximum.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this._leverMaximum.Flip = false;
-            this._leverMaximum.KnobColor = System.Drawing.Color.SteelBlue;
-            this._leverMaximum.KnobRadius = 7;
-            resources.ApplyResources(this._leverMaximum, "_leverMaximum");
-            this._leverMaximum.Name = "_leverMaximum";
-            this._leverMaximum.Opacity = 1F;
-            this._leverMaximum.ColorChanged += new System.EventHandler(this.leverMaximum_ColorChanged);
-            this._leverMaximum.ColorChanging += new System.EventHandler(this.leverMaximum_ColorChanging);
-            //
-            // GradientControl
-            //
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.Controls.Add(this._gradientSlider1);
-            this.Controls.Add(this._leverMinimum);
-            this.Controls.Add(this._leverMaximum);
-            this.Name = "GradientControl";
-            resources.ApplyResources(this, "$this");
-            this.ResumeLayout(false);
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Creates a new instance of a Gradient Control
-        /// </summary>
-        public GradientControl()
-        {
-            InitializeComponent();
-        }
-
-        /// <summary>
-        /// Gets or sets the position of the minimum handle
-        /// </summary>
-        public float StartValue
-        {
-            get { return _gradientSlider1.LeftHandle.Position; }
-            set { _gradientSlider1.LeftHandle.Position = value; }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets or sets the position of the maximum handle
         /// </summary>
         public float EndValue
         {
-            get { return _gradientSlider1.RightHandle.Position; }
-            set { _gradientSlider1.RightHandle.Position = value; }
-        }
+            get
+            {
+                return _gradientSlider1.RightHandle.Position;
+            }
 
-        /// <summary>
-        /// Gets or sets the minimum color
-        /// </summary>
-        [Description("Gets or sets the color associated with the minimum side of the gradient slider.")]
-        public Color MinimumColor
-        {
-            get { return _gradientSlider1.MinimumColor; }
             set
             {
-                _gradientSlider1.MinimumColor = value;
-                _leverMinimum.Color = value;
+                _gradientSlider1.RightHandle.Position = value;
             }
         }
 
@@ -172,7 +80,11 @@ namespace DotSpatial.Symbology.Forms
         [Description("Gets or sets the color associated with the maximum side of the gradient slider.")]
         public Color MaximumColor
         {
-            get { return _gradientSlider1.MaximumColor; }
+            get
+            {
+                return _gradientSlider1.MaximumColor;
+            }
+
             set
             {
                 _gradientSlider1.MaximumColor = value;
@@ -181,14 +93,36 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets a boolean that determine whether the sliders are enabled on the gradient control.
+        /// Gets or sets the minimum color
+        /// </summary>
+        [Description("Gets or sets the color associated with the minimum side of the gradient slider.")]
+        public Color MinimumColor
+        {
+            get
+            {
+                return _gradientSlider1.MinimumColor;
+            }
+
+            set
+            {
+                _gradientSlider1.MinimumColor = value;
+                _leverMinimum.Color = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the sliders are enabled on the gradient control.
         /// Disabling the sliders will prevent them from being drawn or changed, and will automatically
         /// set the values to minimum and maximumum.
         /// </summary>
-        [Description("Gets or sets a boolean that determine whether the sliders are enabled on the gradient control. Disabling the sliders will prevent them from being drawn or changed, and will automatically set the values to minimum and maximumum.")]
+        [Description("Gets or sets a value indicating whether the sliders are enabled on the gradient control. Disabling the sliders will prevent them from being drawn or changed, and will automatically set the values to minimum and maximumum.")]
         public bool SlidersEnabled
         {
-            get { return _gradientSlider1.Enabled; }
+            get
+            {
+                return _gradientSlider1.Enabled;
+            }
+
             set
             {
                 if (value == false)
@@ -196,63 +130,82 @@ namespace DotSpatial.Symbology.Forms
                     _gradientSlider1.LeftHandle.Position = _gradientSlider1.Minimum;
                     _gradientSlider1.RightHandle.Position = _gradientSlider1.Maximum;
                 }
+
                 _gradientSlider1.Enabled = value;
                 Invalidate();
             }
         }
 
-        #region Protected Methods
-
         /// <summary>
-        /// Fires the Gradient Changed event
+        /// Gets or sets the position of the minimum handle
         /// </summary>
-        protected virtual void OnGradientChanged()
+        public float StartValue
         {
-            if (GradientChanged != null) GradientChanged(this, EventArgs.Empty);
-        }
+            get
+            {
+                return _gradientSlider1.LeftHandle.Position;
+            }
 
-        /// <summary>
-        /// Fires the Gradient Changing event
-        /// </summary>
-        protected virtual void OnGradientChanging()
-        {
-            if (GradientChanging != null) GradientChanging(this, EventArgs.Empty);
+            set
+            {
+                _gradientSlider1.LeftHandle.Position = value;
+            }
         }
 
         #endregion
 
-        private void leverMinimum_ColorChanging(object sender, EventArgs e)
+        #region Methods
+
+        /// <summary>
+        /// Fires the Gradient Changed event.
+        /// </summary>
+        protected virtual void OnGradientChanged()
         {
-            _gradientSlider1.MinimumColor = _leverMinimum.Color;
+            GradientChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Fires the Gradient Changing event.
+        /// </summary>
+        protected virtual void OnGradientChanging()
+        {
+            GradientChanging?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void GradientSlider1PositionChanged(object sender, EventArgs e)
+        {
+            OnGradientChanged();
+        }
+
+        private void GradientSlider1PositionChanging(object sender, EventArgs e)
+        {
             OnGradientChanging();
         }
 
-        private void leverMaximum_ColorChanging(object sender, EventArgs e)
+        private void LeverMaximumColorChanged(object sender, EventArgs e)
+        {
+            _gradientSlider1.MaximumColor = _leverMaximum.Color;
+            OnGradientChanged();
+        }
+
+        private void LeverMaximumColorChanging(object sender, EventArgs e)
         {
             _gradientSlider1.MaximumColor = _leverMaximum.Color;
             OnGradientChanging();
         }
 
-        private void leverMaximum_ColorChanged(object sender, EventArgs e)
-        {
-            _gradientSlider1.MaximumColor = _leverMaximum.Color;
-            OnGradientChanged();
-        }
-
-        private void leverMinimum_ColorChanged(object sender, EventArgs e)
+        private void LeverMinimumColorChanged(object sender, EventArgs e)
         {
             _gradientSlider1.MinimumColor = _leverMinimum.Color;
             OnGradientChanged();
         }
 
-        private void gradientSlider1_PositionChanging(object sender, EventArgs e)
+        private void LeverMinimumColorChanging(object sender, EventArgs e)
         {
+            _gradientSlider1.MinimumColor = _leverMinimum.Color;
             OnGradientChanging();
         }
 
-        private void gradientSlider1_PositionChanged(object sender, EventArgs e)
-        {
-            OnGradientChanged();
-        }
+        #endregion
     }
 }

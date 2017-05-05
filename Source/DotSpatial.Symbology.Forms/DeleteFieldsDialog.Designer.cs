@@ -86,7 +86,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnCancel.Font = null;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new EventHandler(this.BtnCancelClick);
             //
             // btnOK
             //
@@ -97,7 +97,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnOK.Font = null;
             this.btnOK.Name = "btnOK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new EventHandler(this.BtnOkClick);
             //
             // frmDeleteField
             //

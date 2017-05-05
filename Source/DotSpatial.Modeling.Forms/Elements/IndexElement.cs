@@ -22,7 +22,7 @@ using DotSpatial.Symbology.Forms;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    ///  /// A modular component that can be inherited to retrieve parameters for functions.
+    /// A modular component that can be inherited to retrieve parameters for functions.
     /// </summary>
     internal partial class IndexElement : DialogElement
     {
@@ -93,7 +93,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
                 if (((IndexParam)base.Param).Fs.DataTable.Rows.Count < 1) return;
 
-                using (SQLExpressionDialog dlgExpression = new SQLExpressionDialog { Table = ((IndexParam)base.Param).Fs.DataTable })
+                using (SqlExpressionDialog dlgExpression = new SqlExpressionDialog { Table = ((IndexParam)base.Param).Fs.DataTable })
                 {
                     if (dlgExpression.ShowDialog() != DialogResult.OK) return;
 

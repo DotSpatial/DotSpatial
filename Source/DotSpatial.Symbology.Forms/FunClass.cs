@@ -14,70 +14,56 @@
 
 namespace DotSpatial.Symbology.Forms
 {
+    /// <summary>
+    /// FunClass
+    /// </summary>
     internal class FunClass
     {
-        private int _funTok;
-        private string _functon;
-        private int _idx;
-        private string _nextArg;
-        private int _noOfArg;
-        private int _posInExpr;
-        private string _preArg;
-        private int _priorityLevel;
-        private double _value;
-
-        #region constructor
+        #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the FunClass class.
+        /// Initializes a new instance of the <see cref="FunClass"/> class.
         /// </summary>
         public FunClass()
+            : this(null, 0)
         {
-            _idx = 0;
-            _functon = null;
-            _value = 0.0;
         }
 
         /// <summary>
-        /// Initializes a new instance of the FunClass class.
+        /// Initializes a new instance of the <see cref="FunClass"/> class.
         /// </summary>
         /// <param name="function">The function name.</param>
         /// <param name="index">The index of the class.</param>
         public FunClass(string function, int index)
         {
-            _idx = index;
-            _functon = function;
-            _value = 0.0;
+            Index = index;
+            FunctionName = function;
+            Value = 0.0;
         }
 
         /// <summary>
-        /// Initializes a new instance of the FunClass class.
+        /// Initializes a new instance of the <see cref="FunClass"/> class.
         /// </summary>
         /// <param name="function">The function name.</param>
         /// <param name="index">The index of the class.</param>
         /// <param name="posInExp">The position in the expression.</param>
         public FunClass(string function, int index, int posInExp)
+            : this(function, index)
         {
-            _idx = index;
-            _functon = function;
-            _value = 0.0;
-            _posInExpr = posInExp;
+            PositionInExpression = posInExp;
         }
 
         /// <summary>
-        /// Initializes a new instance of the FunClass class.
+        /// Initializes a new instance of the <see cref="FunClass"/> class.
         /// </summary>
         /// <param name="function">The function name.</param>
         /// <param name="index">The index of the class.</param>
         /// <param name="posInExp">The position in the expression.</param>
         /// <param name="tokVal">The token value.</param>
         public FunClass(string function, int index, int posInExp, int tokVal)
+            : this(function, index, posInExp)
         {
-            _idx = index;
-            _functon = function;
-            _value = 0.0;
-            _posInExpr = posInExp;
-            _funTok = tokVal;
+            TokenVal = tokVal;
         }
 
         #endregion
@@ -87,84 +73,48 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the function string.
         /// </summary>
-        public string FunctionName
-        {
-            get { return _functon; }
-            set { _functon = value; }
-        }
+        public string FunctionName { get; set; }
 
         /// <summary>
         /// Gets or sets the integer index.
         /// </summary>
-        public int Index
-        {
-            get { return _idx; }
-            set { _idx = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the priority level.
-        /// </summary>
-        public int PriorityLevel
-        {
-            get { return _priorityLevel; }
-            set { _priorityLevel = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the previous argument.
-        /// </summary>
-        public string PreviousArgument
-        {
-            get { return _preArg; }
-            set { _preArg = value; }
-        }
+        public int Index { get; set; }
 
         /// <summary>
         /// Gets or sets the next argument.
         /// </summary>
-        public string NextArgument
-        {
-            get { return _nextArg; }
-            set { _nextArg = value; }
-        }
+        public string NextArgument { get; set; }
 
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets or sets the no Of arg fuction type
+        /// either one or two or more than two
         /// </summary>
-        public double Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public int NoOfArg { get; set; }
 
         /// <summary>
         /// Gets or sets position in the expression.
         /// </summary>
-        public int PositionInExpression
-        {
-            get { return _posInExpr; }
-            set { _posInExpr = value; }
-        }
+        public int PositionInExpression { get; set; }
+
+        /// <summary>
+        /// Gets or sets the previous argument.
+        /// </summary>
+        public string PreviousArgument { get; set; }
+
+        /// <summary>
+        /// Gets or sets the priority level.
+        /// </summary>
+        public int PriorityLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the token value.
         /// </summary>
-        public int TokenVal
-        {
-            get { return _funTok; }
-            set { _funTok = value; }
-        }
+        public int TokenVal { get; set; }
 
         /// <summary>
-        /// set or get the no Of arg fuction type
-        /// either one or two or more than two
+        /// Gets or sets the value.
         /// </summary>
-        public int NoOfArg
-        {
-            get { return _noOfArg; }
-            set { _noOfArg = value; }
-        }
+        public double Value { get; set; }
 
         #endregion
     }

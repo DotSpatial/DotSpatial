@@ -115,6 +115,33 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///1) always use double click on the Fields or Function or Operation in order to add them to the Expression. When you click, it will put spaces in front and back automatically( ).
+        ///
+        ///2) use space to use constant or number ex. _3_  or  (_3_*_4_)_-_2  
+        ///
+        ///3) Make sure to close the backets when using functions.
+        ///
+        ///eg. Abs(-222.34 )
+        ///or  3 * pow(Area, 2 )  this is equal to 3*pow(Area, 2)
+        ///.
+        /// </summary>
+        internal static string CalculatorUserGuide_RichTextboxText {
+            get {
+                return ResourceManager.GetString("CalculatorUserGuide_RichTextboxText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Scale Mode?.
+        /// </summary>
+        internal static string ChangeScaleMode {
+            get {
+                return ResourceManager.GetString("ChangeScaleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Center Color.
         /// </summary>
         internal static string DetailedPolygonSymbolControl_CenterColor {
@@ -277,7 +304,61 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Each symbol group can define a separate string expression that includes attribute values.  Double click fields to add it to the expression..
+        ///   Looks up a localized string similar to Choosing this option will force the drawing to use a Geographic scale mode. Do you wish to continue?.
+        /// </summary>
+        internal static string ForceDrawingToUseGeographicScaleMode {
+            get {
+                return ResourceManager.GetString("ForceDrawingToUseGeographicScaleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chosing this option will force the drawing to use a Symbolic scale mode. Do you wish to continue?.
+        /// </summary>
+        internal static string ForceDrawingToUseSymbolicScaleMode {
+            get {
+                return ResourceManager.GetString("ForceDrawingToUseSymbolicScaleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an excel file first..
+        /// </summary>
+        internal static string JoinDialog_SelectExcelFile {
+            get {
+                return ResourceManager.GetString("JoinDialog_SelectExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a foreign field to join on first..
+        /// </summary>
+        internal static string JoinDialog_SelectForeignField {
+            get {
+                return ResourceManager.GetString("JoinDialog_SelectForeignField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a local field to join on first..
+        /// </summary>
+        internal static string JoinDialog_SelectLocalField {
+            get {
+                return ResourceManager.GetString("JoinDialog_SelectLocalField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an output file first..
+        /// </summary>
+        internal static string JoinDialog_SelectOutputFile {
+            get {
+                return ResourceManager.GetString("JoinDialog_SelectOutputFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Each symbol group can define a separate string expression that includes attribute values. Double click fields to add it to the expression..
         /// </summary>
         internal static string LabelSetup_Help1 {
             get {
@@ -295,7 +376,7 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Expression Tab to design the text that should appear in a label.  Fields indicated with brackets will be substituted with real values..
+        ///   Looks up a localized string similar to Use the Expression Tab to design the text that should appear in a label. Fields indicated with brackets will be substituted with real values..
         /// </summary>
         internal static string LabelSetup_Help3 {
             get {
@@ -367,11 +448,29 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The expression you provided for one of the rows is not valid. Try revising the expression to look like &apos;[FieldId] &gt;= Value&apos;.
+        /// </summary>
+        internal static string LayerDialog_InvalidExpressionProvided {
+            get {
+                return ResourceManager.GetString("LayerDialog_InvalidExpressionProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preview.
         /// </summary>
         internal static string Preview {
             get {
                 return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error attempting to apply this expression..
+        /// </summary>
+        internal static string SelectByAttributes_ErrorWhileAttemptingToApplyExpression {
+            get {
+                return ResourceManager.GetString("SelectByAttributes_ErrorWhileAttemptingToApplyExpression", resourceCulture);
             }
         }
         

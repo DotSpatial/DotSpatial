@@ -24,78 +24,29 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class FeatureLayerActions : LegendItemActionsBase, IFeatureLayerActions
     {
-        /// <summary>
-        /// Show the properties of a feature layer in the legend.
-        /// </summary>
-        /// <param name="e"></param>
-        public void ShowProperties(IFeatureLayer e)
-        {
-            using (var dlg = new LayerDialog(e, new FeatureCategoryControl()))
-            {
-                ShowDialog(dlg);
-            }
-        }
+        #region Methods
+
         /// <summary>
         /// Show the dialog to join an Excel table with a feature set.
         /// </summary>
-        /// <param name="e"></param>
-        public void ExcelJoin(IFeatureSet e)
+        /// <param name="layer">Layer whose join to excel table dialog is shown.</param>
+        public void ExcelJoin(IFeatureSet layer)
         {
-            using (var jd = new JoinDialog(e))
+            using (var jd = new JoinDialog(layer))
             {
                 ShowDialog(jd);
             }
         }
 
         /// <summary>
-        /// Show the dialog to set label extents.
-        /// </summary>
-        /// <param name="e"></param>
-        public void LabelExtents(IDynamicVisibility e)
-        {
-            using (var dvg = new DynamicVisibilityModeDialog())
-            {
-                if (ShowDialog(dvg) == DialogResult.OK)
-                {
-                    e.DynamicVisibilityMode = dvg.DynamicVisibilityMode;
-                    e.UseDynamicVisibility = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Show the dialog to set up labels.
-        /// </summary>
-        /// <param name="e"></param>
-        public void LabelSetup(ILabelLayer e)
-        {
-            using (var dlg = new LabelSetup {Layer = e})
-            {
-                ShowDialog(dlg);
-            }
-        }
-
-        /// <summary>
-        /// Show the attribute table editor.
-        /// </summary>
-        /// <param name="e"></param>
-        public void ShowAttributes(IFeatureLayer e)
-        {
-            using (var attributeDialog = new AttributeDialog(e))
-            {
-                ShowDialog(attributeDialog);
-            }
-        }
-
-        /// <summary>
         /// Show the dialog for exporting data from a feature layer.
         /// </summary>
-        /// <param name="e"></param>
-        public void ExportData(IFeatureLayer e)
+        /// <param name="layer">Layer whose data gets exported.</param>
+        public void ExportData(IFeatureLayer layer)
         {
             using (var frmExport = new ExportFeature())
             {
-                frmExport.Filename = e.DataSet.Filename;
+                frmExport.Filename = layer.DataSet.Filename;
                 if (ShowDialog(frmExport) != DialogResult.OK) return;
 
                 // Create a FeatureSet of features that the client wants exported
@@ -103,31 +54,62 @@ namespace DotSpatial.Symbology.Forms
                 switch (frmExport.FeaturesIndex)
                 {
                     case 0:
-                        fs = (FeatureSet) e.DataSet;
+                        fs = (FeatureSet)layer.DataSet;
                         break;
                     case 1:
-                        fs = e.Selection.ToFeatureSet();
+                        fs = layer.Selection.ToFeatureSet();
                         break;
                     case 2:
-                        var features = e.DataSet.Select(e.MapFrame.ViewExtents);
-                        fs = new FeatureSet(features) {Projection = e.Projection};
+                        var features = layer.DataSet.Select(layer.MapFrame.ViewExtents);
+                        fs = new FeatureSet(features)
+                        {
+                            Projection = layer.Projection
+                        };
                         break;
                 }
 
+                if (fs == null) return;
+
                 if (fs.Features.Count == 0)
                 {
-                    fs.CopyTableSchema(e.DataSet);
-                    fs.FeatureType = e.DataSet.FeatureType;
+                    fs.CopyTableSchema(layer.DataSet);
+                    fs.FeatureType = layer.DataSet.FeatureType;
                 }
 
                 fs.SaveAs(frmExport.Filename, true);
 
-                if (MessageBox.Show(Owner, SymbologyFormsMessageStrings.FeatureLayerActions_LoadFeatures,
-                                    SymbologyFormsMessageStrings.FeatureLayerActions_FeaturesExported,
-                                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show(Owner, SymbologyFormsMessageStrings.FeatureLayerActions_LoadFeatures, SymbologyFormsMessageStrings.FeatureLayerActions_FeaturesExported, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    LoadFeatureSetAsLayer(e, fs, Path.GetFileNameWithoutExtension(frmExport.Filename));
+                    LoadFeatureSetAsLayer(layer, fs, Path.GetFileNameWithoutExtension(frmExport.Filename));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Show the dialog to set label extents.
+        /// </summary>
+        /// <param name="layer">Layer whose dynamic visibility dialog is shown.</param>
+        public void LabelExtents(IDynamicVisibility layer)
+        {
+            using (var dvg = new DynamicVisibilityModeDialog())
+            {
+                if (ShowDialog(dvg) == DialogResult.OK)
+                {
+                    layer.DynamicVisibilityMode = dvg.DynamicVisibilityMode;
+                    layer.UseDynamicVisibility = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Show the dialog to set up labels.
+        /// </summary>
+        /// <param name="layer">Layer whose label setup dialog is shown.</param>
+        public void LabelSetup(ILabelLayer layer)
+        {
+            using (var dlg = new LabelSetup { Layer = layer })
+            {
+                ShowDialog(dlg);
             }
         }
 
@@ -140,20 +122,45 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private static void LoadFeatureSetAsLayer(IFeatureLayer e, FeatureSet fs, string newLayerName)
+        /// <summary>
+        /// Show the attribute table editor.
+        /// </summary>
+        /// <param name="layer">Layer whose attribute table is shown.</param>
+        public void ShowAttributes(IFeatureLayer layer)
         {
-            var layerType = e.GetType();
+            using (var attributeDialog = new AttributeDialog(layer))
+            {
+                ShowDialog(attributeDialog);
+            }
+        }
+
+        /// <summary>
+        /// Show the properties of a feature layer in the legend.
+        /// </summary>
+        /// <param name="layer">Layer whose properties are shown.</param>
+        public void ShowProperties(IFeatureLayer layer)
+        {
+            using (var dlg = new LayerDialog(layer, new FeatureCategoryControl()))
+            {
+                ShowDialog(dlg);
+            }
+        }
+
+        private static void LoadFeatureSetAsLayer(IFeatureLayer layer, FeatureSet fs, string newLayerName)
+        {
+            var layerType = layer.GetType();
             var newLayer = (FeatureLayer)Activator.CreateInstance(layerType, fs);
 
-            var parent = e.GetParentItem() as IGroup;
+            var parent = layer.GetParentItem() as IGroup;
             if (parent != null)
             {
-                int index = parent.IndexOf(e);
+                int index = parent.IndexOf(layer);
                 parent.Insert(index + 1, newLayer);
                 var child = parent[index + 1];
                 child.LegendText = newLayer.DataSet.Name = newLayer.Name = newLayerName;
-
             }
         }
+
+        #endregion
     }
 }

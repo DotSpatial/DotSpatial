@@ -21,12 +21,32 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// A button that is a certain color with beveled edges.  The default use of this control is to work as a simple
+    /// A button that is a certain color with beveled edges. The default use of this control is to work as a simple
     /// color dialog launcher that happens to show a preview of the currently selected color.
     /// </summary>
     [DefaultEvent("ColorChanged")]
     public class ColorButton : Control
     {
+        #region Fields
+
+        private Color _color;
+        private bool _isDown;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorButton"/> class.
+        /// </summary>
+        public ColorButton()
+        {
+            _color = Color.Blue;
+            LaunchDialogOnClick = true;
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -36,44 +56,13 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Private Variables
-
-        private int _bevelRadius;
-        private Color _color;
-        private bool _isDown;
-        private bool _launchDialogOnClick;
-        private int _roundingRadius;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of ColorButton
-        /// </summary>
-        public ColorButton()
-        {
-            _color = Color.Blue;
-            _launchDialogOnClick = true;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Sets the color but will not fire the ColorChanged event.
-        /// </summary>
-        /// <param name="color"></param>
-        public void SetColorQuietly(Color color)
-        {
-            _color = color;
-            Invalidate();
-        }
-
-        #endregion
-
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the floating point radius between the outside of the button and the flat central portion.
+        /// </summary>
+        [Description("Gets or sets the floating point radius between the outside of the button and the flat central portion.")]
+        public int BevelRadius { get; set; }
 
         /// <summary>
         /// Gets or sets the color of this button
@@ -81,7 +70,11 @@ namespace DotSpatial.Symbology.Forms
         [Description("Gets or sets the color of this button")]
         public Color Color
         {
-            get { return _color; }
+            get
+            {
+                return _color;
+            }
+
             set
             {
                 _color = value;
@@ -91,132 +84,135 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the floating point radius between the outside of the button and the flat central portion.
+        /// Gets or sets a value indicating whether this button should launch a
+        /// color dialog to alter its color when it is clicked.
         /// </summary>
-        [Description("Gets or sets the floating point radius between the outside of the button and the flat central portion.")]
-        public int BevelRadius
-        {
-            get { return _bevelRadius; }
-            set { _bevelRadius = value; }
-        }
+        [Description("Gets or sets a boolean that indicates whether this button should launch a color dialog to alter its color when it is clicked.")]
+        public bool LaunchDialogOnClick { get; set; }
 
         /// <summary>
         /// Gets or sets the rounding radius that controls how rounded this button appears
         /// </summary>
         [Description("Gets or sets the rounding radius that controls how rounded this button appears")]
-        public int RoundingRadius
-        {
-            get { return _roundingRadius; }
-            set { _roundingRadius = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether this button should launch a
-        /// color dialog to alter its color when it is clicked.
-        /// </summary>
-        [Description("Gets or sets a boolean that indicates whether this button should launch a color dialog to alter its color when it is clicked.")]
-        public bool LaunchDialogOnClick
-        {
-            get { return _launchDialogOnClick; }
-            set { _launchDialogOnClick = value; }
-        }
+        public int RoundingRadius { get; set; }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
+
+        /// <summary>
+        /// Sets the color but will not fire the ColorChanged event.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        public void SetColorQuietly(Color color)
+        {
+            _color = color;
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Clicking launches a color dialog by default.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnClick(EventArgs e)
+        {
+            if (LaunchDialogOnClick)
+            {
+                using (ColorDialog cd = new ColorDialog
+                {
+                    AnyColor = true,
+                    CustomColors = new[] { ToDialogColor(_color) },
+                    Color = _color
+                })
+                {
+                    if (cd.ShowDialog() != DialogResult.OK) return;
+                    Color = cd.Color;
+                }
+            }
+
+            base.OnClick(e);
+        }
 
         /// <summary>
         /// Fires the ColorChanged event
         /// </summary>
         protected virtual void OnColorChanged()
         {
-            if (ColorChanged != null) ColorChanged(this, EventArgs.Empty);
+            ColorChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
         /// Custom drawing code
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="clipRectangle"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
         protected virtual void OnDraw(Graphics g, Rectangle clipRectangle)
         {
-            Brush b = new SolidBrush(_color);
-
-            Color pressedLight = _color.Lighter(.2F);
-
-            Color pressedDark = _color.Darker(.4F);
-
-            Color light = _color.Lighter(.3F);
-
-            Color dark = _color.Darker(.3F);
-
             Rectangle bounds = new Rectangle(0, 0, Width - 1, Height - 1);
-            GraphicsPath gp = new GraphicsPath();
+
             // Even when fully transparent, I would like to see a "glass like" reflective appearance
-            LinearGradientBrush crystalBrush;
-            Color cLight = Color.FromArgb(80, Color.LightCyan.Lighter(.3F));
-            Color cDark = Color.FromArgb(80, Color.DarkCyan).Darker(.3F);
-            if (_isDown == false)
-            {
-                crystalBrush = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), cLight, cDark);
-            }
-            else
-            {
-                crystalBrush = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), cDark, cLight);
-            }
+            Color first = _isDown ? Color.FromArgb(80, Color.DarkCyan).Darker(.3F) : Color.FromArgb(80, Color.LightCyan.Lighter(.3F));
+            Color second = _isDown ? Color.FromArgb(80, Color.LightCyan.Lighter(.3F)) : Color.FromArgb(80, Color.DarkCyan).Darker(.3F);
+            Color first2 = _isDown ? _color.Darker(.4F) : _color.Lighter(.3F);
+            Color second2 = _isDown ? _color.Lighter(.2F) : _color.Darker(.3F);
 
-            LinearGradientBrush lgb;
-            if (_isDown == false)
-            {
-                lgb = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), light, dark);
-            }
-            else
-            {
-                lgb = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), pressedDark, pressedLight);
-            }
+            int rad = Math.Min(Math.Min(RoundingRadius, Width / 2), Height / 2);
 
-            int rad = Math.Min(Math.Min(_roundingRadius, Width / 2), Height / 2);
-            gp.AddRoundedRectangle(bounds, rad);
-
-            g.FillPath(crystalBrush, gp);
-            g.FillPath(lgb, gp);
-            gp.Dispose();
-            if (Width < _bevelRadius * 2 || Height < _bevelRadius * 2)
+            using (GraphicsPath gp = new GraphicsPath())
             {
-            }
-            else
-            {
-                Rectangle inner = new Rectangle(bounds.Left + _bevelRadius, bounds.Top + _bevelRadius, bounds.Width - _bevelRadius * 2, bounds.Height - _bevelRadius * 2);
-                gp = new GraphicsPath();
-                int rRad = _roundingRadius - _bevelRadius;
-                if (rRad < 0) rRad = 0;
-                gp.AddRoundedRectangle(inner, rRad);
+                gp.AddRoundedRectangle(bounds, rad);
 
-                Color cPlain = Color.FromArgb(20, Color.Cyan);
-                SolidBrush back = new SolidBrush(BackColor);
-                SolidBrush crystalFlat = new SolidBrush(cPlain);
-                g.FillPath(back, gp);
-                g.FillPath(crystalFlat, gp);
-                back.Dispose();
-                crystalFlat.Dispose();
+                using (var crystalBrush = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), first, second))
+                {
+                    g.FillPath(crystalBrush, gp);
+                }
 
-                g.FillPath(b, gp);
-                gp.Dispose();
+                using (var lgb = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), first2, second2))
+                {
+                    g.FillPath(lgb, gp);
+                }
             }
 
-            b.Dispose();
+            var bevel2 = BevelRadius * 2;
+            if (Width >= bevel2 && Height >= bevel2)
+            {
+                Rectangle inner = new Rectangle(bounds.Left + BevelRadius, bounds.Top + BevelRadius, bounds.Width - bevel2, bounds.Height - bevel2);
+                using (var gp = new GraphicsPath())
+                {
+                    int rRad = RoundingRadius - BevelRadius;
+                    if (rRad < 0) rRad = 0;
+                    gp.AddRoundedRectangle(inner, rRad);
+
+                    Color cPlain = Color.FromArgb(20, Color.Cyan);
+                    using (SolidBrush back = new SolidBrush(BackColor))
+                    {
+                        g.FillPath(back, gp);
+                    }
+
+                    using (SolidBrush crystalFlat = new SolidBrush(cPlain))
+                    {
+                        g.FillPath(crystalFlat, gp);
+                    }
+
+                    using (Brush b = new SolidBrush(_color))
+                    {
+                        g.FillPath(b, gp);
+                    }
+                }
+            }
         }
 
         /// <summary>
         /// when the mouse down event is received this also "depresses" the button
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
             if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
             {
                 _isDown = true;
             }
+
             base.OnMouseDown(e);
             Invalidate();
         }
@@ -224,55 +220,22 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Handles the situation where the mouse is moving up.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
             if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
             {
                 _isDown = false;
             }
+
             base.OnMouseUp(e);
             Invalidate();
         }
 
         /// <summary>
-        /// Clicking launches a color dialog by default.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnClick(EventArgs e)
-        {
-            if (_launchDialogOnClick)
-            {
-                ColorDialog cd = new ColorDialog();
-                cd.AnyColor = true;
-                cd.CustomColors = new[] { ToDialogColor(_color) };
-                cd.Color = _color;
-                if (cd.ShowDialog() != DialogResult.OK) return;
-                Color = cd.Color;
-            }
-
-            base.OnClick(e);
-        }
-
-        private static int ToDialogColor(Color color)
-        {
-            return (color.R + (color.G << 8) + (color.B << 16));
-        }
-
-        /// <summary>
-        /// Cancels the on paint background event to prevent flicker
-        /// </summary>
-        /// <param name="pevent"></param>
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            // base.OnPaintBackground(pevent);
-            // OnPaint(pevent);
-        }
-
-        /// <summary>
         /// Sets up a bitmap to use as a double buffer for doing all the drawing code.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             Rectangle clip = e.ClipRectangle;
@@ -280,6 +243,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 clip = ClientRectangle;
             }
+
             Bitmap bmp = new Bitmap(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -289,6 +253,19 @@ namespace DotSpatial.Symbology.Forms
             OnDraw(g, clip);
             e.Graphics.DrawImage(bmp, clip, new Rectangle(0, 0, clip.Width, clip.Height), GraphicsUnit.Pixel);
             g.Dispose();
+        }
+
+        /// <summary>
+        /// Cancels the on paint background event to prevent flicker
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+        }
+
+        private static int ToDialogColor(Color color)
+        {
+            return color.R + (color.G << 8) + (color.B << 16);
         }
 
         #endregion

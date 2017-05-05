@@ -130,15 +130,45 @@
     <Compile Include="CollectionPropertyGrid.Designer.cs">
       <DependentUpon>CollectionPropertyGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColorBox.Designer.cs">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="ColorCategoryActions.cs" />
+    <Compile Include="ColorPicker.Designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="DecorationCollectionControl.Designer.cs">
       <DependentUpon>DecorationCollectionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="DetailedLineSymbolControl.Designer.cs">
       <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DetailedLineSymbolDialog.Designer.cs">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetailedPointSymbolControl.Designer.cs">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetailedPointSymbolDialog.Designer.cs">
+      <DependentUpon>DetailedPointSymbolDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="DetailedPolygonSymbolControl.Designer.cs">
       <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetailedPolygonSymbolDialog.Designer.cs">
+      <DependentUpon>DetailedPolygonSymbolDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DialogButtons.Designer.cs">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DoubleBox.Designer.cs">
+      <DependentUpon>DoubleBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicVisibilityControl.Designer.cs">
+      <DependentUpon>DynamicVisibilityControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicVisibilityModeDialog.Designer.cs">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ExportFeature.Designer.cs">
       <DependentUpon>ExportFeature.cs</DependentUpon>
@@ -152,7 +182,16 @@
     <Compile Include="FeatureCategoryControl.Designer.cs">
       <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="FeatureSizeRangeControl.Designer.cs">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FilterEventArgs.cs" />
+    <Compile Include="FontBox.Designer.cs">
+      <DependentUpon>FontBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GradientControl.Designer.cs">
+      <DependentUpon>GradientControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ICategoryControl.cs" />
     <Compile Include="IIWin32WindowOwner.cs" />
     <Compile Include="ImageCategoryControl.cs">
@@ -162,6 +201,9 @@
       <DependentUpon>ImageCategoryControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageLayerActions.cs" />
+    <Compile Include="JoinDialog.Designer.cs">
+      <DependentUpon>JoinDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="LabelAlignmentControl.Designer.cs">
       <DependentUpon>LabelAlignmentControl.cs</DependentUpon>
     </Compile>
@@ -177,8 +219,20 @@
       <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="FunClass.cs" />
+    <Compile Include="LayerDialog.Designer.cs">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LineJoinControl.Designer.cs">
+      <DependentUpon>LineJoinControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LineSymbolDialog.Designer.cs">
       <DependentUpon>LineSymbolDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutlineControl.Designer.cs">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PatternCollectionControl.Designer.cs">
+      <DependentUpon>PatternCollectionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgressCancelDialog.Designer.cs">
       <DependentUpon>ProgressCancelDialog.cs</DependentUpon>
@@ -187,6 +241,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyDialog.Designer.cs">
+      <DependentUpon>PropertyDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="RasterCategoryControl.Designer.cs">
       <DependentUpon>RasterCategoryControl.cs</DependentUpon>
@@ -207,10 +264,22 @@
     <Compile Include="SelectByAttributes.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SelectByAttributes.Designer.cs">
+      <DependentUpon>SelectByAttributes.cs</DependentUpon>
+    </Compile>
     <Compile Include="SelectField.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LegendItemActionsBase.cs" />
+    <Compile Include="SelectField.Designer.cs">
+      <DependentUpon>SelectField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Size2DDialog.Designer.cs">
+      <DependentUpon>Size2DDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SizeControl.Designer.cs">
+      <DependentUpon>SizeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SQLExpressionDialog.Designer.cs">
       <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
     </Compile>
@@ -497,6 +566,7 @@
   <ItemGroup>
     <EmbeddedResource Include="AddCustomSymbolDialog.de-DE.resx">
       <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AddCustomSymbolDialog.it.resx">
       <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
@@ -615,12 +685,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedLineSymbolControl.de-DE.resx">
       <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedLineSymbolControl.it-IT.resx">
       <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedLineSymbolControl.pt-BR.resx">
       <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedLineSymbolDialog.de-DE.resx">
       <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
@@ -639,6 +712,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedPointSymbolControl.pt-BR.resx">
       <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedPolygonSymbolControl.de-DE.resx">
       <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
@@ -648,6 +722,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedPolygonSymbolControl.pt-BR.resx">
       <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedPolygonSymbolDialog.en-US.resx">
       <DependentUpon>DetailedPolygonSymbolDialog.cs</DependentUpon>
@@ -663,12 +738,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicVisibilityModeDialog.de-DE.resx">
       <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicVisibilityModeDialog.it-IT.resx">
       <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicVisibilityModeDialog.pt-BR.resx">
       <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicVisibilityModeDialog.zh-CN.resx">
       <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
@@ -681,9 +759,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureCategoryControl.de-DE.resx">
       <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureCategoryControl.it-IT.resx">
       <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureCategoryControl.pt-BR.resx">
       <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
@@ -705,12 +785,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LabelSetup.de-DE.resx">
       <DependentUpon>LabelSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LabelSetup.it-IT.resx">
       <DependentUpon>LabelSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LabelSetup.pt-BR.resx">
       <DependentUpon>LabelSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LayerDialog.de-DE.resx">
       <DependentUpon>LayerDialog.cs</DependentUpon>
@@ -832,9 +915,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SymbologyFormsMessageStrings.it-IT.resx">
       <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SymbologyFormsMessageStrings.pt-BR.resx">
       <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TabColorControl.de-DE.resx">
       <DependentUpon>TabColorControl.cs</DependentUpon>

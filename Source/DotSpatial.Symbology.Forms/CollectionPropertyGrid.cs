@@ -53,8 +53,8 @@ namespace DotSpatial.Symbology.Forms
         #region Events
 
         /// <summary>
-        /// Occurs whenever the add item is clicked.  This is because the Collection Property Grid
-        /// doesn't necessarilly know how to create a default item.  (An alternative would be
+        /// Occurs whenever the add item is clicked. This is because the Collection Property Grid
+        /// doesn't necessarilly know how to create a default item. (An alternative would be
         /// to send in a factory, but I think this will work just as well.)
         /// </summary>
         public event EventHandler AddItemClicked;

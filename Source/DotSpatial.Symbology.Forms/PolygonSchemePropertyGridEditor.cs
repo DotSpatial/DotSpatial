@@ -25,8 +25,14 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class PolygonSchemePropertyGridEditor : UITypeEditor
     {
+        #region Fields
+
         private IPolygonScheme _editCopy;
         private IPolygonScheme _original;
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This should launch an open file dialog instead of the usual thing.
@@ -40,25 +46,13 @@ namespace DotSpatial.Symbology.Forms
             _original = value as IPolygonScheme;
             _editCopy = _original.Copy();
 
-            IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider?.GetService(typeof(IWindowsFormsEditorService));
             NamedList<IPolygonCategory> cats = new NamedList<IPolygonCategory>(_editCopy.Categories, "Category");
             CollectionPropertyGrid frm = new CollectionPropertyGrid(cats);
             frm.ChangesApplied += FrmChangesApplied;
             frm.AddItemClicked += FrmAddItemClicked;
-            dialogProvider.ShowDialog(frm);
+            dialogProvider?.ShowDialog(frm);
             return _original; // don't bother swapping out the edit copy, just store copies of the categories when changes are applied.
-        }
-
-        private void FrmAddItemClicked(object sender, EventArgs e)
-        {
-            _editCopy.Categories.Add(new PolygonCategory());
-        }
-
-        private void FrmChangesApplied(object sender, EventArgs e)
-        {
-            // the scheme is a reference copy to the original layer.  This way,
-            // applying the scheme here should also update the map.
-            _original.CopyProperties(_editCopy);
         }
 
         /// <summary>
@@ -70,5 +64,19 @@ namespace DotSpatial.Symbology.Forms
         {
             return UITypeEditorEditStyle.Modal;
         }
+
+        private void FrmAddItemClicked(object sender, EventArgs e)
+        {
+            _editCopy.Categories.Add(new PolygonCategory());
+        }
+
+        private void FrmChangesApplied(object sender, EventArgs e)
+        {
+            // the scheme is a reference copy to the original layer. This way,
+            // applying the scheme here should also update the map.
+            _original.CopyProperties(_editCopy);
+        }
+
+        #endregion
     }
 }

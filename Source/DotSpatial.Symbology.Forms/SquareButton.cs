@@ -204,7 +204,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws this square button.  The graphics object should be in client coordinates.
+        /// Draws this square button. The graphics object should be in client coordinates.
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="clipRectangle">The clip rectangle.</param>

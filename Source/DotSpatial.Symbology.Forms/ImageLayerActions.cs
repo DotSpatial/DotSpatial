@@ -23,12 +23,12 @@ namespace DotSpatial.Symbology.Forms
     public class ImageLayerActions : LegendItemActionsBase, IImageLayerActions
     {
         /// <summary>
-        /// Show the properties of an image layer in the legend. 
+        /// Show the properties of an image layer in the legend.
         /// </summary>
-        /// <param name="e"></param>
-        public void ShowProperties(IImageLayer e)
+        /// <param name="layer">The image layer.</param>
+        public void ShowProperties(IImageLayer layer)
         {
-            using (var dlg = new LayerDialog(e,new ImageCategoryControl()))
+            using (var dlg = new LayerDialog(layer, new ImageCategoryControl()))
             {
                 ShowDialog(dlg);
             }
@@ -37,17 +37,17 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Export data from an image layer.
         /// </summary>
-        /// <param name="e"></param>
-        public void ExportData(IImageData e)
+        /// <param name="data">The image data.</param>
+        public void ExportData(IImageData data)
         {
             using (var sfd = new SaveFileDialog
-                {
-                    Filter = DataManager.DefaultDataManager.RasterWriteFilter
-                })
+            {
+                Filter = DataManager.DefaultDataManager.RasterWriteFilter
+            })
             {
                 if (ShowDialog(sfd) == DialogResult.OK)
                 {
-                    e.SaveAs(sfd.FileName);
+                    data.SaveAs(sfd.FileName);
                 }
             }
         }

@@ -22,27 +22,19 @@ namespace DotSpatial.Symbology.Forms
     /// FontBox
     /// </summary>
     [DefaultProperty("Value")]
-    public class FontBox : UserControl
+    public partial class FontBox : UserControl
     {
-        private FontDialog _fontDialog;
+        #region Fields
+
+        private readonly FontDialog _fontDialog;
         private Font _value;
-        private Button cmdShowDialog;
-        private Label lblFont;
-        private TextBox txtFont;
-
-        #region Private Variables
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of FontBox
+        /// Initializes a new instance of the <see cref="FontBox"/> class.
         /// </summary>
         public FontBox()
         {
@@ -53,71 +45,26 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Component Designer generated code
+        #region Properties
 
         /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// Gets or sets the label text for this control.
         /// </summary>
-        private void InitializeComponent()
+        [Category("Text")]
+        [Description("Gets or sets the label text for this control.")]
+        public string LabelText
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(FontBox));
-            this.lblFont = new Label();
-            this.txtFont = new TextBox();
-            this.cmdShowDialog = new Button();
-            this.SuspendLayout();
-            //
-            // lblFont
-            //
-            this.lblFont.AccessibleDescription = null;
-            this.lblFont.AccessibleName = null;
-            resources.ApplyResources(this.lblFont, "lblFont");
-            this.lblFont.Font = null;
-            this.lblFont.Name = "lblFont";
-            //
-            // txtFont
-            //
-            this.txtFont.AccessibleDescription = null;
-            this.txtFont.AccessibleName = null;
-            resources.ApplyResources(this.txtFont, "txtFont");
-            this.txtFont.BackgroundImage = null;
-            this.txtFont.Font = null;
-            this.txtFont.Name = "txtFont";
-            //
-            // cmdShowDialog
-            //
-            this.cmdShowDialog.AccessibleDescription = null;
-            this.cmdShowDialog.AccessibleName = null;
-            resources.ApplyResources(this.cmdShowDialog, "cmdShowDialog");
-            this.cmdShowDialog.BackgroundImage = null;
-            this.cmdShowDialog.Font = null;
-            this.cmdShowDialog.Name = "cmdShowDialog";
-            this.cmdShowDialog.UseVisualStyleBackColor = true;
-            this.cmdShowDialog.Click += new EventHandler(this.cmdShowDialog_Click);
-            //
-            // FontBox
-            //
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
-            resources.ApplyResources(this, "$this");
+            get
+            {
+                return lblFont.Text;
+            }
 
-            this.BackgroundImage = null;
-            this.Controls.Add(this.cmdShowDialog);
-            this.Controls.Add(this.txtFont);
-            this.Controls.Add(this.lblFont);
-            this.Font = null;
-            this.Name = "FontBox";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            set
+            {
+                lblFont.Text = value;
+                Reset();
+            }
         }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the font that this control should be using.
@@ -126,9 +73,9 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                if (_value == null) _value = new Font("Microsoft Sans Serif", 9);
-                return _value;
+                return _value ?? (_value = new Font("Microsoft Sans Serif", 9));
             }
+
             set
             {
                 _value = value;
@@ -139,45 +86,14 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        /// <summary>
-        /// Gets or sets the label text for this control.
-        /// </summary>
-        [Category("Text"), Description("Gets or sets the label text for this control.")]
-        public string LabelText
-        {
-            get
-            {
-                return lblFont.Text;
-            }
-            set
-            {
-                lblFont.Text = value;
-                Reset();
-            }
-        }
-
         #endregion
 
-        #region Protected Methods
+        #region Methods
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #endregion
-
-        private void cmdShowDialog_Click(object sender, EventArgs e)
+        private void CmdShowDialogClick(object sender, EventArgs e)
         {
             if (_fontDialog.ShowDialog(ParentForm) != DialogResult.OK) return;
+
             Value = _fontDialog.Font;
         }
 
@@ -189,5 +105,7 @@ namespace DotSpatial.Symbology.Forms
             txtFont.Left = lblFont.Width + 5;
             txtFont.Width = cmdShowDialog.Left - txtFont.Left - 10;
         }
+
+        #endregion
     }
 }

@@ -22,23 +22,15 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class DashSliderVertical : DashSlider
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DashSliderVertical
+        /// Initializes a new instance of the <see cref="DashSliderVertical"/> class.
         /// </summary>
         public DashSliderVertical()
             : base(Orientation.Vertical)
         {
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -51,28 +43,18 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                RectangleF result = new RectangleF();
                 if (Image != null)
                 {
-                    result.X = 0;
-                    result.Y = Position.Y - Image.Height / 2;
-                    result.Width = Image.Width;
-                    result.Height = Image.Height;
+                    return new RectangleF(0, Position.Y - (Image.Height / 2), Image.Width, Image.Height);
                 }
-                else
-                {
-                    result.X = 0;
-                    result.Y = Position.Y - Size.Height / 2;
-                    result.Width = Size.Width;
-                    result.Height = (Size.Height * 3) / 2;
-                }
-                return result;
+
+                return new RectangleF(0, Position.Y - (Size.Height / 2), Size.Width, (Size.Height * 3) / 2);
             }
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
 
         /// <summary>
         /// Teh Publick method allowing this dash slider to be moved
@@ -84,16 +66,12 @@ namespace DotSpatial.Symbology.Forms
             DrawVertical(g, clipRectangle);
         }
 
-        #endregion
-
-        #region Private Functions
-
         private void DrawVertical(Graphics g, Rectangle clipRectangle)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
             if (Image != null)
             {
-                g.DrawImage(Image, 0, Position.Y - Image.Height / 2);
+                g.DrawImage(Image, 0, Position.Y - (Image.Height / 2));
             }
             else
             {

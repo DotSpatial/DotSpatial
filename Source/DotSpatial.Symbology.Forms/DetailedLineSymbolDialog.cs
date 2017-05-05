@@ -20,8 +20,33 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// DetailedLineSymbolDialog
     /// </summary>
-    public class DetailedLineSymbolDialog : Form
+    public partial class DetailedLineSymbolDialog : Form
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DetailedLineSymbolDialog"/> class.
+        /// </summary>
+        public DetailedLineSymbolDialog()
+        {
+            InitializeComponent();
+            Configure();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DetailedLineSymbolDialog"/> class where only
+        /// the original is specified and the duplicate is created.
+        /// </summary>
+        /// <param name="original">The original line symbolizer.</param>
+        public DetailedLineSymbolDialog(ILineSymbolizer original)
+        {
+            InitializeComponent();
+            detailedLineSymbolControl.Initialize(original);
+            Configure();
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -31,164 +56,31 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        private DetailedLineSymbolControl detailedLineSymbolControl;
-        private DialogButtons dialogButtons1;
-        private Panel panel1;
-
-        #region Private Variables
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
-
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedLineSymbolDialog));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dialogButtons1 = new DotSpatial.Symbology.Forms.DialogButtons();
-            this.detailedLineSymbolControl = new DotSpatial.Symbology.Forms.DetailedLineSymbolControl();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // panel1
-            //
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.dialogButtons1);
-            this.panel1.Name = "panel1";
-            //
-            // dialogButtons1
-            //
-            resources.ApplyResources(this.dialogButtons1, "dialogButtons1");
-            this.dialogButtons1.Name = "dialogButtons1";
-            //
-            // detailedLineSymbolControl
-            //
-            resources.ApplyResources(this.detailedLineSymbolControl, "detailedLineSymbolControl");
-            this.detailedLineSymbolControl.Name = "detailedLineSymbolControl";
-            //
-            // DetailedLineSymbolDialog
-            //
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.detailedLineSymbolControl);
-            this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "DetailedLineSymbolDialog";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of CollectionPropertyGrid
-        /// </summary>
-        public DetailedLineSymbolDialog()
-        {
-            InitializeComponent();
-            Configure();
-        }
-
-        /// <summary>
-        /// Creates a new line symbol dialog where only the original is specified and the
-        /// duplicate is created.
-        /// </summary>
-        /// <param name="original"></param>
-        public DetailedLineSymbolDialog(ILineSymbolizer original)
-        {
-            InitializeComponent();
-            detailedLineSymbolControl.Initialize(original);
-            Configure();
-        }
-
-        private void Configure()
-        {
-            dialogButtons1.OkClicked += btnOk_Click;
-            dialogButtons1.CancelClicked += btnCancel_Click;
-            dialogButtons1.ApplyClicked += btnApply_Click;
-        }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// Gets or sets the symbolizer being used by this control.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ILineSymbolizer Symbolizer
         {
             get
             {
-                if (detailedLineSymbolControl == null) return null;
-                return detailedLineSymbolControl.Symbolizer;
+                return detailedLineSymbolControl?.Symbolizer;
             }
+
             set
             {
                 if (detailedLineSymbolControl == null) return;
+
                 detailedLineSymbolControl.Symbolizer = value;
             }
         }
 
         #endregion
 
-        #region Events
-
-        #endregion
-
-        #region Event Handlers
-
-        private void btnApply_Click(object sender, EventArgs e)
-        {
-            OnApplyChanges();
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-            OnApplyChanges();
-            Close();
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #region Methods
 
         /// <summary>
         /// Fires the ChangesApplied event
@@ -196,7 +88,30 @@ namespace DotSpatial.Symbology.Forms
         protected virtual void OnApplyChanges()
         {
             detailedLineSymbolControl.ApplyChanges();
-            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
+            ChangesApplied?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void BtnApplyClick(object sender, EventArgs e)
+        {
+            OnApplyChanges();
+        }
+
+        private void BtnCancelClick(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void BtnOkClick(object sender, EventArgs e)
+        {
+            OnApplyChanges();
+            Close();
+        }
+
+        private void Configure()
+        {
+            dialogButtons1.OkClicked += BtnOkClick;
+            dialogButtons1.CancelClicked += BtnCancelClick;
+            dialogButtons1.ApplyClicked += BtnApplyClick;
         }
 
         #endregion

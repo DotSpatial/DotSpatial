@@ -13,17 +13,31 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// A user control that is specifically designed to control the point sizes
+    /// A user control that is specifically designed to control the point sizes.
     /// </summary>
     [DefaultEvent("SelectedSizeChanged")]
-    public class SizeControl : UserControl
+    public partial class SizeControl : UserControl
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SizeControl"/> class.
+        /// </summary>
+        public SizeControl()
+        {
+            InitializeComponent();
+            _editDialog = new Size2DDialog();
+            _editDialog.ChangesApplied += EditDialogChangesApplied;
+            scSizes.SelectedSizeChanged += ScSizesSelectedSizeChanged;
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -34,123 +48,20 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region private variables
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private readonly IContainer _components;
-
-        private Size2DDialog _editDialog;
-        private Button btnEdit;
-        private GroupBox grpSize;
-        private SymbolSizeChooser scSizes;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of the size control
-        /// </summary>
-        public SizeControl()
-        {
-            _components = null;
-            InitializeComponent();
-            _editDialog = new Size2DDialog();
-            _editDialog.ChangesApplied += EditDialogChangesApplied;
-            scSizes.SelectedSizeChanged += ScSizesSelectedSizeChanged;
-        }
-
-        #endregion
-
-        #region Component Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(SizeControl));
-            this.grpSize = new GroupBox();
-            this.scSizes = new SymbolSizeChooser();
-            this.btnEdit = new Button();
-            this.grpSize.SuspendLayout();
-            ((ISupportInitialize)(this.scSizes)).BeginInit();
-            this.SuspendLayout();
-            //
-            // grpSize
-            //
-            this.grpSize.AccessibleDescription = null;
-            this.grpSize.AccessibleName = null;
-            resources.ApplyResources(this.grpSize, "grpSize");
-            this.grpSize.BackgroundImage = null;
-            this.grpSize.Controls.Add(this.scSizes);
-            this.grpSize.Controls.Add(this.btnEdit);
-            this.grpSize.Font = null;
-            this.grpSize.Name = "grpSize";
-            this.grpSize.TabStop = false;
-            //
-            // scSizes
-            //
-            this.scSizes.AccessibleDescription = null;
-            this.scSizes.AccessibleName = null;
-            resources.ApplyResources(this.scSizes, "scSizes");
-            this.scSizes.BackgroundImage = null;
-            this.scSizes.BoxBackColor = SystemColors.Control;
-            this.scSizes.BoxSelectionColor = SystemColors.Highlight;
-            this.scSizes.BoxSize = new Size(36, 36);
-            this.scSizes.Font = null;
-            this.scSizes.Name = "scSizes";
-            this.scSizes.NumBoxes = 4;
-            this.scSizes.Orientation = Orientation.Horizontal;
-            this.scSizes.RoundingRadius = 6;
-            //
-            // btnEdit
-            //
-            this.btnEdit.AccessibleDescription = null;
-            this.btnEdit.AccessibleName = null;
-            resources.ApplyResources(this.btnEdit, "btnEdit");
-            this.btnEdit.BackgroundImage = null;
-            this.btnEdit.Font = null;
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.UseVisualStyleBackColor = true;
-            this.btnEdit.Click += new EventHandler(this.btnEdit_Click);
-            //
-            // SizeControl
-            //
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
-            resources.ApplyResources(this, "$this");
-
-            this.BackgroundImage = null;
-            this.Controls.Add(this.grpSize);
-            this.Font = null;
-            this.Name = "SizeControl";
-            this.grpSize.ResumeLayout(false);
-            ((ISupportInitialize)(this.scSizes)).EndInit();
-            this.ResumeLayout(false);
-        }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// Gets or sets the symbol to use when drawing the various sizes
         /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public ISymbol Symbol
         {
             get
             {
                 return scSizes.Symbol;
             }
+
             set
             {
                 scSizes.Symbol = value;
@@ -160,34 +71,17 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Protected Methods
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (_components != null))
-            {
-                _components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #region Methods
 
         /// <summary>
         /// Fires the SizeChanged event
         /// </summary>
         protected virtual void OnSelectedSizeChanged()
         {
-            if (SelectedSizeChanged != null) SelectedSizeChanged(this, EventArgs.Empty);
+            SelectedSizeChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        #endregion
-
-        #region Event Handlers
-
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void BtnEditClick(object sender, EventArgs e)
         {
             _editDialog.ShowDialog();
         }

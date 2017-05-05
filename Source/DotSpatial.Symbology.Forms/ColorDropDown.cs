@@ -20,17 +20,23 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// A drop down coded by
+    /// A color drop down.
     /// </summary>
     internal class ColorDropDown : ComboBox
     {
-        readonly Pen _boxPen;
-        Brush _backBrush;
-        Array _colors;
-        Brush _foreBrush;
+        #region Fields
+
+        private readonly Pen _boxPen;
+        private Brush _backBrush;
+        private Array _colors;
+        private Brush _foreBrush;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// Creates a dropdown with known colors populated in it
+        /// Initializes a new instance of the <see cref="ColorDropDown"/> class with known colors populated in it.
         /// </summary>
         public ColorDropDown()
         {
@@ -50,18 +56,46 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Basically still allow this to be affected in code, but remove it from the designer stuff
+        /// Gets or sets the draw mode.
         /// </summary>
         [Browsable(false)]
         public new DrawMode DrawMode
         {
-            get { return base.DrawMode; }
-            set { base.DrawMode = value; }
+            get
+            {
+                return base.DrawMode;
+            }
+
+            set
+            {
+                base.DrawMode = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the currently selected color from this dropdown control
+        /// Gets or sets the drop down style.
+        /// </summary>
+        [Browsable(false)]
+        public new ComboBoxStyle DropDownStyle
+        {
+            get
+            {
+                return base.DropDownStyle;
+            }
+
+            set
+            {
+                base.DropDownStyle = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the currently selected color from this dropdown control.
         /// </summary>
         public Color Value
         {
@@ -74,12 +108,15 @@ namespace DotSpatial.Symbology.Forms
                     // the color to draw
                     col = Color.FromKnownColor((KnownColor)SelectedItem);
                 }
+
                 if (SelectedItem is Color)
                 {
                     col = (Color)SelectedItem;
                 }
+
                 return col;
             }
+
             set
             {
                 foreach (object item in Items)
@@ -87,13 +124,14 @@ namespace DotSpatial.Symbology.Forms
                     Color col;
                     if (item is KnownColor)
                     {
-                        col = Color.FromKnownColor(((KnownColor)item));
+                        col = Color.FromKnownColor((KnownColor)item);
                         if (col == value)
                         {
                             SelectedItem = item;
                             return;
                         }
                     }
+
                     if (item is Color)
                     {
                         col = (Color)item;
@@ -104,43 +142,27 @@ namespace DotSpatial.Symbology.Forms
                         }
                     }
                 }
+
                 Items.Add(value);
                 SelectedIndex = Items.Count - 1;
             }
         }
 
-        /// <summary>
-        /// Basically still allow this to be affected in code, but remove it from the designer stuff
-        /// </summary>
-        [Browsable(false)]
-        public new ComboBoxStyle DropDownStyle
-        {
-            get { return base.DropDownStyle; }
-            set { base.DropDownStyle = value; }
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Disposes stuff
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">Indicats whether managed resources should be disposed.</param>
         protected override void Dispose(bool disposing)
         {
             _colors = null;
-            if (_backBrush != null) _backBrush.Dispose();
-            if (_foreBrush != null) _foreBrush.Dispose();
-            // Do not dispose these because they are system members
-            // if (_boxPen != null) _boxPen.Dispose();
-            // if (_fillBrush != null) _fillBrush.Dispose();
-            base.Dispose(disposing);
-        }
+            _backBrush?.Dispose();
+            _foreBrush?.Dispose();
 
-        /// <summary>
-        /// Prevents flicker .. or possibly does nothing.. I'm not sure.
-        /// </summary>
-        /// <param name="pevent">PaintEventArgs</param>
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            // base.OnPaintBackground(pevent);
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -152,6 +174,7 @@ namespace DotSpatial.Symbology.Forms
             if (IsDisposed) return;
             if (Visible == false) return;
             if (e.Index == -1) return; // no items to draw
+
             Color col = Color.Empty;
             string name = "Empty";
             if (Items[e.Index] is KnownColor)
@@ -160,11 +183,13 @@ namespace DotSpatial.Symbology.Forms
                 col = Color.FromKnownColor((KnownColor)Items[e.Index]);
                 name = col.Name;
             }
+
             if (Items[e.Index] is Color)
             {
                 col = (Color)Items[e.Index];
                 name = "R: " + col.R + " G: " + col.G + " B: " + col.B;
             }
+
             // by erasing and drawing off-camera, we avoid flicker
             Bitmap bmp = new Bitmap(e.Bounds.Width, e.Bounds.Height);
             Graphics backBuffer = Graphics.FromImage(bmp);
@@ -176,6 +201,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 _backBrush = new SolidBrush(e.BackColor);
             }
+
             if (((SolidBrush)_foreBrush).Color != e.ForeColor)
             {
                 _foreBrush = new SolidBrush(e.ForeColor);
@@ -196,5 +222,16 @@ namespace DotSpatial.Symbology.Forms
             // now that we have drawn the item, add it to the front
             e.Graphics.DrawImage(bmp, e.Bounds.X, e.Bounds.Y);
         }
+
+        /// <summary>
+        /// Prevents flicker .. or possibly does nothing.. I'm not sure.
+        /// </summary>
+        /// <param name="pevent">PaintEventArgs</param>
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            // base.OnPaintBackground(pevent);
+        }
+
+        #endregion
     }
 }

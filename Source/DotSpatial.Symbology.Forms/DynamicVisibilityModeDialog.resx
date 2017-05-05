@@ -129,7 +129,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Dynamic visibility can work two ways.  In one case, the layer is only visible when zoomed in closer than this extent.  In the other way, it is only visible when zoomed out beyond this extent.  Select the mode that should remain visible.</value>
+    <value>Dynamic visibility can work two ways. In one case, the layer is only visible when zoomed in closer than this extent. In the other way, it is only visible when zoomed out beyond this extent. Select the mode that should remain visible.</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>

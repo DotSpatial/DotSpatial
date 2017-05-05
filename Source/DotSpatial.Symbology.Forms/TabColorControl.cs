@@ -140,7 +140,7 @@ namespace DotSpatial.Symbology.Forms
         public void Initialize(ColorRangeEventArgs args)
         {
             _endColor = args.EndColor;
-            _hsl = args.HSL;
+            _hsl = args.Hsl;
             HueShift = args.HueShift;
             _startColor = args.StartColor;
             chkUseColorRange.Checked = args.UseColorRange;

@@ -115,9 +115,9 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the rectangular extent for all the boxes.  This is not the size of the symbol.
+        /// Gets or sets the rectangular extent for all the boxes. This is not the size of the symbol.
         /// </summary>
-        [Description("Gets or sets the rectangular extent for all the boxes.  This is not the size of the symbol.")]
+        [Description("Gets or sets the rectangular extent for all the boxes. This is not the size of the symbol.")]
         public Size BoxSize
         {
             get

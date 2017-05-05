@@ -18,7 +18,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// System.Font is notoriously difficult when serialization comes up.  This replaces that
+    /// System.Font is notoriously difficult when serialization comes up. This replaces that
     /// with a more serializable version.
     /// </summary>
     [Serializable]
@@ -298,7 +298,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// This returns the actual internal font.  Be careful not to dispose this.
+        /// This returns the actual internal font. Be careful not to dispose this.
         /// </summary>
         /// <returns>A System.Font</returns>
         public Font GetFont()

@@ -13,14 +13,12 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology.Forms
 {
+    /// <summary>
+    /// ImageCategoryControl
+    /// </summary>
     public partial class ImageCategoryControl : UserControl, ICategoryControl
     {
-        /// <summary>
-        /// Occurs when the apply changes option has been triggered.
-        /// </summary>
-        public event EventHandler ChangesApplied;
-
-        #region Private Variables
+        #region Fields
 
         private bool _ignoreRefresh;
         private IImageLayer _newLayer;
@@ -29,13 +27,54 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
+        #region Constructors
+
         /// <summary>
-        /// Initialize new instance of <see cref="ImageCategoryControl"/>.
+        /// Initializes a new instance of the <see cref="ImageCategoryControl"/> class.
         /// </summary>
         public ImageCategoryControl()
         {
             InitializeComponent();
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageCategoryControl"/> class with the given layer.
+        /// </summary>
+        /// <param name="layer">The layer.</param>
+        public ImageCategoryControl(IImageLayer layer)
+        {
+            InitializeComponent();
+            Initialize(layer);
+        }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when the apply changes option has been triggered.
+        /// </summary>
+        public event EventHandler ChangesApplied;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Fires the apply changes situation externally, forcing the Table to
+        /// write its values to the original layer.
+        /// </summary>
+        public void ApplyChanges()
+        {
+            OnApplyChanges();
+        }
+
+        /// <summary>
+        /// Cancel the action.
+        /// </summary>
+        public void Cancel()
+        {
+            OnCancel();
         }
 
         /// <inheritdoc />
@@ -45,25 +84,9 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Initialize new instance of <see cref="ImageCategoryControl"/> with given layer.
+        /// Sets up the Table to work with the specified layer.
         /// </summary>
-        public ImageCategoryControl(IImageLayer layer)
-        {
-            InitializeComponent();
-            Initialize(layer);
-        }
-
-
-        private void rsOpacity_ValueChanged(object sender, EventArgs e)
-        {
-            if (_ignoreRefresh) return;
-            _newLayer.Symbolizer.Opacity = Convert.ToSingle(rsOpacity.Value);
-        }
-
-        /// <summary>
-        /// Sets up the Table to work with the specified layer
-        /// </summary>
-        /// <param name="layer"></param>
+        /// <param name="layer">The layer.</param>
         public void Initialize(IImageLayer layer)
         {
             if (layer.Symbolizer == null) layer.Symbolizer = new ImageSymbolizer();
@@ -76,33 +99,13 @@ namespace DotSpatial.Symbology.Forms
             _ignoreRefresh = false;
         }
 
-
-
-        /// <summary>
-        /// Fires the apply changes situation externally, forcing the Table to
-        /// write its values to the original layer.
-        /// </summary>
-        public void ApplyChanges()
-        {
-            OnApplyChanges();
-        }
-
         /// <summary>
         /// Applies the changes that have been specified in this control
         /// </summary>
         protected virtual void OnApplyChanges()
         {
             _originalLayer.Symbolizer = _newLayer.Symbolizer.Copy();
-            // _originalLayer.WriteBitmap(mwProgressBar1);
-            if (ChangesApplied != null) ChangesApplied(_originalLayer, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Cancel the action.
-        /// </summary>
-        public void Cancel()
-        {
-            OnCancel();
+            ChangesApplied?.Invoke(_originalLayer, EventArgs.Empty);
         }
 
         /// <summary>
@@ -113,5 +116,12 @@ namespace DotSpatial.Symbology.Forms
             _originalLayer.Symbolizer = _symbolizer;
         }
 
+        private void RsOpacityValueChanged(object sender, EventArgs e)
+        {
+            if (_ignoreRefresh) return;
+            _newLayer.Symbolizer.Opacity = Convert.ToSingle(rsOpacity.Value);
+        }
+
+        #endregion
     }
 }

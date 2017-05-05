@@ -80,7 +80,7 @@ namespace DotSpatial.Symbology.Forms
             this.rtbExpression.AcceptsTab = true;
             resources.ApplyResources(this.rtbExpression, "rtbExpression");
             this.rtbExpression.Name = "rtbExpression";
-            this.rtbExpression.KeyDown += new KeyEventHandler(this.rtbExpression_KeyDown);
+            this.rtbExpression.KeyDown += new KeyEventHandler(this.RtbExpressionKeyDown);
             // 
             // groupBox1
             // 
@@ -183,14 +183,14 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btValidate, "btValidate");
             this.btValidate.Name = "btValidate";
             this.btValidate.UseVisualStyleBackColor = true;
-            this.btValidate.Click += new EventHandler(this.btValidate_Click);
+            this.btValidate.Click += new EventHandler(this.BtValidateClick);
             // 
             // btNewLine
             // 
             resources.ApplyResources(this.btNewLine, "btNewLine");
             this.btNewLine.Name = "btNewLine";
             this.btNewLine.UseVisualStyleBackColor = true;
-            this.btNewLine.Click += new EventHandler(this.btNewLine_Click);
+            this.btNewLine.Click += new EventHandler(this.BtNewLineClick);
             // 
             // lblResult
             // 
@@ -220,7 +220,7 @@ namespace DotSpatial.Symbology.Forms
             this.dgvFields.ReadOnly = true;
             this.dgvFields.RowHeadersVisible = false;
             this.dgvFields.ShowEditingIcon = false;
-            this.dgvFields.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(this.dgvFields_CellMouseDoubleClick);
+            this.dgvFields.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(this.DgvFieldsCellMouseDoubleClick);
             // 
             // dgvcName
             // 

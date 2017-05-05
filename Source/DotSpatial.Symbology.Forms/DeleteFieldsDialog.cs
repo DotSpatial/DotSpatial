@@ -25,17 +25,14 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public partial class DeleteFieldsDialog : Form
     {
-        #region Private Variables
-
-        private readonly List<string> _fields = new List<string>();
-        private List<string> _fieldSelected = new List<string>();
+        #region Fields
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the form for deleting a field
+        /// Initializes a new instance of the <see cref="DeleteFieldsDialog"/> class for deleting a field.
         /// </summary>
         public DeleteFieldsDialog()
         {
@@ -43,14 +40,13 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Creates a new instance of the form for deleting a field while passing in a new field.
+        /// Initializes a new instance of the <see cref="DeleteFieldsDialog"/> class for deleting a field while passing in a new field.
         /// </summary>
-        /// <param name="fields"></param>
+        /// <param name="fields">The fields that get added to the checked list box.</param>
         public DeleteFieldsDialog(List<string> fields)
         {
             InitializeComponent();
-            _fields = fields;
-            foreach (string st in _fields)
+            foreach (string st in fields)
             {
                 clb.Items.Add(st, false);
             }
@@ -61,28 +57,28 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// get or set the list of selected Fields
+        /// Gets or sets the list of selected Fields.
         /// </summary>
-        public List<string> SelectedFieldIdList
-        {
-            get { return _fieldSelected; }
-            set { _fieldSelected = value; }
-        }
+        public List<string> SelectedFieldIdList { get; set; } = new List<string>();
 
         #endregion
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        #region Methods
+
+        private void BtnCancelClick(object sender, EventArgs e)
         {
             Hide();
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void BtnOkClick(object sender, EventArgs e)
         {
-            _fieldSelected.Clear();
+            SelectedFieldIdList.Clear();
             CheckedListBox.CheckedItemCollection sItems = clb.CheckedItems;
-            foreach (string st in sItems)
-                _fieldSelected.Add(st);
+            foreach (string st in sItems) SelectedFieldIdList.Add(st);
+
             DialogResult = DialogResult.OK;
         }
+
+        #endregion
     }
 }

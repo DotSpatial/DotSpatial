@@ -95,7 +95,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the scale mode.  If the scale mode is set to geographic, then the
+        /// Gets or sets the scale mode. If the scale mode is set to geographic, then the
         /// specified size will be ignored when drawing the symbolic representation.
         /// </summary>
         public ScaleMode ScaleMode { get; set; }

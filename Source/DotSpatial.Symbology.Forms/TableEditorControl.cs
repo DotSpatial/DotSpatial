@@ -210,7 +210,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets the collection of selected data rows.  The row indices are
+        /// Gets the collection of selected data rows. The row indices are
         /// 1 based instead of zero based, so be sure to subtract one before matching with a feature.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -891,7 +891,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void QueryDialogChangesApplied(object sender, EventArgs e)
         {
-            string resultExpresion = ((SQLExpressionDialog)sender).Expression;
+            string resultExpresion = ((SqlExpressionDialog)sender).Expression;
             if (resultExpresion != null)
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -919,7 +919,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void QueryExe()
         {
-            var queryDialog = new SQLExpressionDialog();
+            var queryDialog = new SqlExpressionDialog();
             queryDialog.ChangesApplied += QueryDialogChangesApplied;
             if (_featureLayer.DataSet.AttributesPopulated)
             {

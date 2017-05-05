@@ -24,8 +24,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Determines whether a layer has dynamic visibility and hence is only shown at certain scales.
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="mapFrame"></param>
+        /// <param name="e">The dynamic visibility object that gets manipulated.</param>
+        /// <param name="mapFrame">The map frame.</param>
         public void DynamicVisibility(IDynamicVisibility e, IFrame mapFrame)
         {
             using (var dvg = new DynamicVisibilityModeDialog())

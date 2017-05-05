@@ -12,7 +12,6 @@
 // ********************************************************************************************************
 
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
@@ -20,83 +19,12 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// DetailedPointSymbolDialog
     /// </summary>
-    public class DetailedPointSymbolDialog : Form
+    public partial class DetailedPointSymbolDialog : Form
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs whenever the apply changes button is clicked, or else when the ok button is clicked.
-        /// </summary>
-        public event EventHandler ChangesApplied;
-
-        #endregion
-
-        private DetailedPointSymbolControl detailedPointSymbolControl1;
-        private DialogButtons dialogButtons1;
-        private Panel panel1;
-
-        #region Private Variables
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
-
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedPointSymbolDialog));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dialogButtons1 = new DotSpatial.Symbology.Forms.DialogButtons();
-            this.detailedPointSymbolControl1 = new DotSpatial.Symbology.Forms.DetailedPointSymbolControl();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // panel1
-            //
-            this.panel1.Controls.Add(this.dialogButtons1);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
-            //
-            // dialogButtons1
-            //
-            resources.ApplyResources(this.dialogButtons1, "dialogButtons1");
-            this.dialogButtons1.Name = "dialogButtons1";
-            //
-            // detailedPointSymbolControl1
-            //
-            resources.ApplyResources(this.detailedPointSymbolControl1, "detailedPointSymbolControl1");
-            this.detailedPointSymbolControl1.Name = "detailedPointSymbolControl1";
-            //
-            // DetailedPointSymbolDialog
-            //
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.detailedPointSymbolControl1);
-            this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "DetailedPointSymbolDialog";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of CollectionPropertyGrid
+        /// Initializes a new instance of the <see cref="DetailedPointSymbolDialog"/> class.
         /// </summary>
         public DetailedPointSymbolDialog()
         {
@@ -105,9 +33,9 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="DetailedPointSymbolDialog"/> class.
         /// </summary>
-        /// <param name="original"></param>
+        /// <param name="original">The original point symbolizer.</param>
         public DetailedPointSymbolDialog(IPointSymbolizer original)
         {
             InitializeComponent();
@@ -115,16 +43,14 @@ namespace DotSpatial.Symbology.Forms
             Configure();
         }
 
-        private void Configure()
-        {
-            dialogButtons1.OkClicked += btnOk_Click;
-            dialogButtons1.CancelClicked += btnCancel_Click;
-            dialogButtons1.ApplyClicked += btnApply_Click;
-        }
-
         #endregion
 
-        #region Methods
+        #region Events
+
+        /// <summary>
+        /// Occurs whenever the apply changes button is clicked, or else when the ok button is clicked.
+        /// </summary>
+        public event EventHandler ChangesApplied;
 
         #endregion
 
@@ -137,56 +63,20 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                if (detailedPointSymbolControl1 == null) return null;
-                return detailedPointSymbolControl1.Symbolizer;
+                return detailedPointSymbolControl1?.Symbolizer;
             }
+
             set
             {
                 if (detailedPointSymbolControl1 == null) return;
+
                 detailedPointSymbolControl1.Symbolizer = value;
             }
         }
 
         #endregion
 
-        #region Events
-
-        #endregion
-
-        #region Event Handlers
-
-        private void btnApply_Click(object sender, EventArgs e)
-        {
-            OnApplyChanges();
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-            OnApplyChanges();
-            Close();
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #region Methods
 
         /// <summary>
         /// Fires the ChangesApplied event
@@ -194,7 +84,30 @@ namespace DotSpatial.Symbology.Forms
         protected virtual void OnApplyChanges()
         {
             detailedPointSymbolControl1.ApplyChanges();
-            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
+            ChangesApplied?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void BtnApplyClick(object sender, EventArgs e)
+        {
+            OnApplyChanges();
+        }
+
+        private void BtnCancelClick(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void BtnOkClick(object sender, EventArgs e)
+        {
+            OnApplyChanges();
+            Close();
+        }
+
+        private void Configure()
+        {
+            dialogButtons1.OkClicked += BtnOkClick;
+            dialogButtons1.CancelClicked += BtnCancelClick;
+            dialogButtons1.ApplyClicked += BtnApplyClick;
         }
 
         #endregion

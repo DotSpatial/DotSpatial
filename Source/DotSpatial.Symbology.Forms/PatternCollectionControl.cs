@@ -25,8 +25,28 @@ namespace DotSpatial.Symbology.Forms
     /// This is designed to automatically have add, subtract, up and down arrows for working with a simple collection of items.
     /// </summary>
     [ToolboxBitmap(typeof(PatternCollectionControl), "UserControl.ico")]
-    internal class PatternCollectionControl : UserControl
+    internal partial class PatternCollectionControl : UserControl
     {
+        #region Fields
+
+        private IList<IPattern> _patterns;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PatternCollectionControl"/> class.
+        /// </summary>
+        public PatternCollectionControl()
+        {
+            InitializeComponent();
+            _patterns = new List<IPattern>();
+            lbxItems.DrawItem += LbxItemsDrawItem;
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -35,9 +55,9 @@ namespace DotSpatial.Symbology.Forms
         public event EventHandler AddClicked;
 
         /// <summary>
-        /// Occurs when someone selects one of the items in the list box
+        /// Occurs when the list has been added, removed, or re-ordered in any way.
         /// </summary>
-        public event EventHandler SelectedItemChanged;
+        public event EventHandler ListChanged;
 
         /// <summary>
         /// Occurs when either the Promote or Demote function has been used,
@@ -51,181 +71,50 @@ namespace DotSpatial.Symbology.Forms
         public event EventHandler RemoveClicked;
 
         /// <summary>
-        /// Occurs when the list has been added, removed, or re-ordered in any way.
+        /// Occurs when someone selects one of the items in the list box
         /// </summary>
-        public event EventHandler ListChanged;
+        public event EventHandler SelectedItemChanged;
 
         #endregion
 
-        #region Private Variables
-
-        private IList<IPattern> _patterns;
-        private Button btnAdd;
-        private Button btnDown;
-        private Button btnRemove;
-        private Button btnUp;
-        private ListBox lbxItems;
-        private Panel panel1;
-
-        #endregion
-
-        #region Constructors
+        #region Properties
 
         /// <summary>
-        /// Creates a new instance of the Collection Control
+        /// Gets or sets the core list of patterns that will be drawn here.
         /// </summary>
-        public PatternCollectionControl()
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IList<IPattern> Patterns
         {
-            InitializeComponent();
-            _patterns = new List<IPattern>();
-            lbxItems.DrawItem += lbxItems_DrawItem;
-        }
-
-        private void lbxItems_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            get
             {
-                e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
+                return _patterns;
             }
-            else
+
+            set
             {
-                Brush b = new SolidBrush(BackColor);
-                e.Graphics.FillRectangle(b, outer);
-                b.Dispose();
+                _patterns = value;
+                RefreshList();
             }
-            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
-            e.Graphics.FillRectangle(Brushes.White, inner);
-            e.Graphics.DrawRectangle(Pens.Black, inner);
-            e.Graphics.Clip = new Region(inner);
-            IPattern pattern = lbxItems.Items[e.Index] as IPattern;
-            if (pattern == null) return;
-            GraphicsPath gp = new GraphicsPath();
-            gp.AddRectangle(new Rectangle(new Point(e.Bounds.X + 10, e.Bounds.Y + 2), new Size(e.Bounds.Width - 20, e.Bounds.Height - 4)));
-            pattern.FillPath(e.Graphics, gp);
-            pattern.DrawPath(e.Graphics, gp, 1);
-            gp.Dispose();
-        }
-
-        #endregion
-
-        #region Component Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(PatternCollectionControl));
-            this.lbxItems = new ListBox();
-            this.panel1 = new Panel();
-            this.btnDown = new Button();
-            this.btnUp = new Button();
-            this.btnRemove = new Button();
-            this.btnAdd = new Button();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // lbxItems
-            //
-            this.lbxItems.AccessibleDescription = null;
-            this.lbxItems.AccessibleName = null;
-            resources.ApplyResources(this.lbxItems, "lbxItems");
-            this.lbxItems.BackgroundImage = null;
-            this.lbxItems.DrawMode = DrawMode.OwnerDrawFixed;
-            this.lbxItems.Font = null;
-            this.lbxItems.FormattingEnabled = true;
-            this.lbxItems.Name = "lbxItems";
-            this.lbxItems.SelectedIndexChanged += new EventHandler(this.lbxItems_SelectedIndexChanged);
-            //
-            // panel1
-            //
-            this.panel1.AccessibleDescription = null;
-            this.panel1.AccessibleName = null;
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.BackgroundImage = null;
-            this.panel1.Controls.Add(this.btnDown);
-            this.panel1.Controls.Add(this.btnUp);
-            this.panel1.Controls.Add(this.btnRemove);
-            this.panel1.Controls.Add(this.btnAdd);
-            this.panel1.Font = null;
-            this.panel1.Name = "panel1";
-            //
-            // btnDown
-            //
-            this.btnDown.AccessibleDescription = null;
-            this.btnDown.AccessibleName = null;
-            resources.ApplyResources(this.btnDown, "btnDown");
-            this.btnDown.BackgroundImage = null;
-            this.btnDown.Font = null;
-            this.btnDown.Image = SymbologyFormsImages.down as Image;
-            this.btnDown.Name = "btnDown";
-            this.btnDown.UseVisualStyleBackColor = true;
-            this.btnDown.Click += new EventHandler(this.btnDown_Click);
-            //
-            // btnUp
-            //
-            this.btnUp.AccessibleDescription = null;
-            this.btnUp.AccessibleName = null;
-            resources.ApplyResources(this.btnUp, "btnUp");
-            this.btnUp.BackgroundImage = null;
-            this.btnUp.Font = null;
-            this.btnUp.Image = SymbologyFormsImages.up as Image;
-            this.btnUp.Name = "btnUp";
-            this.btnUp.UseVisualStyleBackColor = true;
-            this.btnUp.Click += new EventHandler(this.btnUp_Click);
-            //
-            // btnRemove
-            //
-            this.btnRemove.AccessibleDescription = null;
-            this.btnRemove.AccessibleName = null;
-            resources.ApplyResources(this.btnRemove, "btnRemove");
-            this.btnRemove.BackgroundImage = null;
-            this.btnRemove.Font = null;
-            this.btnRemove.Image = SymbologyFormsImages.mnuLayerClear as Image;
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new EventHandler(this.btnRemove_Click);
-            //
-            // btnAdd
-            //
-            this.btnAdd.AccessibleDescription = null;
-            this.btnAdd.AccessibleName = null;
-            resources.ApplyResources(this.btnAdd, "btnAdd");
-            this.btnAdd.BackgroundImage = null;
-            this.btnAdd.Font = null;
-            this.btnAdd.Image = SymbologyFormsImages.mnuLayerAdd as Image;
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new EventHandler(this.btnAdd_Click);
-            //
-            // PatternCollectionControl
-            //
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
-            resources.ApplyResources(this, "$this");
-
-            this.BackgroundImage = null;
-            this.Controls.Add(this.lbxItems);
-            this.Controls.Add(this.panel1);
-            this.Font = null;
-            this.Name = "PatternCollectionControl";
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-
-        private void lbxItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OnSelectedItemChanged();
         }
 
         /// <summary>
-        /// Fires the SelectedItemChanged event
+        /// Gets or sets the selected item cast as an object.
         /// </summary>
-        protected virtual void OnSelectedItemChanged()
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IPattern SelectedPattern
         {
-            if (SelectedItemChanged != null) SelectedItemChanged(this, EventArgs.Empty);
+            get
+            {
+                return lbxItems?.SelectedItem as IPattern;
+            }
+
+            set
+            {
+                if (lbxItems == null) return;
+                lbxItems.SelectedItem = value;
+            }
         }
 
         #endregion
@@ -243,59 +132,61 @@ namespace DotSpatial.Symbology.Forms
             {
                 lbxItems.Items.Insert(0, pattern);
             }
+
             lbxItems.ResumeLayout();
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets the selected item cast as an object.
+        /// Fires the AddClicked event
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IPattern SelectedPattern
+        protected virtual void OnAdd()
         {
-            get
-            {
-                if (lbxItems == null) return null;
-                if (lbxItems.SelectedItem == null) return null;
-                return lbxItems.SelectedItem as IPattern;
-            }
-            set
-            {
-                if (lbxItems == null) return;
-                lbxItems.SelectedItem = value;
-            }
+            AddClicked?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
         }
 
         /// <summary>
-        /// Gets or sets the core list of patterns that will be drawn here.
+        /// Fires the ListChanged event
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IList<IPattern> Patterns
+        protected virtual void OnListChanged()
         {
-            get { return _patterns; }
-            set
-            {
-                _patterns = value;
-                RefreshList();
-            }
+            ListChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        #endregion
+        /// <summary>
+        /// Fires the OnOrderChanged event
+        /// </summary>
+        protected virtual void OnOrderChanged()
+        {
+            OrderChanged?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
+        }
 
-        #region Event Handlers
+        /// <summary>
+        /// Fires the RemoveCLicked event
+        /// </summary>
+        protected virtual void OnRemoveClick()
+        {
+            RemoveClicked?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
+        }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Fires the SelectedItemChanged event
+        /// </summary>
+        protected virtual void OnSelectedItemChanged()
+        {
+            SelectedItemChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void BtnAddClick(object sender, EventArgs e)
         {
             OnAdd();
             RefreshList();
         }
 
-        private void btnDown_Click(object sender, EventArgs e)
+        private void BtnDownClick(object sender, EventArgs e)
         {
-            if (lbxItems.SelectedItem == null) return;
             IPattern pattern = lbxItems.SelectedItem as IPattern;
             if (pattern == null) return;
             _patterns.DecreaseIndex(pattern);
@@ -304,7 +195,7 @@ namespace DotSpatial.Symbology.Forms
             OnOrderChanged();
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void BtnRemoveClick(object sender, EventArgs e)
         {
             if (lbxItems.SelectedItem == null) return;
             if (lbxItems.Items.Count <= 1) return;
@@ -317,13 +208,13 @@ namespace DotSpatial.Symbology.Forms
             {
                 index -= 1;
             }
+
             lbxItems.SelectedIndex = index;
             OnRemoveClick();
         }
 
-        private void btnUp_Click(object sender, EventArgs e)
+        private void BtnUpClick(object sender, EventArgs e)
         {
-            if (lbxItems.SelectedItem == null) return;
             IPattern pattern = lbxItems.SelectedItem as IPattern;
             if (pattern == null) return;
             _patterns.IncreaseIndex(pattern);
@@ -332,43 +223,38 @@ namespace DotSpatial.Symbology.Forms
             OnOrderChanged();
         }
 
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Fires the AddClicked event
-        /// </summary>
-        protected virtual void OnAdd()
+        private void LbxItemsDrawItem(object sender, DrawItemEventArgs e)
         {
-            if (AddClicked != null) AddClicked(this, EventArgs.Empty);
-            OnListChanged();
+            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
+            }
+            else
+            {
+                using (Brush b = new SolidBrush(BackColor))
+                {
+                    e.Graphics.FillRectangle(b, outer);
+                }
+            }
+
+            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
+            e.Graphics.FillRectangle(Brushes.White, inner);
+            e.Graphics.DrawRectangle(Pens.Black, inner);
+            e.Graphics.Clip = new Region(inner);
+            IPattern pattern = lbxItems.Items[e.Index] as IPattern;
+            if (pattern == null) return;
+            using (GraphicsPath gp = new GraphicsPath())
+            {
+                gp.AddRectangle(new Rectangle(new Point(e.Bounds.X + 10, e.Bounds.Y + 2), new Size(e.Bounds.Width - 20, e.Bounds.Height - 4)));
+                pattern.FillPath(e.Graphics, gp);
+                pattern.DrawPath(e.Graphics, gp, 1);
+            }
         }
 
-        /// <summary>
-        /// Fires the ListChanged event
-        /// </summary>
-        protected virtual void OnListChanged()
+        private void LbxItemsSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ListChanged != null) ListChanged(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Fires the RemoveCLicked event
-        /// </summary>
-        protected virtual void OnRemoveClick()
-        {
-            if (RemoveClicked != null) RemoveClicked(this, EventArgs.Empty);
-            OnListChanged();
-        }
-
-        /// <summary>
-        /// Fires the OnOrderChanged event
-        /// </summary>
-        protected virtual void OnOrderChanged()
-        {
-            if (OrderChanged != null) OrderChanged(this, EventArgs.Empty);
-            OnListChanged();
+            OnSelectedItemChanged();
         }
 
         #endregion
