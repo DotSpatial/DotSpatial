@@ -20,13 +20,13 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Represents stroke using specified <see cref="Color"/> and  <see cref="DashStyle"/>.
+    /// Represents stroke using specified <see cref="Color"/> and <see cref="DashStyle"/>.
     /// </summary>
     [Serializable]
     [XmlRoot("SimpleStroke")]
     public class SimpleStroke : Stroke, ISimpleStroke
     {
-        #region Private Variables
+        #region Fields
 
         private Color _color;
         private DashStyle _dashStyle;
@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of SimpleStroke
+        /// Initializes a new instance of the <see cref="SimpleStroke"/> class.
         /// </summary>
         public SimpleStroke()
         {
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Sets the width of the line as part of the constructor
+        /// Initializes a new instance of the <see cref="SimpleStroke"/> class.
         /// </summary>
         /// <param name="width">The double width of the line to set</param>
         public SimpleStroke(double width)
@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new simple stroke with the specified color
+        /// Initializes a new instance of the <see cref="SimpleStroke"/> class.
         /// </summary>
         /// <param name="color">The color to use for the stroke</param>
         public SimpleStroke(Color color)
@@ -65,60 +65,14 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new simple stroke with the specified width and color
+        /// Initializes a new instance of the <see cref="SimpleStroke"/> class.
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="color"></param>
+        /// <param name="width">The double width of the line to set</param>
+        /// <param name="color">The color to use for the stroke</param>
         public SimpleStroke(double width, Color color)
         {
             Width = width;
             Color = color;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Gets a color to represent this line.  If the stroke doesn't work as a color,
-        /// then this color will be gray.
-        /// </summary>
-        /// <returns></returns>
-        public override Color GetColor()
-        {
-            return _color;
-        }
-
-        /// <summary>
-        /// Sets the color of this stroke to the specified color if possible.
-        /// </summary>
-        /// <param name="color">The color to assign to this color.</param>
-        public override void SetColor(Color color)
-        {
-            _color = color;
-        }
-
-        /// <summary>
-        /// Creates a system drawing pen that has all of the symbolic information
-        /// necessary for this stroke.
-        /// </summary>
-        /// <param name="width">The base width.  In symbolic drawing this is 1, but in
-        /// geographic drawing, this will be a number representing the result of a
-        /// transform from projToPixel width.</param>
-        /// <returns></returns>
-        public override Pen ToPen(double width)
-        {
-            float w = (float)(width * Width);
-            Pen result = new Pen(Color, w);
-            result.DashStyle = _dashStyle;
-            if (_dashStyle == DashStyle.Custom)
-            {
-                result.DashPattern = new[] { 1F };
-            }
-            result.LineJoin = LineJoin.Round;
-            result.StartCap = LineCap.Round;
-            result.EndCap = LineCap.Round;
-            return result;
         }
 
         #endregion
@@ -131,8 +85,15 @@ namespace DotSpatial.Symbology
         [Serialize("Color")]
         public Color Color
         {
-            get { return _color; }
-            set { _color = value; }
+            get
+            {
+                return _color;
+            }
+
+            set
+            {
+                _color = value;
+            }
         }
 
         /// <summary>
@@ -141,17 +102,28 @@ namespace DotSpatial.Symbology
         [Serialize("DashStyle")]
         public DashStyle DashStyle
         {
-            get { return _dashStyle; }
-            set { _dashStyle = value; }
+            get
+            {
+                return _dashStyle;
+            }
+
+            set
+            {
+                _dashStyle = value;
+            }
         }
 
         /// <summary>
-        /// gets or sets the opacity of the color.  1 is fully opaque while 0 is fully transparent.
+        /// gets or sets the opacity of the color. 1 is fully opaque while 0 is fully transparent.
         /// </summary>
         [Serialize("Opacity")]
         public float Opacity
         {
-            get { return _color.A / 255F; }
+            get
+            {
+                return _color.A / 255F;
+            }
+
             set
             {
                 float val = value;
@@ -168,16 +140,66 @@ namespace DotSpatial.Symbology
         [Serialize("Width")]
         public double Width
         {
-            get { return _width; }
-            set { _width = value; }
+            get
+            {
+                return _width;
+            }
+
+            set
+            {
+                _width = value;
+            }
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
 
         /// <summary>
-        /// Handles randomization of simple stroke content
+        /// Gets a color to represent this line. If the stroke doesn't work as a color,
+        /// then this color will be gray.
+        /// </summary>
+        /// <returns>The color.</returns>
+        public override Color GetColor()
+        {
+            return _color;
+        }
+
+        /// <summary>
+        /// Sets the color of this stroke to the specified color if possible.
+        /// </summary>
+        /// <param name="color">The color to assign to this color.</param>
+        public override void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        /// <summary>
+        /// Creates a system drawing pen that has all of the symbolic information necessary for this stroke.
+        /// </summary>
+        /// <param name="width">The base width. In symbolic drawing this is 1, but in geographic drawing,
+        /// this will be a number representing the result of a transform from projToPixel width.</param>
+        /// <returns>The created pen.</returns>
+        public override Pen ToPen(double width)
+        {
+            float w = (float)(width * Width);
+            Pen result = new Pen(Color, w)
+            {
+                DashStyle = _dashStyle,
+                LineJoin = LineJoin.Round,
+                StartCap = LineCap.Round,
+                EndCap = LineCap.Round
+            };
+            if (_dashStyle == DashStyle.Custom)
+            {
+                result.DashPattern = new[] { 1F };
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Handles randomization of simple stroke content.
         /// </summary>
         /// <param name="generator">The random generator to use for randomizing characteristics.</param>
         protected override void OnRandomize(Random generator)

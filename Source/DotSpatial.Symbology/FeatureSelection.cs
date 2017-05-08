@@ -54,7 +54,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Creates a new instance of FilterCollection, where the current state of the filter is
-        /// recorded as the kind of "collection" that this item belongs to.  The filter can be
+        /// recorded as the kind of "collection" that this item belongs to. The filter can be
         /// altered later, and this will retain the original state.
         /// </summary>
         public FeatureSelection(IFeatureSet featureSet, IDrawingFilter inFilter, FilterType activeType)
@@ -123,9 +123,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This uses extent checking (rather than full polygon intersection checking).  It will add
+        /// This uses extent checking (rather than full polygon intersection checking). It will add
         /// any members that are either contained by or intersect with the specified region
-        /// depending on the SelectionMode property.  The order of operation is the region
+        /// depending on the SelectionMode property. The order of operation is the region
         /// acting on the feature, so Contains, for instance, would work with points.
         /// </summary>
         /// <param name="region"></param>
@@ -329,7 +329,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This cycles through all the members in the current grouping and re-sets the current category
-        /// back to the default setting.  In other words, if the active type is selection, then this
+        /// back to the default setting. In other words, if the active type is selection, then this
         /// will unselect all the features, but won't adjust any of the other categories.
         /// </summary>
         /// <exception cref="ReadOnlyException">Occurs if this list is set to read-only in the constructor</exception>
@@ -459,7 +459,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Tests each member currently in the selected features based on
-        /// the SelectionMode.  If it passes, it will remove the feature from
+        /// the SelectionMode. If it passes, it will remove the feature from
         /// the selection.
         /// </summary>
         /// <param name="region">The geographic region to remove</param>
@@ -586,8 +586,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Collections can be nested, but for instance if you have gone into category[2].SelectedFeatures and want to
         /// remove an item, then we would expect it to show up in Category[2].UnSelectedFeatures, not in
-        /// Category[0].UnselectedFeatures.  So while add necessarilly acts on every filter constraint, remove or clear only
-        /// operates on the most intimate.  The ActiveType records which criteria that is.
+        /// Category[0].UnselectedFeatures. So while add necessarilly acts on every filter constraint, remove or clear only
+        /// operates on the most intimate. The ActiveType records which criteria that is.
         /// </summary>
         public FilterType ActiveType
         {

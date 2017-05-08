@@ -21,15 +21,12 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class EnvelopeArgs : EventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of EnvelopeArgs.
+        /// Initializes a new instance of the <see cref="EnvelopeArgs"/> class.
         /// </summary>
+        /// <param name="inEnvelope">Envelope of the event.</param>
         public EnvelopeArgs(Envelope inEnvelope)
         {
             Envelope = inEnvelope;
@@ -40,7 +37,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the envelope specific to this event.
+        /// Gets or sets the envelope specific to this event.
         /// </summary>
         public Envelope Envelope { get; protected set; }
 

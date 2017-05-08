@@ -29,7 +29,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of MatchableObject
+        /// Initializes a new instance of the <see cref="Descriptor"/> class.
         /// </summary>
         protected Descriptor()
         {
@@ -52,15 +52,14 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Compares the properties of this object with the specified IMatchable other.
-        /// This does not test every property of other, but does test every property
-        /// of this item.  As long as the other item has corresponding properties
-        /// for every property on this item, the items are said to match.
+        /// This does not test every property of other, but does test every property of this item.
+        /// As long as the other item has corresponding properties for every property on this item, the items are said to match.
         /// The IMatchable interface allows custom definitions of matching.
         /// For collections to match, all of their sub-members must match.
         /// </summary>
-        /// <param name="other"></param>
-        /// <param name="mismatchedProperties"></param>
-        /// <returns></returns>
+        /// <param name="other">Other IMatchable to check against.</param>
+        /// <param name="mismatchedProperties">Resulting list of mismatched Properties.</param>
+        /// <returns>False if there were mismatched properties.</returns>
         public bool Matches(IMatchable other, out List<string> mismatchedProperties)
         {
             mismatchedProperties = new List<string>();
@@ -77,15 +76,11 @@ namespace DotSpatial.Symbology
             OnRandomize(generator);
         }
 
-        #endregion
-
-        #region Protected Methods
-
         /// <summary>
         /// This occurs while copying properties from the specified source, and
         /// is the default handling for subclasses
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">Source to copy properties from.</param>
         protected virtual void OnCopyProperties(object source)
         {
             Type original = GetType();
@@ -96,12 +91,14 @@ namespace DotSpatial.Symbology
             {
                 if (originalProperty.CanWrite == false) continue;
                 if (copyProperties.Contains(originalProperty.Name) == false) continue;
+
                 PropertyInfo copyProperty = copyProperties.GetFirst(originalProperty.Name);
                 if (copyProperty == null)
                 {
                     // The name of the property was not found on the other object
                     continue;
                 }
+
                 object copyValue = copyProperty.GetValue(source, null);
                 if (copyProperty.GetCustomAttributes(typeof(ShallowCopy), true).Length == 0)
                 {
@@ -112,11 +109,12 @@ namespace DotSpatial.Symbology
                         continue;
                     }
                 }
+
                 // Use a shallow copy where ICloneable is not specifically defined.
                 originalProperty.SetValue(this, copyValue, null);
             }
 
-            // Public Fields ---------------------------------------------------------
+            // Public Fields
             FieldInfo[] originalFields = original.GetFields(BindingFlags.Public | BindingFlags.Instance);
             FieldInfo[] copyFields = copy.GetFields(BindingFlags.Public | BindingFlags.Instance);
             foreach (FieldInfo originalField in originalFields)
@@ -147,28 +145,29 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This gives sub-classes the chance to directly override, control or otherwise tamper
-        /// with the matching process.  This is also where normal matching is performed,
-        /// so to replace it, simply don't call the base.OnMatch method.  To tweak the results,
+        /// with the matching process. This is also where normal matching is performed,
+        /// so to replace it, simply don't call the base.OnMatch method. To tweak the results,
         /// the base method should be performed first, and the results can then be modified.
         /// </summary>
-        /// <param name="other"></param>
-        /// <param name="mismatchedProperties"></param>
-        /// <returns></returns>
+        /// <param name="other">Other IMatchable to check against.</param>
+        /// <param name="mismatchedProperties">Resulting list of mismatched Properties.</param>
+        /// <returns>False if there were mismatched properties.</returns>
         protected virtual bool OnMatch(IMatchable other, List<string> mismatchedProperties)
         {
             Type original = GetType();
             Type copy = other.GetType();
 
-            // Public Properties ------------------------------------------------------
+            // Public Properties
             PropertyInfo[] originalProperties = original.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             PropertyInfo[] copyProperties = copy.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo originalProperty in originalProperties)
             {
-                if (copyProperties.Contains(originalProperty.Name) == false)
+                if (!copyProperties.Contains(originalProperty.Name))
                 {
                     mismatchedProperties.Add(originalProperty.Name);
                     continue;
                 }
+
                 PropertyInfo copyProperty = copyProperties.GetFirst(originalProperty.Name);
                 if (copyProperty == null)
                 {
@@ -179,18 +178,18 @@ namespace DotSpatial.Symbology
 
                 object originalValue = originalProperty.GetValue(this, null);
                 object copyValue = copyProperty.GetValue(other, null);
-                if (Match(originalValue, copyValue) == false)
+                if (!Match(originalValue, copyValue))
                 {
                     mismatchedProperties.Add(originalProperty.Name);
                 }
             }
 
-            // Public Fields ---------------------------------------------------------
+            // Public Fields
             FieldInfo[] originalFields = original.GetFields(BindingFlags.Public | BindingFlags.Instance);
             FieldInfo[] copyFields = copy.GetFields(BindingFlags.Public | BindingFlags.Instance);
             foreach (FieldInfo originalField in originalFields)
             {
-                if (copyFields.Contains(originalField.Name) == false)
+                if (!copyFields.Contains(originalField.Name))
                 {
                     mismatchedProperties.Add(originalField.Name);
                     continue;
@@ -205,16 +204,13 @@ namespace DotSpatial.Symbology
 
                 object originalValue = originalField.GetValue(this);
                 object copyValue = copyField.GetValue(other);
-                if (Match(originalValue, copyValue) == false)
+                if (!Match(originalValue, copyValue))
                 {
                     mismatchedProperties.Add(originalField.Name);
                 }
             }
-            if (mismatchedProperties.Count > 0)
-            {
-                return false;
-            }
-            return true;
+
+            return mismatchedProperties.Count <= 0;
         }
 
         /// <summary>
@@ -233,16 +229,9 @@ namespace DotSpatial.Symbology
             {
                 object prop = originalProperty.GetValue(this, null);
                 IRandomizable rnd = prop as IRandomizable;
-                if (rnd != null)
-                {
-                    rnd.Randomize(generator);
-                }
+                rnd?.Randomize(generator);
             }
         }
-
-        #endregion
-
-        #region Private Functions
 
         private static bool Match(object originalValue, object copyValue)
         {
@@ -262,6 +251,7 @@ namespace DotSpatial.Symbology
             {
                 string mString = copyValue as string;
                 if (mString == null) return false;
+
                 return origString.Equals(mString);
             }
 
@@ -281,16 +271,20 @@ namespace DotSpatial.Symbology
                         {
                             return false;
                         }
+
                         e.MoveNext();
                     }
                 }
+
                 return true;
             }
+
             if (originalValue == null && copyValue == null) return true;
+
             // If the objects are not collections and are not IMatchable, the only remaining thing we can
             // realistically test is simple equality.
             // Don't use == here!  It will always be false for boxed value types.
-            return originalValue != null && (originalValue.Equals(copyValue));
+            return originalValue != null && originalValue.Equals(copyValue);
         }
 
         #endregion

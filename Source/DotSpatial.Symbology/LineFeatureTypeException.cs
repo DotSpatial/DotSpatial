@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of LineFeatureTypeException
+        /// Initializes a new instance of the <see cref="LineFeatureTypeException"/> class.
         /// </summary>
         public LineFeatureTypeException()
             : base(SymbologyMessageStrings.LineFeatureTypeException)
@@ -31,7 +31,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of LineFeatureTypeException
+        /// Initializes a new instance of the <see cref="LineFeatureTypeException"/> class.
         /// </summary>
         /// <param name="message">The custom error message for this exception</param>
         public LineFeatureTypeException(string message)

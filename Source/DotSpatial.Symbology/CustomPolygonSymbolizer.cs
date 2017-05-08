@@ -16,11 +16,16 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// A custom polygon symbolizer.
+    /// </summary>
     [Serializable]
     public class CustomPolygonSymbolizer : CustomSymbolizer
     {
+        #region Constructors
+
         /// <summary>
-        /// Creates a new CustomSymbolizer for symbolizing Polygons
+        /// Initializes a new instance of the <see cref="CustomPolygonSymbolizer"/> class.
         /// </summary>
         public CustomPolygonSymbolizer()
         {
@@ -28,7 +33,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new Custom Polygon symbolizer with the specified properties
+        /// Initializes a new instance of the <see cref="CustomPolygonSymbolizer"/> class.
         /// </summary>
         /// <param name="uniqueName">the unique name</param>
         /// <param name="name">the name of the custom symbolizer</param>
@@ -42,6 +47,10 @@ namespace DotSpatial.Symbology
             base.Symbolizer = symbolizer;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the Polygon symbolizer
         /// </summary>
@@ -51,8 +60,17 @@ namespace DotSpatial.Symbology
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public new IPolygonSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as IPolygonSymbolizer; }
-            set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as IPolygonSymbolizer;
+            }
+
+            set
+            {
+                base.Symbolizer = value;
+            }
         }
+
+        #endregion
     }
 }

@@ -44,14 +44,14 @@ namespace DotSpatial.Symbology
         char Character { get; set; }
 
         /// <summary>
-        /// Unicode characters consist of 2 bytes.  This represents the first byte,
+        /// Unicode characters consist of 2 bytes. This represents the first byte,
         /// which can be thought of as specifying a typeset.
         /// </summary>
         [Description("Gets or sets the upper unicode byte, or character set.")]
         byte CharacterSet { get; set; }
 
         /// <summary>
-        /// Gets or sets the byte code for the lower 256 values.  This represents the
+        /// Gets or sets the byte code for the lower 256 values. This represents the
         /// specific character in a given "typeset" range.
         /// </summary>
         /// <remarks>

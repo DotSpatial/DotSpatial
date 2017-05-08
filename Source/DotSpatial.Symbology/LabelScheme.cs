@@ -85,9 +85,9 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Attempts to reduce the integer index representing this categories rank in the
-        /// list.  By doing this, it will be drawn sooner, and therefore subsequent
+        /// list. By doing this, it will be drawn sooner, and therefore subsequent
         /// layers will be drawn on top of this layer, and so it reduces the categories
-        /// priority.  If this collection does not contain the category or it is already
+        /// priority. If this collection does not contain the category or it is already
         /// at index 0, this will return false.
         /// </summary>
         /// <param name="category">The ILabelCategory to demote</param>
@@ -109,7 +109,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This attempts to increase the numeric index, which will cause it to be drawn later,
         /// or higher up on the cue, which means it will be drawn AFTER the previous layers,
-        /// and therefore is a higher priority.  If the category does not exist in the collection
+        /// and therefore is a higher priority. If the category does not exist in the collection
         /// or the category is already at the highest value, this returns false.
         /// </summary>
         /// <param name="category">The category to promote if possible.</param>
@@ -131,7 +131,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// The individual categories are copied, meaning that the text symbolizers
         /// will be new, and disconnected from the original text symbolizers of this
-        /// scheme.  MemberwiseClone is used so that any subclass members appended
+        /// scheme. MemberwiseClone is used so that any subclass members appended
         /// to this will be shallow copies unless this method is overridden.
         /// </summary>
         /// <returns>A Duplicate LabelScheme, but with new, duplicated categories and symbolizers</returns>

@@ -18,11 +18,11 @@ using System.Collections.Generic;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// DataProviders
+    /// LayerProviders
     /// </summary>
     public class LayerProviders : EventArgs
     {
-        #region Private Variables
+        #region Fields
 
         private List<ILayerProvider> _providers;
 
@@ -31,7 +31,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DataProviders
+        /// Initializes a new instance of the <see cref="LayerProviders"/> class.
         /// </summary>
         /// <param name="providers">Specifies a list of IDataProviders</param>
         public LayerProviders(List<ILayerProvider> providers)
@@ -44,12 +44,19 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the list of providers for this event.
+        /// Gets or sets the list of providers for this event.
         /// </summary>
         public virtual List<ILayerProvider> Providers
         {
-            get { return _providers; }
-            protected set { _providers = value; }
+            get
+            {
+                return _providers;
+            }
+
+            protected set
+            {
+                _providers = value;
+            }
         }
 
         #endregion

@@ -38,7 +38,7 @@ namespace DotSpatial.Symbology
         void WriteBitmap(IProgressHandler progressHandler);
 
         /// <summary>
-        ///  Creates a bmp texture and saves it to the specified fileName.  The fileName should end in bmp.
+        ///  Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
         ///  This also generates a bpw world file for the texture.
         /// </summary>
         /// <param name="fileName">The string fileName to write to</param>
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology
         void ExportBitmap(string fileName, ImageBandType bandType);
 
         /// <summary>
-        /// Creates a bmp texture and saves it to the specified fileName.  The fileName should end in bmp.
+        /// Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
         /// This also generates a bpw world file for the texture.
         /// </summary>
         /// <param name="fileName">The string fileName to write to</param>
@@ -99,8 +99,8 @@ namespace DotSpatial.Symbology
         float ElevationFactor { get; set; }
 
         /// <summary>
-        /// Gets the exaggeration beyond normal elevation values.  A value of 1 is normal elevation, a vlaue of 0 would be flat,
-        /// while a value of 2 would be twice the normal elevation.  This applies to the three-dimensional rendering and is
+        /// Gets the exaggeration beyond normal elevation values. A value of 1 is normal elevation, a vlaue of 0 would be flat,
+        /// while a value of 2 would be twice the normal elevation. This applies to the three-dimensional rendering and is
         /// not related to the shaded relief pattern created by the texture.
         /// </summary>
         float Extrusion { get; set; }
@@ -111,12 +111,12 @@ namespace DotSpatial.Symbology
         string Filename { get; }
 
         /// <summary>
-        /// Gets the maximum value of this raster.  If this is an elevation raster, this is also the top.
+        /// Gets the maximum value of this raster. If this is an elevation raster, this is also the top.
         /// </summary>
         double Maximum { get; }
 
         /// <summary>
-        /// Gets the minimum value of this raster.  If this is an elevation raster, this is also the bottom.
+        /// Gets the minimum value of this raster. If this is an elevation raster, this is also the bottom.
         /// </summary>
         double Minimum { get; }
 

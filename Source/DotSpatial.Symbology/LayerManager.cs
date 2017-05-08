@@ -24,7 +24,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This can be used as a component to work as a LayerManager.  This also provides the
+    /// This can be used as a component to work as a LayerManager. This also provides the
     /// very important DefaultLayerManager property, which is where the developer controls
     /// what LayerManager should be used for their project.
     /// </summary>
@@ -56,8 +56,8 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets the implementation of ILayerManager for the project to use when
-        /// accessing data.  This is THE place where the LayerManager can be replaced
-        /// by a different data manager.  If you add this data manager to your
+        /// accessing data. This is THE place where the LayerManager can be replaced
+        /// by a different data manager. If you add this data manager to your
         /// project, this will automatically set itself as the DefaultLayerManager.
         /// However, since each DM will do this, you may have to control this manually
         /// if you add more than one LayerManager to the project in order to set the
@@ -80,9 +80,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets a temporary list of active project layers.  This is designed to house
+        /// Gets or sets a temporary list of active project layers. This is designed to house
         /// the layers from a map frame when the property grids are shown for layers in that
-        /// map frame.  This list on the DefaultLayerManager is what is used to create the
+        /// map frame. This list on the DefaultLayerManager is what is used to create the
         /// list that populates dropdowns that can take a Layer as a parameter.
         /// </summary>
         public IList<ILayer> ActiveProjectLayers
@@ -96,10 +96,10 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the LayerManager class.  A data manager is more or less
-        /// just a list of data providers to use.  The very important
+        /// Creates a new instance of the LayerManager class. A data manager is more or less
+        /// just a list of data providers to use. The very important
         /// LayerManager.DefaultLayerManager property controls which LayerManager will be used
-        /// to load data.  By default, each LayerManager sets itself as the default in its
+        /// to load data. By default, each LayerManager sets itself as the default in its
         /// constructor.
         /// </summary>
         public LayerManager()
@@ -211,7 +211,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This launches an open file dialog and attempts to load the specified file.
         /// </summary>
-        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages.  This value overrides the property on this DataManager.</param>
+        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
         /// <returns>A Layer</returns>
         public virtual ILayer OpenLayer(IProgressHandler progressHandler)
         {
@@ -260,7 +260,7 @@ namespace DotSpatial.Symbology
         /// This launches an open file dialog and attempts to load the specified file.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages.  This value overrides the property on this DataManager.</param>
+        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
         /// <returns>A Layer</returns>
         public virtual ILayer OpenLayer(string fileName, IProgressHandler progressHandler)
         {
@@ -272,9 +272,9 @@ namespace DotSpatial.Symbology
         /// that matches the extension on the string.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory.  This value overrides the property on this LayerManager.</param>
+        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory. This value overrides the property on this LayerManager.</param>
         /// <param name="container">A container to open this layer in</param>
-        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages.  This value overrides the property on this LayerManager.</param>
+        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this LayerManager.</param>
         /// <returns>An ILayer</returns>
         public virtual ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
@@ -317,7 +317,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This create new method implies that this provider has the priority for creating a new file.
-        /// An instance of the dataset should be created and then returned.  By this time, the fileName
+        /// An instance of the dataset should be created and then returned. By this time, the fileName
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
         /// <param name="name">The string fileName for the new instance.</param>
@@ -728,8 +728,8 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets a dictionary of ILayerProviders with corresponding extensions.  The
-        /// standard order is to try to load the data using a PreferredProvider.  If that
+        /// Gets or sets a dictionary of ILayerProviders with corresponding extensions. The
+        /// standard order is to try to load the data using a PreferredProvider. If that
         /// fails, then it will check the list of dataProviders, and finally, if that fails,
         /// it will check the plugin Layer Providers in directories.
         /// </summary>
@@ -937,7 +937,7 @@ namespace DotSpatial.Symbology
         /// This should be called once all the permitted directories have been set in the code.
         /// This will not affect the PreferredProviders or the general list of Providers.
         /// These automatically have the lowest priority and will only be used if nothing
-        /// else works.  Use the PreferredProviders to force preferential loading of
+        /// else works. Use the PreferredProviders to force preferential loading of
         /// a plugin LayerProvider.
         /// </summary>
         /// <returns>A list of just the newly added LayerProviders from this method.</returns>
@@ -998,7 +998,7 @@ namespace DotSpatial.Symbology
         /// ILayerProvder interface.
         /// </summary>
         /// <param name="fileName">The string path of the assembly to load from.</param>
-        /// <returns>A list that contains only the providers that were just loaded.  This may be a list of count 0, but shouldn't return null.</returns>
+        /// <returns>A list that contains only the providers that were just loaded. This may be a list of count 0, but shouldn't return null.</returns>
         public virtual List<ILayerProvider> LoadProvidersFromAssembly(string fileName)
         {
             List<ILayerProvider> result = new List<ILayerProvider>();

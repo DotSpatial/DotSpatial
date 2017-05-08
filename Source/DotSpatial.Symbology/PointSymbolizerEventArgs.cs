@@ -18,15 +18,12 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class PointSymbolizerEventArgs : FeatureSymbolizerEventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PointSymbolizerEventArgs
+        /// Initializes a new instance of the <see cref="PointSymbolizerEventArgs"/> class.
         /// </summary>
+        /// <param name="symbolizer">The symbolizer of the event.</param>
         public PointSymbolizerEventArgs(IPointSymbolizer symbolizer)
             : base(symbolizer)
         {
@@ -37,12 +34,19 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the symbolizer cast as an IPointSymbolizer
+        /// Gets or sets the symbolizer cast as an IPointSymbolizer.
         /// </summary>
         public new IPointSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as IPointSymbolizer; }
-            protected set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as IPointSymbolizer;
+            }
+
+            protected set
+            {
+                base.Symbolizer = value;
+            }
         }
 
         #endregion

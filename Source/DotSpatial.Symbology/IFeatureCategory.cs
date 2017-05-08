@@ -38,8 +38,8 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This gets a single color that attempts to represent the specified
-        /// category.  For polygons, for example, this is the fill color (or central fill color)
-        /// of the top pattern.  If an image is being used, the color will be gray.
+        /// category. For polygons, for example, this is the fill color (or central fill color)
+        /// of the top pattern. If an image is being used, the color will be gray.
         /// </summary>
         /// <returns>The System.Color that can be used as an approximation to represent this category.</returns>
         Color GetColor();

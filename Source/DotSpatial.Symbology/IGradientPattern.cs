@@ -29,7 +29,7 @@ namespace DotSpatial.Symbology
         double Angle { get; set; }
 
         /// <summary>
-        /// Gets or sets an array of colors that match the corresponding positions.  The length of
+        /// Gets or sets an array of colors that match the corresponding positions. The length of
         /// colors and positions should be the same length.
         /// </summary>
         Color[] Colors { get; set; }

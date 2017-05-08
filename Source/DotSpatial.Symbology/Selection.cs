@@ -23,8 +23,10 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Selection.
+        /// Initializes a new instance of the <see cref="Selection"/> class.
         /// </summary>
+        /// <param name="fs">The feature set.</param>
+        /// <param name="inFilter">The drawing filter.</param>
         public Selection(IFeatureSet fs, IDrawingFilter inFilter)
             : base(fs, inFilter, FilterType.Selection)
         {

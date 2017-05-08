@@ -19,7 +19,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// This is should not be instantiated because it cannot in itself perform the necessary functions.
     /// Instead, most of the specified functionality must be implemented in the more specific classes.
-    /// This is also why there is no direct constructor for this class.  You can use the static
+    /// This is also why there is no direct constructor for this class. You can use the static
     /// "FromFile" or "FromFeatureLayer" to create FeatureLayers from a file.
     /// </summary>
     public interface IFeatureLayer : ILayer
@@ -62,7 +62,7 @@ namespace DotSpatial.Symbology
         void AssignFastDrawnStates();
 
         /// <summary>
-        /// This method actually draws the image to the snapshot using the graphics object.  This should be
+        /// This method actually draws the image to the snapshot using the graphics object. This should be
         /// overridden in sub-classes because the drawing methods are very different.
         /// </summary>
         /// <param name="g">
@@ -120,7 +120,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This method will remove the in ram features from the underlying dataset.
-        /// This will not affect the data source.  Beware!  Removing features
+        /// This will not affect the data source. Beware!  Removing features
         /// without populating the DataTable first will almost assuredly mean
         /// indexing failures if you choose to load it later.
         /// </summary>
@@ -133,7 +133,7 @@ namespace DotSpatial.Symbology
         void RemoveSelectedFeatures();
 
         /// <summary>
-        /// Selects the specified list of features.  If the specified feature is already selected,
+        /// Selects the specified list of features. If the specified feature is already selected,
         /// this method will not alter it.
         /// </summary>
         /// <param name="featureIndices">
@@ -191,7 +191,7 @@ namespace DotSpatial.Symbology
         /// The 0 based integer shape index
         /// </param>
         /// <param name="category">
-        /// The category for this feature.  The exact kind of category depends on the
+        /// The category for this feature. The exact kind of category depends on the
         /// feature type.
         /// </param>
         void SetCategory(int index, IFeatureCategory category);
@@ -210,7 +210,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This forces the creation of a category for the specified symbolizer, if it doesn't exist.
-        /// This will add the specified feature to the category.  Be sure that the symbolizer type
+        /// This will add the specified feature to the category. Be sure that the symbolizer type
         /// matches the feature type.
         /// </summary>
         /// <param name="index">
@@ -246,9 +246,9 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Creates a bitmap of the requested size that covers the specified geographic extent using
-        /// the current symbolizer for this layer.  This does not have any drawing optimizations,
+        /// the current symbolizer for this layer. This does not have any drawing optimizations,
         /// or techniques to speed up performance and should only be used in special cases like
-        /// draping of vector content onto a texture.  It also doesn't worry about selections.
+        /// draping of vector content onto a texture. It also doesn't worry about selections.
         /// </summary>
         /// <param name="geographicExtent">
         /// The extent to use when computing the snapshot.
@@ -262,7 +262,7 @@ namespace DotSpatial.Symbology
         Bitmap SnapShot(Extent geographicExtent, int width);
 
         /// <summary>
-        /// Unselects the specified features.  If any features already unselected, they are ignored.
+        /// Unselects the specified features. If any features already unselected, they are ignored.
         /// </summary>
         /// <param name="featureIndices">
         /// </param>
@@ -304,20 +304,20 @@ namespace DotSpatial.Symbology
         new IFeatureSet DataSet { get; set; }
 
         /// <summary>
-        /// Controls the drawn states according to a feature index.  This is used if the EditMode is
-        /// false.  When EditMode is true, then drawn states are tied to the features instead.
+        /// Controls the drawn states according to a feature index. This is used if the EditMode is
+        /// false. When EditMode is true, then drawn states are tied to the features instead.
         /// </summary>
         FastDrawnState[] DrawnStates { get; set; }
 
         /// <summary>
-        /// Gets or sets the Boolean flag that controls whether the DrawnStates are needed.  If nothing is selected,
+        /// Gets or sets the Boolean flag that controls whether the DrawnStates are needed. If nothing is selected,
         /// and there is only one category, and there is no filter expression on that category, then this should be false.
         /// </summary>
         bool DrawnStatesNeeded { get; set; }
 
         /// <summary>
-        /// Gets or sets a Boolean.  If edit mode is true, feature index is ignored, and features
-        /// are assumed to be entirely loaded into ram.  If edit mode is false, then index
+        /// Gets or sets a Boolean. If edit mode is true, feature index is ignored, and features
+        /// are assumed to be entirely loaded into ram. If edit mode is false, then index
         /// is used instead and features are not assumed to be loaded into ram.
         /// </summary>
         bool EditMode { get; set; }

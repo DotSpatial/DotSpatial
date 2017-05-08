@@ -21,26 +21,13 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class PointCategoryCollection : ChangeEventList<IPointCategory>
     {
+        #region Fields
+
         private IPointScheme _scheme;
 
-        /// <summary>
-        /// Gets or sets the parent scheme.
-        /// </summary>
-        public IPointScheme Scheme
-        {
-            get { return _scheme; }
-            set
-            {
-                _scheme = value;
-                UpdateItemParentPointers();
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Occurs when a category indicates that its filter expression should be used
-        /// to select its members.
-        /// </summary>
-        public event EventHandler<ExpressionEventArgs> SelectFeatures;
+        #region Events
 
         /// <summary>
         /// Occurs when the deselect features context menu is clicked.
@@ -48,13 +35,52 @@ namespace DotSpatial.Symbology
         public event EventHandler<ExpressionEventArgs> DeselectFeatures;
 
         /// <summary>
-        /// Instructs the parent layer to select features matching the specified expression.
+        /// Occurs when a category indicates that its filter expression should be used
+        /// to select its members.
         /// </summary>
-        /// <param name="sender">The object sender where features were selected.</param>
-        /// <param name="e">The event args describing which expression was used.</param>
-        protected virtual void OnSelectFeatures(object sender, ExpressionEventArgs e)
+        public event EventHandler<ExpressionEventArgs> SelectFeatures;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the parent scheme.
+        /// </summary>
+        public IPointScheme Scheme
         {
-            if (SelectFeatures != null) SelectFeatures(sender, e);
+            get
+            {
+                return _scheme;
+            }
+
+            set
+            {
+                _scheme = value;
+                UpdateItemParentPointers();
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Overrides the OnCopy method to remove the SelectFeatures handler on the copy
+        /// </summary>
+        /// <param name="copy">The copy.</param>
+        protected override void OnCopy(CopyList<IPointCategory> copy)
+        {
+            PointCategoryCollection pcc = copy as PointCategoryCollection;
+            if (pcc?.SelectFeatures != null)
+            {
+                foreach (var handler in pcc.SelectFeatures.GetInvocationList())
+                {
+                    pcc.SelectFeatures -= (EventHandler<ExpressionEventArgs>)handler;
+                }
+            }
+
+            base.OnCopy(copy);
         }
 
         /// <summary>
@@ -64,7 +90,21 @@ namespace DotSpatial.Symbology
         /// <param name="e">The event args describing which expression was used.</param>
         protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
         {
-            if (DeselectFeatures != null) DeselectFeatures(sender, e);
+            DeselectFeatures?.Invoke(sender, e);
+        }
+
+        /// <summary>
+        /// Ensures that items are disconnected from parent items when removed from the collection.
+        /// </summary>
+        /// <param name="item">The item that gets excluded.</param>
+        protected override void OnExclude(IPointCategory item)
+        {
+            if (item == null) return;
+
+            item.SelectFeatures -= OnSelectFeatures;
+            item.DeselectFeatures -= OnDeselectFeatures;
+            item.SetParentItem(null);
+            base.OnExclude(item);
         }
 
         /// <summary>
@@ -74,6 +114,7 @@ namespace DotSpatial.Symbology
         protected override void OnInclude(IPointCategory item)
         {
             if (_scheme == null) return;
+
             item.SelectFeatures += OnSelectFeatures;
             item.DeselectFeatures += OnDeselectFeatures;
             item.SetParentItem(_scheme.AppearsInLegend ? _scheme : _scheme.GetParentItem());
@@ -81,33 +122,13 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Ensures that items are disconnected from parent items when removed from the collection.
+        /// Instructs the parent layer to select features matching the specified expression.
         /// </summary>
-        /// <param name="item"></param>
-        protected override void OnExclude(IPointCategory item)
+        /// <param name="sender">The object sender where features were selected.</param>
+        /// <param name="e">The event args describing which expression was used.</param>
+        protected virtual void OnSelectFeatures(object sender, ExpressionEventArgs e)
         {
-            if (item == null) return;
-            item.SelectFeatures -= OnSelectFeatures;
-            item.DeselectFeatures -= OnDeselectFeatures;
-            item.SetParentItem(null);
-            base.OnExclude(item);
-        }
-
-        /// <summary>
-        /// Overrides the OnCopy method to remove the SelectFeatures handler on the copy
-        /// </summary>
-        /// <param name="copy"></param>
-        protected override void OnCopy(CopyList<IPointCategory> copy)
-        {
-            PointCategoryCollection pcc = copy as PointCategoryCollection;
-            if (pcc != null && pcc.SelectFeatures != null)
-            {
-                foreach (var handler in pcc.SelectFeatures.GetInvocationList())
-                {
-                    pcc.SelectFeatures -= (EventHandler<ExpressionEventArgs>)handler;
-                }
-            }
-            base.OnCopy(copy);
+            SelectFeatures?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -127,5 +148,7 @@ namespace DotSpatial.Symbology
                 }
             }
         }
+
+        #endregion
     }
 }

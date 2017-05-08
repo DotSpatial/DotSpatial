@@ -20,7 +20,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Applies the minimum and maximum in order to create the filter expression.  This will also
+        /// Applies the minimum and maximum in order to create the filter expression. This will also
         /// count the members that match the specified criteria.
         /// </summary>
         void ApplyMinMax(EditorSettings settings);

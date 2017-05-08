@@ -38,14 +38,14 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or Sets a ScaleModes enumeration that determines whether non-coordinate drawing
-        /// properties like width or size use pixels or world coordinates.  If pixels are
+        /// properties like width or size use pixels or world coordinates. If pixels are
         /// specified, a back transform is used to approximate pixel sizes.
         /// </summary>
         ScaleMode ScaleMode { get; set; }
 
         /// <summary>
         /// Gets or sets the smoothing mode to use that controls advanced features like
-        /// anti-aliasing.  By default this is set to antialias.
+        /// anti-aliasing. By default this is set to antialias.
         /// </summary>
         bool Smoothing { get; set; }
 

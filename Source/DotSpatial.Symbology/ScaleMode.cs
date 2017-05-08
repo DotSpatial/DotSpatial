@@ -15,7 +15,7 @@ namespace DotSpatial.Symbology
 {
     /// <summary>
     /// Specifies whether non-coordinate drawing properties like width or size
-    /// use pixels or map coordinates.  If pixels are used, a "back transform"
+    /// use pixels or map coordinates. If pixels are used, a "back transform"
     /// to approximate pixel sizes.
     /// </summary>
     public enum ScaleMode

@@ -21,12 +21,12 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class FeatureChangeArgs : EventArgs
     {
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of FeatureChangeArgs.
+        /// Initializes a new instance of the <see cref="FeatureChangeArgs"/> class.
         /// </summary>
+        /// <param name="inChangedFeatures">The changed features.</param>
         public FeatureChangeArgs(List<int> inChangedFeatures)
         {
             ChangedFeatures = inChangedFeatures;
@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the list of features that were changed by this event.
+        /// Gets or sets the list of features that were changed by this event.
         /// </summary>
         public List<int> ChangedFeatures { get; protected set; }
 

@@ -179,9 +179,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Tests the specified legend item.  If the item is another layer or a group or a map-frame, then this
-        /// will return false.  Furthermore, if the parent of the item is not also this object, then it will
-        /// also return false.  The idea is that layers can have sub-nodes move around, but not transport from
+        /// Tests the specified legend item. If the item is another layer or a group or a map-frame, then this
+        /// will return false. Furthermore, if the parent of the item is not also this object, then it will
+        /// also return false. The idea is that layers can have sub-nodes move around, but not transport from
         /// place to place.
         /// </summary>
         /// <param name="item">the legend item to test</param>
@@ -257,9 +257,9 @@ namespace DotSpatial.Symbology
         public ILayerActions LayerActions { get; set; }
 
         /// <summary>
-        /// Gets or sets the internal data set.  This can be null, as in the cases of groups or map-frames.
+        /// Gets or sets the internal data set. This can be null, as in the cases of groups or map-frames.
         /// Copying a layer should not create a duplicate of the dataset, but rather it should point to the
-        /// original dataset.  The ShallowCopy attribute is used so even though the DataSet itself may be cloneable,
+        /// original dataset. The ShallowCopy attribute is used so even though the DataSet itself may be cloneable,
         /// cloning a layer will treat the dataset like a shallow copy.
         /// </summary>
         [Browsable(false)]
@@ -293,7 +293,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Serialize("DynamicVisibilityWidth")]
         [Category("Behavior")]
-        [Description("Dynamic visibility represents layers that only appear when the zoom scale is closer (or further) from a set scale.  This value represents the geographic width where the change takes place.")]
+        [Description("Dynamic visibility represents layers that only appear when the zoom scale is closer (or further) from a set scale. This value represents the geographic width where the change takes place.")]
         public double DynamicVisibilityWidth { get; set; }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace DotSpatial.Symbology
         public virtual IFrame MapFrame { get; set; }
 
         /// <summary>
-        /// Gets or sets the ProgressHandler for this layer.  Setting this overrides the default
+        /// Gets or sets the ProgressHandler for this layer. Setting this overrides the default
         /// behavior which is to use the
         /// </summary>
         [Browsable(false)]
@@ -446,7 +446,7 @@ namespace DotSpatial.Symbology
         #region Protected Methods
 
         /// <summary>
-        /// Layers launch a "Property Grid" by default.  However, this can be overridden with a different UIEditor by this
+        /// Layers launch a "Property Grid" by default. However, this can be overridden with a different UIEditor by this
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -472,7 +472,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Occurs before showing the properties dialog.  If the handled member
+        /// Occurs before showing the properties dialog. If the handled member
         /// was set to true, then this class will not show the event args.
         /// </summary>
         /// <param name="e"></param>
@@ -609,7 +609,7 @@ namespace DotSpatial.Symbology
         #region Static Methods
 
         /// <summary>
-        /// Opens a fileName using the default layer provider and returns a new layer.  The layer will not automatically have a container or be added to a map.
+        /// Opens a fileName using the default layer provider and returns a new layer. The layer will not automatically have a container or be added to a map.
         /// </summary>
         /// <param name="fileName">The string fileName of the layer to open</param>
         /// <returns>An ILayer interface</returns>
@@ -620,7 +620,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Opens a fileName using the default layer provider and returns a new layer.  The layer will not automatically have a container or be added to a map.
+        /// Opens a fileName using the default layer provider and returns a new layer. The layer will not automatically have a container or be added to a map.
         /// </summary>
         /// <param name="fileName">The string fileName of the layer to open</param>
         /// <param name="progressHandler">An IProgresshandler that overrides the Default Layer Manager's progress handler</param>
@@ -648,9 +648,9 @@ namespace DotSpatial.Symbology
         /// that matches the extension on the string.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory.  This value overrides the property on this LayerManager.</param>
+        /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory. This value overrides the property on this LayerManager.</param>
         /// <param name="container">A container to open this layer in</param>
-        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages.  This value overrides the property on this LayerManager.</param>
+        /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this LayerManager.</param>
         /// <returns>An ILayer</returns>
         public virtual ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
@@ -759,7 +759,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Locks dispose.  This typically adds one instance of an internal reference counter.
+        /// Locks dispose. This typically adds one instance of an internal reference counter.
         /// </summary>
         public void LockDispose()
         {
@@ -779,7 +779,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Unlocks dispose.  This typically removes one instance of an internal reference counter.
+        /// Unlocks dispose. This typically removes one instance of an internal reference counter.
         /// </summary>
         public void UnlockDispose()
         {

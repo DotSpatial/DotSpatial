@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
     {
         /// <summary>
         /// This create new method implies that this provider has the priority for creating a new file.
-        /// An instance of the dataset should be created and then returned.  By this time, the fileName
+        /// An instance of the dataset should be created and then returned. By this time, the fileName
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
         /// <param name="name">The string fileName for the new instance.</param>

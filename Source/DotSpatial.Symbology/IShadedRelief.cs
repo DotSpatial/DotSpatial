@@ -41,21 +41,21 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets a float specifying how strong the ambient directional light is.  This should probably be about 1.
+        /// Gets or sets a float specifying how strong the ambient directional light is. This should probably be about 1.
         /// </summary>
         float AmbientIntensity { get; set; }
 
         /// <summary>
-        /// This is kept separate from extrusion to reduce confusion.  This is a conversion factor that will
+        /// This is kept separate from extrusion to reduce confusion. This is a conversion factor that will
         /// convert the units of elevation into the same units that the latitude and longitude are stored in.
         /// To convert feet to decimal degrees is around a factor of .00000274
         /// </summary>
         float ElevationFactor { get; set; }
 
         /// <summary>
-        /// A float value expression that modifies the "height" of the apparent shaded relief.  A value
+        /// A float value expression that modifies the "height" of the apparent shaded relief. A value
         /// of 1 should show the mountains at their true elevations, presuming the ElevationFactor is
-        /// correct.  A value of 0 would be totally flat, while 2 would be twice the value.
+        /// correct. A value of 0 would be totally flat, while 2 would be twice the value.
         /// </summary>
         float Extrusion { get; set; }
 

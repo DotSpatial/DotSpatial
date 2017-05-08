@@ -1138,7 +1138,7 @@ namespace DotSpatial.Symbology.Forms
             if (_isRaster)
             {
                 _values = _raster.GetRandomValues(_rasterSymbolizer.EditorSettings.MaxSampleCount);
-                _statistics.Calculate(_values, _rasterSymbolizer.EditorSettings.Min, _rasterSymbolizer.EditorSettings.Max);
+                _statistics.Calculate(_values);
                 if (_values == null) return;
                 return;
             }

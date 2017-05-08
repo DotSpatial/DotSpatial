@@ -22,7 +22,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Opens the specified image or icon file to a local copy.  Icons are converted into bitmaps.
+        /// Opens the specified image or icon file to a local copy. Icons are converted into bitmaps.
         /// </summary>
         /// <param name="fileName">The string fileName to open.</param>
         void Open(string fileName);
@@ -47,7 +47,7 @@ namespace DotSpatial.Symbology
         Image Picture { get; set; }
 
         /// <summary>
-        /// Gets or sets the picture fileName.  Setting this will load the picture.
+        /// Gets or sets the picture fileName. Setting this will load the picture.
         /// </summary>
         string PictureFilename { get; set; }
 

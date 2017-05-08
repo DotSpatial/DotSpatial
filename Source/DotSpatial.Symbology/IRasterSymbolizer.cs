@@ -49,7 +49,7 @@ namespace DotSpatial.Symbology
         void CreateHillShade(IProgressHandler progressHandler);
 
         /// <summary>
-        /// Gets the color for a specific row and column.  This does not include any hillshade information.
+        /// Gets the color for a specific row and column. This does not include any hillshade information.
         /// </summary>
         /// <param name="value">The double value to find in the colorbreaks.</param>
         /// <returns>A Color</returns>
@@ -69,7 +69,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Indicates that the bitmap has been updated and that the colorscheme is currently
-        /// synchronized with the characteristics of this symbolizer.  This also fires the
+        /// synchronized with the characteristics of this symbolizer. This also fires the
         /// ColorSchemeChanged event.
         /// </summary>
         void Validate();
@@ -89,17 +89,17 @@ namespace DotSpatial.Symbology
         RasterEditorSettings EditorSettings { get; set; }
 
         /// <summary>
-        /// This is kept separate from extrusion to reduce confusion.  This is a conversion factor that will
+        /// This is kept separate from extrusion to reduce confusion. This is a conversion factor that will
         /// convert the units of elevation into the same units that the latitude and longitude are stored in.
-        /// To convert feet to decimal degrees is around a factor of .00000274.  This is used only in the
+        /// To convert feet to decimal degrees is around a factor of .00000274. This is used only in the
         /// 3D-context and does not affect ShadedRelief.
         /// </summary>
         float ElevationFactor { get; set; }
 
         /// <summary>
-        /// A float value expression that modifies the "height" of the apparent shaded relief.  A value
+        /// A float value expression that modifies the "height" of the apparent shaded relief. A value
         /// of 1 should show the mountains at their true elevations, presuming the ElevationFactor is
-        /// correct.  A value of 0 would be totally flat, while 2 would be twice the value.  This controls
+        /// correct. A value of 0 would be totally flat, while 2 would be twice the value. This controls
         /// the 3D effects and has nothing to do with the creation of shaded releif on the texture.
         /// </summary>
         float Extrusion { get; set; }
@@ -116,7 +116,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets a boolean that determines whether to treat the values as if they are elevation
-        /// in the 3-D context.  If this is true, then it will automatically use this grid for
+        /// in the 3-D context. If this is true, then it will automatically use this grid for
         /// calculating elevation values.
         /// </summary>
         bool IsElevation { get; set; }
@@ -152,7 +152,7 @@ namespace DotSpatial.Symbology
         bool MeshHasChanged { get; set; }
 
         /// <summary>
-        /// Gets or sets the parent layer.  This is not always used, but can be useful for symbolic editing
+        /// Gets or sets the parent layer. This is not always used, but can be useful for symbolic editing
         /// that may require a bitmap to be drawn with draped vector layers.
         /// </summary>
         IRasterLayer ParentLayer { get; set; }
@@ -163,7 +163,7 @@ namespace DotSpatial.Symbology
         IColorScheme Scheme { get; set; }
 
         /// <summary>
-        /// Gets or sets the characteristics of the shaded relief.  This only affects the coloring,
+        /// Gets or sets the characteristics of the shaded relief. This only affects the coloring,
         /// and will not control any 3-D properties.
         /// </summary>
         IShadedRelief ShadedRelief { get; set; }

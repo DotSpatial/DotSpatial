@@ -27,7 +27,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// This will set all values to the default (0) category.  Then, it will use the filter
+        /// This will set all values to the default (0) category. Then, it will use the filter
         /// expressions on the remaining categories to change the categories for those members.
         /// This means that an item will be classified as the last filter that it qualifies for.
         /// </summary>
@@ -45,7 +45,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// If UseChunks is true, this uses the index value combined with the chunk size
         /// to calculate the chunk, and also sets the category to the [0] category and the
-        /// selection state to unselected.  This can be overridden in sub-classes to come up
+        /// selection state to unselected. This can be overridden in sub-classes to come up
         /// with a different default state.
         /// </summary>
         /// <param name="index">The integer index to get the default state of</param>
@@ -67,7 +67,7 @@ namespace DotSpatial.Symbology
         int Chunk { get; set; }
 
         /// <summary>
-        /// Gets or sets the integer size of each chunk.  Setting this to
+        /// Gets or sets the integer size of each chunk. Setting this to
         /// a new value will cycle through and update the chunk on all
         /// the features.
         /// </summary>
@@ -76,7 +76,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// If the drawing state for any features has changed, or else if
         /// the state of any members has changed, this will cycle through
-        /// the filter members and cache a new count.  If nothing has
+        /// the filter members and cache a new count. If nothing has
         /// changed, then this will simply return the cached value.
         /// </summary>
         int Count { get; }

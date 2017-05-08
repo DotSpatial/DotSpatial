@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This open method is only called if this plugin has been given priority for one
         /// of the file extensions supported in the DialogReadFilter property supplied by
-        /// this control.  Failing to provide a DialogReadFilter will result in this plugin
+        /// this control. Failing to provide a DialogReadFilter will result in this plugin
         /// being added to the list of DataProviders being supplied under the Add Other Data
         /// option in the file menu.
         /// </summary>
@@ -31,7 +31,7 @@ namespace DotSpatial.Symbology
         /// <param name="inRam">A boolean that, if ture, will request that the data be loaded into memory</param>
         /// <param name="container">Any valid IContainer that should have the new layer automatically added to it</param>
         /// <param name="progressHandler">An IProgressHandler interface for status messages</param>
-        /// <returns>A List of IDataSets to be added to the Map.  These can also be groups of datasets.</returns>
+        /// <returns>A List of IDataSets to be added to the Map. These can also be groups of datasets.</returns>
         ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler);
 
         #endregion
@@ -40,7 +40,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
-        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
+        /// by the | symbol. Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
         /// on this object.
         /// </summary>
         string DialogReadFilter { get; }
@@ -52,7 +52,7 @@ namespace DotSpatial.Symbology
         string DialogWriteFilter { get; }
 
         /// <summary>
-        /// Gets a prefereably short name that identifies this data provider.  Example might be GDAL.
+        /// Gets a prefereably short name that identifies this data provider. Example might be GDAL.
         /// This will be prepended to each of the DialogReadFilter members from this plugin.
         /// </summary>
         string Name { get; }

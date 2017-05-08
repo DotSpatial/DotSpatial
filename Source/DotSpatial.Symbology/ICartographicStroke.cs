@@ -90,7 +90,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets the floating poing offset (in pixels) for the line to be drawn to the left of
-        /// the original line.  (Internally, this will modify the width and compound array for the
+        /// the original line. (Internally, this will modify the width and compound array for the
         /// actual pen being used, as Pens do not support an offset property).
         /// </summary>
         float Offset { get; set; }

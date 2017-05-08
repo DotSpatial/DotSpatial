@@ -73,7 +73,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Returns a shallow copy of this category with the exception of
-        /// the TextSymbolizer, which is duplicated.  This uses memberwise
+        /// the TextSymbolizer, which is duplicated. This uses memberwise
         /// clone, so sublcasses using this method will return an appropriate
         /// version.
         /// </summary>

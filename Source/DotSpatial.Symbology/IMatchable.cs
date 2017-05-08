@@ -24,7 +24,7 @@ namespace DotSpatial.Symbology
     public interface IMatchable
     {
         /// <summary>
-        /// Tests this object against the comparison object.  If any of the
+        /// Tests this object against the comparison object. If any of the
         /// value type members are different, or if any of the properties
         /// are IMatchable and do not match, then this returns false.
         /// </summary>

@@ -346,7 +346,7 @@ namespace DotSpatial.Symbology
             Values = raster.GetRandomValues(EditorSettings.MaxSampleCount);
             var keepers = Values.Where(val => val != raster.NoDataValue).ToList();
             Values = keepers;
-            Statistics.Calculate(Values, raster.Minimum, raster.Maximum);
+            Statistics.Calculate(Values);
         }
 
         /// <summary>

@@ -16,56 +16,40 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// RasterEditorSettings
+    /// </summary>
     [Serializable]
     public class RasterEditorSettings : EditorSettings
     {
-        #region Private Variables
-
-        private double _max;
-        private double _min;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of VectorEditorSettings
+        /// Initializes a new instance of the <see cref="RasterEditorSettings"/> class.
         /// </summary>
         public RasterEditorSettings()
         {
             NumBreaks = 2;
             MaxSampleCount = 10000;
-            _min = -100000;
-            _max = 1000000;
+            Min = -100000;
+            Max = 1000000;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the minimum value that will contribute to statistics
-        /// </summary>
-        [Serialize("Min")]
-        public double Min
-        {
-            get { return _min; }
-            set { _min = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the maximum value that will contribute to statistics.
         /// </summary>
         [Serialize("Max")]
-        public double Max
-        {
-            get { return _max; }
-            set { _max = value; }
-        }
+        public double Max { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value that will contribute to statistics
+        /// </summary>
+        [Serialize("Min")]
+        public double Min { get; set; }
 
         #endregion
     }

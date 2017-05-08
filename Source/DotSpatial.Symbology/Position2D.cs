@@ -19,38 +19,22 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Position2D is much simpler than a typical geometric construct, using fields instead of properties to make it work faster.
+    /// Position2D is much simpler than a typical geometric construct.
     /// </summary>
     [TypeConverter(typeof(Position2DConverter))]
     public class Position2D : Descriptor
     {
-        /// <summary>
-        /// The position in the X, or horizontal direction
-        /// </summary>
-        [Serialize("X")]
-        public double X;
-
-        /// <summary>
-        /// The position in the Y or vertical direction
-        /// </summary>
-        [Serialize("Y")]
-        public double Y;
-
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Position2D
+        /// Initializes a new instance of the <see cref="Position2D"/> class.
         /// </summary>
         public Position2D()
         {
         }
 
         /// <summary>
-        /// Creates a new position2D class using the specified coordinates
+        /// Initializes a new instance of the <see cref="Position2D"/> class.
         /// </summary>
         /// <param name="x">The X or horizontal coordinate</param>
         /// <param name="y">The Y or vertical coordinate</param>
@@ -62,7 +46,32 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the position in the X, or horizontal direction.
+        /// </summary>
+        [Serialize("X")]
+        public double X { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position in the Y or vertical direction.
+        /// </summary>
+        [Serialize("Y")]
+        public double Y { get; set; }
+
+        #endregion
+
         #region Methods
+
+        /// <summary>
+        /// Creates a valid 2D coordinate using this position2D class.
+        /// </summary>
+        /// <returns>A coordinate with the Position2Ds x and y value.</returns>
+        public Coordinate ToCoordinate()
+        {
+            return new Coordinate(X, Y);
+        }
 
         /// <summary>
         /// Randomizes the position by selecting a random position from -1000 to 1000 for X and Y
@@ -70,17 +79,8 @@ namespace DotSpatial.Symbology
         /// <param name="generator">The random number generator so that a seed can be chosen.</param>
         protected override void OnRandomize(Random generator)
         {
-            X = generator.NextDouble() * 2000 - 1000;
-            Y = generator.NextDouble() * 2000 - 1000;
-        }
-
-        /// <summary>
-        /// Creates a valid 2D coordinate using this position2D class
-        /// </summary>
-        /// <returns></returns>
-        public Coordinate ToCoordinate()
-        {
-            return new Coordinate(X, Y);
+            X = (generator.NextDouble() * 2000) - 1000;
+            Y = (generator.NextDouble() * 2000) - 1000;
         }
 
         #endregion

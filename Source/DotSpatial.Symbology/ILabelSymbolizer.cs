@@ -66,10 +66,10 @@ namespace DotSpatial.Symbology
         bool BorderVisible { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.
+        /// Gets or sets the color of the actual shadow. Use the alpha channel to specify opacity.
         /// </summary>
         [Category("Shadow")]
-        [Description("Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.")]
+        [Description("Gets or sets the color of the actual shadow. Use the alpha channel to specify opacity.")]
         Color DropShadowColor { get; set; }
 
         /// <summary>
@@ -192,22 +192,22 @@ namespace DotSpatial.Symbology
         PartLabelingMethod PartsLabelingMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean.  If true, as high priority labels are placed, they
+        /// Gets or sets a boolean. If true, as high priority labels are placed, they
         /// take up space and will not allow low priority labels that conflict for the
         /// space to be placed.
         /// </summary>
         bool PreventCollisions { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean.  Normally high values from the field are given
-        /// a higher priority.  If this is true, low values are given priority instead.
+        /// Gets or sets a boolean. Normally high values from the field are given
+        /// a higher priority. If this is true, low values are given priority instead.
         /// </summary>
         bool PrioritizeLowValues { get; set; }
 
         /// <summary>
         /// Gets or sets the string field name for the field that controls which labels
-        /// get placed first.  If collision detection is on, a higher priority means
-        /// will get placed first.  If it is off, higher priority will be labeled
+        /// get placed first. If collision detection is on, a higher priority means
+        /// will get placed first. If it is off, higher priority will be labeled
         /// on top of lower priority.
         /// </summary>
         string PriorityField { get; set; }

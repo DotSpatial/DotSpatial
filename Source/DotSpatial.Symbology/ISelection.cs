@@ -21,14 +21,14 @@ namespace DotSpatial.Symbology
     public interface ISelection : IAttributeSource
     {
           /// <summary>
-        /// Occurs when members are added to or removed from this collection.  If SuspendChanges
+        /// Occurs when members are added to or removed from this collection. If SuspendChanges
         /// is called, this will temporarilly prevent this event from firing, until ResumeEvents
         /// has been called.
         /// </summary>
         event EventHandler Changed;
 
         /// <summary>
-        /// Resumes the events.  If any changes occured during the period of time when
+        /// Resumes the events. If any changes occured during the period of time when
         /// the events were suspended, this will automatically fire the chnaged event.
         /// </summary>
         void ResumeChanges();
@@ -40,7 +40,7 @@ namespace DotSpatial.Symbology
         void SuspendChanges();
 
         /// <summary>
-        /// To suspend events, call SuspendChanges.  Then to resume events, call ResumeEvents.  If the
+        /// To suspend events, call SuspendChanges. Then to resume events, call ResumeEvents. If the
         /// suspension is greater than 0, then events are suspended.
         /// </summary>
         bool ChangesSuspended { get; }

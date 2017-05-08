@@ -26,7 +26,7 @@ namespace DotSpatial.Symbology
         void ClearSelection();
 
         /// <summary>
-        /// Expression creates the labels based on the given string expression.  Field names in
+        /// Expression creates the labels based on the given string expression. Field names in
         /// square brackets will be replaced by the values for those fields in the FeatureSet.
         /// </summary>
         void CreateLabels();
@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology
         new void Invalidate();
 
         /// <summary>
-        /// Highlights the values from a specified region.  This will not unselect any members,
+        /// Highlights the values from a specified region. This will not unselect any members,
         /// so if you want to select a new region instead of an old one, first use ClearSelection.
         /// This is the default selection that only tests the anchor point, not the entire label.
         /// </summary>
@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
         IFeatureSet FeatureSet { get; set; }
 
         /// <summary>
-        /// Gets or sets an optional layer to link this layer to.  If this is specified, then drawing will
+        /// Gets or sets an optional layer to link this layer to. If this is specified, then drawing will
         /// be associated with this layer.
         /// </summary>
         IFeatureLayer FeatureLayer { get; set; }

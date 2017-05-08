@@ -21,7 +21,7 @@ namespace DotSpatial.Symbology
 {
     /// <summary>
     /// This interface stores a single extent window describing a view, and also contains
-    /// the list of all the layers associated with that view.  The layers are ordered.
+    /// the list of all the layers associated with that view. The layers are ordered.
     /// </summary>
     public interface IFrame : IGroup
     {
@@ -53,8 +53,8 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets a boolean that controls whether or not a newly added layer
-        /// will also force a zoom to that layer.  If this is true, then nothing
-        /// will happen.  Otherwise, adding layers to this frame or a group in this
+        /// will also force a zoom to that layer. If this is true, then nothing
+        /// will happen. Otherwise, adding layers to this frame or a group in this
         /// frame will set the extent.
         /// </summary>
         bool ExtentsInitialized { get; set; }
@@ -70,7 +70,7 @@ namespace DotSpatial.Symbology
         ILayer SelectedLayer { get; }
 
         /// <summary>
-        /// Controls the smoothing mode.  Default or None will have faster performance
+        /// Controls the smoothing mode. Default or None will have faster performance
         /// at the cost of quality.
         /// </summary>
         SmoothingMode SmoothingMode { get; set; }

@@ -26,7 +26,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the FeatureSymbolizerOld determining the shared properties.  This is actually still the PointSymbolizerOld
+        /// Gets or sets the FeatureSymbolizerOld determining the shared properties. This is actually still the PointSymbolizerOld
         /// and should not be used directly on Polygons or Lines.
         /// </summary>
         /// <exception cref="System.InvalidOperationException">Unable to assign a non-point symbolizer to a PointLayer</exception>
@@ -38,8 +38,8 @@ namespace DotSpatial.Symbology
         new IPointSymbolizer SelectionSymbolizer { get; set; }
 
         /// <summary>
-        /// Gets the currently applied scheme.  Because setting the scheme requires a processor intensive
-        /// method, we use the ApplyScheme method for assigning a new scheme.  This allows access
+        /// Gets the currently applied scheme. Because setting the scheme requires a processor intensive
+        /// method, we use the ApplyScheme method for assigning a new scheme. This allows access
         /// to editing the members of an existing scheme directly, however.
         /// </summary>
         new IPointScheme Symbology { get; set; }

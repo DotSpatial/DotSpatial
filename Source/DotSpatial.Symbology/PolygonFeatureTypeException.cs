@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PolygonFeatureTypeException
+        /// Initializes a new instance of the <see cref="PolygonFeatureTypeException"/> class.
         /// </summary>
         public PolygonFeatureTypeException()
             : base(SymbologyMessageStrings.PointFeatureTypeException)
@@ -31,7 +31,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of PolygonFeatureTypeException
+        /// Initializes a new instance of the <see cref="PolygonFeatureTypeException"/> class.
         /// </summary>
         /// <param name="message">The custom error message to use for this exception</param>
         public PolygonFeatureTypeException(string message)

@@ -120,7 +120,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// The envelope that contains all of the layers for this data frame.  Essentially this would be
+        /// The envelope that contains all of the layers for this data frame. Essentially this would be
         /// the extents to use if you want to zoom to the world view.
         /// </summary>
         public virtual Extent Extent
@@ -391,8 +391,8 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Overrides the dispose behavior.  If disposeManagedMemory objects is true, then managed objects
-        /// should be set to null, effectively removing reference counts.  If it is false, then only
+        /// Overrides the dispose behavior. If disposeManagedMemory objects is true, then managed objects
+        /// should be set to null, effectively removing reference counts. If it is false, then only
         /// unmanaged memory objects should be removed.
         /// </summary>
         /// <param name="disposeManagedMemory">Boolean, true if managed memory objects should be set to null, and

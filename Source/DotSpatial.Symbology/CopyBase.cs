@@ -52,7 +52,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// PropertyInfo returns overridden members as separate entries.  We would rather work with each members
+        /// PropertyInfo returns overridden members as separate entries. We would rather work with each members
         /// only one time.
         /// </summary>
         /// <param name="allProperties">All the properties, including duplicates created by overridden members</param>

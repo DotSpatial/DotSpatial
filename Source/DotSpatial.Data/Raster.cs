@@ -103,7 +103,7 @@ namespace DotSpatial.Data
             {
                 // For backwards compatibility, people specifying CellHeight can be assumed
                 // to want to preserve YllCenter, and not the Affine coefficient.
-                Bounds.AffineCoefficients[3] = Bounds.BottomLeft().Y + value * NumRows;
+                Bounds.AffineCoefficients[3] = Bounds.BottomLeft().Y + (value * NumRows);
 
                 // This only allows you to change the magnitude of the cell height, not the direction.
                 // For changing direction, control AffineCoefficients[5] directly.
@@ -456,7 +456,7 @@ namespace DotSpatial.Data
             get
             {
                 double[] affine = Bounds.AffineCoefficients;
-                return affine[0] + affine[1] * .5 + affine[2] * (_numColumns - .5);
+                return affine[0] + (affine[1] * .5) + (affine[2] * (_numColumns - .5));
             }
 
             set
@@ -475,7 +475,7 @@ namespace DotSpatial.Data
                     affine[1] = 1;
                 }
 
-                affine[0] = value - affine[1] * .5 - affine[2] * (_numColumns - .5);
+                affine[0] = value - (affine[1] * .5) - (affine[2] * (_numColumns - .5));
             }
         }
 
@@ -493,7 +493,7 @@ namespace DotSpatial.Data
             get
             {
                 double[] affine = Bounds.AffineCoefficients;
-                return affine[3] + affine[4] * .5 + affine[5] * (_numRows - .5);
+                return affine[3] + (affine[4] * .5) + (affine[5] * (_numRows - .5));
             }
 
             set
@@ -512,7 +512,7 @@ namespace DotSpatial.Data
                     affine[5] = -1;
                 }
 
-                affine[3] = value - affine[4] * .5 - affine[5] * (_numRows - .5);
+                affine[3] = value - (affine[4] * .5) - (affine[5] * (_numRows - .5));
             }
         }
 

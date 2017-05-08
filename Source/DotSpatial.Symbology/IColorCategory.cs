@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets how the color changes are distributed across the
-        /// BiValued range.  If IsBiValue is false, this does nothing.
+        /// BiValued range. If IsBiValue is false, this does nothing.
         /// </summary>
         GradientModel GradientModel { get; set; }
 
@@ -50,8 +50,8 @@ namespace DotSpatial.Symbology
         bool IsBiValue { get; }
 
         /// <summary>
-        /// Gets or sets the color to be used for this break.  For
-        /// BiValued breaks, this only sets one of the colors.  If
+        /// Gets or sets the color to be used for this break. For
+        /// BiValued breaks, this only sets one of the colors. If
         /// this is higher than the high value, both are set to this.
         /// If this equals the high value, IsBiValue will be false.
         /// </summary>

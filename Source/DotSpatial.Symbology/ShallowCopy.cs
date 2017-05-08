@@ -17,7 +17,7 @@ namespace DotSpatial.Symbology
 {
     /// <summary>
     /// Normally, cloning an object starts with MemberwiseClone, which
-    /// creates a shallow copy of the object.  For any members that
+    /// creates a shallow copy of the object. For any members that
     /// derive from the Descriptor, however, any public properties
     /// or fields that implement ICloneable are copied (deep copy behavior).
     /// This is not always desirable, even if the member CAN be copied.

@@ -22,21 +22,25 @@ namespace DotSpatial.Symbology
         /// A pattern that gradually changes from one color to another
         /// </summary>
         Gradient,
+
         /// <summary>
         /// A pattern comprised of evenly spaced lines
         /// </summary>
         Line,
+
         /// <summary>
         /// A pattern comprised of point symbolizers
         /// </summary>
         Marker,
+
         /// <summary>
         /// A pattern comprised of a tiled texture
         /// </summary>
         Picture,
+
         /// <summary>
         /// A pattern comprised strictly of a fill color.
         /// </summary>
-        Simple,
+        Simple
     }
 }

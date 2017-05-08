@@ -16,15 +16,15 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    ///<summary>
+    /// <summary>
     /// Represents the argument for events that need to report changed features and the corresponding envelope.
-    ///</summary>
+    /// </summary>
     public class FeatureChangeEnvelopeArgs : FeatureChangeArgs
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of FeatureChangeEnvelopeArgs
+        /// Initializes a new instance of the <see cref="FeatureChangeEnvelopeArgs"/> class.
         /// </summary>
         /// <param name="inChangedFeatures">Features that were changed.</param>
         /// <param name="inEnvelope">Geographic envelope for the most recent selection event.</param>
@@ -39,7 +39,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the geographic envelope for the most recent selection event.
+        /// Gets or sets the geographic envelope for the most recent selection event.
         /// </summary>
         public Envelope Envelope { get; protected set; }
 

@@ -28,7 +28,7 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region  Constructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LegendIcon"/> class.
@@ -43,7 +43,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// The icon to draw for this legend item
+        /// Gets or sets the icon to draw for this legend item.
         /// </summary>
         public virtual Icon Icon
         {
@@ -63,7 +63,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Gets the legend symbol size (as an icon size)
+        /// Gets the legend symbol size (as an icon size).
         /// </summary>
         /// <returns>The legend symbol size</returns>
         public override Size GetLegendSymbolSize()

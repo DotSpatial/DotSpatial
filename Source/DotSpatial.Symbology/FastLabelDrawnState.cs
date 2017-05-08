@@ -13,25 +13,36 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Fast drawn state for labels.
+    /// </summary>
     public class FastLabelDrawnState
     {
-        /// <summary>
-        /// Gets or sets the category
-        /// </summary>
-        public ILabelCategory Category;
+        #region Constructors
 
         /// <summary>
-        /// Gets or sets whether the label is selected
-        /// </summary>
-        public bool Selected;
-
-        /// <summary>
-        /// Creates a new drawn state with the specified category
+        /// Initializes a new instance of the <see cref="FastLabelDrawnState"/> class.
         /// </summary>
         /// <param name="category">The category</param>
         public FastLabelDrawnState(ILabelCategory category)
         {
             Category = category;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the category.
+        /// </summary>
+        public ILabelCategory Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the label is selected.
+        /// </summary>
+        public bool Selected { get; set; }
+
+        #endregion
     }
 }

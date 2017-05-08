@@ -13,17 +13,18 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Event args for events that need a feature layer selection.
+    /// </summary>
     public class FeatureLayerSelectionEventArgs : FeatureLayerEventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of FeatureLayerSelectionEventArgs
+        /// Initializes a new instance of the <see cref="FeatureLayerSelectionEventArgs"/> class.
         /// </summary>
+        /// <param name="fl">The feature layer.</param>
+        /// <param name="selection">The selection.</param>
         public FeatureLayerSelectionEventArgs(IFeatureLayer fl, ISelection selection)
             : base(fl)
         {
@@ -35,7 +36,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the list of changed features
+        /// Gets or sets the list of changed features.
         /// </summary>
         public ISelection Selection { get; protected set; }
 

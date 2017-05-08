@@ -22,18 +22,17 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class HatchPattern : Pattern, IHatchPattern
     {
-        #region Private Variables
+        #region Fields
 
-        Color _backColor;
-        Color _foreColor;
-        HatchStyle _hatchStyle;
+        private Color _backColor;
+        private Color _foreColor;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HatchPattern
+        /// Initializes a new instance of the <see cref="HatchPattern"/> class.
         /// </summary>
         public HatchPattern()
         {
@@ -43,17 +42,95 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new HatchPattern with the specified image
+        /// Initializes a new instance of the <see cref="HatchPattern"/> class.
         /// </summary>
         /// <param name="style">The hatch style to use</param>
-        ///<param name="foreColor">the forecolor to use</param>
-        ///<param name="backColor">the background color to use</param>
+        /// <param name="foreColor">the forecolor to use</param>
+        /// <param name="backColor">the background color to use</param>
         public HatchPattern(HatchStyle style, Color foreColor, Color backColor)
         {
             HatchStyle = style;
             _foreColor = foreColor;
             _backColor = backColor;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the background color of the hatch pattern.
+        /// </summary>
+        [Serialize("BackColor")]
+        public Color BackColor
+        {
+            get
+            {
+                return _backColor;
+            }
+
+            set
+            {
+                _backColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
+        /// </summary>
+        [Serialize("BackColorOpacity")]
+        public float BackColorOpacity
+        {
+            get
+            {
+                return _backColor.GetOpacity();
+            }
+
+            set
+            {
+                _backColor = _backColor.ToTransparent(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the fore color of the hatch pattern.
+        /// </summary>
+        [Serialize("ForeColor")]
+        public Color ForeColor
+        {
+            get
+            {
+                return _foreColor;
+            }
+
+            set
+            {
+                _foreColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
+        /// </summary>
+        [Serialize("ForeColorOpacity")]
+        public float ForeColorOpacity
+        {
+            get
+            {
+                return _foreColor.GetOpacity();
+            }
+
+            set
+            {
+                _foreColor = _foreColor.ToTransparent(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the hatch style.
+        /// </summary>
+        [Serialize("HatchStyle")]
+        public HatchStyle HatchStyle { get; set; }
 
         #endregion
 
@@ -66,86 +143,30 @@ namespace DotSpatial.Symbology
         /// <param name="gp">The GraphicsPath to fill</param>
         public override void FillPath(Graphics g, GraphicsPath gp)
         {
-            HatchBrush hb = new HatchBrush(_hatchStyle, _foreColor, _backColor);
-            g.FillPath(hb, gp);
-            hb.Dispose();
+            using (HatchBrush hb = new HatchBrush(HatchStyle, _foreColor, _backColor))
+            {
+                g.FillPath(hb, gp);
+            }
+
             base.FillPath(g, gp);
         }
 
         /// <summary>
-        /// Gets the forecolor
+        /// Gets the forecolor.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The fill color.</returns>
         public override Color GetFillColor()
         {
             return _foreColor;
         }
 
         /// <summary>
-        /// Sets the foreColor to the specified color
+        /// Sets the foreColor to the specified color.
         /// </summary>
-        /// <param name="color"></param>
+        /// <param name="color">Color that is set.</param>
         public override void SetFillColor(Color color)
         {
             _foreColor = color;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the hatch style
-        /// </summary>
-        [Serialize("HatchStyle")]
-        public HatchStyle HatchStyle
-        {
-            get { return _hatchStyle; }
-            set { _hatchStyle = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the fore color of the hatch pattern
-        /// </summary>
-        [Serialize("ForeColor")]
-        public Color ForeColor
-        {
-            get { return _foreColor; }
-            set { _foreColor = value; }
-        }
-
-        /// <summary>
-        /// Sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
-        /// </summary>
-        [Serialize("ForeColorOpacity")]
-        public float ForeColorOpacity
-        {
-            get
-            { return _foreColor.GetOpacity(); }
-            set
-            { _foreColor = _foreColor.ToTransparent(value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the background color of the hatch pattern
-        /// </summary>
-        [Serialize("BackColor")]
-        public Color BackColor
-        {
-            get { return _backColor; }
-            set { _backColor = value; }
-        }
-
-        /// <summary>
-        /// Sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
-        /// </summary>
-        [Serialize("BackColorOpacity")]
-        public float BackColorOpacity
-        {
-            get
-            { return _backColor.GetOpacity(); }
-            set
-            { _backColor = _backColor.ToTransparent(value); }
         }
 
         #endregion

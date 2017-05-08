@@ -76,7 +76,7 @@ namespace DotSpatial.Symbology
         /// The mean and standard deviation of the attribute values are calculated, and
         /// values are classified according to their deviation from the mean (z-transform)
         /// The transformed values are mapped, usually at intervales of 1.0 or .5 standard
-        /// deviations.  This often results in no central class.
+        /// deviations. This often results in no central class.
         /// </summary>
         StandardDeviation,
 

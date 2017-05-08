@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         Brush FillBrush { get; set; }
 
         /// <summary>
-        /// Gets or sets whether or not to use a texture when drawing these lines.  By default, this either
+        /// Gets or sets whether or not to use a texture when drawing these lines. By default, this either
         /// checks the DefaultLineProvider or else it is false.
         /// </summary>
         bool IsTextured { get; set; }
@@ -47,9 +47,9 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets a float value from 0 to 1 where 0 is completely transparent
-        /// and 1 is completely solid.  Setting an alpha of a specific feature, like
+        /// and 1 is completely solid. Setting an alpha of a specific feature, like
         /// FillColor, to something less than 255 will control that feature's transparency
-        /// without affecting the others.  The final transparency of the feature will
+        /// without affecting the others. The final transparency of the feature will
         /// be that alpha multiplied by this value and rounded to the nearest byte.
         /// </summary>
         float Opacity { get; set; }
@@ -66,14 +66,14 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or Sets a ScaleModes enumeration that determines whether non-coordinate drawing
-        /// properties like width or size use pixels or world coordinates.  If pixels are
+        /// properties like width or size use pixels or world coordinates. If pixels are
         /// specified, a back transform is used to approximate pixel sizes.
         /// </summary>
         ScaleMode ScaleMode { get; set; }
 
         /// <summary>
         /// Gets or sets the smoothing mode to use that controls advanced features like
-        /// anti-aliasing.  By default this is set to antialias.
+        /// anti-aliasing. By default this is set to antialias.
         /// </summary>
         SmoothingMode Smoothing { get; set; }
     }

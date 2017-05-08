@@ -16,11 +16,16 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// A custom point symbolizer.
+    /// </summary>
     [Serializable]
     public class CustomPointSymbolizer : CustomSymbolizer
     {
+        #region Constructors
+
         /// <summary>
-        /// Creates a new CustomSymbolizer for symbolizing Points
+        /// Initializes a new instance of the <see cref="CustomPointSymbolizer"/> class.
         /// </summary>
         public CustomPointSymbolizer()
         {
@@ -28,7 +33,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new Custom Point symbolizer with the specified properties
+        /// Initializes a new instance of the <see cref="CustomPointSymbolizer"/> class.
         /// </summary>
         /// <param name="uniqueName">the unique name</param>
         /// <param name="name">the name of the custom symbolizer</param>
@@ -42,6 +47,10 @@ namespace DotSpatial.Symbology
             base.Symbolizer = symbolizer;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the Point symbolizer
         /// </summary>
@@ -51,8 +60,17 @@ namespace DotSpatial.Symbology
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public new IPointSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as IPointSymbolizer; }
-            set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as IPointSymbolizer;
+            }
+
+            set
+            {
+                base.Symbolizer = value;
+            }
         }
+
+        #endregion
     }
 }

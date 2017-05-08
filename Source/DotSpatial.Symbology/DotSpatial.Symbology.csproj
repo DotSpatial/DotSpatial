@@ -28,8 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\DotSpatial.Symbology.XML</DocumentationFile>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -39,7 +38,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\DotSpatial.Symbology.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
@@ -155,7 +155,7 @@
     <Compile Include="LegendItem.cs" />
     <Compile Include="LegendItemExt.cs" />
     <Compile Include="LegendType.cs" />
-    <Compile Include="MatchableEMa.cs" />
+    <Compile Include="MatchableEm.cs" />
     <Compile Include="SymbologyMenuItem.cs" />
     <Compile Include="SymbologyMessageStrings.Designer.cs">
       <DependentUpon>SymbologyMessageStrings.resx</DependentUpon>
@@ -196,7 +196,7 @@
     <Compile Include="ScaleMode.cs" />
     <Compile Include="Scheme.cs" />
     <Compile Include="SelectableExt.cs" />
-    <Compile Include="ShallowCopya.cs" />
+    <Compile Include="ShallowCopy.cs" />
     <Compile Include="Size2D.cs" />
     <Compile Include="SnapShotEventArgs.cs" />
     <Compile Include="SymbolMode.cs" />

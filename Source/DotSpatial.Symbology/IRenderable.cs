@@ -18,7 +18,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Anything that can draw itself to the map is an IRenderable.  This is implemented by RenderBase.
+    /// Anything that can draw itself to the map is an IRenderable. This is implemented by RenderBase.
     /// </summary>
     public interface IRenderable
     {

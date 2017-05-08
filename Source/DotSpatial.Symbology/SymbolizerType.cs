@@ -22,18 +22,22 @@ namespace DotSpatial.Symbology
         /// The type is PointSymbolizer
         /// </summary>
         Point,
+
         /// <summary>
         /// The type is LineSymbolizer
         /// </summary>
         Line,
+
         /// <summary>
         /// The type is PolygonSymbolizer
         /// </summary>
         Polygon,
+
         /// <summary>
         /// The type is RasterSymbolizer
         /// </summary>
         Raster,
+
         /// <summary>
         /// The type of the symbolizer is unknown
         /// </summary>

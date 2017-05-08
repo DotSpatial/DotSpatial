@@ -16,13 +16,13 @@ using System.Collections.Generic;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// MatchableEM
+    /// Extension methods for IMatchable.
     /// </summary>
-    public static class MatchableEM
+    public static class MatchableEm
     {
         /// <summary>
-        /// This tests the public properties from the two objects.  If any properties implement
-        /// the IMatchable interface, and do not match, this returns false.  If any public
+        /// This tests the public properties from the two objects. If any properties implement
+        /// the IMatchable interface, and do not match, this returns false. If any public
         /// properties are value types, and they are not equal, then this returns false.
         /// </summary>
         /// <param name="self">This matchable item </param>

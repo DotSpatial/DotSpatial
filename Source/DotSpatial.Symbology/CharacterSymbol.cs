@@ -28,7 +28,7 @@ namespace DotSpatial.Symbology
     [Serializable]
     public class CharacterSymbol : Symbol, ICharacterSymbol
     {
-        #region Private Variables
+        #region Fields
 
         private char _character;
         private Color _color;
@@ -40,7 +40,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of CharacterSymbol
+        /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
         public CharacterSymbol()
         {
@@ -48,11 +48,11 @@ namespace DotSpatial.Symbology
             _fontFamilyName = "DotSpatialSymbols";
             _color = Color.Green;
             _style = FontStyle.Regular;
-            base.SymbolType = SymbolType.Character;
+            SymbolType = SymbolType.Character;
         }
 
         /// <summary>
-        /// Creates a new instance of CharacterSymbol
+        /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
         /// <param name="character">The character to use for the symbol</param>
         public CharacterSymbol(char character)
@@ -61,11 +61,11 @@ namespace DotSpatial.Symbology
             _fontFamilyName = "DotSpatialSymbols";
             _color = Color.Green;
             _style = FontStyle.Regular;
-            base.SymbolType = SymbolType.Character;
+            SymbolType = SymbolType.Character;
         }
 
         /// <summary>
-        /// Creates a new instance of CharacterSymbol
+        /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
         /// <param name="character">The character to use for the symbol</param>
         /// <param name="fontFamily">The font family for the character</param>
@@ -75,11 +75,11 @@ namespace DotSpatial.Symbology
             _fontFamilyName = fontFamily;
             _color = Color.Green;
             _style = FontStyle.Regular;
-            base.SymbolType = SymbolType.Character;
+            SymbolType = SymbolType.Character;
         }
 
         /// <summary>
-        /// Creates a new instance of CharacterSymbol
+        /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
         /// <param name="character">The character to use for the symbol</param>
         /// <param name="fontFamily">The font family for the character</param>
@@ -90,11 +90,11 @@ namespace DotSpatial.Symbology
             _fontFamilyName = fontFamily;
             _color = color;
             _style = FontStyle.Regular;
-            base.SymbolType = SymbolType.Character;
+            SymbolType = SymbolType.Character;
         }
 
         /// <summary>
-        /// Creates a new instance of CharacterSymbol
+        /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
         /// <param name="character">The character to use for the symbol</param>
         /// <param name="fontFamily">The font family for the character</param>
@@ -107,7 +107,184 @@ namespace DotSpatial.Symbology
             _color = color;
             _style = FontStyle.Regular;
             Size = new Size2D(size, size);
-            base.SymbolType = SymbolType.Character;
+            SymbolType = SymbolType.Character;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the unicode category for this character.
+        /// </summary>
+        [XmlIgnore]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("Gets the unicode category for this character.")]
+        public UnicodeCategory Category => char.GetUnicodeCategory(_character);
+
+        /// <summary>
+        /// Gets or sets the character that this represents.
+        /// </summary>
+        [Description("Gets or sets the character for this symbol.")]
+        [Serialize("Character")]
+        public char Character
+        {
+            get
+            {
+                return _character;
+            }
+
+            set
+            {
+                _character = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the character set. Unicode characters consist of 2 bytes. This represents the first byte,
+        /// which can be thought of as specifying a typeset.
+        /// </summary>
+        [XmlIgnore]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("Gets or sets the upper unicode byte, or character set.")]
+        public byte CharacterSet
+        {
+            get
+            {
+                return (byte)(_character / 256);
+            }
+
+            set
+            {
+                int remainder = _character % 256;
+                _character = (char)(remainder + (value * 256));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the byte code for the lower 256 values. This represents the
+        /// specific character in a given "typeset" range.
+        /// </summary>
+        /// <remarks>
+        /// // Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor))
+        /// </remarks>
+        [XmlIgnore]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("Gets or sets the lower unicode byte or character ASCII code")]
+        public byte Code
+        {
+            get
+            {
+                return (byte)(_character % 256);
+            }
+
+            set
+            {
+                int set = _character / 256;
+                _character = (char)((set * 256) + value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color
+        /// </summary>
+        [XmlIgnore]
+        [Description("Gets or sets the color")]
+        public Color Color
+        {
+            get
+            {
+                return _color;
+            }
+
+            set
+            {
+                _color = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the string font family name to use for this character set.
+        /// </summary>
+        /// <remarks>
+        /// // Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor)),
+        /// </remarks>
+        [Description("Gets or sets the font family name to use when building the font.")]
+        [Serialize("FontFamilyName")]
+        public string FontFamilyName
+        {
+            get
+            {
+                return _fontFamilyName;
+            }
+
+            set
+            {
+                _fontFamilyName = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the opacity as a floating point value ranging from 0 to 1, where
+        /// 0 is fully transparent and 1 is fully opaque. This actually adjusts the alpha of the color value.
+        /// </summary>
+        [Description("Gets or sets the opacity as a floating point value ranging from 0 (transparent) to 1 (opaque)")]
+        [Serialize("Opacity")]
+        public float Opacity
+        {
+            get
+            {
+                return _color.A / 255F;
+            }
+
+            set
+            {
+                int alpha = (int)(value * 255);
+                if (alpha > 255) alpha = 255;
+                if (alpha < 0) alpha = 0;
+                if (alpha != _color.A)
+                {
+                    _color = Color.FromArgb(alpha, _color);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font style to use for this character layer.
+        /// </summary>
+        [Description("Gets or sets the font style to use for this character layer.")]
+        [Serialize("FontStyle")]
+        public FontStyle Style
+        {
+            get
+            {
+                return _style;
+            }
+
+            set
+            {
+                _style = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the xml color. This supports serialization even though Colors can't be serialized.
+        /// </summary>
+        [XmlElement("Color")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Serialize("XmlColor")]
+        public string XmlColor
+        {
+            get
+            {
+                return ColorTranslator.ToHtml(_color);
+            }
+
+            set
+            {
+                _color = ColorTranslator.FromHtml(value);
+            }
         }
 
         #endregion
@@ -124,41 +301,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Sets the fill color of this symbol to the specified color
+        /// Because there is no easy range calculation supported in dot net (as compared to GDI32) that I can find, I assume that the
+        /// unsupported values will come back as an open box, or at least identical in glyph form to a known unsupported like Arial 1024.
+        /// (Not to be confused with Arial Unicode MS, which has basically everything.)
         /// </summary>
-        /// <param name="color">The Color</param>
-        public override void SetColor(Color color)
-        {
-            _color = color;
-        }
-
-        /// <summary>
-        /// Modifies this symbol in a way that is appropriate for indicating a selected symbol.
-        /// This could mean drawing a cyan outline, or changing the color to cyan.
-        /// </summary>
-        public override void Select()
-        {
-            _color = Color.Cyan;
-        }
-
-        /// <summary>
-        /// Gets the string equivalent of the specified character code.
-        /// </summary>
-        /// <returns>A string version of the character</returns>
-        public override string ToString()
-        {
-            return _character.ToString();
-        }
-
-        /// <summary>
-        /// Because there is no easy range calculation supported in dot net
-        /// (as compared to GDI32) that I can find, I assume that the
-        /// unsupported values will come back as an open box, or at least
-        /// identical in glyph form to a known unsupported like Arial 1024.
-        /// (Not to be confused with Arial Unicode MS, which has basically
-        /// everything.
-        /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of supported character subsets.</returns>
         public IList<CharacterSubset> GetSupportedSubsets()
         {
             List<CharacterSubset> result = new List<CharacterSubset>();
@@ -190,154 +337,46 @@ namespace DotSpatial.Symbology
                     // Since this symbol is different from the default unsuported symbol
                     result.Add(code);
                 }
+
                 firstCharGrid.Dispose();
             }
 
             return result;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Supports serialization even though Colors can't be serialized
+        /// Modifies this symbol in a way that is appropriate for indicating a selected symbol.
+        /// This could mean drawing a cyan outline, or changing the color to cyan.
         /// </summary>
-        [XmlElement("Color")]
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Serialize("XmlColor")]
-        public string XmlColor
+        public override void Select()
         {
-            get { return ColorTranslator.ToHtml(_color); }
-            set { _color = ColorTranslator.FromHtml(value); }
+            _color = Color.Cyan;
         }
 
         /// <summary>
-        /// Gets the unicode category for this character.
+        /// Sets the fill color of this symbol to the specified color
         /// </summary>
-        [XmlIgnore]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Description("Gets the unicode category for this character.")]
-        public UnicodeCategory Category
+        /// <param name="color">The Color</param>
+        public override void SetColor(Color color)
         {
-            get { return char.GetUnicodeCategory(_character); }
+            _color = color;
         }
 
         /// <summary>
-        /// Gets or sets the character that this represents.
+        /// Gets the string equivalent of the specified character code.
         /// </summary>
-        [Description("Gets or sets the character for this symbol.")]
-        [Serialize("Character")]
-        public char Character
+        /// <returns>A string version of the character</returns>
+        public override string ToString()
         {
-            get { return _character; }
-            set { _character = value; }
+            return _character.ToString();
         }
 
         /// <summary>
-        /// Unicode characters consist of 2 bytes.  This represents the first byte,
-        /// which can be thought of as specifying a typeset.
+        /// Overrides the default behavior and attempts to draw the specified symbol.
         /// </summary>
-        [XmlIgnore]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Description("Gets or sets the upper unicode byte, or character set.")]
-        public byte CharacterSet
-        {
-            get { return (byte)(_character / 256); }
-            set
-            {
-                int remainder = _character % 256;
-                _character = (char)(remainder + value * 256);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the byte code for the lower 256 values.  This represents the
-        /// specific character in a given "typeset" range.
-        /// </summary>
-        /// <remarks>
-        /// // Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor))
-        /// </remarks>
-        [XmlIgnore]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Description("Gets or sets the lower unicode byte or character ASCII code")]
-        public byte Code
-        {
-            get { return (byte)(_character % 256); }
-            set
-            {
-                int set = _character / 256;
-                _character = (char)(set * 256 + value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the color
-        /// </summary>
-        [XmlIgnore]
-        [Description("Gets or sets the color")]
-        public Color Color
-        {
-            get { return _color; }
-            set { _color = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the string font family name to use for this character set.
-        /// </summary>
-        /// <remarks>
-        /// // Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor)),
-        /// </remarks>
-        [Description("Gets or sets the font family name to use when building the font.")]
-        [Serialize("FontFamilyName")]
-        public string FontFamilyName
-        {
-            get { return _fontFamilyName; }
-            set { _fontFamilyName = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the opacity as a floating point value ranging from 0 to 1, where
-        /// 0 is fully transparent and 1 is fully opaque.  This actually adjusts the alpha of the color value.
-        /// </summary>
-        [Description("Gets or sets the opacity as a floating point value ranging from 0 (transparent) to 1 (opaque)")]
-        [Serialize("Opacity")]
-        public float Opacity
-        {
-            get { return _color.A / 255F; }
-            set
-            {
-                int alpha = (int)(value * 255);
-                if (alpha > 255) alpha = 255;
-                if (alpha < 0) alpha = 0;
-                if (alpha != _color.A)
-                {
-                    _color = Color.FromArgb(alpha, _color);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the font style to use for this character layer.
-        /// </summary>
-        [Description("Gets or sets the font style to use for this character layer.")]
-        [Serialize("FontStyle")]
-        public FontStyle Style
-        {
-            get { return _style; }
-            set { _style = value; }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Overrides the default behavior and attempts to draw the specified symbol
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="scaleSize"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="scaleSize">If this should draw in pixels, this should be 1. Otherwise, this should be
+        /// the constant that you multiply against so that drawing using geographic units will draw in pixel units.</param>
         protected override void OnDraw(Graphics g, double scaleSize)
         {
             // base.OnDraw(g, scaleSize); // handle rotation etc.
@@ -354,6 +393,7 @@ namespace DotSpatial.Symbology
                 // Use the width instead
                 y = -fSize.Width / 2;
             }
+
             g.DrawString(txt, fnt, b, new PointF(x, y));
             b.Dispose();
         }

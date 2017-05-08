@@ -18,15 +18,12 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class LineSymbolizerEventArgs : FeatureSymbolizerEventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of LineSymbolizerEventArgs
+        /// Initializes a new instance of the <see cref="LineSymbolizerEventArgs"/> class.
         /// </summary>
+        /// <param name="symbolizer">The symbolizer of the event.</param>
         public LineSymbolizerEventArgs(ILineSymbolizer symbolizer)
             : base(symbolizer)
         {
@@ -37,12 +34,19 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Symbolizer
+        /// Gets or sets the Symbolizer.
         /// </summary>
         public new ILineSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as ILineSymbolizer; }
-            set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as ILineSymbolizer;
+            }
+
+            set
+            {
+                base.Symbolizer = value;
+            }
         }
 
         #endregion

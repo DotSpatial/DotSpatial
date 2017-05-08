@@ -20,12 +20,14 @@ namespace DotSpatial.Symbology
 {
     /// <summary>
     /// This class simply stores enough information for the appropriate menu item to be
-    /// generated.  It is not the Windows Forms MenuItem.
+    /// generated. It is not the Windows Forms MenuItem.
     /// </summary>
     public class SymbologyMenuItem
     {
+        #region Constructors
+
         /// <summary>
-        /// Creates a new instance of the menu item
+        /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
         /// <param name="name">The name or text to appear for this item</param>
         /// <param name="image">The icon to draw for this menu item</param>
@@ -39,7 +41,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of the menu item
+        /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
         /// <param name="name">The name or text to appear for this item</param>
         /// <param name="icon">The icon to draw for this menu item</param>
@@ -53,7 +55,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of the menu item
+        /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
         /// <param name="name">The name or text to appear for this item</param>
         /// <param name="clickHandler">The click event handler</param>
@@ -65,7 +67,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of the menu item
+        /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
         /// <param name="name">The name or text to appear for this item</param>
         public SymbologyMenuItem(string name)
@@ -74,10 +76,14 @@ namespace DotSpatial.Symbology
             Name = name;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the name for this menu item
+        /// Gets or sets the handler for the click event.
         /// </summary>
-        public string Name { get; set; }
+        public EventHandler ClickHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the icon for this menu item
@@ -95,8 +101,10 @@ namespace DotSpatial.Symbology
         public List<SymbologyMenuItem> MenuItems { get; set; }
 
         /// <summary>
-        /// The handler for the click event.
+        /// Gets or sets the name for this menu item
         /// </summary>
-        public EventHandler ClickHandler { get; set; }
+        public string Name { get; set; }
+
+        #endregion
     }
 }

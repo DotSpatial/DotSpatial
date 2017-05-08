@@ -18,15 +18,12 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class PolygonSymbolizerEventArgs : FeatureSymbolizerEventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PolygonSymbolizerEventArgs
+        /// Initializes a new instance of the <see cref="PolygonSymbolizerEventArgs"/> class.
         /// </summary>
+        /// <param name="symbolizer">Symbolizer of the event.</param>
         public PolygonSymbolizerEventArgs(IPolygonSymbolizer symbolizer)
             : base(symbolizer)
         {
@@ -41,8 +38,15 @@ namespace DotSpatial.Symbology
         /// </summary>
         public new IPolygonSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as IPolygonSymbolizer; }
-            set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as IPolygonSymbolizer;
+            }
+
+            set
+            {
+                base.Symbolizer = value;
+            }
         }
 
         #endregion

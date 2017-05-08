@@ -18,21 +18,27 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This is simply an alias to make things a tad (though not much) more understandable
+    /// This is simply an alias to make things a tad (though not much) more understandable.
     /// </summary>
     public class PolygonCategoryCollection : ChangeEventList<IPolygonCategory>
     {
+        #region Fields
+
         private IPolygonScheme _scheme;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new PolygonCategoryCollection instance with the supplied scheme.
+        /// Initializes a new instance of the <see cref="PolygonCategoryCollection"/> class.
         /// </summary>
         public PolygonCategoryCollection()
         {
         }
 
         /// <summary>
-        /// Initializes a new PolygonCategoryCollection instance with the supplied scheme.
+        /// Initializes a new instance of the <see cref="PolygonCategoryCollection"/> class with the supplied scheme.
         /// </summary>
         /// <param name="scheme">The scheme to use ofr this collection.</param>
         public PolygonCategoryCollection(IPolygonScheme scheme)
@@ -40,26 +46,9 @@ namespace DotSpatial.Symbology
             _scheme = scheme;
         }
 
-        /// <summary>
-        /// Gets or sets the parent scheme for this collection
-        /// </summary>
-        [Serialize("Scheme", ConstructorArgumentIndex = 0)]
-        [ShallowCopy]
-        public IPolygonScheme Scheme
-        {
-            get { return _scheme; }
-            set
-            {
-                _scheme = value;
-                UpdateItemParentPointers();
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Occurs when a category indicates that its filter expression should be used
-        /// to select its members.
-        /// </summary>
-        public event EventHandler<ExpressionEventArgs> SelectFeatures;
+        #region Events
 
         /// <summary>
         /// Occurs when the deselect features context menu is clicked.
@@ -67,14 +56,56 @@ namespace DotSpatial.Symbology
         public event EventHandler<ExpressionEventArgs> DeselectFeatures;
 
         /// <summary>
-        /// Instructs the parent layer to select features matching the specified expression.
+        /// Occurs when a category indicates that its filter expression should be used
+        /// to select its members.
         /// </summary>
-        /// <param name="sender">The object sender where features were selected.</param>
-        /// <param name="e">The event args describing the expression used for selection.</param>
-        protected virtual void OnSelectFeatures(object sender, ExpressionEventArgs e)
+        public event EventHandler<ExpressionEventArgs> SelectFeatures;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the parent scheme for this collection.
+        /// </summary>
+        [Serialize("Scheme", ConstructorArgumentIndex = 0)]
+        [ShallowCopy]
+        public IPolygonScheme Scheme
         {
-            if (SelectFeatures != null) SelectFeatures(sender, e);
+            get
+            {
+                return _scheme;
+            }
+
+            set
+            {
+                _scheme = value;
+                UpdateItemParentPointers();
+            }
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Overrides the copy behavior to remove the now unnecessary SelectFeatures event handler.
+        /// </summary>
+        /// <param name="copy">The copy.</param>
+        protected override void OnCopy(CopyList<IPolygonCategory> copy)
+        {
+            PolygonCategoryCollection pcc = copy as PolygonCategoryCollection;
+            if (pcc?.SelectFeatures != null)
+            {
+                foreach (var handler in pcc.SelectFeatures.GetInvocationList())
+                {
+                    pcc.SelectFeatures -= (EventHandler<ExpressionEventArgs>)handler;
+                }
+            }
+
+            base.OnCopy(copy);
+        }
+
         /// <summary>
         /// Instructs the parent layer to select features matching the specified expression.
         /// </summary>
@@ -82,8 +113,23 @@ namespace DotSpatial.Symbology
         /// <param name="e">The event args describing which expression was used.</param>
         protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
         {
-            if (DeselectFeatures != null) DeselectFeatures(sender, e);
+            DeselectFeatures?.Invoke(sender, e);
         }
+
+        /// <summary>
+        /// Changes the parent item of the specified category.
+        /// </summary>
+        /// <param name="item">The item that gets excluded.</param>
+        protected override void OnExclude(IPolygonCategory item)
+        {
+            if (item == null) return;
+
+            item.SelectFeatures -= OnSelectFeatures;
+            item.DeselectFeatures -= OnDeselectFeatures;
+            item.SetParentItem(null);
+            base.OnExclude(item);
+        }
+
         /// <summary>
         /// Ensures that newly added categories can navigate to higher legend items.
         /// </summary>
@@ -101,33 +147,13 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Overrides the copy behavior to remove the now unnecessary SelecTFeatures event handler.
+        /// Instructs the parent layer to select features matching the specified expression.
         /// </summary>
-        /// <param name="copy"></param>
-        protected override void OnCopy(CopyList<IPolygonCategory> copy)
+        /// <param name="sender">The object sender where features were selected.</param>
+        /// <param name="e">The event args describing the expression used for selection.</param>
+        protected virtual void OnSelectFeatures(object sender, ExpressionEventArgs e)
         {
-            PolygonCategoryCollection pcc = copy as PolygonCategoryCollection;
-            if (pcc != null && pcc.SelectFeatures != null)
-            {
-                foreach (var handler in pcc.SelectFeatures.GetInvocationList())
-                {
-                    pcc.SelectFeatures -= (EventHandler<ExpressionEventArgs>)handler;
-                }
-            }
-            base.OnCopy(copy);
-        }
-
-        /// <summary>
-        /// Changes the parent item of the specified category
-        /// </summary>
-        /// <param name="item"></param>
-        protected override void OnExclude(IPolygonCategory item)
-        {
-            if (item == null) return;
-            item.SelectFeatures -= OnSelectFeatures;
-            item.DeselectFeatures -= OnDeselectFeatures;
-            item.SetParentItem(null);
-            base.OnExclude(item);
+            SelectFeatures?.Invoke(sender, e);
         }
 
         private void UpdateItemParentPointers()
@@ -144,5 +170,7 @@ namespace DotSpatial.Symbology
                 }
             }
         }
+
+        #endregion
     }
 }

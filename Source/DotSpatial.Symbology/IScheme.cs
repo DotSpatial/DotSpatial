@@ -51,7 +51,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Reduces the index value of the specified category by 1 by
-        /// exchaning it with the category before it.  If there is no
+        /// exchaning it with the category before it. If there is no
         /// category before it, then this does nothing.
         /// </summary>
         /// /// <param name="category">The category to decrease the index of</param>
@@ -68,7 +68,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Re-orders the specified member by attempting to exchange it with the next higher
-        /// index category.  If there is no higher index, this does nothing.
+        /// index category. If there is no higher index, this does nothing.
         /// </summary>
         ///  <param name="category">The category to increase the index of</param>
         bool IncreaseCategoryIndex(ICategory category);

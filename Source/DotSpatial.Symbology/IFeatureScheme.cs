@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Creates a list of all 'unique value' categories.  This will use the "VectorEditorSettings"
+        /// Creates a list of all 'unique value' categories. This will use the "VectorEditorSettings"
         /// to determine how to create the values, so ensure that you update that property first.
         /// </summary>
         /// <param name="source">The attribute source that can provide the attribute information.</param>
@@ -72,8 +72,8 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether or not the legend should draw this item as a categorical
-        /// tier in the legend.  If so, it will allow the LegendText to be visible as a kind of group for the
-        /// categories.  If not, the categories will appear directly below the layer.C:\dev\Mapwindow6Dev\DotSpatial\DotSpatial\Drawing\Vectors\Points\PointCategoryCollection.cs
+        /// tier in the legend. If so, it will allow the LegendText to be visible as a kind of group for the
+        /// categories. If not, the categories will appear directly below the layer.C:\dev\Mapwindow6Dev\DotSpatial\DotSpatial\Drawing\Vectors\Points\PointCategoryCollection.cs
         /// </summary>
         bool AppearsInLegend { get; set; }
 

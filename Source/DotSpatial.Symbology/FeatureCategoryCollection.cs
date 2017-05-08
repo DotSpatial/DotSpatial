@@ -15,12 +15,13 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// FeatureCategoryCollection
+    /// </summary>
     public class FeatureCategoryCollection : ChangeEventList<IFeatureCategory>
     {
-        private IFeatureScheme _scheme;
-
         /// <summary>
-        /// Creates a new instance of the FeatureSchemeCategoryCollection
+        /// Initializes a new instance of the <see cref="FeatureCategoryCollection"/> class.
         /// </summary>
         public FeatureCategoryCollection()
         {
@@ -28,28 +29,24 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Optionally allows the scheme to identify itself for future reference.
+        /// Gets or sets the scheme to identify itself for future reference.
         /// </summary>
-        public IFeatureScheme Scheme
-        {
-            get { return _scheme; }
-            set { _scheme = value; }
-        }
+        public IFeatureScheme Scheme { get; set; }
 
         /// <summary>
-        /// Occurs when including legend items
+        /// Occurs when including legend items.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">Item that gets included.</param>
         protected override void OnInclude(IFeatureCategory item)
         {
-            item.SetParentItem(_scheme.AppearsInLegend ? _scheme : _scheme.GetParentItem());
+            item.SetParentItem(Scheme.AppearsInLegend ? Scheme : Scheme.GetParentItem());
             base.OnInclude(item);
         }
 
         /// <summary>
-        /// Occurs when excluding legend items
+        /// Occurs when excluding legend items.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">Item that gets excluded.</param>
         protected override void OnExclude(IFeatureCategory item)
         {
             item.SetParentItem(null);

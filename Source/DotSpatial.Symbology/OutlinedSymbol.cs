@@ -20,26 +20,88 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// OutlinedSymbol
+    /// </summary>
     public class OutlinedSymbol : Symbol, IOutlinedSymbol
     {
-        #region Private Variables
-
-        private Color _outlineColor;
-        private double _outlineWidth;
-        private bool _useOutline;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of OutlinedSymbol
+        /// Initializes a new instance of the <see cref="OutlinedSymbol"/> class.
         /// </summary>
         public OutlinedSymbol()
         {
-            _useOutline = false;
-            _outlineWidth = 1;
-            _outlineColor = Color.Black;
+            UseOutline = false;
+            OutlineWidth = 1;
+            OutlineColor = Color.Black;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the outline color that surrounds this specific symbol.
+        /// (this will have the same shape as the symbol, but be larger.
+        /// </summary>
+        [XmlIgnore]
+        public Color OutlineColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the outline opacity. This redefines the Alpha channel of the color to a floating point opacity
+        /// that ranges from 0 to 1.
+        /// </summary>
+        [Serialize("OutlineOpacity")]
+        public float OutlineOpacity
+        {
+            get
+            {
+                return OutlineColor.A / 255F;
+            }
+
+            set
+            {
+                int alpha = (int)(value * 255);
+                if (alpha > 255) alpha = 255;
+                if (alpha < 0) alpha = 0;
+                if (alpha != OutlineColor.A)
+                {
+                    OutlineColor = Color.FromArgb(alpha, OutlineColor);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the outline beyond the size of this symbol.
+        /// </summary>
+        [Serialize("OutlineWidth")]
+        public double OutlineWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the outline should be used.
+        /// </summary>
+        [Serialize("UseOutline")]
+        public bool UseOutline { get; set; }
+
+        /// <summary>
+        /// Gets or sets the outline color for XML serialization.
+        /// </summary>
+        [XmlElement("OutlineColor")]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Serialize("XmlOutlineColor")]
+        public string XmlOutlineColor
+        {
+            get
+            {
+                return ColorTranslator.ToHtml(OutlineColor);
+            }
+
+            set
+            {
+                OutlineColor = ColorTranslator.FromHtml(value);
+            }
         }
 
         #endregion
@@ -52,129 +114,63 @@ namespace DotSpatial.Symbology
         /// <param name="symbol">The symbol to copy from.</param>
         public void CopyOutline(IOutlinedSymbol symbol)
         {
-            _outlineColor = symbol.OutlineColor;
-            _outlineWidth = symbol.OutlineWidth;
-            _useOutline = symbol.UseOutline;
+            OutlineColor = symbol.OutlineColor;
+            OutlineWidth = symbol.OutlineWidth;
+            UseOutline = symbol.UseOutline;
         }
 
         /// <summary>
         /// Handles the drawing code, extending it to include some outline content.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="scaleSize"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="scaleSize">If this should draw in pixels, this should be 1. Otherwise, this should be
+        /// the constant that you multiply against so that drawing using geographic units will draw in pixel units.</param>
         protected override void OnDraw(Graphics g, double scaleSize)
         {
             base.OnDraw(g, scaleSize);
             float dx = (float)(Size.Width * scaleSize / 2);
             float dy = (float)(Size.Height * scaleSize / 2);
-            GraphicsPath gp = new GraphicsPath();
-            gp.AddRectangle(new RectangleF(-dx, -dy, 2F * dx, 2f * dy));
-            OnDrawOutline(g, scaleSize, gp);
-            gp.Dispose();
+            using (GraphicsPath gp = new GraphicsPath())
+            {
+                gp.AddRectangle(new RectangleF(-dx, -dy, 2F * dx, 2f * dy));
+                OnDrawOutline(g, scaleSize, gp);
+            }
         }
 
         /// <summary>
         /// Actually handles the rendering of the outline itself.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="scaleSize"></param>
-        /// <param name="gp"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="scaleSize">If this should draw in pixels, this should be 1. Otherwise, this should be
+        /// the constant that you multiply against so that drawing using geographic units will draw in pixel units.</param>
+        /// <param name="gp">The graphics path of the outline.</param>
         protected virtual void OnDrawOutline(Graphics g, double scaleSize, GraphicsPath gp)
         {
-            if (_useOutline == false) return;
-            if (_outlineWidth == 0) return;
-            Pen p = new Pen(_outlineColor);
-            p.Width = (float)(scaleSize * _outlineWidth);
-            p.Alignment = PenAlignment.Outset;
-            g.DrawPath(p, gp);
-            p.Dispose();
-        }
+            if (!UseOutline || OutlineWidth == 0) return;
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Provided for XML serialization
-        /// </summary>
-        [XmlElement("OutlineColor")]
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Serialize("XmlOutlineColor")]
-        public string XmlOutlineColor
-        {
-            get { return ColorTranslator.ToHtml(_outlineColor); }
-            set { _outlineColor = ColorTranslator.FromHtml(value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the outline color that surrounds this specific symbol.
-        /// (this will have the same shape as the symbol, but be larger.
-        /// </summary>
-        [XmlIgnore]
-        public Color OutlineColor
-        {
-            get { return _outlineColor; }
-            set { _outlineColor = value; }
-        }
-
-        /// <summary>
-        /// This redefines the Alpha channel of the color to a floating point opacity
-        /// that ranges from 0 to 1.
-        /// </summary>
-        [Serialize("OutlineOpacity")]
-        public float OutlineOpacity
-        {
-            get { return _outlineColor.A / 255F; }
-            set
+            using (Pen p = new Pen(OutlineColor)
             {
-                int alpha = (int)(value * 255);
-                if (alpha > 255) alpha = 255;
-                if (alpha < 0) alpha = 0;
-                if (alpha != _outlineColor.A)
-                {
-                    _outlineColor = Color.FromArgb(alpha, _outlineColor);
-                }
+                Width = (float)(scaleSize * OutlineWidth),
+                Alignment = PenAlignment.Outset
+            })
+            {
+                g.DrawPath(p, gp);
             }
         }
 
         /// <summary>
-        /// Gets or sets the size of the outline beyond the size of this symbol.
+        /// Occurs during the randomize process and allows future overriding of the process for sub-classes.
         /// </summary>
-        [Serialize("OutlineWidth")]
-        public double OutlineWidth
-        {
-            get { return _outlineWidth; }
-            set { _outlineWidth = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the boolean outline
-        /// </summary>
-        [Serialize("UseOutline")]
-        public bool UseOutline
-        {
-            get { return _useOutline; }
-            set { _useOutline = value; }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Occurs during the randomize process and allows future overriding of the process for sub-classes
-        /// </summary>
-        /// <param name="generator"></param>
+        /// <param name="generator">The random generator</param>
         protected override void OnRandomize(Random generator)
         {
             // randomize properties of the base class & any properties that are types that implement IRandomizable
             base.OnRandomize(generator);
 
             // randomize whatever is left
-            _useOutline = (generator.Next(0, 1) == 1);
-            _outlineColor = SymbologyGlobal.RandomColor();
-            _outlineWidth = generator.Next();
+            UseOutline = generator.Next(0, 1) == 1;
+            OutlineColor = SymbologyGlobal.RandomColor();
+            OutlineWidth = generator.Next();
         }
 
         #endregion

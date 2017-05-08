@@ -37,9 +37,9 @@ namespace DotSpatial.Symbology
         void CreateCategories(IRaster raster);
 
         /// <summary>
-        /// Gets the values from the raster.  If MaxSampleCount is less than the
+        /// Gets the values from the raster. If MaxSampleCount is less than the
         /// number of cells, then it randomly samples the raster with MaxSampleCount
-        /// values.  Otherwise it gets all the values in the raster.
+        /// values. Otherwise it gets all the values in the raster.
         /// </summary>
         /// <param name="raster">The raster to sample</param>
         void GetValues(IRaster raster);

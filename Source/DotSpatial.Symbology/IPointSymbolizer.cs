@@ -32,7 +32,7 @@ namespace DotSpatial.Symbology
         void Scale(double value);
 
         /// <summary>
-        /// Gets the maximum size for all of the layers, modified by the offsets.  This, in essence, represents the bounds
+        /// Gets the maximum size for all of the layers, modified by the offsets. This, in essence, represents the bounds
         /// for the entire symbol.
         /// </summary>
         Size2D GetSize();

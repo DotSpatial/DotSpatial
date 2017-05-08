@@ -1,7 +1,7 @@
-//********************************************************************************************************
+// *******************************************************************************************************
 // File name: Hydrology.cs
 // Description: Public class, provides methods for watershed delineation.
-//********************************************************************************************************
+// *******************************************************************************************************
 // The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
 // you may not use this file except in compliance with the License. You may obtain a copy of the License at
 // http://www.mozilla.org/MPL/
@@ -20,7 +20,7 @@
 // TODO the Magnitude field in the network shapefile is currently incorrectly calculated
 // 23/1/2011 Chris George replaced use of binary grids with GeoTiffs for TauDEM V5
 // 26/1/2011 Chris George replaced old Taudem and some Hydrology functions with TauDEM V5
-//********************************************************************************************************
+// *******************************************************************************************************
 
 using System;
 using System.CodeDom.Compiler;

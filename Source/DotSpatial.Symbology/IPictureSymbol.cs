@@ -36,7 +36,7 @@ namespace DotSpatial.Symbology
         string ImageFilename { get; set; }
 
         /// <summary>
-        /// Gets or sets the opacity for this image.  Setting this will automatically change the image in memory.
+        /// Gets or sets the opacity for this image. Setting this will automatically change the image in memory.
         /// </summary>
         float Opacity { get; set; }
 

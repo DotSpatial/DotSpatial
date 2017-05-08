@@ -16,6 +16,9 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Opp
+    /// </summary>
     public static class Opp
     {
         /// <summary>

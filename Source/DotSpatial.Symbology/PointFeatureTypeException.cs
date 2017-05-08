@@ -16,14 +16,14 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PointFeatureException
+    /// PointFeatureTypeException
     /// </summary>
     public class PointFeatureTypeException : ArgumentException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PointFeatureTypeException
+        /// Initializes a new instance of the <see cref="PointFeatureTypeException"/> class.
         /// </summary>
         public PointFeatureTypeException()
             : base(SymbologyMessageStrings.PointFeatureTypeException)
@@ -31,7 +31,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of PointFeatureTypeException, but with a custom error message
+        /// Initializes a new instance of the <see cref="PointFeatureTypeException"/> class.
         /// </summary>
         /// <param name="message">The string error message to include in the exception</param>
         public PointFeatureTypeException(string message)

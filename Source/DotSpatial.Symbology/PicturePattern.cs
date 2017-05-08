@@ -23,71 +23,36 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class PicturePattern : Pattern, IPicturePattern
     {
-        #region Private Variables
+        #region Fields
 
-        double _angle;
-        private string _dialogFilter;
-        Image _picture;
-        string _pictureFilename;
-        Position2D _scale;
-        WrapMode _wrapMode;
+        private string _pictureFilename;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PicturePattern
+        /// Initializes a new instance of the <see cref="PicturePattern"/> class.
         /// </summary>
         public PicturePattern()
         {
-            _scale = new Position2D(1, 1);
-            _wrapMode = WrapMode.Tile;
-            _dialogFilter = "Image Files|*.bmp;*.gif;*.jpg;*.png;*.tif;*.ico";
+            Scale = new Position2D(1, 1);
+            WrapMode = WrapMode.Tile;
+            DialogFilter = "Image Files|*.bmp;*.gif;*.jpg;*.png;*.tif;*.ico";
         }
 
         /// <summary>
-        /// Creates a new PicturePattern with the specified image
+        /// Initializes a new instance of the <see cref="PicturePattern"/> class with the specified image.
         /// </summary>
         /// <param name="picture">The picture to draw</param>
         /// <param name="wrap">The way to wrap the picture</param>
         /// <param name="angle">The angle to rotate the image</param>
         public PicturePattern(Image picture, WrapMode wrap, double angle)
         {
-            _picture = picture;
-            _wrapMode = wrap;
-            _angle = angle;
-            _dialogFilter = "Image Files|*.bmp;*.gif;*.jpg;*.png;*.tif;*.ico";
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Opens the specified image or icon file to a local copy.  Icons are converted into bitmaps.
-        /// </summary>
-        /// <param name="fileName">The string fileName to open.</param>
-        public void Open(string fileName)
-        {
-            if (Path.GetExtension(fileName).ToLower() == ".ico")
-            {
-                Icon ico = new Icon(fileName);
-                _picture = ico.ToBitmap();
-            }
-            else
-            {
-                _picture = Image.FromFile(fileName);
-            }
-            _pictureFilename = fileName;
-        }
-
-        /// <summary>
-        /// Disposes the image picture for this PicturePattern.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            _picture.Dispose();
+            Picture = picture;
+            WrapMode = wrap;
+            Angle = angle;
+            DialogFilter = "Image Files|*.bmp;*.gif;*.jpg;*.png;*.tif;*.ico";
         }
 
         #endregion
@@ -98,37 +63,29 @@ namespace DotSpatial.Symbology
         /// Gets or sets the angle for the texture in degrees.
         /// </summary>
         [Serialize("Angle")]
-        public double Angle
-        {
-            get { return _angle; }
-            set { _angle = value; }
-        }
+        public double Angle { get; set; }
 
         /// <summary>
-        /// Gets the string dialog filter that represents the supported picture file formats.
+        /// Gets or sets the dialog filter that represents the supported picture file formats.
         /// </summary>
-        public string DialogFilter
-        {
-            get { return _dialogFilter; }
-            protected set { _dialogFilter = value; }
-        }
+        public string DialogFilter { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the image to use as a repeating texture
+        /// Gets or sets the image to use as a repeating texture.
         /// </summary>
-        public Image Picture
-        {
-            get { return _picture; }
-            set { _picture = value; }
-        }
+        public Image Picture { get; set; }
 
         /// <summary>
-        /// Gets or sets the picture fileName.  Setting this will load the picture.
+        /// Gets or sets the picture fileName. Setting this will load the picture.
         /// </summary>
         [Serialize("PictureFilename")]
         public string PictureFilename
         {
-            get { return _pictureFilename; }
+            get
+            {
+                return _pictureFilename;
+            }
+
             set
             {
                 _pictureFilename = value;
@@ -141,25 +98,25 @@ namespace DotSpatial.Symbology
         /// picture before it is used as a texture in pixel coordinates.
         /// </summary>
         [Serialize("Scale")]
-        public Position2D Scale
-        {
-            get { return _scale; }
-            set { _scale = value; }
-        }
+        public Position2D Scale { get; set; }
 
         /// <summary>
         /// Gets or sets the wrap mode.
         /// </summary>
         [Serialize("WrapMode")]
-        public WrapMode WrapMode
-        {
-            get { return _wrapMode; }
-            set { _wrapMode = value; }
-        }
+        public WrapMode WrapMode { get; set; }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
+
+        /// <summary>
+        /// Disposes the image picture for this PicturePattern.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            Picture.Dispose();
+        }
 
         /// <summary>
         /// Instructs the drawing code to fill the specified path with the specified image.
@@ -168,19 +125,43 @@ namespace DotSpatial.Symbology
         /// <param name="gp">The GraphicsPath to fill</param>
         public override void FillPath(Graphics g, GraphicsPath gp)
         {
-            if (_picture == null) return;
-            if (_scale.X == 0 || _scale.Y == 0) return;
-            if (_scale.X * _picture.Width * _scale.Y * _picture.Height > 8000 * 8000) return; // The scaled image is too large, will cause memory exceptions.
-            Bitmap scaledBitmap = new Bitmap((int)(_picture.Width * _scale.X), (int)(_picture.Height * _scale.Y));
-            Graphics scb = Graphics.FromImage(scaledBitmap);
-            scb.DrawImage(_picture, new Rectangle(0, 0, scaledBitmap.Width, scaledBitmap.Height), new Rectangle(0, 0, _picture.Width, _picture.Height), GraphicsUnit.Pixel);
+            if (Picture == null) return;
+            if (Scale.X == 0 || Scale.Y == 0) return;
+            if (Scale.X * Picture.Width * Scale.Y * Picture.Height > 8000 * 8000) return; // The scaled image is too large, will cause memory exceptions.
 
-            TextureBrush tb = new TextureBrush(scaledBitmap, _wrapMode);
-            tb.RotateTransform(-(float)_angle);
+            Bitmap scaledBitmap = new Bitmap((int)(Picture.Width * Scale.X), (int)(Picture.Height * Scale.Y));
+            Graphics scb = Graphics.FromImage(scaledBitmap);
+            scb.DrawImage(Picture, new Rectangle(0, 0, scaledBitmap.Width, scaledBitmap.Height), new Rectangle(0, 0, Picture.Width, Picture.Height), GraphicsUnit.Pixel);
+
+            TextureBrush tb = new TextureBrush(scaledBitmap, WrapMode);
+            tb.RotateTransform(-(float)Angle);
             g.FillPath(tb, gp);
             tb.Dispose();
             scb.Dispose();
             base.FillPath(g, gp);
+        }
+
+        /// <summary>
+        /// Opens the specified image or icon file to a local copy. Icons are converted into bitmaps.
+        /// </summary>
+        /// <param name="fileName">The string fileName to open.</param>
+        public void Open(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            if (extension != null)
+            {
+                if (extension.ToLower() == ".ico")
+                {
+                    Icon ico = new Icon(fileName);
+                    Picture = ico.ToBitmap();
+                }
+                else
+                {
+                    Picture = Image.FromFile(fileName);
+                }
+            }
+
+            _pictureFilename = fileName;
         }
 
         #endregion

@@ -13,6 +13,9 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// The selection mode that can be used when selecting things.
+    /// </summary>
     public enum SelectionMode
     {
         /// <summary>
@@ -56,7 +59,7 @@ namespace DotSpatial.Symbology
         IntersectsExtent,
 
         /// <summary>
-        /// The most inclusive possible.  If any element is touching or overlapping the region in any
+        /// The most inclusive possible. If any element is touching or overlapping the region in any
         /// way, then this will be true.
         /// </summary>
         Intersects,

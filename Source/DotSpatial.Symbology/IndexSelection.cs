@@ -265,7 +265,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Attempts to remove all the members from the collection.  If
+        /// Attempts to remove all the members from the collection. If
         /// one of the specified indices is outside the range of possible
         /// values, this returns false, even if others were successfully removed.
         /// This will also return false if none of the states were changed.
@@ -720,7 +720,7 @@ namespace DotSpatial.Symbology
         private int GetSourceIndex(int selectedIndex)
         {
             // For instance, the 0 index member of the selection might in fact
-            // be the 10th member of the featureset.  But we want to edit the 10th member
+            // be the 10th member of the featureset. But we want to edit the 10th member
             // and not the 0 member.
             int count = 0;
             foreach (int i in this)

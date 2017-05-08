@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
         IList<ILayer> GetLayers();
 
         /// <summary>
-        /// Returns the number of data layers, not counting groups.  If recursive is true, then layers that are within
+        /// Returns the number of data layers, not counting groups. If recursive is true, then layers that are within
         /// groups will be counted, even though the groups themselves are not.
         /// </summary>
         /// <param name="recursive">Boolean, if true forces checking even the number of child members.</param>
@@ -89,7 +89,7 @@ namespace DotSpatial.Symbology
         Image Icon { get; set; }
 
         /// <summary>
-        /// Gets the integer count of layers.  This can also be accessed through Layers.Count.
+        /// Gets the integer count of layers. This can also be accessed through Layers.Count.
         /// </summary>
         int LayerCount { get; }
 

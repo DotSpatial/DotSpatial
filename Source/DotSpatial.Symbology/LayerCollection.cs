@@ -78,7 +78,7 @@ namespace DotSpatial.Symbology
                 return _mapFrame;
             }
 
-            // not sure I want to try to implement set.  That would force me to change the _mapFrame property
+            // not sure I want to try to implement set. That would force me to change the _mapFrame property
             // on all the layers? Maybe layers don't access
             set
             {

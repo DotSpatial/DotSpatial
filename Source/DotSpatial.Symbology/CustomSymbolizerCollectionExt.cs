@@ -18,7 +18,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Extension methods for a collection of custom symbolizers
+    /// Extension methods for a collection of custom symbolizers.
     /// </summary>
     public static class CustomSymbolizerCollectionExt
     {
@@ -37,7 +37,6 @@ namespace DotSpatial.Symbology
                 bformatter.Serialize(myStream, self);
             }
         }
-       
 
         #endregion
     }

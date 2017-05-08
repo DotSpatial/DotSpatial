@@ -22,17 +22,20 @@ namespace DotSpatial.Symbology
         /// Appends the newly selected features to the existing selection
         /// </summary>
         Append,
+
         /// <summary>
         /// Subtracts the newly selected features from the existing features.
         /// </summary>
         Subtract,
+
         /// <summary>
         /// Clears the current selection and selects the new features
         /// </summary>
         Replace,
+
         /// <summary>
         /// Selects the new features only from the existing selection
         /// </summary>
-        SelectFrom,
+        SelectFrom
     }
 }

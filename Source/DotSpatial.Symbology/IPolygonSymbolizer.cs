@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology
         void SetFillColor(Color color);
 
         /// <summary>
-        /// This gets the largest width of all the strokes of the outlines of all the patterns.  Setting this will
+        /// This gets the largest width of all the strokes of the outlines of all the patterns. Setting this will
         /// forceably adjust the width of all the strokes of the outlines of all the patterns.
         /// </summary>
         double GetOutlineWidth();

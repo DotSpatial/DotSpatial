@@ -16,6 +16,9 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for Stroke.
+    /// </summary>
     public interface IStroke : IDescriptor
     {
         #region Methods
@@ -23,7 +26,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This is an optional expression that allows drawing to the specified GraphicsPath.
         /// Overriding this allows for unconventional behavior to be included, such as
-        /// specifying marker decorations, rather than simply returning a pen.  A pen
+        /// specifying marker decorations, rather than simply returning a pen. A pen
         /// is also returned publicly for convenience.
         /// </summary>
         /// <param name="g">The Graphics device to draw to</param>
@@ -33,16 +36,17 @@ namespace DotSpatial.Symbology
         void DrawPath(Graphics g, GraphicsPath path, double scaleWidth);
 
         /// <summary>
-        /// Casts this stroke to the appropriate pen
+        /// Casts this stroke to the appropriate pen.
         /// </summary>
+        /// <param name="width"></param>
         /// <returns></returns>
         Pen ToPen(double width);
 
         /// <summary>
-        /// Gets a color to represent this line.  If the stroke doesn't work as a color,
+        /// Gets a color to represent this line. If the stroke doesn't work as a color,
         /// then this color will be gray.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The color.</returns>
         Color GetColor();
 
         /// <summary>

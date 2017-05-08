@@ -24,33 +24,17 @@ namespace DotSpatial.Symbology
     [TypeConverter(typeof(Size2DConverter))]
     public class Size2D : Descriptor
     {
-        #region Private Variables
-
-        /// <summary>
-        /// Gets or sets the height
-        /// </summary>
-        [Serialize("Height")]
-        public double Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the width
-        /// </summary>
-        [Serialize("Width")]
-        public double Width { get; set; }
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of <see cref="Size2D"/>.
+        /// Initializes a new instance of the <see cref="Size2D"/> class.
         /// </summary>
         public Size2D()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref=" Size2D"/>.
+        /// Initializes a new instance of the <see cref="Size2D"/> class.
         /// </summary>
         /// <param name="width">The double width</param>
         /// <param name="height">The double height</param>
@@ -62,17 +46,61 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the height.
+        /// </summary>
+        [Serialize("Height")]
+        public double Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        [Serialize("Width")]
+        public double Width { get; set; }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        /// Determines if the height and width are both equal.
+        /// </summary>
+        /// <param name="a">First size to check.</param>
+        /// <param name="b">Second size to check.</param>
+        /// <returns>True, if both are equal.</returns>
+        public static bool operator ==(Size2D a, Size2D b)
+        {
+            if (a == null || b == null) return a == b;
+
+            return a.Width == b.Width && a.Height == b.Height;
+        }
+
+        /// <summary>
+        /// Determiens if the height and width are not equal.
+        /// </summary>
+        /// <param name="a">First size to check.</param>
+        /// <param name="b">Second size to check.</param>
+        /// <returns>True, if both are not equal.</returns>
+        public static bool operator !=(Size2D a, Size2D b)
+        {
+            return !(a == b);
+        }
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// Tests for equality against an object.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">Size2D to check against.</param>
+        /// <returns>True, if both are equal.</returns>
         public override bool Equals(object obj)
         {
             var other = obj as Size2D;
-            if ((object) other == null) return false;
+            if ((object)other == null) return false;
+
             return Equals(other);
         }
 
@@ -84,56 +112,32 @@ namespace DotSpatial.Symbology
         public bool Equals(Size2D size)
         {
             if (((object)size) == null) return false;
-            return (size.Width == Width && size.Height == Height);
-        }
 
-        /// <summary>
-        /// Gets the string equivalent of this object
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return Width + ", " + Height;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Determines if the height and width are both equal
-        /// </summary>
-        public static bool operator ==(Size2D a, Size2D b)
-        {
-            if (((object)a) == null && ((object)b) == null) return true;
-            if ((object)a == null) return false;
-            if ((object)b == null) return false;
-            return (a.Width == b.Width && a.Height == b.Height);
-        }
-
-        /// <summary>
-        /// Determiens if the height and width are not equal
-        /// </summary>
-        public static bool operator !=(Size2D a, Size2D b)
-        {
-            if (((object)a) == null && ((object)b) == null) return false;
-            if (((object)a) == null) return true;
-            if (((object)b) == null) return true;
-            return !(a.Width == b.Width && a.Height == b.Height);
+            return size.Width == Width && size.Height == Height;
         }
 
         /// <summary>
         /// Returns the basic hash code for the object.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The hash code.</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
 
-        #region protected methods
+        /// <summary>
+        /// Gets the string equivalent of this object.
+        /// </summary>
+        /// <returns>String, containing width and height.</returns>
+        public override string ToString()
+        {
+            return Width + ", " + Height;
+        }
 
         /// <summary>
-        /// Generates random doubles for the size from 1 to 100 for both the width and height
+        /// Generates random doubles for the size from 1 to 100 for both the width and height.
         /// </summary>
+        /// <param name="generator">The random generator.</param>
         protected override void OnRandomize(Random generator)
         {
             Width = generator.NextDouble() * 100;
