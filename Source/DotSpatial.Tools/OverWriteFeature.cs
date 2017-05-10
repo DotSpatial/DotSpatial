@@ -1,13 +1,13 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.OverWriteFeature.cs
 // Description:  Overwrite feature in a featureset.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
+// -----------------------|------------------------|------------------------------------------------------
 // Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
 // KP                     |  9/2009                |  Used IDW as model for OverWriteFeature
 // Ping                   |  12/2009               |  Cleaning code and fixing bugs.

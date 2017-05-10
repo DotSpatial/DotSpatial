@@ -1,14 +1,13 @@
-﻿// -----------------------------------------------------------------------
-// *******************************************************************************************************
+﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.RasterMagic.cs
 // Description:  Used to consolidate duplicate code across multiple tools.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------
 // Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
+// -------------------|--------------------|--------------------------------------------------------------
 // ********************************************************************************************************
 
 using System;
@@ -77,10 +76,10 @@ namespace DotSpatial.Tools
             // Figures out which raster has smaller cells
             var smallestCellRaster = input1.CellWidth < input2.CellWidth ? input1 : input2;
             var envelope = UnionEnvelope(input1, input2);
-            envelope.MinX = envelope.MinX + smallestCellRaster.CellWidth / 2;
-            envelope.MinY = envelope.MinY - smallestCellRaster.CellHeight / 2;
-            envelope.MaxX = envelope.MaxX + smallestCellRaster.CellWidth / 2;
-            envelope.MaxY = envelope.MaxY - smallestCellRaster.CellHeight / 2;
+            envelope.MinX = envelope.MinX + (smallestCellRaster.CellWidth / 2);
+            envelope.MinY = envelope.MinY - (smallestCellRaster.CellHeight / 2);
+            envelope.MaxX = envelope.MaxX + (smallestCellRaster.CellWidth / 2);
+            envelope.MaxY = envelope.MaxY - (smallestCellRaster.CellHeight / 2);
 
             // Given the envelope of the two rasters we calculate the number of columns / rows
             int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / smallestCellRaster.CellWidth));

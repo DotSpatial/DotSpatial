@@ -1,4 +1,8 @@
 // ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+//
+// ********************************************************************************************************
 // Product Name: DotSpatial.Symbology.dll
 // Description:  The core libraries for the DotSpatial project.
 //

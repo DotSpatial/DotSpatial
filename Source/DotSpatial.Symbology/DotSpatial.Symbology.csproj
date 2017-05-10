@@ -313,6 +313,9 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.Symbology.snk" />
     <None Include="DotSpatial.Symbology.nuspec" />
   </ItemGroup>

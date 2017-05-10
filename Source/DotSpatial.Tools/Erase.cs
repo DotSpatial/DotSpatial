@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.Erase
 // Description:  Erase a portion of a data set.
-
+//
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 // Contributor(s): (Open source contributors should list themselves and their modifications here).

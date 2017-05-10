@@ -15,22 +15,20 @@ using System;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Event args for the ChangedObjectEvent.
+    /// </summary>
     public class ChangedObjectEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private readonly object _item;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of ChangedObjectEvent
+        /// Initializes a new instance of the <see cref="ChangedObjectEventArgs"/> class.
         /// </summary>
+        /// <param name="changedItem">The item that has been changed.</param>
         public ChangedObjectEventArgs(object changedItem)
         {
-            _item = changedItem;
+            Item = changedItem;
         }
 
         #endregion
@@ -38,12 +36,9 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the item that has been changed
+        /// Gets the item that has been changed.
         /// </summary>
-        public object Item
-        {
-            get { return _item; }
-        }
+        public object Item { get; }
 
         #endregion
     }

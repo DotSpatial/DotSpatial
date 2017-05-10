@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.ClipPolygonWithLine.cs
 // Description:  A tool for clipping a polygon with a line.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
@@ -1331,11 +1331,11 @@ namespace DotSpatial.Tools
                 {
                     // Save these points so we can find the "new" index values later
                     colPolyIntLocPoints.Add(polygon.Geometry.Coordinates[listIntLocs[2 * i]]);
-                    colPolyIntLocPoints.Add(polygon.Geometry.Coordinates[listIntLocs[2 * i + 1]]);
+                    colPolyIntLocPoints.Add(polygon.Geometry.Coordinates[listIntLocs[(2 * i) + 1]]);
 
                     // Build the line parts that we need for each cut
                     int nStart = listLinePartStartEndIndexValues[2 * nLineParts];
-                    int nEnd = listLinePartStartEndIndexValues[2 * nLineParts + 1];
+                    int nEnd = listLinePartStartEndIndexValues[(2 * nLineParts) + 1];
                     List<int> currentListOfIndexValues = colListForEachLinePart[nLineParts];
 
                     List<Coordinate> listLinePart = new List<Coordinate> { listNewLine[nStart] };
@@ -1375,7 +1375,7 @@ namespace DotSpatial.Tools
                         int firstIntLoc = -1;
                         int lastIntLoc = -1;
                         Coordinate firstCoord = colPolyIntLocPoints[2 * nLineParts];
-                        Coordinate lastCoord = colPolyIntLocPoints[2 * nLineParts + 1];
+                        Coordinate lastCoord = colPolyIntLocPoints[(2 * nLineParts) + 1];
 
                         // Find the index of both points
                         for (int j = 0; j < currentFeature.Geometry.Coordinates.Length; j++)
@@ -1798,7 +1798,7 @@ namespace DotSpatial.Tools
         private static double TurboDeterm(double elem11, double elem12, double elem13, double elem21, double elem22, double elem23)
         {
             // The third row of the 3x3 matrix is (1, 1, 1)
-            return elem11 * (elem22 - elem23) - elem12 * (elem21 - elem23) + elem13 * (elem21 - elem22);
+            return (elem11 * (elem22 - elem23)) - (elem12 * (elem21 - elem23)) + (elem13 * (elem21 - elem22));
         }
 
         #endregion

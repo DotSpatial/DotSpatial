@@ -1,13 +1,13 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.RasterDistance.cs
 // Description:  This tool calculates the euclidean distance from each raster cell to the nearest target cell.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//---------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
-//------------------------|------------------------|-------------------------------------------------------
+// -----------------------|------------------------|-------------------------------------------------------
 // Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
 // KP                     |  9/2009                |  Used IDW as model for RasterDistance
 // Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
@@ -163,10 +163,10 @@ namespace DotSpatial.Tools
                         aNcels[3] = aSqDist[row - 1][col + 1]; // NE
 
                         // calculate the squared euclidean distances to each neighbouring cell and to the nearest target cell
-                        aDiff[0] = (aNcels[0] < InfD) ? aNcels[0] + 2 * aRx[row][col - 1] + 1 : InfD;
-                        aDiff[1] = (aNcels[1] < InfD) ? aNcels[1] + 2 * (aRx[row - 1][col - 1] + aRy[row - 1][col - 1] + 1) : InfD;
-                        aDiff[2] = (aNcels[2] < InfD) ? aNcels[2] + 2 * aRy[row - 1][col] + 1 : InfD;
-                        aDiff[3] = (aNcels[3] < InfD) ? aNcels[3] + 2 * (aRx[row - 1][col + 1] + aRy[row - 1][col + 1] + 1) : InfD;
+                        aDiff[0] = (aNcels[0] < InfD) ? aNcels[0] + (2 * aRx[row][col - 1]) + 1 : InfD;
+                        aDiff[1] = (aNcels[1] < InfD) ? aNcels[1] + (2 * (aRx[row - 1][col - 1] + aRy[row - 1][col - 1] + 1)) : InfD;
+                        aDiff[2] = (aNcels[2] < InfD) ? aNcels[2] + (2 * aRy[row - 1][col]) + 1 : InfD;
+                        aDiff[3] = (aNcels[3] < InfD) ? aNcels[3] + (2 * (aRx[row - 1][col + 1] + aRy[row - 1][col + 1] + 1)) : InfD;
 
                         // find neighbouring cell with minimum distance difference
                         int minDiff = aDiff[0];
@@ -251,10 +251,10 @@ namespace DotSpatial.Tools
                         aNcels[3] = aSqDist[row + 1][col - 1]; // SW
 
                         // calculate the squared euclidean distances to each neighbouring cell and to the nearest target cell
-                        aDiff[0] = (aNcels[0] < InfD) ? aNcels[0] + 2 * aRx[row][col + 1] + 1 : InfD;
-                        aDiff[1] = (aNcels[1] < InfD) ? aNcels[1] + 2 * (aRx[row + 1][col + 1] + aRy[row + 1][col + 1] + 1) : InfD;
-                        aDiff[2] = (aNcels[2] < InfD) ? aNcels[2] + 2 * aRy[row + 1][col] + 1 : InfD;
-                        aDiff[3] = (aNcels[3] < InfD) ? aNcels[3] + 2 * (aRx[row + 1][col - 1] + aRy[row + 1][col - 1] + 1) : InfD;
+                        aDiff[0] = (aNcels[0] < InfD) ? aNcels[0] + (2 * aRx[row][col + 1]) + 1 : InfD;
+                        aDiff[1] = (aNcels[1] < InfD) ? aNcels[1] + (2 * (aRx[row + 1][col + 1] + aRy[row + 1][col + 1] + 1)) : InfD;
+                        aDiff[2] = (aNcels[2] < InfD) ? aNcels[2] + (2 * aRy[row + 1][col]) + 1 : InfD;
+                        aDiff[3] = (aNcels[3] < InfD) ? aNcels[3] + (2 * (aRx[row + 1][col - 1] + aRy[row + 1][col - 1] + 1)) : InfD;
 
                         // find neighbouring cell with minimum distance difference
                         int minDiff = aDiff[0];

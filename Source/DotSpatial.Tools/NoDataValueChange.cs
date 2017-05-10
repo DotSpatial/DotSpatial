@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.NoDataValueChange.cs
 // Description:  Tool that changes the no data value of a raster file.
-
+//
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //---------------------------------------------------------------------------------------------------------

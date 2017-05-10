@@ -1,8 +1,7 @@
-﻿// -----------------------------------------------------------------------
-// *******************************************************************************************************
+﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.RasterMultiply.cs
 // Description:  Multiply two raster layers cell by cell.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.

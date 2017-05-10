@@ -1,14 +1,13 @@
-﻿// -----------------------------------------------------------------------
-// *******************************************************************************************************
+﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.RasterToPolygon.cs
 // Description:  Convert a raster dataset to a polygon featureset.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------
 // Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
+// -----------------------|------------------------|------------------------------------------------------
 // Ted Dunsford           |  8/24/2009             |  Cleaned up some unnecessary references using re-sharper
 // KP                     |  9/2009                |  Used IDW as model for RasterToPolygon
 // Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
@@ -116,10 +115,10 @@ namespace DotSpatial.Tools
             var height = input.CellHeight;
             var width = input.CellWidth;
 
-            var xMin = input.Xllcenter - width / 2.0;
-            var yMin = input.Yllcenter - height / 2.0;
-            var xMax = xMin + width * input.NumColumns;
-            var yMax = yMin + height * input.NumRows;
+            var xMin = input.Xllcenter - (width / 2.0);
+            var yMin = input.Yllcenter - (height / 2.0);
+            var xMax = xMin + (width * input.NumColumns);
+            var yMax = yMin + (height * input.NumRows);
 
             var numRows = input.NumRows;
             var numColumns = input.NumColumns;
@@ -186,14 +185,14 @@ namespace DotSpatial.Tools
                      cl    cr
                      bl bc br
                      */
-                    var tl = new Coordinate(xMin + x * width, yMax - (y + 1) * height);
-                    var tc = new Coordinate(xMin + (x + 0.5) * width, yMax - (y + 1) * height);
-                    var tr = new Coordinate(xMin + (x + 1) * width, yMax - (y + 1) * height);
-                    var cl = new Coordinate(xMin + x * width, yMax - (y + 0.5) * height);
-                    var cr = new Coordinate(xMin + (x + 1) * width, yMax - (y + 0.5) * height);
-                    var bl = new Coordinate(xMin + x * width, yMax - y * height);
-                    var bc = new Coordinate(xMin + (x + 0.5) * width, yMax - y * height);
-                    var br = new Coordinate(xMin + (x + 1) * width, yMax - y * height);
+                    var tl = new Coordinate(xMin + (x * width), yMax - ((y + 1) * height));
+                    var tc = new Coordinate(xMin + ((x + 0.5) * width), yMax - ((y + 1) * height));
+                    var tr = new Coordinate(xMin + ((x + 1) * width), yMax - ((y + 1) * height));
+                    var cl = new Coordinate(xMin + (x * width), yMax - ((y + 0.5) * height));
+                    var cr = new Coordinate(xMin + ((x + 1) * width), yMax - ((y + 0.5) * height));
+                    var bl = new Coordinate(xMin + (x * width), yMax - (y * height));
+                    var bc = new Coordinate(xMin + ((x + 0.5) * width), yMax - (y * height));
+                    var br = new Coordinate(xMin + ((x + 1) * width), yMax - (y * height));
 
                     /*
                      Cell edges:
@@ -463,12 +462,12 @@ namespace DotSpatial.Tools
                     // Right top out diagonals
                     if (con8L)
                     {
-                        lineList.AddSegment(tc, new Coordinate(xMin + (x + 1) * width, yMax - (y + 1 + 0.5) * height));
+                        lineList.AddSegment(tc, new Coordinate(xMin + ((x + 1) * width), yMax - ((y + 1 + 0.5) * height)));
                     }
 
                     if (con8R)
                     {
-                        lineList.AddSegment(cr, new Coordinate(xMin + (x + 1 + 0.5) * width, yMax - (y + 1) * height));
+                        lineList.AddSegment(cr, new Coordinate(xMin + ((x + 1 + 0.5) * width), yMax - ((y + 1) * height)));
                     }
 
                     // Right in diagonals
@@ -491,12 +490,12 @@ namespace DotSpatial.Tools
                     // Left Top out diagonals
                     if (con6R)
                     {
-                        lineList.AddSegment(tc, new Coordinate(xMin + x * width, yMax - (y + 1 + 0.5) * height));
+                        lineList.AddSegment(tc, new Coordinate(xMin + (x * width), yMax - ((y + 1 + 0.5) * height)));
                     }
 
                     if (con6L)
                     {
-                        lineList.AddSegment(cl, new Coordinate(xMin + (x - 0.5) * width, yMax - (y + 1) * height));
+                        lineList.AddSegment(cl, new Coordinate(xMin + ((x - 0.5) * width), yMax - ((y + 1) * height)));
                     }
 
                     // Left In diagonals

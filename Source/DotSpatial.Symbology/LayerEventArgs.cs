@@ -15,17 +15,17 @@ using System;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Event args for events that need a layer.
+    /// </summary>
     public class LayerEventArgs : EventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of LayerEventArgs
+        /// Initializes a new instance of the <see cref="LayerEventArgs"/> class.
         /// </summary>
+        /// <param name="layer">The layer of the event.</param>
         public LayerEventArgs(ILayer layer)
         {
             Layer = layer;
@@ -33,14 +33,10 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets a layer
+        /// Gets or sets a layer.
         /// </summary>
         public ILayer Layer { get; protected set; }
 

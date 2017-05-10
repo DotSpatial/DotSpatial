@@ -1,8 +1,7 @@
-﻿// -----------------------------------------------------------------------
-// *******************************************************************************************************
+﻿// *******************************************************************************************************
 // Product: DotSpatial.Tools.RasterSlope.cs
 // Description:  Generate slope raster from given altitude raster.
-
+//
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
@@ -133,8 +132,8 @@ namespace DotSpatial.Tools
                             double z8 = ras.Value[i + 1, j + 1];
 
                             // 3rd Order Finite Difference slope algorithm
-                            double dZdX = inZFactor * ((z3 - z1) + 2 * (z5 - z4) + (z8 - z6)) / (8 * ras.CellWidth);
-                            double dZdY = inZFactor * ((z1 - z6) + 2 * (z2 - z7) + (z3 - z8)) / (8 * ras.CellHeight);
+                            double dZdX = inZFactor * ((z3 - z1) + (2 * (z5 - z4)) + (z8 - z6)) / (8 * ras.CellWidth);
+                            double dZdY = inZFactor * ((z1 - z6) + (2 * (z2 - z7)) + (z3 - z8)) / (8 * ras.CellHeight);
 
                             double slope = Math.Atan(Math.Sqrt((dZdX * dZdX) + (dZdY * dZdY))) * (180 / Math.PI);
 

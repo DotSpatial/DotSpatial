@@ -6,7 +6,7 @@ using DotSpatial.Plugins.SetSelectable.Properties;
 
 namespace DotSpatial.Plugins.SetSelectable
 {
-    partial class DGV_Select
+    partial class DgvSelect
     {
         /// <summary> 
         /// Erforderliche Designervariable.
@@ -42,7 +42,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(DGV_Select));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(DgvSelect));
             this.ToolStripContainer1 = new ToolStripContainer();
             this.DGV_Layer = new DataGridView();
             this.ToolStrip1 = new ToolStrip();
@@ -111,8 +111,8 @@ namespace DotSpatial.Plugins.SetSelectable
             this.DGV_Layer.Name = "DGV_Layer";
             this.DGV_Layer.RowHeadersVisible = false;
             this.DGV_Layer.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGV_Layer.CellContentClick += new DataGridViewCellEventHandler(this.DGV_Layer_CellContentClick);
-            this.DGV_Layer.CellToolTipTextNeeded += new DataGridViewCellToolTipTextNeededEventHandler(this.DGV_Layer_CellToolTipTextNeeded);
+            this.DGV_Layer.CellContentClick += new DataGridViewCellEventHandler(this.DgvLayerCellContentClick);
+            this.DGV_Layer.CellToolTipTextNeeded += new DataGridViewCellToolTipTextNeededEventHandler(this.DgvLayerCellToolTipTextNeeded);
             // 
             // ToolStrip1
             // 
@@ -133,7 +133,7 @@ namespace DotSpatial.Plugins.SetSelectable
             this.TSB_CheckAll.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this.TSB_CheckAll.Image = Resources.checkall;
             this.TSB_CheckAll.Name = "TSB_CheckAll";
-            this.TSB_CheckAll.Click += new EventHandler(this.TSB_CheckAll_Click);
+            this.TSB_CheckAll.Click += new EventHandler(this.TsbCheckAllClick);
             // 
             // TSB_CheckNone
             // 
@@ -141,7 +141,7 @@ namespace DotSpatial.Plugins.SetSelectable
             this.TSB_CheckNone.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this.TSB_CheckNone.Image = Resources.uncheckall;
             this.TSB_CheckNone.Name = "TSB_CheckNone";
-            this.TSB_CheckNone.Click += new EventHandler(this.TSB_CheckNone_Click);
+            this.TSB_CheckNone.Click += new EventHandler(this.TsbCheckNoneClick);
             // 
             // TSB_SelectAll
             // 
@@ -149,7 +149,7 @@ namespace DotSpatial.Plugins.SetSelectable
             this.TSB_SelectAll.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this.TSB_SelectAll.Image = Resources.select_all;
             this.TSB_SelectAll.Name = "TSB_SelectAll";
-            this.TSB_SelectAll.Click += new EventHandler(this.TSB_SelectAll_Click);
+            this.TSB_SelectAll.Click += new EventHandler(this.TsbSelectAllClick);
             // 
             // TSB_SelectNone
             // 
@@ -157,7 +157,7 @@ namespace DotSpatial.Plugins.SetSelectable
             this.TSB_SelectNone.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this.TSB_SelectNone.Image = Resources.select_none;
             this.TSB_SelectNone.Name = "TSB_SelectNone";
-            this.TSB_SelectNone.Click += new EventHandler(this.TSB_SelectNone_Click);
+            this.TSB_SelectNone.Click += new EventHandler(this.TsbSelectNoneClick);
             // 
             // DataGridViewImageColumn1
             // 
@@ -206,7 +206,7 @@ namespace DotSpatial.Plugins.SetSelectable
             this.AutoScaleMode = AutoScaleMode.Font;
             this.Controls.Add(this.ToolStripContainer1);
             this.Name = "DGV_Select";
-            this.Load += new EventHandler(this.DGV_Select_Load);
+            this.Load += new EventHandler(this.DgvSelectLoad);
             this.ToolStripContainer1.ContentPanel.ResumeLayout(false);
             this.ToolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this.ToolStripContainer1.TopToolStripPanel.PerformLayout();
