@@ -26,12 +26,16 @@ namespace DotSpatial.Serialization
     /// </summary>
     public class SerializationMap
     {
-        private static readonly Dictionary<Type, SerializationMap> _typeToSerializationMap = new Dictionary<Type, SerializationMap>();
+        #region Fields
 
-        private readonly List<SerializationMapEntry> _memberInfos = new List<SerializationMapEntry>();
+        private static readonly Dictionary<Type, SerializationMap> TypeToSerializationMap = new Dictionary<Type, SerializationMap>();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// The static constructor creates a dictionary that maps an object type to a specific SerializationMap instance.
+        /// Initializes static members of the <see cref="SerializationMap"/> class.
         /// </summary>
         static SerializationMap()
         {
@@ -50,13 +54,12 @@ namespace DotSpatial.Serialization
                     continue;
                 }
 
-                if (mapInstance != null)
-                    _typeToSerializationMap[mapInstance.ForType] = mapInstance;
+                if (mapInstance != null) TypeToSerializationMap[mapInstance.ForType] = mapInstance;
             }
         }
 
         /// <summary>
-        /// Creates a new instance of the SerializationMap class.
+        /// Initializes a new instance of the <see cref="SerializationMap"/> class.
         /// </summary>
         /// <param name="forType">The type associated with this SerializationMap.</param>
         protected SerializationMap(Type forType)
@@ -65,21 +68,26 @@ namespace DotSpatial.Serialization
             FindSerializableMembers(forType);
 
             // Update the mapping dictionary
-            _typeToSerializationMap[forType] = this;
+            TypeToSerializationMap[forType] = this;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// The type that this serialization map instance is associated with.
+        /// Gets the type that this serialization map instance is associated with.
         /// </summary>
         public Type ForType { get; private set; }
 
         /// <summary>
-        /// The members that participate in serialization.
+        /// Gets the members that participate in serialization.
         /// </summary>
-        public List<SerializationMapEntry> Members
-        {
-            get { return _memberInfos; }
-        }
+        public List<SerializationMapEntry> Members { get; } = new List<SerializationMapEntry>();
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This overload is used for objects that are marked with the <see cref="SerializeAttribute"/>.
@@ -89,19 +97,9 @@ namespace DotSpatial.Serialization
         public static SerializationMap FromType(Type type)
         {
             var cachedMap = GetCachedSerializationMap(type);
-            if (cachedMap != null)
-                return cachedMap;
+            if (cachedMap != null) return cachedMap;
 
             return new SerializationMap(type);
-        }
-
-        private static SerializationMap GetCachedSerializationMap(Type type)
-        {
-            // Try to find a cached instance first
-            if (_typeToSerializationMap.ContainsKey(type))
-                return _typeToSerializationMap[type];
-
-            return null;
         }
 
         /// <summary>
@@ -114,34 +112,27 @@ namespace DotSpatial.Serialization
         protected SerializationMapEntry Serialize(MemberInfo memberInfo, string name)
         {
             SerializationMapEntry result = new SerializationMapEntry(memberInfo, new SerializeAttribute(name));
-            _memberInfos.Add(result);
+            Members.Add(result);
             return result;
-        }
-
-        private void FindSerializableMembers(Type type)
-        {
-            FindPrivateSerializableMembers(type);
-            FindPublicSerializableMemebers(type);
-        }
-
-        private void FindSerializableProperties(Type type, BindingFlags bindingFlags)
-        {
-            AddSerializableMembers(type.GetProperties(bindingFlags));
-        }
-
-        private void FindSerializableFields(Type type, BindingFlags bindingFlags)
-        {
-            AddSerializableMembers(type.GetFields(bindingFlags).Where(fi => (!fi.IsInitOnly || FieldIsConstructorArgument(fi))).Cast<MemberInfo>());
         }
 
         private static bool FieldIsConstructorArgument(FieldInfo fi)
         {
             foreach (var fieldAttribute in fi.GetCustomAttributes(typeof(SerializeAttribute), true))
             {
-                var sa = (SerializeAttribute) fieldAttribute;
+                var sa = (SerializeAttribute)fieldAttribute;
                 return sa.ConstructorArgumentIndex >= 0;
             }
+
             return false;
+        }
+
+        private static SerializationMap GetCachedSerializationMap(Type type)
+        {
+            // Try to find a cached instance first
+            if (TypeToSerializationMap.ContainsKey(type)) return TypeToSerializationMap[type];
+
+            return null;
         }
 
         private void AddSerializableMembers(IEnumerable<MemberInfo> members)
@@ -150,12 +141,9 @@ namespace DotSpatial.Serialization
             {
                 var attribute = memberInfo.GetCustomAttributes(typeof(SerializeAttribute), true).Cast<SerializeAttribute>().FirstOrDefault();
                 MemberInfo info = memberInfo;
-                if (attribute != null &&
-                    !_memberInfos.Any(mi => mi.Member.Name == info.Name &&
-                                            mi.Member.DeclaringType == info.DeclaringType &&
-                                            mi.Member.MemberType == info.MemberType))
+                if (attribute != null && !Members.Any(mi => mi.Member.Name == info.Name && mi.Member.DeclaringType == info.DeclaringType && mi.Member.MemberType == info.MemberType))
                 {
-                    _memberInfos.Add(new SerializationMapEntry(memberInfo, attribute));
+                    Members.Add(new SerializationMapEntry(memberInfo, attribute));
                 }
             }
         }
@@ -186,56 +174,23 @@ namespace DotSpatial.Serialization
             FindSerializableFields(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
             FindSerializableProperties(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
         }
+
+        private void FindSerializableFields(Type type, BindingFlags bindingFlags)
+        {
+            AddSerializableMembers(type.GetFields(bindingFlags).Where(fi => !fi.IsInitOnly || FieldIsConstructorArgument(fi)));
+        }
+
+        private void FindSerializableMembers(Type type)
+        {
+            FindPrivateSerializableMembers(type);
+            FindPublicSerializableMemebers(type);
+        }
+
+        private void FindSerializableProperties(Type type, BindingFlags bindingFlags)
+        {
+            AddSerializableMembers(type.GetProperties(bindingFlags));
+        }
+
+        #endregion
     }
-
-    ///// <summary>
-    ///// Generic type used to make creating custom mappings a little bit easier.
-    ///// </summary>
-    ///// <typeparam name="T">The type that this map will be associated with.</typeparam>
-    // public class SerializationMap<T> : SerializationMap
-    //{
-    //    /// <summary>
-    //    /// Constructs a new instance of the generic SerializationMap class
-    //    /// </summary>
-    //    protected SerializationMap() : base(typeof(T))
-    //    {
-    //    }
-
-    //    /// <summary>
-    //    /// Specifies that a field or property should be serialize
-    //    /// </summary>
-    //    /// <param name="expression">An expression that will yield a <see cref="MemberInfo"/>.</param>
-    //    /// <param name="name">The name to use when serializing this member.</param>
-    //    /// <returns>A <see cref="SerializationMapEntry"/> representing the member specified by <paramref name="expression"/>.</returns>
-    //    protected SerializationMapEntry Serialize(Expression<Func<T, object>> expression, string name)
-    //    {
-    //        MemberExpression memberExpression = null;
-
-    //        if (expression.Body.NodeType == ExpressionType.Convert)
-    //        {
-    //            memberExpression = ((UnaryExpression)expression.Body).Operand as MemberExpression;
-    //        }
-    //        else if (expression.Body.NodeType == ExpressionType.MemberAccess)
-    //        {
-    //            memberExpression = expression.Body as MemberExpression;
-    //        }
-
-    //        if (memberExpression == null)
-    //            throw new ArgumentException("This type of expression not supported.", "expression");
-
-    //        MemberInfo memberInfo = memberExpression.Member;
-    //        Debug.Assert(memberInfo != null);
-
-    //        // Replace an entry if the specified member has already been mapped one way or another.
-    //        SerializeAttribute attribute = memberInfo.GetCustomAttributes(typeof(SerializeAttribute), true).
-    //            Cast<SerializeAttribute>().
-    //            FirstOrDefault();
-    //        if (attribute != null)
-    //            Members.RemoveAll(m => m.Member.Equals(memberInfo));
-
-    //        SerializationMapEntry result = new SerializationMapEntry(memberInfo, new SerializeAttribute(name));
-    //        Members.Add(result);
-    //        return result;
-    //    }
-    //}
 }

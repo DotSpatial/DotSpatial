@@ -401,14 +401,14 @@ namespace DotSpatial.Data
         #region Insert
 
         /// <summary>
-        /// Occurs before an item is inserted.  The index of the requested
+        /// Occurs before an item is inserted. The index of the requested
         /// insertion as well as the item being inserted and an option to
         /// cancel the event are specified
         /// </summary>
         event EventHandler<IndividualIndexCancel<T>> BeforeItemInserted;
 
         /// <summary>
-        /// Occurs before a range is inserted.  The index of the requested
+        /// Occurs before a range is inserted. The index of the requested
         /// insertion location as well as the item being inserted and an option to
         /// cancel the event are provided in the event arguments
         /// </summary>
@@ -459,13 +459,13 @@ namespace DotSpatial.Data
         /// <summary>
         /// Occurs before all the elements that match a predicate are removed.
         /// Supplies an IEnumerable list in the event args of all the items
-        /// that will match the expression.  This action can be cancelled.
+        /// that will match the expression. This action can be cancelled.
         /// </summary>
         event EventHandler<CollectiveCancel<T>> BeforeAllMatchingRemoved;
 
         /// <summary>
         /// Occurs after all the elements that matched a predicate were
-        /// removed.  The values are the items that were successfully removed.
+        /// removed. The values are the items that were successfully removed.
         /// The action has already happened, and so cannot be cancelled here.
         /// </summary>
         event EventHandler<Collective<T>> AfterAllMatchingRemoved;
@@ -511,14 +511,14 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Occurs just after the list or any sub portion
-        /// of the list is sorted.  This event occurs in
+        /// of the list is sorted. This event occurs in
         /// addition to the specific reversal case.
         /// </summary>
         event EventHandler AfterReversed;
 
         /// <summary>
         /// Occurs just before the list or any sub portion
-        /// of the list is sorted.  This event occurs in
+        /// of the list is sorted. This event occurs in
         /// addition to the specific reversal case.
         /// </summary>
         event CancelEventHandler BeforeReversed;

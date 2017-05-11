@@ -73,7 +73,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the double affine coefficients that control the world-file
-        /// positioning of this image.  X' and Y' are real world coords.
+        /// positioning of this image. X' and Y' are real world coords.
         /// X' = [0] + [1] * Column + [2] * Row
         /// Y' = [3] + [4] * Column + [5] * Row
         /// </summary>
@@ -84,9 +84,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the desired width per cell.  This will keep the skew the same, but
+        /// Gets or sets the desired width per cell. This will keep the skew the same, but
         /// will adjust both the column based and row based width coefficients in order
-        /// to match the specified cell width.  This can be thought of as the width
+        /// to match the specified cell width. This can be thought of as the width
         /// of a bounding box that contains an entire grid cell, no matter if it is skewed.
         /// </summary>
         double CellWidth
@@ -96,9 +96,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the desired height per cell.  This will keep the skew the same, but
+        /// Gets or sets the desired height per cell. This will keep the skew the same, but
         /// will adjust both the column based and row based height coefficients in order
-        /// to match the specified cell height.  This can be thought of as the height
+        /// to match the specified cell height. This can be thought of as the height
         /// of a bounding box that contains an entire grid cell, no matter if it is skewed.
         /// </summary>
         double CellHeight
@@ -108,7 +108,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the rectangular confines for this envelope.  The skew will remain
+        /// Gets or sets the rectangular confines for this envelope. The skew will remain
         /// the same when setting this, but the image will be translated and stretched
         /// to fit in the specified envelope.
         /// </summary>
@@ -135,7 +135,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the world file name.  This won't do anything until the "Load" or "Save" methods are called.
+        /// Gets or sets the world file name. This won't do anything until the "Load" or "Save" methods are called.
         /// </summary>
         string WorldFile
         {

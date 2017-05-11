@@ -16,26 +16,22 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// ImageProjection
+    /// </summary>
     public class ImageProjection : IProj
     {
-        #region Private Variables
-
-        private readonly Rectangle _destRectangle;
-        private readonly Extent _extents;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the ImageGraphics class for assisting with drawing.
+        /// Initializes a new instance of the <see cref="ImageProjection"/> class.
         /// </summary>
-        /// <param name="inExtent"></param>
-        /// <param name="inDestRectangle"></param>
+        /// <param name="inExtent">The geographic extent.</param>
+        /// <param name="inDestRectangle">The image rectangle.</param>
         public ImageProjection(Extent inExtent, Rectangle inDestRectangle)
         {
-            _extents = inExtent;
-            _destRectangle = inDestRectangle;
+            GeographicExtents = inExtent;
+            ImageRectangle = inDestRectangle;
         }
 
         #endregion
@@ -43,20 +39,14 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// The destination rectangle on the bitmap where drawing should occur.
+        /// Gets the geographic extents where drawing will take place.
         /// </summary>
-        public Rectangle ImageRectangle
-        {
-            get { return _destRectangle; }
-        }
+        public Extent GeographicExtents { get; }
 
         /// <summary>
-        /// The geographic extents where drawing will take place.
+        /// Gets the destination rectangle on the bitmap where drawing should occur.
         /// </summary>
-        public Extent GeographicExtents
-        {
-            get { return _extents; }
-        }
+        public Rectangle ImageRectangle { get; }
 
         #endregion
     }

@@ -17,7 +17,7 @@
  *
  * Project:  Erdas Imagine (.img) Translator
  * Purpose:  Implementation of the HFAType class, for managing one type
- *           defined in the HFA data dictionary.  Managed by HFADictionary.
+ *           defined in the HFA data dictionary. Managed by HFADictionary.
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  *
  ******************************************************************************
@@ -112,7 +112,7 @@ namespace DotSpatial.Data
             // This may already be done, if an earlier object required this
             // object (as a field), and forced and early computation of the size
             if (_numBytes != 0) return;
-            // Complete each fo the fields, totaling up the sizes.  This
+            // Complete each fo the fields, totaling up the sizes. This
             // isn't really accurate for objects with variable sized
             // subobjects.
             foreach (HfaField field in _fields)

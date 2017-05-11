@@ -20,7 +20,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Tests to see if the specified item is contained in the list.  This returns true if the item is contained in the list.
+        /// Tests to see if the specified item is contained in the list. This returns true if the item is contained in the list.
         /// </summary>
         /// <param name="item">The item to test for.</param>
         /// <returns>Boolean, true if the item is found in the list</returns>
@@ -61,7 +61,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the item at the specified index.  Ideally, this ReadOnlyList is used with
+        /// Gets the item at the specified index. Ideally, this ReadOnlyList is used with
         /// value types, or else this gives the user considerable power over the core content.
         /// </summary>
         /// <param name="index">The item to obtain from this list</param>

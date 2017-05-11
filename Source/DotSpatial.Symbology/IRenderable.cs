@@ -41,35 +41,35 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets an Envelope in world coordinates that contains this object.
+        /// </summary>
+        /// <returns>The extent that contains this object.</returns>
+        Extent Extent { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the unmanaged drawing structures have been created for this item.
+        /// </summary>
+        bool IsInitialized { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the drawing function will render anything.
+        /// Warning! If false this will also prevent any execution of calculations that take place
+        /// as part of the drawing methods and will also abort the drawing methods of any
+        /// sub-members to this IRenderable.
+        /// </summary>
+        bool IsVisible { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// Invalidates the drawing methods
         /// </summary>
         void Invalidate();
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Obtains an Envelope in world coordinates that contains this object
-        /// </summary>
-        /// <returns></returns>
-        Extent Extent { get; }
-
-        /// <summary>
-        /// Gets whether or not the unmanaged drawing structures have been created for this item
-        /// </summary>
-        bool IsInitialized { get; }
-
-        /// <summary>
-        /// If this is false, then the drawing function will not render anything.
-        /// Warning!  This will also prevent any execution of calculations that take place
-        /// as part of the drawing methods and will also abort the drawing methods of any
-        /// sub-members to this IRenderable.
-        /// </summary>
-        bool IsVisible { get; set; }
 
         #endregion
     }

@@ -95,7 +95,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets a long integer specifying the starting position of the currently loaded buffer
-        /// relative to the start of the file.  A value of -1 indicates that no buffer is
+        /// relative to the start of the file. A value of -1 indicates that no buffer is
         /// currently loaded.
         /// </summary>
         public long BufferOffset { get; private set; }
@@ -210,8 +210,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Instructs the reader to fill its buffer with data.  This only does something
-        /// if the buffer is not loaded yet.  This method is optional since the first
+        /// Instructs the reader to fill its buffer with data. This only does something
+        /// if the buffer is not loaded yet. This method is optional since the first
         /// effort at reading the file will automatically load the buffer.
         /// </summary>
         public void FillBuffer()
@@ -224,7 +224,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This method will both assign a new maximum buffer size to the reader and
-        /// force the reader to load the values into memory.  This is unnecessary
+        /// force the reader to load the values into memory. This is unnecessary
         /// unless you plan on closing the file before reading values from this class.
         /// Even if values are loaded, this will assign the MaxBufferSize property
         /// so that future buffers have the specified size.
@@ -305,7 +305,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads the specified number of bytes.  This will throw an exception
+        /// Reads the specified number of bytes. This will throw an exception
         /// if a number of bytes is specified that exeeds the file length.
         /// </summary>
         /// <param name="byteCount">The integer count of the bytes.</param>
@@ -480,7 +480,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Uses the seek method to quickly reach a desired location to begin reading.
-        /// This will not buffer or read values.  If the new position is beyond the end
+        /// This will not buffer or read values. If the new position is beyond the end
         /// of the current buffer, the next read will load a new buffer.
         /// </summary>
         /// <param name="offset">A 64 bit integer specifying where to skip to in the file.</param>

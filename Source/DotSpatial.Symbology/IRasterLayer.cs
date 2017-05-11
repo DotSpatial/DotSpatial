@@ -22,46 +22,7 @@ namespace DotSpatial.Symbology
     /// </summary>
     public interface IRasterLayer : ILayer
     {
-        #region Methods
-
-        /// <summary>
-        /// Creates a bmp texture and saves it to the same fileName as the raster, but with a bmp ending.
-        /// This also generates a bpw world file for the texture.
-        /// </summary>
-        void WriteBitmap();
-
-        /// <summary>
-        /// Creates a bmp texture and saves it to the same fileName as the raster but with a bmp ending.
-        /// This also generates a bpw world file for the texture.
-        /// </summary>
-        /// <param name="progressHandler">An implementation of IProgressHandler to recieve status messages</param>
-        void WriteBitmap(IProgressHandler progressHandler);
-
-        /// <summary>
-        ///  Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
-        ///  This also generates a bpw world file for the texture.
-        /// </summary>
-        /// <param name="fileName">The string fileName to write to</param>
-        /// <param name="bandType">The image band type.</param>
-        void ExportBitmap(string fileName, ImageBandType bandType);
-
-        /// <summary>
-        /// Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
-        /// This also generates a bpw world file for the texture.
-        /// </summary>
-        /// <param name="fileName">The string fileName to write to</param>
-        /// <param name="progressHandler">The progress handler for creating a new bitmap.</param>
-        /// <param name="bandType">The image band type.</param>
-        void ExportBitmap(string fileName, IProgressHandler progressHandler, ImageBandType bandType);
-
-        #endregion
-
-        #region properties
-
-        /// <summary>
-        /// Gets or sets the boundaries of the raster.
-        /// </summary>
-        IRasterBounds Bounds { get; set; }
+        #region Properties
 
         /// <summary>
         /// Gets or sets the item that controls rendering this raster as a bitmap.
@@ -69,14 +30,19 @@ namespace DotSpatial.Symbology
         IGetBitmap BitmapGetter { get; set; }
 
         /// <summary>
-        /// Gets the geographic width of the cells for this raster (East-West)
+        /// Gets or sets the boundaries of the raster.
         /// </summary>
-        double CellWidth { get; }
+        IRasterBounds Bounds { get; set; }
 
         /// <summary>
         /// Gets the geographic height of the cells for this raster (North-South)
         /// </summary>
         double CellHeight { get; }
+
+        /// <summary>
+        /// Gets the geographic width of the cells for this raster (East-West)
+        /// </summary>
+        double CellWidth { get; }
 
         /// <summary>
         /// Gets or sets the underlying dataset raster for this object
@@ -94,12 +60,13 @@ namespace DotSpatial.Symbology
         double East { get; }
 
         /// <summary>
-        /// This is a conversion factor that is required in order to convert the elevation units into the same units as the geospatial projection for the latitude and logitude values of the grid.
+        /// Gets or sets the elevation factor. This is a conversion factor that is required in order to convert the elevation units into
+        /// the same units as the geospatial projection for the latitude and logitude values of the grid.
         /// </summary>
         float ElevationFactor { get; set; }
 
         /// <summary>
-        /// Gets the exaggeration beyond normal elevation values. A value of 1 is normal elevation, a vlaue of 0 would be flat,
+        /// Gets or sets the exaggeration beyond normal elevation values. A value of 1 is normal elevation, a vlaue of 0 would be flat,
         /// while a value of 2 would be twice the normal elevation. This applies to the three-dimensional rendering and is
         /// not related to the shaded relief pattern created by the texture.
         /// </summary>
@@ -159,6 +126,40 @@ namespace DotSpatial.Symbology
         /// Gets the western boundary of this raster.
         /// </summary>
         double West { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///  Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
+        ///  This also generates a bpw world file for the texture.
+        /// </summary>
+        /// <param name="fileName">The string fileName to write to</param>
+        /// <param name="bandType">The image band type.</param>
+        void ExportBitmap(string fileName, ImageBandType bandType);
+
+        /// <summary>
+        /// Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
+        /// This also generates a bpw world file for the texture.
+        /// </summary>
+        /// <param name="fileName">The string fileName to write to</param>
+        /// <param name="progressHandler">The progress handler for creating a new bitmap.</param>
+        /// <param name="bandType">The image band type.</param>
+        void ExportBitmap(string fileName, IProgressHandler progressHandler, ImageBandType bandType);
+
+        /// <summary>
+        /// Creates a bmp texture and saves it to the same fileName as the raster, but with a bmp ending.
+        /// This also generates a bpw world file for the texture.
+        /// </summary>
+        void WriteBitmap();
+
+        /// <summary>
+        /// Creates a bmp texture and saves it to the same fileName as the raster but with a bmp ending.
+        /// This also generates a bpw world file for the texture.
+        /// </summary>
+        /// <param name="progressHandler">An implementation of IProgressHandler to recieve status messages</param>
+        void WriteBitmap(IProgressHandler progressHandler);
 
         #endregion
     }

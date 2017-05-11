@@ -23,11 +23,11 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of NonNumericException
+        /// Initializes a new instance of the <see cref="NonNumericException"/> class.
         /// </summary>
         /// <param name="invalidVariable">The string name of the variable, or value that cannot be parsed as a number.</param>
-        public NonNumericException(string invalidVariable) :
-            base("The value " + invalidVariable + " could not be parsed as a number.")
+        public NonNumericException(string invalidVariable)
+            : base("The value " + invalidVariable + " could not be parsed as a number.")
         {
         }
 

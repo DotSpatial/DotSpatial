@@ -1,7 +1,7 @@
 // *******************************************************************************************************
 // Product:  DotSpatial.Symbology.IImageLayerActions
 // Description:  Contains methods which can be used in ImageLayer (e.g. in ContextMenu)
-
+//
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
@@ -19,16 +19,20 @@ namespace DotSpatial.Symbology
     /// </summary>
     public interface IImageLayerActions
     {
-        /// <summary>
-        /// Show properties dialog
-        /// </summary>
-        /// <param name="e">Image layer</param>
-        void ShowProperties(IImageLayer e);
+        #region Methods
 
         /// <summary>
         /// Show export dialog
         /// </summary>
         /// <param name="e">Image data</param>
         void ExportData(IImageData e);
+
+        /// <summary>
+        /// Show properties dialog
+        /// </summary>
+        /// <param name="e">Image layer</param>
+        void ShowProperties(IImageLayer e);
+
+        #endregion
     }
 }

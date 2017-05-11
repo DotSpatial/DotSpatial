@@ -153,10 +153,10 @@ namespace DotSpatial.Data
                     myShape.MinM = fs.ReadDouble();
                     myShape.MaxM = fs.ReadDouble();
                     myShape.M = fs.ReadDouble(shape.NumPoints);
-                    shape.Extent = new ExtentMZ(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
+                    shape.Extent = new ExtentMz(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
                 }
                 else
-                    shape.Extent = new ExtentMZ(shape.Extent.MinX, shape.Extent.MinY, double.MaxValue, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, double.MinValue, myShape.MaxZ);
+                    shape.Extent = new ExtentMz(shape.Extent.MinX, shape.Extent.MinY, double.MaxValue, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, double.MinValue, myShape.MaxZ);
             }
 
             myShape.Range = shape;

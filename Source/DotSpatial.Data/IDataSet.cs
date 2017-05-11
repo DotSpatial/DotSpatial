@@ -23,9 +23,9 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the extent for the dataset.  Usages to Envelope were replaced
+        /// Gets or sets the extent for the dataset. Usages to Envelope were replaced
         /// as they required an explicit using to DotSpatial.Topology which is not
-        /// as intuitive.  Extent.ToEnvelope() and new Extent(myEnvelope) convert them.
+        /// as intuitive. Extent.ToEnvelope() and new Extent(myEnvelope) convert them.
         /// </summary>
         Extent Extent { get; set; }
 
@@ -59,7 +59,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// This closes the data set.  Many times this will simply do nothing, but
+        /// This closes the data set. Many times this will simply do nothing, but
         /// in some cases this may close an open connection to a data source.
         /// </summary>
         void Close();

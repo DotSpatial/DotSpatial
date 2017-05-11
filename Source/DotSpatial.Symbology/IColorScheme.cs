@@ -20,6 +20,25 @@ namespace DotSpatial.Symbology
     /// </summary>
     public interface IColorScheme : IScheme
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the collection of color scheme categories to use.
+        /// </summary>
+        ColorCategoryCollection Categories { get; set; }
+
+        /// <summary>
+        /// gets or sets the editor settings for controls that affect the color scheme.
+        /// </summary>
+        new RasterEditorSettings EditorSettings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the floating point value for the opacity
+        /// </summary>
+        float Opacity { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -43,25 +62,6 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="raster">The raster to sample</param>
         void GetValues(IRaster raster);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the floating point value for the opacity
-        /// </summary>
-        float Opacity { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of color scheme categories to use.
-        /// </summary>
-        ColorCategoryCollection Categories { get; set; }
-
-        /// <summary>
-        /// gets or sets the editor settings for controls that affect the color scheme.
-        /// </summary>
-        new RasterEditorSettings EditorSettings { get; set; }
 
         #endregion
     }

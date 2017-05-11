@@ -67,7 +67,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="progressHandler">Any valid implementation if IProgressHandler that will handle the progress function</param>
         /// <param name="baseMessage">The message without any progress information.</param>
-        /// <param name="endValue">Percent should show a range between the MinValue and MaxValue.  MinValue is assumed to be 0.</param>
+        /// <param name="endValue">Percent should show a range between the MinValue and MaxValue. MinValue is assumed to be 0.</param>
         public ProgressMeter(IProgressHandler progressHandler, string baseMessage, object endValue)
         {
             _endValue = Convert.ToDouble(endValue);
@@ -81,7 +81,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Resets the progress meter to the 0 value.  This sets the status message to "Ready.".
+        /// Resets the progress meter to the 0 value. This sets the status message to "Ready.".
         /// </summary>
         public void Reset()
         {
@@ -116,8 +116,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the current integer progress level from 0 to 100.  If a new update is less than or equal to the previous
-        /// value, then no progress will be displayed by the ProgressMeter.  Values less than 0 are set to 0.  Values greater than
+        /// Gets or sets the current integer progress level from 0 to 100. If a new update is less than or equal to the previous
+        /// value, then no progress will be displayed by the ProgressMeter. Values less than 0 are set to 0. Values greater than
         /// 100 are set to 100.
         /// </summary>
         public int CurrentPercent
@@ -212,9 +212,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// An integer value that is 1 by default.  Ordinarily this will send a progress message only when the integer progress
-        /// has changed by 1 percentage point.  For example, if StepPercent were set to 5, then a progress update would only
-        /// be sent out at 5%, 10% and so on.  This helps reduce overhead in cases where showing status messages is actually
+        /// An integer value that is 1 by default. Ordinarily this will send a progress message only when the integer progress
+        /// has changed by 1 percentage point. For example, if StepPercent were set to 5, then a progress update would only
+        /// be sent out at 5%, 10% and so on. This helps reduce overhead in cases where showing status messages is actually
         /// the majority of the processing time for the function.
         /// </summary>
         public int StepPercent
@@ -229,8 +229,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the previous integer progress level from 0 to 100.  If a new update is less than or equal to the previous
-        /// value, then no progress will be displayed by the ProgressMeter.  Values less than 0 are set to 0.  Values greater than
+        /// Gets or sets the previous integer progress level from 0 to 100. If a new update is less than or equal to the previous
+        /// value, then no progress will be displayed by the ProgressMeter. Values less than 0 are set to 0. Values greater than
         /// 100 are set to 100.
         /// </summary>
         public int PreviousPercent

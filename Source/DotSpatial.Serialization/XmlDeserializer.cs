@@ -97,7 +97,7 @@ namespace DotSpatial.Serialization
 
         private static string GetName(XElement element)
         {
-            var nameAttrib = element.Attribute(XmlConstants.NAME);
+            var nameAttrib = element.Attribute(XmlConstants.Name);
             if (nameAttrib == null) throw new XmlException("Missing name attribute for node " + GetFullPath(element));
 
             return nameAttrib.Value;
@@ -105,7 +105,7 @@ namespace DotSpatial.Serialization
 
         private static string GetValue(XElement element)
         {
-            var valueAttrib = element.Attribute(XmlConstants.VALUE);
+            var valueAttrib = element.Attribute(XmlConstants.Value);
 
             return valueAttrib?.Value;
         }
@@ -114,10 +114,10 @@ namespace DotSpatial.Serialization
         {
             var result = new Dictionary<string, Type>();
             var typeNameManager = new TypeNameManager();
-            foreach (var typeNode in rootNode.Elements(XmlConstants.TYPE_CACHE).Elements(XmlConstants.ITEM))
+            foreach (var typeNode in rootNode.Elements(XmlConstants.TypeCache).Elements(XmlConstants.Item))
             {
-                var keyAttrib = typeNode.Attribute(XmlConstants.KEY);
-                var valueAttrib = typeNode.Attribute(XmlConstants.VALUE);
+                var keyAttrib = typeNode.Attribute(XmlConstants.Key);
+                var valueAttrib = typeNode.Attribute(XmlConstants.Value);
                 if (keyAttrib == null || valueAttrib == null) continue;
 
                 Type t;
@@ -160,7 +160,7 @@ namespace DotSpatial.Serialization
             List<object> constructorArgs;
             if (type.IsArray)
             {
-                int arrayLength = element.Elements(XmlConstants.ITEM).Count();
+                int arrayLength = element.Elements(XmlConstants.Item).Count();
                 constructorArgs = new List<object>
                                   {
                                       arrayLength
@@ -213,11 +213,11 @@ namespace DotSpatial.Serialization
             Type type = parent.GetType();
             var map = SerializationMap.FromType(type);
 
-            var idAttribute = element.Attribute(XmlConstants.ID);
+            var idAttribute = element.Attribute(XmlConstants.Id);
             if (idAttribute != null) _references[idAttribute.Value] = parent;
 
             // Populate the rest of the members
-            var nonConstructorArgElements = from m in element.Elements(XmlConstants.MEMBER) where m.Attribute(XmlConstants.ARG) == null || includeConstructorElements select m;
+            var nonConstructorArgElements = from m in element.Elements(XmlConstants.Member) where m.Attribute(XmlConstants.Arg) == null || includeConstructorElements select m;
 
             foreach (var member in nonConstructorArgElements)
             {
@@ -262,11 +262,11 @@ namespace DotSpatial.Serialization
             List<object> constructorArgs = new List<object>();
             int constructorArgSanityCheck = 0;
 
-            var constructorArgElements = from m in element.Elements(XmlConstants.MEMBER) let arg = m.Attribute(XmlConstants.ARG) where arg != null orderby arg.Value ascending select m;
+            var constructorArgElements = from m in element.Elements(XmlConstants.Member) let arg = m.Attribute(XmlConstants.Arg) where arg != null orderby arg.Value ascending select m;
 
             foreach (var argElement in constructorArgElements)
             {
-                var argAttrib = argElement.Attribute(XmlConstants.ARG);
+                var argAttrib = argElement.Attribute(XmlConstants.Arg);
                 if (argAttrib == null) continue;
 
                 int arg = int.Parse(argAttrib.Value, CultureInfo.InvariantCulture);
@@ -282,10 +282,10 @@ namespace DotSpatial.Serialization
 
         private object GetObjectFromFormatter(XElement element)
         {
-            var formatterAttrib = element.Attribute(XmlConstants.FORMATTER);
+            var formatterAttrib = element.Attribute(XmlConstants.Formatter);
             if (formatterAttrib == null) return null;
 
-            var valueAttrib = element.Attribute(XmlConstants.VALUE);
+            var valueAttrib = element.Attribute(XmlConstants.Value);
             if (valueAttrib == null) throw new XmlException("Missing value attribute for formattable element " + GetFullPath(element));
 
             var formatterType = _typeCache[formatterAttrib.Value];
@@ -295,7 +295,7 @@ namespace DotSpatial.Serialization
 
         private Type GetType(XElement element)
         {
-            var typeAttrib = element.Attribute(XmlConstants.TYPE_ID);
+            var typeAttrib = element.Attribute(XmlConstants.TypeId);
             if (typeAttrib == null) throw new XmlException("Missing type attribute for node " + GetFullPath(element));
 
             return _typeCache[typeAttrib.Value];
@@ -304,7 +304,7 @@ namespace DotSpatial.Serialization
         private void PopulateArray(XElement element, Array array)
         {
             int index = 0;
-            foreach (var item in element.Elements(XmlConstants.ITEM))
+            foreach (var item in element.Elements(XmlConstants.Item))
             {
                 object newItem = ReadObject(item, array.GetValue(index));
                 array.SetValue(newItem, index++);
@@ -315,10 +315,10 @@ namespace DotSpatial.Serialization
         {
             if (dictionary.Count > 0) dictionary.Clear();
 
-            foreach (var item in element.Elements(XmlConstants.DICTIONARY_ENTRY))
+            foreach (var item in element.Elements(XmlConstants.DictionaryEntry))
             {
-                var keyElement = item.Element(XmlConstants.KEY);
-                var valueElement = item.Element(XmlConstants.VALUE);
+                var keyElement = item.Element(XmlConstants.Key);
+                var valueElement = item.Element(XmlConstants.Value);
                 if (keyElement == null || valueElement == null) continue;
 
                 object key = ReadObject(keyElement, null);
@@ -332,7 +332,7 @@ namespace DotSpatial.Serialization
         {
             if (list.Count > 0) list.Clear();
 
-            foreach (var item in element.Elements(XmlConstants.ITEM))
+            foreach (var item in element.Elements(XmlConstants.Item))
             {
                 object newItem = ReadObject(item, null);
                 if (newItem != null) list.Add(newItem);
@@ -350,7 +350,7 @@ namespace DotSpatial.Serialization
         private object ReadObject(XElement element, object parent)
         {
             // See if this element is an object reference
-            var refElement = element.Attribute(XmlConstants.REF);
+            var refElement = element.Attribute(XmlConstants.Ref);
             if (refElement != null) return _references[refElement.Value];
 
             object result = GetObjectFromFormatter(element);

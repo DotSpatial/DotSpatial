@@ -112,7 +112,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the buffer size is an integer value in bytes specifying how large a piece of memory can be used at any one time.
-        /// Reading and writing from the disk is faster when done all at once.  The larger this number the more effective
+        /// Reading and writing from the disk is faster when done all at once. The larger this number the more effective
         /// the disk management, but the more ram will be required (and the more likely to trip an out of memory error).
         /// </summary>
         [Browsable(false)]
@@ -315,9 +315,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This doesn't rewrite the entire header or erase the existing content.  This simply replaces the file length
-        /// in the file with the new file length.  This is generally because we want to write the header first,
-        /// but don't know the total length of a new file until cycling through the entire file.  It is easier, therefore
+        /// This doesn't rewrite the entire header or erase the existing content. This simply replaces the file length
+        /// in the file with the new file length. This is generally because we want to write the header first,
+        /// but don't know the total length of a new file until cycling through the entire file. It is easier, therefore
         /// to update the length after editing.
         /// </summary>
         /// <param name="fileName">A string fileName</param>
@@ -332,9 +332,9 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Operates on abritrary stream.
-        /// This doesn't rewrite the entire header or erase the existing content.  This simply replaces the file length
-        /// in the file with the new file length.  This is generally because we want to write the header first,
-        /// but don't know the total length of a new file until cycling through the entire file.  It is easier, therefore
+        /// This doesn't rewrite the entire header or erase the existing content. This simply replaces the file length
+        /// in the file with the new file length. This is generally because we want to write the header first,
+        /// but don't know the total length of a new file until cycling through the entire file. It is easier, therefore
         /// to update the length after editing.
         /// Note: performs seek
         /// </summary>
@@ -476,7 +476,7 @@ namespace DotSpatial.Data
                 result.Rows.Add(dr);
             }
 
-            // Most use cases with an expression use only one or two fieldnames.  Tailor for better
+            // Most use cases with an expression use only one or two fieldnames. Tailor for better
             // performance in that case, at the cost of performance in the "read all " case.
             // The other overload without fieldnames specified is designed for that case.
             foreach (string field in fields)
@@ -507,7 +507,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="expressions">The string expression to test</param>
         /// <param name="progressHandler">THe progress handler that can also cancel the counting</param>
-        /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts.  If this is negative, it will not be used.</param>
+        /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts. If this is negative, it will not be used.</param>
         /// <returns>The integer count of the members that match the expression.</returns>
         public override int[] GetCounts(string[] expressions, ICancelProgressHandler progressHandler, int maxSampleSize)
         {
@@ -723,7 +723,7 @@ namespace DotSpatial.Data
         /// Converts a page of content from a DataTable format, saving it back to the source.
         /// </summary>
         /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table)</param>
-        /// <param name="pageValues">The DataTable representing the rows to set.  If the row count is larger than the dataset, this will add the rows instead.</param>
+        /// <param name="pageValues">The DataTable representing the rows to set. If the row count is larger than the dataset, this will add the rows instead.</param>
         public new void SetAttributes(int startIndex, DataTable pageValues)
         {
             // overridden in sub-classes

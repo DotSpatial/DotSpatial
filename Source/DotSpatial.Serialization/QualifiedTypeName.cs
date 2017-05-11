@@ -22,7 +22,10 @@ namespace DotSpatial.Serialization
     /// </summary>
     public class QualifiedTypeName
     {
+        #region Constructors
+
         /// <summary>
+        /// Initializes a new instance of the <see cref="QualifiedTypeName"/> class.
         /// Reads in the full string, parsing out the separate elements. These are not always in the specified order,
         /// and many times there are several optional elements. This class helps find the optional elements that are
         /// necessary. This does not support mulitple enclosed types yet, like dictionaries or something. We needed
@@ -34,12 +37,11 @@ namespace DotSpatial.Serialization
             if (qualifiedName.Contains("[["))
             {
                 // extract inner type:
-                int start = qualifiedName.IndexOf("[[");
-                int end = qualifiedName.IndexOf("]]");
+                int start = qualifiedName.IndexOf("[[", StringComparison.Ordinal);
+                int end = qualifiedName.IndexOf("]]", StringComparison.Ordinal);
                 string innerTypeText = qualifiedName.Substring(start + 2, end - (start + 2));
                 EnclosedName = new QualifiedTypeName(innerTypeText);
-                qualifiedName = (qualifiedName.Substring(0, start + 2) +
-                                 qualifiedName.Substring(end, qualifiedName.Length - end));
+                qualifiedName = qualifiedName.Substring(0, start + 2) + qualifiedName.Substring(end, qualifiedName.Length - end);
             }
 
             string[] parts = qualifiedName.Split(',');
@@ -53,10 +55,12 @@ namespace DotSpatial.Serialization
                     string version = text.Substring(8, text.Length - 8);
                     Version = new Version(version);
                 }
+
                 if (text.Substring(0, 8) == "Culture=")
                 {
                     Culture = text.Substring(8, text.Length - 8);
                 }
+
                 if (text.Substring(0, 15) == "PublicKeyToken=")
                 {
                     string publicKeyToken = text.Substring(15, text.Length - 15);
@@ -65,15 +69,9 @@ namespace DotSpatial.Serialization
             }
         }
 
-        /// <summary>
-        /// Gets or sets the name for the enclosed type.
-        /// </summary>
-        public QualifiedTypeName EnclosedName { get; set; }
+        #endregion
 
-        /// <summary>
-        /// Gets or sets the TypeName
-        /// </summary>
-        public string TypeName { get; set; }
+        #region Properties
 
         /// <summary>
         /// Gets or sets the name of the assembly
@@ -81,19 +79,33 @@ namespace DotSpatial.Serialization
         public string Assembly { get; set; }
 
         /// <summary>
-        /// Gets or sets a System.Version for getting or setting the version.
-        /// </summary>
-        public Version Version { get; set; }
-
-        /// <summary>
         /// Gets or sets the CultureInfo of the Culture
         /// </summary>
         public string Culture { get; set; }
 
         /// <summary>
+        /// Gets or sets the name for the enclosed type.
+        /// </summary>
+        public QualifiedTypeName EnclosedName { get; set; }
+
+        /// <summary>
         /// Gets or sets the public key token for the strong name of the assembly.
         /// </summary>
         public string PublicKeyToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the TypeName
+        /// </summary>
+        public string TypeName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a System.Version for getting or setting the version.
+        /// </summary>
+        public Version Version { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Returns the full qualified type name as "TypeName, Assembly, Version=x, Culture=x, PublicKeyToken=x".
@@ -104,7 +116,7 @@ namespace DotSpatial.Serialization
             string fullname = TypeName;
             if (fullname.Contains("[["))
             {
-                int insert = TypeName.IndexOf("]]");
+                int insert = TypeName.IndexOf("]]", StringComparison.Ordinal);
                 fullname = TypeName.Insert(insert, EnclosedName.ToString());
             }
 
@@ -116,8 +128,9 @@ namespace DotSpatial.Serialization
                 keyToken = "null";
             }
 
-            return string.Format("{0}, {1}, Version={2}, Culture={3}, PublicKeyToken={4}",
-                                 fullname, Assembly, Version, Culture, keyToken);
+            return string.Format("{0}, {1}, Version={2}, Culture={3}, PublicKeyToken={4}", fullname, Assembly, Version, Culture, keyToken);
         }
+
+        #endregion
     }
 }

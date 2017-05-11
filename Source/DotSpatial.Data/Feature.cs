@@ -35,15 +35,16 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the column to use when sorting lists of features.
         /// If this is set to a column not in the field, the FID is used instead.
-        /// This should be assigned before attempting to sort features.  Because
+        /// This should be assigned before attempting to sort features. Because
         /// this is static, it only has to be set once, and will affect
         /// all the individual comparisions until it is set differently.
         /// </summary>
         public static string ComparisonField;
 
-        private IGeometry _geometry;
         private DataRow _dataRow;
         private FeatureType _featureType;
+
+        private IGeometry _geometry;
         private IFeatureSet _parentFeatureSet;
 
         #endregion
@@ -51,13 +52,14 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a feature from the specified shape.  This will not handle the attribute content,
+        /// Creates a feature from the specified shape. This will not handle the attribute content,
         /// which should be handles separately, with full knowledge of the desired schema.
         /// </summary>
         /// <param name="shape">The shape to read the vertices from in order to build a proper geometry.</param>
         public Feature(Shape shape)
         {
             if (shape.Range == null) return;
+
             ShapeIndex = shape.Range;
             if (shape.Range.FeatureType == FeatureType.Point)
             {
@@ -67,6 +69,7 @@ namespace DotSpatial.Data
                 _geometry = new Point(c);
                 _featureType = FeatureType.Point;
             }
+
             if (shape.Range.FeatureType == FeatureType.MultiPoint)
             {
                 List<Coordinate> coords = new List<Coordinate>();
@@ -74,12 +77,13 @@ namespace DotSpatial.Data
                 {
                     for (int i = part.StartIndex; i <= part.EndIndex; i++)
                     {
-                        Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[i * 2 + 1]);
+                        Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[(i * 2) + 1]);
                         if (shape.Z != null) c.Z = shape.Z[i];
                         if (shape.M != null) c.M = shape.M[i];
                         coords.Add(c);
                     }
                 }
+
                 _geometry = new MultiPoint(coords.CastToPointArray());
                 _featureType = FeatureType.MultiPoint;
             }
@@ -92,13 +96,15 @@ namespace DotSpatial.Data
                     List<Coordinate> coords = new List<Coordinate>();
                     for (int i = part.StartIndex; i <= part.EndIndex; i++)
                     {
-                        Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[i * 2 + 1]);
+                        Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[(i * 2) + 1]);
                         if (shape.Z != null) c.Z = shape.Z[i];
                         if (shape.M != null) c.M = shape.M[i];
                         coords.Add(c);
                     }
+
                     strings.Add(new LineString(coords.ToArray()));
                 }
+
                 if (strings.Count > 1)
                 {
                     _geometry = new MultiLineString(strings.ToArray());
@@ -107,28 +113,33 @@ namespace DotSpatial.Data
                 {
                     _geometry = strings[0];
                 }
+
                 _featureType = FeatureType.Line;
             }
+
             if (shape.Range.FeatureType == FeatureType.Polygon)
             {
                 ReadPolygonShape(shape);
             }
-
         }
 
         /// <summary>
-        /// Creates a complete geometric feature based on a single point.  The attribute datarow is null.
+        /// Creates a complete geometric feature based on a single point. The attribute datarow is null.
         /// </summary>
         /// <param name="point">The vertex</param>
         public Feature(Vertex point)
-            : this(new Point(point.X, point.Y)) { }
+            : this(new Point(point.X, point.Y))
+        {
+        }
 
         /// <summary>
         /// Creates a single point feature from a new point.
         /// </summary>
         /// <param name="c"></param>
         public Feature(Coordinate c)
-            : this(new Point(c)) { }
+            : this(new Point(c))
+        {
+        }
 
         /// <summary>
         /// Creates a feature from a geometry
@@ -192,6 +203,7 @@ namespace DotSpatial.Data
                     _geometry = new Polygon(new LinearRing(coordinates.ToArray()));
                     break;
             }
+
             _featureType = featureType;
         }
 
@@ -202,8 +214,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the datarow containing all the attributes related to this geometry.
         /// This will query the parent feature layer's data Table by FID and then
-        /// cache the value locally.  If no parent feature layer exists, then
-        /// this is meaningless.  You should create a new Feature by doing
+        /// cache the value locally. If no parent feature layer exists, then
+        /// this is meaningless. You should create a new Feature by doing
         /// FeatureLayer.Features.Add(), which will return a new Feature.
         /// </summary>
         public virtual DataRow DataRow
@@ -212,6 +224,7 @@ namespace DotSpatial.Data
             {
                 return _dataRow;
             }
+
             set
             {
                 _dataRow = value;
@@ -227,11 +240,15 @@ namespace DotSpatial.Data
             {
                 return _geometry == null ? FeatureType.Unspecified : _featureType;
             }
-            private set { _featureType = value; }
+
+            private set
+            {
+                _featureType = value;
+            }
         }
 
         /// <summary>
-        /// Gets the key that is associated with this feature.  This returns -1 if
+        /// Gets the key that is associated with this feature. This returns -1 if
         /// this feature is not a member of a feature layer.
         /// </summary>
         public virtual int Fid
@@ -240,9 +257,11 @@ namespace DotSpatial.Data
             {
                 if (_parentFeatureSet.IndexMode || !_parentFeatureSet.AttributesPopulated)
                 {
-                    return ShapeIndex != null ? ShapeIndex.RecordNumber - 1 : -2;  // -1 because RecordNumber for shapefiles is 1-based.
+                    return ShapeIndex != null ? ShapeIndex.RecordNumber - 1 : -2; // -1 because RecordNumber for shapefiles is 1-based.
+
                     // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
                 }
+
                 return _parentFeatureSet.Features.IndexOf(this);
             }
         }
@@ -258,6 +277,7 @@ namespace DotSpatial.Data
             {
                 return _geometry;
             }
+
             set
             {
                 _geometry = value;
@@ -270,8 +290,15 @@ namespace DotSpatial.Data
         /// </summary>
         public virtual IFeatureSet ParentFeatureSet
         {
-            get { return _parentFeatureSet; }
-            set { _parentFeatureSet = value; }
+            get
+            {
+                return _parentFeatureSet;
+            }
+
+            set
+            {
+                _parentFeatureSet = value;
+            }
         }
 
         /// <summary>
@@ -283,6 +310,69 @@ namespace DotSpatial.Data
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Copies this feature, creating an independant, but identical feature.
+        /// </summary>
+        /// <returns></returns>
+        public Feature Copy()
+        {
+            Feature clone = (Feature)MemberwiseClone();
+            clone.Geometry = Geometry.Copy();
+            if (ParentFeatureSet != null && ParentFeatureSet.DataTable != null)
+            {
+                DataTable table = ParentFeatureSet.DataTable;
+                clone._dataRow = table.NewRow();
+                if (DataRow != null)
+                {
+                    for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
+                    {
+                        clone._dataRow[i] = DataRow[i];
+                    }
+                }
+            }
+
+            return clone;
+        }
+
+        /// <summary>
+        /// This uses the field names to copy attribute values from the source to this feature.
+        /// Even if columns are missing or if there are extra columns, this method should work.
+        /// </summary>
+        /// <param name="source">The IFeature source to copy attributes from.</param>
+        public void CopyAttributes(IFeature source)
+        {
+            if (source.DataRow == null) return;
+
+            for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
+            {
+                string name = ParentFeatureSet.DataTable.Columns[i].ColumnName;
+                if (source.ParentFeatureSet.DataTable.Columns.Contains(name))
+                {
+                    _dataRow[i] = source.DataRow[name];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates a new shape based on this feature by itself.
+        /// </summary>
+        /// <returns>A Shape object</returns>
+        public Shape ToShape()
+        {
+            return new Shape(this);
+        }
+
+        /// <summary>
+        /// Forces the geometry to update its envelope, and then updates the cached envelope of the feature.
+        /// </summary>
+        public void UpdateEnvelope()
+        {
+            if (_geometry == null) return;
+
+            _geometry.GeometryChanged();
+            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); // Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
+        }
 
         /// <summary>
         /// Creates a deep copy of this feature.
@@ -297,8 +387,8 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// The FID comparison will be very slow, so this should only be used
-        /// if the ComparisonField property is set.  This will allow sorting
-        /// features based on their data-row attributes.  The data rows
+        /// if the ComparisonField property is set. This will allow sorting
+        /// features based on their data-row attributes. The data rows
         /// do not have to be identical, as long as both contain a column
         /// with the comparison field.
         /// </summary>
@@ -327,30 +417,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Copies this feature, creating an independant, but identical feature.
-        /// </summary>
-        /// <returns></returns>
-        public Feature Copy()
-        {
-            Feature clone = (Feature)MemberwiseClone();
-            clone.Geometry = Geometry.Copy();
-            if (ParentFeatureSet != null && ParentFeatureSet.DataTable != null)
-            {
-                DataTable table = ParentFeatureSet.DataTable;
-                clone._dataRow = table.NewRow();
-                if (DataRow != null)
-                {
-                    for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
-                    {
-                        clone._dataRow[i] = DataRow[i];
-                    }
-                }
-            }
-
-            return clone;
-        }
-
-        /// <summary>
         /// Creates a deep copy of this feature.
         /// </summary>
         /// <returns>Returns a deep copy of this feature as an IFeature</returns>
@@ -360,21 +426,14 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This uses the field names to copy attribute values from the source to this feature.
-        /// Even if columns are missing or if there are extra columns, this method should work.
+        /// Occurs during the cloning process and this method also duplicates the envelope and basic geometry.
         /// </summary>
-        /// <param name="source">The IFeature source to copy attributes from.</param>
-        public void CopyAttributes(IFeature source)
+        /// <param name="copy">The feature being copied</param>
+        protected virtual void OnCopy(Feature copy)
         {
-            if (source.DataRow == null) return;
-            for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
-            {
-                string name = ParentFeatureSet.DataTable.Columns[i].ColumnName;
-                if (source.ParentFeatureSet.DataTable.Columns.Contains(name))
-                {
-                    _dataRow[i] = source.DataRow[name];
-                }
-            }
+            copy.Geometry = _geometry.Copy();
+
+            // This provides an overrideable interface for modifying the copy behavior.
         }
 
         /// <summary>
@@ -404,17 +463,8 @@ namespace DotSpatial.Data
                     featureType = FeatureType.MultiPoint;
                     break;
             }
-            return featureType;
-        }
 
-        /// <summary>
-        /// Occurs during the cloning process and this method also duplicates the envelope and basic geometry.
-        /// </summary>
-        /// <param name="copy">The feature being copied</param>
-        protected virtual void OnCopy(Feature copy)
-        {
-            copy.Geometry = _geometry.Copy();
-            // This provides an overrideable interface for modifying the copy behavior.
+            return featureType;
         }
 
         /// <summary>
@@ -425,9 +475,8 @@ namespace DotSpatial.Data
         /// <returns>true if testPoint is a point in the pointList list.</returns>
         private static bool PointInList(Coordinate testPoint, IEnumerable<Coordinate> pointList)
         {
-            foreach (Coordinate p in pointList)
-                if (p.Equals2D(testPoint))
-                    return true;
+            foreach (Coordinate p in pointList) if (p.Equals2D(testPoint)) return true;
+
             return false;
         }
 
@@ -447,6 +496,7 @@ namespace DotSpatial.Data
                     i++;
                     coords.Add(c);
                 }
+
                 LinearRing ring = new LinearRing(coords.ToArray());
                 if (shape.Range.Parts.Count == 1)
                 {
@@ -464,11 +514,13 @@ namespace DotSpatial.Data
                     }
                 }
             }
+
             if (shells.Count == 0 && holes.Count > 0)
             {
                 shells = holes;
                 holes = new List<ILinearRing>();
             }
+
             //// Now we have a list of all shells and all holes
             List<ILinearRing>[] holesForShells = new List<ILinearRing>[shells.Count];
             for (int i = 0; i < shells.Count; i++)
@@ -488,16 +540,16 @@ namespace DotSpatial.Data
                 {
                     ILinearRing tryRing = shells[j];
                     Envelope tryEnv = tryRing.EnvelopeInternal;
-                    if (minShell != null)
-                        minEnv = minShell.EnvelopeInternal;
+                    if (minShell != null) minEnv = minShell.EnvelopeInternal;
 
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (tryEnv.Contains(testEnv) && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates) || (PointInList(testPt, tryRing.Coordinates))))
+                    if (tryEnv.Contains(testEnv) && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates) || PointInList(testPt, tryRing.Coordinates)))
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
                         {
                             minShell = tryRing;
                         }
+
                         holesForShells[j].Add(holes[i]);
                     }
                 }
@@ -518,26 +570,8 @@ namespace DotSpatial.Data
                 // It's a multi part
                 _geometry = new MultiPolygon(polygons);
             }
+
             _featureType = FeatureType.Polygon;
-        }
-
-        /// <summary>
-        /// Creates a new shape based on this feature by itself.
-        /// </summary>
-        /// <returns>A Shape object</returns>
-        public Shape ToShape()
-        {
-            return new Shape(this);
-        }
-
-        /// <summary>
-        /// Forces the geometry to update its envelope, and then updates the cached envelope of the feature.
-        /// </summary>
-        public void UpdateEnvelope()
-        {
-            if (_geometry == null) return;
-            _geometry.GeometryChanged();
-            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); // Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
         #endregion

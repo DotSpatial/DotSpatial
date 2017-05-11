@@ -15,13 +15,45 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for LabelLayer.
+    /// </summary>
     public interface ILabelLayer : ILayer
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets an optional layer to link this layer to. If this is specified, then drawing will
+        /// be associated with this layer.
+        /// </summary>
+        IFeatureLayer FeatureLayer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the featureSet that defines the text for the labels on this layer.
+        /// </summary>
+        IFeatureSet FeatureSet { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selection symbolizer from the first TextSymbol group.
+        /// </summary>
+        ILabelSymbolizer SelectionSymbolizer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the regular symbolizer from the first TextSymbol group.
+        /// </summary>
+        ILabelSymbolizer Symbolizer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the symbology
+        /// </summary>
+        ILabelScheme Symbology { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// Clears the current selection, reverting the geometries back to their
-        /// normal colors.
+        /// Clears the current selection, reverting the geometries back to their normal colors.
         /// </summary>
         void ClearSelection();
 
@@ -44,36 +76,6 @@ namespace DotSpatial.Symbology
         /// <param name="region">An Envelope showing a 3D selection box for intersection testing.</param>
         /// <returns>True if any members were added to the current selection.</returns>
         bool Select(Extent region);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the featureSet that defines the text for the labels on this layer.
-        /// </summary>
-        IFeatureSet FeatureSet { get; set; }
-
-        /// <summary>
-        /// Gets or sets an optional layer to link this layer to. If this is specified, then drawing will
-        /// be associated with this layer.
-        /// </summary>
-        IFeatureLayer FeatureLayer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the symbology
-        /// </summary>
-        ILabelScheme Symbology { get; set; }
-
-        /// <summary>
-        /// Gets or sets the selection symbolizer from the first TextSymbol group.
-        /// </summary>
-        ILabelSymbolizer SelectionSymbolizer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the regular symbolizer from the first TextSymbol group.
-        /// </summary>
-        ILabelSymbolizer Symbolizer { get; set; }
 
         #endregion
     }

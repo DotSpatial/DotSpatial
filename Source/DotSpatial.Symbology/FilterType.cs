@@ -23,14 +23,17 @@ namespace DotSpatial.Symbology
         /// Categories
         /// </summary>
         Category,
+
         /// <summary>
         /// Chunks
         /// </summary>
         Chunk,
+
         /// <summary>
         /// Selected or unselected
         /// </summary>
         Selection,
+
         /// <summary>
         /// Visible or not
         /// </summary>

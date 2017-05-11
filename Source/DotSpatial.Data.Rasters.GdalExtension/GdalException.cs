@@ -31,7 +31,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         #region Constructors
 
         /// <summary>
-        /// Creates a new Exception using Gdal.GetLastErrorMsg
+        /// Initializes a new instance of the <see cref="GdalException"/> class using Gdal.GetLastErrorMsg.
         /// </summary>
         public GdalException()
             : base(Gdal.GetLastErrorMsg())
@@ -39,18 +39,19 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// Creates a new instance of GDalException
+        /// Initializes a new instance of the <see cref="GdalException"/> class.
         /// </summary>
+        /// <param name="message">The message.</param>
         public GdalException(string message)
             : base(message)
         {
         }
 
-        ///<summary>
-        /// Creates a new instance of GDalException with inner exception
-        ///</summary>
-        ///<param name="message"></param>
-        ///<param name="innerException"></param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GdalException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         public GdalException(string message, Exception innerException)
             : base(message, innerException)
         {

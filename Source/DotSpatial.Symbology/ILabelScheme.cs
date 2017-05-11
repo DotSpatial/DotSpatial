@@ -16,8 +16,20 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for label scheme.
+    /// </summary>
     public interface ILabelScheme : ICloneable
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the list of categories that make up this label scheme
+        /// </summary>
+        IList<ILabelCategory> Categories { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -53,15 +65,6 @@ namespace DotSpatial.Symbology
         /// <param name="category">The category to promote if possible.</param>
         /// <returns>Boolean, true if the promotion was successful</returns>
         bool Promote(ILabelCategory category);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the list of categories that make up this label scheme
-        /// </summary>
-        IList<ILabelCategory> Categories { get; set; }
 
         #endregion
     }

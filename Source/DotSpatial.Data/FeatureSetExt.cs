@@ -35,7 +35,7 @@ namespace DotSpatial.Data
         /// <returns>The newly created IFeatureSet</returns>
         public static IFeatureSet Buffer(this IFeatureSet self, double distance, bool copyAttributes)
         {
-            // Dimension the new, output featureset.  Buffered shapes are polygons, even if the
+            // Dimension the new, output featureset. Buffered shapes are polygons, even if the
             // original geometry is a point or a line.
             IFeatureSet result = new FeatureSet(FeatureType.Polygon);
 
@@ -92,7 +92,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Calculates a union of any features that have a common value in the specified field.
-        /// The output will only contain the specified field.  Example: Disolving a county
+        /// The output will only contain the specified field. Example: Disolving a county
         /// shapefile based on state name to produce a single polygon shaped like the state.
         /// </summary>
         /// <param name="self">The original featureSet to disolve the features of</param>
@@ -190,7 +190,7 @@ namespace DotSpatial.Data
                 // We also don't want to waste time unioning shapes to themselves.
                 freeFeatures.RemoveAt(0);
 
-                // This is the unioned result.  Remember, we may just add the original feature if no
+                // This is the unioned result. Remember, we may just add the original feature if no
                 // shapes present themselves for unioning.
                 IFeature fResult = null;
 
@@ -208,7 +208,7 @@ namespace DotSpatial.Data
                             fResult = intersectSource.Union(fs.Features[index].Geometry);
                             shapeChanged = true;
 
-                            // Don't modify the "freefeatures" list during a loop.  Keep track until later.
+                            // Don't modify the "freefeatures" list during a loop. Keep track until later.
                             mergedList.Add(index);
 
                             // Less double-checking happens if we break rather than finishing the loop

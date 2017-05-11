@@ -66,8 +66,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Adds one request or "reference count" for this item not to be disposed.  When an owner is finished,
-        /// if this is 0, then dispose should be called.  For now this does not prevent Dispose from being
+        /// Adds one request or "reference count" for this item not to be disposed. When an owner is finished,
+        /// if this is 0, then dispose should be called. For now this does not prevent Dispose from being
         /// called, it is simply for tracking purposes.
         /// </summary>
         public void LockDispose()
@@ -84,7 +84,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This is where the meat of the dispose work is done.  Subclasses should call dispose on any disposable
+        /// This is where the meat of the dispose work is done. Subclasses should call dispose on any disposable
         /// members or internal members (presuming they are not dispose locked).
         /// </summary>
         /// <param name="isDisposing">True if the "Dispose" method was called instead of the destructor.</param>

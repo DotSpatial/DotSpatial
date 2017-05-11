@@ -44,7 +44,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         private static volatile bool _configuredGdal;
 
         /// <summary>
-        /// Construction of Gdal/Ogr
+        /// Initializes static members of the <see cref="GdalConfiguration"/> class.
         /// </summary>
         static GdalConfiguration()
         {

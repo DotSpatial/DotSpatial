@@ -15,17 +15,16 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for LineScheme.
+    /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface ILineScheme : IFeatureScheme
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets the list of scheme categories belonging to this scheme.
+        /// Gets or sets the list of scheme categories belonging to this scheme.
         /// </summary>
         LineCategoryCollection Categories { get; set; }
 

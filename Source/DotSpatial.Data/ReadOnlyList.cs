@@ -20,19 +20,21 @@ namespace DotSpatial.Data
     /// In cases where we want to allow some basic cycling or checking of values, but we don't want the user to change
     /// the values directly, we can wrap the values in this read-only list, which restricts what the user can do.
     /// </summary>
+    /// <typeparam name="T">Type of the items in the list.</typeparam>
     public class ReadOnlyList<T> : IReadOnlyList<T>
     {
-        #region Private Variables
+        #region Fields
 
-        private IList<T> _internalList;
+        private readonly IList<T> _internalList;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of ReadOnlyList
+        /// Initializes a new instance of the <see cref="ReadOnlyList{T}"/> class.
         /// </summary>
+        /// <param name="sourceList">The list used in this read only list.</param>
         public ReadOnlyList(IList<T> sourceList)
         {
             _internalList = sourceList;
@@ -40,10 +42,36 @@ namespace DotSpatial.Data
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the integer count of items in this list.
+        /// </summary>
+        public int Count => _internalList.Count;
+
+        /// <summary>
+        /// Gets a value indicating whether this is read only. Returns true because this is a read-only list.
+        /// </summary>
+        public bool IsReadOnly => true;
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// Gets the item at the specified index. Ideally, this ReadOnlyList is used with
+        /// value types, or else this gives the user considerable power over the core content.
+        /// </summary>
+        /// <param name="index">The item to obtain from this list</param>
+        /// <returns>The item at the specified index.</returns>
+        public T this[int index] => _internalList[index];
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// Tests to see if the specified item is contained in the list.  This returns true if the item is contained in the list.
+        /// Tests to see if the specified item is contained in the list. This returns true if the item is contained in the list.
         /// </summary>
         /// <param name="item">The item to test for.</param>
         /// <returns>Boolean, true if the item is found in the list</returns>
@@ -71,11 +99,6 @@ namespace DotSpatial.Data
             return _internalList.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _internalList.GetEnumerator();
-        }
-
         /// <summary>
         /// Obtains the index of the specified item
         /// </summary>
@@ -86,38 +109,13 @@ namespace DotSpatial.Data
             return _internalList.IndexOf(item);
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets the integer count of items in this list.
+        /// Gets the enumerator.
         /// </summary>
-        public int Count
+        /// <returns>The enumerator.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            get { return _internalList.Count; }
-        }
-
-        /// <summary>
-        /// Return true because this is a read-only list.
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// Gets the item at the specified index.  Ideally, this ReadOnlyList is used with
-        /// value types, or else this gives the user considerable power over the core content.
-        /// </summary>
-        /// <param name="index">The item to obtain from this list</param>
-        /// <returns>The item at the specified index.</returns>
-        public T this[int index]
-        {
-            get
-            {
-                return _internalList[index];
-            }
+            return _internalList.GetEnumerator();
         }
 
         #endregion

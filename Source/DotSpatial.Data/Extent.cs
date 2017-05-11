@@ -108,8 +108,8 @@ namespace DotSpatial.Data
         {
             get
             {
-                double x = MinX + (MaxX - MinX) / 2;
-                double y = MinY + (MaxY - MinY) / 2;
+                double x = MinX + ((MaxX - MinX) / 2);
+                double y = MinY + ((MaxY - MinY) / 2);
                 return new Coordinate(x, y);
             }
         }
@@ -277,7 +277,7 @@ namespace DotSpatial.Data
             {
                 double zmin, zmax;
                 nameFailed = "Z";
-                ExtentMZ mz = new ExtentMZ();
+                ExtentMz mz = new ExtentMz();
                 if (!TryExtract(text, "Z", out zmin, out zmax)) return false;
                 mz.MinZ = zmin;
                 mz.MaxZ = zmax;
@@ -446,10 +446,10 @@ namespace DotSpatial.Data
         public override int GetHashCode()
         {
             // 215^4 ~ Int.MaxValue so the value will cover the range based mostly on first 2 sig figs.
-            int xmin = Convert.ToInt32(MinX * 430 / MinX - 215);
-            int xmax = Convert.ToInt32(MaxX * 430 / MaxX - 215);
-            int ymin = Convert.ToInt32(MinY * 430 / MinY - 215);
-            int ymax = Convert.ToInt32(MaxY * 430 / MaxY - 215);
+            int xmin = Convert.ToInt32((MinX * 430 / MinX) - 215);
+            int xmax = Convert.ToInt32((MaxX * 430 / MaxX) - 215);
+            int ymin = Convert.ToInt32((MinY * 430 / MinY) - 215);
+            int ymax = Convert.ToInt32((MaxY * 430 / MaxY) - 215);
             return xmin * xmax * ymin * ymax;
         }
 
@@ -561,10 +561,10 @@ namespace DotSpatial.Data
         /// <param name="height">The new extent height.</param>
         public void SetCenter(double centerX, double centerY, double width, double height)
         {
-            MinX = centerX - width / 2;
-            MaxX = centerX + width / 2;
-            MinY = centerY - height / 2;
-            MaxY = centerY + height / 2;
+            MinX = centerX - (width / 2);
+            MaxX = centerX + (width / 2);
+            MinY = centerY - (height / 2);
+            MaxY = centerY + (height / 2);
         }
 
         /// <summary>

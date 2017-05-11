@@ -15,17 +15,16 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for PolygonScheme.
+    /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface IPolygonScheme : IFeatureScheme
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets the list of scheme categories belonging to this scheme.
+        /// Gets or sets the list of scheme categories belonging to this scheme.
         /// </summary>
         PolygonCategoryCollection Categories { get; set; }
 

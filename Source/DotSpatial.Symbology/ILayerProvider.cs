@@ -16,27 +16,17 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for LayerProvider.
+    /// </summary>
     public interface ILayerProvider
     {
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// This open method is only called if this plugin has been given priority for one
-        /// of the file extensions supported in the DialogReadFilter property supplied by
-        /// this control. Failing to provide a DialogReadFilter will result in this plugin
-        /// being added to the list of DataProviders being supplied under the Add Other Data
-        /// option in the file menu.
+        /// Gets a basic description of what your provider does.
         /// </summary>
-        /// <param name="fileName">A string specifying the complete path and extension of the file to open.</param>
-        /// <param name="inRam">A boolean that, if ture, will request that the data be loaded into memory</param>
-        /// <param name="container">Any valid IContainer that should have the new layer automatically added to it</param>
-        /// <param name="progressHandler">An IProgressHandler interface for status messages</param>
-        /// <returns>A List of IDataSets to be added to the Map. These can also be groups of datasets.</returns>
-        ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler);
-
-        #endregion
-
-        #region Properties
+        string Description { get; }
 
         /// <summary>
         /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
@@ -57,10 +47,23 @@ namespace DotSpatial.Symbology
         /// </summary>
         string Name { get; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// This provides a basic description of what your provider does.
+        /// This open method is only called if this plugin has been given priority for one
+        /// of the file extensions supported in the DialogReadFilter property supplied by
+        /// this control. Failing to provide a DialogReadFilter will result in this plugin
+        /// being added to the list of DataProviders being supplied under the Add Other Data
+        /// option in the file menu.
         /// </summary>
-        string Description { get; }
+        /// <param name="fileName">A string specifying the complete path and extension of the file to open.</param>
+        /// <param name="inRam">A boolean that, if ture, will request that the data be loaded into memory</param>
+        /// <param name="container">Any valid IContainer that should have the new layer automatically added to it</param>
+        /// <param name="progressHandler">An IProgressHandler interface for status messages</param>
+        /// <returns>A List of IDataSets to be added to the Map. These can also be groups of datasets.</returns>
+        ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler);
 
         #endregion
     }

@@ -27,6 +27,8 @@ namespace DotSpatial.Serialization
     /// </summary>
     public static class ReflectionHelper
     {
+        #region Methods
+
         /// <summary>
         /// Searches the entire folder tree beginning at the entry assembly path for types that derive from the specified type.
         /// </summary>
@@ -71,22 +73,21 @@ namespace DotSpatial.Serialization
                 {
                     if (baseType.IsGenericTypeDefinition)
                     {
-                        result.AddRange(assembly.GetTypes().
-                                            Where(t =>
-                                                  t.BaseType != null &&
-                                                  t.BaseType.IsGenericType &&
-                                                  t.BaseType.GetGenericTypeDefinition().Equals(baseType)));
+                        result.AddRange(assembly.GetTypes().Where(t => t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition().Equals(baseType)));
                     }
                     else
+                    {
                         result.AddRange(assembly.GetTypes().Where(t => !t.Equals(baseType) && baseType.IsAssignableFrom(t)));
+                    }
                 }
                 catch (Exception)
                 {
-                    continue;
                 }
             }
 
             return result;
         }
+
+        #endregion
     }
 }

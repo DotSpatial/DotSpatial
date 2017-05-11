@@ -20,6 +20,8 @@ namespace DotSpatial.Serialization
     /// </summary>
     public static class XmlHelper
     {
+        #region Methods
+
         /// <summary>
         /// Some characters create problems in xml format by being interpreted by xml parsers as
         /// content formatting tags.
@@ -47,10 +49,8 @@ namespace DotSpatial.Serialization
                         sb.Append("&quot;");
                         break;
                     case '&':
-                        if (IsValidEscapeSequence(text, i))
-                            sb.Append(text[i]);
-                        else
-                            sb.Append("&amp;");
+                        if (IsValidEscapeSequence(text, i)) sb.Append(text[i]);
+                        else sb.Append("&amp;");
                         break;
                     default:
                         sb.Append(text[i]);
@@ -91,25 +91,22 @@ namespace DotSpatial.Serialization
 
             if (charactersLeft >= 6)
             {
-                return (text[startIndex + 1] == 'q' && text[startIndex + 2] == 'u' && text[startIndex + 3] == 'o' && text[startIndex + 4] == 't' && text[startIndex + 5] == ';') ||
-                       (text[startIndex + 1] == 'a' && text[startIndex + 2] == 'p' && text[startIndex + 3] == 'o' && text[startIndex + 4] == 's' && text[startIndex + 5] == ';') ||
-                       (text[startIndex + 1] == 'a' && text[startIndex + 2] == 'm' && text[startIndex + 3] == 'p' && text[startIndex + 4] == ';') ||
-                       (text[startIndex + 1] == 'l' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';') ||
-                       (text[startIndex + 1] == 'g' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';');
+                return (text[startIndex + 1] == 'q' && text[startIndex + 2] == 'u' && text[startIndex + 3] == 'o' && text[startIndex + 4] == 't' && text[startIndex + 5] == ';') || (text[startIndex + 1] == 'a' && text[startIndex + 2] == 'p' && text[startIndex + 3] == 'o' && text[startIndex + 4] == 's' && text[startIndex + 5] == ';') || (text[startIndex + 1] == 'a' && text[startIndex + 2] == 'm' && text[startIndex + 3] == 'p' && text[startIndex + 4] == ';') || (text[startIndex + 1] == 'l' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';') || (text[startIndex + 1] == 'g' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';');
             }
+
             if (charactersLeft >= 5)
             {
-                return (text[startIndex + 1] == 'a' && text[startIndex + 2] == 'm' && text[startIndex + 3] == 'p' && text[startIndex + 4] == ';') ||
-                       (text[startIndex + 1] == 'l' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';') ||
-                       (text[startIndex + 1] == 'g' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';');
+                return (text[startIndex + 1] == 'a' && text[startIndex + 2] == 'm' && text[startIndex + 3] == 'p' && text[startIndex + 4] == ';') || (text[startIndex + 1] == 'l' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';') || (text[startIndex + 1] == 'g' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';');
             }
+
             if (charactersLeft >= 4)
             {
-                return (text[startIndex + 1] == 'l' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';') ||
-                       (text[startIndex + 1] == 'g' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';');
+                return (text[startIndex + 1] == 'l' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';') || (text[startIndex + 1] == 'g' && text[startIndex + 2] == 't' && text[startIndex + 3] == ';');
             }
 
             return false;
         }
+
+        #endregion
     }
 }

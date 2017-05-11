@@ -28,15 +28,25 @@ namespace DotSpatial.Serialization
     /// </summary>
     public class TypeNameManager
     {
+        #region Fields
+
         private readonly Dictionary<string, Assembly> _loadedAssemblies;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the TypeManager class.
+        /// Initializes a new instance of the <see cref="TypeNameManager"/> class.
         /// </summary>
         public TypeNameManager()
         {
             _loadedAssemblies = new Dictionary<string, Assembly>();
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Since the version, or even possibly the strong name may be dynamic, an older
@@ -53,29 +63,8 @@ namespace DotSpatial.Serialization
                 UpdateVersion(type);
                 type = type.EnclosedName;
             }
+
             return myType.ToString();
-        }
-
-        private void UpdateVersion(QualifiedTypeName myType)
-        {
-            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
-            {
-                UpdateAssembly(myType.Assembly);
-            }
-            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
-            {
-                // Don't throw an exception here, because we are just trying to update versions.
-                // Since GAC and System libraries aren't discovered this way, we must
-                // simply choose not to update those libraries and hope the reference
-                // is not invalid because of a GAC or System library update.
-                return;
-            }
-
-            AssemblyName myAssembly = _loadedAssemblies[myType.Assembly].GetName();
-            myType.Version = myAssembly.Version;
-            string publicKeyToken = BitConverter.ToString(myAssembly.GetPublicKeyToken());
-            publicKeyToken = publicKeyToken.Replace("-", string.Empty).ToLower();
-            myType.PublicKeyToken = publicKeyToken;
         }
 
         /// <summary>
@@ -89,8 +78,7 @@ namespace DotSpatial.Serialization
             string file = assembly + ".dll";
             if (!File.Exists(file))
             {
-                string path =
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 if (path != null)
                 {
                     // Try subfolders
@@ -114,6 +102,7 @@ namespace DotSpatial.Serialization
                                     di = di.Parent;
                                     continue;
                                 }
+
                                 file = parentfiles[0];
                                 break;
                             }
@@ -121,6 +110,7 @@ namespace DotSpatial.Serialization
                     }
                 }
             }
+
             if (File.Exists(file))
             {
                 Assembly tryAssembly = Assembly.LoadFrom(file);
@@ -130,5 +120,30 @@ namespace DotSpatial.Serialization
                 }
             }
         }
+
+        private void UpdateVersion(QualifiedTypeName myType)
+        {
+            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
+            {
+                UpdateAssembly(myType.Assembly);
+            }
+
+            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
+            {
+                // Don't throw an exception here, because we are just trying to update versions.
+                // Since GAC and System libraries aren't discovered this way, we must
+                // simply choose not to update those libraries and hope the reference
+                // is not invalid because of a GAC or System library update.
+                return;
+            }
+
+            AssemblyName myAssembly = _loadedAssemblies[myType.Assembly].GetName();
+            myType.Version = myAssembly.Version;
+            string publicKeyToken = BitConverter.ToString(myAssembly.GetPublicKeyToken());
+            publicKeyToken = publicKeyToken.Replace("-", string.Empty).ToLower();
+            myType.PublicKeyToken = publicKeyToken;
+        }
+
+        #endregion
     }
 }

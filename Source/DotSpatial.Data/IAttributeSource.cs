@@ -39,7 +39,7 @@ namespace DotSpatial.Data
         /// Converts a page of content from a DataTable format, saving it back to the source.
         /// </summary>
         /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table)</param>
-        /// <param name="pageValues">The DataTable representing the rows to set.  If the row count is larger than the dataset, this will add the rows instead.</param>
+        /// <param name="pageValues">The DataTable representing the rows to set. If the row count is larger than the dataset, this will add the rows instead.</param>
         void SetAttributes(int startIndex, DataTable pageValues);
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace DotSpatial.Data
         DataColumn GetColumn(string name);
 
         /// <summary>
-        /// Gets a copy of the fields used to build the data structure.  This is useful for learning
+        /// Gets a copy of the fields used to build the data structure. This is useful for learning
         /// about the existing fields, but doesn't allow direct changes to the underlying data structure.
         /// </summary>
         DataColumn[] GetColumns();
@@ -92,7 +92,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="expressions">The array of string expressions to test</param>
         /// <param name="progressHandler">The progress handler that might also instruct this step to be canceled.</param>
-        /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts.  If this is negative, it will not be used.</param>
+        /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts. If this is negative, it will not be used.</param>
         /// <returns>An array of integer counts of the members that match the expression</returns>
         int[] GetCounts(string[] expressions, ICancelProgressHandler progressHandler, int maxSampleSize);
     }

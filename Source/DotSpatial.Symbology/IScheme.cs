@@ -17,10 +17,32 @@ using System.Drawing;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Represents categorizable legend item.
+    /// Represents a categorizable legend item.
     /// </summary>
     public interface IScheme : ILegendItem
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the editor settings that control how this scheme operates.
+        /// </summary>
+        EditorSettings EditorSettings { get; set; }
+
+        /// <summary>
+        /// Gets the statistics. This is cached until a GetValues call is made, at which time the statistics will
+        /// be re-calculated from the values.
+        /// </summary>
+        Statistics Statistics { get; }
+
+        /// <summary>
+        /// Gets the current list of values calculated in the case of numeric breaks.
+        /// This includes only members that are not excluded by the exclude expression,
+        /// and have a valid numeric value.
+        /// </summary>
+        List<double> Values { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -33,7 +55,13 @@ namespace DotSpatial.Symbology
         /// Applies the snapping rule directly to the categories, based on the most recently
         /// collected set of values, and the current VectorEditorSettings.
         /// </summary>
+        /// <param name="category">Category the snapping rule gets applied to.</param>
         void ApplySnapping(ICategory category);
+
+        /// <summary>
+        /// Clears the categories
+        /// </summary>
+        void ClearCategories();
 
         /// <summary>
         /// Creates the category using a random fill color
@@ -54,7 +82,8 @@ namespace DotSpatial.Symbology
         /// exchaning it with the category before it. If there is no
         /// category before it, then this does nothing.
         /// </summary>
-        /// /// <param name="category">The category to decrease the index of</param>
+        /// <param name="category">The category to decrease the index of</param>
+        /// <returns>True, if the index was decreased.</returns>
         bool DecreaseCategoryIndex(ICategory category);
 
         /// <summary>
@@ -70,7 +99,8 @@ namespace DotSpatial.Symbology
         /// Re-orders the specified member by attempting to exchange it with the next higher
         /// index category. If there is no higher index, this does nothing.
         /// </summary>
-        ///  <param name="category">The category to increase the index of</param>
+        /// <param name="category">The category to increase the index of</param>
+        /// <returns>True, if the index was increased.</returns>
         bool IncreaseCategoryIndex(ICategory category);
 
         /// <summary>
@@ -87,41 +117,14 @@ namespace DotSpatial.Symbology
         void RemoveCategory(ICategory category);
 
         /// <summary>
-        /// Suspends the category events
-        /// </summary>
-        void SuspendEvents();
-
-        /// <summary>
         /// Resumes the category events
         /// </summary>
         void ResumeEvents();
 
         /// <summary>
-        /// Clears the categories
+        /// Suspends the category events
         /// </summary>
-        void ClearCategories();
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the editor settings that control how this scheme operates.
-        /// </summary>
-        EditorSettings EditorSettings { get; set; }
-
-        /// <summary>
-        /// This is cached until a GetValues call is made, at which time the statistics will
-        /// be re-calculated from the values.
-        /// </summary>
-        Statistics Statistics { get; }
-
-        /// <summary>
-        /// Gets the current list of values calculated in the case of numeric breaks.
-        /// This includes only members that are not excluded by the exclude expression,
-        /// and have a valid numeric value.
-        /// </summary>
-        List<double> Values { get; }
+        void SuspendEvents();
 
         #endregion
     }

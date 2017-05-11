@@ -156,7 +156,7 @@ namespace DotSpatial.Data
                 IExtentZ zTest = Extent as IExtentZ;
                 if (zTest == null)
                 {
-                    Extent ext = new ExtentMZ();
+                    Extent ext = new ExtentMz();
                     if (_extent != null) ext.CopyFrom(_extent);
                     _extent = ext;
                 }
@@ -168,7 +168,7 @@ namespace DotSpatial.Data
                 IExtentM mTest = Extent as IExtentM;
                 if (mTest == null)
                 {
-                    Extent ext = new ExtentMZ();
+                    Extent ext = new ExtentMz();
                     if (_extent != null) ext.CopyFrom(_extent);
                     _extent = ext;
                 }
@@ -196,7 +196,7 @@ namespace DotSpatial.Data
             switch (coordType)
             {
                 case CoordinateType.Z:
-                    _extent = new ExtentMZ();
+                    _extent = new ExtentMz();
                     break;
                 case CoordinateType.M:
                     _extent = new ExtentM();

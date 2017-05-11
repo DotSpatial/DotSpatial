@@ -20,19 +20,10 @@ namespace DotSpatial.Symbology
     /// </summary>
     public interface IFeatureSymbolizer : ILegendItem
     {
-        #region Methods
-
-        /// <summary>
-        /// Draws a simple rectangle in the specified location.
-        /// </summary>
-        void Draw(Graphics g, Rectangle target);
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not this specific feature should be drawn.
+        /// Gets or sets a value indicating whether or not this specific feature should be drawn.
         /// </summary>
         bool IsVisible { get; set; }
 
@@ -44,8 +35,7 @@ namespace DotSpatial.Symbology
         ScaleMode ScaleMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the smoothing mode to use that controls advanced features like
-        /// anti-aliasing. By default this is set to antialias.
+        /// Gets or sets a value indicating whether things should be anti-aliased. By default this is set to antialias.
         /// </summary>
         bool Smoothing { get; set; }
 
@@ -53,6 +43,17 @@ namespace DotSpatial.Symbology
         /// Gets or sets the graphics unit to work with.
         /// </summary>
         GraphicsUnit Units { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Draws a simple rectangle in the specified location.
+        /// </summary>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="target">The rectangle that gets drawn.</param>
+        void Draw(Graphics g, Rectangle target);
 
         /// <summary>
         /// Sets the outline, assuming that the symbolizer either supports outlines, or

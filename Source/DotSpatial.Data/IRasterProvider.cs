@@ -23,7 +23,7 @@ namespace DotSpatial.Data
     {
         /// <summary>
         /// This create new method implies that this provider has the priority for creating a new file.
-        /// An instance of the dataset should be created and then returned.  By this time, the fileName
+        /// An instance of the dataset should be created and then returned. By this time, the fileName
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
         /// <param name="name">The string fileName for the new instance.</param>
@@ -39,12 +39,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// This open method is only called if this plugin has been given priority for one
         /// of the file extensions supported in the DialogReadFilter property supplied by
-        /// this control.  Failing to provide a DialogReadFilter will result in this plugin
+        /// this control. Failing to provide a DialogReadFilter will result in this plugin
         /// being added to the list of DataProviders being supplied under the Add Other Data
         /// option in the file menu.
         /// </summary>
         /// <param name="fileName">A string specifying the complete path and extension of the file to open.</param>
-        /// <returns>An IDataSet to be added to the Map.  These can also be groups of datasets.</returns>
+        /// <returns>An IDataSet to be added to the Map. These can also be groups of datasets.</returns>
         new IRaster Open(string fileName);
     }
 }

@@ -17,18 +17,11 @@ using System.Globalization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for CharacterSymbol.
+    /// </summary>
     public interface ICharacterSymbol : ISymbol, IColorable
     {
-        #region Methods
-
-        /// <summary>
-        /// Gets the string equivalent of the specified character code.
-        /// </summary>
-        /// <returns>A string version of the character</returns>
-        string ToString();
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -44,7 +37,7 @@ namespace DotSpatial.Symbology
         char Character { get; set; }
 
         /// <summary>
-        /// Unicode characters consist of 2 bytes. This represents the first byte,
+        /// Gets or sets the character set. Unicode characters consist of 2 bytes. This represents the first byte,
         /// which can be thought of as specifying a typeset.
         /// </summary>
         [Description("Gets or sets the upper unicode byte, or character set.")]
@@ -72,6 +65,16 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Description("Gets or sets the font style to use for this character layer.")]
         FontStyle Style { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets the string equivalent of the specified character code.
+        /// </summary>
+        /// <returns>A string version of the character</returns>
+        string ToString();
 
         #endregion
     }

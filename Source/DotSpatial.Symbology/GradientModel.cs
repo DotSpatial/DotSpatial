@@ -23,6 +23,7 @@ namespace DotSpatial.Symbology
         /// The values are colored in even steps in each of the Red, Green and Blue bands.
         /// </summary>
         Linear,
+
         /// <summary>
         /// The even steps between values are used as powers of two, greatly increasing the impact of higher values.
         /// </summary>

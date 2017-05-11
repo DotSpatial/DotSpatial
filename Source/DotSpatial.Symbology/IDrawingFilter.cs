@@ -17,40 +17,17 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for DrawingFilter.
+    /// </summary>
     public interface IDrawingFilter : IEnumerable<IFeature>, ICloneable
     {
+        #region Events
+
         /// <summary>
         /// Occurs after this filter has built its internal list of items.
         /// </summary>
         event EventHandler Initialized;
-
-        #region Methods
-
-        /// <summary>
-        /// This will set all values to the default (0) category. Then, it will use the filter
-        /// expressions on the remaining categories to change the categories for those members.
-        /// This means that an item will be classified as the last filter that it qualifies for.
-        /// </summary>
-        /// <param name="scheme">The scheme of categories to apply to the drawing states</param>
-        void ApplyScheme(IFeatureScheme scheme);
-
-        /// <summary>
-        /// Invalidates this drawing filter, forcing a re-creation
-        /// of the entire dictionary from the source featureset.
-        /// This should only be done if changes are made to the
-        /// feature list while SuspendChanges on the list is true.
-        /// </summary>
-        void Invalidate();
-
-        /// <summary>
-        /// If UseChunks is true, this uses the index value combined with the chunk size
-        /// to calculate the chunk, and also sets the category to the [0] category and the
-        /// selection state to unselected. This can be overridden in sub-classes to come up
-        /// with a different default state.
-        /// </summary>
-        /// <param name="index">The integer index to get the default state of</param>
-        /// <returns>An IDrawnState</returns>
-        IDrawnState GetDefaultState(int index);
 
         #endregion
 
@@ -62,7 +39,7 @@ namespace DotSpatial.Symbology
         IFeatureCategory Category { get; set; }
 
         /// <summary>
-        /// Gets the integer chunk that the filter should use
+        /// Gets or sets the integer chunk that the filter should use.
         /// </summary>
         int Chunk { get; set; }
 
@@ -74,7 +51,7 @@ namespace DotSpatial.Symbology
         int ChunkSize { get; set; }
 
         /// <summary>
-        /// If the drawing state for any features has changed, or else if
+        /// Gets the count. If the drawing state for any features has changed, or else if
         /// the state of any members has changed, this will cycle through
         /// the filter members and cache a new count. If nothing has
         /// changed, then this will simply return the cached value.
@@ -98,16 +75,45 @@ namespace DotSpatial.Symbology
         IFeatureList FeatureList { get; }
 
         /// <summary>
-        /// If chunks are being used, then this indicates the total count of chunks.
-        /// Otherwise, this returns 1 as everything is effectively in one chunk.
+        /// Gets the total count of chunks.
+        /// If not chunks are used, this returns 1 as everything is effectively in one chunk.
         /// </summary>
         int NumChunks { get; }
 
         /// <summary>
-        /// If UseSelection is true, this will get or set the boolean selection state
+        /// Gets or sets a value indicating whether the items are selected. If UseSelection is true, this will get or set the boolean selection state
         /// that will be used to select values.
         /// </summary>
         bool Selected { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the filter should subdivide based on category.
+        /// </summary>
+        bool UseCategory { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether we should use the chunk.
+        /// </summary>
+        bool UseChunks { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this filter should use the Selected
+        /// </summary>
+        bool UseSelection { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the filter should consider the IsVisible property
+        /// </summary>
+        bool UseVisibility { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to return visible, or hidden features if UseVisibility is true.
+        /// </summary>
+        bool Visible { get; set; }
+
+        #endregion
+
+        #region Indexers
 
         /// <summary>
         /// This uses the feature as the key and attempts to find the specified drawn state
@@ -118,7 +124,7 @@ namespace DotSpatial.Symbology
         /// the features in the featureset, we don't forget which ones are selected.
         /// The disadvantage is that duplicate features in the same featureset
         /// will cause an exception.</remarks>
-        /// <returns></returns>
+        /// <returns>The drawn state for the feature.</returns>
         IDrawnState this[IFeature key] { get; set; }
 
         /// <summary>
@@ -129,30 +135,35 @@ namespace DotSpatial.Symbology
         /// <returns>The current IDrawnState for the current feature.</returns>
         IDrawnState this[int index] { get; set; }
 
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether we should use the chunk
-        /// </summary>
-        bool UseChunks { get; set; }
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Gets or sets a boolean that indicates whether this filter should use the Selected
+        /// This will set all values to the default (0) category. Then, it will use the filter
+        /// expressions on the remaining categories to change the categories for those members.
+        /// This means that an item will be classified as the last filter that it qualifies for.
         /// </summary>
-        bool UseSelection { get; set; }
+        /// <param name="scheme">The scheme of categories to apply to the drawing states</param>
+        void ApplyScheme(IFeatureScheme scheme);
 
         /// <summary>
-        /// Gets or sets a boolean that indicates whether the filter should subdivide based on category.
+        /// If UseChunks is true, this uses the index value combined with the chunk size
+        /// to calculate the chunk, and also sets the category to the [0] category and the
+        /// selection state to unselected. This can be overridden in sub-classes to come up
+        /// with a different default state.
         /// </summary>
-        bool UseCategory { get; set; }
+        /// <param name="index">The integer index to get the default state of</param>
+        /// <returns>An IDrawnState</returns>
+        IDrawnState GetDefaultState(int index);
 
         /// <summary>
-        /// Gets or sets a boolean that indicates whether the filter should consider the IsVisible property
+        /// Invalidates this drawing filter, forcing a re-creation
+        /// of the entire dictionary from the source featureset.
+        /// This should only be done if changes are made to the
+        /// feature list while SuspendChanges on the list is true.
         /// </summary>
-        bool UseVisibility { get; set; }
-
-        /// <summary>
-        /// Gets or sets a boolean that specifies whether to return visible, or hidden features if UseVisibility is true.
-        /// </summary>
-        bool Visible { get; set; }
+        void Invalidate();
 
         #endregion
     }

@@ -20,9 +20,9 @@ namespace DotSpatial.Data
     public interface IFeatureRow
     {
         /// <summary>
-        /// This is a cached extent.  This will not reflect changes in Geometry or Shape unless
+        /// This is a cached extent. This will not reflect changes in Geometry or Shape unless
         /// they have been stored, but will reflect the most recently stored or retrieved
-        /// extent from accessing either the shape or geometry.  In cases where reading from
+        /// extent from accessing either the shape or geometry. In cases where reading from
         /// WKB, this will be lazily created, but it will be cached when reading from
         /// shapefiles.
         /// </summary>

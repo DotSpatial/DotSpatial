@@ -648,8 +648,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the internal list of features.  This is quite fast in this case because
-        /// the actual internal data store is a list.  This does not create a new collection.
+        /// Gets the internal list of features. This is quite fast in this case because
+        /// the actual internal data store is a list. This does not create a new collection.
         /// </summary>
         /// <returns>The internal list.</returns>
         public virtual List<IFeature> ToList()
@@ -686,7 +686,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Occurs each time a feature is added to the list.  This should only be called
+        /// Occurs each time a feature is added to the list. This should only be called
         /// if suspend events is false.
         /// </summary>
         /// <param name="feature">The feature that was added.</param>
@@ -696,7 +696,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Occurs each time a feature is removed from the list.  This should only be
+        /// Occurs each time a feature is removed from the list. This should only be
         /// called if suspend events is false.
         /// </summary>
         /// <param name="feature">he feature that was removed</param>

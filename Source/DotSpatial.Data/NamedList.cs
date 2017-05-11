@@ -16,10 +16,10 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A named list preserves a 1:1 mapping between names and items.  It can be used to
-    /// reference information in either direction.  It essentially provides a string
-    /// handle for working with generic typed ILists.  This cannot instantiate new
-    /// items.  (Creating a default T would not work, for instance, for an interface).
+    /// A named list preserves a 1:1 mapping between names and items. It can be used to
+    /// reference information in either direction. It essentially provides a string
+    /// handle for working with generic typed ILists. This cannot instantiate new
+    /// items. (Creating a default T would not work, for instance, for an interface).
     /// </summary>
     public class NamedList<T> : INamedList
     {
@@ -75,7 +75,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Gets or sets the item corresponding to the specified name.  Setting this
+        /// Gets or sets the item corresponding to the specified name. Setting this
         /// will re-use the same name and position in the list, but set a new object.
         /// </summary>
         /// <param name="name">The string name of the item to obtain</param>
@@ -173,7 +173,7 @@ namespace DotSpatial.Data
         public void RefreshNames()
         {
             // When re-ordering, we want to keep the name like category 0 the same,
-            // so we can't just clear the values.  Instead, to see the item move,
+            // so we can't just clear the values. Instead, to see the item move,
             // the name has to stay with the item.
             List<T> deleteItems = new List<T>();
             foreach (T item in _names.Keys)
@@ -280,7 +280,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the list of actual items.  This is basically a reference copy of
+        /// Gets the list of actual items. This is basically a reference copy of
         /// the actual collection of items to be contained in this named list.
         /// </summary>
         public IList<T> Items

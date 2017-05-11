@@ -16,7 +16,7 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// This is an abstract base class that represents a datasets that has a RasterBounds on it, and reprojects
-    /// by using the RasterBounds.  This works for Image and Raster implementations.
+    /// by using the RasterBounds. This works for Image and Raster implementations.
     /// </summary>
     public abstract class RasterBoundDataSet : DataSet
     {

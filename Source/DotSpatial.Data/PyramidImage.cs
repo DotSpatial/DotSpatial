@@ -25,7 +25,7 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// The Pyramid Image is designed with the expectation that the image will be too big to access all at once.
-    /// It is stored with multiple resolutions in a "mwi or DotSpatial Image" format.  It is raw bytes in argb order.
+    /// It is stored with multiple resolutions in a "mwi or DotSpatial Image" format. It is raw bytes in argb order.
     /// The header content is stored in xml format.
     /// </summary>
     public class PyramidImage : ImageData
@@ -241,7 +241,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This assumes that the base image has been written to the file.  This will now attempt to calculate
+        /// This assumes that the base image has been written to the file. This will now attempt to calculate
         /// the down-sampled images.
         /// </summary>
         public void CreatePyramids2()
@@ -296,7 +296,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This assumes that the base image has been written to the file.  This will now attempt to calculate
+        /// This assumes that the base image has been written to the file. This will now attempt to calculate
         /// the down-sampled images.
         /// </summary>
         public void CreatePyramids()
@@ -373,7 +373,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This is normally weighted for calculations for the middle row.  If the top or bottom row
+        /// This is normally weighted for calculations for the middle row. If the top or bottom row
         /// is null, it will use mirror symetry by grabbing values from the other row instead.
         /// </summary>
         /// <param name="r1"></param>
@@ -418,7 +418,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This writes a window of byte values (ARGB order) to the file.  This assumes that the headers already exist.
+        /// This writes a window of byte values (ARGB order) to the file. This assumes that the headers already exist.
         /// If the headers have not been created or the bounds extend beyond the header numRows and numColumns for the
         /// specified scale, this will throw an exception.
         /// </summary>
@@ -426,7 +426,7 @@ namespace DotSpatial.Data
         /// <param name="startColumn">The integer start column</param>
         /// <param name="numRows">The integer number of rows in the window</param>
         /// <param name="numColumns">The integer number of columns in the window</param>
-        /// <param name="scale">The integer scale.  0 is the original image.</param>
+        /// <param name="scale">The integer scale. 0 is the original image.</param>
         /// <returns>The bytes created by this process</returns>
         /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined.</exception>
         /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale.</exception>
@@ -473,7 +473,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This writes a window of byte values (ARGB order) to the file.  This assumes that the headers already exist.
+        /// This writes a window of byte values (ARGB order) to the file. This assumes that the headers already exist.
         /// If the headers have not been created or the bounds extend beyond the header numRows and numColumns for the
         /// specified scale, this will throw an exception.
         /// </summary>
@@ -493,7 +493,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This writes a window of byte values (ARGB order) to the file.  This assumes that the headers already exist.
+        /// This writes a window of byte values (ARGB order) to the file. This assumes that the headers already exist.
         /// If the headers have not been created or the bounds extend beyond the header numRows and numColumns for the
         /// specified scale, this will throw an exception.
         /// </summary>
@@ -503,7 +503,7 @@ namespace DotSpatial.Data
         /// <param name="numRows">The integer number of rows in the window</param>
         /// <param name="numColumns">The integer number of columns in the window</param>
         /// <param name="scale">The integer scale. 0 is the original image.</param>
-        /// <param name="pm">The progress meter to advance by row.  Calls Next() for each row.</param>
+        /// <param name="pm">The progress meter to advance by row. Calls Next() for each row.</param>
         /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined</exception>
         /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale</exception>
         public void WriteWindow(byte[] bytes, int startRow, int startColumn, int numRows, int numColumns, int scale, ProgressMeter pm)
@@ -549,8 +549,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads the header only from the specified mwi file.  The header is in xml format.
-        /// This is a test.  We may have to jurry rig the thing to ensure it ignores the actual
+        /// Reads the header only from the specified mwi file. The header is in xml format.
+        /// This is a test. We may have to jurry rig the thing to ensure it ignores the actual
         /// image content.
         /// </summary>
         /// <param name="fileName">Whether this is the mwi or mwh file, this reads the mwh file for the fileName.</param>
@@ -585,7 +585,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets a block of data directly, converted into a bitmap.  This is a general
+        /// Gets a block of data directly, converted into a bitmap. This is a general
         /// implementation, so assumes you are reading and writing to the 0 scale.
         /// This is always in ARGB format.
         /// </summary>
@@ -610,7 +610,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves a bitmap of data as a continuous block into the specified location.  This
+        /// Saves a bitmap of data as a continuous block into the specified location. This
         /// is a general implementation, so assumes you are reading and writing to the 0 scale.
         /// This should be in ARGB pixel format or it will fail.
         /// </summary>
@@ -633,7 +633,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Updates overviews.  In the case of a Pyramid image, this recalculates the values.
+        /// Updates overviews. In the case of a Pyramid image, this recalculates the values.
         /// </summary>
         public override void UpdateOverviews()
         {

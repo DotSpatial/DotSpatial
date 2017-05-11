@@ -18,8 +18,53 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Layer used for labeling features.
+    /// </summary>
     public class LabelLayer : Layer, ILabelLayer
     {
+        #region Fields
+
+        private IFeatureLayer _featureLayer;
+
+        [Serialize("Symbology")]
+        private ILabelScheme _symbology;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabelLayer"/> class.
+        /// </summary>
+        public LabelLayer()
+        {
+            Configure();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabelLayer"/> class.
+        /// </summary>
+        /// <param name="inFeatureSet">FeatureSet whose features get labeled by this label layer.</param>
+        public LabelLayer(IFeatureSet inFeatureSet)
+        {
+            FeatureSet = inFeatureSet;
+            Configure();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabelLayer"/> class.
+        /// </summary>
+        /// <param name="inFeatureLayer">Layer whose features get labeled by this label layer.</param>
+        public LabelLayer(IFeatureLayer inFeatureLayer)
+        {
+            FeatureSet = inFeatureLayer.DataSet;
+            _featureLayer = inFeatureLayer;
+            Configure();
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -34,50 +79,102 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Private Variables
-
-        private IFeatureLayer _featureLayer;
-
-        [Serialize("Symbology")]
-        private ILabelScheme _symbology;
-
-        #endregion
-
-        #region Constructors
+        #region Properties
 
         /// <summary>
-        /// Creates a new instance of LabelLayer
+        /// Gets or sets the dictionary that quickly identifies the category for
+        /// each label.
         /// </summary>
-        public LabelLayer()
+        [ShallowCopy]
+        public Dictionary<IFeature, LabelDrawState> DrawnStates { get; set; }
+
+        /// <summary>
+        /// Gets or sets the indexed collection of drawn states
+        /// </summary>
+        public FastLabelDrawnState[] FastDrawnStates { get; set; }
+
+        /// <summary>
+        /// Gets or sets an optional layer to link this layer to. If this is specified, then drawing will
+        /// be associated with this layer. This also updates the FeatureSet property.
+        /// </summary>
+        [ShallowCopy]
+        public IFeatureLayer FeatureLayer
         {
-            Configure();
+            get
+            {
+                return _featureLayer;
+            }
+
+            set
+            {
+                _featureLayer = value;
+                FeatureSet = _featureLayer.DataSet;
+            }
         }
 
         /// <summary>
-        /// Creates a new layer that uses the attributes from the given featureSet
+        /// Gets or sets the featureSet that defines the text for the labels on this layer.
         /// </summary>
-        /// <param name="inFeatureSet"></param>
-        public LabelLayer(IFeatureSet inFeatureSet)
+        [ShallowCopy]
+        public IFeatureSet FeatureSet { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selection symbolizer from the first TextSymbol group.
+        /// </summary>
+        [ShallowCopy]
+        public ILabelSymbolizer SelectionSymbolizer
         {
-            FeatureSet = inFeatureSet;
-            Configure();
+            get
+            {
+                if (_symbology?.Categories == null || _symbology.Categories.Count == 0) return null;
+                return _symbology.Categories[0].SelectionSymbolizer;
+            }
+
+            set
+            {
+                if (_symbology == null) _symbology = new LabelScheme();
+                if (_symbology.Categories == null) _symbology.Categories = new BaseList<ILabelCategory>();
+                if (_symbology.Categories.Count == 0) _symbology.Categories.Add(new LabelCategory());
+                _symbology.Categories[0].SelectionSymbolizer = value;
+            }
         }
 
         /// <summary>
-        /// Creates a new label layer based on the features in the
+        /// Gets or sets the regular symbolizer from the first TextSymbol group.
         /// </summary>
-        /// <param name="inFeatureLayer"></param>
-        public LabelLayer(IFeatureLayer inFeatureLayer)
+        [ShallowCopy]
+        public ILabelSymbolizer Symbolizer
         {
-            FeatureSet = inFeatureLayer.DataSet;
-            _featureLayer = inFeatureLayer;
-            Configure();
+            get
+            {
+                if (_symbology?.Categories == null || _symbology.Categories.Count == 0) return null;
+                return _symbology.Categories[0].Symbolizer;
+            }
+
+            set
+            {
+                if (_symbology == null) _symbology = new LabelScheme();
+                if (_symbology.Categories == null) _symbology.Categories = new BaseList<ILabelCategory>();
+                if (_symbology.Categories.Count == 0) _symbology.Categories.Add(new LabelCategory());
+                _symbology.Categories[0].Symbolizer = value;
+            }
         }
 
-        private void Configure()
+        /// <summary>
+        /// Gets or sets the labeling scheme as a collection of categories.
+        /// </summary>
+        public ILabelScheme Symbology
         {
-            if (FeatureSet != null) MyExtent = FeatureSet.Extent.Copy();
-            _symbology = new LabelScheme();
+            get
+            {
+                return _symbology;
+            }
+
+            set
+            {
+                _symbology = value;
+                CreateLabels(); // update the drawn state with the new categories
+            }
         }
 
         #endregion
@@ -85,8 +182,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Clears the current selection, reverting the geometries back to their
-        /// normal colors.
+        /// Clears the current selection, reverting the geometries back to their normal colors.
         /// </summary>
         public void ClearSelection()
         {
@@ -97,33 +193,23 @@ namespace DotSpatial.Symbology
         /// </summary>
         public virtual void CreateLabels()
         {
-            if (FeatureSet != null)
+            if (FeatureSet != null && FeatureSet.IndexMode)
             {
-                if (FeatureSet.IndexMode)
-                {
-                    CreateIndexedLabels();
-                    return;
-                }
+                CreateIndexedLabels();
+                return;
             }
+
             DrawnStates = new Dictionary<IFeature, LabelDrawState>();
-            if (FeatureSet == null) return;
-            // DataTable dt = _featureSet.DataTable; // if working correctly, this should auto-populate
-            if (Symbology == null) return;
+            if (FeatureSet == null || Symbology == null) return;
 
             foreach (ILabelCategory category in Symbology.Categories)
             {
-                List<IFeature> features;
-                if (!string.IsNullOrWhiteSpace(category.FilterExpression))
-                    features = FeatureSet.SelectByAttribute(category.FilterExpression);
-                else
-                    features = FeatureSet.Features.ToList();
+                List<IFeature> features = !string.IsNullOrWhiteSpace(category.FilterExpression) ? FeatureSet.SelectByAttribute(category.FilterExpression) : FeatureSet.Features.ToList();
 
                 foreach (IFeature feature in features)
                 {
-                    if (DrawnStates.ContainsKey(feature))
-                        DrawnStates[feature] = new LabelDrawState(category);
-                    else
-                        DrawnStates.Add(feature, new LabelDrawState(category));
+                    if (DrawnStates.ContainsKey(feature)) DrawnStates[feature] = new LabelDrawState(category);
+                    else DrawnStates.Add(feature, new LabelDrawState(category));
                 }
             }
         }
@@ -139,10 +225,30 @@ namespace DotSpatial.Symbology
         {
             List<IFeature> features = FeatureSet.Select(region);
             if (features.Count == 0) return false;
+
             foreach (IFeature feature in features)
             {
                 DrawnStates[feature].Selected = true;
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the features in the given region.
+        /// </summary>
+        /// <param name="region">the geographic region to remove the feature from the selection on this layer</param>
+        /// <returns>Boolean true if any features were removed from the selection.</returns>
+        public bool UnSelect(Extent region)
+        {
+            List<IFeature> features = FeatureSet.Select(region);
+            if (features.Count == 0) return false;
+
+            foreach (IFeature feature in features)
+            {
+                DrawnStates[feature].Selected = false;
+            }
+
             return true;
         }
 
@@ -152,6 +258,7 @@ namespace DotSpatial.Symbology
         protected void CreateIndexedLabels()
         {
             if (FeatureSet == null) return;
+
             FastDrawnStates = new FastLabelDrawnState[FeatureSet.ShapeIndices.Count];
 
             // DataTable dt = _featureSet.DataTable; // if working correctly, this should auto-populate
@@ -178,134 +285,27 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Removes the features in the given region
-        /// </summary>
-        /// <param name="region">the geographic region to remove the feature from the selection on this layer</param>
-        /// <returns>Boolean true if any features were removed from the selection.</returns>
-        public bool UnSelect(Extent region)
-        {
-            List<IFeature> features = FeatureSet.Select(region);
-            if (features.Count == 0) return false;
-            foreach (IFeature feature in features)
-            {
-                DrawnStates[feature].Selected = false;
-            }
-            return true;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the dictionary that quickly identifies the category for
-        /// each label.
-        /// </summary>
-        [ShallowCopy]
-        public Dictionary<IFeature, LabelDrawState> DrawnStates { get; set; }
-
-        /// <summary>
-        /// Gets or sets the indexed collection of drawn states
-        /// </summary>
-        public FastLabelDrawnState[] FastDrawnStates { get; set; }
-
-        /// <summary>
-        /// Gets or sets the featureSet that defines the text for the labels on this layer.
-        /// </summary>
-        [ShallowCopy]
-        public IFeatureSet FeatureSet { get; set; }
-
-        /// <summary>
-        /// Gets or sets an optional layer to link this layer to. If this is specified, then drawing will
-        /// be associated with this layer. This also updates the FeatureSet property.
-        /// </summary>
-        [ShallowCopy]
-        public IFeatureLayer FeatureLayer
-        {
-            get { return _featureLayer; }
-            set
-            {
-                _featureLayer = value;
-                FeatureSet = _featureLayer.DataSet;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the labeling scheme as a collection of categories.
-        /// </summary>
-        public ILabelScheme Symbology
-        {
-            get { return _symbology; }
-            set
-            {
-                _symbology = value;
-                CreateLabels(); // update the drawn state with the new categories
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the selection symbolizer from the first TextSymbol group.
-        /// </summary>
-        [ShallowCopy]
-        public ILabelSymbolizer SelectionSymbolizer
-        {
-            get
-            {
-                if (_symbology == null) return null;
-                if (_symbology.Categories == null) return null;
-                if (_symbology.Categories.Count == 0) return null;
-                return _symbology.Categories[0].SelectionSymbolizer;
-            }
-            set
-            {
-                if (_symbology == null) _symbology = new LabelScheme();
-                if (_symbology.Categories == null) _symbology.Categories = new BaseList<ILabelCategory>();
-                if (_symbology.Categories.Count == 0) _symbology.Categories.Add(new LabelCategory());
-                _symbology.Categories[0].SelectionSymbolizer = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the regular symbolizer from the first TextSymbol group.
-        /// </summary>
-        [ShallowCopy]
-        public ILabelSymbolizer Symbolizer
-        {
-            get
-            {
-                if (_symbology == null) return null;
-                if (_symbology.Categories == null) return null;
-                if (_symbology.Categories.Count == 0) return null;
-                return _symbology.Categories[0].Symbolizer;
-            }
-            set
-            {
-                if (_symbology == null) _symbology = new LabelScheme();
-                if (_symbology.Categories == null) _symbology.Categories = new BaseList<ILabelCategory>();
-                if (_symbology.Categories.Count == 0) _symbology.Categories.Add(new LabelCategory());
-                _symbology.Categories[0].Symbolizer = value;
-            }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
         /// Fires the selection cleared event
         /// </summary>
+        /// <param name="args">The arguments.</param>
         protected virtual void OnSelectionCleared(FeatureChangeArgs args)
         {
-            if (SelectionCleared != null) SelectionCleared(this, args);
+            SelectionCleared?.Invoke(this, args);
         }
 
         /// <summary>
-        /// Fires the selection extended event
+        /// Fires the selection extended event.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">The arguments.</param>
         protected virtual void OnSelectionExtended(FeatureChangeEnvelopeArgs args)
         {
-            if (SelectionExtended != null) SelectionExtended(this, args);
+            SelectionExtended?.Invoke(this, args);
+        }
+
+        private void Configure()
+        {
+            if (FeatureSet != null) MyExtent = FeatureSet.Extent.Copy();
+            _symbology = new LabelScheme();
         }
 
         #endregion

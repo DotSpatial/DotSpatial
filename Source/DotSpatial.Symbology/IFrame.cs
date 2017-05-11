@@ -39,20 +39,15 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        /// This will create a new layer from the featureset and add it.
-        /// </summary>
-        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics</param>
-        void Add(IFeatureSet featureSet);
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets or sets a boolean that controls whether or not a newly added layer
+        /// Gets or sets the drawing layers. Drawing layers are tracked separately, and do not appear in the legend.
+        /// </summary>
+        List<ILayer> DrawingLayers { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not a newly added layer
         /// will also force a zoom to that layer. If this is true, then nothing
         /// will happen. Otherwise, adding layers to this frame or a group in this
         /// frame will set the extent.
@@ -60,25 +55,30 @@ namespace DotSpatial.Symbology
         bool ExtentsInitialized { get; set; }
 
         /// <summary>
-        /// Drawing layers are tracked separately, and do not appear in the legend.
-        /// </summary>
-        List<ILayer> DrawingLayers { get; set; }
-
-        /// <summary>
-        /// Gets or sets the currently active layer.
+        /// Gets the currently active layer.
         /// </summary>
         ILayer SelectedLayer { get; }
 
         /// <summary>
-        /// Controls the smoothing mode. Default or None will have faster performance
+        /// Gets or sets the smoothing mode. Default or None will have faster performance
         /// at the cost of quality.
         /// </summary>
         SmoothingMode SmoothingMode { get; set; }
 
         /// <summary>
-        /// This is the geographic envelope in view.
+        /// Gets or sets the geographic envelope in view.
         /// </summary>
         Extent ViewExtents { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// This will create a new layer from the featureset and add it.
+        /// </summary>
+        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics</param>
+        void Add(IFeatureSet featureSet);
 
         #endregion
     }

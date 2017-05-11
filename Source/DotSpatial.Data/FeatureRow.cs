@@ -113,7 +113,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// From shapefiles, this should be cached.  Any other source must likely
+        /// From shapefiles, this should be cached. Any other source must likely
         /// create the extent from a geometry, and possibly all the way from WKB.
         /// </summary>
         public IExtent Extent
@@ -194,7 +194,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// When reading from WKB, the Shape is lazily created.  When reading from sources like
+        /// When reading from WKB, the Shape is lazily created. When reading from sources like
         /// a shapefile, the Shape is actually pre-fetched because the value exists as a shape
         /// rather than a geometry.
         /// </summary>

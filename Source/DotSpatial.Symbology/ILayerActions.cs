@@ -1,7 +1,7 @@
 // *******************************************************************************************************
 // Product:  DotSpatial.Symbology.ILayerActions
 // Description:  Contains methods which can be used in Layer (e.g. in ContextMenu)
-
+//
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace DotSpatial.Symbology
         /// Show Dynamic Visibility dialog
         /// </summary>
         /// <param name="e">Dynamic Visibility</param>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">The map frame.</param>
         void DynamicVisibility(IDynamicVisibility e, IFrame mapFrame);
     }
 }

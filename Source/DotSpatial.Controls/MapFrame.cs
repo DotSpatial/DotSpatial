@@ -477,7 +477,7 @@ namespace DotSpatial.Controls
             set
             {
                 if (value == null) return;
-                Extent ext = CloneableEM.Copy(value);
+                Extent ext = CloneableEm.Copy(value);
                 ResetAspectRatio(ext);
 
                 // reset buffer initializes with correct buffer. Don't allow initialization yet.
@@ -559,8 +559,8 @@ namespace DotSpatial.Controls
             if (base.ViewExtents == null) return new Coordinate(0, 0);
             double x = Convert.ToDouble(position.X);
             double y = Convert.ToDouble(position.Y);
-            x = x * view.Width / _width + view.MinX;
-            y = view.MaxY - y * view.Height / _height;
+            x = (x * view.Width / _width) + view.MinX;
+            y = view.MaxY - (y * view.Height / _height);
 
             return new Coordinate(x, y, 0.0);
         }
@@ -867,14 +867,14 @@ namespace DotSpatial.Controls
             double viewAspect = vW / vH;
             if (controlAspect > viewAspect)
             {
-                int dW = Convert.ToInt32(vH * controlAspect - vW);
-                _view.X = _originalView.X - dW / 2;
+                int dW = Convert.ToInt32((vH * controlAspect) - vW);
+                _view.X = _originalView.X - (dW / 2);
                 _view.Width = _originalView.Width + dW;
             }
             else
             {
-                int dH = Convert.ToInt32(vW / controlAspect - vH);
-                _view.Y = _originalView.Y - dH / 2;
+                int dH = Convert.ToInt32((vW / controlAspect) - vH);
+                _view.Y = _originalView.Y - (dH / 2);
                 _view.Height = _originalView.Height + dH;
             }
         }
@@ -889,8 +889,8 @@ namespace DotSpatial.Controls
         {
             Rectangle result = new Rectangle
             {
-                X = View.X + (clip.X * View.Width) / _parent.ClientRectangle.Width,
-                Y = View.Y + (clip.Y * View.Height) / _parent.ClientRectangle.Height,
+                X = View.X + ((clip.X * View.Width) / _parent.ClientRectangle.Width),
+                Y = View.Y + ((clip.Y * View.Height) / _parent.ClientRectangle.Height),
                 Width = clip.Width * View.Width / _parent.ClientRectangle.Width,
                 Height = clip.Height * View.Height / _parent.ClientRectangle.Height
             };
@@ -1362,13 +1362,13 @@ namespace DotSpatial.Controls
                         // 1 point, or all points are the same point.
                         double x = desired.X;
                         double y = desired.Y;
-                        ViewExtents = new Extent(x - x / 10, y - y / 10, x + x / 10, y + y / 10);
+                        ViewExtents = new Extent(x - (x / 10), y - (y / 10), x + (x / 10), y + (y / 10));
                     }
                     else if (desired.Width > 0 && desired.Width < 1E300)
                     {
                         if (desired.Height > 0 && desired.Height < 1E300)
                         {
-                            Extent env = CloneableEM.Copy(desired);
+                            Extent env = CloneableEm.Copy(desired);
 
                             if (ExtendBuffer) env.ExpandBy(env.Width, env.Height);
                             env.ExpandBy(env.Width / 10, env.Height / 10); // Work item #84

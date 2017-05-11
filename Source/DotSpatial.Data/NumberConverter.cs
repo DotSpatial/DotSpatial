@@ -112,7 +112,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new, random float that is constrained by the specified length and decimal count.
         /// </summary>
-        /// <returns>A new float.  Floats can only store about 8 digits of precision, so specifying a high </returns>
+        /// <returns>A new float. Floats can only store about 8 digits of precision, so specifying a high </returns>
         public float RandomFloat()
         {
             string test = new string(RandomChars(6));

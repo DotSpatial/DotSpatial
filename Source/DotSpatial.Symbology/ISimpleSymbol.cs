@@ -13,12 +13,11 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for SimpleSymbol.
+    /// </summary>
     public interface ISimpleSymbol : IOutlinedSymbol, IColorable
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>

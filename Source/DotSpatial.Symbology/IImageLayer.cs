@@ -15,6 +15,9 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for ImageLayer.
+    /// </summary>
     public interface IImageLayer : ILayer
     {
         /// <summary>

@@ -19,7 +19,7 @@ namespace DotSpatial.Data
     public enum FieldJoinType
     {
         /// <summary>
-        /// Output datasets have all fields from both input and output sets.  Fields with duplicate field names will be appended with a number.
+        /// Output datasets have all fields from both input and output sets. Fields with duplicate field names will be appended with a number.
         /// Features from this dataset may appear more than once if more than one valid intersection occurs with the features from the
         /// other featureset.
         /// </summary>

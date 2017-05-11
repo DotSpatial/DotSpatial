@@ -15,17 +15,16 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for PointScheme.
+    /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface IPointScheme : IFeatureScheme
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets the list of scheme categories belonging to this scheme.
+        /// Gets or sets the list of scheme categories belonging to this scheme.
         /// </summary>
         PointCategoryCollection Categories { get; set; }
 

@@ -19,7 +19,7 @@ namespace DotSpatial.Data
     public interface IGetBitmap : IDisposable, IDisposeLock, IContainRasterBounds
     {
         /// <summary>
-        /// Attempts to create a bitmap for the entire image.  This may cause memory exceptions.
+        /// Attempts to create a bitmap for the entire image. This may cause memory exceptions.
         /// </summary>
         /// <returns>
         /// A Bitmap of the image.

@@ -26,7 +26,7 @@ namespace DotSpatial.Data
     {
         /// <summary>
         /// This method assumes that there was a direct correlation between this envelope and the original
-        /// rectangle.  This reproportions this window to match the specified newRectangle.
+        /// rectangle. This reproportions this window to match the specified newRectangle.
         /// </summary>
         /// <param name="self">The original envelope</param>
         /// <param name="original">The original rectangle </param>
@@ -52,7 +52,7 @@ namespace DotSpatial.Data
             if (self.HasZ())
             {
                 // regardless of whether it has M, we need an MZExtent.
-                return new ExtentMZ(self);
+                return new ExtentMz(self);
             }
 
             return self.HasM() ? new ExtentM(self) : new Extent(self);

@@ -28,7 +28,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Returns a duplicate of this entire list, where each item has been cloned
-        /// if it implements ICloneable.  Otherwise, the values will be a shallow copy.
+        /// if it implements ICloneable. Otherwise, the values will be a shallow copy.
         /// </summary>
         /// <returns></returns>
         public object Clone()
@@ -39,9 +39,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This copies any individual members of the list.  If the item can be
-        /// cloned, then it copies the cloned item.  Otherwise it copies the
-        /// regular item.  This method can be overridden to handle special behavior
+        /// This copies any individual members of the list. If the item can be
+        /// cloned, then it copies the cloned item. Otherwise it copies the
+        /// regular item. This method can be overridden to handle special behavior
         /// in sub-classes.
         /// </summary>
         /// <param name="copy"></param>

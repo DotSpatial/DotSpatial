@@ -34,6 +34,9 @@ namespace DotSpatial.Symbology
         InteriorPoint
     }
 
+    /// <summary>
+    /// Used to indicate the label orientation.
+    /// </summary>
     public enum LineOrientation
     {
         /// <summary>

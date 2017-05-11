@@ -38,6 +38,7 @@ namespace DotSpatial.Symbology
             {
                 self.Add(f);
             }
+
             self.ResumeChanges();
         }
 
@@ -68,11 +69,12 @@ namespace DotSpatial.Symbology
             {
                 self.Remove(f);
             }
+
             self.ResumeChanges();
         }
 
         /// <summary>
-        /// Tests each member currently in the selected features based on the SelectionMode. 
+        /// Tests each member currently in the selected features based on the SelectionMode.
         /// If it passes, it will remove the feature from the selection.
         /// </summary>
         /// <param name="self">The IFeatureSelection that this should be applied to.</param>

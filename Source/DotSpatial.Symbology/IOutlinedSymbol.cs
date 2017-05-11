@@ -15,6 +15,9 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for OutlinedSymbol.
+    /// </summary>
     public interface IOutlinedSymbol : ISymbol
     {
         /// <summary>
@@ -24,7 +27,7 @@ namespace DotSpatial.Symbology
         Color OutlineColor { get; set; }
 
         /// <summary>
-        /// This redefines the Alpha channel of the color to a floating point opacity
+        /// Gets or sets the Alpha channel of the color to a floating point opacity
         /// that ranges from 0 to 1.
         /// </summary>
         float OutlineOpacity { get; set; }
@@ -35,7 +38,7 @@ namespace DotSpatial.Symbology
         double OutlineWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets the boolean outline
+        /// Gets or sets a value indicating whether the outline should be used.
         /// </summary>
         bool UseOutline { get; set; }
 

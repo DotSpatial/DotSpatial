@@ -17,18 +17,11 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for PicturePattern.
+    /// </summary>
     public interface IPicturePattern : IPattern, IDisposable
     {
-        #region Methods
-
-        /// <summary>
-        /// Opens the specified image or icon file to a local copy. Icons are converted into bitmaps.
-        /// </summary>
-        /// <param name="fileName">The string fileName to open.</param>
-        void Open(string fileName);
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -61,6 +54,16 @@ namespace DotSpatial.Symbology
         /// Gets or sets the wrap mode.
         /// </summary>
         WrapMode WrapMode { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Opens the specified image or icon file to a local copy. Icons are converted into bitmaps.
+        /// </summary>
+        /// <param name="fileName">The string fileName to open.</param>
+        void Open(string fileName);
 
         #endregion
     }

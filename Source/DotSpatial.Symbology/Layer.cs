@@ -875,7 +875,7 @@ namespace DotSpatial.Symbology
 
             if (_propertyDialogProvider == null) return;
 
-            var editCopy = CloneableEM.Copy(this);
+            var editCopy = CloneableEm.Copy(this);
             CopyProperties(editCopy); // for some reason we are getting blank layers during edits, this tries to fix that
             _propertyDialogProvider.ShowDialog(editCopy);
             editCopy.Dispose();

@@ -69,7 +69,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
-        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
+        /// by the | symbol. Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
         /// on this object.
         /// </summary>
         public string DialogReadFilter
@@ -95,7 +95,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets a prefereably short name that identifies this data provider.  Example might be GDAL.
+        /// Gets a prefereably short name that identifies this data provider. Example might be GDAL.
         /// This will be prepended to each of the DialogReadFilter members from this plugin.
         /// </summary>
         public string Name

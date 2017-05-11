@@ -15,13 +15,15 @@ using System;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// IDescriptor
+    /// </summary>
     public interface IDescriptor : IMatchable, IRandomizable, ICloneable
     {
         #region Methods
 
         /// <summary>
-        /// This copies the public descriptor properties from the specified object to
-        /// this object.
+        /// This copies the public descriptor properties from the specified object to this object.
         /// </summary>
         /// <param name="other">An object that has properties that match the public properties on this object.</param>
         void CopyProperties(object other);

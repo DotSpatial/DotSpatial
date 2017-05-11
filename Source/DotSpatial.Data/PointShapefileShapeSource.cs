@@ -122,7 +122,7 @@ namespace DotSpatial.Data
                 myShape.MinZ = myShape.MaxZ = myShape.Z[0];
                 myShape.M = fs.ReadDouble(1);
                 myShape.MinM = myShape.MaxM = myShape.M[0];
-                shape.Extent = new ExtentMZ(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
+                shape.Extent = new ExtentMz(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
             }
 
             PartRange partR = new PartRange(myShape.Vertices, 0, 0, FeatureType.Point) { NumVertices = 1 };

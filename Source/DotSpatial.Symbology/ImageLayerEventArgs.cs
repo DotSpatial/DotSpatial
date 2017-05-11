@@ -21,24 +21,18 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class ImageLayerEventArgs : EventArgs
     {
-        private IImageLayer _imageLayer;
-
         /// <summary>
-        /// Initializes a new instance of the ImageLayerEventArgs class.
+        /// Initializes a new instance of the <see cref="ImageLayerEventArgs"/> class.
         /// </summary>
         /// <param name="imageLayer">The IImageLayer that is involved in this event.</param>
         public ImageLayerEventArgs(IImageLayer imageLayer)
         {
-            _imageLayer = imageLayer;
+            ImageLayer = imageLayer;
         }
 
         /// <summary>
-        /// Gets the ImageLayer associated with this event.
+        /// Gets or sets the ImageLayer associated with this event.
         /// </summary>
-        public IImageLayer ImageLayer
-        {
-            get { return _imageLayer; }
-            protected set { _imageLayer = value; }
-        }
+        public IImageLayer ImageLayer { get; protected set; }
     }
 }

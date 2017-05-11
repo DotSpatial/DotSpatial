@@ -58,9 +58,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the extent for the dataset.  Usages to Envelope were replaced
+        /// Gets or sets the extent for the dataset. Usages to Envelope were replaced
         /// as they required an explicit using to DotSpatial.Topology which is not
-        /// as intuitive.  Extent.ToEnvelope() and new Extent(myEnvelope) convert them.
+        /// as intuitive. Extent.ToEnvelope() and new Extent(myEnvelope) convert them.
         /// This is designed to be a virtual member to be overridden by subclasses,
         /// and should not be called directly by the constructor of inheriting classes.
         /// </summary>
@@ -113,8 +113,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the cached extent variable.  The public Extent is the virtual accessor,
-        /// and should not be used from a constructor.  MyExtent is protected, not virtual,
+        /// Gets or sets the cached extent variable. The public Extent is the virtual accessor,
+        /// and should not be used from a constructor. MyExtent is protected, not virtual,
         /// and is only visible to inheriting classes, and can be safely set in the constructor.
         /// </summary>
         protected Extent MyExtent { get; set; }
@@ -147,7 +147,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This is an internal place holder to make it easier to pass around a single progress meter
-        /// between methods.  This will use lazy instantiation if it is requested before one has
+        /// between methods. This will use lazy instantiation if it is requested before one has
         /// been created.
         /// </summary>
         [Browsable(false)]
@@ -164,11 +164,11 @@ namespace DotSpatial.Data
         public ProjectionInfo Projection { get; set; }
 
         /// <summary>
-        /// Gets or sets the raw projection string for this dataset.  This handles both the
+        /// Gets or sets the raw projection string for this dataset. This handles both the
         /// case where projection is unavailable but a projection string needs to
         /// be passed around, and the case when a string is not recognized by the
-        /// DotSpatial.Projections library.  This is not format restricted, but should match
-        /// the original data source as closely as possible.  Setting this will also set
+        /// DotSpatial.Projections library. This is not format restricted, but should match
+        /// the original data source as closely as possible. Setting this will also set
         ///  the Projection if the Projection library is available and the format successfully
         /// defines a transform by either treating it as an Esri string or a proj4 string.
         /// </summary>

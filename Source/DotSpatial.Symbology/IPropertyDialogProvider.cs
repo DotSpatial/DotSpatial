@@ -15,6 +15,9 @@ using System;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// IPropertyDialogProvider
+    /// </summary>
     public interface IPropertyDialogProvider
     {
         #region Events
@@ -26,6 +29,15 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the item that was changed by this operation.
+        /// </summary>
+        object ChangeItem { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -33,15 +45,6 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="editCopy">A clone of the actual object to be edited. This should not be the original object.</param>
         void ShowDialog(object editCopy);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the item that was changed by this operation.
-        /// </summary>
-        object ChangeItem { get; }
 
         #endregion
     }

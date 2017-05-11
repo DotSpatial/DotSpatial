@@ -16,7 +16,12 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    public interface ILayerEventList<T> : ILayerEvents, IChangeEventList<T> where T : ILayer
+    /// <summary>
+    /// Interface for LayerEventList.
+    /// </summary>
+    /// <typeparam name="T">Type of the items in the list.</typeparam>
+    public interface ILayerEventList<T> : ILayerEvents, IChangeEventList<T>
+        where T : ILayer
     {
     }
 }

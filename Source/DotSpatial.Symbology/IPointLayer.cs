@@ -15,14 +15,10 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This is a specialized FeatureLayer that specifically handles point drawing
+    /// This is a specialized FeatureLayer that specifically handles point drawing.
     /// </summary>
     public interface IPointLayer : IFeatureLayer
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -38,7 +34,7 @@ namespace DotSpatial.Symbology
         new IPointSymbolizer SelectionSymbolizer { get; set; }
 
         /// <summary>
-        /// Gets the currently applied scheme. Because setting the scheme requires a processor intensive
+        /// Gets or sets the currently applied scheme. Because setting the scheme requires a processor intensive
         /// method, we use the ApplyScheme method for assigning a new scheme. This allows access
         /// to editing the members of an existing scheme directly, however.
         /// </summary>

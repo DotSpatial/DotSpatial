@@ -49,7 +49,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This is a re-expression of the features using a strong typed
-        /// list.  This may be the inner list or a copy depending on
+        /// list. This may be the inner list or a copy depending on
         /// implementation.
         /// </summary>
         /// <returns>The features as a List of IFeature.</returns>

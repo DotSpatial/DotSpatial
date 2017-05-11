@@ -25,7 +25,7 @@ namespace DotSpatial.Data
         /// starting from a certain index, and then advancing the string pointer.
         /// This advances the index, extracting the string up to the point of the
         /// specified delimeter, or the end of the string, and advancing the string
-        /// past the delimeter itself.  If the index is equal to the length,
+        /// past the delimeter itself. If the index is equal to the length,
         /// then you are at the end of the string.
         /// </summary>
         public static string ExtractTo(this string input, ref int start, string delimeter)

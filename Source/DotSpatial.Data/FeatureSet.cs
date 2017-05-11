@@ -32,11 +32,6 @@ namespace DotSpatial.Data
     public class FeatureSet : DataSet, IFeatureSet
     {
         /// <summary>
-        /// The _feature lookup.
-        /// </summary>
-        private readonly Dictionary<DataRow, IFeature> _featureLookup;
-
-        /// <summary>
         /// The _data table.
         /// </summary>
         private DataTable _dataTable;
@@ -78,7 +73,7 @@ namespace DotSpatial.Data
         public FeatureSet()
         {
             IndexMode = false; // this is false unless we are loading it from a specific shapefile case.
-            _featureLookup = new Dictionary<DataRow, IFeature>();
+            FeatureLookup = new Dictionary<DataRow, IFeature>();
             _features = new FeatureList(this);
             _features.FeatureAdded += FeaturesFeatureAdded;
             _features.FeatureRemoved += FeaturesFeatureRemoved;
@@ -97,13 +92,13 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureSet"/> class.
-        /// This creates a new featureset by checking each row of the table.  If the WKB feature
+        /// This creates a new featureset by checking each row of the table. If the WKB feature
         /// type matches the specified featureTypes, then it will copy that.
         /// </summary>
-        /// <param name="wkbTable"> </param>
-        /// <param name="wkbColumnIndex"> </param>
-        /// <param name="indexed"> </param>
-        /// <param name="type"> </param>
+        /// <param name="wkbTable">The wkbTable.</param>
+        /// <param name="wkbColumnIndex">The wkb column index. Not used.</param>
+        /// <param name="indexed">Not used.</param>
+        /// <param name="type">The feature type. Not used.</param>
         public FeatureSet(DataTable wkbTable, int wkbColumnIndex, bool indexed, FeatureType type)
             : this()
         {
@@ -115,7 +110,7 @@ namespace DotSpatial.Data
                 {
                     byte[] data = (byte[])row[0];
                     MemoryStream ms = new MemoryStream(data);
-                    WKBFeatureReader.ReadFeature(ms, result);
+                    WkbFeatureReader.ReadFeature(ms, result);
                 }
 
                 // convert lists of arrays into a single vertex array for each shape type.
@@ -173,7 +168,7 @@ namespace DotSpatial.Data
                 {
                     IFeature myFeature = f.Copy();
                     _features.Add(myFeature);
-                    if (myFeature.DataRow != null) _featureLookup.Add(myFeature.DataRow, myFeature);
+                    if (myFeature.DataRow != null) FeatureLookup.Add(myFeature.DataRow, myFeature);
                 }
 
                 _features.ResumeEvents();
@@ -273,7 +268,7 @@ namespace DotSpatial.Data
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Dictionary<DataRow, IFeature> FeatureLookup => _featureLookup;
+        public Dictionary<DataRow, IFeature> FeatureLookup { get; }
 
         /// <summary>
         /// Gets or sets a list of the features in this layer.
@@ -548,7 +543,7 @@ namespace DotSpatial.Data
                 addedFeature.DataRow = AddAttributes(shape);
 
                 if (_features.EventsSuspended && addedFeature.DataRow != null) // Changed by jany_: If feature gets added while _features events are suspended _features and _featureLookup get out of sync
-                    _featureLookup[addedFeature.DataRow] = addedFeature;
+                    FeatureLookup[addedFeature.DataRow] = addedFeature;
 
                 if (!shape.Range.Extent.IsEmpty())
                 {
@@ -642,7 +637,7 @@ namespace DotSpatial.Data
                     Array.Copy(shape.Z, start, _z, offset, num);
                 }
 
-                ShapeRange newRange = CloneableEM.Copy(shape.Range);
+                ShapeRange newRange = CloneableEm.Copy(shape.Range);
                 newRange.StartIndex = offset;
                 offset += num;
                 ShapeIndices.Add(newRange);
@@ -716,7 +711,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public IFeature FeatureFromRow(DataRow row)
         {
-            return _featureLookup[row];
+            return FeatureLookup[row];
         }
 
         /// <inheritdoc/>
@@ -757,7 +752,7 @@ namespace DotSpatial.Data
             var result = new DataTable();
             DataColumn[] columns = GetColumns();
 
-            // Always add FID in this paging scenario.  This is for the in-ram case.  A more appropriate
+            // Always add FID in this paging scenario. This is for the in-ram case. A more appropriate
             // implementation exists
             if (columns.All(c => c.ColumnName != "FID"))
             {
@@ -876,7 +871,7 @@ namespace DotSpatial.Data
 
             // This will also deep copy the parts, attributes and vertices
             ShapeRange range = ShapeIndices[index];
-            result.Range = CloneableEM.Copy(range);
+            result.Range = CloneableEm.Copy(range);
             int start = range.StartIndex;
             int numPoints = range.NumPoints;
 
@@ -1021,8 +1016,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Attempts to remove the specified shape.  If in memory, this will also remove the
-        /// corresponding database row.  This has no affect on the underlying datasets.
+        /// Attempts to remove the specified shape. If in memory, this will also remove the
+        /// corresponding database row. This has no affect on the underlying datasets.
         /// </summary>
         /// <param name="index">
         /// The integer index o the shape to remove.
@@ -1043,13 +1038,13 @@ namespace DotSpatial.Data
             ShapeRange sr = _shapeIndices[index];
 
             // remove the x,y vertices
-            double[] xyResult = new double[_vertices.Length - sr.NumPoints * 2];
+            double[] xyResult = new double[_vertices.Length - (sr.NumPoints * 2)];
             if (sr.StartIndex > 0)
             {
                 Array.Copy(_vertices, 0, xyResult, 0, sr.StartIndex * 2);
             }
 
-            int end = sr.StartIndex * 2 + sr.NumPoints * 2;
+            int end = (sr.StartIndex * 2) + (sr.NumPoints * 2);
             if (index < _shapeIndices.Count - 1)
             {
                 Array.Copy(_vertices, end, xyResult, sr.StartIndex * 2, _vertices.Length - end);
@@ -1106,7 +1101,7 @@ namespace DotSpatial.Data
             }
 
             // Updating the vertex array means that the parts are now pointing
-            // to the wrong array of vertices internally.  This doesn't affect
+            // to the wrong array of vertices internally. This doesn't affect
             // rendering, but will affect selection.
             foreach (ShapeRange shape in _shapeIndices)
             {
@@ -1125,8 +1120,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Attempts to remove a range of shapes by index.  This is optimized to
-        /// work better for large numbers.  For one or two, using RemoveShapeAt might
+        /// Attempts to remove a range of shapes by index. This is optimized to
+        /// work better for large numbers. For one or two, using RemoveShapeAt might
         /// be faster.
         /// </summary>
         /// <param name="indices">
@@ -1256,7 +1251,7 @@ namespace DotSpatial.Data
             ProgressMeter = new ProgressMeter(ProgressHandler, "Reassigning part vertex pointers", _shapeIndices.Count);
 
             // Updating the vertex array means that the parts are now pointing
-            // to the wrong array of vertices internally.  This doesn't affect
+            // to the wrong array of vertices internally. This doesn't affect
             // rendering, but will affect selection.
             foreach (ShapeRange shape in _shapeIndices)
             {
@@ -1384,7 +1379,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Selects using a string filter expression to obtain the desired features.
-        /// Field names should be in square brackets.  Alternately, if the field name of [FID]
+        /// Field names should be in square brackets. Alternately, if the field name of [FID]
         /// is used, then it will use the row index instead if no FID field is found.
         /// </summary>
         /// <param name="filterExpression">
@@ -1443,7 +1438,7 @@ namespace DotSpatial.Data
                     var table = GetAttributes(page * RowsPerPage, RowsPerPage);
                     foreach (var row in table.Select(filterExpression))
                     {
-                        result.Add(table.Rows.IndexOf(row) + page * RowsPerPage);
+                        result.Add(table.Rows.IndexOf(row) + (page * RowsPerPage));
                     }
                 }
             }
@@ -1600,7 +1595,7 @@ namespace DotSpatial.Data
                 // need to preserve event handler already attached to this feature list
                 _features.Clear();
                 _features.IncludeAttributes = false;
-                _featureLookup.Clear();
+                FeatureLookup.Clear();
             }
 
             _features.SuspendEvents();
@@ -1613,7 +1608,7 @@ namespace DotSpatial.Data
                     // Don't force population if we haven't populated yet, but
                     // definitely assign the DataRow if it already exists.
                     _features[shp].DataRow = DataTable.Rows[shp];
-                    _featureLookup.Add(_features[shp].DataRow, _features[shp]); // Added by jany_: sync the _featureLookup
+                    FeatureLookup.Add(_features[shp].DataRow, _features[shp]); // Added by jany_: sync the _featureLookup
                 }
             }
 
@@ -1738,7 +1733,7 @@ namespace DotSpatial.Data
             }
             else
             {
-                Coordinate c = new Coordinate(Vertex[shape.StartIndex * 2], Vertex[shape.StartIndex * 2 + 1]);
+                Coordinate c = new Coordinate(Vertex[shape.StartIndex * 2], Vertex[(shape.StartIndex * 2) + 1]);
 
                 if (M != null && M.Length != 0)
                 {
@@ -1935,7 +1930,7 @@ namespace DotSpatial.Data
                 foreach (Coordinate c in coords)
                 {
                     _vertices[i * 2] = c.X;
-                    _vertices[i * 2 + 1] = c.Y;
+                    _vertices[(i * 2) + 1] = c.Y;
 
                     // essentially add a reference pointer to the internal array of values
                     i++;
@@ -2017,7 +2012,7 @@ namespace DotSpatial.Data
         /// <returns>A data row, but only if attributes are populated.</returns>
         private DataRow AddAttributes(Shape shape)
         {
-            // Handle attributes if the array is not null.  Assumes compatible schema.
+            // Handle attributes if the array is not null. Assumes compatible schema.
             if (shape.Attributes != null)
             {
                 DataColumn[] columns = GetColumns();
@@ -2082,7 +2077,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            FeatureSet copy = new FeatureSet(f) { Projection = CloneableEM.Copy(Projection) };
+            FeatureSet copy = new FeatureSet(f) { Projection = CloneableEm.Copy(Projection) };
             copy.InvalidateEnvelope(); // the new set will likely have a different envelope bounds
             return copy;
         }
@@ -2105,8 +2100,8 @@ namespace DotSpatial.Data
         /// <param name="e">The e.</param>
         private void DataTableRowDeleted(object sender, DataRowChangeEventArgs e)
         {
-            Features.Remove(_featureLookup[e.Row]);
-            _featureLookup.Remove(e.Row);
+            Features.Remove(FeatureLookup[e.Row]);
+            FeatureLookup.Remove(e.Row);
         }
 
         /// <summary>
@@ -2122,7 +2117,7 @@ namespace DotSpatial.Data
                 return;
             }
 
-            _featureLookup[e.Feature.DataRow] = e.Feature;
+            FeatureLookup[e.Feature.DataRow] = e.Feature;
             FeatureAdded?.Invoke(sender, e);
         }
 
@@ -2135,7 +2130,7 @@ namespace DotSpatial.Data
         {
             _verticesAreValid = false;
             ShapeIndices.Remove(e.Feature.ShapeIndex);
-            _featureLookup.Remove(e.Feature.DataRow);
+            FeatureLookup.Remove(e.Feature.DataRow);
             FeatureRemoved?.Invoke(sender, e);
         }
 
@@ -2155,7 +2150,7 @@ namespace DotSpatial.Data
                 foreach (Coordinate c in coords)
                 {
                     c.X = _vertices[i * 2];
-                    c.Y = _vertices[i * 2 + 1];
+                    c.Y = _vertices[(i * 2) + 1];
                     i++;
                 }
             }

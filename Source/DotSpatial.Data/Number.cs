@@ -204,7 +204,7 @@ namespace DotSpatial.Data
         #region IComparable Members
 
         /// <summary>
-        /// Compares this with the specified value.  Returns 1 if the other
+        /// Compares this with the specified value. Returns 1 if the other
         /// item is greater than this value, 0 if they are equal and -1 if
         /// the other value is less than this value.
         /// </summary>
@@ -226,7 +226,7 @@ namespace DotSpatial.Data
         #region IComparable<double> Members
 
         /// <summary>
-        /// Compares this with the specified value.  Returns 1 if the other
+        /// Compares this with the specified value. Returns 1 if the other
         /// item is greater than this value, 0 if they are equal and -1 if
         /// the other value is less than this value.
         /// </summary>
@@ -244,7 +244,7 @@ namespace DotSpatial.Data
         #region IComparable<Number> Members
 
         /// <summary>
-        /// Compares this with the specified value.  Returns 1 if the other
+        /// Compares this with the specified value. Returns 1 if the other
         /// item is greater than this value, 0 if they are equal and -1 if
         /// the other value is less than this value.
         /// </summary>

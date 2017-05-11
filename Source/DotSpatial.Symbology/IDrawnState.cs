@@ -13,6 +13,9 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for DrawnState.
+    /// </summary>
     public interface IDrawnState
     {
         #region Properties
@@ -28,12 +31,12 @@ namespace DotSpatial.Symbology
         IFeatureCategory SchemeCategory { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean, true if this feature is currently selected
+        /// Gets or sets a value indicating whether this feature is currently selected.
         /// </summary>
         bool IsSelected { get; set; }
 
         /// <summary>
-        /// Gets or sets whether this feature is currently being drawn.
+        /// Gets or sets a value indicating whether this feature is currently being drawn.
         /// </summary>
         bool IsVisible { get; set; }
 

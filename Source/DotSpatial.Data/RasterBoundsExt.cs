@@ -26,7 +26,7 @@ namespace DotSpatial.Data
     public static class RasterBoundsExt
     {
         /// <summary>
-        /// Calculates the area of this envelope.  Because the word Area, like Volume, is dimension specific,
+        /// Calculates the area of this envelope. Because the word Area, like Volume, is dimension specific,
         /// this method only looks at the X and Y ordinates, and requires at least 2 ordinates.
         /// </summary>
         /// <param name="self">The IEnvelope to use with this method.</param>
@@ -248,8 +248,8 @@ namespace DotSpatial.Data
 
             // X' = [0] + [1] * Column + [2] * Row
             // Y' = [3] + [4] * Column + [5] * Row
-            double x = affine[0] + numRows * affine[2];
-            double y = affine[3] + numRows * affine[5];
+            double x = affine[0] + (numRows * affine[2]);
+            double y = affine[3] + (numRows * affine[5]);
             return new Coordinate(x, y);
         }
 
@@ -267,8 +267,8 @@ namespace DotSpatial.Data
 
             // X' = [0] + [1] * Column + [2] * Row
             // Y' = [3] + [4] * Column + [5] * Row
-            double x = affine[0] + numColumns * affine[1] + numRows * affine[2];
-            double y = affine[3] + numColumns * affine[4] + numRows * affine[5];
+            double x = affine[0] + (numColumns * affine[1]) + (numRows * affine[2]);
+            double y = affine[3] + (numColumns * affine[4]) + (numRows * affine[5]);
             return new Coordinate(x, y);
         }
 
@@ -302,8 +302,8 @@ namespace DotSpatial.Data
 
             // X' = [0] + [1] * Column + [2] * Row
             // Y' = [3] + [4] * Column + [5] * Row
-            double x = affine[0] + numColumns * affine[1];
-            double y = affine[3] + numColumns * affine[4];
+            double x = affine[0] + (numColumns * affine[1]);
+            double y = affine[3] + (numColumns * affine[4]);
             return new Coordinate(x, y);
         }
 
@@ -387,7 +387,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// The affine transform can make figuring out what rows and columns are needed from the original image
-        /// in order to correctly fill a geographic extent challenging.  This attempts to handle that back projection
+        /// in order to correctly fill a geographic extent challenging. This attempts to handle that back projection
         /// problem. It returns a System.Drawing.Rectangle in pixel (cell) coordinates that is completely contains
         /// the geographic extents, but is not larger than the bounds of the underlying image.
         /// If geographic extent fully contains extent of IRasterBounds, than returns rectangle which contains full raster image.

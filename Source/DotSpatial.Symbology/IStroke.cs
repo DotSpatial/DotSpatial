@@ -21,6 +21,15 @@ namespace DotSpatial.Symbology
     /// </summary>
     public interface IStroke : IDescriptor
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets the stroke style for this stroke
+        /// </summary>
+        StrokeStyle StrokeStyle { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -36,13 +45,6 @@ namespace DotSpatial.Symbology
         void DrawPath(Graphics g, GraphicsPath path, double scaleWidth);
 
         /// <summary>
-        /// Casts this stroke to the appropriate pen.
-        /// </summary>
-        /// <param name="width"></param>
-        /// <returns></returns>
-        Pen ToPen(double width);
-
-        /// <summary>
         /// Gets a color to represent this line. If the stroke doesn't work as a color,
         /// then this color will be gray.
         /// </summary>
@@ -55,14 +57,12 @@ namespace DotSpatial.Symbology
         /// <param name="color">The color to assign to this color.</param>
         void SetColor(Color color);
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets the stroke style for this stroke
+        /// Casts this stroke to the appropriate pen.
         /// </summary>
-        StrokeStyle StrokeStyle { get; }
+        /// <param name="width">The width of the pen.</param>
+        /// <returns>The created pen.</returns>
+        Pen ToPen(double width);
 
         #endregion
     }

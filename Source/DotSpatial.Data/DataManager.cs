@@ -607,7 +607,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens the specified fileName, returning an IRaster.  This will return null if a manager
+        /// Opens the specified fileName, returning an IRaster. This will return null if a manager
         /// either returns the wrong data format.
         /// </summary>
         /// <param name="fileName">The string fileName to open</param>
@@ -618,7 +618,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens the specified fileName, returning an IRaster.  This will return null if a manager
+        /// Opens the specified fileName, returning an IRaster. This will return null if a manager
         /// either returns the wrong data format.
         /// </summary>
         /// <param name="fileName">The string fileName to open</param>
@@ -833,8 +833,8 @@ namespace DotSpatial.Data
         /// as well as its LoadInRam property.
         /// </summary>
         /// <param name="name">The fileName of the new file to create.</param>
-        /// <param name="driverCode">The string code identifying the driver to use to create the raster.  If no code is specified
-        /// the manager will attempt to match the extension with a code specified in the Dialog write filter.  </param>
+        /// <param name="driverCode">The string code identifying the driver to use to create the raster. If no code is specified
+        /// the manager will attempt to match the extension with a code specified in the Dialog write filter. </param>
         /// <param name="xSize">The number of columns in the raster</param>
         /// <param name="ySize">The number of rows in the raster</param>
         /// <param name="numBands">The number of bands in the raster</param>

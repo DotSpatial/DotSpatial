@@ -36,7 +36,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This involves boxing and unboxing as well as a convert to double, but IConvertible was
-        /// not CLS Compliant, so we were always getting warnings about it.  Ted was trying to make
+        /// not CLS Compliant, so we were always getting warnings about it. Ted was trying to make
         /// all the code CLS Compliant to remove warnings.
         /// </summary>
         /// <param name="value"></param>
@@ -189,7 +189,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This attempts to convert a value into a byte.  If it fails, the byte will be 0.
+        /// This attempts to convert a value into a byte. If it fails, the byte will be 0.
         /// </summary>
         /// <param name="expression">The expression (like a string) to System.Convert.</param>
         /// <returns>A byte that is 0 if the test fails.</returns>
@@ -204,7 +204,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This attempts to convert a value into a double.  If it fails, the double will be double.NaN.
+        /// This attempts to convert a value into a double. If it fails, the double will be double.NaN.
         /// </summary>
         /// <param name="expression">The expression (like a string) to System.Convert.</param>
         /// <returns>A double that is double.NAN if the test fails.</returns>
@@ -215,7 +215,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This attempts to convert a value into a float.  If it fails, the float will be 0.
+        /// This attempts to convert a value into a float. If it fails, the float will be 0.
         /// </summary>
         /// <param name="expression">The expression (like a string) to System.Convert.</param>
         /// <returns>A float that is 0 if the test fails.</returns>
@@ -226,7 +226,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This attempts to convert a value into an integer.  If it fails, it returns 0.
+        /// This attempts to convert a value into an integer. If it fails, it returns 0.
         /// </summary>
         /// <param name="expression">The expression to test</param>
         /// <returns>true if the value could be cast as a double, false otherwise</returns>
@@ -237,7 +237,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This attempts to convert a value into a short.  If it fails, it returns 0.
+        /// This attempts to convert a value into a short. If it fails, it returns 0.
         /// </summary>
         /// <param name="expression">The expression (like a string) to System.Convert.</param>
         /// <returns>A short that is 0 if the test fails.</returns>

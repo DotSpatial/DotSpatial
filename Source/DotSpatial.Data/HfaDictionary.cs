@@ -17,7 +17,7 @@
  *
  * Project:  Erdas Imagine (.img) Translator
  * Purpose:  Implementation of the HFADictionary class for managing the
- *           dictionary read from the HFA file.  Most work done by the
+ *           dictionary read from the HFA file. Most work done by the
  *           HFAType, and HFAField classes.
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  *
@@ -186,7 +186,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Given a character type, this calculates a size.  This was originally
+        /// Given a character type, this calculates a size. This was originally
         /// on the Dictionary, but I moved this to the HfaInfo instead.
         /// </summary>
         /// <param name="charType"></param>

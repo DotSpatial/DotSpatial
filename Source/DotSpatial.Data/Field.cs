@@ -35,10 +35,10 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Field"/> class.
-        /// Creates a new default field given the specified DataColumn.  Numeric types
+        /// Creates a new default field given the specified DataColumn. Numeric types
         /// default to a size of 255, but will be shortened during the save opperation.
         /// The default decimal count for double and long is 0, for Currency is 2, for float is
-        /// 3, and for double is 8.  These can be changed by changing the DecimalCount property.
+        /// 3, and for double is 8. These can be changed by changing the DecimalCount property.
         /// </summary>
         /// <param name="inColumn">A System.Data.DataColumn to create a Field from</param>
         public Field(DataColumn inColumn)
@@ -106,7 +106,7 @@ namespace DotSpatial.Data
          *   N    |      Numeric | Number stored as a string, right justified, and padded with blanks to the width of the field.
          *   L    |      Logical | 1 byte - initialized to 0x20 (space) otherwise T or F.
          *   M    |         Memo | 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
-         *   @    |    Timestamp | 8 bytes - two longs, first for date, second for time.  The date is the number of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+         *   @    |    Timestamp | 8 bytes - two longs, first for date, second for time. The date is the number of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
          *   I    |         Long | 4 bytes. Leftmost bit used to indicate sign, 0 negative.
          *   +    |Autoincrement | Same as a Long
          *   F    |        Float | Number stored as a string, right justified, and padded with blanks to the width of the field.
@@ -160,9 +160,9 @@ namespace DotSpatial.Data
                 // The strategy here is to assign the smallest type that we KNOW will be large enough
                 // to hold any value with the length (in digits) and characters.
                 // even though double can hold as high a value as a "Number" can go, it can't
-                // preserve the extraordinary 255 digit precision that a Number has.  The strategy
+                // preserve the extraordinary 255 digit precision that a Number has. The strategy
                 // is to assess the length in characters and assign a numeric type where no
-                // value may exist outside the range.  (They can always change the datatype later.)
+                // value may exist outside the range. (They can always change the datatype later.)
 
                 // The basic encoding we are using here
                 if (decimalCount == 0)
@@ -210,7 +210,7 @@ namespace DotSpatial.Data
                 // Decimals -79228162514264337593543950335 to 79228162514264337593543950335
 
                 // Doubles have the range to handle any number with the 255 character size,
-                // but won't preserve the precision that is possible.  It is still
+                // but won't preserve the precision that is possible. It is still
                 // preferable to have a numeric type in 99% of cases, and double is the easiest.
                 DataType = typeof(double);
 

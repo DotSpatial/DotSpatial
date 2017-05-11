@@ -14,6 +14,9 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Color scheme types.
+    /// </summary>
     public enum ColorSchemeType
     {
         /// <summary>
@@ -49,11 +52,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Summer Mountains
         /// </summary>
-        Summer_Mountains,
+        SummerMountains,
 
         /// <summary>
         /// Valley Fires
         /// </summary>
-        Valley_Fires
+        ValleyFires
     }
 }

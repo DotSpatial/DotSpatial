@@ -17,9 +17,9 @@ using System.Drawing;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// TiledImage is a class for actually controlling the data in several tiles.  This does not supply
+    /// TiledImage is a class for actually controlling the data in several tiles. This does not supply
     /// direct accessors for
-    /// modifying the bytes directly, and instead expects the user to edit the image on a tile-by-tile basis.  However,
+    /// modifying the bytes directly, and instead expects the user to edit the image on a tile-by-tile basis. However,
     /// the GetBitmap method will produce a representation of the envelope scaled to the specified window.
     /// </summary>
     public class ImageCoverage : DataSet, IImageCoverage

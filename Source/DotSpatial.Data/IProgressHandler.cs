@@ -16,7 +16,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// An interface for sending progress messages.  Percent is an integer from 0 to 100.
+    /// An interface for sending progress messages. Percent is an integer from 0 to 100.
     /// </summary>
     public interface IProgressHandler
     {

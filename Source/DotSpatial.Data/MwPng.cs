@@ -164,9 +164,9 @@ namespace DotSpatial.Data
         /// be aligned with the left side of the image.
         /// </summary>
         /// <param name="refData">The original bytes to apply the PaethPredictor to.</param>
-        /// <param name="offset">The integer offset in the array where the filter should begin application.  If this is 0, then
+        /// <param name="offset">The integer offset in the array where the filter should begin application. If this is 0, then
         /// it assumes that there is no previous scan-line to work with.</param>
-        /// <param name="length">The number of bytes to filter, starting at the specified offset.  This should be evenly divisible by the width.</param>
+        /// <param name="length">The number of bytes to filter, starting at the specified offset. This should be evenly divisible by the width.</param>
         /// <param name="width">The integer width of a scan-line for grabbing the c and b bytes</param>
         /// <returns>The entire length of bytes starting with the specified offset</returns>
         /// <exception cref="PngInsuficientLengthException"/>

@@ -121,7 +121,7 @@
     <value>The argument %S cannot be negative.</value>
   </data>
   <data name="ArgumentNull_S" xml:space="preserve">
-    <value>The argument %S was null.  Try testing for the null case before calling this method.</value>
+    <value>The argument %S was null. Try testing for the null case before calling this method.</value>
   </data>
   <data name="ArgumentOfWrongType_S1_S2" xml:space="preserve">
     <value>The argument %S1 was incorrect for %S2.</value>
@@ -139,7 +139,7 @@
     <value>Copying Values</value>
   </data>
   <data name="CurrentElementNotSpecified" xml:space="preserve">
-    <value>The current element was not defined.  Before attempting to read the element, first assign the value of the current XML Element to read.</value>
+    <value>The current element was not defined. Before attempting to read the element, first assign the value of the current XML Element to read.</value>
   </data>
   <data name="EndOfFile" xml:space="preserve">
     <value>Cannot read past the end of the file.</value>
@@ -148,10 +148,10 @@
     <value>The FeatureType of the feature you are trying to add does not match the feature type of this featureset.</value>
   </data>
   <data name="FeaturetypeUnspecified" xml:space="preserve">
-    <value>The FeatureType was not specified.  Please specify a featuretype before attempting to call this method.</value>
+    <value>The FeatureType was not specified. Please specify a featuretype before attempting to call this method.</value>
   </data>
   <data name="FileExists_S" xml:space="preserve">
-    <value>The fileName %S already exists.  Do you wish to overwrite it?</value>
+    <value>The fileName %S already exists. Do you wish to overwrite it?</value>
   </data>
   <data name="FileNotFound_S" xml:space="preserve">
     <value>The fileName %S was not found.</value>
@@ -196,10 +196,10 @@
     <value>The value %S was too small to be encoded with 18 ASCII characters.</value>
   </data>
   <data name="ParseFailed_S" xml:space="preserve">
-    <value>The value you entered could not be parsed into a %S.  Make sure the value is in the valid range.</value>
+    <value>The value you entered could not be parsed into a %S. Make sure the value is in the valid range.</value>
   </data>
   <data name="PngInsuficientLengthException" xml:space="preserve">
-    <value>The desired length of %S1 was too long.  The total length was %S2 and the offset was %S3.</value>
+    <value>The desired length of %S1 was too long. The total length was %S2 and the offset was %S3.</value>
   </data>
   <data name="PngInvalidSignatureException" xml:space="preserve">
     <value>The beginning eight bytes of the specified file did not match the png signature.</value>

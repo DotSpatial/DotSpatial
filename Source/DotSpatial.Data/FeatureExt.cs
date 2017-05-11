@@ -28,7 +28,7 @@ namespace DotSpatial.Data
     public static class FeatureExt
     {
         /// <summary>
-        /// Generates a new feature from the buffer of this feature.  The DataRow of
+        /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
         /// <param name="self">This feature</param>
@@ -41,7 +41,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Generates a new feature from the buffer of this feature.  The DataRow of
+        /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
         /// <param name="self">This feature</param>
@@ -55,7 +55,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Generates a new feature from the buffer of this feature.  The DataRow of
+        /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
         /// <param name="self">This feature</param>
@@ -69,7 +69,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Generates a new feature from the buffer of this feature.  The DataRow of
+        /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
         /// <param name="self">This feature</param>

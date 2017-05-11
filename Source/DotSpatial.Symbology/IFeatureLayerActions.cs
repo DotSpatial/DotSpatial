@@ -1,7 +1,7 @@
 // *******************************************************************************************************
 // Product:  DotSpatial.Symbology.IFeatureLayerActions
 // Description:  Contains methods which can be used in FeatureLayer (e.g. in ContextMenu)
-
+//
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
 //--------------------------------------------------------------------------------------------------------

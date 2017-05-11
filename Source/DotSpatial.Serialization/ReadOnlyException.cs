@@ -31,7 +31,7 @@ namespace DotSpatial.Serialization
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of ReadOnlyException
+        /// Initializes a new instance of the <see cref="ReadOnlyException"/> class.
         /// </summary>
         public ReadOnlyException()
             : base(Resources.ReadOnly)
@@ -39,7 +39,7 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Creates a new ReadOnlyException with the given message.
+        /// Initializes a new instance of the <see cref="ReadOnlyException"/> class.
         /// </summary>
         /// <param name="message">Message, the ReadOnlyException should show.</param>
         public ReadOnlyException(string message)

@@ -15,20 +15,11 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for ColorCategory.
+    /// </summary>
     public interface IColorCategory : ICategory
     {
-        #region Methods
-
-        /// <summary>
-        /// This is primarilly used in the BiValue situation where a color needs to be generated
-        /// somewhere between the startvalue and the endvalue.
-        /// </summary>
-        /// <param name="value">The integer value to be converted into a color from the range on this colorbreak</param>
-        /// <returns>A color that is selected from the range values.</returns>
-        Color CalculateColor(double value);
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -44,18 +35,27 @@ namespace DotSpatial.Symbology
         Color HighColor { get; set; }
 
         /// <summary>
-        /// This not only indicates that there are two values,
-        /// but that the values are also different from one another.
+        /// Gets a value indicating whether there are two values that are also different from one another.
         /// </summary>
         bool IsBiValue { get; }
 
         /// <summary>
-        /// Gets or sets the color to be used for this break. For
-        /// BiValued breaks, this only sets one of the colors. If
-        /// this is higher than the high value, both are set to this.
-        /// If this equals the high value, IsBiValue will be false.
+        /// Gets or sets the color to be used for this break. For BiValued breaks, this only sets one of the colors. If
+        /// this is higher than the high value, both are set to this. If this equals the high value, IsBiValue will be false.
         /// </summary>
         Color LowColor { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// This is primarilly used in the BiValue situation where a color needs to be generated
+        /// somewhere between the startvalue and the endvalue.
+        /// </summary>
+        /// <param name="value">The integer value to be converted into a color from the range on this colorbreak</param>
+        /// <returns>A color that is selected from the range values.</returns>
+        Color CalculateColor(double value);
 
         #endregion
     }

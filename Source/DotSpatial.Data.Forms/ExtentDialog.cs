@@ -48,7 +48,7 @@ namespace DotSpatial.Data.Forms
                 Extent result;
                 if (chkZ.Checked)
                 {
-                    ExtentMZ mz = new ExtentMZ();
+                    ExtentMz mz = new ExtentMz();
                     if (dbxMinimumZ.IsValid)
                     {
                         mz.MinZ = dbxMinimumZ.Value;
@@ -122,7 +122,7 @@ namespace DotSpatial.Data.Forms
                     return;
                 }
 
-                ExtentMZ mz = value as ExtentMZ;
+                ExtentMz mz = value as ExtentMz;
                 ExtentM m = value as ExtentM;
                 if (mz != null)
                 {

@@ -18,6 +18,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for LabelSymbolizer.
+    /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface ILabelSymbolizer : ICloneable
     {
@@ -31,21 +34,21 @@ namespace DotSpatial.Symbology
         StringAlignment Alignment { get; set; }
 
         /// <summary>
-        /// Gets or set the angle that the font should be drawn in
+        /// Gets or sets the angle that the font should be drawn in.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the angle that the font should be drawn in.")]
         double Angle { get; set; }
 
         /// <summary>
-        /// Gets or sets the background color
+        /// Gets or sets the background color.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the background color of a rectangle around the label.")]
         Color BackColor { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not a background color should be used
+        /// Gets or sets a value indicating whether or not a background color should be used.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets a boolean indicating whether or not a background color should be used.")]
@@ -59,7 +62,7 @@ namespace DotSpatial.Symbology
         Color BorderColor { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not a border should be drawn around the label.
+        /// Gets or sets a value indicating whether or not a border should be drawn around the label.
         /// </summary>
         [Category("Border")]
         [Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label.")]
@@ -73,7 +76,7 @@ namespace DotSpatial.Symbology
         Color DropShadowColor { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean that will force a shadow to be drawn if this is true.
+        /// Gets or sets a value indicating whether a shadow to be drawn.
         /// </summary>
         [Category("Shadow")]
         [Description("Gets or sets a boolean that will force a shadow to be drawn if this is true.")]
@@ -100,19 +103,19 @@ namespace DotSpatial.Symbology
         string FloatingFormat { get; set; }
 
         /// <summary>
-        /// Gets or set the color that the font should be drawn in.
+        /// Gets or sets the color that the font should be drawn in.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the color that the font should be drawn in.")]
         Color FontColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the string font family name
+        /// Gets or sets the string font family name.
         /// </summary>
         string FontFamily { get; set; }
 
         /// <summary>
-        /// gets or sets the font size
+        /// gets or sets the font size.
         /// </summary>
         float FontSize { get; set; }
 
@@ -129,28 +132,28 @@ namespace DotSpatial.Symbology
         Color HaloColor { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean that governs whether or not to draw a halo.
+        /// Gets or sets a value indicating whether or not to draw a halo.
         /// </summary>
         [Category("Halo")]
         [Description("Gets or sets a boolean that governs whether or not to draw a halo.")]
         bool HaloEnabled { get; set; }
 
         /// <summary>
-        /// Gets or set the field with angle to draw label
+        /// Gets or sets the field with angle to draw label.
         /// </summary>
         [Category("General")]
         [Description("Gets or set the field with angle to draw label.")]
         string LabelAngleField { get; set; }
 
         /// <summary>
-        /// Gets or sets the labeling method
+        /// Gets or sets the labeling method.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the labeling method.")]
         LabelPlacementMethod LabelPlacementMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets the labeling method
+        /// Gets or sets the labeling method.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the labeling method for line labels.")]
@@ -178,28 +181,27 @@ namespace DotSpatial.Symbology
         float OffsetY { get; set; }
 
         /// <summary>
-        /// Gets or sets the position of the label relative to the placement point
+        /// Gets or sets the position of the label relative to the placement point.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the position of the label relative to the placement point.")]
         ContentAlignment Orientation { get; set; }
 
         /// <summary>
-        /// Gets or sets the way features with multiple parts are labeled
+        /// Gets or sets the way features with multiple parts are labeled.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the way features with multiple parts are labeled.")]
         PartLabelingMethod PartsLabelingMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean. If true, as high priority labels are placed, they
-        /// take up space and will not allow low priority labels that conflict for the
-        /// space to be placed.
+        /// Gets or sets a value indicating whether to prevent collision. If true, as high priority labels are placed, they
+        /// take up space and will not allow low priority labels that conflict for the space to be placed.
         /// </summary>
         bool PreventCollisions { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean. Normally high values from the field are given
+        /// Gets or sets a value indicating whether low values should be prioritized. Normally high values from the field are given
         /// a higher priority. If this is true, low values are given priority instead.
         /// </summary>
         bool PrioritizeLowValues { get; set; }
@@ -213,28 +215,28 @@ namespace DotSpatial.Symbology
         string PriorityField { get; set; }
 
         /// <summary>
-        /// Gets or sets the scaling behavior for the text
+        /// Gets or sets the scaling behavior for the text.
         /// </summary>
         [Category("General")]
         [Description(" Gets or sets the scaling behavior for the text.")]
         ScaleMode ScaleMode { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not <see cref="Angle"/> should be used
+        /// Gets or sets a value indicating whether or not <see cref="Angle"/> should be used.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets a boolean indicating whether or not Angle should be used.")]
         bool UseAngle { get; set; }
 
         /// <summary>
-        /// Gets or set a boolean indicating whether or not <see cref="LabelAngleField"/> should be used
+        /// Gets or sets a value indicating whether or not <see cref="LabelAngleField"/> should be used.
         /// </summary>
         [Category("General")]
         [Description("Gets or set a boolean indicating whether or not LabelAngleField should be used.")]
         bool UseLabelAngleField { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not the LineOrientation gets used.
+        /// Gets or sets a value indicating whether or not the LineOrientation gets used.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets a boolean indicating whether or not LineOrientation should be used.")]

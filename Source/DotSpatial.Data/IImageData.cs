@@ -118,9 +118,9 @@ namespace DotSpatial.Data
         void WriteBlock(Bitmap value, int xOffset, int yOffset);
 
         /// <summary>
-        /// Finalizes the blocks.  In the case of a pyramid image, this forces recalculation of the
-        /// various overlays.  For GDAL images, this may do nothing, since the overlay recalculation
-        /// may be on the fly.  For InRam images this does nothing.
+        /// Finalizes the blocks. In the case of a pyramid image, this forces recalculation of the
+        /// various overlays. For GDAL images, this may do nothing, since the overlay recalculation
+        /// may be on the fly. For InRam images this does nothing.
         /// </summary>
         void UpdateOverviews();
 
@@ -161,7 +161,7 @@ namespace DotSpatial.Data
         WorldFile WorldFile { get; set; }
 
         /// <summary>
-        /// Gets or sets the interpretation for the image bands.  This currently is only for GDAL images.
+        /// Gets or sets the interpretation for the image bands. This currently is only for GDAL images.
         /// </summary>
         ImageBandType BandType { get; set; }
 

@@ -22,22 +22,18 @@ namespace DotSpatial.Symbology
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface IPolygonSymbolizerOld : IFeatureSymbolizerOld
     {
-        /// <summary>
-        /// Gets or sets the border symbolizer
-        /// </summary>
-        ILineSymbolizer BorderSymbolizer
-        {
-            get;
-            set;
-        }
+        #region Properties
 
         /// <summary>
-        /// Gets or sets a boolean that determines whether or not the polygon border should be drawn.
+        /// Gets or sets a value indicating whether or not the polygon border should be drawn.
         /// </summary>
-        bool BorderIsVisible
-        {
-            get;
-            set;
-        }
+        bool BorderIsVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets the border symbolizer.
+        /// </summary>
+        ILineSymbolizer BorderSymbolizer { get; set; }
+
+        #endregion
     }
 }

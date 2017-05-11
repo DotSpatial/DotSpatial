@@ -16,16 +16,15 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for PictureSymbol.
+    /// </summary>
     public interface IPictureSymbol : IOutlinedSymbol, IDisposable
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets or sets the image to use when the PictureMode is set to Image
+        /// Gets or sets the image to use when the PictureMode is set to Image.
         /// </summary>
         Image Image { get; set; }
 

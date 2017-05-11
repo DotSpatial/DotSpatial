@@ -23,14 +23,14 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// This only works for in-ram rasters.  This basically makes a new raster that has all the same
+        /// This only works for in-ram rasters. This basically makes a new raster that has all the same
         /// in memory values
         /// </summary>
         /// <returns>An IRaster that is a duplicate of this class</returns>
         IRaster Copy();
 
         /// <summary>
-        /// Creates a duplicate version of this file.  If copyValues is set to false, then a raster of NoData values is created
+        /// Creates a duplicate version of this file. If copyValues is set to false, then a raster of NoData values is created
         /// that has the same georeferencing information as the source file of this Raster, even if this raster is just a window.
         /// </summary>
         /// <param name="fileName">The string fileName specifying where to create the new file.</param>
@@ -43,7 +43,7 @@ namespace DotSpatial.Data
         void GetStatistics();
 
         /// <summary>
-        /// Most raster methods are optimized for reading in lines or blocks at a time.  This one is designed
+        /// Most raster methods are optimized for reading in lines or blocks at a time. This one is designed
         /// to be used for scattered points.
         /// </summary>
         /// <param name="indices">The zero based integer index that is Row * NumColumnsInFile + Column</param>
@@ -51,9 +51,9 @@ namespace DotSpatial.Data
         List<double> GetValues(IEnumerable<long> indices);
 
         /// <summary>
-        /// Returns a subset from the file that includes only the specified offsets.  The result is a raster,
+        /// Returns a subset from the file that includes only the specified offsets. The result is a raster,
         /// and the extents are calculated, but the row and column values are in terms of the window,
-        /// not the original raster.  The band can be controlled by setting the "Current Band" first.
+        /// not the original raster. The band can be controlled by setting the "Current Band" first.
         /// </summary>
         /// <param name="xOff">X axis or horizontal offset (0 based from left)</param>
         /// <param name="yOff">Y axis or vertical offset (0 based from top)</param>
@@ -74,7 +74,7 @@ namespace DotSpatial.Data
         void WriteBlock(IRaster blockValues, int xOff, int yOff, int xSize, int ySize);
 
         /// <summary>
-        /// Saves changes from any values that are in memory to the file.  This will preserve the existing
+        /// Saves changes from any values that are in memory to the file. This will preserve the existing
         /// structure and attempt to only write values to the parts of the file that match the loaded window.
         /// </summary>
         void Save();
@@ -96,14 +96,14 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets this raster (or its Internal Raster) as the appropriately typed raster
         /// so that strong typed access methods are available, instead of just the
-        /// regular methods, or null if the type is incorrect.  (Check datatype property).
+        /// regular methods, or null if the type is incorrect. (Check datatype property).
         /// </summary>
         /// <typeparam name="T">The type (int, short, float, etc.)</typeparam>
-        /// <returns>The Raster&lt;T&gt; where T are value types like int, short and float.  Returns null if the type is wrong.</returns>
+        /// <returns>The Raster&lt;T&gt; where T are value types like int, short and float. Returns null if the type is wrong.</returns>
         Raster<T> ToRaster<T>() where T : IEquatable<T>, IComparable<T>;
 
         /// <summary>
-        /// Instructs the raster to write only the header content.  This is especially useful if you just want to update
+        /// Instructs the raster to write only the header content. This is especially useful if you just want to update
         /// the extents or the projection of the raster, without changing the data values.
         /// </summary>
         void WriteHeader();
@@ -118,14 +118,14 @@ namespace DotSpatial.Data
         int ByteSize { get; }
 
         /// <summary>
-        /// Gets or sets the list of bands, which are in turn rasters.  The rasters
+        /// Gets or sets the list of bands, which are in turn rasters. The rasters
         /// contain only one band each, instead of the list of all the bands like the
         /// parent raster.
         /// </summary>
         IList<IRaster> Bands { get; set; }
 
         /// <summary>
-        /// The geographic height of a cell the projected units.  Setting this will
+        /// The geographic height of a cell the projected units. Setting this will
         /// automatically adjust the affine coefficient to a negative value.
         /// </summary>
         double CellHeight { get; set; }
@@ -153,20 +153,20 @@ namespace DotSpatial.Data
         Type DataType { get; set; }
 
         /// <summary>
-        /// Gets or sets a short string to identify which driver to use.  This is primarilly used by GDAL rasters.
+        /// Gets or sets a short string to identify which driver to use. This is primarilly used by GDAL rasters.
         /// </summary>
         string DriverCode { get; set; }
 
         /// <summary>
-        /// The integer column index for the right column of this raster.  Most of the time this will
-        /// be NumColumns - 1.  However, if this raster is a window taken from a larger raster, then
+        /// The integer column index for the right column of this raster. Most of the time this will
+        /// be NumColumns - 1. However, if this raster is a window taken from a larger raster, then
         /// it will be the index of the endColumn from the window.
         /// </summary>
         int EndColumn { get; }
 
         /// <summary>
-        /// The integer row index for the end row of this raster.  Most of the time this will
-        /// be numRows - 1.  However, if this raster is a window taken from a larger raster, then
+        /// The integer row index for the end row of this raster. Most of the time this will
+        /// be numRows - 1. However, if this raster is a window taken from a larger raster, then
         /// it will be the index of the endRow from the window.
         /// </summary>
         int EndRow { get; }
@@ -187,7 +187,7 @@ namespace DotSpatial.Data
         double Maximum { get; }
 
         /// <summary>
-        /// Gets the mean of the non-NoData values in this grid.  If the data is not InRam, then
+        /// Gets the mean of the non-NoData values in this grid. If the data is not InRam, then
         /// the GetStatistics method must be called before these values will be correct.
         /// </summary>
         double Mean { get; }
@@ -208,8 +208,8 @@ namespace DotSpatial.Data
         string Notes { get; set; }
 
         /// <summary>
-        /// Gets the number of bands.  In most traditional grid formats, this is 1.  For RGB images,
-        /// this would be 3.  Some formats may have many bands.
+        /// Gets the number of bands. In most traditional grid formats, this is 1. For RGB images,
+        /// this would be 3. Some formats may have many bands.
         /// </summary>
         int NumBands { get; }
 
@@ -236,7 +236,7 @@ namespace DotSpatial.Data
         int NumRowsInFile { get; }
 
         /// <summary>
-        /// Gets the count of the cells that are not no-data.  If the data is not InRam, then
+        /// Gets the count of the cells that are not no-data. If the data is not InRam, then
         /// you will have to first call the GetStatistics() method to gain meaningul values.
         /// </summary>
         long NumValueCells { get; }
@@ -252,21 +252,21 @@ namespace DotSpatial.Data
         List<IValueRow> Rows { get; }
 
         /// <summary>
-        /// The integer column index for the left column of this raster.  Most of the time this will
-        /// be 0.  However, if this raster is a window taken from a file, then
+        /// The integer column index for the left column of this raster. Most of the time this will
+        /// be 0. However, if this raster is a window taken from a file, then
         /// it will be the row index in the file for the top row of this raster.
         /// </summary>
         int StartColumn { get; }
 
         /// <summary>
-        /// The integer row index for the top row of this raster.  Most of the time this will
-        /// be 0.  However, if this raster is a window taken from a file, then
+        /// The integer row index for the top row of this raster. Most of the time this will
+        /// be 0. However, if this raster is a window taken from a file, then
         /// it will be the row index in the file for the left row of this raster.
         /// </summary>
         int StartRow { get; }
 
         /// <summary>
-        /// Gets the standard deviation of all the Non-nodata cells.  If the data is not InRam,
+        /// Gets the standard deviation of all the Non-nodata cells. If the data is not InRam,
         /// then you will have to first call the GetStatistics() method to get meaningful values.
         /// </summary>
         double StdDeviation { get; }
@@ -315,8 +315,8 @@ namespace DotSpatial.Data
         #region Events
 
         /// <summary>
-        /// Occurs when attempting to copy or save to a fileName that already exists.  A developer can tap into this event
-        /// in order to display an appropriate message.  A cancel property allows the developer (and ultimately the user)
+        /// Occurs when attempting to copy or save to a fileName that already exists. A developer can tap into this event
+        /// in order to display an appropriate message. A cancel property allows the developer (and ultimately the user)
         /// decide if the specified event should ultimately be cancelled.
         /// </summary>
         event EventHandler<MessageCancelEventArgs> FileExists;

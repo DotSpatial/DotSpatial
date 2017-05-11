@@ -15,12 +15,11 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for GradientPattern.
+    /// </summary>
     public interface IGradientPattern : IPattern
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -35,15 +34,15 @@ namespace DotSpatial.Symbology
         Color[] Colors { get; set; }
 
         /// <summary>
-        /// The positions as floating point values from 0 to 1 that represent the corresponding location
-        /// in the gradient brush pattern.
-        /// </summary>
-        float[] Positions { get; set; }
-
-        /// <summary>
         /// Gets or sets the gradient type
         /// </summary>
         GradientType GradientType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the positions as floating point values from 0 to 1 that represent the corresponding location
+        /// in the gradient brush pattern.
+        /// </summary>
+        float[] Positions { get; set; }
 
         #endregion
     }

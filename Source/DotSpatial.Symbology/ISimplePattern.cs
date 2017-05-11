@@ -15,12 +15,11 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for SimplePattern.
+    /// </summary>
     public interface ISimplePattern : IPattern
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace DotSpatial.Symbology
         Color FillColor { get; set; }
 
         /// <summary>
-        /// Sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
+        /// Gets or sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
         /// </summary>
         float Opacity { get; set; }
 

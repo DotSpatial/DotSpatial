@@ -19,18 +19,52 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for FeatureScheme.
+    /// </summary>
     public interface IFeatureScheme : IScheme
     {
+        #region Events
+
+        /// <summary>
+        /// Occurs when the deselect features context menu is clicked.
+        /// </summary>
+        event EventHandler<ExpressionEventArgs> DeselectFeatures;
+
         /// <summary>
         /// Occurs when a category indicates that its filter expression should be used
         /// to select its members.
         /// </summary>
         event EventHandler<ExpressionEventArgs> SelectFeatures;
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Occurs when the deselect features context menu is clicked.
+        /// Gets or sets a value indicating whether or not the legend should draw this item as a categorical
+        /// tier in the legend. If so, it will allow the LegendText to be visible as a kind of group for the
+        /// categories. If not, the categories will appear directly below the layer.C:\dev\Mapwindow6Dev\DotSpatial\DotSpatial\Drawing\Vectors\Points\PointCategoryCollection.cs
         /// </summary>
-        event EventHandler<ExpressionEventArgs> DeselectFeatures;
+        bool AppearsInLegend { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dialog settings
+        /// </summary>
+        new FeatureEditorSettings EditorSettings { get; set; }
+
+        /// <summary>
+        /// Gets the number of categories of this scheme.
+        /// </summary>
+        int NumCategories { get; }
+
+        /// <summary>
+        /// Gets the UITypeEditor to use for editing this FeatureScheme
+        /// </summary>
+        /// <returns>The UITypeEditor</returns>
+        UITypeEditor PropertyEditor { get; }
+
+        #endregion
 
         #region Methods
 
@@ -43,9 +77,9 @@ namespace DotSpatial.Symbology
         void CreateCategories(IAttributeSource source, ICancelProgressHandler progressHandler);
 
         /// <summary>
-        /// Creates the categories using the specified data table
+        /// Creates the categories using the specified data table.
         /// </summary>
-        /// <param name="table"></param>
+        /// <param name="table">Data table used for category creation.</param>
         void CreateCategories(DataTable table);
 
         /// <summary>
@@ -56,48 +90,24 @@ namespace DotSpatial.Symbology
         IFeatureCategory CreateRandomCategory(string filterExpression);
 
         /// <summary>
-        /// This keeps the existing categories, but uses the current scheme settings to apply
-        /// a new color to each of the symbols.
-        /// </summary>
-        void RegenerateColors();
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the dialog settings
-        /// </summary>
-        new FeatureEditorSettings EditorSettings { get; set; }
-
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether or not the legend should draw this item as a categorical
-        /// tier in the legend. If so, it will allow the LegendText to be visible as a kind of group for the
-        /// categories. If not, the categories will appear directly below the layer.C:\dev\Mapwindow6Dev\DotSpatial\DotSpatial\Drawing\Vectors\Points\PointCategoryCollection.cs
-        /// </summary>
-        bool AppearsInLegend { get; set; }
-
-        /// <summary>
-        /// Gets the number of categories of this scheme.
-        /// </summary>
-        int NumCategories { get; }
-
-        /// <summary>
-        /// Gets or sets the UITypeEditor to use for editing this FeatureScheme
-        /// </summary>
-        UITypeEditor PropertyEditor { get; }
-
-        /// <summary>
         /// When using this scheme to define the symbology, these individual categories will be referenced in order to
         /// create genuine categories (that will be cached).
         /// </summary>
+        /// <returns>The categories.</returns>
         IEnumerable<IFeatureCategory> GetCategories();
 
         /// <summary>
         /// Queries this layer and the entire parental tree up to the map frame to determine if
         /// this layer is within the selected layers.
         /// </summary>
+        /// <returns>True, if this is within legend selection.</returns>
         bool IsWithinLegendSelection();
+
+        /// <summary>
+        /// This keeps the existing categories, but uses the current scheme settings to apply
+        /// a new color to each of the symbols.
+        /// </summary>
+        void RegenerateColors();
 
         #endregion
     }

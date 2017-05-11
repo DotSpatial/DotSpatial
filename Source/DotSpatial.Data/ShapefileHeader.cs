@@ -448,7 +448,7 @@ namespace DotSpatial.Data
                 ShapeType == ShapeType.PolygonZ ||
                 ShapeType == ShapeType.PolyLineZ)
             {
-                return new ExtentMZ(_xMin, _yMin, _mMin, _zMin, _xMax, _yMax, _mMax, _zMax);
+                return new ExtentMz(_xMin, _yMin, _mMin, _zMin, _xMax, _yMax, _mMax, _zMax);
             }
             if (ShapeType == ShapeType.MultiPointM ||
                 ShapeType == ShapeType.PointM ||
@@ -468,7 +468,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void SetExtent(IExtent extent)
         {
-            IExtentZ zExt = extent as ExtentMZ;
+            IExtentZ zExt = extent as ExtentMz;
             IExtentM mExt = extent as ExtentM;
             if ((ShapeType == ShapeType.MultiPointZ ||
                  ShapeType == ShapeType.PointZ ||

@@ -56,8 +56,8 @@ namespace DotSpatial.Data
         #region Events
 
         /// <summary>
-        /// Occurs when attempting to copy or save to a fileName that already exists.  A developer can tap into this event
-        /// in order to display an appropriate message.  A cancel property allows the developer (and ultimately the user)
+        /// Occurs when attempting to copy or save to a fileName that already exists. A developer can tap into this event
+        /// in order to display an appropriate message. A cancel property allows the developer (and ultimately the user)
         /// decide if the specified event should ultimately be canceled.
         /// </summary>
         public event EventHandler<MessageCancelEventArgs> FileExists;
@@ -78,7 +78,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the list of bands, which are in turn rasters.  The rasters
+        /// Gets or sets the list of bands, which are in turn rasters. The rasters
         /// contain only one band each, instead of the list of all the bands like the parent raster.
         /// </summary>
         [Browsable(false)]
@@ -293,10 +293,10 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the integer count of the number of columns in the source or file that this
-        /// raster is a window from.  (Usually this will be the same as NumColumns)
+        /// raster is a window from. (Usually this will be the same as NumColumns)
         /// </summary>
         [Category("Window")]
-        [Description("Gets or sets the integer count of the number of columns in the source or file that this raster is a window from.  (Usually this will be the same as NumColumns)")]
+        [Description("Gets or sets the integer count of the number of columns in the source or file that this raster is a window from. (Usually this will be the same as NumColumns)")]
         public virtual int NumColumnsInFile { get; protected set; }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace DotSpatial.Data
         /// raster is a window from. (Usually this will be the same as NumColumns.)
         /// </summary>
         [Category("Window")]
-        [Description("Gets the integer count of the number of rows in the source or file that this raster is a window from.  (Usually this will be the same as NumColumns.)")]
+        [Description("Gets the integer count of the number of rows in the source or file that this raster is a window from. (Usually this will be the same as NumColumns.)")]
         public virtual int NumRowsInFile { get; protected set; }
 
         /// <summary>
@@ -540,7 +540,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This create new method implies that this provider has the priority for creating a new file.
-        /// An instance of the dataset should be created and then returned.  By this time, the fileName
+        /// An instance of the dataset should be created and then returned. By this time, the fileName
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
         /// <param name="name">The string fileName for the new instance.</param>
@@ -777,7 +777,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens the specified fileName.  The DefaultDataManager will determine the best type of raster to handle the specified
+        /// Opens the specified fileName. The DefaultDataManager will determine the best type of raster to handle the specified
         /// file based on the fileName or characteristics of the file.
         /// </summary>
         public virtual void Open()
@@ -900,7 +900,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Fires the FileExists method.  If this returns true, then the action should be cancelled.
+        /// Fires the FileExists method. If this returns true, then the action should be cancelled.
         /// </summary>
         /// <param name="fileName">The fileName to write to</param>
         /// <returns>Boolean, true if the user doesn't want to overwrite</returns>

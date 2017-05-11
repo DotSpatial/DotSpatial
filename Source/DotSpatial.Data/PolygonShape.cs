@@ -101,10 +101,10 @@ namespace DotSpatial.Data
                 // This extent check shortcut should help speed things up for large polygon parts
                 if (!ext.Intersects(point)) continue;
 
-                // Imagine a ray on the horizontal starting from point.X -> infinity.  (In practice this can be ext.XMax)
-                // Count the intersections of segments with that line.  If the resulting count is odd, the point is inside.
+                // Imagine a ray on the horizontal starting from point.X -> infinity. (In practice this can be ext.XMax)
+                // Count the intersections of segments with that line. If the resulting count is odd, the point is inside.
                 Segment ray = new Segment(point.X, point.Y, ext.MaxX, point.Y);
-                int[] numCrosses = new int[polygonShape.NumParts]; // A cross is a complete cross.  Coincident doesn't count because it is either 0 or 2 crosses.
+                int[] numCrosses = new int[polygonShape.NumParts]; // A cross is a complete cross. Coincident doesn't count because it is either 0 or 2 crosses.
                 int totalCrosses = 0;
                 int iPart = 0;
                 foreach (PartRange ring in polygonShape.Parts)

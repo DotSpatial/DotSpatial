@@ -13,28 +13,52 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// ShapeFactory
+    /// </summary>
     public class ShapeFactory
     {
-        private static ShapeFactory _instance;
+        #region Fields
+
+        private static ShapeFactory instance;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// for singleton pattern.
+        /// Initializes a new instance of the <see cref="ShapeFactory"/> class.
         /// </summary>
         private ShapeFactory()
         {
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Gets the shared instance of the shape factory;
+        /// Gets or sets the shared instance of the shape factory.
         /// </summary>
         public static ShapeFactory Instance
         {
-            get { return _instance ?? (_instance = new ShapeFactory()); }
-            set { _instance = value; }
+            get
+            {
+                return instance ?? (instance = new ShapeFactory());
+            }
+
+            set
+            {
+                instance = value;
+            }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Creates a new multi-part polygon shape.  Winding order should control holes.
+        /// Creates a new multi-part polygon shape. Winding order should control holes.
         /// </summary>
         /// <param name="allParts">The list of all the lists of coordinates.</param>
         /// <returns>A new Multi-Polygon Shape.</returns>
@@ -55,6 +79,7 @@ namespace DotSpatial.Data
                     count++;
                     coordinatecount++;
                 }
+
                 offsets.Add(count);
                 counts.Add(coordinatecount);
                 numParts++;
@@ -66,15 +91,21 @@ namespace DotSpatial.Data
                 shp.Vertices[i * 2] = allCoords[i].X;
                 shp.Vertices[i * 2 + 1] = allCoords[i].Y;
             }
+
             ShapeRange result = new ShapeRange(FeatureType.Polygon);
 
             for (int i = 0; i < numParts; i++)
             {
-                PartRange prt = new PartRange(shp.Vertices, 0, offsets[i], FeatureType.Polygon);
-                prt.NumVertices = counts[i];
+                PartRange prt = new PartRange(shp.Vertices, 0, offsets[i], FeatureType.Polygon)
+                {
+                    NumVertices = counts[i]
+                };
                 result.Parts.Add(prt);
             }
+
             return shp;
         }
+
+        #endregion
     }
 }

@@ -79,7 +79,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The argument %S was null.  Try testing for the null case before calling this method..
+        ///   Looks up a localized string similar to The argument %S was null. Try testing for the null case before calling this method..
         /// </summary>
         internal static string ArgumentNull_S {
             get {
@@ -124,7 +124,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The current element was not defined.  Before attempting to read the element, first assign the value of the current XML Element to read..
+        ///   Looks up a localized string similar to The current element was not defined. Before attempting to read the element, first assign the value of the current XML Element to read..
         /// </summary>
         internal static string CurrentElementNotSpecified {
             get {
@@ -160,7 +160,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The FeatureType was not specified.  Please specify a featuretype before attempting to call this method..
+        ///   Looks up a localized string similar to The FeatureType was not specified. Please specify a featuretype before attempting to call this method..
         /// </summary>
         internal static string FeaturetypeUnspecified {
             get {
@@ -169,7 +169,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The fileName %S already exists.  Do you wish to overwrite it?.
+        ///   Looks up a localized string similar to The fileName %S already exists. Do you wish to overwrite it?.
         /// </summary>
         internal static string FileExists_S {
             get {
@@ -331,7 +331,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value you entered could not be parsed into a %S.  Make sure the value is in the valid range..
+        ///   Looks up a localized string similar to The value you entered could not be parsed into a %S. Make sure the value is in the valid range..
         /// </summary>
         internal static string ParseFailed_S {
             get {
@@ -340,7 +340,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The desired length of %S1 was too long.  The total length was %S2 and the offset was %S3..
+        ///   Looks up a localized string similar to The desired length of %S1 was too long. The total length was %S2 and the offset was %S3..
         /// </summary>
         internal static string PngInsuficientLengthException {
             get {

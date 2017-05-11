@@ -143,7 +143,7 @@ namespace DotSpatial.Data
         public const byte FilterMethod = 0;
 
         /// <summary>
-        /// Gets or sets the bit depth.  Depending on the Color Type, not all are allowed:
+        /// Gets or sets the bit depth. Depending on the Color Type, not all are allowed:
         /// Greyscale - 1, 2, 4, 8, 16
         /// Truecolor - 8, 16
         /// Indexed - 1, 2, 4, 8

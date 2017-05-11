@@ -24,12 +24,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the parent item relative to this item.
         /// </summary>
+        /// <returns>The parent item.</returns>
         T GetParentItem();
 
         /// <summary>
-        /// Sets teh parent legend item for this item
+        /// Sets the parent legend item for this item.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Item for which the parent item gets set.</param>
         void SetParentItem(T value);
 
         #endregion

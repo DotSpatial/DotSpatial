@@ -208,7 +208,7 @@ namespace DotSpatial.Symbology
             int alpha = Utils.ByteRange(Convert.ToInt32(_opacity * 255F));
             switch (schemeType)
             {
-                case ColorSchemeType.Summer_Mountains:
+                case ColorSchemeType.SummerMountains:
                     lowColor = Color.FromArgb(alpha, 10, 100, 10);
                     midColor = Color.FromArgb(alpha, 153, 125, 25);
                     highColor = Color.FromArgb(alpha, 255, 255, 255);
@@ -233,7 +233,7 @@ namespace DotSpatial.Symbology
                     midColor = Color.FromArgb(alpha, 43, 91, 30);
                     highColor = Color.FromArgb(alpha, 167, 220, 168);
                     break;
-                case ColorSchemeType.Valley_Fires:
+                case ColorSchemeType.ValleyFires:
                     lowColor = Color.FromArgb(alpha, 164, 0, 0);
                     midColor = Color.FromArgb(alpha, 255, 128, 64);
                     highColor = Color.FromArgb(alpha, 255, 255, 191);

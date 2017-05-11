@@ -32,10 +32,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
     /// </summary>
     public class GdalRasterProvider : IRasterProvider
     {
-        #region Private Variables
-
-        #endregion Private Variables
-
         #region Constructors
 
         static GdalRasterProvider()
@@ -44,7 +40,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// Creates a new instance of GdalRasterProvider
+        /// Initializes a new instance of the <see cref="GdalRasterProvider"/> class.
         /// </summary>
         public GdalRasterProvider()
         {
@@ -59,50 +55,41 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
         }
 
-        #endregion Constructors
+        #endregion
 
-        private static string GetDriverCode(string fileExtension)
-        {
-            if (String.IsNullOrEmpty(fileExtension))
-            {
-                return null;
-            }
+        #region Properties
 
-            switch (fileExtension.ToLower())
-            {
-                case ".asc":
-                    return "AAIGrid";
+        // This function checks if a GeoTiff dataset should be interpreted as a one-band raster
+        // or as an image. Returns true if the dataset is a valid one-band raster.
 
-                case ".adf":
-                    return "AAIGrid";
+        /// <summary>
+        /// Gets the description of the raster.
+        /// </summary>
+        public string Description => "GDAL Integer Raster";
 
-                case ".tiff":
-                case ".tif":
-                    return "GTiff";
+        /// <summary>
+        /// Gets the dialog filter to use when opening a file.
+        /// </summary>
+        public string DialogReadFilter => "GDAL Rasters|*.asc;*.adf;*.bil;*.gen;*.thf;*.blx;*.xlb;*.bt;*.dt0;*.dt1;*.dt2;*.tif;*.dem;*.ter;*.mem;*.img;*.nc";
 
-                case ".img":
-                    return "HFA";
+        /// <summary>
+        /// Gets the dialog filter to use when saving to a file.
+        /// </summary>
+        public string DialogWriteFilter => "AAIGrid|*.asc;*.adf|DTED|*.dt0;*.dt1;*.dt2|GTiff|*.tif;*.tiff|TERRAGEN|*.ter|GenBin|*.bil|netCDF|*.nc|Imagine|*.img|GFF|*.gff|Terragen|*.ter";
 
-                case ".gff":
-                    return "GFF";
+        /// <summary>
+        /// Gets the name of the provider.
+        /// </summary>
+        public string Name => "GDAL Raster Provider";
 
-                case ".dt0":
-                case ".dt1":
-                case ".dt2":
-                    return "DTED";
+        /// <summary>
+        /// Gets or sets the progress handler that gets updated with progress information.
+        /// </summary>
+        public IProgressHandler ProgressHandler { get; set; }
 
-                case ".ter":
-                    return "Terragen";
+        #endregion
 
-                case ".nc":
-                    return "netCDF";
-
-                default:
-                    return null;
-            }
-        }
-
-        #region IRasterProvider Members
+        #region Methods
 
         /// <summary>
         /// This create new method implies that this provider has the priority for creating a new file.
@@ -120,10 +107,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         public IRaster Create(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
             if (File.Exists(name)) File.Delete(name);
-            if (String.IsNullOrEmpty(driverCode))
+            if (string.IsNullOrEmpty(driverCode))
             {
                 driverCode = GetDriverCode(Path.GetExtension(name));
             }
+
             Driver d = Gdal.GetDriverByName(driverCode);
             if (d == null)
             {
@@ -135,8 +123,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             DataType dt;
             if (dataType == typeof(int)) dt = DataType.GDT_Int32;
             else if (dataType == typeof(short)) dt = DataType.GDT_Int16;
-            else if (dataType == typeof(UInt32)) dt = DataType.GDT_UInt32;
-            else if (dataType == typeof(UInt16)) dt = DataType.GDT_UInt16;
+            else if (dataType == typeof(uint)) dt = DataType.GDT_UInt32;
+            else if (dataType == typeof(ushort)) dt = DataType.GDT_UInt16;
             else if (dataType == typeof(double)) dt = DataType.GDT_Float64;
             else if (dataType == typeof(float)) dt = DataType.GDT_Float32;
             else if (dataType == typeof(byte)) dt = DataType.GDT_Byte;
@@ -150,45 +138,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             return WrapDataSetInRaster(name, dataType, dataset);
         }
 
-        private static IRaster WrapDataSetInRaster(string name, Type dataType, Dataset dataset)
-        {
-            // todo: what about UInt32?
-            if (dataType == typeof(int) || dataType == typeof(UInt16))
-            {
-                return new GdalRaster<int>(name, dataset);
-            }
-            if (dataType == typeof(short))
-            {
-                return new GdalRaster<short>(name, dataset);
-            }
-            if (dataType == typeof(float))
-            {
-                return new GdalRaster<float>(name, dataset);
-            }
-            if (dataType == typeof(double))
-            {
-                return new GdalRaster<double>(name, dataset);
-            }
-            if (dataType == typeof(byte))
-            {
-                return new GdalRaster<byte>(name, dataset);
-            }
-
-            // It was an unsupported type.
-            if (dataset != null)
-            {
-                dataset.Dispose();
-                if (File.Exists(name)) File.Delete(name);
-            }
-            return null;
-        }
-
         /// <summary>
-        /// Opens the specified file
+        /// Opens the specified file.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        [DebuggerStepThrough]
+        /// <param name="fileName">Name of the file that gets opened.</param>
+        /// <returns>The file as IRaster.</returns>
         public IRaster Open(string fileName)
         {
             IRaster result = null;
@@ -205,55 +159,19 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     dataset.Dispose();
                 }
             }
+
             return result;
         }
 
-        // This function checks if a GeoTiff dataset should be interpreted as a one-band raster
-        // or as an image. Returns true if the dataset is a valid one-band raster.
-
         /// <summary>
-        /// Description of the raster
+        /// Opens the specified file.
         /// </summary>
-        public string Description
-        {
-            get { return "GDAL Integer Raster"; }
-        }
-
-        /// <summary>
-        /// The dialog filter to use when opening a file
-        /// </summary>
-        public string DialogReadFilter
-        {
-            get { return "GDAL Rasters|*.asc;*.adf;*.bil;*.gen;*.thf;*.blx;*.xlb;*.bt;*.dt0;*.dt1;*.dt2;*.tif;*.dem;*.ter;*.mem;*.img;*.nc"; }
-        }
-
-        /// <summary>
-        /// The dialog filter to use when saving to a file
-        /// </summary>
-        public string DialogWriteFilter
-        {
-            get { return "AAIGrid|*.asc;*.adf|DTED|*.dt0;*.dt1;*.dt2|GTiff|*.tif;*.tiff|TERRAGEN|*.ter|GenBin|*.bil|netCDF|*.nc|Imagine|*.img|GFF|*.gff|Terragen|*.ter"; }
-        }
-
-        /// <summary>
-        /// Updated with progress information
-        /// </summary>
-        public IProgressHandler ProgressHandler { get; set; }
-
-        /// <summary>
-        /// The name of the provider
-        /// </summary>
-        public string Name
-        {
-            get { return "GDAL Raster Provider"; }
-        }
-
+        /// <param name="fileName">Name of the file that gets opened.</param>
+        /// <returns>The file as IDataSet.</returns>
         IDataSet IDataProvider.Open(string fileName)
         {
             return Open(fileName);
         }
-
-        #endregion
 
         private static IRaster GetBand(string fileName, Dataset dataset, Band band)
         {
@@ -267,8 +185,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 case DataType.GDT_CFloat32:
                 case DataType.GDT_CFloat64:
                 case DataType.GDT_CInt16:
-                case DataType.GDT_CInt32:
-                    break;
+                case DataType.GDT_CInt32: break;
                 case DataType.GDT_Float32:
                     result = new GdalRaster<float>(fileName, dataset, band);
                     break;
@@ -282,24 +199,90 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 case DataType.GDT_Int32:
                     result = new GdalRaster<int>(fileName, dataset, band);
                     break;
-                case DataType.GDT_TypeCount:
-                    break;
+                case DataType.GDT_TypeCount: break;
 
                 case DataType.GDT_UInt32:
                     result = new GdalRaster<long>(fileName, dataset, band);
                     break;
-                case DataType.GDT_Unknown:
-                    break;
-                default:
-                    break;
+                case DataType.GDT_Unknown: break;
+                default: break;
             }
 
-            if (result != null)
-            {
-                result.Open();
-            }
+            result?.Open();
 
             return result;
         }
+
+        private static string GetDriverCode(string fileExtension)
+        {
+            if (string.IsNullOrEmpty(fileExtension))
+            {
+                return null;
+            }
+
+            switch (fileExtension.ToLower())
+            {
+                case ".asc": return "AAIGrid";
+
+                case ".adf": return "AAIGrid";
+
+                case ".tiff":
+                case ".tif": return "GTiff";
+
+                case ".img": return "HFA";
+
+                case ".gff": return "GFF";
+
+                case ".dt0":
+                case ".dt1":
+                case ".dt2": return "DTED";
+
+                case ".ter": return "Terragen";
+
+                case ".nc": return "netCDF";
+
+                default: return null;
+            }
+        }
+
+        private static IRaster WrapDataSetInRaster(string name, Type dataType, Dataset dataset)
+        {
+            // todo: what about UInt32?
+            if (dataType == typeof(int) || dataType == typeof(ushort))
+            {
+                return new GdalRaster<int>(name, dataset);
+            }
+
+            if (dataType == typeof(short))
+            {
+                return new GdalRaster<short>(name, dataset);
+            }
+
+            if (dataType == typeof(float))
+            {
+                return new GdalRaster<float>(name, dataset);
+            }
+
+            if (dataType == typeof(double))
+            {
+                return new GdalRaster<double>(name, dataset);
+            }
+
+            if (dataType == typeof(byte))
+            {
+                return new GdalRaster<byte>(name, dataset);
+            }
+
+            // It was an unsupported type.
+            if (dataset != null)
+            {
+                dataset.Dispose();
+                if (File.Exists(name)) File.Delete(name);
+            }
+
+            return null;
+        }
+
+        #endregion
     }
 }

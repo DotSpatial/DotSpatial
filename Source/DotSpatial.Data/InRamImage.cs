@@ -15,7 +15,7 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Sets the InRamImage for this class.  This is just a georeferenced .Net bitmap that also implements
+    /// Sets the InRamImage for this class. This is just a georeferenced .Net bitmap that also implements
     /// IGetBitmap for cross purpose use with IImageData implementations.
     /// </summary>
     public class InRamImage : DisposeBase, IGetBitmap
@@ -23,9 +23,9 @@ namespace DotSpatial.Data
         private Bitmap _myImage;
 
         /// <summary>
-        /// Initializes a new instance of an InRamImage class.  This class supports a basic .Net Image
-        /// plus a geographic extent as a RasterBounds.  This class does not feature any byte level
-        /// data access or built in file access.  The expectation is that this will only be used in memory.
+        /// Initializes a new instance of an InRamImage class. This class supports a basic .Net Image
+        /// plus a geographic extent as a RasterBounds. This class does not feature any byte level
+        /// data access or built in file access. The expectation is that this will only be used in memory.
         /// </summary>
         /// <param name="image">THe Bitmap image to use to create this image.</param>
         public InRamImage(Bitmap image)
@@ -42,7 +42,7 @@ namespace DotSpatial.Data
         public IRasterBounds Bounds { get; set; }
 
         /// <summary>
-        /// Returns the internal bitmap in this case.  In other cases, this may have to be constructed
+        /// Returns the internal bitmap in this case. In other cases, this may have to be constructed
         /// from the unmanaged memory content.
         /// </summary>
         /// <returns>

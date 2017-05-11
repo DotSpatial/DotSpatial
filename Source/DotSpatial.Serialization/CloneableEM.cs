@@ -21,8 +21,10 @@ namespace DotSpatial.Serialization
     /// <summary>
     /// CloneableEM
     /// </summary>
-    public static class CloneableEM
+    public static class CloneableEm
     {
+        #region Methods
+
         /// <summary>
         /// The type parameter T is optional, so the intended use would be like:
         /// ObjectType copy = myObject.Copy();
@@ -30,10 +32,12 @@ namespace DotSpatial.Serialization
         /// <typeparam name="T">The type of the object</typeparam>
         /// <param name="original">The original object</param>
         /// <returns>A new object of the same type as the type being copied.</returns>
-        public static T Copy<T>(this T original) where T : class, ICloneable
+        public static T Copy<T>(this T original)
+            where T : class, ICloneable
         {
-            if (original != null) return original.Clone() as T;
-            return null;
+            return original?.Clone() as T;
         }
+
+        #endregion
     }
 }

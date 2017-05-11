@@ -13,6 +13,9 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for LineCategory.
+    /// </summary>
     public interface ILineCategory : IFeatureCategory
     {
         #region Properties

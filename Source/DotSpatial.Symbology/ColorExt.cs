@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
         /// Calculates the opacity as a function of the Alpha channel.
         /// </summary>
         /// <param name="self">The color to determine the opacity for</param>
-        /// <returns></returns>
+        /// <returns>The opacity.</returns>
         public static float GetOpacity(this Color self)
         {
             return self.A / 255F;
@@ -65,9 +65,9 @@ namespace DotSpatial.Symbology
         /// Given a floating point opacity, where 0 is fully transparent and 1 is fully opaque,
         /// this will generate a new color that is the transparent version.
         /// </summary>
-        /// <param name="self"></param>
-        /// <param name="opacity"></param>
-        /// <returns></returns>
+        /// <param name="self">this</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <returns>The resulting color.</returns>
         public static Color ToTransparent(this Color self, float opacity)
         {
             int a = Convert.ToInt32(opacity * 255);

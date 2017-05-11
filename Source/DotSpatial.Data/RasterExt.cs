@@ -64,7 +64,7 @@ namespace DotSpatial.Data
         /// This doesn't change the data, but instead performs a translation where the upper left coordinate
         /// is specified in world coordinates.
         /// </summary>
-        /// <param name="raster">Moves this raster so that the upper left coordinate will match the specified position.  The skew and cellsize will remain unaltered</param>
+        /// <param name="raster">Moves this raster so that the upper left coordinate will match the specified position. The skew and cellsize will remain unaltered</param>
         /// <param name="position">The location to move the upper left corner of the raster to in world coordinates.</param>
         public static void MoveTo(this IRaster raster, Coordinate position)
         {
@@ -101,7 +101,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This method uses a matrix transform to adjust the scale.  The precision of using
+        /// This method uses a matrix transform to adjust the scale. The precision of using
         /// a Drawing2D transform is float precision, so some accuracy may be lost.
         /// </summary>
         /// <param name="raster">The raster to apply the scale transform to</param>
@@ -115,7 +115,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This method uses a matrix transform to adjust the shear.  The precision of using
+        /// This method uses a matrix transform to adjust the shear. The precision of using
         /// a Drawing2D transform is float precision, so some accuracy may be lost.
         /// </summary>
         /// <param name="raster">The raster to apply the transform to</param>
@@ -145,7 +145,7 @@ namespace DotSpatial.Data
         #region Nearest Values
 
         /// <summary>
-        /// Retrieves the data from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the data from the cell that is closest to the specified coordinates. This will
         /// return a No-Data value if the specified coordintes are outside of the grid.
         /// </summary>
         /// <param name="raster">The raster to get the value from</param>
@@ -160,7 +160,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Retrieves the data from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the data from the cell that is closest to the specified coordinates. This will
         /// return a No-Data value if the specified coordintes are outside of the grid.
         /// </summary>
         /// <param name="raster">The raster to get the value from</param>
@@ -176,7 +176,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Retrieves the location from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the location from the cell that is closest to the specified coordinates. This will
         /// do nothing if the specified coordinates are outside of the raster.
         /// </summary>
         /// <param name="raster">The IRaster to set the value for</param>
@@ -192,7 +192,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Retrieves the location from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the location from the cell that is closest to the specified coordinates. This will
         /// do nothing if the specified coordinates are outside of the raster.
         /// </summary>
         /// <param name="raster">The IRaster to set the value for</param>

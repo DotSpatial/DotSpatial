@@ -13,23 +13,22 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for PolygonCategory.
+    /// </summary>
     public interface IPolygonCategory : IFeatureCategory
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the symbolizer for this category
-        /// </summary>
-        new IPolygonSymbolizer Symbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the symbolizer to use to draw selected features from this category.
         /// </summary>
         new IPolygonSymbolizer SelectionSymbolizer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the symbolizer for this category
+        /// </summary>
+        new IPolygonSymbolizer Symbolizer { get; set; }
 
         #endregion
     }

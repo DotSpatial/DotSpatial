@@ -25,7 +25,7 @@ namespace DotSpatial.Symbology
     [Serializable]
     public class FeatureSymbolizer : LegendItem, IFeatureSymbolizer
     {
-        #region Private Variables
+        #region Fields
 
         private bool _isVisible;
         private ScaleMode _scaleMode;
@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of FeatureSymbolizer
+        /// Initializes a new instance of the <see cref="FeatureSymbolizer"/> class.
         /// </summary>
         protected FeatureSymbolizer()
         {
@@ -49,46 +49,10 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        /// Sets the outline, assuming that the symbolizer either supports outlines, or
-        /// else by using a second symbol layer.
-        /// </summary>
-        /// <param name="outlineColor">The color of the outline</param>
-        /// <param name="width">The width of the outline in pixels</param>
-        public virtual void SetOutline(Color outlineColor, double width)
-        {
-            OnItemChanged(this);
-        }
-
-        /// <summary>
-        /// Draws a simple rectangle in the specified location.
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="target"></param>
-        public virtual void Draw(Graphics g, Rectangle target)
-        {
-            g.DrawRectangle(Pens.Black, target);
-        }
-
-        /// <summary>
-        /// Occurs during the copy properties method, when copying properties from the source symbolizer
-        /// to this symbolizer.
-        /// </summary>
-        /// <param name="source">The source symbolizer to copy properties from.</param>
-        protected override void OnCopyProperties(object source)
-        {
-            base.OnCopyProperties(source);
-            OnItemChanged();
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not this specific feature should be drawn.
+        /// Gets or sets a value indicating whether or not this specific feature should be drawn.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets a boolean indicating whether or not this should be drawn.")]
@@ -99,6 +63,7 @@ namespace DotSpatial.Symbology
             {
                 return _isVisible;
             }
+
             set
             {
                 _isVisible = value;
@@ -113,19 +78,32 @@ namespace DotSpatial.Symbology
         [Serialize("ScaleModes")]
         public virtual ScaleMode ScaleMode
         {
-            get { return _scaleMode; }
-            set { _scaleMode = value; }
+            get
+            {
+                return _scaleMode;
+            }
+
+            set
+            {
+                _scaleMode = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the smoothing mode to use that controls advanced features like
-        /// anti-aliasing. By default this is set to antialias.
+        /// Gets or sets a value indicating whether things should be anti-aliased. By default this is set to antialias.
         /// </summary>
         [Serialize("Smoothing")]
         public virtual bool Smoothing
         {
-            get { return _smoothing; }
-            set { _smoothing = value; }
+            get
+            {
+                return _smoothing;
+            }
+
+            set
+            {
+                _smoothing = value;
+            }
         }
 
         /// <summary>
@@ -134,8 +112,51 @@ namespace DotSpatial.Symbology
         [Serialize("Units")]
         public GraphicsUnit Units
         {
-            get { return _unit; }
-            set { _unit = value; }
+            get
+            {
+                return _unit;
+            }
+
+            set
+            {
+                _unit = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Draws a simple rectangle in the specified location.
+        /// </summary>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="target">The rectangle that gets drawn.</param>
+        public virtual void Draw(Graphics g, Rectangle target)
+        {
+            g.DrawRectangle(Pens.Black, target);
+        }
+
+        /// <summary>
+        /// Sets the outline, assuming that the symbolizer either supports outlines, or
+        /// else by using a second symbol layer.
+        /// </summary>
+        /// <param name="outlineColor">The color of the outline</param>
+        /// <param name="width">The width of the outline in pixels</param>
+        public virtual void SetOutline(Color outlineColor, double width)
+        {
+            OnItemChanged(this);
+        }
+
+        /// <summary>
+        /// Occurs during the copy properties method, when copying properties from the source symbolizer
+        /// to this symbolizer.
+        /// </summary>
+        /// <param name="source">The source symbolizer to copy properties from.</param>
+        protected override void OnCopyProperties(object source)
+        {
+            base.OnCopyProperties(source);
+            OnItemChanged();
         }
 
         #endregion

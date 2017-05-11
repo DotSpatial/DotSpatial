@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         Brush FillBrush { get; set; }
 
         /// <summary>
-        /// Gets or sets whether or not to use a texture when drawing these lines. By default, this either
+        /// Gets or sets a value indicating whether or not to use a texture when drawing these lines. By default, this either
         /// checks the DefaultLineProvider or else it is false.
         /// </summary>
         bool IsTextured { get; set; }
