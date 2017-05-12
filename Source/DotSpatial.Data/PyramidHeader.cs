@@ -16,31 +16,12 @@ using System.Xml.Serialization;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// PyramidHeader
+    /// </summary>
     [XmlRoot("PyramidHeader")]
     public class PyramidHeader
     {
-        #region Private Variables
-
-        private PyramidImageHeader[] _imageHeaders;
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Calculates the header size for this
-        /// </summary>
-        /// <returns></returns>
-        public long HeaderSize()
-        {
-            MemoryStream ms = new MemoryStream();
-            XmlSerializer s = new XmlSerializer(typeof(PyramidHeader));
-            s.Serialize(ms, this);
-            return ms.Length;
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -48,10 +29,22 @@ namespace DotSpatial.Data
         /// necessary for working with this image.
         /// </summary>
         [XmlElement("ImageHeaders")]
-        public PyramidImageHeader[] ImageHeaders
+        public PyramidImageHeader[] ImageHeaders { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Calculates the header size for this.
+        /// </summary>
+        /// <returns>The header size.</returns>
+        public long HeaderSize()
         {
-            get { return _imageHeaders; }
-            set { _imageHeaders = value; }
+            MemoryStream ms = new MemoryStream();
+            XmlSerializer s = new XmlSerializer(typeof(PyramidHeader));
+            s.Serialize(ms, this);
+            return ms.Length;
         }
 
         #endregion

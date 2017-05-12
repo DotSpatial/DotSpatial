@@ -17,32 +17,32 @@ namespace DotSpatial.Data
     public interface IExtent
     {
         /// <summary>
-        /// Minimum in the X dimension, usually left or minimum longitude.
+        /// Gets or sets the minimum in the X dimension, usually left or minimum longitude.
         /// </summary>
         double MinX { get; set; }
 
         /// <summary>
-        /// Maximum in the x dimension, usually right or maximum longitude.
+        /// Gets or sets the maximum in the x dimension, usually right or maximum longitude.
         /// </summary>
         double MaxX { get; set; }
 
         /// <summary>
-        /// Minimum in the y dimension, usually bottom or minimum latitude.
+        /// Gets or sets the minimum in the y dimension, usually the bottom or minimum latitude.
         /// </summary>
         double MinY { get; set; }
 
         /// <summary>
-        /// Maximum in the y dimension, usually the top or maximum latitude.
+        /// Gets or sets the maximum in the y dimension, usually the top or maximum latitude.
         /// </summary>
         double MaxY { get; set; }
 
         /// <summary>
-        /// Gets a Boolean that is true if the Min and Max M range should be used.
+        /// Gets a value indicating whether the Min and Max M range should be used.
         /// </summary>
         bool HasM { get; }
 
         /// <summary>
-        /// Gets a Boolean indicating whether the Z value should be used.
+        /// Gets a value indicating whether the Z value should be used.
         /// </summary>
         bool HasZ { get; }
     }

@@ -17,43 +17,36 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// Row event argument class
-    ///</summary>
+    /// </summary>
     public class FeatureRowChangeEvent : EventArgs
     {
-        private readonly DataRowAction _eventAction;
-        private readonly FeatureRow _eventRow;
+        #region Constructors
 
         /// <summary>
-        /// A new event argument for events in a FeatureTable.
+        /// Initializes a new instance of the <see cref="FeatureRowChangeEvent"/> class.
         /// </summary>
         /// <param name="row">The FeatureRow of the event.</param>
         /// <param name="action">The action occurring for this event.</param>
         public FeatureRowChangeEvent(FeatureRow row, DataRowAction action)
         {
-            _eventRow = row;
-            _eventAction = action;
+            Row = row;
+            Action = action;
         }
 
-        /// <summary>
-        /// The FeatureRow for this event.
-        /// </summary>
-        public FeatureRow Row
-        {
-            get
-            {
-                return _eventRow;
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// The action for this event.
+        /// Gets the action for this event.
         /// </summary>
-        public DataRowAction Action
-        {
-            get
-            {
-                return _eventAction;
-            }
-        }
+        public DataRowAction Action { get; }
+
+        /// <summary>
+        /// Gets the FeatureRow for this event.
+        /// </summary>
+        public FeatureRow Row { get; }
+
+        #endregion
     }
 }

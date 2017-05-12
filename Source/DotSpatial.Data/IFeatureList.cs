@@ -35,6 +35,26 @@ namespace DotSpatial.Data
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether or not the events have been suspended.
+        /// </summary>
+        bool EventsSuspended { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether attribute Table information will be copied when features will be added to the list.
+        /// This will allow the attributes to be loaded in a more on-demand later.
+        /// </summary>
+        bool IncludeAttributes { get; set; }
+
+        /// <summary>
+        /// Gets the parent featureset for this list.
+        /// </summary>
+        IFeatureSet Parent { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -54,26 +74,6 @@ namespace DotSpatial.Data
         /// </summary>
         /// <returns>The features as a List of IFeature.</returns>
         List<IFeature> ToList();
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets whether or not the events have been suspended
-        /// </summary>
-        bool EventsSuspended { get; }
-
-        /// <summary>
-        /// If this is false, then features will be added to the list without copying over attribute Table information.
-        /// This will allow the attributes to be loaded in a more on-demand later.
-        /// </summary>
-        bool IncludeAttributes { get; set; }
-
-        /// <summary>
-        /// Gets the parent featureset for this list.
-        /// </summary>
-        IFeatureSet Parent { get; }
 
         #endregion
     }

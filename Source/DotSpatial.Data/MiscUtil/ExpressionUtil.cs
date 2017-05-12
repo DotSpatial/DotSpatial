@@ -11,6 +11,8 @@ namespace DotSpatial.Data.MiscUtil
     /// </summary>
     public static class ExpressionUtil
     {
+        #region Methods
+
         /// <summary>
         /// Create a function delegate representing a unary operation
         /// </summary>
@@ -18,8 +20,7 @@ namespace DotSpatial.Data.MiscUtil
         /// <typeparam name="TResult">The return type</typeparam>
         /// <param name="body">Body factory</param>
         /// <returns>Compiled function delegate</returns>
-        public static Func<TArg1, TResult> CreateExpression<TArg1, TResult>(
-            Func<Expression, UnaryExpression> body)
+        public static Func<TArg1, TResult> CreateExpression<TArg1, TResult>(Func<Expression, UnaryExpression> body)
         {
             ParameterExpression inp = Expression.Parameter(typeof(TArg1), "inp");
             try
@@ -29,7 +30,7 @@ namespace DotSpatial.Data.MiscUtil
             catch (Exception ex)
             {
                 string msg = ex.Message; // avoid capture of ex itself
-                return delegate { throw new InvalidOperationException(msg); };
+                return arg => { throw new InvalidOperationException(msg); };
             }
         }
 
@@ -41,8 +42,7 @@ namespace DotSpatial.Data.MiscUtil
         /// <typeparam name="TResult">The return type</typeparam>
         /// <param name="body">Body factory</param>
         /// <returns>Compiled function delegate</returns>
-        public static Func<TArg1, TArg2, TResult> CreateExpression<TArg1, TArg2, TResult>(
-            Func<Expression, Expression, BinaryExpression> body)
+        public static Func<TArg1, TArg2, TResult> CreateExpression<TArg1, TArg2, TResult>(Func<Expression, Expression, BinaryExpression> body)
         {
             return CreateExpression<TArg1, TArg2, TResult>(body, false);
         }
@@ -61,8 +61,7 @@ namespace DotSpatial.Data.MiscUtil
         /// <returns>
         /// Compiled function delegate
         /// </returns>
-        public static Func<TArg1, TArg2, TResult> CreateExpression<TArg1, TArg2, TResult>(
-            Func<Expression, Expression, BinaryExpression> body, bool castArgsToResultOnFailure)
+        public static Func<TArg1, TArg2, TResult> CreateExpression<TArg1, TArg2, TResult>(Func<Expression, Expression, BinaryExpression> body, bool castArgsToResultOnFailure)
         {
             ParameterExpression lhs = Expression.Parameter(typeof(TArg1), "lhs");
             ParameterExpression rhs = Expression.Parameter(typeof(TArg2), "rhs");
@@ -74,29 +73,28 @@ namespace DotSpatial.Data.MiscUtil
                 }
                 catch (InvalidOperationException)
                 {
-                    if (castArgsToResultOnFailure && !(         // if we show retry
-                            typeof(TArg1) == typeof(TResult) &&  // and the args aren't
-                            typeof(TArg2) == typeof(TResult)))
-                    { // already "TValue, TValue, TValue"...
+                    if (castArgsToResultOnFailure && !( // if we show retry
+                                                          typeof(TArg1) == typeof(TResult) && // and the args aren't
+                                                          typeof(TArg2) == typeof(TResult)))
+                    {
+                        // already "TValue, TValue, TValue"...
                         // convert both lhs and rhs to TResult (as appropriate)
-                        Expression castLhs = typeof(TArg1) == typeof(TResult) ?
-                                lhs :
-                                (Expression)Expression.Convert(lhs, typeof(TResult));
-                        Expression castRhs = typeof(TArg2) == typeof(TResult) ?
-                                rhs :
-                                (Expression)Expression.Convert(rhs, typeof(TResult));
+                        Expression castLhs = typeof(TArg1) == typeof(TResult) ? lhs : (Expression)Expression.Convert(lhs, typeof(TResult));
+                        Expression castRhs = typeof(TArg2) == typeof(TResult) ? rhs : (Expression)Expression.Convert(rhs, typeof(TResult));
 
-                        return Expression.Lambda<Func<TArg1, TArg2, TResult>>(
-                            body(castLhs, castRhs), lhs, rhs).Compile();
+                        return Expression.Lambda<Func<TArg1, TArg2, TResult>>(body(castLhs, castRhs), lhs, rhs).Compile();
                     }
-                    else throw;
+
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message; // avoid capture of ex itself
-                return delegate { throw new InvalidOperationException(msg); };
+                return (arg1, arg2) => { throw new InvalidOperationException(msg); };
             }
         }
+
+        #endregion
     }
 }

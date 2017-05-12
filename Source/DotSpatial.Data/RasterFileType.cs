@@ -22,54 +22,66 @@ namespace DotSpatial.Data
         /// <summary>
         /// Ascii
         /// </summary>
-        ASCII,
+        Ascii,
+
         /// <summary>
         /// Binary interlaced Layers
         /// </summary>
-        BIL,
+        Bil,
+
         /// <summary>
         /// BGD (Original DotSpatial format)
         /// </summary>
-        BINARY,
+        Binary,
+
         /// <summary>
         /// DTED
         /// </summary>
-        DTED,
+        Dted,
+
         /// <summary>
         /// Wavelet format
         /// </summary>
-        ECW,
+        Ecw,
+
         /// <summary>
         /// ArcGIS format
         /// </summary>
-        ESRI,
+        Esri,
+
         /// <summary>
         /// FLT
         /// </summary>
-        FLT,
+        Flt,
+
         /// <summary>
         /// GeoTiff
         /// </summary>
         GeoTiff,
+
         /// <summary>
         /// SID
         /// </summary>
-        MrSID,
+        MrSid,
+
         /// <summary>
         /// AUX
         /// </summary>
-        PAUX,
+        Paux,
+
         /// <summary>
         /// PCIDsk
         /// </summary>
-        PCIDsk,
+        PciDsk,
+
         /// <summary>
         /// SDTS
         /// </summary>
-        SDTS,
+        Sdts,
+
         /// <summary>
         /// Custom - specified as string
         /// </summary>
-        CUSTOM
+        Custom
     }
 }

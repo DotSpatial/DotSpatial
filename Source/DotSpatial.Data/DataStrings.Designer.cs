@@ -61,7 +61,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The argument %S cannot be null..
+        ///   Looks up a localized string similar to The argument {0} cannot be null..
         /// </summary>
         internal static string Argument_Null_S {
             get {
@@ -79,7 +79,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The argument %S was null. Try testing for the null case before calling this method..
+        ///   Looks up a localized string similar to The argument {0} was null. Try testing for the null case before calling this method..
         /// </summary>
         internal static string ArgumentNull_S {
             get {
@@ -171,27 +171,45 @@ namespace DotSpatial.Data {
         /// <summary>
         ///   Looks up a localized string similar to The fileName %S already exists. Do you wish to overwrite it?.
         /// </summary>
-        internal static string FileExists_S {
+        internal static string File0ExistsOverwrite {
             get {
-                return ResourceManager.GetString("FileExists_S", resourceCulture);
+                return ResourceManager.GetString("File0ExistsOverwrite", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The file {0} already exists and may not be overwritten..
         /// </summary>
-        internal static string FileExistsOverwritingNotAllowed {
+        internal static string File0ExistsOverwritingNotAllowed {
             get {
-                return ResourceManager.GetString("FileExistsOverwritingNotAllowed", resourceCulture);
+                return ResourceManager.GetString("File0ExistsOverwritingNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file {0} could not be found..
+        /// </summary>
+        internal static string File0NotFound {
+            get {
+                return ResourceManager.GetString("File0NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The fileName {0} contains a feature type other than {1}..
+        /// </summary>
+        internal static string File0NotShapeType1 {
+            get {
+                return ResourceManager.GetString("File0NotShapeType1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The file extension {0} is not supported by Shapefile data provider..
         /// </summary>
-        internal static string FileExtensionNotSupportedByShapefileDataProvider {
+        internal static string FileExtension0NotSupportedByShapefileDataProvider {
             get {
-                return ResourceManager.GetString("FileExtensionNotSupportedByShapefileDataProvider", resourceCulture);
+                return ResourceManager.GetString("FileExtension0NotSupportedByShapefileDataProvider", resourceCulture);
             }
         }
         
@@ -205,33 +223,6 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The fileName %S was not found..
-        /// </summary>
-        internal static string FileNotFound_S {
-            get {
-                return ResourceManager.GetString("FileNotFound_S", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The fileName %S contains a feature type other than lines..
-        /// </summary>
-        internal static string FileNotLines_S {
-            get {
-                return ResourceManager.GetString("FileNotLines_S", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The fileName %S contains a feature type other than points..
-        /// </summary>
-        internal static string FileNotPoints_S {
-            get {
-                return ResourceManager.GetString("FileNotPoints_S", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The specified file type is not supported..
         /// </summary>
         internal static string FileTypeNotSupported {
@@ -241,7 +232,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attepted to set the enumeration field to the value &apos;%s&apos;, which is not known..
+        ///   Looks up a localized string similar to Attepted to set the enumeration field to the value &apos;{0}&apos;, which is not known..
         /// </summary>
         internal static string HfaEnumerationNotFound {
             get {
@@ -250,7 +241,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified character &apos;%S&apos; was not a known field type: 124cCesStlLfdmMbox&quot;.
+        ///   Looks up a localized string similar to The specified character &apos;{0}&apos; was not a known field type: 124cCesStlLfdmMbox&quot;.
         /// </summary>
         internal static string HfaFieldTypeException {
             get {
@@ -259,7 +250,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of rows and number of columns must both be greater than 0, but the header for this item returned %S1 rows and %S2 columns..
+        ///   Looks up a localized string similar to The number of rows and number of columns must both be greater than 0, but the header for this item returned {0} rows and {1} columns..
         /// </summary>
         internal static string HfaInvalidCountException {
             get {
@@ -295,15 +286,6 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file %S could not be found..
-        /// </summary>
-        internal static string IO_FileNotFound_S {
-            get {
-                return ResourceManager.GetString("IO_FileNotFound_S", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to This has not yet been implemented..
         /// </summary>
         internal static string NotImplemented {
@@ -313,7 +295,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value %S was too large to encode with 18 ASCII characters..
+        ///   Looks up a localized string similar to The value {0} was too large to encode with 18 ASCII characters..
         /// </summary>
         internal static string NumberException_TooLarge_S {
             get {
@@ -322,7 +304,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value %S was too small to be encoded with 18 ASCII characters..
+        ///   Looks up a localized string similar to The value {0} was too small to be encoded with 18 ASCII characters..
         /// </summary>
         internal static string NumberException_TooSmall_S {
             get {
@@ -340,7 +322,7 @@ namespace DotSpatial.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The desired length of %S1 was too long. The total length was %S2 and the offset was %S3..
+        ///   Looks up a localized string similar to The desired length of {0} was too long. The total length was {1} and the offset was {2}..
         /// </summary>
         internal static string PngInsuficientLengthException {
             get {
@@ -444,6 +426,15 @@ namespace DotSpatial.Data {
         internal static string Shape_ZeroPointsError {
             get {
                 return ResourceManager.GetString("Shape_ZeroPointsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The shape type {0} is not supported..
+        /// </summary>
+        internal static string ShapeType0NotSupported {
+            get {
+                return ResourceManager.GetString("ShapeType0NotSupported", resourceCulture);
             }
         }
         

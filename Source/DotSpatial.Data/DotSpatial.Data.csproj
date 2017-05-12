@@ -122,6 +122,7 @@
     <Compile Include="FeatureRowChangeEvent.cs" />
     <Compile Include="FeatureSetEventArgs.cs" />
     <Compile Include="FeatureSourceFeatureEditEvent.cs" />
+    <Compile Include="FeatureSourceRowEditEventArgs.cs" />
     <Compile Include="FeatureTable.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -144,10 +145,14 @@
     <Compile Include="LineShape.cs" />
     <Compile Include="LineShapefileFeatureSource.cs" />
     <Compile Include="LineShapefileShapeSource.cs" />
+    <Compile Include="MiscUtil\ClassNullOp.cs" />
     <Compile Include="MiscUtil\ExpressionUtil.cs" />
-    <Compile Include="MiscUtil\NullOp.cs" />
+    <Compile Include="MiscUtil\INullOp.cs" />
     <Compile Include="MiscUtil\Operator.cs" />
     <Compile Include="FilePathUtils.cs" />
+    <Compile Include="MiscUtil\Operator{TValue,TResult}.cs" />
+    <Compile Include="MiscUtil\Operator{T}.cs" />
+    <Compile Include="MiscUtil\StructNullOp.cs" />
     <Compile Include="Mono.cs" />
     <Compile Include="PointShape.cs" />
     <Compile Include="PointShapefileFeatureSource.cs" />
@@ -167,11 +172,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RasterBoundDataSet.cs" />
-    <Compile Include="RasterT.cs" />
-    <Compile Include="RowEditEvent.cs" />
+    <Compile Include="Raster{T}.cs" />
+    <Compile Include="RowEditEventArgs.cs" />
     <Compile Include="ShapeFactory.cs" />
     <Compile Include="ShapefileFeatureSource.cs" />
     <Compile Include="ShapefileFeatureSourceQuadtree.cs" />
+    <Compile Include="ShapefileFeatureSourceSearchAndModifyAttributeParameters.cs" />
     <Compile Include="ShapefileIndexFile.cs" />
     <Compile Include="ShapefilePackage.cs" />
     <Compile Include="ShapefileShapeSource.cs" />
@@ -234,7 +240,7 @@
     <Compile Include="HfaInvalidCountException.cs" />
     <Compile Include="HfaPointerInsertNotSupportedException.cs" />
     <Compile Include="HfaType.cs" />
-    <Compile Include="HfaTypeException.cs" />
+    <Compile Include="HfaFieldTypeException.cs" />
     <Compile Include="AffineTransform.cs" />
     <Compile Include="BinaryRasterProvider.cs" />
     <Compile Include="RasterBoundsExt.cs" />
@@ -304,7 +310,7 @@
     <Compile Include="CollectiveIndexCompareCancel.cs" />
     <Compile Include="Compare.cs" />
     <Compile Include="CompareCancel.cs" />
-    <Compile Include="Comparison.cs" />
+    <Compile Include="ComparisonArgs.cs" />
     <Compile Include="ComparisonCancelEventArgs.cs" />
     <Compile Include="CopyList.cs" />
     <Compile Include="EventList.cs" />

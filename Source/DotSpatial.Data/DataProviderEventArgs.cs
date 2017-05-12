@@ -17,23 +17,20 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// DataProviderEventArgs
+    /// </summary>
     public class DataProviderEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private IEnumerable<IDataProvider> _providers;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DataProviderEventArgs
+        /// Initializes a new instance of the <see cref="DataProviderEventArgs"/> class.
         /// </summary>
         /// <param name="providers">Specifies a list of IDataProviders</param>
         public DataProviderEventArgs(IEnumerable<IDataProvider> providers)
         {
-            _providers = providers;
+            Providers = providers;
         }
 
         #endregion
@@ -41,15 +38,10 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the list of providers for this event.
+        /// Gets or sets the list of providers for this event.
         /// </summary>
-        public virtual IEnumerable<IDataProvider> Providers
-        {
-            get { return _providers; }
-            protected set { _providers = value; }
-        }
+        public IEnumerable<IDataProvider> Providers { get; protected set; }
 
         #endregion
-
     }
 }

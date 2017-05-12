@@ -32,15 +32,6 @@ namespace DotSpatial.Data
     {
         #region Fields
 
-        /// <summary>
-        /// Gets or sets the column to use when sorting lists of features.
-        /// If this is set to a column not in the field, the FID is used instead.
-        /// This should be assigned before attempting to sort features. Because
-        /// this is static, it only has to be set once, and will affect
-        /// all the individual comparisions until it is set differently.
-        /// </summary>
-        public static string ComparisonField;
-
         private DataRow _dataRow;
         private FeatureType _featureType;
 
@@ -52,8 +43,8 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a feature from the specified shape. This will not handle the attribute content,
-        /// which should be handles separately, with full knowledge of the desired schema.
+        /// Initializes a new instance of the <see cref="Feature"/> class from the specified shape. This will not
+        /// handle the attribute content, which should be handles separately, with full knowledge of the desired schema.
         /// </summary>
         /// <param name="shape">The shape to read the vertices from in order to build a proper geometry.</param>
         public Feature(Shape shape)
@@ -124,7 +115,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a complete geometric feature based on a single point. The attribute datarow is null.
+        /// Initializes a new instance of the <see cref="Feature"/> class based on a single point. The attribute datarow is null.
         /// </summary>
         /// <param name="point">The vertex</param>
         public Feature(Vertex point)
@@ -133,16 +124,16 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a single point feature from a new point.
+        /// Initializes a new instance of the <see cref="Feature"/> class from a new point.
         /// </summary>
-        /// <param name="c"></param>
+        /// <param name="c">The coordinate of the point.</param>
         public Feature(Coordinate c)
             : this(new Point(c))
         {
         }
 
         /// <summary>
-        /// Creates a feature from a geometry
+        /// Initializes a new instance of the <see cref="Feature"/> class from a geometry.
         /// </summary>
         /// <param name="geometry">The geometry to turn into a feature</param>
         public Feature(IGeometry geometry)
@@ -153,8 +144,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This constructor allows the creation of a feature but will automatically
-        /// add the feature to the parent featureset.
+        /// Initializes a new instance of the <see cref="Feature"/> class.
+        /// This will automatically add the feature to the parent featureset.
         /// </summary>
         /// <param name="geometry">The IBasicGeometry to use for this feature</param>
         /// <param name="parent">The IFeatureSet to add this feature to.</param>
@@ -167,7 +158,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Constructs a new Feature
+        /// Initializes a new instance of the <see cref="Feature"/> class.
         /// </summary>
         public Feature()
         {
@@ -177,7 +168,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new instance of a feature, by specifying the feature type enumeration and a
+        /// Initializes a new instance of the <see cref="Feature"/> class, by specifying the feature type enumeration and a
         /// set of coordinates that can be either a list or an array as long as it is enumerable.
         /// </summary>
         /// <param name="featureType">The feature type</param>
@@ -212,7 +203,16 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the datarow containing all the attributes related to this geometry.
+        /// Gets or sets the column to use when sorting lists of features.
+        /// If this is set to a column not in the field, the FID is used instead.
+        /// This should be assigned before attempting to sort features. Because
+        /// this is static, it only has to be set once, and will affect
+        /// all the individual comparisions until it is set differently.
+        /// </summary>
+        public static string ComparisonField { get; set; }
+
+        /// <summary>
+        /// Gets or sets the datarow containing all the attributes related to this geometry.
         /// This will query the parent feature layer's data Table by FID and then
         /// cache the value locally. If no parent feature layer exists, then
         /// this is meaningless. You should create a new Feature by doing
@@ -232,7 +232,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Returns either Point, Polygon or Line.
+        /// Gets either Point, Polygon or Line.
         /// </summary>
         public FeatureType FeatureType
         {
@@ -257,7 +257,7 @@ namespace DotSpatial.Data
             {
                 if (_parentFeatureSet.IndexMode || !_parentFeatureSet.AttributesPopulated)
                 {
-                    return ShapeIndex != null ? ShapeIndex.RecordNumber - 1 : -2; // -1 because RecordNumber for shapefiles is 1-based.
+                    return ShapeIndex?.RecordNumber - 1 ?? -2; // -1 because RecordNumber for shapefiles is 1-based.
 
                     // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
                 }
@@ -286,7 +286,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets a reference to the IFeatureLayer that contains this item.
+        /// Gets or sets a reference to the IFeatureLayer that contains this item.
         /// </summary>
         public virtual IFeatureSet ParentFeatureSet
         {
@@ -302,7 +302,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This is simply a quick access to the Vertices list for this specific
+        /// Gets or sets the shape index. This is simply a quick access to the Vertices list for this specific
         /// feature. If the Vertices have not yet been defined, this will be null.
         /// </summary>
         public ShapeRange ShapeIndex { get; set; }
@@ -314,12 +314,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// Copies this feature, creating an independant, but identical feature.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The copy.</returns>
         public Feature Copy()
         {
             Feature clone = (Feature)MemberwiseClone();
             clone.Geometry = Geometry.Copy();
-            if (ParentFeatureSet != null && ParentFeatureSet.DataTable != null)
+            if (ParentFeatureSet?.DataTable != null)
             {
                 DataTable table = ParentFeatureSet.DataTable;
                 clone._dataRow = table.NewRow();
@@ -371,7 +371,7 @@ namespace DotSpatial.Data
             if (_geometry == null) return;
 
             _geometry.GeometryChanged();
-            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); // Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
+            ShapeIndex?.CalculateExtents(); // Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
         /// <summary>
@@ -529,13 +529,12 @@ namespace DotSpatial.Data
             }
 
             // Find holes
-            for (int i = 0; i < holes.Count; i++)
+            foreach (ILinearRing hole in holes)
             {
-                ILinearRing testRing = holes[i];
                 ILinearRing minShell = null;
                 Envelope minEnv = null;
-                Envelope testEnv = testRing.EnvelopeInternal;
-                Coordinate testPt = testRing.Coordinates[0];
+                Envelope testEnv = hole.EnvelopeInternal;
+                Coordinate testPt = hole.Coordinates[0];
                 for (int j = 0; j < shells.Count; j++)
                 {
                     ILinearRing tryRing = shells[j];
@@ -550,7 +549,7 @@ namespace DotSpatial.Data
                             minShell = tryRing;
                         }
 
-                        holesForShells[j].Add(holes[i]);
+                        holesForShells[j].Add(hole);
                     }
                 }
             }

@@ -15,8 +15,24 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    public interface IChangeEventList<T> : IList<T>, IChangeItem where T : IChangeItem
+    /// <summary>
+    /// Interface for ChangeEventList{T}.
+    /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
+    public interface IChangeEventList<T> : IList<T>, IChangeItem
+        where T : IChangeItem
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether or not the list is currently suspended.
+        /// </summary>
+        bool EventsSuspended { get; }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
         /// </summary>
@@ -29,11 +45,6 @@ namespace DotSpatial.Data
         void AddRange(IEnumerable<T> collection);
 
         /// <summary>
-        /// Gets whether or not the list is currently suspended
-        /// </summary>
-        bool EventsSuspended { get; }
-
-        /// <summary>
         /// Resumes event sending and fires a ListChanged event if any changes have taken place.
         /// This will not track all the individual changes that may have fired in the meantime.
         /// </summary>
@@ -43,5 +54,7 @@ namespace DotSpatial.Data
         /// Temporarilly suspends notice events, allowing a large number of changes.
         /// </summary>
         void SuspendEvents();
+
+        #endregion
     }
 }

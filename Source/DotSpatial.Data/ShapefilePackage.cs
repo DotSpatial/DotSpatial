@@ -8,22 +8,22 @@ namespace DotSpatial.Data
     public class ShapefilePackage
     {
         /// <summary>
-        /// Gets or sets shapefile
+        /// Gets or sets the shapefile.
         /// </summary>
         public Stream ShpFile { get; set; }
 
         /// <summary>
-        /// Gets os sets shapefile index.
+        /// Gets or sets the shapefile index.
         /// </summary>
         public Stream ShxFile { get; set; }
 
         /// <summary>
-        /// Gets or sets shapefile database.
+        /// Gets or sets the shapefile database.
         /// </summary>
         public Stream DbfFile { get; set; }
 
         /// <summary>
-        /// Gets or sets shapefile projection.
+        /// Gets or sets the shapefile projection.
         /// </summary>
         public Stream PrjFile { get; set; }
     }

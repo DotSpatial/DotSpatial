@@ -21,10 +21,9 @@ namespace DotSpatial.Data
     public static class CulturePreferences
     {
         /// <summary>
-        /// This culture information is useful for things like Number Formatting.
-        /// This defaults to CurrentCulture, but can be specified through preferences or
-        /// whatever.
+        /// Gets or sets the CultureInformation. This culture information is useful for things like Number Formatting.
+        /// This defaults to CurrentCulture, but can be specified through preferences or whatever.
         /// </summary>
-        public static CultureInfo CultureInformation = CultureInfo.CurrentCulture;
+        public static CultureInfo CultureInformation { get; set; } = CultureInfo.CurrentCulture;
     }
 }

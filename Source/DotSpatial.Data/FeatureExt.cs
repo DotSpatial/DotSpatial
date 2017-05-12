@@ -27,6 +27,8 @@ namespace DotSpatial.Data
     /// </summary>
     public static class FeatureExt
     {
+        #region Methods
+
         /// <summary>
         /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
@@ -50,7 +52,12 @@ namespace DotSpatial.Data
         /// <returns>An IFeature representing the output from the buffer operation</returns>
         public static IFeature Buffer(this IFeature self, double distance, EndCapStyle endCapStyle)
         {
-            IGeometry g = self.Geometry.Buffer(distance, new BufferParameters { EndCapStyle = endCapStyle });
+            IGeometry g = self.Geometry.Buffer(
+                distance,
+                new BufferParameters
+                {
+                    EndCapStyle = endCapStyle
+                });
             return new Feature(g);
         }
 
@@ -104,6 +111,7 @@ namespace DotSpatial.Data
                     f.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
                 }
             }
+
             return f;
         }
 
@@ -129,6 +137,7 @@ namespace DotSpatial.Data
                     f.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
                 }
             }
+
             return f;
         }
 
@@ -154,6 +163,7 @@ namespace DotSpatial.Data
                     f.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
                 }
             }
+
             return f;
         }
 
@@ -180,6 +190,7 @@ namespace DotSpatial.Data
                     f.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
                 }
             }
+
             return f;
         }
 
@@ -187,9 +198,11 @@ namespace DotSpatial.Data
         /// If the geometry for this shape was loaded from a file, this contains the size
         /// of this shape in 16-bit words as per the Esri Shapefile specification.
         /// </summary>
+        /// <param name="self">This feature.</param>
+        /// <returns>The content length.</returns>
         public static int ContentLength(this IFeature self)
         {
-            return self.ShapeIndex != null ? self.ShapeIndex.ContentLength : 0;
+            return self.ShapeIndex?.ContentLength ?? 0;
         }
 
         /// <summary>
@@ -221,6 +234,7 @@ namespace DotSpatial.Data
                     f.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
                 }
             }
+
             return f;
         }
 
@@ -233,8 +247,10 @@ namespace DotSpatial.Data
         public static IFeature Difference(this IFeature self, IGeometry other)
         {
             if (other == null) return self.Copy();
+
             IGeometry g = self.Geometry.Difference(other);
             if (g == null || g.IsEmpty) return null;
+
             return new Feature(g);
         }
 
@@ -255,144 +271,20 @@ namespace DotSpatial.Data
             {
                 UpdateFields(self, other, f, destinationFeatureSet, joinType);
             }
+
             return f;
         }
 
         /// <summary>
-        /// Creates a new GML string describing the location of this point
+        /// Creates a new GML string describing the location of this point.
         /// </summary>
+        /// <param name="self">This feature.</param>
         /// <returns>A String representing the Geographic Markup Language version of this point</returns>
         public static string ExportToGml(this IFeature self)
         {
             var geo = self.Geometry as Geometry;
-            return (geo == null) ? "" : geo.ToGMLFeature().ToString();
+            return geo == null ? string.Empty : geo.ToGMLFeature().ToString();
         }
-
-        // This handles the slightly complex business of attribute outputs.
-        private static void UpdateFields(IFeature self, IFeature other, IFeature result, IFeatureSet destinationFeatureSet, FieldJoinType joinType)
-        {
-            if (destinationFeatureSet.FeatureType != result.FeatureType) return;
-            destinationFeatureSet.Features.Add(result);
-            if (joinType == FieldJoinType.None) return;
-            if (joinType == FieldJoinType.All)
-            {
-                // This overly complex mess is concerned with preventing duplicate field names.
-                // This assumes that numbers were appended when duplicates occured, and will
-                // repeat the process here to establish one set of string names and values.
-                Dictionary<string, object> mappings = new Dictionary<string, object>();
-                foreach (DataColumn dc in self.ParentFeatureSet.DataTable.Columns)
-                {
-                    string name = dc.ColumnName;
-                    int i = 1;
-                    while (mappings.ContainsKey(name))
-                    {
-                        name = dc.ColumnName + i;
-                        i++;
-                    }
-                    mappings.Add(name, self.DataRow[dc.ColumnName]);
-                }
-                foreach (DataColumn dc in other.ParentFeatureSet.DataTable.Columns)
-                {
-                    string name = dc.ColumnName;
-                    int i = 1;
-                    while (mappings.ContainsKey(name))
-                    {
-                        name = dc.ColumnName + i;
-                        i++;
-                    }
-                    mappings.Add(name, other.DataRow[dc.ColumnName]);
-                }
-                foreach (KeyValuePair<string, object> pair in mappings)
-                {
-                    if (!result.DataRow.Table.Columns.Contains(pair.Key))
-                    {
-                        result.DataRow.Table.Columns.Add(pair.Key);
-                    }
-                    result.DataRow[pair.Key] = pair.Value;
-                }
-            }
-            if (joinType == FieldJoinType.LocalOnly)
-            {
-                foreach (DataColumn dc in destinationFeatureSet.DataTable.Columns)
-                {
-                    if (self.DataRow.Table.Columns.Contains(dc.ColumnName))
-                    {
-                        result.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
-                    }
-                }
-            }
-            if (joinType == FieldJoinType.ForeignOnly)
-            {
-                foreach (DataColumn dc in destinationFeatureSet.DataTable.Columns)
-                {
-                    if (other.DataRow[dc.ColumnName] != null)
-                    {
-                        result.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
-                    }
-                }
-            }
-        }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if the geometry of this feature is disjoint with the geometry
-        // /// of the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The feature to compare this feature to</param>
-        // /// <returns>Boolean, true if this feature is disjoint with the specified feature</returns>
-        // public static bool Disjoint(this IFeature self, IFeature other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Disjoint(Geometry.FromBasicGeometry(other));
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if the geometry of this feature is disjoint with the geometry
-        // /// of the specified feature.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The feature to compare this feature to</param>
-        // /// <returns>Boolean, true if this feature is disjoint with the specified feature</returns>
-        // public static bool Disjoint(this IFeature self, IGeometry other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Disjoint(other);
-        // }
-
-        // /// <summary>
-        // /// Distance between features.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The feature to compare this feature to</param>
-        // /// <returns></returns>
-        // public static double Distance(this IFeature self, IFeature other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Distance(Geometry.FromBasicGeometry(other));
-        // }
-
-        // /// <summary>
-        // /// Gets a boolean that is true if the geometry of this feature is disjoint with the geometry
-        // /// of the specified feature
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The feature to compare this feature to</param>
-        // /// <returns>Boolean, true if this feature is disjoint with the specified feature</returns>
-        // public static double Distance(this IFeature self, IGeometry other)
-        // {
-        //     return Geometry.FromBasicGeometry(self.Geometry).Distance(other);
-        // }
-
-        // /// <summary>
-        // /// Creates a new Feature that has a geometry that is the intersection between this feature and the specified feature.
-        // /// </summary>
-        // /// <param name="self">This feature</param>
-        // /// <param name="other">The other feature to compare to.</param>
-        // /// <returns>A new feature that is the geometric intersection between this feature and the specified feature.</returns>
-        // public static IFeature Intersection(this IFeature self, IFeature other)
-        // {
-        //     IGeometry g = Geometry.FromBasicGeometry(self.Geometry).Intersection(Geometry.FromBasicGeometry(other.Geometry));
-        //     if (g == null) return null;
-        //     if (g.IsEmpty) return null;
-        //     return new Feature(g);
-        // }
 
         /// <summary>
         /// Creates a new Feature that has a geometry that is the intersection between this feature and the specified feature.
@@ -404,6 +296,7 @@ namespace DotSpatial.Data
         {
             IGeometry g = self.Geometry.Intersection(other);
             if (g == null || g.IsEmpty) return null;
+
             return new Feature(g);
         }
 
@@ -424,18 +317,21 @@ namespace DotSpatial.Data
             {
                 UpdateFields(self, other, f, destinationFeatureSet, joinType);
             }
+
             return f;
         }
 
         /// <summary>
         /// Gets the integer number of parts associated with this feature.
         /// </summary>
+        /// <param name="self">This feature.</param>
+        /// <returns>The number of parts.</returns>
         public static int NumParts(this IFeature self)
         {
             int count = 0;
 
-            if (self.FeatureType != FeatureType.Polygon)
-                return self.Geometry.NumGeometries;
+            if (self.FeatureType != FeatureType.Polygon) return self.Geometry.NumGeometries;
+
             IPolygon p = self.Geometry as IPolygon;
             if (p == null)
             {
@@ -444,6 +340,7 @@ namespace DotSpatial.Data
                 {
                     p = self.Geometry.GetGeometryN(i) as IPolygon;
                     if (p == null) continue;
+
                     count += 1; // Shell
                     count += p.NumInteriorRings; // Holes
                 }
@@ -454,7 +351,18 @@ namespace DotSpatial.Data
                 count += 1; // Shell
                 count += p.NumInteriorRings; // Holes
             }
+
             return count;
+        }
+
+        /// <summary>
+        /// An index value that is saved in some file formats.
+        /// </summary>
+        /// <param name="self">This feature.</param>
+        /// <returns>The record number.</returns>
+        public static int RecordNumber(this IFeature self)
+        {
+            return self.ShapeIndex?.RecordNumber ?? -1;
         }
 
         /// <summary>
@@ -475,17 +383,11 @@ namespace DotSpatial.Data
         /// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
         /// and whether or not the shape is null.
         /// </summary>
+        /// <param name="self">This feature.</param>
+        /// <returns>The shape type.</returns>
         public static ShapeType ShapeType(this IFeature self)
         {
-            return self.ShapeIndex != null ? self.ShapeIndex.ShapeType : Data.ShapeType.NullShape;
-        }
-
-        /// <summary>
-        /// An index value that is saved in some file formats.
-        /// </summary>
-        public static int RecordNumber(this IFeature self)
-        {
-            return self.ShapeIndex != null ? self.ShapeIndex.RecordNumber : -1;
+            return self.ShapeIndex?.ShapeType ?? Data.ShapeType.NullShape;
         }
 
         /// <summary>
@@ -498,6 +400,7 @@ namespace DotSpatial.Data
         {
             IGeometry g = self.Geometry.SymmetricDifference(other);
             if (g == null || g.IsEmpty) return null;
+
             return new Feature(g);
         }
 
@@ -518,6 +421,7 @@ namespace DotSpatial.Data
             {
                 UpdateFields(self, other, f, destinationFeatureSet, joinType);
             }
+
             return f;
         }
 
@@ -531,6 +435,7 @@ namespace DotSpatial.Data
         {
             IGeometry g = self.Geometry.Union(other);
             if (g == null || g.IsEmpty) return null;
+
             return new Feature(g);
         }
 
@@ -551,8 +456,84 @@ namespace DotSpatial.Data
             {
                 UpdateFields(self, other, f, destinationFeatureSet, joinType);
             }
+
             return f;
         }
 
+        // This handles the slightly complex business of attribute outputs.
+        private static void UpdateFields(IFeature self, IFeature other, IFeature result, IFeatureSet destinationFeatureSet, FieldJoinType joinType)
+        {
+            if (destinationFeatureSet.FeatureType != result.FeatureType) return;
+
+            destinationFeatureSet.Features.Add(result);
+            if (joinType == FieldJoinType.None) return;
+
+            if (joinType == FieldJoinType.All)
+            {
+                // This overly complex mess is concerned with preventing duplicate field names.
+                // This assumes that numbers were appended when duplicates occured, and will
+                // repeat the process here to establish one set of string names and values.
+                Dictionary<string, object> mappings = new Dictionary<string, object>();
+                foreach (DataColumn dc in self.ParentFeatureSet.DataTable.Columns)
+                {
+                    string name = dc.ColumnName;
+                    int i = 1;
+                    while (mappings.ContainsKey(name))
+                    {
+                        name = dc.ColumnName + i;
+                        i++;
+                    }
+
+                    mappings.Add(name, self.DataRow[dc.ColumnName]);
+                }
+
+                foreach (DataColumn dc in other.ParentFeatureSet.DataTable.Columns)
+                {
+                    string name = dc.ColumnName;
+                    int i = 1;
+                    while (mappings.ContainsKey(name))
+                    {
+                        name = dc.ColumnName + i;
+                        i++;
+                    }
+
+                    mappings.Add(name, other.DataRow[dc.ColumnName]);
+                }
+
+                foreach (KeyValuePair<string, object> pair in mappings)
+                {
+                    if (!result.DataRow.Table.Columns.Contains(pair.Key))
+                    {
+                        result.DataRow.Table.Columns.Add(pair.Key);
+                    }
+
+                    result.DataRow[pair.Key] = pair.Value;
+                }
+            }
+
+            if (joinType == FieldJoinType.LocalOnly)
+            {
+                foreach (DataColumn dc in destinationFeatureSet.DataTable.Columns)
+                {
+                    if (self.DataRow.Table.Columns.Contains(dc.ColumnName))
+                    {
+                        result.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
+                    }
+                }
+            }
+
+            if (joinType == FieldJoinType.ForeignOnly)
+            {
+                foreach (DataColumn dc in destinationFeatureSet.DataTable.Columns)
+                {
+                    if (other.DataRow[dc.ColumnName] != null)
+                    {
+                        result.DataRow[dc.ColumnName] = self.DataRow[dc.ColumnName];
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

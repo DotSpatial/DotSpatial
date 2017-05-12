@@ -29,25 +29,12 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets a valid IBasicGeometry associated with the data elements of this feature.
-        /// This will be enough geometry information to cast into a full fledged geometry
-        /// that can be used in coordination with DotSpatial.Analysis
-        /// </summary>
-        IGeometry Geometry { get; set; }
-
-        ///// <summary>
-        ///// Gets or sets the content length. If the geometry for this shape was loaded from a file, this contains the size
-        ///// of this shape in 16-bit words as per the Esri Shapefile specification.
-        ///// </summary>
-        // int ContentLength { get; set; }
-
-        /// <summary>
-        /// Gets the datarow containing all the attributes related to this geometry
+        /// Gets or sets the datarow containing all the attributes related to this geometry
         /// </summary>
         DataRow DataRow { get; set; }
 
         /// <summary>
-        /// Returns the FeatureType of the feature. This can either be Point, Multipoint, Line, Polygon or Unspecified if the feature has no geometry.
+        /// Gets the FeatureType of the feature. This can either be Point, Multipoint, Line, Polygon or Unspecified if the feature has no geometry.
         /// </summary>
         FeatureType FeatureType { get; }
 
@@ -58,26 +45,22 @@ namespace DotSpatial.Data
         int Fid { get; }
 
         /// <summary>
-        /// Gets a reference to the IFeatureLayer that contains this item.
+        /// Gets or sets a valid IBasicGeometry associated with the data elements of this feature.
+        /// This will be enough geometry information to cast into a full fledged geometry
+        /// that can be used in coordination with DotSpatial.Analysis
+        /// </summary>
+        IGeometry Geometry { get; set; }
+
+        /// <summary>
+        /// Gets or sets a reference to the IFeatureLayer that contains this item.
         /// </summary>
         IFeatureSet ParentFeatureSet { get; set; }
 
-        ///// <summary>
-        ///// An index value that is saved in some file formats.
-        ///// </summary>
-        // int RecordNumber { get; set; }
-
         /// <summary>
-        /// This is simply a quick access to the Vertices list for this specific
+        /// Gets or sets a quick access to the Vertices list for this specific
         /// feature. If the Vertices have not yet been defined, this will be null.
         /// </summary>
         ShapeRange ShapeIndex { get; set; }
-
-        ///// <summary>
-        ///// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
-        ///// and whether or not the shape is null.
-        ///// </summary>
-        // ShapeType ShapeType { get; set; }
 
         #endregion
 

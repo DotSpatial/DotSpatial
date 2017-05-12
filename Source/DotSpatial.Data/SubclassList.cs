@@ -17,100 +17,45 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// SubclassList is brilliant if I do say so myself.  Let's say you have a list of IPointCategory, which is a subclass of IFeatureCategory.
+    /// SubclassList is brilliant if I do say so myself. Let's say you have a list of IPointCategory, which is a subclass of IFeatureCategory.
     /// You can't have a strong typed List that is both without creating a special class that can deal with the specific implementations of
-    /// each.  So I was writing all of the stupid type specific collection classes, when in reality, I just needed a class like this
-    /// that could handle the business logic.  Then specific instances can just inherit from this class, but specify the two types.
+    /// each. So I was writing all of the stupid type specific collection classes, when in reality, I just needed a class like this
+    /// that could handle the business logic. Then specific instances can just inherit from this class, but specify the two types.
     /// </summary>
     /// <typeparam name="TBase">The base type that is inherited</typeparam>
     /// <typeparam name="TSub">The sub type that inherits from the base type</typeparam>
-    public class SubclassList<TBase, TSub>
-        : ChangeEventList<TBase>, IChangeEventList<TSub>
+    public class SubclassList<TBase, TSub> : ChangeEventList<TBase>, IChangeEventList<TSub>
         where TSub : class, TBase
         where TBase : class, IChangeItem
     {
-        #region Enumerator
+        #region Indexers
 
         /// <summary>
-        /// I can't simply return the enumerator of the internal list because it would be the wrong type.
-        /// Furthermore, I need to know both types so that I can cast them appropriately.
+        /// Gets or sets the specific item in the list.
         /// </summary>
-        /// <typeparam name="TB">The base type that is inherited</typeparam>
-        /// <typeparam name="TS">The sub type that inherits from the base type</typeparam>
-        private class SubclassListEnumerator<TB, TS> : IEnumerator<TS>
-            where TS : class, TB
+        /// <param name="index">The index.</param>
+        /// <returns>The item at the specified index.</returns>
+        public new TSub this[int index]
         {
-            private readonly IEnumerator<TB> _internalEnumerator;
-
-            /// <summary>
-            /// Creates a new instance of the enumerator of the sub-type given an enumerator
-            /// of the base type.
-            /// </summary>
-            /// <param name="internalEnumerator">The internal enumerator.</param>
-            public SubclassListEnumerator(IEnumerator<TB> internalEnumerator)
+            get
             {
-                _internalEnumerator = internalEnumerator;
+                return base[index] as TSub;
             }
 
-            #region IEnumerator<TS> Members
-
-            /// <summary>
-            /// Gets the current member returned as type TSub.
-            /// </summary>
-            public TS Current
+            set
             {
-                get { return _internalEnumerator.Current as TS; }
+                base[index] = value;
             }
-
-            object IEnumerator.Current
-            {
-                get { return _internalEnumerator.Current; }
-            }
-
-            /// <summary>
-            /// Disposes any unmanaged memory objects
-            /// </summary>
-            public void Dispose()
-            {
-                _internalEnumerator.Dispose();
-            }
-
-            /// <summary>
-            /// Advances the enumerator to the next position
-            /// </summary>
-            /// <returns>Boolean, false at the end of the list.</returns>
-            public bool MoveNext()
-            {
-                return _internalEnumerator.MoveNext();
-            }
-
-            /// <summary>
-            /// Resets the enumerator to the beginning of the list
-            /// </summary>
-            public void Reset()
-            {
-                _internalEnumerator.Reset();
-            }
-
-            #endregion
         }
-
-        #endregion
-
-        #region Private Variables
-
-        #endregion
-
-        #region Constructors
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Allows adding of the sub type
+        /// Allows adding of the sub type.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The iten that gets added.</param>
         public void Add(TSub item)
         {
             Add(item as TBase);
@@ -149,6 +94,7 @@ namespace DotSpatial.Data
             for (int i = 0; i < Count; i++)
             {
                 if (index > array.GetUpperBound(0)) break;
+
                 array[index] = base[i] as TSub;
                 index++;
             }
@@ -157,7 +103,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets an enumerator of type TSub for cycling through the list.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The enumerator.</returns>
         public new IEnumerator<TSub> GetEnumerator()
         {
             return new SubclassListEnumerator<TBase, TSub>(base.GetEnumerator());
@@ -195,23 +141,75 @@ namespace DotSpatial.Data
 
         #endregion
 
-        #region Properties
+        #region Classes
 
         /// <summary>
-        /// Gets or sets the specific item in the list
+        /// I can't simply return the enumerator of the internal list because it would be the wrong type.
+        /// Furthermore, I need to know both types so that I can cast them appropriately.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public new TSub this[int index]
+        /// <typeparam name="TB">The base type that is inherited</typeparam>
+        /// <typeparam name="TS">The sub type that inherits from the base type</typeparam>
+        private class SubclassListEnumerator<TB, TS> : IEnumerator<TS>
+            where TS : class, TB
         {
-            get
+            #region Fields
+
+            private readonly IEnumerator<TB> _internalEnumerator;
+
+            #endregion
+
+            #region Constructors
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SubclassListEnumerator{TB, TS}"/> class.
+            /// </summary>
+            /// <param name="internalEnumerator">The internal enumerator.</param>
+            public SubclassListEnumerator(IEnumerator<TB> internalEnumerator)
             {
-                return base[index] as TSub;
+                _internalEnumerator = internalEnumerator;
             }
-            set
+
+            #endregion
+
+            #region Properties
+
+            /// <summary>
+            /// Gets the current member returned as type TSub.
+            /// </summary>
+            public TS Current => _internalEnumerator.Current as TS;
+
+            object IEnumerator.Current => _internalEnumerator.Current;
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Disposes any unmanaged memory objects
+            /// </summary>
+            public void Dispose()
             {
-                base[index] = value;
+                _internalEnumerator.Dispose();
             }
+
+            /// <summary>
+            /// Advances the enumerator to the next position
+            /// </summary>
+            /// <returns>Boolean, false at the end of the list.</returns>
+            public bool MoveNext()
+            {
+                return _internalEnumerator.MoveNext();
+            }
+
+            /// <summary>
+            /// Resets the enumerator to the beginning of the list
+            /// </summary>
+            public void Reset()
+            {
+                _internalEnumerator.Reset();
+            }
+
+            #endregion
         }
 
         #endregion

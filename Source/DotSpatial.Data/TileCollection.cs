@@ -18,10 +18,12 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// 
+    /// TileCollection
     /// </summary>
     public class TileCollection : IEnumerable<IImageData>
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TileCollection"/> class.
         /// </summary>
@@ -37,6 +39,8 @@ namespace DotSpatial.Data
             if (Height < TileHeight) TileHeight = height;
             Tiles = new IImageData[NumTilesTall(), NumTilesWide()];
         }
+
+        #endregion
 
         #region Properties
 
@@ -72,13 +76,13 @@ namespace DotSpatial.Data
 
         #endregion
 
+        #region Methods
+
         /// <inheritdoc />
         public IEnumerator<IImageData> GetEnumerator()
         {
             return new TileCollectionEnumerator(this);
         }
-
-        #region Methods
 
         /// <summary>
         /// Gets the height of the tile.
@@ -88,7 +92,8 @@ namespace DotSpatial.Data
         public int GetTileHeight(int row)
         {
             if (row < NumTilesTall() - 1) return TileHeight;
-            return Height - (NumTilesTall() - 1) * TileHeight;
+
+            return Height - ((NumTilesTall() - 1) * TileHeight);
         }
 
         /// <summary>
@@ -99,7 +104,8 @@ namespace DotSpatial.Data
         public int GetTileWidth(int col)
         {
             if (col < NumTilesWide() - 1) return TileWidth;
-            return Width - (NumTilesWide() - 1) * TileWidth;
+
+            return Width - ((NumTilesWide() - 1) * TileWidth);
         }
 
         /// <summary>
@@ -134,6 +140,7 @@ namespace DotSpatial.Data
             }
 
             if (Tiles == null) return;
+
             for (int row = 0; row < NumTilesTall(); row++)
             {
                 for (int col = 0; col < NumTilesWide(); col++)
@@ -142,8 +149,8 @@ namespace DotSpatial.Data
                     int w = GetTileWidth(col);
 
                     // The rotation terms are the same, but the top-left values need to be shifted.
-                    tileAffine[0] = affine[0] + affine[1] * col * TileWidth + affine[2] * row * TileHeight;
-                    tileAffine[3] = affine[3] + affine[4] * col * TileWidth + affine[5] * row * TileHeight;
+                    tileAffine[0] = affine[0] + (affine[1] * col * TileWidth) + (affine[2] * row * TileHeight);
+                    tileAffine[3] = affine[3] + (affine[4] * col * TileWidth) + (affine[5] * row * TileHeight);
                     Tiles[row, col].Bounds = new RasterBounds(h, w, tileAffine);
                 }
             }
@@ -164,11 +171,17 @@ namespace DotSpatial.Data
         /// </summary>
         private class TileCollectionEnumerator : IEnumerator<IImageData>
         {
+            #region Fields
+
             private readonly IImageData[,] _tiles;
 
             private int _col;
 
             private int _row;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             /// Initializes a new instance of the <see cref="TileCollectionEnumerator"/> class.
@@ -181,10 +194,18 @@ namespace DotSpatial.Data
                 _col = -1;
             }
 
+            #endregion
+
+            #region Properties
+
             /// <inheritdoc />
             public IImageData Current => _tiles[_row, _col];
 
             object IEnumerator.Current => Current;
+
+            #endregion
+
+            #region Methods
 
             /// <inheritdoc />
             public void Dispose()
@@ -207,6 +228,7 @@ namespace DotSpatial.Data
                     if (_row > _tiles.GetUpperBound(0)) return false;
                 }
                 while (_tiles[_row, _col] == null);
+
                 return true;
             }
 
@@ -216,7 +238,10 @@ namespace DotSpatial.Data
                 _row = 0;
                 _col = 0;
             }
+
+            #endregion
         }
+
         #endregion
     }
 }

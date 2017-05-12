@@ -22,6 +22,7 @@ namespace DotSpatial.Data
         /// All shapes will be used
         /// </summary>
         All,
+
         /// <summary>
         /// Only intersecting shapes will be used
         /// </summary>

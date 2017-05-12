@@ -25,14 +25,18 @@ namespace DotSpatial.Data
     /// </summary>
     public class PointShapefile : Shapefile
     {
-        /// <summary>
-        /// Creates a new instance of a PointShapefile for in-ram handling only.
-        /// </summary>
-        public PointShapefile()
-            : base(FeatureType.Point, ShapeType.Point) { }
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a PointShapefile that is loaded from the supplied fileName.
+        /// Initializes a new instance of the <see cref="PointShapefile"/> class for in-ram handling only.
+        /// </summary>
+        public PointShapefile()
+            : base(FeatureType.Point, ShapeType.Point)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointShapefile"/> class that is loaded from the supplied fileName.
         /// </summary>
         /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
         public PointShapefile(string fileName)
@@ -41,8 +45,29 @@ namespace DotSpatial.Data
             Open(fileName, null);
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
+        public override IFeature GetFeature(int index)
+        {
+            IFeature f;
+            if (!IndexMode)
+            {
+                f = Features[index];
+            }
+            else
+            {
+                f = GetPoint(index);
+                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            }
+
+            return f;
+        }
+
         /// <summary>
-        /// Opens a shapefile
+        /// Opens a shapefile.
         /// </summary>
         /// <param name="fileName">The string fileName of the point shapefile to load</param>
         /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
@@ -73,6 +98,47 @@ namespace DotSpatial.Data
 
             FillPoints(Filename, progressHandler);
             ReadProjection();
+        }
+
+        /// <inheritdoc />
+        protected override StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
+        {
+            if (indexed) return PopulateShpAndShxStreamsIndexed(shpStream, shxStream);
+
+            return PopulateShpAndShxStreamsNotIndexed(shpStream, shxStream);
+        }
+
+        /// <inheritdoc />
+        protected override void SetHeaderShapeType()
+        {
+            if (CoordinateType == CoordinateType.Regular) Header.ShapeType = ShapeType.Point;
+            else if (CoordinateType == CoordinateType.M) Header.ShapeType = ShapeType.PointM;
+            else if (CoordinateType == CoordinateType.Z) Header.ShapeType = ShapeType.PointZ;
+        }
+
+        /// <summary>
+        /// Calculates the ContentLength that is needed to save a shape with the given number of parts and points.
+        /// </summary>
+        /// <param name="shapeType">The shape type.</param>
+        /// <returns>ContentLength that is needed to save a shape with the given number of parts and points.</returns>
+        private static int GetContentLength(ShapeType shapeType)
+        {
+            int contentLength = 2; // Shape Type
+
+            switch (shapeType)
+            {
+                case ShapeType.Point:
+                    contentLength += 8; // x, y
+                    break;
+                case ShapeType.PointM:
+                    contentLength += 12; // x, y, m
+                    break;
+                case ShapeType.PointZ:
+                    contentLength += 16; // x, y, m, z
+                    break;
+            }
+
+            return contentLength;
         }
 
         // X Y Points: Total Length = 28 Bytes
@@ -115,29 +181,7 @@ namespace DotSpatial.Data
         /// <param name="progressHandler">Progress handler</param>
         private void FillPoints(string fileName, IProgressHandler progressHandler)
         {
-            // Check to ensure the fileName is not null
-            if (fileName == null)
-            {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", "fileName"));
-            }
-
-            if (File.Exists(fileName) == false)
-            {
-                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
-            }
-
-            // Get the basic header information.
-            // Check to ensure that the fileName is the correct shape type
-            if (Header.ShapeType != ShapeType.Point && Header.ShapeType != ShapeType.PointM && Header.ShapeType != ShapeType.PointZ)
-            {
-                throw new ApplicationException(DataStrings.FileNotPoints_S.Replace("%S", fileName));
-            }
-
-            if (new FileInfo(fileName).Length == 100)
-            {
-                // the file is empty so we are done reading
-                return;
-            }
+            if (!CanBeRead(fileName, this, ShapeType.Point, ShapeType.PointM, ShapeType.PointZ)) return;
 
             // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
             List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
@@ -200,7 +244,7 @@ namespace DotSpatial.Data
                 int i = 0;
                 for (var shp = 0; shp < numShapes; shp++)
                 {
-                    progressMeter.CurrentPercent = (int)(50 + shp * 50.0 / numShapes);
+                    progressMeter.CurrentPercent = (int)(50 + (shp * 50.0 / numShapes));
 
                     var shape = shapeIndices[shp];
                     if (shape.ShapeType == ShapeType.NullShape) continue;
@@ -214,7 +258,7 @@ namespace DotSpatial.Data
                     ind += 8;
 
                     // Read Y
-                    vert[i * 2 + 1] = reader.ReadDouble();
+                    vert[(i * 2) + 1] = reader.ReadDouble();
                     ind += 8;
 
                     // Read Z
@@ -236,9 +280,13 @@ namespace DotSpatial.Data
                             m[i] = reader.ReadDouble();
                         }
                     }
-                    var part = new PartRange(vert, shape.StartIndex, 0, FeatureType.Point) { NumVertices = 1 };
+
+                    var part = new PartRange(vert, shape.StartIndex, 0, FeatureType.Point)
+                    {
+                        NumVertices = 1
+                    };
                     shape.Parts.Add(part);
-                    shape.Extent = new Extent(new[] { vert[i * 2], vert[i * 2 + 1], vert[i * 2], vert[i * 2 + 1] });
+                    shape.Extent = new Extent(new[] { vert[i * 2], vert[(i * 2) + 1], vert[i * 2], vert[(i * 2) + 1] });
                     i++;
                 }
 
@@ -251,57 +299,49 @@ namespace DotSpatial.Data
             progressMeter.Reset();
         }
 
-        /// <inheritdoc />
-        public override IFeature GetFeature(int index)
-        {
-            IFeature f;
-            if (!IndexMode)
-            {
-                f = Features[index];
-            }
-            else
-            {
-                f = GetPoint(index);
-                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
-            }
-
-            return f;
-        }
-
-        /// <inheritdoc />
-        protected override void SetHeaderShapeType()
-        {
-            if (CoordinateType == CoordinateType.Regular)
-                Header.ShapeType = ShapeType.Point;
-            else if (CoordinateType == CoordinateType.M)
-                Header.ShapeType = ShapeType.PointM;
-            else if (CoordinateType == CoordinateType.Z)
-                Header.ShapeType = ShapeType.PointZ;
-        }
-
         /// <summary>
-        /// Calculates the ContentLength that is needed to save a shape with the given number of parts and points.
+        /// Populates the given streams for the shp and shx file when in IndexMode.
         /// </summary>
-        /// <param name="header"></param>
-        /// <returns>ContentLength that is needed to save a shape with the given number of parts and points.</returns>
-        private static int GetContentLength(ShapeType header)
+        /// <param name="shpStream">Stream that is used to write the shp file.</param>
+        /// <param name="shxStream">Stream that is used to write the shx file.</param>
+        /// <returns>The lengths of the streams in bytes.</returns>
+        private StreamLengthPair PopulateShpAndShxStreamsIndexed(Stream shpStream, Stream shxStream)
         {
-            int contentLength = 2; // Shape Type
+            int fid = 0;
+            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
 
-            switch (header)
+            foreach (ShapeRange shape in ShapeIndices)
             {
-                case ShapeType.Point:
-                    contentLength += 8; // x, y
-                    break;
-                case ShapeType.PointM:
-                    contentLength += 12; // x, y, m
-                    break;
-                case ShapeType.PointZ:
-                    contentLength += 16; // x, y, m, z
-                    break;
+                int contentLength = shape.ShapeType == ShapeType.NullShape ? 2 : GetContentLength(Header.ShapeType);
+
+                shxStream.WriteBe(offset);
+                shxStream.WriteBe(contentLength);
+
+                shpStream.WriteBe(fid + 1);
+                shpStream.WriteBe(contentLength);
+                if (shape.ShapeType == ShapeType.NullShape)
+                {
+                    shpStream.WriteLe((int)ShapeType.NullShape); // Byte 8       Shape Type 3        Integer     1           Little
+                }
+                else
+                {
+                    shpStream.WriteLe((int)Header.ShapeType);
+                    shpStream.WriteLe(Vertex[shape.StartIndex * 2]);
+                    shpStream.WriteLe(Vertex[(shape.StartIndex * 2) + 1]);
+                    if (Z != null) shpStream.WriteLe(Z[shape.StartIndex]);
+                    if (M != null) shpStream.WriteLe(M[shape.StartIndex]);
+                }
+
+                fid++;
+                offset += 4; // header bytes
+                offset += contentLength; // adding the content length from each loop calculates the word offset
             }
 
-            return contentLength;
+            return new StreamLengthPair
+            {
+                ShpLength = offset,
+                ShxLength = 50 + (fid * 4)
+            };
         }
 
         /// <summary>
@@ -340,11 +380,11 @@ namespace DotSpatial.Data
 
                 if (isNullShape)
                 {
-                    shpStream.WriteLe((int)ShapeType.NullShape);         // Byte 8   Shape Type 0   Integer     1           Little
+                    shpStream.WriteLe((int)ShapeType.NullShape); // Byte 8   Shape Type 0   Integer     1           Little
                 }
                 else
                 {
-                    shpStream.WriteLe((int)Header.ShapeType);           // Byte 8   Shape Type    Integer     1           Little
+                    shpStream.WriteLe((int)Header.ShapeType); // Byte 8   Shape Type    Integer     1           Little
 
                     Coordinate c = f.Geometry.Coordinates[0];
                     shpStream.WriteLe(c.X);
@@ -368,55 +408,13 @@ namespace DotSpatial.Data
 
             progressMeter.Reset();
 
-            return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + fid * 4 };
-        }
-
-        /// <inheritdoc />
-        protected override StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
-        {
-            if (indexed) return PopulateShpAndShxStreamsIndexed(shpStream, shxStream);
-            return PopulateShpAndShxStreamsNotIndexed(shpStream, shxStream);
-        }
-
-        /// <summary>
-        /// Populates the given streams for the shp and shx file when in IndexMode.
-        /// </summary>
-        /// <param name="shpStream">Stream that is used to write the shp file.</param>
-        /// <param name="shxStream">Stream that is used to write the shx file.</param>
-        /// <returns>The lengths of the streams in bytes.</returns>
-        private StreamLengthPair PopulateShpAndShxStreamsIndexed(Stream shpStream, Stream shxStream)
-        {
-            int fid = 0;
-            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
-
-            foreach (ShapeRange shape in ShapeIndices)
+            return new StreamLengthPair
             {
-                int contentLength = shape.ShapeType == ShapeType.NullShape ? 2 : GetContentLength(Header.ShapeType);
-
-                shxStream.WriteBe(offset);
-                shxStream.WriteBe(contentLength);
-
-                shpStream.WriteBe(fid + 1);
-                shpStream.WriteBe(contentLength);
-                if (shape.ShapeType == ShapeType.NullShape)
-                {
-                    shpStream.WriteLe((int)ShapeType.NullShape); // Byte 8       Shape Type 3        Integer     1           Little
-                }
-                else
-                {
-                    shpStream.WriteLe((int)Header.ShapeType);
-                    shpStream.WriteLe(Vertex[shape.StartIndex * 2]);
-                    shpStream.WriteLe(Vertex[shape.StartIndex * 2 + 1]);
-                    if (Z != null) shpStream.WriteLe(Z[shape.StartIndex]);
-                    if (M != null) shpStream.WriteLe(M[shape.StartIndex]);
-                }
-
-                fid++;
-                offset += 4; // header bytes
-                offset += contentLength; // adding the content length from each loop calculates the word offset
-            }
-
-            return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + fid * 4 };
+                ShpLength = offset,
+                ShxLength = 50 + (fid * 4)
+            };
         }
+
+        #endregion
     }
 }

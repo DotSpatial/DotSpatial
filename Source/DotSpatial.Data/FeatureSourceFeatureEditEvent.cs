@@ -16,36 +16,10 @@
 // ********************************************************************************************************
 namespace DotSpatial.Data
 {
-    ///<summary>
-    /// Callback specified when calling IFeatureSource.SearchAndModifyAttributes
-    ///</summary>
-    ///<param name="e"></param>
-    public delegate bool FeatureSourceRowEditEvent(FeatureSourceRowEditEventArgs e);
-
     /// <summary>
-    /// FeatureSourceRowEditEvent arguments
+    /// Callback specified when calling IFeatureSource.SearchAndModifyAttributes
     /// </summary>
-    public class FeatureSourceRowEditEventArgs
-    {
-        /// <summary>
-        /// RowEditEvent arguments
-        /// </summary>
-        public RowEditEventArgs RowEditEventArgs;
-
-        /// <summary>
-        /// Shape geometry associated with the row
-        /// </summary>
-        public Shape Shape;
-
-        /// <summary>
-        /// Construct FeatureSourceRowEditEventArgs
-        /// </summary>
-        /// <param name="rowEditEventArgs"></param>
-        /// <param name="shape"></param>
-        public FeatureSourceRowEditEventArgs(RowEditEventArgs rowEditEventArgs, Shape shape)
-        {
-            RowEditEventArgs = rowEditEventArgs;
-            Shape = shape;
-        }
-    }
+    /// <param name="e">The event args.</param>
+    /// <returns>Boolean</returns>
+    public delegate bool FeatureSourceRowEditEvent(FeatureSourceRowEditEventArgs e);
 }

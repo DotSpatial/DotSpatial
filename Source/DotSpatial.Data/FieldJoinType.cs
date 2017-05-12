@@ -24,15 +24,18 @@ namespace DotSpatial.Data
         /// other featureset.
         /// </summary>
         All,
+
         /// <summary>
         /// The fields will be created from the fields in the other featureset.
         /// </summary>
         ForeignOnly,
+
         /// <summary>
         /// All the fields from this FeatureSet are used, and all of the features from the other featureset are considered
         /// to be a single geometry so that features from this set will appear no more than once in the output set.
         /// </summary>
         LocalOnly,
+
         /// <summary>
         /// No fields will be copied, but features from this featureset will be considered independantly and added as separate
         /// features to the output featureset.

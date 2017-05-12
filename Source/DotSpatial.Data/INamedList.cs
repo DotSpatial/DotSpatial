@@ -13,8 +13,25 @@
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Interface for NamedList.
+    /// </summary>
     public interface INamedList
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the base name to use for naming items
+        /// </summary>
+        string BaseName { get; set; }
+
+        /// <summary>
+        /// Gets the count of the items in the list.
+        /// </summary>
+        int Count { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -27,8 +44,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets the item with the specified name as an object.
-        /// This enables the INamedList to work with items even
-        /// if it doesn't know the strong type.
+        /// This enables the INamedList to work with items even if it doesn't know the strong type.
         /// </summary>
         /// <param name="name">The string name of the item to retrieve</param>
         /// <returns>The actual item cast as an object.</returns>
@@ -46,6 +62,7 @@ namespace DotSpatial.Data
         /// Gets the list of names for the items currently stored in the list,
         /// in the sequence defined by the list of items.
         /// </summary>
+        /// <returns>The names.</returns>
         string[] GetNames();
 
         /// <summary>
@@ -53,7 +70,7 @@ namespace DotSpatial.Data
         /// and therefore will be drawn later, and therefore should appear
         /// in a higher position on the list.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Name of the item that gets promoted.</param>
         void Promote(string name);
 
         /// <summary>
@@ -68,15 +85,5 @@ namespace DotSpatial.Data
         void Remove(string name);
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets the base name to use for naming items
-        /// </summary>
-        string BaseName { get; set; }
-
-        /// <summary>
-        /// Gets the count of the items in the list.
-        /// </summary>
-        int Count { get; }
     }
 }

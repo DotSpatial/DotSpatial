@@ -17,6 +17,9 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// RasterBounds
+    /// </summary>
     public class RasterBounds : IRasterBounds
     {
         #region Fields
@@ -32,7 +35,7 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new RasterBounds
+        /// Initializes a new instance of the <see cref="RasterBounds"/> class.
         /// </summary>
         public RasterBounds()
         {
@@ -40,7 +43,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Attempts to read the very simple 6 number world file associated with an image
+        /// Initializes a new instance of the <see cref="RasterBounds"/> class.
+        /// This attempts to read the very simple 6 number world file associated with an image.
         /// </summary>
         /// <param name="numRows">The number of rows in this raster</param>
         /// <param name="numColumns">The number of columns in this raster</param>
@@ -54,7 +58,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new instance of the RasterBounds class
+        /// Initializes a new instance of the <see cref="RasterBounds"/> class.
         /// </summary>
         /// <param name="numRows">The number of rows for this raster</param>
         /// <param name="numColumns">The number of columns for this raster</param>
@@ -67,7 +71,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new raster bounds that is georeferenced to the specified envelope.
+        /// Initializes a new instance of the <see cref="RasterBounds"/> class that is georeferenced to the specified envelope.
         /// </summary>
         /// <param name="numRows">The number of rows</param>
         /// <param name="numColumns">The number of columns</param>
@@ -90,7 +94,8 @@ namespace DotSpatial.Data
         /// X' = [0] + [1] * Column + [2] * Row
         /// Y' = [3] + [4] * Column + [5] * Row
         /// </summary>
-        [Category("GeoReference"), Description("X' = [0] + [1] * Column + [2] * Row, Y' = [3] + [4] * Column + [5] * Row")]
+        [Category("GeoReference")]
+        [Description("X' = [0] + [1] * Column + [2] * Row, Y' = [3] + [4] * Column + [5] * Row")]
         public virtual double[] AffineCoefficients
         {
             get
@@ -218,26 +223,16 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the number of columns in the raster.
         /// </summary>
-        [Category("General"), Description("Gets the number of columns in the raster.")]
-        public virtual int NumColumns
-        {
-            get
-            {
-                return _numColumns;
-            }
-        }
+        [Category("General")]
+        [Description("Gets the number of columns in the raster.")]
+        public virtual int NumColumns => _numColumns;
 
         /// <summary>
         /// Gets the number of rows in the raster.
         /// </summary>
-        [Category("General"), Description("Gets the number of rows in the underlying raster.")]
-        public virtual int NumRows
-        {
-            get
-            {
-                return _numRows;
-            }
-        }
+        [Category("General")]
+        [Description("Gets the number of rows in the underlying raster.")]
+        public virtual int NumRows => _numRows;
 
         /// <summary>
         /// Gets or sets the geographic width of this raster. This will include the skew term
@@ -272,7 +267,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the fileName of the wordfile that describes the geographic coordinates of this raster. If a relative path gets assigned it is changed to the absolute path including the file extension.
         /// </summary>
-        [Category("GeoReference"), Description("Returns the Geographic width of the envelope that completely contains this raster.")]
+        [Category("GeoReference")]
+        [Description("Returns the Geographic width of the envelope that completely contains this raster.")]
         public string WorldFile
         {
             get
@@ -305,10 +301,10 @@ namespace DotSpatial.Data
                 if (affine[0] < xMin) xMin = affine[0]; // TopLeft;
                 if (affine[0] + (nc * affine[1]) < xMin) xMin = affine[0] + (nc * affine[1]); // TopRight;
                 if (affine[0] + (nr * affine[2]) < xMin) xMin = affine[0] + (nr * affine[2]); // BottomLeft;
-                if (affine[0] + (nc * affine[1]) + (nr * affine[2]) < xMin) xMin = affine[0] + nc * affine[1] + nr * affine[2]; // BottomRight
+                if (affine[0] + (nc * affine[1]) + (nr * affine[2]) < xMin) xMin = affine[0] + (nc * affine[1]) + (nr * affine[2]); // BottomRight
 
                 // the coordinate thus far is the center of the cell. The actual left is half a cell further left.
-                return xMin - Math.Abs(affine[1]) / 2 - Math.Abs(affine[2]) / 2;
+                return xMin - (Math.Abs(affine[1]) / 2) - (Math.Abs(affine[2]) / 2);
             }
 
             set
@@ -335,12 +331,12 @@ namespace DotSpatial.Data
 
                 // Because these coefficients can be negative, we can't make assumptions about what corner is furthest left.
                 if (affine[3] > yMax) yMax = affine[3]; // TopLeft;
-                if (affine[3] + nc * affine[4] > yMax) yMax = affine[3] + nc * affine[4]; // TopRight;
-                if (affine[3] + nr * affine[5] > yMax) yMax = affine[3] + nr * affine[5]; // BottomLeft;
-                if (affine[3] + nc * affine[4] + nr * affine[5] > yMax) yMax = affine[3] + nc * affine[4] + nr * affine[5]; // BottomRight
+                if (affine[3] + (nc * affine[4]) > yMax) yMax = affine[3] + (nc * affine[4]); // TopRight;
+                if (affine[3] + (nr * affine[5]) > yMax) yMax = affine[3] + (nr * affine[5]); // BottomLeft;
+                if (affine[3] + (nc * affine[4]) + (nr * affine[5]) > yMax) yMax = affine[3] + (nc * affine[4]) + (nr * affine[5]); // BottomRight
 
                 // the value thus far is at the center of the cell. Return a value half a cell further
-                return yMax + Math.Abs(affine[4]) / 2 + Math.Abs(affine[5]) / 2;
+                return yMax + (Math.Abs(affine[4]) / 2) + (Math.Abs(affine[5]) / 2);
             }
 
             set
@@ -380,8 +376,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Attempts to load the data from the file listed in WorldFile
+        /// Attempts to load the data from the given fileName.
         /// </summary>
+        /// <param name="fileName">The file name.</param>
         public virtual void Open(string fileName)
         {
             this.OpenWorldFile(fileName);
@@ -395,6 +392,10 @@ namespace DotSpatial.Data
             this.SaveWorldFile();
         }
 
+        /// <summary>
+        /// Creates a duplicate of this RasterBounds.
+        /// </summary>
+        /// <returns>The copy.</returns>
         IRasterBounds IRasterBounds.Copy()
         {
             return Copy();

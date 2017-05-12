@@ -21,24 +21,18 @@ namespace DotSpatial.Data
     /// </summary>
     public class FeatureSetEventArgs : EventArgs
     {
-        private IFeatureSet _featureSet;
-
         /// <summary>
-        /// Initializes a new instance of the FeatureSetEventArgs class.
+        /// Initializes a new instance of the <see cref="FeatureSetEventArgs"/> class.
         /// </summary>
         /// <param name="featureSet">The IFeatureSet that is involved in this event.</param>
         public FeatureSetEventArgs(IFeatureSet featureSet)
         {
-            _featureSet = featureSet;
+            FeatureSet = featureSet;
         }
 
         /// <summary>
-        /// Gets the Raster associated with this event.
+        /// Gets or sets the FeatureSet associated with this event.
         /// </summary>
-        public IFeatureSet FeatureSet
-        {
-            get { return _featureSet; }
-            protected set { _featureSet = value; }
-        }
+        public IFeatureSet FeatureSet { get; protected set; }
     }
 }

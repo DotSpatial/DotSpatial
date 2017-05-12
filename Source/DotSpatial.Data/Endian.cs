@@ -23,6 +23,7 @@ namespace DotSpatial.Data
         /// Specifies big endian like mainframe or unix system.
         /// </summary>
         BigEndian,
+
         /// <summary>
         /// Specifies little endian like most pc systems.
         /// </summary>

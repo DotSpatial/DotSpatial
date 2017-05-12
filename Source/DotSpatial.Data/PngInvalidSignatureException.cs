@@ -15,12 +15,15 @@ using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// PngInvalidSignatureException
+    /// </summary>
     public class PngInvalidSignatureException : ApplicationException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PngInvalidSignatureException
+        /// Initializes a new instance of the <see cref="PngInvalidSignatureException"/> class.
         /// </summary>
         public PngInvalidSignatureException()
             : base(DataStrings.PngInvalidSignatureException)

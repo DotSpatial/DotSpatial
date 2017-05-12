@@ -19,22 +19,22 @@ namespace DotSpatial.Data
     /// <summary>
     /// The same as a ListEventArgs, but provides an option to cancel the event
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     public class IndividualCancelEventArgs<T> : CancelEventArgs
     {
-        /// <summary>
-        /// The protected object internal to this list event args class
-        /// </summary>
-        private readonly T _listItem;
+        #region Fields
 
-        #region Methods
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="IndividualCancelEventArgs{T}"/> class.
         /// </summary>
         /// <param name="inListItem">an object that is being interacted with in the list</param>
         public IndividualCancelEventArgs(T inListItem)
         {
-            _listItem = inListItem;
+            ListItem = inListItem;
         }
 
         #endregion
@@ -42,15 +42,9 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the list item being referenced by this event
+        /// Gets the list item being referenced by this event.
         /// </summary>
-        public T ListItem
-        {
-            get
-            {
-                return _listItem;
-            }
-        }
+        public T ListItem { get; }
 
         #endregion
     }

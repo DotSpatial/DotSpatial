@@ -16,23 +16,26 @@ using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// An exception that gets thrown for elements that may not be null.
+    /// </summary>
     public class NullException : ArgumentNullException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the NullLogException, but does not set the message
-        /// or log the exception.
+        /// Initializes a new instance of the <see cref="NullException"/> class.
         /// </summary>
         public NullException()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of NullException
+        /// Initializes a new instance of the <see cref="NullException"/> class.
         /// </summary>
+        /// <param name="parameterName">Name of the parameter that is null.</param>
         public NullException(string parameterName)
-            : base(DataStrings.Argument_Null_S.Replace("%S", parameterName))
+            : base(string.Format(DataStrings.Argument_Null_S, parameterName))
         {
         }
 

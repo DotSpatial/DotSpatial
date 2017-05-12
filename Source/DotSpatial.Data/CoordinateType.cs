@@ -22,10 +22,12 @@ namespace DotSpatial.Data
         /// X and Y coordinates only
         /// </summary>
         Regular,
+
         /// <summary>
         /// M values are available
         /// </summary>
         M,
+
         /// <summary>
         /// Z values are available
         /// </summary>

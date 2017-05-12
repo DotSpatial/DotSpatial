@@ -16,6 +16,9 @@ using System.Data;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Interface for AttributeSource.
+    /// </summary>
     public interface IAttributeSource
     {
         /// <summary>
@@ -43,9 +46,9 @@ namespace DotSpatial.Data
         void SetAttributes(int startIndex, DataTable pageValues);
 
         /// <summary>
-        /// The number of rows
+        /// Gets the number of rows.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The number of rows.</returns>
         int NumRows();
 
         /// <summary>
@@ -59,6 +62,7 @@ namespace DotSpatial.Data
         /// Gets a copy of the fields used to build the data structure. This is useful for learning
         /// about the existing fields, but doesn't allow direct changes to the underlying data structure.
         /// </summary>
+        /// <returns>The columns.</returns>
         DataColumn[] GetColumns();
 
         /// <summary>

@@ -19,8 +19,10 @@ namespace DotSpatial.Data
     /// </summary>
     public interface IFeatureRow
     {
+        #region Properties
+
         /// <summary>
-        /// This is a cached extent. This will not reflect changes in Geometry or Shape unless
+        /// Gets or sets a cached extent. This will not reflect changes in Geometry or Shape unless
         /// they have been stored, but will reflect the most recently stored or retrieved
         /// extent from accessing either the shape or geometry. In cases where reading from
         /// WKB, this will be lazily created, but it will be cached when reading from
@@ -29,46 +31,56 @@ namespace DotSpatial.Data
         IExtent Extent { get; set; }
 
         /// <summary>
-        /// A Geometry created lazily from a WKB byte structure in the GEOMETRY field preferentially
+        /// Gets or sets a Geometry created lazily from a WKB byte structure in the GEOMETRY field preferentially
         /// or if the field is DBNull and the shape is not null, then from the Shape object.
         /// </summary>
         IGeometry Geometry { get; set; }
 
         /// <summary>
-        /// A Shape that is either created lazily from the WKB Geometry or directly from a shapefile.
+        /// Gets a value indicating whether the extent has been created.
         /// </summary>
-        Shape Shape { get; set; }
+        bool IsExtentCreated { get; }
 
         /// <summary>
-        /// The rest of the attributes are stored by an indexed property.
-        /// </summary>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        object this[string fieldName] { get; set; }
-
-        /// <summary>
-        /// Boolean, true if the geometry has already been created, false otherwise.
+        /// Gets a value indicating whether the geometry has already been created.
         /// </summary>
         bool IsGeometryCreated { get; }
 
         /// <summary>
-        /// Boolean, true if the shape has already been created, false otherwise.
+        /// Gets a value indicating whether the shape has already been created.
         /// </summary>
         bool IsShapeCreated { get; }
 
         /// <summary>
-        /// Boolean, true if the extent has been created, false otherwise.
+        /// Gets or sets a Shape that is either created lazily from the WKB Geometry or directly from a shapefile.
         /// </summary>
-        bool IsExtentCreated { get; }
+        Shape Shape { get; set; }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// The rest of the attributes are stored by an indexed property.
+        /// </summary>
+        /// <param name="fieldName">The field name.</param>
+        /// <returns>The field value.</returns>
+        object this[string fieldName] { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Stores the geometry to the geometry wkb.
+        /// </summary>
+        void StoreGeometry();
 
         /// <summary>
         /// Stores the shape to the GEOMETRY WKB.
         /// </summary>
         void StoreShape();
 
-        /// <summary>
-        /// Stores the geometry to the geometry wkb.
-        /// </summary>
-        void StoreGeometry();
+        #endregion
     }
 }

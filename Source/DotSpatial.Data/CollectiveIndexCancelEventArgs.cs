@@ -19,22 +19,20 @@ namespace DotSpatial.Data
     /// <summary>
     /// The same as a ListEventArgs, but provides an option to cancel the event
     /// </summary>
+    /// <typeparam name="T">Type of the collection items.</typeparam>
     public class CollectiveIndexCancelEventArgs<T> : CancelEventArgs
     {
-        private IEnumerable<T> _collection;
-        private int _index = -1;
-
-        #region Methods
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="CollectiveIndexCancelEventArgs{T}"/> class.
         /// </summary>
         /// <param name="inCollection">the IEnumerable&lt;T&gt; responsible for the event</param>
         /// <param name="inIndex">the Integer index associated with this event</param>
         public CollectiveIndexCancelEventArgs(IEnumerable<T> inCollection, int inIndex)
         {
-            _collection = inCollection;
-            _index = inIndex;
+            Collection = inCollection;
+            Index = inIndex;
         }
 
         #endregion
@@ -42,22 +40,14 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the IEnumerable&lt;T&gt; collection involved in this event
+        /// Gets or sets the IEnumerable&lt;T&gt; collection involved in this event.
         /// </summary>
-        public IEnumerable<T> Collection
-        {
-            get { return _collection; }
-            protected set { _collection = value; }
-        }
+        public IEnumerable<T> Collection { get; protected set; }
 
         /// <summary>
-        /// Gets the integer index in the IEventList where this event occurred
+        /// Gets or sets the integer index in the IEventList where this event occurred.
         /// </summary>
-        public int Index
-        {
-            get { return _index; }
-            protected set { _index = value; }
-        }
+        public int Index { get; protected set; }
 
         #endregion
     }

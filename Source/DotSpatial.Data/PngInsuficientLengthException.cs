@@ -15,15 +15,21 @@ using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// PngInsuficientLengthException
+    /// </summary>
     public class PngInsuficientLengthException : ArgumentException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PngInsuficientLengthException
+        /// Initializes a new instance of the <see cref="PngInsuficientLengthException"/> class.
         /// </summary>
+        /// <param name="length">The desired length.</param>
+        /// <param name="totalLength">The total length.</param>
+        /// <param name="offset">The offset.</param>
         public PngInsuficientLengthException(int length, int totalLength, int offset)
-            : base(DataStrings.PngInsuficientLengthException.Replace("%S1", length.ToString()).Replace("%S2", totalLength.ToString()).Replace("%S3", offset.ToString()))
+            : base(string.Format(DataStrings.PngInsuficientLengthException, length, totalLength, offset))
         {
         }
 

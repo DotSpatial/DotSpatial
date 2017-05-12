@@ -13,6 +13,9 @@
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Interface for TiledImage.
+    /// </summary>
     public interface ITiledImage : IImageSet
     {
         #region Properties
@@ -23,12 +26,12 @@ namespace DotSpatial.Data
         IRasterBounds Bounds { get; set; }
 
         /// <summary>
-        /// Gets or sets the integer height in pixels for the combined image at its maximum resolution
+        /// Gets the integer height in pixels for the combined image at its maximum resolution
         /// </summary>
         int Height { get; }
 
         /// <summary>
-        /// Gets the stride, or total width in pixels of the byte data, which might not match exactly with the visible width.
+        /// Gets or sets the stride, or total width in pixels of the byte data, which might not match exactly with the visible width.
         /// </summary>
         int Stride { get; set; }
 
@@ -43,7 +46,7 @@ namespace DotSpatial.Data
         int TileHeight { get; }
 
         /// <summary>
-        /// Gets or sets the integer pixel width for the combined image at its maximum resolution.
+        /// Gets the integer pixel width for the combined image at its maximum resolution.
         /// </summary>
         int Width { get; }
 

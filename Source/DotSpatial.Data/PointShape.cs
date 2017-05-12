@@ -15,16 +15,32 @@ using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// PointShape
+    /// </summary>
     public static class PointShape
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon.
         /// </summary>
         public static double Epsilon
         {
-            get { return Vertex.Epsilon; }
-            set { Vertex.Epsilon = value; }
+            get
+            {
+                return Vertex.Epsilon;
+            }
+
+            set
+            {
+                Vertex.Epsilon = value;
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Calculates the intersection of a point shape without relying on the NTS geometry.
@@ -36,7 +52,7 @@ namespace DotSpatial.Data
         {
             if (pointShape.FeatureType != FeatureType.Point && pointShape.FeatureType != FeatureType.MultiPoint)
             {
-                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "pointShape", "point or multi point", pointShape.FeatureType)); 
+                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "pointShape", "point or multi point", pointShape.FeatureType));
             }
 
             // Implemented in PolygonShape or line shape. Point shape is the simplest and just looks for overlapping coordinates.
@@ -70,7 +86,10 @@ namespace DotSpatial.Data
                     }
                 }
             }
+
             return false;
         }
+
+        #endregion
     }
 }

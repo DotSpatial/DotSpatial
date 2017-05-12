@@ -29,7 +29,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
-        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceded by the name provided
+        /// by the | symbol. Each will appear in DotSpatial's open file dialog filter, preceded by the name provided
         /// on this object.
         /// </summary>
         public virtual string DialogReadFilter => "Shapefiles (*.shp)|*.shp;*.shx;*.dbf";
@@ -41,7 +41,7 @@ namespace DotSpatial.Data
         public virtual string DialogWriteFilter => "Shapefiles (*.shp)|*.shp";
 
         /// <summary>
-        /// Gets a preferably short name that identifies this data provider.  Example might be GDAL.
+        /// Gets a preferably short name that identifies this data provider. Example might be GDAL.
         /// This will be prepended to each of the DialogReadFilter members from this plugin.
         /// </summary>
         public virtual string Name => "DotSpatial.Shapefile";
@@ -61,7 +61,7 @@ namespace DotSpatial.Data
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
         /// <param name="fileName">The string fileName for the new instance</param>
-        /// <param name="featureType">Point, Line, Polygon etc.  Sometimes this will be specified, sometimes it will be "Unspecified"</param>
+        /// <param name="featureType">Point, Line, Polygon etc. Sometimes this will be specified, sometimes it will be "Unspecified"</param>
         /// <param name="inRam">Boolean, true if the dataset should attempt to store data entirely in ram</param>
         /// <param name="progressHandler">An IProgressHandler for status messages.</param>
         /// <returns>An IRaster</returns>
@@ -128,7 +128,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// This open method is only called if this plugin has been given priority for one
         /// of the file extensions supported in the DialogReadFilter property supplied by
-        /// this control.  Failing to provide a DialogReadFilter will result in this plugin
+        /// this control. Failing to provide a DialogReadFilter will result in this plugin
         /// being added to the list of DataProviders being supplied under the Add Other Data
         /// option in the file menu.
         /// </summary>

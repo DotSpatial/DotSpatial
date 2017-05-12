@@ -22,6 +22,7 @@ namespace DotSpatial.Data
         /// Read Only with no update access
         /// </summary>
         ReadOnly = 0,
+
         /// <summary>
         /// Read/Write access
         /// </summary>

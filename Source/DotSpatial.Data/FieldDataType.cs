@@ -22,10 +22,12 @@ namespace DotSpatial.Data
         /// 32 Bit integer data type
         /// </summary>
         Integer,
+
         /// <summary>
         /// Double precision floating point data type
         /// </summary>
         Double,
+
         /// <summary>
         /// String data type
         /// </summary>

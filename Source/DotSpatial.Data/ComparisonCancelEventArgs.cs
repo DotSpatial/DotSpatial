@@ -21,22 +21,22 @@ namespace DotSpatial.Data
     /// <summary>
     /// The same as a ListEventArgs, but provides an option to cancel the event
     /// </summary>
+    /// <typeparam name="T">Type of the comparison.</typeparam>
     public class ComparisonCancelEventArgs<T> : CancelEventArgs
     {
-        /// <summary>
-        /// The protected System.Collections.Generic.IComparer&lt;T&gt; being used by this action
-        /// </summary>
-        private Comparison<T> _comparison;
+        #region Fields
 
-        #region Methods
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="ComparisonCancelEventArgs{T}"/> class.
         /// </summary>
         /// <param name="inComparison">The System.Collections.Generic.IComparer&lt;T&gt; being used by this action </param>
         public ComparisonCancelEventArgs(Comparison<T> inComparison)
         {
-            _comparison = inComparison;
+            Comparison = inComparison;
         }
 
         #endregion
@@ -44,13 +44,9 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the comparer being used in this action
+        /// Gets or sets the comparer being used in this action.
         /// </summary>
-        public Comparison<T> Comparison
-        {
-            get { return _comparison; }
-            set { _comparison = value; }
-        }
+        public Comparison<T> Comparison { get; set; }
 
         #endregion
     }

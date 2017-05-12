@@ -88,43 +88,55 @@ namespace DotSpatial.Data
     /// </summary>
     public class HfaType
     {
-        #region Private Variables
+        #region Properties
 
-        private int _fieldCount;
-        private List<HfaField> _fields;
-        private int _numBytes;
-        private string _typeName;
+        /// <summary>
+        /// Gets or sets the number of fields.
+        /// </summary>
+        public int FieldCount { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Gets or sets the list of fields
+        /// </summary>
+        public List<HfaField> Fields { get; set; }
 
-        #region Constructors
+        /// <summary>
+        /// Gets or sets the number of bytes.
+        /// </summary>
+        public int NumBytes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type name.
+        /// </summary>
+        public string TypeName { get; set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Completes the defenition of this type based on the existing dictionary
+        /// Completes the defenition of this type based on the existing dictionary.
         /// </summary>
-        /// <param name="dictionary"></param>
+        /// <param name="dictionary">Dictionary used for completion.</param>
         public void CompleteDefn(HfaDictionary dictionary)
         {
             // This may already be done, if an earlier object required this
             // object (as a field), and forced and early computation of the size
-            if (_numBytes != 0) return;
+            if (NumBytes != 0) return;
+
             // Complete each fo the fields, totaling up the sizes. This
             // isn't really accurate for objects with variable sized
             // subobjects.
-            foreach (HfaField field in _fields)
+            foreach (HfaField field in Fields)
             {
                 field.CompleteDefn(dictionary);
-                if (field.NumBytes < 0 || _numBytes == -1)
+                if (field.NumBytes < 0 || NumBytes == -1)
                 {
-                    _numBytes = -1;
+                    NumBytes = -1;
                 }
                 else
                 {
-                    _numBytes += field.NumBytes;
+                    NumBytes += field.NumBytes;
                 }
             }
         }
@@ -134,11 +146,11 @@ namespace DotSpatial.Data
         /// the type name and number of bytes, followed by cycling through and writing each
         /// of the fields.
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Stream to write to.</param>
         public void Dump(Stream stream)
         {
             StreamWriter sw = new StreamWriter(stream);
-            sw.Write("HFAType " + _typeName + "/" + NumBytes + "\n");
+            sw.Write("HFAType " + TypeName + "/" + NumBytes + "\n");
             foreach (HfaField field in Fields)
             {
                 field.Dump(stream);
@@ -148,14 +160,14 @@ namespace DotSpatial.Data
         /// <summary>
         /// Triggers a dump on all the fields of this type.
         /// </summary>
-        /// <param name="fpOut"></param>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <param name="dataSize"></param>
-        /// <param name="pszPrefix"></param>
+        /// <param name="fpOut">The output stream.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The offset to start from.</param>
+        /// <param name="dataSize">The data size.</param>
+        /// <param name="pszPrefix">The prefix.</param>
         public void DumpInstValue(Stream fpOut, byte[] data, long dataOffset, int dataSize, string pszPrefix)
         {
-            foreach (HfaField field in _fields)
+            foreach (HfaField field in Fields)
             {
                 field.DumpInstValue(fpOut, data, dataOffset, dataSize, pszPrefix);
                 int nInstBytes = field.GetInstBytes(data, dataOffset);
@@ -165,15 +177,15 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Extracts the value form the byte array
+        /// Extracts the value form the byte array.
         /// </summary>
-        /// <param name="fieldPath"></param>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <param name="dataSize"></param>
-        /// <param name="reqType"></param>
-        /// <param name="reqReturn"></param>
-        /// <returns></returns>
+        /// <param name="fieldPath">The field path.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The offset to start from.</param>
+        /// <param name="dataSize">The data size.</param>
+        /// <param name="reqType">The req type.</param>
+        /// <param name="reqReturn">The req return.</param>
+        /// <returns>True, if the value could be extracted.</returns>
         public bool ExtractInstValue(string fieldPath, byte[] data, long dataOffset, int dataSize, char reqType, out object reqReturn)
         {
             reqReturn = null;
@@ -191,32 +203,35 @@ namespace DotSpatial.Data
         /// <returns>The integer count.</returns>
         public int GetInstBytes(byte[] data, long dataOffset)
         {
-            if (_numBytes >= 0)
+            if (NumBytes >= 0)
             {
-                return _numBytes;
+                return NumBytes;
             }
+
             int nTotal = 0;
-            foreach (HfaField field in _fields)
+            foreach (HfaField field in Fields)
             {
                 nTotal += field.GetInstBytes(data, dataOffset + nTotal);
             }
+
             return nTotal;
         }
 
         /// <summary>
-        /// Attempts to find the specified field in the field path and extracts the size of the specified field in bytes
+        /// Attempts to find the specified field in the field path and extracts the count of the specified field.
         /// </summary>
-        /// <param name="fieldPath"></param>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <param name="dataSize"></param>
-        /// <returns></returns>
+        /// <param name="fieldPath">The field path.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The data offset.</param>
+        /// <param name="dataSize">The data size.</param>
+        /// <returns>The count for a particular instance of a field.</returns>
         public int GetInstCount(string fieldPath, byte[] data, long dataOffset, int dataSize)
         {
             int arrayIndex, byteOffset;
             string remainder;
             HfaField field = ParseFieldPath(fieldPath, data, dataOffset, out remainder, out arrayIndex, out byteOffset);
             if (field != null) return field.GetInstCount(data, dataOffset + byteOffset);
+
             return -1;
         }
 
@@ -228,6 +243,7 @@ namespace DotSpatial.Data
         public string Intialize(string input)
         {
             if (!input.Contains("{")) return null;
+
             string partialInput = input.SkipTo("{");
             while (partialInput != null && partialInput[0] != '}')
             {
@@ -236,28 +252,30 @@ namespace DotSpatial.Data
                 // If the initialize fails, the return string is null.
                 partialInput = fld.Initialize(partialInput);
                 if (partialInput == null) continue;
-                if (_fields == null) _fields = new List<HfaField>();
-                _fields.Add(fld);
-                _fieldCount++;
+
+                if (Fields == null) Fields = new List<HfaField>();
+                Fields.Add(fld);
+                FieldCount++;
             }
+
             // If we have run out of content, we can't complete the type.
             if (partialInput == null) return null;
 
             // Get the name
             int start = 0;
-            _typeName = partialInput.ExtractTo(ref start, ",");
+            TypeName = partialInput.ExtractTo(ref start, ",");
             return partialInput.Substring(start, partialInput.Length - start);
         }
 
         /// <summary>
-        ///
+        /// Sets the value.
         /// </summary>
-        /// <param name="fieldPath"></param>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <param name="dataSize"></param>
-        /// <param name="reqType"></param>
-        /// <param name="value"></param>
+        /// <param name="fieldPath">The field path.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The data offset.</param>
+        /// <param name="dataSize">The data size.</param>
+        /// <param name="reqType">The req type.</param>
+        /// <param name="value">The value.</param>
         public void SetInstValue(string fieldPath, byte[] data, long dataOffset, int dataSize, char reqType, object value)
         {
             int arrayIndex, byteOffset;
@@ -279,6 +297,7 @@ namespace DotSpatial.Data
                 string arrayVal;
                 name = fieldPath.ExtractTo("[", out arrayVal);
                 arrayIndex = arrayVal.ExtractInteger();
+
                 // Finally, we still need the subname after the period, but we can ignore the return value and just use the remainder.
                 fieldPath.ExtractTo(".", out remainder);
             }
@@ -294,55 +313,17 @@ namespace DotSpatial.Data
 
             // Find the field within this type, if possible
             byteOffset = 0;
-            foreach (HfaField field in _fields)
+            foreach (HfaField field in Fields)
             {
                 if (field.FieldName == name)
                 {
                     return field;
                 }
+
                 byteOffset += field.GetInstBytes(data, dataOffset + byteOffset);
             }
+
             return null;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// The short integer number of bytes
-        /// </summary>
-        public int NumBytes
-        {
-            get { return _numBytes; }
-            set { _numBytes = value; }
-        }
-
-        /// <summary>
-        /// The short integer number of fields
-        /// </summary>
-        public int FieldCount
-        {
-            get { return _fieldCount; }
-            set { _fieldCount = value; }
-        }
-
-        /// <summary>
-        /// The type name
-        /// </summary>
-        public string TypeName
-        {
-            get { return _typeName; }
-            set { _typeName = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the list of fields
-        /// </summary>
-        public List<HfaField> Fields
-        {
-            get { return _fields; }
-            set { _fields = value; }
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of <see cref="PyramidUndefinedHeaderException"/>.
+        /// Initializes a new instance of the <see cref="PyramidUndefinedHeaderException"/> class.
         /// </summary>
         public PyramidUndefinedHeaderException()
             : base(DataStrings.PyramidHeaderException)

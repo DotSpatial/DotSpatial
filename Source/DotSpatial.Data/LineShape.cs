@@ -15,6 +15,9 @@ using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// A line shape.
+    /// </summary>
     public static class LineShape
     {
         /// <summary>
@@ -36,7 +39,7 @@ namespace DotSpatial.Data
         {
             if (lineShape.FeatureType != FeatureType.Line)
             {
-                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "lineShape", "line", lineShape.FeatureType)); 
+                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "lineShape", "line", lineShape.FeatureType));
             }
 
             // Implemented in PolygonShape
@@ -82,6 +85,7 @@ namespace DotSpatial.Data
                     }
                 }
             }
+
             return false;
         }
 
@@ -90,7 +94,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="lineShape">A Line or Polygon shape</param>
         /// <param name="otherShape">Another line or polygon shape</param>
-        /// <returns></returns>
+        /// <returns>True, if any segments intersect.</returns>
         public static bool SegmentsIntersect(ShapeRange lineShape, ShapeRange otherShape)
         {
             if (lineShape.FeatureType != FeatureType.Line && lineShape.FeatureType != FeatureType.Polygon)
@@ -116,7 +120,6 @@ namespace DotSpatial.Data
             }
 
             // If the other segment is a polygon, we need to check the "
-
             return false;
         }
     }

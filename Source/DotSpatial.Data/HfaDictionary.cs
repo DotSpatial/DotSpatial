@@ -81,45 +81,18 @@ namespace DotSpatial.Data
     /// </summary>
     public class HfaDictionary : Dictionary<string, HfaType>
     {
-        #region Private Variables
+        #region Fields
 
-        static readonly string[] DefDefn =
-            {
-                "Edsc_Table",
-                "{1:lnumrows, }Edsc_Table",
-
-                "Edsc_Column",
-                "{1:lnumRows, 1:LcolumnDataPtr, 1:e4:integer, real, complex, string, dataType, 1:lmaxNumChars, }Edsc_Column",
-
-                "Eprj_Size",
-                "{1:dwidth, 1:dheight, }Eprj_Size",
-
-                "Eprj_Coordinate",
-                "{1:dx, 1:dy, }Eprj_Coordinate",
-
-                "Eprj_MapInfo",
-                "{0:pcproName, 1:*oEprj_Coordinate, upperLeftCenter, 1:*oEprj_Coordinate, lowerRightCenter, 1:*oEprj_Size, pixelSize, 0:pcunits, }Eprj_MapInfo",
-
-                "Eimg_StatisticsParameters830",
-                "{0:poEmif_String, LayerNames, 1:*bExcludedValues, 1:oEmif_String, AOIname, 1:lSkipFactorX, 1:lSkipFactorY, 1:*oEdsc_BinFunction, BinFunction, }Eimg_StatisticsParameters830",
-
-                "Esta_Statistics",
-                "{1:dminimum, 1:dmaximum, 1:dmean, 1:dmedian, 1:dmode, 1:dstddev, }Esta_Statistics",
-
-                "Edsc_BinFunction",
-                "{1:lnumBins, 1:e4:direct, linear, logarithmic, explicit, binFunctionType, 1:dminLimit, 1:dmaxLimit, 1:*bbinLimits, }Edsc_BinFunction",
-
-                "Eimg_NonInitializedValue",
-                "{1:*bvalueBD, }Eimg_NonInitializedValue",
-            };
+        private static readonly string[] DefDefn = { "Edsc_Table", "{1:lnumrows, }Edsc_Table", "Edsc_Column", "{1:lnumRows, 1:LcolumnDataPtr, 1:e4:integer, real, complex, string, dataType, 1:lmaxNumChars, }Edsc_Column", "Eprj_Size", "{1:dwidth, 1:dheight, }Eprj_Size", "Eprj_Coordinate", "{1:dx, 1:dy, }Eprj_Coordinate", "Eprj_MapInfo", "{0:pcproName, 1:*oEprj_Coordinate, upperLeftCenter, 1:*oEprj_Coordinate, lowerRightCenter, 1:*oEprj_Size, pixelSize, 0:pcunits, }Eprj_MapInfo", "Eimg_StatisticsParameters830", "{0:poEmif_String, LayerNames, 1:*bExcludedValues, 1:oEmif_String, AOIname, 1:lSkipFactorX, 1:lSkipFactorY, 1:*oEdsc_BinFunction, BinFunction, }Eimg_StatisticsParameters830", "Esta_Statistics", "{1:dminimum, 1:dmaximum, 1:dmean, 1:dmedian, 1:dmode, 1:dstddev, }Esta_Statistics", "Edsc_BinFunction", "{1:lnumBins, 1:e4:direct, linear, logarithmic, explicit, binFunctionType, 1:dminLimit, 1:dmaxLimit, 1:*bbinLimits, }Edsc_BinFunction", "Eimg_NonInitializedValue", "{1:*bvalueBD, }Eimg_NonInitializedValue", };
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HfaDictionary
+        /// Initializes a new instance of the <see cref="HfaDictionary"/> class.
         /// </summary>
+        /// <param name="content">Content for the dictionary.</param>
         public HfaDictionary(string content)
         {
             int end = 0;
@@ -131,6 +104,7 @@ namespace DotSpatial.Data
             while (!string.IsNullOrEmpty(substring))
             {
                 HfaType type = new HfaType();
+
                 // A null return means the effort failed.
                 substring = type.Intialize(substring);
                 if (substring != null)
@@ -163,6 +137,43 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
+        /// Given a character type, this calculates a size. This was originally
+        /// on the Dictionary, but I moved this to the HfaInfo instead.
+        /// </summary>
+        /// <param name="charType">The character type.</param>
+        /// <returns>The calculated size.</returns>
+        public static int GetItemSize(char charType)
+        {
+            switch (charType)
+            {
+                case '1':
+                case '2':
+                case '4':
+                case 'c':
+                case 'C': return 1;
+                case 'e':
+                case 's':
+                case 'S': return 2;
+                case 't':
+                case 'l':
+                case 'L':
+                case 'f': return 4;
+                case 'd':
+                case 'm': return 8;
+                case 'M': return 16;
+                case 'b': return -1;
+                case 'o':
+                case 'x': return 0;
+
+                default:
+                    Debug.WriteLine("Could not GetItemSize for character: '" + charType + "'.");
+                    break;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
         /// Adds the type using the TypeName as the key
         /// </summary>
         /// <param name="type">The type to add</param>
@@ -174,7 +185,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Writes all the elements from this dictionary to the specified stream.
         /// </summary>
-        /// <param name="fp"></param>
+        /// <param name="fp">The stream to write to.</param>
         public void Dump(Stream fp)
         {
             StreamWriter sw = new StreamWriter(fp);
@@ -184,53 +195,6 @@ namespace DotSpatial.Data
                 pair.Value.Dump(fp);
             }
         }
-
-        /// <summary>
-        /// Given a character type, this calculates a size. This was originally
-        /// on the Dictionary, but I moved this to the HfaInfo instead.
-        /// </summary>
-        /// <param name="charType"></param>
-        /// <returns></returns>
-        public static int GetItemSize(char charType)
-        {
-            switch (charType)
-            {
-                case '1':
-                case '2':
-                case '4':
-                case 'c':
-                case 'C':
-                    return 1;
-                case 'e':
-                case 's':
-                case 'S':
-                    return 2;
-                case 't':
-                case 'l':
-                case 'L':
-                case 'f':
-                    return 4;
-                case 'd':
-                case 'm':
-                    return 8;
-                case 'M':
-                    return 16;
-                case 'b':
-                    return -1;
-                case 'o':
-                case 'x':
-                    return 0;
-
-                default:
-                    Debug.WriteLine("Could not GetItemSize for character: '" + charType + "'.");
-                    break;
-            }
-            return 0;
-        }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

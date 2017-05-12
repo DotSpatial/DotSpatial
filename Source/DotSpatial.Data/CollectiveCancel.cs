@@ -20,19 +20,18 @@ namespace DotSpatial.Data
     /// <summary>
     /// The same as a ListEventArgs, but provides an option to cancel the event
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     public class CollectiveCancel<T> : CancelEventArgs
     {
-        private IEnumerable<T> _collection;
-
-        #region Methods
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="CollectiveCancel{T}"/> class.
         /// </summary>
         /// <param name="inCollection">the IEnumerable&lt;T&gt; responsible for the event</param>
         public CollectiveCancel(IEnumerable<T> inCollection)
         {
-            _collection = inCollection;
+            Collection = inCollection;
         }
 
         #endregion
@@ -40,13 +39,9 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the list item being referenced by this event
+        /// Gets or sets the list item being referenced by this event.
         /// </summary>
-        public IEnumerable<T> Collection
-        {
-            get { return _collection; }
-            protected set { _collection = value; }
-        }
+        public IEnumerable<T> Collection { get; protected set; }
 
         #endregion
     }

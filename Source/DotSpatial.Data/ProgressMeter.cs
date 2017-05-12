@@ -22,20 +22,21 @@ namespace DotSpatial.Data
     /// </summary>
     public class ProgressMeter
     {
-        private string _baseMessage;
-        private double _endValue = 100;
+        #region Fields
+
+        private double _endValue;
         private int _oldProg = -1; // the previous progress level
         private int _prog; // the current progress level
-        private IProgressHandler _progressHandler;
-        private bool _silent;
         private double _startValue;
         private int _stepPercent = 1;
         private double _value;
 
+        #endregion
+
         #region Constructors
 
         /// <summary>
-        /// Initializes a new progress meter, but doesn't support the IProgressHandler unless one is specified.
+        /// Initializes a new instance of the <see cref="ProgressMeter"/> class, but doesn't support the IProgressHandler unless one is specified.
         /// </summary>
         public ProgressMeter()
             : this(null, "Calculating values.", 100)
@@ -43,6 +44,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ProgressMeter"/> class.
         /// A progress meter can't actually do anything without a progressHandler, which actually displays the status.
         /// </summary>
         /// <param name="progressHandler">An IProgressHandler that will actually handle the status messages sent by this meter.</param>
@@ -52,7 +54,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// A progress meter that simply keeps track of progress and is capable of sending progress messages.
+        /// Initializes a new instance of the <see cref="ProgressMeter"/> class that simply keeps track of progress and is capable of sending progress messages.
         /// This assumes a MaxValue of 100 unless it is changed later.
         /// </summary>
         /// <param name="progressHandler">Any valid IProgressHandler that will display progress messages</param>
@@ -63,7 +65,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// A progress meter that simply keeps track of progress and is capable of sending progress messages.
+        /// Initializes a new instance of the <see cref="ProgressMeter"/> class that simply keeps track of progress and is capable of sending progress messages.
         /// </summary>
         /// <param name="progressHandler">Any valid implementation if IProgressHandler that will handle the progress function</param>
         /// <param name="baseMessage">The message without any progress information.</param>
@@ -71,26 +73,9 @@ namespace DotSpatial.Data
         public ProgressMeter(IProgressHandler progressHandler, string baseMessage, object endValue)
         {
             _endValue = Convert.ToDouble(endValue);
-            _progressHandler = progressHandler;
+            ProgressHandler = progressHandler;
             Reset();
-            _baseMessage = baseMessage;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Resets the progress meter to the 0 value. This sets the status message to "Ready.".
-        /// </summary>
-        public void Reset()
-        {
-            _prog = 0;
-            _oldProg = 0;
-            _baseMessage = "Ready.";
-            if (_silent) return;
-            if (_progressHandler == null) return;
-            _progressHandler.Progress(_baseMessage, _prog, _baseMessage);
+            BaseMessage = baseMessage;
         }
 
         #endregion
@@ -100,20 +85,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the string message (without the progress element).
         /// </summary>
-        public string BaseMessage
-        {
-            get { return _baseMessage; }
-            set { _baseMessage = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the string that does not include any mention of progress percentage, but specifies what is occurring.
-        /// </summary>
-        public string Key
-        {
-            get { return _baseMessage; }
-            set { _baseMessage = value; }
-        }
+        public string BaseMessage { get; set; }
 
         /// <summary>
         /// Gets or sets the current integer progress level from 0 to 100. If a new update is less than or equal to the previous
@@ -122,7 +94,11 @@ namespace DotSpatial.Data
         /// </summary>
         public int CurrentPercent
         {
-            get { return _prog; }
+            get
+            {
+                return _prog;
+            }
+
             set
             {
                 int val = value;
@@ -131,6 +107,7 @@ namespace DotSpatial.Data
                 {
                     val = 100;
                 }
+
                 _prog = val;
                 if (_prog >= _oldProg + _stepPercent)
                 {
@@ -151,6 +128,7 @@ namespace DotSpatial.Data
             {
                 return _value;
             }
+
             set
             {
                 _value = Convert.ToDouble(value);
@@ -160,20 +138,13 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    if (_startValue == _endValue)
-                    {
-                        CurrentPercent = 100;
-                    }
-                    else
-                    {
-                        CurrentPercent = Convert.ToInt32(Math.Round(100 * (_startValue - _value) / (_startValue - _endValue)));
-                    }
+                    CurrentPercent = _startValue == _endValue ? 100 : Convert.ToInt32(Math.Round(100 * (_startValue - _value) / (_startValue - _endValue)));
                 }
             }
         }
 
         /// <summary>
-        /// The value that defines when the meter should show as 100% complete.
+        /// Gets or sets the value that defines when the meter should show as 100% complete.
         /// EndValue can be less than StartValue, but values closer to EndValue
         /// will show as being closer to 100%.
         /// </summary>
@@ -183,6 +154,7 @@ namespace DotSpatial.Data
             {
                 return _endValue;
             }
+
             set
             {
                 _endValue = Convert.ToDouble(value);
@@ -190,41 +162,18 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets whether the progress meter should send messages to the IProgressHandler.
-        /// By default Silent is false, but setting this to true will disable the messaging portion.
+        /// Gets or sets the string that does not include any mention of progress percentage, but specifies what is occurring.
         /// </summary>
-        public bool Silent
+        public string Key
         {
-            get { return _silent; }
-            set { _silent = value; }
-        }
-
-        /// <summary>
-        /// The minimum value defines when the meter should show as 0% complete.
-        /// </summary>
-        public object StartValue
-        {
-            get { return _startValue; }
-            set
+            get
             {
-                _startValue = Convert.ToDouble(value);
+                return BaseMessage;
             }
-        }
 
-        /// <summary>
-        /// An integer value that is 1 by default. Ordinarily this will send a progress message only when the integer progress
-        /// has changed by 1 percentage point. For example, if StepPercent were set to 5, then a progress update would only
-        /// be sent out at 5%, 10% and so on. This helps reduce overhead in cases where showing status messages is actually
-        /// the majority of the processing time for the function.
-        /// </summary>
-        public int StepPercent
-        {
-            get { return _stepPercent; }
             set
             {
-                _stepPercent = value;
-                if (_stepPercent < 1) _stepPercent = 1;
-                if (_stepPercent > 100) _stepPercent = 100;
+                BaseMessage = value;
             }
         }
 
@@ -235,7 +184,11 @@ namespace DotSpatial.Data
         /// </summary>
         public int PreviousPercent
         {
-            get { return _oldProg; }
+            get
+            {
+                return _oldProg;
+            }
+
             set
             {
                 int val = value;
@@ -248,11 +201,54 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the progress handler for this meter
         /// </summary>
-        public IProgressHandler ProgressHandler
+        public IProgressHandler ProgressHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the progress meter should send messages to the IProgressHandler.
+        /// By default Silent is false, but setting this to true will disable the messaging portion.
+        /// </summary>
+        public bool Silent { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value the meter should show as 0% complete.
+        /// </summary>
+        public object StartValue
         {
-            get { return _progressHandler; }
-            set { _progressHandler = value; }
+            get
+            {
+                return _startValue;
+            }
+
+            set
+            {
+                _startValue = Convert.ToDouble(value);
+            }
         }
+
+        /// <summary>
+        /// Gets or sets a value that is 1 by default. Ordinarily this will send a progress message only when the integer progress
+        /// has changed by 1 percentage point. For example, if StepPercent were set to 5, then a progress update would only
+        /// be sent out at 5%, 10% and so on. This helps reduce overhead in cases where showing status messages is actually
+        /// the majority of the processing time for the function.
+        /// </summary>
+        public int StepPercent
+        {
+            get
+            {
+                return _stepPercent;
+            }
+
+            set
+            {
+                _stepPercent = value;
+                if (_stepPercent < 1) _stepPercent = 1;
+                if (_stepPercent > 100) _stepPercent = 100;
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This always increments the CurrentValue by one.
@@ -263,13 +259,26 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Resets the progress meter to the 0 value. This sets the status message to "Ready.".
+        /// </summary>
+        public void Reset()
+        {
+            _prog = 0;
+            _oldProg = 0;
+            BaseMessage = "Ready.";
+            if (Silent) return;
+
+            ProgressHandler?.Progress(BaseMessage, _prog, BaseMessage);
+        }
+
+        /// <summary>
         /// Sends a progress message to the IProgressHandler interface with the current message and progress
         /// </summary>
         public void SendProgress()
         {
-            if (_silent) return;
-            if (_progressHandler == null) return;
-            _progressHandler.Progress(_baseMessage, _prog, _baseMessage + ", " + _prog + "% Complete.");
+            if (Silent) return;
+
+            ProgressHandler?.Progress(BaseMessage, _prog, BaseMessage + ", " + _prog + "% Complete.");
         }
 
         #endregion

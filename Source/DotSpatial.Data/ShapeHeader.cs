@@ -15,34 +15,28 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A simple structure that contains the elements of a shapefile that must exist
+    /// A simple structure that contains the elements of a shapefile that must exist.
     /// </summary>
     public struct ShapeHeader
     {
         /// <summary>
-        /// The content length
+        /// Gets or sets the content length.
         /// </summary>
-        public int ContentLength;
+        public int ContentLength { get; set; }
 
         /// <summary>
-        /// The offset in 16-bit words
+        /// Gets or sets the offset in 16-bit words.
         /// </summary>
-        public int Offset;
+        public int Offset { get; set; }
 
         /// <summary>
-        /// The offset in bytes
+        /// Gets the offset in bytes.
         /// </summary>
-        public int ByteOffset
-        {
-            get { return Offset * 2; }
-        }
+        public int ByteOffset => Offset * 2;
 
         /// <summary>
-        /// The length in bytes
+        /// Gets the length in bytes.
         /// </summary>
-        public int ByteLength
-        {
-            get { return ContentLength * 2; }
-        }
+        public int ByteLength => ContentLength * 2;
     }
 }

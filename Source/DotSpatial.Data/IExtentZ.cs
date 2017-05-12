@@ -18,12 +18,12 @@ namespace DotSpatial.Data
     public interface IExtentZ
     {
         /// <summary>
-        /// The minimum in the Z dimension (usually the bottom)
+        /// Gets or sets the minimum in the Z dimension (usually the bottom).
         /// </summary>
         double MinZ { get; set; }
 
         /// <summary>
-        /// The maximum in the Z dimension (usually the top)
+        /// Gets or sets the maximum in the Z dimension (usually the top).
         /// </summary>
         double MaxZ { get; set; }
     }

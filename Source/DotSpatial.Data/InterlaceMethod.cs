@@ -13,12 +13,16 @@
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// InterlaceMethod
+    /// </summary>
     public enum InterlaceMethod : byte
     {
         /// <summary>
         /// No interlacing
         /// </summary>
         NoInterlacing = 0,
+
         /// <summary>
         /// Adam7 interlacing
         /// </summary>

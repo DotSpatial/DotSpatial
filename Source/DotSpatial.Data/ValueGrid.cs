@@ -16,24 +16,28 @@ using System;
 
 namespace DotSpatial.Data
 {
-    public class ValueGrid<T> : IValueGrid where T : IEquatable<T>, IComparable<T>
+    /// <summary>
+    /// ValueGrid
+    /// </summary>
+    /// <typeparam name="T">Type of the items in the ValueGrid.</typeparam>
+    public class ValueGrid<T> : IValueGrid
+        where T : IEquatable<T>, IComparable<T>
     {
-        #region Private Variables
+        #region Fields
 
         private readonly T[][] _rowBuffer;
         private readonly Raster<T> _sourceRaster;
         private readonly int _topRow;
-        private bool _updated;
 
         #endregion
 
-        #region Methods
+        #region Constructors
 
         /// <summary>
-        /// Constructing an ObjectGrid this way assumes the values are not in ram and will
+        /// Initializes a new instance of the <see cref="ValueGrid{T}"/> class this way assumes the values are not in ram and will
         /// simply buffer 3 rows.
         /// </summary>
-        /// <param name="sourceRaster"></param>
+        /// <param name="sourceRaster">The source raster.</param>
         public ValueGrid(Raster<T> sourceRaster)
         {
             _sourceRaster = sourceRaster;
@@ -44,6 +48,16 @@ namespace DotSpatial.Data
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the values are updated. It is the responsibility of the user to set this
+        /// value to false again when the situation warents it.
+        /// </summary>
+        public bool Updated { get; set; }
+
+        #endregion
+
+        #region Indexers
 
         /// <summary>
         /// Gets or sets a value at the 0 row, 0 column index.
@@ -59,25 +73,30 @@ namespace DotSpatial.Data
                 {
                     return ToDouble(_sourceRaster.Data[row][column]);
                 }
+
                 if (_rowBuffer[0] == null)
                 {
                     _rowBuffer[0] = _sourceRaster.ReadRow(_topRow);
                 }
+
                 if (_rowBuffer[1] == null)
                 {
                     _rowBuffer[1] = _sourceRaster.ReadRow(_topRow + 1);
                 }
+
                 if (_rowBuffer[2] == null)
                 {
                     _rowBuffer[2] = _sourceRaster.ReadRow(_topRow + 2);
                 }
+
                 int shift = row - _topRow;
                 if (shift >= 0 && shift < 3)
                 {
                     // the value is in a row buffer
                     return ToDouble(_rowBuffer[row - _topRow][column]);
                 }
-                // the value was not found in the buffer.  If the value is below the row buffer, load the new row as the bottom row.
+
+                // the value was not found in the buffer. If the value is below the row buffer, load the new row as the bottom row.
                 if (shift == 3)
                 {
                     _rowBuffer[0] = _rowBuffer[1];
@@ -85,6 +104,7 @@ namespace DotSpatial.Data
                     _rowBuffer[2] = _sourceRaster.ReadRow(row);
                     return ToDouble(_rowBuffer[2][column]);
                 }
+
                 if (shift == 4)
                 {
                     _rowBuffer[0] = _rowBuffer[2];
@@ -92,6 +112,7 @@ namespace DotSpatial.Data
                     _rowBuffer[2] = _sourceRaster.ReadRow(row);
                     return ToDouble(_rowBuffer[2][column]);
                 }
+
                 if (shift > 4)
                 {
                     _rowBuffer[0] = _sourceRaster.ReadRow(row - 2);
@@ -99,6 +120,7 @@ namespace DotSpatial.Data
                     _rowBuffer[2] = _sourceRaster.ReadRow(row);
                     return ToDouble(_rowBuffer[2][column]);
                 }
+
                 if (shift == -1)
                 {
                     _rowBuffer[0] = _sourceRaster.ReadRow(row);
@@ -106,6 +128,7 @@ namespace DotSpatial.Data
                     _rowBuffer[2] = _rowBuffer[1];
                     return ToDouble(_rowBuffer[0][column]);
                 }
+
                 if (shift == -2)
                 {
                     _rowBuffer[0] = _sourceRaster.ReadRow(row);
@@ -113,6 +136,7 @@ namespace DotSpatial.Data
                     _rowBuffer[2] = _rowBuffer[0];
                     return ToDouble(_rowBuffer[0][column]);
                 }
+
                 if (shift < -2)
                 {
                     _rowBuffer[0] = _sourceRaster.ReadRow(row);
@@ -120,13 +144,16 @@ namespace DotSpatial.Data
                     _rowBuffer[2] = _sourceRaster.ReadRow(row + 2);
                     return ToDouble(_rowBuffer[0][column]);
                 }
+
                 // this should never happen
                 throw new ApplicationException(DataStrings.IndexingErrorIn_S.Replace("%S", "Raster.Value[" + row + ", " + column + "]"));
             }
+
             set
             {
-                _updated = true;
+                Updated = true;
                 if (!_sourceRaster.IsInRam) return;
+
                 T test = (T)Convert.ChangeType(value, typeof(T));
                 if (test.CompareTo(Global.MaximumValue<T>()) > 0)
                 {
@@ -144,24 +171,17 @@ namespace DotSpatial.Data
             }
         }
 
-        /// <summary>
-        /// This is just a boolean flag that is set to true when the values
-        /// are updated.  It is the responsibility of the user to set this
-        /// value to false again when the situation warents it.
-        /// </summary>
-        public bool Updated
-        {
-            get { return _updated; }
-            set { _updated = value; }
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This involves boxing and unboxing as well as a convert to double, but IConvertible was
-        /// not CLS Compliant, so we were always getting warnings about it.  I am trying to make
+        /// not CLS Compliant, so we were always getting warnings about it. I am trying to make
         /// all the code CLS Compliant to remove warnings.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">The value.</param>
+        /// <returns>The value converted to double.</returns>
         public static double ToDouble(T value)
         {
             return Global.ToDouble(value);

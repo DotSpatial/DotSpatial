@@ -16,17 +16,18 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaTypeException
+    /// HfaFieldTypeException
     /// </summary>
     public class HfaFieldTypeException : ApplicationException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HfaTypeException
+        /// Initializes a new instance of the <see cref="HfaFieldTypeException"/> class.
         /// </summary>
+        /// <param name="code">The unknown character.</param>
         public HfaFieldTypeException(char code)
-            : base(DataStrings.HfaFieldTypeException.Replace("%S", code.ToString()))
+            : base(string.Format(DataStrings.HfaFieldTypeException, code))
         {
         }
 

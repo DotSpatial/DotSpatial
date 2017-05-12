@@ -156,8 +156,8 @@ namespace DotSpatial.Data
         /// Updates the running CRC.
         /// </summary>
         /// <param name="crc">CRC that gets updated.</param>
-        /// <param name="buff"></param>
-        /// <param name="len"></param>
+        /// <param name="buff">The buffer.</param>
+        /// <param name="len">The length.</param>
         /// <returns>The updated CRC.</returns>
         private static uint UpdateCrc(uint crc, byte[] buff, int len)
         {

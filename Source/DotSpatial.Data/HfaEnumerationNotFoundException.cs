@@ -23,10 +23,11 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HfaEnumerationNotFoundException
+        /// Initializes a new instance of the <see cref="HfaEnumerationNotFoundException"/> class.
         /// </summary>
+        /// <param name="name">The unknown value.</param>
         public HfaEnumerationNotFoundException(string name)
-            : base(DataStrings.HfaEnumerationNotFound.Replace("%S", name))
+            : base(string.Format(DataStrings.HfaEnumerationNotFound, name))
         {
         }
 

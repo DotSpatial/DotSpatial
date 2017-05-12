@@ -40,12 +40,12 @@ namespace DotSpatial.Data
         string FilePath { get; set; }
 
         /// <summary>
-        /// True if the dispose method has been called on this dataset.
+        /// Gets a value indicating whether the dispose method has been called on this dataset.
         /// </summary>
         bool IsDisposed { get; }
 
         /// <summary>
-        /// Gets or sets a string name identifying this dataset
+        /// Gets or sets a string name identifying this dataset.
         /// </summary>
         string Name { get; set; }
 

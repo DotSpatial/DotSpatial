@@ -19,19 +19,18 @@ namespace DotSpatial.Data
     /// <summary>
     /// Carries event arguments for the generic IEventList
     /// </summary>
+    /// <typeparam name="T">Type of the comparison.</typeparam>
     public class ComparisonArgs<T> : EventArgs
     {
-        private Comparison<T> _comparison;
-
-        #region Methods
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="ComparisonArgs{T}"/> class.
         /// </summary>
         /// <param name="inComparison">The System.Comparison&lt;T&gt; being used by this action </param>
         public ComparisonArgs(Comparison<T> inComparison)
         {
-            _comparison = inComparison;
+            Comparison = inComparison;
         }
 
         #endregion
@@ -39,13 +38,9 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets System.Comparison being referenced by this event
+        /// Gets or sets System.Comparison being referenced by this event.
         /// </summary>
-        public Comparison<T> Comparison
-        {
-            get { return _comparison; }
-            set { _comparison = value; }
-        }
+        public Comparison<T> Comparison { get; set; }
 
         #endregion
     }

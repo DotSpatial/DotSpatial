@@ -570,25 +570,25 @@ namespace DotSpatial.Data
             var eUp = extension?.ToUpper() ?? string.Empty;
             switch (eUp)
             {
-                case ".ASC": return RasterFileType.ASCII;
-                case ".ARC": return RasterFileType.ASCII;
-                case ".BGD": return RasterFileType.BINARY;
-                case ".FLT": return RasterFileType.FLT;
-                case ".ADF": return RasterFileType.ESRI;
-                case ".ECW": return RasterFileType.ECW;
-                case ".BIL": return RasterFileType.BIL;
-                case ".SID": return RasterFileType.MrSID;
-                case ".AUX": return RasterFileType.PAUX;
-                case ".PIX": return RasterFileType.PCIDsk;
-                case ".DHM": return RasterFileType.DTED;
-                case ".DT0": return RasterFileType.DTED;
-                case ".DT1": return RasterFileType.DTED;
+                case ".ASC": return RasterFileType.Ascii;
+                case ".ARC": return RasterFileType.Ascii;
+                case ".BGD": return RasterFileType.Binary;
+                case ".FLT": return RasterFileType.Flt;
+                case ".ADF": return RasterFileType.Esri;
+                case ".ECW": return RasterFileType.Ecw;
+                case ".BIL": return RasterFileType.Bil;
+                case ".SID": return RasterFileType.MrSid;
+                case ".AUX": return RasterFileType.Paux;
+                case ".PIX": return RasterFileType.PciDsk;
+                case ".DHM": return RasterFileType.Dted;
+                case ".DT0": return RasterFileType.Dted;
+                case ".DT1": return RasterFileType.Dted;
                 case ".TIF": return RasterFileType.GeoTiff;
-                case ".IMG": return RasterFileType.BIL;
-                case ".DDF": return RasterFileType.SDTS;
+                case ".IMG": return RasterFileType.Bil;
+                case ".DDF": return RasterFileType.Sdts;
             }
 
-            return RasterFileType.CUSTOM;
+            return RasterFileType.Custom;
         }
 
         /// <summary>
@@ -908,7 +908,7 @@ namespace DotSpatial.Data
         {
             if (FileExists != null)
             {
-                MessageCancelEventArgs mc = new MessageCancelEventArgs(DataStrings.FileExists_S.Replace("%S", fileName));
+                MessageCancelEventArgs mc = new MessageCancelEventArgs(DataStrings.File0ExistsOverwrite.Replace("%S", fileName));
                 FileExists(this, mc);
                 return mc.Cancel;
             }

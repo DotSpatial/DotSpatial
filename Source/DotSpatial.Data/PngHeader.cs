@@ -16,17 +16,34 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Header of a png file.
+    /// </summary>
     public class PngHeader
     {
-        #region Private Variables
+        #region Fields
+
+        /// <summary>
+        /// At this time, the only compression method recognized is 0 - deflate/inflate with a
+        /// sliding window of at most 32768 bytes
+        /// </summary>
+        public const byte CompressionMethod = 0;
+
+        /// <summary>
+        /// At this time, only filter method 0 is outlined in the international standards.
+        /// (adaptive filtering with 5 basic filter types)
+        /// </summary>
+        public const byte FilterMethod = 0;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PngHeader
+        /// Initializes a new instance of the <see cref="PngHeader"/> class.
         /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         public PngHeader(int width, int height)
         {
             Width = width;
@@ -38,22 +55,67 @@ namespace DotSpatial.Data
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the bit depth. Depending on the Color Type, not all are allowed:
+        /// Greyscale - 1, 2, 4, 8, 16
+        /// Truecolor - 8, 16
+        /// Indexed - 1, 2, 4, 8
+        /// Greyscale/alpha - 8, 16
+        /// TrueColor/alpha - 8, 16
+        /// </summary>
+        public BitDepth BitDepth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color type.
+        /// </summary>
+        public ColorType ColorType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height
+        /// </summary>
+        public int Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interlacing method used for this image.
+        /// </summary>
+        public InterlaceMethod InterlaceMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width
+        /// </summary>
+        public int Width { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// Writes the byte-format of this png image header chunk to
+        /// Reads the important content from the stream of bytes.
         /// </summary>
-        /// <param name="stream"></param>
-        public void Write(Stream stream)
+        /// <param name="stream">Stream to read from.</param>
+        /// <returns>The png header containing the data that was read.</returns>
+        public static PngHeader FromBytes(Stream stream)
         {
-            byte[] head = ToBytes();
-            stream.Write(head, 0, head.Length);
+            byte[] vals = new byte[25];
+            stream.Read(vals, 0, 25);
+            int w = (int)BitConverter.ToUInt32(vals, 9);
+            int h = (int)BitConverter.ToUInt32(vals, 13);
+
+            PngHeader result = new PngHeader(w, h)
+            {
+                BitDepth = (BitDepth)vals[17],
+                ColorType = (ColorType)vals[18],
+                InterlaceMethod = (InterlaceMethod)vals[21]
+            };
+            return result;
         }
 
         /// <summary>
         /// Returns the image header in bytes.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The image header in bytes.</returns>
         public byte[] ToBytes()
         {
             byte[] vals = new byte[25];
@@ -72,7 +134,6 @@ namespace DotSpatial.Data
             vals[20] = (byte)InterlaceMethod;
 
             // CRC check is calculated on the chunk type and chunk data, but not the length.
-
             byte[] data = new byte[13];
             Array.Copy(vals, 8, data, 0, 13);
             byte[] crcData = new byte[17];
@@ -83,24 +144,21 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Writes an integer in Big-endian Uint format.
+        /// Writes the byte-format of this png image header chunk to the given stream.
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="offset"></param>
-        /// <param name="value"></param>
-        public void WriteAsUint32(byte[] array, int offset, long value)
+        /// <param name="stream">The stream to write to.</param>
+        public void Write(Stream stream)
         {
-            byte[] arr = BitConverter.GetBytes(Convert.ToUInt32(value));
-            if (BitConverter.IsLittleEndian) Array.Reverse(arr);
-            Array.Copy(arr, 0, array, offset, 4);
+            byte[] head = ToBytes();
+            stream.Write(head, 0, head.Length);
         }
 
         /// <summary>
         /// Writes an integer in Big-endian Uint format.
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="offset"></param>
-        /// <param name="value"></param>
+        /// <param name="array">Array the value gets written to.</param>
+        /// <param name="offset">Index in the destination array where writing should start.</param>
+        /// <param name="value">Value that gets written.</param>
         public void Write(byte[] array, int offset, int value)
         {
             byte[] arr = BitConverter.GetBytes((uint)value);
@@ -109,68 +167,17 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads the important content from the stream of bytes
+        /// Writes an integer in Big-endian Uint format.
         /// </summary>
-        /// <param name="stream"></param>
-        public static PngHeader FromBytes(Stream stream)
+        /// <param name="array">Array the value gets written to.</param>
+        /// <param name="offset">Index in the destination array where writing should start.</param>
+        /// <param name="value">Value that gets written.</param>
+        public void WriteAsUint32(byte[] array, int offset, long value)
         {
-            byte[] vals = new byte[25];
-            stream.Read(vals, 0, 25);
-            int w = (int)BitConverter.ToUInt32(vals, 9);
-            int h = (int)BitConverter.ToUInt32(vals, 13);
-
-            PngHeader result = new PngHeader(w, h);
-            result.BitDepth = (BitDepth)vals[17];
-            result.ColorType = (ColorType)vals[18];
-            result.InterlaceMethod = (InterlaceMethod)vals[21];
-            return result;
+            byte[] arr = BitConverter.GetBytes(Convert.ToUInt32(value));
+            if (BitConverter.IsLittleEndian) Array.Reverse(arr);
+            Array.Copy(arr, 0, array, offset, 4);
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// At this time, the only compression method recognized is 0 - deflate/inflate with a
-        /// sliding window of at most 32768 bytes
-        /// </summary>
-        public const byte CompressionMethod = 0;
-
-        /// <summary>
-        /// At this time, only filter method 0 is outlined in the international standards.
-        /// (adaptive filtering with 5 basic filter types)
-        /// </summary>
-        public const byte FilterMethod = 0;
-
-        /// <summary>
-        /// Gets or sets the bit depth. Depending on the Color Type, not all are allowed:
-        /// Greyscale - 1, 2, 4, 8, 16
-        /// Truecolor - 8, 16
-        /// Indexed - 1, 2, 4, 8
-        /// Greyscale/alpha - 8, 16
-        /// TrueColor/alpha - 8, 16
-        /// </summary>
-        public BitDepth BitDepth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color type.
-        /// </summary>
-        public ColorType ColorType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the width
-        /// </summary>
-        public int Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets the height
-        /// </summary>
-        public int Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the interlacing method used for this image.
-        /// </summary>
-        public InterlaceMethod InterlaceMethod { get; set; }
 
         #endregion
     }

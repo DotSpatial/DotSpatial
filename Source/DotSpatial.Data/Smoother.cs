@@ -17,19 +17,20 @@ using System.Runtime.InteropServices;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// 
+    /// Smoother
     /// </summary>
     public class Smoother
     {
-        #region Private Variables
+        #region Fields
+
+        private readonly Action _copyResult;
+        private readonly Func<int, byte> _getByte;
 
         private readonly int _height;
         private readonly ProgressMeter _pm;
         private readonly byte[] _result;
         private readonly int _stride;
         private readonly int _width;
-        private readonly Func<int, byte> _getByte;
-        private readonly Action _copyResult;
 
         #endregion
 
@@ -38,6 +39,11 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Smoother"/> class.
         /// </summary>
+        /// <param name="stride">The stride.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="inRgbData">The rgb data.</param>
+        /// <param name="progHandler">The progress handler.</param>
         public Smoother(int stride, int width, int height, byte[] inRgbData, IProgressHandler progHandler)
         {
             _stride = stride;
@@ -52,6 +58,11 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Smoother"/> class with IntPtr for input array.
         /// </summary>
+        /// <param name="stride">The stride.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="inRgbData">The rgb data.</param>
+        /// <param name="progHandler">The progress handler.</param>
         public Smoother(int stride, int width, int height, IntPtr inRgbData, IProgressHandler progHandler)
         {
             _stride = stride;
@@ -87,7 +98,7 @@ namespace DotSpatial.Data
 
         private static int Offset(int row, int col, int stride)
         {
-            return row * stride + col * 4;
+            return (row * stride) + (col * 4);
         }
 
         private void DoSmooth(int row, int col)

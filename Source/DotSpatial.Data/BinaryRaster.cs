@@ -94,7 +94,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the used file type. All the binary rasters use the Binary file type.
         /// </summary>
-        public override RasterFileType FileType => RasterFileType.BINARY;
+        public override RasterFileType FileType => RasterFileType.Binary;
 
         /// <summary>
         /// Gets the size of the header. There is one no-data value in the header.

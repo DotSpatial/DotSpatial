@@ -21,7 +21,7 @@ namespace DotSpatial.Data
     public class ExtentArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the ExtentArgs class.
+        /// Initializes a new instance of the <see cref="ExtentArgs"/> class.
         /// </summary>
         /// <param name="value">The value for this event.</param>
         public ExtentArgs(Extent value)

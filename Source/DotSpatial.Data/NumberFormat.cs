@@ -14,7 +14,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// NumberFormats
+    /// The NumberFormat enumeration contains the various formatting options for numbers.
     /// </summary>
     public enum NumberFormat
     {

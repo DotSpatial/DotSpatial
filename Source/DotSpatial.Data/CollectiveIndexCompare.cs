@@ -18,31 +18,24 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// The same as a ListEventArgs, but provides an option to cancel the event
+    /// The same as a ListEventArgs, but provides an option to cancel the event.
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     public class CollectiveIndexCompare<T> : EventArgs
     {
-        #region Private Variables
-
-        private IEnumerable<T> _collection;
-        private IComparer<T> _comparer;
-        private int _index;
-
-        #endregion
-
-        #region Methods
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class.
+        /// Initializes a new instance of the <see cref="CollectiveIndexCompare{T}"/> class.
         /// </summary>
         /// <param name="inCollection">the IEnumerable&lt;T&gt; responsible for the event.</param>
         /// <param name="inComparer">The System.Collections.Generic.IComparer&lt;T&gt; being used by this action.</param>
         /// <param name="inIndex">the Integer index associated with this event.</param>
         public CollectiveIndexCompare(IEnumerable<T> inCollection, IComparer<T> inComparer, int inIndex)
         {
-            _collection = inCollection;
-            _index = inIndex;
-            _comparer = inComparer;
+            Collection = inCollection;
+            Index = inIndex;
+            Comparer = inComparer;
         }
 
         #endregion
@@ -50,31 +43,19 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the IEnumerable&lt;T&gt; collection involved in this event
+        /// Gets or sets the IEnumerable&lt;T&gt; collection involved in this event.
         /// </summary>
-        public virtual IEnumerable<T> Collection
-        {
-            get { return _collection; }
-            protected set { _collection = value; }
-        }
+        public IEnumerable<T> Collection { get; protected set; }
 
         /// <summary>
-        /// Gets the integer index in the IEventList where this event occurred
+        /// Gets or sets the System.Collections.Generic.IComparer&lt;T&gt; being used by this action.
         /// </summary>
-        public virtual int Index
-        {
-            get { return _index; }
-            set { _index = value; }
-        }
+        public IComparer<T> Comparer { get; set; }
 
         /// <summary>
-        /// The System.Collections.Generic.IComparer&lt;T&gt; being used by this action
+        /// Gets or sets the integer index in the IEventList where this event occurred.
         /// </summary>
-        public virtual IComparer<T> Comparer
-        {
-            get { return _comparer; }
-            set { _comparer = value; }
-        }
+        public int Index { get; set; }
 
         #endregion
     }

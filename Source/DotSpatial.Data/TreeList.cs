@@ -21,9 +21,11 @@ namespace DotSpatial.Data
     /// A list that keeps track of a "parent" body that is also of type T.
     /// Whenever a member is added to the list, it sets the parent property.
     /// </summary>
-    public class TreeList<T> : IList<T> where T : IParentItem<T>
+    /// <typeparam name="T">Type of t he items in the tree.</typeparam>
+    public class TreeList<T> : IList<T>
+        where T : IParentItem<T>
     {
-        #region variables
+        #region Fields
 
         private readonly T _parent;
         private List<T> _list;
@@ -33,7 +35,7 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of list with no parent
+        /// Initializes a new instance of the <see cref="TreeList{T}"/> class.
         /// </summary>
         public TreeList()
         {
@@ -41,7 +43,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Instantiates a new instance of a TreeList of type T, where the specified parent
+        /// Initializes a new instance of the <see cref="TreeList{T}"/> class, where the specified parent
         /// will be used as the parent for each of the items of type T in the list.
         /// </summary>
         /// <param name="parent">The ParentItem of the specified item</param>
@@ -51,21 +53,73 @@ namespace DotSpatial.Data
             Configure();
         }
 
-        private void Configure()
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the total number of elements the internal data structure can hold without resizing.
+        /// </summary>
+        /// <returns>
+        /// The number of elements that the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; can contain before resizing is required.
+        /// </returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Capacity is set to a value that is less than DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count.</exception>
+        public virtual int Capacity
         {
-            _list = new List<T>();
+            get
+            {
+                return _list.Capacity;
+            }
+
+            set
+            {
+                _list.Capacity = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the count of the members in the list.
+        /// </summary>
+        public virtual int Count => _list.Count;
+
+        /// <summary>
+        /// Gets a value indicating whether this list can be written to.
+        /// </summary>
+        public bool IsReadOnly => false;
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// The default, indexed value of type T
+        /// </summary>
+        /// <param name="index">The numeric index</param>
+        /// <returns>An object of type T corresponding to the index value specified</returns>
+        public virtual T this[int index]
+        {
+            get
+            {
+                return _list[index];
+            }
+
+            set
+            {
+                // Don't add handlers if the items are already members of this list
+                OnExclude(_list[index]);
+                _list[index] = value;
+                OnInclude(value);
+            }
         }
 
         #endregion
 
         #region Methods
 
-        #region Add
-
         /// <summary>
-        /// Adds the item to the list, setting the parent to be the list's parent
+        /// Adds the item to the list, setting the parent to be the list's parent.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">Item  that gets added.</param>
         public void Add(T item)
         {
             _list.Add(item);
@@ -88,10 +142,6 @@ namespace DotSpatial.Data
             }
         }
 
-        #endregion
-
-        #region BinarySearch
-
         /// <summary>
         /// Searches the entire sorted System.Collections.Generic.List&lt;T&gt; for an element using the default comparer and returns the zero-based index of the element.
         /// </summary>
@@ -103,8 +153,6 @@ namespace DotSpatial.Data
             return _list.BinarySearch(item);
         }
 
-        #endregion
-
         /// <summary>
         /// Removes all elements from the EventList&lt;T&gt;.
         /// </summary>
@@ -115,6 +163,7 @@ namespace DotSpatial.Data
             {
                 OnExclude(item);
             }
+
             _list.Clear();
         }
 
@@ -129,21 +178,16 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through this list
+        /// Converts the elements in the current EventList&lt;T&gt; to another type, and returns a list containing the converted elements.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerator<T> GetEnumerator()
+        /// <typeparam name="TOutput">The output type to convert to</typeparam>
+        /// <param name="converter">A System.Converter&lt;TInput, TOutput&gt; delegate that converts each element from one type to another type.</param>
+        /// <returns>A List&lt;T&gt; of the target type containing the converted elements from the current EventList&lt;T&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">converter is null.</exception>
+        public virtual List<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter)
         {
-            return _list.GetEnumerator();
+            return _list.ConvertAll(converter);
         }
-
-        // if this is cast to IEnumerable or whatever
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        #region CopyTo
 
         /// <summary>
         /// Copies the entire System.Collections.Generic.List&lt;T&gt; to a compatible one-dimensional array, starting at the specified index of the target array.
@@ -184,20 +228,6 @@ namespace DotSpatial.Data
             _list.CopyTo(array);
         }
 
-        #endregion
-
-        /// <summary>
-        /// Converts the elements in the current EventList&lt;T&gt; to another type, and returns a list containing the converted elements.
-        /// </summary>
-        /// <typeparam name="TOutput">The output type to convert to</typeparam>
-        /// <param name="converter">A System.Converter&lt;TInput, TOutput&gt; delegate that converts each element from one type to another type.</param>
-        /// <returns>A List&lt;T&gt; of the target type containing the converted elements from the current EventList&lt;T&gt;.</returns>
-        /// <exception cref="System.ArgumentNullException">converter is null.</exception>
-        public virtual List<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter)
-        {
-            return _list.ConvertAll(converter);
-        }
-
         /// <summary>
         /// Determines whether the EventList&lt;T&gt; contains elements that match the conditions defined by the specified predicate.
         /// </summary>
@@ -208,322 +238,6 @@ namespace DotSpatial.Data
         {
             return _list.Exists(match);
         }
-
-        /// <summary>
-        /// Creates a shallow copy of a range of elements in the source EventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="index">The zero-based EventList&lt;T&gt; index at which the range starts.</param>
-        /// <param name="count"> The number of elements in the range.</param>
-        /// <returns>A shallow copy of a range of elements in the source EventList&lt;T&gt;.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
-        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the EventList&lt;T&gt;.</exception>
-        public virtual List<T> GetRange(int index, int count)
-        {
-            return _list.GetRange(index, count);
-        }
-
-        /// <summary>
-        /// Copies the elements of the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to a new array.
-        /// </summary>
-        /// <returns>An array containing copies of the elements of the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</returns>
-        public virtual T[] ToArray()
-        {
-            return _list.ToArray();
-        }
-
-        /// <summary>
-        /// Sets the capacity to the actual number of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;, if that number is less than a threshold value.
-        /// </summary>
-        public virtual void TrimExcess()
-        {
-            _list.TrimExcess();
-        }
-
-        /// <summary>
-        /// Determines whether every element in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; matches the conditions defined by the specified predicate.
-        /// </summary>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions to check against the elements.</param>
-        /// <returns>true if every element in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; matches the conditions defined by the specified predicate; otherwise, false. If the list has no elements, the return value is true.</returns>
-        /// <exception cref="System.ArgumentNullException">match is null.</exception>
-        public virtual bool TrueForAll(Predicate<T> match)
-        {
-            return _list.TrueForAll(match);
-        }
-
-        #region IndexOf
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the first occurrence within the entire System.Collections.Generic.List&lt;T&gt;.
-        /// </summary>
-        /// <param name="item">The object to locate in the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
-        /// <returns>The zero-based index of the first occurrence of item within the entire System.Collections.Generic.List&lt;T&gt;, if found; otherwise, –1.</returns>
-        public virtual int IndexOf(T item)
-        {
-            return _list.IndexOf(item);
-        }
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the EventList&lt;T&gt; that starts at the specified index and contains the specified number of elements.
-        /// </summary>
-        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index"> The zero-based starting index of the search.</param>
-        /// <param name="count">The number of elements in the section to search.</param>
-        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the EventList&lt;T&gt; that starts at index and contains count number of elements, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException"> index is outside the range of valid indexes for the EventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the EventList&lt;T&gt;.</exception>
-        public virtual int IndexOf(T item, int index, int count)
-        {
-            return _list.IndexOf(item, index, count);
-        }
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the EventList&lt;T&gt; that extends from the specified index to the last element.
-        /// </summary>
-        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index"> The zero-based starting index of the search.</param>
-        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the EventList&lt;T&gt; that extends from index to the last element, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the EventList&lt;T&gt;.</exception>
-        public virtual int IndexOf(T item, int index)
-        {
-            return _list.IndexOf(item, index);
-        }
-
-        #endregion
-
-        #region Insert
-
-        /// <summary>
-        /// Inserts an element into the System.Collections.Generic.List&lt;T&gt; at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index at which item should be inserted.</param>
-        /// <param name="item">The object to insert. The value can be null for reference types.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-index is greater than System.Collections.Generic.List&lt;T&gt;.Count.</exception>
-        /// <exception cref="System.ApplicationException">Unable to insert while the ReadOnly property is set to true.</exception>
-        public virtual void Insert(int index, T item)
-        {
-            _list.Insert(index, item);
-            OnInclude(item);
-        }
-
-        /// <summary>
-        /// Inserts the elements of a collection into the EventList&lt;T&gt; at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
-        /// <param name="collection">The collection whose elements should be inserted into the EventList&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null, if type T is a reference type.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-index is greater than EventList&lt;T&gt;.Count.</exception>
-        /// <exception cref="System.ArgumentNullException">collection is null.</exception>
-        /// <exception cref="System.ApplicationException">Unable to insert while the ReadOnly property is set to true.</exception>
-        public virtual void InsertRange(int index, IEnumerable<T> collection)
-        {
-            int indx = index;
-            foreach (T item in collection)
-            {
-                _list.Insert(indx, item);
-                indx++;
-                OnInclude(item);
-            }
-        }
-
-        #endregion
-
-        #region LastIndexOf
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the EventList&lt;T&gt; that contains the specified number of elements and ends at the specified index.
-        /// </summary>
-        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index">The zero-based starting index of the backward search.</param>
-        /// <param name="count">The number of elements in the section to search.</param>
-        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the EventList&lt;T&gt; that contains count number of elements and ends at index, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the EventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the EventList&lt;T&gt;.</exception>
-        public virtual int LastIndexOf(T item, int index, int count)
-        {
-            return _list.LastIndexOf(item, index, count);
-        }
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the EventList&lt;T&gt; that extends from the first element to the specified index.
-        /// </summary>
-        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index">The zero-based starting index of the backward search.</param>
-        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the EventList&lt;T&gt; that extends from the first element to index, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the EventList&lt;T&gt;.</exception>
-        public virtual int LastIndexOf(T item, int index)
-        {
-            return _list.LastIndexOf(item, index, Count);
-        }
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the last occurrence within the entire EventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <returns>The zero-based index of the last occurrence of item within the entire the EventList&lt;T&gt;, if found; otherwise, –1.</returns>
-        public virtual int LastIndexOf(T item)
-        {
-            return _list.LastIndexOf(item);
-        }
-
-        #endregion
-
-        #region Remove
-
-        /// <summary>
-        /// Removes the first occurrence of a specific object from the System.Collections.Generic.List&lt;T&gt;.
-        /// </summary>
-        /// <param name="item">The object to remove from the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
-        /// <returns>true if item is successfully removed; otherwise, false. This method also returns false if item was not
-        /// found in the System.Collections.Generic.List&lt;T&gt;.</returns>
-        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
-        public virtual bool Remove(T item)
-        {
-            if (_list.Remove(item))
-            {
-                OnExclude(item);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Removes the element at the specified index of the System.Collections.Generic.List&lt;T&gt;.
-        /// </summary>
-        /// <param name="index">The zero-based index of the element to remove.</param>
-        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
-        public virtual void RemoveAt(int index)
-        {
-            T item = _list[index];
-            OnExclude(item);
-            _list.RemoveAt(index);
-        }
-
-        /// <summary>
-        /// Removes the all the elements that match the conditions defined by the specified predicate.
-        /// </summary>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the elements to remove.</param>
-        /// <returns>The number of elements removed from the EventList&lt;T&gt;</returns>
-        /// <exception cref="System.ArgumentNullException">match is null.</exception>
-        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
-        public virtual int RemoveAll(Predicate<T> match)
-        {
-            List<T> matches = FindAll(match);
-
-            int numRemoved = matches.Count;
-            foreach (T item in matches)
-            {
-                if (_list.Remove(item))
-                {
-                    OnExclude(item);
-                }
-                else
-                {
-                    numRemoved--;
-                }
-            }
-            return numRemoved;
-        }
-
-        /// <summary>
-        /// Removes a range of elements from the EventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
-        /// <param name="count">The number of elements to remove.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
-        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the EventList&lt;T&gt;.</exception>
-        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
-        public virtual void RemoveRange(int index, int count)
-        {
-            T[] temp = new T[count];
-            _list.CopyTo(index, temp, 0, count);
-            _list.RemoveRange(index, count);
-            foreach (T item in temp)
-            {
-                OnExclude(item);
-            }
-        }
-
-        #endregion
-
-        #region Reverse
-
-        /// <summary>
-        /// Reverses the order of the elements in the specified range.
-        /// </summary>
-        /// <param name="index">The zero-based starting index of the range to reverse.</param>
-        /// <param name="count">The number of elements in the range to reverse.</param>
-        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the EventList&lt;T&gt;.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
-        /// <exception cref="System.ApplicationException">Unable to reverse while the ReadOnly property is set to true.</exception>
-        public virtual void Reverse(int index, int count)
-        {
-            _list.Reverse(index, count);
-        }
-
-        /// <summary>
-        /// Reverses the order of the elements in the entire EventList&lt;T&gt;.
-        /// </summary>
-        /// <exception cref="System.ApplicationException">Unable to reverse while the ReadOnly property is set to true.</exception>
-        public virtual void Reverse()
-        {
-            _list.Reverse();
-        }
-
-        #endregion
-
-        #region Sort
-
-        /// <summary>
-        /// Sorts the elements in the entire EventList&lt;T&gt; using the specified System.Comparison&lt;T&gt;.
-        /// </summary>
-        /// <param name="comparison">The System.Comparison&lt;T&gt; to use when comparing elements.</param>
-        /// <exception cref="System.ArgumentException">The implementation of comparison caused an error during the sort. For example, comparison might not return 0 when comparing an item with itself.</exception>
-        /// <exception cref="System.ArgumentNullException">comparison is null.</exception>
-        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
-        public virtual void Sort(Comparison<T> comparison)
-        {
-            _list.Sort(comparison);
-        }
-
-        /// <summary>
-        /// Sorts the elements in a range of elements in EventList&lt;T&gt; using the specified comparer.
-        /// </summary>
-        /// <param name="index"> The zero-based starting index of the range to sort.</param>
-        /// <param name="count">The length of the range to sort.</param>
-        /// <param name="comparer">The System.Collections.Generic.IComparer&lt;T&gt; implementation to use when comparing elements, or null to use the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default.</param>
-        /// <exception cref="System.ArgumentException">index and count do not specify a valid range in the EventList&lt;T&gt;.-or-The implementation of comparer caused an error during the sort. For example, comparer might not return 0 when comparing an item with itself.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
-        /// <exception cref="System.InvalidOperationException"> comparer is null, and the default comparer
-        /// System.Collections.Generic.Comparer&lt;T&gt;.Default cannot find implementation of the System.IComparable&lt;T&gt;
-        /// generic interface or the System.IComparable interface for type T.</exception>
-        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
-        public virtual void Sort(int index, int count, IComparer<T> comparer)
-        {
-            _list.Sort(index, count, comparer);
-        }
-
-        /// <summary>
-        /// Sorts the elements in the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; using the specified comparer.
-        /// </summary>
-        /// <param name="comparer"> The System.Collections.Generic.IComparer&lt;T&gt; implementation to use when comparing elements, or null to use the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default.</param>
-        /// <exception cref="System.ArgumentException">The implementation of comparer caused an error during the sort. For example, comparer might not return 0 when comparing an item with itself.</exception>
-        /// <exception cref="System.InvalidOperationException">comparer is null, and the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default cannot find implementation of the System.IComparable&lt;T&gt; generic interface or the System.IComparable interface for type T.</exception>
-        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
-        public virtual void Sort(IComparer<T> comparer)
-        {
-            _list.Sort(comparer);
-        }
-
-        /// <summary>
-        /// Sorts the elements in the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; using the default comparer.
-        /// </summary>
-        /// <exception cref="System.InvalidOperationException">The default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default cannot find an implementation of the System.IComparable&lt;T&gt; generic interface or the System.IComparable interface for type T.</exception>
-        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
-        public virtual void Sort()
-        {
-            _list.Sort();
-        }
-
-        #endregion
-
-        #region Find
 
         /// <summary>
         /// Retrieves all the elements that match the conditions described by the specified predicate
@@ -589,8 +303,8 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="startIndex">The zero-based starting index of the backward search.</param>
         /// <param name="count">The number of elements in the section to search.</param>
-        /// <param name="match"></param>
-        /// <returns>The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</returns>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The zero-based index of the last occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the EventList&lt;T&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the EventList&lt;T&gt;.</exception>
         /// <exception cref="System.ArgumentNullException">match is null.</exception>
         public virtual int FindLastIndex(int startIndex, int count, Predicate<T> match)
@@ -621,73 +335,324 @@ namespace DotSpatial.Data
             return _list.FindLastIndex(match);
         }
 
-        #endregion
-
-        #endregion
-
-        #region Properties
+        /// <summary>
+        /// Returns an enumerator that iterates through this list.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
 
         /// <summary>
-        /// Gets or sets the total number of elements the internal data structure can hold without resizing.
+        /// Creates a shallow copy of a range of elements in the source EventList&lt;T&gt;.
         /// </summary>
-        /// <returns>
-        /// The number of elements that the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; can contain before resizing is required.
-        /// </returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Capacity is set to a value that is less than DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count.</exception>
-        public virtual int Capacity
+        /// <param name="index">The zero-based EventList&lt;T&gt; index at which the range starts.</param>
+        /// <param name="count"> The number of elements in the range.</param>
+        /// <returns>A shallow copy of a range of elements in the source EventList&lt;T&gt;.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
+        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the EventList&lt;T&gt;.</exception>
+        public virtual List<T> GetRange(int index, int count)
         {
-            get
+            return _list.GetRange(index, count);
+        }
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the first occurrence within the entire System.Collections.Generic.List&lt;T&gt;.
+        /// </summary>
+        /// <param name="item">The object to locate in the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
+        /// <returns>The zero-based index of the first occurrence of item within the entire System.Collections.Generic.List&lt;T&gt;, if found; otherwise, –1.</returns>
+        public virtual int IndexOf(T item)
+        {
+            return _list.IndexOf(item);
+        }
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the EventList&lt;T&gt; that starts at the specified index and contains the specified number of elements.
+        /// </summary>
+        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index"> The zero-based starting index of the search.</param>
+        /// <param name="count">The number of elements in the section to search.</param>
+        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the EventList&lt;T&gt; that starts at index and contains count number of elements, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException"> index is outside the range of valid indexes for the EventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the EventList&lt;T&gt;.</exception>
+        public virtual int IndexOf(T item, int index, int count)
+        {
+            return _list.IndexOf(item, index, count);
+        }
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the EventList&lt;T&gt; that extends from the specified index to the last element.
+        /// </summary>
+        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index"> The zero-based starting index of the search.</param>
+        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the EventList&lt;T&gt; that extends from index to the last element, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the EventList&lt;T&gt;.</exception>
+        public virtual int IndexOf(T item, int index)
+        {
+            return _list.IndexOf(item, index);
+        }
+
+        /// <summary>
+        /// Inserts an element into the System.Collections.Generic.List&lt;T&gt; at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index at which item should be inserted.</param>
+        /// <param name="item">The object to insert. The value can be null for reference types.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-index is greater than System.Collections.Generic.List&lt;T&gt;.Count.</exception>
+        /// <exception cref="System.ApplicationException">Unable to insert while the ReadOnly property is set to true.</exception>
+        public virtual void Insert(int index, T item)
+        {
+            _list.Insert(index, item);
+            OnInclude(item);
+        }
+
+        /// <summary>
+        /// Inserts the elements of a collection into the EventList&lt;T&gt; at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
+        /// <param name="collection">The collection whose elements should be inserted into the EventList&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null, if type T is a reference type.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-index is greater than EventList&lt;T&gt;.Count.</exception>
+        /// <exception cref="System.ArgumentNullException">collection is null.</exception>
+        /// <exception cref="System.ApplicationException">Unable to insert while the ReadOnly property is set to true.</exception>
+        public virtual void InsertRange(int index, IEnumerable<T> collection)
+        {
+            int indx = index;
+            foreach (T item in collection)
             {
-                return _list.Capacity;
-            }
-            set
-            {
-                _list.Capacity = value;
+                _list.Insert(indx, item);
+                indx++;
+                OnInclude(item);
             }
         }
 
         /// <summary>
-        /// Gets the count of the members in the list
+        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the EventList&lt;T&gt; that contains the specified number of elements and ends at the specified index.
         /// </summary>
-        public virtual int Count
+        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index">The zero-based starting index of the backward search.</param>
+        /// <param name="count">The number of elements in the section to search.</param>
+        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the EventList&lt;T&gt; that contains count number of elements and ends at index, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the EventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the EventList&lt;T&gt;.</exception>
+        public virtual int LastIndexOf(T item, int index, int count)
         {
-            get { return _list.Count; }
+            return _list.LastIndexOf(item, index, count);
         }
 
         /// <summary>
-        /// The default, indexed value of type T
+        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the EventList&lt;T&gt; that extends from the first element to the specified index.
         /// </summary>
-        /// <param name="index">The numeric index</param>
-        /// <returns>An object of type T corresponding to the index value specified</returns>
-        public virtual T this[int index]
+        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index">The zero-based starting index of the backward search.</param>
+        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the EventList&lt;T&gt; that extends from the first element to index, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the EventList&lt;T&gt;.</exception>
+        public virtual int LastIndexOf(T item, int index)
         {
-            get
+            return _list.LastIndexOf(item, index, Count);
+        }
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the last occurrence within the entire EventList&lt;T&gt;.
+        /// </summary>
+        /// <param name="item">The object to locate in the EventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <returns>The zero-based index of the last occurrence of item within the entire the EventList&lt;T&gt;, if found; otherwise, –1.</returns>
+        public virtual int LastIndexOf(T item)
+        {
+            return _list.LastIndexOf(item);
+        }
+
+        /// <summary>
+        /// Removes the first occurrence of a specific object from the System.Collections.Generic.List&lt;T&gt;.
+        /// </summary>
+        /// <param name="item">The object to remove from the System.Collections.Generic.List&lt;T&gt;. The value can be null for reference types.</param>
+        /// <returns>true if item is successfully removed; otherwise, false. This method also returns false if item was not
+        /// found in the System.Collections.Generic.List&lt;T&gt;.</returns>
+        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
+        public virtual bool Remove(T item)
+        {
+            if (_list.Remove(item))
             {
-                return _list[index];
+                OnExclude(item);
+                return true;
             }
-            set
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes the all the elements that match the conditions defined by the specified predicate.
+        /// </summary>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the elements to remove.</param>
+        /// <returns>The number of elements removed from the EventList&lt;T&gt;</returns>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
+        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
+        public virtual int RemoveAll(Predicate<T> match)
+        {
+            List<T> matches = FindAll(match);
+
+            int numRemoved = matches.Count;
+            foreach (T item in matches)
             {
-                // Don't add handlers if the items are already members of this list
-                OnExclude(_list[index]);
-                _list[index] = value;
-                OnInclude(value);
+                if (_list.Remove(item))
+                {
+                    OnExclude(item);
+                }
+                else
+                {
+                    numRemoved--;
+                }
+            }
+
+            return numRemoved;
+        }
+
+        /// <summary>
+        /// Removes the element at the specified index of the System.Collections.Generic.List&lt;T&gt;.
+        /// </summary>
+        /// <param name="index">The zero-based index of the element to remove.</param>
+        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
+        public virtual void RemoveAt(int index)
+        {
+            T item = _list[index];
+            OnExclude(item);
+            _list.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Removes a range of elements from the EventList&lt;T&gt;.
+        /// </summary>
+        /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
+        /// <param name="count">The number of elements to remove.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
+        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the EventList&lt;T&gt;.</exception>
+        /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
+        public virtual void RemoveRange(int index, int count)
+        {
+            T[] temp = new T[count];
+            _list.CopyTo(index, temp, 0, count);
+            _list.RemoveRange(index, count);
+            foreach (T item in temp)
+            {
+                OnExclude(item);
             }
         }
 
         /// <summary>
-        /// Gets a boolean property indicating whether this list can be written to.
+        /// Reverses the order of the elements in the specified range.
         /// </summary>
-        public bool IsReadOnly
+        /// <param name="index">The zero-based starting index of the range to reverse.</param>
+        /// <param name="count">The number of elements in the range to reverse.</param>
+        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the EventList&lt;T&gt;.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
+        /// <exception cref="System.ApplicationException">Unable to reverse while the ReadOnly property is set to true.</exception>
+        public virtual void Reverse(int index, int count)
         {
-            get
-            {
-                return false;
-            }
+            _list.Reverse(index, count);
         }
 
-        #endregion
+        /// <summary>
+        /// Reverses the order of the elements in the entire EventList&lt;T&gt;.
+        /// </summary>
+        /// <exception cref="System.ApplicationException">Unable to reverse while the ReadOnly property is set to true.</exception>
+        public virtual void Reverse()
+        {
+            _list.Reverse();
+        }
 
-        #region Protected Methods
+        /// <summary>
+        /// Sorts the elements in the entire EventList&lt;T&gt; using the specified System.Comparison&lt;T&gt;.
+        /// </summary>
+        /// <param name="comparison">The System.Comparison&lt;T&gt; to use when comparing elements.</param>
+        /// <exception cref="System.ArgumentException">The implementation of comparison caused an error during the sort. For example, comparison might not return 0 when comparing an item with itself.</exception>
+        /// <exception cref="System.ArgumentNullException">comparison is null.</exception>
+        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
+        public virtual void Sort(Comparison<T> comparison)
+        {
+            _list.Sort(comparison);
+        }
+
+        /// <summary>
+        /// Sorts the elements in a range of elements in EventList&lt;T&gt; using the specified comparer.
+        /// </summary>
+        /// <param name="index"> The zero-based starting index of the range to sort.</param>
+        /// <param name="count">The length of the range to sort.</param>
+        /// <param name="comparer">The System.Collections.Generic.IComparer&lt;T&gt; implementation to use when comparing elements, or null to use the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default.</param>
+        /// <exception cref="System.ArgumentException">index and count do not specify a valid range in the EventList&lt;T&gt;.-or-The implementation of comparer caused an error during the sort. For example, comparer might not return 0 when comparing an item with itself.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
+        /// <exception cref="System.InvalidOperationException"> comparer is null, and the default comparer
+        /// System.Collections.Generic.Comparer&lt;T&gt;.Default cannot find implementation of the System.IComparable&lt;T&gt;
+        /// generic interface or the System.IComparable interface for type T.</exception>
+        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
+        public virtual void Sort(int index, int count, IComparer<T> comparer)
+        {
+            _list.Sort(index, count, comparer);
+        }
+
+        /// <summary>
+        /// Sorts the elements in the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; using the specified comparer.
+        /// </summary>
+        /// <param name="comparer"> The System.Collections.Generic.IComparer&lt;T&gt; implementation to use when comparing elements, or null to use the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default.</param>
+        /// <exception cref="System.ArgumentException">The implementation of comparer caused an error during the sort. For example, comparer might not return 0 when comparing an item with itself.</exception>
+        /// <exception cref="System.InvalidOperationException">comparer is null, and the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default cannot find implementation of the System.IComparable&lt;T&gt; generic interface or the System.IComparable interface for type T.</exception>
+        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
+        public virtual void Sort(IComparer<T> comparer)
+        {
+            _list.Sort(comparer);
+        }
+
+        /// <summary>
+        /// Sorts the elements in the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; using the default comparer.
+        /// </summary>
+        /// <exception cref="System.InvalidOperationException">The default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default cannot find an implementation of the System.IComparable&lt;T&gt; generic interface or the System.IComparable interface for type T.</exception>
+        /// <exception cref="System.ApplicationException">Unable to sort while the ReadOnly property is set to true.</exception>
+        public virtual void Sort()
+        {
+            _list.Sort();
+        }
+
+        /// <summary>
+        /// Copies the elements of the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to a new array.
+        /// </summary>
+        /// <returns>An array containing copies of the elements of the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</returns>
+        public virtual T[] ToArray()
+        {
+            return _list.ToArray();
+        }
+
+        /// <summary>
+        /// Sets the capacity to the actual number of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;, if that number is less than a threshold value.
+        /// </summary>
+        public virtual void TrimExcess()
+        {
+            _list.TrimExcess();
+        }
+
+        /// <summary>
+        /// Determines whether every element in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; matches the conditions defined by the specified predicate.
+        /// </summary>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions to check against the elements.</param>
+        /// <returns>true if every element in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; matches the conditions defined by the specified predicate; otherwise, false. If the list has no elements, the return value is true.</returns>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
+        public virtual bool TrueForAll(Predicate<T> match)
+        {
+            return _list.TrueForAll(match);
+        }
+
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
+
+        /// <summary>
+        /// This reverts the parent item of an item when it is removed from this treelist
+        /// </summary>
+        /// <param name="item">The item being removed from the list</param>
+        protected virtual void OnExclude(T item)
+        {
+            item.SetParentItem(default(T));
+        }
 
         /// <summary>
         /// This sets the parent item of the item being added to this treelist.
@@ -698,13 +663,9 @@ namespace DotSpatial.Data
             item.SetParentItem(_parent);
         }
 
-        /// <summary>
-        /// This reverts the parent item of an item when it is removed from this treelist
-        /// </summary>
-        /// <param name="item">The item being removed from the list</param>
-        protected virtual void OnExclude(T item)
+        private void Configure()
         {
-            item.SetParentItem(default(T));
+            _list = new List<T>();
         }
 
         #endregion

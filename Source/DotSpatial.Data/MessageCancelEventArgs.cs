@@ -17,15 +17,21 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A set of PaintEventArgs that can be used before a drawing function in order to cancel an event.
+    /// A set of MessageCancelEventArgs that can be used in order to cancel an event.
     /// </summary>
     public class MessageCancelEventArgs : EventArgs
     {
+        #region Fields
+
         private bool _cancel; // decides to cancel something
         private string _message; // a message of what is happening.
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Creates a new instance of the MessageCancel Event Arguments
+        /// Initializes a new instance of the <see cref="MessageCancelEventArgs"/> class.
         /// </summary>
         /// <param name="message">A string message to convey with this event.</param>
         public MessageCancelEventArgs(string message)
@@ -34,8 +40,12 @@ namespace DotSpatial.Data
             _message = message;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Returns a boolean specifying whether the action that caused this event should be canceled.
+        /// Gets or sets a value indicating whether the action that caused this event should be canceled.
         /// </summary>
         public virtual bool Cancel
         {
@@ -43,6 +53,7 @@ namespace DotSpatial.Data
             {
                 return _cancel;
             }
+
             set
             {
                 _cancel = value;
@@ -50,7 +61,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The message allowing someone to decide whether or not the process should be canceled. For instance,
+        /// Gets or sets the message allowing someone to decide whether or not the process should be canceled. For instance,
         /// when writing a new file, a message might show "The file C:\bob.txt already exists, overwrite it?"
         /// </summary>
         public virtual string Message
@@ -59,10 +70,13 @@ namespace DotSpatial.Data
             {
                 return _message;
             }
+
             protected set
             {
                 _message = value;
             }
         }
+
+        #endregion
     }
 }

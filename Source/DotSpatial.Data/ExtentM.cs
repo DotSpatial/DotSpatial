@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel;
+using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
 using GeoAPI.Geometries;
 
@@ -20,13 +21,14 @@ namespace DotSpatial.Data
     /// <summary>
     /// The ExtentsM class extends the regular X and Y extent to the X, Y and M case.
     /// </summary>
-    [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class ExtentM : Extent, IExtentM
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ExtentM class.
+        /// Initializes a new instance of the <see cref="ExtentM"/> class.
         /// </summary>
         public ExtentM()
         {
@@ -35,21 +37,21 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the ExtentM class.
+        /// Initializes a new instance of the <see cref="ExtentM"/> class.
         /// </summary>
         /// <param name="minX">The double Minimum in the X direction.</param>
         /// <param name="minY">The double Minimum in the Y direction.</param>
         /// <param name="minM">The double Minimum in the Measure category.</param>
         /// <param name="maxX">The double Maximum in the X direction.</param>
         /// <param name="maxY">The double Maximum in the Y direction.</param>
-        ///  <param name="maxM">The double Maximum in the Measure category.</param>
+        /// <param name="maxM">The double Maximum in the Measure category.</param>
         public ExtentM(double minX, double minY, double minM, double maxX, double maxY, double maxM)
         {
             SetValues(minX, minY, minM, maxX, maxY, maxM);
         }
 
         /// <summary>
-        /// Initializes a new instance of the ExtentM class that is specially designed to work
+        /// Initializes a new instance of the <see cref="ExtentM"/> class that is specially designed to work.
         /// with shapefile formats that have a Measure value. Obviously other formats can use
         /// this as well.
         /// </summary>
@@ -64,7 +66,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the ExtentM class. This overload works from an envelope.
+        /// Initializes a new instance of the <see cref="ExtentM"/> class. This overload works from an envelope.
         /// </summary>
         /// <param name="env">The envelope with extent values to read.</param>
         public ExtentM(Envelope env)
@@ -77,7 +79,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets whether the M values are used. M values are considered optional,
+        /// Gets a value indicating whether the M values are used. M values are considered optional,
         /// and not mandatory. Unused could mean either bound is NaN for some reason, or
         /// else that the bounds are invalid by the Min being less than the Max.
         /// </summary>
@@ -140,10 +142,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Tests if this envelope is contained by the specified envelope
+        /// Tests if the specified extent is contained by the this.
         /// </summary>
-        /// <param name="ext"></param>
-        /// <returns></returns>
+        /// <param name="ext">The extent to test.</param>
+        /// <returns>True, if the extent is contained by this.</returns>
         public override bool Contains(IExtent ext)
         {
             IExtentM mExt = ext as IExtentM;
@@ -156,14 +158,14 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Tests if this envelope is contained by the specified envelope. If either element
+        /// Tests if this envelope contains the specified envelope. If either element
         /// does not support M values, then only the default X and Y contains test is used.
         /// </summary>
         /// <param name="env">The envelope to test.</param>
         /// <returns>Boolean.</returns>
         public override bool Contains(Envelope env)
         {
-            if (  !double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
+            if (env.HasM() && HasM)
             {
                 if (env.Maximum.M < MinM || env.Minimum.M > MaxM)
                 {

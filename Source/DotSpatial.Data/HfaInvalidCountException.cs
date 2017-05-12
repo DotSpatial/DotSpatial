@@ -23,10 +23,12 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HfaInvalidCountException
+        /// Initializes a new instance of the <see cref="HfaInvalidCountException"/> class.
         /// </summary>
-        public HfaInvalidCountException(int nRows, int nCols)
-            : base(DataStrings.HfaInvalidCountException.Replace("%S1", nRows.ToString()).Replace("%S2", nCols.ToString()))
+        /// <param name="rows">Number of rows.</param>
+        /// <param name="cols">Number of columns.</param>
+        public HfaInvalidCountException(int rows, int cols)
+            : base(string.Format(DataStrings.HfaInvalidCountException, rows, cols))
         {
         }
 

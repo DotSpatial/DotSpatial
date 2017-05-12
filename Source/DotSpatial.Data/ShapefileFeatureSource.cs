@@ -33,9 +33,13 @@ namespace DotSpatial.Data
     /// </summary>
     public abstract class ShapefileFeatureSource
     {
+        #region Fields
+
         private readonly bool _trackDeletedRows;
         private List<int> _deletedRows;
         private string _fileName;
+
+        #endregion
 
         #region Constructors
 
@@ -82,8 +86,8 @@ namespace DotSpatial.Data
             get
             {
                 var sh = new ShapefileHeader(Filename);
-                if (sh.ShxLength == 50)
-                    return new Extent(double.NaN, 0, 0, 0);
+                if (sh.ShxLength == 50) return new Extent(double.NaN, 0, 0, 0);
+
                 return sh.ToExtent();
             }
         }
@@ -92,6 +96,27 @@ namespace DotSpatial.Data
         /// Gets the feature type supported by this feature source
         /// </summary>
         public abstract FeatureType FeatureType { get; }
+
+        /// <summary>
+        /// Gets or sets the absolute Filename of this ShapefileFeatureSource. If a relative path gets assigned it is changed to the absolute path including the file extension.
+        /// </summary>
+        public string Filename
+        {
+            get
+            {
+                return _fileName;
+            }
+
+            set
+            {
+                _fileName = Path.GetFullPath(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the integer maximum number of records to return in a single page of results.
+        /// </summary>
+        public int PageSize { get; set; }
 
         /// <summary>
         /// Gets the shape type (without M or Z) supported by this feature source
@@ -107,20 +132,6 @@ namespace DotSpatial.Data
         /// Gets the shape type (with M and Z) supported by this feature source
         /// </summary>
         public abstract ShapeType ShapeTypeZ { get; }
-
-        /// <summary>
-        /// Gets or sets the absolute Filename of this ShapefileFeatureSource. If a relative path gets assigned it is changed to the absolute path including the file extension.
-        /// </summary>
-        public string Filename
-        {
-            get { return _fileName; }
-            set { _fileName = Path.GetFullPath(value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the integer maximum number of records to return in a single page of results.
-        /// </summary>
-        public int PageSize { get; set; }
 
         /// <summary>
         /// Gets the spatial index if any
@@ -161,18 +172,14 @@ namespace DotSpatial.Data
             {
                 case ShapeType.Polygon:
                 case ShapeType.PolygonM:
-                case ShapeType.PolygonZ:
-                    return new PolygonShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
+                case ShapeType.PolygonZ: return new PolygonShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
                 case ShapeType.PolyLine:
                 case ShapeType.PolyLineM:
-                case ShapeType.PolyLineZ:
-                    return new LineShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
+                case ShapeType.PolyLineZ: return new LineShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
                 case ShapeType.Point:
                 case ShapeType.PointM:
-                case ShapeType.PointZ:
-                    return new PointShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
-                default:
-                    throw new ClassNotSupportedException($"Cannot create ShapefileFeatureSource for {header.ShapeType} shape type"); // TODO jany_ why use classNotSupportedException if message not a class name?  resulting Errormessage makes no sense
+                case ShapeType.PointZ: return new PointShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
+                default: throw new ClassNotSupportedException($"Cannot create ShapefileFeatureSource for {header.ShapeType} shape type"); // TODO jany_ why use classNotSupportedException if message not a class name?  resulting Errormessage makes no sense
             }
         }
 
@@ -333,6 +340,7 @@ namespace DotSpatial.Data
             if (File.Exists(Filename)) File.Delete(Filename);
             string dir = Path.GetDirectoryName(Filename);
             if (dir == null) return;
+
             string baseName = Path.GetFileNameWithoutExtension(Filename);
             string[] files = Directory.GetFiles(dir, baseName + ".*");
             foreach (string file in files)
@@ -342,27 +350,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Select function passed with a filter expression.
-        /// </summary>
-        /// <param name="filterExpression">The string filter expression based on attributes</param>
-        /// <param name="envelope">The envelope for vector filtering.</param>
-        /// <param name="startIndex">The integer start index where values should be checked.  This will be updated to the </param>
-        /// last index that was checked before the return, so that paging the query can begin with that index in the next cycle.
-        /// Be sure to add one before the next call.
-        /// <param name="maxCount">The integer maximum number of IFeature values that should be returned.</param>
-        /// <returns>A dictionary with FID keys and IFeature values.</returns>
-        public abstract IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount);
-
-        /// <summary>
-        /// Conditionally modify attributes as searched in a single pass via client supplied callback.
-        /// </summary>
-        /// <param name="envelope">The envelope for vector filtering.</param>
-        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
-        /// <param name="rowCallback">Callback on each feature</param>
-        public abstract void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
-
-        /// <summary>
-        /// Edits the values of the specified row in the attribute table.  Since not all data formats
+        /// Edits the values of the specified row in the attribute table. Since not all data formats
         /// can handle the dynamic change of attributes, updating vectors can be done with Remove and Add.
         /// </summary>
         /// <param name="fid">The feature offest</param>
@@ -384,12 +372,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Adding and removing shapes may make the bounds for the entire shapefile invalid.
-        /// This triggers a check that ensures that the collective extents contain all the shapes.
-        /// </summary>
-        public abstract void UpdateExtents();
-
-        /// <summary>
         /// Removes the feature with the specified index.
         /// </summary>
         /// <param name="index">Removes the feature from the specified index location</param>
@@ -407,8 +389,7 @@ namespace DotSpatial.Data
 
                 AttributeTable dbf = GetAttributeTable(Filename);
                 dbf.RemoveRowAt(index);
-                if (_trackDeletedRows)
-                    _deletedRows = dbf.DeletedRows;
+                if (_trackDeletedRows) _deletedRows = dbf.DeletedRows;
 
                 // Update extent in header if feature being deleted is NOT completely contained
                 var hdr = new ShapefileHeader(Filename);
@@ -422,6 +403,136 @@ namespace DotSpatial.Data
                 // Update the Quadtree
                 Quadtree?.Remove(featureEnv, index);
             }
+        }
+
+        /// <summary>
+        /// Conditionally modify attributes as searched in a single pass via client supplied callback.
+        /// </summary>
+        /// <param name="envelope">The envelope for vector filtering.</param>
+        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
+        /// <param name="rowCallback">Callback on each feature</param>
+        public abstract void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
+
+        /// <summary>
+        /// Select function passed with a filter expression.
+        /// </summary>
+        /// <param name="filterExpression">The string filter expression based on attributes</param>
+        /// <param name="envelope">The envelope for vector filtering.</param>
+        /// <param name="startIndex">The integer start index where values should be checked. This will be updated to the </param>
+        /// last index that was checked before the return, so that paging the query can begin with that index in the next cycle.
+        /// Be sure to add one before the next call.
+        /// <param name="maxCount">The integer maximum number of IFeature values that should be returned.</param>
+        /// <returns>A dictionary with FID keys and IFeature values.</returns>
+        public abstract IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount);
+
+        /// <summary>
+        /// Adding and removing shapes may make the bounds for the entire shapefile invalid.
+        /// This triggers a check that ensures that the collective extents contain all the shapes.
+        /// </summary>
+        public abstract void UpdateExtents();
+
+        /// <summary>
+        /// Append the geometry to the shapefile.
+        /// </summary>
+        /// <param name="header">ShapefileHeader of this file.</param>
+        /// <param name="geometry">Geometry that gets appended.</param>
+        /// <param name="numFeatures">Number of the features in the shapefile including the one getting appended.</param>
+        protected abstract void AppendGeometry(ShapefileHeader header, IGeometry geometry, int numFeatures);
+
+        /// <summary>
+        /// Conditionally modify attributes as searched in a single pass via client supplied callback.
+        /// </summary>
+        /// <param name="sr">ShapeSource for this feature source</param>
+        /// <param name="envelope">The envelope for vector filtering.</param>
+        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
+        /// <param name="featureEditCallback">Callback on each feature</param>
+        protected void SearchAndModifyAttributes(IShapeSource sr, Envelope envelope, int chunkSize, FeatureSourceRowEditEvent featureEditCallback)
+        {
+            var samp = new ShapefileFeatureSourceSearchAndModifyAttributeParameters(featureEditCallback);
+            AttributeTable at = null;
+            int startIndex = 0;
+            do
+            {
+                samp.CurrentSearchAndModifyAttributeShapes = sr.GetShapes(ref startIndex, chunkSize, envelope);
+                if (samp.CurrentSearchAndModifyAttributeShapes.Count > 0)
+                {
+                    if (at == null) at = GetAttributeTable(Filename);
+
+                    at.Edit(samp.CurrentSearchAndModifyAttributeShapes.Keys, samp.OnRowEditEvent);
+                }
+            }
+            while (samp.CurrentSearchAndModifyAttributeShapes.Count == chunkSize);
+        }
+
+        /// <summary>
+        /// Select the features in an IShapeSource.
+        /// </summary>
+        /// <param name="shapeSource">ShapeSource that contains the shapes.</param>
+        /// <param name="filterExpression">Expression that is used to filter the attributes.</param>
+        /// <param name="envelope">The geographic extents that can be used to limit the shapes. If this is null, then no envelope is used.</param>
+        /// <param name="startIndex">The integer offset of the first shape to test. When this returns, the offset is set to the integer index of the last shape tested, regardless of whether or not it was returned.</param>
+        /// <param name="maxCount">The integer count of the maximum number of shapes to return here. </param>
+        /// <returns>An IFeatureSet containing the selected features.</returns>
+        protected IFeatureSet Select(IShapeSource shapeSource, string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
+        {
+            var shapes = shapeSource.GetShapes(ref startIndex, maxCount, envelope);
+            AttributeTable at = GetAttributeTable(Filename);
+            var result = new FeatureSet(FeatureType.Polygon);
+            bool schemaDefined = false;
+            foreach (var pair in shapes)
+            {
+                DataTable td = at.SupplyPageOfData(pair.Key, 1);
+                if (td.Select(filterExpression).Length > 0)
+                {
+                    if (!schemaDefined)
+                    {
+                        schemaDefined = true;
+                        result.CopyTableSchema(td);
+                    }
+
+                    IFeature f = new Feature(pair.Value)
+                    {
+                        DataRow = td.Rows[0]
+                    };
+                    result.Features.Add(f);
+                    f.UpdateEnvelope();
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Update header extents from the geometries in a IShapeSource.
+        /// </summary>
+        /// <param name="shapeSource">IShapeSource that is used to update the header extents.</param>
+        protected void UpdateExtents(IShapeSource shapeSource)
+        {
+            var sr = new ShapeReader(shapeSource);
+            Extent env = null;
+
+            foreach (var page in sr)
+            {
+                foreach (var shape in page)
+                {
+                    Extent shapeExtent = shape.Value.Range.Extent;
+                    if (env == null)
+                    {
+                        env = (Extent)shapeExtent.Clone();
+                    }
+                    else
+                    {
+                        env.ExpandToInclude(shapeExtent);
+                    }
+                }
+            }
+
+            // Extents for an empty file are unspecified according to the specification, so do nothing
+            if (env == null) return;
+
+            var sh = new ShapefileHeader(Filename);
+            sh.SetExtent(env);
+            sh.Save();
         }
 
         /// <summary>
@@ -477,109 +588,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Update header extents from the geometries in a IShapeSource.
-        /// </summary>
-        /// <param name="shapeSource">IShapeSource that is used to update the header extents.</param>
-        protected void UpdateExtents(IShapeSource shapeSource)
-        {
-            var sr = new ShapeReader(shapeSource);
-            Extent env = null;
-
-            foreach (var page in sr)
-            {
-                foreach (var shape in page)
-                {
-                    Extent shapeExtent = shape.Value.Range.Extent;
-                    if (env == null)
-                    {
-                        env = (Extent)shapeExtent.Clone();
-                    }
-                    else
-                    {
-                        env.ExpandToInclude(shapeExtent);
-                    }
-                }
-            }
-
-            // Extents for an empty file are unspecified according to the specification, so do nothing
-            if (env == null)
-                return;
-
-            var sh = new ShapefileHeader(Filename);
-            sh.SetExtent(env);
-            sh.Save();
-        }
-
-        /// <summary>
-        /// Select the features in an IShapeSource.
-        /// </summary>
-        /// <param name="shapeSource">ShapeSource that contains the shapes.</param>
-        /// <param name="filterExpression">Expression that is used to filter the attributes.</param>
-        /// <param name="envelope">The geographic extents that can be used to limit the shapes. If this is null, then no envelope is used.</param>
-        /// <param name="startIndex">The integer offset of the first shape to test. When this returns, the offset is set to the integer index of the last shape tested, regardless of whether or not it was returned.</param>
-        /// <param name="maxCount">The integer count of the maximum number of shapes to return here. </param>
-        /// <returns>An IFeatureSet containing the selected features.</returns>
-        protected IFeatureSet Select(IShapeSource shapeSource, string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
-        {
-            var shapes = shapeSource.GetShapes(ref startIndex, maxCount, envelope);
-            AttributeTable at = GetAttributeTable(Filename);
-            var result = new FeatureSet(FeatureType.Polygon);
-            bool schemaDefined = false;
-            foreach (var pair in shapes)
-            {
-                DataTable td = at.SupplyPageOfData(pair.Key, 1);
-                if (td.Select(filterExpression).Length > 0)
-                {
-                    if (!schemaDefined)
-                    {
-                        schemaDefined = true;
-                        result.CopyTableSchema(td);
-                    }
-
-                    IFeature f = new Feature(pair.Value) { DataRow = td.Rows[0] };
-                    result.Features.Add(f);
-                    f.UpdateEnvelope();
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Conditionally modify attributes as searched in a single pass via client supplied callback.
-        /// </summary>
-        /// <param name="sr">ShapeSource for this feature source</param>
-        /// <param name="envelope">The envelope for vector filtering.</param>
-        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
-        /// <param name="featureEditCallback">Callback on each feature</param>
-        protected void SearchAndModifyAttributes(IShapeSource sr, Envelope envelope, int chunkSize, FeatureSourceRowEditEvent featureEditCallback)
-        {
-            var samp = new ShapefileFeatureSourceSearchAndModifyAttributeParameters(featureEditCallback);
-            AttributeTable at = null;
-            int startIndex = 0;
-            do
-            {
-                samp.CurrentSearchAndModifyAttributeShapes = sr.GetShapes(ref startIndex, chunkSize, envelope);
-                if (samp.CurrentSearchAndModifyAttributeShapes.Count > 0)
-                {
-                    if (at == null)
-                        at = GetAttributeTable(Filename);
-
-                    at.Edit(samp.CurrentSearchAndModifyAttributeShapes.Keys, samp.OnRowEditEvent);
-                }
-            }
-            while (samp.CurrentSearchAndModifyAttributeShapes.Count == chunkSize);
-        }
-
-        /// <summary>
-        /// Append the geometry to the shapefile.
-        /// </summary>
-        /// <param name="header">ShapefileHeader of this file.</param>
-        /// <param name="geometry">Geometry that gets appended.</param>
-        /// <param name="numFeatures">Number of the features in the shapefile including the one getting appended.</param>
-        protected abstract void AppendGeometry(ShapefileHeader header, IGeometry geometry, int numFeatures);
-
-        /// <summary>
         /// Writes the header to the given file.
         /// </summary>
         /// <param name="header">Header that gets written.</param>
@@ -594,25 +602,33 @@ namespace DotSpatial.Data
 
             using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Write, FileShare.None, 100))
             {
-                fs.WriteBe(header.FileCode);       ////  Byte 0          File Code       9994        Integer     Big
+                fs.WriteBe(header.FileCode); ////  Byte 0          File Code       9994        Integer     Big
 
                 var bt = new byte[20];
-                fs.Write(bt, 0, 20);               ////  Bytes 4 - 20 are unused
+                fs.Write(bt, 0, 20); ////  Bytes 4 - 20 are unused
 
                 // This is overwritten later
-                fs.WriteBe(0);                       //  Byte 24         File Length     File Length Integer     Big
-                fs.WriteLe(header.Version);          //  Byte 28         Version         1000        Integer     Little
-                fs.WriteLe((int)header.ShapeType);   //  Byte 32         Shape Type      Shape Type  Integer     Little
-                fs.WriteLe(header.Xmin);             //  Byte 36         Bounding Box    Xmin        Double      Little
-                fs.WriteLe(header.Ymin);             //  Byte 44         Bounding Box    Ymin        Double      Little
-                fs.WriteLe(header.Xmax);             //  Byte 52         Bounding Box    Xmax        Double      Little
-                fs.WriteLe(header.Ymax);             //  Byte 60         Bounding Box    Ymax        Double      Little
-                fs.WriteLe(header.Zmin);             //  Byte 68         Bounding Box    Zmin        Double      Little
-                fs.WriteLe(header.Zmax);             //  Byte 76         Bounding Box    Zmax        Double      Little
-                fs.WriteLe(header.Mmin);             //  Byte 84         Bounding Box    Mmin        Double      Little
-                fs.WriteLe(header.Mmax);             //  Byte 92         Bounding Box    Mmax        Double      Little
+                fs.WriteBe(0); //  Byte 24         File Length     File Length Integer     Big
+                fs.WriteLe(header.Version); //  Byte 28         Version         1000        Integer     Little
+                fs.WriteLe((int)header.ShapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
+                fs.WriteLe(header.Xmin); //  Byte 36         Bounding Box    Xmin        Double      Little
+                fs.WriteLe(header.Ymin); //  Byte 44         Bounding Box    Ymin        Double      Little
+                fs.WriteLe(header.Xmax); //  Byte 52         Bounding Box    Xmax        Double      Little
+                fs.WriteLe(header.Ymax); //  Byte 60         Bounding Box    Ymax        Double      Little
+                fs.WriteLe(header.Zmin); //  Byte 68         Bounding Box    Zmin        Double      Little
+                fs.WriteLe(header.Zmax); //  Byte 76         Bounding Box    Zmax        Double      Little
+                fs.WriteLe(header.Mmin); //  Byte 84         Bounding Box    Mmin        Double      Little
+                fs.WriteLe(header.Mmax); //  Byte 92         Bounding Box    Mmax        Double      Little
                 fs.Close();
             }
+        }
+
+        private AttributeTable GetAttributeTable(string fileName)
+        {
+            var at = new AttributeTable();
+            at.Open(fileName, _deletedRows);
+            if (_trackDeletedRows) _deletedRows = at.DeletedRows;
+            return at;
         }
 
         private void InitializeQuadtree()
@@ -632,55 +648,10 @@ namespace DotSpatial.Data
                 returnedCount = shapes.Count;
             }
             while (returnedCount == 1000);
+
             Quadtree = qt;
         }
 
-        private AttributeTable GetAttributeTable(string fileName)
-        {
-            var at = new AttributeTable();
-            at.Open(fileName, _deletedRows);
-            if (_trackDeletedRows)
-                _deletedRows = at.DeletedRows;
-            return at;
-        }
-
         #endregion
-
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    internal class ShapefileFeatureSourceSearchAndModifyAttributeParameters
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="featureEditCallback"></param>
-        public ShapefileFeatureSourceSearchAndModifyAttributeParameters(FeatureSourceRowEditEvent featureEditCallback)
-        {
-            FeatureEditCallback = featureEditCallback;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Dictionary<int, Shape> CurrentSearchAndModifyAttributeShapes { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public FeatureSourceRowEditEvent FeatureEditCallback { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        public bool OnRowEditEvent(RowEditEventArgs e)
-        {
-            var shape = CurrentSearchAndModifyAttributeShapes[e.RowNumber];
-            return FeatureEditCallback(new FeatureSourceRowEditEventArgs(e, shape));
-        }
     }
 }

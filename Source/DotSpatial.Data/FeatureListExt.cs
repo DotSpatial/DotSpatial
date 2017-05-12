@@ -38,6 +38,7 @@ namespace DotSpatial.Data
             {
                 throw new FeatureTypeMismatchException();
             }
+
             self.Parent.FeatureType = FeatureType.Point;
             self.Add(new Feature(new Point(point)));
         }
@@ -67,30 +68,28 @@ namespace DotSpatial.Data
         /// <exception cref="UnspecifiedFeaturetypeException">Thrown if the current FeatureType for the shapefile is unspecified.</exception>
         public static void Add(this IFeatureList self, IEnumerable<Coordinate> points)
         {
-            if (self.Parent.FeatureType == FeatureType.Unspecified)
+            switch (self.Parent.FeatureType)
             {
-                throw new UnspecifiedFeaturetypeException();
-            }
-            if (self.Parent.FeatureType == FeatureType.Point)
-            {
-                self.SuspendEvents();
-                foreach (Coordinate point in points)
-                {
-                    self.Add(new Feature(new Point(point)));
-                }
-                self.ResumeEvents();
-            }
-            if (self.Parent.FeatureType == FeatureType.Line)
-            {
-                self.Add(new Feature(new LineString(points as Coordinate[])));
-            }
-            if (self.Parent.FeatureType == FeatureType.Polygon)
-            {
-                self.Add(new Feature(new Polygon(new LinearRing(points as Coordinate[]))));
-            }
-            if (self.Parent.FeatureType == FeatureType.MultiPoint)
-            {
-                self.Add(new Feature(new MultiPoint(points.CastToPointArray())));
+                case FeatureType.Unspecified:
+                    throw new UnspecifiedFeaturetypeException();
+                case FeatureType.Point:
+                    self.SuspendEvents();
+                    foreach (Coordinate point in points)
+                    {
+                        self.Add(new Feature(new Point(point)));
+                    }
+
+                    self.ResumeEvents();
+                    break;
+                case FeatureType.Line:
+                    self.Add(new Feature(new LineString(points as Coordinate[])));
+                    break;
+                case FeatureType.Polygon:
+                    self.Add(new Feature(new Polygon(new LinearRing(points as Coordinate[]))));
+                    break;
+                case FeatureType.MultiPoint:
+                    self.Add(new Feature(new MultiPoint(points.CastToPointArray())));
+                    break;
             }
         }
 
@@ -108,6 +107,7 @@ namespace DotSpatial.Data
             {
                 throw new FeatureTypeMismatchException();
             }
+
             self.Add(f);
         }
 

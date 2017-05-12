@@ -20,7 +20,7 @@ namespace DotSpatial.Data
     public interface ICancelProgressHandler : IProgressHandler
     {
         /// <summary>
-        /// Returns true if the progress handler has been notified that the running process should be cancelled
+        /// Gets a value indicating whether the progress handler has been notified that the running process should be cancelled.
         /// </summary>
         bool Cancel { get; }
     }

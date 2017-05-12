@@ -24,12 +24,13 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the parent item relative to this item.
         /// </summary>
+        /// <returns>The parent.</returns>
         T GetParentItem();
 
         /// <summary>
-        /// Sets teh parent legend item for this item
+        /// Sets the parent legend item for this item.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The parent.</param>
         void SetParentItem(T value);
 
         #endregion

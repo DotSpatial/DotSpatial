@@ -11,7 +11,6 @@
 //
 // ********************************************************************************************************
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,36 +21,15 @@ namespace DotSpatial.Data
     /// </summary>
     public class HfaInfo
     {
-        #region Private Variables
-
-        private HfaAccess _access;
-        private Dictionary<string, HfaType> _dictionary;
-        private long _dictionaryPos;
-        private long _endOfFile; // using long instead of guint32
-        private int _entryHeaderLength;
-        private string _fileName;
-        private FileStream _fp;
-        private string _igeFilename;
-        private string _path;
-        private long _rootPos;
-        private Boolean _treeDirty;
-        private int _version;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HfaInfo
+        /// Initializes a new instance of the <see cref="HfaInfo"/> class.
         /// </summary>
         public HfaInfo()
         {
-            _dictionary = new Dictionary<string, HfaType>();
+            Dictionary = new Dictionary<string, HfaType>();
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -60,110 +38,62 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the access type
         /// </summary>
-        public HfaAccess Access
-        {
-            get { return _access; }
-            set { _access = value; }
-        }
+        public HfaAccess Access { get; set; }
 
         /// <summary>
         /// Gets or sets a dictionary for looking up types based on string type names.
         /// </summary>
-        public Dictionary<string, HfaType> Dictionary
-        {
-            get { return _dictionary; }
-            set { _dictionary = value; }
-        }
+        public Dictionary<string, HfaType> Dictionary { get; set; }
 
         /// <summary>
-        /// The directory path
+        /// Gets or sets the dictionary position.
         /// </summary>
-        public string Path
-        {
-            get { return _path; }
-            set { _path = value; }
-        }
+        public long DictionaryPos { get; set; }
 
         /// <summary>
-        /// The string fileName sans path
+        /// Gets or sets the end of file.
         /// </summary>
-        public string Filename
-        {
-            get { return _fileName; }
-            set { _fileName = value; }
-        }
+        public long EndOfFile { get; set; }
 
         /// <summary>
-        /// sans path
+        /// Gets or sets the entry header length.
         /// </summary>
-        public string IgeFilename
-        {
-            get { return _igeFilename; }
-            set { _igeFilename = value; }
-        }
+        public int EntryHeaderLength { get; set; }
 
         /// <summary>
-        /// End of file
+        /// Gets or sets the fileName sans path.
         /// </summary>
-        public long EndOfFile
-        {
-            get { return _endOfFile; }
-            set { _endOfFile = value; }
-        }
+        public string Filename { get; set; }
 
         /// <summary>
-        /// Root position
+        /// Gets or sets the file stream.
         /// </summary>
-        public long RootPos
-        {
-            get { return _rootPos; }
-            set { _rootPos = value; }
-        }
+        public FileStream Fp { get; set; }
 
         /// <summary>
-        ///
+        /// Gets or sets the ige file name.
         /// </summary>
-        public long DictionaryPos
-        {
-            get { return _dictionaryPos; }
-            set { _dictionaryPos = value; }
-        }
+        public string IgeFilename { get; set; }
 
         /// <summary>
-        /// The entry header length
+        /// Gets or sets the directory path.
         /// </summary>
-        public int EntryHeaderLength
-        {
-            get { return _entryHeaderLength; }
-            set { _entryHeaderLength = value; }
-        }
+        public string Path { get; set; }
 
         /// <summary>
-        /// The integer version
+        /// Gets or sets the root position.
         /// </summary>
-        public int Version
-        {
-            get { return _version; }
-            set { _version = value; }
-        }
+        public long RootPos { get; set; }
 
         /// <summary>
-        /// Boolean, true if the tree has changed
+        /// Gets or sets a value indicating whether the tree has changed.
         /// </summary>
-        public bool TreeDirty
-        {
-            get { return _treeDirty; }
-            set { _treeDirty = value; }
-        }
+        public bool TreeDirty { get; set; }
 
         /// <summary>
-        /// The file stream
+        /// Gets or sets the integer version.
         /// </summary>
-        public FileStream Fp
-        {
-            get { return _fp; }
-            set { _fp = value; }
-        }
+        public int Version { get; set; }
 
         #endregion
     }

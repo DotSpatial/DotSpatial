@@ -176,16 +176,16 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        ///
+        /// Completes the defenition of this type based on the existing dictionary.
         /// </summary>
-        /// <param name="dict"></param>
-        public void CompleteDefn(HfaDictionary dict)
+        /// <param name="dictionary">Dictionary used for completion.</param>
+        public void CompleteDefn(HfaDictionary dictionary)
         {
             // Get a reference to the type object if we have a type name
             // for this field (not a build in).
             if (ItemObjectTypeString != null)
             {
-                ItemObjectType = dict[ItemObjectTypeString];
+                ItemObjectType = dictionary[ItemObjectTypeString];
             }
 
             // Figure out the size
@@ -195,7 +195,7 @@ namespace DotSpatial.Data
             }
             else if (ItemObjectType != null)
             {
-                ItemObjectType.CompleteDefn(dict);
+                ItemObjectType.CompleteDefn(dictionary);
                 if (ItemObjectType.NumBytes == -1)
                 {
                     NumBytes = -1;
@@ -306,13 +306,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        ///
+        /// Dumps the fields value.
         /// </summary>
-        /// <param name="fpOut"></param>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <param name="dataSize"></param>
-        /// <param name="prefix"></param>
+        /// <param name="fpOut">The output stream.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The offset to start from.</param>
+        /// <param name="dataSize">The data size.</param>
+        /// <param name="prefix">The prefix.</param>
         public void DumpInstValue(Stream fpOut, byte[] data, long dataOffset, int dataSize, string prefix)
         {
             StreamWriter sw = new StreamWriter(fpOut);
@@ -356,7 +356,7 @@ namespace DotSpatial.Data
                     case 'b':
                         int nRows = Hfa.ReadInt32(data, dataOffset + 8);
                         int nColumns = Hfa.ReadInt32(data, dataOffset + 12);
-                        HfaEPT type = Hfa.ReadType(data, dataOffset + 16);
+                        HfaEpt type = Hfa.ReadType(data, dataOffset + 16);
                         sw.Write(nRows + "x" + nColumns + " basedata of type " + type);
                         break;
                     case 'e':
@@ -414,17 +414,17 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        ///
+        /// Extracts the value.
         /// </summary>
-        /// <param name="pszField"></param>
-        /// <param name="nIndexValue"></param>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <param name="nDataSize"></param>
-        /// <param name="reqType"></param>
-        /// <param name="pReqReturn"></param>
+        /// <param name="pszField">The psz field.</param>
+        /// <param name="nIndexValue">The index value.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The offset to start from.</param>
+        /// <param name="nDataSize">The data size.</param>
+        /// <param name="reqType">The req type.</param>
+        /// <param name="pReqReturn">The req return.</param>
         /// <param name="extraOffset">This is used in the case of 'object' pointers where the indexed object is further in the data block.</param>
-        /// <returns></returns>
+        /// <returns>True, if the value could be extracted.</returns>
         /// <exception cref="HfaInvalidCountException">Occurs if the count is less than zero for the header of a block of base data</exception>
         public bool ExtractInstValue(string pszField, int nIndexValue, byte[] data, long dataOffset, int nDataSize, char reqType, out object pReqReturn, out int extraOffset)
         {
@@ -471,7 +471,7 @@ namespace DotSpatial.Data
                     dataOffset++;
                 }
 
-                pReqReturn = new String(chars.ToArray());
+                pReqReturn = new string(chars.ToArray());
             }
 
             switch (ItemType)
@@ -483,100 +483,100 @@ namespace DotSpatial.Data
                     break;
                 case 'e':
                 case 's':
-                {
-                    int nNumber = Hfa.ReadUInt16(data, dataOffset + (nIndexValue * 2));
-                    nIntRet = nNumber;
-                    dfDoubleRet = nIntRet;
-                    if (ItemType == 'e' && nIntRet >= 0 && nIntRet < EnumNames.Count)
                     {
-                        returnString = EnumNames[nIntRet];
+                        int nNumber = Hfa.ReadUInt16(data, dataOffset + (nIndexValue * 2));
+                        nIntRet = nNumber;
+                        dfDoubleRet = nIntRet;
+                        if (ItemType == 'e' && nIntRet >= 0 && nIntRet < EnumNames.Count)
+                        {
+                            returnString = EnumNames[nIntRet];
+                        }
                     }
-                }
 
                     break;
                 case 'S':
-                {
-                    short nNumber = Hfa.ReadInt16(data, dataOffset + (nIndexValue * 2));
-                    nIntRet = nNumber;
-                    dfDoubleRet = nNumber;
-                }
+                    {
+                        short nNumber = Hfa.ReadInt16(data, dataOffset + (nIndexValue * 2));
+                        nIntRet = nNumber;
+                        dfDoubleRet = nNumber;
+                    }
 
                     break;
                 case 't':
                 case 'l':
-                {
-                    long nNumber = Hfa.ReadUInt32(data, dataOffset + (nIndexValue * 2));
-                    nIntRet = (int)nNumber;
-                    dfDoubleRet = nNumber;
-                }
+                    {
+                        long nNumber = Hfa.ReadUInt32(data, dataOffset + (nIndexValue * 2));
+                        nIntRet = (int)nNumber;
+                        dfDoubleRet = nNumber;
+                    }
 
                     break;
                 case 'L':
-                {
-                    int nNumber = Hfa.ReadInt32(data, dataOffset + (nIndexValue * 2));
-                    nIntRet = nNumber;
-                    dfDoubleRet = nNumber;
-                }
+                    {
+                        int nNumber = Hfa.ReadInt32(data, dataOffset + (nIndexValue * 2));
+                        nIntRet = nNumber;
+                        dfDoubleRet = nNumber;
+                    }
 
                     break;
                 case 'f':
-                {
-                    float fNumber = Hfa.ReadSingle(data, dataOffset + (nIndexValue * 4));
-                    dfDoubleRet = fNumber;
-                    nIntRet = Convert.ToInt32(fNumber);
-                }
+                    {
+                        float fNumber = Hfa.ReadSingle(data, dataOffset + (nIndexValue * 4));
+                        dfDoubleRet = fNumber;
+                        nIntRet = Convert.ToInt32(fNumber);
+                    }
 
                     break;
                 case 'd':
-                {
-                    dfDoubleRet = Hfa.ReadDouble(data, dataOffset + (nInstItemCount * 8));
-                    nIntRet = Convert.ToInt32(dfDoubleRet);
-                }
+                    {
+                        dfDoubleRet = Hfa.ReadDouble(data, dataOffset + (nInstItemCount * 8));
+                        nIntRet = Convert.ToInt32(dfDoubleRet);
+                    }
 
                     break;
                 case 'b':
-                {
-                    // BASE DATA
-                    int nRows = Hfa.ReadInt32(data, dataOffset);
-                    int nColumns = Hfa.ReadInt32(data, dataOffset + 4);
-                    if (nIndexValue < 0 || nIndexValue >= nRows * nColumns) return false;
-
-                    HfaEPT type = (HfaEPT)Hfa.ReadUInt16(data, dataOffset + 8);
-
-                    // Ignore the 2 byte objecttype value
-                    dataOffset += 12;
-                    if (nRows < 0 || nColumns < 0) throw new HfaInvalidCountException(nRows, nColumns);
-
-                    switch (type)
                     {
-                        case HfaEPT.U8:
-                            dfDoubleRet = data[dataOffset + nIndexValue];
-                            nIntRet = data[offset + nIndexValue];
-                            break;
-                        case HfaEPT.S16:
-                            short tShort = Hfa.ReadInt16(data, dataOffset + (nIndexValue * 2));
-                            dfDoubleRet = tShort;
-                            nIntRet = tShort;
-                            break;
-                        case HfaEPT.U16:
-                            int tUShort = Hfa.ReadUInt16(data, dataOffset + (nIndexValue * 2));
-                            dfDoubleRet = tUShort;
-                            nIntRet = tUShort;
-                            break;
-                        case HfaEPT.Single:
-                            float tSingle = Hfa.ReadSingle(data, dataOffset + (nIndexValue * 4));
-                            dfDoubleRet = tSingle;
-                            nIntRet = Convert.ToInt32(tSingle);
-                            break;
-                        case HfaEPT.Double:
-                            dfDoubleRet = Hfa.ReadDouble(data, dataOffset + (nIndexValue * 8));
-                            nIntRet = Convert.ToInt32(dfDoubleRet);
-                            break;
-                        default:
-                            pReqReturn = null;
-                            return false;
+                        // BASE DATA
+                        int nRows = Hfa.ReadInt32(data, dataOffset);
+                        int nColumns = Hfa.ReadInt32(data, dataOffset + 4);
+                        if (nIndexValue < 0 || nIndexValue >= nRows * nColumns) return false;
+
+                        HfaEpt type = (HfaEpt)Hfa.ReadUInt16(data, dataOffset + 8);
+
+                        // Ignore the 2 byte objecttype value
+                        dataOffset += 12;
+                        if (nRows < 0 || nColumns < 0) throw new HfaInvalidCountException(nRows, nColumns);
+
+                        switch (type)
+                        {
+                            case HfaEpt.U8:
+                                dfDoubleRet = data[dataOffset + nIndexValue];
+                                nIntRet = data[offset + nIndexValue];
+                                break;
+                            case HfaEpt.S16:
+                                short tShort = Hfa.ReadInt16(data, dataOffset + (nIndexValue * 2));
+                                dfDoubleRet = tShort;
+                                nIntRet = tShort;
+                                break;
+                            case HfaEpt.U16:
+                                int tUShort = Hfa.ReadUInt16(data, dataOffset + (nIndexValue * 2));
+                                dfDoubleRet = tUShort;
+                                nIntRet = tUShort;
+                                break;
+                            case HfaEpt.Single:
+                                float tSingle = Hfa.ReadSingle(data, dataOffset + (nIndexValue * 4));
+                                dfDoubleRet = tSingle;
+                                nIntRet = Convert.ToInt32(tSingle);
+                                break;
+                            case HfaEpt.Double:
+                                dfDoubleRet = Hfa.ReadDouble(data, dataOffset + (nIndexValue * 8));
+                                nIntRet = Convert.ToInt32(dfDoubleRet);
+                                break;
+                            default:
+                                pReqReturn = null;
+                                return false;
+                        }
                     }
-                }
 
                     break;
                 case 'o':
@@ -611,15 +611,15 @@ namespace DotSpatial.Data
             switch (reqType)
             {
                 case 's':
-                {
-                    if (returnString == null)
                     {
-                        returnString = nIntRet.ToString();
-                    }
+                        if (returnString == null)
+                        {
+                            returnString = nIntRet.ToString();
+                        }
 
-                    pReqReturn = returnString;
-                    return true;
-                }
+                        pReqReturn = returnString;
+                        return true;
+                    }
 
                 case 'd':
                     pReqReturn = dfDoubleRet;
@@ -637,9 +637,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Scans through the array and estimates the byte size of the field in this case.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <returns></returns>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The data offset.</param>
+        /// <returns>The byte size of the field.</returns>
         public int GetInstBytes(byte[] data, long dataOffset)
         {
             int nCount;
@@ -669,7 +669,7 @@ namespace DotSpatial.Data
                 offset += 4;
                 int nColumns = Hfa.ReadInt32(data, offset);
                 offset += 4;
-                HfaEPT baseItemType = (HfaEPT)Hfa.ReadInt16(data, offset);
+                HfaEpt baseItemType = (HfaEpt)Hfa.ReadInt16(data, offset);
                 nInstBytes += 12;
                 nInstBytes += ((baseItemType.GetBitCount() + 7) / 8) * nRows * nColumns;
             }
@@ -693,33 +693,32 @@ namespace DotSpatial.Data
         /// the built in value, but for variable fields, this is extracted from the
         /// data itself.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <returns></returns>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The data offset.</param>
+        /// <returns>The count for a particular instance of a field.</returns>
         public int GetInstCount(byte[] data, long dataOffset)
         {
             if (Pointer == '\0')
             {
                 return ItemCount;
             }
-            else if (ItemType == 'b')
+
+            if (ItemType == 'b')
             {
                 int numRows = Hfa.ReadInt32(data, dataOffset + 8);
                 int numColumns = Hfa.ReadInt32(data, dataOffset + 12);
                 return numRows * numColumns;
             }
-            else
-            {
-                return Hfa.ReadInt32(data, dataOffset);
-            }
+
+            return Hfa.ReadInt32(data, dataOffset);
         }
 
         /// <summary>
         /// Parses the input string into a valid HfaField, or returns null
         /// if one could not be created.
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="input">The input string.</param>
+        /// <returns>The parsed string, or null if the field could not be created.</returns>
         public string Initialize(string input)
         {
             int length = input.Length;
@@ -796,15 +795,15 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// SetInstValue
+        /// Sets the value.
         /// </summary>
-        /// <param name="sField"></param>
-        /// <param name="indexValue"></param>
-        /// <param name="data"></param>
-        /// <param name="dataOffset"></param>
-        /// <param name="dataSize"></param>
-        /// <param name="reqType"></param>
-        /// <param name="value"></param>
+        /// <param name="sField">The field.</param>
+        /// <param name="indexValue">The index value.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="dataOffset">The data offset.</param>
+        /// <param name="dataSize">The data size.</param>
+        /// <param name="reqType">The req type.</param>
+        /// <param name="value">The value.</param>
         /// <exception cref="HfaPointerInsertNotSupportedException">Attempting to insert a pointer is not supported.</exception>
         /// <exception cref="HfaEnumerationNotFoundException">Occurs if the specified value is not a valid member of the enumeration for this field.</exception>
         public void SetInstValue(string sField, int indexValue, byte[] data, long dataOffset, int dataSize, char reqType, object value)
@@ -840,9 +839,9 @@ namespace DotSpatial.Data
             if ((ItemType == 'c' || ItemType == 'C') && reqType == 's')
             {
                 int nBytesToCopy = NumBytes;
-                IEnumerable<char> strVal = value as IEnumerable<char>;
-                if (strVal != null) nBytesToCopy = strVal.Count();
-                if (NumBytes == -1 && strVal != null) nBytesToCopy = strVal.Count();
+                var strVal = (value as IEnumerable<char>)?.ToArray();
+                if (strVal != null) nBytesToCopy = strVal.Length;
+                if (NumBytes == -1 && strVal != null) nBytesToCopy = strVal.Length;
 
                 // Force a blank erase to remove previous characters
                 byte[] blank = new byte[nBytesToCopy];
@@ -850,7 +849,7 @@ namespace DotSpatial.Data
                 if (strVal != null)
                 {
                     ASCIIEncoding ascii = new ASCIIEncoding();
-                    string str = new string(strVal.ToArray());
+                    string str = new string(strVal);
                     byte[] charData = ascii.GetBytes(str);
                     Array.Copy(charData, 0, data, dataOffset, charData.Length);
                 }
@@ -902,7 +901,6 @@ namespace DotSpatial.Data
                     break;
                 case 'e': // enums are stored as ushort
                 case 's':
-                {
                     // little s  = ushort type
                     if (ItemType == 'e' && reqType == 's')
                     {
@@ -912,53 +910,33 @@ namespace DotSpatial.Data
                             throw new HfaEnumerationNotFoundException((string)value);
                         }
                     }
-                }
 
                     // Each enumeration is stored as a 2-bit unsigned short entry.
                     ushort num = (ushort)nIntValue;
                     Array.Copy(Hfa.LittleEndian(num), 0, data, dataOffset + (2 * indexValue), 2);
                     break;
                 case 'S':
-                {
                     // signed short
-                    short nNumber = (short)nIntValue;
-                    Array.Copy(Hfa.LittleEndian(nNumber), 0, data, dataOffset + (indexValue * 2), 2);
-                }
-
+                    Array.Copy(Hfa.LittleEndian((short)nIntValue), 0, data, dataOffset + (indexValue * 2), 2);
                     break;
                 case 't':
                 case 'l':
-                {
-                    uint nNumber = (uint)nIntValue;
-                    Array.Copy(Hfa.LittleEndian(nNumber), 0, data, dataOffset + (indexValue * 4), 4);
-                }
-
+                    Array.Copy(Hfa.LittleEndian((uint)nIntValue), 0, data, dataOffset + (indexValue * 4), 4);
                     break;
                 case 'L':
-                {
                     // Int32
-                    int nNumber = nIntValue;
-                    Array.Copy(Hfa.LittleEndian(nNumber), 0, data, dataOffset + (indexValue * 4), 4);
-                }
-
+                    Array.Copy(Hfa.LittleEndian(nIntValue), 0, data, dataOffset + (indexValue * 4), 4);
                     break;
                 case 'f':
-                {
                     // Float (32 bit)
                     float dfNumber = Convert.ToSingle(dfDoubleValue);
                     Array.Copy(Hfa.LittleEndian(dfNumber), 0, data, dataOffset + (indexValue * 4), 4);
-                }
-
                     break;
                 case 'd':
-                {
                     // Double (float 64)
                     Array.Copy(Hfa.LittleEndian(dfDoubleValue), 0, data, dataOffset + (8 * indexValue), 8);
-                }
-
                     break;
                 case 'o':
-                {
                     // object
                     if (ItemObjectType == null) break;
 
@@ -980,7 +958,6 @@ namespace DotSpatial.Data
                     {
                         ItemObjectType.SetInstValue(sField, data, dataOffset + nExtraOffset, dataSize - nExtraOffset, reqType, value);
                     }
-                }
 
                     break;
                 default: throw new ArgumentException();

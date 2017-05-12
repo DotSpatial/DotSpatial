@@ -6,7 +6,7 @@
     /// </summary>
     public class MockICancelProgressHandler : ICancelProgressHandler
     {
-        private readonly IProgressHandler _ProgressHandler;
+        private readonly IProgressHandler _progressHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MockICancelProgressHandler"/> class.
@@ -14,16 +14,13 @@
         /// <param name="progressHandler">The progress handler.</param>
         public MockICancelProgressHandler(IProgressHandler progressHandler)
         {
-            _ProgressHandler = progressHandler;
+            _progressHandler = progressHandler;
         }
 
         /// <summary>
-        /// Returns true if the running process should be canceled
+        /// Gets a value indicating whether the running process should be canceled.
         /// </summary>
-        public bool Cancel
-        {
-            get { return false; }
-        }
+        public bool Cancel => false;
 
         /// <summary>
         /// Progress is the method that should receive a progress message.
@@ -33,7 +30,7 @@
         /// <param name="message">A string containing both information on what the process is, as well as its completion status.</param>
         public void Progress(string key, int percent, string message)
         {
-            _ProgressHandler.Progress(key, percent, message);
+            _progressHandler.Progress(key, percent, message);
         }
     }
 }

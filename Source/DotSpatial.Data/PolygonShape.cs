@@ -20,13 +20,46 @@ namespace DotSpatial.Data
     /// </summary>
     public static class PolygonShape
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
         /// </summary>
         public static double Epsilon
         {
-            get { return Vertex.Epsilon; }
-            set { Vertex.Epsilon = value; }
+            get
+            {
+                return Vertex.Epsilon;
+            }
+
+            set
+            {
+                Vertex.Epsilon = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// This cycles through all the vertices, which are stored as {X1, Y1, X2, Y2...Xn, Yn} and tests
+        /// if any of those vertices falls within the polygon shape.
+        /// </summary>
+        /// <param name="polygonShape">Polygon shape used for calculation.</param>
+        /// <param name="otherShape">Other shape of any feature type.</param>
+        /// <returns>True, if the given shape ranges intersect.</returns>
+        public static bool ContainsVertex(ShapeRange polygonShape, ShapeRange otherShape)
+        {
+            foreach (PartRange otherPart in otherShape.Parts)
+            {
+                if (ContainsVertex(polygonShape, otherPart))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -47,8 +80,7 @@ namespace DotSpatial.Data
             if (ContainsVertex(polygonShape, otherShape)) return true;
 
             // There is no other way for this polygon to intersect the other points
-            if (otherShape.FeatureType == FeatureType.Point || otherShape.FeatureType == FeatureType.MultiPoint)
-                return false;
+            if (otherShape.FeatureType == FeatureType.Point || otherShape.FeatureType == FeatureType.MultiPoint) return false;
 
             // For lines and polygons, if any segment intersects any segment of this polygon shape, return true.
             // This is essentially looking for the rare case of crossing in and crossing out again with
@@ -63,25 +95,6 @@ namespace DotSpatial.Data
             Vertex v = polygonShape.First();
             ShapeRange onlyFirstPoint = new ShapeRange(v);
             return ContainsVertex(otherShape, onlyFirstPoint);
-        }
-
-        /// <summary>
-        /// This cycles through all the vertices, which are stored as {X1, Y1, X2, Y2...Xn, Yn} and tests
-        /// if any of those vertices falls within the polygon shape.
-        /// </summary>
-        /// <param name="polygonShape">Polygon shape used for calculation.</param>
-        /// <param name="otherShape">Other shape of any feature type.</param>
-        /// <returns>True, if the given shape ranges intersect.</returns>
-        public static bool ContainsVertex(ShapeRange polygonShape, ShapeRange otherShape)
-        {
-            foreach (PartRange otherPart in otherShape.Parts)
-            {
-                if (ContainsVertex(polygonShape, otherPart))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         /// <summary>
@@ -112,9 +125,11 @@ namespace DotSpatial.Data
                     foreach (Segment segment in ring.Segments)
                     {
                         if (segment.IntersectionCount(ray) != 1) continue;
+
                         numCrosses[iPart]++;
                         totalCrosses++;
                     }
+
                     iPart++;
                 }
 
@@ -132,6 +147,7 @@ namespace DotSpatial.Data
                 for (iPart = 0; iPart < numCrosses.Length; iPart++)
                 {
                     int count = numCrosses[iPart];
+
                     // If this part does not contain the point, don't bother trying to figure out if the part is a hole or not.
                     if (count % 2 == 0) continue;
 
@@ -146,9 +162,13 @@ namespace DotSpatial.Data
                         totalCrosses++;
                     }
                 }
+
                 return totalCrosses > 0;
             }
+
             return false;
         }
+
+        #endregion
     }
 }

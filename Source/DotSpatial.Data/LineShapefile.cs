@@ -176,60 +176,26 @@ namespace DotSpatial.Data
         /// <exception cref="NullReferenceException">Throws a NullReferenceException, if the fileName is null.</exception>
         internal static void FillLines(string fileName, IProgressHandler progressHandler, Shapefile shapefile, FeatureType featureType)
         {
-            // Check to ensure the fileName is not null
-            if (fileName == null)
-            {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", "fileName"));
-            }
-
-            if (shapefile == null) throw new ArgumentNullException(nameof(shapefile));
-
-            if (!File.Exists(fileName))
-            {
-                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
-            }
-
-            if (featureType != FeatureType.Line && featureType != FeatureType.Polygon)
-            {
-                throw new NotSupportedException();
-            }
-
-            var header = shapefile.Header;
-
             // Check to ensure that the fileName is the correct shape type
             switch (featureType)
             {
                 case FeatureType.Line:
-                    if (header.ShapeType != ShapeType.PolyLine &&
-                        header.ShapeType != ShapeType.PolyLineM &&
-                        header.ShapeType != ShapeType.PolyLineZ)
-                    {
-                        throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
-                    }
+                    if (!CanBeRead(fileName, shapefile, ShapeType.PolyLine, ShapeType.PolyLineM, ShapeType.PolyLineZ)) return;
 
                     break;
                 case FeatureType.Polygon:
-                    if (header.ShapeType != ShapeType.Polygon &&
-                        header.ShapeType != ShapeType.PolygonM &&
-                        header.ShapeType != ShapeType.PolygonZ)
-                    {
-                        throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
-                    }
-
+                    if (!CanBeRead(fileName, shapefile, ShapeType.Polygon, ShapeType.PolygonM, ShapeType.PolygonZ)) return;
                     break;
-            }
-
-            if (new FileInfo(fileName).Length == 100)
-            {
-                // the file is empty so we are done reading
-                return;
+                default:
+                    throw new NotSupportedException(DataStrings.ShapeType0NotSupported);
             }
 
             // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
+            var header = shapefile.Header;
             var shapeHeaders = shapefile.ReadIndexFile(fileName);
             int numShapes = shapeHeaders.Count;
-
             bool isM = false, isZ = false;
+
             switch (header.ShapeType)
             {
                 case ShapeType.PolyLineM:
@@ -318,12 +284,12 @@ namespace DotSpatial.Data
                 int partsOffset = 0;
                 for (int shp = 0; shp < numShapes; shp++)
                 {
-                    progressMeter.CurrentPercent = (int)(50 + shp * 50.0 / numShapes);
+                    progressMeter.CurrentPercent = (int)(50 + (shp * 50.0 / numShapes));
 
                     var shape = shapeIndices[shp];
                     if (shape.ShapeType == ShapeType.NullShape) continue;
                     reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
-                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumParts, NumPoints)
+                    reader.Seek((3 * 4) + 32 + (2 * 4), SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumParts, NumPoints)
 
                     // Read parts
                     var partsBytes = reader.ReadBytes(4 * shape.NumParts); // Numparts * Integer(4) = existing Parts
@@ -361,7 +327,7 @@ namespace DotSpatial.Data
                     {
                         case ShapeType.PolyLineM:
                         case ShapeType.PolygonM:
-                            if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
+                            if (shape.ContentLength * 2 > 44 + (4 * shape.NumParts) + (16 * shape.NumPoints))
                             {
                                 var mExt = (IExtentM)shape.Extent;
                                 mExt.MinM = reader.ReadDouble();
@@ -386,7 +352,7 @@ namespace DotSpatial.Data
                             // These are listed as "optional" but there isn't a good indicator of how to determine if they were added.
                             // To handle the "optional" M values, check the contentLength for the feature.
                             // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                            if (shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints)
+                            if (shape.ContentLength * 2 > 60 + (4 * shape.NumParts) + (24 * shape.NumPoints))
                             {
                                 goto case ShapeType.PolyLineM;
                             }
@@ -480,7 +446,7 @@ namespace DotSpatial.Data
                 offset += contentLength; // adding the content length from each loop calculates the word offset
             }
 
-            return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + fid * 4 };
+            return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + (fid * 4) };
         }
 
         /// <summary>
@@ -563,7 +529,7 @@ namespace DotSpatial.Data
                     for (int i = 0; i < points.Count; i++)
                     {
                         xyVals[i * 2] = points[i].X;
-                        xyVals[i * 2 + 1] = points[i].Y;
+                        xyVals[(i * 2) + 1] = points[i].Y;
                     }
 
                     shpStream.WriteLe(xyVals);
@@ -604,7 +570,7 @@ namespace DotSpatial.Data
 
             progressMeter.Reset();
 
-            return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + fid * 4 };
+            return new StreamLengthPair { ShpLength = offset, ShxLength = 50 + (fid * 4) };
         }
 
         /// <summary>

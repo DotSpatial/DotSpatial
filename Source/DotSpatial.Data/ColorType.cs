@@ -13,24 +13,31 @@
 
 namespace DotSpatial.Data
 {
-   public enum ColorType : byte
+    /// <summary>
+    /// ColorType
+    /// </summary>
+    public enum ColorType : byte
     {
         /// <summary>
         /// Each pixel is a greyscale sample
         /// </summary>
         Greyscale = 0,
+
         /// <summary>
         /// Each pixel is an RGB triple
         /// </summary>
         Truecolor = 2,
+
         /// <summary>
         /// Each pixel is a palette index
         /// </summary>
         Indexed = 3,
+
         /// <summary>
         /// Each pixel is a greyscale sample followed by an alpha sample
         /// </summary>
         GreyscaleAlpha = 4,
+
         /// <summary>
         /// EAch pixel is an RGB triple followed by an alhpa sample
         /// </summary>

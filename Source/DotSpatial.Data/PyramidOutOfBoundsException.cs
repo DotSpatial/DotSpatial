@@ -23,7 +23,7 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of <see cref="PyramidOutOfBoundsException"/>.
+        /// Initializes a new instance of the <see cref="PyramidOutOfBoundsException"/> class.
         /// </summary>
         public PyramidOutOfBoundsException()
             : base(DataStrings.PyramidOutOfBoundsException)

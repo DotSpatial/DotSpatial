@@ -121,13 +121,13 @@
     <value>The argument %S cannot be negative.</value>
   </data>
   <data name="ArgumentNull_S" xml:space="preserve">
-    <value>The argument %S was null. Try testing for the null case before calling this method.</value>
+    <value>The argument {0} was null. Try testing for the null case before calling this method.</value>
   </data>
   <data name="ArgumentOfWrongType_S1_S2" xml:space="preserve">
     <value>The argument %S1 was incorrect for %S2.</value>
   </data>
   <data name="Argument_Null_S" xml:space="preserve">
-    <value>The argument %S cannot be null.</value>
+    <value>The argument {0} cannot be null.</value>
   </data>
   <data name="CalculatingStatistics" xml:space="preserve">
     <value>Calculating Statistics</value>
@@ -150,29 +150,26 @@
   <data name="FeaturetypeUnspecified" xml:space="preserve">
     <value>The FeatureType was not specified. Please specify a featuretype before attempting to call this method.</value>
   </data>
-  <data name="FileExists_S" xml:space="preserve">
+  <data name="File0ExistsOverwrite" xml:space="preserve">
     <value>The fileName %S already exists. Do you wish to overwrite it?</value>
   </data>
-  <data name="FileNotFound_S" xml:space="preserve">
-    <value>The fileName %S was not found.</value>
+  <data name="File0NotFound" xml:space="preserve">
+    <value>The file {0} could not be found.</value>
   </data>
-  <data name="FileNotLines_S" xml:space="preserve">
-    <value>The fileName %S contains a feature type other than lines.</value>
-  </data>
-  <data name="FileNotPoints_S" xml:space="preserve">
-    <value>The fileName %S contains a feature type other than points.</value>
+  <data name="File0NotShapeType1" xml:space="preserve">
+    <value>The fileName {0} contains a feature type other than {1}.</value>
   </data>
   <data name="FileTypeNotSupported" xml:space="preserve">
     <value>The specified file type is not supported.</value>
   </data>
   <data name="HfaEnumerationNotFound" xml:space="preserve">
-    <value>Attepted to set the enumeration field to the value '%s', which is not known.</value>
+    <value>Attepted to set the enumeration field to the value '{0}', which is not known.</value>
   </data>
   <data name="HfaFieldTypeException" xml:space="preserve">
-    <value>The specified character '%S' was not a known field type: 124cCesStlLfdmMbox"</value>
+    <value>The specified character '{0}' was not a known field type: 124cCesStlLfdmMbox"</value>
   </data>
   <data name="HfaInvalidCountException" xml:space="preserve">
-    <value>The number of rows and number of columns must both be greater than 0, but the header for this item returned %S1 rows and %S2 columns.</value>
+    <value>The number of rows and number of columns must both be greater than 0, but the header for this item returned {0} rows and {1} columns.</value>
   </data>
   <data name="HfaNotCompressedException" xml:space="preserve">
     <value>You must first compress the data before accessing this value.</value>
@@ -183,23 +180,20 @@
   <data name="IndexingErrorIn_S" xml:space="preserve">
     <value>There was an error while attempting to index %S</value>
   </data>
-  <data name="IO_FileNotFound_S" xml:space="preserve">
-    <value>The file %S could not be found.</value>
-  </data>
   <data name="NotImplemented" xml:space="preserve">
     <value>This has not yet been implemented.</value>
   </data>
   <data name="NumberException_TooLarge_S" xml:space="preserve">
-    <value>The value %S was too large to encode with 18 ASCII characters.</value>
+    <value>The value {0} was too large to encode with 18 ASCII characters.</value>
   </data>
   <data name="NumberException_TooSmall_S" xml:space="preserve">
-    <value>The value %S was too small to be encoded with 18 ASCII characters.</value>
+    <value>The value {0} was too small to be encoded with 18 ASCII characters.</value>
   </data>
   <data name="ParseFailed_S" xml:space="preserve">
     <value>The value you entered could not be parsed into a %S. Make sure the value is in the valid range.</value>
   </data>
   <data name="PngInsuficientLengthException" xml:space="preserve">
-    <value>The desired length of %S1 was too long. The total length was %S2 and the offset was %S3.</value>
+    <value>The desired length of {0} was too long. The total length was {1} and the offset was {2}.</value>
   </data>
   <data name="PngInvalidSignatureException" xml:space="preserve">
     <value>The beginning eight bytes of the specified file did not match the png signature.</value>
@@ -238,13 +232,13 @@
   <data name="FeatureSet_ExportShapefilePackage_NotImplemented" xml:space="preserve">
     <value>ExportShapefilePackage has not been implemented for this type of FeatureSet.</value>
   </data>
-  <data name="FileExistsOverwritingNotAllowed" xml:space="preserve">
+  <data name="File0ExistsOverwritingNotAllowed" xml:space="preserve">
     <value>The file {0} already exists and may not be overwritten.</value>
   </data>
   <data name="ShapeTypeNotYetSupported" xml:space="preserve">
     <value>This shape type is not yet supported.</value>
   </data>
-  <data name="FileExtensionNotSupportedByShapefileDataProvider" xml:space="preserve">
+  <data name="FileExtension0NotSupportedByShapefileDataProvider" xml:space="preserve">
     <value>The file extension {0} is not supported by Shapefile data provider.</value>
   </data>
   <data name="FileNameShouldNotBeNull" xml:space="preserve">
@@ -252,5 +246,8 @@
   </data>
   <data name="ReadingExtentFromStringFailedOnTerm" xml:space="preserve">
     <value>Attempting to read an extent string failed while reading the {0} term.</value>
+  </data>
+  <data name="ShapeType0NotSupported" xml:space="preserve">
+    <value>The shape type {0} is not supported.</value>
   </data>
 </root>

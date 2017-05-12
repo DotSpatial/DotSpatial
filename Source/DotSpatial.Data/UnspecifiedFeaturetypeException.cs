@@ -15,12 +15,15 @@ using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// UnspecifiedFeaturetypeException
+    /// </summary>
     public class UnspecifiedFeaturetypeException : ApplicationException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of UnspecifiedFeaturetypeException
+        /// Initializes a new instance of the <see cref="UnspecifiedFeaturetypeException"/> class.
         /// </summary>
         public UnspecifiedFeaturetypeException()
             : base(DataStrings.FeaturetypeUnspecified)

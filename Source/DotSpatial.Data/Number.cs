@@ -15,19 +15,20 @@ using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Number
+    /// </summary>
     public struct Number : IComparable, IComparable<Number>, IComparable<double>
     {
         #region Private methods
 
-        private readonly int _significantFigures;
-        private int _decimalCount;
-        private NumberFormat _format;
         private bool _hasValue;
         private double _value;
 
         #endregion
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Number"/> struct.
         /// Creates a value from an object
         /// </summary>
         /// <param name="value">A numeric value that is, or can be parsed to a numeric value.</param>
@@ -37,93 +38,97 @@ namespace DotSpatial.Data
             if (Global.IsShort(value))
             {
                 _value = Global.GetDouble(value);
-                _significantFigures = 5;
-                _decimalCount = 0;
-                _format = NumberFormat.General;
+                SignificantFigures = 5;
+                DecimalsCount = 0;
+                Format = NumberFormat.General;
                 _hasValue = true;
                 return;
             }
+
             if (Global.IsInteger(value))
             {
                 _value = Global.GetDouble(value);
-                _significantFigures = 10;
-                _decimalCount = 0;
-                _format = NumberFormat.General;
+                SignificantFigures = 10;
+                DecimalsCount = 0;
+                Format = NumberFormat.General;
                 _hasValue = true;
                 return;
             }
+
             if (Global.IsFloat(value))
             {
                 _value = Global.GetDouble(value);
-                _significantFigures = 8;
-                _decimalCount = 7;
-                _format = NumberFormat.General;
+                SignificantFigures = 8;
+                DecimalsCount = 7;
+                Format = NumberFormat.General;
                 _hasValue = true;
                 return;
             }
+
             if (Global.IsDouble(value))
             {
                 // doubles can have 16 digits, so in scientific notation
                 _value = Global.GetDouble(value);
-                _significantFigures = 16;
-                _decimalCount = 15;
-                _format = NumberFormat.General;
+                SignificantFigures = 16;
+                DecimalsCount = 15;
+                Format = NumberFormat.General;
                 _hasValue = true;
                 return;
             }
+
             throw new NonNumericException("value");
         }
 
         /// <summary>
-        /// Creates a number to fit the specified double value.
+        /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified double value.
         /// </summary>
         /// <param name="value">A double</param>
         public Number(double value)
         {
             // doubles can have 16 digits, so in scientific notation
             _value = value;
-            _significantFigures = 16;
-            _decimalCount = 15;
-            _format = NumberFormat.General;
+            SignificantFigures = 16;
+            DecimalsCount = 15;
+            Format = NumberFormat.General;
             _hasValue = true;
         }
 
         /// <summary>
-        /// Creates a number to fit the specified int value
+        /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified int value.
         /// </summary>
         /// <param name="value">An integer</param>
         public Number(int value)
         {
             _value = value;
-            _significantFigures = 10;
-            _decimalCount = 0;
-            _format = NumberFormat.General;
+            SignificantFigures = 10;
+            DecimalsCount = 0;
+            Format = NumberFormat.General;
             _hasValue = true;
         }
 
         /// <summary>
-        /// Creates a number to fit the specified float value
+        /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified float value.
         /// </summary>
         /// <param name="value">The value to work with</param>
         public Number(float value)
         {
             _value = value;
-            _significantFigures = 8;
-            _decimalCount = 7;
-            _format = NumberFormat.General;
+            SignificantFigures = 8;
+            DecimalsCount = 7;
+            Format = NumberFormat.General;
             _hasValue = true;
         }
 
         /// <summary>
-        /// Creates a number from a short
+        /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified short value.
         /// </summary>
         /// <param name="value">A short</param>
         public Number(short value)
         {
             _value = value;
-            _significantFigures = 5;
-            _decimalCount = 0;
-            _format = NumberFormat.General;
+            SignificantFigures = 5;
+            DecimalsCount = 0;
+            Format = NumberFormat.General;
             _hasValue = true;
         }
 
@@ -134,7 +139,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                switch (_format)
+                switch (Format)
                 {
                     case NumberFormat.Currency: return "C";
                     case NumberFormat.Exponential: return "E";
@@ -144,48 +149,35 @@ namespace DotSpatial.Data
                     case NumberFormat.Percent: return "P";
                     case NumberFormat.Unspecified: return "G";
                 }
+
                 return "G";
             }
         }
 
         /// <summary>
-        /// A NumberFormats enumeration giving the various formatting options
+        /// Gets or sets the format. The NumberFormats enumeration contains the various formatting options.
         /// </summary>
-        public NumberFormat Format
-        {
-            get { return _format; }
-            set { _format = value; }
-        }
+        public NumberFormat Format { get; set; }
 
         /// <summary>
-        /// Tests to see if a value has been assigned to this Number
+        /// Gets a value indicating whether a value has been assigned to this Number.
         /// </summary>
-        public bool IsEmpty
-        {
-            get { return !_hasValue; }
-        }
+        public bool IsEmpty => !_hasValue;
 
         /// <summary>
         /// Gets or sets the number of digits that folow the decimal
         /// when converting this value to string notation.
         /// </summary>
-        public int DecimalsCount
-        {
-            get { return _decimalCount; }
-            set { _decimalCount = value; }
-        }
+        public int DecimalsCount { get; set; }
 
         /// <summary>
         /// Gets the precision (determined by the data type) which
         /// effectively describes how many significant figures there are.
         /// </summary>
-        public int SignificantFigures
-        {
-            get { return _significantFigures; }
-        }
+        public int SignificantFigures { get; }
 
         /// <summary>
-        /// Gets this number as a double
+        /// Gets or sets this number as a double.
         /// </summary>
         /// <returns>a double</returns>
         public double Value
@@ -194,6 +186,7 @@ namespace DotSpatial.Data
             {
                 return _value;
             }
+
             set
             {
                 _value = value;
@@ -218,6 +211,7 @@ namespace DotSpatial.Data
             {
                 throw new NonNumericException("other");
             }
+
             return _value.CompareTo(Global.GetDouble(other));
         }
 
@@ -307,6 +301,7 @@ namespace DotSpatial.Data
         {
             if (_value > int.MaxValue) return int.MaxValue;
             if (_value < int.MinValue) return int.MinValue;
+
             return Convert.ToInt32(_value);
         }
 
@@ -318,6 +313,7 @@ namespace DotSpatial.Data
         {
             if (_value > short.MaxValue) return short.MaxValue;
             if (_value < short.MinValue) return short.MinValue;
+
             return Convert.ToInt16(_value);
         }
 
@@ -329,6 +325,7 @@ namespace DotSpatial.Data
         {
             if (_value > float.MaxValue) return float.MaxValue;
             if (_value > float.MinValue) return float.MinValue;
+
             return Convert.ToSingle(_value);
         }
     }

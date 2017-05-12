@@ -40,7 +40,7 @@ namespace DotSpatial.Data
         /// This is very generic, but allows the user to cycle through the images currently in the image set,
         /// regardless of whether they are in a list or an array or other data structure.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The images of the image set.</returns>
         IEnumerable<IImageData> GetImages();
     }
 }

@@ -19,35 +19,29 @@ namespace DotSpatial.Data
     /// <summary>
     /// Carries event arguments for the generic IEventList
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     public class IndividualIndex<T> : EventArgs
     {
-        private int _index = -1;
+        #region Constructors
 
         /// <summary>
-        /// The protected object internal to this list event args class
-        /// </summary>
-        private T _listItem;
-
-        #region Methods
-
-        /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="IndividualIndex{T}"/> class.
         /// </summary>
         /// <param name="inListItem">an object that is being interacted with in the list</param>
         public IndividualIndex(T inListItem)
         {
-            _listItem = inListItem;
+            ListItem = inListItem;
         }
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="IndividualIndex{T}"/> class.
         /// </summary>
         /// <param name="inListItem">The list item that the event belongs to</param>
         /// <param name="inIndex">The list index, if any, that is specified.</param>
         public IndividualIndex(T inListItem, int inIndex)
         {
-            _listItem = inListItem;
-            _index = inIndex;
+            ListItem = inListItem;
+            Index = inIndex;
         }
 
         #endregion
@@ -55,34 +49,14 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the list item being referenced by this event
+        /// Gets or sets the index for the ListItem.
         /// </summary>
-        public T ListItem
-        {
-            get
-            {
-                return _listItem;
-            }
-            protected set
-            {
-                _listItem = value;
-            }
-        }
+        public int Index { get; protected set; } = -1;
 
         /// <summary>
-        /// Gets the index for the ListItem
+        /// Gets or sets the list item being referenced by this event.
         /// </summary>
-        public int Index
-        {
-            get
-            {
-                return _index;
-            }
-            protected set
-            {
-                _index = value;
-            }
-        }
+        public T ListItem { get; protected set; }
 
         #endregion
     }

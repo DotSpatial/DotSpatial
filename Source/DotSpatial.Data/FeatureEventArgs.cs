@@ -16,24 +16,19 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// FeatureEvent
+    /// FeatureEventArgs
     /// </summary>
     public class FeatureEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private IFeature _feature;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of FeatureEvent
+        /// Initializes a new instance of the <see cref="FeatureEventArgs"/> class.
         /// </summary>
+        /// <param name="inFeature">The feature of the event.</param>
         public FeatureEventArgs(IFeature inFeature)
         {
-            _feature = inFeature;
+            Feature = inFeature;
         }
 
         #endregion
@@ -41,13 +36,9 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the feature being referenced by this event.
+        /// Gets or sets the feature being referenced by this event.
         /// </summary>
-        public IFeature Feature
-        {
-            get { return _feature; }
-            protected set { _feature = value; }
-        }
+        public IFeature Feature { get; protected set; }
 
         #endregion
     }

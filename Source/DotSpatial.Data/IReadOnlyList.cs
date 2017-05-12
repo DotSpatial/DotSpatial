@@ -15,8 +15,38 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Interface for ReadOnlyList{T}
+    /// </summary>
+    /// <typeparam name="T">Type of contained items.</typeparam>
     public interface IReadOnlyList<T> : IEnumerable<T>
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets the integer count of items in this list.
+        /// </summary>
+        int Count { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this is readonly. This returns true because this is a read-only list.
+        /// </summary>
+        bool IsReadOnly { get; }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// Gets the item at the specified index. Ideally, this ReadOnlyList is used with
+        /// value types, or else this gives the user considerable power over the core content.
+        /// </summary>
+        /// <param name="index">The item to obtain from this list</param>
+        /// <returns>The item at the specified index.</returns>
+        T this[int index] { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -39,37 +69,6 @@ namespace DotSpatial.Data
         /// <param name="item">The item to find the index of</param>
         /// <returns>An integer representing the index of the specified item</returns>
         int IndexOf(T item);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the integer count of items in this list.
-        /// </summary>
-        int Count
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Return true because this is a read-only list.
-        /// </summary>
-        bool IsReadOnly
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the item at the specified index. Ideally, this ReadOnlyList is used with
-        /// value types, or else this gives the user considerable power over the core content.
-        /// </summary>
-        /// <param name="index">The item to obtain from this list</param>
-        /// <returns>The item at the specified index.</returns>
-        T this[int index]
-        {
-            get;
-        }
 
         #endregion
     }

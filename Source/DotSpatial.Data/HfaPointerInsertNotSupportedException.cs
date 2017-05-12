@@ -23,7 +23,7 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HfaPointerInsertNotSupportedException
+        /// Initializes a new instance of the <see cref="HfaPointerInsertNotSupportedException"/> class.
         /// </summary>
         public HfaPointerInsertNotSupportedException()
             : base(DataStrings.HfaPointerInsertNotSupportedException)

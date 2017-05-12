@@ -22,22 +22,12 @@ namespace DotSpatial.Data
     [InheritedExport]
     public interface IDataProvider
     {
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// This open method is only called if this plugin has been given priority for one
-        /// of the file extensions supported in the DialogReadFilter property supplied by
-        /// this control. Failing to provide a DialogReadFilter will result in this plugin
-        /// being added to the list of DataProviders being supplied under the Add Other Data
-        /// option in the file menu.
+        /// Gets a basic description of what your provider does.
         /// </summary>
-        /// <param name="name">A string specifying the complete path and extension of the file to open.</param>
-        /// <returns>A List of IDataSets to be added to the Map. These can also be groups of datasets.</returns>
-        IDataSet Open(string name);
-
-        #endregion
-
-        #region Properties
+        string Description { get; }
 
         /// <summary>
         /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimited
@@ -65,10 +55,20 @@ namespace DotSpatial.Data
         /// </summary>
         IProgressHandler ProgressHandler { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// This provides a basic description of what your provider does.
+        /// This open method is only called if this plugin has been given priority for one
+        /// of the file extensions supported in the DialogReadFilter property supplied by
+        /// this control. Failing to provide a DialogReadFilter will result in this plugin
+        /// being added to the list of DataProviders being supplied under the Add Other Data
+        /// option in the file menu.
         /// </summary>
-        string Description { get; }
+        /// <param name="name">A string specifying the complete path and extension of the file to open.</param>
+        /// <returns>A List of IDataSets to be added to the Map. These can also be groups of datasets.</returns>
+        IDataSet Open(string name);
 
         #endregion
     }

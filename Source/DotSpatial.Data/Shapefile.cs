@@ -166,7 +166,7 @@ namespace DotSpatial.Data
         public static new Shapefile OpenFile(string fileName, IProgressHandler progressHandler)
         {
             var ext = Path.GetExtension(fileName)?.ToLower();
-            if (ext != ".shp" && ext != ".shx" && ext != ".dbf") throw new ArgumentException(string.Format(DataStrings.FileExtensionNotSupportedByShapefileDataProvider, ext));
+            if (ext != ".shp" && ext != ".shx" && ext != ".dbf") throw new ArgumentException(string.Format(DataStrings.FileExtension0NotSupportedByShapefileDataProvider, ext));
 
             string name = Path.ChangeExtension(fileName, ".shp");
             var head = new ShapefileHeader();
@@ -622,12 +622,12 @@ namespace DotSpatial.Data
 
             if (shxFilename == null)
             {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
+                throw new NullReferenceException(string.Format(DataStrings.ArgumentNull_S, nameof(fileName)));
             }
 
             if (!File.Exists(shxFilename))
             {
-                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", shxFilename));
+                throw new FileNotFoundException(string.Format(DataStrings.File0NotFound, shxFilename));
             }
 
             var fileLen = new FileInfo(shxFilename).Length;
@@ -756,6 +756,43 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Checks whether the file can be read.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="shapefile">The shapefile object.</param>
+        /// <param name="shapeType">The normal shape type that may be contained in the shapefile.</param>
+        /// <param name="shapeTypeM">The m shape type that may be contained in the shapefile.</param>
+        /// <param name="shapeTypeZ">The z shape type that may be contained in the shapefile.</param>
+        /// <returns>True, if the file is not empty.</returns>
+        /// <exception cref="NullReferenceException">Thrown if fileName is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if shapefile is null.</exception>
+        /// <exception cref="FileNotFoundException">Thrown if the file specified by fileName could not be found.</exception>
+        /// <exception cref="ApplicationException">Thrown if the file contains a shape type that differs from the expected shape types.</exception>
+        protected static bool CanBeRead(string fileName, Shapefile shapefile, ShapeType shapeType, ShapeType shapeTypeM, ShapeType shapeTypeZ)
+        {
+            // Check to ensure the fileName is not null
+            if (fileName == null)
+            {
+                throw new NullReferenceException(string.Format(DataStrings.ArgumentNull_S, nameof(fileName)));
+            }
+
+            if (shapefile == null) throw new ArgumentNullException(nameof(shapefile));
+
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException(string.Format(DataStrings.File0NotFound, fileName));
+            }
+
+            // Check to ensure that the fileName is the correct shape type
+            if (shapefile.Header.ShapeType != shapeType && shapefile.Header.ShapeType != shapeTypeM && shapefile.Header.ShapeType != shapeTypeZ)
+            {
+                throw new ApplicationException(string.Format(DataStrings.File0NotShapeType1, fileName, Enum.GetName(typeof(ShapeType), shapeType)));
+            }
+
+            return new FileInfo(fileName).Length > 100;
+        }
+
+        /// <summary>
         /// Checks whether the shapefile can be saved with the given fileName.
         /// </summary>
         /// <param name="fileName">File name to save.</param>
@@ -769,7 +806,7 @@ namespace DotSpatial.Data
             }
             else if (File.Exists(fileName))
             {
-                if (fileName != Filename && !overwrite) throw new ArgumentOutOfRangeException(string.Format(DataStrings.FileExistsOverwritingNotAllowed, fileName));
+                if (fileName != Filename && !overwrite) throw new ArgumentOutOfRangeException(string.Format(DataStrings.File0ExistsOverwritingNotAllowed, fileName));
                 File.Delete(fileName);
                 var shx = Path.ChangeExtension(fileName, ".shx");
                 if (File.Exists(shx)) File.Delete(shx);
@@ -824,7 +861,7 @@ namespace DotSpatial.Data
             SetHeaderShapeType();
             InvalidateEnvelope();
             Header.SetExtent(Extent);
-            Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
+            Header.ShxLength = ((IndexMode ? ShapeIndices.Count : Features.Count) * 4) + 50;
         }
 
         /// <summary>
