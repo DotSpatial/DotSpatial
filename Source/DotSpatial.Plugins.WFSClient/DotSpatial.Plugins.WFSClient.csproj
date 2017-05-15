@@ -43,6 +43,7 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(OutputPath)\DemoMap.exe</StartProgram>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Release\Windows Extensions\DotSpatial.Plugins.WFSClient\DotSpatial.Plugins.WFSClient.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">

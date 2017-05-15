@@ -4,25 +4,34 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
-    static class Program
+    /// <summary>
+    /// Start point for the Updater.
+    /// </summary>
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// <param name="args">The arguments</param>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(Resolver);
+            AppDomain.CurrentDomain.AssemblyResolve += Resolver;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Updater(args));
         }
 
-        static Assembly Resolver(object sender, ResolveEventArgs args)
+        /// <summary>
+        /// Handles the resolve event.
+        /// </summary>
+        /// <param name="sender">The sender that raised the event.</param>
+        /// <param name="args">The event args.</param>
+        /// <returns>The loaded assembly.</returns>
+        private static Assembly Resolver(object sender, ResolveEventArgs args)
         {
             var a1 = Assembly.GetExecutingAssembly();
-            var s = a1.GetManifestResourceStream(string.Format("{0}.Resources.{1}.dll", 
-                typeof(Updater).Namespace, new AssemblyName(args.Name).Name));
+            var s = a1.GetManifestResourceStream(string.Format("{0}.Resources.{1}.dll", typeof(Updater).Namespace, new AssemblyName(args.Name).Name));
             var block = new byte[s.Length];
             s.Read(block, 0, block.Length);
             s.Dispose();

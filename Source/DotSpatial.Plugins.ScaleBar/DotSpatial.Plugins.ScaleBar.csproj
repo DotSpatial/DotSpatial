@@ -41,6 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Release\Plugins\DotSpatial.Plugins.ScaleBar\DotSpatial.Plugins.ScaleBar.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />

@@ -60,8 +60,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Release\Plugins\DotSpatial.Plugins.ShapeEditor\DotSpatial.Plugins.ShapeEditor.XML</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

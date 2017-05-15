@@ -42,6 +42,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Release\Windows Extensions\DotSpatial.Plugins.WebMap\DotSpatial.Plugins.WebMap.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BruTile, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">

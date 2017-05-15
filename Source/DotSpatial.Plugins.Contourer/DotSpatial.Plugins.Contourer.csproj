@@ -60,6 +60,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Release\Plugins\DotSpatial.Plugins.Contourer\DotSpatial.Plugins.Contourer.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfoShared.cs">

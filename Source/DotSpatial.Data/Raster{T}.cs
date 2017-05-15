@@ -18,6 +18,10 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// A raster of the given type.
+    /// </summary>
+    /// <typeparam name="T">Type of the raster.</typeparam>
     public class Raster<T> : Raster
         where T : IEquatable<T>, IComparable<T>
     {
@@ -39,19 +43,19 @@ namespace DotSpatial.Data
         /// <param name="valueGrid">The default ValueGrid only supports standard numeric types, but if a different kind of value grid is needed, this allows it.</param>
         public Raster(int numRows, int numColumns, ValueGrid<T> valueGrid)
         {
-            base.NumRows = numRows;
-            base.NumColumns = numColumns;
-            base.IsInRam = true;
+            NumRows = numRows;
+            NumColumns = numColumns;
+            IsInRam = true;
             DataType = typeof(T);
             if (numRows * numColumns > 64000000)
             {
-                base.NumRowsInFile = numRows;
-                base.NumColumnsInFile = numColumns;
-                base.IsInRam = false;
-                base.Bounds = new RasterBounds(numRows, numColumns, new[] { 0.5, 1.0, 0.0, numRows - .5, 0.0, -1.0 });
-                base.NoDataValue = 0; // sets the no-data value to the minimum value for the specified type.
+                NumRowsInFile = numRows;
+                NumColumnsInFile = numColumns;
+                IsInRam = false;
+                Bounds = new RasterBounds(numRows, numColumns, new[] { 0.5, 1.0, 0.0, numRows - .5, 0.0, -1.0 });
+                NoDataValue = 0; // sets the no-data value to the minimum value for the specified type.
                 ValuesT = valueGrid;
-                base.Value = ValuesT;
+                Value = ValuesT;
                 return;
             }
 
@@ -65,23 +69,23 @@ namespace DotSpatial.Data
         /// <param name="numColumns">The number of columns in the raster</param>
         public Raster(int numRows, int numColumns)
         {
-            base.NumRows = numRows;
-            base.NumColumns = numColumns;
+            NumRows = numRows;
+            NumColumns = numColumns;
             DataType = typeof(T);
             if (numRows * numColumns > 64000000)
             {
-                base.IsInRam = false;
-                base.NumRowsInFile = numRows;
-                base.NumColumnsInFile = numColumns;
-                base.IsInRam = false;
-                base.Bounds = new RasterBounds(numRows, numColumns, new[] { 0.5, 1.0, 0.0, numRows - .5, 0.0, -1.0 });
-                base.NoDataValue = 0; // sets the no-data value to the minimum value for the specified type.
+                IsInRam = false;
+                NumRowsInFile = numRows;
+                NumColumnsInFile = numColumns;
+                IsInRam = false;
+                Bounds = new RasterBounds(numRows, numColumns, new[] { 0.5, 1.0, 0.0, numRows - .5, 0.0, -1.0 });
+                NoDataValue = 0; // sets the no-data value to the minimum value for the specified type.
                 ValuesT = new ValueGrid<T>(this);
-                base.Value = ValuesT;
+                Value = ValuesT;
                 return;
             }
 
-            base.IsInRam = true;
+            IsInRam = true;
             Initialize();
         }
 
@@ -96,13 +100,7 @@ namespace DotSpatial.Data
         /// This only works for a few numeric types, and will return 0 if it is not identifiable as one
         /// of these basic types: byte, short, int, long, float, double, decimal, sbyte, ushort, uint, ulong, bool.
         /// </remarks>
-        public override int ByteSize
-        {
-            get
-            {
-                return GetByteSize(default(T));
-            }
-        }
+        public override int ByteSize => GetByteSize(default(T));
 
         /// <summary>
         /// Gets or sets the actual data values, stored as a jagged array of values of type T.
@@ -120,18 +118,6 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Used especially by the "save as" situation, this simply creates a new reference pointer for the actual data values.
-        /// </summary>
-        /// <param name="original">The original the data is gotten from.</param>
-        public override void SetData(IRaster original)
-        {
-            Raster<T> temp = original as Raster<T>;
-            if (temp == null) return;
-            Data = temp.Data;
-            Value = temp.Value;
-        }
-
-        /// <summary>
         /// Creates a deep copy of this raster object so that the data values can be manipulated without
         /// interfering with the original raster.
         /// </summary>
@@ -140,6 +126,7 @@ namespace DotSpatial.Data
         {
             Raster<T> copy = MemberwiseClone() as Raster<T>;
             if (copy == null) return null;
+
             copy.Bounds = Bounds.Copy();
             copy.Data = new T[NumRows][];
             for (int row = 0; row < NumRows; row++)
@@ -176,10 +163,9 @@ namespace DotSpatial.Data
         /// <returns>An implementation of IRaster</returns>
         public IRaster CopyWindow(string fileName, int startRow, int endRow, int startColumn, int endColumn, bool copyValues, bool inRam)
         {
-            if (inRam == false || (endColumn - startColumn + 1) * (endRow - startRow + 1) > 64000000)
-                throw new ArgumentException(DataStrings.RasterRequiresCast);
-            if (IsInRam == false)
-                throw new ArgumentException(DataStrings.RasterRequiresCast);
+            if (inRam == false || (endColumn - startColumn + 1) * (endRow - startRow + 1) > 64000000) throw new ArgumentException(DataStrings.RasterRequiresCast);
+            if (IsInRam == false) throw new ArgumentException(DataStrings.RasterRequiresCast);
+
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
 
@@ -237,6 +223,7 @@ namespace DotSpatial.Data
                         T val = values[col];
                         double dblVal = Global.ToDouble(val);
                         if (dblVal == NoDataValue) continue;
+
                         if (val.CompareTo(max) > 0) max = val;
                         if (val.CompareTo(min) < 0) min = val;
                         total += dblVal;
@@ -276,9 +263,37 @@ namespace DotSpatial.Data
             Maximum = Global.ToDouble(max);
             Mean = total / count;
             NumValueCells = count;
-            StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells) * (total / NumValueCells));
+            StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells * (total / NumValueCells)));
 
             pm.Reset();
+        }
+
+        /// <inheritdoc/>
+        public override List<double> GetValues(IEnumerable<long> indices)
+        {
+            // There is no need to override this any further, but GetValuesT should be implemented more intelligently in subclasses.
+            List<T> vals = GetValuesT(indices);
+            return vals.Select(Global.ToDouble).ToList();
+        }
+
+        /// <summary>
+        /// Most reading is optimized to read in a block at a time and process it. This method is designed for seeking through the file.
+        /// It should work faster than the buffered methods in cases where an unusually arranged collection of values are required.
+        /// Sorting the list before calling this should significantly improve performance.
+        /// </summary>
+        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column)</param>
+        /// <returns>List of the gotten values.</returns>
+        public virtual List<T> GetValuesT(IEnumerable<long> indices)
+        {
+            if (IsInRam)
+            {
+                List<T> values = (from index in indices let row = (int)Math.Floor(index / (double)NumColumnsInFile) let col = (int)(index % NumColumnsInFile) select Data[row][col]).ToList();
+                return values;
+            }
+
+            // This code should never be called because it should get replaced
+            // by file access code that is optimized, but if not, then this will be slow.
+            return (from index in indices let row = (int)Math.Floor(index / (double)NumColumnsInFile) let col = (int)(index % NumColumnsInFile) select (T)Convert.ChangeType(Value[row, col], typeof(T))).ToList();
         }
 
         /// <summary>
@@ -294,8 +309,7 @@ namespace DotSpatial.Data
         /// <returns>An implementation of IRaster</returns>
         public IRaster GetWindow(int startRow, int endRow, int startColumn, int endColumn, bool inRam)
         {
-            if (IsInRam == false)
-                throw new ArgumentException(DataStrings.RasterRequiresCast);
+            if (IsInRam == false) throw new ArgumentException(DataStrings.RasterRequiresCast);
             if (startRow < StartRow || endRow > EndRow || StartColumn < startColumn || EndColumn > endColumn)
             {
                 // the requested extents are outside of the extents that have been windowed into ram. File Handling is required.
@@ -320,9 +334,9 @@ namespace DotSpatial.Data
                 EndRow = EndRow,
                 FileType = FileType,
                 Bounds =
-                {
-                    AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow)
-                }
+                                   {
+                                       AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow)
+                                   }
             };
 
             // Reposition the new "raster" so that it matches the specified window, not the whole raster
@@ -356,8 +370,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void GetWindowStatistics()
         {
-            if (IsInRam == false)
-                throw new ArgumentException(DataStrings.RasterRequiresCast);
+            if (IsInRam == false) throw new ArgumentException(DataStrings.RasterRequiresCast);
 
             ProgressMeter pm = new ProgressMeter(ProgressHandler, "Calculating Statistics.", NumRows);
 
@@ -391,7 +404,7 @@ namespace DotSpatial.Data
             Minimum = Global.ToDouble(min);
             Maximum = Global.ToDouble(max);
             NumValueCells = count;
-            StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells) * (total / NumValueCells));
+            StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells * (total / NumValueCells)));
         }
 
         /// <summary>
@@ -404,70 +417,6 @@ namespace DotSpatial.Data
                 Data = ReadRaster();
                 GetStatistics();
             }
-        }
-
-        /// <summary>
-        /// This saves content from memory stored in the Data field to the file using whatever
-        /// file format the file already exists as.
-        /// </summary>
-        public override void Save()
-        {
-            UpdateHeader();
-            WriteRaster(Data);
-        }
-
-        /// <summary>
-        /// Reads a specific row.
-        /// </summary>
-        /// <param name="row">The vertical offset of the window to read values from.</param>
-        /// <returns>The array of raster values of type T belonging to the row.</returns>
-        public T[] ReadRow(int row)
-        {
-            return ReadRaster(0, row, NumColumns, 1)[0];
-        }
-
-        /// <summary>
-        /// This method reads the values from the entire band into an array and returns the array as a single array.
-        /// This assumes 0 offsets, the size of the entire image, and 0 for the pixel or line space.
-        /// </summary>
-        /// <returns>An array of values of type T, in row major order</returns>
-        public T[][] ReadRaster()
-        {
-            return ReadRaster(0, 0, NumColumns, NumRows);
-        }
-
-        /// <summary>
-        /// Most reading is optimized to read in a block at a time and process it. This method is designed for seeking through the file.
-        /// It should work faster than the buffered methods in cases where an unusually arranged collection of values are required.
-        /// Sorting the list before calling this should significantly improve performance.
-        /// </summary>
-        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column)</param>
-        /// <returns>List of the gotten values.</returns>
-        public virtual List<T> GetValuesT(IEnumerable<long> indices)
-        {
-            if (IsInRam)
-            {
-                List<T> values = (from index in indices
-                                  let row = (int)Math.Floor(index / (double)NumColumnsInFile)
-                                  let col = (int)(index % NumColumnsInFile)
-                                  select Data[row][col]).ToList();
-                return values;
-            }
-
-            // This code should never be called because it should get replaced
-            // by file access code that is optimized, but if not, then this will be slow.
-            return (from index in indices
-                    let row = (int)Math.Floor(index / (double)NumColumnsInFile)
-                    let col = (int)(index % NumColumnsInFile)
-                    select (T)Convert.ChangeType(Value[row, col], typeof(T))).ToList();
-        }
-
-        /// <inheritdoc/>
-        public override List<double> GetValues(IEnumerable<long> indices)
-        {
-            // There is no need to override this any further, but GetValuesT should be implemented more intelligently in subclasses.
-            List<T> vals = GetValuesT(indices);
-            return vals.Select(Global.ToDouble).ToList();
         }
 
         /// <inheritdoc/>
@@ -490,6 +439,16 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// This method reads the values from the entire band into an array and returns the array as a single array.
+        /// This assumes 0 offsets, the size of the entire image, and 0 for the pixel or line space.
+        /// </summary>
+        /// <returns>An array of values of type T, in row major order</returns>
+        public T[][] ReadRaster()
+        {
+            return ReadRaster(0, 0, NumColumns, NumRows);
+        }
+
+        /// <summary>
         /// This Method should be overrridden by classes, and provides the primary ability.
         /// </summary>
         /// <param name="xOff">The horizontal offset of the area to read values from.</param>
@@ -503,39 +462,36 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads a specific
+        /// Reads a specific row.
         /// </summary>
-        /// <param name="buffer">The one dimensional array of values containing all the data for this particular content.</param>
-        /// <param name="row">The integer row to write to the raster</param>
-        public void WriteRow(T[] buffer, int row)
+        /// <param name="row">The vertical offset of the window to read values from.</param>
+        /// <returns>The array of raster values of type T belonging to the row.</returns>
+        public T[] ReadRow(int row)
         {
-            T[][] bufferJagged = new T[1][];
-            bufferJagged[0] = buffer;
-            WriteRaster(bufferJagged, 0, row, NumColumns, 1);
+            return ReadRaster(0, row, NumColumns, 1)[0];
         }
 
         /// <summary>
-        /// This method reads the values from the entire band into an array and returns the array as a single array.
-        /// This assumes 0 offsets, the size of the entire image, and 0 for the pixel or line space.
+        /// This saves content from memory stored in the Data field to the file using whatever
+        /// file format the file already exists as.
         /// </summary>
-        /// <param name="buffer">The one dimensional array of values containing all the data for this particular content.</param>
-        public void WriteRaster(T[][] buffer)
+        public override void Save()
         {
-            WriteRaster(buffer, 0, 0, NumColumns, NumRows);
+            UpdateHeader();
+            WriteRaster(Data);
         }
 
         /// <summary>
-        /// This method reads the values from the entire band into an array and returns the array as a single array.
-        /// This specifies a window where the xSize and ySize specified and 0 is used for the pixel and line space.
+        /// Used especially by the "save as" situation, this simply creates a new reference pointer for the actual data values.
         /// </summary>
-        /// <param name="buffer">The one dimensional array of values containing all the data for this particular content.</param>
-        /// <param name="xOff">The horizontal offset of the area to read values from.</param>
-        /// <param name="yOff">The vertical offset of the window to read values from.</param>
-        /// <param name="xSize">The number of values to read into the buffer.</param>
-        /// <param name="ySize">The vertical size of the window to read into the buffer.</param>
-        public virtual void WriteRaster(T[][] buffer, int xOff, int yOff, int xSize, int ySize)
+        /// <param name="original">The original the data is gotten from.</param>
+        public override void SetData(IRaster original)
         {
-            throw new NotImplementedException("This should be overridden by classes that specify a file format.");
+            Raster<T> temp = original as Raster<T>;
+            if (temp == null) return;
+
+            Data = temp.Data;
+            Value = temp.Value;
         }
 
         /// <inheritdoc/>
@@ -584,6 +540,42 @@ namespace DotSpatial.Data
 
                 WriteRaster(values, xOff, yOff, xSize, ySize);
             }
+        }
+
+        /// <summary>
+        /// This method reads the values from the entire band into an array and returns the array as a single array.
+        /// This assumes 0 offsets, the size of the entire image, and 0 for the pixel or line space.
+        /// </summary>
+        /// <param name="buffer">The one dimensional array of values containing all the data for this particular content.</param>
+        public void WriteRaster(T[][] buffer)
+        {
+            WriteRaster(buffer, 0, 0, NumColumns, NumRows);
+        }
+
+        /// <summary>
+        /// This method reads the values from the entire band into an array and returns the array as a single array.
+        /// This specifies a window where the xSize and ySize specified and 0 is used for the pixel and line space.
+        /// </summary>
+        /// <param name="buffer">The one dimensional array of values containing all the data for this particular content.</param>
+        /// <param name="xOff">The horizontal offset of the area to read values from.</param>
+        /// <param name="yOff">The vertical offset of the window to read values from.</param>
+        /// <param name="xSize">The number of values to read into the buffer.</param>
+        /// <param name="ySize">The vertical size of the window to read into the buffer.</param>
+        public virtual void WriteRaster(T[][] buffer, int xOff, int yOff, int xSize, int ySize)
+        {
+            throw new NotImplementedException("This should be overridden by classes that specify a file format.");
+        }
+
+        /// <summary>
+        /// Reads a specific
+        /// </summary>
+        /// <param name="buffer">The one dimensional array of values containing all the data for this particular content.</param>
+        /// <param name="row">The integer row to write to the raster</param>
+        public void WriteRow(T[] buffer, int row)
+        {
+            T[][] bufferJagged = new T[1][];
+            bufferJagged[0] = buffer;
+            WriteRaster(bufferJagged, 0, row, NumColumns, 1);
         }
 
         /// <inheritdoc/>
@@ -656,6 +648,5 @@ namespace DotSpatial.Data
         }
 
         #endregion
-
     }
 }

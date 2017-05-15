@@ -7,9 +7,18 @@ using DotSpatial.Plugins.ExtensionManager.Updater.Properties;
 
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
+    /// <summary>
+    /// ListViewHelper
+    /// </summary>
     public class ListViewHelper
     {
+        #region Methods
 
+        /// <summary>
+        /// Adds the items from the given list to the given listView.
+        /// </summary>
+        /// <param name="list">List that contains the items that should be added.</param>
+        /// <param name="listView">ListView the items get added to.</param>
         public void AddChecked(IEnumerable<string> list, ListView listView)
         {
             if (list == null)
@@ -17,9 +26,12 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
                 return;
             }
 
-            ImageList imageList = new ImageList();
-            imageList.ImageSize = new Size(16, 16);
-            imageList.ColorDepth = ColorDepth.Depth32Bit;
+            ImageList imageList = new ImageList
+            {
+                ImageSize = new Size(16, 16),
+                ColorDepth = ColorDepth.Depth32Bit
+            };
+
             // Add a default image at position 0;
             imageList.Images.Add(Resources.Tick_16x16);
 
@@ -27,22 +39,26 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
             ListViewItem[] items = new ListViewItem[pagelist.Length];
             for (int i = 0; i < pagelist.Length; i++)
             {
-                ListViewItem item = new ListViewItem(pagelist[i].Substring(pagelist[i].LastIndexOf('.') + 1));
-                item.ImageIndex = 0;
-                items[i]= item;
+                items[i] = new ListViewItem(pagelist[i].Substring(pagelist[i].LastIndexOf('.') + 1))
+                {
+                    ImageIndex = 0
+                };
             }
 
-            listView.Invoke((Action)(() =>
-            {
-                listView.LargeImageList = imageList;
-                listView.SmallImageList = imageList;
+            listView.Invoke(
+                (Action)(() =>
+                {
+                    listView.LargeImageList = imageList;
+                    listView.SmallImageList = imageList;
 
-                listView.BeginUpdate();
-                listView.Items.Clear();
-                listView.Items.AddRange(items);
+                    listView.BeginUpdate();
+                    listView.Items.Clear();
+                    listView.Items.AddRange(items);
 
-                listView.EndUpdate();
-            }));
+                    listView.EndUpdate();
+                }));
         }
+
+        #endregion
     }
 }

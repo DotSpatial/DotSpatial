@@ -1,109 +1,96 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Packages.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.IO;
+﻿using System.IO;
 using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
+    /// <summary>
+    /// Packages
+    /// </summary>
     public class Packages
     {
-        #region Constants and Fields
+        #region Fields
 
         private const string PackageSourceUrl = "http://www.myget.org/F/cuahsi/";
-        private const string coreRepoUrl = "https://nuget.org/api/v2/";
-        private PackageManager packageManager;
-        private IPackageRepository repo;
-        private string repositoryLocation;
+        private PackageManager _packageManager;
 
         #endregion
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the Packages class.
+        /// Initializes a new instance of the <see cref="Packages"/> class.
         /// </summary>
-        public Packages(String ExtensionFolder)
+        /// <param name="extensionFolder">Folder that contains the extensions.</param>
+        public Packages(string extensionFolder)
         {
-            repo = PackageRepositoryFactory.Default.CreateRepository(PackageSourceUrl);
-            repositoryLocation = Path.Combine(ExtensionFolder);
-            packageManager = new PackageManager(Repo, new DefaultPackagePathResolver(PackageSourceUrl), new PhysicalFileSystem(repositoryLocation));
+            Repo = PackageRepositoryFactory.Default.CreateRepository(PackageSourceUrl);
+            RepositoryLocation = Path.Combine(extensionFolder);
+            _packageManager = new PackageManager(Repo, new DefaultPackagePathResolver(PackageSourceUrl), new PhysicalFileSystem(RepositoryLocation));
         }
 
         #endregion
 
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the PackageRepository.
-        /// </summary>
-        public IPackageRepository Repo
-        {
-            get
-            {
-                return repo;
-            }
-        }
-
-        /// <summary>
-        /// Gets the repository location.
-        /// </summary>
-        public string RepositoryLocation
-        {
-            get
-            {
-                return repositoryLocation;
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets the package manger.
         /// </summary>
-        public IPackageManager Manager
-        {
-            get
-            {
-                return packageManager;
-            }
-        }
+        public IPackageManager Manager => _packageManager;
+
+        /// <summary>
+        /// Gets the PackageRepository.
+        /// </summary>
+        public IPackageRepository Repo { get; private set; }
+
+        /// <summary>
+        /// Gets the repository location.
+        /// </summary>
+        public string RepositoryLocation { get; }
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
+        /// <summary>
+        /// Gets the package with the given id from the local repository of the package manager.
+        /// </summary>
+        /// <param name="id">Id of the package, that should be returned.</param>
+        /// <returns>The package belonging to the given id.</returns>
         public IPackage GetLocalPackage(string id)
         {
-            var pack = packageManager.LocalRepository.FindPackage(id);
-            String[] files = Directory.GetDirectories(repositoryLocation, id + '*');
-            if (files.Length > 0 && files[0] != Path.Combine(repositoryLocation, packageManager.PathResolver.GetPackageDirectory(pack)))
+            var pack = _packageManager.LocalRepository.FindPackage(id);
+            string[] files = Directory.GetDirectories(RepositoryLocation, id + '*');
+            if (files.Length > 0 && files[0] != Path.Combine(RepositoryLocation, _packageManager.PathResolver.GetPackageDirectory(pack)))
             {
-                Directory.Move(files[0], Path.Combine(repositoryLocation, packageManager.PathResolver.GetPackageDirectory(pack)));
-                pack = packageManager.LocalRepository.FindPackage(id);
+                Directory.Move(files[0], Path.Combine(RepositoryLocation, _packageManager.PathResolver.GetPackageDirectory(pack)));
+                pack = _packageManager.LocalRepository.FindPackage(id);
             }
+
             return pack;
+        }
+
+        /// <summary>
+        /// Changes the source for the repository and package manager.
+        /// </summary>
+        /// <param name="source">The new source.</param>
+        public void SetNewSource(string source)
+        {
+            Repo = PackageRepositoryFactory.Default.CreateRepository(source);
+            _packageManager = new PackageManager(Repo, new DefaultPackagePathResolver(source), new PhysicalFileSystem(RepositoryLocation));
         }
 
         /// <summary>
         /// Updates the specified package and dependencies.
         /// </summary>
-        /// <param name="package">The package.</param>
+        /// <param name="packageId">The package id.</param>
+        /// <param name="version">The version.</param>
         public void Update(string packageId, SemanticVersion version)
         {
             var pack = GetLocalPackage(packageId);
-            packageManager.UninstallPackage(pack, true, false);
-            packageManager.InstallPackage(packageId, version, false, false);
+            _packageManager.UninstallPackage(pack, true, false);
+            _packageManager.InstallPackage(packageId, version, false, false);
         }
-
-        public void SetNewSource(string source)
-        {
-            repo = PackageRepositoryFactory.Default.CreateRepository(source);
-            packageManager = new PackageManager(Repo, new DefaultPackagePathResolver(source), new PhysicalFileSystem(repositoryLocation));
-        }
-    }
 
         #endregion
+    }
 }

@@ -352,6 +352,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </None>
     <None Include="app.config" />
     <None Include="DotSpatial.Data.4.0.snk" />
     <None Include="DotSpatial.Data.nuspec" />
