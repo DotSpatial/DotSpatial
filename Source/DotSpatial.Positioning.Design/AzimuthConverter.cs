@@ -28,33 +28,26 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>Azimuth</strong> object to be converted between
-    ///     other data types, such as <strong>Double</strong>, <strong>Integer</strong> and
-    ///     <strong>String</strong>. This class is used primarily during the Windows Forms
-    ///     designer to give detailed information about properties of type
-    ///     <strong>Azimuth</strong>, and also allows developers to type in string values such
-    ///     as "NNW" and have them converted to <strong>Azimuth</strong> objects automatically.
-    ///     Finally, this class controls design-time serialization of <strong>Azimuth</strong>
-    ///     object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>Azimuth</strong> object to be converted between
+    /// other data types, such as <strong>Double</strong>, <strong>Integer</strong> and
+    /// <strong>String</strong>. This class is used primarily during the Windows Forms
+    /// designer to give detailed information about properties of type
+    /// <strong>Azimuth</strong>, and also allows developers to type in string values such
+    /// as "NNW" and have them converted to <strong>Azimuth</strong> objects automatically.
+    /// Finally, this class controls design-time serialization of <strong>Azimuth</strong>
+    /// object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    /// rarely created at run-time.</para>
     /// </remarks>
     public sealed class AzimuthConverter : PositioningNumericObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Azimuth";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Azimuth";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             // What is the destination type?
-
             if (destinationType == typeof(InstanceDescriptor))
             {
                 // Instance descriptor.  Used during Windows Forms serialization.
@@ -63,8 +56,8 @@ namespace DotSpatial.Positioning.Design
                 Type azimuthType = value.GetType();
 
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[] { azimuthType.GetProperty("DecimalDegrees").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double) };
+                object[] constructorParameters = { azimuthType.GetProperty("DecimalDegrees").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = azimuthType.GetConstructor(constructorTypes);
@@ -75,35 +68,37 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "North",
-		            "NorthNortheast",
-		            "Northeast",
-		            "EastNortheast",
-		            "East",
-		            "EastSoutheast",
-		            "Southeast",
-		            "SouthSoutheast",
-		            "South",
-		            "SouthSouthwest",
-		            "Southwest",
-		            "WestSouthwest",
-		            "West",
-		            "WestNorthwest",
-		            "Northwest",
-		            "NorthNorthwest" });
+            return new StandardValuesCollection(new[]
+            {
+                    "North",
+                    "NorthNortheast",
+                    "Northeast",
+                    "EastNortheast",
+                    "East",
+                    "EastSoutheast",
+                    "Southeast",
+                    "SouthSoutheast",
+                    "South",
+                    "SouthSouthwest",
+                    "Southwest",
+                    "WestSouthwest",
+                    "West",
+                    "WestNorthwest",
+                    "Northwest",
+                    "NorthNorthwest"
+            });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

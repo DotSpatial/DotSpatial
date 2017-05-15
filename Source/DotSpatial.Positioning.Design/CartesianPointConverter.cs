@@ -28,28 +28,22 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>CartesianPoint</strong> object to be converted between
-    ///     other data types, such as <strong>String</strong>. This class is used primarily
-    ///     during the Windows Forms designer to give detailed information about properties of
-    ///     type <strong>CartesianPoint</strong>, and also allows developers to type in string values
-    ///     such as "10m, 20m, 100m" and have them converted to <strong>CartesianPoint</strong> objects
-    ///     automatically. Finally, this class controls design-time serialization of
-    ///     <strong>CartesianPoint</strong> object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>CartesianPoint</strong> object to be converted between
+    /// other data types, such as <strong>String</strong>. This class is used primarily
+    /// during the Windows Forms designer to give detailed information about properties of
+    /// type <strong>CartesianPoint</strong>, and also allows developers to type in string values
+    /// such as "10m, 20m, 100m" and have them converted to <strong>CartesianPoint</strong> objects
+    /// automatically. Finally, this class controls design-time serialization of
+    /// <strong>CartesianPoint</strong> object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    /// rarely created at run-time.</para>
     /// </remarks>
     public sealed class CartesianPointConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.CartesianPoint";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.CartesianPoint";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -58,15 +52,10 @@ namespace DotSpatial.Positioning.Design
 
                 // Get the type of the object (probably an CartesianPoint)
                 Type cartesianPointType = value.GetType();
+
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[]
-                                                     { cartesianPointType.GetProperty("X").GetValue(value, null),
-                                                       cartesianPointType.GetProperty("Y").GetValue(value, null),
-                                                       cartesianPointType.GetProperty("Z").GetValue(value, null) };
-                Type[] constructorTypes = new[]
-                                              { Type.GetType("GeoFramework.Distance"),
-                                                Type.GetType("GeoFramework.Distance"),
-                                                Type.GetType("GeoFramework.Distance") };
+                object[] constructorParameters = { cartesianPointType.GetProperty("X").GetValue(value, null), cartesianPointType.GetProperty("Y").GetValue(value, null), cartesianPointType.GetProperty("Z").GetValue(value, null) };
+                Type[] constructorTypes = { Type.GetType("GeoFramework.Distance"), Type.GetType("GeoFramework.Distance"), Type.GetType("GeoFramework.Distance") };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = cartesianPointType.GetConstructor(constructorTypes);
@@ -77,20 +66,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Empty" });
+            return new StandardValuesCollection(new[] { "Empty" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

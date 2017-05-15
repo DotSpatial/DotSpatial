@@ -28,29 +28,23 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>Position</strong> object to be converted
-    ///     between other data types, such as <strong>String</strong>. This class is used
-    ///     primarily during the Windows Forms designer to give detailed information about
-    ///     properties of type <strong>Position</strong>, and also allows developers to type in
-    ///     string values such as "29N, 42W" (for 29°North by 42°West) and have them converted
-    ///     to <strong>Position</strong> objects automatically. Finally, this class controls
-    ///     design-time serialization of <strong>Position</strong> object properties. UTM
-    ///     coordinates such as "13S 12345E 12345N" are also accepted.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>Position</strong> object to be converted
+    /// between other data types, such as <strong>String</strong>. This class is used
+    /// primarily during the Windows Forms designer to give detailed information about
+    /// properties of type <strong>Position</strong>, and also allows developers to type in
+    /// string values such as "29N, 42W" (for 29°North by 42°West) and have them converted
+    /// to <strong>Position</strong> objects automatically. Finally, this class controls
+    /// design-time serialization of <strong>Position</strong> object properties. UTM
+    /// coordinates such as "13S 12345E 12345N" are also accepted.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    /// rarely created at run-time.</para>
     /// </remarks>
     public sealed class PositionConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Position";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Position";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -61,12 +55,12 @@ namespace DotSpatial.Positioning.Design
                 Type positionType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[]
-                                                     { positionType.GetProperty("Latitude").GetValue(value, null),
-                                                       positionType.GetProperty("Longitude").GetValue(value, null) };
-                Type[] constructorTypes = new[]
-                                              { Type.GetType("GeoFramework.Latitude"),
-                                                Type.GetType("GeoFramework.Longitude") };
+                object[] constructorParameters =
+                    {
+                        positionType.GetProperty("Latitude").GetValue(value, null),
+                        positionType.GetProperty("Longitude").GetValue(value, null)
+                    };
+                Type[] constructorTypes = { Type.GetType("GeoFramework.Latitude"), Type.GetType("GeoFramework.Longitude") };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = positionType.GetConstructor(constructorTypes);
@@ -77,22 +71,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Empty",
-		            "Maximum",
-		            "Minimum" });
+            return new StandardValuesCollection(new[] { "Empty", "Maximum", "Minimum" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

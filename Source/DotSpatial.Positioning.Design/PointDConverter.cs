@@ -28,28 +28,22 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>PointD</strong> object to be converted between
-    ///     other data types, such as <strong>String</strong>. This class is used primarily
-    ///     during the Windows Forms designer to give detailed information about properties of
-    ///     type <strong>PointD</strong>, and also allows developers to type in string values
-    ///     such as "10.123, 20.123" and have them converted to <strong>PointD</strong> objects
-    ///     automatically. Finally, this class controls design-time serialization of
-    ///     <strong>PointD</strong> object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>PointD</strong> object to be converted between
+    /// other data types, such as <strong>String</strong>. This class is used primarily
+    /// during the Windows Forms designer to give detailed information about properties of
+    /// type <strong>PointD</strong>, and also allows developers to type in string values
+    /// such as "10.123, 20.123" and have them converted to <strong>PointD</strong> objects
+    /// automatically. Finally, this class controls design-time serialization of
+    /// <strong>PointD</strong> object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    /// rarely created at run-time.</para>
     /// </remarks>
     public sealed class PointDConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.PointD";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.PointD";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -60,34 +54,31 @@ namespace DotSpatial.Positioning.Design
                 Type pointDType = value.GetType();
 
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[]
-                                                     { pointDType.GetProperty("X").GetValue(value, null),
-                                                       pointDType.GetProperty("Y").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double), typeof(double) };
+                object[] constructorParameters = { pointDType.GetProperty("X").GetValue(value, null), pointDType.GetProperty("Y").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double), typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = pointDType.GetConstructor(constructorTypes);
                 return new InstanceDescriptor(constructor, constructorParameters);
             }
+
             // Defer to the base class
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Empty",
-		            "Invalid" });
+            return new StandardValuesCollection(new[] { "Empty", "Invalid" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

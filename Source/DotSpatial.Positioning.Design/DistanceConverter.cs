@@ -28,28 +28,22 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>Distance</strong> object to be converted
-    ///     between other data types, such as <strong>String</strong>. This class is used
-    ///     primarily during the Windows Forms designer to give detailed information about
-    ///     properties of type <strong>Distance</strong>, and also allows developers to type in
-    ///     string values such as "2 miles" and have them converted to
-    ///     <strong>Distance</strong> objects automatically. Finally, this class controls
-    ///     design-time serialization of <strong>Distance</strong> object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>Distance</strong> object to be converted
+    /// between other data types, such as <strong>String</strong>. This class is used
+    /// primarily during the Windows Forms designer to give detailed information about
+    /// properties of type <strong>Distance</strong>, and also allows developers to type in
+    /// string values such as "2 miles" and have them converted to
+    /// <strong>Distance</strong> objects automatically. Finally, this class controls
+    /// design-time serialization of <strong>Distance</strong> object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    /// rarely created at run-time.</para>
     /// </remarks>
     public sealed class DistanceConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Distance";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Distance";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -60,10 +54,12 @@ namespace DotSpatial.Positioning.Design
                 Type distanceType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[]
-                                                     {   distanceType.GetProperty("Value").GetValue(value, null),
-                                                         distanceType.GetProperty("Units").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double), Type.GetType("GeoFramework.DistanceUnit") };
+                object[] constructorParameters =
+                {
+                    distanceType.GetProperty("Value").GetValue(value, null),
+                    distanceType.GetProperty("Units").GetValue(value, null)
+                };
+                Type[] constructorTypes = { typeof(double), Type.GetType("GeoFramework.DistanceUnit") };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = distanceType.GetConstructor(constructorTypes);
@@ -74,42 +70,47 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             // Are we currently in metric or imperial?
             if (RegionInfo.CurrentRegion.IsMetric)
             {
-                return new StandardValuesCollection(new[] {
-		            "1 centimeter",
-		            "10 centimeters",
-		            "100 centimeters",
+                return new StandardValuesCollection(new[]
+                {
+                    "1 centimeter",
+                    "10 centimeters",
+                    "100 centimeters",
                     "1 meter",
                     "10 meters",
                     "100 meters",
                     "1 kilometer",
                     "10 kilometers",
-                    "100 kilometers" });
+                    "100 kilometers"
+                });
             }
-            return new StandardValuesCollection(new[] {
-                                                          "1 inch",
-                                                          "10 inches",
-                                                          "100 inches",
-                                                          "1 foot",
-                                                          "10 feet",
-                                                          "100 feet",
-                                                          "1 mile",
-                                                          "10 miles",
-                                                          "100 miles" });
+
+            return new StandardValuesCollection(new[]
+            {
+                "1 inch",
+                "10 inches",
+                "100 inches",
+                "1 foot",
+                "10 feet",
+                "100 feet",
+                "1 mile",
+                "10 miles",
+                "100 miles"
+            });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

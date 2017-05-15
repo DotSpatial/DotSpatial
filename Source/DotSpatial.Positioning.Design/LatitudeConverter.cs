@@ -27,29 +27,23 @@ namespace DotSpatial.Positioning.Design
     /// Provides functionality to convert string values to and from Latitude objects at design time.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>Latitude</strong> object to be converted
-    ///     between other data types, such as <strong>Double</strong>, <strong>Integer</strong>
-    ///     and <strong>String</strong>. This class is used primarily during the Windows Forms
-    ///     designer to give detailed information about properties of type
-    ///     <strong>Latitude</strong>, and also allows developers to type in string values such
-    ///     as "12N" (for 12° North) and have them converted to <strong>Latitude</strong>
-    ///     objects automatically. Finally, this class controls design-time serialization of
-    ///     <strong>Latitude</strong> object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>Latitude</strong> object to be converted
+    /// between other data types, such as <strong>Double</strong>, <strong>Integer</strong>
+    /// and <strong>String</strong>. This class is used primarily during the Windows Forms
+    /// designer to give detailed information about properties of type
+    /// <strong>Latitude</strong>, and also allows developers to type in string values such
+    /// as "12N" (for 12° North) and have them converted to <strong>Latitude</strong>
+    /// objects automatically. Finally, this class controls design-time serialization of
+    /// <strong>Latitude</strong> object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    /// rarely created at run-time.</para>
     /// </remarks>
     public sealed class LatitudeConverter : PositioningNumericObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Latitude";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Latitude";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             // What is the destination type?
@@ -61,8 +55,8 @@ namespace DotSpatial.Positioning.Design
                 Type latitudeType = value.GetType();
 
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[] { latitudeType.GetProperty("DecimalDegrees").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double) };
+                object[] constructorParameters = { latitudeType.GetProperty("DecimalDegrees").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = latitudeType.GetConstructor(constructorTypes);
@@ -73,24 +67,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Equator",
-		            "NorthPole",
-		            "SouthPole",
-		            "TropicOfCapricorn",
-		            "TropicOfCancer" });
+            return new StandardValuesCollection(new[] { "Equator", "NorthPole", "SouthPole", "TropicOfCapricorn", "TropicOfCancer" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

@@ -28,28 +28,22 @@ namespace DotSpatial.Positioning.Design
     /// <strong>RectangleD</strong> objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>RectangleD</strong> object to be converted
-    ///     between other data types, such as <strong>String</strong>. This class is used
-    ///     primarily during the Windows Forms designer to give detailed information about
-    ///     properties of type <strong>RectangleD</strong>, and also allows developers to type
-    ///     in string values such as "1.5, 2.5, 4.5, 7.8" and have them converted to
-    ///     <strong>RectangleD</strong> objects automatically. Finally, this class controls
-    ///     design-time serialization of <strong>RectangleD</strong> object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>RectangleD</strong> object to be converted
+    ///  between other data types, such as <strong>String</strong>. This class is used
+    ///  primarily during the Windows Forms designer to give detailed information about
+    ///  properties of type <strong>RectangleD</strong>, and also allows developers to type
+    ///  in string values such as "1.5, 2.5, 4.5, 7.8" and have them converted to
+    ///  <strong>RectangleD</strong> objects automatically. Finally, this class controls
+    ///  design-time serialization of <strong>RectangleD</strong> object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    ///  rarely created at run-time.</para>
     /// </remarks>
     public sealed class RectangleDConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.RectangleD";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.RectangleD";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -58,16 +52,14 @@ namespace DotSpatial.Positioning.Design
                 Type rectangleDType = value.GetType();
 
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[]
-                                                     { rectangleDType.GetProperty("Left").GetValue(value, null),
-                                                       rectangleDType.GetProperty("Top").GetValue(value, null),
-                                                       rectangleDType.GetProperty("Right").GetValue(value, null),
-                                                       rectangleDType.GetProperty("Bottom").GetValue(value, null) };
-                Type[] constructorTypes = new[]
-                                              { typeof(double),
-                                                typeof(double),
-                                                typeof(double),
-                                                typeof(double) };
+                object[] constructorParameters =
+                    {
+                        rectangleDType.GetProperty("Left").GetValue(value, null),
+                        rectangleDType.GetProperty("Top").GetValue(value, null),
+                        rectangleDType.GetProperty("Right").GetValue(value, null),
+                        rectangleDType.GetProperty("Bottom").GetValue(value, null)
+                    };
+                Type[] constructorTypes = { typeof(double), typeof(double), typeof(double), typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = rectangleDType.GetConstructor(constructorTypes);
@@ -78,20 +70,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Empty" });
+            return new StandardValuesCollection(new[] { "Empty" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

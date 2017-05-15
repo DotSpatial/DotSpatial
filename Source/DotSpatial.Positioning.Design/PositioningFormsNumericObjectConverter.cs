@@ -24,7 +24,7 @@ namespace DotSpatial.Positioning.Design
     /// </summary>
     public abstract class PositioningFormsNumericObjectConverter : PositioningNumericObjectConverter
     {
-        /// <inheritdocs/>
+        /// <inheritdoc />
         protected override Version HandledAssemblyVersion
         {
             get
@@ -33,7 +33,7 @@ namespace DotSpatial.Positioning.Design
             }
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         protected override string HandledAssemblyName
         {
             get

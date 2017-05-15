@@ -28,16 +28,10 @@ namespace DotSpatial.Positioning.Design
     /// </summary>
     public sealed class DilutionOfPrecisionConverter : PositioningFormsNumericObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Gps.DilutionOfPrecision";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Gps.DilutionOfPrecision";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -48,8 +42,8 @@ namespace DotSpatial.Positioning.Design
                 Type dilutionOfPrecisionType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[] { dilutionOfPrecisionType.GetProperty("Value").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double) };
+                object[] constructorParameters = { dilutionOfPrecisionType.GetProperty("Value").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = dilutionOfPrecisionType.GetConstructor(constructorTypes);
@@ -60,26 +54,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Ideal",
-		            "Excellent",
-                    "Good",
-                    "Moderate",
-		            "Fair",
-		            "Poor"
-		             });
+            return new StandardValuesCollection(new[] { "Ideal", "Excellent", "Good", "Moderate", "Fair", "Poor" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

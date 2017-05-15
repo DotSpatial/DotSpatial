@@ -23,9 +23,8 @@ using System.Security;
 /* The assembly configuration just explains what target platform this assembly is for.  This
  * will be used instead of version numbers from now on to indicate the target platform.
  */
-
 #if Framework40
-    [assembly: AssemblyConfiguration("Public Release for .NET Framework 4.0")]
+[assembly: AssemblyConfiguration("Public Release for .NET Framework 4.0")]
 #elif Framework30
 [assembly: AssemblyConfiguration("Public Release for .NET Framework 3.5")]
 #elif Framework20
@@ -44,8 +43,7 @@ using System.Security;
  */
 
 // CAS permission declarations are obsolete in .Net 4.0
-//#if !Framework40
-
+// #if !Framework40
 //    // Grant only the minimum security permissions
 //    [assembly: SecurityPermission(SecurityAction.RequestMinimum)]
 //    // Grant only the minimum required reflection permissions
@@ -57,7 +55,7 @@ using System.Security;
 //    // We want only the minimum permissions necessary
 //    [assembly: PermissionSet(SecurityAction.RequestMinimum, Unrestricted = false)]
 
-//#endif
+// #endif
 
 // Allow partially-trusted callers to use this code (such as ASP.NET)
 [assembly: AllowPartiallyTrustedCallers]

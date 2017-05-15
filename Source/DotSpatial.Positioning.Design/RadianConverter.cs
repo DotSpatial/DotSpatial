@@ -28,16 +28,10 @@ namespace DotSpatial.Positioning.Design
     /// </summary>
     public sealed class RadianConverter : PositioningNumericObjectConverter
     {
-        /// <inheritdoc/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Radian";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Radian";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -48,9 +42,8 @@ namespace DotSpatial.Positioning.Design
                 Type sourceType = value.GetType();
 
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[] {
-                                                           sourceType.GetProperty("Value").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double) };
+                object[] constructorParameters = { sourceType.GetProperty("Value").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = sourceType.GetConstructor(constructorTypes);

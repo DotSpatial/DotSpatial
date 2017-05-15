@@ -28,16 +28,10 @@ namespace DotSpatial.Positioning.Design
     /// </summary>
     public sealed class SignalToNoiseRatioConverter : PositioningFormsNumericObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Gps.SignalToNoiseRatio";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Gps.SignalToNoiseRatio";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             // What is the destination type?
@@ -49,8 +43,8 @@ namespace DotSpatial.Positioning.Design
                 Type signalToNoiseRatioType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[] { signalToNoiseRatioType.GetProperty("Value").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double) };
+                object[] constructorParameters = { signalToNoiseRatioType.GetProperty("Value").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = signalToNoiseRatioType.GetConstructor(constructorTypes);
@@ -61,23 +55,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-                    "FullSignal",
-                    "HalfSignal",
-                    "NoSignal"
-                     });
+            return new StandardValuesCollection(new[] { "FullSignal", "HalfSignal", "NoSignal" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

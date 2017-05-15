@@ -27,32 +27,10 @@ namespace DotSpatial.Positioning.Design
     /// </summary>
     public abstract class PositioningObjectConverter : ExpandableObjectConverter
     {
-        #region ConvertFrom: Converts an object to an Distance
-
-        /// <inheritdocs/>
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string)
-                || sourceType == typeof(InstanceDescriptor)
-                || sourceType.Name == HandledTypeName)
-            {
-                // Console.WriteLine("DEBUG: " + sourceType.Name + " CAN be converted to " + HandledTypeName + "...");
-
-                return true;
-            }
-
-            // Console.WriteLine("DEBUG: " + sourceType.Name + " probably can NOT be converted to " + HandledTypeName + "...");
-
-            return base.CanConvertFrom(context, sourceType);
-        }
+        #region Properties
 
         /// <summary>
-        /// Indicates the name of the type handled by this type converter.
-        /// </summary>
-        protected abstract string HandledTypeName { get; }
-
-        /// <summary>
-        /// Indicates the full nume of the assembly housing objects handled by this type converter.
+        /// Gets the full nume of the assembly housing objects handled by this type converter.
         /// </summary>
         protected virtual string HandledAssemblyName
         {
@@ -65,15 +43,41 @@ namespace DotSpatial.Positioning.Design
         /// <summary>
         /// Gets the hard coded assembly version of the library that this designer handles.
         /// </summary>
-        protected virtual Version HandledAssemblyVersion
+        protected virtual Version HandledAssemblyVersion => new Version("1.0.0.*");
+
+        /// <summary>
+        /// Gets the name of the type handled by this type converter.
+        /// </summary>
+        protected abstract string HandledTypeName { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            get
+            if (sourceType == typeof(string) || sourceType == typeof(InstanceDescriptor) || sourceType.Name == HandledTypeName)
             {
-                return new Version("1.0.0.*");
+                return true;
             }
+
+            return base.CanConvertFrom(context, sourceType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(string) || destinationType == typeof(InstanceDescriptor))
+            {
+                return true;
+            }
+
+            // Defer to the base class
+            return base.CanConvertTo(context, destinationType);
+        }
+
+        /// <inheritdoc />
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             // If the type is a string or a double, it's ok to proceed with conversion.
@@ -85,30 +89,14 @@ namespace DotSpatial.Positioning.Design
                 // If a destination type was found, go ahead and create a new instance!
                 if (destinationType != null)
                 {
-                    return Activator.CreateInstance(destinationType, new[] { value });
+                    return Activator.CreateInstance(destinationType, value);
                 }
             }
 
             return base.ConvertFrom(context, culture, value);
         }
 
-        #endregion
-
-        #region ConvertTo: Converts an Distance to another type
-
-        /// <inheritdocs/>
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            if (destinationType == typeof(string)
-                || destinationType == typeof(InstanceDescriptor))
-            {
-                return true;
-            }
-            // Defer to the base class
-            return base.CanConvertTo(context, destinationType);
-        }
-
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             // What is the destination type?

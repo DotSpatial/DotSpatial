@@ -28,29 +28,23 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>Percent</strong> object to be converted between
-    ///     other data types, such as <strong>Double</strong>, <strong>Integer</strong> and
-    ///     <strong>String</strong>. This class is used primarily during the Windows Forms
-    ///     designer to give detailed information about properties of type
-    ///     <strong>Percent</strong>, and also allows developers to type in string values such as
-    ///     "1.50" and have them converted to <strong>Percent</strong> objects automatically.
-    ///     Finally, this class controls design-time serialization of <strong>Percent</strong>
-    ///     object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>Percent</strong> object to be converted between
+    ///  other data types, such as <strong>Double</strong>, <strong>Integer</strong> and
+    ///  <strong>String</strong>. This class is used primarily during the Windows Forms
+    ///  designer to give detailed information about properties of type
+    ///  <strong>Percent</strong>, and also allows developers to type in string values such as
+    ///  "1.50" and have them converted to <strong>Percent</strong> objects automatically.
+    ///  Finally, this class controls design-time serialization of <strong>Percent</strong>
+    ///  object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    ///  rarely created at run-time.</para>
     /// </remarks>
     public class PercentConverter : PositioningNumericObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Percent";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Percent";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -59,10 +53,10 @@ namespace DotSpatial.Positioning.Design
 
                 // Get the type of the object (probably an Percent)
                 Type percentType = value.GetType();
+
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[] {
-                                                           percentType.GetProperty("Value").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(float) };
+                object[] constructorParameters = { percentType.GetProperty("Value").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(float) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = percentType.GetConstructor(constructorTypes);
@@ -73,19 +67,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return false;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             return null;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

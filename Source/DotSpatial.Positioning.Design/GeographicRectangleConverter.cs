@@ -28,26 +28,23 @@ namespace DotSpatial.Positioning.Design
     /// <strong>GeographicRectangle</strong> objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>GeographicRectangle</strong> object to be
-    ///     converted between other data types, such as <strong>String</strong>. This class is
-    ///     used primarily during the Windows Forms designer to give detailed information about
-    ///     properties of type <strong>GeographicRectangle</strong>, and also allows developers
-    ///     to type in string values such as "1, 2, 10, 10" and have them converted to
-    ///     <strong>GeographicRectangle</strong> objects automatically. Finally, this class
-    ///     controls design-time serialization of <strong>GeographicRectangle</strong> object
-    ///     properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>GeographicRectangle</strong> object to be
+    /// converted between other data types, such as <strong>String</strong>. This class is
+    /// used primarily during the Windows Forms designer to give detailed information about
+    /// properties of type <strong>GeographicRectangle</strong>, and also allows developers
+    /// to type in string values such as "1, 2, 10, 10" and have them converted to
+    /// <strong>GeographicRectangle</strong> objects automatically. Finally, this class
+    /// controls design-time serialization of <strong>GeographicRectangle</strong> object
+    /// properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    /// rarely created at run-time.</para>
     /// </remarks>
     public sealed class GeographicRectangleConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get { return "GeoFramework.GeographicRectangle"; }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.GeographicRectangle";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -58,20 +55,14 @@ namespace DotSpatial.Positioning.Design
                 Type geographicRectangleType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[]
-                                                     { geographicRectangleType.GetProperty("Top").GetValue(value, null),
-                                                       geographicRectangleType.GetProperty("Left").GetValue(value, null),
-                                                       geographicRectangleType.GetProperty("Bottom").GetValue(value, null),
-                                                       geographicRectangleType.GetProperty("Right").GetValue(value, null)};
-                Type[] constructorTypes = new[]
-                                              { Type.GetType("GeoFramework.Latitude"),
-                                                Type.GetType("GeoFramework.Longitude"),
-                                                Type.GetType("GeoFramework.Latitude"),
-                                                Type.GetType("GeoFramework.Longitude") };
-
-                //#if DEBUG
-                //                        System.Diagnostics.EventLog.WriteEntry("SUCCESS: GeographicRectangleConverter: ConvertTo: \"" + value.ToString() + "\" to New GeographicRectangle(" + DecimalDegrees.ToString() + ").", "");
-                //#endif
+                object[] constructorParameters =
+                {
+                    geographicRectangleType.GetProperty("Top").GetValue(value, null),
+                    geographicRectangleType.GetProperty("Left").GetValue(value, null),
+                    geographicRectangleType.GetProperty("Bottom").GetValue(value, null),
+                    geographicRectangleType.GetProperty("Right").GetValue(value, null)
+                };
+                Type[] constructorTypes = { Type.GetType("GeoFramework.Latitude"), Type.GetType("GeoFramework.Longitude"), Type.GetType("GeoFramework.Latitude"), Type.GetType("GeoFramework.Longitude") };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = geographicRectangleType.GetConstructor(constructorTypes);
@@ -82,22 +73,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Empty",
-		            "Maximum",
-		            "Minimum" });
+            return new StandardValuesCollection(new[] { "Empty", "Maximum", "Minimum" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;
