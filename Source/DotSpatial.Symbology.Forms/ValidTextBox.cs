@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  An open source drawing pad that is super simple, but extendable
-// ********************************************************************************************************
-//
-// The Original Code is from SketchPad.exe
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/8/2008 1:01:26 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Drawing;

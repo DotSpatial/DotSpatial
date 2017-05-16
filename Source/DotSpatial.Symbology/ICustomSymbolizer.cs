@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Drawing.Vectors.dll Alpha
-// Description:  The basic module for ICustomSymbolizer version 6.0
-// ********************************************************************************************************
-//
-// The Original Code is from DotSpatial.Drawing.Vectors.dll version 6.0
-//
-// The Initial Developer of this Original Code is Jiri Kadlec. Created 5/14/2009 3:17:57 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {

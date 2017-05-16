@@ -1,18 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Serialization.dll
-// Description:  A module that supports common functions like serialization.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is  Ted Dunsford. Created 2/20/2009 4:24:20 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |-----------------|---------|---------------------------------------------------------------------
-// |      Name       |  Date   |                        Comments
-// |-----------------|---------|----------------------------------------------------------------------
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;

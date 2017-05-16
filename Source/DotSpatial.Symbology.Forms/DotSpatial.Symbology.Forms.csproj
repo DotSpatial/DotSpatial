@@ -1259,6 +1259,9 @@
     <EmbeddedResource Include="AngleControl.ico" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="DotSpatial.Symbology.Forms.snk" />
     <None Include="DotSpatial.Symbology.Forms.nuspec" />

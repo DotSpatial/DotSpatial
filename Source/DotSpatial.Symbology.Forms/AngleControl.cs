@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Projections.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Projections library.
-// ********************************************************************************************************
-//
-// The Original Code is MapWindow.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/19/2009 1:06:14 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//        Name         |    Date    |        Comment
-// --------------------|------------|------------------------------------------------------------
-// Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;

@@ -1,22 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: Expression.cs
-// Description:  Class to validate and calculate label expressions.
-// ********************************************************************************************************
-// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://www.mozilla.org/MPL/
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from MapWindow 4.8.8 Expression.cpp
-//
-// The Initial Developer of this Original Code is Sergei Leschinski. Created 25 june 2010
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// 2015-03-02 - jany_ - Moved to Dotspatial
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;

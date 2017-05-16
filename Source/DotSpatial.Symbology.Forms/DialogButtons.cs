@@ -1,17 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 9/21/2009 4:30:25 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// 9/22/09: Chris Wilson--changed order of buttons and removed hotkeys to conform to Windows standards
-//          Automatically sets AcceptButton and CancelButton properties of owner form
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;

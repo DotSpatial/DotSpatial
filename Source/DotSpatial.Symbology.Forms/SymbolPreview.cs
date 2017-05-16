@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: PredefinedSymbols.dll Alpha
-// Description:  The basic module for PredefinedSymbols version 6.0
-// ********************************************************************************************************
-//
-// The Original Code is from PredefinedSymbols.dll version 6.0
-//
-// The Initial Developer of this Original Code is Jiri Kadlec. Created 5/19/2009 9:56:08 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Drawing;

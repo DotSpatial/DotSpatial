@@ -1,18 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Common.dll
-// Description:  A shared module for DotSpatial libraries
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Darrel Brown. Created 9/10/2009
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |-----------------|---------|---------------------------------------------------------------------
-// |      Name       |  Date   |                        Comments
-// |-----------------|---------|----------------------------------------------------------------------
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Serialization
 {

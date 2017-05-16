@@ -1,4 +1,7 @@
-﻿namespace DotSpatial.Serialization
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+namespace DotSpatial.Serialization
 {
     /// <summary>
     /// Class that defines a move from an old namespace to a new namespace.

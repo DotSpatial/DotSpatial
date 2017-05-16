@@ -1,18 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Projections library.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in Fall 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// Kandasamy Prasanna (2009-09-11) main contributor to most of the functionality
-// Jiri Kadlec (2009-10-30) Changed the form into a user control, improved selection when sorting
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;

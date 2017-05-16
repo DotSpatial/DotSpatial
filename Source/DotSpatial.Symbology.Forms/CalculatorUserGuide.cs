@@ -1,18 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The core assembly for the DotSpatial 6.0 distribution.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Kandasamy Prasanna. Created 09/18/2009
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-//  Name               Date                Comments
-// ---------------------------------------------------------------------------------------------
-// Ted Dunsford     |  9/19/2009    |  Added some xml comments
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;

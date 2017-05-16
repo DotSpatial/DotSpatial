@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/22/2009 11:25:31 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -269,10 +259,10 @@ namespace DotSpatial.Symbology.Forms
                 if (knob.Contains(loc) == false)
                 {
                     // nudge the hidden mouse so that it at least stays in the balpark of the knob.
-                    center = new Point(knob.X + knob.Width / 2, knob.Y + knob.Height / 2);
+                    center = new Point(knob.X + (knob.Width / 2), knob.Y + (knob.Height / 2));
                     dx = loc.X - center.X;
                     dy = loc.Y - center.Y;
-                    double len = Math.Sqrt(dx * dx + dy * dy);
+                    double len = Math.Sqrt((dx * dx) + (dy * dy));
                     double rx = dx / len;
                     double ry = dy / len;
                     Point c = new Point(Convert.ToInt32(center.X + rx), Convert.ToInt32(center.Y + ry));
@@ -301,7 +291,7 @@ namespace DotSpatial.Symbology.Forms
                 {
                     _isDragging = false;
                     Rectangle knob = GetKnobBounds();
-                    Point center = new Point(knob.X + knob.Width / 2, knob.Y + knob.Height / 2);
+                    Point center = new Point(knob.X + (knob.Width / 2), knob.Y + (knob.Height / 2));
                     Point client = StandardToClient(center);
                     Point screen = PointToScreen(client);
                     Cursor.Position = screen;
@@ -397,7 +387,7 @@ namespace DotSpatial.Symbology.Forms
             if (innerRound.Width <= 0 || innerRound.Height <= 0) return;
 
             gp.AddPie(new Rectangle(innerRound.X - innerRound.Width, innerRound.Y, innerRound.Width * 2, innerRound.Height), -90, 180);
-            PointF center = new PointF(innerRound.X + innerRound.Width / 2, innerRound.Y + innerRound.Height / 2);
+            PointF center = new PointF(innerRound.X + (innerRound.Width / 2), innerRound.Y + (innerRound.Height / 2));
             float x = center.X - innerRound.Width;
             float y = center.Y - innerRound.Height;
             float w = innerRound.Width * 2;
@@ -410,7 +400,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 CenterColor = _color.Lighter(.2F),
                 SurroundColors = new[] { _color.Darker(.2F) },
-                CenterPoint = new PointF(innerRound.X + 3, innerRound.Y + innerRound.Height / 3)
+                CenterPoint = new PointF(innerRound.X + 3, innerRound.Y + (innerRound.Height / 3))
             };
             g.FillPath(pgb, gp);
             lgb.Dispose();
@@ -423,7 +413,7 @@ namespace DotSpatial.Symbology.Forms
 
             Rectangle r = GetKnobBounds();
             Icon ico = SymbologyFormsImages.Pan;
-            if (ico != null) g.DrawIcon(ico, r.X + r.Width / 2 - ico.Width / 2, r.Y + r.Height / 2 - ico.Height / 2);
+            if (ico != null) g.DrawIcon(ico, r.X + (r.Width / 2) - (ico.Width / 2), r.Y + (r.Height / 2) - (ico.Height / 2));
         }
 
         private void DrawKnob(Graphics g)
@@ -441,11 +431,11 @@ namespace DotSpatial.Symbology.Forms
             PointF center = new PointF(knob.X + KnobRadius, knob.Y + KnobRadius);
             double dx = center.X - start.X;
             double dy = center.Y - start.Y;
-            double len = Math.Sqrt(dx * dx + dy * dy);
+            double len = Math.Sqrt((dx * dx) + (dy * dy));
             double sx = dx / len;
             double sy = dy / len;
-            PointF kJoint = new PointF((float)(center.X - sx * KnobRadius), (float)(center.Y - sy * KnobRadius));
-            PointF sJoint = new PointF((float)(center.X - sx * (KnobRadius + BarLength)), (float)(center.Y - sy * (BarLength + KnobRadius)));
+            PointF kJoint = new PointF((float)(center.X - (sx * KnobRadius)), (float)(center.Y - (sy * KnobRadius)));
+            PointF sJoint = new PointF((float)(center.X - (sx * (KnobRadius + BarLength))), (float)(center.Y - (sy * (BarLength + KnobRadius))));
             Pen back = new Pen(BackColor.Darker(.2F), BarWidth)
             {
                 EndCap = LineCap.Round,
@@ -475,7 +465,7 @@ namespace DotSpatial.Symbology.Forms
 
         private double GetKnobAngle()
         {
-            return Math.Acos((double)_color.GetOpacity() * 2 - 1);
+            return Math.Acos(((double)_color.GetOpacity() * 2) - 1);
         }
 
         private Rectangle GetKnobBounds()
@@ -485,10 +475,10 @@ namespace DotSpatial.Symbology.Forms
                 Width = KnobRadius * 2,
                 Height = KnobRadius * 2
             };
-            double scale = Height - KnobRadius * 2 - 1;
+            double scale = Height - (KnobRadius * 2) - 1;
             result.Y = Convert.ToInt32((1 - _color.GetOpacity()) * scale);
             double angle = GetKnobAngle();
-            scale = Width - KnobRadius * 2 - 1;
+            scale = Width - (KnobRadius * 2) - 1;
             result.X = Convert.ToInt32(scale * Math.Sin(angle));
             return result;
         }
@@ -496,8 +486,8 @@ namespace DotSpatial.Symbology.Forms
         // calculate so that the bar can rotate freely all the way around the rotation axis.
         private Rectangle GetSemicircleBounds()
         {
-            int l = BarLength + KnobRadius * 2;
-            Rectangle result = new Rectangle(0, l, Width - l, Height - 2 * l);
+            int l = BarLength + (KnobRadius * 2);
+            Rectangle result = new Rectangle(0, l, Width - l, Height - (2 * l));
             return result;
         }
 
@@ -511,7 +501,7 @@ namespace DotSpatial.Symbology.Forms
 
             flipRot.Rotate(-(float)Angle);
             double ang = Angle * Math.PI / 180;
-            float scale = (float)(1 / (1 + (Math.Sqrt(2) - 1) * Math.Abs(Math.Sin(ang))));
+            float scale = (float)(1 / (1 + ((Math.Sqrt(2) - 1) * Math.Abs(Math.Sin(ang)))));
             flipRot.Scale(scale, scale); // A rotated square would go outside the bounds of the control, so resize.
             flipRot.Translate(-Width / 2F, -Height / 2F);
         }

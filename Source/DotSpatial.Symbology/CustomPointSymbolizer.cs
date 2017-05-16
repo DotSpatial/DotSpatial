@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Drawing.PredefinedSymbols.dll Alpha
-// Description:  The basic module for DotSpatial.Drawing version 6.0
-// ********************************************************************************************************
-//
-// The Original Code is from DotSpatial.Drawing.PredefinedSymbols.dll version 6.0
-//
-// The Initial Developer of this Original Code is Jiri Kadlec. Created 5/22/2009 2:49:57 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;

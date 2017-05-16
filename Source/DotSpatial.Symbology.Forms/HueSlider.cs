@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/22/2009 11:21:12 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -263,7 +253,7 @@ namespace DotSpatial.Symbology.Forms
                     for (int i = 0; i <= 36; i++)
                     {
                         int j = _inverted ? 36 - i : i;
-                        colors[j] = SymbologyGlobal.ColorFromHsl((i * 10 + _hueShift) % 360, 1, .7).ToTransparent(.7f);
+                        colors[j] = SymbologyGlobal.ColorFromHsl(((i * 10) + _hueShift) % 360, 1, .7).ToTransparent(.7f);
                         positions[i] = i / 36f;
                     }
 
@@ -327,7 +317,7 @@ namespace DotSpatial.Symbology.Forms
                 if (LeftHandle.Visible) min = LeftHandle.Width;
                 if (x > w) x = w;
                 if (x < min) x = min;
-                RightHandle.Position = _min + (x / w) * (_max - _min);
+                RightHandle.Position = _min + ((x / w) * (_max - _min));
                 if (LeftHandle.Visible)
                 {
                     if (LeftHandle.Position > RightHandle.Position)
@@ -346,7 +336,7 @@ namespace DotSpatial.Symbology.Forms
                 if (RightHandle.Visible) max = Width - RightHandle.Width;
                 if (x > max) x = max;
                 if (x < 0) x = 0;
-                LeftHandle.Position = _min + (x / w) * (_max - _min);
+                LeftHandle.Position = _min + ((x / w) * (_max - _min));
                 if (RightHandle.Visible)
                 {
                     if (RightHandle.Position < LeftHandle.Position)

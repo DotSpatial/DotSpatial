@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 10/11/2009 10:08:43 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -299,7 +289,7 @@ namespace DotSpatial.Symbology
                 var dl = endColor.GetBrightness() - lLow;
                 var aLow = startColor.A / 255.0;
                 var da = (endColor.A - aLow) / 255.0;
-                return SymbologyGlobal.ColorFromHsl(rnd.NextDouble() * dH + hLow, rnd.NextDouble() * ds + sLow, rnd.NextDouble() * dl + lLow).ToTransparent((float)(rnd.NextDouble() * da + aLow));
+                return SymbologyGlobal.ColorFromHsl((rnd.NextDouble() * dH) + hLow, (rnd.NextDouble() * ds) + sLow, (rnd.NextDouble() * dl) + lLow).ToTransparent((float)((rnd.NextDouble() * da) + aLow));
             }
 
             int rLow = Math.Min(startColor.R, endColor.R);
@@ -381,7 +371,7 @@ namespace DotSpatial.Symbology
                 }
                 else
                 {
-                    brk.Maximum = min + (i + 1) * dx;
+                    brk.Maximum = min + ((i + 1) * dx);
                 }
 
                 result.Add(brk);
@@ -468,7 +458,7 @@ namespace DotSpatial.Symbology
             var dA = (endColor.A - (double)startColor.A) / numColors;
             for (var i = 0; i < numColors; i++)
             {
-                result.Add(Color.FromArgb((int)(startColor.A + dA * i), (int)(startColor.R + dR * i), (int)(startColor.G + dG * i), (int)(startColor.B + dB * i)));
+                result.Add(Color.FromArgb((int)(startColor.A + (dA * i)), (int)(startColor.R + (dR * i)), (int)(startColor.G + (dG * i)), (int)(startColor.B + (dB * i))));
             }
 
             return result;
@@ -483,10 +473,10 @@ namespace DotSpatial.Symbology
             var dA = (maxAlpha - (double)minAlpha) / numColors;
             for (var i = 0; i < numColors; i++)
             {
-                var h = (minHue + dh * i) + hueShift % 360;
-                var s = minSat + ds * i;
-                var l = minLight + dl * i;
-                var a = (float)(minAlpha + dA * i) / 255f;
+                var h = (minHue + (dh * i)) + (hueShift % 360);
+                var s = minSat + (ds * i);
+                var l = minLight + (dl * i);
+                var a = (float)(minAlpha + (dA * i)) / 255f;
                 result.Add(SymbologyGlobal.ColorFromHsl(h, s, l).ToTransparent(a));
             }
 
