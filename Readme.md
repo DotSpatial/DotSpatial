@@ -26,7 +26,7 @@ Still have questions? Maybe someone already [asked them](https://github.com/DotS
 See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
 
 ### Links
-* Continious integration build [![Build status](https://ci.appveyor.com/api/projects/status/7tof6s7m07qdad3b?svg=true)](https://ci.appveyor.com/project/mogikanin/dotspatial)
+* Continious integration build [![Build status](https://ci.appveyor.com/api/projects/status/7tof6s7m07qdad3b/branch/master?svg=true)](https://ci.appveyor.com/project/mogikanin/dotspatial/branch/master)
 * [Changelog](https://github.com/DotSpatial/DotSpatial/blob/master/Changelog.md)
 * [Latest available build from master branch](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifacts/Source/bin/Release.zip?branch=master)
 * [Continiuos Integration builds Nuget feed](https://ci.appveyor.com/nuget/dotspatial)
