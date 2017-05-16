@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.Contracts;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;

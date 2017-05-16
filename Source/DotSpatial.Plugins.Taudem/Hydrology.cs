@@ -1,26 +1,5 @@
-// *******************************************************************************************************
-// File name: Hydrology.cs
-// Description: Public class, provides methods for watershed delineation.
-// *******************************************************************************************************
-// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://www.mozilla.org/MPL/
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either express or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is MapWindow Open Source Hydrology, including the Fill algorithm that was
-// developed by Ted Dunsford at Idaho State University.  This algorithm is currently being
-// prepared for publication in Computers and Geosciences.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// 7/7/2006 Ted Dunsford established this new environment for an improved hydrology toolkit.
-// 2/11/2009 Chris George rewrote BuildJoinedBasins to (dramatically) improve speed
-// 20/7/2010 Chris George made corrections to deal correctly with zero length links
-// TODO the Magnitude field in the network shapefile is currently incorrectly calculated
-// 23/1/2011 Chris George replaced use of binary grids with GeoTiffs for TauDEM V5
-// 26/1/2011 Chris George replaced old Taudem and some Hydrology functions with TauDEM V5
-// *******************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.CodeDom.Compiler;

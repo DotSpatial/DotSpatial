@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/11/2008 3:54:51 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -209,15 +199,15 @@ namespace DotSpatial.Controls
                     r.Inflate(Convert.ToInt32(-w / inFactor), Convert.ToInt32(-h / inFactor));
 
                     // try to keep the mouse cursor in the same geographic position
-                    r.X += Convert.ToInt32((e.X * w / (_sensitivity * cw)) - w / inFactor);
-                    r.Y += Convert.ToInt32((e.Y * h / (_sensitivity * ch)) - h / inFactor);
+                    r.X += Convert.ToInt32((e.X * w / (_sensitivity * cw)) - (w / inFactor));
+                    r.Y += Convert.ToInt32((e.Y * h / (_sensitivity * ch)) - (h / inFactor));
                 }
                 else
                 {
                     double outFactor = 0.5 * _sensitivity;
                     r.Inflate(Convert.ToInt32(w / _sensitivity), Convert.ToInt32(h / _sensitivity));
-                    r.X += Convert.ToInt32(w / _sensitivity - (e.X * w / (outFactor * cw)));
-                    r.Y += Convert.ToInt32(h / _sensitivity - (e.Y * h / (outFactor * ch)));
+                    r.X += Convert.ToInt32((w / _sensitivity) - (e.X * w / (outFactor * cw)));
+                    r.Y += Convert.ToInt32((h / _sensitivity) - (e.Y * h / (outFactor * ch)));
                 }
 
                 e.Map.MapFrame.View = r;

@@ -85,6 +85,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

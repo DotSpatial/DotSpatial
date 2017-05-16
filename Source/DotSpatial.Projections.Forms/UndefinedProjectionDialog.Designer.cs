@@ -85,7 +85,7 @@ namespace DotSpatial.Projections.Forms
             resources.ApplyResources(this.btnSelect, "btnSelect");
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.UseVisualStyleBackColor = true;
-            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            this.btnSelect.Click += new System.EventHandler(this.BtnSelectClick);
             // 
             // radMapFrame
             // 

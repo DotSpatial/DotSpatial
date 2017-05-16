@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/17/2008 10:20:46 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Kyle Ellison 01/07/2010 Changed Draw*Feature from private to public to expose label functionality
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -821,19 +810,19 @@ namespace DotSpatial.Controls
                 case ContentAlignment.TopLeft:
                     return new PointF(-size.Width + x, -size.Height + y);
                 case ContentAlignment.TopCenter:
-                    return new PointF(-size.Width / 2 + x, -size.Height + y);
+                    return new PointF((-size.Width / 2) + x, -size.Height + y);
                 case ContentAlignment.TopRight:
                     return new PointF(0 + x, -size.Height + y);
                 case ContentAlignment.MiddleLeft:
-                    return new PointF(-size.Width + x, -size.Height / 2 + y);
+                    return new PointF(-size.Width + x, (-size.Height / 2) + y);
                 case ContentAlignment.MiddleCenter:
-                    return new PointF(-size.Width / 2 + x, -size.Height / 2 + y);
+                    return new PointF((-size.Width / 2) + x, (-size.Height / 2) + y);
                 case ContentAlignment.MiddleRight:
-                    return new PointF(0 + x, -size.Height / 2 + y);
+                    return new PointF(0 + x, (-size.Height / 2) + y);
                 case ContentAlignment.BottomLeft:
                     return new PointF(-size.Width + x, 0 + y);
                 case ContentAlignment.BottomCenter:
-                    return new PointF(-size.Width / 2 + x, 0 + y);
+                    return new PointF((-size.Width / 2) + x, 0 + y);
                 case ContentAlignment.BottomRight:
                     return new PointF(0 + x, 0 + y);
             }

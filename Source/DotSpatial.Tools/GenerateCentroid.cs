@@ -1,18 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.GenerateCentroid.cs
-// Description:  Generate a centroid featureset from an input featureset.
-//
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// Ted Dunsford           |  9/17/2009             |  Copy attributes from the original featureset.
-// KP                     |  9/2009                |  Used IDW as model for GenerateCentroid
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -22,7 +9,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Generate Centroid tool
+    /// Generate a centroid featureset from an input featureset.
     /// </summary>
     public class GenerateCentroid : Tool
     {

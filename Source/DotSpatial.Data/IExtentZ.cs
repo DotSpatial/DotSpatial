@@ -1,14 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/13/2010 9:30:48 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Data
 {

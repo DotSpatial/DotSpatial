@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.StringParam
-// Description:  String Parameters returned by an ITool allows the tool to specify a default value
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.Data;

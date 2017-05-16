@@ -1,21 +1,9 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Layout
-// Description:  The DotSpatial LayoutControl used to setup printing layouts
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Jul, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;

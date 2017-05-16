@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ModelerMenuStrip
-// Description:  A menu strip designed to work along with the modeler
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Apr, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -18,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// A Menu strip that is part of Brian's toolbox
+    /// A menu strip designed to work along with the modeler
     /// </summary>
     [ToolboxItem(false)]
     public partial class ModelerMenuStrip : MenuStrip

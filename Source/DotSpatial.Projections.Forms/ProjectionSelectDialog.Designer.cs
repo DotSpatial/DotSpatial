@@ -53,7 +53,7 @@ namespace DotSpatial.Projections.Forms
             resources.ApplyResources(this.btnApply, "btnApply");
             this.btnApply.Name = "btnApply";
             this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            this.btnApply.Click += new System.EventHandler(this.BtnApplyClick);
             // 
             // btnCancel
             // 
@@ -68,7 +68,7 @@ namespace DotSpatial.Projections.Forms
             this.cmdOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.cmdOk.Name = "cmdOk";
             this.cmdOk.UseVisualStyleBackColor = true;
-            this.cmdOk.Click += new System.EventHandler(this.cmdOk_Click);
+            this.cmdOk.Click += new System.EventHandler(this.CmdOkClick);
             // 
             // projectionSelectControl1
             // 

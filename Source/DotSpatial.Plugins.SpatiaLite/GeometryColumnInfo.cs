@@ -1,4 +1,7 @@
-﻿namespace DotSpatial.Plugins.SpatiaLite
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+namespace DotSpatial.Plugins.SpatiaLite
 {
     /// <summary>
     /// This class contains informations about geometry columns.

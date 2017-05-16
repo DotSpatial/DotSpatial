@@ -1,34 +1,16 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Topology.dll
-// Description:  The basic topology module for the new dotSpatial libraries
-// ********************************************************************************************************
-// The contents of this file are subject to the Lesser GNU Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from a code project example:
-// http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx
-// which is protected under the Code Project Open License
-// http://www.codeproject.com/info/cpol10.aspx
-//
-// The Initial Developer to integrate this code into MapWindow 6.0 is Ted Dunsford.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name              |   Date             |   Comments
-// ------------------|--------------------|---------------------------------------------------------
-// Benjamin Dittes   | August 10, 2005    |  Authored original code for working with laser data
-// Ted Dunsford      | August 26, 2009    |  Ported and re-formated code. Fixed a sorting and rounding problem
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+// The Original Code is from a code project example:
+// http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx
+// which is protected under the Code Project Open License
+// http://www.codeproject.com/info/cpol10.aspx
+//
 namespace DotSpatial.NTSExtension.Voronoi
 {
     /// <summary>
@@ -249,9 +231,9 @@ namespace DotSpatial.NTSExtension.Voronoi
                 wy = -1;
             }
 
-            double alpha = (wy * (vx - tx) - wx * (vy - ty)) / (ux * wy - wx * uy);
+            double alpha = ((wy * (vx - tx)) - (wx * (vy - ty))) / ((ux * wy) - (wx * uy));
 
-            return new Vector2(tx + alpha * ux, ty + alpha * uy);
+            return new Vector2(tx + (alpha * ux), ty + (alpha * uy));
         }
 
         /// <summary>
@@ -277,9 +259,9 @@ namespace DotSpatial.NTSExtension.Voronoi
             double a1 = 1 / (2 * (y1 - ys));
             double a2 = 1 / (2 * (y2 - ys));
             if (a1 == a2) return (x1 + x2) / 2;
-            double root = Math.Sqrt(-8 * a1 * x1 * a2 * x2 - 2 * a1 * y1 + 2 * a1 * y2 + 4 * a1 * a2 * x2 * x2 + 2 * a2 * y1 + 4 * a2 * a1 * x1 * x1 - 2 * a2 * y2);
-            double xs1 = 0.5 / (2 * a1 - 2 * a2) * (4 * a1 * x1 - 4 * a2 * x2 + 2 * root);
-            double xs2 = 0.5 / (2 * a1 - 2 * a2) * (4 * a1 * x1 - 4 * a2 * x2 - 2 * root);
+            double root = Math.Sqrt((-8 * a1 * x1 * a2 * x2) - (2 * a1 * y1) + (2 * a1 * y2) + (4 * a1 * a2 * x2 * x2) + (2 * a2 * y1) + (4 * a2 * a1 * x1 * x1) - (2 * a2 * y2));
+            double xs1 = 0.5 / ((2 * a1) - (2 * a2)) * ((4 * a1 * x1) - (4 * a2 * x2) + (2 * root));
+            double xs2 = 0.5 / ((2 * a1) - (2 * a2)) * ((4 * a1 * x1) - (4 * a2 * x2) - (2 * root));
             if (xs1 > xs2)
             {
                 double h = xs1;

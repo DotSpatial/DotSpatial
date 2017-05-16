@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Forms.LayoutForm
-// Description:  A form that shows the mapwindow layout
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is by Brian Marchionni Aug 2009
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -159,7 +162,7 @@ namespace DotSpatial.Plugins.LiDAR
 
                     if (featureType == FeatureType.Point)
                     {
-                        Point pt = new Point(Convert.ToInt32((vertices[index * 2] - minX) * dx), Convert.ToInt32((maxY - vertices[index * 2 + 1]) * dy));
+                        Point pt = new Point(Convert.ToInt32((vertices[index * 2] - minX) * dx), Convert.ToInt32((maxY - vertices[(index * 2) + 1]) * dy));
 
                         Matrix shift = origTransform.Clone();
                         shift.Translate(pt.X, pt.Y);
@@ -251,7 +254,7 @@ namespace DotSpatial.Plugins.LiDAR
             bg.SmoothingMode = category.Symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
             Matrix trans = bg.Transform;
 
-            trans.Translate((float)(size.Width * scaleSize) / 2 - 1, (float)(size.Height * scaleSize) / 2 - 1);
+            trans.Translate(((float)(size.Width * scaleSize) / 2) - 1, ((float)(size.Height * scaleSize) / 2) - 1);
             bg.Transform = trans;
             category.Symbolizer.Draw(bg, 1);
             return normalSymbol;

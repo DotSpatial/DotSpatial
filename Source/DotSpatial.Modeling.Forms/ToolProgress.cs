@@ -1,18 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ToolProgress
-// Description:  A form used to show the progress of a tool
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Feb, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name                  |   Date            |            Comments
-// ----------------------|-------------------|-----------------------------------------------------
-// Ted Dunsford          | 8/24/2009         |  Used Re-sharper to clean up a few unnecessary accessors
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;

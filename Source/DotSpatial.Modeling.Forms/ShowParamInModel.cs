@@ -1,10 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Modeling.Forms.dll
-// Description:  Supports the Windows Forms UI for the modeling components.
-// ********************************************************************************************************
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Modeling.Forms
 {

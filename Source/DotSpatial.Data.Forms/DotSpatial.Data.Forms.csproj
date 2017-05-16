@@ -161,6 +161,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.Data.Forms.snk" />
     <None Include="DotSpatial.Data.Forms.nuspec" />
     <None Include="packages.config" />

@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  The core assembly for the DotSpatial 6.0 distribution.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 12/10/2008 2:15:33 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -17,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// frmOpenDataDialog
+    /// OpenDataDialog
     /// </summary>
     public class OpenDataDialog : Form
     {

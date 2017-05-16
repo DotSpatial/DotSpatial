@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in May, 2011.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------
-//  Yang  Cao         | 05/16/2011         |  Create the interface IHeaderControl to work with standard toolbar and ribbon control
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 

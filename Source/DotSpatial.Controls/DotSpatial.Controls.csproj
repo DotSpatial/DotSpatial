@@ -484,6 +484,9 @@
     <EmbeddedResource Include="Resources\SpatialToolStrip.ico" />
     <EmbeddedResource Include="SpatialProgressBar.ico" />
     <EmbeddedResource Include="Resources\SpatialStatusStrip.ico" />
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="DotSpatial.Controls.snk" />
     <None Include="DotSpatial.Controls.nuspec">

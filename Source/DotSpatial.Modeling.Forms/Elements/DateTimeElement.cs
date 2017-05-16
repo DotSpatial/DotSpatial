@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.DateElement
-// Description:  Boolean Element for use in the tool dialog
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Teva Veluppillai. Created in March, 2010
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;

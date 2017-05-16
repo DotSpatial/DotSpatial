@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Layout.LayoutListBox
-// Description:  Shows a list of all the items in the layout control
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/28/2009 4:23:05 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;

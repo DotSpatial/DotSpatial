@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Layout.Elements.LayoutMap
-// Description:  The DotSpatial LayoutMap element, the map
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Jul, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -140,7 +128,7 @@ namespace DotSpatial.Controls
 
                 double xtl = Envelope.MinX;
                 double ytl = Envelope.MaxY;
-                Envelope.Init(xtl, xtl + (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D), ytl - (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D), ytl);
+                Envelope.Init(xtl, xtl + ((value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D)), ytl - ((value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D)), ytl);
             }
         }
 

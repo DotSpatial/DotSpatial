@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/29/2008 3:21:30 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -146,14 +136,14 @@ namespace DotSpatial.Controls
                         r.Inflate(-r.Width / 4, -r.Height / 4);
 
                         // The mouse cursor should anchor the geographic location during zoom.
-                        r.X += (e.X / 2) - w / 4;
-                        r.Y += (e.Y / 2) - h / 4;
+                        r.X += (e.X / 2) - (w / 4);
+                        r.Y += (e.Y / 2) - (h / 4);
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
                         r.Inflate(r.Width / 2, r.Height / 2);
-                        r.X += w / 2 - e.X;
-                        r.Y += h / 2 - e.Y;
+                        r.X += (w / 2) - e.X;
+                        r.Y += (h / 2) - e.Y;
                     }
 
                     e.Map.MapFrame.View = r;

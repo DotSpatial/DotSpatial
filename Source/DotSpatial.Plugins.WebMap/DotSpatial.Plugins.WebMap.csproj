@@ -139,6 +139,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="Resources\nodata.bmp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,22 +1,5 @@
-// ********************************************************************************************************
-// Product Name: MapWindow.dll Alpha
-// Description:  The basic module for MapWindow version 6.0
-// ********************************************************************************************************
-// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://www.mozilla.org/MPL/
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOlhsT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/3/2008 3:29:47 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using GeoAPI.Geometries;
@@ -92,12 +75,12 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Gets the length of the vector.
         /// </summary>
-        public float Length => Convert.ToSingle(Math.Sqrt(X * X + Y * Y + Z * Z));
+        public float Length => Convert.ToSingle(Math.Sqrt((X * X) + (Y * Y) + (Z * Z)));
 
         /// <summary>
         /// Gets the square of length of this vector.
         /// </summary>
-        public float LengthSq => Convert.ToSingle(X * X + Y * Y + Z * Z);
+        public float LengthSq => Convert.ToSingle((X * X) + (Y * Y) + (Z * Z));
 
         #endregion
 
@@ -176,9 +159,9 @@ namespace DotSpatial.NTSExtension
         {
             return new FloatVector3
             {
-                X = lhs.Y * rhs.Z - lhs.Z * rhs.Y,
-                Y = lhs.Z * rhs.X - lhs.X * rhs.Z,
-                Z = lhs.X * rhs.Y - lhs.Y * rhs.X
+                X = (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y),
+                Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
+                Z = (lhs.X * rhs.Y) - (lhs.Y * rhs.X)
             };
         }
 
@@ -277,9 +260,9 @@ namespace DotSpatial.NTSExtension
         {
             FloatVector3 result = new FloatVector3
             {
-                X = lhs.Y * rhs.Z - lhs.Z * rhs.Y,
-                Y = lhs.Z * rhs.X - lhs.X * rhs.Z,
-                Z = lhs.X * rhs.Y - lhs.Y * rhs.X
+                X = (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y),
+                Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
+                Z = (lhs.X * rhs.Y) - (lhs.Y * rhs.X)
             };
             return result;
         }
@@ -292,7 +275,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>The resulting value.</returns>
         public static float Dot(FloatVector3 lhs, FloatVector3 rhs)
         {
-            return lhs.X * rhs.X + lhs.Y * rhs.Y + lhs.Z * rhs.Z;
+            return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
         }
 
         /// <summary>

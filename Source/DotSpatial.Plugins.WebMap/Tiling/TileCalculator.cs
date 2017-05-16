@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
@@ -135,11 +138,11 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
             var x = (longitude + 180) / 360;
             var sinLatitude = Math.Sin(latitude * Math.PI / 180);
-            var y = 0.5 - Math.Log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI);
+            var y = 0.5 - (Math.Log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI));
 
             var mapSize = MapSize(levelOfDetail);
 
-            return new NtsPoint((int)Clip(x * mapSize + 0.5, 0, mapSize - 1), (int)Clip(y * mapSize + 0.5, 0, mapSize - 1));
+            return new NtsPoint((int)Clip((x * mapSize) + 0.5, 0, mapSize - 1), (int)Clip((y * mapSize) + 0.5, 0, mapSize - 1));
         }
 
         /// <summary>
@@ -203,7 +206,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             double x = (Clip(pixelX, 0, mapSize - 1) / mapSize) - 0.5;
             double y = 0.5 - (Clip(pixelY, 0, mapSize - 1) / mapSize);
 
-            double latitude = 90 - 360 * Math.Atan(Math.Exp(-y * 2 * Math.PI)) / Math.PI;
+            double latitude = 90 - (360 * Math.Atan(Math.Exp(-y * 2 * Math.PI)) / Math.PI);
             double longitude = 360 * x;
 
             return new Coordinate(longitude, latitude);
@@ -315,7 +318,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <returns>The coordinate of the bottom-right pixel of the tile.</returns>
         public static NtsPoint TileXyToBottomRightPixelXy(int tileX, int tileY)
         {
-            return new NtsPoint((tileX + 1) * 256 - 1, (tileY + 1) * 256 - 1);
+            return new NtsPoint(((tileX + 1) * 256) - 1, ((tileY + 1) * 256) - 1);
         }
 
         /// <summary>

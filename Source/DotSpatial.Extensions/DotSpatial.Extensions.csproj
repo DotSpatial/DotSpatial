@@ -74,6 +74,9 @@
     <Compile Include="SplashScreens\SplashScreenHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>SplashScreens\stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.snk" />
     <None Include="DotSpatial.Extensions.nuspec" />
     <None Include="packages.config" />

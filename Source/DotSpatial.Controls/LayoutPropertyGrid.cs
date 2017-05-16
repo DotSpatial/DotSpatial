@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Layout.LayoutPropertyGrid
-// Description:  A property grid designed to work along with the layout engine
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Jul, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;

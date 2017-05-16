@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows.Forms;
 using DotSpatial.Plugins.ExtensionManager.Properties;

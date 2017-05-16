@@ -1,20 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 7/25/2008 9:37:01 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------
-// Jiri Kadlec        |  2/18/2010         |  Added zoom out button and custom mouse cursors
-// Kyle Ellison       | 12/15/2010         |  Fixed Issue #190 (Deactivated MapFunctions still involved)
-// Eric Hullinger     | 12/28/2012         |  Resolved Issue (Unrestricted Zoom Out)
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -1483,7 +1468,7 @@ namespace DotSpatial.Controls
                 // the current height or width is smaller than minExt
                 double x = ViewExtents.Center.X;
                 double y = ViewExtents.Center.Y;
-                Extent newExtent = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2); // resize to stay above the minExt
+                Extent newExtent = new Extent(x - (minExt / 2), y - (minExt / 2), x + (minExt / 2), y + (minExt / 2)); // resize to stay above the minExt
 
                 // changed by jany_ (2016-04-14) Remember the last minimum extent in case MapFrame.ResetAspectRatio decides to resize the ViewExtent to something smaller than this.
                 // We don't want to cause a loop between this point and MapFrame.ResetAspectRatio switching ViewExtent between minExt and the corresponding extent that comes from fitting minExt to the maps aspect ratio.

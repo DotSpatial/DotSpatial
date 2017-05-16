@@ -1,26 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Topology.dll
-// Description:  The basic topology module for the new dotSpatial libraries
-// ********************************************************************************************************
-// The contents of this file are subject to the Lesser GNU Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license  Alternately, you can access an earlier version of this content from
-// the Net Topology Suite, which is also protected by the GNU Lesser Public License and the sourcecode
-// for the Net Topology Suite can be obtained here: http://sourceforge.net/projects/nts.
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from the Net Topology Suite, which is a C# port of the Java Topology Suite.
-//
-// The Initial Developer to integrate this code into MapWindow 6.0 is Ted Dunsford.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |         Name         |    Date    |                              Comment
-// |----------------------|------------|------------------------------------------------------------
-// |                      |            |
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using GeoAPI.Geometries;
@@ -266,7 +245,7 @@ namespace DotSpatial.NTSExtension
                 if (X > 0 && Y < 0)
                 {
                     // Turn -Pi/2 -> 0 into 3Pi/2 -> 2Pi
-                    theta = Math.PI * 2 + theta;
+                    theta = (Math.PI * 2) + theta;
                 }
 
                 return theta;
@@ -324,7 +303,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A Vector containing the cross product of U and V</returns>
         public static Vector operator ^(Vector u, Vector v)
         {
-            return new Vector { X = u.Y * v.Z - u.Z * v.Y, Y = u.Z * v.X - u.X * v.Z, Z = u.X * v.Y - u.Y * v.X };
+            return new Vector { X = (u.Y * v.Z) - (u.Z * v.Y), Y = (u.Z * v.X) - (u.X * v.Z), Z = (u.X * v.Y) - (u.Y * v.X) };
         }
 
         /// <summary>
@@ -409,7 +388,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A Vector containing the cross product of U and V</returns>
         public static Vector CrossProduct(Vector u, Vector v)
         {
-            return new Vector { X = u.Y * v.Z - u.Z * v.Y, Y = u.Z * v.X - u.X * v.Z, Z = u.X * v.Y - u.Y * v.X };
+            return new Vector { X = (u.Y * v.Z) - (u.Z * v.Y), Y = (u.Z * v.X) - (u.X * v.Z), Z = (u.X * v.Y) - (u.Y * v.X) };
         }
 
         /// <summary>
@@ -453,7 +432,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>Double, the square of the distance</returns>
         public static double Norm2(Vector u)
         {
-            double n2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z;
+            double n2 = (u.X * u.X) + (u.Y * u.Y) + (u.Z * u.Z);
             return n2;
         }
 
@@ -485,7 +464,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A vector result from the inner product</returns>
         public Vector Cross(Vector v)
         {
-            return new Vector { X = Y * v.Z - Z * v.Y, Y = Z * v.X - X * v.Z, Z = X * v.Y - Y * v.X };
+            return new Vector { X = (Y * v.Z) - (Z * v.Y), Y = (Z * v.X) - (X * v.Z), Z = (X * v.Y) - (Y * v.X) };
         }
 
         /// <summary>
@@ -495,7 +474,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A Double result from the inner product</returns>
         public double Dot(Vector v)
         {
-            return X * v.X + Y * v.Y + Z * v.Z;
+            return (X * v.X) + (Y * v.Y) + (Z * v.Z);
         }
 
         /// <summary>
@@ -560,7 +539,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>Double, the square of the distance between the vectors</returns>
         public double Norm2()
         {
-            return X * X + Y * Y + Z * Z;
+            return (X * X) + (Y * Y) + (Z * Z);
         }
 
         /// <summary>

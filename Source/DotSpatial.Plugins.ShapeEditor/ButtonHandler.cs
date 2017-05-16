@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Plugins.ShapeEditor.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/11/2009 11:03:39 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;

@@ -113,6 +113,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="App.config" />
     <None Include="DotSpatial.Plugins.SpatiaLite.nuspec">
       <SubType>Designer</SubType>

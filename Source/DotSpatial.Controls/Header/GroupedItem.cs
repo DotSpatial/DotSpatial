@@ -1,4 +1,7 @@
-﻿namespace DotSpatial.Controls.Header
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+namespace DotSpatial.Controls.Header
 {
     /// <summary>
     /// A visually distinguished container of <see cref="ActionItem"/> instances that are Grouped inside of <see cref="RootItem"/>s.

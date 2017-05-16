@@ -145,6 +145,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.Data.Rasters.GdalExtension.snk" />
     <None Include="package.nuspec">
       <SubType>Designer</SubType>

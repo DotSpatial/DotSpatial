@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.Parameters
-// Description:  Parameters passed back from a ITool to the toolbox manager
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +15,7 @@ namespace DotSpatial.Modeling.Forms
     public delegate void EventHandlerValueChanged(Parameter sender);
 
     /// <summary>
-    /// This is the base class for the parameter array to be passed into a ITool
+    /// This is the base class for the parameter array to be passed into an ITool.
     /// </summary>
     public abstract class Parameter : ICloneable
     {

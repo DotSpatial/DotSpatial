@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -155,8 +158,8 @@ namespace DotSpatial.Plugins.Contourer
 
             if (contType == Contour.ContourType.Polygon)
             {
-                tomPaletteEditor1.AddItem(min + every / 2, System.Drawing.Color.Chartreuse);
-                tomPaletteEditor1.AddItem(max - every / 2, System.Drawing.Color.Magenta);
+                tomPaletteEditor1.AddItem(min + (every / 2), System.Drawing.Color.Chartreuse);
+                tomPaletteEditor1.AddItem(max - (every / 2), System.Drawing.Color.Magenta);
             }
 
             tomPaletteEditor1.Invalidate();

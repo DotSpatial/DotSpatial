@@ -7,6 +7,7 @@
     "documentationRules": {
       "companyName": "DotSpatial Team",
       "copyrightText": "Copyright (c) {companyName}. All rights reserved.\nLicensed under the {licenseName} license. See {licenseFile} file in the project root for full license information.",
+      "xmlHeader": false,
       "variables": {
         "licenseName": "MIT",
         "licenseFile": "License.txt"

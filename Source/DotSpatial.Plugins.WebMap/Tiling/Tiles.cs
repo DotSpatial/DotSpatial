@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Drawing;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.Tiling

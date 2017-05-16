@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.ExtensionManager.Updater")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

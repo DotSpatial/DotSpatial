@@ -10,7 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Open rasters and other file formats using GDAL.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("DotSpatial.Data.Rasters.GdalExtension")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

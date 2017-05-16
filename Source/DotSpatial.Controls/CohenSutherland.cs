@@ -1,14 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Initial Developer of this Original Code is Kyle Ellison. Created in November, 15, 2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -122,22 +113,22 @@ namespace DotSpatial.Controls
                     // use formulas y = y0 + slope * (x - x0), x = x0 + (1/slope)* (y - y0)
                     if ((outcodeOut & Top) > 0)
                     {
-                        x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1);
+                        x = x1 + ((x2 - x1) * (ymax - y1) / (y2 - y1));
                         y = ymax;
                     }
                     else if ((outcodeOut & Bottom) > 0)
                     {
-                        x = x1 + (x2 - x1) * (ymin - y1) / (y2 - y1);
+                        x = x1 + ((x2 - x1) * (ymin - y1) / (y2 - y1));
                         y = ymin;
                     }
                     else if ((outcodeOut & Right) > 0)
                     {
-                        y = y1 + (y2 - y1) * (xmax - x1) / (x2 - x1);
+                        y = y1 + ((y2 - y1) * (xmax - x1) / (x2 - x1));
                         x = xmax;
                     }
                     else if ((outcodeOut & Left) > 0)
                     {
-                        y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1);
+                        y = y1 + ((y2 - y1) * (xmin - x1) / (x2 - x1));
                         x = xmin;
                     }
 

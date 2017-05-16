@@ -70,8 +70,14 @@
     <Compile Include="DoubleBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="DoubleBox.Designer.cs">
+      <DependentUpon>DoubleBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProjectionCustomDialog.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectionCustomDialog.Designer.cs">
+      <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectionSelectControl.cs">
       <SubType>UserControl</SubType>
@@ -187,6 +193,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.Projections.Forms.nuspec" />
     <None Include="packages.config" />
     <None Include="Projections.Forms.4.0.snk" />

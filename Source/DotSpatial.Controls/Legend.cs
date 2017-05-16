@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 12/2/2008 9:26:55 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -909,7 +899,7 @@ namespace DotSpatial.Controls
 
             if (item.Checked)
             {
-                int top = (int)topLeft.Y + (ItemHeight - _icoChecked.Height) / 2;
+                int top = (int)topLeft.Y + ((ItemHeight - _icoChecked.Height) / 2);
                 int left = (int)topLeft.X + 6;
                 g.DrawIcon(_icoChecked, left, top);
                 Rectangle box = new Rectangle(left, top, _icoChecked.Width, _icoChecked.Height);
@@ -917,7 +907,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                int top = (int)topLeft.Y + (ItemHeight - _icoUnchecked.Height) / 2;
+                int top = (int)topLeft.Y + ((ItemHeight - _icoUnchecked.Height) / 2);
                 int left = (int)topLeft.X + 6;
                 g.DrawIcon(_icoUnchecked, left, top);
                 Rectangle box = new Rectangle(left, top, _icoChecked.Width, _icoChecked.Height);
@@ -943,7 +933,7 @@ namespace DotSpatial.Controls
             tl.X += 3;
             Rectangle box = new Rectangle(tl.X, tl.Y, 8, 8);
             itemBox.ExpandBox = box;
-            Point center = new Point(tl.X + 4, (int)topLeft.Y + ItemHeight / 2);
+            Point center = new Point(tl.X + 4, (int)topLeft.Y + (ItemHeight / 2));
             g.FillRectangle(Brushes.White, box);
             g.DrawRectangle(Pens.Gray, box);
             if (item.IsExpanded)

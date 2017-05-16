@@ -1,16 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.RasterSlope.cs
-// Description:  Generate slope raster from given altitude raster.
-//
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// KP                     |  9/2009                |  Used IDW as model for RasterSlope
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -20,7 +9,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Raster Slope
+    /// Generate slope raster from given altitude raster.
     /// </summary>
     public class RasterSlope : Tool
     {

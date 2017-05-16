@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Jiri Kadlec. Created 2/26/2011 11:03:10 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-//        Name       |    Date    |                       Comments
-// ------------------|------------|---------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Diagnostics;

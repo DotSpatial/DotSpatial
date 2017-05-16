@@ -1,31 +1,12 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Topology.dll
-// Description:  The basic topology module for the new dotSpatial libraries
-// ********************************************************************************************************
-// The contents of this file are subject to the Lesser GNU Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
+
 // The Original Code is from a code project example:
 // http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx
 // which is protected under the Code Project Open License
 // http://www.codeproject.com/info/cpol10.aspx
-//
-// The Initial Developer to integrate this code into MapWindow 6.0 is Ted Dunsford.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name              |   Date             |   Comments
-// ------------------|--------------------|---------------------------------------------------------
-// Benjamin Dittes   | August 10, 2005    |  Authored original code for working with laser data
-// Ted Dunsford      | August 26, 2009    |  Ported and cleand up the raw source from code project
-// ********************************************************************************************************
-
-using System;
-
 namespace DotSpatial.NTSExtension.Voronoi
 {
     /// <summary>
@@ -70,7 +51,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <returns>The distance between the two points.</returns>
         public static double Dist(double x1, double y1, double x2, double y2)
         {
-            return Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+            return Math.Sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
         }
 
         #endregion

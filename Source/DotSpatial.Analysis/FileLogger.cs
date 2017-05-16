@@ -1,19 +1,5 @@
-// *******************************************************************************************************
-// Product: DotSpatial.Analysis.FileLogger.cs
-// Description: This is a default file logger in DotSpatial illustrating how to implement the interface for logging.
-//
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/2007            |  Initially written.
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  6/30/2010         |  Moved from MapWindow6.dll to DotSpatial.
-//--------------------|--------------------|--------------------------------------------------------------
-// Dan Ames           |  3/2013            |  Adding this header.
-// *******************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;

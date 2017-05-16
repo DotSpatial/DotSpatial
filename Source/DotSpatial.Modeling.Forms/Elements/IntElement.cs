@@ -1,18 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.IntegerElement
-// Description:  Integer Element for use in the tool dialog
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name                 |    Date              |   Comments
-// ---------------------|----------------------|----------------------------------------------------
-// Ted Dunsford         |  8/28/2009           |  Cleaned up some formatting content using re-sharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -20,7 +7,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// an element for integers
+    /// Integer Element for use in the tool dialog
     /// </summary>
     public partial class IntElement : DialogElement
     {

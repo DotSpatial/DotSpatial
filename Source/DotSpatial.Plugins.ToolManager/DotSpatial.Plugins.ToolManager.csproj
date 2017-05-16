@@ -73,6 +73,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="DotSpatial.Plugins.ToolManager.nuspec">
       <SubType>Designer</SubType>

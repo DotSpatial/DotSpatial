@@ -1,10 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.Forms.dll
-// Description:  A dynamically loaded extension with a toolkit.
-// ********************************************************************************************************
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;

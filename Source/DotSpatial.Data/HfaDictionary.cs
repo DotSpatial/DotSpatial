@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/25/2010 1:43:16 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 // ORIGINAL HEADER FROM C++ source which was converted to C# by Ted Dunsford 2/25/2010
 /******************************************************************************
@@ -67,7 +57,6 @@
  *
  * Revision 1.1  1999/01/04 05:28:12  warmerda
  * New
- *
  */
 
 using System.Collections.Generic;

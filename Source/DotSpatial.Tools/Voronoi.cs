@@ -1,15 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.Voronoi.cs
-// Description:  Create thiessen polygons within a raster layer.
-//
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//---------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|-------------------------------------------------------
-// KP                     |  9/2009                |  Used IDW as model for Voronoi
-// Ping  Yang             |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;

@@ -95,6 +95,9 @@
     <Compile Include="Voronoi\VoronoiGraph.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.NTSExtension.snk" />
     <None Include="DotSpatial.NTSExtension.nuspec" />
     <None Include="packages.config" />

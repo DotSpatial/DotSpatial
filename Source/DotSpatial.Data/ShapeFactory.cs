@@ -1,12 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created during DotSpatial refactoring 2010.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using GeoAPI.Geometries;
@@ -89,7 +82,7 @@ namespace DotSpatial.Data
             for (int i = 0; i < allCoords.Count; i++)
             {
                 shp.Vertices[i * 2] = allCoords[i].X;
-                shp.Vertices[i * 2 + 1] = allCoords[i].Y;
+                shp.Vertices[(i * 2) + 1] = allCoords[i].Y;
             }
 
             ShapeRange result = new ShapeRange(FeatureType.Polygon);

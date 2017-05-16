@@ -81,6 +81,9 @@
     <Compile Include="Voronoi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="DotSpatial.Analysis.snk" />
     <None Include="DotSpatial.Analysis.nuspec">

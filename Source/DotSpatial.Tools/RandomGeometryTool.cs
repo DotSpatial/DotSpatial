@@ -1,13 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.RandomPoints.cs
-// Description:  Wraps DotSpatial.Analysis.RandomGeometry in a tool wrapper for use through the DotSptial toolbox.
-//
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// *******************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Analysis;
 using DotSpatial.Data;

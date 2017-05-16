@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.NTSExtension
@@ -68,8 +71,8 @@ namespace DotSpatial.NTSExtension
         /// <param name="radAngle">Rotation angle in radian.</param>
         private static void RotateCoordinateRad(Coordinate origin, ref double coordX, ref double coordY, double radAngle)
         {
-            double x = origin.X + (Math.Cos(radAngle) * (coordX - origin.X) - Math.Sin(radAngle) * (coordY - origin.Y));
-            double y = origin.Y + (Math.Sin(radAngle) * (coordX - origin.X) + Math.Cos(radAngle) * (coordY - origin.Y));
+            double x = origin.X + ((Math.Cos(radAngle) * (coordX - origin.X)) - (Math.Sin(radAngle) * (coordY - origin.Y)));
+            double y = origin.Y + ((Math.Sin(radAngle) * (coordX - origin.X)) + (Math.Cos(radAngle) * (coordY - origin.Y)));
             coordX = x;
             coordY = y;
         }

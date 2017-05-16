@@ -1,4 +1,7 @@
-﻿namespace DotSpatial.Data.MiscUtil
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+namespace DotSpatial.Data.MiscUtil
 {
     // Required Attribution under Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License;
     // http://www.codeproject.com/KB/cs/GenericArithmeticUtil.aspx

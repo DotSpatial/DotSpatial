@@ -1,11 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: Conturer
-// Description:  An extension for create contour from raste
-// ********************************************************************************************************
-//
-// The Initial Developer of this Original Code is Tomaso Tonelli in memory of his mother in 2012.
-// for questions/ info tomaso.tonelli@gmail.com
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +15,7 @@ using NetTopologySuite.Operation.Polygonize;
 namespace DotSpatial.Plugins.Contourer
 {
     /// <summary>
-    /// Contour
+    /// An extension for create contour from raster.
     /// </summary>
     public class Contour
     {
@@ -65,7 +59,7 @@ namespace DotSpatial.Plugins.Contourer
 
             for (int i = 0; i < c; i++)
             {
-                levels[i] = minContour + every * i;
+                levels[i] = minContour + (every * i);
             }
 
             return levels;
@@ -141,12 +135,12 @@ namespace DotSpatial.Plugins.Contourer
 
             for (int i = 0; i < rst.NumColumns; i++)
             {
-                x[i] = rst.Extent.MinX + rst.CellWidth * i + rst.CellWidth / 2;
+                x[i] = rst.Extent.MinX + (rst.CellWidth * i) + (rst.CellWidth / 2);
             }
 
             for (int i = 0; i < rst.NumRows; i++)
             {
-                y[i] = rst.Extent.MaxY - rst.CellHeight * i - rst.CellHeight / 2;
+                y[i] = rst.Extent.MaxY - (rst.CellHeight * i) - (rst.CellHeight / 2);
             }
 
             FeatureSet fs = null;
@@ -441,8 +435,8 @@ namespace DotSpatial.Plugins.Contourer
 
                             Coordinate c = new Coordinate
                             {
-                                X = xx[i] + frac * dx,
-                                Y = yy[i] + frac * dy,
+                                X = xx[i] + (frac * dx),
+                                Y = yy[i] + (frac * dy),
                                 Z = zlevel
                             };
 

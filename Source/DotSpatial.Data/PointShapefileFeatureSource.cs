@@ -1,21 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Kyle Ellison. Created 12/01/2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// |-----------------|----------|---------------------------------------------------------------------
-// |      Name       |  Date    |                        Comments
-// |-----------------|----------|----------------------------------------------------------------------
-// | Kyle Ellison    |12/22/2010| Made FeatureType and ShapeType properties public
-// |-----------------|----------|----------------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;

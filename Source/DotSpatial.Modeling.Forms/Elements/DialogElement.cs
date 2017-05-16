@@ -1,17 +1,5 @@
-// *********************************************************************************************************
-// Product Name: DotSpatial.Tools.DialogElement
-// Description:  The abstract tool Element class to be inherited by elements of the tool dialog
-//
-// *********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// *********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;

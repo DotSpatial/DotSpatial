@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -11,23 +14,27 @@ namespace DotSpatial.Projections.Forms
     {
         #region Fields
 
-        private ProjectionInfo _selectedCoordinateSystem;
         private bool _disableEvents;
+
+        private ProjectionInfo _selectedCoordinateSystem;
         private bool _userChanges;
 
         #endregion
 
+        #region Constructors
+
         /// <summary>
-        /// Creates a new instance of ProjectionSelectControl.
+        /// Initializes a new instance of the <see cref="ProjectionSelectControl"/> class.
         /// </summary>
         public ProjectionSelectControl()
         {
             InitializeComponent();
 
             chbEsri.Checked = true;
-            Load += delegate
+            Load += (sender, args) =>
             {
                 if (DesignMode) return;
+
                 if (SelectedCoordinateSystem == null)
                 {
                     radProjected.Checked = true;
@@ -35,16 +42,25 @@ namespace DotSpatial.Projections.Forms
             };
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the currently chosen coordinate system.
         /// </summary>
         [Browsable(false)]
         public ProjectionInfo SelectedCoordinateSystem
         {
-            get { return _selectedCoordinateSystem; }
+            get
+            {
+                return _selectedCoordinateSystem;
+            }
+
             set
             {
                 if (_selectedCoordinateSystem == value) return;
+
                 _selectedCoordinateSystem = value;
                 if (_selectedCoordinateSystem == null)
                 {
@@ -52,10 +68,9 @@ namespace DotSpatial.Projections.Forms
                     tbEsriProj4.Text = null;
                     return;
                 }
+
                 nudEpsgCode.Value = _selectedCoordinateSystem.AuthorityCode;
-                tbEsriProj4.Text = chbEsri.Checked
-                    ? _selectedCoordinateSystem.ToEsriString()
-                    : _selectedCoordinateSystem.ToProj4String();
+                tbEsriProj4.Text = chbEsri.Checked ? _selectedCoordinateSystem.ToEsriString() : _selectedCoordinateSystem.ToProj4String();
                 if (!_userChanges)
                 {
                     // try to found Category for SelectedCoordinateSystem
@@ -76,11 +91,15 @@ namespace DotSpatial.Projections.Forms
             }
         }
 
+        private ICoordinateSystemCategoryHolder CurrentCategoryHolder => radProjected.Checked ? (ICoordinateSystemCategoryHolder)KnownCoordinateSystems.Projected : KnownCoordinateSystems.Geographic;
+
+        #endregion
+
+        #region Methods
+
         private static ProjectionCategory GetProjectionCategory(ProjectionInfo projectionInfo)
         {
-            var holder = projectionInfo.IsLatLon
-                  ? (ICoordinateSystemCategoryHolder)KnownCoordinateSystems.Geographic
-                  : KnownCoordinateSystems.Projected;
+            var holder = projectionInfo.IsLatLon ? (ICoordinateSystemCategoryHolder)KnownCoordinateSystems.Geographic : KnownCoordinateSystems.Projected;
             var selectedAsStr = projectionInfo.ToString();
             var selectedEsri = projectionInfo.ToEsriString();
             foreach (var name in holder.Names)
@@ -89,36 +108,82 @@ namespace DotSpatial.Projections.Forms
                 foreach (var projName in cat.Names)
                 {
                     var proj = cat.GetProjection(projName);
-                    if (proj.ToString() == selectedAsStr &&
-                        proj.ToEsriString() == selectedEsri)
+                    if (proj.ToString() == selectedAsStr && proj.ToEsriString() == selectedEsri)
                     {
-                        return new ProjectionCategory { CategoryName = name, ProjectionFieldName = projName };
+                        return new ProjectionCategory
+                               {
+                                   CategoryName = name,
+                                   ProjectionFieldName = projName
+                               };
                     }
                 }
             }
+
             return null;
         }
 
-        private class ProjectionCategory
+        private void BtnFromEpsgCodeClick(object sender, EventArgs e)
         {
-            public string CategoryName { get; set; }
-            public string ProjectionFieldName { get; set; }
-        }
-
-        private ICoordinateSystemCategoryHolder CurrentCategoryHolder
-        {
-            get
+            ProjectionInfo proj;
+            try
             {
-                return radProjected.Checked
-                ? (ICoordinateSystemCategoryHolder)KnownCoordinateSystems.Projected
-                : KnownCoordinateSystems.Geographic;
+                proj = ProjectionInfo.FromEpsgCode((int)nudEpsgCode.Value);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, ProjectionStrings.UnknownEpsgCode, ProjectionStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                proj = null;
+            }
+
+            if (proj != null)
+            {
+                SelectedCoordinateSystem = proj;
             }
         }
 
-        private void radProjected_CheckedChanged(object sender, EventArgs e)
+        private void BtnUseEsriClick(object sender, EventArgs e)
+        {
+            ProjectionInfo proj;
+            try
+            {
+                proj = chbEsri.Checked ? ProjectionInfo.FromEsriString(tbEsriProj4.Text) : ProjectionInfo.FromProj4String(tbEsriProj4.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, ProjectionStrings.UnknownEsriOrProj4String, ProjectionStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                proj = null;
+            }
+
+            if (proj != null)
+            {
+                SelectedCoordinateSystem = proj;
+            }
+        }
+
+        private void ChbEsriCheckedChanged(object sender, EventArgs e)
+        {
+            if (SelectedCoordinateSystem == null) return;
+
+            tbEsriProj4.Text = chbEsri.Checked ? SelectedCoordinateSystem.ToEsriString() : SelectedCoordinateSystem.ToProj4String();
+        }
+
+        private void CmbMajorCategorySelectedIndexChanged(object sender, EventArgs e)
         {
             if (_disableEvents) return;
-            LoadMajorCategories();
+
+            LoadMinorCategories();
+        }
+
+        private void CmbMinorCategorySelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_disableEvents) return;
+
+            var c = CurrentCategoryHolder.GetCategory((string)cmbMajorCategory.SelectedItem);
+            if (c == null) return;
+
+            _userChanges = true;
+            SelectedCoordinateSystem = c.GetProjection((string)cmbMinorCategory.SelectedItem);
+            _userChanges = false;
         }
 
         private void LoadMajorCategories(string selectedName = null)
@@ -129,6 +194,7 @@ namespace DotSpatial.Projections.Forms
             {
                 cmbMajorCategory.Items.Add(name);
             }
+
             if (selectedName != null)
             {
                 cmbMajorCategory.SelectedItem = selectedName;
@@ -137,6 +203,7 @@ namespace DotSpatial.Projections.Forms
             {
                 cmbMajorCategory.SelectedIndex = 0;
             }
+
             cmbMajorCategory.ResumeLayout();
         }
 
@@ -160,71 +227,32 @@ namespace DotSpatial.Projections.Forms
             {
                 cmbMinorCategory.SelectedIndex = 0;
             }
+
             cmbMinorCategory.ResumeLayout();
         }
 
-        private void cmbMajorCategory_SelectedIndexChanged(object sender, EventArgs e)
+        private void RadProjectedCheckedChanged(object sender, EventArgs e)
         {
             if (_disableEvents) return;
-            LoadMinorCategories();
+
+            LoadMajorCategories();
         }
 
-        private void cmbMinorCategory_SelectedIndexChanged(object sender, EventArgs e)
+        #endregion
+
+        #region Classes
+
+        private class ProjectionCategory
         {
-            if (_disableEvents) return;
-            var c = CurrentCategoryHolder.GetCategory((string)cmbMajorCategory.SelectedItem);
-            if (c == null) return;
-            _userChanges = true;
-            SelectedCoordinateSystem = c.GetProjection((string)cmbMinorCategory.SelectedItem);
-            _userChanges = false;
+            #region Properties
+
+            public string CategoryName { get; set; }
+
+            public string ProjectionFieldName { get; set; }
+
+            #endregion
         }
 
-        private void btnFromEpsgCode_Click(object sender, EventArgs e)
-        {
-            ProjectionInfo proj;
-            try
-            {
-                proj = ProjectionInfo.FromEpsgCode((int)nudEpsgCode.Value);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(this, ProjectionStrings.UnknownEpsgCode, ProjectionStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                proj = null;
-            }
-
-            if (proj != null)
-            {
-                SelectedCoordinateSystem = proj;
-            }
-        }
-
-        private void btnUseESRI_Click(object sender, EventArgs e)
-        {
-            ProjectionInfo proj;
-            try
-            {
-                proj = chbEsri.Checked
-                ? ProjectionInfo.FromEsriString(tbEsriProj4.Text)
-                : ProjectionInfo.FromProj4String(tbEsriProj4.Text);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(this, ProjectionStrings.UnknownEsriOrProj4String, ProjectionStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                proj = null;
-            }
-            if (proj != null)
-            {
-                SelectedCoordinateSystem = proj;
-            }
-        }
-
-        private void chbEsri_CheckedChanged(object sender, EventArgs e)
-        {
-            if (SelectedCoordinateSystem == null) return;
-            tbEsriProj4.Text = chbEsri.Checked
-                    ? SelectedCoordinateSystem.ToEsriString()
-                    : SelectedCoordinateSystem.ToProj4String();
-        }
-         
+        #endregion
     }
 }

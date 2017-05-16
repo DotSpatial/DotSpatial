@@ -1,0 +1,1 @@
+﻿Supports DotSpatial interfaces organized for a MapWindow 4 plugin context.

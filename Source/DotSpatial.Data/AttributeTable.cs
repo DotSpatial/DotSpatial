@@ -1,21 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2009?
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name             |   Date    |   Description
-// -------------------------------------------------------------------------------------------------
-// Aerosol          | 3/3/2010  |  Addressed some indexing/formatting problems
-// Kyle Ellison     |11/03/2010 | Added method to retrieve a page of data for a single column and consolidated parsing code
-// Kyle Ellison     |12/08/2010 | Added ability to edit multiple rows in one call for performance
-// Kyle Ellison     |12/10/2010 | Added method to retrieve multiple disparate rows in one call for performance
-// Arnold Engelmann | 1/18/2013 | Added support for LDID code in DBF file.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;

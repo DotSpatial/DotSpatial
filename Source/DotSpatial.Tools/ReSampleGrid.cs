@@ -1,17 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.ReSampleGrid.cs
-// Description:  Change the cell size.
-//
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for ReSampleGrid
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -22,7 +10,7 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Grid Resample
+    /// Change the cell size of a grid.
     /// </summary>
     public class ReSampleGrid : Tool
     {

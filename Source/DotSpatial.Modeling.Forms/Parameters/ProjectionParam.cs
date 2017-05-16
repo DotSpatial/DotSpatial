@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  A library module for the DotSpatial geospatial framework for .Net.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/25/2009 1:48:32 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.Modeling.Forms.Elements;

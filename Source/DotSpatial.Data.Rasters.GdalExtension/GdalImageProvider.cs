@@ -1,23 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Gdal
-// Description:  This is a data extension for the System.Spatial framework.
-// ********************************************************************************************************
-// The contents of this file are subject to the Gnu Lesser General Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from a plugin for MapWindow version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 12/10/2008 11:32:21 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |     Name          |    Date     |              Comments
-// |-------------------|-------------|-------------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
@@ -228,19 +210,18 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 int numBlocks = (int)Math.Ceiling(gs.Bounds.NumRows / (double)blockHeight);
                 ProgressMeter pm = new ProgressMeter(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
 
-                // ProgressHandler.Progress("pyramid", 0, "Copying Data To Pyramids: 0% Complete");
                 Application.DoEvents();
                 for (int j = 0; j < numBlocks; j++)
                 {
                     int h = blockHeight;
                     if (j == numBlocks - 1)
                     {
-                        h = gs.Bounds.NumRows - j * blockHeight;
+                        h = gs.Bounds.NumRows - (j * blockHeight);
                     }
 
                     byte[] vals = gs.ReadWindow(j * blockHeight, 0, h, width, 0);
 
-                    pm.CurrentValue = j * 2 + 1;
+                    pm.CurrentValue = (j * 2) + 1;
                     py.WriteWindow(vals, j * blockHeight, 0, h, width, 0);
                     pm.CurrentValue = (j + 1) * 2;
                 }

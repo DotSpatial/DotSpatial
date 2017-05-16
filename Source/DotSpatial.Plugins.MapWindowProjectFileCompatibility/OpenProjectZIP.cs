@@ -1,5 +1,7 @@
-using System.ComponentModel.Composition;
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using System.ComponentModel.Composition;
 using DotSpatial.Controls;
 using DotSpatial.Extensions;
 

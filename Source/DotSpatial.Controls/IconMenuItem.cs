@@ -1,21 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Ribbon.dll
-// Description:  Original new code created by Ted Dunsford to help add items to panels
-// ********************************************************************************************************
-// The license is the Microsoft Public License (Ms-PL). A copy of the license can be found
-// here: http://www.opensource.org/licenses/ms-pl.html. This is to keep it consistent with the
-// rest of the ribbon code content.
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Initial Developer was Ted Dunsford, August 22, 2010 11:34:00 AM.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |         Name         |    Date    |                              Comment
-// |----------------------|------------|------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;

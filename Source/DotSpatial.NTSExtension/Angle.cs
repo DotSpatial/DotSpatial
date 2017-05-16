@@ -1,10 +1,12 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// A geometric angle mesured in degrees or radians
-    /// the angle will wrap around, so setting larger values will
+    /// A geometric angle mesured in degrees or radians the angle will wrap around, so setting larger values will
     /// result in an appropriate angle.
     /// </summary>
     public struct Angle

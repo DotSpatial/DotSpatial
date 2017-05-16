@@ -1,18 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.PageSetupForm
-// Description:  The DotSpatial PageSetupForm used to setup printing layouts
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Aug, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name                 |    Date    |  Commments
-// ---------------------|------------|--------------------------------------------------------------------
-// Ted Dunsford         | 8/28/2009  | Cleaned up some code using re-sharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing.Printing;

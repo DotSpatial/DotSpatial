@@ -1,18 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.Buffer.cs
-// Description:  Wraps DotSpatial.Feature.Buffer in a tool wrapper for use through the DotSptial toolbox.
-//
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-// -------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-// -------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/24/2009         |  Cleaned up some unnecessary references using re-sharper
-// KP                 |  9/2009            |  Used IDW as model for Buffer
-// Ping  Yang         |  12/2009           |  Cleaning code and fixing bugs.
-// Dan Ames           |  3/2013            |  Cleaning up header and interface as model for other tools.
-// *******************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Analysis;
 using DotSpatial.Data;

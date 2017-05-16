@@ -119,6 +119,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.Positioning.Design.snk" />
     <None Include="DotSpatial.Positioning.Design.nuspec" />
     <None Include="packages.config" />

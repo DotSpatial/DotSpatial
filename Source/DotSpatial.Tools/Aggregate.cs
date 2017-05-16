@@ -1,17 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.Aggregate.cs
-// Description:  A tool for aggregating multiple polygons into a single polygon.
-//
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders.
-// -------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-// -----------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for Aggregate
-// Ping                   |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;

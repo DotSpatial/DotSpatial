@@ -1,18 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ToolManager
-// Description:  Deals with loading and finding tools from a specific folder
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name              |   Date     |         Comments
-// ------------------|------------|-----------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
