@@ -25,9 +25,9 @@ namespace DotSpatial.Serialization.Tests
         }
 
         /// <summary>
-        /// Gets the root.
+        /// Gets or sets the root.
         /// </summary>
         [Serialize("Root")]
-        public Node Root { get; }
+        public Node Root { get; set; }
     }
 }

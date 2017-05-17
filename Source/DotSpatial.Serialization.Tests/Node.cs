@@ -10,16 +10,6 @@ namespace DotSpatial.Serialization.Tests
     /// </summary>
     public class Node
     {
-        #region Fields
-
-        [Serialize("Data")]
-        private readonly object _data;
-
-        [Serialize("Nodes")]
-        private readonly List<Node> _nodes;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -27,8 +17,8 @@ namespace DotSpatial.Serialization.Tests
         /// </summary>
         public Node()
         {
-            _data = null;
-            _nodes = new List<Node>();
+            Data = null;
+            Nodes = new List<Node>();
         }
 
         /// <summary>
@@ -37,8 +27,8 @@ namespace DotSpatial.Serialization.Tests
         /// <param name="data">The data.</param>
         public Node(object data)
         {
-            _data = data;
-            _nodes = new List<Node>();
+            Data = data;
+            Nodes = new List<Node>();
         }
 
         /// <summary>
@@ -48,8 +38,8 @@ namespace DotSpatial.Serialization.Tests
         /// <param name="nodes">The nodes.</param>
         public Node(object data, List<Node> nodes)
         {
-            _data = data;
-            _nodes = nodes;
+            Data = data;
+            Nodes = nodes;
         }
 
         #endregion
@@ -57,14 +47,16 @@ namespace DotSpatial.Serialization.Tests
         #region Properties
 
         /// <summary>
-        /// Gets the data.
+        /// Gets or sets the data.
         /// </summary>
-        public object Data => _data;
+        [Serialize("Data")]
+        public object Data { get; set; }
 
         /// <summary>
-        /// Gets the nodes.
+        /// Gets or sets the nodes.
         /// </summary>
-        public List<Node> Nodes => _nodes;
+        [Serialize("Nodes")]
+        public List<Node> Nodes { get; set; }
 
         #endregion
 
@@ -79,9 +71,9 @@ namespace DotSpatial.Serialization.Tests
         {
             if (obj == null) return false;
 
-            if (_data == null) return ((Node)obj).Data == null;
+            if (Data == null) return ((Node)obj).Data == null;
 
-            return _data.Equals(((Node)obj).Data);
+            return Data.Equals(((Node)obj).Data);
         }
 
         /// <summary>
@@ -90,9 +82,9 @@ namespace DotSpatial.Serialization.Tests
         /// <returns>The hash code.</returns>
         public override int GetHashCode()
         {
-            if (_data == null) return _nodes.Count;
+            if (Data == null) return Nodes.Count;
 
-            return _data.GetHashCode() ^ _nodes.Count;
+            return Data.GetHashCode() ^ Nodes.Count;
         }
 
         #endregion
