@@ -1,35 +1,28 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System.IO;
-
 using DotSpatial.Tests.Common;
-
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for Shapefile.
+    /// </summary>
     [TestFixture]
-    class ShapefileTests
+    internal class ShapefileTests
     {
+        #region Fields
+
         private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
 
-        [Test]
-        public void SelectByAttribute()
-        {
-            var shapefile = Shapefile.OpenFile(Path.Combine(_shapefiles, "lakes.shp"));
-            var features = shapefile.SelectByAttribute("[NAME]='Great Salt Lake'");
-            Assert.AreEqual(1, features.Count);
-        }
+        #endregion
 
-        [Test]
-        public void SelectIndexByAttribute()
-        {
-            var shapeFile = Shapefile.OpenFile(Path.Combine(_shapefiles, "lakes.shp"));
-            var features = shapeFile.SelectIndexByAttribute("[NAME]='Great Salt Lake'");
-            Assert.AreEqual(1, features.Count);
-        }
+        #region Methods
 
         /// <summary>
-        /// This test checks that Shapefiles with Numeric columns using up to 15 decimal digits precision 
+        /// This test checks that Shapefiles with Numeric columns using up to 15 decimal digits precision
         /// are loaded as double instead of as string.
         /// </summary>
         /// <remarks>
@@ -40,6 +33,28 @@ namespace DotSpatial.Data.Tests
         {
             var shapeFile = Shapefile.OpenFile(Path.Combine(_shapefiles, @"OGR-numeric\ogr-numeric.shp"));
             Assert.AreEqual("System.Double", shapeFile.DataTable.Columns[2].DataType.FullName);
+        }
+
+        /// <summary>
+        /// Checks that select by attribute returns the all the features found by the given filterExpression.
+        /// </summary>
+        [Test]
+        public void SelectByAttribute()
+        {
+            var shapefile = Shapefile.OpenFile(Path.Combine(_shapefiles, "lakes.shp"));
+            var features = shapefile.SelectByAttribute("[NAME]='Great Salt Lake'");
+            Assert.AreEqual(1, features.Count);
+        }
+
+        /// <summary>
+        /// Checks that select by attribute returns the all the features indizes found by the given filterExpression.
+        /// </summary>
+        [Test]
+        public void SelectIndexByAttribute()
+        {
+            var shapeFile = Shapefile.OpenFile(Path.Combine(_shapefiles, "lakes.shp"));
+            var features = shapeFile.SelectIndexByAttribute("[NAME]='Great Salt Lake'");
+            Assert.AreEqual(1, features.Count);
         }
 
         /// <summary>
@@ -113,5 +128,6 @@ namespace DotSpatial.Data.Tests
             }
         }
 
+        #endregion
     }
 }

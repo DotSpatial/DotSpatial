@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
@@ -6,17 +9,18 @@ using NUnit.Framework;
 
 namespace DotSpatial.Symbology.Tests
 {
-
     /// <summary>
     /// This is a test class for FeatureLayerTest and is intended
     /// to contain all FeatureLayerTest Unit Tests
-    ///</summary>
+    /// </summary>
     [TestFixture]
-    class FeatureLayerTest
+    internal class FeatureLayerTest
     {
-        /// <summary>
+        #region Methods
+
+        /// <summary>
         /// A test for ExportSelection
-        ///</summary>
+        /// </summary>
         [Test]
         public void ExportSelectionTest()
         {
@@ -34,9 +38,9 @@ namespace DotSpatial.Symbology.Tests
             File.Delete(fileOut);
         }
 
-        /// <summary>
+        /// <summary>
         /// A test for ExportSelection http://dotspatial.codeplex.com/workitem/203
-        ///</summary>
+        /// </summary>
         [Test]
         public void ExportSelectionTestWithCulture()
         {
@@ -56,5 +60,7 @@ namespace DotSpatial.Symbology.Tests
 
             File.Delete(fileOut);
         }
+
+        #endregion
     }
 }

@@ -1,22 +1,33 @@
-﻿using GeoAPI.Geometries;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using GeoAPI.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for polygon shapefiles.
+    /// </summary>
     [TestFixture]
-    class PolygonShapefileTests
+    internal class PolygonShapefileTests
     {
+        #region Methods
+
+        /// <summary>
+        /// Checks whether large shapefiles can be read.
+        /// </summary>
         [Test]
         public void CanReadShapefileWithManyByteBlocks()
         {
-            const string path = @"Data\Shapefiles\nos80k\nos80k.shp";
-            var target = new PolygonShapefile(path);
+            const string Path = @"Data\Shapefiles\nos80k\nos80k.shp";
+            var target = new PolygonShapefile(Path);
             Assert.IsNotNull(target);
             Assert.IsNotNull(target.ShapeIndices);
         }
 
         /// <summary>
-        /// The file contains a MultiPolygon that consist of one polygon with a hole that contains 
+        /// The file contains a MultiPolygon that consist of one polygon with a hole that contains
         /// another polygon with a hole. Each of these polygons should only contain one hole.
         /// </summary>
         [Test]
@@ -37,5 +48,7 @@ namespace DotSpatial.Data.Tests
                 }
             }
         }
+
+        #endregion
     }
 }

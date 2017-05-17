@@ -1,20 +1,32 @@
-﻿using System.Windows.Forms;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Windows.Forms;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for DataManager.
+    /// </summary>
     [TestFixture]
-    class DataManagerTests
+    internal class DataManagerTests
     {
+        /// <summary>
+        /// Checks that the dialog read filter is correct.
+        /// </summary>
         [Test]
-        public void DialogReadFilter_IsCorrect()
+        public void DialogReadFilterIsCorrect()
         {
             var ofd = new OpenFileDialog();
             Assert.DoesNotThrow(() => ofd.Filter = new DataManager().DialogReadFilter);
         }
 
+        /// <summary>
+        /// Checks that the dialog write filter is correct.
+        /// </summary>
         [Test]
-        public void DialogWriteFilter_IsCorrect()
+        public void DialogWriteFilterIsCorrect()
         {
             var ofd = new SaveFileDialog();
             Assert.DoesNotThrow(() => ofd.Filter = new DataManager().DialogWriteFilter);

@@ -1,43 +1,64 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.IO;
 using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
-using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 
 namespace DotSpatial.Data.Tests
 {
     /// <summary>
-    /// This is a test class for RasterTest and is intended
-    /// to contain all RasterTest Unit Tests
-    ///</summary>
-    [TestClass()]
+    /// This is a test class for RasterTest and is intended to contain all RasterTest Unit Tests.
+    /// </summary>
+    [TestClass]
     public class RasterTest
     {
+        #region Methods
+
+        /// <summary>
+        /// Checks whether a raster created with GdalRasterProvider can be opened after closing.
+        /// </summary>
+        [TestMethod]
+        public void CanOpenRasterAfterClose()
+        {
+            var rasterFileName = FileTools.GetTempFileName(".tif");
+            var p = new GdalRasterProvider();
+            var raster = p.Create(rasterFileName, null, 20, 20, 1, typeof(float), new[] { string.Empty });
+            raster.Close();
+
+            try
+            {
+                using (var openTif = File.Open(rasterFileName, FileMode.Open)) Assert.IsNotNull(openTif);
+            }
+            finally
+            {
+                File.Delete(rasterFileName);
+            }
+        }
+
         /// <summary>
         /// A test for GetNoDataCellCount
-        ///</summary>
+        /// </summary>
         [TestMethod]
         public void GetNoDataCellCountTest()
         {
             var path = FileTools.GetTempFileName(".bgd");
-            const double xllcorner = 3267132.224761;
-            const double yllcorner = 5326939.203029;
-            const int ncols = 512;
-            const int nrows = 128;
-            const int frequencyOfNoValue = 5;
+            const double Xllcorner = 3267132.224761;
+            const double Yllcorner = 5326939.203029;
+            const int Ncols = 512;
+            const int Nrows = 128;
+            const int FrequencyOfNoValue = 5;
 
-            const double cellsize = 500;
-            var x2 = xllcorner + (cellsize * ncols);
-            var y2 = yllcorner + (cellsize * nrows);
-            var myExtent = new Extent(xllcorner, yllcorner, x2, y2);
-            var target = (Raster)Raster.Create(path, String.Empty, ncols, nrows, 1, typeof(double), new[] { String.Empty });
-            target.Bounds = new RasterBounds(nrows, ncols, myExtent);
+            const double Cellsize = 500;
+            var x2 = Xllcorner + (Cellsize * Ncols);
+            var y2 = Yllcorner + (Cellsize * Nrows);
+            var myExtent = new Extent(Xllcorner, Yllcorner, x2, y2);
+            var target = (Raster)Raster.Create(path, string.Empty, Ncols, Nrows, 1, typeof(double), new[] { string.Empty });
+            target.Bounds = new RasterBounds(Nrows, Ncols, myExtent);
             target.NoDataValue = -9999;
             var mRow = target.Bounds.NumRows;
             var mCol = target.Bounds.NumColumns;
@@ -46,17 +67,16 @@ namespace DotSpatial.Data.Tests
             {
                 for (var col = 0; col < mCol; col++)
                 {
-                    if (row % frequencyOfNoValue == 0)
-                        target.Value[row, col] = -9999d;
-                    else
-                        target.Value[row, col] = 2d;
+                    if (row % FrequencyOfNoValue == 0) target.Value[row, col] = -9999d;
+                    else target.Value[row, col] = 2d;
                 }
             }
+
             target.Save();
 
-            const long expected = (nrows / frequencyOfNoValue) * ncols + ncols;
+            const long Expected = ((Nrows / FrequencyOfNoValue) * Ncols) + Ncols;
             var actual = target.GetNoDataCellCount();
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
             try
             {
@@ -69,7 +89,7 @@ namespace DotSpatial.Data.Tests
 
         /// <summary>
         /// A test for SaveAs
-        ///</summary>
+        /// </summary>
         [TestMethod]
         public void SaveAsTest()
         {
@@ -78,37 +98,20 @@ namespace DotSpatial.Data.Tests
             var sourceGrid = p.Open(GridDataFolder + @"elev_cm_ESRI\elev_cm_clip2\hdr.adf");
             var sourceGridMaximum = sourceGrid.Maximum;
 
-            const string savedGridName = GridDataFolder + @"elev_cm.tif";
-            sourceGrid.SaveAs(savedGridName);
+            const string SavedGridName = GridDataFolder + @"elev_cm.tif";
+            sourceGrid.SaveAs(SavedGridName);
 
             Assert.AreEqual(sourceGrid.Maximum, sourceGridMaximum, 0.0001);
 
-            var savedSourceGrid = Raster.Open(savedGridName);
+            var savedSourceGrid = Raster.Open(SavedGridName);
 
             Assert.AreEqual(sourceGridMaximum, savedSourceGrid.Maximum, 0.0001);
 
             sourceGrid.Close();
             savedSourceGrid.Close();
-            File.Delete(savedGridName);
+            File.Delete(SavedGridName);
         }
 
-        [Test]
-        public void CanOpenRasterAfterClose()
-        {
-            var rasterFileName = FileTools.GetTempFileName(".tif");
-            var p = new GdalRasterProvider();
-            var raster = p.Create(rasterFileName, null, 20, 20, 1, typeof(float), new[] { "" });
-            raster.Close();
-
-            try
-            {
-                using (var openTif = File.Open(rasterFileName, FileMode.Open))
-                    Assert.IsNotNull(openTif);
-            }
-            finally
-            {
-                File.Delete(rasterFileName);
-            }
-        }
+        #endregion
     }
 }

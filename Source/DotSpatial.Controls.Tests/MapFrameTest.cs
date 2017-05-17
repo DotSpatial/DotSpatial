@@ -1,26 +1,24 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Collections.Generic;
 using DotSpatial.Symbology;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
-using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
-    /// This is a test class for MapFrame and is intended
-    /// to contain all MapFrame Unit Tests
-    ///</summary>
-    [TestClass()]
+    /// This is a test class for MapFrame and is intended to contain all MapFrame Unit Tests
+    /// </summary>
+    [TestClass]
     public class MapFrameTest
     {
         /// <summary>
         /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void GetAllLayersTest()
         {
             var map = new MapFrame();
@@ -44,7 +42,7 @@ namespace DotSpatial.Controls.Tests
         /// <summary>
         /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void GetAllGroupsTest()
         {
             var map = new MapFrame();

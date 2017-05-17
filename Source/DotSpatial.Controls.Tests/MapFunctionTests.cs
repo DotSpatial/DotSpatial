@@ -1,10 +1,19 @@
-﻿using NUnit.Framework;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
 {
+    /// <summary>
+    /// Tests for MapFunction.
+    /// </summary>
     [TestFixture]
-    class MapFunctionTests
+    internal class MapFunctionTests
     {
+        /// <summary>
+        /// Checks that the FunctionActived event is raised inside Activate.
+        /// </summary>
         [Test]
         public void FunctionActivatedRaised()
         {
@@ -15,6 +24,9 @@ namespace DotSpatial.Controls.Tests
             Assert.AreEqual(true, flag);
         }
 
+        /// <summary>
+        /// Checks that the FunctionDeactivated event is raised inside Deactivate.
+        /// </summary>
         [Test]
         public void FunctionDeActivatedRaised()
         {
@@ -25,6 +37,9 @@ namespace DotSpatial.Controls.Tests
             Assert.AreEqual(true, flag);
         }
 
+        /// <summary>
+        /// Checks that the MouseDown event is raised inside DoMouseDown.
+        /// </summary>
         [Test]
         public void MouseDownRaised()
         {
@@ -35,6 +50,9 @@ namespace DotSpatial.Controls.Tests
             Assert.AreEqual(true, flag);
         }
 
+        /// <summary>
+        /// Checks that the MouseMove event is raised inside DoMouseMove.
+        /// </summary>
         [Test]
         public void MouseMoveRaised()
         {
@@ -45,6 +63,9 @@ namespace DotSpatial.Controls.Tests
             Assert.AreEqual(true, flag);
         }
 
+        /// <summary>
+        /// Checks that the MouseUp event is raised inside DoMouseUp.
+        /// </summary>
         [Test]
         public void MouseUpRaised()
         {
@@ -55,6 +76,9 @@ namespace DotSpatial.Controls.Tests
             Assert.AreEqual(true, flag);
         }
 
+        /// <summary>
+        /// Checks that the MouseWheel event is raised inside DoMouseWheel.
+        /// </summary>
         [Test]
         public void MouseWheelRaised()
         {
@@ -65,6 +89,9 @@ namespace DotSpatial.Controls.Tests
             Assert.AreEqual(true, flag);
         }
 
+        /// <summary>
+        /// Checks that the MouseDoubleClick event is raised inside DoMouseDoubleClick.
+        /// </summary>
         [Test]
         public void MouseDoubleClickRaised()
         {
@@ -75,6 +102,9 @@ namespace DotSpatial.Controls.Tests
             Assert.AreEqual(true, flag);
         }
 
+        /// <summary>
+        /// Checks that the KeyUp event is raised inside DoKeyUp.
+        /// </summary>
         [Test]
         public void KeyUpRaised()
         {

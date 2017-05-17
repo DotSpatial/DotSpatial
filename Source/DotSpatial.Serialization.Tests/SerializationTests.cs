@@ -1,8 +1,10 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -11,18 +13,44 @@ using NUnit.Framework;
 
 namespace DotSpatial.Serialization.Tests
 {
+    /// <summary>
+    /// TestEnum
+    /// </summary>
     public enum TestEnum
     {
+        /// <summary>
+        /// Default
+        /// </summary>
         Default,
+
+        /// <summary>
+        /// One
+        /// </summary>
         One,
+
+        /// <summary>
+        /// Two
+        /// </summary>
         Two
     }
 
+    /// <summary>
+    /// Tests for Serialization.
+    /// </summary>
     [TestFixture]
     public class SerializationTests
     {
+        #region Fields
+
         private readonly List<string> _filesToRemove = new List<string>();
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Deletes the temporary files.
+        /// </summary>
         [TestFixtureTearDown]
         public void Clear()
         {
@@ -39,30 +67,54 @@ namespace DotSpatial.Serialization.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the serialization of dictionarys.
+        /// </summary>
         [Test]
-        public void TestSimpleGraph()
+        public void TestDictionary()
         {
-            Node rootNode = new Node(1);
-            Node intNode = new Node(42);
-
-            rootNode.Nodes.Add(intNode);
-            intNode.Nodes.Add(rootNode);
-
-            Graph g = new Graph(rootNode);
+            var dictionary = new Dictionary<int, object>
+            {
+                { 1, new Node(42) },
+                { 2, "Hello <insert name here>!" }
+            };
 
             XmlSerializer s = new XmlSerializer();
-            string result = s.Serialize(g);
+            string result = s.Serialize(dictionary);
 
             XmlDeserializer d = new XmlDeserializer();
-            Graph newGraph = d.Deserialize<Graph>(result);
+            Dictionary<int, object> newDictionary = d.Deserialize<Dictionary<int, object>>(result);
 
-            Assert.IsNotNull(newGraph);
-            Assert.AreEqual(g.Root.Data, newGraph.Root.Data);
-            Assert.AreEqual(g.Root.Nodes[0].Data, newGraph.Root.Nodes[0].Data);
-            Assert.AreEqual(g.Root.Nodes[0].Nodes[0].Data, newGraph.Root.Nodes[0].Nodes[0].Data);
-            Assert.AreSame(newGraph.Root, newGraph.Root.Nodes[0].Nodes[0]);
+            foreach (var key in dictionary.Keys)
+            {
+                Assert.AreEqual(dictionary[key], newDictionary[key]);
+            }
         }
 
+        /// <summary>
+        /// Tests the serialization of ObjectWithIntMember objects.
+        /// </summary>
+        [Test]
+        public void TestFormatter()
+        {
+            ObjectWithIntMember obj = new ObjectWithIntMember(0xBEEF);
+            XmlSerializer s = new XmlSerializer();
+            string xml = s.Serialize(obj);
+
+            XmlDeserializer d = new XmlDeserializer();
+            ObjectWithIntMember result1 = d.Deserialize<ObjectWithIntMember>(xml);
+            Assert.IsNotNull(result1);
+            Assert.AreEqual(0xBEEF, result1.Number);
+
+            ObjectWithIntMember result2 = new ObjectWithIntMember(0);
+            d.Deserialize(result2, xml);
+            Assert.IsNotNull(result2);
+            Assert.AreEqual(0xBEEF, result2.Number);
+        }
+
+        /// <summary>
+        /// Tests the serialization of a graph with enum nodes.
+        /// </summary>
         [Test]
         public void TestGraphWithEnumNode()
         {
@@ -91,6 +143,9 @@ namespace DotSpatial.Serialization.Tests
             Assert.AreSame(newGraph.Root, newGraph.Root.Nodes[0].Nodes[0]);
         }
 
+        /// <summary>
+        /// Tests the serialization of a graph with string nodes.
+        /// </summary>
         [Test]
         public void TestGraphWithStringNode()
         {
@@ -117,42 +172,6 @@ namespace DotSpatial.Serialization.Tests
             Assert.AreEqual(g.Root.Nodes[1].Data, newGraph.Root.Nodes[1].Data);
             Assert.AreEqual(g.Root.Nodes[0].Nodes[0].Data, newGraph.Root.Nodes[0].Nodes[0].Data);
             Assert.AreSame(newGraph.Root, newGraph.Root.Nodes[0].Nodes[0]);
-        }
-
-        [Test]
-        public void TestDictionary()
-        {
-            Dictionary<int, object> dictionary = new Dictionary<int, object>();
-            dictionary.Add(1, new Node(42));
-            dictionary.Add(2, "Hello <insert name here>!");
-
-            XmlSerializer s = new XmlSerializer();
-            string result = s.Serialize(dictionary);
-
-            XmlDeserializer d = new XmlDeserializer();
-            Dictionary<int, object> newDictionary = d.Deserialize<Dictionary<int, object>>(result);
-
-            foreach (var key in dictionary.Keys)
-            {
-                Assert.AreEqual(dictionary[key], newDictionary[key]);
-            }
-        }
-
-        [Test]
-        public void TestMapPointLayer()
-        {
-            string filename = Path.Combine("Data", "test-RandomPts.shp");
-
-            IFeatureSet fs = FeatureSet.Open(filename);
-            MapPointLayer l = new MapPointLayer(fs);
-            XmlSerializer s = new XmlSerializer();
-            string result = s.Serialize(l);
-
-            XmlDeserializer d = new XmlDeserializer();
-            MapPointLayer newPointLayer = d.Deserialize<MapPointLayer>(result);
-
-            Assert.IsNotNull(newPointLayer);
-            Assert.AreEqual(newPointLayer.DataSet.Filename, Path.GetFullPath(filename));
         }
 
         /// <summary>
@@ -190,7 +209,7 @@ namespace DotSpatial.Serialization.Tests
         /// Test for DotSpatial Issue #254
         /// </summary>
         [Test]
-        public void TestMapFrameIsNotNull_Group()
+        public void TestMapFrameIsNotNullGroup()
         {
             string filename = Path.Combine("Data", "test-RandomPts.shp");
             string projectFileName = FileTools.GetTempFileName(".dspx");
@@ -226,26 +245,31 @@ namespace DotSpatial.Serialization.Tests
             Assert.IsNotNull(layers[0].MapFrame);
         }
 
+        /// <summary>
+        /// Test the serialization of a MapPointLayer.
+        /// </summary>
         [Test]
-        public void TestFormatter()
+        public void TestMapPointLayer()
         {
-            ObjectWithIntMember obj = new ObjectWithIntMember(0xBEEF);
+            string filename = Path.Combine("Data", "test-RandomPts.shp");
+
+            IFeatureSet fs = FeatureSet.Open(filename);
+            MapPointLayer l = new MapPointLayer(fs);
             XmlSerializer s = new XmlSerializer();
-            string xml = s.Serialize(obj);
+            string result = s.Serialize(l);
 
             XmlDeserializer d = new XmlDeserializer();
-            ObjectWithIntMember result1 = d.Deserialize<ObjectWithIntMember>(xml);
-            Assert.IsNotNull(result1);
-            Assert.AreEqual(0xBEEF, result1.Number);
+            MapPointLayer newPointLayer = d.Deserialize<MapPointLayer>(result);
 
-            ObjectWithIntMember result2 = new ObjectWithIntMember(0);
-            d.Deserialize(result2, xml);
-            Assert.IsNotNull(result2);
-            Assert.AreEqual(0xBEEF, result2.Number);
+            Assert.IsNotNull(newPointLayer);
+            Assert.AreEqual(newPointLayer.DataSet.Filename, Path.GetFullPath(filename));
         }
 
+        /// <summary>
+        /// Tests the serialization of a point.
+        /// </summary>
         [Test]
-        public void TestPointSerializationMap()
+        public void TestPointSerialization()
         {
             var pt = new Point(1, 2);
             var s = new XmlSerializer();
@@ -257,8 +281,11 @@ namespace DotSpatial.Serialization.Tests
             Assert.AreEqual(pt, result);
         }
 
+        /// <summary>
+        /// Tests the serialization of a rectangle.
+        /// </summary>
         [Test]
-        public void TestRectangleSerializationMap()
+        public void TestRectangleSerialization()
         {
             var rectangle = new Rectangle(1, 1, 2, 2);
             XmlSerializer s = new XmlSerializer();
@@ -272,48 +299,34 @@ namespace DotSpatial.Serialization.Tests
             Assert.AreEqual(2, result.Width);
             Assert.AreEqual(2, result.Height);
         }
-    }
 
-
-    #region SerializationMap classes
-
-    // ReSharper disable UnusedMember.Global
-    public class PointSerializationMap : SerializationMap
-    // ReSharper restore UnusedMember.Global
-    {
-        public PointSerializationMap()
-            : base(typeof(Point))
+        /// <summary>
+        /// Tests the serialization of a simpel graph.
+        /// </summary>
+        [Test]
+        public void TestSimpleGraph()
         {
-            var t = typeof(Point);
+            Node rootNode = new Node(1);
+            Node intNode = new Node(42);
 
-            var x = t.GetField("x", BindingFlags.Instance | BindingFlags.NonPublic);
-            var y = t.GetField("y", BindingFlags.Instance | BindingFlags.NonPublic);
+            rootNode.Nodes.Add(intNode);
+            intNode.Nodes.Add(rootNode);
 
-            Serialize(x, "X").AsConstructorArgument(0);
-            Serialize(y, "Y").AsConstructorArgument(1);
+            Graph g = new Graph(rootNode);
+
+            XmlSerializer s = new XmlSerializer();
+            string result = s.Serialize(g);
+
+            XmlDeserializer d = new XmlDeserializer();
+            Graph newGraph = d.Deserialize<Graph>(result);
+
+            Assert.IsNotNull(newGraph);
+            Assert.AreEqual(g.Root.Data, newGraph.Root.Data);
+            Assert.AreEqual(g.Root.Nodes[0].Data, newGraph.Root.Nodes[0].Data);
+            Assert.AreEqual(g.Root.Nodes[0].Nodes[0].Data, newGraph.Root.Nodes[0].Nodes[0].Data);
+            Assert.AreSame(newGraph.Root, newGraph.Root.Nodes[0].Nodes[0]);
         }
+
+        #endregion
     }
-
-    // ReSharper disable UnusedMember.Global
-    public class RectangleSerializationMap : SerializationMap
-    // ReSharper restore UnusedMember.Global
-    {
-        public RectangleSerializationMap()
-            : base(typeof(Rectangle))
-        {
-            Type t = typeof(Rectangle);
-
-            var x = t.GetField("x", BindingFlags.Instance | BindingFlags.NonPublic);
-            var y = t.GetField("y", BindingFlags.Instance | BindingFlags.NonPublic);
-            var width = t.GetField("width", BindingFlags.Instance | BindingFlags.NonPublic);
-            var height = t.GetField("height", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            Serialize(x, "X").AsConstructorArgument(0);
-            Serialize(y, "Y").AsConstructorArgument(1);
-            Serialize(width, "Width").AsConstructorArgument(2);
-            Serialize(height, "Height").AsConstructorArgument(3);
-        }
-    }
-
-    #endregion
 }

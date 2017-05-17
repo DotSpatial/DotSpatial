@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
@@ -6,23 +9,19 @@ using DotSpatial.Symbology;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
-using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
 
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
     /// This is a test class for MapTest and is intended
     /// to contain all MapTest Unit Tests
-    ///</summary>
+    /// </summary>
     [TestClass]
     public class MapTest
     {
         /// <summary>
         /// A test for ZoomToMaxExtent
-        ///</summary>
+        /// </summary>
         [TestMethod]
         public void ZoomToMaxExtentTest()
         {
@@ -54,14 +53,12 @@ namespace DotSpatial.Controls.Tests
         public void ProjectionChangedEventFireTest()
         {
             bool eventIsFired = false;
-            
-            Map map = new Map();
-            map.ProjectionChanged += delegate {
-                eventIsFired = true;
-            };
 
-            const string esri = "GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101004]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
-            map.ProjectionEsriString = esri;
+            Map map = new Map();
+            map.ProjectionChanged += (sender, args) => eventIsFired = true;
+
+            const string Esri = "GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101004]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            map.ProjectionEsriString = Esri;
 
             Assert.IsTrue(eventIsFired, "the ProjectionChanged event should be fired when Map.ProjectionEsriString is changed.");
         }
