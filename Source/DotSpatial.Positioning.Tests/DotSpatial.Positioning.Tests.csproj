@@ -55,6 +55,7 @@
     <Compile Include="DistanceTests.cs" />
     <Compile Include="NmeaTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleData1.cs" />
     <Compile Include="SerializationTests.cs" />
   </ItemGroup>
   <ItemGroup>
