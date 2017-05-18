@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Projections library.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Kandasamy Prasanna. Created in 09/11/09.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;
@@ -22,82 +11,70 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public partial class AddNewColum : Form
     {
-        /// <summary>
-        /// This form will display when the user want to add new fiels in the Table
-        /// </summary>
-        ///
-        private string _name;
-
-        private int _size;
-        private Type _type;
-
-        #region properties
+        #region Constructors
 
         /// <summary>
-        /// set or get the Name of the field.
-        /// </summary>
-        public new string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        /// <summary>
-        /// set or get the type of the field.
-        /// </summary>
-        public Type Type
-        {
-            get { return _type; }
-            set { _type = value; }
-        }
-
-        /// <summary>
-        /// set or get the size of the field.
-        /// </summary>
-        public new int Size
-        {
-            get { return _size; }
-            set { _size = value; }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// A public constructor for creating a new column
+        /// Initializes a new instance of the <see cref="AddNewColum"/> class.
         /// </summary>
         public AddNewColum()
         {
             InitializeComponent();
-            dialogButtons1.OkClicked += btnOk_Click;
-            dialogButtons1.CancelClicked += btnCancel_Click;
+            dialogButtons1.OkClicked += BtnOkClick;
+            dialogButtons1.CancelClicked += BtnCancelClick;
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-            _name = txtName.Text;
-            string type = Convert.ToString(cmbType.SelectedItem);
-            switch (type)
-            {
-                case ("Double"):
-                    _type = typeof(double);
-                    break;
-                case ("String"):
-                    _type = typeof(string);
-                    break;
-                case ("int"):
-                    _type = typeof(int);
-                    break;
-                default:
-                    _type = typeof(double);
-                    break;
-            }
-            _size = Convert.ToInt32(nudSize.Value);
-            DialogResult = DialogResult.OK;
-        }
+        #endregion
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the Name of the field.
+        /// </summary>
+        public new string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the field.
+        /// </summary>
+        public new int Size { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the field.
+        /// </summary>
+        public Type Type { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        private void BtnCancelClick(object sender, EventArgs e)
         {
             Hide();
         }
+
+        private void BtnOkClick(object sender, EventArgs e)
+        {
+            Name = txtName.Text;
+            string type = Convert.ToString(cmbType.SelectedItem);
+            switch (type)
+            {
+                case "Double":
+                    Type = typeof(double);
+                    break;
+                case "String":
+                    Type = typeof(string);
+                    break;
+                case "int":
+                    Type = typeof(int);
+                    break;
+                default:
+                    Type = typeof(double);
+                    break;
+            }
+
+            Size = Convert.ToInt32(nudSize.Value);
+            DialogResult = DialogResult.OK;
+        }
+
+        #endregion
     }
 }

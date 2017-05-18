@@ -1,14 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.RasterBinTool.cs
-// Description:  Generate slope raster from given altitude raster.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Diagnostics;
@@ -21,65 +12,52 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Raster Slope
+    /// Generate slope raster from given altitude raster.
     /// </summary>
     public class RasterBinTool : Tool
     {
-        #region Constants and Fields
-
+        #region Fields
         private Parameter[] _inputParam;
-
         private Parameter[] _outputParam;
-
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the RasterBinTool class.
+        /// Initializes a new instance of the <see cref="RasterBinTool"/> class.
         /// </summary>
-        public RasterBinTool() 
+        public RasterBinTool()
         {
-            this.Name = TextStrings.RasterBinTool_Name;
-            this.Category = TextStrings.TerrainAnalysis;
-            this.Description = TextStrings.RasterBinTool_Description;
-            this.ToolTip = TextStrings.RasterBinTool_Tooltip;
-            this.Author = "Ted Dunsford?";
+            Name = TextStrings.RasterBinTool_Name;
+            Category = TextStrings.TerrainAnalysis;
+            Description = TextStrings.RasterBinTool_Description;
+            ToolTip = TextStrings.RasterBinTool_Tooltip;
+            Author = "Ted Dunsford?";
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input parameter array
+        /// Gets the input parameter array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output parameter array
+        /// Gets the output parameter array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True if the method worked.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IRaster input1 = _inputParam[0].Value as IRaster;
@@ -100,7 +78,11 @@ namespace DotSpatial.Tools
         /// <returns>True if the method worked.</returns>
         public bool Execute(IRaster source, double baseValue, double binSize, IRaster result, ICancelProgressHandler cancelProgressHandler)
         {
-            RasterBin rasterBin = new RasterBin { BaseValue = baseValue, BinSize = binSize };
+            RasterBin rasterBin = new RasterBin
+            {
+                BaseValue = baseValue,
+                BinSize = binSize
+            };
 
             try
             {
@@ -121,29 +103,30 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[3];
             _inputParam[0] = new RasterParam(TextStrings.input1altitudeRaster)
-                                 {
-                                     HelpText = TextStrings.InputRasterforaverageslopecalculation
-                                 };
+            {
+                HelpText = TextStrings.InputRasterforaverageslopecalculation
+            };
             _inputParam[1] = new DoubleParam("Base value", 0)
-                                 {
-                                     HelpText = TextStrings.RasterBinTool_Initialize_BaseValueHelText
-                                 };
+            {
+                HelpText = TextStrings.RasterBinTool_Initialize_BaseValueHelText
+            };
             _inputParam[2] = new DoubleParam("Bin size", 10)
-                                 {
-                                     HelpText = TextStrings.RasterBinTool_Initialize_BinSizeHelpText
-                                 };
+            {
+                HelpText = TextStrings.RasterBinTool_Initialize_BinSizeHelpText
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputslopeRaster)
-                                  {
-                                      HelpText = TextStrings.Resultofaverageslope
-                                  };
+            {
+                HelpText = TextStrings.Resultofaverageslope
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         /// <summary>
         /// Fires when one of the parameters value has been changed, usually when a user changes a input or output Parameter value, this can be used to populate input2 Parameter default values.
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
         public override void ParameterChanged(Parameter sender)
         {
         }

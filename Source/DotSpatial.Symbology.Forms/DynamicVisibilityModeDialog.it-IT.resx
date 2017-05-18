@@ -693,7 +693,7 @@
 		<value>True</value>
 	</metadata>
 	<data name="label1.Text" xml:space="preserve">
-		<value>Visibilità dinamica può funzionare in due modi.  In un caso, il livello è solo visibile quando zoom più vicino di questa misura.  In altro modo, esso è visibile solo quando rimpicciolisci di là di questa misura.  Selezionare la modalità che deve rimanere visibile.</value>
+		<value>Visibilità dinamica può funzionare in due modi. In un caso, il livello è solo visibile quando zoom più vicino di questa misura. In altro modo, esso è visibile solo quando rimpicciolisci di là di questa misura. Selezionare la modalità che deve rimanere visibile.</value>
 	</data>
 	<data name="btnZoomedOut.Text" xml:space="preserve">
 		<value>Rimpicciolisci</value>

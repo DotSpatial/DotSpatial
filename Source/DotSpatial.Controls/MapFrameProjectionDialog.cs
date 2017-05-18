@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Jiri Kadlec. Created 2/26/2011 11:03:10 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-//        Name       |    Date    |                       Comments
-// ------------------|------------|---------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Diagnostics;
@@ -36,10 +24,12 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region  Constructors
+
         /// <summary>
-        /// use the mapFrame with this dialog
+        /// Initializes a new instance of the <see cref="MapFrameProjectionDialog"/> class.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">Map frame for this dialog.</param>
         public MapFrameProjectionDialog(IMapFrame mapFrame)
         {
             InitializeComponent();
@@ -49,12 +39,20 @@ namespace DotSpatial.Controls
             ChangesApplied = true;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the map frame for this dialog
+        /// Gets or sets the map frame for this dialog.
         /// </summary>
         public IMapFrame MapFrame
         {
-            get { return _mapFrame; }
+            get
+            {
+                return _mapFrame;
+            }
+
             set
             {
                 if (_mapFrame == value) return;
@@ -64,6 +62,7 @@ namespace DotSpatial.Controls
                 {
                     projection.CopyProperties(_mapFrame.Projection);
                 }
+
                 Projection = projection;
             }
         }
@@ -73,7 +72,11 @@ namespace DotSpatial.Controls
         /// </summary>
         public ProjectionInfo Projection
         {
-            get { return _projection; }
+            get
+            {
+                return _projection;
+            }
+
             set
             {
                 if (_projection == value) return;
@@ -91,7 +94,11 @@ namespace DotSpatial.Controls
 
         private bool ChangesApplied
         {
-            get { return _changesApplied; }
+            get
+            {
+                return _changesApplied;
+            }
+
             set
             {
                 if (_changesApplied == value) return;
@@ -100,6 +107,10 @@ namespace DotSpatial.Controls
             }
         }
 
+        #endregion
+
+        #region Methods
+
         private void ApplyChanges()
         {
             if (ChangesApplied) return;
@@ -107,38 +118,19 @@ namespace DotSpatial.Controls
             _mapFrame.ReprojectMapFrame(_projection, layer => ignoredLayers.AppendLine(layer.LegendText));
             if (ignoredLayers.Length > 0)
             {
-                MessageBox.Show(this, "These layers was skipped:" + Environment.NewLine + ignoredLayers,
-                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, string.Format(MessageStrings.MapFrameProjectionDialog_LayersWereSkipped, ignoredLayers), MessageStrings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
             _mapFrame.ResetExtents();
             ChangesApplied = true;
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnApplyClick(object sender, EventArgs e)
         {
             ApplyChanges();
         }
 
-        private void btnApply_Click(object sender, EventArgs e)
-        {
-            ApplyChanges();
-        }
-
-        private void lnkSpatialReference_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Display the appropriate link based on the value of the  
-            // LinkData property of the Link object. 
-            var target = e.Link.LinkData as string;
-
-            // If the value looks like a URL, navigate to it. 
-            if (null != target && (target.StartsWith("www.") ||
-                                   target.StartsWith("http:")))
-            {
-                Process.Start(target);
-            }
-        }
-
-        private void btnChangeToSelected_Click(object sender, EventArgs e)
+        private void BtnChangeToSelectedClick(object sender, EventArgs e)
         {
             using (var pf = new ProjectionSelectDialog())
             {
@@ -149,11 +141,30 @@ namespace DotSpatial.Controls
             }
         }
 
+        private void BtnOkClick(object sender, EventArgs e)
+        {
+            ApplyChanges();
+        }
+
+        private void LnkSpatialReferenceLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // Display the appropriate link based on the value of the LinkData property of the Link object.
+            var target = e.Link.LinkData as string;
+
+            // If the value looks like a URL, navigate to it.
+            if (target != null && (target.StartsWith("www.") || target.StartsWith("http:")))
+            {
+                Process.Start(target);
+            }
+        }
+
         private void PfOnChangesApplied(object sender, EventArgs eventArgs)
         {
-            var pf = (ProjectionSelectDialog) sender;
+            var pf = (ProjectionSelectDialog)sender;
             Projection = pf.SelectedCoordinateSystem;
             ChangesApplied = false;
         }
+
+        #endregion
     }
 }

@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Layout
-// Description:  The DotSpatial LayoutText element, holds draws text for the layout
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Jul, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Drawing;
@@ -20,75 +9,24 @@ using System.Drawing.Text;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Controls a rectangle
+    /// Element that allows adding text to the layout.
     /// </summary>
     public class LayoutText : LayoutElement
     {
+        #region Fields
+
         private Color _color;
         private ContentAlignment _contentAlignment;
         private Font _font;
         private string _text;
-        private TextRenderingHint _textHint = TextRenderingHint.SystemDefault;
-
-        #region ------------------ Public Properties
-
-        /// <summary>
-        /// Gets or sets the text thats drawn in the graphics object
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design", typeof(UITypeEditor))]
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the content alignment
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public ContentAlignment ContentAlignment
-        {
-            get { return _contentAlignment; }
-            set { _contentAlignment = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the font used to draw this text
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public Font Font
-        {
-            get { return _font; }
-            set { _font = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the text
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public Color Color
-        {
-            get { return _color; }
-            set { _color = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the hinting used to draw the text
-        /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public TextRenderingHint TextHint
-        {
-            get { return _textHint; }
-            set { _textHint = value; base.UpdateThumbnail(); base.OnInvalidate(); }
-        }
+        private TextRenderingHint _textHint;
 
         #endregion
 
-        #region ------------------- public methods
+        #region  Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutText"/> class.
         /// </summary>
         public LayoutText()
         {
@@ -100,6 +38,115 @@ namespace DotSpatial.Controls
             ResizeStyle = ResizeStyle.HandledInternally;
             _contentAlignment = ContentAlignment.TopLeft;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the color of the text
+        /// </summary>
+        [Browsable(true)]
+        [Category("Symbol")]
+        public Color Color
+        {
+            get
+            {
+                return _color;
+            }
+
+            set
+            {
+                _color = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the content alignment
+        /// </summary>
+        [Browsable(true)]
+        [Category("Symbol")]
+        public ContentAlignment ContentAlignment
+        {
+            get
+            {
+                return _contentAlignment;
+            }
+
+            set
+            {
+                _contentAlignment = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font used to draw this text
+        /// </summary>
+        [Browsable(true)]
+        [Category("Symbol")]
+        public Font Font
+        {
+            get
+            {
+                return _font;
+            }
+
+            set
+            {
+                _font = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the text thats drawn in the graphics object
+        /// </summary>
+        [Browsable(true)]
+        [Category("Symbol")]
+        [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design", typeof(UITypeEditor))]
+        public string Text
+        {
+            get
+            {
+                return _text;
+            }
+
+            set
+            {
+                _text = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the hinting used to draw the text
+        /// </summary>
+        [Browsable(true)]
+        [Category("Symbol")]
+        public TextRenderingHint TextHint
+        {
+            get
+            {
+                return _textHint;
+            }
+
+            set
+            {
+                _textHint = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -153,10 +200,9 @@ namespace DotSpatial.Controls
                     sf.LineAlignment = StringAlignment.Far;
                     break;
             }
-            // Letters were getting truncated or else bumped to the
-            // next line when printing that were not being bumped while
-            // in the view.  the added letter, here hopefully will prevent
-            // the discrepency.
+
+            // Letters were getting truncated or else bumped to the next line when printing that were not being bumped while
+            // in the view. The added letter, here hopefully will prevent the discrepancy.
             SizeF f = g.MeasureString("0", _font);
             RectangleF r = Rectangle;
             r.Width += f.Width;

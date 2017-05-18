@@ -48,7 +48,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         public static readonly IntPtr InvalidHandle = new IntPtr(-1);
 
-        //http://msdn.microsoft.com/en-us/library/ms724211%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/ms724211%28VS.85%29.aspx
         /// <summary>
         /// Closes an open object handle.
         /// </summary>
@@ -60,7 +60,7 @@ namespace DotSpatial.Positioning
 
         #region IOControl
 
-        //http://msdn.microsoft.com/en-us/library/aa363216%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/aa363216%28VS.85%29.aspx
         /// <summary>
         /// Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.
         /// </summary>
@@ -92,7 +92,7 @@ namespace DotSpatial.Positioning
             out uint lpBytesReturned,
             IntPtr lpOverlapped);
 
-        //http://msdn.microsoft.com/en-us/library/aa363858%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/aa363858%28VS.85%29.aspx
         /// <summary>
         /// Creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream,
         /// directory, physical disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe.
@@ -124,7 +124,7 @@ namespace DotSpatial.Positioning
             IntPtr hTemplateFile						// handle to template file
             );
 
-        //http://msdn.microsoft.com/en-us/library/aa365467%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/aa365467%28VS.85%29.aspx
         /// <summary>
         /// Reads data from the specified file or input/output (I/O) device. Reads occur at the position
         /// specified by the file pointer if supported by the device.
@@ -147,7 +147,7 @@ namespace DotSpatial.Positioning
             out uint lpNumberOfBytesRead,
             IntPtr lpOverlapped);
 
-        //http://msdn.microsoft.com/en-us/library/aa365747%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/aa365747%28VS.85%29.aspx
         /// <summary>
         /// Writes data to the specified file or input/output (I/O) device.
         /// This function is designed for both synchronous and asynchronous operation. For a similar function
@@ -866,7 +866,7 @@ namespace DotSpatial.Positioning
             public IntPtr Reserved;
         }
 
-        //http://msdn.microsoft.com/en-us/library/ff552342%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/ff552342%28VS.85%29.aspx
         /// <summary>
         /// An SP_DEVICE_INTERFACE_DATA structure defines a device interface in a device information set.
         /// </summary>
@@ -992,7 +992,7 @@ namespace DotSpatial.Positioning
            int ulFlags
         );
 
-        //http://msdn.microsoft.com/en-us/library/ff550996%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/ff550996%28VS.85%29.aspx
         /// <summary>
         /// The SetupDiDestroyDeviceInfoList function deletes a device information set and frees all associated memory.
         /// </summary>
@@ -1113,7 +1113,7 @@ namespace DotSpatial.Positioning
            ref SpDeviceInterfaceData deviceInterfaceData
         );
 
-        //http://msdn.microsoft.com/en-us/library/ff551120%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/ff551120%28VS.85%29.aspx
         /// <summary>
         /// The SetupDiGetDeviceInterfaceDetail function returns details about a device interface.
         /// </summary>
@@ -1213,7 +1213,7 @@ namespace DotSpatial.Positioning
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool BluetoothFindRadioClose(IntPtr hFind);
 
-        //http://msdn.microsoft.com/en-us/library/aa362799%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/aa362799%28VS.85%29.aspx
         /// <summary>
         /// The BluetoothIsConnectable function determines whether a Bluetooth radio or radios is connectable.
         /// </summary>
@@ -1238,7 +1238,7 @@ namespace DotSpatial.Positioning
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool BluetoothIsDiscoverable(IntPtr hRadio);
 
-        //http://msdn.microsoft.com/en-us/library/aa362776%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/aa362776%28VS.85%29.aspx
         /// <summary>
         /// The BluetoothEnableDiscovery function changes the discovery state of a local Bluetooth radio or radios.
         /// </summary>
@@ -1282,7 +1282,7 @@ namespace DotSpatial.Positioning
             [MarshalAs(UnmanagedType.Bool)]
             bool fEnabled);
 
-        //http://msdn.microsoft.com/en-us/library/ms742213%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/ms742213%28VS.85%29.aspx
         /// <summary>
         /// The WSAStartup function initiates use of the Winsock DLL by a process.
         /// </summary>
@@ -1300,7 +1300,7 @@ namespace DotSpatial.Positioning
             UInt16 wVersionRequested,
             WsaData wsaData);
 
-        //http://msdn.microsoft.com/en-us/library/ms741549%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/ms741549%28VS.85%29.aspx
         /// <summary>
         /// The WSACleanup function terminates use of the Winsock 2 DLL (Ws2_32.dll).
         /// </summary>
@@ -1327,7 +1327,7 @@ namespace DotSpatial.Positioning
             WasLookupControlOptions dwControlControlOptions,
             ref IntPtr lphLookup);
 
-        //http://msdn.microsoft.com/en-us/library/ms741641%28VS.85%29.aspx
+        // http://msdn.microsoft.com/en-us/library/ms741641%28VS.85%29.aspx
         /// <summary>
         /// The WSALookupServiceNext function is called after obtaining a handle from a previous call to
         /// WSALookupServiceBegin in order to retrieve the requested service information.

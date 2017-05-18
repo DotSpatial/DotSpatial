@@ -1,12 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -25,47 +18,17 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// This is should not be instantiated because it cannot in itself perform the necessary functions.
     /// Instead, most of the specified functionality must be implemented in the more specific classes.
-    /// This is also why there is no direct constructor for this class.  You can use the static
+    /// This is also why there is no direct constructor for this class. You can use the static
     /// "FromFile" or "FromFeatureLayer" to create FeatureLayers from a file.
     /// </summary>
     public abstract class FeatureLayer : Layer, IFeatureLayer
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs after a new symbolic scheme has been applied to the layer.
-        /// </summary>
-        public event EventHandler SchemeApplied;
-
-        /// <summary>
-        /// Occurs after a snapshot is taken, and contains an event argument with the bitmap
-        /// to be displayed.
-        /// </summary>
-        public event EventHandler<SnapShotEventArgs> SnapShotTaken;
-
-        /// <summary>
-        /// Occurs before the attribute Table is displayed, also allowing this event to be handled.
-        /// </summary>
-        public event HandledEventHandler ViewAttributes;
-
-        /// <summary>
-        /// Occurs before the label setup dialog is displayed, allowing the event to be handled.
-        /// </summary>
-        public event HandledEventHandler LabelSetup;
-
-        #endregion
-
-        #region Variables
+        #region Fields
 
         /// <summary>
         /// The _category extents.
         /// </summary>
         private IDictionary<IFeatureCategory, Extent> _categoryExtents;
-
-        /// <summary>
-        /// The _drawing filter.
-        /// </summary>
-        private IDrawingFilter _drawingFilter;
 
         /// <summary>
         /// The _drawn states.
@@ -96,11 +59,6 @@ namespace DotSpatial.Symbology
         /// The _scheme.
         /// </summary>
         private IFeatureScheme _scheme;
-
-        /// <summary>
-        /// The _selection.
-        /// </summary>
-        private ISelection _selection;
 
         /// <summary>
         /// The _selection feature symbolizer.
@@ -163,17 +121,127 @@ namespace DotSpatial.Symbology
             Configure(featureSet);
         }
 
+        #endregion
+
+        #region Events
+
         /// <summary>
-        /// Gets or sets the Boolean flag that controls whether the DrawnStates are needed.  If nothing is selected,
-        /// and there is only one category, and there is no filter expression on that category, then this should be false.
+        /// Occurs before the label setup dialog is displayed, allowing the event to be handled.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool DrawnStatesNeeded
+        public event HandledEventHandler LabelSetup;
+
+        /// <summary>
+        /// Occurs after a new symbolic scheme has been applied to the layer.
+        /// </summary>
+        public event EventHandler SchemeApplied;
+
+        /// <summary>
+        /// Occurs after a snapshot is taken, and contains an event argument with the bitmap
+        /// to be displayed.
+        /// </summary>
+        public event EventHandler<SnapShotEventArgs> SnapShotTaken;
+
+        /// <summary>
+        /// Occurs before the attribute Table is displayed, also allowing this event to be handled.
+        /// </summary>
+        public event HandledEventHandler ViewAttributes;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the dictionary of extents that is calculated from the categories. This is calculated one time,
+        /// when the scheme is applied, and then the cached value is used to help drawing symbols that
+        /// are modified by the categorical boundaries.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IDictionary<IFeatureCategory, Extent> CategoryExtents => _categoryExtents;
+
+        /// <summary>
+        /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet
+        /// </summary>
+        [Serialize("DataSet", ConstructorArgumentIndex = 0)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new IFeatureSet DataSet
         {
-            get { return _drawnStatesNeeded; }
+            get
+            {
+                return base.DataSet as IFeatureSet;
+            }
+
             set
             {
-                if (_drawnStatesNeeded == false && value)
+                if (DataSet != null)
+                {
+                    OnIgnoreFeaturesetEvents(DataSet);
+                }
+
+                base.DataSet = value;
+                OnHandleFeaturesetEvents(DataSet);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a rectangle that gives the maximal extent for 2D GDI+ drawing in pixels.
+        /// Coordinates outside this range will cause overflow exceptions to occur.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Rectangle DrawingBounds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the drawing filter that can be used to narrow the list of features and then
+        /// cycle through those features. Using a for-each expression on the filter will automatically
+        /// apply the constraints specified by the characteristics.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [ShallowCopy]
+        public IDrawingFilter DrawingFilter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the drawn states according to a feature index. This is used if the EditMode is
+        /// false. When EditMode is true, then drawn states are tied to the features instead.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public FastDrawnState[] DrawnStates
+        {
+            get
+            {
+                if (_drawnStates == null)
+                {
+                    DrawnStatesNeeded = true;
+                }
+
+                return _drawnStates;
+            }
+
+            set
+            {
+                _drawnStates = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the DrawnStates are needed. If nothing is selected,
+        /// and there is only one category, and there is no filter expression on that category, then this should be false.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool DrawnStatesNeeded
+        {
+            get
+            {
+                return _drawnStatesNeeded;
+            }
+
+            set
+            {
+                if (!_drawnStatesNeeded && value)
                 {
                     AssignFastDrawnStates();
                 }
@@ -182,165 +250,240 @@ namespace DotSpatial.Symbology
             }
         }
 
-
         /// <summary>
-        /// Zooms to the envelope of the selected features.
+        /// Gets or sets a value indicating whether we're in edit mode. If edit mode is true, feature index is ignored, and features
+        /// are assumed to be entirely loaded into ram. If edit mode is false, then index is used instead and features are not assumed to be loaded into ram.
         /// </summary>
-        public void ZoomToSelectedFeatures()
+        [Browsable(true)]
+        [Description("If edit mode is true, feature index is ignored, and features are assumed to be entirely loaded into ram. If edit mode is false, then index is used instead and features are not assumed to be loaded into ram.")]
+        public bool EditMode
         {
-            ZoomToSelectedFeatures(2, 2);
-        }
-
-        /// <summary>
-        /// Zooms to the envelope of the selected features, adding a border of the size specified.
-        /// </summary>
-        public void ZoomToSelectedFeatures(double distanceX, double distanceY)
-        {
-            if (_selection.Count == 0)
+            get
             {
-                return;
+                return _editMode;
             }
 
-            Envelope env = _selection.Envelope;
-            if (env.Width == 0 || env.Height == 0)
+            set
             {
-                env.ExpandBy(distanceX, distanceY);
-            }
+                if (value == _editMode) return;
 
-            OnZoomToLayer(env);
-        }
-
-        /// <summary>
-        /// The configure.
-        /// </summary>
-        /// <param name="featureSet">
-        /// The feature set.
-        /// </param>
-        private void Configure(IFeatureSet featureSet)
-        {
-            _categoryExtents = new Dictionary<IFeatureCategory, Extent>();
-            DrawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
-            DataSet = featureSet;
-            LegendText = featureSet.Name;
-            Name = featureSet.Name;
-            var label = new SymbologyMenuItem(Msg.FeatureLayer_Labeling);
-            label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick));
-            label.MenuItems.Add(new SymbologyMenuItem(Msg.SetDynamicVisibilityScale, SymbologyImages.ZoomScale,
-                                                      LabelExtentsClick));
-            ContextMenuItems.Insert(4, label);
-            var selection = new SymbologyMenuItem(Msg.FeatureLayer_Selection, SymbologyImages.select, null);
-            ContextMenuItems.Insert(5, selection);
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Zoom_To_Selected, SymbologyImages.ZoomInMap,
-                                                          SelectionZoomClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Create_Layer_From_Selected_Features, SymbologyImages.Copy,
-                                                          SelectionToLayerClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectByAttributes, SelectByAtributesClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectAll, SymbologyImages.select_all, SelectAllClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_UnselectAll, SymbologyImages.deselect_16x16, UnselectAllClick));
-
-            ContextMenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Join_Excel_File, SymbologyImages.redbluearrows,
-                                                       JoinExcel));
-            if (!featureSet.IndexMode)
-            {
-                _editMode = true;
-            }
-
-            // Categories and selections
-
-            // these are like a stored procedure that only care about the selection and no other drawing characteristics.
-            if (_editMode)
-            {
-                _drawingFilter = new DrawingFilter(DataSet.Features, _scheme, 5000);
-                _selection = new Selection(featureSet, _drawingFilter);
-            }
-            else
-            {
-                _selection = new IndexSelection(this);
-            }
-
-            _selection.Changed += SelectedFeaturesChanged;
-
-            _drawnStatesNeeded = false;
-        }
-
-        private void SelectByAtributesClick(object sender, EventArgs e)
-        {
-            var fla = FeatureLayerActions;
-            if (fla != null)
-            {
-                fla.SelectByAttributes(this);
-            }
-        }
-
-        private void DataSetVerticesInvalidated(object sender, EventArgs e)
-        {
-            OnApplyScheme(Symbology);
-            Invalidate();
-        }
-
-        private void JoinExcel(object sender, EventArgs e)
-        {
-            var fla = FeatureLayerActions;
-            if (fla != null)
-            {
-                fla.ExcelJoin(DataSet);
-            }
-        }
-
-        private void LabelExtentsClick(object sender, EventArgs e)
-        {
-            if (_labelLayer == null)
-                return;
-
-            var fla = FeatureLayerActions;
-            if (fla != null)
-            {
-                _labelLayer.DynamicVisibilityWidth = _labelLayer.FeatureLayer.MapFrame.ViewExtents.Width;
-                fla.LabelExtents(_labelLayer);
-            }
-        }
-
-        private void SelectedFeaturesChanged(object sender, EventArgs e)
-        {
-            if (!_drawnStatesNeeded && !_editMode)
-            {
-                AssignFastDrawnStates();
-            }
-
-            OnItemChanged();
-            OnSelectionChanged();
-        }
-
-        private void SelectionToLayerClick(object sender, EventArgs e)
-        {
-            IFeatureLayer newLayer;
-            if (CreateLayerFromSelectedFeatures(out newLayer))
-            {
-                IGroup grp = GetParentItem() as IGroup;
-                if (grp != null)
+                _editMode = value;
+                if (_editMode)
                 {
-                    int index = grp.IndexOf(this);
-                    grp.Insert(index + 1, newLayer);
+                    DrawingFilter = new DrawingFilter(DataSet.Features, _scheme, 5000);
+                    Selection = new Selection(DataSet, DrawingFilter);
+                }
+                else
+                {
+                    Selection = new IndexSelection(this);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the envelope of the DataSet supporting this FeatureLayer.
+        /// </summary>
+        [Category("General")]
+        [Description("Gets the envelope of the DataSet supporting this FeatureLayer")]
+        public override Extent Extent => DataSet == null ? new Extent() : DataSet.Extent;
+
+        /// <summary>
+        /// Gets or sets custom actions for FeatureLayer.
+        /// </summary>
+        [Browsable(false)]
+        public IFeatureLayerActions FeatureLayerActions { get; set; }
+
+        /// <summary>
+        /// Gets underlying dataset for this layer.
+        /// </summary>
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("FeatureSet Properties")]
+        public IFeatureSet FeatureSet => DataSet;
+
+        /// <summary>
+        /// Gets or sets the label layer.
+        /// </summary>
+        [Category("General")]
+        [Description("Gets or sets the label layer associated with this feature layer.")]
+        [ShallowCopy]
+        [Serialize("LabelLayer")]
+        public virtual ILabelLayer LabelLayer
+        {
+            get
+            {
+                return _labelLayer;
+            }
+
+            set
+            {
+                _labelLayer = value;
+                _labelLayer.FeatureLayer = this;
+                _labelLayer.CreateLabels();
+                OnItemChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the LegendItems based on whether or not the symbology makes use of schemes.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public override IEnumerable<ILegendItem> LegendItems
+        {
+            get
+            {
+                if (Symbology.AppearsInLegend)
+                {
+                    return new List<ILegendItem>
+                           {
+                               Symbology
+                           };
                 }
 
-                newLayer.LegendText = LegendText + " selection";
+                // Leave this cast in place for compatibility with 3.5.
+                return Symbology.GetCategories().Cast<ILegendItem>();
             }
         }
 
-        private void SelectionZoomClick(object sender, EventArgs e)
+        /// <summary>
+        /// Gets or sets a string name for this layer. This is not necessarily the same as the legend text.
+        /// </summary>
+        [Category("General")]
+        [Description("Gets or sets a string name for this layer. This is not necessarily the same as the legend text.")]
+        public virtual string Name { get; set; }
+
+        /// <summary>
+        /// Gets a Selection class that is allows the user to cycle through all the selected features with
+        /// a foreach method. This can be null.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ISelection Selection { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the shared characteristics to use with the selected features.
+        /// </summary>
+        [Category("Symbology")]
+        [Description("Gets or sets a collection of feature characteristics for this layer.")]
+        [ShallowCopy]
+        public virtual IFeatureSymbolizer SelectionSymbolizer
         {
-            ZoomToSelectedFeatures();
+            get
+            {
+                var categories = _scheme?.GetCategories().ToList();
+
+                if (categories?.Count > 0)
+                {
+                    return categories.First().SelectionSymbolizer;
+                }
+
+                return _selectionFeatureSymbolizer;
+            }
+
+            set
+            {
+                value.SetParentItem(this);
+                var categories = _scheme?.GetCategories().ToList();
+                if (categories?.Count > 0)
+                {
+                    categories.First().SelectionSymbolizer = value;
+                }
+                else
+                {
+                    _selectionFeatureSymbolizer = value;
+                }
+            }
         }
 
-        private void SelectAllClick(object sender, EventArgs e)
+        /// <summary>
+        /// Gets or sets a value indicating whether labels should be drawn.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets whether labels should be drawn.")]
+        [Serialize("ShowLabels")]
+        public virtual bool ShowLabels
         {
-            SelectAll();
+            get
+            {
+                return _showLabels;
+            }
+
+            set
+            {
+                if (value == _showLabels) return;
+
+                _showLabels = value;
+                OnItemChanged();
+            }
         }
 
-        private void UnselectAllClick(object sender, EventArgs e)
+        /// <summary>
+        /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Gets or sets a collection of feature characteristics for this layer.")]
+        [ShallowCopy]
+        public virtual IFeatureSymbolizer Symbolizer
         {
-            UnSelectAll();
+            get
+            {
+                var categories = _scheme?.GetCategories().ToList();
+
+                if (categories?.Count > 0)
+                {
+                    return categories.First().Symbolizer;
+                }
+
+                return _featureSymbolizer;
+            }
+
+            set
+            {
+                value.SetParentItem(this);
+
+                var categories = _scheme?.GetCategories().ToList();
+                if (categories?.Count > 0)
+                {
+                    categories.First().Symbolizer = value;
+                }
+                else
+                {
+                    _featureSymbolizer = value;
+                }
+            }
         }
+
+        /// <summary>
+        /// Gets or sets the current feature scheme, but to change it ApplyScheme should be called, so that
+        /// feature categories are updated as well.
+        /// </summary>
+        [ShallowCopy]
+        public IFeatureScheme Symbology
+        {
+            get
+            {
+                return _scheme;
+            }
+
+            set
+            {
+                if (value == _scheme)
+                {
+                    return;
+                }
+
+                OnExcludeScheme(_scheme);
+                _scheme = value;
+                OnIncludeScheme(value);
+                ApplyScheme(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the chunk size on the drawing filter. This should be controlled
+        /// by drawing layers.
+        /// </summary>
+        protected int ChunkSize { get; set; }
 
         #endregion
 
@@ -360,6 +503,116 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Assigns the fast drawn states
+        /// </summary>
+        public void AssignFastDrawnStates()
+        {
+            _drawnStatesNeeded = true;
+            _drawnStates = new FastDrawnState[DataSet.ShapeIndices.Count];
+            Selection.Changed -= SelectedFeaturesChanged;
+            Selection = new IndexSelection(this); // update the new drawn-states;
+            Selection.Changed += SelectedFeaturesChanged;
+
+            // Fastest when no categories are used because we don't need DataTable at all
+            List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
+            IFeatureCategory deflt = null;
+            if (categories.Count > 0 && categories[0].FilterExpression == null)
+            {
+                deflt = categories[0];
+            }
+
+            for (int i = 0; i < DataSet.ShapeIndices.Count; i++)
+            {
+                _drawnStates[i] = new FastDrawnState
+                {
+                    Category = deflt
+                };
+            }
+
+            if (categories.Count == 1 && categories[0].FilterExpression == null)
+            {
+                return;
+            }
+
+            bool containsFid = false;
+            if (!DataSet.AttributesPopulated)
+            {
+                // We don't want to read the table multiple times for each category. Just
+                // read a block and then do all the categories we can for that block.
+                var names = new List<string>();
+                foreach (var category in categories)
+                {
+                    var current = DistinctFieldsInExpression(category.FilterExpression);
+                    foreach (string name in current.Where(name => !names.Contains(name)))
+                    {
+                        names.Add(name);
+                    }
+                }
+
+                if (names.Count == 0)
+                {
+                    for (int i = 0; i < DataSet.NumRows(); i++)
+                    {
+                        _drawnStates[i].Category = categories[categories.Count - 1];
+                    }
+
+                    return;
+                }
+
+                int rowCount = DataSet.NumRows();
+                const int Size = 50000;
+                int numPages = (int)Math.Ceiling((double)rowCount / Size);
+                for (int page = 0; page < numPages; page++)
+                {
+                    int count = (page == numPages - 1) ? rowCount - (page * Size) : Size;
+                    DataTable expressionTable = DataSet.GetAttributes(page * Size, count, names);
+                    foreach (var category in categories)
+                    {
+                        DataRow[] res = expressionTable.Select(category.FilterExpression);
+                        foreach (DataRow r in res)
+                        {
+                            _drawnStates[(int)r["FID"]].Category = category;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                DataTable table = DataSet.DataTable;
+                foreach (var category in categories)
+                {
+                    if (category.FilterExpression != null && category.FilterExpression.Contains("[FID]"))
+                    {
+                        containsFid = true;
+                    }
+                }
+
+                if (containsFid && table.Columns.Contains("FID") == false)
+                {
+                    table.Columns.Add("FID");
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        table.Rows[i]["FID"] = i;
+                    }
+                }
+
+                foreach (var category in categories)
+                {
+                    DataRow[] result = table.Select(category.FilterExpression);
+                    foreach (DataRow row in result)
+                    {
+                        _drawnStates[table.Rows.IndexOf(row)].Category = category;
+                    }
+                }
+
+                if (containsFid)
+                {
+                    table.Columns.Remove("FID");
+                }
+            }
+        }
+
+        /// <summary>
         /// Clears the current selection, reverting the geometries back to their
         /// normal colors.
         /// </summary>
@@ -371,7 +624,7 @@ namespace DotSpatial.Symbology
         /// </returns>
         public override bool ClearSelection(out Envelope affectedArea)
         {
-            affectedArea = _selection.Envelope;
+            affectedArea = Selection.Envelope;
             if (!_drawnStatesNeeded)
             {
                 return false;
@@ -380,12 +633,12 @@ namespace DotSpatial.Symbology
             bool changed = false;
             if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
             {
-                if (_selection.Count > 0)
+                if (Selection.Count > 0)
                 {
                     changed = true;
                 }
 
-                _selection.Clear();
+                Selection.Clear();
             }
             else
             {
@@ -397,9 +650,9 @@ namespace DotSpatial.Symbology
                         continue;
                     }
 
-                    _selection.RegionCategory = category;
-                    _selection.Clear();
-                    _selection.RegionCategory = null;
+                    Selection.RegionCategory = category;
+                    Selection.Clear();
+                    Selection.RegionCategory = null;
                 }
 
                 ResumeChangeEvent();
@@ -409,7 +662,26 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This method actually draws the image to the snapshot using the graphics object.  This should be
+        /// This is testing the idea of using an input parameter type that is marked as out
+        /// instead of a return type.
+        /// </summary>
+        /// <param name="result">
+        /// The result of the creation
+        /// </param>
+        /// <returns>
+        /// Boolean, true if a layer can be created
+        /// </returns>
+        public virtual bool CreateLayerFromSelectedFeatures(out IFeatureLayer result)
+        {
+            // This needs to be overridden at the higher levels where drawing function
+            // and point types exist, but is available here so that you don't need
+            // to know what kind of feature layer you have to create an output layer.
+            result = null;
+            return false;
+        }
+
+        /// <summary>
+        /// This method actually draws the image to the snapshot using the graphics object. This should be
         /// overridden in sub-classes because the drawing methods are very different.
         /// </summary>
         /// <param name="g">
@@ -432,7 +704,7 @@ namespace DotSpatial.Symbology
         /// </param>
         public void ExportSelection(string fileName)
         {
-            FeatureSet fs = _selection.ToFeatureSet();
+            FeatureSet fs = Selection.ToFeatureSet();
             fs.SaveAs(fileName, true);
         }
 
@@ -440,8 +712,8 @@ namespace DotSpatial.Symbology
         /// Gets the visible characteristic for an individual feature, regardless of whether
         /// this layer is in edit mode.
         /// </summary>
-        /// <param name="index">
-        /// </param>
+        /// <param name="index">Index of the feature.</param>
+        /// <returns>Visible characteristics of the feature.</returns>
         public IFeatureCategory GetCategory(int index)
         {
             if (_editMode)
@@ -456,8 +728,9 @@ namespace DotSpatial.Symbology
         /// Gets the visible characteristic for a given feature, rather than using the index,
         /// regardless of whether this layer is in edit mode.
         /// </summary>
-        /// <param name="feature">
+        /// <param name="feature">Feature, to get the characteristics for.
         /// </param>
+        /// <returns>Visible characteristics of the feature.</returns>
         public IFeatureCategory GetCategory(IFeature feature)
         {
             if (_editMode)
@@ -467,17 +740,15 @@ namespace DotSpatial.Symbology
 
             int index = DataSet.Features.IndexOf(feature);
             if (index < 0) return null;
+
             return DrawnStates[index].Category;
         }
 
         /// <summary>
-        /// Gets the visible characteristic for an individual feature
+        /// Gets the visible characteristic for an individual feature.
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// The get visible.
-        /// </returns>
+        /// <param name="index">Index of the feature.</param>
+        /// <returns>True, if the feature is visible.</returns>
         public bool GetVisible(int index)
         {
             return _editMode ? DrawingFilter.DrawnStates[DataSet.Features[index]].IsVisible : DrawnStates[index].Visible;
@@ -486,11 +757,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the visible characteristic for a given feature, rather than using the index.
         /// </summary>
-        /// <param name="feature">
-        /// </param>
-        /// <returns>
-        /// The get visible.
-        /// </returns>
+        /// <param name="feature">The feature to get the characteristics for.</param>
+        /// <returns>True, if the feature is visible.</returns>
         public bool GetVisible(IFeature feature)
         {
             if (_editMode)
@@ -503,28 +771,14 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This method inverts the selection for the specified region.  Members already a part of the selection
-        /// will be removed from the selection, while members that are not a part of the selection will be added
-        /// to the selection.
+        /// This method inverts the selection for the specified region. Members already a part of the selection will be
+        /// removed from the selection, while members that are not a part of the selection will be added to the selection.
         /// </summary>
-        /// <param name="tolerant">
-        /// The region specifying where features should be added or removed from the
-        /// selection.
-        /// </param>
-        /// <param name="strict">
-        /// With polygon selection it is better not to allow any tolerance since the
-        ///  polygons already contain it.
-        /// </param>
-        /// <param name="selectionMode">
-        /// The SelectionModes enumeration that clarifies how the features should
-        /// interact with the region.
-        /// </param>
-        /// <param name="affectedArea">
-        /// The geographic region that will be impacted by the changes.
-        /// </param>
-        /// <returns>
-        /// The invert selection.
-        /// </returns>
+        /// <param name="tolerant">The region specifying where features should be added or removed from the selection.</param>
+        /// <param name="strict">With polygon selection it is better not to allow any tolerance since the polygons already contain it.</param>
+        /// <param name="selectionMode">The SelectionModes enumeration that clarifies how the features should interact with the region.</param>
+        /// <param name="affectedArea">The geographic region that will be impacted by the changes.</param>
+        /// <returns>The invert selection.</returns>
         public override bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
@@ -541,10 +795,10 @@ namespace DotSpatial.Symbology
             affectedArea = new Envelope();
             bool changed = false;
 
-            _selection.SelectionMode = selectionMode;
+            Selection.SelectionMode = selectionMode;
             if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
             {
-                changed = _selection.InvertSelection(region, out affectedArea);
+                changed = Selection.InvertSelection(region, out affectedArea);
             }
             else
             {
@@ -554,7 +808,7 @@ namespace DotSpatial.Symbology
                 }
 
                 SuspendChangeEvent();
-                _selection.SuspendChanges();
+                Selection.SuspendChanges();
                 List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
                 foreach (IFeatureCategory category in categories)
                 {
@@ -563,16 +817,16 @@ namespace DotSpatial.Symbology
                         continue;
                     }
 
-                    _selection.RegionCategory = category;
-                    if (_selection.AddRegion(region, out affectedArea))
+                    Selection.RegionCategory = category;
+                    if (Selection.AddRegion(region, out affectedArea))
                     {
                         changed = true;
                     }
 
-                    _selection.RegionCategory = null;
+                    Selection.RegionCategory = null;
                 }
 
-                _selection.ResumeChanges();
+                Selection.ResumeChanges();
                 ResumeChangeEvent();
             }
 
@@ -580,41 +834,79 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// This method will remove the in ram features from the underlying dataset.
+        /// This will not affect the data source.
+        /// </summary>
+        /// <param name="indexValues">The list or array of integer index values.</param>
+        public void RemoveFeaturesAt(IEnumerable<int> indexValues)
+        {
+            DataSet.RemoveShapesAt(indexValues);
+            AssignFastDrawnStates();
+        }
+
+        /// <summary>
+        /// This forces the removal of all the selected features.
+        /// </summary>
+        public void RemoveSelectedFeatures()
+        {
+            // Only work with selections with some features.
+            if (Selection.Count == 0) return;
+
+            IFeatureSet fs = DataSet;
+            if (fs.IndexMode)
+            {
+                // Use Index selection to remove by index
+                IndexSelection indexSel = Selection as IndexSelection;
+
+                // In case we have an invalid cast for some reason.
+                if (indexSel == null) return;
+
+                // Create a list of index values to remove.
+                List<int> orderedIndex = new List<int>();
+                foreach (int index in indexSel)
+                {
+                    orderedIndex.Add(index);
+                }
+
+                RemoveFeaturesAt(orderedIndex);
+
+                // Since the indexing has changed, we need to update the drawn states too.
+            }
+            else
+            {
+                // This case tracks by IFeature, so we don't need to do a lot else.
+                List<IFeature> features = Selection.ToFeatureList();
+                foreach (IFeature feature in features)
+                {
+                    DataSet.Features.Remove(feature);
+                }
+            }
+        }
+
+        /// <summary>
         /// Highlights the values in the specified region, and returns the affected area from the selection,
         /// which should allow for slightly faster drawing in cases where only a small area is changed.
         /// This will also specify the method by which members should be selected.
         /// </summary>
-        /// <param name="tolerant">
-        /// The envelope to change.
-        /// </param>
-        /// <param name="strict">
-        /// The envelope to use in cases like polygons where the geometry has no tolerance.
-        /// </param>
-        /// <param name="selectionMode">
-        /// The selection mode that clarifies the rules to use for selection.
-        /// </param>
-        /// <param name="affectedArea">
-        /// The geographic envelope of the region impacted by the selection.
-        /// </param>
-        /// <returns>
-        /// Boolean, true if items were selected.
-        /// </returns>
+        /// <param name="tolerant">The envelope to change.</param>
+        /// <param name="strict">The envelope to use in cases like polygons where the geometry has no tolerance.</param>
+        /// <param name="selectionMode">The selection mode that clarifies the rules to use for selection.</param>
+        /// <param name="affectedArea">The geographic envelope of the region impacted by the selection.</param>
+        /// <returns>Boolean, true if items were selected.</returns>
         public override bool Select(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
-            if (!_drawnStatesNeeded && !_editMode)
-                AssignFastDrawnStates();
+            if (!_drawnStatesNeeded && !_editMode) AssignFastDrawnStates();
 
             Envelope region = tolerant;
-            if (DataSet.FeatureType == FeatureType.Polygon)
-                region = strict;
+            if (DataSet.FeatureType == FeatureType.Polygon) region = strict;
 
-            affectedArea = _selection.Envelope;
+            affectedArea = Selection.Envelope;
 
             bool changed = false;
             if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
             {
-                _selection.SelectionMode = selectionMode;
-                changed = _selection.AddRegion(region, out affectedArea);
+                Selection.SelectionMode = selectionMode;
+                changed = Selection.AddRegion(region, out affectedArea);
             }
             else
             {
@@ -624,8 +916,8 @@ namespace DotSpatial.Symbology
                 }
 
                 SuspendChangeEvent();
-                _selection.ProgressHandler = ProgressHandler;
-                _selection.SuspendChanges();
+                Selection.ProgressHandler = ProgressHandler;
+                Selection.SuspendChanges();
                 List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
                 foreach (IFeatureCategory category in categories)
                 {
@@ -634,12 +926,12 @@ namespace DotSpatial.Symbology
                         continue;
                     }
 
-                    _selection.RegionCategory = category;
-                    _selection.AddRegion(region, out affectedArea);
-                    _selection.RegionCategory = null;
+                    Selection.RegionCategory = category;
+                    Selection.AddRegion(region, out affectedArea);
+                    Selection.RegionCategory = null;
                 }
 
-                _selection.ResumeChanges();
+                Selection.ResumeChanges();
                 ResumeChangeEvent();
             }
 
@@ -647,23 +939,18 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Selects the specified list of features.  If the specified feature is already selected,
-        /// this method will not alter it.  This will only fire a single SelectionExtended event,
+        /// Selects the specified list of features. If the specified feature is already selected,
+        /// this method will not alter it. This will only fire a single SelectionExtended event,
         /// rather than firing it for each member selected.
         /// </summary>
-        /// <param name="featureIndices">
-        /// A List of integers representing the zero-based feature index values
-        /// </param>
+        /// <param name="featureIndices">A List of integers representing the zero-based feature index values</param>
         public void Select(IEnumerable<int> featureIndices)
         {
             if (_editMode)
             {
                 List<IFeature> features = featureIndices.Select(fid => DataSet.Features[fid]).ToList();
-                IFeatureSelection sel = _selection as IFeatureSelection;
-                if (sel != null)
-                {
-                    sel.AddRange(features);
-                }
+                IFeatureSelection sel = Selection as IFeatureSelection;
+                sel?.AddRange(features);
             }
             else
             {
@@ -672,68 +959,49 @@ namespace DotSpatial.Symbology
                     AssignFastDrawnStates();
                 }
 
-                IIndexSelection sel = _selection as IIndexSelection;
-                if (sel != null)
-                {
-                    sel.AddRange(featureIndices);
-                }
+                IIndexSelection sel = Selection as IIndexSelection;
+                sel?.AddRange(featureIndices);
             }
         }
 
         /// <summary>
         /// Selects a single feature specified by the integer index in the Features list.
         /// </summary>
-        /// <param name="featureIndex">
-        /// The zero-based integer index of the feature.
-        /// </param>
+        /// <param name="featureIndex">The zero-based integer index of the feature.</param>
         public void Select(int featureIndex)
         {
             if (_editMode)
             {
-                IFeatureSelection sel = _selection as IFeatureSelection;
-                if (sel != null)
-                {
-                    sel.Add(DataSet.Features[featureIndex]);
-                }
+                IFeatureSelection sel = Selection as IFeatureSelection;
+                sel?.Add(DataSet.Features[featureIndex]);
             }
             else
             {
-                IIndexSelection sel = _selection as IIndexSelection;
-                if (sel != null)
-                {
-                    sel.Add(featureIndex);
-                }
+                IIndexSelection sel = Selection as IIndexSelection;
+                sel?.Add(featureIndex);
             }
         }
 
         /// <summary>
-        /// Selects the specified feature
+        /// Selects the specified feature.
         /// </summary>
-        /// <param name="feature">
-        /// The feature to select
-        /// </param>
+        /// <param name="feature">The feature to select.</param>
         public void Select(IFeature feature)
         {
             if (_editMode)
             {
-                var sel = _selection as IFeatureSelection;
-                if (sel != null)
-                {
-                    sel.Add(feature);
-                }
+                var sel = Selection as IFeatureSelection;
+                sel?.Add(feature);
             }
             else
             {
-                var sel = _selection as IIndexSelection;
-                if (sel != null)
-                {
-                    sel.Add(feature.Fid);
-                }
+                var sel = Selection as IIndexSelection;
+                sel?.Add(feature.Fid);
             }
         }
 
         /// <summary>
-        /// Cycles through all the features and selects them
+        /// Cycles through all the features and selects them.
         /// </summary>
         public virtual void SelectAll()
         {
@@ -745,7 +1013,7 @@ namespace DotSpatial.Symbology
             Envelope ignoreme;
             if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
             {
-                _selection.AddRegion(Extent.ToEnvelope(), out ignoreme);
+                Selection.AddRegion(Extent.ToEnvelope(), out ignoreme);
             }
             else
             {
@@ -757,9 +1025,9 @@ namespace DotSpatial.Symbology
                         continue;
                     }
 
-                    _selection.RegionCategory = category;
-                    _selection.AddRegion(Extent.ToEnvelope(), out ignoreme);
-                    _selection.RegionCategory = null;
+                    Selection.RegionCategory = category;
+                    Selection.AddRegion(Extent.ToEnvelope(), out ignoreme);
+                    Selection.RegionCategory = null;
                 }
 
                 ResumeChangeEvent();
@@ -767,37 +1035,20 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Selects all the features in this layer that are associated
-        /// with the specified attribute.  This automatically replaces the existing selection.
+        /// Selects all the features in this layer that are associated with the specified attribute.
+        /// This automatically replaces the existing selection.
         /// </summary>
-        /// <param name="filterExpression">
-        /// The string expression to
-        /// identify based on attributes the features to select.
-        /// </param>
+        /// <param name="filterExpression">The string expression to identify based on attributes the features to select.</param>
         public void SelectByAttribute(string filterExpression)
         {
             SelectByAttribute(filterExpression, ModifySelectionMode.Replace);
         }
 
         /// <summary>
-        /// Unselects the features by attribute.
-        /// </summary>
-        /// <param name="filterExpression">The filter expression.</param>
-        public void UnselectByAttribute(string filterExpression)
-        {
-            SelectByAttribute(filterExpression, ModifySelectionMode.Subtract);
-        }
-
-        /// <summary>
         /// Modifies the features with a new selection based on the modifyMode.
         /// </summary>
-        /// <param name="filterExpression">
-        /// The string filter expression to use
-        /// </param>
-        /// <param name="modifyMode">
-        /// Determines how the newly chosen features should interact with the existing
-        ///  selection
-        /// </param>
+        /// <param name="filterExpression">The string filter expression to use</param>
+        /// <param name="modifyMode">Determines how the newly chosen features should interact with the existing selection</param>
         public void SelectByAttribute(string filterExpression, ModifySelectionMode modifyMode)
         {
             if (!_drawnStatesNeeded && !_editMode)
@@ -806,10 +1057,10 @@ namespace DotSpatial.Symbology
             }
 
             List<int> newSelection = DataSet.SelectIndexByAttribute(filterExpression);
-            _selection.SuspendChanges();
+            Selection.SuspendChanges();
             if (modifyMode == ModifySelectionMode.Replace)
             {
-                _selection.Clear();
+                Selection.Clear();
                 Select(newSelection);
             }
 
@@ -823,7 +1074,7 @@ namespace DotSpatial.Symbology
                 List<int> cond = new List<int>();
                 if (_editMode)
                 {
-                    IFeatureSelection fs = _selection as IFeatureSelection;
+                    IFeatureSelection fs = Selection as IFeatureSelection;
                     if (fs != null)
                     {
                         cond.AddRange(fs.Select(feature => DataSet.Features.IndexOf(feature)));
@@ -831,7 +1082,7 @@ namespace DotSpatial.Symbology
                 }
                 else
                 {
-                    IIndexSelection sel = _selection as IIndexSelection;
+                    IIndexSelection sel = Selection as IIndexSelection;
                     if (sel != null)
                     {
                         cond = sel.ToList();
@@ -839,7 +1090,7 @@ namespace DotSpatial.Symbology
                 }
 
                 IEnumerable<int> result = cond.Intersect(newSelection);
-                _selection.Clear();
+                Selection.Clear();
                 Select(result);
             }
 
@@ -848,7 +1099,7 @@ namespace DotSpatial.Symbology
                 UnSelect(newSelection);
             }
 
-            _selection.ResumeChanges();
+            Selection.ResumeChanges();
             OnItemChanged();
         }
 
@@ -891,15 +1142,11 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This forces the creation of a category for the specified symbolizer, if it doesn't exist.
-        /// This will add the specified feature to the category.  Be sure that the symbolizer type
+        /// This will add the specified feature to the category. Be sure that the symbolizer type
         /// matches the feature type.
         /// </summary>
-        /// <param name="index">
-        /// The integer index of the shape to control.
-        /// </param>
-        /// <param name="symbolizer">
-        /// The symbolizer to assign.
-        /// </param>
+        /// <param name="index">The integer index of the shape to control.</param>
+        /// <param name="symbolizer">The symbolizer to assign.</param>
         public void SetShapeSymbolizer(int index, IFeatureSymbolizer symbolizer)
         {
             foreach (IFeatureCategory category in Symbology.GetCategories())
@@ -948,6 +1195,8 @@ namespace DotSpatial.Symbology
         /// Sets the visible characteristic for an individual feature regardless of
         /// whether this layer is in edit mode.
         /// </summary>
+        /// <param name="index">Index of the feature.</param>
+        /// <param name="visible">Visible state that is set.</param>
         public void SetVisible(int index, bool visible)
         {
             if (_editMode)
@@ -964,6 +1213,8 @@ namespace DotSpatial.Symbology
         /// Sets the visible characteristic for a given feature, rather than using the index
         /// regardless of whether this layer is in edit mode.
         /// </summary>
+        /// <param name="feature">The feature.</param>
+        /// <param name="visible">Visible state that is set.</param>
         public void SetVisible(IFeature feature, bool visible)
         {
             if (_editMode)
@@ -990,57 +1241,45 @@ namespace DotSpatial.Symbology
                 return;
             }
 
-            var fla = FeatureLayerActions;
-            if (fla != null)
-            {
-                fla.ShowAttributes(this);
-            }
+            FeatureLayerActions?.ShowAttributes(this);
         }
 
         /// <summary>
         /// Creates a bitmap of the requested size that covers the specified geographic extent using
-        /// the current symbolizer for this layer.  This does not have any drawing optimizations,
+        /// the current symbolizer for this layer. This does not have any drawing optimizations,
         /// or techniques to speed up performance and should only be used in special cases like
-        /// draping of vector content onto a texture.  It also doesn't worry about selections.
+        /// draping of vector content onto a texture. It also doesn't worry about selections.
         /// </summary>
-        /// <param name="geographicExtent">
-        /// The extent to use when computing the snapshot.
-        /// </param>
-        /// <param name="width">
-        /// The integer height of the bitmap.  The height is calculated based on
-        /// the aspect ratio of the specified geographic extent.
-        /// </param>
-        /// <returns>
-        /// A Bitmap object
-        /// </returns>
+        /// <param name="geographicExtent">The extent to use when computing the snapshot.</param>
+        /// <param name="width">The integer height of the bitmap. The height is calculated based on
+        /// the aspect ratio of the specified geographic extent.</param>
+        /// <returns>A Bitmap object</returns>
         public Bitmap SnapShot(Extent geographicExtent, int width)
         {
             int height = Convert.ToInt32((geographicExtent.Height / geographicExtent.Width) * width);
             Bitmap bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(bmp);
-            ImageProjection p = new ImageProjection(geographicExtent, new Rectangle(0, 0, width, height));
-            DrawSnapShot(g, p);
-            g.Dispose();
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                ImageProjection p = new ImageProjection(geographicExtent, new Rectangle(0, 0, width, height));
+                DrawSnapShot(g, p);
+            }
+
             OnSnapShotTaken(bmp);
             return bmp;
         }
 
         /// <summary>
-        /// Unselects the specified features.  If any features already unselected, they are ignored.
-        /// This will only fire a single Selection
+        /// Unselects the specified features. If any features already unselected, they are ignored.
+        /// This will only fire a single Selection.
         /// </summary>
-        /// <param name="featureIndices">
-        /// </param>
+        /// <param name="featureIndices">Indices of the features that get deselected.</param>
         public void UnSelect(IEnumerable<int> featureIndices)
         {
             if (_editMode)
             {
                 List<IFeature> features = featureIndices.Select(fid => DataSet.Features[fid]).ToList();
-                IFeatureSelection sel = _selection as IFeatureSelection;
-                if (sel != null)
-                {
-                    sel.RemoveRange(features);
-                }
+                IFeatureSelection sel = Selection as IFeatureSelection;
+                sel?.RemoveRange(features);
             }
             else
             {
@@ -1049,29 +1288,21 @@ namespace DotSpatial.Symbology
                     AssignFastDrawnStates();
                 }
 
-                IIndexSelection sel = _selection as IIndexSelection;
-                if (sel != null)
-                {
-                    sel.RemoveRange(featureIndices);
-                }
+                IIndexSelection sel = Selection as IIndexSelection;
+                sel?.RemoveRange(featureIndices);
             }
         }
 
         /// <summary>
         /// Unselects the specified feature.
         /// </summary>
-        /// <param name="featureIndex">
-        /// The integer representing the feature to unselect.
-        /// </param>
+        /// <param name="featureIndex">The integer representing the feature to unselect.</param>
         public void UnSelect(int featureIndex)
         {
             if (_editMode)
             {
-                IFeatureSelection sel = _selection as IFeatureSelection;
-                if (sel != null)
-                {
-                    sel.Remove(DataSet.Features[featureIndex]);
-                }
+                IFeatureSelection sel = Selection as IFeatureSelection;
+                sel?.Remove(DataSet.Features[featureIndex]);
             }
             else
             {
@@ -1080,29 +1311,21 @@ namespace DotSpatial.Symbology
                     AssignFastDrawnStates();
                 }
 
-                IIndexSelection sel = _selection as IIndexSelection;
-                if (sel != null)
-                {
-                    sel.Remove(featureIndex);
-                }
+                IIndexSelection sel = Selection as IIndexSelection;
+                sel?.Remove(featureIndex);
             }
         }
 
         /// <summary>
         /// Removes the specified feature from the selection.
         /// </summary>
-        /// <param name="feature">
-        /// The feature to unselect.
-        /// </param>
+        /// <param name="feature">The feature to unselect.</param>
         public void UnSelect(IFeature feature)
         {
             if (_editMode)
             {
-                IFeatureSelection sel = _selection as IFeatureSelection;
-                if (sel != null)
-                {
-                    sel.Remove(feature);
-                }
+                IFeatureSelection sel = Selection as IFeatureSelection;
+                sel?.Remove(feature);
             }
             else
             {
@@ -1111,37 +1334,21 @@ namespace DotSpatial.Symbology
                     AssignFastDrawnStates();
                 }
 
-                IIndexSelection sel = _selection as IIndexSelection;
-                if (sel != null)
-                {
-                    sel.Remove(DataSet.Features.IndexOf(feature));
-                }
+                IIndexSelection sel = Selection as IIndexSelection;
+                sel?.Remove(DataSet.Features.IndexOf(feature));
             }
         }
 
         /// <summary>
-        /// Un-highlights or returns the features from the specified region.  The specified selectionMode
+        /// Un-highlights or returns the features from the specified region. The specified selectionMode
         /// will be used to determine how to choose features.
         /// </summary>
-        /// <param name="tolerant">
-        /// The geographic envelope in cases like clicking near points where tolerance
-        ///  is allowed.
-        /// </param>
-        /// <param name="strict">
-        /// The geographic region when working with absolutes, without a tolerance.
-        /// </param>
-        /// <param name="selectionMode">
-        /// The selection mode that controls how to choose members relative to the
-        /// region.
-        /// </param>
-        /// <param name="affectedArea">
-        /// The geographic envelope that will be visibly impacted by the change.
-        /// </param>
-        /// <returns>
-        /// Boolean, true if members were removed from the selection.
-        /// </returns>
-        public override bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode selectionMode,
-                                      out Envelope affectedArea)
+        /// <param name="tolerant">The geographic envelope in cases like clicking near points where tolerance is allowed.</param>
+        /// <param name="strict">The geographic region when working with absolutes, without a tolerance.</param>
+        /// <param name="selectionMode">The selection mode that controls how to choose members relative to the region.</param>
+        /// <param name="affectedArea">The geographic envelope that will be visibly impacted by the change.</param>
+        /// <returns>Boolean, true if members were removed from the selection.</returns>
+        public override bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
             {
@@ -1161,19 +1368,19 @@ namespace DotSpatial.Symbology
             {
                 if (_editMode)
                 {
-                    _selection.SelectionMode = selectionMode;
-                    changed = _selection.RemoveRegion(region, out affectedArea);
+                    Selection.SelectionMode = selectionMode;
+                    changed = Selection.RemoveRegion(region, out affectedArea);
                 }
                 else
                 {
-                    _selection.SelectionMode = selectionMode;
-                    changed = _selection.RemoveRegion(region, out affectedArea);
+                    Selection.SelectionMode = selectionMode;
+                    changed = Selection.RemoveRegion(region, out affectedArea);
                 }
             }
             else
             {
                 SuspendChangeEvent();
-                _selection.SuspendChanges();
+                Selection.SuspendChanges();
                 List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
                 foreach (IFeatureCategory category in categories)
                 {
@@ -1182,12 +1389,12 @@ namespace DotSpatial.Symbology
                         continue;
                     }
 
-                    _selection.RegionCategory = category;
-                    _selection.RemoveRegion(region, out affectedArea);
-                    _selection.RegionCategory = null;
+                    Selection.RegionCategory = category;
+                    Selection.RemoveRegion(region, out affectedArea);
+                    Selection.RegionCategory = null;
                 }
 
-                _selection.ResumeChanges();
+                Selection.ResumeChanges();
                 ResumeChangeEvent();
             }
 
@@ -1195,707 +1402,62 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Unselects all the features that are currently selected
+        /// Unselects all the features that are currently selected.
         /// </summary>
         public virtual void UnSelectAll()
         {
-            _selection.Clear();
+            Selection.Clear();
         }
 
         /// <summary>
-        /// This is testing the idea of using an input parameter type that is marked as out
-        /// instead of a return type.
+        /// Unselects the features by attribute.
         /// </summary>
-        /// <param name="result">
-        /// The result of the creation
-        /// </param>
-        /// <returns>
-        /// Boolean, true if a layer can be created
-        /// </returns>
-        public virtual bool CreateLayerFromSelectedFeatures(out IFeatureLayer result)
+        /// <param name="filterExpression">The filter expression.</param>
+        public void UnselectByAttribute(string filterExpression)
         {
-            // This needs to be overridden at the higher levels where drawing function
-            // and point types exist, but is available here so that you don't need
-            // to know what kind of feature layer you have to create an output layer.
-            result = null;
-            return false;
+            SelectByAttribute(filterExpression, ModifySelectionMode.Subtract);
         }
 
         /// <summary>
-        /// Occurs when the properties should be shown, and launches a layer dialog.
+        /// Zooms to the envelope of the selected features.
         /// </summary>
-        /// <param name="e">
-        /// </param>
-        protected override void OnShowProperties(HandledEventArgs e)
+        public void ZoomToSelectedFeatures()
         {
-            var fla = FeatureLayerActions;
-            if (fla != null)
-            {
-                fla.ShowProperties(this);
-            }
-            e.Handled = true;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets custom actions for FeatureLayer
-        /// </summary>
-        [Browsable(false)]
-        public IFeatureLayerActions FeatureLayerActions { get; set; }
-
-        /// <summary>
-        /// Gets the dictionary of extents that is calculated from the categories.  This is calculated one time,
-        /// when the scheme is applied, and then the cached value is used to help drawing symbols that
-        /// are modified by the categorical boundaries.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDictionary<IFeatureCategory, Extent> CategoryExtents
-        {
-            get { return _categoryExtents; }
+            ZoomToSelectedFeatures(2, 2);
         }
 
         /// <summary>
-        /// Gets or sets a rectangle that gives the maximal extent for 2D GDI+ drawing in pixels.
-        /// Coordinates outside this range will cause overflow exceptions to occur.
+        /// Zooms to the envelope of the selected features, adding a border of the size specified.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle DrawingBounds { get; set; }
-
-        /// <summary>
-        /// Gets or sets the drawing filter that can be used to narrow the list of features and then
-        /// cycle through those features.  Using a for-each expression on the filter will automatically
-        /// apply the constraints specified by the characteristics.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [ShallowCopy]
-        public IDrawingFilter DrawingFilter
+        /// <param name="distanceX">Border size in x direction.</param>
+        /// <param name="distanceY">Border size in y direction.</param>
+        public void ZoomToSelectedFeatures(double distanceX, double distanceY)
         {
-            get { return _drawingFilter; }
-            set { _drawingFilter = value; }
-        }
-
-        /// <summary>
-        ///  Gets or sets a string name for this layer.  This is not necessarily the same as the legend text.
-        /// </summary>
-        [Category("General"), Description("Gets or sets a string name for this layer.  This is not necessarily the same as the legend text.")]
-        public virtual string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the chunk size on the drawing filter.  This should be controlled
-        /// by drawing layers.
-        /// </summary>
-        protected int ChunkSize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet
-        /// </summary>
-        [Serialize("DataSet", ConstructorArgumentIndex = 0)]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new IFeatureSet DataSet
-        {
-            get { return base.DataSet as IFeatureSet; }
-            set
-            {
-                if (DataSet != null)
-                {
-                    OnIgnoreFeaturesetEvents(DataSet);
-                }
-
-                base.DataSet = value;
-                OnHandleFeaturesetEvents(DataSet);
-            }
-        }
-
-        /// <summary>
-        /// Gets underlying dataset for this layer
-        /// </summary>
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Description("FeatureSet Properties")]
-        public IFeatureSet FeatureSet
-        {
-            get
-            {
-                return DataSet;
-            }
-        }
-
-        /// <summary>
-        /// Controls the drawn states according to a feature index.  This is used if the EditMode is
-        /// false.  When EditMode is true, then drawn states are tied to the features instead.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public FastDrawnState[] DrawnStates
-        {
-            get
-            {
-                if (_drawnStates == null)
-                {
-                    DrawnStatesNeeded = true;
-                }
-
-                return _drawnStates;
-            }
-
-            set { _drawnStates = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean.  If edit mode is true, feature index is ignored, and features
-        /// are assumed to be entirely loaded into ram.  If edit mode is false, then index
-        /// is used instead and features are not assumed to be loaded into ram.
-        /// </summary>
-        [Browsable(true)]
-        [Description("If edit mode is true, feature index is ignored, and features are assumed to be entirely loaded into ram.  If edit mode is false, then index is used instead and features are not assumed to be loaded into ram.")]
-        public bool EditMode
-        {
-            get { return _editMode; }
-            set
-            {
-                if (value == _editMode) return;
-                _editMode = value;
-                if (_editMode)
-                {
-                    _drawingFilter = new DrawingFilter(DataSet.Features, _scheme, 5000);
-                    _selection = new Selection(DataSet, _drawingFilter);
-                }
-                else
-                {
-                    _selection = new IndexSelection(this);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the envelope of the DataSet supporting this FeatureLayer
-        /// </summary>
-        [Category("General"), Description("Gets the envelope of the DataSet supporting this FeatureLayer")]
-        public override Extent Extent
-        {
-            get
-            {
-                return DataSet == null ? new Extent() : DataSet.Extent;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the label layer
-        /// </summary>
-        [Category("General"), Description("Gets or sets the label layer associated with this feature layer.")]
-        [ShallowCopy]
-        [Serialize("LabelLayer")]
-        public virtual ILabelLayer LabelLayer
-        {
-            get { return _labelLayer; }
-            set
-            {
-                _labelLayer = value;
-                _labelLayer.FeatureLayer = this;
-                _labelLayer.CreateLabels();
-                OnItemChanged();
-            }
-        }
-
-        /// <summary>
-        /// Restructures the LegendItems based on whether or not the symbology makes use
-        /// of schemes.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override IEnumerable<ILegendItem> LegendItems
-        {
-            get
-            {
-                if (Symbology.AppearsInLegend)
-                {
-                    return new List<ILegendItem> { Symbology };
-                }
-
-                // Leave this cast in place for compatibility with 3.5.
-                return Symbology.GetCategories().Cast<ILegendItem>();
-            }
-        }
-
-        /// <summary>
-        /// Gets a Selection class that is allows the user to cycle through all the selected features with
-        /// a foreach method.  This can be null.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ISelection Selection
-        {
-            get { return _selection; }
-        }
-
-        /// <summary>
-        /// Gets or sets the shared characteristics to use with the selected features.
-        /// </summary>
-        [Category("Symbology"), Description("Gets or sets a collection of feature characteristics for this layer."),
-         ShallowCopy]
-        public virtual IFeatureSymbolizer SelectionSymbolizer
-        {
-            get
-            {
-                if (_scheme != null)
-                {
-                    IEnumerable<IFeatureCategory> categories = _scheme.GetCategories();
-                    if (categories != null)
-                    {
-                        if (categories.Count() > 0)
-                        {
-                            return categories.First().SelectionSymbolizer;
-                        }
-                    }
-                }
-
-                return _selectionFeatureSymbolizer;
-            }
-
-            set
-            {
-                value.SetParentItem(this);
-                bool defaultExisted = false;
-                if (_scheme != null)
-                {
-                    IEnumerable<IFeatureCategory> categories = _scheme.GetCategories();
-                    if (categories != null)
-                    {
-                        if (categories.Count() > 0)
-                        {
-                            categories.First().SelectionSymbolizer = value;
-                            defaultExisted = true;
-                        }
-                    }
-                }
-
-                if (defaultExisted == false)
-                {
-                    _selectionFeatureSymbolizer = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets whether labels should be drawn.
-        /// </summary>
-        [Category("Behavior"), Description("Gets or sets whether labels should be drawn."), Serialize("ShowLabels")]
-        public virtual bool ShowLabels
-        {
-            get { return _showLabels; }
-            set
-            {
-                if (value == _showLabels) return;
-                _showLabels = value;
-                OnItemChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
-        /// </summary>
-        [Category("Appearance"), Description("Gets or sets a collection of feature characteristics for this layer."),
-         ShallowCopy]
-        public virtual IFeatureSymbolizer Symbolizer
-        {
-            get
-            {
-                if (_scheme != null)
-                {
-                    IEnumerable<IFeatureCategory> categories = _scheme.GetCategories();
-                    if (categories != null)
-                    {
-                        if (categories.Count() > 0)
-                        {
-                            return categories.First().Symbolizer;
-                        }
-                    }
-                }
-
-                return _featureSymbolizer;
-            }
-
-            set
-            {
-                value.SetParentItem(this);
-                bool defaultExisted = false;
-                if (_scheme != null)
-                {
-                    IEnumerable<IFeatureCategory> categories = _scheme.GetCategories();
-                    if (categories != null)
-                    {
-                        if (categories.Count() > 0)
-                        {
-                            categories.First().Symbolizer = value;
-                            defaultExisted = true;
-                        }
-                    }
-                }
-
-                if (defaultExisted == false)
-                {
-                    _featureSymbolizer = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the current feature scheme, but to change it ApplyScheme should be called, so that
-        /// feature categories are updated as well.
-        /// </summary>
-        [ShallowCopy]
-        public IFeatureScheme Symbology
-        {
-            get { return _scheme; }
-            set
-            {
-                if (value == _scheme)
-                {
-                    return;
-                }
-
-                OnExcludeScheme(_scheme);
-                _scheme = value;
-                OnIncludeScheme(value);
-                ApplyScheme(value);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when setting the symbology to a new scheme and allows removing event handlers
-        /// </summary>
-        /// <param name="scheme">
-        /// </param>
-        protected virtual void OnExcludeScheme(IFeatureScheme scheme)
-        {
-            if (scheme == null)
+            if (Selection.Count == 0)
             {
                 return;
             }
 
-            scheme.ItemChanged -= SchemeItemChanged;
-            scheme.SetParentItem(null);
-            scheme.SelectFeatures -= OnSelectFeatures;
-            scheme.DeselectFeatures -= OnDeselectFeatures;
+            Envelope env = Selection.Envelope;
+            if (env.Width == 0 || env.Height == 0)
+            {
+                env.ExpandBy(distanceX, distanceY);
+            }
+
+            OnZoomToLayer(env);
         }
 
         /// <summary>
-        /// Occurs as a new featureset is being assigned to this layer
+        /// This calculates the extent for the category and caches it in the extents collection.
         /// </summary>
-        /// <param name="featureSet">
-        /// The feature Set.
-        /// </param>
-        protected virtual void OnHandleFeaturesetEvents(IFeatureSet featureSet)
-        {
-            if (featureSet == null)
-            {
-                return;
-            }
-
-            DataSet.VerticesInvalidated += DataSetVerticesInvalidated;
-            DataSet.FeatureAdded += DataSetFeatureAdded;
-            DataSet.FeatureRemoved += DataSetFeatureRemoved;
-        }
-
-        /// <summary>
-        /// Unwires event handlers for the specified featureset.
-        /// </summary>
-        /// <param name="featureSet">
-        /// </param>
-        protected virtual void OnIgnoreFeaturesetEvents(IFeatureSet featureSet)
-        {
-            if (featureSet == null)
-            {
-                return;
-            }
-
-            DataSet.VerticesInvalidated -= DataSetVerticesInvalidated;
-            DataSet.FeatureAdded -= DataSetFeatureAdded;
-            DataSet.FeatureRemoved -= DataSetFeatureRemoved;
-        }
-
-        /// <summary>
-        /// Occurs when setting symbology to a new scheme and allows adding event handlers
-        /// </summary>
-        /// <param name="scheme">
-        /// </param>
-        protected virtual void OnIncludeScheme(IFeatureScheme scheme)
-        {
-            if (scheme == null)
-            {
-                return;
-            }
-
-            scheme.ItemChanged += SchemeItemChanged;
-            scheme.SetParentItem(this);
-            scheme.SelectFeatures += OnSelectFeatures;
-            scheme.DeselectFeatures += OnDeselectFeatures;
-        }
-
-        /// <summary>
-        /// Occurs when selecting features and fires the SelectByAttribute event with
-        /// the expression used as the filter expression
-        /// </summary>
-        /// <param name="sender">
-        /// </param>
-        /// <param name="e">
-        /// </param>
-        protected virtual void OnSelectFeatures(object sender, ExpressionEventArgs e)
-        {
-            SelectByAttribute(e.Expression);
-        }
-
-        /// <summary>
-        /// Occurs when selecting features and fires the SelectByAttribute event with
-        /// the expression used as the filter expression
-        /// </summary>
-        protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
-        {
-            UnselectByAttribute(e.Expression);
-        }
-
-        private void DataSetFeatureAdded(object sender, FeatureEventArgs e)
-        {
-            if (_drawingFilter == null)
-            {
-                return;
-            }
-
-            if (_drawingFilter.DrawnStates == null)
-            {
-                return;
-            }
-
-            _drawingFilter.DrawnStates.Add(e.Feature, new DrawnState(Symbology.GetCategories().First(), false, 0, true));
-        }
-
-        private void DataSetFeatureRemoved(object sender, FeatureEventArgs e)
-        {
-            if (_drawingFilter == null)
-            {
-                return;
-            }
-
-            _drawingFilter.DrawnStates.Remove(e.Feature);
-        }
-
-        private void SchemeItemChanged(object sender, EventArgs e)
-        {
-            OnItemChanged(sender);
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Assigns the fast drawn states
-        /// </summary>
-        public void AssignFastDrawnStates()
-        {
-            _drawnStatesNeeded = true;
-            _drawnStates = new FastDrawnState[DataSet.ShapeIndices.Count];
-            _selection.Changed -= SelectedFeaturesChanged;
-            _selection = new IndexSelection(this); // update the new drawn-states;
-            _selection.Changed += SelectedFeaturesChanged;
-
-            // Fastest when no categories are used because we don't need DataTable at all
-            List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
-            IFeatureCategory deflt = null;
-            if (categories.Count > 0 && categories[0].FilterExpression == null)
-            {
-                deflt = categories[0];
-            }
-
-            for (int i = 0; i < DataSet.ShapeIndices.Count; i++)
-            {
-                _drawnStates[i] = new FastDrawnState { Category = deflt };
-            }
-
-            if (categories.Count == 1 && categories[0].FilterExpression == null)
-            {
-                return;
-            }
-
-            bool containsFid = false;
-            if (!DataSet.AttributesPopulated)
-            {
-                // We don't want to read the table multiple times for each category.  Just
-                // read a block and then do all the categories we can for that block.
-                var names = new List<string>();
-                foreach (var category in categories)
-                {
-                    var current = DistinctFieldsInExpression(category.FilterExpression);
-                    foreach (string name in current.Where(name => !names.Contains(name)))
-                    {
-                        names.Add(name);
-                    }
-                }
-
-                if (names.Count == 0)
-                {
-                    for (int i = 0; i < DataSet.NumRows(); i++)
-                    {
-                        _drawnStates[i].Category = categories[categories.Count - 1];
-                    }
-
-                    return;
-                }
-
-                int rowCount = DataSet.NumRows();
-                const int size = 50000;
-                int numPages = (int)Math.Ceiling((double)rowCount / size);
-                for (int page = 0; page < numPages; page++)
-                {
-                    int count = (page == numPages - 1) ? rowCount - page * size : size;
-                    DataTable expressionTable = DataSet.GetAttributes(page * size, count, names);
-                    foreach (var category in categories)
-                    {
-                        DataRow[] res = expressionTable.Select(category.FilterExpression);
-                        foreach (DataRow r in res)
-                        {
-                            _drawnStates[(int)r["FID"]].Category = category;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                DataTable table = DataSet.DataTable;
-                foreach (var category in categories)
-                {
-                    if (category.FilterExpression != null && category.FilterExpression.Contains("[FID]"))
-                    {
-                        containsFid = true;
-                    }
-                }
-
-                if (containsFid && table.Columns.Contains("FID") == false)
-                {
-                    table.Columns.Add("FID");
-                    for (int i = 0; i < table.Rows.Count; i++)
-                    {
-                        table.Rows[i]["FID"] = i;
-                    }
-                }
-
-                foreach (var category in categories)
-                {
-                    DataRow[] result = table.Select(category.FilterExpression);
-                    foreach (DataRow row in result)
-                    {
-                        _drawnStates[table.Rows.IndexOf(row)].Category = category;
-                    }
-                }
-
-                if (containsFid)
-                {
-                    table.Columns.Remove("FID");
-                }
-            }
-        }
-
-        /// <summary>
-        /// This method will remove the in ram features from the underlying dataset.
-        /// This will not affect the data source.
-        /// </summary>
-        /// <param name="indexValues">The list or array of integer index values.</param>
-        public void RemoveFeaturesAt(IEnumerable<int> indexValues)
-        {
-            DataSet.RemoveShapesAt(indexValues);
-            AssignFastDrawnStates();
-        }
-
-        /// <summary>
-        /// This forces the removal of all the selected features.
-        /// </summary>
-        public void RemoveSelectedFeatures()
-        {
-            // Only work with selections with some features.
-            if (Selection.Count == 0) return;
-
-            IFeatureSet fs = DataSet;
-            if (fs.IndexMode)
-            {
-                // Use Index selection to remove by index
-                IndexSelection indexSel = Selection as IndexSelection;
-
-                // In case we have an invalid cast for some reason.
-                if (indexSel == null) return;
-
-                // Create a list of index values to remove.
-                List<int> orderedIndex = new List<int>();
-                foreach (int index in indexSel)
-                {
-                    orderedIndex.Add(index);
-                }
-
-                RemoveFeaturesAt(orderedIndex);
-                // Since the indexing has changed, we need to update the drawn states too.
-            }
-            else
-            {
-                // This case tracks by IFeature, so we don't need to do a lot else.
-                List<IFeature> features = Selection.ToFeatureList();
-                foreach (IFeature feature in features)
-                {
-                    DataSet.Features.Remove(feature);
-                }
-            }
-        }
-
-        /// <summary>
-        /// This does more than remove an index key.  This also shifts down the category
-        /// and selection state for every drawn state with a higher index than the
-        /// given index value.  Call this only in index mode, and only if the shape
-        /// is being removed from the FeatureSet.  in practice, this should really
-        /// only be called internally, but is here just in case.
-        /// </summary>
-        /// <param name="indexValues">
-        /// The list or array of index values to remove.
-        /// </param>
-        private void RemoveDrawnStates(IEnumerable<int> indexValues)
-        {
-            Dictionary<int, FastDrawnState> set = new Dictionary<int, FastDrawnState>();
-            int ind = 0;
-            List<int> remaining = new List<int>();
-            foreach (FastDrawnState state in _drawnStates)
-            {
-                set.Add(ind, state);
-                remaining.Add(ind);
-                ind++;
-            }
-
-            foreach (int index in indexValues)
-            {
-                set.Remove(index);
-                remaining.Remove(index);
-            }
-
-            _drawnStates = new FastDrawnState[set.Count];
-            int i = 0;
-            foreach (int r in remaining)
-            {
-                _drawnStates[i] = set[r];
-                i++;
-            }
-
-            _selection.Changed -= SelectedFeaturesChanged;
-            // If the drawnStates changes, the selection must also change.
-            _selection = new IndexSelection(this);
-            _selection.Changed += SelectedFeaturesChanged;
-        }
-
-        /// <summary>
-        /// This calculates the extent for the category and caches it in the extents collection
-        /// </summary>
-        /// <param name="category">
-        /// </param>
+        /// <param name="category">The category the extent gets calculated for.</param>
+        /// <returns>The extent calculated for the category.</returns>
         protected virtual Extent CalculateCategoryExtent(IFeatureCategory category)
         {
             Extent ext = new Extent(new[] { double.MaxValue, double.MaxValue, double.MinValue, double.MinValue });
             if (_editMode)
             {
-                IDictionary<IFeature, IDrawnState> features = _drawingFilter.DrawnStates;
+                IDictionary<IFeature, IDrawnState> features = DrawingFilter.DrawnStates;
 
                 foreach (IFeature f in DataSet.Features)
                 {
@@ -1938,23 +1500,46 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This method cycles through all the Categories in the scheme and creates a new
-        /// category.
+        /// Disposes the resources of the FeatureLayer.
         /// </summary>
-        /// <param name="scheme">
-        /// The scheme to apply
-        /// </param>
+        /// <param name="disposeManagedResources">Indicates whether managed resources should be disposed too.</param>
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            if (disposeManagedResources)
+            {
+                DataSet = null;
+                Symbology = null;
+                if (_labelLayer != null)
+                {
+                    _labelLayer.Dispose();
+                    _labelLayer = null;
+                }
+
+                if (Selection != null)
+                {
+                    Selection.Changed -= SelectedFeaturesChanged;
+                }
+            }
+
+            base.Dispose(disposeManagedResources);
+        }
+
+        /// <summary>
+        /// This method cycles through all the Categories in the scheme and creates a new category.
+        /// </summary>
+        /// <param name="scheme">The scheme to apply</param>
         protected virtual void OnApplyScheme(IFeatureScheme scheme)
         {
             if (scheme == null) return;
+
             if (_editMode)
             {
-                _drawingFilter.ApplyScheme(scheme);
+                DrawingFilter.ApplyScheme(scheme);
             }
             else
             {
                 List<IFeatureCategory> categories = scheme.GetCategories().ToList();
-                if (_drawnStatesNeeded || (_selection != null && _selection.Count > 0) || categories.Count > 1)
+                if (_drawnStatesNeeded || (Selection != null && Selection.Count > 0) || categories.Count > 1)
                 {
                     AssignFastDrawnStates();
                 }
@@ -1973,10 +1558,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Occurs during a copy operation and handles removing surplus event handlers
+        /// Occurs during a copy operation and handles removing surplus event handlers.
         /// </summary>
-        /// <param name="copy">
-        /// </param>
+        /// <param name="copy">The copied item.</param>
         protected override void OnCopy(Descriptor copy)
         {
             // Remove event handlers from the copy (since Memberwise clone also clones handlers.)
@@ -2030,22 +1614,95 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Occurs when selecting features and fires the SelectByAttribute event with
+        /// the expression used as the filter expression
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
+        {
+            UnselectByAttribute(e.Expression);
+        }
+
+        /// <summary>
+        /// Occurs when setting the symbology to a new scheme and allows removing event handlers.
+        /// </summary>
+        /// <param name="scheme">The scheme that gets excluded.</param>
+        protected virtual void OnExcludeScheme(IFeatureScheme scheme)
+        {
+            if (scheme == null)
+            {
+                return;
+            }
+
+            scheme.ItemChanged -= SchemeItemChanged;
+            scheme.SetParentItem(null);
+            scheme.SelectFeatures -= OnSelectFeatures;
+            scheme.DeselectFeatures -= OnDeselectFeatures;
+        }
+
+        /// <summary>
         /// Handles the situation for exporting the layer as a new source.
         /// </summary>
         protected override void OnExportData()
         {
-            var fla = FeatureLayerActions;
-            if (fla != null)
-            {
-                // In this case the feature layer won't be edited, but rather,
-                // it needs to be passed so the process can work with the selection
-                // and possibly add the finished content back into the map.
-                fla.ExportData(this);
-            }
+            // In this case the feature layer won't be edited, but rather,
+            // it needs to be passed so the process can work with the selection
+            // and possibly add the finished content back into the map.
+            FeatureLayerActions?.ExportData(this);
         }
 
         /// <summary>
-        /// Occurs before the label setup dialog is shown.  If handled is set to true,
+        /// Occurs as a new featureset is being assigned to this layer.
+        /// </summary>
+        /// <param name="featureSet">The feature Set.</param>
+        protected virtual void OnHandleFeaturesetEvents(IFeatureSet featureSet)
+        {
+            if (featureSet == null)
+            {
+                return;
+            }
+
+            DataSet.VerticesInvalidated += DataSetVerticesInvalidated;
+            DataSet.FeatureAdded += DataSetFeatureAdded;
+            DataSet.FeatureRemoved += DataSetFeatureRemoved;
+        }
+
+        /// <summary>
+        /// Unwires event handlers for the specified featureset.
+        /// </summary>
+        /// <param name="featureSet">FeatureSet the event handlers get unwired from.</param>
+        protected virtual void OnIgnoreFeaturesetEvents(IFeatureSet featureSet)
+        {
+            if (featureSet == null)
+            {
+                return;
+            }
+
+            DataSet.VerticesInvalidated -= DataSetVerticesInvalidated;
+            DataSet.FeatureAdded -= DataSetFeatureAdded;
+            DataSet.FeatureRemoved -= DataSetFeatureRemoved;
+        }
+
+        /// <summary>
+        /// Occurs when setting symbology to a new scheme and allows adding event handlers.
+        /// </summary>
+        /// <param name="scheme">Scheme that gets included.</param>
+        protected virtual void OnIncludeScheme(IFeatureScheme scheme)
+        {
+            if (scheme == null)
+            {
+                return;
+            }
+
+            scheme.ItemChanged += SchemeItemChanged;
+            scheme.SetParentItem(this);
+            scheme.SelectFeatures += OnSelectFeatures;
+            scheme.DeselectFeatures += OnDeselectFeatures;
+        }
+
+        /// <summary>
+        /// Occurs before the label setup dialog is shown. If handled is set to true,
         /// then the dialog will not be shown.
         /// </summary>
         /// <param name="e">
@@ -2053,8 +1710,7 @@ namespace DotSpatial.Symbology
         /// </param>
         protected virtual void OnLabelSetup(HandledEventArgs e)
         {
-            var h = LabelSetup;
-            if (h != null) h(this, e);
+            LabelSetup?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2062,43 +1718,54 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnSchemeApplied()
         {
-            var h = SchemeApplied;
-            if (h != null) h(this, EventArgs.Empty);
+            SchemeApplied?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// Fires the SnapShotTaken event.  This can be overridden in order to modify the bitmap returned etc.
+        /// Occurs when selecting features and fires the SelectByAttribute event with
+        /// the expression used as the filter expression
         /// </summary>
-        /// <param name="e">
-        /// </param>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnSelectFeatures(object sender, ExpressionEventArgs e)
+        {
+            SelectByAttribute(e.Expression);
+        }
+
+        /// <summary>
+        /// Occurs when the properties should be shown, and launches a layer dialog.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnShowProperties(HandledEventArgs e)
+        {
+            FeatureLayerActions?.ShowProperties(this);
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Fires the SnapShotTaken event. This can be overridden in order to modify the bitmap returned etc.
+        /// </summary>
+        /// <param name="e">The event args.</param>
         protected virtual void OnSnapShotTaken(Bitmap e)
         {
-            var h = SnapShotTaken;
-            if (h != null) h(this, new SnapShotEventArgs(e));
+            SnapShotTaken?.Invoke(this, new SnapShotEventArgs(e));
         }
 
         /// <summary>
-        /// Occurs before attributes are about to be viewed.  Overriding this
-        /// allows that to be handled, and if e.Handled is true, this class
-        /// won't show the attributes.
+        /// Occurs before attributes are about to be viewed. Overriding this
+        /// allows that to be handled, and if e.Handled is true, this class won't show the attributes.
         /// </summary>
-        /// <param name="e">
-        /// A HandledEventArgs
-        /// </param>
+        /// <param name="e">The event args.</param>
         protected virtual void OnViewAttributes(HandledEventArgs e)
         {
-            var h = ViewAttributes;
-            if (h != null) h(this, e);
+            ViewAttributes?.Invoke(this, e);
         }
 
         /// <summary>
-        /// The distinct fields in expression.
+        /// Gets the distinct fields in the given expression. Fields should be indicated by [ ] characters.
         /// </summary>
-        /// <param name="expression">
-        /// The expression.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="expression">The expression.</param>
+        /// <returns>Names of the fields in the given expression.</returns>
         private static IEnumerable<string> DistinctFieldsInExpression(string expression)
         {
             // Fields should be indicated by [ ] characters.
@@ -2107,6 +1774,7 @@ namespace DotSpatial.Symbology
             {
                 return allNames;
             }
+
             bool isField = false; // I don't think nesting is possible
             List<char> currentName = new List<char>();
             foreach (char current in expression)
@@ -2133,9 +1801,85 @@ namespace DotSpatial.Symbology
             return allNames.Distinct();
         }
 
-        #endregion
+        /// <summary>
+        /// Configures the feature layer.
+        /// </summary>
+        /// <param name="featureSet">The feature set.</param>
+        private void Configure(IFeatureSet featureSet)
+        {
+            _categoryExtents = new Dictionary<IFeatureCategory, Extent>();
+            DrawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
+            DataSet = featureSet;
+            LegendText = featureSet.Name;
+            Name = featureSet.Name;
+            var label = new SymbologyMenuItem(Msg.FeatureLayer_Labeling);
+            label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick));
+            label.MenuItems.Add(new SymbologyMenuItem(Msg.SetDynamicVisibilityScale, SymbologyImages.ZoomScale, LabelExtentsClick));
+            ContextMenuItems.Insert(4, label);
+            var selection = new SymbologyMenuItem(Msg.FeatureLayer_Selection, SymbologyImages.select, null);
+            ContextMenuItems.Insert(5, selection);
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Zoom_To_Selected, SymbologyImages.ZoomInMap, SelectionZoomClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Create_Layer_From_Selected_Features, SymbologyImages.Copy, SelectionToLayerClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectByAttributes, SelectByAtributesClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectAll, SymbologyImages.select_all, SelectAllClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_UnselectAll, SymbologyImages.deselect_16x16, UnselectAllClick));
 
-        #region EventHandlers
+            ContextMenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Join_Excel_File, SymbologyImages.redbluearrows, JoinExcel));
+            if (!featureSet.IndexMode)
+            {
+                _editMode = true;
+            }
+
+            // Categories and selections
+
+            // these are like a stored procedure that only care about the selection and no other drawing characteristics.
+            if (_editMode)
+            {
+                DrawingFilter = new DrawingFilter(DataSet.Features, _scheme, 5000);
+                Selection = new Selection(featureSet, DrawingFilter);
+            }
+            else
+            {
+                Selection = new IndexSelection(this);
+            }
+
+            Selection.Changed += SelectedFeaturesChanged;
+
+            _drawnStatesNeeded = false;
+        }
+
+        private void DataSetFeatureAdded(object sender, FeatureEventArgs e)
+        {
+            DrawingFilter?.DrawnStates?.Add(e.Feature, new DrawnState(Symbology.GetCategories().First(), false, 0, true));
+        }
+
+        private void DataSetFeatureRemoved(object sender, FeatureEventArgs e)
+        {
+            DrawingFilter?.DrawnStates.Remove(e.Feature);
+        }
+
+        private void DataSetVerticesInvalidated(object sender, EventArgs e)
+        {
+            OnApplyScheme(Symbology);
+            Invalidate();
+        }
+
+        private void JoinExcel(object sender, EventArgs e)
+        {
+            FeatureLayerActions?.ExcelJoin(DataSet);
+        }
+
+        private void LabelExtentsClick(object sender, EventArgs e)
+        {
+            if (_labelLayer == null) return;
+
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                _labelLayer.DynamicVisibilityWidth = _labelLayer.FeatureLayer.MapFrame.ViewExtents.Width;
+                fla.LabelExtents(_labelLayer);
+            }
+        }
 
         private void LabelSetupClick(object sender, EventArgs e)
         {
@@ -2152,37 +1896,101 @@ namespace DotSpatial.Symbology
                 ShowLabels = true;
             }
 
-            var fla = FeatureLayerActions;
-            if (fla != null)
+            FeatureLayerActions?.LabelSetup(_labelLayer);
+        }
+
+        /// <summary>
+        /// This does more than remove an index key. This also shifts down the category and selection state for
+        /// every drawn state with a higher index than the given index value. Call this only in index mode, and
+        /// only if the shape is being removed from the FeatureSet. in practice, this should really only be
+        /// called internally, but is here just in case.
+        /// </summary>
+        /// <param name="indexValues">The list or array of index values to remove.</param>
+        private void RemoveDrawnStates(IEnumerable<int> indexValues)
+        {
+            Dictionary<int, FastDrawnState> set = new Dictionary<int, FastDrawnState>();
+            int ind = 0;
+            List<int> remaining = new List<int>();
+            foreach (FastDrawnState state in _drawnStates)
             {
-                fla.LabelSetup(_labelLayer);
+                set.Add(ind, state);
+                remaining.Add(ind);
+                ind++;
             }
+
+            foreach (int index in indexValues)
+            {
+                set.Remove(index);
+                remaining.Remove(index);
+            }
+
+            _drawnStates = new FastDrawnState[set.Count];
+            int i = 0;
+            foreach (int r in remaining)
+            {
+                _drawnStates[i] = set[r];
+                i++;
+            }
+
+            Selection.Changed -= SelectedFeaturesChanged;
+
+            // If the drawnStates changes, the selection must also change.
+            Selection = new IndexSelection(this);
+            Selection.Changed += SelectedFeaturesChanged;
+        }
+
+        private void SchemeItemChanged(object sender, EventArgs e)
+        {
+            OnItemChanged(sender);
+        }
+
+        private void SelectAllClick(object sender, EventArgs e)
+        {
+            SelectAll();
+        }
+
+        private void SelectByAtributesClick(object sender, EventArgs e)
+        {
+            FeatureLayerActions?.SelectByAttributes(this);
+        }
+
+        private void SelectedFeaturesChanged(object sender, EventArgs e)
+        {
+            if (!_drawnStatesNeeded && !_editMode)
+            {
+                AssignFastDrawnStates();
+            }
+
+            OnItemChanged();
+            OnSelectionChanged();
+        }
+
+        private void SelectionToLayerClick(object sender, EventArgs e)
+        {
+            IFeatureLayer newLayer;
+            if (CreateLayerFromSelectedFeatures(out newLayer))
+            {
+                IGroup grp = GetParentItem() as IGroup;
+                if (grp != null)
+                {
+                    int index = grp.IndexOf(this);
+                    grp.Insert(index + 1, newLayer);
+                }
+
+                newLayer.LegendText = LegendText + " selection";
+            }
+        }
+
+        private void SelectionZoomClick(object sender, EventArgs e)
+        {
+            ZoomToSelectedFeatures();
+        }
+
+        private void UnselectAllClick(object sender, EventArgs e)
+        {
+            UnSelectAll();
         }
 
         #endregion
-
-        /// <summary>
-        /// Disposes the resources of the FeatureLayer.
-        /// </summary>
-        /// <param name="disposeManagedResources">Indicates whether managed resources should be disposed too.</param>
-        protected override void Dispose(bool disposeManagedResources)
-        {
-            if (disposeManagedResources)
-            {
-                DataSet = null;
-                Symbology = null;
-                if (_labelLayer != null)
-                {
-                    _labelLayer.Dispose();
-                    _labelLayer = null;
-                }
-                if (_selection != null)
-                {
-                    _selection.Changed -= SelectedFeaturesChanged;
-                }
-            }
-
-            base.Dispose(disposeManagedResources);
-        }
     }
 }

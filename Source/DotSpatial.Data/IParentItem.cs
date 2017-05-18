@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/3/2009 2:48:48 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Data
 {
@@ -24,12 +14,13 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the parent item relative to this item.
         /// </summary>
+        /// <returns>The parent.</returns>
         T GetParentItem();
 
         /// <summary>
-        /// Sets teh parent legend item for this item
+        /// Sets the parent legend item for this item.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The parent.</param>
         void SetParentItem(T value);
 
         #endregion

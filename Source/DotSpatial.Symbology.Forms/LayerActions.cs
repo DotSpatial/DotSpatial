@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Projections library.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in September, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Windows.Forms;
 
@@ -24,8 +13,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Determines whether a layer has dynamic visibility and hence is only shown at certain scales.
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="mapFrame"></param>
+        /// <param name="e">The dynamic visibility object that gets manipulated.</param>
+        /// <param name="mapFrame">The map frame.</param>
         public void DynamicVisibility(IDynamicVisibility e, IFrame mapFrame)
         {
             using (var dvg = new DynamicVisibilityModeDialog())

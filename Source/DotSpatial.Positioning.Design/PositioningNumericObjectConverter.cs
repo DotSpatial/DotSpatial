@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -24,14 +10,13 @@ namespace DotSpatial.Positioning.Design
     /// <summary>
     /// An abstract class that is inherited by several other classes to handle type conversions.
     /// </summary>
+    // The Original Code is from http://geoframework.codeplex.com/ version 2.0
     public abstract class PositioningNumericObjectConverter : PositioningObjectConverter
     {
         /// <inheritdoc/>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType == typeof(double)
-                    || sourceType == typeof(int)
-                    || sourceType == typeof(float))
+            if (sourceType == typeof(double) || sourceType == typeof(int) || sourceType == typeof(float))
             {
                 return true;
             }
@@ -52,7 +37,7 @@ namespace DotSpatial.Positioning.Design
                 // If a destination type was found, go ahead and create a new instance!
                 if (destinationType != null)
                 {
-                    return Activator.CreateInstance(destinationType, new[] { value });
+                    return Activator.CreateInstance(destinationType, value);
                 }
             }
 

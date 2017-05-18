@@ -295,7 +295,7 @@ namespace DotSpatial.Data.Forms
             this.chkM.TabIndex = 5;
             this.chkM.Text = "M";
             this.chkM.UseVisualStyleBackColor = true;
-            this.chkM.CheckedChanged += new System.EventHandler(this.chkM_CheckedChanged);
+            this.chkM.CheckedChanged += new System.EventHandler(this.ChkMCheckedChanged);
             //
             // chkZ
             //
@@ -306,7 +306,7 @@ namespace DotSpatial.Data.Forms
             this.chkZ.TabIndex = 10;
             this.chkZ.Text = "Z";
             this.chkZ.UseVisualStyleBackColor = true;
-            this.chkZ.CheckedChanged += new System.EventHandler(this.chkZ_CheckedChanged);
+            this.chkZ.CheckedChanged += new System.EventHandler(this.ChkZCheckedChanged);
             //
             // ExtentDialog
             //

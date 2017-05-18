@@ -1,17 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.FindAverageSlope.cs
-// Description:  Find the average slope in the given polygon.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for FindAverageSlope
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -23,11 +11,11 @@ using NetTopologySuite.Geometries;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// A tool for finding the average slope
+    /// A tool for finding the average slope in the given polygon.
     /// </summary>
     public class FindAverageSlope : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -35,52 +23,42 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the FindAverageSlope class.
+        /// Initializes a new instance of the <see cref="FindAverageSlope"/> class.
         /// </summary>
         public FindAverageSlope()
         {
-            this.Name = TextStrings.FindAverageSlope;
-            this.Category = TextStrings.TerrainAnalysis;
-            this.Description = TextStrings.FindAverageSlopeDescription;
-            this.ToolTip = TextStrings.CalculateSlopegivenpolygons;
+            Name = TextStrings.FindAverageSlope;
+            Category = TextStrings.TerrainAnalysis;
+            Description = TextStrings.FindAverageSlopeDescription;
+            ToolTip = TextStrings.CalculateSlopegivenpolygons;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IRaster grid = _inputParam[0].Value as IRaster;
@@ -100,6 +78,7 @@ namespace DotSpatial.Tools
         /// <param name="poly">The flow poly shapefile path.</param>
         /// <param name="output">The resulting DEM of slopes</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IRaster ras, double zFactor, IFeatureSet poly, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -117,7 +96,11 @@ namespace DotSpatial.Tools
             output.DataTable.Columns.Add("FID", typeof(int));
             output.DataTable.Columns.Add(TextStrings.AveSlope, typeof(double));
 
-            IRaster slopeGrid = new Raster { DataType = ras.DataType, Bounds = ras.Bounds };
+            IRaster slopeGrid = new Raster
+                                    {
+                                        DataType = ras.DataType,
+                                        Bounds = ras.Bounds
+                                    };
 
             // FeatureSet polyShape = new FeatureSet();
             int previous = 0;
@@ -171,8 +154,7 @@ namespace DotSpatial.Tools
                         Point pt3 = new Point(xCent + dxHalf, yCent - dyHalf);
                         Point pt4 = new Point(xCent + dxHalf, yCent + dyHalf);
                         Point pt5 = new Point(xCent - dxHalf, yCent + dyHalf);
-                        if ((((!tempFeat.Geometry.Covers(pt1) && !tempFeat.Geometry.Covers(pt2)) && !tempFeat.Geometry.Covers(pt3))
-                             && !tempFeat.Geometry.Covers(pt4)) && !tempFeat.Geometry.Covers(pt5))
+                        if ((((!tempFeat.Geometry.Covers(pt1) && !tempFeat.Geometry.Covers(pt2)) && !tempFeat.Geometry.Covers(pt3)) && !tempFeat.Geometry.Covers(pt4)) && !tempFeat.Geometry.Covers(pt5))
                         {
                             continue;
                         }
@@ -236,10 +218,6 @@ namespace DotSpatial.Tools
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Executes the slope generation raster.
         /// </summary>
@@ -249,12 +227,7 @@ namespace DotSpatial.Tools
         /// <param name="result">The output slope raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the method was successful.</returns>
-        private static bool Slope(
-            ref IRaster ras,
-            double inZFactor,
-            bool slopeInPercent,
-            ref IRaster result,
-            ICancelProgressHandler cancelProgressHandler)
+        private static bool Slope(ref IRaster ras, double inZFactor, bool slopeInPercent, ref IRaster result, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (ras == null || result == null)
@@ -268,8 +241,7 @@ namespace DotSpatial.Tools
                 int noOfRow = ras.NumRows;
 
                 // Create the new raster with the appropriate dimensions
-                IRaster temp = Raster.CreateRaster(
-                    "SlopeRaster.bgd", string.Empty, noOfCol, noOfRow, 1, typeof(double), new[] { string.Empty });
+                IRaster temp = Raster.CreateRaster("SlopeRaster.bgd", string.Empty, noOfCol, noOfRow, 1, typeof(double), new[] { string.Empty });
                 temp.NoDataValue = ras.NoDataValue;
                 temp.Bounds = ras.Bounds;
 
@@ -289,8 +261,8 @@ namespace DotSpatial.Tools
                             double z8 = ras.Value[i + 1, j + 1];
 
                             // 3rd Order Finite Difference slope algorithm
-                            double dZdX = inZFactor * ((z3 - z1) + 2 * (z5 - z4) + (z8 - z6)) / (8 * ras.CellWidth);
-                            double dZdY = inZFactor * ((z1 - z6) + 2 * (z2 - z7) + (z3 - z8)) / (8 * ras.CellHeight);
+                            double dZdX = inZFactor * ((z3 - z1) + (2 * (z5 - z4)) + (z8 - z6)) / (8 * ras.CellWidth);
+                            double dZdY = inZFactor * ((z1 - z6) + (2 * (z2 - z7)) + (z3 - z8)) / (8 * ras.CellHeight);
 
                             double slope = Math.Atan(Math.Sqrt((dZdX * dZdX) + (dZdY * dZdY))) * (180 / Math.PI);
 

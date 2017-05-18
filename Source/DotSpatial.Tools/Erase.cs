@@ -1,18 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.Erase
-// Description:  Erase a portion of a data set.
-
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/24/2009         |  Cleaned up some unnecessary references using re-sharper
-// KP                 |  9/2009            |  Used IDW as model for Erase
-// Ping  Yang         |  12/2009           |  Cleaning code and fixing bugs.
-// Troy Shields       |  03/2013           |  Updated License and cleaned up code.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Analysis;
 using DotSpatial.Data;
@@ -22,11 +9,11 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// An Erase tool
+    /// Erase a portion of a data set.
     /// </summary>
     public class Erase : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -34,52 +21,42 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the Erase class.
+        /// Initializes a new instance of the <see cref="Erase"/> class.
         /// </summary>
         public Erase()
         {
-            this.Name = TextStrings.Erase;
-            this.Category = TextStrings.Analysis;
-            this.Description = TextStrings.RraseDescription;
-            this.ToolTip = TextStrings.EliminateSecondFeatureset;
+            Name = TextStrings.Erase;
+            Category = TextStrings.Analysis;
+            Description = TextStrings.RraseDescription;
+            ToolTip = TextStrings.EliminateSecondFeatureset;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet self = _inputParam[0].Value as IFeatureSet;
@@ -97,6 +74,7 @@ namespace DotSpatial.Tools
                 _outputParam = null;
                 return false;
             }
+
             result.Filename = ((IFeatureSet)_outputParam[0].Value).Filename;
             result.Save();
             _outputParam[0].Value = result;

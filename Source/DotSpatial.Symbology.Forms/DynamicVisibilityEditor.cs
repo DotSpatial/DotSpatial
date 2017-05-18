@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/27/2009 5:08:52 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -23,7 +13,7 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class DynamicVisibilityEditor : UITypeEditor
     {
-        #region Private Variables
+        #region Fields
 
         private ILayer _layer;
 
@@ -35,33 +25,29 @@ namespace DotSpatial.Symbology.Forms
         /// Display a drop down when editing instead of the normal control, and allow the user to "grab" a
         /// new dynamic visibility extent.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="provider"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <param name="provider">The service provider.</param>
+        /// <param name="value">Not used.</param>
+        /// <returns>Returns whether or not to use the dynamic visibility.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _layer = context.Instance as ILayer;
-            IWindowsFormsEditorService dialogProvider = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+            _layer = context?.Instance as ILayer;
+            IWindowsFormsEditorService dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             DynamicVisibilityControl dvc = new DynamicVisibilityControl(dialogProvider, _layer);
-            if (dialogProvider != null) dialogProvider.DropDownControl(dvc);
-            if (_layer != null) _layer.Invalidate();
+            dialogProvider?.DropDownControl(dvc);
+            _layer?.Invalidate();
             return dvc.UseDynamicVisibility;
         }
 
         /// <summary>
         /// Indicate that we should use a drop-down for controlling dynamic visibility.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <returns>The UITypeEditorEditStyle</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

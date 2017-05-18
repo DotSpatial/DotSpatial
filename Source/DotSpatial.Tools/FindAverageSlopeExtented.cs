@@ -1,17 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.FindAverageSlopeExtended.cs
-// Description:  Calculate Average Slope for given polygons with more user preferences
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for FindAverageSlopeExtented
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -23,11 +11,11 @@ using NetTopologySuite.Geometries;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Find the slope
+    /// Calculate Average Slope for given polygons with more user preferences
     /// </summary>
     public class FindAverageSlopeExtented : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -35,52 +23,42 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the FindAverageSlopeExtented class.
+        /// Initializes a new instance of the <see cref="FindAverageSlopeExtented"/> class.
         /// </summary>
         public FindAverageSlopeExtented()
         {
-            this.Name = TextStrings.FindAverageSlope;
-            this.Category = TextStrings.TerrainAnalysis;
-            this.Description = TextStrings.FindAverageSlopeExtentedDescription;
-            this.ToolTip = TextStrings.FindAvrageSlopeExtented;
+            Name = TextStrings.FindAverageSlope;
+            Category = TextStrings.TerrainAnalysis;
+            Description = TextStrings.FindAverageSlopeExtentedDescription;
+            ToolTip = TextStrings.FindAvrageSlopeExtented;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IRaster grid = _inputParam[0].Value as IRaster;
@@ -93,16 +71,7 @@ namespace DotSpatial.Tools
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
-            return Execute(
-                grid,
-                inZFactor,
-                slopeInPercent,
-                poly,
-                fldInPolyToStoreSlope,
-                outerShpFile,
-                outerShpIndex,
-                output,
-                cancelProgressHandler);
+            return Execute(grid, inZFactor, slopeInPercent, poly, fldInPolyToStoreSlope, outerShpFile, outerShpIndex, output, cancelProgressHandler);
         }
 
         /// <summary>
@@ -117,20 +86,12 @@ namespace DotSpatial.Tools
         /// <param name="outerShpIndex">The index of featureset which give paticular area of interest.</param>
         /// <param name="output">The path to save created slope Feature set.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns></returns>
-        public bool Execute(IRaster ras, double inZFactor, bool slopeInPercent, IFeatureSet poly, string fldInPolyToStoreSlope, IFeatureSet outerShpFile,
-                            int outerShpIndex, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
+        /// <returns>True, if executed successfully.</returns>
+        public bool Execute(IRaster ras, double inZFactor, bool slopeInPercent, IFeatureSet poly, string fldInPolyToStoreSlope, IFeatureSet outerShpFile, int outerShpIndex, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
-            if (ras == null || poly == null || outerShpFile == null || output == null)
-            {
-                return false;
-            }
-
-            if (poly.FeatureType != FeatureType.Polygon || outerShpFile.FeatureType != FeatureType.Polygon)
-            {
-                return false;
-            }
+            if (ras == null || poly == null || outerShpFile == null || output == null) return false;
+            if (poly.FeatureType != FeatureType.Polygon || outerShpFile.FeatureType != FeatureType.Polygon) return false;
 
             int previous = 0;
             IRaster slopegrid = new Raster();
@@ -189,7 +150,7 @@ namespace DotSpatial.Tools
 
             // Add the column
             output.DataTable.Columns.Add("FID", typeof(int));
-            output.DataTable.Columns.Add(fldInPolyToStoreSlope, typeof(Double));
+            output.DataTable.Columns.Add(fldInPolyToStoreSlope, typeof(double));
             for (int c = 0; c < output.Features.Count; c++)
             {
                 if (areaCount[c] == 0)
@@ -213,51 +174,47 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
             _inputParam = new Parameter[7];
             _inputParam[0] = new RasterParam(TextStrings.input1altitudeRaster)
-                                 {
-                                     HelpText = TextStrings.InputRasterforaverageslopecalculation
-                                 };
+            {
+                HelpText = TextStrings.InputRasterforaverageslopecalculation
+            };
             _inputParam[1] = new DoubleParam(TextStrings.inputZfactor, 1.0)
-                                 {
-                                     HelpText = TextStrings.InputZfactorforslopedisplay
-                                 };
+            {
+                HelpText = TextStrings.InputZfactorforslopedisplay
+            };
             _inputParam[2] = new BooleanParam(TextStrings.slopeinpercentage, TextStrings.boxSlopeInPercentage, false)
-                                 {
-                                     HelpText = TextStrings.slopeinpercentage
-                                 };
+            {
+                HelpText = TextStrings.slopeinpercentage
+            };
             _inputParam[3] = new FeatureSetParam(TextStrings.input1polygonfeatureset)
-                                 {
-                                     HelpText = TextStrings.averageslopeinarribute
-                                 };
+            {
+                HelpText = TextStrings.averageslopeinarribute
+            };
             _inputParam[4] = new FeatureSetParam(TextStrings.inputtheareaofinterest)
-                                 {
-                                     HelpText = TextStrings.featuresetcontainareainterest
-                                 };
+            {
+                HelpText = TextStrings.featuresetcontainareainterest
+            };
             _inputParam[5] = new IntParam(TextStrings.Indexofareaofinterestfeature, 0)
-                                 {
-                                     HelpText = TextStrings.indexspecificarea
-                                 };
+            {
+                HelpText = TextStrings.indexspecificarea
+            };
             _inputParam[6] = new StringParam(TextStrings.Fieldnameforavrageslope, TextStrings.AveSlope)
-                                 {
-                                     HelpText = TextStrings.Fieldnamecolomavrageslope
-                                 };
+            {
+                HelpText = TextStrings.Fieldnamecolomavrageslope
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.Outputwithaverageslope)
-                                  {
-                                      HelpText = TextStrings.SelecttheResultofOutput
-                                  };
+            {
+                HelpText = TextStrings.SelecttheResultofOutput
+            };
             _outputParam[2] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Executes the slope generation raster.
@@ -267,13 +224,10 @@ namespace DotSpatial.Tools
         /// <param name="slopeInPercent">If this is true, the slope is returned as a percentage.</param>
         /// <param name="result">The output slope raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        private static void Slope(IRaster ras,double inZFactor,bool slopeInPercent,IRaster result,ICancelProgressHandler cancelProgressHandler)
+        private static void Slope(IRaster ras, double inZFactor, bool slopeInPercent, IRaster result, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
-            if (ras == null || result == null)
-            {
-                return;
-            }
+            if (ras == null || result == null) return;
 
             try
             {
@@ -301,8 +255,8 @@ namespace DotSpatial.Tools
                             double z8 = ras.Value[i + 1, j + 1];
 
                             // 3rd Order Finite Difference slope algorithm
-                            double dZdX = inZFactor * ((z3 - z1) + 2 * (z5 - z4) + (z8 - z6)) / (8 * ras.CellWidth);
-                            double dZdY = inZFactor * ((z1 - z6) + 2 * (z2 - z7) + (z3 - z8)) / (8 * ras.CellHeight);
+                            double dZdX = inZFactor * ((z3 - z1) + (2 * (z5 - z4)) + (z8 - z6)) / (8 * ras.CellWidth);
+                            double dZdY = inZFactor * ((z1 - z6) + (2 * (z2 - z7)) + (z3 - z8)) / (8 * ras.CellHeight);
 
                             double slope = Math.Atan(Math.Sqrt((dZdX * dZdX) + (dZdY * dZdY))) * (180 / Math.PI);
 

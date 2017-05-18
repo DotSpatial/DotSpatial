@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in September, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -29,10 +18,10 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="PolygonLayer"/> class.
         /// </summary>
-        ///<param name="inFeatureSet">A featureset that contains polygons</param>
-        ///<exception cref="PolygonFeatureTypeException">Thrown if a non-polygon featureset is supplied.</exception>
+        /// <param name="inFeatureSet">A featureset that contains polygons</param>
+        /// <exception cref="PolygonFeatureTypeException">Thrown if a non-polygon featureset is supplied.</exception>
         public PolygonLayer(IFeatureSet inFeatureSet)
             : base(inFeatureSet)
         {
@@ -40,7 +29,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Constructor that also shows progress
+        /// Initializes a new instance of the <see cref="PolygonLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">A featureset that contains polygons</param>
         /// <param name="progressHandler">An IProgressHandler to receive progress messages</param>
@@ -52,7 +41,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Initializes a new instance of the PolygonLayer class.
+        /// Initializes a new instance of the <see cref="PolygonLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">A featureset that contains polygons.</param>
         /// <param name="container">A Container to store the newly created layer in.</param>
@@ -62,32 +51,6 @@ namespace DotSpatial.Symbology
             : base(inFeatureSet, container, progressHandler)
         {
             Configure(inFeatureSet);
-        }
-
-        private void Configure(IFeatureSet inFeatureSet)
-        {
-            if (inFeatureSet.FeatureType != FeatureType.Polygon)
-            {
-                throw new PolygonFeatureTypeException();
-            }
-            PolygonScheme ps = new PolygonScheme();
-            ps.SetParentItem(this);
-            Symbology = ps;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Draws some section of the extent to the specified graphics object.
-        /// </summary>
-        /// <param name="g">The graphics object to draw to.</param>
-        /// <param name="p">The projection interface that specifies how to transform geographic coordinates to an image.</param>
-        public override void DrawSnapShot(Graphics g, IProj p)
-        {
-            //bool To_DO_DRaw_Polygon_Snapshot = true;
-            throw new NotImplementedException();
         }
 
         #endregion
@@ -110,6 +73,7 @@ namespace DotSpatial.Symbology
             {
                 return base.SelectionSymbolizer as IPolygonSymbolizer;
             }
+
             set
             {
                 base.SelectionSymbolizer = value;
@@ -134,6 +98,7 @@ namespace DotSpatial.Symbology
             {
                 return base.Symbolizer as IPolygonSymbolizer;
             }
+
             set
             {
                 base.Symbolizer = value;
@@ -152,11 +117,42 @@ namespace DotSpatial.Symbology
         [Serialize("Symbology")]
         public new IPolygonScheme Symbology
         {
-            get { return base.Symbology as IPolygonScheme; }
+            get
+            {
+                return base.Symbology as IPolygonScheme;
+            }
+
             set
             {
                 base.Symbology = value;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Draws some section of the extent to the specified graphics object.
+        /// </summary>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="p">The projection interface that specifies how to transform geographic coordinates to an image.</param>
+        public override void DrawSnapShot(Graphics g, IProj p)
+        {
+            // bool To_DO_DRaw_Polygon_Snapshot = true;
+            throw new NotImplementedException();
+        }
+
+        private void Configure(IFeatureSet inFeatureSet)
+        {
+            if (inFeatureSet.FeatureType != FeatureType.Polygon)
+            {
+                throw new PolygonFeatureTypeException();
+            }
+
+            PolygonScheme ps = new PolygonScheme();
+            ps.SetParentItem(this);
+            Symbology = ps;
         }
 
         #endregion

@@ -49,9 +49,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\Plugins\DotSpatial.Plugins.ShapeEditor\DotSpatial.Plugins.ShapeEditor.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>PdbOnly</DebugType>
@@ -60,9 +60,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Release\Plugins\DotSpatial.Plugins.ShapeEditor\DotSpatial.Plugins.ShapeEditor.XML</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
@@ -110,8 +110,14 @@
     <Compile Include="CoordinateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CoordinateDialog.Designer.cs">
+      <DependentUpon>CoordinateDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="FeatureTypeDialog.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureTypeDialog.Designer.cs">
+      <DependentUpon>FeatureTypeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ShapeEditorPlugin.cs" />
     <Compile Include="MessageStrings.Designer.cs">
@@ -135,6 +141,7 @@
     <Compile Include="SnapSettingsDialog.Designer.cs">
       <DependentUpon>SnapSettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="VertexMovedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CoordinateDialog.resx">
@@ -171,6 +178,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="DotSpatial.Plugins.ShapeEditor.nuspec" />
     <None Include="packages.config" />
@@ -248,6 +258,11 @@
     <Content Include="Readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

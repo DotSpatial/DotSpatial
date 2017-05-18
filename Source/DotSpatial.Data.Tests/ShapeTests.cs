@@ -1,11 +1,37 @@
-﻿using GeoAPI.Geometries;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using GeoAPI.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for Shape.
+    /// </summary>
     [TestFixture]
-    class ShapeTests
+    internal class ShapeTests
     {
+        #region Methods
+
+        /// <summary>
+        /// Checks whether features can be converted to shape if they have no datarow.
+        /// </summary>
+        [Test]
+        public void CanConvertFeatureToShapeIfDataRowIsMissing()
+        {
+            var feature = new Feature(FeatureType.Polygon, new[] { new Coordinate(1375930, 6269230), new Coordinate(1376248, 6269230), new Coordinate(1376248, 6268860), new Coordinate(1375930, 6268860), new Coordinate(1375930, 6269230) });
+            var shape = feature.ToShape();
+            Assert.IsNotNull(shape);
+        }
+
+        /// <summary>
+        /// Checks whether shapes can be created from coordinates.
+        /// </summary>
+        /// <param name="x">The x value.</param>
+        /// <param name="y">The y value.</param>
+        /// <param name="z">The z value.</param>
+        /// <param name="m">The m value.</param>
         [Test]
         [TestCase(1, 1, double.NaN, double.NaN)]
         [TestCase(1, 1, 1, double.NaN)]
@@ -17,19 +43,6 @@ namespace DotSpatial.Data.Tests
             Assert.IsNotNull(shape);
         }
 
-        [Test]
-        public void CanConvertFeatureToShapeWhenDataRowIsMissing()
-        {
-            var feature = new Feature(FeatureType.Polygon, new Coordinate[]
-            {
-                new Coordinate(1375930, 6269230),
-                new Coordinate(1376248, 6269230),
-                new Coordinate(1376248, 6268860),
-                new Coordinate(1375930, 6268860),
-                new Coordinate(1375930, 6269230)
-            });
-            var shape = feature.ToShape();
-            Assert.IsNotNull(shape);
-        }
+        #endregion
     }
 }

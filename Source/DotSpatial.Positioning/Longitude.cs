@@ -795,7 +795,7 @@ Math.Round(
             double LongitudeTemp = (DecimalDegrees + 180) - Angle.Truncate((DecimalDegrees + 180) / 360) * 360 - 180;
 #endif
 
-                //int ZoneNumber = 0;
+                // int ZoneNumber = 0;
 
                 // Adjust for special zone numbers
                 if (DecimalDegrees >= 56.0 && DecimalDegrees < 64.0 && longitudeTemp >= 3.0 && longitudeTemp < 12.0)
@@ -823,7 +823,7 @@ Math.Round(
                     }
                 }
 
-                //else
+                // else
                 {
 #if Framework20 && !PocketPC
                     return (int)Math.Truncate((longitudeTemp + 180) / 6) + 1;
@@ -832,7 +832,7 @@ Math.Round(
 #endif
                 }
 
-                //return ZoneNumber;
+                // return ZoneNumber;
 
                 //                int Zone;
                 //                if (ToRadians() < Math.PI)
@@ -1137,7 +1137,7 @@ Math.Round(
 #endif
             // Get the amount in seconds
             double newSeconds = Seconds;
-            //double HalfInterval = interval * 0.5;
+            // double HalfInterval = interval * 0.5;
             // Loop through all intervals to find the right rounding
             for (double value = 0; value < 60; value += interval)
             {
@@ -1446,7 +1446,7 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, int minutes, double seconds)
         {
-            //return hours < 0
+            // return hours < 0
             //    ? -Math.Round(-hours + minutes / 60.0 + seconds / 3600.0, MaximumPrecisionDigits)
             //    : Math.Round(hours + minutes / 60.0 + seconds / 3600.0, MaximumPrecisionDigits);
             return hours < 0
@@ -1468,7 +1468,7 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, double decimalMinutes)
         {
-            //return hours < 0
+            // return hours < 0
             //    ? -Math.Round(-hours + decimalMinutes / 60.0, MaximumPrecisionDigits)
             //    : Math.Round(hours + decimalMinutes / 60.0, MaximumPrecisionDigits);
             return hours < 0
@@ -1499,7 +1499,7 @@ Math.Round(
         /// <remarks>The specified value will be converted to decimal degrees, then rounded to thirteen digits, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, double decimalMinutes, LongitudeHemisphere hemisphere)
         {
-            //switch (hemisphere)
+            // switch (hemisphere)
             //{
             //    case LongitudeHemisphere.West:
             //        return -Math.Abs(hours) - Math.Round(decimalMinutes / 60.0, MaximumPrecisionDigits);
@@ -1529,7 +1529,7 @@ Math.Round(
         /// <remarks>The specified value will be rounded to thirteen digits, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(double decimalDegrees, LongitudeHemisphere hemisphere)
         {
-            //switch (hemisphere)
+            // switch (hemisphere)
             //{
             //    case LongitudeHemisphere.West:
             //        return -Math.Abs(Math.Round(decimalDegrees, MaximumPrecisionDigits));
@@ -1574,7 +1574,7 @@ Math.Round(
                 default:
                     return ToDecimalDegrees(hours, minutes, seconds);
             }
-            //switch (hemisphere)
+            // switch (hemisphere)
             //{
             //    case LongitudeHemisphere.West:
             //        return -Math.Abs(hours) - Math.Round(minutes / 60.0, MaximumPrecisionDigits) - Math.Round(seconds / 3600.0, MaximumPrecisionDigits);

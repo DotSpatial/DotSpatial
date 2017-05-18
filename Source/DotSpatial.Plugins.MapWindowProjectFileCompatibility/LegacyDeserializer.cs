@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
@@ -6,40 +9,21 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
+    /// <summary>
+    /// LegacyDeserializer
+    /// </summary>
     internal static class LegacyDeserializer
     {
+        #region Methods
+
         /// <summary>
         /// Gets the color from a MW settings string.
         /// </summary>
-        /// <param name="colorFromMW">The color from MW.</param>
-        /// <returns></returns>
-        public static Color GetColor(object colorFromMW)
+        /// <param name="colorFromMw">The color from MW.</param>
+        /// <returns>The converted color.</returns>
+        public static Color GetColor(object colorFromMw)
         {
-            return ColorTranslator.FromOle(Convert.ToInt32(colorFromMW));
-        }
-
-        private static bool UseAlternateParser(dynamic layer)
-        {
-            // use a try catch to determine what xml version we are using.
-            try
-            {
-                if (layer.ShapeFileProperties == null)
-                {
-                    // The element is empty but exists.
-                    return false;
-                }
-                else
-                {
-                    // The element is present.
-                    return false;
-                }
-            }
-            catch (RuntimeBinderException)
-            {
-                // this means the are using ShapefileProperties and a different attribute set.
-                // probably version="4.8.2" +
-                return true;
-            }
+            return ColorTranslator.FromOle(Convert.ToInt32(colorFromMw));
         }
 
         /// <summary>
@@ -54,6 +38,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 DeserializeLayerAlternateVersion(layer.ShapefileProperties, polyLayer);
                 return;
             }
+
             var polySymbolizer = new PolygonSymbolizer();
             var outlineColor = LegacyDeserializer.GetColor(layer.ShapeFileProperties["OutLineColor"]);
             var outlineWidth = Convert.ToDouble(layer.ShapeFileProperties["LineOrPointSize"]);
@@ -87,16 +72,21 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
                     if (startValue == endValue)
                     {
-                        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["StartColor"]), 0);
-                        category.FilterExpression = String.Format("[{0}] = '{1}'", polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName, startValue);
-                        category.LegendText = startValue;
+                        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["StartColor"]), 0)
+                        {
+                            FilterExpression = $"[{polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName}] = '{startValue}'",
+                            LegendText = startValue
+                        };
                     }
                     else
                     {
-                        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["EndColor"]), 0, GradientType.Linear, outlineColor, outlineWidth);
-                        category.FilterExpression = String.Format("'{2}' >= [{0}] >= '{1}'", polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName, startValue, endValue);
-                        category.LegendText = String.Format("{0} - {1}", startValue, endValue);
+                        category = new PolygonCategory(LegacyDeserializer.GetColor(colorBreak["StartColor"]), LegacyDeserializer.GetColor(colorBreak["EndColor"]), 0, GradientType.Linear, outlineColor, outlineWidth)
+                        {
+                            FilterExpression = string.Format("'{2}' >= [{0}] >= '{1}'", polyLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName, startValue, endValue),
+                            LegendText = $"{startValue} - {endValue}"
+                        };
                     }
+
                     category.LegendText = startValue;
                     category.LegendItemVisible = Convert.ToBoolean(colorBreak["Visible"]);
                     polyLayer.Symbology.AddCategory(category);
@@ -112,27 +102,6 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             }
         }
 
-        private static void DeserializeLayerAlternateVersion(dynamic shapefileProperties, MapPolygonLayer polyLayer)
-        {
-            var polySymbolizer = new PolygonSymbolizer();
-            var outlineColor = LegacyDeserializer.GetColor(shapefileProperties.DefaultDrawingOptions["LineColor"]);
-            var outlineWidth = Convert.ToDouble(shapefileProperties.DefaultDrawingOptions["LineWidth"]);
-            polySymbolizer.SetOutline(outlineColor, outlineWidth);
-            if (Convert.ToBoolean(shapefileProperties.DefaultDrawingOptions["FillVisible"]))
-            {
-                Color color = LegacyDeserializer.GetColor(shapefileProperties.DefaultDrawingOptions["FillBgColor"]);
-                float transparency = Convert.ToInt32(shapefileProperties.DefaultDrawingOptions["FillTransparency"]) / 255f;
-                color = color.ToTransparent(transparency);
-                polySymbolizer.SetFillColor(color);
-            }
-            else
-            {
-                polySymbolizer.SetFillColor(Color.Transparent);
-            }
-
-            polyLayer.Symbolizer = polySymbolizer;
-        }
-
         /// <summary>
         /// Deserializes the layer.
         /// </summary>
@@ -145,6 +114,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 // TODO: write alternate parser for this layer information.
                 return;
             }
+
             var lineSymbolizer = new LineSymbolizer();
             lineSymbolizer.SetWidth(Convert.ToDouble(layer.ShapeFileProperties["LineOrPointSize"]));
 
@@ -163,6 +133,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 // TODO: write alternate parser for this layer information.
                 return;
             }
+
             LegacyPointType typeOfPoint = (LegacyPointType)Enum.ToObject(typeof(LegacyPointType), Convert.ToInt32(layer.ShapeFileProperties["PointType"]));
 
             PointSymbolizer pointSymbolizer;
@@ -178,7 +149,29 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
                 pointSymbolizer = new PointSymbolizer(color, ConvertLegacyPointTypeToPointShape(typeOfPoint), width);
             }
+
             pointLayer.Symbolizer = pointSymbolizer;
+        }
+
+        /// <summary>
+        /// Deserializes the layer properties.
+        /// </summary>
+        /// <param name="layer">The layer.</param>
+        /// <param name="mapLayer">The map layer.</param>
+        internal static void DeserializeLayerProperties(dynamic layer, Layer mapLayer)
+        {
+            mapLayer.LegendText = layer["Name"];
+            mapLayer.IsVisible = Convert.ToBoolean(layer["Visible"]);
+            mapLayer.IsExpanded = Convert.ToBoolean(layer["Expanded"]);
+            try
+            {
+                mapLayer.UseDynamicVisibility = Convert.ToBoolean(layer.DynamicVisibility["UseDynamicVisibility"]);
+                mapLayer.DynamicVisibilityWidth = Convert.ToDouble(layer.DynamicVisibility["Scale"]);
+            }
+            catch (RuntimeBinderException)
+            {
+                // No DynamicVisibility node, ignore that.
+            }
         }
 
         private static PointShape ConvertLegacyPointTypeToPointShape(LegacyPointType typeOfPoint)
@@ -210,28 +203,55 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 default:
                     break;
             }
+
             return pointShape;
         }
 
-        /// <summary>
-        /// Deserializes the layer properties.
-        /// </summary>
-        /// <param name="layer">The layer.</param>
-        /// <param name="mapLayer">The map layer.</param>
-        internal static void DeserializeLayerProperties(dynamic layer, Layer mapLayer)
+        private static void DeserializeLayerAlternateVersion(dynamic shapefileProperties, MapPolygonLayer polyLayer)
         {
-            mapLayer.LegendText = layer["Name"];
-            mapLayer.IsVisible = Convert.ToBoolean(layer["Visible"]);
-            mapLayer.IsExpanded = Convert.ToBoolean(layer["Expanded"]);
+            var polySymbolizer = new PolygonSymbolizer();
+            var outlineColor = LegacyDeserializer.GetColor(shapefileProperties.DefaultDrawingOptions["LineColor"]);
+            var outlineWidth = Convert.ToDouble(shapefileProperties.DefaultDrawingOptions["LineWidth"]);
+            polySymbolizer.SetOutline(outlineColor, outlineWidth);
+            if (Convert.ToBoolean(shapefileProperties.DefaultDrawingOptions["FillVisible"]))
+            {
+                Color color = LegacyDeserializer.GetColor(shapefileProperties.DefaultDrawingOptions["FillBgColor"]);
+                float transparency = Convert.ToInt32(shapefileProperties.DefaultDrawingOptions["FillTransparency"]) / 255f;
+                color = color.ToTransparent(transparency);
+                polySymbolizer.SetFillColor(color);
+            }
+            else
+            {
+                polySymbolizer.SetFillColor(Color.Transparent);
+            }
+
+            polyLayer.Symbolizer = polySymbolizer;
+        }
+
+        private static bool UseAlternateParser(dynamic layer)
+        {
+            // use a try catch to determine what xml version we are using.
             try
             {
-                mapLayer.UseDynamicVisibility = Convert.ToBoolean(layer.DynamicVisibility["UseDynamicVisibility"]);
-                mapLayer.DynamicVisibilityWidth = Convert.ToDouble(layer.DynamicVisibility["Scale"]);
+                if (layer.ShapeFileProperties == null)
+                {
+                    // The element is empty but exists.
+                    return false;
+                }
+                else
+                {
+                    // The element is present.
+                    return false;
+                }
             }
             catch (RuntimeBinderException)
             {
-                // No DynamicVisibility node, ignore that.
+                // this means the are using ShapefileProperties and a different attribute set.
+                // probably version="4.8.2" +
+                return true;
             }
         }
+
+        #endregion
     }
 }

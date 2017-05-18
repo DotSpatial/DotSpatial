@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/8/2008 4:44:51 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.Data;
@@ -22,10 +12,16 @@ namespace DotSpatial.Controls
     /// </summary>
     public interface IMapLayer : ILayer
     {
+        #region Methods
+
         /// <summary>
         /// This draws content from the specified geographic regions onto the specified graphics
         /// object specified by MapArgs.
         /// </summary>
+        /// <param name="args">The map args.</param>
+        /// <param name="regions">The regions.</param>
         void DrawRegions(MapArgs args, List<Extent> regions);
+
+        #endregion
     }
 }

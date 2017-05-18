@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/29/2009 1:49:29 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 
@@ -24,7 +14,7 @@ namespace DotSpatial.Symbology
     public interface IMatchable
     {
         /// <summary>
-        /// Tests this object against the comparison object.  If any of the
+        /// Tests this object against the comparison object. If any of the
         /// value type members are different, or if any of the properties
         /// are IMatchable and do not match, then this returns false.
         /// </summary>

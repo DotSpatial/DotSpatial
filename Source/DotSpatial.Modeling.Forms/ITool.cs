@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ITool
-// Description:  Interface for tools for the DotSpatial toolbox
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel.Composition;
 using System.Drawing;
@@ -24,101 +13,78 @@ namespace DotSpatial.Modeling.Forms
     [InheritedExport]
     public interface ITool
     {
-        /// <summary>
-        /// Returns the name of the tool
-        /// </summary>
-        string Name
-        {
-            get;
-        }
+        #region Properties
 
         /// <summary>
-        /// A UniqueName Identifying this Tool, if another tool with the same UniqueName exists this tool will not be loaded. The is persisted by the model builder in saved files.
+        /// Gets a UniqueName Identifying this Tool, if another tool with the same UniqueName exists this tool will not be loaded. The is persisted by the model builder in saved files.
         /// </summary>
-        string AssemblyQualifiedName
-        {
-            get;
-        }
+        string AssemblyQualifiedName { get; }
 
         /// <summary>
-        /// Returns the category of tool that the ITool should be added to
+        /// Gets the Author of the tool's name.
         /// </summary>
-        string Category
-        {
-            get;
-        }
+        string Author { get; }
 
         /// <summary>
-        /// Returns the Version of the tool
+        /// Gets the category of tool that the ITool should be added to.
         /// </summary>
-        string Version
-        {
-            get;
-        }
+        string Category { get; }
 
         /// <summary>
-        /// Returns the Author of the tool's name
+        /// Gets the help text to be displayed when no input field is selected.
         /// </summary>
-        string Author
-        {
-            get;
-        }
+        string Description { get; }
 
         /// <summary>
-        /// Returns a brief description displayed when the user hovers over the tool in the toolbox
+        /// Gets the image displayed in the help area when no input field is selected.
         /// </summary>
-        string ToolTip
-        {
-            get;
-        }
+        Bitmap HelpImage { get; }
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the address of the tools help web page in HTTP://... format. Return a empty string to hide the help hyperlink.
         /// </summary>
-        Parameter[] InputParameters
-        {
-            get;
-        }
+        string HelpUrl { get; }
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets a 32x32 Bitmap - The Large icon that will appears in the Tool Dialog Next to the tools name.
         /// </summary>
-        Parameter[] OutputParameters
-        {
-            get;
-        }
+        Bitmap Icon { get; }
 
         /// <summary>
-        /// 32x32 Bitmap - The Large icon that will appears in the Tool Dialog Next to the tools name
+        /// Gets the input paramater array.
         /// </summary>
-        Bitmap Icon
-        {
-            get;
-        }
+        Parameter[] InputParameters { get; }
 
         /// <summary>
-        /// Image displayed in the help area when no input field is selected
+        /// Gets the name of the tool.
         /// </summary>
-        Bitmap HelpImage
-        {
-            get;
-        }
+        string Name { get; }
 
         /// <summary>
-        /// Help text to be displayed when no input field is selected
+        /// Gets the output paramater array.
         /// </summary>
-        string Description
-        {
-            get;
-        }
+        Parameter[] OutputParameters { get; }
 
         /// <summary>
-        /// Returns the address of the tools help web page in HTTP://... format. Return a empty string to hide the help hyperlink.
+        /// Gets a brief description displayed when the user hovers over the tool in the toolbox.
         /// </summary>
-        string HelpUrl
-        {
-            get;
-        }
+        string ToolTip { get; }
+
+        /// <summary>
+        /// Gets the Version of the tool.
+        /// </summary>
+        string Version { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
+        /// </summary>
+        /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
+        /// <returns>True, if executed succesfully.</returns>
+        bool Execute(ICancelProgressHandler cancelProgressHandler);
 
         /// <summary>
         /// The parameters array should be populated with default values here
@@ -128,13 +94,9 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Fires when one of the paramters value has beend changed, usually when a user changes a input or output parameters value, this can be used to populate other parameters default values.
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
         void ParameterChanged(Parameter sender);
 
-        /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
-        /// </summary>
-        /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
-        /// <returns></returns>
-        bool Execute(ICancelProgressHandler cancelProgressHandler);
+        #endregion
     }
 }

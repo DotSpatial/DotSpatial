@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -26,18 +12,13 @@ namespace DotSpatial.Positioning.Design
     /// <summary>
     /// Provides functionality to convert string values to and from Area objects at design time.
     /// </summary>
+    // The Original Code is from http://geoframework.codeplex.com/ version 2.0
     public sealed class AreaConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Area";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Area";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -48,10 +29,8 @@ namespace DotSpatial.Positioning.Design
                 Type areaType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[]
-                                                     {   areaType.GetProperty("Value").GetValue(value, null),
-                                                         areaType.GetProperty("Units").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double), Type.GetType("GeoFramework.AreaUnit") };
+                object[] constructorParameters = { areaType.GetProperty("Value").GetValue(value, null), areaType.GetProperty("Units").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double), Type.GetType("GeoFramework.AreaUnit") };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = areaType.GetConstructor(constructorTypes);
@@ -62,22 +41,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-		            "Empty",
-		            "Infinity",
-		            "SeaLevel" });
+            return new StandardValuesCollection(new[] { "Empty", "Infinity", "SeaLevel" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

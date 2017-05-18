@@ -1,24 +1,13 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/11/2009 3:17:59 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for SimpleSymbol.
+    /// </summary>
     public interface ISimpleSymbol : IOutlinedSymbol, IColorable
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>

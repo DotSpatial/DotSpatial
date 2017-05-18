@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/26/2009 2:13:31 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -19,78 +9,40 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// RoundedSlider
+    /// RoundedHandle
     /// </summary>
     public class RoundedHandle
     {
-        #region Private Variables
+        #region Fields
 
-        private Color _color;
-        private bool _isDragging;
-        private GradientSlider _parent;
         private float _position;
-        private int _roundingRadius;
-        private bool _visible;
-        private int _width;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of RoundedSlider
+        /// Initializes a new instance of the <see cref="RoundedHandle"/> class.
         /// </summary>
         public RoundedHandle()
         {
-            _width = 10;
-            _roundingRadius = 4;
-            _color = Color.SteelBlue;
-            _visible = true;
+            Width = 10;
+            RoundingRadius = 4;
+            Color = Color.SteelBlue;
+            Visible = true;
         }
 
         /// <summary>
-        /// Creates a new instance of a rounded handle, specifying the parent gradient slider
+        /// Initializes a new instance of the <see cref="RoundedHandle"/> class specifying the parent gradient slider.
         /// </summary>
-        /// <param name="parent"></param>
+        /// <param name="parent">The parent gradient slider.</param>
         public RoundedHandle(GradientSlider parent)
         {
-            _parent = parent;
-            _width = 10;
-            _roundingRadius = 4;
-            _color = Color.SteelBlue;
-            _visible = true;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Draws this slider on the specified graphics object
-        /// </summary>
-        /// <param name="g"></param>
-        public void Draw(Graphics g)
-        {
-            if (_visible == false) return;
-            if (_width == 0) return;
-            Rectangle bounds = GetBounds();
-            GraphicsPath gp = new GraphicsPath();
-            gp.AddRoundedRectangle(bounds, _roundingRadius);
-            LinearGradientBrush lgb = new LinearGradientBrush(bounds, Color.Lighter(.3F), Color.Darker(.3F), LinearGradientMode.ForwardDiagonal);
-            g.FillPath(lgb, gp);
-            lgb.Dispose();
-            gp.Dispose();
-        }
-
-        /// <summary>
-        /// Gets the bounds of this handle in the coordinates of the parent slider.
-        /// </summary>
-        public Rectangle GetBounds()
-        {
-            float sx = (_position - _parent.Minimum) / (_parent.Maximum - _parent.Minimum);
-            int x = Convert.ToInt32(sx * (_parent.Width - _width));
-            Rectangle bounds = new Rectangle(x, 0, _width, _parent.Height);
-            return bounds;
+            Parent = parent;
+            Width = 10;
+            RoundingRadius = 4;
+            Color = Color.SteelBlue;
+            Visible = true;
         }
 
         #endregion
@@ -98,80 +50,96 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether this is visible or not
+        /// Gets or sets the basic color of the slider.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsDragging
-        {
-            get { return _isDragging; }
-            set { _isDragging = value; }
-        }
+        [Description("Gets or sets the basic color of the slider")]
+        public Color Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the parent
+        /// Gets or sets a value indicating whether this is visible or not.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsDragging { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parent.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public GradientSlider Parent
-        {
-            get { return _parent; }
-            set { _parent = value; }
-        }
+        public GradientSlider Parent { get; set; }
 
         /// <summary>
-        /// Gets or sets the Position
+        /// Gets or sets the Position.
         /// </summary>
         [Description("Gets or sets the Position")]
         public float Position
         {
-            get { return _position; }
+            get
+            {
+                return _position;
+            }
+
             set
             {
                 _position = value;
-                if (_parent != null)
+                if (Parent != null)
                 {
-                    if (_position > _parent.Maximum) _position = _parent.Maximum;
-                    if (_position < _parent.Minimum) _position = _parent.Minimum;
+                    if (_position > Parent.Maximum) _position = Parent.Maximum;
+                    if (_position < Parent.Minimum) _position = Parent.Minimum;
                 }
             }
         }
 
         /// <summary>
+        /// Gets or sets the integer describing the radius of the curves in the corners of the slider.
+        /// </summary>
+        [Description("Gets or sets the integer describing the radius of the curves in the corners of the slider")]
+        public int RoundingRadius { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this handle is drawn and visible.
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
         /// Gets or sets the integer width of this slider in pixels.
         /// </summary>
         [Description("Gets or sets the integer width of this slider in pixels.")]
-        public int Width
+        public int Width { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Draws this slider on the specified graphics object.
+        /// </summary>
+        /// <param name="g">The graphics object used for drawing.</param>
+        public void Draw(Graphics g)
         {
-            get { return _width; }
-            set { _width = value; }
+            if (!Visible || Width == 0) return;
+            Rectangle bounds = GetBounds();
+            using (GraphicsPath gp = new GraphicsPath())
+            {
+                gp.AddRoundedRectangle(bounds, RoundingRadius);
+
+                using (LinearGradientBrush lgb = new LinearGradientBrush(bounds, Color.Lighter(.3F), Color.Darker(.3F), LinearGradientMode.ForwardDiagonal))
+                {
+                    g.FillPath(lgb, gp);
+                }
+            }
         }
 
         /// <summary>
-        /// Gets or sets the basic color of the slider
+        /// Gets the bounds of this handle in the coordinates of the parent slider.
         /// </summary>
-        [Description("Gets or sets the basic color of the slider")]
-        public Color Color
+        /// <returns>The bounds of this handle.</returns>
+        public Rectangle GetBounds()
         {
-            get { return _color; }
-            set { _color = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the integer describing the radius of the curves in the corners of the slider
-        /// </summary>
-        [Description("Gets or sets the integer describing the radius of the curves in the corners of the slider")]
-        public int RoundingRadius
-        {
-            get { return _roundingRadius; }
-            set { _roundingRadius = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that controls whether or not this handle is drawn and visible.
-        /// </summary>
-        public bool Visible
-        {
-            get { return _visible; }
-            set { _visible = value; }
+            float sx = (_position - Parent.Minimum) / (Parent.Maximum - Parent.Minimum);
+            int x = Convert.ToInt32(sx * (Parent.Width - Width));
+            Rectangle bounds = new Rectangle(x, 0, Width, Parent.Height);
+            return bounds;
         }
 
         #endregion

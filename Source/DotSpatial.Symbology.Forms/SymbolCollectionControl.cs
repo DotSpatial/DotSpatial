@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/28/2009 4:23:05 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -24,8 +14,28 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// This is designed to automatically have add, subtract, up and down arrows for working with a simple collection of items.
     /// </summary>
-    internal class SymbolCollectionControl : UserControl
+    internal partial class SymbolCollectionControl : UserControl
     {
+        #region Fields
+
+        private IList<ISymbol> _symbols;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SymbolCollectionControl"/> class.
+        /// </summary>
+        public SymbolCollectionControl()
+        {
+            InitializeComponent();
+            _symbols = new List<ISymbol>();
+            lbxItems.DrawItem += LbxItemsDrawItem;
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -34,9 +44,9 @@ namespace DotSpatial.Symbology.Forms
         public event EventHandler AddClicked;
 
         /// <summary>
-        /// Occurs when someone selects one of the items in the list box
+        /// Occurs when the list has been added, removed, or re-ordered in any way.
         /// </summary>
-        public event EventHandler SelectedItemChanged;
+        public event EventHandler ListChanged;
 
         /// <summary>
         /// Occurs when either the Promote or Demote function has been used,
@@ -50,180 +60,9 @@ namespace DotSpatial.Symbology.Forms
         public event EventHandler RemoveClicked;
 
         /// <summary>
-        /// Occurs when the list has been added, removed, or re-ordered in any way.
+        /// Occurs when someone selects one of the items in the list box
         /// </summary>
-        public event EventHandler ListChanged;
-
-        #endregion
-
-        #region Private Variables
-
-        private ScaleMode _scaleMode;
-        private IList<ISymbol> _symbols;
-        private Button btnAdd;
-        private Button btnDown;
-        private Button btnRemove;
-        private Button btnUp;
-        private ListBox lbxItems;
-        private Panel panel1;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of the Collection Control
-        /// </summary>
-        public SymbolCollectionControl()
-        {
-            InitializeComponent();
-            _symbols = new List<ISymbol>();
-            lbxItems.DrawItem += lbxItems_DrawItem;
-        }
-
-        private void lbxItems_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (e.Index == -1) return;
-            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-            {
-                e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
-            }
-            else
-            {
-                Brush b = new SolidBrush(BackColor);
-                e.Graphics.FillRectangle(b, outer);
-                b.Dispose();
-            }
-            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
-            e.Graphics.FillRectangle(Brushes.White, inner);
-            e.Graphics.DrawRectangle(Pens.Black, inner);
-            ISymbol stroke = lbxItems.Items[e.Index] as ISymbol;
-            if (stroke == null) return;
-            Matrix old = e.Graphics.Transform;
-            Matrix shift = e.Graphics.Transform;
-            Size2D size = _symbols.GetBoundingSize();
-            double scaleSize = 1;
-            if (_scaleMode == ScaleMode.Geographic || size.Height > 14)
-            {
-                scaleSize = (ItemHeight - 6) / size.Height;
-            }
-            shift.Translate(e.Bounds.Left + e.Bounds.Width / 2, e.Bounds.Top + e.Bounds.Height / 2);
-            //shift.Translate(-(float)(size.Width * scaleSize / 2), -(float)(size.Height * scaleSize / 2));
-            e.Graphics.Transform = shift;
-            stroke.Draw(e.Graphics, scaleSize);
-            e.Graphics.Transform = old;
-        }
-
-        #endregion
-
-        #region Component Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SymbolCollectionControl));
-            this.lbxItems = new System.Windows.Forms.ListBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnDown = new System.Windows.Forms.Button();
-            this.btnUp = new System.Windows.Forms.Button();
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // lbxItems
-            //
-            resources.ApplyResources(this.lbxItems, "lbxItems");
-            this.lbxItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lbxItems.FormattingEnabled = true;
-            this.lbxItems.Name = "lbxItems";
-            this.lbxItems.SelectedIndexChanged += new System.EventHandler(this.lbxItems_SelectedIndexChanged);
-            //
-            // panel1
-            //
-            this.panel1.Controls.Add(this.btnDown);
-            this.panel1.Controls.Add(this.btnUp);
-            this.panel1.Controls.Add(this.btnRemove);
-            this.panel1.Controls.Add(this.btnAdd);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
-            //
-            // btnDown
-            //
-            this.btnDown.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.down;
-            resources.ApplyResources(this.btnDown, "btnDown");
-            this.btnDown.Name = "btnDown";
-            this.btnDown.UseVisualStyleBackColor = true;
-            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
-            //
-            // btnUp
-            //
-            this.btnUp.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.up;
-            resources.ApplyResources(this.btnUp, "btnUp");
-            this.btnUp.Name = "btnUp";
-            this.btnUp.UseVisualStyleBackColor = true;
-            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
-            //
-            // btnRemove
-            //
-            this.btnRemove.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.mnuLayerClear;
-            resources.ApplyResources(this.btnRemove, "btnRemove");
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            //
-            // btnAdd
-            //
-            this.btnAdd.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.mnuLayerAdd;
-            resources.ApplyResources(this.btnAdd, "btnAdd");
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            //
-            // SymbolCollectionControl
-            //
-            this.Controls.Add(this.lbxItems);
-            this.Controls.Add(this.panel1);
-            this.Name = "SymbolCollectionControl";
-            resources.ApplyResources(this, "$this");
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-
-        private void lbxItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OnSelectedItemChanged();
-        }
-
-        /// <summary>
-        /// Fires the SelectedItemChanged event
-        /// </summary>
-        protected virtual void OnSelectedItemChanged()
-        {
-            if (SelectedItemChanged != null) SelectedItemChanged(this, EventArgs.Empty);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Refreshes the items in the list to accurately reflect the current collection
-        /// </summary>
-        public void RefreshList()
-        {
-            lbxItems.SuspendLayout();
-            lbxItems.Items.Clear();
-            foreach (ISymbol stroke in _symbols)
-            {
-                lbxItems.Items.Insert(0, stroke);
-            }
-            lbxItems.ResumeLayout();
-        }
+        public event EventHandler SelectedItemChanged;
 
         #endregion
 
@@ -234,32 +73,35 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public int ItemHeight
         {
-            get { return lbxItems.ItemHeight; }
-            set { lbxItems.ItemHeight = value; }
+            get
+            {
+                return lbxItems.ItemHeight;
+            }
+
+            set
+            {
+                lbxItems.ItemHeight = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the scale mode.  If the scale mode is set to geographic, then the
+        /// Gets or sets the scale mode. If the scale mode is set to geographic, then the
         /// specified size will be ignored when drawing the symbolic representation.
         /// </summary>
-        public ScaleMode ScaleMode
-        {
-            get { return _scaleMode; }
-            set { _scaleMode = value; }
-        }
+        public ScaleMode ScaleMode { get; set; }
 
         /// <summary>
-        /// Gets the selected item cast as an object.
+        /// Gets or sets the selected item cast as an object.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ISymbol SelectedSymbol
         {
             get
             {
-                if (lbxItems == null) return null;
-                if (lbxItems.SelectedItem == null) return null;
-                return lbxItems.SelectedItem as ISymbol;
+                return lbxItems?.SelectedItem as ISymbol;
             }
+
             set
             {
                 if (lbxItems == null) return;
@@ -270,10 +112,15 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the core list of strokes that will be drawn here.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IList<ISymbol> Symbols
         {
-            get { return _symbols; }
+            get
+            {
+                return _symbols;
+            }
+
             set
             {
                 _symbols = value;
@@ -283,17 +130,74 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Event Handlers
+        #region Methods
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Refreshes the items in the list to accurately reflect the current collection.
+        /// </summary>
+        public void RefreshList()
+        {
+            lbxItems.SuspendLayout();
+            lbxItems.Items.Clear();
+            foreach (ISymbol stroke in _symbols)
+            {
+                lbxItems.Items.Insert(0, stroke);
+            }
+
+            lbxItems.ResumeLayout();
+        }
+
+        /// <summary>
+        /// Fires the AddClicked event.
+        /// </summary>
+        protected virtual void OnAdd()
+        {
+            AddClicked?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
+        }
+
+        /// <summary>
+        /// Fires the ListChanged event.
+        /// </summary>
+        protected virtual void OnListChanged()
+        {
+            ListChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Fires the OnOrderChanged event.
+        /// </summary>
+        protected virtual void OnOrderChanged()
+        {
+            OrderChanged?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
+        }
+
+        /// <summary>
+        /// Fires the RemoveCLicked event.
+        /// </summary>
+        protected virtual void OnRemoveClick()
+        {
+            RemoveClicked?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
+        }
+
+        /// <summary>
+        /// Fires the SelectedItemChanged event.
+        /// </summary>
+        protected virtual void OnSelectedItemChanged()
+        {
+            SelectedItemChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void BtnAddClick(object sender, EventArgs e)
         {
             OnAdd();
             RefreshList();
         }
 
-        private void btnDown_Click(object sender, EventArgs e)
+        private void BtnDownClick(object sender, EventArgs e)
         {
-            if (lbxItems.SelectedItem == null) return;
             ISymbol stroke = lbxItems.SelectedItem as ISymbol;
             if (stroke == null) return;
             _symbols.DecreaseIndex(stroke);
@@ -302,10 +206,10 @@ namespace DotSpatial.Symbology.Forms
             OnOrderChanged();
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void BtnRemoveClick(object sender, EventArgs e)
         {
-            if (lbxItems.SelectedItem == null) return;
             ISymbol stroke = lbxItems.SelectedItem as ISymbol;
+            if (stroke == null) return;
             int index = _symbols.IndexOf(stroke);
             _symbols.Remove(stroke);
             RefreshList();
@@ -314,13 +218,13 @@ namespace DotSpatial.Symbology.Forms
             {
                 index -= 1;
             }
+
             lbxItems.SelectedIndex = index;
             OnRemoveClick();
         }
 
-        private void btnUp_Click(object sender, EventArgs e)
+        private void BtnUpClick(object sender, EventArgs e)
         {
-            if (lbxItems.SelectedItem == null) return;
             ISymbol stroke = lbxItems.SelectedItem as ISymbol;
             if (stroke == null) return;
             _symbols.IncreaseIndex(stroke);
@@ -329,43 +233,45 @@ namespace DotSpatial.Symbology.Forms
             OnOrderChanged();
         }
 
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Fires the AddClicked event
-        /// </summary>
-        protected virtual void OnAdd()
+        private void LbxItemsDrawItem(object sender, DrawItemEventArgs e)
         {
-            if (AddClicked != null) AddClicked(this, EventArgs.Empty);
-            OnListChanged();
+            if (e.Index == -1) return;
+            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
+            }
+            else
+            {
+                using (Brush b = new SolidBrush(BackColor))
+                {
+                    e.Graphics.FillRectangle(b, outer);
+                }
+            }
+
+            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
+            e.Graphics.FillRectangle(Brushes.White, inner);
+            e.Graphics.DrawRectangle(Pens.Black, inner);
+            ISymbol stroke = lbxItems.Items[e.Index] as ISymbol;
+            if (stroke == null) return;
+            Matrix old = e.Graphics.Transform;
+            Matrix shift = e.Graphics.Transform;
+            Size2D size = _symbols.GetBoundingSize();
+            double scaleSize = 1;
+            if (ScaleMode == ScaleMode.Geographic || size.Height > 14)
+            {
+                scaleSize = (ItemHeight - 6) / size.Height;
+            }
+
+            shift.Translate(e.Bounds.Left + (e.Bounds.Width / 2), e.Bounds.Top + (e.Bounds.Height / 2));
+            e.Graphics.Transform = shift;
+            stroke.Draw(e.Graphics, scaleSize);
+            e.Graphics.Transform = old;
         }
 
-        /// <summary>
-        /// Fires the ListChanged event
-        /// </summary>
-        protected virtual void OnListChanged()
+        private void LbxItemsSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ListChanged != null) ListChanged(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Fires the RemoveCLicked event
-        /// </summary>
-        protected virtual void OnRemoveClick()
-        {
-            if (RemoveClicked != null) RemoveClicked(this, EventArgs.Empty);
-            OnListChanged();
-        }
-
-        /// <summary>
-        /// Fires the OnOrderChanged event
-        /// </summary>
-        protected virtual void OnOrderChanged()
-        {
-            if (OrderChanged != null) OrderChanged(this, EventArgs.Empty);
-            OnListChanged();
+            OnSelectedItemChanged();
         }
 
         #endregion

@@ -38,111 +38,103 @@ using ICSharpCode.TextEditor.Gui.CompletionWindow;
 
 namespace CSharpEditor
 {
+    /// <summary>
+    /// CodeCompletionProvider
+    /// </summary>
     internal class CodeCompletionProvider : ICompletionDataProvider
     {
-        MainForm mainForm;
+        #region Fields
 
+        private readonly MainForm _mainForm;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeCompletionProvider"/> class.
+        /// </summary>
+        /// <param name="mainForm">The main form.</param>
         public CodeCompletionProvider(MainForm mainForm)
         {
-            this.mainForm = mainForm;
+            _mainForm = mainForm;
         }
 
-        #region ICompletionDataProvider Members
+        #endregion
 
-        public ImageList ImageList
-        {
-            get
-            {
-                return mainForm.imageList1;
-            }
-        }
+        #region Properties
 
-        public string PreSelection
-        {
-            get
-            {
-                return null;
-            }
-        }
+        /// <summary>
+        /// Gets the default index.
+        /// </summary>
+        public int DefaultIndex => -1;
 
-        public int DefaultIndex
-        {
-            get
-            {
-                return -1;
-            }
-        }
+        /// <summary>
+        /// Gets the image list.
+        /// </summary>
+        public ImageList ImageList => _mainForm.imageList1;
 
-        public CompletionDataProviderKeyResult ProcessKey(char key)
+        /// <summary>
+        /// Gets the preselection.
+        /// </summary>
+        public string PreSelection => null;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Generators completion data.
+        /// </summary>
+        /// <param name="fileName">not used</param>
+        /// <param name="textArea">The text area.</param>
+        /// <param name="charTyped">The character type.</param>
+        /// <returns>The completion data.</returns>
+        public ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
         {
-            if (char.IsLetterOrDigit(key) || key == '_')
+            // We can return code-completion items like this:
+            // return new ICompletionData[] {new DefaultCompletionData("Text", "Description", 1)};
+            NRefactoryResolver resolver = new NRefactoryResolver(_mainForm.MyProjectContent.Language);
+            ResolveResult rr = resolver.Resolve(FindExpression(textArea), _mainForm.ParseInformation, textArea.MotherTextEditorControl.Text);
+            List<ICompletionData> resultList = new List<ICompletionData>();
+
+            ArrayList completionData = rr?.GetCompletionData(_mainForm.MyProjectContent);
+            if (completionData != null)
             {
-                return CompletionDataProviderKeyResult.NormalKey;
+                AddCompletionData(resultList, completionData);
             }
-            else
-            {
-                // key triggers insertion of selected items
-                return CompletionDataProviderKeyResult.InsertionKey;
-            }
+
+            return resultList.ToArray();
         }
 
         /// <summary>
         /// Called when entry should be inserted. Forward to the insertion action of the completion data.
         /// </summary>
+        /// <param name="data">The completion data.</param>
+        /// <param name="textArea">The text area.</param>
+        /// <param name="insertionOffset">The insertion offset.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>Boolean.</returns>
         public bool InsertAction(ICompletionData data, TextArea textArea, int insertionOffset, char key)
         {
             textArea.Caret.Position = textArea.Document.OffsetToPosition(insertionOffset);
             return data.InsertAction(textArea, key);
         }
 
-        public ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
-        {
-            // We can return code-completion items like this:
-
-            //return new ICompletionData[] {
-            //	new DefaultCompletionData("Text", "Description", 1)
-            //};
-
-            NRefactoryResolver resolver = new NRefactoryResolver(mainForm.myProjectContent.Language);
-            ResolveResult rr = resolver.Resolve(FindExpression(textArea),
-                                                    mainForm.parseInformation,
-                                                    textArea.MotherTextEditorControl.Text);
-            List<ICompletionData> resultList = new List<ICompletionData>();
-            if (rr != null)
-            {
-                ArrayList completionData = rr.GetCompletionData(mainForm.myProjectContent);
-                if (completionData != null)
-                {
-                    AddCompletionData(resultList, completionData);
-                }
-            }
-            return resultList.ToArray();
-        }
-
-        #endregion
-
         /// <summary>
-        /// Find the expression the cursor is at.
-        /// Also determines the context (using statement, "new"-expression etc.) the
-        /// cursor is at.
+        /// Processes the key.
         /// </summary>
-        private ExpressionResult FindExpression(TextArea textArea)
+        /// <param name="key">The key.</param>
+        /// <returns>The CompletionDataProviderKeyResult.</returns>
+        public CompletionDataProviderKeyResult ProcessKey(char key)
         {
-            IExpressionFinder finder;
-            if (MainForm.IsVisualBasic)
+            if (char.IsLetterOrDigit(key) || key == '_')
             {
-                finder = new VBExpressionFinder();
+                return CompletionDataProviderKeyResult.NormalKey;
             }
-            else
-            {
-                finder = new CSharpExpressionFinder(mainForm.parseInformation);
-            }
-            ExpressionResult expression = finder.FindExpression(textArea.Document.TextContent, textArea.Caret.Offset);
-            if (expression.Region.IsEmpty)
-            {
-                expression.Region = new DomRegion(textArea.Caret.Line + 1, textArea.Caret.Column + 1);
-            }
-            return expression;
+
+            // key triggers insertion of selected items
+            return CompletionDataProviderKeyResult.InsertionKey;
         }
 
         private void AddCompletionData(List<ICompletionData> resultList, ArrayList completionData)
@@ -154,10 +146,11 @@ namespace CSharpEditor
             // list for the text editor
             foreach (object obj in completionData)
             {
-                if (obj is string)
+                var s = obj as string;
+                if (s != null)
                 {
                     // namespace names are returned as string
-                    resultList.Add(new DefaultCompletionData((string)obj, "namespace " + obj, 5));
+                    resultList.Add(new DefaultCompletionData(s, "namespace " + obj, 5));
                 }
                 else if (obj is IClass)
                 {
@@ -167,14 +160,14 @@ namespace CSharpEditor
                 else if (obj is IMember)
                 {
                     IMember m = (IMember)obj;
-                    if (m is IMethod && ((m as IMethod).IsConstructor))
+                    if (m is IMethod && (m as IMethod).IsConstructor)
                     {
                         // Skip constructors
                         continue;
                     }
+
                     // Group results by name and add "(x Overloads)" to the
                     // description if there are multiple results with the same name.
-
                     CodeCompletionData data;
                     if (nameDictionary.TryGetValue(m.Name, out data))
                     {
@@ -193,5 +186,34 @@ namespace CSharpEditor
                 }
             }
         }
+
+        /// <summary>
+        /// Find the expression the cursor is at.
+        /// Also determines the context (using statement, "new"-expression etc.) the cursor is at.
+        /// </summary>
+        /// <param name="textArea">Textarea that gets searched.</param>
+        /// <returns>The expression that was found.</returns>
+        private ExpressionResult FindExpression(TextArea textArea)
+        {
+            IExpressionFinder finder;
+            if (MainForm.IsVisualBasic)
+            {
+                finder = new VBExpressionFinder();
+            }
+            else
+            {
+                finder = new CSharpExpressionFinder(_mainForm.ParseInformation);
+            }
+
+            ExpressionResult expression = finder.FindExpression(textArea.Document.TextContent, textArea.Caret.Offset);
+            if (expression.Region.IsEmpty)
+            {
+                expression.Region = new DomRegion(textArea.Caret.Line + 1, textArea.Caret.Column + 1);
+            }
+
+            return expression;
+        }
+
+        #endregion
     }
 }

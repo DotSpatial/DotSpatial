@@ -1,24 +1,10 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Analysis.ResampleCells.cs
-// Description: Class simple resampling of a raster to a new cell size.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  9/10/2009         |  Initially written.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/24/2009         |  Cleaned up some formatting issues using re-sharper.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  6/30/2010         |  Moved to DotSpatial.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Dan Ames           |  3/2013            |  Updated and standarded licence and header info.  
-// *******************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+
 using DotSpatial.Data;
+
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Analysis
@@ -28,6 +14,8 @@ namespace DotSpatial.Analysis
     /// </summary>
     public static class ResampleCells
     {
+        #region Methods
+
         /// <summary>
         /// This will resample the cells.
         /// If the cell size is zero, this will default to the shorter of the width or height
@@ -54,8 +42,7 @@ namespace DotSpatial.Analysis
         /// <param name="outputFileName">The string name of the output raster.</param>
         /// <param name="progressHandler">An interface for handling the progress messages.</param>
         /// <returns>The resampled raster.</returns>
-        public static IRaster Resample(IRaster input1, double cellHeight, double cellWidth, string outputFileName,
-                                       IProgressHandler progressHandler)
+        public static IRaster Resample(IRaster input1, double cellHeight, double cellWidth, string outputFileName, IProgressHandler progressHandler)
         {
             if (input1 == null)
             {
@@ -68,54 +55,55 @@ namespace DotSpatial.Analysis
             {
                 cellHeight = envelope.Height / 256;
             }
+
             if (cellWidth == 0)
             {
                 cellWidth = envelope.Width / 256;
             }
 
-            //Calculate new number of columns and rows
+            // Calculate new number of columns and rows
             int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / cellWidth));
             int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / cellHeight));
 
-            IRaster output = Raster.CreateRaster(outputFileName, string.Empty, noOfCol, noOfRow, 1, input1.DataType,
-                                                 new[] { string.Empty });
+            IRaster output = Raster.CreateRaster(outputFileName, string.Empty, noOfCol, noOfRow, 1, input1.DataType, new[] { string.Empty });
             RasterBounds bound = new RasterBounds(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
             output.NoDataValue = input1.NoDataValue;
 
-            RcIndex index1;
-            int max = (output.Bounds.NumRows);
+            int max = output.Bounds.NumRows;
             ProgressMeter pm = new ProgressMeter(progressHandler, "ReSize Cells", max);
 
-            //Loop through every cell for new value
+            // Loop through every cell for new value
             for (int i = 0; i < max; i++)
             {
                 for (int j = 0; j < output.Bounds.NumColumns; j++)
                 {
-                    //Project the cell position to Map
+                    // Project the cell position to Map
                     Coordinate cellCenter = output.CellToProj(i, j);
-                    index1 = input1.ProjToCell(cellCenter);
+                    var index1 = input1.ProjToCell(cellCenter);
 
                     double val;
-                    if (index1.Row <= input1.EndRow && index1.Column <= input1.EndColumn && index1.Row > -1 &&
-                        index1.Column > -1)
+                    if (index1.Row <= input1.EndRow && index1.Column <= input1.EndColumn && index1.Row > -1 && index1.Column > -1)
                     {
-                        val = input1.Value[index1.Row, index1.Column] == input1.NoDataValue
-                                  ? output.NoDataValue
-                                  : input1.Value[index1.Row, index1.Column];
+                        val = input1.Value[index1.Row, index1.Column] == input1.NoDataValue ? output.NoDataValue : input1.Value[index1.Row, index1.Column];
                     }
                     else
                     {
                         val = output.NoDataValue;
                     }
+
                     output.Value[i, j] = val;
                 }
+
                 pm.CurrentValue = i;
             }
+
             output.Save();
             pm.Reset();
             return output;
         }
+
+        #endregion
     }
 }

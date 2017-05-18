@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/27/2010 3:20:48 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -23,10 +13,12 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of HfaInvalidCountException
+        /// Initializes a new instance of the <see cref="HfaInvalidCountException"/> class.
         /// </summary>
-        public HfaInvalidCountException(int nRows, int nCols)
-            : base(DataStrings.HfaInvalidCountException.Replace("%S1", nRows.ToString()).Replace("%S2", nCols.ToString()))
+        /// <param name="rows">Number of rows.</param>
+        /// <param name="cols">Number of columns.</param>
+        public HfaInvalidCountException(int rows, int cols)
+            : base(string.Format(DataStrings.HfaInvalidCountException, rows, cols))
         {
         }
 

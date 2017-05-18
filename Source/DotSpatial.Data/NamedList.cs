@@ -1,81 +1,90 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/29/2009 9:20:13 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A named list preserves a 1:1 mapping between names and items.  It can be used to
-    /// reference information in either direction.  It essentially provides a string
-    /// handle for working with generic typed ILists.  This cannot instantiate new
-    /// items.  (Creating a default T would not work, for instance, for an interface).
+    /// A named list preserves a 1:1 mapping between names and items. It can be used to
+    /// reference information in either direction. It essentially provides a string
+    /// handle for working with generic typed ILists. This cannot instantiate new
+    /// items. (Creating a default T would not work, for instance, for an interface).
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     public class NamedList<T> : INamedList
     {
-        #region Private Variables
+        #region Fields
 
-        private string _baseName;
-        private Dictionary<string, T> _items; // search by name
-        private IList<T> _list; // determines order
-        private Dictionary<T, string> _names; // search by item
+        private readonly Dictionary<string, T> _items; // search by name
+        private readonly Dictionary<T, string> _names; // search by item
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of NamedList
+        /// Initializes a new instance of the <see cref="NamedList{T}"/> class.
         /// </summary>
         public NamedList()
         {
-            _list = new List<T>(); // default setting
+            Items = new List<T>(); // default setting
             _items = new Dictionary<string, T>();
             _names = new Dictionary<T, string>();
         }
 
         /// <summary>
-        /// Creates a new instance of a named list.
+        /// Initializes a new instance of the <see cref="NamedList{T}"/> class.
         /// </summary>
         /// <param name="values">The values to use for the content.</param>
         public NamedList(IList<T> values)
         {
-            _list = values;
+            Items = values;
             _items = new Dictionary<string, T>();
             _names = new Dictionary<T, string>();
             RefreshNames();
         }
 
         /// <summary>
-        /// Creates a new instance of a named list.
+        /// Initializes a new instance of the <see cref="NamedList{T}"/> class.
         /// </summary>
         /// <param name="values">The values to use for the content.</param>
         /// <param name="baseName">The string that should precede the numbering to describe the individual items.</param>
         public NamedList(IList<T> values, string baseName)
         {
-            _list = values;
+            Items = values;
             _items = new Dictionary<string, T>();
             _names = new Dictionary<T, string>();
-            _baseName = baseName;
+            BaseName = baseName;
             RefreshNames();
         }
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// Gets or sets the item corresponding to the specified name.  Setting this
+        /// Gets or sets the base name to use for naming items.
+        /// </summary>
+        public string BaseName { get; set; }
+
+        /// <summary>
+        /// Gets the count of the items in the list.
+        /// </summary>
+        public int Count => _items.Count;
+
+        /// <summary>
+        /// Gets or sets the list of actual items. This is basically a reference copy of
+        /// the actual collection of items to be contained in this named list.
+        /// </summary>
+        public IList<T> Items { get; set; }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// Gets or sets the item corresponding to the specified name. Setting this
         /// will re-use the same name and position in the list, but set a new object.
         /// </summary>
         /// <param name="name">The string name of the item to obtain</param>
@@ -84,42 +93,47 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_items.ContainsKey(name)) return _items[name];
-                return default(T);
+                return _items.ContainsKey(name) ? _items[name] : default(T);
             }
+
             set
             {
                 T oldItem = _items[name];
                 _names.Remove(oldItem);
-                int index = _list.IndexOf(oldItem);
-                _list.RemoveAt(index);
-                _list.Insert(index, value);
+                int index = Items.IndexOf(oldItem);
+                Items.RemoveAt(index);
+                Items.Insert(index, value);
                 _items[name] = value;
                 _names.Add(value, name);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Re-orders the list so that the index of the specifeid item is lower,
         /// and threfore will be drawn earlier, and therefore should appear
         /// in a lower position on the list.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">name of the item that gets demoted.</param>
         public void Demote(string name)
         {
             Demote(_items[name]);
         }
 
         /// <summary>
-        /// Gets the name of the item corresponding
+        /// Re-orders the list so that this item appears closer to the 0 index.
         /// </summary>
-        /// <param name="value">The item cast as an object.</param>
-        /// <returns>The string name of the specified object, or null if the cast fails.</returns>
-        public string GetNameOfObject(object value)
+        /// <param name="item">Item that gets demoted.</param>
+        public void Demote(T item)
         {
-            T item = Global.SafeCastTo<T>(value);
-            if (item == null) return null;
-            return GetName(item);
+            int index = Items.IndexOf(item);
+            if (index == -1 || index == 0) return;
+
+            Items.RemoveAt(index);
+            Items.Insert(index - 1, item);
         }
 
         /// <summary>
@@ -135,24 +149,48 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Gets the string name for the specified item
+        /// </summary>
+        /// <param name="item">The item of type T to find the name for</param>
+        /// <returns>The string name corresponding to the specified item.</returns>
+        public string GetName(T item)
+        {
+            return _names.ContainsKey(item) ? _names[item] : null;
+        }
+
+        /// <summary>
+        /// Gets the name of the item corresponding
+        /// </summary>
+        /// <param name="value">The item cast as an object.</param>
+        /// <returns>The string name of the specified object, or null if the cast fails.</returns>
+        public string GetNameOfObject(object value)
+        {
+            T item = Global.SafeCastTo<T>(value);
+            return item == null ? null : GetName(item);
+        }
+
+        /// <summary>
         /// Gets the list of names for the items currently stored in the list,
         /// in the sequence defined by the list of items.
         /// </summary>
+        /// <returns>The list of names.</returns>
         public string[] GetNames()
         {
             List<string> result = new List<string>();
-            foreach (T item in _list)
+            foreach (T item in Items)
             {
-                if (_names.ContainsKey(item) == false)
+                if (!_names.ContainsKey(item))
                 {
                     RefreshNames();
                     break;
                 }
             }
-            foreach (T item in _list)
+
+            foreach (T item in Items)
             {
                 result.Add(_names[item]);
             }
+
             return result.ToArray();
         }
 
@@ -161,10 +199,26 @@ namespace DotSpatial.Data
         /// and therefore will be drawn later, and therefore should appear
         /// in a higher position on the list.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Name of the item that gets promoted.</param>
         public void Promote(string name)
         {
             Promote(_items[name]);
+        }
+
+        /// <summary>
+        /// Re-orders the list so that the index of the specified item is higher,
+        /// and therefore will be drawn later, and therefore should appear
+        /// in a higher position on the list.
+        /// </summary>
+        /// <param name="item">Item that gets promoted.</param>
+        public void Promote(T item)
+        {
+            int index = Items.IndexOf(item);
+            if (index == -1) return;
+            if (index == Items.Count - 1) return;
+
+            Items.RemoveAt(index);
+            Items.Insert(index + 1, item);
         }
 
         /// <summary>
@@ -173,20 +227,22 @@ namespace DotSpatial.Data
         public void RefreshNames()
         {
             // When re-ordering, we want to keep the name like category 0 the same,
-            // so we can't just clear the values.  Instead, to see the item move,
+            // so we can't just clear the values. Instead, to see the item move,
             // the name has to stay with the item.
             List<T> deleteItems = new List<T>();
             foreach (T item in _names.Keys)
             {
-                if (_list.Contains(item) == false)
+                if (Items.Contains(item) == false)
                 {
                     deleteItems.Add(item);
                 }
             }
+
             foreach (T item in deleteItems)
             {
                 _names.Remove(item);
             }
+
             List<string> deleteNames = new List<string>();
             foreach (string name in _items.Keys)
             {
@@ -195,14 +251,15 @@ namespace DotSpatial.Data
                     deleteNames.Add(name);
                 }
             }
+
             foreach (string name in deleteNames)
             {
                 _items.Remove(name);
             }
 
-            foreach (T item in _list)
+            foreach (T item in Items)
             {
-                if (_names.ContainsKey(item) == false)
+                if (!_names.ContainsKey(item))
                 {
                     string name = BaseName + 0;
                     int i = 1;
@@ -211,6 +268,7 @@ namespace DotSpatial.Data
                         name = BaseName + i;
                         i++;
                     }
+
                     _names.Add(item, name);
                     _items.Add(name, item);
                 }
@@ -227,83 +285,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Re-orders the list so that this item appears closer to the 0 index.
-        /// </summary>
-        /// <param name="item"></param>
-        public void Demote(T item)
-        {
-            int index = _list.IndexOf(item);
-            if (index == -1) return;
-            if (index == 0) return;
-            _list.RemoveAt(index);
-            _list.Insert(index - 1, item);
-        }
-
-        /// <summary>
-        /// Gets the string name for the specified item
-        /// </summary>
-        /// <param name="item">The item of type T to find the name for</param>
-        /// <returns>The string name corresponding to the specified item.</returns>
-        public string GetName(T item)
-        {
-            if (_names.ContainsKey(item)) return _names[item];
-            return null;
-        }
-
-        /// <summary>
-        /// Re-orders the list so that the index of the specified item is higher,
-        /// and therefore will be drawn later, and therefore should appear
-        /// in a higher position on the list.
-        /// </summary>
-        /// <param name="item"></param>
-        public void Promote(T item)
-        {
-            int index = _list.IndexOf(item);
-            if (index == -1) return;
-            if (index == _list.Count - 1) return;
-            _list.RemoveAt(index);
-            _list.Insert(index + 1, item);
-        }
-
-        /// <summary>
         /// Removes the specified item
         /// </summary>
         /// <param name="item">The item to remove.</param>
         public void Remove(T item)
         {
-            _list.Remove(item);
+            Items.Remove(item);
             RefreshNames();
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the list of actual items.  This is basically a reference copy of
-        /// the actual collection of items to be contained in this named list.
-        /// </summary>
-        public IList<T> Items
-        {
-            get { return _list; }
-            set { _list = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the base name to use for naming items
-        /// </summary>
-        public string BaseName
-        {
-            get { return _baseName; }
-            set { _baseName = value; }
-        }
-
-        /// <summary>
-        /// Gets the count of the items in the list.
-        /// </summary>
-        public int Count
-        {
-            get { return _items.Count; }
         }
 
         #endregion

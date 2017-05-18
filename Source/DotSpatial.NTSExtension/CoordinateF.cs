@@ -1,26 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Topology.dll
-// Description:  The basic topology module for the new dotSpatial libraries
-// ********************************************************************************************************
-// The contents of this file are subject to the Lesser GNU Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license  Alternately, you can access an earlier version of this content from
-// the Net Topology Suite, which is also protected by the GNU Lesser Public License and the sourcecode
-// for the Net Topology Suite can be obtained here: http://sourceforge.net/projects/nts.
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from the Net Topology Suite, which is a C# port of the Java Topology Suite.
-//
-// The Initial Developer to integrate this code into MapWindow 6.0 is Ted Dunsford.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |         Name         |    Date    |                              Comment
-// |----------------------|------------|------------------------------------------------------------
-// |                      |            |
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -29,37 +8,31 @@ using GeoAPI.Geometries;
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// A lightweight class used to store coordinates
-    /// on the 2-dimensional Cartesian plane.
+    /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane.
     /// It is distinct from <c>Point</c>, which is a subclass of <c>Geometry</c>.
-    /// Unlike objects of type <c>Point</c> (which contain additional
-    /// information such as an envelope, a precision model, and spatial reference
-    /// system information), a <c>Coordinate</c> only contains ordinate values
-    /// and accessor methods.
-    /// <c>Coordinate</c>s are two-dimensional points, with an additional
-    /// z-ordinate. NTS does not support any operations on the z-ordinate except
-    /// the basic accessor functions. Constructed coordinates will have a
-    /// z-ordinate of <c>NaN</c>.  The standard comparison functions will ignore
+    /// Unlike objects of type <c>Point</c> (which contain additional information such as an envelope, a precision model, and spatial reference
+    /// system information), a <c>Coordinate</c> only contains ordinate values and accessor methods.
+    /// <c>Coordinate</c>s are two-dimensional points, with an additional z-ordinate. NTS does not support any operations on the z-ordinate except
+    /// the basic accessor functions. Constructed coordinates will have a z-ordinate of <c>NaN</c>. The standard comparison functions will ignore
     /// the z-ordinate.
     /// </summary>
-    [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public sealed class CoordinateF
     {
         #region Fields
 
-        private float _m = float.NaN;
-        private float _x = float.NaN;
-        private float _y = float.NaN;
-        private float _z = float.NaN;
+        private float _m;
+        private float _x;
+        private float _y;
+        private float _z;
 
         #endregion
 
-        #region Constructors
-
         /// <summary>
-        /// Creates a CoordinateF by using the X, Y and Z terms of a FloatVector
+        /// Initializes a new instance of the <see cref="CoordinateF"/> class by using the X, Y and Z terms of a FloatVector.
         /// </summary>
-        /// <param name="floatVector"></param>
+        /// <param name="floatVector">FloatVector used for initialization.</param>
         public CoordinateF(FloatVector3 floatVector)
         {
             _x = floatVector.X;
@@ -69,7 +42,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Constructs a <c>Coordinate</c> at (x, y, z).
+        /// Initializes a new instance of the <see cref="CoordinateF"/> class with the given (x, y, z, m) values.
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
@@ -84,7 +57,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Constructs a <c>Coordinate</c> at (x, y, z).
+        /// Initializes a new instance of the <see cref="CoordinateF"/> class with the given (x, y, z) values.
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
@@ -98,7 +71,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Creates a Coordinate from any ICoordinate Interface
+        /// Initializes a new instance of the <see cref="CoordinateF"/> class from any Coordinate object.
         /// </summary>
         /// <param name="coordinate">The Vector.IPoint interface to construct a coordinate from</param>
         public CoordinateF(Coordinate coordinate)
@@ -106,26 +79,31 @@ namespace DotSpatial.NTSExtension
             _x = Convert.ToSingle(coordinate.X);
             _y = Convert.ToSingle(coordinate.Y);
             _z = Convert.ToSingle(coordinate.Z);
+            _m = Convert.ToSingle(coordinate.M);
         }
 
         /// <summary>
-        ///  Constructs a <c>Coordinate</c> at (0, 0, NaN).
+        /// Initializes a new instance of the <see cref="CoordinateF"/> class at (0, 0, 0, 0).
         /// </summary>
-        public CoordinateF() : this(0.0F, 0.0F, 0, 0) { }
+        public CoordinateF()
+            : this(0.0F, 0.0F, 0, 0)
+        {
+        }
 
         /// <summary>
-        /// Constructs a <c>Coordinate</c> at (x, y, NaN).
+        /// Initializes a new instance of the <see cref="CoordinateF"/> class at (x, y, 0, 0).
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
-        public CoordinateF(float x, float y) : this(x, y, 0F, 0F) { }
-
-        #endregion
+        public CoordinateF(float x, float y)
+            : this(x, y, 0F, 0F)
+        {
+        }
 
         #region Properties
 
         /// <summary>
-        /// Gets/Sets <c>Coordinate</c>s (x, y, z) values.
+        /// Gets or sets the <c>Coordinate</c>s (x, y, z, m) values.
         /// </summary>
         [Browsable(false)]
         public CoordinateF CoordinateValue
@@ -134,6 +112,7 @@ namespace DotSpatial.NTSExtension
             {
                 return this;
             }
+
             set
             {
                 _x = value.X;
@@ -144,21 +123,25 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// A Measure coordinate
+        /// Gets or sets the Measure coordinate.
         /// </summary>
         public float M
         {
-            get { return _m; }
-            set { _m = value; }
+            get
+            {
+                return _m;
+            }
+
+            set
+            {
+                _m = value;
+            }
         }
 
         /// <summary>
-        ///  For now this is 3D
+        /// Gets the number of ordinates. For now this is 3D.
         /// </summary>
-        public int NumOrdinates
-        {
-            get { return 3; }
-        }
+        public int NumOrdinates => 3;
 
         /// <summary>
         /// Gets or sets the values of this CoordinateF using an array of double values
@@ -169,6 +152,7 @@ namespace DotSpatial.NTSExtension
             {
                 return new double[] { Convert.ToSingle(_x), Convert.ToSingle(_y), Convert.ToSingle(_z) };
             }
+
             set
             {
                 if (value.GetLength(0) > 0) _x = Convert.ToSingle(value[0]);
@@ -178,43 +162,61 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Direct access to the coordinate works as a float.  If you only have the interface,
-        /// it must involve conversions to and from a float.  This may cause errors if the
-        /// value being set is outside the range of the float values.
+        /// Gets or sets the x value. If you only have the interface, it must involve conversions to and from a float.
+        /// This may cause errors if the value being set is outside the range of the float values.
         /// </summary>
         public float X
         {
-            get { return _x; }
-            set { _x = value; }
+            get
+            {
+                return _x;
+            }
+
+            set
+            {
+                _x = value;
+            }
         }
 
         /// <summary>
-        /// Direct access to the Y coordinate as a float
+        /// Gets or sets the Y coordinate.
         /// </summary>
         public float Y
         {
-            get { return _y; }
-            set { _y = value; }
+            get
+            {
+                return _y;
+            }
+
+            set
+            {
+                _y = value;
+            }
         }
 
         /// <summary>
-        /// Z coordinate.
+        /// Gets or sets the Z coordinate.
         /// </summary>
         public float Z
         {
-            get { return _z; }
-            set { _z = value; }
+            get
+            {
+                return _z;
+            }
+
+            set
+            {
+                _z = value;
+            }
         }
 
         #endregion
 
-        #region Indexers
-
         /// <summary>
-        /// Gets or sets the double value corresponding to the specific ordinate
+        /// Gets or sets the double value corresponding to the specific ordinate.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">Index of the value that should be gotten / set.</param>
+        /// <returns>The value from the given index or 0 if the index is out of bounds.</returns>
         public double this[int index]
         {
             get
@@ -222,25 +224,26 @@ namespace DotSpatial.NTSExtension
                 if (index == 0) return Convert.ToDouble(_x);
                 if (index == 1) return Convert.ToDouble(_y);
                 if (index == 2) return Convert.ToDouble(_z);
+                if (index == 3) return Convert.ToDouble(_m);
                 return 0;
             }
+
             set
             {
                 if (index == 0) _x = Convert.ToSingle(value);
                 if (index == 1) _y = Convert.ToSingle(value);
                 if (index == 2) _z = Convert.ToSingle(value);
+                if (index == 3) _m = Convert.ToSingle(value);
             }
         }
-
-        #endregion
-
-        #region Operators
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
         /// Overloaded + operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator +(CoordinateF coord1, Coordinate coord2)
         {
             // returns Coordinate as a specific implementatino of ICoordinate
@@ -250,6 +253,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded + operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="d">The float to add.</param>
         public static CoordinateF operator +(CoordinateF coord1, float d)
         {
             return new CoordinateF(coord1.X + d, coord1.Y + d, coord1.Z + d);
@@ -258,6 +263,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded + operator.
         /// </summary>
+        /// <param name="d">The float to add.</param>
+        /// <param name="coord1">The first coordinate for the operation</param>
         public static CoordinateF operator +(float d, CoordinateF coord1)
         {
             return coord1 + d;
@@ -266,6 +273,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded / operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator /(CoordinateF coord1, Coordinate coord2)
         {
             return new CoordinateF(coord1.X / Convert.ToSingle(coord2.X), coord1.Y / Convert.ToSingle(coord2.Y), coord1.Z / Convert.ToSingle(coord2.Z));
@@ -274,6 +283,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded / operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="d">The float to devide.</param>
         public static CoordinateF operator /(CoordinateF coord1, float d)
         {
             return new CoordinateF(coord1.X / d, coord1.Y / d, coord1.Z / d);
@@ -282,28 +293,30 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded / operator.
         /// </summary>
+        /// <param name="d">The float to devide.</param>
+        /// <param name="coord1">The first coordinate for the operation</param>
         public static CoordinateF operator /(float d, CoordinateF coord1)
         {
             return coord1 / d;
         }
 
         /// <summary>
-        ///
+        /// Checks whether the Coordinates are equal.
         /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        /// <returns></returns>
+        /// <param name="obj1">First object to compare.</param>
+        /// <param name="obj2">Second object to compare.</param>
+        /// <returns>True, if the objects are equal.</returns>
         public static bool operator ==(CoordinateF obj1, Coordinate obj2)
         {
-            return Equals(obj1, obj2);
+            return Equals(obj1, new CoordinateF(obj2));
         }
 
         /// <summary>
-        ///
+        /// Checks whether the Coordinates are not equal.
         /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        /// <returns></returns>
+        /// <param name="obj1">First object to compare.</param>
+        /// <param name="obj2">Second object to compare.</param>
+        /// <returns>True, if the objects do not equal.</returns>
         public static bool operator !=(CoordinateF obj1, Coordinate obj2)
         {
             return !(obj1 == obj2);
@@ -312,6 +325,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded * operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator *(CoordinateF coord1, Coordinate coord2)
         {
             return new CoordinateF(coord1.X * Convert.ToSingle(coord2.X), coord1.Y * Convert.ToSingle(coord2.Y), coord1.Z * Convert.ToSingle(coord2.Z));
@@ -320,6 +335,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded * operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="d">The float to multiply.</param>
         public static CoordinateF operator *(CoordinateF coord1, float d)
         {
             return new CoordinateF(coord1.X * d, coord1.Y * d, coord1.Z * d);
@@ -328,6 +345,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded * operator.
         /// </summary>
+        /// <param name="d">The float to multiply.</param>
+        /// <param name="coord1">The first coordinate for the operation</param>
         public static CoordinateF operator *(float d, CoordinateF coord1)
         {
             return coord1 * d;
@@ -336,6 +355,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded - operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator -(CoordinateF coord1, Coordinate coord2)
         {
             return new CoordinateF(coord1.X - Convert.ToSingle(coord2.X), coord1.Y - Convert.ToSingle(coord2.Y), coord1.Z - Convert.ToSingle(coord2.Z));
@@ -344,6 +365,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded - operator.
         /// </summary>
+        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="d">The float to subtract.</param>
         public static CoordinateF operator -(CoordinateF coord1, float d)
         {
             return new CoordinateF(coord1.X - d, coord1.Y - d, coord1.Z - d);
@@ -352,19 +375,30 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded - operator.
         /// </summary>
+        /// <param name="d">The float to subtract.</param>
+        /// <param name="coord1">The first coordinate for the operation</param>
         public static CoordinateF operator -(float d, CoordinateF coord1)
         {
             return coord1 - d;
         }
 
-        #endregion
-
         #region Methods
+
+        /// <summary>
+        /// Return HashCode.
+        /// </summary>
+        /// <param name="x">Value from HashCode computation.</param>
+        /// <returns>The resulting hash.</returns>
+        public static int GetHashCode(double x)
+        {
+            long f = BitConverter.DoubleToInt64Bits(x);
+            return (int)(f ^ (f >> 32));
+        }
 
         /// <summary>
         /// Create a new object as copy of this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A copy of this instance.</returns>
         public object Clone()
         {
             return new Coordinate(_x, _y, _z, _m);
@@ -387,21 +421,17 @@ namespace DotSpatial.NTSExtension
         {
             Coordinate otherCoord = other as Coordinate;
             if (otherCoord == null) throw new ArgumentException(TopologyText.ArgumentCouldNotBeCast_S1_S2.Replace("%S1", "other").Replace("%S2", "ICoordinate"));
-            if (_x < otherCoord.X)
-                return -1;
-            if (_x > otherCoord.X)
-                return 1;
-            if (_y < otherCoord.Y)
-                return -1;
-            if (_y > otherCoord.Y)
-                return 1;
+            if (_x < otherCoord.X) return -1;
+            if (_x > otherCoord.X) return 1;
+            if (_y < otherCoord.Y) return -1;
+            if (_y > otherCoord.Y) return 1;
             return 0;
         }
 
         /// <summary>
-        /// Creates a new ICoordinate copy of this instance
+        /// Creates a new Coordinate copy of this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A copy of this instance.</returns>
         public Coordinate Copy()
         {
             return new Coordinate(_x, _y, _z, _m);
@@ -416,7 +446,7 @@ namespace DotSpatial.NTSExtension
         {
             double dx = _x - coordinate.X;
             double dy = _y - coordinate.Y;
-            return Math.Sqrt(dx * dx + dy * dy);
+            return Math.Sqrt((dx * dx) + (dy * dy));
         }
 
         /// <summary>
@@ -427,16 +457,14 @@ namespace DotSpatial.NTSExtension
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for the x and y ordinates.</returns>
         public override bool Equals(object other)
         {
-            if (other == null)
-                return false;
-            if (!(other is Coordinate))
-                return false;
-            return Equals2D((CoordinateF)other);
+            var coord = other as CoordinateF;
+            if (coord == null) return false;
+            return Equals2D(coord);
         }
 
         /// <summary>
         /// Returns whether the planar projections of the two <i>Coordinate</i>s are equal.
-        ///</summary>
+        /// </summary>
         /// <param name="coordinate"><i>ICoordinate</i> with which to do the 2D comparison.</param>
         /// <returns>
         /// <c>true</c> if the x- and y-coordinates are equal;
@@ -444,23 +472,8 @@ namespace DotSpatial.NTSExtension
         /// </returns>
         public bool Equals2D(CoordinateF coordinate)
         {
-            CoordinateF coordF = coordinate;
-            if (coordF == null)
-            {
-                if (_x != coordinate.X)
-                    return false;
-                if (_y != coordinate.Y)
-                    return false;
-            }
-            else
-            {
-                // Compare at the float level if possible.
-                if (_x != coordF.X)
-                    return false;
-                if (_y != coordF.Y)
-                    return false;
-            }
-            return true;
+            if (coordinate == null) return false;
+            return _x == coordinate.X && _y == coordinate.Y;
         }
 
         /// <summary>
@@ -470,38 +483,24 @@ namespace DotSpatial.NTSExtension
         /// <returns><c>true</c> if <c>other</c> is a <c>ICoordinate</c> with the same values for x, y and z.</returns>
         public bool Equals3D(CoordinateF other)
         {
-            CoordinateF coordF = other;
-            if (coordF == null)
-            {
-                return (_x == other.X) && (_y == other.X) && ((_z == other.Z)
-           || (Double.IsNaN(_z) && Double.IsNaN(other.Z)));
-            }
-            return (_x == coordF.X) && (_y == coordF.Y) && ((_z == coordF.Z) || ((float.IsNaN(_z) && float.IsNaN(coordF.Z))));
+            if (other == null) return false;
+            return (_x == other.X) && (_y == other.X) && ((_z == other.Z) || (double.IsNaN(_z) && double.IsNaN(other.Z)));
         }
 
         /// <summary>
         /// Return HashCode.
         /// </summary>
-        /// <param name="x">Value from HashCode computation.</param>
-        public static int GetHashCode(double x)
-        {
-            long f = BitConverter.DoubleToInt64Bits(x);
-            return (int)(f ^ (f >> 32));
-        }
-
-        /// <summary>
-        /// Return HashCode.
-        /// </summary>
+        /// <returns>The generated hash code.</returns>
         public override int GetHashCode()
         {
             int result = 17;
-            result = 37 * result + GetHashCode(X);
-            result = 37 * result + GetHashCode(Y);
+            result = (37 * result) + GetHashCode(X);
+            result = (37 * result) + GetHashCode(Y);
             return result;
         }
 
         /// <summary>
-        /// Returns the distance that is appropriate for N dimensions.  In otherwords, if this point is
+        /// Returns the distance that is appropriate for N dimensions. In otherwords, if this point is
         /// three dimensional, then all three dimensions will be used for calculating the distance.
         /// </summary>
         /// <param name="coordinate">The coordinate to compare to this coordinate</param>
@@ -525,7 +524,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Gets an array of double values for each of the ordinates
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An array of double values for each of the ordinates.</returns>
         public double[] ToArray()
         {
             return new double[] { Convert.ToSingle(_x), Convert.ToSingle(_y), Convert.ToSingle(_z) };

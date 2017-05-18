@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.Enums
-// Description:  An Enumeration defining all of the parameter types which can be passed back from a ITool
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Modeling.Forms
 {
@@ -23,10 +12,12 @@ namespace DotSpatial.Modeling.Forms
         /// Indicates that no value has been set for this yet.
         /// </summary>
         Empty,
+
         /// <summary>
         /// Indicates that the element parameter is ok and won't halt.
         /// </summary>
         Ok,
+
         /// <summary>
         /// Indicates that the element value will cause an error.
         /// </summary>

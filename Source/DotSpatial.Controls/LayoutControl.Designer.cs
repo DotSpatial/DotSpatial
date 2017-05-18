@@ -77,13 +77,13 @@ namespace DotSpatial.Controls
             //
             resources.ApplyResources(this._hScrollBar, "_hScrollBar");
             this._hScrollBar.Name = "_hScrollBar";
-            this._hScrollBar.Scroll += new ScrollEventHandler(this.hScrollBar_Scroll);
+            this._hScrollBar.Scroll += new ScrollEventHandler(this.HScrollBarScroll);
             //
             // _vScrollBar
             //
             resources.ApplyResources(this._vScrollBar, "_vScrollBar");
             this._vScrollBar.Name = "_vScrollBar";
-            this._vScrollBar.Scroll += new ScrollEventHandler(this.vScrollBar_Scroll);
+            this._vScrollBar.Scroll += new ScrollEventHandler(this.VScrollBarScroll);
             //
             // _contextMenuRight
             //
@@ -103,13 +103,13 @@ namespace DotSpatial.Controls
             //
             this._cMnuMoveUp.Index = 0;
             this._cMnuMoveUp.Text = MessageStrings.LayoutMenuStripSelectMoveUp;
-            this._cMnuMoveUp.Click += new EventHandler(this.cMnuMoveUp_Click);
+            this._cMnuMoveUp.Click += new EventHandler(this.CMnuMoveUpClick);
             //
             // _cMnuMoveDown
             //
             this._cMnuMoveDown.Index = 1;
             this._cMnuMoveDown.Text = MessageStrings.LayoutMenuStripSelectMoveDown;
-            this._cMnuMoveDown.Click += new EventHandler(this.cMnuMoveDown_Click);
+            this._cMnuMoveDown.Click += new EventHandler(this.CMnuMoveDownClick);
             //
             // _menuItem2
             //
@@ -132,37 +132,37 @@ namespace DotSpatial.Controls
             //
             this._cMnuSelLeft.Index = 0;
             this._cMnuSelLeft.Text = MessageStrings.LayoutCmnuLeft;
-            this._cMnuSelLeft.Click += new EventHandler(this.cMnuSelLeft_Click);
+            this._cMnuSelLeft.Click += new EventHandler(this.CMnuSelLeftClick);
             //
             // _cMnuSelRight
             //
             this._cMnuSelRight.Index = 1;
             this._cMnuSelRight.Text = MessageStrings.LayoutCmnuRight;
-            this._cMnuSelRight.Click += new EventHandler(this.cMnuSelRight_Click);
+            this._cMnuSelRight.Click += new EventHandler(this.CMnuSelRightClick);
             //
             // _cMnuSelTop
             //
             this._cMnuSelTop.Index = 2;
             this._cMnuSelTop.Text = MessageStrings.LayoutCmnuTop;
-            this._cMnuSelTop.Click += new EventHandler(this.cMnuSelTop_Click);
+            this._cMnuSelTop.Click += new EventHandler(this.CMnuSelTopClick);
             //
             // _cMnuSelBottom
             //
             this._cMnuSelBottom.Index = 3;
             this._cMnuSelBottom.Text = MessageStrings.LayoutCmnuBottom;
-            this._cMnuSelBottom.Click += new EventHandler(this.cMnuSelBottom_Click);
+            this._cMnuSelBottom.Click += new EventHandler(this.CMnuSelBottomClick);
             //
             // _cMnuSelHor
             //
             this._cMnuSelHor.Index = 4;
             this._cMnuSelHor.Text = MessageStrings.LayoutCmnuHor;
-            this._cMnuSelHor.Click += new EventHandler(this.cMnuSelHor_Click);
+            this._cMnuSelHor.Click += new EventHandler(this.CMnuSelHorClick);
             //
             // _cMnuSelVert
             //
             this._cMnuSelVert.Index = 5;
             this._cMnuSelVert.Text = MessageStrings.LayoutCmnuVert;
-            this._cMnuSelVert.Click += new EventHandler(this.cMnuSelVert_Click);
+            this._cMnuSelVert.Click += new EventHandler(this.CMnuSelVertClick);
             //
             // _cMnuMarAli
             //
@@ -180,37 +180,37 @@ namespace DotSpatial.Controls
             //
             this._cMnuMargLeft.Index = 0;
             this._cMnuMargLeft.Text = MessageStrings.LayoutCmnuLeft;
-            this._cMnuMargLeft.Click += new EventHandler(this.cMnuMargLeft_Click);
+            this._cMnuMargLeft.Click += new EventHandler(this.CMnuMargLeftClick);
             //
             // _cMnuMargRight
             //
             this._cMnuMargRight.Index = 1;
             this._cMnuMargRight.Text = MessageStrings.LayoutCmnuRight;
-            this._cMnuMargRight.Click += new EventHandler(this.cMnuMargRight_Click);
+            this._cMnuMargRight.Click += new EventHandler(this.CMnuMargRightClick);
             //
             // _cMnuMargTop
             //
             this._cMnuMargTop.Index = 2;
             this._cMnuMargTop.Text = MessageStrings.LayoutCmnuTop;
-            this._cMnuMargTop.Click += new EventHandler(this.cMnuMargTop_Click);
+            this._cMnuMargTop.Click += new EventHandler(this.CMnuMargTopClick);
             //
             // _cMnuMargBottom
             //
             this._cMnuMargBottom.Index = 3;
             this._cMnuMargBottom.Text = MessageStrings.LayoutCmnuBottom;
-            this._cMnuMargBottom.Click += new EventHandler(this.cMnuMargBottom_Click);
+            this._cMnuMargBottom.Click += new EventHandler(this.CMnuMargBottomClick);
             //
             // _cMnuMargHor
             //
             this._cMnuMargHor.Index = 4;
             this._cMnuMargHor.Text = MessageStrings.LayoutCmnuHor;
-            this._cMnuMargHor.Click += new EventHandler(this.cMnuMargHor_Click);
+            this._cMnuMargHor.Click += new EventHandler(this.CMnuMargHorClick);
             //
             // _cMnuMargVert
             //
             this._cMnuMargVert.Index = 5;
             this._cMnuMargVert.Text = MessageStrings.LayoutCmnuVert;
-            this._cMnuMargVert.Click += new EventHandler(this.cMnuMargVert_Click);
+            this._cMnuMargVert.Click += new EventHandler(this.CMnuMargVertClick);
             //
             // _menuItem19
             //
@@ -229,13 +229,13 @@ namespace DotSpatial.Controls
             //
             this._cMnuSelWidth.Index = 0;
             this._cMnuSelWidth.Text = MessageStrings.LayoutCmnuWidth;
-            this._cMnuSelWidth.Click += new EventHandler(this.cMnuSelWidth_Click);
+            this._cMnuSelWidth.Click += new EventHandler(this.CMnuSelWidthClick);
             //
             // _cMnuSelHeight
             //
             this._cMnuSelHeight.Index = 1;
             this._cMnuSelHeight.Text = MessageStrings.LayoutCmnuHeight;
-            this._cMnuSelHeight.Click += new EventHandler(this.cMnuSelHeight_Click);
+            this._cMnuSelHeight.Click += new EventHandler(this.CMnuSelHeightClick);
             //
             // _cMnuMarFit
             //
@@ -249,13 +249,13 @@ namespace DotSpatial.Controls
             //
             this._cMnuMargWidth.Index = 0;
             this._cMnuMargWidth.Text = MessageStrings.LayoutCmnuWidth;
-            this._cMnuMargWidth.Click += new EventHandler(this.cMnuMargWidth_Click);
+            this._cMnuMargWidth.Click += new EventHandler(this.CMnuMargWidthClick);
             //
             // _cMnuMargHeight
             //
             this._cMnuMargHeight.Index = 1;
             this._cMnuMargHeight.Text = MessageStrings.LayoutCmnuHeight;
-            this._cMnuMargHeight.Click += new EventHandler(this.cMnuMargHeight_Click);
+            this._cMnuMargHeight.Click += new EventHandler(this.CMnuMargHeightClick);
             //
             // _menuItem4
             //
@@ -266,7 +266,7 @@ namespace DotSpatial.Controls
             //
             this._cMnuDelete.Index = 9;
             this._cMnuDelete.Text = MessageStrings.LayoutMenuStripSelectDelete;
-            this._cMnuDelete.Click += new EventHandler(this.cMnuDelete_Click);
+            this._cMnuDelete.Click += new EventHandler(this.CMnuDeleteClick);
             //
             // LayoutControl
             //
@@ -275,11 +275,11 @@ namespace DotSpatial.Controls
             this.Controls.Add(this._vScrollBar);
             this.Controls.Add(this._hScrollBarPanel);
             this.Name = "LayoutControl";
-            this.MouseMove += new MouseEventHandler(this.LayoutControl_MouseMove);
-            this.KeyUp += new KeyEventHandler(this.LayoutControl_KeyUp);
-            this.MouseDown += new MouseEventHandler(this.LayoutControl_MouseDown);
-            this.Resize += new EventHandler(this.LayoutControl_Resize);
-            this.MouseUp += new MouseEventHandler(this.LayoutControl_MouseUp);
+            this.MouseMove += new MouseEventHandler(this.LayoutControlMouseMove);
+            this.KeyUp += new KeyEventHandler(this.LayoutControlKeyUp);
+            this.MouseDown += new MouseEventHandler(this.LayoutControlMouseDown);
+            this.Resize += new EventHandler(this.LayoutControlResize);
+            this.MouseUp += new MouseEventHandler(this.LayoutControlMouseUp);
             this._hScrollBarPanel.ResumeLayout(false);
             this.ResumeLayout(false);
         }

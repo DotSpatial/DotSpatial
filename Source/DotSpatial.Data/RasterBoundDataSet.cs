@@ -1,14 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-// The Initial Developer of this Original Code is Ted Dunsford. Created Before 11/25/2010 9:20 AM
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Projections;
 
@@ -16,19 +7,29 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// This is an abstract base class that represents a datasets that has a RasterBounds on it, and reprojects
-    /// by using the RasterBounds.  This works for Image and Raster implementations.
+    /// by using the RasterBounds. This works for Image and Raster implementations.
     /// </summary>
     public abstract class RasterBoundDataSet : DataSet
     {
+        #region Fields
+
         private IRasterBounds _bounds;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Creates a new instance of the RasterBoundData object, setting up a default RasterBounds.
+        /// Initializes a new instance of the <see cref="RasterBoundDataSet"/> class.
         /// </summary>
         protected RasterBoundDataSet()
         {
             _bounds = new RasterBounds(0, 0, new double[] { 0, 1, 0, 0, 0, -1 });
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the image bounds being used to define the georeferencing of the image
@@ -39,6 +40,7 @@ namespace DotSpatial.Data
             {
                 return _bounds;
             }
+
             set
             {
                 _bounds = value;
@@ -54,21 +56,18 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (Bounds == null) return null;
-                return Bounds.Extent;
+                return Bounds?.Extent;
             }
+
             set
             {
                 if (Bounds != null) Bounds.Extent = value;
             }
         }
 
-        /// <summary>
-        /// Occurs when the raster bounds of this data class have changed.
-        /// </summary>
-        protected virtual void OnBoundsChanged(IRasterBounds bounds)
-        {
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// RasterBounds datasets offer a limited sort of reproject on the fly.
@@ -82,6 +81,7 @@ namespace DotSpatial.Data
         public override void Reproject(ProjectionInfo targetProjection)
         {
             if (CanReproject == false) return;
+
             double[] aff = Projections.Reproject.ReprojectAffine(Bounds.AffineCoefficients, Bounds.NumRows, Bounds.NumColumns, Projection, targetProjection);
             Bounds.AffineCoefficients = aff;
         }
@@ -97,7 +97,18 @@ namespace DotSpatial.Data
             {
                 Bounds = null;
             }
+
             base.Dispose(disposeManagedResources);
         }
+
+        /// <summary>
+        /// Occurs when the raster bounds of this data class have changed.
+        /// </summary>
+        /// <param name="bounds">The bounds that changed.</param>
+        protected virtual void OnBoundsChanged(IRasterBounds bounds)
+        {
+        }
+
+        #endregion
     }
 }

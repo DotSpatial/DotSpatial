@@ -121,30 +121,30 @@
   <data name="lblPaperDimension.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 13</value>
   </data>
-  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cancelButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
   </data>
   <data name="&gt;&gt;txtBoxLeft.Name" xml:space="preserve">
     <value>txtBoxLeft</value>
   </data>
-  <data name="&gt;&gt;Label4.Type" xml:space="preserve">
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="_groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
+  <data name="&gt;&gt;okButton.Name" xml:space="preserve">
+    <value>okButton</value>
   </data>
   <data name="_rdbLandscape.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -155,22 +155,22 @@
   <data name="txtBoxBottom.Location" type="System.Drawing.Point, System.Drawing">
     <value>99, 130</value>
   </data>
-  <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 13</value>
   </data>
   <data name="_rdbPortrait.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 23</value>
   </data>
   <data name="&gt;&gt;txtBoxBottom.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>groupBox1</value>
   </data>
-  <data name="Label3.Text" xml:space="preserve">
+  <data name="label3.Text" xml:space="preserve">
     <value>&amp;Left</value>
   </data>
-  <data name="Label5.Text" xml:space="preserve">
+  <data name="label5.Text" xml:space="preserve">
     <value>&amp;Right</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 16</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
@@ -182,7 +182,7 @@
   <data name="&gt;&gt;_groupBox2.Name" xml:space="preserve">
     <value>_groupBox2</value>
   </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="&gt;&gt;txtBoxRight.ZOrder" xml:space="preserve">
@@ -194,22 +194,22 @@
   <data name="&gt;&gt;_rdbLandscape.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ComboPaperSizes.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="comboPaperSizes.Location" type="System.Drawing.Point, System.Drawing">
     <value>76, 13</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
   </data>
-  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
   <data name="&gt;&gt;txtBoxBottom.Name" xml:space="preserve">
     <value>txtBoxBottom</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cancelButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -239,23 +239,23 @@
         AADgDwAA8B8AAA==
 </value>
   </data>
-  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="&gt;&gt;lblPaperDimension.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="&gt;&gt;txtBoxLeft.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;txtBoxBottom.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label4.Name" xml:space="preserve">
-    <value>Label4</value>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
   </data>
   <data name="_groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 65</value>
@@ -263,7 +263,7 @@
   <data name="lblPaperDimension.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>183, 63</value>
   </data>
   <data name="&gt;&gt;txtBoxBottom.ZOrder" xml:space="preserve">
@@ -272,13 +272,13 @@
   <data name="&gt;&gt;_rdbPortrait.Name" xml:space="preserve">
     <value>_rdbPortrait</value>
   </data>
-  <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cancelButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>183, 313</value>
   </data>
   <data name="&gt;&gt;_rdbLandscape.Name" xml:space="preserve">
     <value>_rdbLandscape</value>
   </data>
-  <data name="ComboPaperSizes.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="comboPaperSizes.Size" type="System.Drawing.Size, System.Drawing">
     <value>173, 21</value>
   </data>
   <data name="_rdbLandscape.Size" type="System.Drawing.Size, System.Drawing">
@@ -287,49 +287,49 @@
   <data name="_rdbLandscape.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 46</value>
   </data>
-  <data name="&gt;&gt;Label5.Name" xml:space="preserve">
-    <value>Label5</value>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
   </data>
-  <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="okButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>110, 313</value>
   </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 13</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="txtBoxRight.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 20</value>
   </data>
-  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lblPaperDimension.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 40</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cancelButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PageSetupForm</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
-  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 63</value>
   </data>
-  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="Label6.TabIndex" type="System.Int32, mscorlib">
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="lblPaperDimension.Text" xml:space="preserve">
@@ -341,10 +341,10 @@
   <data name="&gt;&gt;_groupBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ComboPaperSizes.Type" xml:space="preserve">
+  <data name="&gt;&gt;comboPaperSizes.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;okButton.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -357,17 +357,17 @@
   <data name="txtBoxBottom.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 20</value>
   </data>
-  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txtBoxTop.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>groupBox1</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
   </data>
   <data name="_groupBox2.Text" xml:space="preserve">
     <value>Paper Orientation</value>
@@ -378,14 +378,14 @@
   <data name="&gt;&gt;txtBoxRight.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ComboPaperSizes.Parent" xml:space="preserve">
+  <data name="&gt;&gt;comboPaperSizes.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
+  <data name="&gt;&gt;cancelButton.Name" xml:space="preserve">
+    <value>cancelButton</value>
   </data>
-  <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="txtBoxBottom.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -396,34 +396,34 @@
   <data name="&gt;&gt;_rdbPortrait.Parent" xml:space="preserve">
     <value>_groupBox2</value>
   </data>
-  <data name="Cancel_Button.Text" xml:space="preserve">
+  <data name="cancelButton.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="_rdbPortrait.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
+  <data name="label2.Text" xml:space="preserve">
     <value>Paper Dimensions:</value>
   </data>
   <data name="_rdbPortrait.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
+  <data name="&gt;&gt;okButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
+  <data name="&gt;&gt;okButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="&gt;&gt;lblPaperDimension.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 40</value>
   </data>
   <data name="txtBoxTop.TabIndex" type="System.Int32, mscorlib">
@@ -432,7 +432,7 @@
   <data name="_rdbPortrait.Text" xml:space="preserve">
     <value>&amp;Portrait</value>
   </data>
-  <data name="ComboPaperSizes.TabIndex" type="System.Int32, mscorlib">
+  <data name="comboPaperSizes.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="txtBoxLeft.Location" type="System.Drawing.Point, System.Drawing">
@@ -441,7 +441,7 @@
   <data name="&gt;&gt;_rdbPortrait.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 13</value>
   </data>
   <data name="&gt;&gt;_rdbLandscape.Parent" xml:space="preserve">
@@ -450,65 +450,65 @@
   <data name="_rdbLandscape.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;Label6.Name" xml:space="preserve">
-    <value>Label6</value>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
   </data>
-  <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
+  <data name="okButton.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="label1.Text" xml:space="preserve">
     <value>Paper &amp;Size:</value>
   </data>
-  <data name="&gt;&gt;Label5.Type" xml:space="preserve">
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 15</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
   </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 145</value>
   </data>
-  <data name="&gt;&gt;ComboPaperSizes.Name" xml:space="preserve">
-    <value>ComboPaperSizes</value>
+  <data name="&gt;&gt;comboPaperSizes.Name" xml:space="preserve">
+    <value>comboPaperSizes</value>
   </data>
   <data name="_rdbLandscape.Text" xml:space="preserve">
     <value>&amp;Landscape</value>
   </data>
-  <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 114</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Label5.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="&gt;&gt;txtBoxTop.Name" xml:space="preserve">
     <value>txtBoxTop</value>
   </data>
-  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="Label4.TabIndex" type="System.Int32, mscorlib">
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="&gt;&gt;txtBoxRight.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>groupBox1</value>
   </data>
   <data name="_groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>237, 74</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="_rdbPortrait.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 17</value>
@@ -525,17 +525,17 @@
   <data name="txtBoxRight.Location" type="System.Drawing.Point, System.Drawing">
     <value>186, 79</value>
   </data>
-  <data name="&gt;&gt;ComboPaperSizes.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;comboPaperSizes.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>26, 13</value>
   </data>
-  <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="okButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
   </data>
-  <data name="&gt;&gt;Label5.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>265, 348</value>
@@ -543,46 +543,46 @@
   <data name="&gt;&gt;txtBoxLeft.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="Label4.Text" xml:space="preserve">
+  <data name="label4.Text" xml:space="preserve">
     <value>&amp;Top</value>
   </data>
-  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>237, 162</value>
   </data>
   <data name="lblPaperDimension.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>25, 13</value>
   </data>
-  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
-    <value>Label3</value>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
   </data>
-  <data name="Label5.TabIndex" type="System.Int32, mscorlib">
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
+  <data name="&gt;&gt;cancelButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
+  <data name="cancelButton.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="&gt;&gt;txtBoxTop.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Label6.Text" xml:space="preserve">
+  <data name="label6.Text" xml:space="preserve">
     <value>&amp;Bottom</value>
   </data>
-  <data name="GroupBox1.Text" xml:space="preserve">
+  <data name="groupBox1.Text" xml:space="preserve">
     <value>Margins</value>
   </data>
   <data name="&gt;&gt;_rdbPortrait.ZOrder" xml:space="preserve">
@@ -594,16 +594,16 @@
   <data name="&gt;&gt;txtBoxLeft.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Label6.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="txtBoxRight.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;Label6.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
-  <data name="OK_Button.Text" xml:space="preserve">
+  <data name="okButton.Text" xml:space="preserve">
     <value>OK</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

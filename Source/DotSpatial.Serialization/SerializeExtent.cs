@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Serialization.dll
-// Description:  A module that supports common functions like serialization.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/11/2009 2:34:48 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -19,41 +9,15 @@ namespace DotSpatial.Serialization
     /// <summary>
     /// Extent works like an envelope but is faster acting, has a minimum memory profile, only works in 2D and has no events.
     /// </summary>
-    [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class SerializeExtent : ICloneable
     {
-        #region Private Variables
-
-        /// <summary>
-        /// Max X
-        /// </summary>
-        [Serialize("XMax")]
-        public double XMax;
-
-        /// <summary>
-        /// Min X
-        /// </summary>
-        [Serialize("XMin")]
-        public double XMin;
-
-        /// <summary>
-        /// Max Y
-        /// </summary>
-        [Serialize("YMax")]
-        public double YMax;
-
-        /// <summary>
-        /// Min Y
-        /// </summary>
-        [Serialize("YMin")]
-        public double YMin;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Extent.  This introduces no error checking and assumes
+        /// Initializes a new instance of the <see cref="SerializeExtent"/> class.
+        /// This introduces no error checking and assumes
         /// that the user knows what they are doing when working with this.
         /// </summary>
         public SerializeExtent()
@@ -65,12 +29,12 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Creates a new extent from the specified ordinates
+        /// Initializes a new instance of the <see cref="SerializeExtent"/> class.
         /// </summary>
-        /// <param name="xMin"></param>
-        /// <param name="yMin"></param>
-        /// <param name="xMax"></param>
-        /// <param name="yMax"></param>
+        /// <param name="xMin">The x min.</param>
+        /// <param name="yMin">The y min.</param>
+        /// <param name="xMax">The x max.</param>
+        /// <param name="yMax">The y max.</param>
         public SerializeExtent(double xMin, double yMin, double xMax, double yMax)
         {
             XMin = xMin;
@@ -80,11 +44,10 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Given a long array of doubles, this builds an extent from a small part of that
-        /// xmin, ymin, xmax, ymax
+        /// Initializes a new instance of the <see cref="SerializeExtent"/> class.
         /// </summary>
-        /// <param name="values"></param>
-        /// <param name="offset"></param>
+        /// <param name="values">Array that contains xmin, ymin, xmax and ymax.</param>
+        /// <param name="offset">Offset of Xmin, the others follow directly after.</param>
         public SerializeExtent(double[] values, int offset)
         {
             XMin = values[0 + offset];
@@ -94,9 +57,9 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// XMin, YMin, XMax, YMax order
+        /// Initializes a new instance of the <see cref="SerializeExtent"/> class.
         /// </summary>
-        /// <param name="values"></param>
+        /// <param name="values">Array that contains xmin, ymin, xmax and ymax.</param>
         public SerializeExtent(double[] values)
         {
             XMin = values[0];
@@ -107,18 +70,44 @@ namespace DotSpatial.Serialization
 
         #endregion
 
-        #region ICloneable Members
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets Max X.
+        /// </summary>
+        [Serialize("XMax")]
+        public double XMax { get; set; }
+
+        /// <summary>
+        /// Gets or sets Min X.
+        /// </summary>
+        [Serialize("XMin")]
+        public double XMin { get; set; }
+
+        /// <summary>
+        /// Gets or sets Max Y.
+        /// </summary>
+        [Serialize("YMax")]
+        public double YMax { get; set; }
+
+        /// <summary>
+        /// Gets or sets Min Y.
+        /// </summary>
+        [Serialize("YMin")]
+        public double YMin { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Produces a clone, rather than using this same object.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The clone.</returns>
         public object Clone()
         {
             return new SerializeExtent(XMin, YMin, XMax, YMax);
         }
-
-        #endregion
 
         /// <summary>
         /// If this is undefined, it will have a min that is larger than the max.
@@ -127,7 +116,10 @@ namespace DotSpatial.Serialization
         public bool IsEmpty()
         {
             if (XMin > XMax || YMin > YMax) return true;
+
             return false;
         }
+
+        #endregion
     }
 }

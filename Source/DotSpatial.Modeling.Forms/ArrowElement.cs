@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ArrowElement
-// Description:  An abstract class that handles drawing arrows between elements in the modeler window
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -27,15 +16,16 @@ namespace DotSpatial.Modeling.Forms
     /// </summary>
     public class ArrowElement : ModelElement
     {
-        GraphicsPath _arrowPath = new GraphicsPath();
-        ModelElement _startElement;
+        #region Fields
 
-        Point _startPoint;
-        ModelElement _stopElement;
-        Point _stopPoint;
+        private GraphicsPath _arrowPath = new GraphicsPath();
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of an ArrowElement
+        /// Initializes a new instance of the <see cref="ArrowElement"/> class.
         /// </summary>
         /// <param name="sourceElement">The element the arrow starts at</param>
         /// <param name="destElement">the element the arrow ends at</param>
@@ -43,83 +33,46 @@ namespace DotSpatial.Modeling.Forms
         public ArrowElement(ModelElement sourceElement, ModelElement destElement, List<ModelElement> modelElements)
             : base(modelElements)
         {
-            _startElement = sourceElement;
-            _stopElement = destElement;
-            UpdateDimentions();
+            StartElement = sourceElement;
+            StopElement = destElement;
+            UpdateDimensions();
             Shape = ModelShape.Arrow;
-            Location = _startElement.Location;
+            Location = StartElement.Location;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Updates the dimentions
+        /// Gets or sets the source element.
         /// </summary>
-        public void UpdateDimentions()
-        {
-            //Updates the location and size of the element based on the elements its attached to
-            Location = _startElement.Location;
-            Width = _stopElement.Location.X - _startElement.Location.X;
-            Height = _stopElement.Location.Y - _startElement.Location.Y;
-            _startPoint = new Point(_startElement.Width - 4, (_startElement.Height / 2));
-            _stopPoint = new Point(Width, Height + (StopElement.Height / 2));
-        }
+        public ModelElement StartElement { get; set; }
 
         /// <summary>
-        /// Repaints the form with cool background and stuff
+        /// Gets or sets the point in the arrows coordinants we draw from.
         /// </summary>
-        /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
-        public override void Paint(Graphics graph)
-        {
-            //Draws Rectangular Shapes
-            if (Shape == ModelShape.Arrow)
-            {
-                _arrowPath = new GraphicsPath();
-
-                //Draws the basic shape
-                Pen arrowPen;
-                if (Highlight < 1)
-                    arrowPen = new Pen(Color.Cyan, 3F);
-                else
-                    arrowPen = new Pen(Color.Black, 3F);
-
-                //Draws the curved arrow
-                Point[] lineArray = new Point[4];
-                lineArray[0] = new Point(_startPoint.X, _startPoint.Y);
-                lineArray[1] = new Point(_startPoint.X - ((_startPoint.X - _stopPoint.X) / 3), _startPoint.Y);
-                lineArray[2] = new Point(_stopPoint.X - ((_stopPoint.X - _startPoint.X) / 3), _stopPoint.Y);
-                lineArray[3] = new Point(_stopPoint.X, _stopPoint.Y);
-                graph.DrawBeziers(arrowPen, lineArray);
-                _arrowPath.AddBeziers(lineArray);
-                _arrowPath.Flatten();
-
-                //Draws the arrow head
-                Point[] arrowArray = new Point[3];
-                arrowArray[0] = _stopPoint;
-                arrowArray[1] = new Point(_stopPoint.X - (5 * Math.Sign(_stopPoint.X - _startPoint.X)), _stopPoint.Y - 2);
-                arrowArray[2] = new Point(_stopPoint.X - (5 * Math.Sign(_stopPoint.X - _startPoint.X)), _stopPoint.Y + 2);
-                graph.DrawPolygon(arrowPen, arrowArray);
-
-                //Garbage collection
-                arrowPen.Dispose();
-            }
-        }
+        public Point StartPoint { get; set; }
 
         /// <summary>
-        /// Calculates if a point is within the shape that defines the element
+        /// Gets or sets the destination Element.
         /// </summary>
-        /// <param name="point">A point to test in the virtual modeling plane</param>
-        /// <returns></returns>
-        public override bool PointInElement(Point point)
-        {
-            Rectangle temp = new Rectangle(point, new Size(1, 1));
-            temp.Inflate(2, 2);
-            return ElementInRectangle(temp);
-        }
+        public ModelElement StopElement { get; set; }
 
         /// <summary>
-        /// Returns true if the element intersect the rectangle from the parent class
+        /// Gets or sets the point in the arrows coordinants we stop drawing from.
+        /// </summary>
+        public Point StopPoint { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Returns true if the element intersect the rectangle from the parent class.
         /// </summary>
         /// <param name="rect">The rectangle to test must be in the virtual modeling coordinant plane</param>
-        /// <returns></returns>
+        /// <returns>True if the element intersect the rectangle from the parent class.</returns>
         public override bool ElementInRectangle(Rectangle rect)
         {
             IGeometry rectanglePoly;
@@ -159,48 +112,73 @@ namespace DotSpatial.Modeling.Forms
                 {
                     arrowPoints[i] = new Coordinate(_arrowPath.PathPoints[i].X + Location.X, _arrowPath.PathPoints[i].Y + Location.Y);
                 }
+
                 LineString arrowLine = new LineString(arrowPoints);
-                return (arrowLine.Intersects(rectanglePoly));
+                return arrowLine.Intersects(rectanglePoly);
             }
+
             return false;
         }
 
-        #region -------------------- Properties
-
         /// <summary>
-        /// Gets or sets the destination Element
+        /// Repaints the form with cool background and stuff
         /// </summary>
-        public ModelElement StopElement
+        /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
+        public override void Paint(Graphics graph)
         {
-            get { return _stopElement; }
-            set { _stopElement = value; }
+            // Draws Rectangular Shapes
+            if (Shape == ModelShape.Arrow)
+            {
+                _arrowPath = new GraphicsPath();
+
+                // Draws the basic shape
+                Pen arrowPen = Highlight < 1 ? new Pen(Color.Cyan, 3F) : new Pen(Color.Black, 3F);
+
+                // Draws the curved arrow
+                Point[] lineArray = new Point[4];
+                lineArray[0] = new Point(StartPoint.X, StartPoint.Y);
+                lineArray[1] = new Point(StartPoint.X - ((StartPoint.X - StopPoint.X) / 3), StartPoint.Y);
+                lineArray[2] = new Point(StopPoint.X - ((StopPoint.X - StartPoint.X) / 3), StopPoint.Y);
+                lineArray[3] = new Point(StopPoint.X, StopPoint.Y);
+                graph.DrawBeziers(arrowPen, lineArray);
+                _arrowPath.AddBeziers(lineArray);
+                _arrowPath.Flatten();
+
+                // Draws the arrow head
+                Point[] arrowArray = new Point[3];
+                arrowArray[0] = StopPoint;
+                arrowArray[1] = new Point(StopPoint.X - (5 * Math.Sign(StopPoint.X - StartPoint.X)), StopPoint.Y - 2);
+                arrowArray[2] = new Point(StopPoint.X - (5 * Math.Sign(StopPoint.X - StartPoint.X)), StopPoint.Y + 2);
+                graph.DrawPolygon(arrowPen, arrowArray);
+
+                // Garbage collection
+                arrowPen.Dispose();
+            }
         }
 
         /// <summary>
-        /// Gets or sets the source element
+        /// Calculates if a point is within the shape that defines the element.
         /// </summary>
-        public ModelElement StartElement
+        /// <param name="point">A point to test in the virtual modeling plane</param>
+        /// <returns>True, if the point is within the shape that defines the element.</returns>
+        public override bool PointInElement(Point point)
         {
-            get { return _startElement; }
-            set { _startElement = value; }
+            Rectangle temp = new Rectangle(point, new Size(1, 1));
+            temp.Inflate(2, 2);
+            return ElementInRectangle(temp);
         }
 
         /// <summary>
-        /// the point in the arrows coordinants we draw from
+        /// Updates the dimensions.
         /// </summary>
-        public Point StartPoint
+        public void UpdateDimensions()
         {
-            get { return _startPoint; }
-            set { _startPoint = value; }
-        }
-
-        /// <summary>
-        /// the point in the arrows coordinants we stop drawing from
-        /// </summary>
-        public Point StopPoint
-        {
-            get { return _stopPoint; }
-            set { _stopPoint = value; }
+            // Updates the location and size of the element based on the elements its attached to
+            Location = StartElement.Location;
+            Width = StopElement.Location.X - StartElement.Location.X;
+            Height = StopElement.Location.Y - StartElement.Location.Y;
+            StartPoint = new Point(StartElement.Width - 4, StartElement.Height / 2);
+            StopPoint = new Point(Width, Height + (StopElement.Height / 2));
         }
 
         #endregion

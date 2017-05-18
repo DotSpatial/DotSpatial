@@ -229,13 +229,13 @@
     <value>linhas</value>
   </data>
   <data name="LabelSetup_Help1" xml:space="preserve">
-    <value>Cada grupo de símbolo pode definir uma expressão de seqüência de caracteres separadas que inclui valores de atributo.  Dê um duplo clique em campos para adicioná-lo à expressão.</value>
+    <value>Cada grupo de símbolo pode definir uma expressão de seqüência de caracteres separadas que inclui valores de atributo. Dê um duplo clique em campos para adicioná-lo à expressão.</value>
   </data>
   <data name="LabelSetup_Help2" xml:space="preserve">
     <value>Use a guia Membros ao design, uma expressão de filtro que restringe quais recursos será atribuída para um rótulo específico.</value>
   </data>
   <data name="LabelSetup_Help3" xml:space="preserve">
-    <value>Use a expressão guia para projetar o texto que deve aparecer em um rótulo.  Campos indicados com colchetes serão substituídos com valores reais.</value>
+    <value>Use a expressão guia para projetar o texto que deve aparecer em um rótulo. Campos indicados com colchetes serão substituídos com valores reais.</value>
   </data>
   <data name="LabelSetup_Help4" xml:space="preserve">
     <value>Cada grupo pode especificar suas próprias características de projeto básico.</value>

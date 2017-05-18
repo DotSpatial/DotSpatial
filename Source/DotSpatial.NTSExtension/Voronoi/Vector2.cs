@@ -1,32 +1,13 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Topology.dll
-// Description:  The basic topology module for the new dotSpatial libraries
-// ********************************************************************************************************
-// The contents of this file are subject to the Lesser GNU Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from a code project example:
-// http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx
-// which is protected under the Code Project Open License
-// http://www.codeproject.com/info/cpol10.aspx
-//
-// The Initial Developer to integrate this code into MapWindow 6.0 is Ted Dunsford.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name              |   Date             |   Comments
-// ------------------|--------------------|---------------------------------------------------------
-// Benjamin Dittes   | August 10, 2005    |  Authored an original "Vector" class which enumerated an array of doubles
-// Ted Dunsford      | August 26, 2009    |  Reformatted some code and use public structures for X and Y instead
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using GeoAPI.Geometries;
 
+// The Original Code is from a code project example:
+// http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx
+// which is protected under the Code Project Open License
+// http://www.codeproject.com/info/cpol10.aspx
 namespace DotSpatial.NTSExtension.Voronoi
 {
     /// <summary>
@@ -37,8 +18,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         #region Fields
 
         /// <summary>
-        /// This double controls the test for equality so that values that
-        /// are smaller than this value will be considered equal.
+        /// This double controls the test for equality so that values that are smaller than this value will be considered equal.
         /// </summary>
         public static double Tolerance;
 
@@ -57,10 +37,10 @@ namespace DotSpatial.NTSExtension.Voronoi
         #region Constructors
 
         /// <summary>
-        /// Creates a vector by reading a long array of vertices and assigning the vector based on that
+        /// Initializes a new instance of the <see cref="Vector2"/> struct by reading a long array of vertices and assigning the vector based on that.
         /// </summary>
-        /// <param name="xyvertices"></param>
-        /// <param name="offset"></param>
+        /// <param name="xyvertices">Vertices to assign.</param>
+        /// <param name="offset">Offset that indicates where the x value is.</param>
         public Vector2(double[] xyvertices, int offset)
         {
             X = xyvertices[offset];
@@ -68,7 +48,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Build a new vector
+        /// Initializes a new instance of the <see cref="Vector2"/> struct.
         /// </summary>
         /// <param name="x">The elements of the vector</param>
         public Vector2(params double[] x)
@@ -84,10 +64,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Gets the dot product of this vector with itself
         /// </summary>
-        public double SquaredLength
-        {
-            get { return this * this; }
-        }
+        public double SquaredLength => this * this;
 
         #endregion
 
@@ -107,9 +84,9 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Overrides equality to use the tolerant equality
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
+        /// <param name="a">First vector to check.</param>
+        /// <param name="b">Second vector to check.</param>
+        /// <returns>True, if both are equal.</returns>
         public static bool operator ==(Vector2 a, Vector2 b)
         {
             return a.Equals(b);
@@ -118,9 +95,9 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Overrides equality to use the tolerant equality test
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
+        /// <param name="a">First vector to check.</param>
+        /// <param name="b">Second vector to check.</param>
+        /// <returns>True, if both are not equal.</returns>
         public static bool operator !=(Vector2 a, Vector2 b)
         {
             return !a.Equals(b);
@@ -129,9 +106,12 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Get the scalar product of two vectors
         /// </summary>
+        /// <param name="a">First vector to multiply.</param>
+        /// <param name="b">Second vector to multiply.</param>
+        /// <returns>The resulting value.</returns>
         public static double operator *(Vector2 a, Vector2 b)
         {
-            return a.X * b.X + a.Y * b.Y;
+            return (a.X * b.X) + (a.Y * b.Y);
         }
 
         /// <summary>
@@ -172,39 +152,40 @@ namespace DotSpatial.NTSExtension.Voronoi
         #region Methods
 
         /// <summary>
-        /// True if any of the double values is not a number
+        /// True if any of the double values is not a number.
         /// </summary>
+        /// <returns>bool if either X or Y is nan.</returns>
         public bool ContainsNan()
         {
-            if (double.IsNaN(X)) return true;
-            if (double.IsNaN(Y)) return true;
-            return false;
+            return double.IsNaN(X) || double.IsNaN(Y);
         }
 
         /// <summary>
         /// Calculates the euclidean distance from this cell to another
         /// </summary>
+        /// <param name="other">Second cell for distance calculation.</param>
         /// <returns>Vector2 stuff</returns>
         public double Distance(Vector2 other)
         {
             double dx = X - other.X;
             double dy = Y - other.Y;
-            return Math.Sqrt(dx * dx + dy * dy);
+            return Math.Sqrt((dx * dx) + (dy * dy));
         }
 
         /// <summary>
-        /// Compares this vector with another one
+        /// Compares this vector with another one.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">Selecond vector for comparing.</param>
+        /// <returns>True, if the vectors are equal by tolerance.</returns>
         public override bool Equals(object obj)
         {
+            if (obj == null) return false;
             Vector2 b = (Vector2)obj;
             return TolerantEqual(X, b.X) && TolerantEqual(Y, b.Y);
         }
 
         /// <summary>
-        /// Retrieves a hashcode that is dependent on the elements
+        /// Retrieves a hashcode that is dependent on the elements.
         /// </summary>
         /// <returns>The hashcode</returns>
         public override int GetHashCode()
@@ -213,12 +194,21 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Transforms the vector into a coordinate with an x and y value
+        /// Transforms the vector into a coordinate with an x and y value.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a coordinate with this vectors X and Y values.</returns>
         public Coordinate ToCoordinate()
         {
             return new Coordinate(X, Y);
+        }
+
+        /// <summary>
+        /// Convert the vector into a reconstructable string representation
+        /// </summary>
+        /// <returns>A string from which the vector can be rebuilt</returns>
+        public override string ToString()
+        {
+            return "(" + X + "," + Y + ")";
         }
 
         private static bool TolerantEqual(double a, double b)
@@ -234,15 +224,6 @@ namespace DotSpatial.NTSExtension.Voronoi
 
             // If a tolerance has been specified, check equality using that tolerance level.
             return Math.Abs(a - b) <= Tolerance;
-        }
-
-        /// <summary>
-        /// Convert the vector into a reconstructable string representation
-        /// </summary>
-        /// <returns>A string from which the vector can be rebuilt</returns>
-        public override string ToString()
-        {
-            return "(" + X + "," + Y + ")";
         }
 
         #endregion

@@ -1,10 +1,12 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System.Collections.Generic;
 using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
-using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -13,37 +15,13 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// </summary>
     public abstract class SnappableMapFunction : MapFunctionZoom
     {
-        #region Fields
+        #region  Constructors
 
         /// <summary>
-        /// This is true if the current mouse position has been snapped.
+        /// Initializes a new instance of the <see cref="SnappableMapFunction"/> class.
         /// </summary>
-        protected bool IsSnapped = false;
-
-        /// <summary>
-        /// List of layers that will be snapped to.
-        /// </summary>
-        protected List<IFeatureLayer> SnapLayers;
-
-        /// <summary>
-        /// This is the pen that will be used to draw the snapping circle.
-        /// </summary>
-        protected Pen SnapPen = new Pen(Color.HotPink, 2F);
-
-        /// <summary>
-        /// +/- N pixels around the mouse point.
-        /// </summary>
-        protected int SnapTol = 9;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="map"></param>
-        public SnappableMapFunction(IMap map)
+        /// <param name="map">The map.</param>
+        protected SnappableMapFunction(IMap map)
             : base(map)
         {
             DoSnapping = false;
@@ -54,24 +32,43 @@ namespace DotSpatial.Plugins.ShapeEditor
         #region Properties
 
         /// <summary>
-        /// This determines if snapping is performed or not.
+        /// Gets or sets a value indicating whether snapping is performed or not.
         /// </summary>
         public bool DoSnapping { get; set; }
 
         /// <summary>
-        /// Feature the computed snappedCoord belongs to.
+        /// Gets the feature the computed snappedCoord belongs to.
         /// </summary>
         public IFeature SnappedFeature { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the current mouse position has been snapped.
+        /// </summary>
+        protected bool IsSnapped { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a list of layers that will be snapped to.
+        /// </summary>
+        protected List<IFeatureLayer> SnapLayers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the pen that will be used to draw the snapping circle.
+        /// </summary>
+        protected Pen SnapPen { get; set; } = new Pen(Color.HotPink, 2F);
+
+        /// <summary>
+        /// Gets or sets the snap tolerance. +/- N pixels around the mouse point.
+        /// </summary>
+        protected int SnapTol { get; set; } = 9;
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Add the given layer to the snap list.  This list determines which layers
-        /// the current layer will be snapped to.
+        /// Add the given layer to the snap list. This list determines which layers the current layer will be snapped to.
         /// </summary>
-        /// <param name="layer"></param>
+        /// <param name="layer">The layer that gets added to the list of layers that can be used for snapping.</param>
         public void AddLayerToSnap(IFeatureLayer layer)
         {
             if (SnapLayers == null)
@@ -84,7 +81,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// location of the mouse will be the coordinates of the object rather than the actual
         /// mouse coords.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         /// <param name="snappedCoord">set if a coordinate is found</param>
         /// <returns>true if snap found</returns>
         protected bool ComputeSnappedLocation(GeoMouseArgs e, ref Coordinate snappedCoord)
@@ -116,6 +113,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     }
                 }
             }
+
             SnappedFeature = null;
             return false;
         }
@@ -123,8 +121,8 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <summary>
         /// Perform any actions in the OnMouseMove event that are necessary for snap drawing.
         /// </summary>
-        /// <param name="prevWasSnapped"></param>
-        /// <param name="pos"></param>
+        /// <param name="prevWasSnapped">Indicates whether the mouse was snapped to a point before.</param>
+        /// <param name="pos">Current position.</param>
         protected void DoMouseMoveForSnapDrawing(bool prevWasSnapped, Point pos)
         {
             // Invalidate the region around the mouse so that the previous snap colors are erased.

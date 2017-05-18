@@ -1,22 +1,9 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.ClipPolygonWithLine.cs
-// Description:  A tool for clipping a polygon with a line.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for ClipPolygonWithLine
-// Ping                   |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -31,12 +18,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class ClipPolygonWithLine : Tool
     {
-        #region Constants and Fields
-
-        ///<summary>
-        /// Intersection tolerance for comparing to near 0.0
-        ///</summary>
-        public static double FindIntersectionTolerance = 1E-10;
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -44,57 +26,50 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ClipPolygonWithLine class.
+        /// Initializes a new instance of the <see cref="ClipPolygonWithLine"/> class.
         /// </summary>
         public ClipPolygonWithLine()
         {
-            this.Name = TextStrings.ClipPolygonwithLine;
-            this.Category = TextStrings.VectorOverlay;
-            this.Description = TextStrings.ClipPolygonwithLine;
-            this.ToolTip = TextStrings.ClipPolygonwithLine;
+            Name = TextStrings.ClipPolygonwithLine;
+            Category = TextStrings.VectorOverlay;
+            Description = TextStrings.ClipPolygonwithLine;
+            ToolTip = TextStrings.ClipPolygonwithLine;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets or sets the intersection tolerance for comparing to near 0.0.
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public static double FindIntersectionTolerance { get; set; } = 1E-10;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the input paramater array.
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
+
+        /// <summary>
+        /// Gets the output paramater array
+        /// </summary>
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
         /// Accurate Clip Polygon with Line
         /// </summary>
-        /// <param name="polygon"></param>
-        /// <param name="line"></param>
-        /// <param name="resultFeatureSet"></param>
-        /// <returns></returns>
-        public static bool Accurate_ClipPolygonWithLine(ref IFeature polygon, ref IFeature line, ref IFeatureSet resultFeatureSet)
+        /// <param name="polygon">The polygon to clip.</param>
+        /// <param name="line">The line used for clipping.</param>
+        /// <param name="resultFeatureSet">The resulting feature set.</param>
+        /// <returns>False if errors where encountered.</returns>
+        public static bool AccurateClipPolygonWithLine(ref IFeature polygon, ref IFeature line, ref IFeatureSet resultFeatureSet)
         {
             if (polygon == null || line == null) return false;
             if (!line.Geometry.Crosses(polygon.Geometry)) return false;
@@ -147,7 +122,7 @@ namespace DotSpatial.Tools
         /// <param name="line">Input Line.</param>
         /// <param name="resultFile">Output Featureset.</param>
         /// <param name="speedOptimized">The speed optimizer.</param>
-        /// <returns></returns>
+        /// <returns>False if an error was encountered, true otherwise.</returns>
         public static bool ClipMultiPartPolyWithLine(ref IFeature polygon, ref IFeature line, ref IFeatureSet resultFile, bool speedOptimized)
         {
             int numParts = polygon.Geometry.NumGeometries;
@@ -171,11 +146,11 @@ namespace DotSpatial.Tools
                     {
                         if (speedOptimized)
                         {
-                            Fast_ClipPolygonWithLine(ref currPart, ref line, out tempResult);
+                            FastClipPolygonWithLine(ref currPart, ref line, out tempResult);
                         }
                         else
                         {
-                            Accurate_ClipPolygonWithLine(ref currPart, ref line, ref tempResult);
+                            AccurateClipPolygonWithLine(ref currPart, ref line, ref tempResult);
                         }
 
                         int numResults = tempResult.Features.Count;
@@ -204,10 +179,10 @@ namespace DotSpatial.Tools
 
             if (speedOptimized)
             {
-                return Fast_ClipPolygonWithLine(ref polygon, ref line, out resultFile);
+                return FastClipPolygonWithLine(ref polygon, ref line, out resultFile);
             }
 
-            return Accurate_ClipPolygonWithLine(ref polygon, ref line, ref resultFile);
+            return AccurateClipPolygonWithLine(ref polygon, ref line, ref resultFile);
         }
 
         /// <summary>
@@ -248,10 +223,9 @@ namespace DotSpatial.Tools
         {
             int numParts = parts.Length;
             Polygon po = new Polygon(new LinearRing(parts[0].Geometry.Coordinates));
-            Polygon poly;
             for (int i = 0; i <= numParts - 1; i++)
             {
-                poly = new Polygon(new LinearRing(parts[i].Geometry.Coordinates));
+                var poly = new Polygon(new LinearRing(parts[i].Geometry.Coordinates));
                 po = poly.Union(po) as Polygon;
             }
 
@@ -314,7 +288,7 @@ namespace DotSpatial.Tools
                 return ClipMultiPartPolyWithLine(ref polygon, ref line, ref resultSf, false);
             }
 
-            return Accurate_ClipPolygonWithLine(ref polygon, ref line, ref resultSf);
+            return AccurateClipPolygonWithLine(ref polygon, ref line, ref resultSf);
         }
 
         /// <summary>
@@ -360,11 +334,12 @@ namespace DotSpatial.Tools
         /// <param name="line">The line that will clip the polygon into multiple parts.</param>
         /// <param name="resultFeatureSet">The in-memory shapefile where the polygon sections will be saved.</param>
         /// <returns>False if errors are encountered, true otherwise.</returns>
-        public static bool Fast_ClipPolygonWithLine(ref IFeature polygon, ref IFeature line, out IFeatureSet resultFeatureSet)
+        public static bool FastClipPolygonWithLine(ref IFeature polygon, ref IFeature line, out IFeatureSet resultFeatureSet)
         {
             IFeatureSet resultFile = new FeatureSet(FeatureType.Polygon);
-            if (polygon == null || line == null || polygon.FeatureType != FeatureType.Polygon || !polygon.Geometry.Overlaps(line.Geometry))  // make sure polygon and line aren't null, we're dealing with a valid shapefile type and line and polygon overlap
+            if (polygon == null || line == null || polygon.FeatureType != FeatureType.Polygon || !polygon.Geometry.Overlaps(line.Geometry))
             {
+                // make sure polygon and line aren't null, we're dealing with a valid shapefile type and line and polygon overlap
                 resultFeatureSet = resultFile;
                 return false;
             }
@@ -404,7 +379,7 @@ namespace DotSpatial.Tools
             if (numInside != numPoints && numOutside != numPoints)
             {
                 // case: part of line is inside and part is outside - find inside segments.
-                if (!Fast_ProcessPartInAndOut(ptsInside, line, polygon, resultFile))
+                if (!FastProcessPartInAndOut(ptsInside, line, polygon, resultFile))
                 {
                     resultFeatureSet = resultFile;
                     return false;
@@ -441,7 +416,7 @@ namespace DotSpatial.Tools
         /// <param name="intersectsPerLineSeg">Output array of intersection counts</param>
         /// <param name="intersectionPts">Output array of intersection points</param>
         /// <param name="polyIntersectLocs">Output array of intersection locations in reference to polygon vertex indices</param>
-        /// <returns></returns>
+        /// <returns>Number of found intersections.</returns>
         public static int FindIntersections(IFeatureSet lineFeatureSet, IFeature polygon, out int[] intersectsPerLineSeg, out IPoint[][] intersectionPts, out int[][] polyIntersectLocs)
         {
             int numSignChanges = 0; // tracks number of determinant sign changes
@@ -512,12 +487,17 @@ namespace DotSpatial.Tools
                             {
                                 IList<Coordinate> secCoor = new List<Coordinate>
                                                                 {
-                                                                    coorPoly[vertNo - 1], coorPoly[vertNo]
+                                                                    coorPoly[vertNo - 1],
+                                                                    coorPoly[vertNo]
                                                                 };
 
                                 // calculate the actual intercept point
                                 LineString polyTestLine1 = new LineString(secCoor.ToArray());
-                                secCoor = new List<Coordinate> { coorLine[0], coorLine[1] };
+                                secCoor = new List<Coordinate>
+                                              {
+                                                  coorLine[0],
+                                                  coorLine[1]
+                                              };
                                 LineString polyTestLine2 = new LineString(secCoor.ToArray());
                                 bool validIntersect = polyTestLine1.Intersects(polyTestLine2);
                                 IGeometry inPt = polyTestLine1.Intersection(polyTestLine2);
@@ -554,6 +534,7 @@ namespace DotSpatial.Tools
 
                             break;
                     }
+
                     // end of switch
                 }
             }
@@ -574,7 +555,6 @@ namespace DotSpatial.Tools
             int numParts = polygon.Geometry.NumGeometries;
             if (numParts < 1) return;
 
-
             // Multiple parts exist
             IFeature[] parts;
             SeparateParts(ref polygon, out parts);
@@ -590,6 +570,7 @@ namespace DotSpatial.Tools
                 for (int j = 0; j <= numParts - 1; j++)
                 {
                     if (j == i || !parts[j].Geometry.Envelope.Contains(parts[i].Geometry.Envelope)) continue;
+
                     // found a potential hole, do further checking
                     Point pt = new Point(parts[i].Geometry.Coordinates[0]);
 
@@ -597,6 +578,7 @@ namespace DotSpatial.Tools
                     partIsHole = true;
                     break;
                 }
+
                 // done checking current part against all other parts
                 if (partIsHole && currIsClockwise)
                 {
@@ -613,6 +595,7 @@ namespace DotSpatial.Tools
                  }
                  */
             }
+
             // done looping through parts and correcting orientation (if necessary)
             IFeature resultShp;
 
@@ -638,10 +621,10 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Separate Parts
+        /// Separate Parts.
         /// </summary>
-        /// <param name="poly"></param>
-        /// <param name="polyParts"></param>
+        /// <param name="poly">Polygon that gets separated.</param>
+        /// <param name="polyParts">Resulting parts.</param>
         public static void SeparateParts(ref IFeature poly, out IFeature[] polyParts)
         {
             int numParts = poly.Geometry.NumGeometries;
@@ -674,21 +657,17 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;
-            if (input1 != null)
-            {
-                input1.FillAttributes();
-            }
+            input1?.FillAttributes();
 
             var input2 = _inputParam[1].Value as IFeatureSet;
-            if (input2 != null)
-            {
-                input2.FillAttributes();
-            }
+            input2?.FillAttributes();
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
@@ -696,20 +675,19 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the ClipPolygonWithLine Operation tool programaticaly.
-        /// Ping deleted static for external testing 01/2010
+        /// Executes the ClipPolygonWithLine Operation tool programmatically.
         /// </summary>
         /// <param name="input1">The input Polygon FeatureSet.</param>
         /// <param name="input2">The input Polyline FeatureSet.</param>
         /// <param name="output">The output Polygon FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input1, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input1 == null || input2 == null || output == null || cancelProgressHandler.Cancel) return false;
 
-            string filename = output.Filename; //changed by jany_ (2016-05-23) remember filename here because output gets replaced a few times and we don't want to reset the filename again and again just because we need it to save the shapefile here
+            string filename = output.Filename; // changed by jany_ (2016-05-23) remember filename here because output gets replaced a few times and we don't want to reset the filename again and again just because we need it to save the shapefile here
 
             IFeature polygon = input1.Features[0];
             IFeature line = input2.Features[0];
@@ -748,17 +726,22 @@ namespace DotSpatial.Tools
         public override void Initialize()
         {
             _inputParam = new Parameter[2];
-            _inputParam[0] = new PolygonFeatureSetParam(TextStrings.input1PolygonShapefile) { HelpText = TextStrings.InputPolygonforCliping };
-            _inputParam[1] = new LineFeatureSetParam(TextStrings.input2LineforCliping) { HelpText = TextStrings.Inputlineforcliping };
+            _inputParam[0] = new PolygonFeatureSetParam(TextStrings.input1PolygonShapefile)
+            {
+                HelpText = TextStrings.InputPolygonforCliping
+            };
+            _inputParam[1] = new LineFeatureSetParam(TextStrings.input2LineforCliping)
+            {
+                HelpText = TextStrings.Inputlineforcliping
+            };
 
             _outputParam = new Parameter[2];
-            _outputParam[0] = new FeatureSetParam(TextStrings.ResultShapefile) { HelpText = TextStrings.SelectResultShapefileDirectory };
+            _outputParam[0] = new FeatureSetParam(TextStrings.ResultShapefile)
+            {
+                HelpText = TextStrings.SelectResultShapefileDirectory
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Given a line that contains portion both inside and outside of the polygon, this
@@ -771,7 +754,7 @@ namespace DotSpatial.Tools
         /// <param name="polygon">The polygon that will be split by the intersecting line.</param>
         /// <param name="resultFeatureSet">The shapefile that the polygon sections will be saved to.</param>
         /// <returns>False if errors were encountered or an assumption violated, true otherwise.</returns>
-        private static bool Fast_ProcessPartInAndOut(bool[] insidePts, IFeature line, IFeature polygon, IFeatureSet resultFeatureSet)
+        private static bool FastProcessPartInAndOut(bool[] insidePts, IFeature line, IFeature polygon, IFeatureSet resultFeatureSet)
         {
             int numLinePts = line.Geometry.NumPoints;
             int numLineSegs = numLinePts - 1;
@@ -811,7 +794,6 @@ namespace DotSpatial.Tools
             IFeature insideLine = new Feature();
             List<Coordinate> insideLineList = new List<Coordinate>();
 
-            List<Coordinate> intersectSegList;
             IPoint startIntersect = Point.Empty;
             bool startIntExists = false;
             bool validInsideLine = false;
@@ -866,7 +848,7 @@ namespace DotSpatial.Tools
                     {
                         if (startIntExists)
                         {
-                            intersectSegList = new List<Coordinate>();
+                            var intersectSegList = new List<Coordinate>();
                             ptIndex = 0;
                             intersectSegList.Insert(ptIndex, startIntersect.Coordinate);
                             ptIndex = 1;
@@ -877,8 +859,7 @@ namespace DotSpatial.Tools
 
                             int firstPolyLoc = startIntPolyLoc;
                             int lastPolyLoc = polyIntLocs[i][0] - 1;
-                            if (SectionPolygonWithLine(
-                                ref intersectSeg, ref polygon, firstPolyLoc, lastPolyLoc, ref resultFeatureSet) == false)
+                            if (SectionPolygonWithLine(ref intersectSeg, ref polygon, firstPolyLoc, lastPolyLoc, ref resultFeatureSet) == false)
                             {
                                 return false;
                             }
@@ -898,8 +879,9 @@ namespace DotSpatial.Tools
                             if (!SectionPolygonWithLine(ref insideLine, ref polygon, firstPolyLoc, lastPolyLoc, ref resultFeatureSet)) return false;
 
                             validInsideLine = false;
-                            //TODO jany_ do we need to clear the Coordinates?
-                            //insideLine.Geometry.Coordinates.Clear();
+
+                            // TODO jany_ do we need to clear the Coordinates?
+                            // insideLine.Geometry.Coordinates.Clear();
                         }
                     }
                     else
@@ -948,8 +930,10 @@ namespace DotSpatial.Tools
                         return false;
                     }
                 }
+
                 // end of outside->outside
             }
+
             // end of looping through 2pt segments
             return true;
         }
@@ -1026,6 +1010,7 @@ namespace DotSpatial.Tools
                         c++;
                         if (c == numLineSegs) break;
                     }
+
                     i = c - 1;
                 }
                 else
@@ -1047,16 +1032,18 @@ namespace DotSpatial.Tools
                         int polyEndIndex = polyIntLocs[i][j + 1] - 1;
                         if (!SectionPolygonWithLine(ref intersectSeg, ref polygon, polyStartIndex, polyEndIndex, ref resultFeatureSet)) return false;
 
-                        //TODO jany_ do we need to clear the Coordinates?
-                        //intersectSeg.Geometry.Coordinates.Clear();
+                        // TODO jany_ do we need to clear the Coordinates?
+                        // intersectSeg.Geometry.Coordinates.Clear();
                         j++;
                     }
+
                     // end of looping through intersect pts
                 }
+
                 // end of more than 2 intersects exist
             }
-            // end of looping through 2pt line segments
 
+            // end of looping through 2pt line segments
             return true;
         }
 
@@ -1145,6 +1132,7 @@ namespace DotSpatial.Tools
                                     c++;
                                     if (c == numLineSegs) break;
                                 }
+
                                 i = c - 1; // setup the next segment to use
                             }
                             else
@@ -1171,20 +1159,26 @@ namespace DotSpatial.Tools
                                 {
                                     ifsNewResultFs.Features.Add(feature1);
                                 }
-                                //TODO jany_ do we need to clear the Coordinates?
-                                //intersectSeg.Geometry.Coordinates.Clear();
+
+                                // TODO jany_ do we need to clear the Coordinates?
+                                // intersectSeg.Geometry.Coordinates.Clear();
                             }
+
                             // end of else intersects exist for 2pt segment
                         }
+
                         // end of looping through 2pt line segments
                     }
+
                     // end of else intersects exist
                 }
+
                 // for each feature in FeatureSet
 
                 // update the result set
                 resultFeatureSet = ifsNewResultFs;
             }
+
             // for number of cuts to make
 
             // Remove any duplicate features
@@ -1217,7 +1211,6 @@ namespace DotSpatial.Tools
 
             // cut line into 2pt segments and put in new shapefile.
             IFeatureSet lineSegments = new FeatureSet(FeatureType.Line);
-            IFeature lineSegment;
             IList<Coordinate> coordi = line.Geometry.Coordinates;
 
             for (int i = 0; i <= numLineSegs - 1; i++)
@@ -1225,7 +1218,7 @@ namespace DotSpatial.Tools
                 Coordinate[] secCoordinate = new Coordinate[2];
                 secCoordinate[0] = coordi[i];
                 secCoordinate[1] = coordi[i + 1];
-                lineSegment = new Feature(FeatureType.Line, secCoordinate);
+                IFeature lineSegment = new Feature(FeatureType.Line, secCoordinate);
                 lineSegments.Features.Add(lineSegment);
 
                 intersectPts[i] = new IPoint[numPolyPts];
@@ -1239,16 +1232,236 @@ namespace DotSpatial.Tools
             // CASE: If no split was made, try using the whole line.
             if (resultFeatureSet.Features.Count != 0) return true;
 
-            resultFeatureSet.Features.Add(polygon);  // start with original polygon
+            resultFeatureSet.Features.Add(polygon); // start with original polygon
             List<IFeature> colLineParts = new List<IFeature>();
             List<Coordinate> colPolyIntLocPoints = new List<Coordinate>();
 
-            ProcessPartInAndOutWithWholeLine(ref insidePts, ref line, ref polygon, ref resultFeatureSet, numIntersects, numLineSegs,
-                                             intersectPts, polyIntLocs, numPolyPts, colLineParts, colPolyIntLocPoints);
+            ProcessPartInAndOutWithWholeLine(ref insidePts, ref line, ref polygon, ref resultFeatureSet, numIntersects, numLineSegs, intersectPts, polyIntLocs, numPolyPts, colLineParts, colPolyIntLocPoints);
 
             RemoveDuplicateFeaturesFromFeatureSet(ref resultFeatureSet);
 
             return true;
+        }
+
+        private static bool ProcessPartInAndOutWithWholeLine(ref bool[] insidePts, ref IFeature line, ref IFeature polygon, ref IFeatureSet resultFeatureSet, int numIntersects, int numLineSegs, IPoint[][] intersectPts, int[][] polyIntLocs, int numPolyPts, List<IFeature> colLineParts, List<Coordinate> colPolyIntLocPoints)
+        {
+            IPoint[] intPts = new IPoint[numIntersects];
+            IPoint startPt = new Point(line.Geometry.Coordinates[0]);
+            IPoint firstIntPt = null;
+            IPoint lastIntPt = null;
+            List<int> listIntLocs = new List<int>();
+            List<int> listLinePartIndexValuesForOrigLine = new List<int>();
+            List<List<int>> colListForEachLinePart = new List<List<int>>();
+            List<int> listLinePartStartEndIndexValues = new List<int>();
+            int nNewLineStartIndex = 0;
+            int nNewLineEndIndex = 0;
+            int nLastIndexUsed = -1;
+            List<Coordinate> listNewLine = new List<Coordinate>();
+            int nLineParts = 0;
+
+            // First time only: collect the information needed for all intersections
+            if (colLineParts.Count == 0)
+            {
+                for (int i = 0; i <= numLineSegs - 1; i++)
+                {
+                    FindAndSortValidIntersects(numIntersects, ref intersectPts[i], ref intPts, ref startPt, ref polyIntLocs[i]);
+
+                    // Find the intersect points & start/end line points
+                    for (int j = 0; j < numPolyPts; j++)
+                    {
+                        if (polyIntLocs[i][j] != 0)
+                        {
+                            // Save this index in the polygon points
+                            listIntLocs.Add(polyIntLocs[i][j] - 1);
+                        }
+
+                        if (!intersectPts[i][j].X.Equals(double.NaN))
+                        {
+                            if (firstIntPt == null)
+                            {
+                                firstIntPt = intersectPts[i][j]; // first intersection for this cut
+                                nNewLineStartIndex = i;
+                                listNewLine.Add(new Coordinate(intersectPts[i][j].X, intersectPts[i][j].Y, 0.0));
+                                listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
+                            }
+                            else
+                            {
+                                lastIntPt = intersectPts[i][j]; // last intersection for this cut
+                                nNewLineEndIndex = i;
+                            }
+                        }
+                    }
+
+                    if (firstIntPt != null && lastIntPt == null)
+                    {
+                        // Collect the point from the line that are between the two poly intersetion points
+                        listNewLine.Add(line.Geometry.Coordinates[i]);
+                        if (i > nLastIndexUsed)
+                        {
+                            listLinePartIndexValuesForOrigLine.Add(i);
+                            nLastIndexUsed = i; // we want one of each index
+                        }
+                    }
+                    else if (firstIntPt != null && lastIntPt != null)
+                    {
+                        listNewLine.Add(new Coordinate(lastIntPt.X, lastIntPt.Y, 0.0));
+                        listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
+
+                        colListForEachLinePart.Add(new List<int>(listLinePartIndexValuesForOrigLine));
+
+                        listLinePartIndexValuesForOrigLine.Clear();
+                        firstIntPt = null;
+                        lastIntPt = null;
+                    }
+                }
+
+                for (int i = 0; i < (listIntLocs.Count / 2); i++)
+                {
+                    // Save these points so we can find the "new" index values later
+                    colPolyIntLocPoints.Add(polygon.Geometry.Coordinates[listIntLocs[2 * i]]);
+                    colPolyIntLocPoints.Add(polygon.Geometry.Coordinates[listIntLocs[(2 * i) + 1]]);
+
+                    // Build the line parts that we need for each cut
+                    int nStart = listLinePartStartEndIndexValues[2 * nLineParts];
+                    int nEnd = listLinePartStartEndIndexValues[(2 * nLineParts) + 1];
+                    List<int> currentListOfIndexValues = colListForEachLinePart[nLineParts];
+
+                    List<Coordinate> listLinePart = new List<Coordinate> { listNewLine[nStart] };
+
+                    // Add first intersection
+                    foreach (int j in currentListOfIndexValues)
+                    {
+                        listLinePart.Add(line.Geometry.Coordinates[j + 1]); // get values from original line
+                    }
+
+                    listLinePart.Add(listNewLine[nEnd]); // Add second intersection
+
+                    // Now, we have the part of the line we need make this cut
+                    IFeature newLinePart = new Feature(FeatureType.Line, listLinePart);
+                    colLineParts.Add(newLinePart);
+
+                    nLineParts++; // get ready for next part
+                }
+            }
+
+            bool bSwapIntLocs = false;
+            nLineParts = 0;
+
+            // For each intersecting line part, see if a cut needs to be made.
+            for (int i = 0; i < colLineParts.Count; i++)
+            {
+                IFeature newLinePart = colLineParts[i];
+                IFeatureSet tempFeatureSet = new FeatureSet(FeatureType.Polygon);
+
+                foreach (IFeature feature in resultFeatureSet.Features)
+                {
+                    IFeature currentFeature = feature;
+
+                    // Does this part of the line really intersect?
+                    if (newLinePart.Intersects(currentFeature.Geometry.EnvelopeInternal))
+                    {
+                        int firstIntLoc = -1;
+                        int lastIntLoc = -1;
+                        Coordinate firstCoord = colPolyIntLocPoints[2 * nLineParts];
+                        Coordinate lastCoord = colPolyIntLocPoints[(2 * nLineParts) + 1];
+
+                        // Find the index of both points
+                        for (int j = 0; j < currentFeature.Geometry.Coordinates.Length; j++)
+                        {
+                            Coordinate coord = currentFeature.Geometry.Coordinates[j];
+                            if (coord.Equals(firstCoord) && firstIntLoc == -1)
+                                firstIntLoc = j;
+                            if (coord.Equals(lastCoord) && lastIntLoc == -1)
+                                lastIntLoc = j;
+                        }
+
+                        if (bSwapIntLocs)
+                        {
+                            int nTemp = firstIntLoc;
+                            firstIntLoc = lastIntLoc;
+                            lastIntLoc = nTemp;
+                        }
+
+                        IFeatureSet tempSplitFeatureSet = new FeatureSet(FeatureType.Polygon);
+                        if (!SectionPolygonWithLine(ref newLinePart, ref currentFeature, firstIntLoc, lastIntLoc, ref tempSplitFeatureSet)) return false;
+
+                        if (tempSplitFeatureSet.Features.Count == 0)
+                        {
+                            tempFeatureSet.Features.Add(currentFeature); // no cut was made
+                        }
+                        else
+                        {
+                            foreach (IFeature feature2 in tempSplitFeatureSet.Features)
+                            {
+                                tempFeatureSet.Features.Add(feature2);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        tempFeatureSet.Features.Add(currentFeature); // no cut needed for this polygon
+                    }
+                }
+
+                // Next time we will need to do the opposite
+                nLineParts++; // get ready for next part
+
+                // Replace original features with new ones
+                resultFeatureSet = new FeatureSet(tempFeatureSet.Features);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes duplicate features from the IFeatureSet.
+        /// </summary>
+        /// <param name="resultFeatureSet">IFeatureSet to remove features from.</param>
+        private static void RemoveDuplicateFeaturesFromFeatureSet(ref IFeatureSet resultFeatureSet)
+        {
+            IFeatureSet ifsNewResultFs = new FeatureSet();
+            int nIndexOfCurrent = 0;
+            List<int> listIndexesToNotAdd = new List<int>();
+            List<int> listIndexesAddedToNewFs = new List<int>();
+
+            if (resultFeatureSet.Features.Count < 2) return; // no need to check
+
+            while (nIndexOfCurrent < resultFeatureSet.Features.Count)
+            {
+                IFeature currentFeature = resultFeatureSet.Features[nIndexOfCurrent];
+                if (!listIndexesToNotAdd.Contains(nIndexOfCurrent))
+                {
+                    for (int j = 0; j < resultFeatureSet.Features.Count; j++)
+                    {
+                        if (nIndexOfCurrent != j && !listIndexesAddedToNewFs.Contains(j))
+                        {
+                            IFeature feature = resultFeatureSet.Features[j];
+                            IFeature diffFeature = currentFeature.SymmetricDifference(feature.Geometry);
+                            if (diffFeature == null)
+                            {
+                                // Exact duplicate
+                                if (!listIndexesToNotAdd.Contains(j)) listIndexesToNotAdd.Add(j);
+                            }
+                            else if (diffFeature.Geometry.Area <= FindIntersectionTolerance && !listIndexesToNotAdd.Contains(j))
+                            {
+                                // Only a "sliver" remained; treat as a duplicate
+                                listIndexesToNotAdd.Add(j);
+                            }
+                        }
+                    }
+                }
+
+                if (!listIndexesToNotAdd.Contains(nIndexOfCurrent))
+                {
+                    ifsNewResultFs.Features.Add(currentFeature);
+                    listIndexesAddedToNewFs.Add(nIndexOfCurrent);
+                }
+
+                nIndexOfCurrent++;
+            }
+
+            // Done
+            resultFeatureSet = ifsNewResultFs;
         }
 
         /// <summary>
@@ -1292,22 +1505,23 @@ namespace DotSpatial.Tools
                 if (testFeatureSet.Features.Count > 0 || testFeatureSet2.Features.Count > 0)
                 {
                     int numTestShapes = testFeatureSet.Features.Count;
-                    const int insertIndex = 0;
+                    const int InsertIndex = 0;
                     IFeature insertShape;
                     for (int j = 0; j <= numTestShapes - 1; j++)
                     {
                         insertShape = testFeatureSet.Features[j];
-                        resultFeatureSet.Features.Insert(insertIndex, insertShape);
+                        resultFeatureSet.Features.Insert(InsertIndex, insertShape);
                     }
 
                     numTestShapes = testFeatureSet2.Features.Count;
                     for (int j = 0; j <= numTestShapes - 1; j++)
                     {
                         insertShape = testFeatureSet2.Features[j];
-                        resultFeatureSet.Features.Insert(insertIndex, insertShape);
+                        resultFeatureSet.Features.Insert(InsertIndex, insertShape);
                     }
                 }
             }
+
             // end of checking against previous splits
             return true;
         }
@@ -1374,15 +1588,14 @@ namespace DotSpatial.Tools
                 }
             }
 
-
-            // 			else if (numIntersectPts > 10)
-            // 			{
-            // TO DO: write a quick-sort function to aid in time
+            // else if (numIntersectPts > 10)
+            // {
+            // TODO: write a quick-sort function to aid in time
             // haven't done this because it is rare to have
             // a large number of intersect pts for a small line segment
             // quick-sort performs poorly on small lists, that's why insertion
             // sort is used above.
-            // 			}
+            // }
         }
 
         /// <summary>
@@ -1437,14 +1650,14 @@ namespace DotSpatial.Tools
                 }
             }
 
-            // 			else if (numIntersectPts > 10)
-            // 			{
-            // TO DO: write a quick-sort function to aid in time
+            // else if (numIntersectPts > 10)
+            // {
+            // TODO: write a quick-sort function to aid in time
             // haven't done this because it is rare to have
             // a large number of intersect pts for a small line segment
             // quick-sort performs poorly on small lists, that's why insertion
             // sort is used above.
-            // 			}
+            // }
         }
 
         /// <summary>
@@ -1573,244 +1786,7 @@ namespace DotSpatial.Tools
         private static double TurboDeterm(double elem11, double elem12, double elem13, double elem21, double elem22, double elem23)
         {
             // The third row of the 3x3 matrix is (1, 1, 1)
-            return elem11 * (elem22 - elem23) - elem12 * (elem21 - elem23) + elem13 * (elem21 - elem22);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="resultFeatureSet"></param>
-        private static void RemoveDuplicateFeaturesFromFeatureSet(ref IFeatureSet resultFeatureSet)
-        {
-            IFeatureSet ifsNewResultFs = new FeatureSet();
-            int nIndexOfCurrent = 0;
-            List<int> listIndexesToNotAdd = new List<int>();
-            List<int> listIndexesAddedToNewFs = new List<int>();
-
-            if (resultFeatureSet.Features.Count < 2) return; // no need to check
-
-            while (nIndexOfCurrent < resultFeatureSet.Features.Count)
-            {
-                IFeature currentFeature = resultFeatureSet.Features[nIndexOfCurrent];
-                if (!listIndexesToNotAdd.Contains(nIndexOfCurrent))
-                {
-                    for (int j = 0; j < resultFeatureSet.Features.Count; j++)
-                    {
-                        if (nIndexOfCurrent != j && !listIndexesAddedToNewFs.Contains(j))
-                        {
-                            IFeature feature = resultFeatureSet.Features[j];
-                            IFeature diffFeature = currentFeature.SymmetricDifference(feature.Geometry);
-                            if (diffFeature == null)
-                            {
-                                // Exact duplicate
-                                if (!listIndexesToNotAdd.Contains(j)) listIndexesToNotAdd.Add(j);
-                            }
-                            else if (diffFeature.Geometry.Area <= FindIntersectionTolerance && !listIndexesToNotAdd.Contains(j))
-                            {
-                                // Only a "sliver" remained; treat as a duplicate
-                                listIndexesToNotAdd.Add(j);
-                            }
-                        }
-                    }
-                }
-
-                if (!listIndexesToNotAdd.Contains(nIndexOfCurrent))
-                {
-                    ifsNewResultFs.Features.Add(currentFeature);
-                    listIndexesAddedToNewFs.Add(nIndexOfCurrent);
-                }
-
-                nIndexOfCurrent++;
-            }
-
-            // Done
-            resultFeatureSet = ifsNewResultFs;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="insidePts"></param>
-        /// <param name="line"></param>
-        /// <param name="polygon"></param>
-        /// <param name="resultFeatureSet"></param>
-        /// <param name="numIntersects"></param>
-        /// <param name="numLineSegs"></param>
-        /// <param name="intersectPts"></param>
-        /// <param name="polyIntLocs"></param>
-        /// <param name="numPolyPts"></param>
-        /// <param name="colLineParts"></param>
-        /// <param name="colPolyIntLocPoints"></param>
-        /// <returns></returns>
-        private static bool ProcessPartInAndOutWithWholeLine(ref bool[] insidePts, ref IFeature line, ref IFeature polygon, ref IFeatureSet resultFeatureSet, int numIntersects,
-                                                             int numLineSegs, IPoint[][] intersectPts, int[][] polyIntLocs, int numPolyPts, List<IFeature> colLineParts, List<Coordinate> colPolyIntLocPoints)
-        {
-            IPoint[] intPts = new IPoint[numIntersects];
-            IPoint startPt = new Point(line.Geometry.Coordinates[0]);
-            IPoint firstIntPt = null;
-            IPoint lastIntPt = null;
-            List<int> listIntLocs = new List<int>();
-            List<int> listLinePartIndexValuesForOrigLine = new List<int>();
-            List<List<int>> colListForEachLinePart = new List<List<int>>();
-            List<int> listLinePartStartEndIndexValues = new List<int>();
-            int nNewLineStartIndex = 0;
-            int nNewLineEndIndex = 0;
-            int nLastIndexUsed = -1;
-            List<Coordinate> listNewLine = new List<Coordinate>();
-            int nLineParts = 0;
-
-            // First time only: collect the information needed for all intersections
-            if (colLineParts.Count == 0)
-            {
-                for (int i = 0; i <= numLineSegs - 1; i++)
-                {
-                    FindAndSortValidIntersects(numIntersects, ref intersectPts[i], ref intPts, ref startPt, ref polyIntLocs[i]);
-
-                    // Find the intersect points & start/end line points
-                    for (int j = 0; j < numPolyPts; j++)
-                    {
-                        if (polyIntLocs[i][j] != 0)
-                        {
-                            // Save this index in the polygon points
-                            listIntLocs.Add(polyIntLocs[i][j] - 1);
-                        }
-
-                        if (!intersectPts[i][j].X.Equals(double.NaN))
-                        {
-                            if (firstIntPt == null)
-                            {
-                                firstIntPt = intersectPts[i][j]; // first intersection for this cut
-                                nNewLineStartIndex = i;
-                                listNewLine.Add(new Coordinate(intersectPts[i][j].X, intersectPts[i][j].Y, 0.0));
-                                listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
-                            }
-                            else
-                            {
-                                lastIntPt = intersectPts[i][j]; // last intersection for this cut
-                                nNewLineEndIndex = i;
-                            }
-                        }
-                    }
-
-                    if (firstIntPt != null && lastIntPt == null)
-                    {
-                        // Collect the point from the line that are between the two poly intersetion points
-                        listNewLine.Add(line.Geometry.Coordinates[i]);
-                        if (i > nLastIndexUsed)
-                        {
-                            listLinePartIndexValuesForOrigLine.Add(i);
-                            nLastIndexUsed = i; // we want one of each index
-                        }
-                    }
-                    else if (firstIntPt != null && lastIntPt != null)
-                    {
-                        listNewLine.Add(new Coordinate(lastIntPt.X, lastIntPt.Y, 0.0));
-                        listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
-
-                        colListForEachLinePart.Add(new List<int>(listLinePartIndexValuesForOrigLine));
-
-                        listLinePartIndexValuesForOrigLine.Clear();
-                        firstIntPt = null;
-                        lastIntPt = null;
-                    }
-                }
-
-                for (int i = 0; i < (listIntLocs.Count / 2); i++)
-                {
-                    // Save these points so we can find the "new" index values later
-                    colPolyIntLocPoints.Add(polygon.Geometry.Coordinates[listIntLocs[2 * i]]);
-                    colPolyIntLocPoints.Add(polygon.Geometry.Coordinates[listIntLocs[2 * i + 1]]);
-
-                    // Build the line parts that we need for each cut
-                    int nStart = listLinePartStartEndIndexValues[2 * nLineParts];
-                    int nEnd = listLinePartStartEndIndexValues[2 * nLineParts + 1];
-                    List<int> currentListOfIndexValues = colListForEachLinePart[nLineParts];
-
-                    List<Coordinate> listLinePart = new List<Coordinate>();
-                    listLinePart.Add(listNewLine[nStart]);  // Add first intersection
-                    foreach (int j in currentListOfIndexValues)
-                    {
-                        listLinePart.Add(line.Geometry.Coordinates[j + 1]); // get values from original line
-                    }
-                    listLinePart.Add(listNewLine[nEnd]);  // Add second intersection
-
-                    // Now, we have the part of the line we need make this cut
-                    IFeature newLinePart = new Feature(FeatureType.Line, listLinePart);
-                    colLineParts.Add(newLinePart);
-
-                    nLineParts++; // get ready for next part
-                }
-            }
-
-            bool bSwapIntLocs = false;
-            nLineParts = 0;
-
-            // For each intersecting line part, see if a cut needs to be made.
-            for (int i = 0; i < colLineParts.Count; i++)
-            {
-                IFeature newLinePart = colLineParts[i];
-                IFeatureSet tempFeatureSet = new FeatureSet(FeatureType.Polygon);
-
-
-                foreach (IFeature feature in resultFeatureSet.Features)
-                {
-                    IFeature currentFeature = feature;
-
-                    // Does this part of the line really intersect?
-                    if (newLinePart.Intersects(currentFeature.Geometry.EnvelopeInternal))
-                    {
-                        int firstIntLoc = -1;
-                        int lastIntLoc = -1;
-                        Coordinate firstCoord = colPolyIntLocPoints[2 * nLineParts];
-                        Coordinate lastCoord = colPolyIntLocPoints[2 * nLineParts + 1];
-
-                        // Find the index of both points
-                        for (int j = 0; j < currentFeature.Geometry.Coordinates.Length; j++)
-                        {
-                            Coordinate coord = currentFeature.Geometry.Coordinates[j];
-                            if (coord.Equals(firstCoord) && firstIntLoc == -1)
-                                firstIntLoc = j;
-                            if (coord.Equals(lastCoord) && lastIntLoc == -1)
-                                lastIntLoc = j;
-                        }
-
-                        if (bSwapIntLocs)
-                        {
-                            int nTemp = firstIntLoc;
-                            firstIntLoc = lastIntLoc;
-                            lastIntLoc = nTemp;
-                        }
-
-                        IFeatureSet tempSplitFeatureSet = new FeatureSet(FeatureType.Polygon);
-                        if (!SectionPolygonWithLine(ref newLinePart, ref currentFeature, firstIntLoc, lastIntLoc, ref tempSplitFeatureSet)) return false;
-
-
-                        if (tempSplitFeatureSet.Features.Count == 0)
-                        {
-                            tempFeatureSet.Features.Add(currentFeature); // no cut was made
-                        }
-                        else
-                        {
-                            foreach (IFeature feature2 in tempSplitFeatureSet.Features)
-                            {
-                                tempFeatureSet.Features.Add(feature2);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        tempFeatureSet.Features.Add(currentFeature); // no cut needed for this polygon
-                    }
-                }
-
-                // Next time we will need to do the opposite
-                nLineParts++; // get ready for next part
-
-                // Replace original features with new ones
-                resultFeatureSet = new FeatureSet(tempFeatureSet.Features);
-            }
-
-            return true;
+            return (elem11 * (elem22 - elem23)) - (elem12 * (elem21 - elem23)) + (elem13 * (elem21 - elem22));
         }
 
         #endregion

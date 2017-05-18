@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -28,28 +14,23 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>Speed</strong> object to be converted between
-    ///     other data types, such as <strong>String</strong>. This class is used primarily
-    ///     during the Windows Forms designer to give detailed information about properties of
-    ///     type <strong>Speed</strong>, and also allows developers to type in string values
-    ///     such as "120 km/h" and have them converted to <strong>Speed</strong> objects
-    ///     automatically. Finally, this class controls design-time serialization of
-    ///     <strong>Speed</strong> object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>Speed</strong> object to be converted between
+    ///  other data types, such as <strong>String</strong>. This class is used primarily
+    ///  during the Windows Forms designer to give detailed information about properties of
+    ///  type <strong>Speed</strong>, and also allows developers to type in string values
+    ///  such as "120 km/h" and have them converted to <strong>Speed</strong> objects
+    ///  automatically. Finally, this class controls design-time serialization of
+    ///  <strong>Speed</strong> object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    ///  rarely created at run-time.</para>
     /// </remarks>
+    // The Original Code is from http://geoframework.codeplex.com/ version 2.0
     public sealed class SpeedConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Speed";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Speed";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             // What is the destination type?
@@ -61,13 +42,8 @@ namespace DotSpatial.Positioning.Design
                 Type speedType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[]
-                                                     {   speedType.GetProperty("Value").GetValue(value, null),
-                                                         speedType.GetProperty("Units").GetValue(value, null) };
-                Type[] constructorTypes = new[]
-                                              {
-                                                  typeof(double),
-                                                  Type.GetType("GeoFramework.SpeedUnit") };
+                object[] constructorParameters = { speedType.GetProperty("Value").GetValue(value, null), speedType.GetProperty("Units").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double), Type.GetType("GeoFramework.SpeedUnit") };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = speedType.GetConstructor(constructorTypes);

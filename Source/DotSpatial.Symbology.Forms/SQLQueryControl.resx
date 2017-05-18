@@ -610,7 +610,7 @@
     <value>&amp;Field Names:</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SQLQueryControl</value>
+    <value>SqlQueryControl</value>
   </data>
   <data name="btnEquals.Location" type="System.Drawing.Point, System.Drawing">
     <value>170, 21</value>

@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="IStatusControl.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel.Composition;
 using DotSpatial.Data;
@@ -15,6 +12,8 @@ namespace DotSpatial.Controls.Header
     [InheritedExport]
     public interface IStatusControl : IProgressHandler
     {
+        #region Methods
+
         /// <summary>
         /// Adds the specified panel.
         /// </summary>
@@ -26,5 +25,7 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         /// <param name="panel">The panel.</param>
         void Remove(StatusPanel panel);
+
+        #endregion
     }
 }

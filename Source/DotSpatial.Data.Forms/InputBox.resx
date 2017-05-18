@@ -118,123 +118,123 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblMessageText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="_lblMessageText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblMessageText.AutoSize" type="System.Boolean, mscorlib">
+  <data name="_lblMessageText.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lblMessageText.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_lblMessageText.Font" type="System.Drawing.Font, System.Drawing">
     <value>Tahoma, 8.25pt</value>
   </data>
-  <data name="lblMessageText.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_lblMessageText.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 13</value>
   </data>
-  <data name="lblMessageText.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_lblMessageText.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 13</value>
   </data>
-  <data name="lblMessageText.TabIndex" type="System.Int32, mscorlib">
+  <data name="_lblMessageText.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lblMessageText.Text" xml:space="preserve">
+  <data name="_lblMessageText.Text" xml:space="preserve">
     <value>Enter a value:</value>
   </data>
-  <data name="&gt;&gt;lblMessageText.Name" xml:space="preserve">
-    <value>lblMessageText</value>
+  <data name="&gt;&gt;_lblMessageText.Name" xml:space="preserve">
+    <value>_lblMessageText</value>
   </data>
-  <data name="&gt;&gt;lblMessageText.Type" xml:space="preserve">
+  <data name="&gt;&gt;_lblMessageText.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblMessageText.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_lblMessageText.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblMessageText.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_lblMessageText.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="txtInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="_txtInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="txtInput.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_txtInput.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 39</value>
   </data>
-  <data name="txtInput.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_txtInput.Size" type="System.Drawing.Size, System.Drawing">
     <value>340, 20</value>
   </data>
-  <data name="txtInput.TabIndex" type="System.Int32, mscorlib">
+  <data name="_txtInput.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;txtInput.Name" xml:space="preserve">
-    <value>txtInput</value>
+  <data name="&gt;&gt;_txtInput.Name" xml:space="preserve">
+    <value>_txtInput</value>
   </data>
-  <data name="&gt;&gt;txtInput.Type" xml:space="preserve">
+  <data name="&gt;&gt;_txtInput.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txtInput.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_txtInput.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;txtInput.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_txtInput.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="cmdOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="_cmdOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="cmdOk.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_cmdOk.Font" type="System.Drawing.Font, System.Drawing">
     <value>Tahoma, 8.25pt</value>
   </data>
-  <data name="cmdOk.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_cmdOk.Location" type="System.Drawing.Point, System.Drawing">
     <value>196, 79</value>
   </data>
-  <data name="cmdOk.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_cmdOk.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="cmdOk.TabIndex" type="System.Int32, mscorlib">
+  <data name="_cmdOk.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="cmdOk.Text" xml:space="preserve">
+  <data name="_cmdOk.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;cmdOk.Name" xml:space="preserve">
-    <value>cmdOk</value>
+  <data name="&gt;&gt;_cmdOk.Name" xml:space="preserve">
+    <value>_cmdOk</value>
   </data>
-  <data name="&gt;&gt;cmdOk.Type" xml:space="preserve">
+  <data name="&gt;&gt;_cmdOk.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdOk.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_cmdOk.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmdOk.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_cmdOk.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="cmdCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="_cmdCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="cmdCancel.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_cmdCancel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Tahoma, 8.25pt</value>
   </data>
-  <data name="cmdCancel.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_cmdCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>277, 79</value>
   </data>
-  <data name="cmdCancel.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_cmdCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="cmdCancel.TabIndex" type="System.Int32, mscorlib">
+  <data name="_cmdCancel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="cmdCancel.Text" xml:space="preserve">
+  <data name="_cmdCancel.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
   </data>
-  <data name="&gt;&gt;cmdCancel.Name" xml:space="preserve">
-    <value>cmdCancel</value>
+  <data name="&gt;&gt;_cmdCancel.Name" xml:space="preserve">
+    <value>_cmdCancel</value>
   </data>
-  <data name="&gt;&gt;cmdCancel.Type" xml:space="preserve">
+  <data name="&gt;&gt;_cmdCancel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdCancel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_cmdCancel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmdCancel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_cmdCancel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

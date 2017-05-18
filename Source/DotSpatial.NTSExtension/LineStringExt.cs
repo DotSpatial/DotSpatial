@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -9,32 +12,14 @@ namespace DotSpatial.NTSExtension
     /// </summary>
     public static class LineStringExt
     {
+        #region Methods
 
         /// <summary>
-        /// Gets the value of the angle between the StartPoint and the EndPoint in Radian.
-        /// </summary>
-        /// <param name="self">The ILineString, whose angle is returned.</param>
-        /// <remarks>added by JLeiss</remarks>
-        public static double RadAngle(this ILineString self)
-        {
-            double deltaX = self.EndPoint.X - self.StartPoint.X;
-            double deltaY = self.EndPoint.Y - self.StartPoint.Y;
-            double winkel = Math.Atan(deltaY / deltaX);
-
-            if (deltaX < 0)
-            {
-                if (deltaY <= 0) winkel += Math.PI;
-                if (deltaY > 0) winkel -= Math.PI;
-            }
-            return winkel;
-        }
-
-        /// <summary>
-        /// Given the specified test point, this checks each segment, and will
-        /// return the closest point on the specified segment.
+        /// Given the specified test point, this checks each segment, and will return the closest point on the specified segment.
         /// </summary>
         /// <param name="self">The ILineString, whose point is returned.</param>
         /// <param name="testPoint">The point to test.</param>
+        /// <returns>The closest point.</returns>
         public static Coordinate ClosestPoint(this ILineString self, Coordinate testPoint)
         {
             Coordinate closest = self.GetCoordinateN(0);
@@ -50,8 +35,31 @@ namespace DotSpatial.NTSExtension
                     closest = temp;
                 }
             }
+
             return closest;
         }
 
+        /// <summary>
+        /// Gets the value of the angle between the StartPoint and the EndPoint in Radian.
+        /// </summary>
+        /// <param name="self">The ILineString, whose angle is returned.</param>
+        /// <remarks>added by JLeiss</remarks>
+        /// <returns>The angle between start end endpoint in radian.</returns>
+        public static double RadAngle(this ILineString self)
+        {
+            double deltaX = self.EndPoint.X - self.StartPoint.X;
+            double deltaY = self.EndPoint.Y - self.StartPoint.Y;
+            double winkel = Math.Atan(deltaY / deltaX);
+
+            if (deltaX < 0)
+            {
+                if (deltaY <= 0) winkel += Math.PI;
+                if (deltaY > 0) winkel -= Math.PI;
+            }
+
+            return winkel;
+        }
+
+        #endregion
     }
 }

@@ -40,30 +40,24 @@ namespace CSharpEditor
     /// </summary>
     internal static class HostCallbackImplementation
     {
+        #region Methods
+
+        /// <summary>
+        /// Registers the event handlers for the given mainForm.
+        /// </summary>
+        /// <param name="mainForm">The main form.</param>
         public static void Register(MainForm mainForm)
         {
             // Must be implemented. Gets the project content of the active project.
-            HostCallback.GetCurrentProjectContent = delegate
-            {
-                return mainForm.myProjectContent;
-            };
+            HostCallback.GetCurrentProjectContent = () => mainForm.MyProjectContent;
 
             // The default implementation just logs to Log4Net. We want to display a MessageBox.
             // Note that we use += here - in this case, we want to keep the default Log4Net implementation.
-            HostCallback.ShowError += delegate(string message, Exception ex)
-            {
-                MessageBox.Show(message + Environment.NewLine + ex);
-            };
-            HostCallback.ShowMessage += delegate(string message)
-            {
-                MessageBox.Show(message);
-            };
-            HostCallback.ShowAssemblyLoadError += delegate(string fileName, string include, string message)
-            {
-                MessageBox.Show("Error loading code-completion information for "
-                                + include + " from " + fileName
-                                + ":\r\n" + message + "\r\n");
-            };
+            HostCallback.ShowError += (message, ex) => MessageBox.Show(message + Environment.NewLine + ex);
+            HostCallback.ShowMessage += message => MessageBox.Show(message);
+            HostCallback.ShowAssemblyLoadError += (fileName, include, message) => MessageBox.Show("Error loading code-completion information for " + include + " from " + fileName + ":\r\n" + message + "\r\n");
         }
+
+        #endregion
     }
 }

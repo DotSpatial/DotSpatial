@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/1/2010 8:06:31 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -20,13 +10,46 @@ namespace DotSpatial.Data
     /// </summary>
     public static class PolygonShape
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
         /// </summary>
         public static double Epsilon
         {
-            get { return Vertex.Epsilon; }
-            set { Vertex.Epsilon = value; }
+            get
+            {
+                return Vertex.Epsilon;
+            }
+
+            set
+            {
+                Vertex.Epsilon = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// This cycles through all the vertices, which are stored as {X1, Y1, X2, Y2...Xn, Yn} and tests
+        /// if any of those vertices falls within the polygon shape.
+        /// </summary>
+        /// <param name="polygonShape">Polygon shape used for calculation.</param>
+        /// <param name="otherShape">Other shape of any feature type.</param>
+        /// <returns>True, if the given shape ranges intersect.</returns>
+        public static bool ContainsVertex(ShapeRange polygonShape, ShapeRange otherShape)
+        {
+            foreach (PartRange otherPart in otherShape.Parts)
+            {
+                if (ContainsVertex(polygonShape, otherPart))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -47,8 +70,7 @@ namespace DotSpatial.Data
             if (ContainsVertex(polygonShape, otherShape)) return true;
 
             // There is no other way for this polygon to intersect the other points
-            if (otherShape.FeatureType == FeatureType.Point || otherShape.FeatureType == FeatureType.MultiPoint)
-                return false;
+            if (otherShape.FeatureType == FeatureType.Point || otherShape.FeatureType == FeatureType.MultiPoint) return false;
 
             // For lines and polygons, if any segment intersects any segment of this polygon shape, return true.
             // This is essentially looking for the rare case of crossing in and crossing out again with
@@ -63,25 +85,6 @@ namespace DotSpatial.Data
             Vertex v = polygonShape.First();
             ShapeRange onlyFirstPoint = new ShapeRange(v);
             return ContainsVertex(otherShape, onlyFirstPoint);
-        }
-
-        /// <summary>
-        /// This cycles through all the vertices, which are stored as {X1, Y1, X2, Y2...Xn, Yn} and tests
-        /// if any of those vertices falls within the polygon shape.
-        /// </summary>
-        /// <param name="polygonShape">Polygon shape used for calculation.</param>
-        /// <param name="otherShape">Other shape of any feature type.</param>
-        /// <returns>True, if the given shape ranges intersect.</returns>
-        public static bool ContainsVertex(ShapeRange polygonShape, ShapeRange otherShape)
-        {
-            foreach (PartRange otherPart in otherShape.Parts)
-            {
-                if (ContainsVertex(polygonShape, otherPart))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         /// <summary>
@@ -101,10 +104,10 @@ namespace DotSpatial.Data
                 // This extent check shortcut should help speed things up for large polygon parts
                 if (!ext.Intersects(point)) continue;
 
-                // Imagine a ray on the horizontal starting from point.X -> infinity.  (In practice this can be ext.XMax)
-                // Count the intersections of segments with that line.  If the resulting count is odd, the point is inside.
+                // Imagine a ray on the horizontal starting from point.X -> infinity. (In practice this can be ext.XMax)
+                // Count the intersections of segments with that line. If the resulting count is odd, the point is inside.
                 Segment ray = new Segment(point.X, point.Y, ext.MaxX, point.Y);
-                int[] numCrosses = new int[polygonShape.NumParts]; // A cross is a complete cross.  Coincident doesn't count because it is either 0 or 2 crosses.
+                int[] numCrosses = new int[polygonShape.NumParts]; // A cross is a complete cross. Coincident doesn't count because it is either 0 or 2 crosses.
                 int totalCrosses = 0;
                 int iPart = 0;
                 foreach (PartRange ring in polygonShape.Parts)
@@ -112,9 +115,11 @@ namespace DotSpatial.Data
                     foreach (Segment segment in ring.Segments)
                     {
                         if (segment.IntersectionCount(ray) != 1) continue;
+
                         numCrosses[iPart]++;
                         totalCrosses++;
                     }
+
                     iPart++;
                 }
 
@@ -132,6 +137,7 @@ namespace DotSpatial.Data
                 for (iPart = 0; iPart < numCrosses.Length; iPart++)
                 {
                     int count = numCrosses[iPart];
+
                     // If this part does not contain the point, don't bother trying to figure out if the part is a hole or not.
                     if (count % 2 == 0) continue;
 
@@ -146,9 +152,13 @@ namespace DotSpatial.Data
                         totalCrosses++;
                     }
                 }
+
                 return totalCrosses > 0;
             }
+
             return false;
         }
+
+        #endregion
     }
 }

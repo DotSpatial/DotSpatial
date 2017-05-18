@@ -1251,7 +1251,7 @@
 		<value>Geographic</value>
 	</data>
 	<data name="cmbScaleMode.ToolTip" xml:space="preserve">
-		<value>Linee geografiche ottengono più ampi, come lo zoom in e utilizza unità di mappa per la larghezza del controllo.  Simbolico e semplice mantenere la stessa larghezza come si ingrandisce.</value>
+		<value>Linee geografiche ottengono più ampi, come lo zoom in e utilizza unità di mappa per la larghezza del controllo. Simbolico e semplice mantenere la stessa larghezza come si ingrandisce.</value>
 	</data>
 	<data name="groupBox1.Text" xml:space="preserve">
 		<value>Caratteristiche symbolizer</value>
@@ -1296,7 +1296,7 @@
 		<value>Custom</value>
 	</data>
 	<data name="cmbStrokeStyle.ToolTip" xml:space="preserve">
-		<value>Permette alcune semplici stili di tratteggio.  Per gli stili più complicati, selezionare tratti cartografiche.</value>
+		<value>Permette alcune semplici stili di tratteggio. Per gli stili più complicati, selezionare tratti cartografiche.</value>
 	</data>
 	<data name="label2.Text" xml:space="preserve">
 		<value>&amp; Stile del tratteggio:</value>
@@ -1305,7 +1305,7 @@
 		<value>Larghezza:</value>
 	</data>
 	<data name="dblWidth.ToolTip" xml:space="preserve">
-		<value>Impostare la larghezza del tratto.  La modalità di scala determina l'unità di misura.</value>
+		<value>Impostare la larghezza del tratto. La modalità di scala determina l'unità di misura.</value>
 	</data>
 	<data name="tabSimple.Text" xml:space="preserve">
 		<value>Linea semplice</value>
@@ -1389,7 +1389,7 @@
 		<value>&amp; Numero di posizioni:</value>
 	</data>
 	<data name="nudDecorationCount.ToolTip" xml:space="preserve">
-		<value>I primi due sono disegnati sulle posizioni di inizio e di fine.  Dopo di che, la linea è divisa in modo uniforme.</value>
+		<value>I primi due sono disegnati sulle posizioni di inizio e di fine. Dopo di che, la linea è divisa in modo uniforme.</value>
 	</data>
 	<data name="radRotationFixed.Text" xml:space="preserve">
 		<value>&amp; Mantenere simbolo ad angolo fisso per pagina</value>

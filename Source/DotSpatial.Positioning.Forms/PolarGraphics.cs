@@ -157,7 +157,7 @@ namespace DotSpatial.Positioning.Forms
         /// <returns></returns>
         public PolarCoordinate ToPolarCoordinate(PointD point)
         {
-            //return point.Subtract(HalfWidth, HalfHeight).Divide(HorizontalScale, VerticalScale)
+            // return point.Subtract(HalfWidth, HalfHeight).Divide(HorizontalScale, VerticalScale)
             //    .ToPolarCoordinate().Rotate(pRotation.DecimalDegrees).ToOrientation(pOrigin, pOrientation);
             PointD value = point.Subtract(_halfWidth, _halfHeight).Divide(_horizontalScale, _verticalScale);
             PolarCoordinate value2 = PointDToPolarCoordinate(value);
@@ -186,7 +186,7 @@ namespace DotSpatial.Positioning.Forms
         /// <summary>Converts a polar coordinate to a precise pixel coordinate.</summary>
         public PointF ToPointF(PolarCoordinate coordinate)
         {
-            return ToPointF(ToPointD(coordinate)); //fixes problems with DrawRotatedString
+            return ToPointF(ToPointD(coordinate)); // fixes problems with DrawRotatedString
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace DotSpatial.Positioning.Forms
             // Convert to pixel coordinates
             PointD start = ToPointD(pt1);
             PointD end = ToPointD(pt2);
-			//gx.DrawLine(new PenX(pen.Color, pen.Width), (float)start.X, (float)start.Y, (float)end.X, (float)end.Y);
+			// gx.DrawLine(new PenX(pen.Color, pen.Width), (float)start.X, (float)start.Y, (float)end.X, (float)end.Y);
             g.DrawLine(pen, (int)start.X, (int)start.Y, (int)end.X, (int)end.Y);
 #else
             // Convert to pixel coordinates
@@ -419,7 +419,7 @@ namespace DotSpatial.Positioning.Forms
         public void FillPolygon(Brush brush, PolarCoordinate[] points)
         {
 #if PocketPC
-			//gx.FillPolygon(new SolidBrushX(brush.Color), ToPointArray(points));
+			// gx.FillPolygon(new SolidBrushX(brush.Color), ToPointArray(points));
             g.FillPolygon(brush, ToPointArray(points));
 #else
             _g.FillPolygon(brush, ToPointFArray(points));
@@ -459,7 +459,7 @@ namespace DotSpatial.Positioning.Forms
         public void DrawPolygon(Pen pen, PolarCoordinate[] points)
         {
 #if PocketPC
-			//gx.DrawPolygon(new PenX(pen.Color, pen.Width), ToPointArray(points));
+			// gx.DrawPolygon(new PenX(pen.Color, pen.Width), ToPointArray(points));
             g.DrawPolygon(pen, ToPointArray(points));
 #else
             _g.DrawPolygon(pen, ToPointFArray(points));
@@ -504,7 +504,7 @@ namespace DotSpatial.Positioning.Forms
         public PointF[] ToPointFArray(PolarCoordinate[] points)
         {
             // Convert to an array of PointF objects
-            //int Count = points.Length;
+            // int Count = points.Length;
             PointF[] result = new PointF[points.Length];
             for (int index = 0; index < points.Length; index++)
                 result[index] = ToPointF(points[index]);
@@ -520,7 +520,7 @@ namespace DotSpatial.Positioning.Forms
         public PointD[] ToPointDArray(PolarCoordinate[] points)
         {
             // Convert to an array of PointF objects
-            //int Count = points.Length;
+            // int Count = points.Length;
             PointD[] result = new PointD[points.Length];
             for (int index = 0; index < points.Length; index++)
                 result[index] = ToPointD(points[index]);

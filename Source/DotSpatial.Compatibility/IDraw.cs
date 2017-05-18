@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Compatibility.dll
-// Description:  Supports DotSpatial interfaces organized for a MapWindow 4 plugin context.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 1/20/2009 3:52:33 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 
@@ -20,6 +10,16 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface IDraw
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to use double buffering. Double buffering makes the drawing of the
+        /// custom drawings smoother (not flickering). It is recommended that you use double buffering.
+        /// </summary>
+        bool DoubleBuffer { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -85,16 +85,6 @@ namespace DotSpatial.Compatibility
         /// by the DotSpatial.  There is only one active drawing layer, which is the most recently created one.  There is no
         /// way to access any other drawing layers other than the current one.</remarks>
         int NewDrawing(ReferenceType projection);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Specifies whether or not to use double buffering.  Double buffering makes the drawing of the
-        /// custom drawings smoother (not flickering). It is recommended that you use double buffering.
-        /// </summary>
-        bool DoubleBuffer { get; set; }
 
         #endregion
     }

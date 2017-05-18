@@ -1,59 +1,56 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. 2/17/2008 5:00:07 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Some of the more common relationships between elevation and geographic coordinates
+    /// Some of the more common relationships between elevation and geographic coordinates.
     /// </summary>
     public enum ElevationScenario
     {
         /// <summary>
         /// The elevation values are in centimeters, but the geographic projection uses decimal degrees
         /// </summary>
-        ElevationCentiMeters_ProjectionDegrees,
+        ElevationCentimetersProjectionDegrees,
+
         /// <summary>
         /// The elevation values are in centimeters, but the geographic projection uses Meters
         /// </summary>
-        ElevationCentiMeters_ProjectionMeters,
+        ElevationCentimetersProjectionMeters,
+
         /// <summary>
         /// The elevation values are in centimeters, but the geographic projection uses Feet
         /// </summary>
-        ElevationCentiMeters_ProjectionFeet,
+        ElevationCentimetersProjectionFeet,
+
         /// <summary>
         /// The elevation values are in feet, but the geographic projection uses decimal degrees
         /// </summary>
-        ElevationFeet_ProjectionDegrees,
+        ElevationFeetProjectionDegrees,
+
         /// <summary>
         /// The elevation values are in feet, but the geographic projection uses meters
         /// </summary>
-        ElevationFeet_ProjectionMeters,
+        ElevationFeetProjectionMeters,
+
         /// <summary>
         /// The elevation values are in feet, but the geographic projection uses feet
         /// </summary>
-        ElevationFeet_ProjectionFeet,
+        ElevationFeetProjectionFeet,
+
         /// <summary>
         /// The elevation values are in meters, but the geographic projection uses decimal degrees
         /// </summary>
-        ElevationMeters_ProjectionDegrees,
+        ElevationMetersProjectionDegrees,
+
         /// <summary>
         /// The elevation values are in meters, but the geographic projection uses meters
         /// </summary>
-        ElevationMeters_ProjectionMeters,
+        ElevationMetersProjectionMeters,
+
         /// <summary>
         /// The elevation values are in meters, but the geographic projection uses feet
         /// </summary>
-        ElevationMeters_ProjectionFeet
+        ElevationMetersProjectionFeet
     }
 }

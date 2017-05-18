@@ -1,23 +1,25 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/21/2009 1:45:12 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for label scheme.
+    /// </summary>
     public interface ILabelScheme : ICloneable
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the list of categories that make up this label scheme
+        /// </summary>
+        IList<ILabelCategory> Categories { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -35,9 +37,9 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Attempts to reduce the integer index representing this categories rank in the
-        /// list.  By doing this, it will be drawn sooner, and therefore subsequent
+        /// list. By doing this, it will be drawn sooner, and therefore subsequent
         /// layers will be drawn on top of this layer, and so it reduces the categories
-        /// priority.  If this collection does not contain the category or it is already
+        /// priority. If this collection does not contain the category or it is already
         /// at index 0, this will return false.
         /// </summary>
         /// <param name="category">The ILabelCategory to demote</param>
@@ -47,21 +49,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This attempts to increase the numeric index, which will cause it to be drawn later,
         /// or higher up on the cue, which means it will be drawn AFTER the previous layers,
-        /// and therefore is a higher priority.  If the category does not exist in the collection
+        /// and therefore is a higher priority. If the category does not exist in the collection
         /// or the category is already at the highest value, this returns false.
         /// </summary>
         /// <param name="category">The category to promote if possible.</param>
         /// <returns>Boolean, true if the promotion was successful</returns>
         bool Promote(ILabelCategory category);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the list of categories that make up this label scheme
-        /// </summary>
-        IList<ILabelCategory> Categories { get; set; }
 
         #endregion
     }

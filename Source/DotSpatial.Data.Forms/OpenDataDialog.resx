@@ -118,45 +118,45 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="directoryView1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="_directoryView1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="directoryView1.Text" xml:space="preserve">
+  <data name="_directoryView1.Text" xml:space="preserve">
     <value>Directory</value>
   </data>
-  <data name="&gt;&gt;directoryView1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_directoryView1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>600, 495</value>
   </data>
-  <data name="&gt;&gt;directoryView1.Type" xml:space="preserve">
+  <data name="&gt;&gt;_directoryView1.Type" xml:space="preserve">
     <value>DotSpatial.Data.Forms.DirectoryView, DotSpatial.Data.Forms, Version=1.0.0.39586, Culture=neutral, PublicKeyToken=53ab5a198378d4c1</value>
   </data>
-  <data name="&gt;&gt;directoryView1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_directoryView1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>OpenDataDialog</value>
   </data>
-  <data name="directoryView1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_directoryView1.Size" type="System.Drawing.Size, System.Drawing">
     <value>600, 495</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Open Data Dialog</value>
   </data>
-  <data name="&gt;&gt;directoryView1.Name" xml:space="preserve">
-    <value>directoryView1</value>
+  <data name="&gt;&gt;_directoryView1.Name" xml:space="preserve">
+    <value>_directoryView1</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="directoryView1.TabIndex" type="System.Int32, mscorlib">
+  <data name="_directoryView1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="directoryView1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_directoryView1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

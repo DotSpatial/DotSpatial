@@ -1,13 +1,25 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.IO;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for the BinaryRasterProvider.
+    /// </summary>
     [TestFixture]
-    class BinaryRasterProviderTests
+    internal class BinaryRasterProviderTests
     {
+        #region Methods
+
+        /// <summary>
+        /// Tests that a created BinaryRaster still contains the same data after beeing saved to file and loaded again.
+        /// </summary>
+        /// <param name="type">Type of the raster.</param>
         [TestCase(typeof(byte))]
         [TestCase(typeof(short))]
         [TestCase(typeof(int))]
@@ -27,7 +39,7 @@ namespace DotSpatial.Data.Tests
 
             try
             {
-                var raster = target.Create(fileName, "", 2, 2, 1, type, null);
+                var raster = target.Create(fileName, string.Empty, 2, 2, 1, type, null);
                 Assert.IsNotNull(raster);
 
                 // assume that any tested type contains 0 and 1 values
@@ -43,15 +55,19 @@ namespace DotSpatial.Data.Tests
                 Assert.IsNotNull(raster);
 
                 for (var i = 0; i < openRaster.NumRows; i++)
+                {
                     for (var j = 0; j < openRaster.NumColumns; j++)
                     {
                         Assert.AreEqual(raster.Value[i, j], openRaster.Value[i, j]);
                     }
+                }
             }
-            finally 
+            finally
             {
                 File.Delete(fileName);
             }
         }
+
+        #endregion
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -6,14 +9,19 @@ using DotSpatial.Plugins.SpatiaLite.Properties;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
+    /// <summary>
+    /// This adds the possibility to use SpatiaLite data as layers.
+    /// </summary>
     public class SpatiaLitePlugin : Extension
     {
+        #region Methods
+
         /// <summary>
         /// When the plugin is activated
         /// </summary>
         public override void Activate()
         {
-            //try setting environment variables..
+            // try setting environment variables..
             SpatiaLiteHelper.SetEnvironmentVars();
 
             string spatiaLiteGroup = "SpatiaLite";
@@ -27,8 +35,8 @@ namespace DotSpatial.Plugins.SpatiaLite
             };
             App.HeaderControl.Add(bOpenLayer);
 
-            //query
-            var bQuery = new SimpleActionItem("SpatiaLite Query", bQuery_Click)
+            // query
+            var bQuery = new SimpleActionItem("SpatiaLite Query", BQueryClick)
             {
                 LargeImage = Resources.spatialite_query_32,
                 SmallImage = Resources.spatialite_query_16,
@@ -37,8 +45,8 @@ namespace DotSpatial.Plugins.SpatiaLite
             };
             App.HeaderControl.Add(bQuery);
 
-            //save layer (not implemented yet)
-            var bSaveLayer = new SimpleActionItem("Save Layer", bSaveLayer_Click)
+            // save layer (not implemented yet)
+            var bSaveLayer = new SimpleActionItem("Save Layer", BSaveLayerClick)
             {
                 LargeImage = Resources.spatialite_save_32,
                 SmallImage = Resources.spatialite_save_16,
@@ -50,6 +58,38 @@ namespace DotSpatial.Plugins.SpatiaLite
         }
 
         /// <summary>
+        /// Shows the add layer window.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        public void ButtonClick(object sender, EventArgs e)
+        {
+            // check if it's a valid SpatiaLite layer
+            using (OpenFileDialog fd = new OpenFileDialog
+            {
+                Title = Resources.OpenSpatialiteDatabase,
+                Filter = Resources.SpatialiteDatabaseFilter
+            })
+            {
+                if (fd.ShowDialog() == DialogResult.OK)
+                {
+                    string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
+                    bool isValidSchema = SpatiaLiteHelper.CheckSpatiaLiteSchema(cs);
+                    if (!isValidSchema)
+                    {
+                        MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName));
+                        return;
+                    }
+
+                    using (FrmAddLayer frm = new FrmAddLayer(cs, App.Map))
+                    {
+                        frm.Show();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// When the plugin is deactivated
         /// </summary>
         public override void Deactivate()
@@ -58,46 +98,29 @@ namespace DotSpatial.Plugins.SpatiaLite
             base.Deactivate();
         }
 
-        private void bQuery_Click(object sender, EventArgs e)
+        private void BQueryClick(object sender, EventArgs e)
         {
-            //check if it's a valid SpatiaLite layer
-            OpenFileDialog fd = new OpenFileDialog();
-            fd.Title = "Open SpatiaLite database";
-            fd.Filter = "SpatiaLite database|*.sqlite";
-            if (fd.ShowDialog() == DialogResult.OK)
+            // check if it's a valid SpatiaLite layer
+            using (OpenFileDialog fd = new OpenFileDialog
             {
-                string cs = SQLiteHelper.GetSQLiteConnectionString(fd.FileName);
-                var frm = new frmQuery(cs, App.Map);
-                frm.Show();
-            }
-        }
-
-        private void bSaveLayer_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This operation is not implemented yet");
-        }
-
-        public void ButtonClick(object sender, EventArgs e)
-        {
-            //check if it's a valid SpatiaLite layer
-            OpenFileDialog fd = new OpenFileDialog();
-            fd.Title = "Open SpatiaLite database";
-            fd.Filter = "SpatiaLite database|*.sqlite";
-            if (fd.ShowDialog() == DialogResult.OK)
+                Title = Resources.OpenSpatialiteDatabase,
+                Filter = Resources.SpatialiteDatabaseFilter
+            })
             {
-                string cs = SQLiteHelper.GetSQLiteConnectionString(fd.FileName);
-                bool isValidSchema = SpatiaLiteHelper.CheckSpatiaLiteSchema(cs);
-                if (!isValidSchema)
+                if (fd.ShowDialog() == DialogResult.OK)
                 {
-                    MessageBox.Show("The database " + fd.FileName + " is not a valid SpatiaLite database. Table geometry_columns not found.");
-                    return;
-                }
-                else
-                {
-                    frmAddLayer frm = new frmAddLayer(cs, App.Map);
+                    string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
+                    var frm = new FrmQuery(cs, App.Map);
                     frm.Show();
                 }
             }
         }
+
+        private void BSaveLayerClick(object sender, EventArgs e)
+        {
+            MessageBox.Show(@"This operation is not implemented yet");
+        }
+
+        #endregion
     }
 }

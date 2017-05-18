@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CurrentElementNotSpecified" xml:space="preserve">
-    <value>The current element was not defined.  Before attempting to read the element, first assign the value of the current XML Element to read.</value>
+    <value>The current element was not defined. Before attempting to read the element, first assign the value of the current XML Element to read.</value>
   </data>
   <data name="ExtentDialog_Fail_Invalid_Value" xml:space="preserve">
     <value>Invalid Value.</value>
   </data>
   <data name="ExtentDialog_Fail_Post" xml:space="preserve">
-    <value>box.  Either fix the value to represent a double precision floating point value or choose cancel.</value>
+    <value>box. Either fix the value to represent a double precision floating point value or choose cancel.</value>
   </data>
   <data name="ExtentDialog_Fail_Pre" xml:space="preserve">
     <value>There is an invalid entry in the</value>
   </data>
   <data name="ParseFailed_S" xml:space="preserve">
-    <value>The value you entered could not be parsed into a %S.  Make sure the value is in the valid range.</value>
+    <value>The value you entered could not be parsed into a %S. Make sure the value is in the valid range.</value>
   </data>
 </root>

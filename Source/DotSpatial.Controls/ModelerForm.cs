@@ -1,42 +1,21 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ModelerForm
-// Description:  A form which contains the modeler component
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Apr, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-using DotSpatial.Modeling.Forms;
 
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A form used in Brian's toolkit code
+    /// A form used in Brian's toolkit code.
     /// </summary>
-    public class ModelerForm : Form
+    public partial class ModelerForm : Form
     {
-        #region "Private variables"
-
-        private Modeler _modeler;
-        private ModelerMenuStrip _modelerMenuStrip;
-        private ModelerToolStrip _modelerToolStrip;
-        private ToolStripContainer _toolStripContainer;
-        private ToolStripMenuItem _toolStripMenuItem;
-
-        #endregion
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the modeler's form
+        /// Initializes a new instance of the <see cref="ModelerForm"/> class.
         /// </summary>
         public ModelerForm()
         {
@@ -45,145 +24,22 @@ namespace DotSpatial.Controls
             _modeler.ModelFilenameChanged += ModelerModelFilenameChanged;
         }
 
-        #region properties
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// Gets modeler in the form
+        /// Gets the forms modeler.
         /// </summary>
-        public Modeler Modeler
-        {
-            get { return _modeler; }
-        }
+        public Modeler Modeler => _modeler;
 
         #endregion
 
-        #region Events
+        #region Methods
 
         private void ModelerModelFilenameChanged(object sender, EventArgs e)
         {
-            Text = "DotSpatial Modeler - " + Path.GetFileNameWithoutExtension(_modeler.ModelFilename);
-        }
-
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModelerForm));
-            this._toolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this._modeler = new DotSpatial.Controls.Modeler();
-            this._modelerToolStrip = new DotSpatial.Controls.ModelerToolStrip();
-            this._modelerMenuStrip = new DotSpatial.Modeling.Forms.ModelerMenuStrip();
-            this._toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._toolStripContainer.ContentPanel.SuspendLayout();
-            this._toolStripContainer.TopToolStripPanel.SuspendLayout();
-            this._toolStripContainer.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // _toolStripContainer
-            //
-            resources.ApplyResources(this._toolStripContainer, "_toolStripContainer");
-            //
-            // _toolStripContainer.BottomToolStripPanel
-            //
-            resources.ApplyResources(this._toolStripContainer.BottomToolStripPanel, "_toolStripContainer.BottomToolStripPanel");
-            //
-            // _toolStripContainer.ContentPanel
-            //
-            resources.ApplyResources(this._toolStripContainer.ContentPanel, "_toolStripContainer.ContentPanel");
-            this._toolStripContainer.ContentPanel.Controls.Add(this._modeler);
-            //
-            // _toolStripContainer.LeftToolStripPanel
-            //
-            resources.ApplyResources(this._toolStripContainer.LeftToolStripPanel, "_toolStripContainer.LeftToolStripPanel");
-            this._toolStripContainer.Name = "_toolStripContainer";
-            //
-            // _toolStripContainer.RightToolStripPanel
-            //
-            resources.ApplyResources(this._toolStripContainer.RightToolStripPanel, "_toolStripContainer.RightToolStripPanel");
-            //
-            // _toolStripContainer.TopToolStripPanel
-            //
-            resources.ApplyResources(this._toolStripContainer.TopToolStripPanel, "_toolStripContainer.TopToolStripPanel");
-            this._toolStripContainer.TopToolStripPanel.Controls.Add(this._modelerMenuStrip);
-            this._toolStripContainer.TopToolStripPanel.Controls.Add(this._modelerToolStrip);
-            //
-            // _modeler
-            //
-            resources.ApplyResources(this._modeler, "_modeler");
-            this._modeler.AllowDrop = true;
-            this._modeler.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this._modeler.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this._modeler.Cursor = System.Windows.Forms.Cursors.Default;
-            this._modeler.DataColor = System.Drawing.Color.LightGreen;
-            this._modeler.DataFont = new System.Drawing.Font("Tahoma", 8F);
-            this._modeler.DataShape = DotSpatial.Modeling.Forms.ModelShape.Ellipse;
-            this._modeler.DefaultFileExtension = "mwm";
-            this._modeler.DrawingQuality = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this._modeler.EnableLinking = false;
-            this._modeler.IsInitialized = true;
-            this._modeler.MaxExecutionThreads = 2;
-            this._modeler.ModelFilename = null;
-            this._modeler.Name = "_modeler";
-            this._modeler.ShowWaterMark = true;
-            this._modeler.ToolColor = System.Drawing.Color.Khaki;
-            this._modeler.ToolFont = new System.Drawing.Font("Tahoma", 8F);
-            this._modeler.ToolManager = null;
-            this._modeler.ToolShape = DotSpatial.Modeling.Forms.ModelShape.Rectangle;
-            this._modeler.WorkingPath = null;
-            this._modeler.ZoomFactor = 1F;
-            //
-            // _modelerToolStrip
-            //
-            resources.ApplyResources(this._modelerToolStrip, "_modelerToolStrip");
-            this._modelerToolStrip.Modeler = this._modeler;
-            this._modelerToolStrip.Name = "_modelerToolStrip";
-            //
-            // _modelerMenuStrip
-            //
-            resources.ApplyResources(this._modelerMenuStrip, "_modelerMenuStrip");
-            this._modelerMenuStrip.Name = "_modelerMenuStrip";
-            //
-            // _toolStripMenuItem
-            //
-            resources.ApplyResources(this._toolStripMenuItem, "_toolStripMenuItem");
-            this._toolStripMenuItem.Name = "_toolStripMenuItem";
-            //
-            // ModelerForm
-            //
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this._toolStripContainer);
-            this.Icon = global::DotSpatial.Controls.Images.NewModel;
-            this.Name = "ModelerForm";
-            this._toolStripContainer.ContentPanel.ResumeLayout(false);
-            this._toolStripContainer.TopToolStripPanel.ResumeLayout(false);
-            this._toolStripContainer.TopToolStripPanel.PerformLayout();
-            this._toolStripContainer.ResumeLayout(false);
-            this._toolStripContainer.PerformLayout();
-            this.ResumeLayout(false);
+            Text = string.Format(MessageStrings.ModelerForm_DotSpatialModelerFileName, Path.GetFileNameWithoutExtension(_modeler.ModelFilename));
         }
 
         #endregion

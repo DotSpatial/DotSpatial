@@ -94,14 +94,14 @@ namespace DotSpatial.Controls
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOk.Name = "btnOk";
             this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            this.btnOk.Click += new System.EventHandler(this.BtnOkClick);
             // 
             // btnApply
             // 
             resources.ApplyResources(this.btnApply, "btnApply");
             this.btnApply.Name = "btnApply";
             this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            this.btnApply.Click += new System.EventHandler(this.BtnApplyClick);
             // 
             // txtEsriString
             // 
@@ -153,7 +153,7 @@ namespace DotSpatial.Controls
             resources.ApplyResources(this.lnkSpatialReference, "lnkSpatialReference");
             this.lnkSpatialReference.Name = "lnkSpatialReference";
             this.lnkSpatialReference.TabStop = true;
-            this.lnkSpatialReference.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSpatialReference_LinkClicked);
+            this.lnkSpatialReference.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkSpatialReferenceLinkClicked);
             // 
             // txtAuthority
             // 
@@ -221,7 +221,7 @@ namespace DotSpatial.Controls
             resources.ApplyResources(this.btnChange, "btnChange");
             this.btnChange.Name = "btnChange";
             this.btnChange.UseVisualStyleBackColor = true;
-            this.btnChange.Click += new System.EventHandler(this.btnChangeToSelected_Click);
+            this.btnChange.Click += new System.EventHandler(this.BtnChangeToSelectedClick);
             // 
             // txtAuthorityCode
             // 

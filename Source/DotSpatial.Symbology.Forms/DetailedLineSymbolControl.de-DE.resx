@@ -149,7 +149,7 @@
     <value>Skalier-Modus:</value>
   </data>
   <data name="cmbScaleMode.ToolTip" xml:space="preserve">
-    <value>Geographische Linien werden breiter, wenn Sie hinein zoomen und Karteneinheiten zur Kontrolle benutzen.  Symbolische und einfache Linien behalten die gleiche Breite, wenn sie vergrößert werden.</value>
+    <value>Geographische Linien werden breiter, wenn Sie hinein zoomen und Karteneinheiten zur Kontrolle benutzen. Symbolische und einfache Linien behalten die gleiche Breite, wenn sie vergrößert werden.</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Symbolizer Merkmale</value>
@@ -233,7 +233,7 @@
     <value>14, 92</value>
   </data>
   <data name="dblWidth.ToolTip" xml:space="preserve">
-    <value>Legen Sie die Breite des Striches fest.  Der Skalier-Modus bestimmt die Maßeinheiten.</value>
+    <value>Legen Sie die Breite des Striches fest. Der Skalier-Modus bestimmt die Maßeinheiten.</value>
   </data>
   <data name="tabSimple.Text" xml:space="preserve">
     <value>Einfache Linie</value>

@@ -1,21 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Ribbon.dll
-// Description:  Original new code created by Ted Dunsford to help add items to panels
-// ********************************************************************************************************
-// The license is the Microsoft Public License (Ms-PL).  A copy of the license can be found
-// here: http://www.opensource.org/licenses/ms-pl.html.  This is to keep it consistent with the
-// rest of the ribbon code content.
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Initial Developer was Ted Dunsford, August 22, 2010 11:34:00 AM.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |         Name         |    Date    |                              Comment
-// |----------------------|------------|------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -31,12 +15,14 @@ namespace DotSpatial.Controls
     [ToolboxItem(false)]
     public class IconMenuItem : MenuItem
     {
+        #region  Constructors
+
         /// <summary>
-        /// Creates a new instance of the Icon Menu Item with the specified name
+        /// Initializes a new instance of the <see cref="IconMenuItem"/> class with the specified name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="icon"></param>
-        /// <param name="onClick"></param>
+        /// <param name="name">Name of the menu item.</param>
+        /// <param name="icon">Icon of the menu item.</param>
+        /// <param name="onClick">The click event handler.</param>
         public IconMenuItem(string name, Icon icon, EventHandler onClick)
             : base(name, onClick)
         {
@@ -45,11 +31,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of the Icon Menu Item with the specified name
+        /// Initializes a new instance of the <see cref="IconMenuItem"/> class with the specified name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="image"></param>
-        /// <param name="onClick"></param>
+        /// <param name="name">Name of the menu item.</param>
+        /// <param name="image">Image of the menu item.</param>
+        /// <param name="onClick">The click event handler.</param>
         public IconMenuItem(string name, Image image, EventHandler onClick)
             : base(name, onClick)
         {
@@ -58,15 +44,19 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of the Icon Menu Item with the specified name
+        /// Initializes a new instance of the <see cref="IconMenuItem"/> class with the specified name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="onClick"></param>
+        /// <param name="name">Name of the menu item.</param>
+        /// <param name="onClick">The click event handler.</param>
         public IconMenuItem(string name, EventHandler onClick)
             : base(name, onClick)
         {
             OwnerDraw = true;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the icon to be drawn to the left of this menu item.
@@ -77,6 +67,10 @@ namespace DotSpatial.Controls
         /// Gets or sets the image to be drawn to the left of this menu item
         /// </summary>
         public Image Image { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc/>
         protected override void OnDrawItem(DrawItemEventArgs e)
@@ -105,6 +99,7 @@ namespace DotSpatial.Controls
                 e.Graphics.FillRectangle(iconBack, e.Bounds.X, e.Bounds.Y, 22, e.Bounds.Height);
                 iconBack.Dispose();
             }
+
             Rectangle tight = new Rectangle(e.Bounds.Left + 2, e.Bounds.Top + 2, 16, 16);
             if (Icon != null) e.Graphics.DrawIcon(Icon, e.Bounds.Left + 2, e.Bounds.Top + 2);
             if (Image != null) e.Graphics.DrawImage(Image, tight);
@@ -121,5 +116,7 @@ namespace DotSpatial.Controls
             e.ItemWidth = (int)Math.Ceiling(sizef.Width) + 20;
             e.ItemHeight = (int)Math.Max(Math.Ceiling(sizef.Height), 20);
         }
+
+        #endregion
     }
 }

@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/4/2009 11:52:50 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -20,80 +10,21 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// MapGroup
+    /// </summary>
     public class MapGroup : Group, IMapGroup
     {
-        /// <summary>
-        /// Overrides the base CreateGroup method to ensure that new groups are GeoGroups.
-        /// </summary>
-        protected override void OnCreateGroup()
-        {
-            new MapGroup(Layers, ParentMapFrame, ProgressHandler) {LegendText = "New Group"};
-        }
-
-        #region Nested type: MapLayerEnumerator
-
-        /// <summary>
-        /// Transforms an IMapLayer enumerator into an ILayer Enumerator
-        /// </summary>
-        private class MapLayerEnumerator : IEnumerator<ILayer>
-        {
-            private readonly IEnumerator<IMapLayer> _enumerator;
-
-            /// <summary>
-            /// Creates a new instance of the MapLayerEnumerator
-            /// </summary>
-            /// <param name="subEnumerator"></param>
-            public MapLayerEnumerator(IEnumerator<IMapLayer> subEnumerator)
-            {
-                _enumerator = subEnumerator;
-            }
-
-            #region IEnumerator<ILayer> Members
-
-            /// <inheritdoc />
-            public ILayer Current
-            {
-                get { return _enumerator.Current; }
-            }
-
-            /// <inheritdoc />
-            public void Dispose()
-            {
-                _enumerator.Dispose();
-            }
-
-            object IEnumerator.Current
-            {
-                get { return _enumerator.Current; }
-            }
-
-            /// <inheritdoc />
-            public bool MoveNext()
-            {
-                return _enumerator.MoveNext();
-            }
-
-            /// <inheritdoc />
-            public void Reset()
-            {
-                _enumerator.Reset();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private IMapLayerCollection _layers;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of GeoGroup
+        /// Initializes a new instance of the <see cref="MapGroup"/> class.
         /// </summary>
         public MapGroup()
         {
@@ -101,7 +32,8 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new group for the specified map.  This will place the group at the root level on the MapFrame.
+        /// Initializes a new instance of the <see cref="MapGroup"/> class for the specified map.
+        /// This will place the group at the root level on the MapFrame.
         /// </summary>
         /// <param name="map">The map to add this group to.</param>
         /// <param name="name">The name to appear in the legend text.</param>
@@ -109,15 +41,15 @@ namespace DotSpatial.Controls
             : base(map.MapFrame, map.ProgressHandler)
         {
             Layers = new MapLayerCollection(map.MapFrame, this, map.ProgressHandler);
-            base.LegendText = name;
+            LegendText = name;
             map.Layers.Add(this);
         }
 
         /// <summary>
-        /// Creates a group that sits in a layer list and uses the specified progress handler
+        /// Initializes a new instance of the <see cref="MapGroup"/> class that sits in a layer list and uses the specified progress handler.
         /// </summary>
         /// <param name="container">the layer list</param>
-        /// <param name="frame"></param>
+        /// <param name="frame">The map frame.</param>
         /// <param name="progressHandler">the progress handler</param>
         public MapGroup(ICollection<IMapLayer> container, IMapFrame frame, IProgressHandler progressHandler)
             : base(frame, progressHandler)
@@ -128,51 +60,100 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         /// <inheritdoc />
-        public override int IndexOf(ILayer item)
+        public override int Count => _layers.Count;
+
+        /// <inheritdoc />
+        public override bool EventsSuspended => _layers.EventsSuspended;
+
+        /// <inheritdoc />
+        public override bool IsReadOnly => _layers.IsReadOnly;
+
+        /// <summary>
+        /// Gets or sets the collection of layers.
+        /// </summary>
+        [Serialize("Layers")]
+        public new IMapLayerCollection Layers
         {
-            IMapLayer ml = item as IMapLayer;
-            if (ml != null)
+            get
             {
-                return _layers.IndexOf(ml);
+                return _layers;
             }
-            return -1;
-        }
 
-        /// <inheritdoc />
-        public override void Add(ILayer layer)
-        {
-            IMapLayer ml = layer as IMapLayer;
-            if (ml != null)
+            set
             {
-                _layers.Add(ml);
-            }
-        }
+                if (Layers != null)
+                {
+                    IgnoreLayerEvents(_layers);
+                }
 
-        /// <inheritdoc />
-        public override bool Remove(ILayer layer)
-        {
-            IMapLayer ml = layer as IMapLayer;
-            return ml != null && _layers.Remove(ml);
-        }
+                HandleLayerEvents(value);
+                _layers = value;
 
-        /// <inheritdoc />
-        public override void RemoveAt(int index)
-        {
-            _layers.RemoveAt(index);
-        }
-
-        /// <inheritdoc />
-        public override void Insert(int index, ILayer layer)
-        {
-            IMapLayer ml = layer as IMapLayer;
-            if (ml != null)
-            {
-                _layers.Insert(index, ml);
+                // set the MapFrame property
+                if (ParentMapFrame != null)
+                {
+                    _layers.MapFrame = ParentMapFrame;
+                }
             }
         }
+
+        /// <summary>
+        /// Gets the layers cast as legend items. This allows easier cycling in recursive legend code.
+        /// </summary>
+        public override IEnumerable<ILegendItem> LegendItems
+        {
+            get
+            {
+                // Keep cast for 3.5 framework
+                return _layers.Cast<ILegendItem>();
+            }
+        }
+
+        /// <inheritdoc />
+        public override IFrame MapFrame
+        {
+            get
+            {
+                return base.MapFrame;
+            }
+
+            set
+            {
+                base.MapFrame = value;
+                if (_layers != null)
+                {
+                    IMapFrame newValue = value as IMapFrame;
+                    if (newValue != null && _layers.MapFrame == null)
+                    {
+                        _layers.MapFrame = newValue;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the MapFrame that this group ultimately belongs to. This may not
+        /// be the immediate parent of this group.
+        /// </summary>
+        public IMapFrame ParentMapFrame
+        {
+            get
+            {
+                return MapFrame as IMapFrame;
+            }
+
+            set
+            {
+                MapFrame = value;
+            }
+        }
+
+        #endregion
+
+        #region Indexers
 
         /// <inheritdoc />
         public override ILayer this[int index]
@@ -181,10 +162,25 @@ namespace DotSpatial.Controls
             {
                 return _layers[index];
             }
+
             set
             {
                 IMapLayer ml = value as IMapLayer;
                 _layers[index] = ml;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
+        public override void Add(ILayer layer)
+        {
+            IMapLayer ml = layer as IMapLayer;
+            if (ml != null)
+            {
+                _layers.Add(ml);
             }
         }
 
@@ -210,52 +206,12 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <inheritdoc />
-        public override int Count
-        {
-            get { return _layers.Count; }
-        }
-
-        /// <inheritdoc />
-        public override bool IsReadOnly
-        {
-            get { return _layers.IsReadOnly; }
-        }
-
-        /// <inheritdoc />
-        public override void SuspendEvents()
-        {
-            _layers.SuspendEvents();
-        }
-
-        /// <inheritdoc />
-        public override void ResumeEvents()
-        {
-            _layers.ResumeEvents();
-        }
-
-        /// <inheritdoc />
-        public override bool EventsSuspended
-        {
-            get { return _layers.EventsSuspended; }
-        }
-
-        /// <inheritdoc />
-        public override IEnumerator<ILayer> GetEnumerator()
-        {
-            return new MapLayerEnumerator(_layers.GetEnumerator());
-        }
-
-        /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _layers.GetEnumerator();
-        }
-
         /// <summary>
         /// This draws content from the specified geographic regions onto the specified graphics
         /// object specified by MapArgs.
         /// </summary>
+        /// <param name="args">The map args.</param>
+        /// <param name="regions">The regions.</param>
         public void DrawRegions(MapArgs args, List<Extent> regions)
         {
             if (Layers == null) return;
@@ -268,67 +224,26 @@ namespace DotSpatial.Controls
                     {
                         if (MapFrame.ViewExtents.Width > layer.DynamicVisibilityWidth)
                         {
-                            continue;  // skip the geoLayer if we are zoomed out too far.
+                            continue; // skip the layer if we are zoomed out too far.
                         }
                     }
                     else
                     {
                         if (MapFrame.ViewExtents.Width < layer.DynamicVisibilityWidth)
                         {
-                            continue;  // skip the geoLayer if we are zoomed in too far.
+                            continue; // skip the layer if we are zoomed in too far.
                         }
                     }
                 }
+
                 layer.DrawRegions(args, regions);
             }
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the collection of Geographic drawing layers.
-        /// </summary>
-        /// <summary>
-        /// Gets or sets the layers
-        /// </summary>
-        [Serialize("Layers")]
-        public new IMapLayerCollection Layers
-        {
-            get { return _layers; }
-            set
-            {
-                if (Layers != null)
-                {
-                    Ignore_Layer_Events(_layers);
-                }
-                Handle_Layer_Events(value);
-                _layers = value;
-                //set the MapFrame property
-                if (ParentMapFrame != null)
-                {
-                    _layers.MapFrame = ParentMapFrame;
-                }
-            }
-        }
-
         /// <inheritdoc />
-        public override IFrame MapFrame
+        public override IEnumerator<ILayer> GetEnumerator()
         {
-            get { return base.MapFrame; }
-            set
-            {
-                base.MapFrame = value;
-                if (_layers != null)
-                {
-                    IMapFrame newValue = value as IMapFrame;
-                    if (newValue != null && _layers.MapFrame == null)
-                    {
-                        _layers.MapFrame = newValue;
-                    }
-                }
-            }
+            return new MapLayerEnumerator(_layers.GetEnumerator());
         }
 
         /// <summary>
@@ -341,27 +256,128 @@ namespace DotSpatial.Controls
             return _layers.Cast<ILayer>().ToList();
         }
 
-        /// <summary>
-        /// Gets the MapFrame that this group ultimately belongs to.  This may not
-        /// be the immediate parent of this group.
-        /// </summary>
-        public IMapFrame ParentMapFrame
+        /// <inheritdoc />
+        public override int IndexOf(ILayer item)
         {
-            get { return MapFrame as IMapFrame; }
-            set { MapFrame = value; }
+            IMapLayer ml = item as IMapLayer;
+            if (ml != null)
+            {
+                return _layers.IndexOf(ml);
+            }
+
+            return -1;
+        }
+
+        /// <inheritdoc />
+        public override void Insert(int index, ILayer layer)
+        {
+            IMapLayer ml = layer as IMapLayer;
+            if (ml != null)
+            {
+                _layers.Insert(index, ml);
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool Remove(ILayer layer)
+        {
+            IMapLayer ml = layer as IMapLayer;
+            return ml != null && _layers.Remove(ml);
+        }
+
+        /// <inheritdoc />
+        public override void RemoveAt(int index)
+        {
+            _layers.RemoveAt(index);
+        }
+
+        /// <inheritdoc />
+        public override void ResumeEvents()
+        {
+            _layers.ResumeEvents();
+        }
+
+        /// <inheritdoc />
+        public override void SuspendEvents()
+        {
+            _layers.SuspendEvents();
+        }
+
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _layers.GetEnumerator();
         }
 
         /// <summary>
-        /// This is a different view of the layers cast as legend items.  This allows
-        /// easier cycling in recursive legend code.
+        /// Overrides the base CreateGroup method to ensure that new groups are GeoGroups.
         /// </summary>
-        public override IEnumerable<ILegendItem> LegendItems
+        protected override void OnCreateGroup()
         {
-            get
+            new MapGroup(Layers, ParentMapFrame, ProgressHandler)
             {
-                // Keep cast for 3.5 framework
-                return _layers.Cast<ILegendItem>();
+                LegendText = "New Group"
+            };
+        }
+
+        #endregion
+
+        #region Classes
+
+        /// <summary>
+        /// Transforms an IMapLayer enumerator into an ILayer Enumerator
+        /// </summary>
+        private class MapLayerEnumerator : IEnumerator<ILayer>
+        {
+            #region Fields
+
+            private readonly IEnumerator<IMapLayer> _enumerator;
+
+            #endregion
+
+            #region  Constructors
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MapLayerEnumerator"/> class.
+            /// </summary>
+            /// <param name="subEnumerator">Enumerator used inside this.</param>
+            public MapLayerEnumerator(IEnumerator<IMapLayer> subEnumerator)
+            {
+                _enumerator = subEnumerator;
             }
+
+            #endregion
+
+            #region Properties
+
+            /// <inheritdoc />
+            public ILayer Current => _enumerator.Current;
+
+            object IEnumerator.Current => _enumerator.Current;
+
+            #endregion
+
+            #region Methods
+
+            /// <inheritdoc />
+            public void Dispose()
+            {
+                _enumerator.Dispose();
+            }
+
+            /// <inheritdoc />
+            public bool MoveNext()
+            {
+                return _enumerator.MoveNext();
+            }
+
+            /// <inheritdoc />
+            public void Reset()
+            {
+                _enumerator.Reset();
+            }
+
+            #endregion
         }
 
         #endregion

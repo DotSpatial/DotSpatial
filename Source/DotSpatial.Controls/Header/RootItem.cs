@@ -1,3 +1,6 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 namespace DotSpatial.Controls.Header
 {
     /// <summary>
@@ -5,13 +8,21 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class RootItem : HeaderItem
     {
-        private string caption;
-        private short sortOrder;
-        private bool visible;
+        #region Fields
+
+        private string _caption;
+        private short _sortOrder;
+        private bool _visible;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of RootItem MenuContainerItem class.
+        /// Initializes a new instance of the <see cref="RootItem"/> class.
         /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         public RootItem(string key, string caption)
             : this()
         {
@@ -20,12 +31,16 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// Initializes a new instance of the <see cref="RootItem"/> class.
         /// </summary>
         public RootItem()
         {
-            visible = true;
+            _visible = true;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the caption.
@@ -33,11 +48,15 @@ namespace DotSpatial.Controls.Header
         /// <value>The caption.</value>
         public string Caption
         {
-            get { return caption; }
+            get
+            {
+                return _caption;
+            }
+
             set
             {
-                if (caption == value) return;
-                caption = value;
+                if (_caption == value) return;
+                _caption = value;
                 OnPropertyChanged("Caption");
             }
         }
@@ -51,11 +70,15 @@ namespace DotSpatial.Controls.Header
         /// </value>
         public short SortOrder
         {
-            get { return sortOrder; }
+            get
+            {
+                return _sortOrder;
+            }
+
             set
             {
-                if (sortOrder == value) return;
-                sortOrder = value;
+                if (_sortOrder == value) return;
+                _sortOrder = value;
                 OnPropertyChanged("SortOrder");
             }
         }
@@ -69,13 +92,19 @@ namespace DotSpatial.Controls.Header
         /// <remarks>Will generally bring this <see cref="RootItem"/> into focus when Visible is set to true.</remarks>
         public bool Visible
         {
-            get { return visible; }
+            get
+            {
+                return _visible;
+            }
+
             set
             {
-                if (visible == value) return;
-                visible = value;
+                if (_visible == value) return;
+                _visible = value;
                 OnPropertyChanged("Visible");
             }
         }
+
+        #endregion
     }
 }

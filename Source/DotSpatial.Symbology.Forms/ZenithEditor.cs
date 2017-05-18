@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/22/2009 3:10:14 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -20,17 +10,23 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// OpacityEditor
+    /// ZenithEditor
     /// </summary>
     public class ZenithEditor : UITypeEditor
     {
-        #region Private Variables
+        #region Fields
 
-        IWindowsFormsEditorService _dialogProvider;
+        private IWindowsFormsEditorService _dialogProvider;
 
         #endregion
 
-        #region Constructors
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether we can widen the drop-down without having to close the drop down,
+        /// widen the control, and re-open it again.
+        /// </summary>
+        public override bool IsDropDownResizable => true;
 
         #endregion
 
@@ -39,63 +35,45 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Edits the value by showing a slider control in the drop down.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="provider"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <param name="provider">The service provider.</param>
+        /// <param name="value">The ramp slider value.</param>
+        /// <returns>Returns the ramp slider value.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _dialogProvider = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            RampSlider rs = new RampSlider();
-            rs.Maximum = 90;
-            rs.Minimum = 0;
-            rs.MaximumColor = Color.SteelBlue;
-            rs.MinimumColor = Color.Transparent;
-            rs.RampText = "Zenith";
-            rs.RampTextBehindRamp = false;
-            rs.Value = Convert.ToDouble(value);
+            _dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+            RampSlider rs = new RampSlider
+            {
+                Maximum = 90,
+                Minimum = 0,
+                MaximumColor = Color.SteelBlue,
+                MinimumColor = Color.Transparent,
+                RampText = "Zenith",
+                RampTextBehindRamp = false,
+                Value = Convert.ToDouble(value),
+                ShowValue = false,
+                Width = 75,
+                Height = 50
+            };
             rs.ValueChanged += RsValueChanged;
-            rs.ShowValue = false;
-            rs.Width = 75;
-            rs.Height = 50;
-            if (_dialogProvider != null) _dialogProvider.DropDownControl(rs);
+            _dialogProvider?.DropDownControl(rs);
             return (float)rs.Value;
+        }
+
+        /// <summary>
+        /// Sets the behavior to drop-down
+        /// </summary>
+        /// <param name="context">The type descriptor context.</param>
+        /// <returns>The UITypeEditorEditStyle.</returns>
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.DropDown;
         }
 
         private void RsValueChanged(object sender, EventArgs e)
         {
             _dialogProvider.CloseDropDown();
         }
-
-        /// <summary>
-        /// Sets the behavior to drop-down
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-        {
-            return UITypeEditorEditStyle.DropDown;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Ensures that we can widen the drop-down without having to close the drop down,
-        /// widen the control, and re-open it again.
-        /// </summary>
-        public override bool IsDropDownResizable
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        #endregion
-
-        #region Protected Methods
 
         #endregion
     }

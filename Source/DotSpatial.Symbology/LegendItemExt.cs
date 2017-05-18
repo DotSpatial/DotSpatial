@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/4/2009 8:35:43 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -17,24 +7,40 @@ using System.Linq;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Contains extension methods for ILegendItems
+    /// Contains extension methods for ILegendItems.
     /// </summary>
     public static class LegendItemExt
     {
         #region Methods
 
         /// <summary>
+        /// Searches through the LegendItems recursively, looking for the 0 index
+        /// member of the deepest part of the tree.
+        /// </summary>
+        /// <param name="self">this</param>
+        /// <returns>The found member.</returns>
+        public static ILegendItem BottomMember(this ILegendItem self)
+        {
+            if (self.LegendItems != null && self.LegendItems.Any())
+            {
+                return BottomMember(self.LegendItems.First());
+            }
+
+            return self;
+        }
+
+        /// <summary>
         /// This method starts with this legend item and tests to see if it can contain
-        /// the specified target.  As it moves up the
+        /// the specified target. As it moves up the
         /// </summary>
         /// <param name="startItem">This legend item</param>
         /// <param name="dropItem">The target legend item to test</param>
         /// <returns>An ILegendItem that is one of the parent items of this item, but that can receive the target.</returns>
         public static ILegendItem GetValidContainerFor(this ILegendItem startItem, ILegendItem dropItem)
         {
-            if (startItem == null) return null;
-            if (dropItem == null) return null;
+            if (startItem == null || dropItem == null) return null;
             if (startItem.CanReceiveItem(dropItem)) return startItem;
+
             ILegendItem item = startItem;
             while ((item = item.GetParentItem()) != null)
             {
@@ -43,6 +49,7 @@ namespace DotSpatial.Symbology
                     return item;
                 }
             }
+
             return null;
         }
 
@@ -57,50 +64,21 @@ namespace DotSpatial.Symbology
         {
             ILegendItem container = GetValidContainerFor(startItem, dropItem);
             if (container == null) return -1;
+
             ILegendItem insertTarget = GetInsertTarget(startItem, dropItem);
             if (insertTarget == null) return container.LegendItems.Count();
             if (insertTarget == container)
             {
                 return container.LegendItems.Count();
             }
+
             List<ILegendItem> items = container.LegendItems.ToList();
             if (items.Contains(insertTarget))
             {
                 return items.IndexOf(insertTarget);
             }
+
             return container.LegendItems.Count();
-        }
-
-        private static ILegendItem GetInsertTarget(ILegendItem startItem, ILegendItem dropItem)
-        {
-            if (startItem == null) return null;
-            if (dropItem == null) return null;
-            if (startItem.CanReceiveItem(dropItem)) return startItem;
-            ILegendItem item = startItem;
-            while (item.GetParentItem() != null)
-            {
-                if (item.GetParentItem().CanReceiveItem(dropItem))
-                {
-                    return item;
-                }
-                item = item.GetParentItem();
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Searches through the LegendItems recursively, looking for the 0 index
-        /// member of the deepest part of the tree.
-        /// </summary>
-        /// <param name="self"></param>
-        /// <returns></returns>
-        public static ILegendItem BottomMember(this ILegendItem self)
-        {
-            if (self.LegendItems != null && self.LegendItems.Count() > 0)
-            {
-                return BottomMember(self.LegendItems.First());
-            }
-            return self;
         }
 
         /// <summary>
@@ -116,9 +94,30 @@ namespace DotSpatial.Symbology
             while (current != null)
             {
                 if (frame != null) return frame;
+
                 current = current.GetParentItem();
                 frame = current as IFrame;
             }
+
+            return null;
+        }
+
+        private static ILegendItem GetInsertTarget(ILegendItem startItem, ILegendItem dropItem)
+        {
+            if (startItem == null || dropItem == null) return null;
+            if (startItem.CanReceiveItem(dropItem)) return startItem;
+
+            ILegendItem item = startItem;
+            while (item.GetParentItem() != null)
+            {
+                if (item.GetParentItem().CanReceiveItem(dropItem))
+                {
+                    return item;
+                }
+
+                item = item.GetParentItem();
+            }
+
             return null;
         }
 

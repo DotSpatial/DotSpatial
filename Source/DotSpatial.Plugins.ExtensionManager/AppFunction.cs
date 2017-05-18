@@ -1,8 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppFunction.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -15,7 +12,7 @@ namespace DotSpatial.Plugins.ExtensionManager
     /// </summary>
     public class AppFunction : MapFunctionGlyph
     {
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets or sets the Manager that the dialog uses to control Apps.

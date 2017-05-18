@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/23/2008 8:22:45 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Data
 {
@@ -22,54 +11,66 @@ namespace DotSpatial.Data
         /// <summary>
         /// Ascii
         /// </summary>
-        ASCII,
+        Ascii,
+
         /// <summary>
         /// Binary interlaced Layers
         /// </summary>
-        BIL,
+        Bil,
+
         /// <summary>
         /// BGD (Original DotSpatial format)
         /// </summary>
-        BINARY,
+        Binary,
+
         /// <summary>
         /// DTED
         /// </summary>
-        DTED,
+        Dted,
+
         /// <summary>
         /// Wavelet format
         /// </summary>
-        ECW,
+        Ecw,
+
         /// <summary>
         /// ArcGIS format
         /// </summary>
-        ESRI,
+        Esri,
+
         /// <summary>
         /// FLT
         /// </summary>
-        FLT,
+        Flt,
+
         /// <summary>
         /// GeoTiff
         /// </summary>
         GeoTiff,
+
         /// <summary>
         /// SID
         /// </summary>
-        MrSID,
+        MrSid,
+
         /// <summary>
         /// AUX
         /// </summary>
-        PAUX,
+        Paux,
+
         /// <summary>
         /// PCIDsk
         /// </summary>
-        PCIDsk,
+        PciDsk,
+
         /// <summary>
         /// SDTS
         /// </summary>
-        SDTS,
+        Sdts,
+
         /// <summary>
         /// Custom - specified as string
         /// </summary>
-        CUSTOM
+        Custom
     }
 }

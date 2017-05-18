@@ -1120,7 +1120,7 @@ namespace DotSpatial.Positioning
             //}
 
             //// Does the right edge intersect?
-            //if (rectangle.Right >= _Left && rectangle.Right <= _Right)
+            // if (rectangle.Right >= _Left && rectangle.Right <= _Right)
             //{
             //    // The rectangle overlaps the current instance on its right side
 
@@ -1140,7 +1140,7 @@ namespace DotSpatial.Positioning
             //}
 
             //// Is the left edge of the rectangle between our left and right borders?
-            //if (rectangle.Left >= _Left && rectangle.Left <= _Right)
+            // if (rectangle.Left >= _Left && rectangle.Left <= _Right)
             //{
             //    // Yes.  But is the right edge also with the borders?  If so, there is no
             //    // intersection.  An overlap, yes, but not an intersection.
@@ -1154,7 +1154,7 @@ namespace DotSpatial.Positioning
             //    if (rectangle.Bottom <= _Top && rectangle.Bottom >= _Bottom)
             //        return true;
             //}
-            //else if (rectangle.Right >= _Left && rectangle.Right <= _Right)
+            // else if (rectangle.Right >= _Left && rectangle.Right <= _Right)
             //{
             //    // Yes.  But is the right edge also with the borders?  If so, there is no
             //    // intersection.  An overlap, yes, but not an intersection.
@@ -1165,12 +1165,12 @@ namespace DotSpatial.Positioning
             //    else if (rectangle.Bottom <= _Top && rectangle.Bottom >= _Bottom)
             //        return true;
             //}
-            ////else if (rectangle.Left <= _Left && rectangle.Right >= _Right
+            //// else if (rectangle.Left <= _Left && rectangle.Right >= _Right
             ////            && rectangle.Top >= _Top && rectangle.Bottom <= _Bottom)
             ////{
             ////    return true;
             ////}
-            //return false;
+            // return false;
         }
 
         /// <summary>

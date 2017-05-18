@@ -1,18 +1,7 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  A library module for the DotSpatial geospatial framework for .Net.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/25/2009 1:41:29 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
@@ -21,23 +10,20 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// ProjectionElement
+    /// ExtentElement
     /// </summary>
-    internal class ExtentElement : DialogElement
+    internal partial class ExtentElement : DialogElement
     {
-        #region Private Variables
-
+        #region Fields
         private readonly ToolTip _tthelp;
-        private Button cmdSelect;
-        private Label lblExtent;
-
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of ProjectionElement
+        /// Initializes a new instance of the <see cref="ExtentElement"/> class.
         /// </summary>
+        /// <param name="value">The ExtentParam</param>
         public ExtentElement(ExtentParam value)
         {
             _tthelp = new ToolTip();
@@ -49,19 +35,8 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 lblExtent.Text = value.Value.ToString();
             }
-            value.ValueChanged += ParamValueChanged;
-        }
 
-        protected override void ParamValueChanged(Parameter sender)
-        {
-            if (Param == null) return;
-            if (Param.Value == null)
-            {
-                lblExtent.Text = string.Empty;
-                return;
-            }
-            lblExtent.Text = Param.Value.ToString();
-            base.ParamValueChanged(sender);
+            value.ValueChanged += ParamValueChanged;
         }
 
         #endregion
@@ -73,7 +48,11 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// </summary>
         public new ExtentParam Param
         {
-            get { return (ExtentParam)base.Param; }
+            get
+            {
+                return (ExtentParam)base.Param;
+            }
+
             set
             {
                 Status = ToolStatus.Empty;
@@ -90,47 +69,31 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         #endregion
 
-        private void InitializeComponent()
+        #region Methods
+
+        /// <inheritdoc />
+        public override void Refresh()
         {
-            lblExtent = new Label();
-            cmdSelect = new Button();
-            SuspendLayout();
-            //
-            // groupBox1
-            //
-            GroupBox.Controls.Add(lblExtent);
-            GroupBox.Controls.Add(cmdSelect);
-            GroupBox.Controls.SetChildIndex(cmdSelect, 0);
-            GroupBox.Controls.SetChildIndex(lblExtent, 0);
-            GroupBox.Controls.SetChildIndex(StatusLabel, 0);
-            //
-            // lblProjection
-            //
-            lblExtent.Anchor = (AnchorStyles.Top | AnchorStyles.Left)
-                                   | AnchorStyles.Right;
-            lblExtent.BackColor = Color.White;
-            lblExtent.BorderStyle = BorderStyle.Fixed3D;
-            lblExtent.Location = new Point(39, 16);
-            lblExtent.Name = "lblExtent";
-            lblExtent.Size = new Size(405, 20);
-            lblExtent.TabIndex = 2;
-            lblExtent.Text = ModelingMessageStrings.ExtentElement_Press_button;
-            //
-            // cmdSelect
-            //
-            cmdSelect.Location = new Point(450, 15);
-            cmdSelect.Name = "cmdSelect";
-            cmdSelect.Size = new Size(36, 23);
-            cmdSelect.TabIndex = 3;
-            cmdSelect.Text = "...";
-            cmdSelect.UseVisualStyleBackColor = true;
-            cmdSelect.Click += CmdSelectClick;
-            //
-            // ProjectionElement
-            //
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            Name = "ProjectionElement";
-            ResumeLayout(false);
+            Status = ToolStatus.Empty;
+            LightTipText = ModelingMessageStrings.ParameterInvalid;
+            if (Param == null) return;
+            if (Param.Value == null) return;
+            Status = ToolStatus.Ok;
+            LightTipText = ModelingMessageStrings.ParameterValid;
+        }
+
+        /// <inheritdoc />
+        protected override void ParamValueChanged(Parameter sender)
+        {
+            if (Param == null) return;
+            if (Param.Value == null)
+            {
+                lblExtent.Text = string.Empty;
+                return;
+            }
+
+            lblExtent.Text = Param.Value.ToString();
+            base.ParamValueChanged(sender);
         }
 
         private void CmdSelectClick(object sender, EventArgs e)
@@ -150,18 +113,11 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 Param.Value = dlg.Extent;
             }
+
             lblExtent.Text = Param.Value.ToString();
             _tthelp.SetToolTip(lblExtent, Param.Value.ToString());
         }
 
-        public override void Refresh()
-        {
-            Status = ToolStatus.Empty;
-            LightTipText = ModelingMessageStrings.ParameterInvalid;
-            if (Param == null) return;
-            if (Param.Value == null) return;
-            Status = ToolStatus.Ok;
-            LightTipText = ModelingMessageStrings.ParameterValid;
-        }
+        #endregion
     }
 }

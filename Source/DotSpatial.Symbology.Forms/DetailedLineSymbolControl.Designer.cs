@@ -106,7 +106,7 @@ namespace DotSpatial.Symbology.Forms
             resources.GetString("cmbStrokeType.Items1")});
             this.cmbStrokeType.Name = "cmbStrokeType";
             this.ttHelp.SetToolTip(this.cmbStrokeType, resources.GetString("cmbStrokeType.ToolTip"));
-            this.cmbStrokeType.SelectedIndexChanged += new System.EventHandler(this.cmbStrokeType_SelectedIndexChanged);
+            this.cmbStrokeType.SelectedIndexChanged += new System.EventHandler(this.CmbStrokeTypeSelectedIndexChanged);
             // 
             // chkSmoothing
             // 
@@ -114,7 +114,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkSmoothing.Name = "chkSmoothing";
             this.ttHelp.SetToolTip(this.chkSmoothing, resources.GetString("chkSmoothing.ToolTip"));
             this.chkSmoothing.UseVisualStyleBackColor = true;
-            this.chkSmoothing.CheckedChanged += new System.EventHandler(this.chkSmoothing_CheckedChanged);
+            this.chkSmoothing.CheckedChanged += new System.EventHandler(this.ChkSmoothingCheckedChanged);
             // 
             // groupBox1
             // 
@@ -159,7 +159,7 @@ namespace DotSpatial.Symbology.Forms
             resources.GetString("cmbScaleMode.Items2")});
             this.cmbScaleMode.Name = "cmbScaleMode";
             this.ttHelp.SetToolTip(this.cmbScaleMode, resources.GetString("cmbScaleMode.ToolTip"));
-            this.cmbScaleMode.SelectedIndexChanged += new System.EventHandler(this.cmbScaleMode_SelectedIndexChanged);
+            this.cmbScaleMode.SelectedIndexChanged += new System.EventHandler(this.CmbScaleModeSelectedIndexChanged);
             // 
             // label1
             // 
@@ -259,7 +259,7 @@ namespace DotSpatial.Symbology.Forms
             resources.GetString("cmbStrokeStyle.Items5")});
             this.cmbStrokeStyle.Name = "cmbStrokeStyle";
             this.ttHelp.SetToolTip(this.cmbStrokeStyle, resources.GetString("cmbStrokeStyle.ToolTip"));
-            this.cmbStrokeStyle.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.cmbStrokeStyle.SelectedIndexChanged += new System.EventHandler(this.ComboBox1SelectedIndexChanged);
             // 
             // label2
             // 
@@ -280,7 +280,7 @@ namespace DotSpatial.Symbology.Forms
             this.dblWidth.RegularHelp = "Enter a double precision floating point value.";
             this.ttHelp.SetToolTip(this.dblWidth, resources.GetString("dblWidth.ToolTip"));
             this.dblWidth.Value = 0D;
-            this.dblWidth.TextChanged += new System.EventHandler(this.dblWidth_TextChanged);
+            this.dblWidth.TextChanged += new System.EventHandler(this.DblWidthTextChanged);
             // 
             // tabCartographic
             // 
@@ -333,7 +333,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmbEndCap.FormattingEnabled = true;
             this.cmbEndCap.Name = "cmbEndCap";
             this.ttHelp.SetToolTip(this.cmbEndCap, resources.GetString("cmbEndCap.ToolTip"));
-            this.cmbEndCap.SelectedIndexChanged += new System.EventHandler(this.cmbEndCap_SelectedIndexChanged);
+            this.cmbEndCap.SelectedIndexChanged += new System.EventHandler(this.CmbEndCapSelectedIndexChanged);
             // 
             // label4
             // 
@@ -348,7 +348,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmbStartCap.FormattingEnabled = true;
             this.cmbStartCap.Name = "cmbStartCap";
             this.ttHelp.SetToolTip(this.cmbStartCap, resources.GetString("cmbStartCap.ToolTip"));
-            this.cmbStartCap.SelectedIndexChanged += new System.EventHandler(this.cmbStartCap_SelectedIndexChanged);
+            this.cmbStartCap.SelectedIndexChanged += new System.EventHandler(this.CmbStartCapSelectedIndexChanged);
             // 
             // cbColorCartographic
             // 
@@ -411,7 +411,7 @@ namespace DotSpatial.Symbology.Forms
             this.radLineJoin.Name = "radLineJoin";
             this.ttHelp.SetToolTip(this.radLineJoin, resources.GetString("radLineJoin.ToolTip"));
             this.radLineJoin.Value = DotSpatial.Symbology.LineJoinType.Round;
-            this.radLineJoin.ValueChanged += new System.EventHandler(this.radLineJoin_ValueChanged);
+            this.radLineJoin.ValueChanged += new System.EventHandler(this.RadLineJoinValueChanged);
             // 
             // dblWidthCartographic
             // 
@@ -426,7 +426,7 @@ namespace DotSpatial.Symbology.Forms
             this.dblWidthCartographic.RegularHelp = "Enter a double precision floating point value.";
             this.ttHelp.SetToolTip(this.dblWidthCartographic, resources.GetString("dblWidthCartographic.ToolTip"));
             this.dblWidthCartographic.Value = 0D;
-            this.dblWidthCartographic.TextChanged += new System.EventHandler(this.dblWidthCartographic_TextChanged);
+            this.dblWidthCartographic.TextChanged += new System.EventHandler(this.DblWidthCartographicTextChanged);
             // 
             // tabDash
             // 
@@ -488,7 +488,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.nudPercentualPosition, "nudPercentualPosition");
             this.nudPercentualPosition.Name = "nudPercentualPosition";
             this.ttHelp.SetToolTip(this.nudPercentualPosition, resources.GetString("nudPercentualPosition.ToolTip"));
-            this.nudPercentualPosition.ValueChanged += new System.EventHandler(this.nudPercentualPosition_ValueChanged);
+            this.nudPercentualPosition.ValueChanged += new System.EventHandler(this.NudPercentualPositionValueChanged);
             // 
             // btnEdit
             // 
@@ -496,7 +496,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnEdit.Name = "btnEdit";
             this.ttHelp.SetToolTip(this.btnEdit, resources.GetString("btnEdit.ToolTip"));
             this.btnEdit.UseVisualStyleBackColor = true;
-            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            this.btnEdit.Click += new System.EventHandler(this.BtnEditClick);
             // 
             // label6
             // 
@@ -528,7 +528,7 @@ namespace DotSpatial.Symbology.Forms
             0});
             this.nudDecorationCount.Name = "nudDecorationCount";
             this.ttHelp.SetToolTip(this.nudDecorationCount, resources.GetString("nudDecorationCount.ToolTip"));
-            this.nudDecorationCount.ValueChanged += new System.EventHandler(this.nudDecorationCount_ValueChanged);
+            this.nudDecorationCount.ValueChanged += new System.EventHandler(this.NudDecorationCountValueChanged);
             // 
             // grpRotation
             // 
@@ -554,7 +554,7 @@ namespace DotSpatial.Symbology.Forms
             this.radRotationWithLine.TabStop = true;
             this.ttHelp.SetToolTip(this.radRotationWithLine, resources.GetString("radRotationWithLine.ToolTip"));
             this.radRotationWithLine.UseVisualStyleBackColor = true;
-            this.radRotationWithLine.CheckedChanged += new System.EventHandler(this.radRotationWithLine_CheckedChanged);
+            this.radRotationWithLine.CheckedChanged += new System.EventHandler(this.RadRotationWithLineCheckedChanged);
             // 
             // grpFlip
             // 
@@ -571,7 +571,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkFlipFirst.Name = "chkFlipFirst";
             this.ttHelp.SetToolTip(this.chkFlipFirst, resources.GetString("chkFlipFirst.ToolTip"));
             this.chkFlipFirst.UseVisualStyleBackColor = true;
-            this.chkFlipFirst.CheckedChanged += new System.EventHandler(this.chkFlipFirst_CheckedChanged);
+            this.chkFlipFirst.CheckedChanged += new System.EventHandler(this.ChkFlipFirstCheckedChanged);
             // 
             // chkFlipAll
             // 
@@ -579,7 +579,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkFlipAll.Name = "chkFlipAll";
             this.ttHelp.SetToolTip(this.chkFlipAll, resources.GetString("chkFlipAll.ToolTip"));
             this.chkFlipAll.UseVisualStyleBackColor = true;
-            this.chkFlipAll.CheckedChanged += new System.EventHandler(this.chkFlipAll_CheckedChanged);
+            this.chkFlipAll.CheckedChanged += new System.EventHandler(this.ChkFlipAllCheckedChanged);
             // 
             // dblOffset
             // 

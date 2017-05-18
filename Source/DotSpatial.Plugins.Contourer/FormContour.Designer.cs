@@ -58,7 +58,7 @@ namespace DotSpatial.Plugins.Contourer
             this.buttonOK.TabIndex = 0;
             this.buttonOK.Text = "Contour";
             this.buttonOK.UseVisualStyleBackColor = true;
-            this.buttonOK.Click += new System.EventHandler(this.button1_Click);
+            this.buttonOK.Click += new System.EventHandler(this.Button1Click);
             // 
             // comboBoxLayerList
             // 
@@ -68,7 +68,7 @@ namespace DotSpatial.Plugins.Contourer
             this.comboBoxLayerList.Name = "comboBoxLayerList";
             this.comboBoxLayerList.Size = new System.Drawing.Size(327, 21);
             this.comboBoxLayerList.TabIndex = 1;
-            this.comboBoxLayerList.SelectedIndexChanged += new System.EventHandler(this.comboBoxLayerList_SelectedIndexChanged);
+            this.comboBoxLayerList.SelectedIndexChanged += new System.EventHandler(this.ComboBoxLayerListSelectedIndexChanged);
             // 
             // label1
             // 
@@ -87,7 +87,7 @@ namespace DotSpatial.Plugins.Contourer
             this.comboBoxType.Name = "comboBoxType";
             this.comboBoxType.Size = new System.Drawing.Size(89, 21);
             this.comboBoxType.TabIndex = 3;
-            this.comboBoxType.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
+            this.comboBoxType.SelectedIndexChanged += new System.EventHandler(this.ComboBoxTypeSelectedIndexChanged);
             // 
             // label2
             // 
@@ -114,7 +114,7 @@ namespace DotSpatial.Plugins.Contourer
             this.numericUpDownMin.Name = "numericUpDownMin";
             this.numericUpDownMin.Size = new System.Drawing.Size(80, 20);
             this.numericUpDownMin.TabIndex = 8;
-            this.numericUpDownMin.ValueChanged += new System.EventHandler(this.numericUpDownMin_ValueChanged);
+            this.numericUpDownMin.ValueChanged += new System.EventHandler(this.NumericUpDownMinValueChanged);
             // 
             // numericUpDownMax
             // 
@@ -132,7 +132,7 @@ namespace DotSpatial.Plugins.Contourer
             this.numericUpDownMax.Name = "numericUpDownMax";
             this.numericUpDownMax.Size = new System.Drawing.Size(80, 20);
             this.numericUpDownMax.TabIndex = 9;
-            this.numericUpDownMax.ValueChanged += new System.EventHandler(this.numericUpDownMax_ValueChanged);
+            this.numericUpDownMax.ValueChanged += new System.EventHandler(this.NumericUpDownMaxValueChanged);
             // 
             // label4
             // 
@@ -220,7 +220,7 @@ namespace DotSpatial.Plugins.Contourer
             this.MaximizeBox = false;
             this.Name = "FormContour";
             this.Text = "Contour";
-            this.Load += new System.EventHandler(this.FormContour_Load);
+            this.Load += new System.EventHandler(this.FormContourLoad);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEvery)).EndInit();

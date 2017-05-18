@@ -1,17 +1,8 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Compatibility.dll
-// Description:  Supports DotSpatial interfaces organized for a MapWindow 4 plugin context.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 1/20/2009 1:42:49 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
+
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Compatibility
@@ -21,15 +12,21 @@ namespace DotSpatial.Compatibility
     /// </summary>
     public interface ISelectedShape
     {
+        #region Properties
+
         /// <summary>
-        /// Returns the extents of this selected shape.
+        /// Gets the extents of this selected shape.
         /// </summary>
         Envelope Extents { get; }
 
         /// <summary>
-        /// Returns the shape index of this selected shape.
+        /// Gets the shape index of this selected shape.
         /// </summary>
         int ShapeIndex { get; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Initializes all information in the <c>SelectedShape</c> object then highlights the shape on the map.
@@ -37,5 +34,7 @@ namespace DotSpatial.Compatibility
         /// <param name="shapeIndex">Index of the shape in the shapefile.</param>
         /// <param name="selectColor">Color to use when highlighting the shape.</param>
         void Add(int shapeIndex, Color selectColor);
+
+        #endregion
     }
 }

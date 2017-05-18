@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.WFSClient
 {
-    partial class WFSServerParameters
+    partial class WfsServerParameters
     {
         /// <summary>
         /// Required designer variable.
@@ -116,7 +116,7 @@ namespace DotSpatial.Plugins.WFSClient
             this.uxGetCapabilities.TabIndex = 2;
             this.uxGetCapabilities.Text = "Connect";
             this.uxGetCapabilities.UseVisualStyleBackColor = true;
-            this.uxGetCapabilities.Click += new System.EventHandler(this.uxGetCapabilities_Click);
+            this.uxGetCapabilities.Click += new System.EventHandler(this.UxGetCapabilitiesClick);
             // 
             // groupBox1
             // 
@@ -152,7 +152,7 @@ namespace DotSpatial.Plugins.WFSClient
             this.uxListServer.Name = "uxListServer";
             this.uxListServer.Size = new System.Drawing.Size(533, 21);
             this.uxListServer.TabIndex = 3;
-            this.uxListServer.SelectedIndexChanged += new System.EventHandler(this.uxListServer_SelectedIndexChanged);
+            this.uxListServer.SelectedIndexChanged += new System.EventHandler(this.UxListServerSelectedIndexChanged);
             // 
             // uxGroupWPS
             // 
@@ -255,8 +255,8 @@ namespace DotSpatial.Plugins.WFSClient
             this.uxLayersList.Name = "uxLayersList";
             this.uxLayersList.Size = new System.Drawing.Size(591, 223);
             this.uxLayersList.TabIndex = 0;
-            this.uxLayersList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.uxLayersList_CellContentClick);
-            this.uxLayersList.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.uxLayersList_RowHeaderMouseClick);
+            this.uxLayersList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.UxLayersListCellContentClick);
+            this.uxLayersList.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.UxLayersListRowHeaderMouseClick);
             // 
             // uxAttributes
             // 
@@ -276,8 +276,8 @@ namespace DotSpatial.Plugins.WFSClient
             this.uxAttributesGrid.Name = "uxAttributesGrid";
             this.uxAttributesGrid.Size = new System.Drawing.Size(597, 276);
             this.uxAttributesGrid.TabIndex = 0;
-            this.uxAttributesGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.uxAttributesGrid_CellContentClick);
-            this.uxAttributesGrid.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.uxAttributesGrid_RowHeaderMouseClick);
+            this.uxAttributesGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.UxAttributesGridCellContentClick);
+            this.uxAttributesGrid.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.UxAttributesGridRowHeaderMouseClick);
             // 
             // uxOptions
             // 
@@ -383,7 +383,7 @@ namespace DotSpatial.Plugins.WFSClient
             this.uxOpen.TabIndex = 6;
             this.uxOpen.Text = "Open";
             this.uxOpen.UseVisualStyleBackColor = true;
-            this.uxOpen.Click += new System.EventHandler(this.uxOpen_Click);
+            this.uxOpen.Click += new System.EventHandler(this.UxOpenClick);
             // 
             // uxGeographicField
             // 
@@ -438,9 +438,9 @@ namespace DotSpatial.Plugins.WFSClient
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(611, 486);
             this.Controls.Add(this.splitContainer2);
-            this.Name = "WFSServerParameters";
+            this.Name = "WfsServerParameters";
             this.Text = "WFS Client";
-            this.Load += new System.EventHandler(this.WFSServerParameters_Load);
+            this.Load += new System.EventHandler(this.WfsServerParametersLoad);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.uxGroupWPS.ResumeLayout(false);

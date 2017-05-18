@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 6/2/2009 3:10:43 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -25,7 +15,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of CopyBase
+        /// Initializes a new instance of the <see cref="CopyBase"/> class.
         /// </summary>
         protected CopyBase()
         {
@@ -52,7 +42,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// PropertyInfo returns overridden members as separate entries.  We would rather work with each members
+        /// PropertyInfo returns overridden members as separate entries. We would rather work with each members
         /// only one time.
         /// </summary>
         /// <param name="allProperties">All the properties, including duplicates created by overridden members</param>
@@ -67,6 +57,7 @@ namespace DotSpatial.Symbology
                 result.Add(property);
                 names.Add(property.Name);
             }
+
             return result.ToArray();
         }
 

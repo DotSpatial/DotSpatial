@@ -1,23 +1,34 @@
-﻿namespace DotSpatial.Controls.Header
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+namespace DotSpatial.Controls.Header
 {
     /// <summary>
     /// A visually distinguished container of <see cref="ActionItem"/> instances that are Grouped inside of <see cref="RootItem"/>s.
     /// </summary>
     public abstract class GroupedItem : HeaderItem
     {
-        private string groupCaption;
-        private string rootKey;
+        #region Fields
+
+        private string _groupCaption;
+        private string _rootKey;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the GroupItem class.
+        /// Initializes a new instance of the <see cref="GroupedItem"/> class.
         /// </summary>
         protected GroupedItem()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the HeaderItem class.
+        /// Initializes a new instance of the <see cref="GroupedItem"/> class.
         /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="groupCaption">The groups caption.</param>
         protected GroupedItem(string rootKey, string groupCaption)
             : this()
         {
@@ -34,6 +45,10 @@
         {
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the group. This is a logical unit.
         /// </summary>
@@ -42,12 +57,13 @@
         {
             get
             {
-                return groupCaption;
+                return _groupCaption;
             }
+
             set
             {
-                if (groupCaption == value) return;
-                groupCaption = value;
+                if (_groupCaption == value) return;
+                _groupCaption = value;
                 OnPropertyChanged("GroupCaption");
             }
         }
@@ -60,14 +76,17 @@
         {
             get
             {
-                return rootKey;
+                return _rootKey;
             }
+
             set
             {
-                if (rootKey == value) return;
-                rootKey = value;
+                if (_rootKey == value) return;
+                _rootKey = value;
                 OnPropertyChanged("RootKey");
             }
         }
+
+        #endregion
     }
 }

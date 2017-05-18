@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  The core assembly for the DotSpatial 6.0 distribution.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/29/2008 3:48:03 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -23,88 +13,24 @@ namespace DotSpatial.Data.Forms
     /// </summary>
     public class InputBox : Form
     {
-        #region Private Variables
-
-        private ValidationType _validation;
-        private Button cmdCancel;
-        private Button cmdOk;
+        #region Fields
 
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private IContainer components = null;
+        private readonly IContainer _components = null;
 
-        private Label lblMessageText;
-        private TextBox txtInput;
-
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputBox));
-            this.lblMessageText = new System.Windows.Forms.Label();
-            this.txtInput = new System.Windows.Forms.TextBox();
-            this.cmdOk = new System.Windows.Forms.Button();
-            this.cmdCancel = new System.Windows.Forms.Button();
-            this.SuspendLayout();
-            //
-            // lblMessageText
-            //
-            resources.ApplyResources(this.lblMessageText, "lblMessageText");
-            this.lblMessageText.Name = "lblMessageText";
-            //
-            // txtInput
-            //
-            resources.ApplyResources(this.txtInput, "txtInput");
-            this.txtInput.Name = "txtInput";
-            //
-            // cmdOk
-            //
-            resources.ApplyResources(this.cmdOk, "cmdOk");
-            this.cmdOk.BackColor = System.Drawing.Color.Transparent;
-            this.cmdOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOk.Name = "cmdOk";
-            this.cmdOk.UseVisualStyleBackColor = false;
-            this.cmdOk.Click += new System.EventHandler(this.cmdOk_Click);
-            //
-            // cmdCancel
-            //
-            resources.ApplyResources(this.cmdCancel, "cmdCancel");
-            this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
-            this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.UseVisualStyleBackColor = false;
-            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
-            //
-            // InputBox
-            //
-            this.AcceptButton = this.cmdOk;
-            this.CancelButton = this.cmdCancel;
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.cmdCancel);
-            this.Controls.Add(this.cmdOk);
-            this.Controls.Add(this.txtInput);
-            this.Controls.Add(this.lblMessageText);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "InputBox";
-            this.ShowIcon = false;
-            this.ResumeLayout(false);
-            this.PerformLayout();
-        }
+        private Button _cmdCancel;
+        private Button _cmdOk;
+        private Label _lblMessageText;
+        private TextBox _txtInput;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         public InputBox()
         {
@@ -112,31 +38,31 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="text">Sets the text of the message to show.</param>
         public InputBox(string text)
             : this()
         {
-            lblMessageText.Text = text;
-            _validation = ValidationType.None;
+            _lblMessageText.Text = text;
+            Validation = ValidationType.None;
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="text">The string message to show.</param>
         /// <param name="caption">The string caption to allow.</param>
         public InputBox(string text, string caption)
             : this()
         {
-            lblMessageText.Text = text;
-            _validation = ValidationType.None;
-            base.Text = caption;
+            _lblMessageText.Text = text;
+            Validation = ValidationType.None;
+            Text = caption;
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="text">The string message to show.</param>
         /// <param name="caption">The string caption to allow.</param>
@@ -144,13 +70,13 @@ namespace DotSpatial.Data.Forms
         public InputBox(string text, string caption, ValidationType validation)
             : this()
         {
-            lblMessageText.Text = text;
-            _validation = validation;
-            base.Text = caption;
+            _lblMessageText.Text = text;
+            Validation = validation;
+            Text = caption;
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="text">The string message to show.</param>
         /// <param name="caption">The string caption to allow.</param>
@@ -159,15 +85,15 @@ namespace DotSpatial.Data.Forms
         public InputBox(string text, string caption, ValidationType validation, Icon icon)
             : this()
         {
-            lblMessageText.Text = text;
-            _validation = validation;
-            base.Text = caption;
+            _lblMessageText.Text = text;
+            Validation = validation;
+            Text = caption;
             ShowIcon = true;
             Icon = icon;
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="owner">Specifies the Form to set as the owner of this dialog.</param>
         /// <param name="text">Sets the text of the message to show.</param>
@@ -176,11 +102,11 @@ namespace DotSpatial.Data.Forms
         {
             Owner = owner;
 
-            lblMessageText.Text = text;
+            _lblMessageText.Text = text;
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="owner">Specifies the Form  to set as the owner of this dialog.</param>
         /// <param name="text">The string message to show.</param>
@@ -190,12 +116,12 @@ namespace DotSpatial.Data.Forms
         {
             Owner = owner;
 
-            lblMessageText.Text = text;
-            base.Text = caption;
+            _lblMessageText.Text = text;
+            Text = caption;
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="owner">Specifies the Form to set as the owner of this dialog.</param>
         /// <param name="text">The string message to show.</param>
@@ -206,13 +132,13 @@ namespace DotSpatial.Data.Forms
         {
             Owner = owner;
 
-            lblMessageText.Text = text;
-            base.Text = caption;
-            _validation = validation;
+            _lblMessageText.Text = text;
+            Text = caption;
+            Validation = validation;
         }
 
         /// <summary>
-        /// Creates a new instance of frmInputBox
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
         /// </summary>
         /// <param name="owner">Specifies the Form to set as the owner of this dialog.</param>
         /// <param name="text">The string message to show.</param>
@@ -223,52 +149,30 @@ namespace DotSpatial.Data.Forms
             : this()
         {
             Owner = owner;
-            _validation = validation;
-            lblMessageText.Text = text;
-            base.Text = caption;
+            Validation = validation;
+            _lblMessageText.Text = text;
+            Text = caption;
             ShowIcon = true;
             Icon = icon;
         }
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// The string result that was entered for this text box.
+        /// Gets the string result that was entered for this text box.
         /// </summary>
-        public string Result
-        {
-            get
-            {
-                return txtInput.Text;
-            }
-        }
+        public string Result => _txtInput.Text;
 
         /// <summary>
         /// Gets or sets the type of validation to force on the value before the OK option is permitted.
         /// </summary>
-        public ValidationType Validation
-        {
-            get { return _validation; }
-            set { _validation = value; }
-        }
+        public ValidationType Validation { get; set; }
 
         #endregion
 
-        #region Events
-
-        #endregion
-
-        #region Event Handlers
-
-        #endregion
-
-        #region Private Functions
+        #region Methods
 
         /// <summary>
         /// Clean up any resources being used.
@@ -276,106 +180,173 @@ namespace DotSpatial.Data.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                _components?.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
-        #endregion
-
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancelClick(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        private void cmdOk_Click(object sender, EventArgs e)
+        private void CmdOkClick(object sender, EventArgs e)
         {
-            // Parse the value entered in the text box.  If the value doesn't match the criteria, don't
+            // Parse the value entered in the text box. If the value doesn't match the criteria, don't
             // allow the user to exit the dialog by pressing ok.
-            switch (_validation)
+            switch (Validation)
             {
                 case ValidationType.Byte:
-                    if (Global.IsByte(txtInput.Text) == false)
+                    if (Global.IsByte(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "byte"));
                         return;
                     }
+
                     break;
                 case ValidationType.Double:
-                    if (Global.IsDouble(txtInput.Text) == false)
+                    if (Global.IsDouble(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "double"));
                         return;
                     }
+
                     break;
                 case ValidationType.Float:
-                    if (Global.IsFloat(txtInput.Text) == false)
+                    if (Global.IsFloat(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "float"));
                         return;
                     }
+
                     break;
                 case ValidationType.Integer:
-                    if (Global.IsInteger(txtInput.Text) == false)
+                    if (Global.IsInteger(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "integer"));
                         return;
                     }
+
                     break;
                 case ValidationType.PositiveDouble:
-                    if (Global.IsDouble(txtInput.Text) == false)
+                    if (Global.IsDouble(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "double"));
                         return;
                     }
-                    if (Global.GetDouble(txtInput.Text) < 0)
+
+                    if (Global.GetDouble(_txtInput.Text) < 0)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "positive double"));
                         return;
                     }
+
                     break;
                 case ValidationType.PositiveFloat:
-                    if (Global.IsFloat(txtInput.Text) == false)
+                    if (Global.IsFloat(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "float"));
                         return;
                     }
-                    if (Global.GetFloat(txtInput.Text) < 0)
+
+                    if (Global.GetFloat(_txtInput.Text) < 0)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "positive float"));
                         return;
                     }
+
                     break;
                 case ValidationType.PositiveInteger:
-                    if (Global.IsInteger(txtInput.Text) == false)
+                    if (Global.IsInteger(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "integer"));
                         return;
                     }
-                    if (Global.GetInteger(txtInput.Text) < 0)
+
+                    if (Global.GetInteger(_txtInput.Text) < 0)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "positive integer"));
                         return;
                     }
+
                     break;
                 case ValidationType.PositiveShort:
-                    if (Global.IsShort(txtInput.Text) == false)
+                    if (Global.IsShort(_txtInput.Text) == false)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "short"));
                         return;
                     }
-                    if (Global.GetShort(txtInput.Text) < 0)
+
+                    if (Global.GetShort(_txtInput.Text) < 0)
                     {
                         LogManager.DefaultLogManager.LogMessageBox(DataFormsMessageStrings.ParseFailed_S.Replace("%S", "positive short"));
                         return;
                     }
+
                     break;
             }
+
             DialogResult = DialogResult.OK;
             Close();
         }
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(InputBox));
+            _lblMessageText = new Label();
+            _txtInput = new TextBox();
+            _cmdOk = new Button();
+            _cmdCancel = new Button();
+            SuspendLayout();
+
+            // lblMessageText
+            resources.ApplyResources(_lblMessageText, "_lblMessageText");
+            _lblMessageText.Name = "_lblMessageText";
+
+            // txtInput
+            resources.ApplyResources(_txtInput, "_txtInput");
+            _txtInput.Name = "_txtInput";
+
+            // cmdOk
+            resources.ApplyResources(_cmdOk, "_cmdOk");
+            _cmdOk.BackColor = Color.Transparent;
+            _cmdOk.DialogResult = DialogResult.OK;
+            _cmdOk.Name = "_cmdOk";
+            _cmdOk.UseVisualStyleBackColor = false;
+            _cmdOk.Click += CmdOkClick;
+
+            // cmdCancel
+            resources.ApplyResources(_cmdCancel, "_cmdCancel");
+            _cmdCancel.BackColor = Color.Transparent;
+            _cmdCancel.DialogResult = DialogResult.Cancel;
+            _cmdCancel.Name = "_cmdCancel";
+            _cmdCancel.UseVisualStyleBackColor = false;
+            _cmdCancel.Click += CmdCancelClick;
+
+            // InputBox
+            AcceptButton = _cmdOk;
+            CancelButton = _cmdCancel;
+            resources.ApplyResources(this, "$this");
+            Controls.Add(_cmdCancel);
+            Controls.Add(_cmdOk);
+            Controls.Add(_txtInput);
+            Controls.Add(_lblMessageText);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "InputBox";
+            ShowIcon = false;
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
     }
 }

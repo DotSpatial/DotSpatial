@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/2/2008 6:47:43 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -22,10 +12,12 @@ namespace DotSpatial.Symbology.Forms
         /// This panel draws color boxes
         /// </summary>
         Colors,
+
         /// <summary>
         /// This panel draws values
         /// </summary>
         Values,
+
         /// <summary>
         /// This panel draws captions
         /// </summary>

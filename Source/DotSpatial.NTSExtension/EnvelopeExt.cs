@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -9,44 +12,36 @@ namespace DotSpatial.NTSExtension
     /// </summary>
     public static class EnvelopeExt
     {
+        #region Methods
+
         /// <summary>
-        /// Initializes the envelopes Minimum.Z with the smaller of the two given z values and the Maximum.Z with the bigger of the two given z values. 
+        /// Gets the minY, which is Y - Height.
         /// </summary>
-        /// <param name="envelope">Envelope, whose Minimum and Maximum.Z should be initialized.</param>
-        /// <param name="z1">First z value.</param>
-        /// <param name="z2">Second z value.</param>
-        public static void InitZ(this Envelope envelope, double z1, double z2)
+        /// <param name="self">The <c>IEnvelope</c> that this calculation is for.</param>
+        /// <returns>The bottom value.</returns>
+        public static double Bottom(this Envelope self)
         {
-            if (z1 < z2)
-            {
-                envelope.Minimum.Z = z1;
-                envelope.Maximum.Z = z2;
-            }
-            else
-            {
-                envelope.Minimum.Z = z2;
-                envelope.Maximum.Z = z1;
-            }
+            return self.MinY;
         }
 
         /// <summary>
-        /// Initializes the envelopes Minimum.M with the smaller of the two given m values and the Maximum.M with the bigger of the two given m values. 
+        /// Gets the coordinate defining the center of this envelope
+        /// in all of the dimensions of this envelope.
         /// </summary>
-        /// <param name="envelope">Envelope, whos Minimum and Maximum.M should be initialized.</param>
-        /// <param name="m1">First m value.</param>
-        /// <param name="m2">Second m value.</param>
-        public static void InitM(this Envelope envelope, double m1, double m2)
+        /// <param name="self">The <c>IEnvelope</c> to find the center for</param>
+        /// <returns>An ICoordinate</returns>
+        public static Coordinate Center(this Envelope self)
         {
-            if (m1 < m2)
-            {
-                envelope.Minimum.M = m1;
-                envelope.Maximum.M = m2;
-            }
-            else
-            {
-                envelope.Minimum.M = m2;
-                envelope.Maximum.M = m1;
-            }
+            if (self == null || self.IsNull) return null;
+            Coordinate result = new Coordinate
+                                    {
+                                        X = (self.MinX + self.MaxX) / 2,
+                                        Y = (self.MinY + self.MaxY) / 2
+                                    };
+
+            if (!double.IsNaN(self.Minimum.Z)) result.Z = (self.Minimum.Z + self.Maximum.Z) / 2;
+            if (!double.IsNaN(self.Minimum.M)) result.M = (self.Minimum.M + self.Maximum.M) / 2;
+            return result;
         }
 
         /// <summary>
@@ -74,45 +69,54 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Gets the minY, which is Y - Height.
+        /// Initializes the envelopes Minimum.M with the smaller of the two given m values and the Maximum.M with the bigger of the two given m values.
         /// </summary>
-        /// <param name="self">The <c>IEnvelope</c> that this calculation is for.</param>
-        /// <returns></returns>
-        public static double Bottom(this Envelope self)
+        /// <param name="envelope">Envelope, whos Minimum and Maximum.M should be initialized.</param>
+        /// <param name="m1">First m value.</param>
+        /// <param name="m2">Second m value.</param>
+        public static void InitM(this Envelope envelope, double m1, double m2)
         {
-            return self.MinY;
+            if (m1 < m2)
+            {
+                envelope.Minimum.M = m1;
+                envelope.Maximum.M = m2;
+            }
+            else
+            {
+                envelope.Minimum.M = m2;
+                envelope.Maximum.M = m1;
+            }
         }
 
         /// <summary>
-        /// Gets the coordinate defining the center of this envelope
-        /// in all of the dimensions of this envelope.
+        /// Initializes the envelopes Minimum.Z with the smaller of the two given z values and the Maximum.Z with the bigger of the two given z values.
         /// </summary>
-        /// <param name="self">The <c>IEnvelope</c> to find the center for</param>
-        /// <returns>An ICoordinate</returns>
-        public static Coordinate Center(this Envelope self)
+        /// <param name="envelope">Envelope, whose Minimum and Maximum.Z should be initialized.</param>
+        /// <param name="z1">First z value.</param>
+        /// <param name="z2">Second z value.</param>
+        public static void InitZ(this Envelope envelope, double z1, double z2)
         {
-            if (self == null || self.IsNull) return null;
-            Coordinate result = new Coordinate
+            if (z1 < z2)
             {
-                X = (self.MinX + self.MaxX) / 2,
-                Y = (self.MinY + self.MaxY) / 2
-            };
-
-            if (!double.IsNaN(self.Minimum.Z)) result.Z = (self.Minimum.Z + self.Maximum.Z) / 2;
-            if (!double.IsNaN(self.Minimum.M)) result.M = (self.Minimum.M + self.Maximum.M) / 2;
-            return result;
+                envelope.Minimum.Z = z1;
+                envelope.Maximum.Z = z2;
+            }
+            else
+            {
+                envelope.Minimum.Z = z2;
+                envelope.Maximum.Z = z1;
+            }
         }
 
         /// <summary>
         /// Gets the right value, which is X + Width.
         /// </summary>
         /// <param name="self">The <c>IEnvelope</c> that this calculation is for.</param>
-        /// <returns></returns>
+        /// <returns>The right value.</returns>
         public static double Right(this Envelope self)
         {
             return self.MaxX;
         }
-
 
         /// <summary>
         /// Converts this envelope into a linear ring.
@@ -122,20 +126,19 @@ namespace DotSpatial.NTSExtension
         public static ILinearRing ToLinearRing(this Envelope self)
         {
             // Holes are counter clockwise, so this should create a clockwise linear ring.
-
             var coords = new List<Coordinate>
-            {
-                new Coordinate(self.MinX, self.MaxY),
-                new Coordinate(self.MaxX, self.MaxY),
-                new Coordinate(self.MaxX, self.MinY),
-                new Coordinate(self.MinX, self.MinY),
-                new Coordinate(self.MinX, self.MaxY)
-            };
-
+                             {
+                                 new Coordinate(self.MinX, self.MaxY),
+                                 new Coordinate(self.MaxX, self.MaxY),
+                                 new Coordinate(self.MaxX, self.MinY),
+                                 new Coordinate(self.MinX, self.MinY),
+                                 new Coordinate(self.MinX, self.MaxY)
+                             };
 
             // close the polygon
             return new LinearRing(coords.ToArray());
         }
+
         /// <summary>
         /// Technically an Evelope object is not actually a geometry.
         /// This creates a polygon from the extents.
@@ -144,8 +147,10 @@ namespace DotSpatial.NTSExtension
         /// <returns>A Polygon, which technically qualifies as an IGeometry</returns>
         public static IPolygon ToPolygon(this Envelope self)
         {
-            if (self.IsNull) return new Polygon(new LinearRing(new Coordinate[]{}));
+            if (self.IsNull) return new Polygon(new LinearRing(new Coordinate[] { }));
             return new Polygon(ToLinearRing(self));
         }
+
+        #endregion
     }
 }

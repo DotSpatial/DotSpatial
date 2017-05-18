@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in May, 2011.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------
-//  Yang  Cao         | 05/16/2011         |  Create the interface IHeaderControl to work with standard toolbar and ribbon control
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -26,11 +12,21 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public interface IHeaderControl
     {
+        #region Events
+
+        /// <summary>
+        /// This event occurs when a root item is selected
+        /// </summary>
+        event EventHandler<RootItemEventArgs> RootItemSelected;
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// This will add a new item that will appear on the standard toolbar or ribbon control.
         /// </summary>
+        /// <param name="item">The item that gets added.</param>
         /// <returns>Added GUI item</returns>
         object Add(HeaderItem item);
 
@@ -50,15 +46,6 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         /// <param name="key">The key.</param>
         void SelectRoot(string key);
-
-        #endregion Methods
-
-        #region Events
-
-        /// <summary>
-        /// This event occurs when a root item is selected
-        /// </summary>
-        event EventHandler<RootItemEventArgs> RootItemSelected;
 
         #endregion
     }

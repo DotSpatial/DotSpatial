@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/2/2009 9:24:33 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -55,7 +45,7 @@ namespace DotSpatial.Symbology
         /// Calculates the opacity as a function of the Alpha channel.
         /// </summary>
         /// <param name="self">The color to determine the opacity for</param>
-        /// <returns></returns>
+        /// <returns>The opacity.</returns>
         public static float GetOpacity(this Color self)
         {
             return self.A / 255F;
@@ -65,9 +55,9 @@ namespace DotSpatial.Symbology
         /// Given a floating point opacity, where 0 is fully transparent and 1 is fully opaque,
         /// this will generate a new color that is the transparent version.
         /// </summary>
-        /// <param name="self"></param>
-        /// <param name="opacity"></param>
-        /// <returns></returns>
+        /// <param name="self">this</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <returns>The resulting color.</returns>
         public static Color ToTransparent(this Color self, float opacity)
         {
             int a = Convert.ToInt32(opacity * 255);

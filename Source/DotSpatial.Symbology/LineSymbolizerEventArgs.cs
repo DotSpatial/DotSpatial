@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/20/2009 3:26:07 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {
@@ -18,15 +8,12 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class LineSymbolizerEventArgs : FeatureSymbolizerEventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of LineSymbolizerEventArgs
+        /// Initializes a new instance of the <see cref="LineSymbolizerEventArgs"/> class.
         /// </summary>
+        /// <param name="symbolizer">The symbolizer of the event.</param>
         public LineSymbolizerEventArgs(ILineSymbolizer symbolizer)
             : base(symbolizer)
         {
@@ -37,12 +24,19 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Symbolizer
+        /// Gets or sets the Symbolizer.
         /// </summary>
         public new ILineSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as ILineSymbolizer; }
-            set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as ILineSymbolizer;
+            }
+
+            set
+            {
+                base.Symbolizer = value;
+            }
         }
 
         #endregion

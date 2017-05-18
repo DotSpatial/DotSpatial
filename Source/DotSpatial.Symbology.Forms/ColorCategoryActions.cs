@@ -1,14 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Symbology.Forms.ColorCategoryActions
-// Description: Implementation of IColorCategoryActions
-
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Max Miroshnikov    |  3/2013            |  Initial commit
-// *******************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -20,10 +11,10 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Show the color category editor form.
         /// </summary>
-        /// <param name="e"></param>
-        public void ShowEdit(IColorCategory e)
+        /// <param name="category">The color category.</param>
+        public void ShowEdit(IColorCategory category)
         {
-            using (var frm = new ColorPicker(e))
+            using (var frm = new ColorPicker(category))
             {
                 ShowDialog(frm);
             }

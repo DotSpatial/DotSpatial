@@ -1,19 +1,7 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in September, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DotSpatial.Symbology
 {
@@ -22,22 +10,19 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class LayerCollection : LayerEventList<ILayer>, ILayerCollection
     {
-        #region Private Variables
-
+        #region Fields
         private IFrame _mapFrame;
-
         private IGroup _parentGroup;
-
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new blank instance of a MapLayer collection.  This is especially useful
-        /// for tracking layers that can draw themselves.  This does not concern itself with
-        /// view extents like a dataframe, but rather is a grouping of layers that is itself
-        /// also an IMapLayer.
+        /// Initializes a new instance of the <see cref="LayerCollection"/> class that is blank.
+        /// This is especially useful for tracking layers that can draw themselves. This does not concern itself with
+        /// view extents like a dataframe, but rather is a grouping of layers that is itself also an IMapLayer.
         /// </summary>
+        /// <param name="containerFrame">The map frame.</param>
         public LayerCollection(IFrame containerFrame)
         {
             _mapFrame = containerFrame;
@@ -45,11 +30,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new layer collection where the parent group is different from the
-        /// map frame.
+        /// Initializes a new instance of the <see cref="LayerCollection"/> class
+        /// where the parent group is different from the map frame.
         /// </summary>
-        /// <param name="frame"></param>
-        /// <param name="parent"></param>
+        /// <param name="frame">The map frame.</param>
+        /// <param name="parent">The parent of this.</param>
         public LayerCollection(IFrame frame, IGroup parent)
         {
             _mapFrame = frame;
@@ -57,46 +42,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a LayerCollection that is not confined in a MapFrame
+        /// Initializes a new instance of the <see cref="LayerCollection"/> class that is not confined in a MapFrame.
         /// </summary>
         public LayerCollection()
         {
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Occurs when wiring events
-        /// </summary>
-        /// <param name="item"></param>
-        protected override void OnInclude(ILayer item)
-        {
-            item.SetParentItem(_parentGroup);
-            item.MapFrame = _mapFrame;
-            base.OnInclude(item);
-        }
-
-        /// <summary>
-        /// Occurs when unwiring events
-        /// </summary>
-        /// <param name="item"></param>
-        protected override void OnExclude(ILayer item)
-        {
-            item.SetParentItem(null);
-            item.MapFrame = null;
-            base.OnExclude(item);
-        }
-
-        /// <summary>
-        /// Occurs when layer was moved.
-        /// </summary>
-        /// <param name="item">Layer that was moved.</param>
-        /// <param name="newPosition">Position the layer was moved to.</param>
-        protected override void OnMoved(ILayer item, int newPosition)
-        {
-            base.OnMoved(item, newPosition);
         }
 
         #endregion
@@ -106,13 +55,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the current count.
         /// </summary>
-        public new int Count
-        {
-            get { return base.Count; }
-        }
+        public new int Count => base.Count;
 
         /// <summary>
-        /// Gets the map frame of this layer collection
+        /// Gets or sets the map frame of this layer collection.
         /// </summary>
         public IFrame MapFrame
         {
@@ -120,7 +66,8 @@ namespace DotSpatial.Symbology
             {
                 return _mapFrame;
             }
-            // not sure I want to try to implement set.  That would force me to change the _mapFrame property
+
+            // not sure I want to try to implement set. That would force me to change the _mapFrame property
             // on all the layers? Maybe layers don't access
             set
             {
@@ -132,10 +79,6 @@ namespace DotSpatial.Symbology
             }
         }
 
-        #endregion
-
-        #region ILayerCollection Members
-
         /// <summary>
         /// Gets or sets the ParentGroup for this layer collection, even if that parent group
         /// is not actually a map frame.
@@ -146,6 +89,7 @@ namespace DotSpatial.Symbology
             {
                 return _parentGroup;
             }
+
             set
             {
                 _parentGroup = value;
@@ -158,23 +102,37 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Methods
+
         /// <summary>
-        /// Gets the index of the specified item in this collection if it is a layer
+        /// Adds a range of legend items.
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="collection">Legend items that get added.</param>
+        public void AddRange(IEnumerable<ILegendItem> collection)
+        {
+            foreach (ILegendItem item in collection)
+            {
+                Add(item as ILayer);
+            }
+        }
+
+        /// <summary>
+        /// Gets the index of the specified item in this collection if it is a layer.
+        /// </summary>
+        /// <param name="item">Item whose index should be returned.</param>
+        /// <returns>-1 if the item is no ILayer or not found, otherwise the index.</returns>
         public int IndexOf(ILegendItem item)
         {
             ILayer layer = item as ILayer;
             if (layer == null) return -1;
-            return base.IndexOf(item as ILayer);
+            return base.IndexOf(layer);
         }
 
         /// <summary>
-        /// Inserts the specified item into this collection if it is a layer
+        /// Inserts the specified item into this collection if it is a layer.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="item"></param>
+        /// <param name="index">Index where the item should be added.</param>
+        /// <param name="item">Item that should be added.</param>
         public void Insert(int index, ILegendItem item)
         {
             ILayer layer = item as ILayer;
@@ -183,15 +141,27 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Adds a range of values
+        /// Occurs when unwiring events.
         /// </summary>
-        /// <param name="collection"></param>
-        public void AddRange(IEnumerable<ILegendItem> collection)
+        /// <param name="item">Item whose events get unwired.</param>
+        protected override void OnExclude(ILayer item)
         {
-            foreach (ILegendItem item in collection)
-            {
-                Add(item as ILayer);
-            }
+            item.SetParentItem(null);
+            item.MapFrame = null;
+            base.OnExclude(item);
         }
+
+        /// <summary>
+        /// Occurs when wiring events.
+        /// </summary>
+        /// <param name="item">Item whose events get wired.</param>
+        protected override void OnInclude(ILayer item)
+        {
+            item.SetParentItem(_parentGroup);
+            item.MapFrame = _mapFrame;
+            base.OnInclude(item);
+        }
+
+        #endregion
     }
 }

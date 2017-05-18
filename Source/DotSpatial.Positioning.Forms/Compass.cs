@@ -1236,7 +1236,7 @@ namespace DotSpatial.Positioning.Forms
         private void InterpolationLoop()
         {
             // Flag that we're alive
-            //InterpolationThreadWaitHandle.Set();
+            // InterpolationThreadWaitHandle.Set();
             // Are we at the end?
             while (_isInterpolationActive)
             {
@@ -1244,7 +1244,7 @@ namespace DotSpatial.Positioning.Forms
                 {
                     // Wait for interpolation to actually be needed
                     _animationWaitHandle.WaitOne();
-                    //InterpolationThread.Suspend();
+                    // InterpolationThread.Suspend();
                     // If we're shutting down, just exit
                     if (!_isInterpolationActive)
                         break;
@@ -1272,7 +1272,7 @@ namespace DotSpatial.Positioning.Forms
                 }
             }
             // Flag that we're alive
-            //InterpolationThreadWaitHandle.Set();
+            // InterpolationThreadWaitHandle.Set();
         }
 
 #endif

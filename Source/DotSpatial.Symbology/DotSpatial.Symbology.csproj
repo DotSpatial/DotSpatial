@@ -28,8 +28,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\DotSpatial.Symbology.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,7 +38,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\DotSpatial.Symbology.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\DotSpatial.Symbology.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -153,7 +154,7 @@
     <Compile Include="LegendItem.cs" />
     <Compile Include="LegendItemExt.cs" />
     <Compile Include="LegendType.cs" />
-    <Compile Include="MatchableEMa.cs" />
+    <Compile Include="MatchableEm.cs" />
     <Compile Include="SymbologyMenuItem.cs" />
     <Compile Include="SymbologyMessageStrings.Designer.cs">
       <DependentUpon>SymbologyMessageStrings.resx</DependentUpon>
@@ -194,7 +195,7 @@
     <Compile Include="ScaleMode.cs" />
     <Compile Include="Scheme.cs" />
     <Compile Include="SelectableExt.cs" />
-    <Compile Include="ShallowCopya.cs" />
+    <Compile Include="ShallowCopy.cs" />
     <Compile Include="Size2D.cs" />
     <Compile Include="SnapShotEventArgs.cs" />
     <Compile Include="SymbolMode.cs" />
@@ -311,6 +312,9 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.Symbology.snk" />
     <None Include="DotSpatial.Symbology.nuspec" />
   </ItemGroup>
@@ -365,6 +369,11 @@
       <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
       <Name>DotSpatial.Serialization</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

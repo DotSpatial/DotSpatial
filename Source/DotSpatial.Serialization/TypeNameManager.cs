@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Serialization.dll
-// Description:  A module that supports common functions like serialization.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 10/26/2010 6:56:48 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |-----------------|---------|---------------------------------------------------------------------
-// |      Name       |  Date   |                        Comments
-// |-----------------|---------|---------------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -23,20 +11,30 @@ namespace DotSpatial.Serialization
 {
     /// <summary>
     /// In many cases, the explicit type name references a version or public key token that is expired,
-    /// even though the reference is still perfectly valid in the new instance.  This type allows testing
+    /// even though the reference is still perfectly valid in the new instance. This type allows testing
     /// for that eventuality, as well as working directly with the components of a fully qualified name.
     /// </summary>
     public class TypeNameManager
     {
+        #region Fields
+
         private readonly Dictionary<string, Assembly> _loadedAssemblies;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the TypeManager class.
+        /// Initializes a new instance of the <see cref="TypeNameManager"/> class.
         /// </summary>
         public TypeNameManager()
         {
             _loadedAssemblies = new Dictionary<string, Assembly>();
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Since the version, or even possibly the strong name may be dynamic, an older
@@ -53,34 +51,13 @@ namespace DotSpatial.Serialization
                 UpdateVersion(type);
                 type = type.EnclosedName;
             }
+
             return myType.ToString();
-        }
-
-        private void UpdateVersion(QualifiedTypeName myType)
-        {
-            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
-            {
-                UpdateAssembly(myType.Assembly);
-            }
-            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
-            {
-                // Don't throw an exception here, because we are just trying to update versions.
-                // Since GAC and System libraries aren't discovered this way, we must
-                // simply choose not to update those libraries and hope the reference
-                // is not invalid because of a GAC or System library update.
-                return;
-            }
-
-            AssemblyName myAssembly = _loadedAssemblies[myType.Assembly].GetName();
-            myType.Version = myAssembly.Version;
-            string publicKeyToken = BitConverter.ToString(myAssembly.GetPublicKeyToken());
-            publicKeyToken = publicKeyToken.Replace("-", string.Empty).ToLower();
-            myType.PublicKeyToken = publicKeyToken;
         }
 
         /// <summary>
         /// This method searches the executable path, as well as sub-folders looking for an instance of
-        /// the specified assembly.  Since this class is only needed if the fully qualified assembly name
+        /// the specified assembly. Since this class is only needed if the fully qualified assembly name
         /// is invalid, we have to assume that we are looking for something else.
         /// </summary>
         /// <param name="assembly">The string assembly name.</param>
@@ -89,8 +66,7 @@ namespace DotSpatial.Serialization
             string file = assembly + ".dll";
             if (!File.Exists(file))
             {
-                string path =
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 if (path != null)
                 {
                     // Try subfolders
@@ -114,6 +90,7 @@ namespace DotSpatial.Serialization
                                     di = di.Parent;
                                     continue;
                                 }
+
                                 file = parentfiles[0];
                                 break;
                             }
@@ -121,6 +98,7 @@ namespace DotSpatial.Serialization
                     }
                 }
             }
+
             if (File.Exists(file))
             {
                 Assembly tryAssembly = Assembly.LoadFrom(file);
@@ -130,5 +108,30 @@ namespace DotSpatial.Serialization
                 }
             }
         }
+
+        private void UpdateVersion(QualifiedTypeName myType)
+        {
+            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
+            {
+                UpdateAssembly(myType.Assembly);
+            }
+
+            if (!_loadedAssemblies.Keys.Contains(myType.Assembly))
+            {
+                // Don't throw an exception here, because we are just trying to update versions.
+                // Since GAC and System libraries aren't discovered this way, we must
+                // simply choose not to update those libraries and hope the reference
+                // is not invalid because of a GAC or System library update.
+                return;
+            }
+
+            AssemblyName myAssembly = _loadedAssemblies[myType.Assembly].GetName();
+            myType.Version = myAssembly.Version;
+            string publicKeyToken = BitConverter.ToString(myAssembly.GetPublicKeyToken());
+            publicKeyToken = publicKeyToken.Replace("-", string.Empty).ToLower();
+            myType.PublicKeyToken = publicKeyToken;
+        }
+
+        #endregion
     }
 }

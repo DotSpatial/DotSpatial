@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.StringParam
-// Description:  String Parameters returned by an ITool allows the tool to specify a default value
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.Data;
@@ -23,17 +12,16 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class IndexParam : Parameter
     {
-        #region variables
+        #region Fields
 
-        private FeatureSet _fs = new FeatureSet();
         private IndexElement _indexEle;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new Index parameter
+        /// Initializes a new instance of the <see cref="IndexParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public IndexParam(string name)
@@ -46,41 +34,29 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         #endregion
 
-        #region properties
+        #region Properties
 
         /// <summary>
-        /// The featureset used to populate the query generator
+        /// Gets or sets the featureset used to populate the query generator.
         /// </summary>
-        public FeatureSet Fs
-        {
-            get { return _fs; }
-            set { _fs = value; }
-        }
+        public FeatureSet Fs { get; set; } = new FeatureSet();
 
         /// <summary>
-        /// Specifies the value of the parameter (This will give the result featureset that user want handle.)
+        /// Gets the value of the parameter (This will give the result featureset that user want handle.)
         /// </summary>
-        public new string Value
-        {
-            get
-            {
-                if (_indexEle.Expression == null)
-                    return null;
-                return _indexEle.Expression;
-            }
-        }
+        public new string Value => _indexEle.Expression;
 
         #endregion
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
             _indexEle = new IndexElement(this);
-            return (_indexEle);
+            return _indexEle;
         }
+
+        #endregion
     }
 }

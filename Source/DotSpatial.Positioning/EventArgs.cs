@@ -376,7 +376,7 @@ namespace DotSpatial.Positioning
         }
     }
 
-    //public sealed class GeographicRectangleEventArgs : EventArgs
+    // public sealed class GeographicRectangleEventArgs : EventArgs
     //{
     //    private GeographicRectangle _Rectangle;
 

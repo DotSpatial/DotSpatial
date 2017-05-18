@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {
-    partial class WMSServerParameters
+    partial class WmsServerParameters
     {
         /// <summary>
         /// Required designer variable.
@@ -329,7 +329,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             this.tvLayers.Name = "tvLayers";
             this.tvLayers.Size = new System.Drawing.Size(239, 367);
             this.tvLayers.TabIndex = 8;
-            this.tvLayers.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvLayers_AfterSelect);
+            this.tvLayers.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TvLayersAfterSelect);
             // 
             // lblServerURL
             // 
@@ -349,7 +349,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             this.btnGetCapabilities.TabIndex = 1;
             this.btnGetCapabilities.Text = "Get data";
             this.btnGetCapabilities.UseVisualStyleBackColor = true;
-            this.btnGetCapabilities.Click += new System.EventHandler(this.btnGetCapabilities_Click);
+            this.btnGetCapabilities.Click += new System.EventHandler(this.BtnGetCapabilitiesClick);
             // 
             // tbServerUrl
             // 
@@ -380,7 +380,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             this.btnOK.TabIndex = 99;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new System.EventHandler(this.BtnOkClick);
             // 
             // tableLayoutPanel2
             // 
@@ -550,7 +550,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(700, 650);
-            this.Name = "WMSServerParameters";
+            this.Name = "WmsServerParameters";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "WMS Server Parameters";
             this.panel1.ResumeLayout(false);

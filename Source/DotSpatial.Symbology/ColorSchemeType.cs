@@ -1,19 +1,11 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/24/2008 12:57:15 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Color scheme types.
+    /// </summary>
     public enum ColorSchemeType
     {
         /// <summary>
@@ -49,11 +41,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Summer Mountains
         /// </summary>
-        Summer_Mountains,
+        SummerMountains,
 
         /// <summary>
         /// Valley Fires
         /// </summary>
-        Valley_Fires
+        ValleyFires
     }
 }

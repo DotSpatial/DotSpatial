@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 6/23/2009 1:58:39 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {
@@ -76,7 +66,7 @@ namespace DotSpatial.Symbology
         /// The mean and standard deviation of the attribute values are calculated, and
         /// values are classified according to their deviation from the mean (z-transform)
         /// The transformed values are mapped, usually at intervales of 1.0 or .5 standard
-        /// deviations.  This often results in no central class.
+        /// deviations. This often results in no central class.
         /// </summary>
         StandardDeviation,
 

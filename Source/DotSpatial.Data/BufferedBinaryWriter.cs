@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.IO.dll Alpha
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from DotSpatial.Data.IO.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in February 2008
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +9,7 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// The buffered binary reader was originally designed by Ted Dunsford to make shapefile reading more
-    /// efficient, but ostensibly could be used for other binary reading exercises.  To use this class,
+    /// efficient, but ostensibly could be used for other binary reading exercises. To use this class,
     /// simply specify the BufferSize in bytes that you would like to use and begin reading values.
     /// </summary>
     public class BufferedBinaryWriter
@@ -29,25 +18,22 @@ namespace DotSpatial.Data
 
         private readonly long _fileLength;
         private BinaryWriter _binaryWriter;
-        private byte[] _buffer;
-        private long _bufferOffset; // Position of the start of the buffer relative to the start of the file
-        private int _bufferSize;
-        private long _fileOffset; // position in the entire file
+
         private Stream _fileStream;
         private bool _isBufferLoaded;
-        private int _maxBufferSize = 9600000; // Approximately around ten megs, divisible by 8
+        private int _maxBufferSize;
         private IProgressHandler _progressHandler;
         private ProgressMeter _progressMeter;
-        private int _writeOffset; //
+        private int _writeOffset;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of BufferedBinaryReader.
+        /// Initializes a new instance of the <see cref="BufferedBinaryWriter"/> class.
         /// </summary>
-        ///<param name="fileName">The string path of a file to open using this BufferedBinaryReader.</param>
+        /// <param name="fileName">The string path of a file to open using this BufferedBinaryReader.</param>
         public BufferedBinaryWriter(string fileName)
             : this(fileName, null, 100000)
         {
@@ -57,27 +43,26 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// create buffered binary writer on arbitrary stream 
+        /// Initializes a new instance of the <see cref="BufferedBinaryWriter"/> class on an arbitrary stream.
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="s">Stream used for writing.</param>
         public BufferedBinaryWriter(Stream s)
         {
             long expectedByteCount = 100000;
 
             _fileStream = s;
             _fileLength = 0;
-            _fileOffset = 0;
+            FileOffset = 0;
 
-            _buffer = new byte[expectedByteCount];
-            _bufferSize = Convert.ToInt32(expectedByteCount);
-            _maxBufferSize = _bufferSize;
+            Buffer = new byte[expectedByteCount];
+            BufferSize = Convert.ToInt32(expectedByteCount);
+            _maxBufferSize = BufferSize;
             _writeOffset = -1; // There is no buffer loaded.
-            _bufferOffset = -1; // -1 means no buffer is loaded.
-
+            BufferOffset = -1; // -1 means no buffer is loaded.
         }
 
         /// <summary>
-        /// Creates a new instance of BufferedBinaryWriter, and specifies where to send progress messages.
+        /// Initializes a new instance of the <see cref="BufferedBinaryWriter"/> class and specifies where to send progress messages.
         /// </summary>
         /// <param name="fileName">The string path of a file to open using this BufferedBinaryReader.</param>
         /// <param name="progressHandler">Any implementation of IProgressHandler for receiving progress messages.</param>
@@ -90,24 +75,24 @@ namespace DotSpatial.Data
                 _fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write);
                 FileInfo fi = new FileInfo(fileName);
                 _fileLength = fi.Length;
-                _fileOffset = 0;
+                FileOffset = 0;
             }
             else
             {
                 // In this case, we just create the new file from scratch
                 _fileStream = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write);
                 _fileLength = 0;
-                _fileOffset = 0;
+                FileOffset = 0;
             }
 
             _binaryWriter = new BinaryWriter(_fileStream);
-            _buffer = new byte[expectedByteCount];
-            _bufferSize = Convert.ToInt32(expectedByteCount);
-            _maxBufferSize = _bufferSize;
+            Buffer = new byte[expectedByteCount];
+            BufferSize = Convert.ToInt32(expectedByteCount);
+            _maxBufferSize = BufferSize;
             _writeOffset = -1; // There is no buffer loaded.
-            _bufferOffset = -1; // -1 means no buffer is loaded.
+            BufferOffset = -1; // -1 means no buffer is loaded.
 
-            //report progress
+            // report progress
             if (progressHandler != null)
             {
                 _progressHandler = progressHandler;
@@ -118,35 +103,104 @@ namespace DotSpatial.Data
 
         #endregion
 
-        #region Methods
+        #region Properties
 
-        // This internal method attempts to advance the buffer.
-        private void AdvanceBuffer()
+        /// <summary>
+        /// Gets or sets the actual array of bytes currently in the buffer
+        /// </summary>
+        public byte[] Buffer { get; set; }
+
+        /// <summary>
+        /// Gets or sets a long integer specifying the starting position of the currently loaded buffer
+        /// relative to the start of the file. A value of -1 indicates that no buffer is
+        /// currently loaded.
+        /// </summary>
+        public long BufferOffset { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets an integer value specifying the size of the buffer currently loaded into memory.
+        /// This will either be the MaxBufferSize, or a smaller buffer representing a smaller
+        /// remainder existing in the file.
+        /// </summary>
+        public int BufferSize { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether there is currently any information loaded into the buffer.
+        /// </summary>
+        public virtual bool IsBufferLoaded
         {
-            if (_isBufferLoaded)
-            {
-                // write the contents of the buffer
-                _binaryWriter.Write(_buffer);
-
-                // reposition the buffer after the last paste
-                _bufferOffset = 0;  // file offset is tracked at the time of an individual write event
-                //_fileOffset += _buffer.Length;
-            }
-            else
-            {
-                _isBufferLoaded = true;
-            }
-
-            // either way, dimension the next chunk
-            _buffer = new byte[_maxBufferSize];
-
-            // indicate where to start writing in the buffer
-            _writeOffset = 0;
+            get { return _isBufferLoaded; }
+            protected set { _isBufferLoaded = value; }
         }
 
         /// <summary>
-        /// Finishes writing whatever is in memory to the file, closes the
-        /// internal binary writer, the underlying file, clears the memory
+        /// Gets or sets the current read position in the file in bytes.
+        /// </summary>
+        public long FileOffset { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the buffer size to read in chunks. This does not
+        /// describe the size of the actual
+        /// </summary>
+        public virtual int MaxBufferSize
+        {
+            get
+            {
+                return _maxBufferSize;
+            }
+
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(DataStrings.ArgumentCannotBeNegative_S.Replace("%S", "BufferSize"));
+                }
+
+                _maxBufferSize = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the progress handler for this binary writer.
+        /// </summary>
+        public virtual IProgressHandler ProgressHandler
+        {
+            get
+            {
+                return _progressHandler;
+            }
+
+            set
+            {
+                _progressHandler = value;
+                _progressMeter = new ProgressMeter(_progressHandler);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets where reading will begin (relative to the start of the buffer).
+        /// </summary>
+        public virtual int WriteOffset
+        {
+            get { return _writeOffset; }
+            protected set { _writeOffset = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the progress meter that is directly linked to the progress handler.
+        /// </summary>
+        protected virtual ProgressMeter ProgressMeter
+        {
+            get { return _progressMeter; }
+            set { _progressMeter = value; }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Finishes writing whatever is in memory to the file, closes the internal binary writer, the underlying file, clears the memory
         /// and disposes the filestream.
         /// </summary>
         public void Close()
@@ -159,43 +213,33 @@ namespace DotSpatial.Data
                 // Close the binary writer and underlying filestream
                 _binaryWriter.Close();
             }
+
             _binaryWriter = null;
-            _buffer = null;
+            Buffer = null;
             _progressMeter = null; // the IProgressHandler could be an undesired handle to a whole form or something
-            if (_fileStream != null) _fileStream.Dispose();
+            _fileStream?.Dispose();
             _fileStream = null;
         }
 
         /// <summary>
-        /// Forces the buffer to paste all its existing values into the file, but does not
-        /// advance the buffer, or in fact do anything to the buffer.  It does advance
-        /// the position of the file index.
-        /// </summary>
-        private void PasteBuffer()
-        {
-            if (_writeOffset > -1)
-            {
-                _binaryWriter.Write(_buffer, 0, _writeOffset);
-                _fileOffset += _writeOffset;
-            }
-        }
-
-        /// <summary>
-        /// This seeks both in the file AND in the buffer.  This is used to write only
-        /// desired portions of a buffer that is in memory to a file.
+        /// This seeks both in the file AND in the buffer. This is used to write only the desired portions of a buffer that is in memory to a file.
         /// </summary>
         /// <param name="offset">A 64 bit integer specifying where to skip to in the file.</param>
         /// <param name="origin">A System.IO.SeekOrigin enumeration specifying how to estimate the location.</param>
+        /// <returns>The position.</returns>
         public virtual long Seek(long offset, SeekOrigin origin)
         {
             long startPosition = 0;
             switch (origin)
             {
-                case SeekOrigin.Begin: startPosition = offset;
+                case SeekOrigin.Begin:
+                    startPosition = offset;
                     break;
-                case SeekOrigin.Current: startPosition = _writeOffset + offset;
+                case SeekOrigin.Current:
+                    startPosition = _writeOffset + offset;
                     break;
-                case SeekOrigin.End: startPosition = _fileLength - offset;
+                case SeekOrigin.End:
+                    startPosition = _fileLength - offset;
                     break;
             }
 
@@ -209,29 +253,30 @@ namespace DotSpatial.Data
             // inside the buffer if a buffer is actually loaded.
             if (_isBufferLoaded)
             {
-                long delta = startPosition - _fileOffset;
+                long delta = startPosition - FileOffset;
 
-                if (delta > _bufferSize - _writeOffset)
+                if (delta > BufferSize - _writeOffset)
                 {
                     // The new position is beyond our current buffer
-                    _buffer = null;
+                    Buffer = null;
                     _writeOffset = -1;
-                    _bufferOffset = -1;
+                    BufferOffset = -1;
                     _isBufferLoaded = false;
                 }
                 else
                 {
                     // The new position is still inside the buffer
                     _writeOffset += Convert.ToInt32(delta);
-                    _fileOffset = startPosition;
+                    FileOffset = startPosition;
+
                     // we don't want to actually seek in the internal reader
                     return startPosition;
                 }
             }
+
             // If no buffer is loaded, the file may not be open and may cause an exception when trying to seek.
             // probably better for tracking than not throwing one.
-
-            _fileOffset = startPosition;
+            FileOffset = startPosition;
             if (_fileStream.CanSeek) _fileStream.Seek(offset, origin);
             return startPosition;
         }
@@ -239,8 +284,9 @@ namespace DotSpatial.Data
         #region Write Methods
 
         /// <summary>
-        /// Reads a boolean form the buffer, automatcially loading the next buffer if necessary.
+        /// Writes a boolean to the buffer.
         /// </summary>
+        /// <param name="value">Value that gets written.</param>
         public void Write(bool value)
         {
             byte[] data = BitConverter.GetBytes(value);
@@ -248,9 +294,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads a character from two bytes in the buffer, automatically loading the next buffer if necessary.
+        /// Writes a character to the buffer.
         /// </summary>
-        /// <param name="value">A character to write to the buffer, and eventually the file</param>
+        /// <param name="value">A character to write to the buffer, and eventually the file.</param>
         public void Write(char value)
         {
             byte[] data = BitConverter.GetBytes(value);
@@ -258,8 +304,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads an array of character from two bytes in the buffer, automatically loading
+        /// Writes an array of character to the buffer.
         /// </summary>
+        /// <param name="values">Values that get written.</param>
         public void Write(char[] values)
         {
             List<byte> lstData = new List<byte>();
@@ -273,15 +320,16 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads a double from the buffer, automatically loading the next buffer if necessary.
+        /// Writes a double to the buffer.
         /// </summary>
+        /// <param name="value">Value that gets written.</param>
         public void Write(double value)
         {
             Write(value, true);
         }
 
         /// <summary>
-        /// Writes a double-precision floating point to 8 bytes in the buffer, automatically loading the next buffer if necessary.
+        /// Writes a double-precision floating point to the buffer.
         /// </summary>
         /// <param name="value">A double-precision floating point decimal value to write as 8 bytes.</param>
         /// <param name="isLittleEndian">Boolean, true if the value should be returned with little endian byte ordering.</param>
@@ -296,6 +344,7 @@ namespace DotSpatial.Data
                 // The isLittleEndian argument tells us what bit order the output should be in.
                 Array.Reverse(data);
             }
+
             Write(data);
         }
 
@@ -324,6 +373,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// By default, this will use little Endian ordering.
         /// </summary>
+        /// <param name="value">Value that gets written.</param>
         public void Write(int value)
         {
             Write(value, true);
@@ -346,6 +396,7 @@ namespace DotSpatial.Data
                 // The isLittleEndian argument tells us what bit order the output should be in.
                 Array.Reverse(data);
             }
+
             Write(data);
         }
 
@@ -402,12 +453,12 @@ namespace DotSpatial.Data
             if (_isBufferLoaded == false) AdvanceBuffer();
             do
             {
-                int bytesInBuffer = _bufferSize - _writeOffset;
+                int bytesInBuffer = BufferSize - _writeOffset;
                 if (count < bytesInBuffer)
                 {
-                    Array.Copy(value, index, _buffer, _writeOffset, count - bytesPasted);
+                    Array.Copy(value, index, Buffer, _writeOffset, count - bytesPasted);
                     _writeOffset += count - bytesPasted;
-                    _fileOffset += count - bytesPasted;
+                    FileOffset += count - bytesPasted;
                     finished = true;
                 }
                 else
@@ -415,10 +466,10 @@ namespace DotSpatial.Data
                     int sourceLeft = count - index;
                     if (sourceLeft > bytesInBuffer)
                     {
-                        Array.Copy(value, index, _buffer, _writeOffset, bytesInBuffer);
+                        Array.Copy(value, index, Buffer, _writeOffset, bytesInBuffer);
                         index += bytesInBuffer;
                         bytesPasted += bytesInBuffer;
-                        _fileOffset += bytesInBuffer;
+                        FileOffset += bytesInBuffer;
                         _writeOffset += bytesInBuffer;
                         if (bytesPasted >= count)
                         {
@@ -431,121 +482,58 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        Array.Copy(value, index, _buffer, _writeOffset, sourceLeft);
+                        Array.Copy(value, index, Buffer, _writeOffset, sourceLeft);
                         index += sourceLeft;
                         bytesPasted += sourceLeft;
-                        _fileOffset += sourceLeft;
+                        FileOffset += sourceLeft;
                         _writeOffset += sourceLeft;
                         finished = true;
                     }
                 }
-            } while (finished == false);
-            //_progressMeter.CurrentValue = _fileOffset;
+            }
+            while (finished == false);
         }
 
         #endregion
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the actual array of bytes currently in the buffer
-        /// </summary>
-        public byte[] Buffer
+        // This internal method attempts to advance the buffer.
+        private void AdvanceBuffer()
         {
-            get { return _buffer; }
-            set { _buffer = value; }
-        }
-
-        /// <summary>
-        /// Gets a long integer specifying the starting position of the currently loaded buffer
-        /// relative to the start of the file.  A value of -1 indicates that no buffer is
-        /// currently loaded.
-        /// </summary>
-        public long BufferOffset
-        {
-            get { return _bufferOffset; }
-            protected set { _bufferOffset = value; }
-        }
-
-        /// <summary>
-        /// Gets an integer value specifying the size of the buffer currently loaded into memory.
-        /// This will either be the MaxBufferSize, or a smaller buffer representing a smaller
-        /// remainder existing in the file.
-        /// </summary>
-        public int BufferSize
-        {
-            get { return _bufferSize; }
-            protected set { _bufferSize = value; }
-        }
-
-        /// <summary>
-        /// Gets a boolean indicating whether there is currently any information loaded into the buffer.
-        /// </summary>
-        public virtual bool IsBufferLoaded
-        {
-            get { return _isBufferLoaded; }
-            protected set { _isBufferLoaded = value; }
-        }
-
-        /// <summary>
-        /// Gets the current read position in the file in bytes.
-        /// </summary>
-        public long FileOffset
-        {
-            get { return _fileOffset; }
-            protected set { _fileOffset = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the buffer size to read in chunks.  This does not
-        /// describe the size of the actual
-        /// </summary>
-        public virtual int MaxBufferSize
-        {
-            get { return _maxBufferSize; }
-            set
+            if (_isBufferLoaded)
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException(DataStrings.ArgumentCannotBeNegative_S.Replace("%S", "BufferSize"));
-                }
-                _maxBufferSize = value;
+                // write the contents of the buffer
+                _binaryWriter.Write(Buffer);
+
+                // reposition the buffer after the last paste
+                BufferOffset = 0;  // file offset is tracked at the time of an individual write event
+            }
+            else
+            {
+                _isBufferLoaded = true;
+            }
+
+            // either way, dimension the next chunk
+            Buffer = new byte[_maxBufferSize];
+
+            // indicate where to start writing in the buffer
+            _writeOffset = 0;
+        }
+
+        /// <summary>
+        /// Forces the buffer to paste all its existing values into the file, but does not
+        /// advance the buffer, or in fact do anything to the buffer. It does advance
+        /// the position of the file index.
+        /// </summary>
+        private void PasteBuffer()
+        {
+            if (_writeOffset > -1)
+            {
+                _binaryWriter.Write(Buffer, 0, _writeOffset);
+                FileOffset += _writeOffset;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the progress meter that is directly linked to the progress handler.
-        /// </summary>
-        protected virtual ProgressMeter ProgressMeter
-        {
-            get { return _progressMeter; }
-            set { _progressMeter = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the progress handler for this binary writer
-        /// </summary>
-        public virtual IProgressHandler ProgressHandler
-        {
-            get { return _progressHandler; }
-            set
-            {
-                _progressHandler = value;
-                _progressMeter = new ProgressMeter(_progressHandler);
-            }
-        }
-
-        /// <summary>
-        /// This acts like a placeholder on the buffer and indicates where reading will begin (relative to the start of the buffer)
-        /// </summary>
-        public virtual int WriteOffset
-        {
-            get { return _writeOffset; }
-            protected set { _writeOffset = value; }
-        }
-
         #endregion
+
     }
 }

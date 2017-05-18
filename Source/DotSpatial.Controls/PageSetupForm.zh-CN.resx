@@ -117,38 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel_Button.Text" xml:space="preserve">
+  <data name="cancelButton.Text" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="OK_Button.Text" xml:space="preserve">
+  <data name="okButton.Text" xml:space="preserve">
     <value>确认</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>19, 13</value>
   </data>
-  <data name="Label5.Text" xml:space="preserve">
+  <data name="label5.Text" xml:space="preserve">
     <value>&amp;右</value>
   </data>
-  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>19, 13</value>
   </data>
-  <data name="Label3.Text" xml:space="preserve">
+  <data name="label3.Text" xml:space="preserve">
     <value>&amp;左</value>
   </data>
-  <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>19, 13</value>
   </data>
-  <data name="Label6.Text" xml:space="preserve">
+  <data name="label6.Text" xml:space="preserve">
     <value>&amp;下</value>
   </data>
-  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>19, 13</value>
   </data>
-  <data name="Label4.Text" xml:space="preserve">
+  <data name="label4.Text" xml:space="preserve">
     <value>&amp;上</value>
   </data>
-  <data name="GroupBox1.Text" xml:space="preserve">
+  <data name="groupBox1.Text" xml:space="preserve">
     <value>页边距</value>
   </data>
   <data name="lblPaperDimension.Size" type="System.Drawing.Size, System.Drawing">
@@ -157,16 +157,16 @@
   <data name="lblPaperDimension.Text" xml:space="preserve">
     <value>注记3</value>
   </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
+  <data name="label2.Text" xml:space="preserve">
     <value>纸张类型:</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="label1.Text" xml:space="preserve">
     <value>纸张大小:</value>
   </data>
   <data name="_rdbLandscape.Size" type="System.Drawing.Size, System.Drawing">

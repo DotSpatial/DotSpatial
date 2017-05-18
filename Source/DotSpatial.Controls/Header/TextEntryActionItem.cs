@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Drawing;
 
 namespace DotSpatial.Controls.Header
 {
@@ -7,27 +10,31 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class TextEntryActionItem : ActionItem
     {
-        private string text;
-        private int width;
-        private Color fontColor;
+        #region Fields
+
+        private Color _fontColor;
+        private string _text;
+        private int _width;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// Gets or sets the width of the item displayed in the header control.
+        /// Gets or sets a value indicating the color of the text in the dropdownbox
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public int Width
+        public Color FontColor
         {
             get
             {
-                return width;
+                return _fontColor;
             }
+
             set
             {
-                if (width == value) return;
-                width = value;
-                OnPropertyChanged("Width");
+                if (_fontColor == value) return;
+                _fontColor = value;
+                OnPropertyChanged("FontColor");
             }
         }
 
@@ -39,27 +46,40 @@ namespace DotSpatial.Controls.Header
         /// </value>
         public string Text
         {
-            get { return text; }
+            get
+            {
+                return _text;
+            }
+
             set
             {
-                if (text == value) return;
-                text = value;
+                if (_text == value) return;
+                _text = value;
                 OnPropertyChanged("Text");
             }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the color of the text in the dropdownbox
+        /// Gets or sets the width of the item displayed in the header control.
         /// </summary>
-        public Color FontColor
+        /// <value>
+        /// The width.
+        /// </value>
+        public int Width
         {
-            get { return fontColor; }
+            get
+            {
+                return _width;
+            }
+
             set
             {
-                if (fontColor == value) return;
-                fontColor = value;
-                OnPropertyChanged("FontColor");
+                if (_width == value) return;
+                _width = value;
+                OnPropertyChanged("Width");
             }
         }
+
+        #endregion
     }
 }

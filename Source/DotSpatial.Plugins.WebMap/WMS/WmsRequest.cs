@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -7,10 +10,28 @@ using BruTile.Web;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {
+    /// <summary>
+    /// WmsRequest
+    /// </summary>
     public class WmsRequest : IRequest
     {
+        #region Fields
+
         private readonly string _fixedUrl;
 
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WmsRequest"/> class.
+        /// </summary>
+        /// <param name="baseUrl">The base url.</param>
+        /// <param name="schema">The tile schema.</param>
+        /// <param name="layers">The layers.</param>
+        /// <param name="styles">The styles.</param>
+        /// <param name="customParameters">The custom parameters.</param>
+        /// <param name="version">The version.</param>
         public WmsRequest(Uri baseUrl, TileSchema schema, IEnumerable<string> layers, IEnumerable<string> styles, IDictionary<string, string> customParameters, string version)
         {
             // Prepare url string
@@ -20,6 +41,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
                 if (!au.EndsWith("?")) au += "?";
                 au += "&SERVICE=WMS";
             }
+
             var url = new StringBuilder(au);
             if (!string.IsNullOrEmpty(version)) url.AppendFormat("&VERSION={0}", version);
             url.Append("&REQUEST=GetMap");
@@ -37,8 +59,13 @@ namespace DotSpatial.Plugins.WebMap.WMS
                     url.AppendFormat("&{0}={1}", name, customParameters[name]);
                 }
             }
+
             _fixedUrl = url.ToString();
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Generates a URI at which to get the data for a tile.
@@ -47,7 +74,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
         /// <returns>The URI at which to get the data for the specified tile.</returns>
         public Uri GetUri(TileInfo info)
         {
-            return new Uri(_fixedUrl + string.Format("&BBOX={0}", info.Extent));
+            return new Uri(_fixedUrl + $"&BBOX={info.Extent}");
         }
 
         private static string ToCommaSeparatedValues(IEnumerable<string> items)
@@ -58,8 +85,11 @@ namespace DotSpatial.Plugins.WebMap.WMS
             {
                 result.AppendFormat(CultureInfo.InvariantCulture, ",{0}", str);
             }
+
             if (result.Length > 0) result.Remove(0, 1);
             return result.ToString();
         }
+
+        #endregion
     }
 }

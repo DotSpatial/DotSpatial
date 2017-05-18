@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/25/2008 8:49:44 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -23,31 +12,98 @@ namespace DotSpatial.Symbology
     /// </summary>
     public static class SymbologyGlobal
     {
+        #region Fields
+
         /// <summary>
         /// An instance of Random that is created when needed and sits around so we don't keep creating new ones.
         /// </summary>
-        private static readonly Random _defaultRandom = new Random();
+        private static readonly Random DefaultRandom = new Random();
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Gets a cool Highlight brush for highlighting things
+        /// Converts a colour from HSL to RGB.
         /// </summary>
-        /// <param name="box">The rectangle in the box</param>
-        /// <param name="selectionHighlight">The color to use for the higlight</param>
-        /// <returns></returns>
-        public static Brush HighlightBrush(Rectangle box, Color selectionHighlight)
+        /// <remarks>Adapted from the algoritm in Foley and Van-Dam</remarks>
+        /// <param name="hue">A double representing degrees ranging from 0 to 360 and is equal to the GetHue() on a Color structure.</param>
+        /// <param name="saturation">A double value ranging from 0 to 1, where 0 is gray and 1 is fully saturated with color.</param>
+        /// <param name="brightness">A double value ranging from 0 to 1, where 0 is black and 1 is white.</param>
+        /// <returns>A Color structure with the equivalent hue saturation and brightness</returns>
+        public static Color ColorFromHsl(double hue, double saturation, double brightness)
         {
-            float med = selectionHighlight.GetBrightness();
-            float bright = med + 0.05f;
-            if (bright > 1f) bright = 1f;
-            float dark = med - 0.05f;
-            if (dark < 0f) dark = 0f;
-            Color brtCol = ColorFromHsl(selectionHighlight.GetHue(), selectionHighlight.GetSaturation(), bright);
-            Color drkCol = ColorFromHsl(selectionHighlight.GetHue(), selectionHighlight.GetSaturation(), dark);
-            return new LinearGradientBrush(box, brtCol, drkCol, LinearGradientMode.Vertical);
+            double normalizedHue = hue / 360;
+
+            double red, green, blue;
+
+            if (brightness == 0)
+            {
+                red = green = blue = 0;
+            }
+            else
+            {
+                if (saturation == 0)
+                {
+                    red = green = blue = brightness;
+                }
+                else
+                {
+                    double temp2;
+                    if (brightness <= 0.5)
+                    {
+                        temp2 = brightness * (1.0 + saturation);
+                    }
+                    else
+                    {
+                        temp2 = brightness + saturation - (brightness * saturation);
+                    }
+
+                    double temp1 = (2.0 * brightness) - temp2;
+
+                    double[] temp3 = { normalizedHue + (1.0 / 3.0), normalizedHue, normalizedHue - (1.0 / 3.0) };
+                    double[] color = { 0, 0, 0 };
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (temp3[i] < 0) temp3[i] += 1.0;
+
+                        if (temp3[i] > 1) temp3[i] -= 1.0;
+
+                        if (6.0 * temp3[i] < 1.0)
+                        {
+                            color[i] = temp1 + ((temp2 - temp1) * temp3[i] * 6.0);
+                        }
+                        else if (2.0 * temp3[i] < 1.0)
+                        {
+                            color[i] = temp2;
+                        }
+                        else if (3.0 * temp3[i] < 2.0)
+                        {
+                            color[i] = temp1 + ((temp2 - temp1) * ((2.0 / 3.0) - temp3[i]) * 6.0);
+                        }
+                        else
+                        {
+                            color[i] = temp1;
+                        }
+                    }
+
+                    red = color[0];
+                    green = color[1];
+                    blue = color[2];
+                }
+            }
+
+            if (red > 1) red = 1;
+            if (red < 0) red = 0;
+            if (green > 1) green = 1;
+            if (green < 0) green = 0;
+            if (blue > 1) blue = 1;
+            if (blue < 0) blue = 0;
+            return Color.FromArgb((int)(255 * red), (int)(255 * green), (int)(255 * blue));
         }
 
         /// <summary>
-        /// Draws a rectangle with ever so slightly rounded edges.  Good for selection borders.
+        /// Draws a rectangle with ever so slightly rounded edges. Good for selection borders.
         /// </summary>
         /// <param name="g">The Graphics object</param>
         /// <param name="pen">The pen to draw with</param>
@@ -86,38 +142,30 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets a cool Highlight brush for highlighting things.
+        /// </summary>
+        /// <param name="box">The rectangle in the box</param>
+        /// <param name="selectionHighlight">The color to use for the higlight</param>
+        /// <returns>The highlight brush.</returns>
+        public static Brush HighlightBrush(Rectangle box, Color selectionHighlight)
+        {
+            float med = selectionHighlight.GetBrightness();
+            float bright = med + 0.05f;
+            if (bright > 1f) bright = 1f;
+            float dark = med - 0.05f;
+            if (dark < 0f) dark = 0f;
+            Color brtCol = ColorFromHsl(selectionHighlight.GetHue(), selectionHighlight.GetSaturation(), bright);
+            Color drkCol = ColorFromHsl(selectionHighlight.GetHue(), selectionHighlight.GetSaturation(), dark);
+            return new LinearGradientBrush(box, brtCol, drkCol, LinearGradientMode.Vertical);
+        }
+
+        /// <summary>
         /// Returns a completely random opaque color.
         /// </summary>
         /// <returns>A random color.</returns>
         public static Color RandomColor()
         {
-            return Color.FromArgb(_defaultRandom.Next(0, 255), _defaultRandom.Next(0, 255), _defaultRandom.Next(0, 255));
-        }
-
-        /// <summary>
-        /// This allows the creation of a transparent color with the specified opacity.
-        /// </summary>
-        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque</param>
-        /// <returns>A Color</returns>
-        public static Color RandomTranslucent(float opacity)
-        {
-            int alpha = Convert.ToInt32(opacity * 255);
-            if (alpha > 255) alpha = 255;
-            if (alpha < 0) alpha = 0;
-            return Color.FromArgb(alpha, _defaultRandom.Next(0, 255), _defaultRandom.Next(0, 255), _defaultRandom.Next(0, 255));
-        }
-
-        /// <summary>
-        /// This allows the creation of a transparent color with the specified opacity.
-        /// </summary>
-        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque</param>
-        /// <returns>A Color</returns>
-        public static Color RandomLightColor(float opacity)
-        {
-            int alpha = Convert.ToInt32(opacity * 255);
-            if (alpha > 255) alpha = 255;
-            if (alpha < 0) alpha = 0;
-            return Color.FromArgb(alpha, ColorFromHsl(_defaultRandom.Next(0, 360), ((double)_defaultRandom.Next(0, 255) / 256), ((double)_defaultRandom.Next(123, 255) / 256)));
+            return Color.FromArgb(DefaultRandom.Next(0, 255), DefaultRandom.Next(0, 255), DefaultRandom.Next(0, 255));
         }
 
         /// <summary>
@@ -130,85 +178,35 @@ namespace DotSpatial.Symbology
             int alpha = Convert.ToInt32(opacity * 255);
             if (alpha > 255) alpha = 255;
             if (alpha < 0) alpha = 0;
-            return Color.FromArgb(alpha, ColorFromHsl(_defaultRandom.Next(0, 360), ((double)_defaultRandom.Next(0, 255) / 256), ((double)_defaultRandom.Next(0, 123) / 256)));
+            return Color.FromArgb(alpha, ColorFromHsl(DefaultRandom.Next(0, 360), (double)DefaultRandom.Next(0, 255) / 256, (double)DefaultRandom.Next(0, 123) / 256));
         }
 
-        ///  <summary>
-        /// Converts a colour from HSL to RGB
+        /// <summary>
+        /// This allows the creation of a transparent color with the specified opacity.
         /// </summary>
-        /// <remarks>Adapted from the algoritm in Foley and Van-Dam</remarks>
-        /// <param name="hue">A double representing degrees ranging from 0 to 360 and is equal to the GetHue() on a Color structure.</param>
-        /// <param name="saturation">A double value ranging from 0 to 1, where 0 is gray and 1 is fully saturated with color.</param>
-        /// <param name="brightness">A double value ranging from 0 to 1, where 0 is black and 1 is white.</param>
-        /// <returns>A Color structure with the equivalent hue saturation and brightness</returns>
-        public static Color ColorFromHsl(double hue, double saturation, double brightness)
+        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque</param>
+        /// <returns>A Color</returns>
+        public static Color RandomLightColor(float opacity)
         {
-            double normalizedHue = hue / 360;
-
-            double red, green, blue;
-
-            if (brightness == 0)
-            {
-                red = green = blue = 0;
-            }
-            else
-            {
-                if (saturation == 0)
-                {
-                    red = green = blue = brightness;
-                }
-                else
-                {
-                    double temp2;
-                    if (brightness <= 0.5)
-                    {
-                        temp2 = brightness * (1.0 + saturation);
-                    }
-                    else
-                    {
-                        temp2 = brightness + saturation - (brightness * saturation);
-                    }
-
-                    double temp1 = 2.0 * brightness - temp2;
-
-                    double[] temp3 = new[] { normalizedHue + 1.0 / 3.0, normalizedHue, normalizedHue - 1.0 / 3.0 };
-                    double[] color = new double[] { 0, 0, 0 };
-                    for (int i = 0; i < 3; i++)
-                    {
-                        if (temp3[i] < 0) temp3[i] += 1.0;
-
-                        if (temp3[i] > 1) temp3[i] -= 1.0;
-
-                        if (6.0 * temp3[i] < 1.0)
-                        {
-                            color[i] = temp1 + (temp2 - temp1) * temp3[i] * 6.0;
-                        }
-                        else if (2.0 * temp3[i] < 1.0)
-                        {
-                            color[i] = temp2;
-                        }
-                        else if (3.0 * temp3[i] < 2.0)
-                        {
-                            color[i] = (temp1 + (temp2 - temp1) * ((2.0 / 3.0) - temp3[i]) * 6.0);
-                        }
-                        else
-                        {
-                            color[i] = temp1;
-                        }
-                    }
-
-                    red = color[0];
-                    green = color[1];
-                    blue = color[2];
-                }
-            }
-            if (red > 1) red = 1;
-            if (red < 0) red = 0;
-            if (green > 1) green = 1;
-            if (green < 0) green = 0;
-            if (blue > 1) blue = 1;
-            if (blue < 0) blue = 0;
-            return Color.FromArgb((int)(255 * red), (int)(255 * green), (int)(255 * blue));
+            int alpha = Convert.ToInt32(opacity * 255);
+            if (alpha > 255) alpha = 255;
+            if (alpha < 0) alpha = 0;
+            return Color.FromArgb(alpha, ColorFromHsl(DefaultRandom.Next(0, 360), (double)DefaultRandom.Next(0, 255) / 256, (double)DefaultRandom.Next(123, 255) / 256));
         }
+
+        /// <summary>
+        /// This allows the creation of a transparent color with the specified opacity.
+        /// </summary>
+        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque</param>
+        /// <returns>A Color</returns>
+        public static Color RandomTranslucent(float opacity)
+        {
+            int alpha = Convert.ToInt32(opacity * 255);
+            if (alpha > 255) alpha = 255;
+            if (alpha < 0) alpha = 0;
+            return Color.FromArgb(alpha, DefaultRandom.Next(0, 255), DefaultRandom.Next(0, 255), DefaultRandom.Next(0, 255));
+        }
+
+        #endregion
     }
 }

@@ -1,26 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Topology.dll
-// Description:  The basic topology module for the new dotSpatial libraries
-// ********************************************************************************************************
-// The contents of this file are subject to the Lesser GNU Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license  Alternately, you can access an earlier version of this content from
-// the Net Topology Suite, which is also protected by the GNU Lesser Public License and the sourcecode
-// for the Net Topology Suite can be obtained here: http://sourceforge.net/projects/nts.
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from the Net Topology Suite, which is a C# port of the Java Topology Suite.
-//
-// The Initial Developer to integrate this code into MapWindow 6.0 is Ted Dunsford.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |         Name         |    Date    |                              Comment
-// |----------------------|------------|------------------------------------------------------------
-// |                      |            |
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -33,93 +12,81 @@ namespace DotSpatial.NTSExtension
     {
         #region Fields
 
-        private int _m;
-        private int _n;
         private double[,] _values;
 
         #endregion
 
-        #region Constructors
-
         /// <summary>
-        /// Creates a new squre identity matrix of the specified size
+        /// Initializes a new instance of the <see cref="MatrixD"/> class that is a square of the given size.
         /// </summary>
         /// <param name="m">The size of the matrix to create</param>
         public MatrixD(int m)
         {
             _values = new double[m, m];
-            _m = m;
-            _n = m;
+            M = m;
+            N = m;
         }
 
         /// <summary>
-        /// Creates a new instance of Matrix with m rows and n columns
+        /// Initializes a new instance of the <see cref="MatrixD"/> class with m rows and n columns.
         /// </summary>
+        /// <param name="m">The row size of the matrix to create</param>
+        /// <param name="n">The column size of the matrix to create</param>
         public MatrixD(int m, int n)
         {
             _values = new double[m, n];
-            _m = m;
-            _n = n;
+            M = m;
+            N = n;
         }
 
         /// <summary>
-        /// Creates a matrix using the specified values.
+        /// Initializes a new instance of the <see cref="MatrixD"/> class using the specified values.
         /// </summary>
-        /// <param name="values"></param>
+        /// <param name="values">Values to use for the matrix.</param>
         public MatrixD(double[,] values)
         {
             _values = values;
-            _m = values.GetLength(0);
-            _n = values.GetLength(1);
+            M = values.GetLength(0);
+            N = values.GetLength(1);
         }
-
-        #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the number of rows
+        /// Gets the number of rows.
         /// </summary>
-        public int M
-        {
-            get { return _m; }
-        }
+        public int M { get; private set; }
+
+        /// <summary>
+        /// Gets the number of columns.
+        /// </summary>
+        public int N { get; private set; }
 
         /// <summary>
         /// Gets the number of columns
         /// </summary>
-        public int N
-        {
-            get { return _n; }
-        }
-
-        /// <summary>
-        /// Gets the number of columns
-        /// </summary>
-        public int NumColumns
-        {
-            get { return _n; }
-        }
+        public int NumColumns => N;
 
         /// <summary>
         /// Gets the number of rows
         /// </summary>
-        public int NumRows
-        {
-            get { return _m; }
-        }
+        public int NumRows => M;
 
         /// <summary>
         /// Gets or sets the values for this matrix
         /// </summary>
         public double[,] Values
         {
-            get { return _values; }
+            get
+            {
+                return _values;
+            }
+
             set
             {
                 _values = value;
-                _m = _values.GetLength(0);
-                _n = _values.GetLength(1);
+                M = _values.GetLength(0);
+                N = _values.GetLength(1);
             }
         }
 
@@ -128,12 +95,12 @@ namespace DotSpatial.NTSExtension
         #region Methods
 
         /// <summary>
-        /// Matrix multiplication only works if the number of columns of the first matrix is the same
-        /// as the number of rows of the second matrix.  The first matrix is this object, so this
-        /// will only work if inMatrix has the same number of rows as this matrix has columns.
+        /// Matrix multiplication only works if the number of columns of the first matrix is the same as the number of rows of the second matrix.
+        /// The first matrix is this object, so this will only work if inMatrix has the same number of rows as this matrix has columns.
         /// </summary>
         /// <param name="inMatrix">The IMatrix to multiply against this matrix</param>
-        /// <returns></returns>
+        /// <returns>Result of the multiplication.</returns>
+        /// <exception cref="ArgumentException">Thrown if number of columns of the first matrix differs from the number of rows from the second matrix.</exception>
         public IMatrixD Multiply(IMatrixD inMatrix)
         {
             if (inMatrix.NumRows != NumColumns) throw new ArgumentException("Matrix multiplication only works if the number of columns of the first matrix is the same as the number of rows of the second matrix");
@@ -152,14 +119,15 @@ namespace DotSpatial.NTSExtension
                     }
                 }
             }
+
             return new MatrixD(vals);
         }
 
         /// <summary>
         /// Multiplies this matrix by the specified scalar value.
         /// </summary>
-        /// <param name="inScalar"></param>
-        /// <returns></returns>
+        /// <param name="inScalar">Scalar used for multiplication.</param>
+        /// <returns>The resulting matrix.</returns>
         public IMatrixD Multiply(double inScalar)
         {
             double[,] vals = new double[NumRows, NumColumns];
@@ -170,9 +138,17 @@ namespace DotSpatial.NTSExtension
                     vals[row, col] = _values[row, col] * inScalar;
                 }
             }
+
             return new MatrixD(vals);
         }
 
+        /// <summary>
+        /// Matrix multiplication only works if the number of columns of the first matrix is the same as the number of rows of the second matrix.
+        /// The first matrix is this object, so this will only work if inMatrix has the same number of rows as this matrix has columns.
+        /// </summary>
+        /// <param name="inMatrix">The IMatrix to multiply against this matrix</param>
+        /// <returns>Result of the multiplication.</returns>
+        /// <exception cref="ArgumentException">Thrown if inMatrix is not a IMatrixD or the number of columns of the first matrix differs from the number of rows from the second matrix.</exception>
         IMatrix IMatrix.Multiply(IMatrix inMatrix)
         {
             IMatrixD mat = inMatrix as IMatrixD;

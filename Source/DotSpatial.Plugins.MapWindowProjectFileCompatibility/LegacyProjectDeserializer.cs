@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using DotSpatial.Controls;
 
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
@@ -8,17 +11,26 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
     /// </summary>
     public class LegacyProjectDeserializer
     {
-        readonly IMap _map;
+        #region Fields
+
+        private readonly IMap _map;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LegacyDeserializer"/> class.
+        /// Initializes a new instance of the <see cref="LegacyProjectDeserializer"/> class.
         /// </summary>
         /// <param name="map">The map.</param>
         public LegacyProjectDeserializer(IMap map)
         {
             _map = map;
         }
-        
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Opens the MW4 style project file.
@@ -40,5 +52,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                     throw new Exception("Unknown project file format");
             }
         }
+
+        #endregion
     }
 }

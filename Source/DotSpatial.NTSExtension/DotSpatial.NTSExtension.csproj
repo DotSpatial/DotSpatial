@@ -23,6 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Debug\DotSpatial.NTSExtension.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\DotSpatial.NTSExtension.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -78,22 +81,34 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TopologyText.Designer.cs" />
     <Compile Include="Vector.cs" />
-    <Compile Include="Voronoi\FortuneVoronoi.cs" />
+    <Compile Include="Voronoi\Fortune.cs" />
     <Compile Include="Voronoi\HashSet.cs" />
-    <Compile Include="Voronoi\ToolBox.cs" />
+    <Compile Include="Voronoi\MathTools.cs" />
+    <Compile Include="Voronoi\VCircleEvent.cs" />
+    <Compile Include="Voronoi\VDataEvent.cs" />
+    <Compile Include="Voronoi\VDataNode.cs" />
     <Compile Include="Voronoi\Vector2.cs" />
+    <Compile Include="Voronoi\VEdgeNode.cs" />
     <Compile Include="Voronoi\VEvent.cs" />
     <Compile Include="Voronoi\VNode.cs" />
     <Compile Include="Voronoi\VoronoiEdge.cs" />
     <Compile Include="Voronoi\VoronoiGraph.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.NTSExtension.snk" />
     <None Include="DotSpatial.NTSExtension.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TopologyText.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

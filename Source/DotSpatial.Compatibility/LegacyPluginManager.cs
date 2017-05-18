@@ -1,19 +1,10 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Compatibility.dll
-// Description:  Supports DotSpatial interfaces organized for a MapWindow 4 plugin context.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 1/20/2009 3:55:28 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+
 using DotSpatial.Controls;
 
 namespace DotSpatial.Compatibility
@@ -24,21 +15,16 @@ namespace DotSpatial.Compatibility
     [ToolboxItem(false)]
     public partial class LegacyPluginManager : Component
     {
-        #region Private Variables
+        #region Fields
 
-        ILegend _legend;
-        IBasicMap _map;
-        MenuStrip _mapMenuStrip;
-        ToolStrip _mapToolStrip;
-        bool _pluginMenuIsVisible;
-        IBasicMap _previewMap;
+        private MenuStrip _mapMenuStrip;
+
+        private bool _pluginMenuIsVisible;
 
         #endregion
 
-        #region Constructors
-
         /// <summary>
-        /// Constructor for Plugin Manager
+        /// Initializes a new instance of the <see cref="LegacyPluginManager"/> class.
         /// </summary>
         public LegacyPluginManager()
         {
@@ -46,7 +32,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Constructor for Plugin Manager
+        /// Initializes a new instance of the <see cref="LegacyPluginManager"/> class.
         /// </summary>
         /// <param name="container">A Container</param>
         public LegacyPluginManager(IContainer container)
@@ -56,50 +42,40 @@ namespace DotSpatial.Compatibility
             InitializeComponent();
         }
 
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// Gets or sets the Legend associated with this plugin manager
         /// </summary>
-        public ILegend Legend
-        {
-            get { return _legend; }
-            set { _legend = value; }
-        }
+        public ILegend Legend { get; set; }
 
         /// <summary>
         /// Gets or sets the Map associated with this plugin manager
         /// </summary>
-        public IBasicMap Map
-        {
-            get
-            {
-                return _map;
-            }
-            set
-            {
-                _map = value;
-            }
-        }
+        public IBasicMap Map { get; set; }
 
         /// <summary>
         /// Gets or sets the MapMenuStrip associated with this plugin manager
         /// </summary>
         public MenuStrip MapMenuStrip
         {
-            get { return _mapMenuStrip; }
+            get
+            {
+                return _mapMenuStrip;
+            }
+
             set
             {
                 if (_pluginMenuIsVisible)
                 {
                     AddPluginMenu();
                 }
+
                 if (_pluginMenuIsVisible == false)
                 {
                     RemovePluginMenu();
                 }
+
                 _mapMenuStrip = value;
             }
         }
@@ -107,28 +83,19 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// Gets or sets the MapToolStrip associated with this plugin manager
         /// </summary>
-        public ToolStrip MapToolstrip
-        {
-            get { return _mapToolStrip; }
-            set { _mapToolStrip = value; }
-        }
+        public ToolStrip MapToolstrip { get; set; }
 
         /// <summary>
-        /// Gets or sets the Preview Map associated with this plugin manager
-        /// </summary>
-        public IBasicMap PreviewMap
-        {
-            get { return _previewMap; }
-            set { _previewMap = value; }
-        }
-
-        /// <summary>
-        /// Controls whether or not a Plugin menu will be added to the MapMenuStrip
-        /// specified by this Plugin Manager
+        /// Gets or sets a value indicating whether or not a Plugin menu will be added to the MapMenuStrip
+        /// specified by this Plugin Manager.
         /// </summary>
         public bool PluginMenuIsVisible
         {
-            get { return _pluginMenuIsVisible; }
+            get
+            {
+                return _pluginMenuIsVisible;
+            }
+
             set
             {
                 if (_pluginMenuIsVisible == false)
@@ -145,9 +112,15 @@ namespace DotSpatial.Compatibility
                         RemovePluginMenu();
                     }
                 }
+
                 _pluginMenuIsVisible = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the Preview Map associated with this plugin manager
+        /// </summary>
+        public IBasicMap PreviewMap { get; set; }
 
         #endregion
 
@@ -174,20 +147,23 @@ namespace DotSpatial.Compatibility
         {
             if (_mapMenuStrip == null) return;
             if (_pluginMenuIsVisible == false) return;
+
             // The Find method is not supported by Mono 2.0
             // ToolStripItem[] tsList = _mapMenuStrip.Items.Find(MessageStrings.Plugins, false);
             List<ToolStripItem> tsList = new List<ToolStripItem>();
             foreach (ToolStripItem item in _mapMenuStrip.Items)
             {
-                if (item.Text == "Apps")
+                if (item.Text == @"Apps")
                 {
                     tsList.Add(item);
                 }
             }
+
             foreach (ToolStripItem item in tsList)
             {
                 _mapMenuStrip.Items.Remove(item);
             }
+
             _pluginMenuIsVisible = false;
         }
 

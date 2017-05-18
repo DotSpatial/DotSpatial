@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 9/27/2009 8:41:43 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -20,20 +10,15 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class BreakSliderEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private BreakSlider _slider;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of BreakSliderEventArgs
+        /// Initializes a new instance of the <see cref="BreakSliderEventArgs"/> class.
         /// </summary>
+        /// <param name="slider">The break slider.</param>
         public BreakSliderEventArgs(BreakSlider slider)
         {
-            _slider = slider;
+            Slider = slider;
         }
 
         #endregion
@@ -43,11 +28,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the protected break slider
         /// </summary>
-        public BreakSlider Slider
-        {
-            get { return _slider; }
-            protected set { _slider = value; }
-        }
+        public BreakSlider Slider { get; protected set; }
 
         #endregion
     }

@@ -1,17 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.OverWriteFeature.cs
-// Description:  Overwrite feature in a featureset.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for OverWriteFeature
-// Ping                   |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
@@ -20,11 +8,11 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Overwrite feature
+    /// Overwrite feature in a featureset.
     /// </summary>
     public class OverWriteFeature : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -32,78 +20,56 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the OverWriteFeature class.
+        /// Initializes a new instance of the <see cref="OverWriteFeature"/> class.
         /// </summary>
         public OverWriteFeature()
         {
-            this.Name = TextStrings.OverWriteFeature;
-            this.Category = TextStrings.VectorOverlay;
-            this.Description = TextStrings.OverWriteFeatureDescription;
-            this.ToolTip = TextStrings.OverWriteFeatureintheFeatureSet;
+            Name = TextStrings.OverWriteFeature;
+            Category = TextStrings.VectorOverlay;
+            Description = TextStrings.OverWriteFeatureDescription;
+            ToolTip = TextStrings.OverWriteFeatureintheFeatureSet;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Help text to be displayed when no input field is selected
+        /// Gets the help text to be displayed when no input field is selected.
         /// </summary>
-        public string HelpText
-        {
-            get
-            {
-                return TextStrings.OverWriteFeaturebyindex;
-            }
-        }
+        public string HelpText => TextStrings.OverWriteFeaturebyindex;
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;
-            if (input1 != null)
-            {
-                input1.FillAttributes();
-            }
+            input1?.FillAttributes();
 
             int index = (int)_inputParam[1].Value;
 
             IFeatureSet input2 = _inputParam[2].Value as IFeatureSet;
-            if (input2 != null)
-            {
-                input2.FillAttributes();
-            }
+            input2?.FillAttributes();
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
@@ -111,14 +77,14 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the overwrite feature Opaeration tool programaticaly.
+        /// Executes the overwrite feature Opaeration tool programmatically.
         /// </summary>
         /// <param name="input1">The input FeatureSet.</param>
         /// <param name="index">The Index to overwrite</param>
         /// <param name="input2">The input2 featureSet which has the new feature to overwrite.</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input1, int index, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -154,7 +120,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
@@ -164,7 +130,10 @@ namespace DotSpatial.Tools
                                      HelpText = TextStrings.InputFeatureSettodelete
                                  };
 
-            _inputParam[1] = new IntParam(TextStrings.Index, 0) { HelpText = TextStrings.IndexNotoOverwrite };
+            _inputParam[1] = new IntParam(TextStrings.Index, 0)
+                                 {
+                                     HelpText = TextStrings.IndexNotoOverwrite
+                                 };
 
             _inputParam[2] = new FeatureSetParam(TextStrings.input2FeatureSettoOverwrite)
                                  {

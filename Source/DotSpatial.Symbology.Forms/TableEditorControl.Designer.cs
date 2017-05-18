@@ -121,19 +121,19 @@ namespace DotSpatial.Symbology.Forms
             // 
             this.addFieldToolStripMenuItem.Name = "addFieldToolStripMenuItem";
             resources.ApplyResources(this.addFieldToolStripMenuItem, "addFieldToolStripMenuItem");
-            this.addFieldToolStripMenuItem.Click += new System.EventHandler(this.addFieldToolStripMenuItem_Click);
+            this.addFieldToolStripMenuItem.Click += new System.EventHandler(this.AddFieldToolStripMenuItemClick);
             // 
             // removeFieldToolStripMenuItem
             // 
             this.removeFieldToolStripMenuItem.Name = "removeFieldToolStripMenuItem";
             resources.ApplyResources(this.removeFieldToolStripMenuItem, "removeFieldToolStripMenuItem");
-            this.removeFieldToolStripMenuItem.Click += new System.EventHandler(this.removeFieldToolStripMenuItem_Click);
+            this.removeFieldToolStripMenuItem.Click += new System.EventHandler(this.RemoveFieldToolStripMenuItemClick);
             // 
             // renameFieldToolStripMenuItem
             // 
             this.renameFieldToolStripMenuItem.Name = "renameFieldToolStripMenuItem";
             resources.ApplyResources(this.renameFieldToolStripMenuItem, "renameFieldToolStripMenuItem");
-            this.renameFieldToolStripMenuItem.Click += new System.EventHandler(this.renameFieldToolStripMenuItem_Click);
+            this.renameFieldToolStripMenuItem.Click += new System.EventHandler(this.RenameFieldToolStripMenuItemClick);
             // 
             // enableEditingToolStripMenuItem
             // 
@@ -147,7 +147,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             this.saveEditsToolStripMenuItem.Name = "saveEditsToolStripMenuItem";
             resources.ApplyResources(this.saveEditsToolStripMenuItem, "saveEditsToolStripMenuItem");
-            this.saveEditsToolStripMenuItem.Click += new System.EventHandler(this.saveEditsToolStripMenuItem_Click);
+            this.saveEditsToolStripMenuItem.Click += new System.EventHandler(this.SaveEditsToolStripMenuItemClick);
             // 
             // mnuView
             // 
@@ -164,25 +164,25 @@ namespace DotSpatial.Symbology.Forms
             this.showOnlySelectedShapesToolStripMenuItem.CheckOnClick = true;
             this.showOnlySelectedShapesToolStripMenuItem.Name = "showOnlySelectedShapesToolStripMenuItem";
             resources.ApplyResources(this.showOnlySelectedShapesToolStripMenuItem, "showOnlySelectedShapesToolStripMenuItem");
-            this.showOnlySelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.showOnlySelectedShapesToolStripMenuItem_Click);
+            this.showOnlySelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.ShowOnlySelectedShapesToolStripMenuItemClick);
             // 
             // zoomToSelectedShapesToolStripMenuItem
             // 
             this.zoomToSelectedShapesToolStripMenuItem.Name = "zoomToSelectedShapesToolStripMenuItem";
             resources.ApplyResources(this.zoomToSelectedShapesToolStripMenuItem, "zoomToSelectedShapesToolStripMenuItem");
-            this.zoomToSelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.zoomToSelectedShapesToolStripMenuItem_Click);
+            this.zoomToSelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.ZoomToSelectedShapesToolStripMenuItemClick);
             // 
             // zoomToShapeBeingEditedToolStripMenuItem
             // 
             this.zoomToShapeBeingEditedToolStripMenuItem.Name = "zoomToShapeBeingEditedToolStripMenuItem";
             resources.ApplyResources(this.zoomToShapeBeingEditedToolStripMenuItem, "zoomToShapeBeingEditedToolStripMenuItem");
-            this.zoomToShapeBeingEditedToolStripMenuItem.Click += new System.EventHandler(this.zoomToShapeBeingEditedToolStripMenuItem_Click);
+            this.zoomToShapeBeingEditedToolStripMenuItem.Click += new System.EventHandler(this.ZoomToShapeBeingEditedToolStripMenuItemClick);
             // 
             // flashSelectedShapesToolStripMenuItem
             // 
             resources.ApplyResources(this.flashSelectedShapesToolStripMenuItem, "flashSelectedShapesToolStripMenuItem");
             this.flashSelectedShapesToolStripMenuItem.Name = "flashSelectedShapesToolStripMenuItem";
-            this.flashSelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.flashSelectedShapesToolStripMenuItem_Click);
+            this.flashSelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.FlashSelectedShapesToolStripMenuItemClick);
             // 
             // mnuSelection
             // 
@@ -199,31 +199,31 @@ namespace DotSpatial.Symbology.Forms
             // 
             this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
             resources.ApplyResources(this.queryToolStripMenuItem, "queryToolStripMenuItem");
-            this.queryToolStripMenuItem.Click += new System.EventHandler(this.queryToolStripMenuItem_Click);
+            this.queryToolStripMenuItem.Click += new System.EventHandler(this.QueryToolStripMenuItemClick);
             // 
             // selectAllToolStripMenuItem
             // 
             this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
             resources.ApplyResources(this.selectAllToolStripMenuItem, "selectAllToolStripMenuItem");
-            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
+            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItemClick);
             // 
             // selectNoneToolStripMenuItem
             // 
             this.selectNoneToolStripMenuItem.Name = "selectNoneToolStripMenuItem";
             resources.ApplyResources(this.selectNoneToolStripMenuItem, "selectNoneToolStripMenuItem");
-            this.selectNoneToolStripMenuItem.Click += new System.EventHandler(this.selectNoneToolStripMenuItem_Click);
+            this.selectNoneToolStripMenuItem.Click += new System.EventHandler(this.SelectNoneToolStripMenuItemClick);
             // 
             // invertSelectionToolStripMenuItem
             // 
             this.invertSelectionToolStripMenuItem.Name = "invertSelectionToolStripMenuItem";
             resources.ApplyResources(this.invertSelectionToolStripMenuItem, "invertSelectionToolStripMenuItem");
-            this.invertSelectionToolStripMenuItem.Click += new System.EventHandler(this.invertSelectionToolStripMenuItem_Click);
+            this.invertSelectionToolStripMenuItem.Click += new System.EventHandler(this.InvertSelectionToolStripMenuItemClick);
             // 
             // exportSelectedFeaturesToolStripMenuItem
             // 
             this.exportSelectedFeaturesToolStripMenuItem.Name = "exportSelectedFeaturesToolStripMenuItem";
             resources.ApplyResources(this.exportSelectedFeaturesToolStripMenuItem, "exportSelectedFeaturesToolStripMenuItem");
-            this.exportSelectedFeaturesToolStripMenuItem.Click += new System.EventHandler(this.exportSelectedFeaturesToolStripMenuItem_Click);
+            this.exportSelectedFeaturesToolStripMenuItem.Click += new System.EventHandler(this.ExportSelectedFeaturesToolStripMenuItemClick);
             // 
             // mnuTools
             // 
@@ -241,37 +241,37 @@ namespace DotSpatial.Symbology.Forms
             // 
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             resources.ApplyResources(this.findToolStripMenuItem, "findToolStripMenuItem");
-            this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
+            this.findToolStripMenuItem.Click += new System.EventHandler(this.FindToolStripMenuItemClick);
             // 
             // replaceToolStripMenuItem
             // 
             this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
             resources.ApplyResources(this.replaceToolStripMenuItem, "replaceToolStripMenuItem");
-            this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
+            this.replaceToolStripMenuItem.Click += new System.EventHandler(this.ReplaceToolStripMenuItemClick);
             // 
             // importFieldDefinitionsFromDBFToolStripMenuItem
             // 
             this.importFieldDefinitionsFromDBFToolStripMenuItem.Name = "importFieldDefinitionsFromDBFToolStripMenuItem";
             resources.ApplyResources(this.importFieldDefinitionsFromDBFToolStripMenuItem, "importFieldDefinitionsFromDBFToolStripMenuItem");
-            this.importFieldDefinitionsFromDBFToolStripMenuItem.Click += new System.EventHandler(this.importFieldDefinitionsFromDBFToolStripMenuItem_Click);
+            this.importFieldDefinitionsFromDBFToolStripMenuItem.Click += new System.EventHandler(this.ImportFieldDefinitionsFromDbfToolStripMenuItemClick);
             // 
             // fieldCalculatorToolToolStripMenuItem
             // 
             this.fieldCalculatorToolToolStripMenuItem.Name = "fieldCalculatorToolToolStripMenuItem";
             resources.ApplyResources(this.fieldCalculatorToolToolStripMenuItem, "fieldCalculatorToolToolStripMenuItem");
-            this.fieldCalculatorToolToolStripMenuItem.Click += new System.EventHandler(this.fieldCalculatorToolToolStripMenuItem_Click);
+            this.fieldCalculatorToolToolStripMenuItem.Click += new System.EventHandler(this.FieldCalculatorToolToolStripMenuItemClick);
             // 
             // generateOrUpdateMWShapeIDFieldsToolStripMenuItem
             // 
             resources.ApplyResources(this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem, "generateOrUpdateMWShapeIDFieldsToolStripMenuItem");
             this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem.Name = "generateOrUpdateMWShapeIDFieldsToolStripMenuItem";
-            this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem.Click += new System.EventHandler(this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem_Click);
+            this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem.Click += new System.EventHandler(this.GenerateOrUpdateMwShapeIdFieldsToolStripMenuItemClick);
             // 
             // copyShapeIDsToSpecifiedFieldToolStripMenuItem
             // 
             this.copyShapeIDsToSpecifiedFieldToolStripMenuItem.Name = "copyShapeIDsToSpecifiedFieldToolStripMenuItem";
             resources.ApplyResources(this.copyShapeIDsToSpecifiedFieldToolStripMenuItem, "copyShapeIDsToSpecifiedFieldToolStripMenuItem");
-            this.copyShapeIDsToSpecifiedFieldToolStripMenuItem.Click += new System.EventHandler(this.copyShapeIDsToSpecifiedFieldToolStripMenuItem_Click);
+            this.copyShapeIDsToSpecifiedFieldToolStripMenuItem.Click += new System.EventHandler(this.CopyShapeIDsToSpecifiedFieldToolStripMenuItemClick);
             // 
             // toolStrip
             // 
@@ -293,7 +293,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnSaveEdits.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.Disk;
             resources.ApplyResources(this.tsbtnSaveEdits, "tsbtnSaveEdits");
             this.tsbtnSaveEdits.Name = "tsbtnSaveEdits";
-            this.tsbtnSaveEdits.Click += new System.EventHandler(this.tsbtnSaveEdits_Click);
+            this.tsbtnSaveEdits.Click += new System.EventHandler(this.TsbtnSaveEditsClick);
             // 
             // tsbtnZoomToSelected
             // 
@@ -301,7 +301,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnZoomToSelected.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.zoom;
             resources.ApplyResources(this.tsbtnZoomToSelected, "tsbtnZoomToSelected");
             this.tsbtnZoomToSelected.Name = "tsbtnZoomToSelected";
-            this.tsbtnZoomToSelected.Click += new System.EventHandler(this.tsbtnZoomToSelected_Click);
+            this.tsbtnZoomToSelected.Click += new System.EventHandler(this.TsbtnZoomToSelectedClick);
             // 
             // tsbtnShowSelected
             // 
@@ -310,7 +310,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnShowSelected.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.Table_edit;
             resources.ApplyResources(this.tsbtnShowSelected, "tsbtnShowSelected");
             this.tsbtnShowSelected.Name = "tsbtnShowSelected";
-            this.tsbtnShowSelected.Click += new System.EventHandler(this.tsbtnShowSelected_Click);
+            this.tsbtnShowSelected.Click += new System.EventHandler(this.TsbtnShowSelectedClick);
             // 
             // tsbtnImportFieldsFromDBF
             // 
@@ -318,7 +318,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnImportFieldsFromDBF.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.down;
             resources.ApplyResources(this.tsbtnImportFieldsFromDBF, "tsbtnImportFieldsFromDBF");
             this.tsbtnImportFieldsFromDBF.Name = "tsbtnImportFieldsFromDBF";
-            this.tsbtnImportFieldsFromDBF.Click += new System.EventHandler(this.tsbtnImportFieldsFromDBF_Click);
+            this.tsbtnImportFieldsFromDBF.Click += new System.EventHandler(this.TsbtnImportFieldsFromDbfClick);
             // 
             // tsbtnFieldCalculator
             // 
@@ -326,7 +326,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnFieldCalculator.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.calculator;
             resources.ApplyResources(this.tsbtnFieldCalculator, "tsbtnFieldCalculator");
             this.tsbtnFieldCalculator.Name = "tsbtnFieldCalculator";
-            this.tsbtnFieldCalculator.Click += new System.EventHandler(this.tsbtnFieldCalculator_Click);
+            this.tsbtnFieldCalculator.Click += new System.EventHandler(this.TsbtnFieldCalculatorClick);
             // 
             // tsbtnRefreshMap
             // 
@@ -334,7 +334,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnRefreshMap.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.color_scheme;
             resources.ApplyResources(this.tsbtnRefreshMap, "tsbtnRefreshMap");
             this.tsbtnRefreshMap.Name = "tsbtnRefreshMap";
-            this.tsbtnRefreshMap.Click += new System.EventHandler(this.tsbtnRefreshMap_Click);
+            this.tsbtnRefreshMap.Click += new System.EventHandler(this.TsbtnRefreshMapClick);
             // 
             // tsbtnRefresh
             // 
@@ -342,7 +342,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnRefresh.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.refresh;
             resources.ApplyResources(this.tsbtnRefresh, "tsbtnRefresh");
             this.tsbtnRefresh.Name = "tsbtnRefresh";
-            this.tsbtnRefresh.Click += new System.EventHandler(this.tsbtnRefresh_Click);
+            this.tsbtnRefresh.Click += new System.EventHandler(this.TsbtnRefreshClick);
             // 
             // tsbtnQuery
             // 
@@ -350,7 +350,7 @@ namespace DotSpatial.Symbology.Forms
             this.tsbtnQuery.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.script;
             resources.ApplyResources(this.tsbtnQuery, "tsbtnQuery");
             this.tsbtnQuery.Name = "tsbtnQuery";
-            this.tsbtnQuery.Click += new System.EventHandler(this.tsbtnQuery_Click);
+            this.tsbtnQuery.Click += new System.EventHandler(this.TsbtnQueryClick);
             // 
             // dataGridView1
             // 
@@ -363,7 +363,7 @@ namespace DotSpatial.Symbology.Forms
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.UpdatedLblSelectedNumber);
             // 
             // TableEditorControl
             // 

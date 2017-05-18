@@ -239,49 +239,49 @@ return
             double z = _z.ToMeters().Value;
 
             //% WGS84 ellipsoid constants:
-            //a = 6378137;
+            // a = 6378137;
 
             double a = ellipsoid.EquatorialRadius.ToMeters().Value;
 
-            //e = 8.1819190842622e-2;
+            // e = 8.1819190842622e-2;
 
             double e = ellipsoid.Eccentricity;
 
             //% calculations:
-            //b   = sqrt(a^2*(1-e^2));
+            // b   = sqrt(a^2*(1-e^2));
 
             double b = Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(e, 2)));
 
-            //ep  = sqrt((a^2-b^2)/b^2);
+            // ep  = sqrt((a^2-b^2)/b^2);
 
             double ep = Math.Sqrt((Math.Pow(a, 2) - Math.Pow(b, 2)) / Math.Pow(b, 2));
 
-            //p   = sqrt(x.^2+y.^2);
+            // p   = sqrt(x.^2+y.^2);
 
             double p = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-            //th  = atan2(a*z, b*p);
+            // th  = atan2(a*z, b*p);
 
             double th = Math.Atan2(a * z, b * p);
 
-            //lon = atan2(y, x);
+            // lon = atan2(y, x);
 
             double lon = Math.Atan2(y, x);
 
-            //lat = atan2((z+ep^2.*b.*sin(th).^3), (p-e^2.*a.*cos(th).^3));
+            // lat = atan2((z+ep^2.*b.*sin(th).^3), (p-e^2.*a.*cos(th).^3));
 
             double lat = Math.Atan2((z + Math.Pow(ep, 2) * b * Math.Pow(Math.Sin(th), 3)), (p - Math.Pow(e, 2) * a * Math.Pow(Math.Cos(th), 3)));
 
-            //N   = a./sqrt(1-e^2.*sin(lat).^2);
+            // N   = a./sqrt(1-e^2.*sin(lat).^2);
 
             double n = a / Math.Sqrt(1 - Math.Pow(e, 2) * Math.Pow(Math.Sin(lat), 2));
 
-            //alt = p./cos(lat)-N;
+            // alt = p./cos(lat)-N;
 
             double alt = p / Math.Cos(lat) - n;
 
             //% return lon in range [0, 2*pi)
-            //lon = mod(lon, 2*pi);
+            // lon = mod(lon, 2*pi);
 
             lon = lon % (2 * Math.PI);
 
@@ -289,16 +289,16 @@ return
             //% (after this correction, error is about 2 millimeters, which is about
             //% the same as the numerical precision of the overall function)
 
-            //k=abs(x)<1 & abs(y)<1;
+            // k=abs(x)<1 & abs(y)<1;
 
             bool k = Math.Abs(x) < 1.0 && Math.Abs(y) < 1.0;
 
-            //alt(k) = abs(z(k))-b;
+            // alt(k) = abs(z(k))-b;
 
             if (k)
                 alt = Math.Abs(z) - b;
 
-            //return
+            // return
 
             return new Position3D(
                     Distance.FromMeters(alt),

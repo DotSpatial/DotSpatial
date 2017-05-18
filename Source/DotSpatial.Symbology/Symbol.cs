@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/11/2009 10:05:42 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -20,17 +10,17 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// A point symbolizer, is comprized of a set of symbols drawn one on top of the other.  This represents the base class
-    /// for one of those symbols.  The specialized type, like CharacterSymbol, SimpleSymbol, and PictureSymbol.
+    /// A point symbolizer, is comprized of a set of symbols drawn one on top of the other. This represents the base class
+    /// for one of those symbols. The specialized type, like CharacterSymbol, SimpleSymbol, and PictureSymbol.
     /// </summary>
     public class Symbol : Descriptor, ISymbol
     {
-        const int TOP_LEFT = 0;
-        const int TOP_RIGHT = 1;
-        const int BOTTOM_LEFT = 2;
-        const int BOTTOM_RIGHT = 3;
+        #region Fields
 
-        #region Private Variables
+        private const int BottomLeft = 2;
+        private const int BottomRight = 3;
+        private const int TopLeft = 0;
+        private const int TopRight = 1;
 
         private double _angle; // The angle in degrees
         private ISymbol _innerSymbol;
@@ -43,7 +33,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Symbol
+        /// Initializes a new instance of the <see cref="Symbol"/> class.
         /// </summary>
         public Symbol()
         {
@@ -52,7 +42,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This creates a wrapper class encapsulates one of the available subclasses for
+        /// Initializes a new instance of the <see cref="Symbol"/> class that encapsulates one of the available subclasses for
         /// symbol, enumerating the different options.
         /// </summary>
         /// <param name="type">The type to use for this symbol.</param>
@@ -63,25 +53,119 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the double precision floating point that controls the angle in degrees counter clockwise.
+        /// </summary>
+        [Serialize("Angle")]
+        public double Angle
+        {
+            get
+            {
+                if (_innerSymbol != null)
+                {
+                    return _innerSymbol.Angle;
+                }
+
+                return _angle;
+            }
+
+            set
+            {
+                if (_innerSymbol != null)
+                {
+                    _innerSymbol.Angle = value;
+                    return;
+                }
+
+                _angle = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the 2D offset for this particular symbol.
+        /// </summary>
+        [Serialize("Offset")]
+        public Position2D Offset
+        {
+            get
+            {
+                if (_innerSymbol != null)
+                {
+                    return _innerSymbol.Offset;
+                }
+
+                return _offset;
+            }
+
+            set
+            {
+                if (_innerSymbol != null)
+                {
+                    _innerSymbol.Offset = value;
+                }
+
+                _offset = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size.
+        /// </summary>
+        [Serialize("Size")]
+        public Size2D Size
+        {
+            get
+            {
+                if (_innerSymbol != null)
+                {
+                    return _innerSymbol.Size;
+                }
+
+                return _size;
+            }
+
+            set
+            {
+                if (_innerSymbol != null)
+                {
+                    _innerSymbol.Size = value;
+                }
+
+                _size = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the symbol type for this symbol.
+        /// </summary>
+        [XmlIgnore]
+        public virtual SymbolType SymbolType
+        {
+            get
+            {
+                if (_innerSymbol != null) return _innerSymbol.SymbolType;
+
+                return _symbolType;
+            }
+
+            protected set
+            {
+                // If we are acting as a base class, _innerSymbol is null, so handle that case differently.
+                if (_innerSymbol == null)
+                {
+                    _symbolType = value;
+                    return;
+                }
+
+                SetInnerSymbol(value);
+            }
+        }
+
+        #endregion
+
         #region Methods
-
-        /// <summary>
-        /// Gets a color to represent this point.  If the point is using an image,
-        /// then this color will be gray.
-        /// </summary>
-        /// <returns></returns>
-        public virtual Color GetColor()
-        {
-            return Color.Gray;
-        }
-
-        /// <summary>
-        /// Sets the primary color of this symbol to the specified color if possible
-        /// </summary>
-        /// <param name="color">The Color to assign</param>
-        public virtual void SetColor(Color color)
-        {
-        }
 
         /// <summary>
         /// Only copies the shared placement aspects (Size, Offset, Angle) from the specified symbol.
@@ -94,6 +178,7 @@ namespace DotSpatial.Symbology
                 _innerSymbol.CopyPlacement(symbol);
                 return;
             }
+
             _size = symbol.Size.Copy();
             _offset = symbol.Offset.Copy();
             _angle = symbol.Angle;
@@ -104,7 +189,7 @@ namespace DotSpatial.Symbology
         /// across the entire set of scales.
         /// </summary>
         /// <param name="g">The graphics object should be adjusted so that (0, 0) is the center of the symbol.</param>
-        /// <param name="scaleWidth">If this should draw in pixels, this should be 1.  Otherwise, this should be
+        /// <param name="scaleWidth">If this should draw in pixels, this should be 1. Otherwise, this should be
         /// the constant that you multiply against so that drawing using geographic units will draw in pixel units.</param>
         public void Draw(Graphics g, double scaleWidth)
         {
@@ -113,6 +198,7 @@ namespace DotSpatial.Symbology
                 _innerSymbol.Draw(g, scaleWidth);
                 return;
             }
+
             Matrix old = g.Transform;
             Matrix adjust = g.Transform;
             float dx = (float)(scaleWidth * _offset.X);
@@ -130,7 +216,7 @@ namespace DotSpatial.Symbology
         /// Calculates a size that would be necessary to contain the entire symbol, taking rotation and
         /// offset into account.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The size that would be necessary to contain the entire symbol.</returns>
         public Size2D GetBoundingSize()
         {
             if (_innerSymbol != null)
@@ -145,23 +231,18 @@ namespace DotSpatial.Symbology
             double dx = _size.Width / 2;
             double dy = _size.Height / 2;
             Position2D[] corners = new Position2D[4];
-            corners[TOP_LEFT] = new Position2D(-dx, dy);
-            corners[TOP_RIGHT] = new Position2D(dx, dy);
-            corners[BOTTOM_LEFT] = new Position2D(-dx, -dy);
-            corners[BOTTOM_RIGHT] = new Position2D(dx, -dy);
+            corners[TopLeft] = new Position2D(-dx, dy);
+            corners[TopRight] = new Position2D(dx, dy);
+            corners[BottomLeft] = new Position2D(-dx, -dy);
+            corners[BottomRight] = new Position2D(dx, -dy);
 
             double radians = _angle * Math.PI / 180;
 
             for (int i = 0; i < 4; i++)
             {
                 Position2D corner = corners[i];
-                Position2D rotated = new Position2D();
-                rotated.X = corner.X * Math.Cos(radians) - corner.Y * Math.Sin(radians);
-                rotated.Y = corner.X * Math.Sin(radians) + corner.Y * Math.Cos(radians);
-
-                Position2D shifted = new Position2D();
-                shifted.X = rotated.X + _offset.X;
-                shifted.Y = rotated.Y + _offset.Y;
+                Position2D rotated = new Position2D((corner.X * Math.Cos(radians)) - (corner.Y * Math.Sin(radians)), (corner.X * Math.Sin(radians)) + (corner.Y * Math.Cos(radians)));
+                Position2D shifted = new Position2D(rotated.X + _offset.X, rotated.Y + _offset.Y);
 
                 if (Math.Abs(shifted.X) > x) x = Math.Abs(shifted.X);
                 if (Math.Abs(shifted.Y) > y) y = Math.Abs(shifted.Y);
@@ -169,6 +250,16 @@ namespace DotSpatial.Symbology
 
             // Since x and y represent a "distance" from (0, 0), the size has to be twice that.
             return new Size2D(2 * x, 2 * y);
+        }
+
+        /// <summary>
+        /// Gets a color to represent this point. If the point is using an image,
+        /// then this color will be gray.
+        /// </summary>
+        /// <returns>The color gray.</returns>
+        public virtual Color GetColor()
+        {
+            return Color.Gray;
         }
 
         /// <summary>
@@ -193,140 +284,26 @@ namespace DotSpatial.Symbology
         /// </summary>
         public virtual void Select()
         {
-            if (_innerSymbol != null)
-            {
-                _innerSymbol.Select();
-            }
+            _innerSymbol?.Select();
+
             // We don't really have access to any symbology tools here
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the double precision floating point that controls the angle in degrees counter clockwise.
+        /// Sets the primary color of this symbol to the specified color if possible
         /// </summary>
-        [Serialize("Angle")]
-        public double Angle
+        /// <param name="color">The Color to assign</param>
+        public virtual void SetColor(Color color)
         {
-            get
-            {
-                if (_innerSymbol != null)
-                {
-                    return _innerSymbol.Angle;
-                }
-                return _angle;
-            }
-            set
-            {
-                if (_innerSymbol != null)
-                {
-                    _innerSymbol.Angle = value;
-                    return;
-                }
-                _angle = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the 2D offset for this particular symbol
+        /// Occurs during drawing. The graphics object will already be rotated by the specified angle and
+        /// adjusted according to the specified offset. The mask will also be drawn before the point.
         /// </summary>
-        [Serialize("Offset")]
-        public Position2D Offset
-        {
-            get
-            {
-                if (_innerSymbol != null)
-                {
-                    return _innerSymbol.Offset;
-                }
-                return _offset;
-            }
-            set
-            {
-                if (_innerSymbol != null)
-                {
-                    _innerSymbol.Offset = value;
-                }
-                _offset = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the size
-        /// </summary>
-        [Serialize("Size")]
-        public Size2D Size
-        {
-            get
-            {
-                if (_innerSymbol != null)
-                {
-                    return _innerSymbol.Size;
-                }
-                return _size;
-            }
-            set
-            {
-                if (_innerSymbol != null)
-                {
-                    _innerSymbol.Size = value;
-                }
-                _size = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the symbol type for this symbol.
-        /// </summary>
-        [XmlIgnore]
-        public virtual SymbolType SymbolType
-        {
-            get
-            {
-                if (_innerSymbol != null) return _innerSymbol.SymbolType;
-                return _symbolType;
-            }
-            protected set
-            {
-                // If we are acting as a base class, _innerSymbol is null, so handle that case differently.
-                if (_innerSymbol == null)
-                {
-                    _symbolType = value;
-                    return;
-                }
-                SetInnerSymbol(value);
-            }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        ///// <summary>
-        ///// Slightly modifies the copy process to duplicate an inner symbol if one is used.
-        ///// </summary>
-        ///// <param name="copy"></param>
-        //protected override void OnCopy(Descriptor copy)
-        //{
-        //    Symbol s = copy as Symbol;
-        //    if (s != null)
-        //    {
-        //        if (s._innerSymbol != null)
-        //        {
-        //            s._innerSymbol = s._innerSymbol.Copy();
-        //        }
-        //    }
-        //    base.OnCopy(copy);
-        //}
-
-        /// <summary>
-        /// Occurs during drawing.  The graphics object will already be rotated by the specified angle and
-        /// adjusted according to the specified offset.  The mask will also be drawn before the point.
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="scaleSize"></param>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="scaleSize">If this should draw in pixels, this should be 1. Otherwise, this should be
+        /// the constant that you multiply against so that drawing using geographic units will draw in pixel units.</param>
         protected virtual void OnDraw(Graphics g, double scaleSize)
         {
             float dx = (float)(scaleSize * _size.Width / 2);
@@ -345,12 +322,12 @@ namespace DotSpatial.Symbology
             base.OnRandomize(generator);
 
             // finish up by handling the angle, which is doesn't implement IRandomizable
-            _angle = (float)(generator.NextDouble() * 360 - 180);
+            _angle = (float)((generator.NextDouble() * 360) - 180);
         }
 
         /// <summary>
-        /// This occurs when the symbol is being instructed to scale.  The linear measurements are all
-        /// multiplied by the specified value.  This allows for additional behavior to be programmed,
+        /// This occurs when the symbol is being instructed to scale. The linear measurements are all
+        /// multiplied by the specified value. This allows for additional behavior to be programmed,
         /// or the original behavior to be overridden or replaced.
         /// </summary>
         /// <param name="value">The double precision value to scale by.</param>
@@ -362,13 +339,10 @@ namespace DotSpatial.Symbology
             _offset.Y = _offset.Y * value;
         }
 
-        #endregion
-
-        #region Private Functions
-
         private void SetInnerSymbol(SymbolType type)
         {
             ISymbol newSymbol = null;
+
             // If this class is acting as a wrapper class, then it should update the internal IStroke.
             switch (type)
             {
@@ -382,10 +356,12 @@ namespace DotSpatial.Symbology
                     newSymbol = new SimpleSymbol();
                     break;
             }
+
             if (newSymbol != null)
             {
                 if (_innerSymbol != null) newSymbol.CopyPlacement(_innerSymbol);
             }
+
             _innerSymbol = newSymbol;
         }
 

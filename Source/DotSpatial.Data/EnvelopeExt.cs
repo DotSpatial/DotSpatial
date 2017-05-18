@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created Before 2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// |   Ted Dunsford       |  6/30/2010  |  Moved to DotSpatial
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using DotSpatial.NTSExtension;
@@ -26,7 +14,7 @@ namespace DotSpatial.Data
     {
         /// <summary>
         /// This method assumes that there was a direct correlation between this envelope and the original
-        /// rectangle.  This reproportions this window to match the specified newRectangle.
+        /// rectangle. This reproportions this window to match the specified newRectangle.
         /// </summary>
         /// <param name="self">The original envelope</param>
         /// <param name="original">The original rectangle </param>
@@ -36,8 +24,8 @@ namespace DotSpatial.Data
         {
             double dx = self.Width * (newRectangle.X - original.X) / original.Width;
             double dy = self.Height * (newRectangle.Y - original.Y) / original.Height;
-            double w = (self.Width * newRectangle.Width / original.Width);
-            double h = (self.Height * newRectangle.Height / original.Height);
+            double w = self.Width * newRectangle.Width / original.Width;
+            double h = self.Height * newRectangle.Height / original.Height;
             return new Envelope(self.MinX + dx, self.MinX + dx + w, self.MinY + dy - h, self.MinY + dy);
         }
 
@@ -46,20 +34,16 @@ namespace DotSpatial.Data
         /// M or Z values.
         /// </summary>
         /// <param name="self">The Envelope to convert into an Extent.</param>
-        /// <returns></returns>
+        /// <returns>The extent that was created from the envelope.</returns>
         public static Extent ToExtent(this Envelope self)
         {
             if (self.HasZ())
             {
                 // regardless of whether it has M, we need an MZExtent.
-                return new ExtentMZ(self);
+                return new ExtentMz(self);
             }
-            if (self.HasM())
-            {
-                return new ExtentM(self);
-            }
-            return new Extent(self);
-        }
 
+            return self.HasM() ? new ExtentM(self) : new Extent(self);
+        }
     }
 }

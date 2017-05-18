@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-// Based on W3C png specification: http://www.w3.org/TR/2003/REC-PNG-20031110/#11PLTE
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/18/2010 1:21:47 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -28,148 +18,19 @@ namespace DotSpatial.Data
     /// </summary>
     public class MwPng
     {
-        #region Private Variables
-
-        #endregion
-
         #region Methods
-
-        /// <summary>
-        /// For testing, see if we can write a png ourself that can be opened by .Net png.
-        /// </summary>
-        /// <param name="image">The image to write to png format</param>
-        /// <param name="fileName">The string fileName</param>
-        public void Write(Bitmap image, string fileName)
-        {
-            if (File.Exists(fileName)) File.Delete(fileName);
-            Stream f = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1000000);
-            WriteSignature(f);
-            PngHeader header = new PngHeader(image.Width, image.Height);
-            header.Write(f);
-            WriteSrgb(f);
-            byte[] refImage = GetBytesFromImage(image);
-            byte[] filtered = Filter(refImage, 0, refImage.Length, image.Width * 4);
-            byte[] compressed = Deflate.Compress(filtered);
-            WriteIDat(f, compressed);
-            WriteEnd(f);
-            f.Flush();
-            f.Close();
-        }
-
-        /// <summary>
-        /// Reads a fileName into the specified bitmap.
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        /// <exception cref="PngInvalidSignatureException">If the file signature doesn't match the png file signature</exception>
-        public Bitmap Read(string fileName)
-        {
-            Stream f = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 1000000);
-            byte[] signature = new byte[8];
-            f.Read(signature, 0, 8);
-            if (!SignatureIsValid(signature))
-            {
-                throw new PngInvalidSignatureException();
-            }
-
-            f.Close();
-            return new Bitmap(10, 10);
-        }
-
-        ///<summary>
-        ///</summary>
-        ///<param name="signature"></param>
-        ///<returns></returns>
-        public static bool SignatureIsValid(byte[] signature)
-        {
-            byte[] test = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
-
-            for (int i = 0; i < 8; i++)
-            {
-                if (signature[i] != test[i]) return false;
-            }
-            return true;
-        }
-
-        private static void WriteIDat(Stream f, byte[] data)
-        {
-            f.Write(ToBytesAsUInt32((uint)data.Length), 0, 4);
-            byte[] tag = new byte[] { 73, 68, 65, 84 };
-            f.Write(tag, 0, 4); // IDAT
-            f.Write(data, 0, data.Length);
-            byte[] combined = new byte[data.Length + 4];
-            Array.Copy(tag, 0, combined, 0, 4);
-            Array.Copy(data, 0, combined, 4, data.Length);
-            f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(combined)), 0, 4);
-
-            //// The IDAT chunks can be no more than 32768, but can in fact be smaller than this.
-            //int numBlocks = (int) Math.Ceiling(data.Length/(double) 32768);
-            //for (int block = 0; block < numBlocks; block++)
-            //{
-            //    int bs = 32768;
-            //    if (block == numBlocks - 1) bs = data.Length - block*32768;
-            //    f.Write(ToBytes((uint)bs), 0, 4); // length
-            //    f.Write(new byte[]{73, 68, 65, 84}, 0, 4); // IDAT
-            //    f.Write(data, block * 32768, bs); // Data Content
-            //    f.Write(ToBytes(Crc32.ComputeChecksum(data)), 0, 4); // CRC
-            //}
-        }
-
-        /// <summary>
-        /// Writes an  in Big-endian Uint format.
-        /// </summary>
-        /// <param name="value"></param>
-        public static byte[] ToBytesAsUInt32(long value)
-        {
-            uint temp = Convert.ToUInt32(value);
-            byte[] arr = BitConverter.GetBytes(temp);
-            if (BitConverter.IsLittleEndian) Array.Reverse(arr);
-            return arr;
-        }
-
-        private static byte[] GetBytesFromImage(Bitmap image)
-        {
-            BitmapData bd = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly,
-                                           PixelFormat.Format32bppPArgb);
-            int len = image.Width * image.Height * 4;
-            byte[] refImage = new byte[len];
-            Marshal.Copy(bd.Scan0, refImage, 0, len);
-            image.UnlockBits(bd);
-            return refImage;
-        }
-
-        private static void WriteSignature(Stream f)
-        {
-            f.Write(new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 }, 0, 8);
-        }
-
-        private static void WriteSrgb(Stream f)
-        {
-            f.Write(ToBytesAsUInt32(1), 0, 4);
-            byte[] vals = new byte[] { 115, 82, 71, 66, 0 }; //sRGB and the value of 0
-            f.Write(vals, 0, 5);
-            f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(vals)), 0, 4);
-        }
-
-        private static void WriteEnd(Stream f)
-        {
-            f.Write(BitConverter.GetBytes(0), 0, 4);
-            byte[] vals = new byte[] { 73, 69, 78, 68 }; // IEND
-            f.Write(vals, 0, 4);
-            f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(vals)), 0, 4);
-        }
 
         /// <summary>
         /// Many rows may be evaluated by this process, but the first value in the array should
         /// be aligned with the left side of the image.
         /// </summary>
         /// <param name="refData">The original bytes to apply the PaethPredictor to.</param>
-        /// <param name="offset">The integer offset in the array where the filter should begin application.  If this is 0, then
+        /// <param name="offset">The integer offset in the array where the filter should begin application. If this is 0, then
         /// it assumes that there is no previous scan-line to work with.</param>
-        /// <param name="length">The number of bytes to filter, starting at the specified offset.  This should be evenly divisible by the width.</param>
+        /// <param name="length">The number of bytes to filter, starting at the specified offset. This should be evenly divisible by the width.</param>
         /// <param name="width">The integer width of a scan-line for grabbing the c and b bytes</param>
         /// <returns>The entire length of bytes starting with the specified offset</returns>
-        /// <exception cref="PngInsuficientLengthException"/>
+        /// <exception cref="PngInsuficientLengthException">Thrown if the offset and the length together lay after the refData.Length.</exception>
         public static byte[] Filter(byte[] refData, int offset, int length, int width)
         {
             // the 'B' and 'C' values of the first row are considered to be 0.
@@ -178,7 +39,9 @@ namespace DotSpatial.Data
             {
                 throw new PngInsuficientLengthException(length, refData.Length, offset);
             }
+
             int numrows = length / width;
+
             // The output also consists of a byte before each line that specifies the Paeth prediction filter is being used
             byte[] result = new byte[numrows + length];
 
@@ -198,7 +61,58 @@ namespace DotSpatial.Data
                     dest++;
                 }
             }
+
             return result;
+        }
+
+        /// <summary>
+        /// Checks whether the signature is valid.
+        /// </summary>
+        /// <param name="signature">The signature.</param>
+        /// <returns>True, if the signatur is valid.</returns>
+        public static bool SignatureIsValid(byte[] signature)
+        {
+            byte[] test = { 137, 80, 78, 71, 13, 10, 26, 10 };
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (signature[i] != test[i]) return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Converts a value into Big-endian Uint format.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static byte[] ToBytesAsUInt32(long value)
+        {
+            uint temp = Convert.ToUInt32(value);
+            byte[] arr = BitConverter.GetBytes(temp);
+            if (BitConverter.IsLittleEndian) Array.Reverse(arr);
+            return arr;
+        }
+
+        /// <summary>
+        /// Reads a fileName into the specified bitmap.
+        /// </summary>
+        /// <param name="fileName">The file name.</param>
+        /// <returns>The created bitmap.</returns>
+        /// <exception cref="PngInvalidSignatureException">If the file signature doesn't match the png file signature</exception>
+        public Bitmap Read(string fileName)
+        {
+            Stream f = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 1000000);
+            byte[] signature = new byte[8];
+            f.Read(signature, 0, 8);
+            if (!SignatureIsValid(signature))
+            {
+                throw new PngInvalidSignatureException();
+            }
+
+            f.Close();
+            return new Bitmap(10, 10);
         }
 
         /// <summary>
@@ -208,15 +122,19 @@ namespace DotSpatial.Data
         /// <param name="offset">the integer offset where reconstruction should begin</param>
         /// <param name="length">The integer length of bytes to deconstruct</param>
         /// <param name="width">The integer width of a scan-line in bytes (not counting any filter type bytes.</param>
-        /// <exception cref="PngInsuficientLengthException"></exception>
+        /// <returns>The unfiltered data.</returns>
+        /// <exception cref="PngInsuficientLengthException">Thrown if the length and offset together lay behind the streams total length.</exception>
         public byte[] UnFilter(byte[] filterStream, int offset, int length, int width)
-        {   // the 'B' and 'C' values of the first row are considered to be 0.
+        {
+            // the 'B' and 'C' values of the first row are considered to be 0.
             // the 'A' value of the first column is considered to be 0.
             if (filterStream.Length - offset < length)
             {
                 throw new PngInsuficientLengthException(length, filterStream.Length, offset);
             }
+
             int numrows = length / width;
+
             // The output also consists of a byte before each line that specifies the Paeth prediction filter is being used
             byte[] result = new byte[length - numrows];
 
@@ -227,6 +145,7 @@ namespace DotSpatial.Data
                 if (filterStream[source] == 0)
                 {
                     source++;
+
                     // No filtering
                     Array.Copy(filterStream, source, result, dest, width);
                     source += width;
@@ -262,7 +181,7 @@ namespace DotSpatial.Data
                     {
                         byte a = (col == 0) ? (byte)0 : result[dest - 1];
                         byte b = (row == 0 || col == 0) ? (byte)0 : result[dest - width - 1];
-                        result[dest] = (byte)((filterStream[dest] + (a + b) / 2) % 256); // integer division automatically does "floor"
+                        result[dest] = (byte)((filterStream[dest] + ((a + b) / 2)) % 256); // integer division automatically does "floor"
                         source++;
                         dest++;
                     }
@@ -281,17 +200,50 @@ namespace DotSpatial.Data
                     }
                 }
             }
+
             return result;
+        }
+
+        /// <summary>
+        /// For testing, see if we can write a png ourself that can be opened by .Net png.
+        /// </summary>
+        /// <param name="image">The image to write to png format</param>
+        /// <param name="fileName">The string fileName</param>
+        public void Write(Bitmap image, string fileName)
+        {
+            if (File.Exists(fileName)) File.Delete(fileName);
+            Stream f = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1000000);
+            WriteSignature(f);
+            PngHeader header = new PngHeader(image.Width, image.Height);
+            header.Write(f);
+            WriteSrgb(f);
+            byte[] refImage = GetBytesFromImage(image);
+            byte[] filtered = Filter(refImage, 0, refImage.Length, image.Width * 4);
+            byte[] compressed = Deflate.Compress(filtered);
+            WriteIDat(f, compressed);
+            WriteEnd(f);
+            f.Flush();
+            f.Close();
+        }
+
+        private static byte[] GetBytesFromImage(Bitmap image)
+        {
+            BitmapData bd = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+            int len = image.Width * image.Height * 4;
+            byte[] refImage = new byte[len];
+            Marshal.Copy(bd.Scan0, refImage, 0, len);
+            image.UnlockBits(bd);
+            return refImage;
         }
 
         /// <summary>
         /// B C   - For the current pixel X, use the best fit from B, C or A to predict X.
         /// A X
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
-        /// <returns></returns>
+        /// <param name="a">The a</param>
+        /// <param name="b">The b</param>
+        /// <param name="c">The c</param>
+        /// <returns>The predicted value.</returns>
         private static byte PaethPredictor(byte a, byte b, byte c)
         {
             byte pR;
@@ -305,9 +257,38 @@ namespace DotSpatial.Data
             return pR;
         }
 
-        #endregion
+        private static void WriteEnd(Stream f)
+        {
+            f.Write(BitConverter.GetBytes(0), 0, 4);
+            byte[] vals = new byte[] { 73, 69, 78, 68 }; // IEND
+            f.Write(vals, 0, 4);
+            f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(vals)), 0, 4);
+        }
 
-        #region Properties
+        private static void WriteIDat(Stream f, byte[] data)
+        {
+            f.Write(ToBytesAsUInt32((uint)data.Length), 0, 4);
+            byte[] tag = { 73, 68, 65, 84 };
+            f.Write(tag, 0, 4); // IDAT
+            f.Write(data, 0, data.Length);
+            byte[] combined = new byte[data.Length + 4];
+            Array.Copy(tag, 0, combined, 0, 4);
+            Array.Copy(data, 0, combined, 4, data.Length);
+            f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(combined)), 0, 4);
+        }
+
+        private static void WriteSignature(Stream f)
+        {
+            f.Write(new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 }, 0, 8);
+        }
+
+        private static void WriteSrgb(Stream f)
+        {
+            f.Write(ToBytesAsUInt32(1), 0, 4);
+            byte[] vals = { 115, 82, 71, 66, 0 }; // sRGB and the value of 0
+            f.Write(vals, 0, 5);
+            f.Write(ToBytesAsUInt32(Crc32.ComputeChecksum(vals)), 0, 4);
+        }
 
         #endregion
     }

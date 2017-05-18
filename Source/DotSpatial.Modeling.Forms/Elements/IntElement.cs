@@ -1,56 +1,63 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.IntegerElement
-// Description:  Integer Element for use in the tool dialog
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name                 |    Date              |   Comments
-// ---------------------|----------------------|----------------------------------------------------
-// Ted Dunsford         |  8/28/2009           |  Cleaned up some formatting content using re-sharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using System.Drawing;
-using System.Windows.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// an element for integers
+    /// Integer Element for use in the tool dialog
     /// </summary>
-    public class IntElement : DialogElement
+    public partial class IntElement : DialogElement
     {
-        #region Class Variables
+        #region Fields
 
         private bool _enableUpdate = true;
         private string _oldText = string.Empty;
-        private TextBox txtValue;
-
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the dialog
+        /// Initializes a new instance of the <see cref="IntElement"/> class.
         /// </summary>
         /// <param name="param">The parameter this element represents</param>
         public IntElement(IntParam param)
         {
-            //Needed by the designer
+            // Needed by the designer
             InitializeComponent();
             GroupBox.Text = param.Name;
 
-            //We save the parameters passed in
+            // We save the parameters passed in
             Param = param;
 
             HandleStatusLight();
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the Parameter that the element represents
+        /// </summary>
+        public new IntParam Param
+        {
+            get
+            {
+                return (IntParam)base.Param;
+            }
+
+            set
+            {
+                base.Param = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Updates the status lights
@@ -60,11 +67,29 @@ namespace DotSpatial.Modeling.Forms.Elements
             HandleStatusLight();
         }
 
+        /// <summary>
+        /// Checks if text contains a value integer
+        /// </summary>
+        /// <param name="theValue">The text to text</param>
+        /// <returns>Returns true if it is a valid integer</returns>
+        private static bool IsInteger(string theValue)
+        {
+            try
+            {
+                Convert.ToInt32(theValue);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private void HandleStatusLight()
         {
             _enableUpdate = false;
 
-            //We load the default parameters
+            // We load the default parameters
             if (Param.DefaultSpecified)
             {
                 int value = Param.Value;
@@ -89,14 +114,22 @@ namespace DotSpatial.Modeling.Forms.Elements
             _enableUpdate = true;
         }
 
-        #endregion
-
-        #region Events
+        /// <summary>
+        /// When the text box is clicked this event fires
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void TextBox1Click(object sender, EventArgs e)
+        {
+            OnClick(e);
+        }
 
         /// <summary>
         /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
         /// </summary>
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void TextBox1TextChanged(object sender, EventArgs e)
         {
             if (_enableUpdate)
             {
@@ -110,84 +143,6 @@ namespace DotSpatial.Modeling.Forms.Elements
                     txtValue.Text = _oldText;
                 }
             }
-        }
-
-        /// <summary>
-        /// Checks if text contains a value integer
-        /// </summary>
-        /// <param name="theValue">The text to text</param>
-        /// <returns>Returns true if it is a valid integer</returns>
-        private static bool IsInteger(string theValue)
-        {
-            try
-            {
-                Convert.ToInt32(theValue);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        } //IsDecimal
-
-        /// <summary>
-        /// When the text box is clicked this event fires
-        /// </summary>
-        private void textBox1_Click(object sender, EventArgs e)
-        {
-            OnClick(e);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the Parameter that the element represents
-        /// </summary>
-        public new IntParam Param
-        {
-            get { return (IntParam)base.Param; }
-            set { base.Param = value; }
-        }
-
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        private void InitializeComponent()
-        {
-            this.txtValue = new TextBox();
-            this.GroupBox.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // groupBox1
-            //
-            this.GroupBox.Controls.Add(this.txtValue);
-            this.GroupBox.Text = "Caption";
-            this.GroupBox.Controls.SetChildIndex(this.txtValue, 0);
-            this.GroupBox.Controls.SetChildIndex(this.StatusLabel, 0);
-            //
-            // lblStatus
-            //
-            this.StatusLabel.Location = new Point(12, 20);
-            //
-            // textBox1
-            //
-            this.txtValue.Location = new Point(44, 17);
-            this.txtValue.Name = "txtValue";
-            this.txtValue.Size = new Size(440, 20);
-            this.txtValue.TabIndex = 3;
-            this.txtValue.TextChanged += new EventHandler(this.textBox1_TextChanged);
-            this.txtValue.Click += new EventHandler(this.textBox1_Click);
-            //
-            // IntElement
-            //
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
-            this.Name = "IntElement";
-            this.GroupBox.ResumeLayout(false);
-            this.GroupBox.PerformLayout();
-            this.ResumeLayout(false);
         }
 
         #endregion

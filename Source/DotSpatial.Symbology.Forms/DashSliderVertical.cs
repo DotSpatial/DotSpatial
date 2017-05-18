@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/1/2009 2:18:39 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -22,23 +12,15 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class DashSliderVertical : DashSlider
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DashSliderVertical
+        /// Initializes a new instance of the <see cref="DashSliderVertical"/> class.
         /// </summary>
         public DashSliderVertical()
             : base(Orientation.Vertical)
         {
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -51,28 +33,18 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                RectangleF result = new RectangleF();
                 if (Image != null)
                 {
-                    result.X = 0;
-                    result.Y = Position.Y - Image.Height / 2;
-                    result.Width = Image.Width;
-                    result.Height = Image.Height;
+                    return new RectangleF(0, Position.Y - (Image.Height / 2), Image.Width, Image.Height);
                 }
-                else
-                {
-                    result.X = 0;
-                    result.Y = Position.Y - Size.Height / 2;
-                    result.Width = Size.Width;
-                    result.Height = (Size.Height * 3) / 2;
-                }
-                return result;
+
+                return new RectangleF(0, Position.Y - (Size.Height / 2), Size.Width, (Size.Height * 3) / 2);
             }
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
 
         /// <summary>
         /// Teh Publick method allowing this dash slider to be moved
@@ -84,16 +56,12 @@ namespace DotSpatial.Symbology.Forms
             DrawVertical(g, clipRectangle);
         }
 
-        #endregion
-
-        #region Private Functions
-
         private void DrawVertical(Graphics g, Rectangle clipRectangle)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
             if (Image != null)
             {
-                g.DrawImage(Image, 0, Position.Y - Image.Height / 2);
+                g.DrawImage(Image, 0, Position.Y - (Image.Height / 2));
             }
             else
             {

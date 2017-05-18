@@ -194,7 +194,7 @@
     <value>Evitare le collisioni</value>
   </data>
   <data name="chkPreventCollision.ToolTip" xml:space="preserve">
-    <value>Se questo non è selezionato, verranno disegnate ad alta priorità etichette sopra le etichette della priorità bassa.  Se è selezionata verrà inserito solo l'etichetta di priorità più elevato di due etichette sovrapposte.</value>
+    <value>Se questo non è selezionato, verranno disegnate ad alta priorità etichette sopra le etichette della priorità bassa. Se è selezionata verrà inserito solo l'etichetta di priorità più elevato di due etichette sovrapposte.</value>
   </data>
   <data name="lblPriorityField.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
@@ -203,7 +203,7 @@
     <value>Campo priorità</value>
   </data>
   <data name="cmbPriorityField.ToolTip" xml:space="preserve">
-    <value>Per impostazione predefinita, il FID è utilizzato per definire le priorità di etichette.  In questo modo i valori di un campo da utilizzare invece.</value>
+    <value>Per impostazione predefinita, il FID è utilizzato per definire le priorità di etichette. In questo modo i valori di un campo da utilizzare invece.</value>
   </data>
   <data name="chkBorder.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 17</value>
@@ -374,7 +374,7 @@
     <value>Applicare</value>
   </data>
   <data name="lblHelp.Text" xml:space="preserve">
-    <value>Ogni gruppo simbolo può avere molti membri.  Utilizzare i membri pagina per aggiungere o rimuovere membri manualmente, o sulla base delle caratteristiche del campo.  Se no membri appaiono in questo elenco di fornitori, è prima necessario rimuovere le etichette da un gruppo esistente.</value>
+    <value>Ogni gruppo simbolo può avere molti membri. Utilizzare i membri pagina per aggiungere o rimuovere membri manualmente, o sulla base delle caratteristiche del campo. Se no membri appaiono in questo elenco di fornitori, è prima necessario rimuovere le etichette da un gruppo esistente.</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 464</value>

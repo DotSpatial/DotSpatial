@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -28,28 +14,29 @@ namespace DotSpatial.Positioning.Design
     /// objects.
     /// </summary>
     /// <remarks>
-    /// 	<para>This class allows any <strong>Position</strong> object to be converted
-    ///     between other data types, such as <strong>String</strong>. This class is used
-    ///     primarily during the Windows Forms designer to give detailed information about
-    ///     properties of type <strong>Position</strong>, and also allows developers to type in
-    ///     string values such as "29.23, 15.65" and have them converted to
-    ///     <strong>Position</strong> objects automatically. Finally, this class controls
-    ///     design-time serialization of <strong>Position</strong> object properties.</para>
-    /// 	<para>In most situations this class is used by the Visual Studio.NET IDE and is
-    ///     rarely created at run-time.</para>
+    /// <para>This class allows any <strong>Position</strong> object to be converted
+    ///  between other data types, such as <strong>String</strong>. This class is used
+    ///  primarily during the Windows Forms designer to give detailed information about
+    ///  properties of type <strong>Position</strong>, and also allows developers to type in
+    ///  string values such as "29.23, 15.65" and have them converted to
+    ///  <strong>Position</strong> objects automatically. Finally, this class controls
+    ///  design-time serialization of <strong>Position</strong> object properties.</para>
+    /// <para>In most situations this class is used by the Visual Studio.NET IDE and is
+    ///  rarely created at run-time.</para>
     /// </remarks>
+    // The Original Code is from http://geoframework.codeplex.com/ version 2.0
     public sealed class SizeDConverter : PositioningObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.SizeD";
-            }
-        }
+        #region Properties
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.SizeD";
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             // What is the destination type?
@@ -61,10 +48,8 @@ namespace DotSpatial.Positioning.Design
                 Type sizeDType = value.GetType();
 
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[]
-                                                     { sizeDType.GetProperty("Width").GetValue(value, null),
-                                                       sizeDType.GetProperty("Height").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double), typeof(double) };
+                object[] constructorParameters = { sizeDType.GetProperty("Width").GetValue(value, null), sizeDType.GetProperty("Height").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double), typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = sizeDType.GetConstructor(constructorTypes);
@@ -75,24 +60,24 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
+            return new StandardValuesCollection(new[] { "Empty", "Invalid" });
+        }
+
+        /// <inheritdoc />
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
-        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-        {
-            return new StandardValuesCollection(new[] {
-		            "Empty",
-		            "Invalid" });
-        }
-
-        /// <inheritdocs/>
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
-        {
-            return false;
-        }
+        #endregion
     }
 }

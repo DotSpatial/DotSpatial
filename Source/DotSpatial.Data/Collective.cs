@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Interfaces Alpha
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -20,12 +9,13 @@ namespace DotSpatial.Data
     /// <summary>
     /// Carries event arguments for the generic IEventList
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     public class Collective<T> : EventArgs
     {
-        #region Methods
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="Collective{T}"/> class.
         /// </summary>
         /// <param name="inCollection">The IEnumerable&lt;T&gt; specified during the event"/></param>
         public Collective(IEnumerable<T> inCollection)
@@ -38,7 +28,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the list item being referenced by this event
+        /// Gets or sets the list item being referenced by this event.
         /// </summary>
         public IEnumerable<T> Collection { get; protected set; }
 

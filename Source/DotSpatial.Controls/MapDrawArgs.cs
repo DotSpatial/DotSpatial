@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 7/1/2008 12:50:00 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -17,11 +7,11 @@ using System.Drawing;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// DrawArgs contains the parameters necessary for 2D drawing
+    /// MapDrawArgs contains the parameters necessary for 2D drawing.
     /// </summary>
     public class MapDrawArgs : EventArgs
     {
-        #region Private Variables
+        #region Fields
 
         private Rectangle _clipRectangle;
         private MapArgs _geoGraphics;
@@ -29,11 +19,14 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawArgs
+        /// Initializes a new instance of the <see cref="MapDrawArgs"/> class.
         /// </summary>
+        /// <param name="inGraphics">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
+        /// <param name="inMapFrame">The map frame.</param>
         public MapDrawArgs(Graphics inGraphics, Rectangle clipRectangle, IMapFrame inMapFrame)
         {
             _graphics = inGraphics;
@@ -43,11 +36,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of GeoDrawArgs
+        /// Initializes a new instance of the <see cref="MapDrawArgs"/> class.
         /// </summary>
-        /// <param name="inGraphics"></param>
-        /// <param name="clipRectangle"></param>
-        /// <param name="inGeoGraphics"></param>
+        /// <param name="inGraphics">The graphics object used for drawing.</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
+        /// <param name="inGeoGraphics">The map args.</param>
         public MapDrawArgs(Graphics inGraphics, Rectangle clipRectangle, MapArgs inGeoGraphics)
         {
             _graphics = inGraphics;
@@ -60,32 +53,53 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets a Graphics object that is useful for drawing in client coordinates.  Coordinates
+        /// Gets or sets the clip rectangle that defines the area on the region in client coordinates where drawing is taking place.
+        /// </summary>
+        public virtual Rectangle ClipRectangle
+        {
+            get
+            {
+                return _clipRectangle;
+            }
+
+            set
+            {
+                _clipRectangle = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a GeoGraphics wrapper that makes it easy to draw things in geographic coordinates.
+        /// </summary>
+        public virtual MapArgs GeoGraphics
+        {
+            get
+            {
+                return _geoGraphics;
+            }
+
+            protected set
+            {
+                _geoGraphics = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a Graphics object that is useful for drawing in client coordinates. Coordinates
         /// should be specified as though they were drawn to the client rectangle, even if
         /// a clip rectangle is specified.
         /// </summary>
         public virtual Graphics Graphics
         {
-            get { return _graphics; }
-            protected set { _graphics = value; }
-        }
+            get
+            {
+                return _graphics;
+            }
 
-        /// <summary>
-        /// Gets a GeoGraphics wrapper that makes it easy to draw things in geographic coordinates.
-        /// </summary>
-        public virtual MapArgs GeoGraphics
-        {
-            get { return _geoGraphics; }
-            protected set { _geoGraphics = value; }
-        }
-
-        /// <summary>
-        /// Gets the clip rectangle that defines the area on the region in client coordinates where drawing is taking place.
-        /// </summary>
-        public virtual Rectangle ClipRectangle
-        {
-            get { return _clipRectangle; }
-            set { _clipRectangle = value; }
+            protected set
+            {
+                _graphics = value;
+            }
         }
 
         #endregion

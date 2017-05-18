@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Plugins.ShapeEditor.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/26/2009 6:44:10 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Controls;
 
@@ -20,22 +10,32 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// </summary>
     public class ShapeEditorPlugin : Extension
     {
+        #region Fields
+
         private ButtonHandler _myHandler;
+
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc/>
         public override void Activate()
         {
-            _myHandler = new ButtonHandler(this.App) { Map = App.Map };
+            _myHandler = new ButtonHandler(App)
+                         {
+                             Map = App.Map
+                         };
             base.Activate();
         }
 
         /// <inheritdoc/>
         public override void Deactivate()
         {
-            if (App.HeaderControl != null) { App.HeaderControl.RemoveAll(); }
-
-            if (_myHandler != null) { _myHandler.Dispose(); }
+            App.HeaderControl?.RemoveAll();
+            _myHandler?.Dispose();
             base.Deactivate();
         }
+
+        #endregion
     }
 }

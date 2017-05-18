@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="SplashScreenHelper.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -21,14 +18,18 @@ namespace DotSpatial.Extensions.SplashScreens
         /// <summary>
         /// Searches "Application Extensions" for and activates "*SplashScreen*.dll"
         /// </summary>
+        /// <returns>Null if no ISplashScreenManager was found otherwise the first ISplashScreenManager that was found.</returns>
         public static ISplashScreenManager GetSplashScreenManager()
         {
             // This is a specific directory where a splash screen may be located.
             Assembly asm = Assembly.GetEntryAssembly();
-            var directories = new List<string> { AppDomain.CurrentDomain.BaseDirectory + "Application Extensions", 
-                                                 AppDomain.CurrentDomain.BaseDirectory + "Plugins",
-                                                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), asm.ManifestModule.Name, "Extensions"),
-                                                 AppDomain.CurrentDomain.BaseDirectory + "Extensions"};
+            var directories = new List<string>
+            {
+                AppDomain.CurrentDomain.BaseDirectory + "Application Extensions",
+                AppDomain.CurrentDomain.BaseDirectory + "Plugins",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), asm.ManifestModule.Name, "Extensions"),
+                AppDomain.CurrentDomain.BaseDirectory + "Extensions"
+            };
 
             foreach (string directory in directories)
             {
@@ -46,14 +47,10 @@ namespace DotSpatial.Extensions.SplashScreens
                     using (CompositionContainer splashBatch = new CompositionContainer(splashCatalog))
                     {
                         var splash = splashBatch.GetExportedValueOrDefault<ISplashScreenManager>();
-
-                        if (splash != null)
-                            splash.Activate();
-
+                        splash?.Activate();
                         return splash;
                     }
                 }
-
             }
 
             return null;

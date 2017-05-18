@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/27/2009 4:59:03 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Windows.Forms;
@@ -21,27 +11,21 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// DynamicVisibilityControl
     /// </summary>
-    public class DynamicVisibilityControl : UserControl
+    public partial class DynamicVisibilityControl : UserControl
     {
-        #region Private Variables
+        #region Fields
 
         private readonly IWindowsFormsEditorService _dialogProvider;
-        private double _dynamicVisibilityWidth;
-        private Envelope _grabExtents;
-        private ILayer _layer;
-        private bool _useDynamicVisibility;
-
-        private Button btnGrabExtents;
-        private CheckBox chkUseDynamicVisibility;
+        private readonly ILayer _layer;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DynamicVisibilityControl.  Note,
-        /// this default constructor won't be able to grab the extents
-        /// from a layer, but instead will use the "grab extents"
+        /// Initializes a new instance of the <see cref="DynamicVisibilityControl"/> class.
+        /// Note, this default constructor won't be able to grab the extents
+        /// from a layer, but instead will use the "grab extents".
         /// </summary>
         public DynamicVisibilityControl()
         {
@@ -49,62 +33,18 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// The true constructor
+        /// Initializes a new instance of the <see cref="DynamicVisibilityControl"/> class.
         /// </summary>
         /// <param name="dialogProvider">Service that may have launched this control</param>
         /// <param name="layer">the layer that this property is being adjusted on</param>
         public DynamicVisibilityControl(IWindowsFormsEditorService dialogProvider, ILayer layer)
         {
             _dialogProvider = dialogProvider;
-            _useDynamicVisibility = layer.UseDynamicVisibility;
-            _dynamicVisibilityWidth = layer.DynamicVisibilityWidth;
+            UseDynamicVisibility = layer.UseDynamicVisibility;
+            DynamicVisibilityWidth = layer.DynamicVisibilityWidth;
             _layer = layer;
             InitializeComponent();
         }
-
-        #endregion
-
-        #region Component Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DynamicVisibilityControl));
-            this.chkUseDynamicVisibility = new System.Windows.Forms.CheckBox();
-            this.btnGrabExtents = new System.Windows.Forms.Button();
-            this.SuspendLayout();
-            // 
-            // chkUseDynamicVisibility
-            // 
-            resources.ApplyResources(this.chkUseDynamicVisibility, "chkUseDynamicVisibility");
-            this.chkUseDynamicVisibility.Name = "chkUseDynamicVisibility";
-            this.chkUseDynamicVisibility.UseVisualStyleBackColor = true;
-            this.chkUseDynamicVisibility.CheckedChanged += new System.EventHandler(this.chkUseDynamicVisibility_CheckedChanged);
-            // 
-            // btnGrabExtents
-            // 
-            resources.ApplyResources(this.btnGrabExtents, "btnGrabExtents");
-            this.btnGrabExtents.Name = "btnGrabExtents";
-            this.btnGrabExtents.UseVisualStyleBackColor = true;
-            this.btnGrabExtents.Click += new System.EventHandler(this.btnGrabExtents_Click);
-            // 
-            // DynamicVisibilityControl
-            // 
-            this.BackColor = System.Drawing.SystemColors.Control;
-            this.Controls.Add(this.btnGrabExtents);
-            this.Controls.Add(this.chkUseDynamicVisibility);
-            this.Name = "DynamicVisibilityControl";
-            resources.ApplyResources(this, "$this");
-            this.ResumeLayout(false);
-
-        }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -113,53 +53,46 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the geographic width where the layer content becomes visible again.
         /// </summary>
-        public double DynamicVisibilityWidth
-        {
-            get { return _dynamicVisibilityWidth; }
-            set { _dynamicVisibilityWidth = value; }
-        }
+        public double DynamicVisibilityWidth { get; set; }
 
         /// <summary>
-        /// If a layer is not provided, the DynamicVisibilityExtents
+        /// Gets or sets the grab extents. If a layer is not provided, the DynamicVisibilityExtents
         /// will be set to the grab extents instead.
         /// </summary>
-        public Envelope GrabExtents
-        {
-            get { return _grabExtents; }
-            set { _grabExtents = value; }
-        }
+        public Envelope GrabExtents { get; set; }
 
         /// <summary>
-        /// Gets or sets a boolean corresponding
+        /// Gets or sets a value indicating  whether dynamic visibility should be used.
         /// </summary>
-        public bool UseDynamicVisibility
-        {
-            get { return _useDynamicVisibility; }
-            set { _useDynamicVisibility = value; }
-        }
+        public bool UseDynamicVisibility { get; set; }
 
         #endregion
 
-        private void chkUseDynamicVisibility_CheckedChanged(object sender, EventArgs e)
-        {
-            _useDynamicVisibility = chkUseDynamicVisibility.Checked;
-            if (_layer != null) _layer.UseDynamicVisibility = chkUseDynamicVisibility.Checked;
-        }
+        #region Methods
 
-        private void btnGrabExtents_Click(object sender, EventArgs e)
+        private void BtnGrabExtentsClick(object sender, EventArgs e)
         {
             if (_layer != null)
             {
-                _dynamicVisibilityWidth = _layer.MapFrame.ViewExtents.Width;
-                _layer.DynamicVisibilityWidth = _dynamicVisibilityWidth;
+                DynamicVisibilityWidth = _layer.MapFrame.ViewExtents.Width;
+                _layer.DynamicVisibilityWidth = DynamicVisibilityWidth;
                 _layer.UseDynamicVisibility = true;
             }
             else
             {
-                _dynamicVisibilityWidth = _grabExtents.Width;
+                DynamicVisibilityWidth = GrabExtents.Width;
             }
-            if (_dialogProvider != null) _dialogProvider.CloseDropDown();
+
+            _dialogProvider?.CloseDropDown();
             Hide();
         }
+
+        private void ChkUseDynamicVisibilityCheckedChanged(object sender, EventArgs e)
+        {
+            UseDynamicVisibility = chkUseDynamicVisibility.Checked;
+            if (_layer != null) _layer.UseDynamicVisibility = chkUseDynamicVisibility.Checked;
+        }
+
+        #endregion
     }
 }

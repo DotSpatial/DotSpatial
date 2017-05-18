@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -34,16 +23,6 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        /// Given the current list of Maps or 3DMaps, it
-        /// rebuilds the treeview nodes
-        /// </summary>
-        void RefreshNodes();
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -51,17 +30,27 @@ namespace DotSpatial.Controls
         /// </summary>
         List<ILegendItem> RootNodes { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Adds a map frame as a root node, and links an event handler to update
         /// when the mapframe triggers an ItemChanged event.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">MapFrame that gets added.</param>
         void AddMapFrame(IFrame mapFrame);
+
+        /// <summary>
+        /// Given the current list of Maps or 3DMaps, it
+        /// rebuilds the treeview nodes
+        /// </summary>
+        void RefreshNodes();
 
         /// <summary>
         /// Removes the specified map frame if it is a root node.
         /// </summary>
-        /// <param name="mapFrame"></param>
+        /// <param name="mapFrame">MapFrame that gets removed.</param>
         /// <param name="preventRefresh">Boolean, if true, removing the map frame will not automatically force a refresh of the legend.</param>
         void RemoveMapFrame(IFrame mapFrame, bool preventRefresh);
 

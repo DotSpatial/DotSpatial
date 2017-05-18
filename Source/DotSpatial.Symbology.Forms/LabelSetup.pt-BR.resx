@@ -164,7 +164,7 @@
     <value>Evitar colisões</value>
   </data>
   <data name="chkPreventCollision.ToolTip" xml:space="preserve">
-    <value>Se esta opção estiver marcada, os rótulos de alta prioridade serão desenhados sobre rótulos de baixa prioridade.  Se estiver marcado, apenas o rótulo de maior prioridade de dois rótulos sobrepostos será colocado.</value>
+    <value>Se esta opção estiver marcada, os rótulos de alta prioridade serão desenhados sobre rótulos de baixa prioridade. Se estiver marcado, apenas o rótulo de maior prioridade de dois rótulos sobrepostos será colocado.</value>
   </data>
   <data name="lblPriorityField.Size" type="System.Drawing.Size, System.Drawing">
     <value>54, 13</value>
@@ -309,7 +309,7 @@
     <value>Aplicar</value>
   </data>
   <data name="lblHelp.Text" xml:space="preserve">
-    <value>Cada grupo de símbolo pode ter muitos membros. Use a aba membros para adicionar ou remover membros manualmente, ou com base de uma característica de um campo usado.  Se nenhum membro aparece na lista, você deve primeiro remover os rótulos de um grupo existente.</value>
+    <value>Cada grupo de símbolo pode ter muitos membros. Use a aba membros para adicionar ou remover membros manualmente, ou com base de uma característica de um campo usado. Se nenhum membro aparece na lista, você deve primeiro remover os rótulos de um grupo existente.</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

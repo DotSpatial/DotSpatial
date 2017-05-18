@@ -117,7 +117,7 @@ namespace DotSpatial.Controls
             this._layoutControl1.Name = "_layoutControl1";
             this._layoutControl1.ShowMargin = false;
             this._layoutControl1.Zoom = 0.3541667F;
-            this._layoutControl1.FilenameChanged += new System.EventHandler(this.layoutControl1_FilenameChanged);
+            this._layoutControl1.FilenameChanged += new System.EventHandler(this.LayoutControl1FilenameChanged);
             // 
             // _layoutDocToolStrip1
             // 
@@ -149,7 +149,7 @@ namespace DotSpatial.Controls
             this._layoutMenuStrip1.LayoutControl = this._layoutControl1;
             resources.ApplyResources(this._layoutMenuStrip1, "_layoutMenuStrip1");
             this._layoutMenuStrip1.Name = "_layoutMenuStrip1";
-            this._layoutMenuStrip1.CloseClicked += new System.EventHandler(this.layoutMenuStrip1_CloseClicked);
+            this._layoutMenuStrip1.CloseClicked += new System.EventHandler(this.LayoutMenuStrip1CloseClicked);
             // 
             // _layoutPropertyGrid1
             // 
@@ -171,7 +171,7 @@ namespace DotSpatial.Controls
             this.Controls.Add(this._layoutMenuStrip1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "LayoutForm";
-            this.Load += new System.EventHandler(this.LayoutForm_Load);
+            this.Load += new System.EventHandler(this.LayoutFormLoad);
             this._toolStripContainer1.ContentPanel.ResumeLayout(false);
             this._toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this._toolStripContainer1.TopToolStripPanel.PerformLayout();

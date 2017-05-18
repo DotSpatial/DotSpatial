@@ -1,24 +1,46 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/1/2010 2:12:57 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections;
 using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// SegmentRange
+    /// </summary>
     public class SegmentRange : IEnumerable<Segment>
     {
-        #region IEnumerable<Segment> Members
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SegmentRange"/> class.
+        /// </summary>
+        /// <param name="part">The part range.</param>
+        /// <param name="featureType">The feature type.</param>
+        public SegmentRange(PartRange part, FeatureType featureType)
+        {
+            FeatureType = featureType;
+            Part = part;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the feature type
+        /// </summary>
+        public FeatureType FeatureType { get; }
+
+        /// <summary>
+        /// Gets the part
+        /// </summary>
+        public PartRange Part { get; }
+
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc />
         public IEnumerator<Segment> GetEnumerator()
@@ -26,6 +48,10 @@ namespace DotSpatial.Data
             return new SegmentRangeEnumerator(this);
         }
 
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -33,25 +59,30 @@ namespace DotSpatial.Data
 
         #endregion
 
-        #region Nested type: SegmentRangeEnumerator
+        #region Classes
 
         /// <summary>
-        /// Cycles through the points, creating segments.  If the feature type is a polygon, then this will
+        /// Cycles through the points, creating segments. If the feature type is a polygon, then this will
         /// loop around again at the end of the part to create a segment from the first and last vertex.
         /// </summary>
         private class SegmentRangeEnumerator : IEnumerator<Segment>
         {
+            #region Fields
+
             private readonly int _numVertices;
             private readonly SegmentRange _range;
             private readonly int _start;
             private readonly double[] _verts;
-            private Segment _current;
             private int _index;
 
+            #endregion
+
+            #region Constructors
+
             /// <summary>
-            /// Creates a new enumerator given the SegmentRange
+            /// Initializes a new instance of the <see cref="SegmentRangeEnumerator"/> class.
             /// </summary>
-            /// <param name="parent"></param>
+            /// <param name="parent">The segment range.</param>
             public SegmentRangeEnumerator(SegmentRange parent)
             {
                 _range = parent;
@@ -61,20 +92,20 @@ namespace DotSpatial.Data
                 _verts = parent.Part.Vertices;
             }
 
-            #region IEnumerator<Segment> Members
+            #endregion
+
+            #region Properties
 
             /// <summary>
-            /// Gets the current segment
+            /// Gets the current segment.
             /// </summary>
-            public Segment Current
-            {
-                get { return _current; }
-            }
+            public Segment Current { get; private set; }
 
-            object IEnumerator.Current
-            {
-                get { return _current; }
-            }
+            object IEnumerator.Current => Current;
+
+            #endregion
+
+            #region Methods
 
             /// <summary>
             /// Does nothing
@@ -92,82 +123,42 @@ namespace DotSpatial.Data
                 _index++;
                 if (_index == 0)
                 {
-                    Vertex p1 = new Vertex(_verts[_start * 2], _verts[_start * 2 + 1]);
-                    Vertex p2 = new Vertex(_verts[_start * 2 + 2], _verts[_start * 2 + 3]);
-                    _current = new Segment(p1, p2);
+                    Vertex p1 = new Vertex(_verts[_start * 2], _verts[(_start * 2) + 1]);
+                    Vertex p2 = new Vertex(_verts[(_start * 2) + 2], _verts[(_start * 2) + 3]);
+                    Current = new Segment(p1, p2);
                     return true;
                 }
+
                 if (_index == _numVertices - 1)
                 {
                     // We have reached the last vertex, but if it is a polygon we wrap this around
                     if (_range.FeatureType != FeatureType.Polygon) return false;
-                    Vertex p1 = _current.P2;
-                    Vertex p2 = new Vertex(_verts[_start * 2], _verts[_start * 2 + 1]);
-                    _current = new Segment(p1, p2);
+
+                    Vertex p1 = Current.P2;
+                    Vertex p2 = new Vertex(_verts[_start * 2], _verts[(_start * 2) + 1]);
+                    Current = new Segment(p1, p2);
                     return true;
                 }
+
                 if (_index > 0 && _index < _numVertices - 1)
                 {
-                    Vertex p1 = _current.P2;
-                    Vertex p2 = new Vertex(_verts[2 * (_start + _index + 1)], _verts[2 * (_start + _index + 1) + 1]);
-                    _current = new Segment(p1, p2);
+                    Vertex p1 = Current.P2;
+                    Vertex p2 = new Vertex(_verts[2 * (_start + _index + 1)], _verts[(2 * (_start + _index + 1)) + 1]);
+                    Current = new Segment(p1, p2);
                     return true;
                 }
+
                 return false;
             }
 
             /// <inheritdoc />
             public void Reset()
             {
-                _current = null;
+                Current = null;
                 _index = -1;
             }
 
             #endregion
-        }
-
-        #endregion
-
-        #region Private Variables
-
-        private readonly FeatureType _featureType;
-        private readonly PartRange _part;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of SegmentSet
-        /// </summary>
-        public SegmentRange(PartRange part, FeatureType featureType)
-        {
-            _featureType = featureType;
-            _part = part;
-        }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the feature type
-        /// </summary>
-        public FeatureType FeatureType
-        {
-            get { return _featureType; }
-        }
-
-        /// <summary>
-        /// Gets the part
-        /// </summary>
-        public PartRange Part
-        {
-            get { return _part; }
         }
 
         #endregion

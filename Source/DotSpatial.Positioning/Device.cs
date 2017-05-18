@@ -1222,7 +1222,7 @@ namespace DotSpatial.Positioning
                     return DilutionOfPrecision.CurrentAverageDevicePrecision;
             }
 
-            //switch (_FixQuality)
+            // switch (_FixQuality)
             //{
             //    case FixQuality.NoFix:
             //        // In this case, there's no fix.  Return 6 meters * Maximum DOP (50)

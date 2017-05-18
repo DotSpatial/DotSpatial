@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/21/2009 3:34:26 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -24,8 +14,7 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// Creates a new instance of the SQLQueryControl
     /// </summary>
-    // ReSharper disable once InconsistentNaming
-    public partial class SQLQueryControl : UserControl
+    public partial class SqlQueryControl : UserControl
     {
         #region Fields
 
@@ -37,9 +26,9 @@ namespace DotSpatial.Symbology.Forms
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the control with no fields specified.
+        /// Initializes a new instance of the <see cref="SqlQueryControl"/> class.
         /// </summary>
-        public SQLQueryControl()
+        public SqlQueryControl()
         {
             InitializeComponent();
         }
@@ -58,13 +47,17 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Setting this is an alternative to specifying the table.  This allows the
+        /// Gets or sets the attribute source. Setting this is an alternative to specifying the table. This allows the
         /// query control to build a query using pages of data instead of the whole
         /// table at once.
         /// </summary>
         public IAttributeSource AttributeSource
         {
-            get { return _attributeSource; }
+            get
+            {
+                return _attributeSource;
+            }
+
             set
             {
                 _attributeSource = value;
@@ -77,8 +70,15 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public string ExpressionText
         {
-            get { return rtbFilterText.Text.Trim(); }
-            set { rtbFilterText.Text = value; }
+            get
+            {
+                return rtbFilterText.Text.Trim();
+            }
+
+            set
+            {
+                rtbFilterText.Text = value;
+            }
         }
 
         /// <summary>
@@ -87,7 +87,11 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public DataTable Table
         {
-            get { return _table; }
+            get
+            {
+                return _table;
+            }
+
             set
             {
                 _table = value;
@@ -100,30 +104,87 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public override string Text
         {
-            get { return rtbFilterText.Text.Trim(); }
-            set { rtbFilterText.Text = value; }
+            get
+            {
+                return rtbFilterText.Text.Trim();
+            }
+
+            set
+            {
+                rtbFilterText.Text = value;
+            }
         }
 
         #endregion
 
         #region Methods
 
-        private void btnAnd_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Validates the expression.
+        /// </summary>
+        /// <returns>True, if Expression is valid.</returns>
+        public bool ValidateExpression()
+        {
+            try
+            {
+                if (_attributeSource != null)
+                    _attributeSource.GetCounts(new[] { rtbFilterText.Text }, null, 1);
+                else
+                    _table?.Select(rtbFilterText.Text);
+            }
+            catch (Exception e)
+            {
+                lblResult.Text = e.Message;
+                lblResult.ForeColor = Color.Red;
+                return false;
+            }
+
+            lblResult.Text = SymbologyFormsMessageStrings.SQLQueryControl_ExpressionIsValid;
+            lblResult.ForeColor = Color.Black;
+            return true;
+        }
+
+        private static void GetMinMax(IEnumerable<DataRow> rows, string field, ref IComparable min, ref IComparable max)
+        {
+            foreach (var dr in rows)
+            {
+                if (dr[field] is DBNull) continue;
+                if (min == null)
+                {
+                    min = dr[field] as IComparable;
+                }
+                else
+                {
+                    if (min.CompareTo(dr[field]) > 0) min = dr[field] as IComparable;
+                }
+
+                if (max == null)
+                {
+                    max = dr[field] as IComparable;
+                }
+                else
+                {
+                    if (max.CompareTo(dr[field]) < 0) max = dr[field] as IComparable;
+                }
+            }
+        }
+
+        private void BtnAndClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "AND ";
         }
 
-        private void btnAsterix_Click(object sender, EventArgs e)
+        private void BtnAsterixClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "*";
         }
 
-        private void btnEquals_Click(object sender, EventArgs e)
+        private void BtnEqualsClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "= ";
         }
 
-        private void btnGetUniqueValues_Click(object sender, EventArgs e)
+        private void BtnGetUniqueValuesClick(object sender, EventArgs e)
         {
             // Sorting should be done as the original objects, not as strings.
             var lst = new HashSet<object>();
@@ -132,7 +193,7 @@ namespace DotSpatial.Symbology.Forms
             bool isString = true;
             if (_attributeSource != null)
             {
-                isString = (_attributeSource.GetColumn(fieldName).DataType == typeof(string));
+                isString = _attributeSource.GetColumn(fieldName).DataType == typeof(string);
                 int numPages = (int)Math.Ceiling((double)_attributeSource.NumRows() / 10000);
                 for (int page = 0; page < numPages; page++)
                 {
@@ -143,9 +204,9 @@ namespace DotSpatial.Symbology.Forms
                         if (lst.Contains(dr[fieldName])) continue;
                         lst.Add(dr[fieldName]);
                     }
+
                     if (lst.Count <= 10000 || useAll) continue;
-                    if (MessageBox.Show(SymbologyFormsMessageStrings.SQLQueryControl_MoreThan10000UniqueValues,
-                                        SymbologyFormsMessageStrings.SQLQueryControl_LargeNumberOfUniqueValues, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show(SymbologyFormsMessageStrings.SQLQueryControl_MoreThan10000UniqueValues, SymbologyFormsMessageStrings.SQLQueryControl_LargeNumberOfUniqueValues, MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         useAll = true;
                     }
@@ -157,7 +218,7 @@ namespace DotSpatial.Symbology.Forms
             }
             else if (_table != null)
             {
-                isString = (_table.Columns[fieldName].DataType == typeof(string));
+                isString = _table.Columns[fieldName].DataType == typeof(string);
                 foreach (DataRow dr in _table.Rows)
                 {
                     if (dr[fieldName] is DBNull) continue;
@@ -179,6 +240,7 @@ namespace DotSpatial.Symbology.Forms
                     text[i++] = o.ToString();
                 }
             }
+
             lbxUniqueValues.SuspendLayout();
             lbxUniqueValues.Items.Clear();
             lbxUniqueValues.Items.AddRange(text);
@@ -188,42 +250,42 @@ namespace DotSpatial.Symbology.Forms
             btnGetUniqueValues.Enabled = false;
         }
 
-        private void btnGreaterThan_Click(object sender, EventArgs e)
+        private void BtnGreaterThanClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "> ";
         }
 
-        private void btnGreaterThanOrEqual_Click(object sender, EventArgs e)
+        private void BtnGreaterThanOrEqualClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = ">= ";
         }
 
-        private void btnLessThan_Click(object sender, EventArgs e)
+        private void BtnLessThanClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "< ";
         }
 
-        private void btnLessThanOrEqual_Click(object sender, EventArgs e)
+        private void BtnLessThanOrEqualClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "<= ";
         }
 
-        private void btnLike_Click(object sender, EventArgs e)
+        private void BtnLikeClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "LIKE ";
         }
 
-        private void btnNot_Click(object sender, EventArgs e)
+        private void BtnNotClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "NOT ";
         }
 
-        private void btnNotEqual_Click(object sender, EventArgs e)
+        private void BtnNotEqualClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "<> ";
         }
 
-        private void btnNotNull_Click(object sender, EventArgs e)
+        private void BtnNotNullClick(object sender, EventArgs e)
         {
             string str = rtbFilterText.SelectedText;
             if (str.Length == 0)
@@ -239,58 +301,34 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private void btnNull_Click(object sender, EventArgs e)
+        private void BtnNullClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = " is Null";
         }
 
-        private void btnOr_Click(object sender, EventArgs e)
+        private void BtnOrClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "OR ";
         }
 
-        private void btnParenthasis_Click(object sender, EventArgs e)
+        private void BtnParenthasisClick(object sender, EventArgs e)
         {
             string str = rtbFilterText.SelectedText;
             str = "(" + str + ")";
             rtbFilterText.SelectedText = str;
         }
 
-        private void btnValidate_Click(object sender, EventArgs e)
+        private void BtnValidateClick(object sender, EventArgs e)
         {
             ValidateExpression();
         }
 
-        private static void GetMinMax(IEnumerable<DataRow> rows, string field, ref IComparable min, ref IComparable max)
-        {
-            foreach (var dr in rows)
-            {
-                if ((dr[field] is DBNull)) continue;
-                if (min == null)
-                {
-                    min = dr[field] as IComparable;
-                }
-                else
-                {
-                    if (min.CompareTo(dr[field]) > 0) min = dr[field] as IComparable;
-                }
-                if (max == null)
-                {
-                    max = dr[field] as IComparable;
-                }
-                else
-                {
-                    if (max.CompareTo(dr[field]) < 0) max = dr[field] as IComparable;
-                }
-            }
-        }
-
-        private void lbxFields_DoubleClick(object sender, EventArgs e)
+        private void LbxFieldsDoubleClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = "[" + lbxFields.SelectedItem + "] ";
         }
 
-        private void lbxFields_SelectedIndexChanged(object sender, EventArgs e)
+        private void LbxFieldsSelectedIndexChanged(object sender, EventArgs e)
         {
             btnGetUniqueValues.Enabled = true;
             string field = lbxFields.SelectedItem as string;
@@ -308,22 +346,24 @@ namespace DotSpatial.Symbology.Forms
                     GetMinMax(table.Rows.Cast<DataRow>(), field, ref min, ref max);
                 }
             }
+
             if (_table != null)
             {
                 GetMinMax(_table.Rows.Cast<DataRow>(), field, ref min, ref max);
             }
+
             if (min != null) lblMin.Text = min.ToString();
             if (max != null) lblMax.Text = max.ToString();
         }
 
-        private void lbxUniqueValues_DoubleClick(object sender, EventArgs e)
+        private void LbxUniqueValuesDoubleClick(object sender, EventArgs e)
         {
             rtbFilterText.SelectedText = lbxUniqueValues.SelectedItem + " ";
         }
 
-        private void rtbFilterText_TextChanged(object sender, EventArgs e)
+        private void RtbFilterTextTextChanged(object sender, EventArgs e)
         {
-            if (ExpressionTextChanged != null) ExpressionTextChanged(this, EventArgs.Empty);
+            ExpressionTextChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void UpdateFields()
@@ -345,31 +385,8 @@ namespace DotSpatial.Symbology.Forms
                     lbxFields.Items.Add(dc.ColumnName);
                 }
             }
-            lbxFields.ResumeLayout();
-        }
 
-        /// <summary>
-        /// Validates the expression.
-        /// </summary>
-        /// <returns>True, if Expression is valid.</returns>
-        public bool ValidateExpression()
-        {
-            try
-            {
-                if (_attributeSource != null)
-                    _attributeSource.GetCounts(new[] { rtbFilterText.Text }, null, 1);
-                else if (_table != null)
-                    _table.Select(rtbFilterText.Text);
-            }
-            catch (Exception e)
-            {
-                lblResult.Text = e.Message;
-                lblResult.ForeColor = Color.Red;
-                return false;
-            }
-            lblResult.Text = SymbologyFormsMessageStrings.SQLQueryControl_ExpressionIsValid;
-            lblResult.ForeColor = Color.Black;
-            return true;
+            lbxFields.ResumeLayout();
         }
 
         #endregion

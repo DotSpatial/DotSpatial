@@ -299,7 +299,7 @@ namespace DotSpatial.Positioning
                      */
 
                     Device device = null;
-                    //Stream stream = null;
+                    // Stream stream = null;
                     Exception connectionException = null;
 
                     #region Pass 1: Look for a device with an open connection

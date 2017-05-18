@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/2/2009 9:46:34 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Drawing;
@@ -17,18 +7,11 @@ using System.Globalization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for CharacterSymbol.
+    /// </summary>
     public interface ICharacterSymbol : ISymbol, IColorable
     {
-        #region Methods
-
-        /// <summary>
-        /// Gets the string equivalent of the specified character code.
-        /// </summary>
-        /// <returns>A string version of the character</returns>
-        string ToString();
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -44,14 +27,14 @@ namespace DotSpatial.Symbology
         char Character { get; set; }
 
         /// <summary>
-        /// Unicode characters consist of 2 bytes.  This represents the first byte,
+        /// Gets or sets the character set. Unicode characters consist of 2 bytes. This represents the first byte,
         /// which can be thought of as specifying a typeset.
         /// </summary>
         [Description("Gets or sets the upper unicode byte, or character set.")]
         byte CharacterSet { get; set; }
 
         /// <summary>
-        /// Gets or sets the byte code for the lower 256 values.  This represents the
+        /// Gets or sets the byte code for the lower 256 values. This represents the
         /// specific character in a given "typeset" range.
         /// </summary>
         /// <remarks>
@@ -72,6 +55,16 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Description("Gets or sets the font style to use for this character layer.")]
         FontStyle Style { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets the string equivalent of the specified character code.
+        /// </summary>
+        /// <returns>A string version of the character</returns>
+        string ToString();
 
         #endregion
     }

@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/1/2009 3:10:20 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -23,14 +13,14 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class PointFConverter : ExpandableObjectConverter
     {
-        #region Protected Methods
+        #region Methods
 
         /// <summary>
-        /// Boolean, true if the source type is a string
+        /// Boolean, true if the source type is a string.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="sourceType"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <param name="sourceType">The source type.</param>
+        /// <returns>True, if the given type can be converted to PointF.</returns>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (sourceType == typeof(string)) return true;
@@ -40,17 +30,17 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Converts the specified string into a PointF
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="culture"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <param name="culture">The culture info.</param>
+        /// <param name="value">The PointF.</param>
+        /// <returns>The converted value</returns>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value is string)
+            var s = value as string;
+            if (s != null)
             {
                 try
                 {
-                    string s = (string)value;
                     string[] converterParts = s.Split(',');
                     float x;
                     float y;
@@ -69,6 +59,7 @@ namespace DotSpatial.Symbology.Forms
                         x = 0F;
                         y = 0F;
                     }
+
                     return new PointF(x, y);
                 }
                 catch
@@ -76,27 +67,29 @@ namespace DotSpatial.Symbology.Forms
                     throw new ArgumentException("Cannot convert [" + value + "] to pointF");
                 }
             }
+
             return base.ConvertFrom(context, culture, value);
         }
 
         /// <summary>
         /// Converts the PointF into a string
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="culture"></param>
-        /// <param name="value"></param>
-        /// <param name="destinationType"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <param name="culture">The culture info.</param>
+        /// <param name="value">The PointF.</param>
+        /// <param name="destinationType">The destination type.</param>
+        /// <returns>The converted value.</returns>
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {
-                if (value.GetType() == typeof(PointF))
+                if (value is PointF)
                 {
                     PointF pt = (PointF)value;
                     return string.Format("{0}, {1}", pt.X, pt.Y);
                 }
             }
+
             return base.ConvertTo(context, culture, value, destinationType);
         }
 

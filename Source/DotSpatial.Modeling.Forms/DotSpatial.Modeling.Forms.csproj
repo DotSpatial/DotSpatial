@@ -28,8 +28,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\DotSpatial.Modeling.Forms.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\DotSpatial.Modeling.Forms.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -67,16 +68,88 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Elements\BooleanElement.Designer.cs">
+      <DependentUpon>BooleanElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\DateTimeElement.Designer.cs">
+      <DependentUpon>DateTimeElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\DialogElement.Designer.cs">
+      <DependentUpon>DialogElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\DialogSpacerElement.Designer.cs">
+      <DependentUpon>DialogSpacerElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\DoubleElement.Designer.cs">
+      <DependentUpon>DoubleElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Elements\ExtentElement.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DataSetArray.cs" />
+    <Compile Include="Elements\ExtentElement.Designer.cs">
+      <DependentUpon>ExtentElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\FeatureSetElement.Designer.cs">
+      <DependentUpon>FeatureSetElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\FeatureSetElementOut.Designer.cs">
+      <DependentUpon>FeatureSetElementOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\IndexElement.Designer.cs">
+      <DependentUpon>IndexElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\IntElement.Designer.cs">
+      <DependentUpon>IntElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\LineElement.Designer.cs">
+      <DependentUpon>LineElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\LineElementOut.Designer.cs">
+      <DependentUpon>LineElementOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\ListElement.Designer.cs">
+      <DependentUpon>ListElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\OpenFileElement.Designer.cs">
+      <DependentUpon>OpenFileElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\PointElement.Designer.cs">
+      <DependentUpon>PointElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\PointElementOut.Designer.cs">
+      <DependentUpon>PointElementOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\PolygonElement.Designer.cs">
+      <DependentUpon>PolygonElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\PolygonElementOut.Designer.cs">
+      <DependentUpon>PolygonElementOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\ProjectionElement.Designer.cs">
+      <DependentUpon>ProjectionElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\RasterElement.Designer.cs">
+      <DependentUpon>RasterElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\RasterElementOut.Designer.cs">
+      <DependentUpon>RasterElementOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\SaveFileElement.Designer.cs">
+      <DependentUpon>SaveFileElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\StringElement.Designer.cs">
+      <DependentUpon>StringElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Images.Designer.cs">
       <DependentUpon>Images.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="ITool.cs" />
+    <Compile Include="ModelerMenuStrip.Designer.cs">
+      <DependentUpon>ModelerMenuStrip.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModelingMessageStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -114,6 +187,9 @@
     </Compile>
     <Compile Include="Elements\DoubleElement.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ToolProgress.Designer.cs">
+      <DependentUpon>ToolProgress.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolStatus.cs" />
     <Compile Include="Elements\FeatureSetElement.cs">
@@ -284,6 +360,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AddLayer.png" />
@@ -325,6 +404,11 @@
       <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
       <Name>DotSpatial.Symbology</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

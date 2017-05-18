@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.OpenFileParam
-// Description:  Double Parameters returned by an ITool allows the tool to specify a range and default value
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Teva Veluppillai. Created in Feb, 2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.IO;
@@ -23,8 +12,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class FileParam : Parameter
     {
+        #region  Constructors
+
         /// <summary>
-        /// Creates a new Feature Set Parameter
+        /// Initializes a new instance of the <see cref="FileParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="filter">The string dialog filter to use.</param>
@@ -37,7 +28,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new Feature Set Parameter
+        /// Initializes a new instance of the <see cref="FileParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public FileParam(string name)
@@ -48,7 +39,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new Feature Set Parameter
+        /// Initializes a new instance of the <see cref="FileParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">A TextFile</param>
@@ -60,17 +51,25 @@ namespace DotSpatial.Modeling.Forms.Parameters
             Value = value;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the filter expression to limit extensions that can be used for this FileParam.
         /// </summary>
         public string DialogFilter { get; set; }
 
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input)
         /// </summary>
         public new TextFile Value
         {
-            get { return (TextFile)base.Value; }
+            get
+            {
+                return (TextFile)base.Value;
+            }
+
             set
             {
                 base.Value = value;
@@ -78,39 +77,35 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Generates a default instance of the data type so that tools have something to write too
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path of the generated text file.</param>
         public override void GenerateDefaultOutput(string path)
         {
             TextFile addedTextFile = new TextFile
-                                     {
-                                         Filename =
-                                             Path.GetDirectoryName(path) +
-                                             Path.DirectorySeparatorChar + ModelName
-                                     };
+                                         {
+                                             Filename = Path.GetDirectoryName(path) + Path.DirectorySeparatorChar + ModelName
+                                         };
             Value = addedTextFile;
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualize INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new OpenFileElement(this, dataSets));
+            return new OpenFileElement(this, dataSets);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualize OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new SaveFileElement(this, dataSets));
+            return new SaveFileElement(this, dataSets);
         }
+
+        #endregion
     }
 }

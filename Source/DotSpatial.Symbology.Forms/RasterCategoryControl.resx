@@ -296,7 +296,7 @@
     <value>24</value>
   </data>
   <data name="dbxElevationFactor.ToolTip" xml:space="preserve">
-    <value>This factor defaults to a value that converts feet into degrees of latitude and longitude.  If your elevation and projection are the same unit, this should be 1.  If your elevation is in feet but your projection is meters, this should be about .3048</value>
+    <value>This factor defaults to a value that converts feet into degrees of latitude and longitude. If your elevation and projection are the same unit, this should be 1. If your elevation is in feet but your projection is meters, this should be about .3048</value>
   </data>
   <data name="&gt;&gt;dbxElevationFactor.Name" xml:space="preserve">
     <value>dbxElevationFactor</value>

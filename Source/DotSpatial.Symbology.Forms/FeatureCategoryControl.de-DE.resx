@@ -275,7 +275,7 @@
     <value>182, 158</value>
   </data>
   <data name="dgvStatistics.ToolTip" xml:space="preserve">
-    <value>Beschreibt die zusammenfassenden Statistiken für die Werte im Feld.  Das könnte nur eine repräsentative Stichprobe.</value>
+    <value>Beschreibt die zusammenfassenden Statistiken für die Werte im Feld. Das könnte nur eine repräsentative Stichprobe.</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 10</value>

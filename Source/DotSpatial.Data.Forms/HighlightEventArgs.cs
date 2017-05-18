@@ -1,39 +1,24 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  A library module for the DotSpatial geospatial framework for .Net.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/13/2008 1:12:13 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// HighlightEventArgs
+    /// Indicates whether the control is now highlighted.
     /// </summary>
     public class HighlightEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private bool _isHighlighted;
-
-        #endregion
-
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of HighlightEventArgs
+        /// Initializes a new instance of the <see cref="HighlightEventArgs"/> class.
         /// </summary>
+        /// <param name="isHighlighted">Indicates whether the control is now highlighted.</param>
         public HighlightEventArgs(bool isHighlighted)
         {
-            _isHighlighted = isHighlighted;
+            IsHighlighted = isHighlighted;
         }
 
         #endregion
@@ -41,13 +26,9 @@ namespace DotSpatial.Data.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets whether or not the control is now highlighted
+        /// Gets or sets a value indicating whether or not the control is now highlighted.
         /// </summary>
-        public bool IsHighlighted
-        {
-            get { return _isHighlighted; }
-            protected set { _isHighlighted = value; }
-        }
+        public bool IsHighlighted { get; protected set; }
 
         #endregion
     }

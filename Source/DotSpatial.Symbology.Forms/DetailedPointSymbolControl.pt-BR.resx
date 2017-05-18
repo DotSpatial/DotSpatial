@@ -320,13 +320,13 @@
 		<value>Personalizado</value>
 	</data>
 	<data name="cmbStrokeStyle.ToolTip" xml:space="preserve">
-		<value>Permite que alguns estilos de traço simples.  Para estilos mais complexos, selecione traços cartográficos.</value>
+		<value>Permite que alguns estilos de traço simples. Para estilos mais complexos, selecione traços cartográficos.</value>
 	</data>
 	<data name="dblWidth.Caption" xml:space="preserve">
 		<value>Largura:</value>
 	</data>
 	<data name="dblWidth.ToolTip" xml:space="preserve">
-		<value>Defina a largura do traço.  O modo de escala determina as unidades de medida.</value>
+		<value>Defina a largura do traço. O modo de escala determina as unidades de medida.</value>
 	</data>
 	<data name="lblColorCartographic.Text" xml:space="preserve">
 		<value>Cor:</value>
@@ -398,7 +398,7 @@
 		<value>O número de posições:</value>
 	</data>
 	<data name="nudDecorationCount.ToolTip" xml:space="preserve">
-		<value>Os dois primeiros são desenhados sobre os locais de início e de término.  Depois disso, a linha é dividida uniformemente.</value>
+		<value>Os dois primeiros são desenhados sobre os locais de início e de término. Depois disso, a linha é dividida uniformemente.</value>
 	</data>
 	<data name="radRotationFixed.Text" xml:space="preserve">
 		<value>Manter o símbolo de ângulo fixo a página</value>

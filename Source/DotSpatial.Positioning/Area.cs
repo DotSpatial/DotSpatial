@@ -2041,7 +2041,7 @@ namespace DotSpatial.Positioning
                 format = "G";
 
             string subFormat;
-            //Dim IsDecimalHandled As Boolean
+            // Dim IsDecimalHandled As Boolean
             try
             {
                 // Use the default if "g" is passed
@@ -2205,7 +2205,7 @@ namespace DotSpatial.Positioning
                 throw new ArgumentException(Resources.Area_InvalidFormat, "format", ex);
 #endif
             }
-            //catch
+            // catch
             //{
             //    throw new ArgumentException(Properties.Resources.Area_InvalidFormat), "format");
             //}

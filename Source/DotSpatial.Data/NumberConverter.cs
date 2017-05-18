@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 9/7/2008 10:27:12 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -24,109 +14,132 @@ namespace DotSpatial.Data
     /// </summary>
     public class NumberConverter
     {
+        #region Fields
+
         /// <summary>
-        /// Numbers can contain ASCII text up till 18 characters long, but no longer
+        /// Numbers can contain ASCII text up till 18 characters long, but no longer.
         /// </summary>
         public const int MaximumLength = 18;
-        ///<summary>
+
+        /// <summary>
         /// Format provider to use to convert DBF numbers to strings and characters
-        ///</summary>
+        /// </summary>
         public static readonly IFormatProvider NumberConversionFormatProvider = CultureInfo.GetCultureInfo("en-US");
 
-        #region Private Variables
-
-        private static readonly Random _rnd = new Random();
+        private static readonly Random Rnd = new Random();
         private int _decimalCount; // when the number is treated like a string, this is the number of recorded values after the decimal, plus one digit in front of the decimal.
-        private int _length; // when the number is treated like a string, this is the total length, including minus signs and decimals.
 
         #endregion
 
         #region Constructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NumberConverter"/> class.
         /// Creates a new instance of NumberConverter where the length and decimal count are known.
         /// </summary>
+        /// <param name="inLength">The length.</param>
+        /// <param name="inDecimalCount">The decimal count.</param>
         public NumberConverter(int inLength, int inDecimalCount)
         {
-            _length = inLength;
+            Length = inLength;
 
             _decimalCount = inDecimalCount;
-            if (_length < 4)
+            if (Length < 4)
             {
                 _decimalCount = 0;
             }
-            else if (_decimalCount > _length - 3)
+            else if (_decimalCount > Length - 3)
             {
-                _decimalCount = _length - 3;
+                _decimalCount = Length - 3;
             }
+
             UpdateDecimalFormatString();
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NumberConverter"/> class.
         /// Cycles through the numeric values in the specified column and determines a selection of
         /// length and decimal count can accurately store the data.
         /// </summary>
-        /// <exception cref="NumberException"/>
+        /// <param name="values">The values.</param>
+        /// <exception cref="NumberException">If the value was to small or lage to be encode with 18 ASCII characters.</exception>
         public NumberConverter(IList<double> values)
         {
             int maxExp = 0;
             int minExp = 0;
-            for (int i = 0; i < values.Count; i++)
+            foreach (double value in values)
             {
-                int exp = (int)Math.Log10(Math.Abs(values[i]));
+                int exp = (int)Math.Log10(Math.Abs(value));
                 if (exp > MaximumLength - 1)
                 {
-                    throw new NumberException(DataStrings.NumberException_TooLarge_S.Replace("%S", values[i].ToString()));
+                    throw new NumberException(string.Format(DataStrings.NumberException_TooLarge_S, value));
                 }
+
                 if (exp < -(MaximumLength - 1))
                 {
-                    throw new NumberException(DataStrings.NumberException_TooSmall_S.Replace("%S", values[i].ToString()));
+                    throw new NumberException(string.Format(DataStrings.NumberException_TooSmall_S, value));
                 }
+
                 if (exp > maxExp) maxExp = exp;
                 if (exp < minExp) minExp = exp;
                 if (exp < MaximumLength - 2) continue;
+
                 // If this happens, we know that we need all the characters for values greater than 1, so no characters are left
                 // for storing both the decimal itself and the numbers beyond the decimal.
-                _length = MaximumLength;
+                Length = MaximumLength;
                 _decimalCount = 0;
                 UpdateDecimalFormatString();
                 return;
             }
+
             UpdateDecimalFormatString();
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the decimal count to use for this number converter
+        /// </summary>
+        public int DecimalCount
+        {
+            get
+            {
+                return _decimalCount;
+            }
+
+            set
+            {
+                _decimalCount = value;
+                UpdateDecimalFormatString();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the format string used to convert doubles, floats, and decimals to strings
+        /// </summary>
+        public string DecimalFormatString { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length.
+        /// </summary>
+        public int Length { get; set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Creates a new, random double that is constrained by the specified length and decimal count.
+        /// Converts from a string, or 0 if the parse failed.
         /// </summary>
-        /// <returns></returns>
-        public double RandomDouble()
+        /// <param name="value">The string value to parse</param>
+        /// <returns>The parse result.</returns>
+        public double FromString(string value)
         {
-            string test = new string(RandomChars(14));
-            return double.Parse(test);
-        }
-
-        /// <summary>
-        /// Creates a new, random float that is constrained by the specified length and decimal count.
-        /// </summary>
-        /// <returns>A new float.  Floats can only store about 8 digits of precision, so specifying a high </returns>
-        public float RandomFloat()
-        {
-            string test = new string(RandomChars(6));
-            return float.Parse(test);
-        }
-
-        /// <summary>
-        /// Creates a new, random decimal that is constrained by the specified length and decimal count.
-        /// </summary>
-        /// <returns></returns>
-        public decimal RandomDecimal()
-        {
-            string test = new string(RandomChars(16));
-            return decimal.Parse(test);
+            double result;
+            double.TryParse(value, out result);
+            return result;
         }
 
         /// <summary>
@@ -136,20 +149,21 @@ namespace DotSpatial.Data
         /// <returns>A character array of that matches the length and decimal count specified by this properties on this number converter</returns>
         public char[] RandomChars(int numDigits)
         {
-            if (numDigits > _length - 1)
+            if (numDigits > Length - 1)
             {
-                numDigits = _length - 1; // crop digits to length (reserve one spot for negative sign)
+                numDigits = Length - 1; // crop digits to length (reserve one spot for negative sign)
             }
-            else if (numDigits < _length - 2)
+            else if (numDigits < Length - 2)
             {
                 if (_decimalCount > 0 && numDigits >= _decimalCount) numDigits += 1; // extend digits by decimal
             }
-            bool isNegative = (_rnd.Next(0, 1) == 0);
 
-            char[] c = new char[_length];
+            bool isNegative = Rnd.Next(0, 1) == 0;
+
+            char[] c = new char[Length];
 
             // i represents the distance from the end, moving backwards
-            for (int i = 0; i < _length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (_decimalCount > 0 && i == _decimalCount - 2)
                 {
@@ -157,7 +171,7 @@ namespace DotSpatial.Data
                 }
                 else if (i < numDigits)
                 {
-                    c[i] = (char)_rnd.Next(48, 57);
+                    c[i] = (char)Rnd.Next(48, 57);
                 }
                 else if (i < _decimalCount - 2)
                 {
@@ -168,24 +182,74 @@ namespace DotSpatial.Data
                     c[i] = ' ';
                 }
             }
+
             if (isNegative)
             {
                 c[numDigits] = '-';
             }
+
             Array.Reverse(c);
             return c;
         }
 
         /// <summary>
-        /// Converts from a string, or 0 if the parse failed
+        /// Creates a new, random decimal that is constrained by the specified length and decimal count.
         /// </summary>
-        /// <param name="value">The string value to parse</param>
-        /// <returns></returns>
-        public double FromString(string value)
+        /// <returns>The created random decimal.</returns>
+        public decimal RandomDecimal()
         {
-            double result;
-            double.TryParse(value, out result);
-            return result;
+            string test = new string(RandomChars(16));
+            return decimal.Parse(test);
+        }
+
+        /// <summary>
+        /// Creates a new, random double that is constrained by the specified length and decimal count.
+        /// </summary>
+        /// <returns>The created random double.</returns>
+        public double RandomDouble()
+        {
+            string test = new string(RandomChars(14));
+            return double.Parse(test);
+        }
+
+        /// <summary>
+        /// Creates a new, random float that is constrained by the specified length and decimal count.
+        /// </summary>
+        /// <returns>A new float. Floats can only store about 8 digits of precision, so specifying a high </returns>
+        public float RandomFloat()
+        {
+            string test = new string(RandomChars(6));
+            return float.Parse(test);
+        }
+
+        /// <summary>
+        /// Converts the specified decimal value to a string that can be used for the number field
+        /// </summary>
+        /// <param name="number">The decimal value to convert to a string</param>
+        /// <returns>A string version of the specified number</returns>
+        public char[] ToChar(double number)
+        {
+            return ToCharInternal(number);
+        }
+
+        /// <summary>
+        /// Converts the specified decimal value to a string that can be used for the number field
+        /// </summary>
+        /// <param name="number">The decimal value to convert to a string</param>
+        /// <returns>A string version of the specified number</returns>
+        public char[] ToChar(float number)
+        {
+            return ToCharInternal(number);
+        }
+
+        /// <summary>
+        /// Converts the specified decimal value to a string that can be used for the number field
+        /// </summary>
+        /// <param name="number">The decimal value to convert to a string</param>
+        /// <returns>A string version of the specified number</returns>
+        public char[] ToChar(decimal number)
+        {
+            return ToCharInternal(number);
         }
 
         /// <summary>
@@ -218,72 +282,6 @@ namespace DotSpatial.Data
             return ToStringInternal(number);
         }
 
-
-        /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
-        /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
-        public char[] ToChar(double number)
-        {
-            return ToCharInternal(number);
-        }
-
-        /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
-        /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
-        public char[] ToChar(float number)
-        {
-            return ToCharInternal(number);
-        }
-
-        /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
-        /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
-        public char[] ToChar(decimal number)
-        {
-            return ToCharInternal(number);
-        }
-
-        private char[] ToCharInternal(object number)
-        {
-            char[] c = new char[_length];
-            string str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
-            if (str.Length >= _length)
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    c[i] = str[i]; // keep the left characters, and chop off lesser characters
-                }
-            }
-            else
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    int ci = i - (_length - str.Length);
-                    c[i] = ci < 0 ? ' ' : str[ci];
-                }
-            }
-            return c;
-        }
-
-        private string ToStringInternal(object number)
-        {
-            var sb = new StringBuilder();
-            var str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
-            for (var i = 0; i < _length - str.Length; i++)
-            {
-                sb.Append(' ');
-            }
-            sb.Append(str);
-            return sb.ToString();
-        }
-
-       
         /// <summary>
         /// Compute and update the DecimalFormatString from the precision specifier
         /// </summary>
@@ -292,43 +290,48 @@ namespace DotSpatial.Data
             string format = "{0:";
             for (int i = 0; i < _decimalCount; i++)
             {
-                if (i == 0)
-                    format = format + "0.";
+                if (i == 0) format = format + "0.";
                 format = format + "0";
             }
+
             DecimalFormatString = format + "}";
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or set the length
-        /// </summary>
-        public int Length
+        private char[] ToCharInternal(object number)
         {
-            get { return _length; }
-            set { _length = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the decimal count to use for this number converter
-        /// </summary>
-        public int DecimalCount
-        {
-            get { return _decimalCount; }
-            set
+            char[] c = new char[Length];
+            string str = string.Format(NumberConversionFormatProvider, DecimalFormatString, number);
+            if (str.Length >= Length)
             {
-                _decimalCount = value;
-                UpdateDecimalFormatString();
+                for (int i = 0; i < Length; i++)
+                {
+                    c[i] = str[i]; // keep the left characters, and chop off lesser characters
+                }
             }
+            else
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    int ci = i - (Length - str.Length);
+                    c[i] = ci < 0 ? ' ' : str[ci];
+                }
+            }
+
+            return c;
         }
 
-        /// <summary>
-        /// Gets or sets the format string used to convert doubles, floats, and decimals to strings
-        /// </summary>
-        public string DecimalFormatString { get; set; }
+        private string ToStringInternal(object number)
+        {
+            var sb = new StringBuilder();
+            var str = string.Format(NumberConversionFormatProvider, DecimalFormatString, number);
+            for (var i = 0; i < Length - str.Length; i++)
+            {
+                sb.Append(' ');
+            }
+
+            sb.Append(str);
+            return sb.ToString();
+        }
 
         #endregion
     }

@@ -1,34 +1,36 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/25/2008 9:34:48 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// |   Ted Dunsford       |  6/30/2010  |  Moved to DotSpatial
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// The AffineTransform class represents a 2D affine transform that performs a linear mapping from 2D coordinates to other 2D coordinates that preserves
+    /// the "straightness" and "parallelness" of lines. Affine transformations can be constructed using sequences of translations, scales, flips, rotations, and shears.
+    /// </summary>
     public class AffineTransform
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of AffineTransform
+        /// Initializes a new instance of the <see cref="AffineTransform"/> class with the 6 specifiable entries of the 3x3 transformation matrix.
         /// </summary>
+        /// <param name="inCoefficients">An array with the 6 specifiable entries of the 3x3 transformation matrix.</param>
         public AffineTransform(double[] inCoefficients)
         {
             Coefficients = inCoefficients;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the array of coefficients for this transform.
+        /// </summary>
+        public double[] Coefficients { get; set; }
 
         #endregion
 
@@ -41,7 +43,7 @@ namespace DotSpatial.Data
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the center of the specified cell</returns>
-        public Coordinate CellCenter_ToProj(int row, int column)
+        public Coordinate CellCenterToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * column + Coefficients[2] * row;
             double y = Coefficients[3] + Coefficients[4] * column + Coefficients[5] * row;
@@ -54,7 +56,7 @@ namespace DotSpatial.Data
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the top left corner of the specified cell</returns>
-        public Coordinate CellTopLeft_ToProj(int row, int column)
+        public Coordinate CellTopLeftToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column - 0.5) + Coefficients[2] * (row - 0.5);
             double y = Coefficients[3] + Coefficients[4] * (column - 0.5) + Coefficients[5] * (row - 0.5);
@@ -67,7 +69,7 @@ namespace DotSpatial.Data
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the top right corner of the specified cell</returns>
-        public Coordinate CellTopRight_ToProj(int row, int column)
+        public Coordinate CellTopRightToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column + 0.5) + Coefficients[2] * (row - 0.5);
             double y = Coefficients[3] + Coefficients[4] * (column + 0.5) + Coefficients[5] * (row - 0.5);
@@ -80,7 +82,7 @@ namespace DotSpatial.Data
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the bottom left corner of the specified cell</returns>
-        public Coordinate CellBottomLeft_ToProj(int row, int column)
+        public Coordinate CellBottomLeftToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column - 0.5) + Coefficients[2] * (row + 0.5);
             double y = Coefficients[3] + Coefficients[4] * (column - 0.5) + Coefficients[5] * (row + 0.5);
@@ -93,7 +95,7 @@ namespace DotSpatial.Data
         /// <param name="row">The integer row index from 0 to numRows - 1</param>
         /// <param name="column">The integer column index from 0 to numColumns - 1</param>
         /// <returns>The geographic position of the bottom right corner of the specified cell</returns>
-        public Coordinate CellBottomRight_ToProj(int row, int column)
+        public Coordinate CellBottomRightToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column + 0.5) + Coefficients[2] * (row + 0.5);
             double y = Coefficients[3] + Coefficients[4] * (column + 0.5) + Coefficients[5] * (row + 0.5);
@@ -103,8 +105,8 @@ namespace DotSpatial.Data
         /// <summary>
         ///  Given the row and column, this returns new affine coefficients transformed to that cell
         /// </summary>
-        /// <param name="startRow">The row index from 0 to numRows - 1</param>
         /// <param name="startColumn">The column index from 0 to numColumns - 1</param>
+        /// <param name="startRow">The row index from 0 to numRows - 1</param>
         /// <returns>Transformed affine coefficients</returns>
         public double[] TransfromToCorner(double startColumn, double startRow)
         {
@@ -145,10 +147,11 @@ namespace DotSpatial.Data
             }
             else
             {
-                double div = (c[4] * c[2] / c[1] - c[5]);
+                double div = c[4] * c[2] / c[1] - c[5];
                 rw = (c[3] + c[4] * location.X / c[1] - c[4] * c[0] / c[1] - location.Y) / div;
                 cl = (location.X - c[2] * rw - c[0]) / c[1];
             }
+
             var iRow = (int)Math.Round(rw);
             var iCol = (int)Math.Round(cl);
             return new RcIndex(iRow, iCol);
@@ -156,13 +159,5 @@ namespace DotSpatial.Data
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the array of coefficients for this transform
-        /// </summary>
-        public double[] Coefficients { get; set; }
-
-        #endregion
     }
 }

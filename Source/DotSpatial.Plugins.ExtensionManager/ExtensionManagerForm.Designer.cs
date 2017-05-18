@@ -101,7 +101,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.Installed.TabIndex = 18;
             this.Installed.UseCompatibleStateImageBehavior = false;
             this.Installed.View = System.Windows.Forms.View.Tile;
-            this.Installed.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.Installed_SelectedItemChanged);
+            this.Installed.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.InstalledSelectedItemChanged);
             // 
             // columnHeader1
             // 
@@ -130,7 +130,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.uxShowExtensionsFolder.TabIndex = 9;
             this.uxShowExtensionsFolder.Text = "Show Extensions Folder";
             this.uxShowExtensionsFolder.UseVisualStyleBackColor = true;
-            this.uxShowExtensionsFolder.Click += new System.EventHandler(this.uxShowExtensionsFolder_Click);
+            this.uxShowExtensionsFolder.Click += new System.EventHandler(this.UxShowExtensionsFolderClick);
             // 
             // uxUninstall
             // 
@@ -141,7 +141,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.uxUninstall.TabIndex = 7;
             this.uxUninstall.Text = "Uninstall";
             this.uxUninstall.UseVisualStyleBackColor = true;
-            this.uxUninstall.Click += new System.EventHandler(this.uxUninstall_Click);
+            this.uxUninstall.Click += new System.EventHandler(this.UxUninstallClick);
             // 
             // tabOnline
             // 
@@ -170,7 +170,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.checkBox1.TabIndex = 28;
             this.checkBox1.Text = "Auto Update";
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.CheckBox1CheckedChanged);
             // 
             // uxClear
             // 
@@ -216,7 +216,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.uxPackages.TabIndex = 17;
             this.uxPackages.UseCompatibleStateImageBehavior = false;
             this.uxPackages.View = System.Windows.Forms.View.Tile;
-            this.uxPackages.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.Online_SelectedItemChanged);
+            this.uxPackages.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.OnlineSelectedItemChanged);
             // 
             // Pack
             // 
@@ -244,8 +244,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.uxSearchText.Size = new System.Drawing.Size(274, 20);
             this.uxSearchText.TabIndex = 12;
             this.uxSearchText.Text = "Search";
-            this.uxSearchText.Click += new System.EventHandler(this.uxSearchText_Click);
-            this.uxSearchText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.uxSearchText_KeyDown);
+            this.uxSearchText.Click += new System.EventHandler(this.UxSearchTextClick);
+            this.uxSearchText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UxSearchTextKeyDown);
             // 
             // uxInstall
             // 
@@ -256,7 +256,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.uxInstall.TabIndex = 3;
             this.uxInstall.Text = "Install";
             this.uxInstall.UseVisualStyleBackColor = true;
-            this.uxInstall.Click += new System.EventHandler(this.InstallButton_Click);
+            this.uxInstall.Click += new System.EventHandler(this.InstallButtonClick);
             // 
             // ExtensionManagerForm
             // 
@@ -272,8 +272,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.Name = "ExtensionManagerForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Extension Manager";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExtensionManagerForm_FormClosed);
-            this.Load += new System.EventHandler(this.ExtensionManagerForm_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExtensionManagerFormFormClosed);
+            this.Load += new System.EventHandler(this.ExtensionManagerFormLoad);
             this.tabControl.ResumeLayout(false);
             this.tabInstalled.ResumeLayout(false);
             this.tabOnline.ResumeLayout(false);

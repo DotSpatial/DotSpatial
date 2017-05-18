@@ -1,7 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="StatusBarCoordinates.cs" company="">
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Controls;
@@ -11,24 +9,51 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Plugins.StatusBarImprovements
 {
     /// <summary>
-    /// Displays how much layers selected
+    /// Displays how many features are selected in which layer.
     /// </summary>
     public class StatusShowSelectionCount : Extension
     {
-        private StatusPanel panel;
+        #region Fields
 
+        private StatusPanel _panel;
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override void Activate()
         {
-            App.Map.SelectionChanged += Map_SelectionChanged;
-            App.Map.MapFrame.LayerSelected += MapFrame_LayerSelected;
+            App.Map.SelectionChanged += MapSelectionChanged;
+            App.Map.MapFrame.LayerSelected += MapFrameLayerSelected;
 
-            panel = new StatusPanel {Width = 180};
-            App.ProgressHandler.Add(panel);
+            _panel = new StatusPanel
+            {
+                Width = 180
+            };
+            App.ProgressHandler.Add(_panel);
 
             base.Activate();
         }
 
-        void MapFrame_LayerSelected(object sender, LayerSelectedEventArgs e)
+        /// <inheritdoc />
+        public override void Deactivate()
+        {
+            App.Map.SelectionChanged -= MapSelectionChanged;
+            App.Map.MapFrame.LayerSelected -= MapFrameLayerSelected;
+
+            App.ProgressHandler.Remove(_panel);
+
+            App.HeaderControl.RemoveAll();
+            base.Deactivate();
+        }
+
+        private void MapSelectionChanged(object sender, EventArgs e)
+        {
+            UpdateStatus();
+        }
+
+        private void MapFrameLayerSelected(object sender, LayerSelectedEventArgs e)
         {
             UpdateStatus();
         }
@@ -37,32 +62,18 @@ namespace DotSpatial.Plugins.StatusBarImprovements
         {
             if (App.Map.Layers.SelectedLayer == null)
             {
-                panel.Caption = "No selected layer";
+                _panel.Caption = "No selected layer";
             }
             else
             {
                 var layer = App.Map.Layers.SelectedLayer as IMapFeatureLayer;
                 if (layer != null)
                 {
-                    panel.Caption = String.Format("{0}: {1} feature{2} selected", layer.LegendText, layer.Selection.Count, layer.Selection.Count == 1 ? null : "s");
+                    _panel.Caption = string.Format("{0}: {1} feature{2} selected", layer.LegendText, layer.Selection.Count, layer.Selection.Count == 1 ? null : "s");
                 }
             }
         }
 
-        void Map_SelectionChanged(object sender, EventArgs e)
-        {
-            UpdateStatus();
-        }
-
-        public override void Deactivate()
-        {
-            App.Map.SelectionChanged -= Map_SelectionChanged;
-            App.Map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
-
-            App.ProgressHandler.Remove(panel);
-
-            App.HeaderControl.RemoveAll();
-            base.Deactivate();
-        }
+        #endregion
     }
 }

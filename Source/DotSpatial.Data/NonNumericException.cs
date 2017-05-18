@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/29/2008 2:32:41 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -23,11 +13,11 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of NonNumericException
+        /// Initializes a new instance of the <see cref="NonNumericException"/> class.
         /// </summary>
         /// <param name="invalidVariable">The string name of the variable, or value that cannot be parsed as a number.</param>
-        public NonNumericException(string invalidVariable) :
-            base("The value " + invalidVariable + " could not be parsed as a number.")
+        public NonNumericException(string invalidVariable)
+            : base("The value " + invalidVariable + " could not be parsed as a number.")
         {
         }
 

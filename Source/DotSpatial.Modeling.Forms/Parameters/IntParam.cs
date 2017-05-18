@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.IntParam
-// Description:  Int Parameters returned by an ITool allows the tool to specify a range and default value
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.Modeling.Forms.Elements;
@@ -22,17 +11,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class IntParam : Parameter
     {
-        #region variables
-
-        private int _max = int.MaxValue;
-        private int _min = int.MinValue;
-
-        #endregion
-
-        #region constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new integer parameter
+        /// Initializes a new instance of the <see cref="IntParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public IntParam(string name)
@@ -44,7 +26,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new integer parameter
+        /// Initializes a new instance of the <see cref="IntParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">The default value</param>
@@ -58,7 +40,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new integer parameter
+        /// Initializes a new instance of the <see cref="IntParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">The default value</param>
@@ -77,28 +59,20 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         #endregion
 
-        #region properties
+        #region Properties
 
         /// <summary>
-        /// The minimum range for the parameter Default: -2, 147, 483, 648
+        /// Gets or sets the maximum range for the paramater Default: 2, 147, 483, 648
         /// </summary>
-        public int Min
-        {
-            get { return _min; }
-            set { _min = value; }
-        }
+        public int Max { get; set; } = int.MaxValue;
 
         /// <summary>
-        /// The maximum range for the paramater Default: 2, 147, 483, 648
+        /// Gets or sets the minimum range for the parameter Default: -2, 147, 483, 648
         /// </summary>
-        public int Max
-        {
-            get { return _max; }
-            set { _max = value; }
-        }
+        public int Min { get; set; } = int.MinValue;
 
         /// <summary>
-        /// Specifies the value to use by default must be between the min and max
+        /// Gets or sets the value to use by default must be between the min and max
         /// </summary>
         public new int Value
         {
@@ -107,6 +81,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
                 if (DefaultSpecified) return (int)base.Value;
                 return 0;
             }
+
             set
             {
                 base.Value = value;
@@ -116,24 +91,20 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         #endregion
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new IntElement(this));
+            return new IntElement(this);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new IntElement(this));
+            return new IntElement(this);
         }
+
+        #endregion
     }
 }

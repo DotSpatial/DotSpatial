@@ -1,14 +1,5 @@
-﻿// *******************************************************************************************************
-// Product:  DotSpatial.Symbology.Forms.IIWin32WindowOwner
-// Description:  Contains IWin32Window Owner
-
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Max Miroshnikov    |  3/2013            |  Initial commit
-// *******************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Windows.Forms;
 
@@ -20,8 +11,8 @@ namespace DotSpatial.Symbology.Forms
     public interface IIWin32WindowOwner
     {
         /// <summary>
-        /// Allows setting the owner for any dialogs that need to be launched.
+        /// Gets or sets owner for any dialogs that need to be launched.
         /// </summary>
-        IWin32Window Owner { get; set; }  
+        IWin32Window Owner { get; set; }
     }
 }

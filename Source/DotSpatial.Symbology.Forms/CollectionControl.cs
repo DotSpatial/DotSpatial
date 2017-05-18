@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/28/2009 4:23:05 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -21,8 +11,27 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// This is designed to automatically have add, subtract, up and down arrows for working with a simple collection of items.
     /// </summary>
-    internal class CollectionControl : UserControl
+    internal partial class CollectionControl : UserControl
     {
+        #region Fields
+
+        private INamedList _items;
+
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollectionControl"/> class.
+        /// </summary>
+        public CollectionControl()
+        {
+            InitializeComponent();
+            _items = new NamedList<object>(); // by default this stores object, but the actual strong type can be changed by setting Items.
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -31,9 +40,9 @@ namespace DotSpatial.Symbology.Forms
         public event EventHandler AddClicked;
 
         /// <summary>
-        /// Occurs when someone selects one of the items in the list box
+        /// Occurs when the list has been added, removed, or re-ordered in any way.
         /// </summary>
-        public event EventHandler SelectedItemChanged;
+        public event EventHandler ListChanged;
 
         /// <summary>
         /// Occurs when either the Promote or Demote function has been used,
@@ -47,130 +56,71 @@ namespace DotSpatial.Symbology.Forms
         public event EventHandler RemoveClicked;
 
         /// <summary>
-        /// Occurs when the list has been added, removed, or re-ordered in any way.
+        /// Occurs when someone selects one of the items in the list box
         /// </summary>
-        public event EventHandler ListChanged;
+        public event EventHandler SelectedItemChanged;
 
         #endregion
 
-        #region Private Variables
-
-        private INamedList _items;
-        private Button btnAdd;
-        private Button btnDown;
-        private Button btnRemove;
-        private Button btnUp;
+        #region Properties
 
         /// <summary>
-        /// Required designer variable.
+        /// Gets or sets the INamedList. The INamedList can work with any strong typed IList.
         /// </summary>
-        private IContainer components = null;
-
-        private ListBox lbxItems;
-        private Panel panel1;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of the Collection Control
-        /// </summary>
-        public CollectionControl()
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public INamedList ItemNames
         {
-            InitializeComponent();
-            _items = new NamedList<object>(); // by default this stores object, but the actual strong type can be changed by setting Items.
-        }
+            get
+            {
+                return _items;
+            }
 
-        #endregion
-
-        #region Component Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CollectionControl));
-            this.lbxItems = new System.Windows.Forms.ListBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnDown = new System.Windows.Forms.Button();
-            this.btnUp = new System.Windows.Forms.Button();
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // lbxItems
-            //
-            resources.ApplyResources(this.lbxItems, "lbxItems");
-            this.lbxItems.FormattingEnabled = true;
-            this.lbxItems.Name = "lbxItems";
-            this.lbxItems.SelectedIndexChanged += new System.EventHandler(this.lbxItems_SelectedIndexChanged);
-            //
-            // panel1
-            //
-            this.panel1.Controls.Add(this.btnDown);
-            this.panel1.Controls.Add(this.btnUp);
-            this.panel1.Controls.Add(this.btnRemove);
-            this.panel1.Controls.Add(this.btnAdd);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
-            //
-            // btnDown
-            //
-            this.btnDown.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.down;
-            resources.ApplyResources(this.btnDown, "btnDown");
-            this.btnDown.Name = "btnDown";
-            this.btnDown.UseVisualStyleBackColor = true;
-            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
-            //
-            // btnUp
-            //
-            this.btnUp.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.up;
-            resources.ApplyResources(this.btnUp, "btnUp");
-            this.btnUp.Name = "btnUp";
-            this.btnUp.UseVisualStyleBackColor = true;
-            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
-            //
-            // btnRemove
-            //
-            this.btnRemove.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.mnuLayerClear;
-            resources.ApplyResources(this.btnRemove, "btnRemove");
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            //
-            // btnAdd
-            //
-            this.btnAdd.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.mnuLayerAdd;
-            resources.ApplyResources(this.btnAdd, "btnAdd");
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            //
-            // CollectionControl
-            //
-            this.Controls.Add(this.lbxItems);
-            this.Controls.Add(this.panel1);
-            this.Name = "CollectionControl";
-            resources.ApplyResources(this, "$this");
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-
-        private void lbxItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OnSelectedItemChanged();
+            set
+            {
+                _items = value;
+                RefreshList();
+                if (lbxItems.Items.Count > 0)
+                {
+                    lbxItems.SelectedIndex = 0;
+                }
+            }
         }
 
         /// <summary>
-        /// Fires the SelectedItemChanged event
+        /// Gets or sets the currently selected name.
         /// </summary>
-        protected virtual void OnSelectedItemChanged()
+        public string SelectedName
         {
-            if (SelectedItemChanged != null) SelectedItemChanged(this, EventArgs.Empty);
+            get
+            {
+                return lbxItems?.SelectedItem?.ToString();
+            }
+
+            set
+            {
+                if (lbxItems == null) return;
+                lbxItems.SelectedItem = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the selected item cast as an object.
+        /// </summary>
+        public object SelectedObject
+        {
+            get
+            {
+                if (lbxItems?.SelectedItem == null) return null;
+                return _items?.GetItem(lbxItems.SelectedItem.ToString());
+            }
+
+            set
+            {
+                if (lbxItems == null || _items == null) return;
+                string name = _items.GetNameOfObject(value);
+                lbxItems.SelectedItem = name;
+            }
         }
 
         #endregion
@@ -189,82 +139,60 @@ namespace DotSpatial.Symbology.Forms
             {
                 lbxItems.Items.Insert(0, name);
             }
+
             lbxItems.ResumeLayout();
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the currently selected name.
+        /// Fires the AddClicked event
         /// </summary>
-        public string SelectedName
+        protected virtual void OnAdd()
         {
-            get
-            {
-                if (lbxItems == null) return null;
-                if (lbxItems.SelectedItem == null) return null;
-                return lbxItems.SelectedItem.ToString();
-            }
-            set
-            {
-                if (lbxItems == null) return;
-                lbxItems.SelectedItem = value;
-            }
+            AddClicked?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
         }
 
         /// <summary>
-        /// Gets the selected item cast as an object.
+        /// Fires the ListChanged event
         /// </summary>
-        public object SelectedObject
+        protected virtual void OnListChanged()
         {
-            get
-            {
-                if (lbxItems == null) return null;
-                if (lbxItems.SelectedItem == null) return null;
-                if (_items == null) return null;
-                return _items.GetItem(lbxItems.SelectedItem.ToString());
-            }
-            set
-            {
-                if (lbxItems == null) return;
-                if (_items == null) return;
-                string name = _items.GetNameOfObject(value);
-                lbxItems.SelectedItem = name;
-            }
+            ListChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// This control works with the INamedList, which in turn can work with any strong typed
-        /// IList.  The only button
+        /// Fires the OnOrderChanged event
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public INamedList ItemNames
+        protected virtual void OnOrderChanged()
         {
-            get { return _items; }
-            set
-            {
-                _items = value;
-                RefreshList();
-                if (lbxItems.Items.Count > 0)
-                {
-                    lbxItems.SelectedIndex = 0;
-                }
-            }
+            OrderChanged?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
         }
 
-        #endregion
+        /// <summary>
+        /// Fires the RemoveCLicked event
+        /// </summary>
+        protected virtual void OnRemoveClick()
+        {
+            RemoveClicked?.Invoke(this, EventArgs.Empty);
+            OnListChanged();
+        }
 
-        #region Event Handlers
+        /// <summary>
+        /// Fires the SelectedItemChanged event
+        /// </summary>
+        protected virtual void OnSelectedItemChanged()
+        {
+            SelectedItemChanged?.Invoke(this, EventArgs.Empty);
+        }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void BtnAddClick(object sender, EventArgs e)
         {
             OnAdd();
             RefreshList();
         }
 
-        private void btnDown_Click(object sender, EventArgs e)
+        private void BtnDownClick(object sender, EventArgs e)
         {
             if (lbxItems.SelectedItem == null) return;
             string name = lbxItems.SelectedItem.ToString();
@@ -274,7 +202,7 @@ namespace DotSpatial.Symbology.Forms
             OnOrderChanged();
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void BtnRemoveClick(object sender, EventArgs e)
         {
             string name = lbxItems.SelectedItem.ToString();
             int index = lbxItems.SelectedIndex;
@@ -284,15 +212,17 @@ namespace DotSpatial.Symbology.Forms
             {
                 lbxItems.SelectedItem = null;
             }
+
             if (index >= _items.Count)
             {
                 index -= 1;
             }
+
             lbxItems.SelectedIndex = index;
             OnRemoveClick();
         }
 
-        private void btnUp_Click(object sender, EventArgs e)
+        private void BtnUpClick(object sender, EventArgs e)
         {
             if (lbxItems.SelectedItem == null) return;
             string name = lbxItems.SelectedItem.ToString();
@@ -302,56 +232,9 @@ namespace DotSpatial.Symbology.Forms
             OnOrderChanged();
         }
 
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        private void LbxItemsSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Fires the AddClicked event
-        /// </summary>
-        protected virtual void OnAdd()
-        {
-            if (AddClicked != null) AddClicked(this, EventArgs.Empty);
-            OnListChanged();
-        }
-
-        /// <summary>
-        /// Fires the ListChanged event
-        /// </summary>
-        protected virtual void OnListChanged()
-        {
-            if (ListChanged != null) ListChanged(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Fires the RemoveCLicked event
-        /// </summary>
-        protected virtual void OnRemoveClick()
-        {
-            if (RemoveClicked != null) RemoveClicked(this, EventArgs.Empty);
-            OnListChanged();
-        }
-
-        /// <summary>
-        /// Fires the OnOrderChanged event
-        /// </summary>
-        protected virtual void OnOrderChanged()
-        {
-            if (OrderChanged != null) OrderChanged(this, EventArgs.Empty);
-            OnListChanged();
+            OnSelectedItemChanged();
         }
 
         #endregion

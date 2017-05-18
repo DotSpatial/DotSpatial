@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/21/2009 4:10:28 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using System.Windows.Forms;
@@ -22,20 +12,12 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     internal class FontFamilyDropDown : ComboBox
     {
-        #region Private Variables
-
-        #endregion
-
-        #region Constructors
-
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// Occurs during the drawing of an item
+        /// Occurs during the drawing of an item.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             Rectangle outer = e.Bounds;
@@ -63,14 +45,11 @@ namespace DotSpatial.Symbology.Forms
             {
                 fnt = new Font(name, 10, FontStyle.Italic);
             }
+
             SizeF box = e.Graphics.MeasureString(name, Font);
             e.Graphics.DrawString(name, Font, fontBrush, e.Bounds.X, e.Bounds.Y);
             e.Graphics.DrawString("ABC", fnt, fontBrush, e.Bounds.X + box.Width, e.Bounds.Y);
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

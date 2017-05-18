@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/25/2008 2:46:23 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -27,33 +17,21 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapRasterLayer : RasterLayer, IMapRasterLayer
     {
-        #region Events
+        #region  Constructors
 
         /// <summary>
-        /// Fires an event that indicates to the parent map-frame that it should first
-        /// redraw the specified clip
+        /// Initializes a new instance of the <see cref="MapRasterLayer"/> class from the specified fileName.
         /// </summary>
-        public event EventHandler<ClipArgs> BufferChanged;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new raster layer from the specified fileName
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="symbolizer"></param>
+        /// <param name="fileName">Filename of the corresponding raster file.</param>
+        /// <param name="symbolizer">Symbolizer used for drawing the raster data.</param>
         public MapRasterLayer(string fileName, IRasterSymbolizer symbolizer)
             : base(fileName, symbolizer)
         {
-            base.LegendText = Path.GetFileNameWithoutExtension(fileName);
+            LegendText = Path.GetFileNameWithoutExtension(fileName);
             if ((long)DataSet.NumRows * DataSet.NumColumns > MaxCellsInMemory)
             {
                 string pyrFile = Path.ChangeExtension(fileName, ".mwi");
-                BitmapGetter = File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh"))
-                    ? new PyramidImage(pyrFile)
-                    : CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
+                BitmapGetter = File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh")) ? new PyramidImage(pyrFile) : CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
             }
             else
             {
@@ -61,30 +39,35 @@ namespace DotSpatial.Controls
                 symbolizer.Raster = DataSet;
 
                 DataSet.DrawToBitmap(symbolizer, bmp);
-                var id = new InRamImage(bmp) { Bounds = DataSet.Bounds };
+                var id = new InRamImage(bmp)
+                {
+                    Bounds = DataSet.Bounds
+                };
                 BitmapGetter = id;
             }
         }
 
         /// <summary>
-        /// Creates a new instance of a MapRasterLayer and the specified image data to use for rendering it.
+        /// Initializes a new instance of the <see cref="MapRasterLayer"/> class and the specified image data to use for rendering it.
         /// </summary>
+        /// <param name="baseRaster">Raster used as data for the layer.</param>
+        /// <param name="baseImage">ImageData used for rendering.</param>
         public MapRasterLayer(IRaster baseRaster, ImageData baseImage)
             : base(baseRaster)
         {
-            base.LegendText = Path.GetFileNameWithoutExtension(baseRaster.Filename);
+            LegendText = Path.GetFileNameWithoutExtension(baseRaster.Filename);
             BitmapGetter = baseImage;
         }
 
         /// <summary>
-        /// Creates a new instance of a Raster layer, and will create a "FallLeaves" image based on the
-        /// raster values.
+        /// Initializes a new instance of the <see cref="MapRasterLayer"/> class, and will create a "FallLeaves" image based on the raster values.
         /// </summary>
         /// <param name="raster">The raster to use</param>
         public MapRasterLayer(IRaster raster)
             : base(raster)
         {
-            base.LegendText = Path.GetFileNameWithoutExtension(raster.Filename);
+            LegendText = Path.GetFileNameWithoutExtension(raster.Filename);
+
             // string imageFile = Path.ChangeExtension(raster.Filename, ".png");
             // if (File.Exists(imageFile)) File.Delete(imageFile);
             if ((long)raster.NumRows * raster.NumColumns > MaxCellsInMemory)
@@ -96,7 +79,7 @@ namespace DotSpatial.Controls
                 if (File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh")))
                 {
                     BitmapGetter = new PyramidImage(pyrFile);
-                    base.LegendText = Path.GetFileNameWithoutExtension(raster.Filename);
+                    LegendText = Path.GetFileNameWithoutExtension(raster.Filename);
                 }
                 else
                 {
@@ -116,13 +99,68 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region Events
+
+        /// <summary>
+        /// Fires an event that indicates to the parent map-frame that it should first
+        /// redraw the specified clip
+        /// </summary>
+        public event EventHandler<ClipArgs> BufferChanged;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [ShallowCopy]
+        public Image BackBuffer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current buffer.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [ShallowCopy]
+        public Image Buffer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [ShallowCopy]
+        public Envelope BufferEnvelope { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rectangle in pixels to use as the back buffer.
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [ShallowCopy]
+        public Rectangle BufferRectangle { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the image layer is initialized
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool IsInitialized { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// Call StartDrawing before using this.
         /// </summary>
         /// <param name="rectangles">The rectangular region in pixels to clear.</param>
-        /// <param name= "color">The color to use when clearing.  Specifying transparent
+        /// <param name= "color">The color to use when clearing. Specifying transparent
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
@@ -136,12 +174,13 @@ namespace DotSpatial.Controls
                     g.Clear(color);
                 }
             }
+
             g.Dispose();
         }
 
         /// <summary>
-        /// This will draw any features that intersect this region.  To specify the features
-        /// directly, use OnDrawFeatures.  This will not clear existing buffer content.
+        /// This will draw any features that intersect this region. To specify the features
+        /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
@@ -165,7 +204,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Copies any current content to the back buffer so that drawing should occur on the
-        /// back buffer (instead of the fore-buffer).  Calling draw methods without
+        /// back buffer (instead of the fore-buffer). Calling draw methods without
         /// calling this may cause exceptions.
         /// </summary>
         /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer
@@ -181,50 +220,36 @@ namespace DotSpatial.Controls
                     g.DrawImageUnscaled(Buffer, 0, 0);
                 }
             }
+
             if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
             BackBuffer = backBuffer;
             OnStartDrawing();
         }
 
-        #endregion
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (Buffer != BackBuffer && Buffer != null)
+                {
+                    Buffer.Dispose();
+                    Buffer = null;
+                }
 
-        #region Properties
+                if (BackBuffer != null)
+                {
+                    BackBuffer.Dispose();
+                    BackBuffer = null;
+                }
 
-        /// <summary>
-        /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Image BackBuffer { get; set; }
+                BufferEnvelope = null;
+                BufferRectangle = Rectangle.Empty;
+                IsInitialized = false;
+            }
 
-        /// <summary>
-        /// Gets the current buffer.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Image Buffer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the geographic region represented by the buffer
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Envelope BufferEnvelope { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rectangle in pixels to use as the back buffer.
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public Rectangle BufferRectangle { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether the image layer is initialized
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool IsInitialized { get; set; }
-
-        #endregion
-
-        #region Protected Methods
+            base.Dispose(disposing);
+        }
 
         /// <summary>
         /// Fires the OnBufferChanged event
@@ -254,40 +279,13 @@ namespace DotSpatial.Controls
         {
         }
 
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (Buffer != BackBuffer && Buffer != null)
-                {
-                    Buffer.Dispose();
-                    Buffer = null;
-                }
-                if (BackBuffer != null)
-                {
-                    BackBuffer.Dispose();
-                    BackBuffer = null;
-                }
-
-                BufferEnvelope = null;
-                BufferRectangle = Rectangle.Empty;
-                IsInitialized = false;
-            }
-            base.Dispose(disposing);
-        }
-
-        #endregion
-
-        #region Private Methods
-
         /// <summary>
-        /// This draws to the back buffer.  If the back buffer doesn't exist, this will create one.
+        /// This draws to the back buffer. If the back buffer doesn't exist, this will create one.
         /// This will not flip the back buffer to the front.
         /// </summary>
-        /// <param name="args"></param>
-        /// <param name="regions"></param>
-        /// <param name="clipRectangles"></param>
+        /// <param name="args">The map arguments.</param>
+        /// <param name="regions">The regions </param>
+        /// <param name="clipRectangles">The clip rectangles.</param>
         private void DrawWindows(MapArgs args, IList<Extent> regions, IList<Rectangle> clipRectangles)
         {
             Graphics g;
@@ -310,6 +308,7 @@ namespace DotSpatial.Controls
                     if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
                 }
             }
+
             if (args.Device == null) g.Dispose();
         }
 

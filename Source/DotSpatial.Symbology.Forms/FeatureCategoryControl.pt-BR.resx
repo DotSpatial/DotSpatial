@@ -250,7 +250,7 @@
     <value>298, 10</value>
   </data>
   <data name="dgvStatistics.ToolTip" xml:space="preserve">
-    <value>Descreve as estatísticas de resumo para os valores no campo.  Isso só pode ser uma amostra representativa.</value>
+    <value>Descreve as estatísticas de resumo para os valores no campo. Isso só pode ser uma amostra representativa.</value>
   </data>
   <data name="tabStatistics.Text" xml:space="preserve">
     <value>Estatísticas</value>

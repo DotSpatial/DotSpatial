@@ -693,7 +693,7 @@
 		<value>True</value>
 	</metadata>
 	<data name="label1.Text" xml:space="preserve">
-		<value>Visibilidade dinâmica pode trabalhar de duas maneiras.  Em um caso, a camada só é visível quando ampliada mais perto do que esta medida.  A outra maneira, só é visível quando o zoom para além desta medida.  Selecione o modo que deve permanecer visível.</value>
+		<value>Visibilidade dinâmica pode trabalhar de duas maneiras. Em um caso, a camada só é visível quando ampliada mais perto do que esta medida. A outra maneira, só é visível quando o zoom para além desta medida. Selecione o modo que deve permanecer visível.</value>
 	</data>
 	<data name="btnZoomedOut.Text" xml:space="preserve">
 		<value>Diminuida</value>

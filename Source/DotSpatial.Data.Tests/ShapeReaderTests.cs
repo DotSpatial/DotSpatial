@@ -1,10 +1,16 @@
-﻿using System.Linq;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Linq;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for ShapeReader.
+    /// </summary>
     [TestFixture]
-    class ShapeReaderTests
+    internal class ShapeReaderTests
     {
         /// <summary>
         /// This test is used to verify if the shape reader properly reads all entries in a shape file or if it skips any.
@@ -16,11 +22,13 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void ShapeReaderSkippingTest()
         {
-            const string path = @"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp";
-            var source = new PointShapefileShapeSource(path);
+            const string Path = @"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp";
+            var source = new PointShapefileShapeSource(Path);
 
-            var target = new ShapeReader(source);
-            target.PageSize = 10;
+            var target = new ShapeReader(source)
+            {
+                PageSize = 10
+            };
             int expectedStartIndex = 0;
             foreach (var page in target)
             {

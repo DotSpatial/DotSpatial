@@ -200,7 +200,7 @@
     <value>Personalizado</value>
   </data>
 	<data name="cmbStrokeStyle.ToolTip" xml:space="preserve">
-    <value>Permite que alguns estilos de traço simples.  Para estilos mais complexos, selecione traços cartográficos.</value>
+    <value>Permite que alguns estilos de traço simples. Para estilos mais complexos, selecione traços cartográficos.</value>
   </data>
 	<data name="label2.Location" type="System.Drawing.Point, System.Drawing">
 		<value>129, 180</value>
@@ -215,7 +215,7 @@
     <value>Largura:</value>
   </data>
 	<data name="dblWidth.ToolTip" xml:space="preserve">
-    <value>Defina a largura do traço.  O modo de escala determina as unidades de medida.</value>
+    <value>Defina a largura do traço. O modo de escala determina as unidades de medida.</value>
   </data>
 	<data name="tabSimple.Text" xml:space="preserve">
     <value>Simples</value>
@@ -333,7 +333,7 @@
 		<value>45, 20</value>
 	</data>
 	<data name="nudDecorationCount.ToolTip" xml:space="preserve">
-    <value>Os dois primeiros são desenhados sobre os locais de início e de término.  Depois disso, a linha é dividida uniformemente.</value>
+    <value>Os dois primeiros são desenhados sobre os locais de início e de término. Depois disso, a linha é dividida uniformemente.</value>
   </data>
 	<data name="radRotationFixed.Size" type="System.Drawing.Size, System.Drawing">
 		<value>220, 17</value>

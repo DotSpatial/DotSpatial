@@ -1,29 +1,40 @@
-﻿using System.Windows.Forms;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 
 namespace DotSpatial.Plugins.SimpleMap
 {
+    /// <summary>
+    /// Adds a simple map to the program.
+    /// </summary>
     public class SimpleMapPlugin : Extension
     {
         private Map _map;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleMapPlugin"/> class.
+        /// </summary>
         public SimpleMapPlugin()
         {
             DeactivationAllowed = false;
         }
 
-        public override int Priority
-        {
-            get { return -10000; }
-        }
+        /// <summary>
+        /// Gets the priority. It's a very low value so it will be loaded at the beginning.
+        /// </summary>
+        public override int Priority => -10000;
 
+        /// <inheritdoc />
         public override void Activate()
         {
             ShowMap();
             base.Activate();
         }
 
+        /// <inheritdoc />
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
@@ -34,7 +45,7 @@ namespace DotSpatial.Plugins.SimpleMap
 
         private void ShowMap()
         {
-            _map = new Map {Text = "Map", Name = "map1", Legend = App.Legend};
+            _map = new Map { Text = "Map", Name = "map1", Legend = App.Legend };
             App.Map = _map;
             App.DockManager.Add(new DockablePanel("kMap", "Map", _map, DockStyle.Fill));
         }

@@ -135,4 +135,7 @@
   <data name="SelectLayerError" xml:space="preserve">
     <value>Please select a layer before attempting to use this feature.</value>
   </data>
+  <data name="HeaderControlMustBeAvailable" xml:space="preserve">
+    <value>A HeaderControl must be available through the AppManager.</value>
+  </data>
 </root>

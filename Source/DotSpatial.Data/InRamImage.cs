@@ -1,12 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/21/2010 11:25:19 AM
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -15,17 +8,23 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Sets the InRamImage for this class.  This is just a georeferenced .Net bitmap that also implements
+    /// Sets the InRamImage for this class. This is just a georeferenced .Net bitmap that also implements
     /// IGetBitmap for cross purpose use with IImageData implementations.
     /// </summary>
     public class InRamImage : DisposeBase, IGetBitmap
     {
+        #region Fields
+
         private Bitmap _myImage;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of an InRamImage class.  This class supports a basic .Net Image
-        /// plus a geographic extent as a RasterBounds.  This class does not feature any byte level
-        /// data access or built in file access.  The expectation is that this will only be used in memory.
+        /// Initializes a new instance of the <see cref="InRamImage"/> class. This class supports a basic .Net Image
+        /// plus a geographic extent as a RasterBounds. This class does not feature any byte level
+        /// data access or built in file access. The expectation is that this will only be used in memory.
         /// </summary>
         /// <param name="image">THe Bitmap image to use to create this image.</param>
         public InRamImage(Bitmap image)
@@ -34,15 +33,21 @@ namespace DotSpatial.Data
             Bounds = new RasterBounds(image.Height, image.Width, new double[] { 0, 1, 0, image.Height, 0, -1 });
         }
 
-        #region IGetBitmap Members
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the raster bounds
         /// </summary>
         public IRasterBounds Bounds { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Returns the internal bitmap in this case.  In other cases, this may have to be constructed
+        /// Returns the internal bitmap in this case. In other cases, this may have to be constructed
         /// from the unmanaged memory content.
         /// </summary>
         /// <returns>
@@ -69,15 +74,13 @@ namespace DotSpatial.Data
         /// </returns>
         public Bitmap GetBitmap(Extent envelope, Rectangle window)
         {
-            if (window.Width == 0 || window.Height == 0)
-                return null;
+            if (window.Width == 0 || window.Height == 0) return null;
 
-            if (Bounds == null || Bounds.Extent == null || Bounds.Extent.IsEmpty())
-                return null;
+            if (Bounds == null || Bounds.Extent == null || Bounds.Extent.IsEmpty()) return null;
 
             // Gets the scaling factor for converting from geographic to pixel coordinates
-            double dx = (window.Width / envelope.Width);
-            double dy = (window.Height / envelope.Height);
+            double dx = window.Width / envelope.Width;
+            double dy = window.Height / envelope.Height;
 
             double[] a = Bounds.AffineCoefficients;
 
@@ -86,8 +89,8 @@ namespace DotSpatial.Data
             float m22 = Convert.ToSingle(a[5] * -dy);
             float m21 = Convert.ToSingle(a[2] * dx);
             float m12 = Convert.ToSingle(a[4] * -dy);
-            float l = (float)(a[0] - .5 * (a[1] + a[2])); // Left of top left pixel
-            float t = (float)(a[3] - .5 * (a[4] + a[5])); // top of top left pixel
+            float l = (float)(a[0] - (.5 * (a[1] + a[2]))); // Left of top left pixel
+            float t = (float)(a[3] - (.5 * (a[4] + a[5]))); // top of top left pixel
             float xShift = (float)((l - envelope.MinX) * dx);
             float yShift = (float)((envelope.MaxY - t) * dy);
 
@@ -100,19 +103,21 @@ namespace DotSpatial.Data
                 g = Graphics.FromImage(tempResult);
                 g.Transform = new Matrix(m11, m12, m21, m22, xShift, yShift);
                 g.PixelOffsetMode = PixelOffsetMode.Half;
-                if (m11 > 1 || m22 > 1)
-                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                if (!g.VisibleClipBounds.IsEmpty)
-                    g.DrawImage(_myImage, new PointF(0, 0));
+                if (m11 > 1 || m22 > 1) g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                if (!g.VisibleClipBounds.IsEmpty) g.DrawImage(_myImage, new PointF(0, 0));
                 result = tempResult;
                 tempResult = null;
             }
-            catch (OverflowException) { } //Raised by g.DrawImage if the new images extent is to small
+            catch (OverflowException)
+            {
+                // Raised by g.DrawImage if the new images extent is to small
+            }
             finally
             {
-                if (tempResult != null) tempResult.Dispose();
-                if (g != null) g.Dispose();
+                tempResult?.Dispose();
+                g?.Dispose();
             }
+
             return result;
         }
 
@@ -129,8 +134,6 @@ namespace DotSpatial.Data
             return GetBitmap(envelope, new Rectangle(new Point(0, 0), size));
         }
 
-        #endregion
-
         /// <summary>
         /// Sets the bitmap for this InRamImage to use.
         /// </summary>
@@ -144,7 +147,7 @@ namespace DotSpatial.Data
         /// If byte access is required, a new class can be created that is a copy of this class for
         /// modifying values byte by byte.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>This image as new InRamImageData.</returns>
         public InRamImageData ToImageData()
         {
             return new InRamImageData(_myImage, Bounds.Extent);
@@ -156,9 +159,10 @@ namespace DotSpatial.Data
         /// <param name="isDisposing">True if the "Dispose" method was called instead of the destructor.</param>
         protected override void Dispose(bool isDisposing)
         {
-            if (_myImage != null) _myImage.Dispose();
+            _myImage?.Dispose();
             base.Dispose(isDisposing);
         }
 
+        #endregion
     }
 }
