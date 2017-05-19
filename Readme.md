@@ -17,7 +17,10 @@ DotSpatial provides a map control for .NET and several GIS capabilities includin
 
 Please use the [discussion list](https://dotspatial.codeplex.com/discussions) to post any discussions related to the development or use of DotSpatial libraries. This is a great place to discuss potential features and to ask questions about how to use the libraries.
 
-For documentation and code samples have a look at the [documentation page](https://dotspatial.codeplex.com/documentation) and the [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
+Documentation and code samples:
+* [documentation page](https://dotspatial.codeplex.com/documentation) 
+* [chm file with API documentation](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Documentation/DotSpatial.chm)
+* [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
 
 Still have questions? Maybe someone already [asked them](https://github.com/DotSpatial/DotSpatial/issues?utf8=✓&q=label%3Aquestion).
 
