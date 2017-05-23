@@ -62,7 +62,8 @@ namespace DotSpatial.Symbology
         /// <returns>True, if both are equal.</returns>
         public static bool operator ==(Size2D a, Size2D b)
         {
-            if (a == null || b == null) return a == b;
+            if ((object)a == null && (object)b == null) return true;
+            if ((object)a == null || (object)b == null) return false;
 
             return a.Width == b.Width && a.Height == b.Height;
         }
@@ -101,7 +102,7 @@ namespace DotSpatial.Symbology
         /// <returns>boolean, true if the height and width are the same in each case.</returns>
         public bool Equals(Size2D size)
         {
-            if (((object)size) == null) return false;
+            if ((object)size == null) return false;
 
             return size.Width == Width && size.Height == Height;
         }

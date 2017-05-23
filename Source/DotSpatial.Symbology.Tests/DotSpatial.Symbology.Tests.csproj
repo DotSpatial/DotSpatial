@@ -84,6 +84,7 @@
     <Compile Include="IndexSelectionTests.cs" />
     <Compile Include="LabelCategoryTests.cs" />
     <Compile Include="LabelSymbolizerTests.cs" />
+    <Compile Include="Size2DTests.cs" />
     <Compile Include="UtilsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTests.cs" />
