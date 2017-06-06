@@ -344,6 +344,57 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
+        /// Checks whether FeatureSet.OpenFile throws the right exception for the missing file.
+        /// </summary>
+        /// <param name="missingFile">The missing file.</param>
+        /// <param name="errorMessage">The error message that gets thrown.</param>
+        [Test(Description = @"Checks whether FeatureSet.OpenFile throws the right exception for the missing file.")]
+        [TestCase("cities.shp", "Could not find file '{0}'.")]
+        [TestCase("cities.shx", "The file {0} could not be found.")]
+        [TestCase("cities.prj", "")]
+        [TestCase("cities.dbf", "Could not find file '{0}'.")]
+        [TestCase("rivers.shp", "Could not find file '{0}'.")]
+        [TestCase("rivers.shx", "The file {0} could not be found.")]
+        [TestCase("rivers.prj", "")]
+        [TestCase("rivers.dbf", "Could not find file '{0}'.")]
+        [TestCase("states.shp", "Could not find file '{0}'.")]
+        [TestCase("states.shx", "The file {0} could not be found.")]
+        [TestCase("states.prj", "")]
+        [TestCase("states.dbf", "Could not find file '{0}'.")]
+        public void OpenFileThrowsRightException(string missingFile, string errorMessage)
+        {
+            string missingFileExt = Path.GetExtension(missingFile);
+
+            List<string> extensions = new List<string>() { ".shp", ".shx", ".dbf", ".prj" };
+            extensions.Remove(missingFileExt);
+
+            var source = Path.Combine(_shapefiles, missingFile);
+            var tmpFile = FileTools.GetTempFileName(".shp");
+            var missingTmpFile = Path.ChangeExtension(tmpFile, missingFileExt);
+
+            foreach (var ext in extensions)
+            {
+                var sourceName = Path.ChangeExtension(source, ext);
+                var tmpFileName = Path.ChangeExtension(tmpFile, ext);
+
+                Assert.NotNull(tmpFileName, "tmpFileName != null");
+                File.Copy(sourceName, tmpFileName);
+            }
+
+            if (errorMessage != string.Empty)
+            {
+                var e = Assert.Throws<FileNotFoundException>(() => FeatureSet.OpenFile(tmpFile));
+                Assert.AreEqual(string.Format(errorMessage, missingTmpFile), e.Message);
+            }
+            else
+            {
+                Assert.DoesNotThrow(() => FeatureSet.OpenFile(tmpFile));
+            }
+
+            FileTools.DeleteShapeFile(tmpFile);
+        }
+
+        /// <summary>
         /// Check whether point features are saved with correct M/Z extent and value.
         /// </summary>
         /// <param name="c">The coordinate type.</param>
