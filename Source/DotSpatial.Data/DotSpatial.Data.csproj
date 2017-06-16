@@ -131,12 +131,16 @@
     </Compile>
     <Compile Include="FeatureType.cs" />
     <Compile Include="Fields.cs" />
+    <Compile Include="FieldTypeCharacterMapper.cs" />
+    <Compile Include="FieldTypeCharacterMapperManager.cs" />
+    <Compile Include="FieldTypeCharacters.cs" />
     <Compile Include="IContainRasterBounds.cs" />
     <Compile Include="IDisposeLock.cs" />
     <Compile Include="IExtent.cs" />
     <Compile Include="IExtentM.cs" />
     <Compile Include="IExtentZ.cs" />
     <Compile Include="IFeatureRow.cs" />
+    <Compile Include="IFieldTypeCharacterMapper.cs" />
     <Compile Include="IGetBitmap.cs" />
     <Compile Include="Endian.cs" />
     <Compile Include="ImageBandType.cs" />

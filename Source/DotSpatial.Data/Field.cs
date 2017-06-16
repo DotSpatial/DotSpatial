@@ -214,35 +214,9 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets the single character dBase code. Only some of these are supported with Esri.
-        /// C - Character (Chars, Strings, objects - as ToString(), and structs - as  )
-        /// D - Date (DateTime)
-        /// T - Time (DateTime)
-        /// N - Number (Short, Integer, Long, Float, Double, byte)
-        /// L - Logic (True-False, Yes-No)
-        /// F - Float
-        /// B - Double
+        /// The possible values are defined in FieldTypeCharacters.
         /// </summary>
-        public char TypeCharacter
-        {
-            get
-            {
-                if (DataType == typeof(bool)) return 'L';
-                if (DataType == typeof(DateTime)) return 'D';
-
-                // We are using numeric in most cases here, because that is the format most compatible with other
-                // Applications
-                if (DataType == typeof(float)) return 'N';
-                if (DataType == typeof(double)) return 'N';
-                if (DataType == typeof(decimal)) return 'N';
-                if (DataType == typeof(byte)) return 'N';
-                if (DataType == typeof(short)) return 'N';
-                if (DataType == typeof(int)) return 'N';
-                if (DataType == typeof(long)) return 'N';
-
-                // The default is to store it as a string type
-                return 'C';
-            }
-        }
+        public char TypeCharacter => FieldTypeCharacterMapperManager.Mapper.Map(DataType);
 
         /// <summary>
         /// Gets or sets the number of places to keep after the 0 in number formats.
