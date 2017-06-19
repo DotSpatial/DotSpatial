@@ -1,47 +1,46 @@
-﻿using System;
-using DotSpatial.Controls;
+﻿using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
 namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
 {
     /// <summary>
     /// Displays latitude and longitude coordinates at the current cursor position.
-    /// This is also shows that extensions can be loaded into design time controls (e.g. into ProgressHandler)
+    /// This also shows that extensions can be loaded into design time controls (e.g. into ProgressHandler).
     /// </summary>
     public class StatusShowCoordinates : Extension
     {
-        private Map _Map;
-        private StatusPanel xPanel;
-        private StatusPanel yPanel;
+        private Map _map;
+        private StatusPanel _xPanel;
+        private StatusPanel _yPanel;
 
         public override void Activate()
         {
-            _Map = (Map)App.Map;
-            _Map.GeoMouseMove += Map_GeoMouseMove;
+            _map = (Map)App.Map;
+            _map.GeoMouseMove += MapGeoMouseMove;
 
-            xPanel = new StatusPanel { Width = 160 };
-            yPanel = new StatusPanel { Width = 160 };
-            App.ProgressHandler.Add(xPanel);
-            App.ProgressHandler.Add(yPanel);
+            _xPanel = new StatusPanel { Width = 160 };
+            _yPanel = new StatusPanel { Width = 160 };
+            App.ProgressHandler.Add(_xPanel);
+            App.ProgressHandler.Add(_yPanel);
 
             base.Activate();
         }
 
         public override void Deactivate()
         {
-            _Map.GeoMouseMove -= Map_GeoMouseMove;
+            _map.GeoMouseMove -= MapGeoMouseMove;
 
-            App.ProgressHandler.Remove(xPanel);
-            App.ProgressHandler.Remove(yPanel);
+            App.ProgressHandler.Remove(_xPanel);
+            App.ProgressHandler.Remove(_yPanel);
 
             App.HeaderControl.RemoveAll();
             base.Deactivate();
         }
 
-        private void Map_GeoMouseMove(object sender, GeoMouseArgs e)
+        private void MapGeoMouseMove(object sender, GeoMouseArgs e)
         {
-            xPanel.Caption = String.Format("X: {0:.#####}", e.GeographicLocation.X);
-            yPanel.Caption = String.Format("Y: {0:.#####}", e.GeographicLocation.Y);
+            _xPanel.Caption = $"X: {e.GeographicLocation.X:.#####}";
+            _yPanel.Caption = $"Y: {e.GeographicLocation.Y:.#####}";
         }
     }
 }

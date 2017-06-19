@@ -144,7 +144,7 @@ namespace Demo.GPS
             this.startButton.TabIndex = 0;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
-            this.startButton.Click += new System.EventHandler(this.startButton_Click);
+            this.startButton.Click += new System.EventHandler(this.StartButtonClick);
             //
             // stopButton
             //
@@ -156,7 +156,7 @@ namespace Demo.GPS
             this.stopButton.TabIndex = 1;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
-            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            this.stopButton.Click += new System.EventHandler(this.StopButtonClick);
             //
             // pauseButton
             //
@@ -168,7 +168,7 @@ namespace Demo.GPS
             this.pauseButton.TabIndex = 2;
             this.pauseButton.Text = "Pause";
             this.pauseButton.UseVisualStyleBackColor = true;
-            this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
+            this.pauseButton.Click += new System.EventHandler(this.PauseButtonClick);
             //
             // resumeButton
             //
@@ -180,7 +180,7 @@ namespace Demo.GPS
             this.resumeButton.TabIndex = 3;
             this.resumeButton.Text = "Resume";
             this.resumeButton.UseVisualStyleBackColor = true;
-            this.resumeButton.Click += new System.EventHandler(this.resumeButton_Click);
+            this.resumeButton.Click += new System.EventHandler(this.ResumeButtonClick);
             //
             // sentenceListBox
             //
@@ -290,7 +290,7 @@ namespace Demo.GPS
             this.detectButton.TabIndex = 4;
             this.detectButton.Text = "Detect";
             this.detectButton.UseVisualStyleBackColor = true;
-            this.detectButton.Click += new System.EventHandler(DetectButton_Click);
+            this.detectButton.Click += new System.EventHandler(DetectButtonClick);
             //
             // cancelDetectButton
             //
@@ -302,7 +302,7 @@ namespace Demo.GPS
             this.cancelDetectButton.TabIndex = 5;
             this.cancelDetectButton.Text = "Cancel";
             this.cancelDetectButton.UseVisualStyleBackColor = true;
-            this.cancelDetectButton.Click += new System.EventHandler(CancelDetectButton_Click);
+            this.cancelDetectButton.Click += new System.EventHandler(CancelDetectButtonClick);
             //
             // devicesListView
             //
@@ -317,7 +317,7 @@ namespace Demo.GPS
             this.devicesListView.TabIndex = 0;
             this.devicesListView.UseCompatibleStateImageBehavior = false;
             this.devicesListView.View = System.Windows.Forms.View.Details;
-            this.devicesListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.devicesListView_ItemSelectionChanged);
+            this.devicesListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.DevicesListViewItemSelectionChanged);
             //
             // columnHeader1
             //
@@ -336,21 +336,21 @@ namespace Demo.GPS
             this.resetMenuItem});
             this.deviceContextMenu.Name = "deviceContextMenu";
             this.deviceContextMenu.Size = new System.Drawing.Size(121, 48);
-            this.deviceContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.deviceContextMenu_Opening);
+            this.deviceContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.DeviceContextMenuOpening);
             //
             // redetectMenuItem
             //
             this.redetectMenuItem.Name = "redetectMenuItem";
             this.redetectMenuItem.Size = new System.Drawing.Size(120, 22);
             this.redetectMenuItem.Text = "Redetect";
-            this.redetectMenuItem.Click += new System.EventHandler(this.redetectMenuItem_Click);
+            this.redetectMenuItem.Click += new System.EventHandler(this.RedetectMenuItemClick);
             //
             // resetMenuItem
             //
             this.resetMenuItem.Name = "resetMenuItem";
             this.resetMenuItem.Size = new System.Drawing.Size(120, 22);
             this.resetMenuItem.Text = "Reset";
-            this.resetMenuItem.Click += new System.EventHandler(this.resetMenuItem_Click);
+            this.resetMenuItem.Click += new System.EventHandler(this.ResetMenuItemClick);
             //
             // statusStrip1
             //
@@ -673,7 +673,7 @@ namespace Demo.GPS
             this.serialCheckBox.TabIndex = 7;
             this.serialCheckBox.Text = "Allow Serial";
             this.serialCheckBox.UseVisualStyleBackColor = true;
-            this.serialCheckBox.CheckedChanged += new System.EventHandler(this.serialCheckBox_CheckedChanged);
+            this.serialCheckBox.CheckedChanged += new System.EventHandler(this.SerialCheckBoxCheckedChanged);
             //
             // bluetoothCheckBox
             //
@@ -686,23 +686,23 @@ namespace Demo.GPS
             this.bluetoothCheckBox.TabIndex = 9;
             this.bluetoothCheckBox.Text = "Allow Bluetooth";
             this.bluetoothCheckBox.UseVisualStyleBackColor = true;
-            this.bluetoothCheckBox.CheckedChanged += new System.EventHandler(this.bluetoothCheckBox_CheckedChanged);
+            this.bluetoothCheckBox.CheckedChanged += new System.EventHandler(this.BluetoothCheckBoxCheckedChanged);
             //
             // nmeaInterpreter1
             //
             this.nmeaInterpreter1.IsFilterEnabled = false;
-            this.nmeaInterpreter1.AltitudeChanged += new System.EventHandler<DotSpatial.Positioning.DistanceEventArgs>(this.nmeaInterpreter1_AltitudeChanged);
-            this.nmeaInterpreter1.BearingChanged += new System.EventHandler<DotSpatial.Positioning.AzimuthEventArgs>(this.nmeaInterpreter1_BearingChanged);
-            this.nmeaInterpreter1.DateTimeChanged += new System.EventHandler<DotSpatial.Positioning.DateTimeEventArgs>(this.nmeaInterpreter1_DateTimeChanged);
-            this.nmeaInterpreter1.PositionChanged += new System.EventHandler<DotSpatial.Positioning.PositionEventArgs>(this.nmeaInterpreter1_PositionChanged);
-            this.nmeaInterpreter1.SpeedChanged += new System.EventHandler<DotSpatial.Positioning.SpeedEventArgs>(this.nmeaInterpreter1_SpeedChanged);
-            this.nmeaInterpreter1.SatellitesChanged += new System.EventHandler<DotSpatial.Positioning.SatelliteListEventArgs>(this.nmeaInterpreter1_SatellitesChanged);
-            this.nmeaInterpreter1.Starting += new System.EventHandler<DotSpatial.Positioning.DeviceEventArgs>(this.nmeaInterpreter1_Starting);
-            this.nmeaInterpreter1.Started += new System.EventHandler(this.nmeaInterpreter1_Started);
-            this.nmeaInterpreter1.Stopping += new System.EventHandler(this.nmeaInterpreter1_Stopping);
-            this.nmeaInterpreter1.Stopped += new System.EventHandler(this.nmeaInterpreter1_Stopped);
-            this.nmeaInterpreter1.Paused += new System.EventHandler(this.nmeaInterpreter1_Paused);
-            this.nmeaInterpreter1.Resumed += new System.EventHandler(this.nmeaInterpreter1_Resumed);
+            this.nmeaInterpreter1.AltitudeChanged += new System.EventHandler<DotSpatial.Positioning.DistanceEventArgs>(this.NmeaInterpreter1AltitudeChanged);
+            this.nmeaInterpreter1.BearingChanged += new System.EventHandler<DotSpatial.Positioning.AzimuthEventArgs>(this.NmeaInterpreter1BearingChanged);
+            this.nmeaInterpreter1.DateTimeChanged += new System.EventHandler<DotSpatial.Positioning.DateTimeEventArgs>(this.NmeaInterpreter1DateTimeChanged);
+            this.nmeaInterpreter1.PositionChanged += new System.EventHandler<DotSpatial.Positioning.PositionEventArgs>(this.NmeaInterpreter1PositionChanged);
+            this.nmeaInterpreter1.SpeedChanged += new System.EventHandler<DotSpatial.Positioning.SpeedEventArgs>(this.NmeaInterpreter1SpeedChanged);
+            this.nmeaInterpreter1.SatellitesChanged += new System.EventHandler<DotSpatial.Positioning.SatelliteListEventArgs>(this.NmeaInterpreter1SatellitesChanged);
+            this.nmeaInterpreter1.Starting += new System.EventHandler<DotSpatial.Positioning.DeviceEventArgs>(this.NmeaInterpreter1Starting);
+            this.nmeaInterpreter1.Started += new System.EventHandler(this.NmeaInterpreter1Started);
+            this.nmeaInterpreter1.Stopping += new System.EventHandler(this.NmeaInterpreter1Stopping);
+            this.nmeaInterpreter1.Stopped += new System.EventHandler(this.NmeaInterpreter1Stopped);
+            this.nmeaInterpreter1.Paused += new System.EventHandler(this.NmeaInterpreter1Paused);
+            this.nmeaInterpreter1.Resumed += new System.EventHandler(this.NmeaInterpreter1Resumed);
             //
             // exhaustiveCheckBox
             //
@@ -713,7 +713,7 @@ namespace Demo.GPS
             this.exhaustiveCheckBox.TabIndex = 8;
             this.exhaustiveCheckBox.Text = "Exhaustive Scan";
             this.exhaustiveCheckBox.UseVisualStyleBackColor = true;
-            this.exhaustiveCheckBox.CheckedChanged += new System.EventHandler(this.exhaustiveCheckBox_CheckedChanged);
+            this.exhaustiveCheckBox.CheckedChanged += new System.EventHandler(this.ExhaustiveCheckBoxCheckedChanged);
             //
             // undetectButton
             //
@@ -725,7 +725,7 @@ namespace Demo.GPS
             this.undetectButton.TabIndex = 6;
             this.undetectButton.Text = "Undetect";
             this.undetectButton.UseVisualStyleBackColor = true;
-            this.undetectButton.Click += new System.EventHandler(this.undetectButton_Click);
+            this.undetectButton.Click += new System.EventHandler(this.UndetectButtonClick);
             //
             // firstDeviceCheckBox
             //
@@ -736,7 +736,7 @@ namespace Demo.GPS
             this.firstDeviceCheckBox.TabIndex = 10;
             this.firstDeviceCheckBox.Text = "Stop after first device";
             this.firstDeviceCheckBox.UseVisualStyleBackColor = true;
-            this.firstDeviceCheckBox.CheckedChanged += new System.EventHandler(this.firstDeviceCheckBox_CheckedChanged);
+            this.firstDeviceCheckBox.CheckedChanged += new System.EventHandler(this.FirstDeviceCheckBoxCheckedChanged);
             //
             // clockSynchronizationCheckBox
             //
@@ -747,7 +747,7 @@ namespace Demo.GPS
             this.clockSynchronizationCheckBox.TabIndex = 11;
             this.clockSynchronizationCheckBox.Text = "Sync system clock";
             this.clockSynchronizationCheckBox.UseVisualStyleBackColor = true;
-            this.clockSynchronizationCheckBox.CheckedChanged += new System.EventHandler(this.clockSynchronizationCheckBox_CheckedChanged);
+            this.clockSynchronizationCheckBox.CheckedChanged += new System.EventHandler(this.ClockSynchronizationCheckBoxCheckedChanged);
             //
             // MainForm
             //

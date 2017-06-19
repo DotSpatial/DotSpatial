@@ -25,10 +25,35 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             }
         }
 
+        public string Filename
+        {
+            get
+            {
+                return null;
+            }
+
+            set
+            {
+               // throw new NotImplementedException();
+            }
+        }
+
+        public string FilePath
+        {
+            get
+            {
+                return null;
+            }
+
+            set
+            {
+              // throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// This method simulates loading the array of points from the LAS file.
-        /// Right now it is generating random points that are within the 
-        /// view extent.
+        /// Right now it is generating random points that are within the view extent.
         /// </summary>
         /// <param name="boundingBox">the view extent</param>
         /// <returns>array of the points in [x y x y ... order]</returns>
@@ -63,7 +88,6 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             }
             set
             {
-                ;
             }
         }
 
@@ -75,7 +99,6 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             }
             set
             {
-                ;
             }
         }
 

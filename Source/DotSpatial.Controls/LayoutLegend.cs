@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
         private int _numCol;
         private TextRenderingHint _textHint;
 
-        #region ------------------ Public Properties
+        #region Public Properties
 
         /// <summary>
         /// Gets or sets the layoutmap to use to base the legend on
@@ -54,11 +54,11 @@ namespace DotSpatial.Controls
                     _layers.Clear();
                     if (Map.MapControl != null)
                     {
-                        foreach (IMapLayer t in Map.MapControl.Layers)
+                        for (int i = Map.MapControl.Layers.Count - 1; i >= 0; i--)
                         {
-                            if (t.Checked)
+                            if (Map.MapControl.Layers[i].Checked)
                             {
-                                _layers.Add(t);
+                                _layers.Add(Map.MapControl.Layers[i]);
                             }
                         }
                     }
@@ -81,7 +81,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                if (Map == null || Map.MapControl == null)
+                if (Map?.MapControl == null)
                     return new List<int>();
                 List<int> layerInts = new List<int>();
                 for (int i = 0; i < Map.MapControl.Layers.Count; i++)
@@ -90,9 +90,10 @@ namespace DotSpatial.Controls
             }
             set
             {
-                if (Map == null || Map.MapControl != null)
+                _layers.Clear();
+
+                if (Map?.MapControl != null)
                 {
-                    _layers.Clear();
                     value.Sort();
                     value.Reverse();
                     foreach (int i in value)
@@ -101,10 +102,7 @@ namespace DotSpatial.Controls
                             _layers.Add(Map.MapControl.Layers[i]);
                     }
                 }
-                else
-                {
-                    _layers.Clear();
-                }
+
                 base.UpdateThumbnail();
                 base.OnInvalidate();
             }
@@ -178,7 +176,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region ------------------- event handlers
+        #region event handlers
 
         /// <summary>
         /// Updates the scale bar if the map is deleted
@@ -191,7 +189,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region ------------------- public methods
+        #region public methods
 
         /// <summary>
         /// Constructor
@@ -255,7 +253,7 @@ namespace DotSpatial.Controls
             if (items == null || !items.Any()) return;
             List<ILegendItem> itemList = items.ToList();
 
-            for (int i = itemList.Count - 1; i >= 0; i--)
+            for (int i = 0; i < itemList.Count; i++)
             {
                 if (itemList[i].LegendItems == null)
                 {

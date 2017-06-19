@@ -34,6 +34,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - ShapeFile Numeric columns now loaded into double instead of string for up to 15 decimal digits (#893)
 - DS Feature refactorings (#906)
 - LegendText ReadOnly (#750)
+- Made Shapefile class abstract, because we already have FeatureSet for creating unspecified Shapefiles (#890)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -101,3 +102,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - DS uses InRamImage although GDAL provider was selected (#931)
 - Disable editing in identify window (#930)
 - ArcMap does show M and Z as NaN (#935)
+- Recognize NullShapes not only for polygon / line shapes when in IndexMode, but also in !IndexMode and for points and multipoints (#890)
+- Legends are in an opposite order in the map legend and in the Print Preview. (#970)

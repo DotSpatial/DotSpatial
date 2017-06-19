@@ -2,7 +2,6 @@
 using DotSpatial.Controls.Header;
 using System.ComponentModel.Composition;
 
-
 namespace DummyHeaderControl
 {
     /// <summary>
@@ -12,16 +11,17 @@ namespace DummyHeaderControl
     public class DummyHeaderControl : IHeaderControl
     {
         public DropDownActionItem MapServiceDropDown { get; private set; }
-        public void Add(HeaderItem item)
+        public object Add(HeaderItem item)
         {
             switch (item.Key)
             {
                 case "kServiceDropDown":
                     {
                         MapServiceDropDown = item as DropDownActionItem;
+                        return MapServiceDropDown;
                     }
-                    break;
             }
+            return null;
         }
 
         public void Remove(string key)

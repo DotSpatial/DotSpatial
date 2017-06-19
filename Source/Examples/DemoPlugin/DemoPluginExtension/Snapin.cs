@@ -18,8 +18,8 @@ namespace DemoPlugin.DemoPluginExtension
             AddMenuItems(App.HeaderControl);
 
             // code for saving plugin settings...
-            App.SerializationManager.Serializing += manager_Serializing;
-            App.SerializationManager.Deserializing += manager_Deserializing;
+            App.SerializationManager.Serializing += ManagerSerializing;
+            App.SerializationManager.Deserializing += ManagerDeserializing;
 
             AddDockingPane();
 
@@ -29,8 +29,8 @@ namespace DemoPlugin.DemoPluginExtension
         public override void Deactivate()
         {
             // Do not forget to unsubscribe event handlers
-            App.SerializationManager.Serializing -= manager_Serializing;
-            App.SerializationManager.Deserializing -= manager_Deserializing;
+            App.SerializationManager.Serializing -= ManagerSerializing;
+            App.SerializationManager.Deserializing -= ManagerDeserializing;
 
             // Remove all GUI components which were added by plugin
             App.DockManager.Remove(AboutPanelKey);
@@ -71,13 +71,13 @@ namespace DemoPlugin.DemoPluginExtension
             App.DockManager.Add(aboutPanel);
         }
 
-        private void manager_Deserializing(object sender, SerializingEventArgs e)
+        private void ManagerDeserializing(object sender, SerializingEventArgs e)
         {
             var manager = (SerializationManager)sender;
             _storedValue = manager.GetCustomSetting(UniqueKeyPluginStoredValueDate, DateTime.Now);
         }
 
-        private void manager_Serializing(object sender, SerializingEventArgs e)
+        private void ManagerSerializing(object sender, SerializingEventArgs e)
         {
             var manager = (SerializationManager)sender;
             manager.SetCustomSetting(UniqueKeyPluginStoredValueDate, _storedValue);
