@@ -299,31 +299,17 @@ namespace DotSpatial.Symbology
         /// <returns>A boolean indicating whether or not this item can have other items dropped on it.</returns>
         public virtual bool CanReceiveItem(ILegendItem item)
         {
-            if (LegendType == LegendType.Scheme)
+            switch (LegendType)
             {
-                if (item.LegendType == LegendType.Symbol) return true;
-                return false;
+                case LegendType.Scheme:
+                    return item.LegendType == LegendType.Symbol;
+                case LegendType.Group:
+                    return item.LegendType != LegendType.Symbol && item.LegendType != LegendType.Scheme;
+                case LegendType.Layer:
+                    return item.LegendType == LegendType.Symbol || item.LegendType == LegendType.Scheme;
             }
 
-            if (LegendType == LegendType.Group)
-            {
-                if (item.LegendType == LegendType.Symbol) return false;
-                if (item.LegendType == LegendType.Scheme) return false;
-                return true;
-            }
-
-            if (LegendType == LegendType.Layer)
-            {
-                if (item.LegendType == LegendType.Symbol) return true;
-                if (item.LegendType == LegendType.Scheme) return true;
-                return false;
-            }
-
-            if (LegendType == LegendType.Symbol)
-            {
-                return false;
-            }
-
+            // symbols and custom items can't receive anything
             return false;
         }
 
@@ -383,7 +369,7 @@ namespace DotSpatial.Symbology
             if (LegendSymbolMode == SymbolMode.Symbol)
             {
                 drawBox = true;
-                x = h * 2 + 4;
+                x = (h * 2) + 4;
             }
 
             Brush b = new SolidBrush(fontColor);

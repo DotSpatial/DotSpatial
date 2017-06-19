@@ -1,6 +1,7 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using System.ComponentModel;
 using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.SetSelectable
@@ -48,12 +49,17 @@ namespace DotSpatial.Plugins.SetSelectable
             set
             {
                 Layer.SelectionEnabled = value;
+                foreach (var cat in Layer.Symbology.GetCategories())
+                {
+                    cat.SelectionEnabled = value;
+                }
             }
         }
 
         /// <summary>
         /// Gets or sets the layer, whose selection can be changed.
         /// </summary>
+        [Browsable(false)]
         public IFeatureLayer Layer { get; set; }
 
         #endregion

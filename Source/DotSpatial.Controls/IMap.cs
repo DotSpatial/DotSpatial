@@ -242,11 +242,5 @@ namespace DotSpatial.Controls
         void ZoomToPrevious();
 
         #endregion
-
-        // event EventHandler<ZoneEventArgs> FinishedDrawingZone;
-        ///// </summary>
-        ///// Occurs when an individual zone has finished drawing
-
-        ///// <summary>
     }
 }

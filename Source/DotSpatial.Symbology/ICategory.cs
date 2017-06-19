@@ -36,6 +36,11 @@ namespace DotSpatial.Symbology
         string Status { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this item is actively supporting selection.
+        /// </summary>
+        bool SelectionEnabled { get; set; }
+
+        /// <summary>
         /// Gets or sets the tag. This is not used by DotSpatial, but is provided for convenient linking for this object
         /// in plugins or other applications.
         /// </summary>

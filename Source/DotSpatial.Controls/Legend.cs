@@ -35,6 +35,7 @@ namespace DotSpatial.Controls
         private Pen _highlightBorderPen;
         private bool _ignoreHide;
         private bool _isDragging;
+        private bool _isMouseDown;
         private List<LegendBox> _legendBoxes; // for hit-testing
         private Rectangle _previousLine;
         private LegendBox _previousMouseDown;
@@ -205,6 +206,14 @@ namespace DotSpatial.Controls
         public SymbologyEventManager SharedEventHandlers { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the legend is used to determine whether a layer is selectable.
+        /// If true, a layer is only selectable if it or a superior object (parental group, mapframe) is selected in legend.
+        /// If false, the selectable state of the layers gets either determined by a plugin like SetSelectable or developers handle the selectable state by code.
+        /// By default legend is used, but if the SetSelectable plugin gets loaded this is used instead of the legend.
+        /// </summary>
+        public bool UseLegendForSelection { get; set; } = true;
+
+        /// <summary>
         /// Gets the bottom box in the legend.
         /// </summary>
         private LegendBox BottomBox => _legendBoxes[_legendBoxes.Count - 1];
@@ -231,7 +240,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Un-selectes any selected items in the legend.
+        /// Un-selects any selected items in the legend.
         /// </summary>
         public void ClearSelection()
         {
@@ -260,7 +269,6 @@ namespace DotSpatial.Controls
         {
             // do any code that needs to happen if content changes
             _previousMouseDown = null; // to avoid memory leaks, because LegendBox contains reference to Layer
-
             IsInitialized = false;
             Invalidate();
         }
@@ -291,12 +299,9 @@ namespace DotSpatial.Controls
                 e.Graphics.DrawRectangle(pen, e.ClipRectangle);
             }
 
-            if (_isDragging)
+            if (_isDragging && !_previousLine.IsEmpty)
             {
-                if (_previousLine.IsEmpty == false)
-                {
-                    e.Graphics.DrawLine(Pens.Black, _previousLine.X, _previousLine.Y + 2, _previousLine.Right, _previousLine.Y + 2);
-                }
+                e.Graphics.DrawLine(Pens.Black, _previousLine.X, _previousLine.Y + 2, _previousLine.Right, _previousLine.Y + 2);
             }
         }
 
@@ -359,7 +364,7 @@ namespace DotSpatial.Controls
         /// <returns>The position where the next LegendItem can be drawn.</returns>
         protected virtual PointF OnInitializeItem(DrawLegendItemArgs e)
         {
-            if (e.Item.LegendItemVisible == false) return e.TopLeft;
+            if (!e.Item.LegendItemVisible) return e.TopLeft;
 
             UpdateActions(e.Item);
 
@@ -373,12 +378,13 @@ namespace DotSpatial.Controls
             if (topLeft.Y > ControlRectangle.Top - ItemHeight)
             {
                 // Draw the item itself
-                // Point tl = new Point((int)topLeft.X, (int)topLeft.Y);
-                var itemBox = new LegendBox();
+                var itemBox = new LegendBox
+                {
+                    Item = e.Item,
+                    Bounds = new Rectangle(0, (int)topLeft.Y, Width, ItemHeight),
+                    Indent = (int)topLeft.X / Indentation
+                };
                 _legendBoxes.Add(itemBox);
-                itemBox.Item = e.Item;
-                itemBox.Bounds = new Rectangle(0, (int)topLeft.Y, Width, ItemHeight);
-                itemBox.Indent = (int)topLeft.X / Indentation;
 
                 DrawPlusMinus(e.Graphics, ref tempTopLeft, itemBox);
 
@@ -599,41 +605,74 @@ namespace DotSpatial.Controls
                 }
             }
 
+            if (_isMouseDown) _isDragging = true;
+
             if (_isDragging)
             {
-                _dragTarget = null;
-                if (currentBox != null) _dragTarget = currentBox;
-                if (ClientRectangle.Contains(e.Location))
+                _dragTarget = currentBox;
+                if (_dragTarget == null && ClientRectangle.Contains(e.Location))
                 {
-                    if (currentBox == null) _dragTarget = BottomBox;
+                    _dragTarget = BottomBox;
                 }
 
                 if (!_previousLine.IsEmpty) Invalidate(_previousLine);
                 _previousLine = Rectangle.Empty;
 
-                if (_dragTarget != null && _dragItem != null && _dragTarget != _dragItem)
+                if (_dragTarget != null && _dragItem != null)
                 {
                     int left = 0;
-                    LegendBox container = BoxFromItem(_dragTarget.Item.GetValidContainerFor(_dragItem.Item));
+                    LegendBox container = BoxFromItem(_dragTarget != _dragItem ? _dragTarget.Item.GetValidContainerFor(_dragItem.Item) : _dragItem.Item);
+
+                    bool indenting = false;
+
                     if (container != null)
                     {
+                        // if the mouse x is smaller than the right corner of the expand box, the user is trying to move the layer out of the current group into the parent group
+                        // so we indent the line based on the parent group
+                        if (loc.X < container.ExpandBox.Right)
+                        {
+                            var c = BoxFromItem(container.Item.GetParentItem());
+                            if (c != null) container = c;
+                            indenting = true;
+                        }
+
                         left = (container.Indent + 1) * Indentation;
                     }
 
-                    LegendBox boxOverLine = _dragTarget.Item.CanReceiveItem(_dragItem.Item) ? _dragTarget : BoxFromItem(_dragTarget.Item.BottomMember());
-                    if (boxOverLine == null)
+                    LegendBox boxOverLine;
+                    if (_dragTarget.Item.CanReceiveItem(_dragItem.Item))
                     {
-                        _previousLine = Rectangle.Empty;
+                        boxOverLine = _dragTarget;
+                    }
+                    else if (_dragTarget.Item.LegendType == LegendType.Layer && _dragItem.Item.LegendType == LegendType.Layer)
+                    {
+                        boxOverLine = BoxFromItem(_dragTarget.Item.BottomMember());
+                    }
+                    else
+                    {
+                        boxOverLine = BoxFromItem(_dragTarget.Item.GetParentItem().BottomMember());
+                    }
+
+                    if (boxOverLine == null || boxOverLine.Item.IsChildOf(_dragItem.Item) || (boxOverLine.Item == _dragItem.Item && !indenting))
+                    {
+                        // items may not be moved onto themselves, so we show the forbidden cursor
+                        _dragTarget = null;
                         Cursor = Cursors.No;
                         cursorHandled = true;
                     }
                     else
                     {
+                        // draw the line on the position the layer would be moved to
+                        _dragTarget = boxOverLine;
                         _previousLine = new Rectangle(left, boxOverLine.Bounds.Bottom, Width - left, 4);
                         Cursor = Cursors.Hand;
                         cursorHandled = true;
                         Invalidate(_previousLine);
                     }
+                }
+                else
+                {
+                    _isMouseDown = false;
                 }
 
                 if (!cursorHandled)
@@ -658,7 +697,9 @@ namespace DotSpatial.Controls
         protected override void OnMouseUp(MouseEventArgs e)
         {
             Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
-            if (!_wasDoubleClick)
+
+            // if it was neither dragged nor double clicked, the item will be renamed
+            if (!_wasDoubleClick && !_isDragging)
             {
                 foreach (LegendBox box in _legendBoxes)
                 {
@@ -668,41 +709,58 @@ namespace DotSpatial.Controls
                 }
             }
 
-            if (_isDragging && _dragItem != null)
+            // if the item was dragged it has to be moved to the new position
+            if (_isDragging)
             {
-                if (_dragTarget != null && _dragTarget.Item != _dragItem.Item)
+                if (_dragItem != null && _dragTarget != null)
                 {
-                    ILegendItem potentialParent = _dragTarget.Item.GetValidContainerFor(_dragItem.Item);
+                    ILegendItem potentialParent = null;
+                    if (_dragTarget.Item != _dragItem.Item)
+                    {
+                        potentialParent = _dragTarget.Item.GetValidContainerFor(_dragItem.Item);
+                    }
+
                     if (potentialParent != null)
                     {
-                        potentialParent.ParentMapFrame().SuspendEvents();
+                        // update the parent, if the user is trying to move the item up the tree
+                        var container = BoxFromItem(potentialParent);
+                        if (loc.X < container.ExpandBox.Right)
+                        {
+                            potentialParent = container.Item.GetParentItem();
+                        }
 
                         // The target must be a group, and the item must be a layer.
                         ILayer lyr = _dragItem.Item as ILayer;
-                        if (lyr != null)
+                        IGroup grp = potentialParent as IGroup;
+                        if (lyr != null && grp != null)
                         {
-                            IGroup grp = _dragItem.Item.GetParentItem() as IGroup;
-                            lyr.LockDispose();
-
                             // when original location is inside group, remove layer from the group.
-                            grp?.Remove(lyr);
-                            int index = _dragTarget.Item.InsertIndex(_dragItem.Item);
-                            if (index == -1) index = 0;
-                            grp = potentialParent as IGroup;
-                            if (grp != null)
+                            IGroup grp1 = _dragItem.Item.GetParentItem() as IGroup;
+
+                            int newIndex = potentialParent.InsertIndex(_dragTarget.Item) - 1;
+                            var oldIndex = grp1?.IndexOf(lyr);
+
+                            // only move the layer if the user doesn't move it to the same position as before
+                            if (grp1 != grp || oldIndex != newIndex)
                             {
+                                potentialParent.ParentMapFrame().SuspendEvents();
+                                lyr.LockDispose();
+                                grp1?.Remove(lyr);
+
+                                var index = potentialParent.InsertIndex(_dragTarget.Item);
+
+                                if (index == -1) index = 0;
                                 grp.Insert(index, lyr);
 
                                 // when the target is a group, assign the parent item.
                                 lyr.SetParentItem(grp);
+                                lyr.UnlockDispose();
+
+                                potentialParent.ParentMapFrame().ResumeEvents();
+                                OnOrderChanged();
+                                potentialParent.ParentMapFrame().Invalidate();
                             }
-
-                            lyr.UnlockDispose();
                         }
-
-                        potentialParent.ParentMapFrame().ResumeEvents();
-                        OnOrderChanged();
-                        potentialParent.ParentMapFrame().Invalidate();
                     }
                 }
 
@@ -711,6 +769,7 @@ namespace DotSpatial.Controls
                 Invalidate();
             }
 
+            _isMouseDown = false;
             _wasDoubleClick = false;
 
             base.OnMouseUp(e);
@@ -764,6 +823,95 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Sets SelectionEnabled true for all the children of the given collection.
+        /// </summary>
+        /// <param name="layers">Collection whose items SelectionEnabled state should be set to true.</param>
+        private static void SetSelectionEnabledForChildren(IMapLayerCollection layers)
+        {
+            foreach (var mapLayer in layers)
+            {
+                mapLayer.SelectionEnabled = true;
+                mapLayer.IsSelected = false; // the selection comes from higher up, so the layers gets deselected, so the user doesn't assume that only the selected items in the group are used for selection
+
+                var gr = mapLayer as IMapGroup;
+                if (gr != null)
+                {
+                    SetSelectionEnabledForChildren(gr.Layers);
+                }
+                else
+                {
+                    IFeatureLayer fl = mapLayer as IFeatureLayer;
+
+                    if (fl != null)
+                    {
+                        // all categories get selection enabled
+                        foreach (var cat in fl.Symbology.GetCategories())
+                        {
+                            cat.SelectionEnabled = true;
+                            cat.IsSelected = false; // the selection comes from higher up, so the category gets deselected, so the user doesn't assume that only the selected categories of the layer get used for selection
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the SelectionEnabled property of all the layers in the given collection.
+        /// </summary>
+        /// <param name="layers">The collection that gets updated.</param>
+        private static void UpdateSelectionEnabled(IEnumerable<object> layers)
+        {
+            foreach (var mapLayer in layers.OfType<ILayer>())
+            {
+                mapLayer.SelectionEnabled = mapLayer.IsSelected; // enable selection if the current item is selected
+
+                var gr = mapLayer as IMapGroup;
+                if (gr != null)
+                {
+                    // this is a group
+                    if (gr.IsSelected)
+                    {
+                        SetSelectionEnabledForChildren(gr.Layers); // group is the selected item, so everything below is selected
+                    }
+                    else
+                    {
+                        UpdateSelectionEnabled(gr.Layers); // group is not the selected item, so find the selected item
+                    }
+                }
+                else
+                {
+                    IFeatureLayer fl = mapLayer as IFeatureLayer;
+
+                    if (fl != null)
+                    {
+                        var cats = fl.Symbology.GetCategories().ToList();
+
+                        // this is a layer with categories
+                        if (mapLayer.IsSelected)
+                        {
+                            // all categories get selection enabled
+                            foreach (var cat in cats)
+                            {
+                                cat.SelectionEnabled = true;
+                                cat.IsSelected = false; // layer is selected, so the category gets deselected, so the user doesn't assume that only the selected categories of the layer get used for selection
+                            }
+                        }
+                        else
+                        {
+                            // only selected categories get selection enabled
+                            foreach (var cat in cats)
+                            {
+                                cat.SelectionEnabled = cat.IsSelected;
+                            }
+
+                            mapLayer.SelectionEnabled = cats.Any(_ => _.SelectionEnabled);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Given a legend item, it searches the list of LegendBoxes until it finds it.
         /// </summary>
         /// <param name="item">LegendItem to find.</param>
@@ -787,30 +935,47 @@ namespace DotSpatial.Controls
                 return;
             }
 
+            // if the item was already selected
             if (e.ItemBox.Item.IsSelected)
             {
-                // if we are already selected, prepare to edit in textbox
-                _previousMouseDown = e.ItemBox;
+                // and the left mouse button is clicked while the shift key is held, we deselect the item
+                if (ModifierKeys == Keys.Control && e.Button == MouseButtons.Left)
+                {
+                    e.ItemBox.Item.IsSelected = false;
+                    return;
+                }
 
                 // Start dragging
                 if (e.Button == MouseButtons.Left)
                 {
-                    _isDragging = true;
-                    ILegendItem li = e.ItemBox.Item;
-                    while (li != null && !(li is ILayer))
+                    var box = e.ItemBox;
+
+                    // otherwise we prepare to edit in textbox
+                    if (_previousMouseDown == null)
                     {
-                        li = li.GetParentItem();
+                        ClearSelection();
+
+                        box = _legendBoxes.Find(_ => _.Item == e.ItemBox.Item);
+                        box.Item.IsSelected = true;
+                        _previousMouseDown = box;
                     }
 
+                    _isMouseDown = true;
+                    ILegendItem li = box.Item;
                     ILayer lyr = li as ILayer;
-                    if (lyr != null && !RootNodes.Contains(lyr))
+                    if (lyr == null)
                     {
-                        // don't allow to drag root nodes
-                        _dragItem = BoxFromItem(lyr);
+                        // this is a category, it may be renamed but not moved
+                    }
+                    else if (RootNodes.Contains(lyr))
+                    {
+                        // this is a root node, it may not be renamed or moved
+                        _isMouseDown = false;
                     }
                     else
                     {
-                        _isDragging = false;
+                        // this is a layer, it may be moved and renamed
+                        _dragItem = BoxFromItem(lyr);
                     }
                 }
             }
@@ -819,12 +984,17 @@ namespace DotSpatial.Controls
                 // Check for textbox clicking
                 if (e.ItemBox.Textbox.Contains(loc))
                 {
-                    if (ModifierKeys != Keys.Shift)
+                    if (ModifierKeys != Keys.Control)
                     {
                         ClearSelection();
                     }
 
                     e.ItemBox.Item.IsSelected = true;
+
+                    if (UseLegendForSelection)
+                    {
+                        UpdateSelectionEnabled(RootNodes.OfType<IMapFrame>().AsEnumerable());
+                    }
                 }
             }
         }
@@ -856,25 +1026,34 @@ namespace DotSpatial.Controls
                     RefreshNodes();
                 }
 
-                if (e.ItemBox.Textbox.Contains(loc) && e.ItemBox == _previousMouseDown)
+                // left click on a text box makes the textbox editable, if it was clicked before
+                if (e.ItemBox.Textbox.Contains(loc))
                 {
-                    _isDragging = false;
-                    if (!e.ItemBox.Item.LegendTextReadOnly)
+                    if (e.ItemBox.Item == _previousMouseDown?.Item)
                     {
-                        // Edit via text box
-                        _editBox.Left = e.ItemBox.Textbox.Left;
-                        _editBox.Width = e.ItemBox.Textbox.Width + 10;
-                        _editBox.Top = e.ItemBox.Bounds.Top;
-                        _editBox.Height = e.ItemBox.Bounds.Height;
-                        _editBox.SelectedText = e.ItemBox.Item.LegendText;
-                        _editBox.Font = Font;
-                        _editBox.Visible = true;
+                        if (!e.ItemBox.Item.LegendTextReadOnly)
+                        {
+                            // Edit via text box
+                            _editBox.Left = e.ItemBox.Textbox.Left;
+                            _editBox.Width = e.ItemBox.Textbox.Width + 10;
+                            _editBox.Top = e.ItemBox.Bounds.Top;
+                            _editBox.Height = e.ItemBox.Bounds.Height;
+                            _editBox.SelectedText = e.ItemBox.Item.LegendText;
+                            _editBox.Font = Font;
+                            _editBox.Visible = true;
+                        }
+                    }
+                    else if (ModifierKeys == Keys.Control)
+                    {
+                        RefreshNodes();
                     }
                 }
             }
             else if (e.Button == MouseButtons.Right)
             {
+                // right click shows the context menu
                 if (e.ItemBox.Item.ContextMenuItems == null) return;
+
                 _contextMenu.MenuItems.Clear();
                 foreach (SymbologyMenuItem mi in e.ItemBox.Item.ContextMenuItems)
                 {
@@ -986,7 +1165,7 @@ namespace DotSpatial.Controls
 
         private void HideEditBox()
         {
-            if (_editBox.Visible && _ignoreHide == false)
+            if (_editBox.Visible && !_ignoreHide)
             {
                 _ignoreHide = true;
                 _previousMouseDown.Item.LegendText = _editBox.Text;

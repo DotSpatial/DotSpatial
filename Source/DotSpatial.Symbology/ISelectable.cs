@@ -15,7 +15,7 @@ namespace DotSpatial.Symbology
         #region Events
 
         /// <summary>
-        /// OCcurs after all of the layers have been updated with new selection content.
+        /// Occurs after all of the layers have been updated with new selection content.
         /// </summary>
         event EventHandler SelectionChanged;
 
@@ -36,8 +36,9 @@ namespace DotSpatial.Symbology
         /// Removes any members from existing in the selected state.
         /// </summary>
         /// <param name="affectedArea">The affected area.</param>
+        /// <param name="force">Indicates whether the selection should be cleared although SelectionEnabled is false.</param>
         /// <returns>Boolean, true if members were removed from the selection</returns>
-        bool ClearSelection(out Envelope affectedArea);
+        bool ClearSelection(out Envelope affectedArea, bool force);
 
         /// <summary>
         /// Inverts the selected state of any members in the specified region.

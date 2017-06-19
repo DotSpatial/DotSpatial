@@ -30,6 +30,14 @@ namespace DotSpatial.Controls
         /// </summary>
         List<ILegendItem> RootNodes { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the legend is used to determine whether a layer is selectable.
+        /// If true, a layer is only selectable if it or a superior object (parental group, mapframe) is selected in legend.
+        /// If false, the selectable state of the layers gets either determined by a plugin like SetSelectable or developers handle the selectable state by code.
+        /// By default legend is used, but if the SetSelectable plugin gets loaded this is used instead of the legend.
+        /// </summary>
+        bool UseLegendForSelection { get; set; }
+
         #endregion
 
         #region Methods

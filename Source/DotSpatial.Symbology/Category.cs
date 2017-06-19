@@ -107,6 +107,14 @@ namespace DotSpatial.Symbology
         public string Status { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether items of this category get selected by the parent layers Select methods.
+        /// If the legend is used for selection this gets set if either the whole layer is selected or this category.
+        /// If the legend is not used for selection this has to be set by code to be able to select only features of this category.
+        /// By default selection is allowed.
+        /// </summary>
+        public bool SelectionEnabled { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the tag. This is not used by DotSpatial, but is provided for convenient linking for this object
         /// in plugins or other applications.
         /// </summary>

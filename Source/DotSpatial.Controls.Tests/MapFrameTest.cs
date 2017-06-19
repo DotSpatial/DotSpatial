@@ -59,7 +59,7 @@ namespace DotSpatial.Controls.Tests
             group2.Layers.Add(new MapLineLayer());
             group2.Layers.Add(new MapPolygonLayer());
 
-            List<IMapGroup> groupList = map.GetAllGroups();
+            List<IGroup> groupList = map.GetAllGroups();
             Assert.AreEqual(groupList.Count, 2);
         }
     }

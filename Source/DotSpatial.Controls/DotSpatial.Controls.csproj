@@ -234,7 +234,6 @@
       <DependentUpon>Map.cs</DependentUpon>
     </Compile>
     <Compile Include="ActionMode.cs" />
-    <Compile Include="MapFrameExt.cs" />
     <Compile Include="MapFrameProjectionHelper.cs" />
     <Compile Include="MapFunctionKeyNavigation.cs" />
     <Compile Include="MessageStrings1.Designer.cs">

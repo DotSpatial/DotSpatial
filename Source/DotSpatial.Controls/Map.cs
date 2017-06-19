@@ -491,8 +491,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                if (MapFrame == null) return false;
-                return MapFrame.SelectionEnabled;
+                return MapFrame != null && MapFrame.SelectionEnabled;
             }
 
             set
@@ -709,19 +708,20 @@ namespace DotSpatial.Controls
         /// Removes any members from existing in the selected state.
         /// </summary>
         /// <param name="affectedArea">The area affected by the clear operation.</param>
-        /// <returns>True, if run successfully.</returns>
-        public bool ClearSelection(out Envelope affectedArea)
+        /// <param name="force">Indicates whether the selection should be cleared although SelectionEnabled is false.</param>
+        /// <returns>True if members were removed from the selection.</returns>
+        public bool ClearSelection(out Envelope affectedArea, bool force)
         {
             affectedArea = new Envelope();
             if (MapFrame == null) return false;
-            return MapFrame.ClearSelection(out affectedArea);
+            return MapFrame.ClearSelection(out affectedArea, force);
         }
 
         /// <summary>
         /// Gets all map groups in the map including the nested groups
         /// </summary>
         /// <returns>the list of the groups</returns>
-        public List<IMapGroup> GetAllGroups()
+        public List<IGroup> GetAllGroups()
         {
             return _geoMapFrame?.GetAllGroups();
         }
@@ -1024,8 +1024,7 @@ namespace DotSpatial.Controls
         public bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
-            if (MapFrame == null) return false;
-            return MapFrame.Select(tolerant, strict, mode, out affectedArea);
+            return MapFrame != null && MapFrame.Select(tolerant, strict, mode, out affectedArea);
         }
 
         /// <summary>

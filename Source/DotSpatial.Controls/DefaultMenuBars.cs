@@ -271,8 +271,7 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         private void DeselectAllClick(object sender, EventArgs e)
         {
-            Envelope env;
-            App.Map.MapFrame.ClearSelection(out env);
+            App.Map.MapFrame.ClearSelection();
         }
 
         private void ExitClick(object sender, EventArgs e)

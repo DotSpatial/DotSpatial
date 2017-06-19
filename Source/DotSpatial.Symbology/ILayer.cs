@@ -72,13 +72,6 @@ namespace DotSpatial.Symbology
         void Invalidate(Extent region);
 
         /// <summary>
-        /// Queries this layer and the entire parental tree up to the map frame to determine if
-        /// this layer is within the selected layers.
-        /// </summary>
-        /// <returns>True, if the layer is within legend selection.</returns>
-        bool IsWithinLegendSelection();
-
-        /// <summary>
         /// Given a geographic extent, this tests the "IsVisible", "UseDynamicVisibility",
         /// "DynamicVisibilityMode" and "DynamicVisibilityWidth"
         /// In order to determine if this layer is visible.

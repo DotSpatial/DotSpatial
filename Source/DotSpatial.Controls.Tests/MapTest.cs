@@ -88,7 +88,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
+        /// Test if the new GetAllGroups() method returns the correct number of layers if the map has groups
         /// </summary>
         [TestMethod]
         public void GetAllGroupsTest()
@@ -107,7 +107,7 @@ namespace DotSpatial.Controls.Tests
             group2.Layers.Add(new MapLineLayer());
             group2.Layers.Add(new MapPolygonLayer());
 
-            List<IMapGroup> groupList = map.GetAllGroups();
+            List<IGroup> groupList = map.GetAllGroups();
             Assert.AreEqual(groupList.Count, 2);
         }
     }
