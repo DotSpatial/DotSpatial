@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Forms.LayoutForm
-// Description:  A form that shows the mapwindow layout
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is by Brian Marchionni Aug 2009
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -21,12 +10,14 @@ using DotSpatial.Data;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// This is the primary form where the print layout content is organized before printing
+    /// This is the primary form where the print layout content is organized before printing.
     /// </summary>
     public partial class LayoutForm : Form
     {
+        #region  Constructors
+
         /// <summary>
-        /// Default constructor for creating a new instance of hte Layout form
+        /// Initializes a new instance of the <see cref="LayoutForm"/> class.
         /// </summary>
         public LayoutForm()
         {
@@ -44,36 +35,41 @@ namespace DotSpatial.Controls
             }
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the layout control.
+        /// </summary>
+        public LayoutControl LayoutControl => _layoutControl1;
+
         /// <summary>
         /// Gets or sets the map that will be used in the layout
         /// </summary>
         public Map MapControl
         {
-            get { return _layoutControl1.MapControl; }
-            set { _layoutControl1.MapControl = value; }
+            get
+            {
+                return _layoutControl1.MapControl;
+            }
+
+            set
+            {
+                _layoutControl1.MapControl = value;
+            }
         }
 
-        /// <summary>
-        /// Gets layout control.
-        /// </summary>
-        public LayoutControl LayoutControl
+        #endregion
+
+        #region Methods
+
+        private void LayoutControl1FilenameChanged(object sender, EventArgs e)
         {
-            get { return _layoutControl1; }
+            Text = !string.IsNullOrEmpty(_layoutControl1.Filename) ? "DotSpatial Print Layout - " + Path.GetFileName(_layoutControl1.Filename) : "DotSpatial Print Layout";
         }
 
-        private void layoutMenuStrip1_CloseClicked(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void layoutControl1_FilenameChanged(object sender, EventArgs e)
-        {
-            Text = !string.IsNullOrEmpty(_layoutControl1.Filename)
-                ? "DotSpatial Print Layout - " + Path.GetFileName(this._layoutControl1.Filename)
-                : "DotSpatial Print Layout";
-        }
-
-        private void LayoutForm_Load(object sender, EventArgs e)
+        private void LayoutFormLoad(object sender, EventArgs e)
         {
             if (MapControl != null)
             {
@@ -82,5 +78,12 @@ namespace DotSpatial.Controls
                 _layoutControl1.AddToLayout(mapElement);
             }
         }
+
+        private void LayoutMenuStrip1CloseClicked(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #endregion
     }
 }

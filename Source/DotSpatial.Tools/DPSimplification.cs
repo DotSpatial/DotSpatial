@@ -1,19 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.DPSimplification.cs
-// Description:  This tool reduces the number of points on polylines using the Douglas-Peucker line
-//               simplification algorithm
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Brian Marchionni   |  04/30/2009        |  Cleaned it up
-// Ted Dunsford       |  8/24/2009         |  Cleaned up some unnecessary references using re-sharper
-// KP                 |  9/2009            |  Used IDW as model for DPSimplification
-// Ping Yang          |  12/2009           |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Data;
@@ -27,11 +13,12 @@ using NetTopologySuite.Simplify;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Line-simplification using Douglas-Peucker algorithm
+    /// This tool reduces the number of points on polylines using the Douglas-Peucker line
+    /// simplification algorithm.
     /// </summary>
     public class DpSimplification : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -39,59 +26,46 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the DpSimplification class.
+        /// Initializes a new instance of the <see cref="DpSimplification"/> class.
         /// </summary>
         public DpSimplification()
         {
-            this.Name = TextStrings.SimplifyLines;
-            this.Category = TextStrings.Generalization;
-            this.Description = TextStrings.DouglasPeuckerlinesimplification;
-            this.ToolTip = TextStrings.DPlinesimplification;
+            Name = TextStrings.SimplifyLines;
+            Category = TextStrings.Generalization;
+            Description = TextStrings.DouglasPeuckerlinesimplification;
+            ToolTip = TextStrings.DPlinesimplification;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input = _inputParam[0].Value as IFeatureSet;
-            if (input != null)
-            {
-                input.FillAttributes();
-            }
+            input?.FillAttributes();
 
             double tolerance = (double)_inputParam[1].Value;
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
@@ -100,13 +74,13 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the DP line simplefy tool programaticaly
+        /// Executes the DP line simplefy tool programmatically
         /// Ping Yang Added it for external Testing
         /// </summary>
         /// <param name="input">The input polygon feature set</param>
         /// <param name="tolerance">The tolerance to use when simplefiying</param>
         /// <param name="output">The output polygon feature set</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input, double tolerance, IFeatureSet output)
         {
             // Validates the input and output data
@@ -150,13 +124,13 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the DP line simplefy tool programaticaly
+        /// Executes the DP line simplefy tool programmatically
         /// </summary>
         /// <param name="input">The input polygon feature set</param>
         /// <param name="tolerance">The tolerance to use when simplefiying</param>
         /// <param name="output">The output polygon feature set</param>
         /// <param name="cancelProgressHandler">The progress handler</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input, double tolerance, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -229,7 +203,10 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[2];
             _inputParam[0] = new LineFeatureSetParam(TextStrings.LineFeatureSet);
-            _inputParam[1] = new DoubleParam(TextStrings.Tolerance) { Value = 10.0 };
+            _inputParam[1] = new DoubleParam(TextStrings.Tolerance)
+            {
+                Value = 10.0
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new LineFeatureSetParam(TextStrings.LineFeatureSet);

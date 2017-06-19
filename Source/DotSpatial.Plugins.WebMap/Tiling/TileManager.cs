@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,6 +11,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {
+    /// <summary>
+    /// The tile manager manages the way tiles are gotten.
+    /// </summary>
     internal class TileManager
     {
         #region Fields
@@ -16,17 +22,34 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
         #endregion
 
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TileManager"/> class.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider that gets the tiles.</param>
         public TileManager(ServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets the tiles.
+        /// </summary>
+        /// <param name="envelope">Envelope that indicates for which region the tiles are needed.</param>
+        /// <param name="bounds">Bounds needed for zoom level calculation.</param>
+        /// <param name="bw">The background worker.</param>
+        /// <returns>The tiles needed for the envelope.</returns>
         public Tiles GetTiles(Envelope envelope, Rectangle bounds, BackgroundWorker bw)
         {
             Coordinate mapTopLeft = new Coordinate(envelope.MinX, envelope.MaxY);
             Coordinate mapBottomRight = new Coordinate(envelope.MaxX, envelope.MinY);
 
-            //Clip the coordinates so they are in the range of the web mercator projection
+            // Clip the coordinates so they are in the range of the web mercator projection
             mapTopLeft.Y = TileCalculator.Clip(mapTopLeft.Y, TileCalculator.MinLatitude, TileCalculator.MaxLatitude);
             mapTopLeft.X = TileCalculator.Clip(mapTopLeft.X, TileCalculator.MinLongitude, TileCalculator.MaxLongitude);
 
@@ -35,34 +58,35 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
             var zoom = TileCalculator.DetermineZoomLevel(envelope, bounds);
 
-            var topLeftTileXY = TileCalculator.LatLongToTileXY(mapTopLeft, zoom);
-            var btmRightTileXY = TileCalculator.LatLongToTileXY(mapBottomRight, zoom);
+            var topLeftTileXy = TileCalculator.LatLongToTileXy(mapTopLeft, zoom);
+            var btmRightTileXy = TileCalculator.LatLongToTileXy(mapBottomRight, zoom);
 
-            var tileMatrix = new Bitmap[(int)(btmRightTileXY.X - topLeftTileXY.X) + 1, (int)(btmRightTileXY.Y - topLeftTileXY.Y) + 1];
-            var po = new ParallelOptions { MaxDegreeOfParallelism = -1 };
-            Parallel.For((int)topLeftTileXY.Y, (int)btmRightTileXY.Y + 1, po,
-                         (y, loopState) => Parallel.For((int)topLeftTileXY.X, (int)btmRightTileXY.X + 1, po,
-                                           (x, loopState2) =>
-                                           {
-                                               if (bw.CancellationPending)
-                                               {
-                                                   loopState.Stop();
-                                                   loopState2.Stop();
-                                                   return;
-                                               }
-                                               var currEnv = GetTileEnvelope(x, y, zoom);
-                                               tileMatrix[x - (int)topLeftTileXY.X, y - (int)topLeftTileXY.Y] = GetTile(x, y, currEnv, zoom);
-                                           }
-                                  ));
+            var tileMatrix = new Bitmap[(int)(btmRightTileXy.X - topLeftTileXy.X) + 1, (int)(btmRightTileXy.Y - topLeftTileXy.Y) + 1];
+            var po = new ParallelOptions
+                         {
+                             MaxDegreeOfParallelism = -1
+                         };
+            Parallel.For((int)topLeftTileXy.Y, (int)btmRightTileXy.Y + 1, po, (y, loopState) => Parallel.For((int)topLeftTileXy.X, (int)btmRightTileXy.X + 1, po, (x, loopState2) =>
+                {
+                    if (bw.CancellationPending)
+                    {
+                        loopState.Stop();
+                        loopState2.Stop();
+                        return;
+                    }
 
-            return new Tiles(tileMatrix,
-                GetTileEnvelope((int)topLeftTileXY.X, (int)topLeftTileXY.Y, zoom),  // top left tile = tileMatrix[0,0]
-                GetTileEnvelope((int)btmRightTileXY.X, (int)btmRightTileXY.Y, zoom) // bottom right tile = tileMatrix[last, last]
-                );
+                    var currEnv = GetTileEnvelope(x, y, zoom);
+                    tileMatrix[x - (int)topLeftTileXy.X, y - (int)topLeftTileXy.Y] = GetTile(x, y, currEnv, zoom);
+                }));
+
+            return new Tiles(
+                tileMatrix,
+                GetTileEnvelope((int)topLeftTileXy.X, (int)topLeftTileXy.Y, zoom), // top left tile = tileMatrix[0,0]
+                GetTileEnvelope((int)btmRightTileXy.X, (int)btmRightTileXy.Y, zoom)); // bottom right tile = tileMatrix[last, last]
         }
 
         /// <summary>
-        /// Get tile envelope in  WGS-84 coordinates
+        /// Get tile envelope in WGS-84 coordinates.
         /// </summary>
         /// <param name="x">x index</param>
         /// <param name="y">y index</param>
@@ -70,11 +94,11 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <returns>Envelope in WGS-84</returns>
         private static Envelope GetTileEnvelope(int x, int y, int zoom)
         {
-            var currTopLeftPixXY = TileCalculator.TileXYToTopLeftPixelXY(x, y);
-            var currTopLeftCoord = TileCalculator.PixelXYToLatLong((int)currTopLeftPixXY.X, (int)currTopLeftPixXY.Y, zoom);
+            var currTopLeftPixXy = TileCalculator.TileXyToTopLeftPixelXy(x, y);
+            var currTopLeftCoord = TileCalculator.PixelXyToLatLong((int)currTopLeftPixXy.X, (int)currTopLeftPixXy.Y, zoom);
 
-            var currBtmRightPixXY = TileCalculator.TileXYToBottomRightPixelXY(x, y);
-            var currBtmRightCoord = TileCalculator.PixelXYToLatLong((int)currBtmRightPixXY.X, (int)currBtmRightPixXY.Y, zoom);
+            var currBtmRightPixXy = TileCalculator.TileXyToBottomRightPixelXy(x, y);
+            var currBtmRightCoord = TileCalculator.PixelXyToLatLong((int)currBtmRightPixXy.X, (int)currBtmRightPixXy.Y, zoom);
             return new Envelope(currTopLeftCoord, currBtmRightCoord);
         }
 
@@ -90,7 +114,10 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 Debug.WriteLine(ex.Message);
                 bm = Resources.nodata;
             }
+
             return bm;
         }
+
+        #endregion
     }
 }

@@ -41,7 +41,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click_1);
+            this.btnClose.Click += new System.EventHandler(this.BtnCloseClick1);
             // 
             // tableEditorControl1
             // 

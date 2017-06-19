@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Interfaces Alpha
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 
@@ -20,31 +9,29 @@ namespace DotSpatial.Data
     /// Contains properties for both a specified item and an integer index
     /// as well as the option to cancel.
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     public class IndividualIndexCancel<T> : CancelEventArgs
     {
-        private int _index = -1;
-        private T _listItem;
-
-        #region Methods
+        #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="IndividualIndexCancel{T}"/> class.
         /// </summary>
         /// <param name="inListItem">an object that is being interacted with in the list</param>
         public IndividualIndexCancel(T inListItem)
         {
-            _listItem = inListItem;
+            ListItem = inListItem;
         }
 
         /// <summary>
-        /// Creates a new instance of a ListEventArgs class
+        /// Initializes a new instance of the <see cref="IndividualIndexCancel{T}"/> class.
         /// </summary>
         /// <param name="inListItem">The list item that the event belongs to</param>
         /// <param name="inIndex">The list index, if any, that is specified.</param>
         public IndividualIndexCancel(T inListItem, int inIndex)
         {
-            _listItem = inListItem;
-            _index = inIndex;
+            ListItem = inListItem;
+            Index = inIndex;
         }
 
         #endregion
@@ -52,22 +39,14 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the list item being referenced by this event
+        /// Gets or sets the index for the ListItem.
         /// </summary>
-        public T ListItem
-        {
-            get { return _listItem; }
-            protected set { _listItem = value; }
-        }
+        public int Index { get; protected set; } = -1;
 
         /// <summary>
-        /// Gets the index for the ListItem
+        /// Gets or sets the list item being referenced by this event.
         /// </summary>
-        public int Index
-        {
-            get { return _index; }
-            protected set { _index = value; }
-        }
+        public T ListItem { get; protected set; }
 
         #endregion
     }

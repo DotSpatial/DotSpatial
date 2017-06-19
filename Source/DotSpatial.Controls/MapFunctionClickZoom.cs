@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/29/2008 3:21:30 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -26,7 +16,7 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionClickZoom : MapFunction
     {
-        #region Private Variables
+        #region Fields
 
         private readonly Pen _selectionPen;
         private Point _currentPoint;
@@ -36,19 +26,25 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of SelectTool
+        /// Initializes a new instance of the <see cref="MapFunctionClickZoom"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionClickZoom(IMap inMap)
             : base(inMap)
         {
-            _selectionPen = new Pen(Color.Black) { DashStyle = DashStyle.Dash };
+            _selectionPen = new Pen(Color.Black)
+                            {
+                                DashStyle = DashStyle.Dash
+                            };
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
         }
 
         #endregion
+
+        #region Methods
 
         /// <inheritdoc />
         protected override void OnDraw(MapDrawArgs e)
@@ -61,13 +57,14 @@ namespace DotSpatial.Controls
                 e.Graphics.DrawRectangle(Pens.White, r);
                 e.Graphics.DrawRectangle(_selectionPen, r);
             }
+
             base.OnDraw(e);
         }
 
         /// <summary>
         /// Handles the MouseDown
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -78,13 +75,14 @@ namespace DotSpatial.Controls
                 _isDragging = true;
                 Map.IsBusy = true;
             }
+
             base.OnMouseDown(e);
         }
 
         /// <summary>
         /// Handles MouseMove
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_isDragging)
@@ -96,13 +94,14 @@ namespace DotSpatial.Controls
                 _currentPoint = e.Location;
                 Map.Invalidate(new Rectangle(x, y, mx - x, my - y));
             }
+
             base.OnMouseMove(e);
         }
 
         /// <summary>
         /// Handles the Mouse Up situation
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (!(e.Map.IsZoomedToMaxExtent && e.Button == MouseButtons.Right))
@@ -116,8 +115,7 @@ namespace DotSpatial.Controls
                 {
                     if (_geoStartPoint != null && _startPoint != e.Location)
                     {
-                        Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
-                                                     _geoStartPoint.Y, e.GeographicLocation.Y);
+                        Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
                         if (Math.Abs(e.X - _startPoint.X) > 1 && Math.Abs(e.Y - _startPoint.Y) > 1)
                         {
                             e.Map.ViewExtents = env.ToExtent();
@@ -125,6 +123,7 @@ namespace DotSpatial.Controls
                         }
                     }
                 }
+
                 _isDragging = false;
 
                 if (handled == false)
@@ -135,16 +134,18 @@ namespace DotSpatial.Controls
                     if (e.Button == MouseButtons.Left)
                     {
                         r.Inflate(-r.Width / 4, -r.Height / 4);
+
                         // The mouse cursor should anchor the geographic location during zoom.
-                        r.X += (e.X / 2) - w / 4;
-                        r.Y += (e.Y / 2) - h / 4;
+                        r.X += (e.X / 2) - (w / 4);
+                        r.Y += (e.Y / 2) - (h / 4);
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
                         r.Inflate(r.Width / 2, r.Height / 2);
-                        r.X += w / 2 - e.X;
-                        r.Y += h / 2 - e.Y;
+                        r.X += (w / 2) - e.X;
+                        r.Y += (h / 2) - e.Y;
                     }
+
                     e.Map.MapFrame.View = r;
                     e.Map.MapFrame.ResetExtents();
                 }
@@ -153,5 +154,7 @@ namespace DotSpatial.Controls
             base.OnMouseUp(e);
             Map.IsBusy = false;
         }
+
+        #endregion
     }
 }

@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Layout.LayoutPropertyGrid
-// Description:  A property grid designed to work along with the layout engine
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Jul, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -22,20 +10,23 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This is a control that allows users to easilly modify the various aspects of many different layout components
     /// </summary>
-    //This control will no longer be visible
+    // This control will no longer be visible
     [ToolboxItem(false)]
-    public class LayoutPropertyGrid : UserControl
+    public partial class LayoutPropertyGrid : UserControl
     {
-        private LayoutControl _layoutControl;
-        private PropertyGrid _propertyGrid;
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the Layout Property Grid
+        /// Initializes a new instance of the <see cref="LayoutPropertyGrid"/> class.
         /// </summary>
         public LayoutPropertyGrid()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the layout control associated with this property grid
@@ -43,7 +34,11 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public LayoutControl LayoutControl
         {
-            get { return _layoutControl; }
+            get
+            {
+                return _layoutControl;
+            }
+
             set
             {
                 _layoutControl = value;
@@ -52,33 +47,28 @@ namespace DotSpatial.Controls
             }
         }
 
-        #region ------------------- Event Handlers
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// If the selection changes this event is called
         /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
         private void LayoutControlSelectionChanged(object sender, EventArgs e)
         {
-            //This code is so that the property grid gets updates if one of the properties changes
+            // This code is so that the property grid gets updates if one of the properties changes
             foreach (LayoutElement selecteElement in _layoutControl.LayoutElements)
                 selecteElement.Invalidated -= SelecteElementInvalidated;
             foreach (LayoutElement selecteElement in _layoutControl.SelectedLayoutElements)
                 selecteElement.Invalidated += SelecteElementInvalidated;
 
-            //If there is no selection get the layoutControls properties otherwise show the selected elements properties
-            if (_layoutControl.SelectedLayoutElements.Count > 0)
-                _propertyGrid.SelectedObjects = _layoutControl.SelectedLayoutElements.ToArray();
-            else
-                _propertyGrid.SelectedObjects = null;
+            // If there is no selection get the layoutControls properties otherwise show the selected elements properties
+            _propertyGrid.SelectedObjects = _layoutControl.SelectedLayoutElements.Count > 0 ? _layoutControl.SelectedLayoutElements.ToArray() : null;
         }
 
-        private void SelecteElementInvalidated(object sender, EventArgs e)
-        {
-            //If there is no selection get the layoutControls properties otherwise show the selected elements properties
-            _propertyGrid.Refresh();
-        }
-
-        private void LayoutPropertyGrid_KeyUp(object sender, KeyEventArgs e)
+        private void LayoutPropertyGridKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -91,27 +81,10 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        private void InitializeComponent()
+        private void SelecteElementInvalidated(object sender, EventArgs e)
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(LayoutPropertyGrid));
-            this._propertyGrid = new PropertyGrid();
-            this.SuspendLayout();
-            //
-            // _propertyGrid
-            //
-            resources.ApplyResources(this._propertyGrid, "_propertyGrid");
-            this._propertyGrid.Name = "_propertyGrid";
-            //
-            // LayoutPropertyGrid
-            //
-            this.Controls.Add(this._propertyGrid);
-            this.Name = "LayoutPropertyGrid";
-            this.KeyUp += new KeyEventHandler(this.LayoutPropertyGrid_KeyUp);
-            this.ResumeLayout(false);
+            // If there is no selection get the layoutControls properties otherwise show the selected elements properties
+            _propertyGrid.Refresh();
         }
 
         #endregion

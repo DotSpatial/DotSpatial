@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 10/5/2009 2:42:17 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -18,56 +8,74 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SizeRange
+    /// FeatureSizeRange
     /// </summary>
     public class FeatureSizeRange
     {
-        #region Private Variables
-
-        private double _end;
-        private double _start;
-        private IFeatureSymbolizer _symbolizer;
-        private bool _useSizeRange;
+        #region Fields
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of SizeRange
+        /// Initializes a new instance of the <see cref="FeatureSizeRange"/> class.
         /// </summary>
         public FeatureSizeRange()
         {
         }
 
         /// <summary>
-        /// Gets or sets the Point Size Range
+        /// Initializes a new instance of the <see cref="FeatureSizeRange"/> class.
         /// </summary>
-        /// <param name="symbolizer"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
+        /// <param name="symbolizer">The symbolizer.</param>
+        /// <param name="start">The minimum size.</param>
+        /// <param name="end">The maximum size.</param>
         public FeatureSizeRange(IFeatureSymbolizer symbolizer, double start, double end)
         {
-            _symbolizer = symbolizer;
-            _start = start;
-            _end = end;
+            Symbolizer = symbolizer;
+            Start = start;
+            End = end;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the maximum size.
+        /// </summary>
+        public double End { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum size.
+        /// </summary>
+        public double Start { get; set; }
+
+        /// <summary>
+        /// Gets or sets the symbolizer that controls everything except for size.
+        /// </summary>
+        public IFeatureSymbolizer Symbolizer { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the size range should be used.
+        /// </summary>
+        public bool UseSizeRange { get; set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Given a size, this will return the native
-        /// symbolizer that has been adjusted to the
-        /// specified size.
+        /// Given a size, this will return the native symbolizer that has been adjusted to the specified size.
         /// </summary>
         /// <param name="size">The size of the symbol</param>
         /// <param name="color">The color of the symbol</param>
-        /// <returns></returns>
+        /// <returns>The adjusted symbolizer.</returns>
         public IFeatureSymbolizer GetSymbolizer(double size, Color color)
         {
-            IFeatureSymbolizer copy = _symbolizer.Copy();
+            IFeatureSymbolizer copy = Symbolizer.Copy();
+
             // preserve aspect ratio, larger dimension specified
             IPointSymbolizer ps = copy as IPointSymbolizer;
             if (ps != null)
@@ -79,53 +87,15 @@ namespace DotSpatial.Symbology.Forms
                 ps.SetSize(s);
                 ps.SetFillColor(color);
             }
+
             ILineSymbolizer ls = copy as ILineSymbolizer;
             if (ls != null)
             {
                 ls.SetWidth(size);
                 ls.SetFillColor(color);
             }
+
             return copy;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the symbolizer that controls everything except for size.
-        /// </summary>
-        public IFeatureSymbolizer Symbolizer
-        {
-            get { return _symbolizer; }
-            set { _symbolizer = value; }
-        }
-
-        /// <summary>
-        /// Minimum size
-        /// </summary>
-        public double Start
-        {
-            get { return _start; }
-            set { _start = value; }
-        }
-
-        /// <summary>
-        /// Maximum size
-        /// </summary>
-        public double End
-        {
-            get { return _end; }
-            set { _end = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean indicating if the size range should be used.
-        /// </summary>
-        public bool UseSizeRange
-        {
-            get { return _useSizeRange; }
-            set { _useSizeRange = value; }
         }
 
         #endregion

@@ -1,14 +1,20 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using NUnit.Framework;
 
 namespace DotSpatial.Tests.Common
 {
+    /// <summary>
+    /// Extension methods for assert.
+    /// </summary>
     public static class AssertExt
     {
         /// <summary>
-        /// Testing double precision equality is tricky.  This uses a tollerance calculated
+        /// Testing double precision equality is tricky. This uses a tollerance calculated
         /// by multiplying parameter a by 1E-15, and asserting that the difference between
-        /// a and by is smaller than that value.  This is good for verifying equality
+        /// a and b is smaller than that value. This is good for verifying equality
         /// for up to about 15 places.
         /// </summary>
         /// <param name="a">One value </param>

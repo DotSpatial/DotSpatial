@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools Enumerations for the Model
-// Description:  Contains enumerations used in the model
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Modeling.Forms
 {
@@ -23,14 +12,17 @@ namespace DotSpatial.Modeling.Forms
         /// Defines the Model Component as a Rectangle
         /// </summary>
         Rectangle,
+
         /// <summary>
         /// Defines the Model Component as a Triangle
         /// </summary>
         Triangle,
+
         /// <summary>
         /// Defines the Model Component as a Ellipse
         /// </summary>
         Ellipse,
+
         /// <summary>
         /// Defines an Arrow
         /// </summary>
@@ -53,7 +45,7 @@ namespace DotSpatial.Modeling.Forms
         Running,
 
         /// <summary>
-        /// The tool finished running succesfully
+        /// The tool finished running successfully
         /// </summary>
         Done,
 

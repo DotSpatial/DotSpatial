@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  A library module for the DotSpatial geospatial framework for .Net.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 1/16/2009 4:22:19 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using System.IO;
@@ -17,25 +7,39 @@ using System.Xml;
 
 namespace DotSpatial.Data.Forms
 {
+    /// <summary>
+    /// This class can be used to read things from Xml documents.
+    /// </summary>
     public class TryXmlDocument
     {
-        #region Private Variables
-
-        private XmlElement _currentElement;
-        private XmlDocument _doc;
-        private string _fileName;
-
-        #endregion
-
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of TryXmlDocument
+        /// Initializes a new instance of the <see cref="TryXmlDocument"/> class.
         /// </summary>
         public TryXmlDocument()
         {
-            _doc = new XmlDocument();
+            Document = new XmlDocument();
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the current node that should be referenced for reading attributes.
+        /// </summary>
+        public XmlElement CurrentElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the XmlDocument that this class uses for data access.
+        /// </summary>
+        public XmlDocument Document { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fileName for this document.
+        /// </summary>
+        public string Filename { get; set; }
 
         #endregion
 
@@ -46,19 +50,21 @@ namespace DotSpatial.Data.Forms
         /// If there are no child nodes, or the child node is not found, this returns false.
         /// If the navigation is successful, this returns true.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">Name of the child.</param>
+        /// <returns>If there are no child nodes, or the child node is not found, this returns false.
+        /// If the navigation is successful, this returns true.</returns>
         public bool NavigateToChild(string name)
         {
-            if (_currentElement.HasChildNodes == false) return false;
-            foreach (XmlElement node in _currentElement.ChildNodes)
+            if (CurrentElement.HasChildNodes == false) return false;
+            foreach (XmlElement node in CurrentElement.ChildNodes)
             {
                 if (node.Name == name)
                 {
-                    _currentElement = node;
+                    CurrentElement = node;
                     return true;
                 }
             }
+
             // node was not found
             return false;
         }
@@ -66,55 +72,60 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Attempts to navigate to the parent.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True, if the parent was found.</returns>
         public bool NavigateToParent()
         {
-            if (_currentElement.ParentNode != null)
+            if (CurrentElement.ParentNode != null)
             {
-                _currentElement = _currentElement.ParentNode as XmlElement;
-                if (_currentElement != null) return true;
+                CurrentElement = CurrentElement.ParentNode as XmlElement;
+                if (CurrentElement != null) return true;
             }
+
             // this node may be a root node with no parent
             return false;
         }
 
         /// <summary>
-        /// Opens the specified
+        /// Opens the specified file.
         /// </summary>
+        /// <param name="fileName">Name of the file that gets opened.</param>
+        /// <exception cref="FileNotFoundException">Thrown if the file doesn't exist.</exception>
         public void Open(string fileName)
         {
-            if (File.Exists(fileName) == false)
+            if (!File.Exists(fileName))
             {
                 throw new FileNotFoundException(fileName);
             }
 
-            _doc.Load(fileName);
-            _currentElement = _doc.DocumentElement;
+            Document.Load(fileName);
+            CurrentElement = Document.DocumentElement;
         }
 
         /// <summary>
-        /// Attempts to read the string for the specified value.  This will first test to see if the
-        /// attribute exists and encloses the test in a try block.  If it fails or the node does not
-        /// exist, the default value is returned.
+        /// Attempts to read the boolean value from the specified attribute, translating it from a text equivalent.
         /// </summary>
-        /// <param name="attribute">The string name for the attribute to read from the CurrentElement.</param>
-        /// <returns>A string specifying the value</returns>
+        /// <param name="attribute">The string name of the attribute to read from the CurrentElement</param>
+        /// <returns>A boolean value based on parsing the text.</returns>
         /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
-        public string ReadText(string attribute)
+        public bool ReadBool(string attribute)
         {
-            if (_currentElement == null)
+            if (CurrentElement == null)
             {
                 throw new TryXmlDocumentException(DataFormsMessageStrings.CurrentElementNotSpecified);
             }
-            string result = string.Empty;
+
+            bool result = false;
             try
             {
-                if (_currentElement.HasAttribute(attribute))
+                if (CurrentElement.HasAttribute(attribute))
                 {
-                    result = _currentElement.GetAttribute(attribute);
+                    result = bool.Parse(CurrentElement.GetAttribute(attribute));
                 }
             }
-            catch { }
+            catch
+            {
+            }
+
             return result;
         }
 
@@ -126,70 +137,24 @@ namespace DotSpatial.Data.Forms
         /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
         public Color ReadColor(string attribute)
         {
-            if (_currentElement == null)
+            if (CurrentElement == null)
             {
                 throw new TryXmlDocumentException(DataFormsMessageStrings.CurrentElementNotSpecified);
             }
+
             Color result = Color.Empty;
             try
             {
-                if (_currentElement.HasAttribute(attribute))
+                if (CurrentElement.HasAttribute(attribute))
                 {
-                    string txtCol = _currentElement.GetAttribute(attribute);
+                    string txtCol = CurrentElement.GetAttribute(attribute);
                     result = Color.FromArgb(int.Parse(txtCol));
                 }
             }
-            catch { }
-            return result;
-        }
+            catch
+            {
+            }
 
-        /// <summary>
-        /// Attempts to read the boolean value from the specified attribute, translating it from
-        /// a text equivalent.
-        /// </summary>
-        /// <param name="attribute">The string name of the attribute to read from the CurrentElement</param>
-        /// <returns>A boolean value based on parsing the text.</returns>
-        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
-        public bool ReadBool(string attribute)
-        {
-            if (_currentElement == null)
-            {
-                throw new TryXmlDocumentException(DataFormsMessageStrings.CurrentElementNotSpecified);
-            }
-            bool result = false;
-            try
-            {
-                if (_currentElement.HasAttribute(attribute))
-                {
-                    result = bool.Parse(_currentElement.GetAttribute(attribute));
-                }
-            }
-            catch { }
-            return result;
-        }
-
-        /// <summary>
-        /// Attempts to read the integer value from the specified attribute, translating it from
-        /// a text equivalent via parsing.
-        /// </summary>
-        /// <param name="attribute">The string name of the attribute to read from the CurrentElement</param>
-        /// <returns>An integer parsed from the inner text of the specified attribute on the CurrentElement</returns>
-        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
-        public int ReadInteger(string attribute)
-        {
-            if (_currentElement == null)
-            {
-                throw new TryXmlDocumentException(DataFormsMessageStrings.CurrentElementNotSpecified);
-            }
-            int result = 0;
-            try
-            {
-                if (_currentElement.HasAttribute(attribute))
-                {
-                    result = int.Parse(_currentElement.GetAttribute(attribute));
-                }
-            }
-            catch { }
             return result;
         }
 
@@ -202,51 +167,83 @@ namespace DotSpatial.Data.Forms
         /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
         public double ReadDouble(string attribute)
         {
-            if (_currentElement == null)
+            if (CurrentElement == null)
             {
                 throw new TryXmlDocumentException(DataFormsMessageStrings.CurrentElementNotSpecified);
             }
+
             double result = 0.0;
             try
             {
-                if (_currentElement.HasAttribute(attribute))
+                if (CurrentElement.HasAttribute(attribute))
                 {
-                    result = double.Parse(_currentElement.GetAttribute(attribute));
+                    result = double.Parse(CurrentElement.GetAttribute(attribute));
                 }
             }
-            catch { }
+            catch
+            {
+            }
+
             return result;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the fileName for this document.
+        /// Attempts to read the integer value from the specified attribute, translating it from
+        /// a text equivalent via parsing.
         /// </summary>
-        public string Filename
+        /// <param name="attribute">The string name of the attribute to read from the CurrentElement</param>
+        /// <returns>An integer parsed from the inner text of the specified attribute on the CurrentElement</returns>
+        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
+        public int ReadInteger(string attribute)
         {
-            get { return _fileName; }
-            set { _fileName = value; }
+            if (CurrentElement == null)
+            {
+                throw new TryXmlDocumentException(DataFormsMessageStrings.CurrentElementNotSpecified);
+            }
+
+            int result = 0;
+            try
+            {
+                if (CurrentElement.HasAttribute(attribute))
+                {
+                    result = int.Parse(CurrentElement.GetAttribute(attribute));
+                }
+            }
+            catch
+            {
+            }
+
+            return result;
         }
 
         /// <summary>
-        /// Gets or sets the XmlDocument that this class uses for data access.
+        /// Attempts to read the string for the specified value. This will first test to see if the
+        /// attribute exists and encloses the test in a try block. If it fails or the node does not
+        /// exist, the default value is returned.
         /// </summary>
-        public XmlDocument Document
+        /// <param name="attribute">The string name for the attribute to read from the CurrentElement.</param>
+        /// <returns>A string specifying the value</returns>
+        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
+        public string ReadText(string attribute)
         {
-            get { return _doc; }
-            set { _doc = value; }
-        }
+            if (CurrentElement == null)
+            {
+                throw new TryXmlDocumentException(DataFormsMessageStrings.CurrentElementNotSpecified);
+            }
 
-        /// <summary>
-        /// Gets or sets the current node that should be referenced for reading attributes.
-        /// </summary>
-        public XmlElement CurrentElement
-        {
-            get { return _currentElement; }
-            set { _currentElement = value; }
+            string result = string.Empty;
+            try
+            {
+                if (CurrentElement.HasAttribute(attribute))
+                {
+                    result = CurrentElement.GetAttribute(attribute);
+                }
+            }
+            catch
+            {
+            }
+
+            return result;
         }
 
         #endregion

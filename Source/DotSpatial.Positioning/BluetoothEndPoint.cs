@@ -104,7 +104,7 @@ namespace DotSpatial.Positioning
 
         /* FxCop says this is unused
          *
-        //internal BluetoothEndPoint(byte[] data)
+        // internal BluetoothEndPoint(byte[] data)
         //{
         //    /* Socket endpoints are different on the desktop vs. mobile devices.
         //     * As a result, we'll serialize the same Address/Port/Guid differently.

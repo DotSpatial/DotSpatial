@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Interfaces Alpha
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -26,19 +15,215 @@ namespace DotSpatial.Data
     /// <typeparam name="T">The type of the members in the list.</typeparam>
     public interface IEventList<T> : IList<T>
     {
-        #region Methods
+        #region Events
 
-        #region add
+        /// <summary>
+        /// Occurs after all the elements that matched a predicate were
+        /// removed. The values are the items that were successfully removed.
+        /// The action has already happened, and so cannot be cancelled here.
+        /// </summary>
+        event EventHandler<Collective<T>> AfterAllMatchingRemoved;
+
+        /// <summary>
+        /// Occurs after an item has already been added to the list.
+        /// The index where the item was added is specified.
+        /// </summary>
+        event EventHandler<IndividualIndex<T>> AfterItemAdded;
+
+        /// <summary>
+        /// Occurs after an item is inserted.
+        /// Shows the true index of the item after it was actually added.
+        /// </summary>
+        event EventHandler<IndividualIndex<T>> AfterItemInserted;
+
+        /// <summary>
+        /// Occurs after an item is removed from the List.
+        /// Gives a handle to the item that was removed, but it no longer
+        /// has a meaningful index value or an option to cancel.
+        /// </summary>
+        event EventHandler<IndividualEventArgs<T>> AfterItemRemoved;
+
+        /// <summary>
+        /// Occurs after the list is cleared and this cannot be canceled.
+        /// </summary>
+        event EventHandler AfterListCleared;
+
+        /// <summary>
+        /// Occurs after the entire list is reversed
+        /// </summary>
+        event EventHandler AfterListReversed;
+
+        /// <summary>
+        /// Occurs after the entire list has been sorted
+        /// </summary>
+        event EventHandler<Compare<T>> AfterListSorted;
+
+        /// <summary>
+        /// Occurs after a range has already been added to the list.
+        /// This reveals the index where the beginning of the range
+        /// was added, but cannot be canceled.
+        /// </summary>
+        event EventHandler<CollectiveIndex<T>> AfterRangeAdded;
+
+        /// <summary>
+        /// Occurs after an item is inserted.
+        /// Shows the true index of the item after it was actually added.
+        /// </summary>
+        event EventHandler<CollectiveIndex<T>> AfterRangeInserted;
+
+        /// <summary>
+        /// Occurs after an item is removed from the List.
+        /// Gives a handle to the range that was removed, but it no longer
+        /// has a meaningful index value or an option to cancel.
+        /// </summary>
+        event EventHandler<Collective<T>> AfterRangeRemoved;
+
+        /// <summary>
+        /// Occurs after a specific range is reversed
+        /// </summary>
+        event EventHandler<CollectiveIndex<T>> AfterRangeReversed;
+
+        /// <summary>
+        /// Occurs just after the Sort method that only sorts a specified range.
+        /// </summary>
+        event EventHandler<CollectiveIndexCompare<T>> AfterRangeSorted;
+
+        /// <summary>
+        /// Occurs just after the list or any sub portion
+        /// of the list is sorted. This event occurs in
+        /// addition to the specific reversal case.
+        /// </summary>
+        event EventHandler AfterReversed;
+
+        /// <summary>
+        /// Occurs after any of the specific sorting methods in addition
+        /// to the event associated with the specific method.
+        /// </summary>
+        event EventHandler AfterSort;
+
+        /// <summary>
+        /// Occurs just after the Sort method that uses a System.Comparison&lt;T&gt;
+        /// </summary>
+        event EventHandler<ComparisonArgs<T>> AfterSortByComparison;
+
+        /// <summary>
+        /// Occurs before all the elements that match a predicate are removed.
+        /// Supplies an IEnumerable list in the event args of all the items
+        /// that will match the expression. This action can be cancelled.
+        /// </summary>
+        event EventHandler<CollectiveCancel<T>> BeforeAllMatchingRemoved;
+
+        /// <summary>
+        /// Occurs before an item is added to the List.
+        /// There is no index yet specified because it will be added to the
+        /// end of the list.
+        /// </summary>
+        event EventHandler<IndividualCancelEventArgs<T>> BeforeItemAdded;
+
+        /// <summary>
+        /// Occurs before an item is inserted. The index of the requested
+        /// insertion as well as the item being inserted and an option to
+        /// cancel the event are specified
+        /// </summary>
+        event EventHandler<IndividualIndexCancel<T>> BeforeItemInserted;
+
+        /// <summary>
+        /// Occurs before an item is removed from the List.
+        /// Specifies the item, the current index and an option to cancel.
+        /// </summary>
+        event EventHandler<IndividualIndexCancel<T>> BeforeItemRemoved;
+
+        /// <summary>
+        /// Occurs before the list is cleared and can cancel the event.
+        /// </summary>
+        event CancelEventHandler BeforeListCleared;
+
+        /// <summary>
+        /// Occurs before the entire list is reversed
+        /// </summary>
+        event CancelEventHandler BeforeListReversed;
+
+        /// <summary>
+        /// Occurs just before the entire list is sorted
+        /// </summary>
+        event EventHandler<CompareCancel<T>> BeforeListSorted;
+
+        /// <summary>
+        /// Occurs before a range of items is added to the list.
+        /// There is no index yet, but this event can be canceled.
+        /// </summary>
+        event EventHandler<CollectiveCancel<T>> BeforeRangeAdded;
+
+        /// <summary>
+        /// Occurs before a range is inserted. The index of the requested
+        /// insertion location as well as the item being inserted and an option to
+        /// cancel the event are provided in the event arguments
+        /// </summary>
+        event EventHandler<CollectiveIndexCancelEventArgs<T>> BeforeRangeInserted;
+
+        /// <summary>
+        /// Occurs before a range is removed from the List.
+        /// Specifies the range, the current index and an option to cancel.
+        /// </summary>
+        event EventHandler<CollectiveIndexCancelEventArgs<T>> BeforeRangeRemoved;
+
+        /// <summary>
+        /// Occurs before a specific range is reversed
+        /// </summary>
+        event EventHandler<CollectiveIndexCancelEventArgs<T>> BeforeRangeReversed;
+
+        /// <summary>
+        /// Occurs just before the Sort method that only sorts a specified range.
+        /// This event can cancel the action.
+        /// </summary>
+        event EventHandler<CollectiveIndexCompareCancel<T>> BeforeRangeSorted;
+
+        /// <summary>
+        /// Occurs just before the list or any sub portion
+        /// of the list is sorted. This event occurs in
+        /// addition to the specific reversal case.
+        /// </summary>
+        event CancelEventHandler BeforeReversed;
+
+        /// <summary>
+        /// Occurs just before any of the specific sorting methodsin addition
+        /// to the event associated with the specific method.
+        /// </summary>
+        event CancelEventHandler BeforeSort;
+
+        /// <summary>
+        /// Occurs just before the Sort method that uses a System.Comparison&lt;T&gt;
+        /// This event can cancel the action.
+        /// </summary>
+        event EventHandler<ComparisonCancelEventArgs<T>> BeforeSortByComparison;
+
+        /// <summary>
+        /// Occurs after a method that sorts or reorganizes the list
+        /// </summary>
+        event EventHandler ListChanged;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the total number of elements the internal data structure can hold without resizing.
+        /// </summary>
+        /// <returns>
+        /// The number of elements that the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; can contain before resizing is required.
+        /// </returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Capacity is set to a value that is less than DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count.</exception>
+        int Capacity { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
         /// </summary>
         /// <param name="collection">collection: The collection whose elements should be added to the end of the System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null, if type T is a reference type.</param>
         void AddRange(IEnumerable<T> collection);
-
-        #endregion
-
-        #region BinarySearch
 
         /// <summary>
         /// Searches the entire sorted System.Collections.Generic.List&lt;T&gt; for an element using the specified comparer and returns the zero-based index of the element.
@@ -64,10 +249,8 @@ namespace DotSpatial.Data
         /// <param name="count">The length of the range to search.</param>
         /// <param name="item">The object to locate. The value can be null for reference types.</param>
         /// <param name="comparer">The System.Collections.Generic.IComparer&lt;T&gt; implementation to use when comparing elements, or null to use the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default.</param>
-        /// <returns></returns>
+        /// <returns>The zero-based index of item in the list, if item is found;  otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, if there is no larger element, the bitwise complement of List.Count.</returns>
         int BinarySearch(int index, int count, T item, IComparer<T> comparer);
-
-        #endregion
 
         /// <summary>
         /// Converts the elements in the current DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to another type, and returns a list containing the converted elements.
@@ -79,12 +262,97 @@ namespace DotSpatial.Data
         List<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter);
 
         /// <summary>
+        /// Copies a range of elements from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to a compatible one-dimensional array, starting at the specified index of the target array.
+        /// </summary>
+        /// <param name="index">The zero-based index in the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; at which copying begins</param>
+        /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The System.Array must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+        /// <param name="count">The number of elements to copy.</param>
+        /// <exception cref="System.ArgumentNullException">array is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"> index is less than 0.-or-arrayIndex is less than 0.-or-count is less than 0.</exception>
+        /// <exception cref="System.ArgumentException">index is equal to or greater than the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count of the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-arrayIndex is equal to or greater than the length of array.-or-The number of elements from index to the end of the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; is greater than the available space from arrayIndex to the end of the destination array.</exception>
+        void CopyTo(int index, T[] array, int arrayIndex, int count);
+
+        /// <summary>
+        /// Copies the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to a compatible one-dimensional array, starting at the beginning of the target array.
+        /// </summary>
+        /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The System.Array must have zero-based indexing.</param>
+        /// <exception cref="System.ArgumentException">The number of elements in the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; is greater than the number of elements that the destination array can contain.</exception>
+        /// <exception cref="System.ArgumentNullException">array is null.</exception>
+        void CopyTo(T[] array);
+
+        /// <summary>
         /// Determines whether the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; contains elements that match the conditions defined by the specified predicate.
         /// </summary>
         /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the elements to search for.</param>
         /// <returns>true if the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; contains one or more elements that match the conditions defined by the specified predicate; otherwise, false.</returns>
         /// <exception cref="System.ArgumentNullException">match is null.</exception>
         bool Exists(Predicate<T> match);
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that starts at the specified index and contains the specified number of elements.
+        /// </summary>
+        /// <param name="startIndex">The zero-based starting index of the search.</param>
+        /// <param name="count">The number of elements in the section to search.</param>
+        /// <param name="match"> The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        /// <exception cref="System.ArgumentNullException">match is null</exception>
+        int FindIndex(int startIndex, int count, Predicate<T> match);
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the specified index to the last element.
+        /// </summary>
+        /// <param name="startIndex">The zero-based starting index of the search.</param>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
+        int FindIndex(int startIndex, Predicate<T> match);
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
+        /// </summary>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
+        int FindIndex(Predicate<T> match);
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the last occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
+        /// </summary>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The last element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type T.</returns>
+        /// <exception cref= "System.ArgumentNullException">match is null."</exception>
+        T FindLast(Predicate<T> match);
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that contains the specified number of elements and ends at the specified index.
+        /// </summary>
+        /// <param name="startIndex">The zero-based starting index of the backward search.</param>
+        /// <param name="count">The number of elements in the section to search.</param>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The zero-based index of the last occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
+        int FindLastIndex(int startIndex, int count, Predicate<T> match);
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the first element to the specified index.
+        /// </summary>
+        /// <param name="startIndex"> The zero-based starting index of the backward search.</param>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The zero-based index of the last occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">: startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        int FindLastIndex(int startIndex, Predicate<T> match);
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the last occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
+        /// </summary>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
+        /// <returns>The zero-based index of the last occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
+        int FindLastIndex(Predicate<T> match);
 
         /// <summary>
         /// Performs the specified action on each element of the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
@@ -102,6 +370,77 @@ namespace DotSpatial.Data
         /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
         /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
         List<T> GetRange(int index, int count);
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that starts at the specified index and contains the specified number of elements.
+        /// </summary>
+        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index"> The zero-based starting index of the search.</param>
+        /// <param name="count">The number of elements in the section to search.</param>
+        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that starts at index and contains count number of elements, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException"> index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        int IndexOf(T item, int index, int count);
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the specified index to the last element.
+        /// </summary>
+        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index"> The zero-based starting index of the search.</param>
+        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from index to the last element, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        int IndexOf(T item, int index);
+
+        /// <summary>
+        /// Inserts the elements of a collection into the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
+        /// <param name="collection">The collection whose elements should be inserted into the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null, if type T is a reference type.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-index is greater than DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count.</exception>
+        /// <exception cref="System.ArgumentNullException">collection is null.</exception>
+        void InsertRange(int index, IEnumerable<T> collection);
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that contains the specified number of elements and ends at the specified index.
+        /// </summary>
+        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index">The zero-based starting index of the backward search.</param>
+        /// <param name="count">The number of elements in the section to search.</param>
+        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that contains count number of elements and ends at index, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        int LastIndexOf(T item, int index, int count);
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the first element to the specified index.
+        /// </summary>
+        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <param name="index">The zero-based starting index of the backward search.</param>
+        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the first element to index, if found; otherwise, –1.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        int LastIndexOf(T item, int index);
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the last occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
+        /// </summary>
+        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
+        /// <returns>The zero-based index of the last occurrence of item within the entire the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;, if found; otherwise, –1.</returns>
+        int LastIndexOf(T item);
+
+        /// <summary>
+        /// Removes the all the elements that match the conditions defined by the specified predicate.
+        /// </summary>
+        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the elements to remove.</param>
+        /// <returns>The number of elements removed from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;</returns>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
+        int RemoveAll(Predicate<T> match);
+
+        /// <summary>
+        /// Removes a range of elements from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
+        /// </summary>
+        /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
+        /// <param name="count">The number of elements to remove.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
+        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
+        void RemoveRange(int index, int count);
 
         /// <summary>
         /// Reverses the order of the elements in the specified range.
@@ -168,408 +507,6 @@ namespace DotSpatial.Data
         /// <returns>true if every element in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; matches the conditions defined by the specified predicate; otherwise, false. If the list has no elements, the return value is true.</returns>
         /// <exception cref="System.ArgumentNullException">match is null.</exception>
         bool TrueForAll(Predicate<T> match);
-
-        #region IndexOf
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that starts at the specified index and contains the specified number of elements.
-        /// </summary>
-        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index"> The zero-based starting index of the search.</param>
-        /// <param name="count">The number of elements in the section to search.</param>
-        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that starts at index and contains count number of elements, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException"> index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        int IndexOf(T item, int index, int count);
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the specified index to the last element.
-        /// </summary>
-        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index"> The zero-based starting index of the search.</param>
-        /// <returns>The zero-based index of the first occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from index to the last element, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        int IndexOf(T item, int index);
-
-        #endregion
-
-        #region Insert
-
-        /// <summary>
-        /// Inserts the elements of a collection into the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
-        /// <param name="collection">The collection whose elements should be inserted into the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null, if type T is a reference type.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-index is greater than DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count.</exception>
-        /// <exception cref="System.ArgumentNullException">collection is null.</exception>
-        void InsertRange(int index, IEnumerable<T> collection);
-
-        #endregion
-
-        #region LastIndexOf
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that contains the specified number of elements and ends at the specified index.
-        /// </summary>
-        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index">The zero-based starting index of the backward search.</param>
-        /// <param name="count">The number of elements in the section to search.</param>
-        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that contains count number of elements and ends at index, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-index and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        int LastIndexOf(T item, int index, int count);
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the first element to the specified index.
-        /// </summary>
-        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <param name="index">The zero-based starting index of the backward search.</param>
-        /// <returns>The zero-based index of the last occurrence of item within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the first element to index, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        int LastIndexOf(T item, int index);
-
-        /// <summary>
-        /// Searches for the specified object and returns the zero-based index of the last occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="item">The object to locate in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The value can be null for reference types.</param>
-        /// <returns>The zero-based index of the last occurrence of item within the entire the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;, if found; otherwise, –1.</returns>
-        int LastIndexOf(T item);
-
-        #endregion
-
-        #region Remove
-
-        /// <summary>
-        /// Removes the all the elements that match the conditions defined by the specified predicate.
-        /// </summary>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the elements to remove.</param>
-        /// <returns>The number of elements removed from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;</returns>
-        /// <exception cref="System.ArgumentNullException">match is null.</exception>
-        int RemoveAll(Predicate<T> match);
-
-        /// <summary>
-        /// Removes a range of elements from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
-        /// <param name="count">The number of elements to remove.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">index is less than 0.-or-count is less than 0.</exception>
-        /// <exception cref="System.ArgumentException">index and count do not denote a valid range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        void RemoveRange(int index, int count);
-
-        #endregion
-
-        #region Find
-
-        /// <summary>
-        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that starts at the specified index and contains the specified number of elements.
-        /// </summary>
-        /// <param name="startIndex">The zero-based starting index of the search.</param>
-        /// <param name="count">The number of elements in the section to search.</param>
-        /// <param name="match"> The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        /// <exception cref="System.ArgumentNullException">match is null</exception>
-        int FindIndex(int startIndex, int count, Predicate<T> match);
-
-        /// <summary>
-        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the specified index to the last element.
-        /// </summary>
-        /// <param name="startIndex">The zero-based starting index of the search.</param>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        /// <exception cref="System.ArgumentNullException">match is null.</exception>
-        int FindIndex(int startIndex, Predicate<T> match);
-
-        /// <summary>
-        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentNullException">match is null.</exception>
-        int FindIndex(Predicate<T> match);
-
-        /// <summary>
-        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the last occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The last element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type T.</returns>
-        /// <exception cref= "System.ArgumentNullException">match is null."</exception>
-        T FindLast(Predicate<T> match);
-
-        /// <summary>
-        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that contains the specified number of elements and ends at the specified index.
-        /// </summary>
-        /// <param name="startIndex">The zero-based starting index of the backward search.</param>
-        /// <param name="count">The number of elements in the section to search.</param>
-        /// <param name="match"></param>
-        /// <returns>The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        /// <exception cref="System.ArgumentNullException">match is null.</exception>
-        int FindLastIndex(int startIndex, int count, Predicate<T> match);
-
-        /// <summary>
-        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the last occurrence within the range of elements in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; that extends from the first element to the specified index.
-        /// </summary>
-        /// <param name="startIndex"> The zero-based starting index of the backward search.</param>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the last occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">: startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        int FindLastIndex(int startIndex, Predicate<T> match);
-
-        /// <summary>
-        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the last occurrence within the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.
-        /// </summary>
-        /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the last occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
-        /// <exception cref="System.ArgumentNullException">match is null.</exception>
-        int FindLastIndex(Predicate<T> match);
-
-        #endregion
-
-        #region CopyTo
-
-        /// <summary>
-        /// Copies a range of elements from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to a compatible one-dimensional array, starting at the specified index of the target array.
-        /// </summary>
-        /// <param name="index">The zero-based index in the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; at which copying begins</param>
-        /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The System.Array must have zero-based indexing.</param>
-        /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
-        /// <param name="count">The number of elements to copy.</param>
-        /// <exception cref="System.ArgumentNullException">array is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException"> index is less than 0.-or-arrayIndex is less than 0.-or-count is less than 0.</exception>
-        /// <exception cref="System.ArgumentException">index is equal to or greater than the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count of the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-arrayIndex is equal to or greater than the length of array.-or-The number of elements from index to the end of the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; is greater than the available space from arrayIndex to the end of the destination array.</exception>
-        void CopyTo(int index, T[] array, int arrayIndex, int count);
-
-        /// <summary>
-        /// Copies the entire DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to a compatible one-dimensional array, starting at the beginning of the target array.
-        /// </summary>
-        /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The System.Array must have zero-based indexing.</param>
-        /// <exception cref="System.ArgumentException">The number of elements in the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; is greater than the number of elements that the destination array can contain.</exception>
-        /// <exception cref="System.ArgumentNullException">array is null.</exception>
-        void CopyTo(T[] array);
-
-        #endregion
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the total number of elements the internal data structure can hold without resizing.
-        /// </summary>
-        /// <returns>
-        /// The number of elements that the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; can contain before resizing is required.
-        /// </returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Capacity is set to a value that is less than DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.Count.</exception>
-        int Capacity
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
-        #region Add
-
-        /// <summary>
-        /// Occurs before an item is added to the List.
-        /// There is no index yet specified because it will be added to the
-        /// end of the list.
-        /// </summary>
-        event EventHandler<IndividualCancelEventArgs<T>> BeforeItemAdded;
-
-        /// <summary>
-        /// Occurs before a range of items is added to the list.
-        /// There is no index yet, but this event can be canceled.
-        /// </summary>
-        event EventHandler<CollectiveCancel<T>> BeforeRangeAdded;
-
-        /// <summary>
-        /// Occurs after an item has already been added to the list.
-        /// The index where the item was added is specified.
-        /// </summary>
-        event EventHandler<IndividualIndex<T>> AfterItemAdded;
-
-        /// <summary>
-        /// Occurs after a range has already been added to the list.
-        /// This reveals the index where the beginning of the range
-        /// was added, but cannot be canceled.
-        /// </summary>
-        event EventHandler<CollectiveIndex<T>> AfterRangeAdded;
-
-        #endregion
-
-        #region Insert
-
-        /// <summary>
-        /// Occurs before an item is inserted.  The index of the requested
-        /// insertion as well as the item being inserted and an option to
-        /// cancel the event are specified
-        /// </summary>
-        event EventHandler<IndividualIndexCancel<T>> BeforeItemInserted;
-
-        /// <summary>
-        /// Occurs before a range is inserted.  The index of the requested
-        /// insertion location as well as the item being inserted and an option to
-        /// cancel the event are provided in the event arguments
-        /// </summary>
-        event EventHandler<CollectiveIndexCancelEventArgs<T>> BeforeRangeInserted;
-
-        /// <summary>
-        /// Occurs after an item is inserted.
-        /// Shows the true index of the item after it was actually added.
-        /// </summary>
-        event EventHandler<IndividualIndex<T>> AfterItemInserted;
-
-        /// <summary>
-        /// Occurs after an item is inserted.
-        /// Shows the true index of the item after it was actually added.
-        /// </summary>
-        event EventHandler<CollectiveIndex<T>> AfterRangeInserted;
-
-        #endregion
-
-        #region Remove
-
-        /// <summary>
-        /// Occurs before an item is removed from the List.
-        /// Specifies the item, the current index and an option to cancel.
-        /// </summary>
-        event EventHandler<IndividualIndexCancel<T>> BeforeItemRemoved;
-
-        /// <summary>
-        /// Occurs before a range is removed from the List.
-        /// Specifies the range, the current index and an option to cancel.
-        /// </summary>
-        event EventHandler<CollectiveIndexCancelEventArgs<T>> BeforeRangeRemoved;
-
-        /// <summary>
-        /// Occurs after an item is removed from the List.
-        /// Gives a handle to the item that was removed, but it no longer
-        /// has a meaningful index value or an option to cancel.
-        /// </summary>
-        event EventHandler<IndividualEventArgs<T>> AfterItemRemoved;
-
-        /// <summary>
-        /// Occurs after an item is removed from the List.
-        /// Gives a handle to the range that was removed, but it no longer
-        /// has a meaningful index value or an option to cancel.
-        /// </summary>
-        event EventHandler<Collective<T>> AfterRangeRemoved;
-
-        /// <summary>
-        /// Occurs before all the elements that match a predicate are removed.
-        /// Supplies an IEnumerable list in the event args of all the items
-        /// that will match the expression.  This action can be cancelled.
-        /// </summary>
-        event EventHandler<CollectiveCancel<T>> BeforeAllMatchingRemoved;
-
-        /// <summary>
-        /// Occurs after all the elements that matched a predicate were
-        /// removed.  The values are the items that were successfully removed.
-        /// The action has already happened, and so cannot be cancelled here.
-        /// </summary>
-        event EventHandler<Collective<T>> AfterAllMatchingRemoved;
-
-        #endregion
-
-        /// <summary>
-        /// Occurs before the list is cleared and can cancel the event.
-        /// </summary>
-        event CancelEventHandler BeforeListCleared;
-
-        /// <summary>
-        /// Occurs after the list is cleared and this cannot be canceled.
-        /// </summary>
-        event EventHandler AfterListCleared;
-
-        /// <summary>
-        /// Occurs after a method that sorts or reorganizes the list
-        /// </summary>
-        event EventHandler ListChanged;
-
-        #region Reverse
-
-        /// <summary>
-        /// Occurs before a specific range is reversed
-        /// </summary>
-        event EventHandler<CollectiveIndexCancelEventArgs<T>> BeforeRangeReversed;
-
-        /// <summary>
-        /// Occurs after a specific range is reversed
-        /// </summary>
-        event EventHandler<CollectiveIndex<T>> AfterRangeReversed;
-
-        /// <summary>
-        /// Occurs before the entire list is reversed
-        /// </summary>
-        event CancelEventHandler BeforeListReversed;
-
-        /// <summary>
-        /// Occurs after the entire list is reversed
-        /// </summary>
-        event EventHandler AfterListReversed;
-
-        /// <summary>
-        /// Occurs just after the list or any sub portion
-        /// of the list is sorted.  This event occurs in
-        /// addition to the specific reversal case.
-        /// </summary>
-        event EventHandler AfterReversed;
-
-        /// <summary>
-        /// Occurs just before the list or any sub portion
-        /// of the list is sorted.  This event occurs in
-        /// addition to the specific reversal case.
-        /// </summary>
-        event CancelEventHandler BeforeReversed;
-
-        #endregion
-
-        #region Sort
-
-        /// <summary>
-        /// Occurs just before any of the specific sorting methodsin addition
-        /// to the event associated with the specific method.
-        /// </summary>
-        event CancelEventHandler BeforeSort;
-
-        /// <summary>
-        /// Occurs after any of the specific sorting methods in addition
-        /// to the event associated with the specific method.
-        /// </summary>
-        event EventHandler AfterSort;
-
-        /// <summary>
-        /// Occurs just before the entire list is sorted
-        /// </summary>
-        event EventHandler<CompareCancel<T>> BeforeListSorted;
-
-        /// <summary>
-        /// Occurs after the entire list has been sorted
-        /// </summary>
-        event EventHandler<Compare<T>> AfterListSorted;
-
-        /// <summary>
-        /// Occurs just before the Sort method that uses a System.Comparison&lt;T&gt;
-        /// This event can cancel the action.
-        /// </summary>
-        event EventHandler<ComparisonCancelEventArgs<T>> BeforeSortByComparison;
-
-        /// <summary>
-        /// Occurs just after the Sort method that uses a System.Comparison&lt;T&gt;
-        /// </summary>
-        event EventHandler<ComparisonArgs<T>> AfterSortByComparison;
-
-        /// <summary>
-        /// Occurs just before the Sort method that only sorts a specified range.
-        /// This event can cancel the action.
-        /// </summary>
-        event EventHandler<CollectiveIndexCompareCancel<T>> BeforeRangeSorted;
-
-        /// <summary>
-        /// Occurs just after the Sort method that only sorts a specified range.
-        /// </summary>
-        event EventHandler<CollectiveIndexCompare<T>> AfterRangeSorted;
 
         #endregion
     }

@@ -51,7 +51,7 @@ namespace DotSpatial.Positioning.Forms
 #if !PocketPC
         private readonly Thread _interpolationThread;
         private bool _isInterpolationActive;
-        //private ManualResetEvent InterpolationThreadWaitHandle = new ManualResetEvent(false);
+        // private ManualResetEvent InterpolationThreadWaitHandle = new ManualResetEvent(false);
         private readonly ManualResetEvent _animationWaitHandle = new ManualResetEvent(false);
         private readonly Interpolator _valueInterpolator = new Interpolator(15, InterpolationMethod.CubicEaseInOut);
         private int _interpolationIndex;
@@ -959,14 +959,14 @@ namespace DotSpatial.Positioning.Forms
         private void InterpolationLoop()
         {
             // Flag that we're alive
-            //InterpolationThreadWaitHandle.Set();
+            // InterpolationThreadWaitHandle.Set();
             // Are we at the end?
             while (_isInterpolationActive)
             {
                 try
                 {
                     // Wait for interpolation to actually be needed
-                    //InterpolationThread.Suspend();
+                    // InterpolationThread.Suspend();
                     _animationWaitHandle.WaitOne();
                     // If we're shutting down, just exit
                     if (!_isInterpolationActive)
@@ -992,7 +992,7 @@ namespace DotSpatial.Positioning.Forms
                 }
             }
             // Flag that we're alive
-            //InterpolationThreadWaitHandle.Set();
+            // InterpolationThreadWaitHandle.Set();
         }
 
 #endif

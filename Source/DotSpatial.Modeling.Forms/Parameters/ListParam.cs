@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ListParam
-// Description:  Double Parameter returned by an ITool allows the tool to specify a range and default value
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.Modeling.Forms.Elements;
@@ -22,14 +11,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class ListParam : Parameter
     {
-        #region variables
-
-        private List<string> _valueList;
-
-        #endregion
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new list parameter
+        /// Initializes a new instance of the <see cref="ListParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public ListParam(string name)
@@ -38,11 +23,11 @@ namespace DotSpatial.Modeling.Forms.Parameters
             ParamVisible = ShowParamInModel.No;
             ParamType = "DotSpatial List Param";
             Value = -1;
-            _valueList = new List<string>();
+            ValueList = new List<string>();
         }
 
         /// <summary>
-        /// Creates a new list parameter
+        /// Initializes a new instance of the <see cref="ListParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="valueList">The list of string values to poluate the combo box</param>
@@ -52,11 +37,11 @@ namespace DotSpatial.Modeling.Forms.Parameters
             ParamVisible = ShowParamInModel.No;
             ParamType = "DotSpatial List Param";
             Value = -1;
-            _valueList = valueList;
+            ValueList = valueList;
         }
 
         /// <summary>
-        /// Creates a new list parameter
+        /// Initializes a new instance of the <see cref="ListParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="valueList">The list of string values to poluate the combo box</param>
@@ -67,46 +52,51 @@ namespace DotSpatial.Modeling.Forms.Parameters
             ParamVisible = ShowParamInModel.No;
             ParamType = "DotSpatial List Param";
             Value = value;
-            _valueList = valueList;
+            ValueList = valueList;
             DefaultSpecified = true;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the index of the list
         /// </summary>
         public new int Value
         {
-            get { return (int)base.Value; }
-            set { base.Value = value; }
+            get
+            {
+                return (int)base.Value;
+            }
+
+            set
+            {
+                base.Value = value;
+            }
         }
 
         /// <summary>
         /// Gets or sets the list of items in the valuelist
         /// </summary>
-        public List<string> ValueList
-        {
-            get { return _valueList; }
-            set { _valueList = value; }
-        }
+        public List<string> ValueList { get; set; }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new ListElement(this));
+            return new ListElement(this);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new ListElement(this));
+            return new ListElement(this);
         }
+
+        #endregion
     }
 }

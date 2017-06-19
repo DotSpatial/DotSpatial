@@ -106,7 +106,7 @@ namespace DotSpatial.Symbology.Forms
             this.label6 = new System.Windows.Forms.Label();
             this.colorButtonShadow = new DotSpatial.Symbology.Forms.ColorButton();
             this.tabMembers = new System.Windows.Forms.TabPage();
-            this.sqlMembers = new DotSpatial.Symbology.Forms.SQLQueryControl();
+            this.sqlMembers = new DotSpatial.Symbology.Forms.SqlQueryControl();
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdApply = new System.Windows.Forms.Button();
@@ -159,7 +159,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.lbCategories, "lbCategories");
             this.lbCategories.FormattingEnabled = true;
             this.lbCategories.Name = "lbCategories";
-            this.lbCategories.SelectedIndexChanged += new System.EventHandler(this.lbCategories_SelectedIndexChanged);
+            this.lbCategories.SelectedIndexChanged += new System.EventHandler(this.LbCategoriesSelectedIndexChanged);
             // 
             // panel3
             // 
@@ -176,7 +176,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btnCategoryDown, "btnCategoryDown");
             this.btnCategoryDown.Name = "btnCategoryDown";
             this.btnCategoryDown.UseVisualStyleBackColor = true;
-            this.btnCategoryDown.Click += new System.EventHandler(this.btnCategoryDown_Click);
+            this.btnCategoryDown.Click += new System.EventHandler(this.BtnCategoryDownClick);
             // 
             // btnCategoryUp
             // 
@@ -184,7 +184,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btnCategoryUp, "btnCategoryUp");
             this.btnCategoryUp.Name = "btnCategoryUp";
             this.btnCategoryUp.UseVisualStyleBackColor = true;
-            this.btnCategoryUp.Click += new System.EventHandler(this.btnCategoryUp_Click);
+            this.btnCategoryUp.Click += new System.EventHandler(this.BtnCategoryUpClick);
             // 
             // btnSubtract
             // 
@@ -192,7 +192,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btnSubtract, "btnSubtract");
             this.btnSubtract.Name = "btnSubtract";
             this.btnSubtract.UseVisualStyleBackColor = true;
-            this.btnSubtract.Click += new System.EventHandler(this.btnSubtract_Click);
+            this.btnSubtract.Click += new System.EventHandler(this.BtnSubtractClick);
             // 
             // btnAdd
             // 
@@ -200,7 +200,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btnAdd, "btnAdd");
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.Click += new System.EventHandler(this.BtnAddClick);
             // 
             // panel2
             // 
@@ -259,7 +259,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.tbFloatingFormat, "tbFloatingFormat");
             this.tbFloatingFormat.Name = "tbFloatingFormat";
-            this.tbFloatingFormat.TextChanged += new System.EventHandler(this.tbFloatingFormat_TextChanged);
+            this.tbFloatingFormat.TextChanged += new System.EventHandler(this.TbFloatingFormatTextChanged);
             // 
             // label13
             // 
@@ -284,7 +284,7 @@ namespace DotSpatial.Symbology.Forms
             this.rbLineBasedAngle.Name = "rbLineBasedAngle";
             this.rbLineBasedAngle.TabStop = true;
             this.rbLineBasedAngle.UseVisualStyleBackColor = true;
-            this.rbLineBasedAngle.CheckedChanged += new System.EventHandler(this.rbLineBasedAngle_CheckedChanged);
+            this.rbLineBasedAngle.CheckedChanged += new System.EventHandler(this.RbLineBasedAngleCheckedChanged);
             // 
             // cmbLineAngle
             // 
@@ -292,7 +292,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmbLineAngle.FormattingEnabled = true;
             resources.ApplyResources(this.cmbLineAngle, "cmbLineAngle");
             this.cmbLineAngle.Name = "cmbLineAngle";
-            this.cmbLineAngle.SelectedIndexChanged += new System.EventHandler(this.cmbLineAngle_SelectedIndexChanged);
+            this.cmbLineAngle.SelectedIndexChanged += new System.EventHandler(this.CmbLineAngleSelectedIndexChanged);
             // 
             // cmbLabelAngleField
             // 
@@ -301,7 +301,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbLabelAngleField, "cmbLabelAngleField");
             this.cmbLabelAngleField.Name = "cmbLabelAngleField";
             this.ttLabelSetup.SetToolTip(this.cmbLabelAngleField, resources.GetString("cmbLabelAngleField.ToolTip"));
-            this.cmbLabelAngleField.SelectedIndexChanged += new System.EventHandler(this.cmbLabelAngleField_SelectedIndexChanged);
+            this.cmbLabelAngleField.SelectedIndexChanged += new System.EventHandler(this.CmbLabelAngleFieldSelectedIndexChanged);
             // 
             // rbIndividualAngle
             // 
@@ -310,7 +310,7 @@ namespace DotSpatial.Symbology.Forms
             this.rbIndividualAngle.TabStop = true;
             this.ttLabelSetup.SetToolTip(this.rbIndividualAngle, resources.GetString("rbIndividualAngle.ToolTip"));
             this.rbIndividualAngle.UseVisualStyleBackColor = true;
-            this.rbIndividualAngle.CheckedChanged += new System.EventHandler(this.rbIndividualAngle_CheckedChanged);
+            this.rbIndividualAngle.CheckedChanged += new System.EventHandler(this.RbIndividualAngleCheckedChanged);
             // 
             // rbCommonAngle
             // 
@@ -319,7 +319,7 @@ namespace DotSpatial.Symbology.Forms
             this.rbCommonAngle.TabStop = true;
             this.ttLabelSetup.SetToolTip(this.rbCommonAngle, resources.GetString("rbCommonAngle.ToolTip"));
             this.rbCommonAngle.UseVisualStyleBackColor = true;
-            this.rbCommonAngle.CheckedChanged += new System.EventHandler(this.rbCommonAngle_CheckedChanged);
+            this.rbCommonAngle.CheckedChanged += new System.EventHandler(this.RbCommonAngleCheckedChanged);
             // 
             // nudAngle
             // 
@@ -336,7 +336,7 @@ namespace DotSpatial.Symbology.Forms
             -2147483648});
             this.nudAngle.Name = "nudAngle";
             this.ttLabelSetup.SetToolTip(this.nudAngle, resources.GetString("nudAngle.ToolTip"));
-            this.nudAngle.ValueChanged += new System.EventHandler(this.nudAngle_ValueChanged);
+            this.nudAngle.ValueChanged += new System.EventHandler(this.NudAngleValueChanged);
             // 
             // chkPrioritizeLow
             // 
@@ -344,7 +344,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkPrioritizeLow.Name = "chkPrioritizeLow";
             this.ttLabelSetup.SetToolTip(this.chkPrioritizeLow, resources.GetString("chkPrioritizeLow.ToolTip"));
             this.chkPrioritizeLow.UseVisualStyleBackColor = true;
-            this.chkPrioritizeLow.CheckedChanged += new System.EventHandler(this.chkPrioritizeLow_CheckedChanged);
+            this.chkPrioritizeLow.CheckedChanged += new System.EventHandler(this.ChkPrioritizeLowCheckedChanged);
             // 
             // chkPreventCollision
             // 
@@ -354,7 +354,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkPreventCollision.Name = "chkPreventCollision";
             this.ttLabelSetup.SetToolTip(this.chkPreventCollision, resources.GetString("chkPreventCollision.ToolTip"));
             this.chkPreventCollision.UseVisualStyleBackColor = true;
-            this.chkPreventCollision.CheckedChanged += new System.EventHandler(this.chkPreventCollision_CheckedChanged);
+            this.chkPreventCollision.CheckedChanged += new System.EventHandler(this.ChkPreventCollisionCheckedChanged);
             // 
             // lblPriorityField
             // 
@@ -368,7 +368,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbPriorityField, "cmbPriorityField");
             this.cmbPriorityField.Name = "cmbPriorityField";
             this.ttLabelSetup.SetToolTip(this.cmbPriorityField, resources.GetString("cmbPriorityField.ToolTip"));
-            this.cmbPriorityField.SelectedIndexChanged += new System.EventHandler(this.cmbPriorityField_SelectedIndexChanged);
+            this.cmbPriorityField.SelectedIndexChanged += new System.EventHandler(this.CmbPriorityFieldSelectedIndexChanged);
             // 
             // gpbBorderColor
             // 
@@ -386,7 +386,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkBorder.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBorder.Name = "chkBorder";
             this.chkBorder.UseVisualStyleBackColor = true;
-            this.chkBorder.CheckedChanged += new System.EventHandler(this.chkBorder_CheckedChanged);
+            this.chkBorder.CheckedChanged += new System.EventHandler(this.ChkBorderCheckedChanged);
             // 
             // sldBorderOpacity
             // 
@@ -426,7 +426,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cbBorderColor, "cbBorderColor");
             this.cbBorderColor.Name = "cbBorderColor";
             this.cbBorderColor.RoundingRadius = 4;
-            this.cbBorderColor.ColorChanged += new System.EventHandler(this.cbBorderColor_ColorChanged);
+            this.cbBorderColor.ColorChanged += new System.EventHandler(this.CbBorderColorColorChanged);
             // 
             // gpbFont
             // 
@@ -486,7 +486,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cbFontColor, "cbFontColor");
             this.cbFontColor.Name = "cbFontColor";
             this.cbFontColor.RoundingRadius = 4;
-            this.cbFontColor.ColorChanged += new System.EventHandler(this.cbFontColor_ColorChanged);
+            this.cbFontColor.ColorChanged += new System.EventHandler(this.CbFontColorColorChanged);
             // 
             // cmbStyle
             // 
@@ -494,7 +494,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmbStyle.FormattingEnabled = true;
             resources.ApplyResources(this.cmbStyle, "cmbStyle");
             this.cmbStyle.Name = "cmbStyle";
-            this.cmbStyle.SelectedIndexChanged += new System.EventHandler(this.cmbStyle_SelectedIndexChanged);
+            this.cmbStyle.SelectedIndexChanged += new System.EventHandler(this.CmbStyleSelectedIndexChanged);
             // 
             // lblFamily
             // 
@@ -529,7 +529,7 @@ namespace DotSpatial.Symbology.Forms
             resources.GetString("cmbSize.Items16")});
             resources.ApplyResources(this.cmbSize, "cmbSize");
             this.cmbSize.Name = "cmbSize";
-            this.cmbSize.SelectedIndexChanged += new System.EventHandler(this.cmbSize_SelectedIndexChanged);
+            this.cmbSize.SelectedIndexChanged += new System.EventHandler(this.CmbSizeSelectedIndexChanged);
             // 
             // label1
             // 
@@ -540,7 +540,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.ffcFamilyName, "ffcFamilyName");
             this.ffcFamilyName.Name = "ffcFamilyName";
-            this.ffcFamilyName.SelectedItemChanged += new System.EventHandler(this.fontFamilyControl1_SelectedItemChanged);
+            this.ffcFamilyName.SelectedItemChanged += new System.EventHandler(this.FontFamilyControl1SelectedItemChanged);
             // 
             // lblPreview
             // 
@@ -595,7 +595,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cbBackgroundColor, "cbBackgroundColor");
             this.cbBackgroundColor.Name = "cbBackgroundColor";
             this.cbBackgroundColor.RoundingRadius = 4;
-            this.cbBackgroundColor.ColorChanged += new System.EventHandler(this.cbBackgroundColor_ColorChanged);
+            this.cbBackgroundColor.ColorChanged += new System.EventHandler(this.CbBackgroundColorColorChanged);
             // 
             // chkBackgroundColor
             // 
@@ -604,7 +604,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkBackgroundColor.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBackgroundColor.Name = "chkBackgroundColor";
             this.chkBackgroundColor.UseVisualStyleBackColor = true;
-            this.chkBackgroundColor.CheckedChanged += new System.EventHandler(this.chkBackgroundColor_CheckedChanged);
+            this.chkBackgroundColor.CheckedChanged += new System.EventHandler(this.ChkBackgroundColorCheckedChanged);
             // 
             // tabAdvanced
             // 
@@ -631,7 +631,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.labelAlignmentControl1, "labelAlignmentControl1");
             this.labelAlignmentControl1.Name = "labelAlignmentControl1";
             this.labelAlignmentControl1.Value = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelAlignmentControl1.ValueChanged += new System.EventHandler(this.labelAlignmentControl1_ValueChanged);
+            this.labelAlignmentControl1.ValueChanged += new System.EventHandler(this.LabelAlignmentControl1ValueChanged);
             // 
             // grpOffset
             // 
@@ -658,7 +658,7 @@ namespace DotSpatial.Symbology.Forms
             0,
             -2147483648});
             this.nudYOffset.Name = "nudYOffset";
-            this.nudYOffset.ValueChanged += new System.EventHandler(this.nudYOffset_ValueChanged);
+            this.nudYOffset.ValueChanged += new System.EventHandler(this.NudYOffsetValueChanged);
             // 
             // label11
             // 
@@ -685,7 +685,7 @@ namespace DotSpatial.Symbology.Forms
             0,
             -2147483648});
             this.nudXOffset.Name = "nudXOffset";
-            this.nudXOffset.ValueChanged += new System.EventHandler(this.nudXOffset_ValueChanged);
+            this.nudXOffset.ValueChanged += new System.EventHandler(this.NudXOffsetValueChanged);
             // 
             // label10
             // 
@@ -699,7 +699,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkHalo.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkHalo.Name = "chkHalo";
             this.chkHalo.UseVisualStyleBackColor = true;
-            this.chkHalo.CheckedChanged += new System.EventHandler(this.chkHalo_CheckedChanged);
+            this.chkHalo.CheckedChanged += new System.EventHandler(this.ChkHaloCheckedChanged);
             // 
             // chkShadow
             // 
@@ -708,7 +708,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkShadow.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShadow.Name = "chkShadow";
             this.chkShadow.UseVisualStyleBackColor = true;
-            this.chkShadow.CheckedChanged += new System.EventHandler(this.chkShadow_CheckedChanged);
+            this.chkShadow.CheckedChanged += new System.EventHandler(this.ChkShadowCheckedChanged);
             // 
             // label5
             // 
@@ -735,7 +735,7 @@ namespace DotSpatial.Symbology.Forms
             resources.GetString("cmbAlignment.Items1"),
             resources.GetString("cmbAlignment.Items2")});
             this.cmbAlignment.Name = "cmbAlignment";
-            this.cmbAlignment.SelectedIndexChanged += new System.EventHandler(this.cmbAlignment_SelectedIndexChanged);
+            this.cmbAlignment.SelectedIndexChanged += new System.EventHandler(this.CmbAlignmentSelectedIndexChanged);
             // 
             // cmbLabelingMethod
             // 
@@ -743,7 +743,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmbLabelingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLabelingMethod.FormattingEnabled = true;
             this.cmbLabelingMethod.Name = "cmbLabelingMethod";
-            this.cmbLabelingMethod.SelectedIndexChanged += new System.EventHandler(this.cmbLabelingMethod_SelectedIndexChanged);
+            this.cmbLabelingMethod.SelectedIndexChanged += new System.EventHandler(this.CmbLabelingMethodSelectedIndexChanged);
             // 
             // cmbLabelParts
             // 
@@ -751,7 +751,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmbLabelParts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLabelParts.FormattingEnabled = true;
             this.cmbLabelParts.Name = "cmbLabelParts";
-            this.cmbLabelParts.SelectedIndexChanged += new System.EventHandler(this.cmbLabelParts_SelectedIndexChanged);
+            this.cmbLabelParts.SelectedIndexChanged += new System.EventHandler(this.CmbLabelPartsSelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -766,7 +766,7 @@ namespace DotSpatial.Symbology.Forms
             this.clrHalo.LabelText = "Halo Color:";
             this.clrHalo.Name = "clrHalo";
             this.clrHalo.Value = System.Drawing.Color.Empty;
-            this.clrHalo.SelectedItemChanged += new System.EventHandler(this.clrHalo_SelectedItemChanged);
+            this.clrHalo.SelectedItemChanged += new System.EventHandler(this.ClrHaloSelectedItemChanged);
             // 
             // gpbUseLabelShadow
             // 
@@ -802,7 +802,7 @@ namespace DotSpatial.Symbology.Forms
             0,
             -2147483648});
             this.nudShadowOffsetY.Name = "nudShadowOffsetY";
-            this.nudShadowOffsetY.ValueChanged += new System.EventHandler(this.UpDownShadowOffsetY_ValueChanged);
+            this.nudShadowOffsetY.ValueChanged += new System.EventHandler(this.UpDownShadowOffsetYValueChanged);
             // 
             // label9
             // 
@@ -839,7 +839,7 @@ namespace DotSpatial.Symbology.Forms
             0,
             -2147483648});
             this.nudShadowOffsetX.Name = "nudShadowOffsetX";
-            this.nudShadowOffsetX.ValueChanged += new System.EventHandler(this.UpDownShadowOffsetX_ValueChanged);
+            this.nudShadowOffsetX.ValueChanged += new System.EventHandler(this.UpDownShadowOffsetXValueChanged);
             // 
             // sliderOpacityShadow
             // 
@@ -870,7 +870,7 @@ namespace DotSpatial.Symbology.Forms
             this.sliderOpacityShadow.TickColor = System.Drawing.Color.DarkGray;
             this.sliderOpacityShadow.TickSpacing = 5F;
             this.sliderOpacityShadow.Value = 0D;
-            this.sliderOpacityShadow.ValueChanged += new System.EventHandler(this.sliderOpacityShadow_ValueChanged);
+            this.sliderOpacityShadow.ValueChanged += new System.EventHandler(this.SliderOpacityShadowValueChanged);
             // 
             // label6
             // 
@@ -885,7 +885,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.colorButtonShadow, "colorButtonShadow");
             this.colorButtonShadow.Name = "colorButtonShadow";
             this.colorButtonShadow.RoundingRadius = 10;
-            this.colorButtonShadow.ColorChanged += new System.EventHandler(this.colorButtonShadow_ColorChanged);
+            this.colorButtonShadow.ColorChanged += new System.EventHandler(this.ColorButtonShadowColorChanged);
             // 
             // tabMembers
             // 
@@ -901,7 +901,7 @@ namespace DotSpatial.Symbology.Forms
             this.sqlMembers.ExpressionText = "";
             this.sqlMembers.Name = "sqlMembers";
             this.sqlMembers.Table = null;
-            this.sqlMembers.ExpressionTextChanged += new System.EventHandler(this.sqlMembers_ExpressionTextChanged);
+            this.sqlMembers.ExpressionTextChanged += new System.EventHandler(this.SqlMembersExpressionTextChanged);
             // 
             // cmdOK
             // 
@@ -909,7 +909,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.UseVisualStyleBackColor = true;
-            this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
+            this.cmdOK.Click += new System.EventHandler(this.CmdOkClick);
             // 
             // cmdCancel
             // 
@@ -917,14 +917,14 @@ namespace DotSpatial.Symbology.Forms
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.UseVisualStyleBackColor = true;
-            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            this.cmdCancel.Click += new System.EventHandler(this.CmdCancelClick);
             // 
             // cmdApply
             // 
             resources.ApplyResources(this.cmdApply, "cmdApply");
             this.cmdApply.Name = "cmdApply";
             this.cmdApply.UseVisualStyleBackColor = true;
-            this.cmdApply.Click += new System.EventHandler(this.cmdApply_Click);
+            this.cmdApply.Click += new System.EventHandler(this.CmdApplyClick);
             // 
             // lblHelp
             // 
@@ -1054,7 +1054,7 @@ namespace DotSpatial.Symbology.Forms
         private RampSlider sldFontOpacity;
         private RampSlider sliderOpacityShadow;
         private SplitContainer splitContainer1;
-        private SQLQueryControl sqlMembers;
+        private SqlQueryControl sqlMembers;
         private TabPage tabAdvanced;
         private TabPage tabBasic;
         private TabPage tabExpression;

@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in September, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -29,9 +18,9 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LineLayer"/> class.
         /// </summary>
-        /// <param name="inFeatureSet"></param>
+        /// <param name="inFeatureSet">A featureset that contains lines.</param>
         /// <exception cref="LineFeatureTypeException">Thrown if a non-line featureSet is supplied</exception>
         public LineLayer(IFeatureSet inFeatureSet)
             : this(inFeatureSet, null)
@@ -39,7 +28,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Constructor that also shows progress
+        /// Initializes a new instance of the <see cref="LineLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">A featureset that contains lines</param>
         /// <param name="progressHandler">An IProgressHandler for receiving status messages</param>
@@ -51,7 +40,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Constructor that also shows progress.
+        /// Initializes a new instance of the <see cref="LineLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">A featureset that contains lines.</param>
         /// <param name="container">An IContainer that the line layer should be created in.</param>
@@ -63,37 +52,12 @@ namespace DotSpatial.Symbology
             Configure(inFeatureSet);
         }
 
-        private void Configure(IFeatureSet inFeatureSet)
-        {
-            if (inFeatureSet.FeatureType != FeatureType.Line)
-            {
-                throw new LineFeatureTypeException();
-            }
-            Symbology = new LineScheme();
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Draws some section of the extent to the specified graphics object.
-        /// </summary>
-        /// <param name="g">The graphics object to draw to.</param>
-        /// <param name="p">The projection interface that specifies how to transform geographic coordinates to an image.</param>
-        public override void DrawSnapShot(Graphics g, IProj p)
-        {
-            // First pass is the "border" which actually fills things in, but then will be painted over with the fill.
-            throw new NotImplementedException();
-            //bool TO_DO_Draw_LINE_SNAPSHOT = true;
-        }
-      
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the line symbolizer to use for the selection
+        /// Gets or sets the line symbolizer to use for the selection.
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(GeneralTypeConverter))]
@@ -108,6 +72,7 @@ namespace DotSpatial.Symbology
             {
                 return base.SelectionSymbolizer as ILineSymbolizer;
             }
+
             set
             {
                 base.SelectionSymbolizer = value;
@@ -115,7 +80,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the FeatureSymbolizerOld determining the shared properties.  This is actually still the PointSymbolizerOld
+        /// Gets or sets the FeatureSymbolizerOld determining the shared properties. This is actually still the PointSymbolizerOld
         /// and should not be used directly on Polygons or Lines.
         /// </summary>
         /// <remarks>
@@ -132,6 +97,7 @@ namespace DotSpatial.Symbology
             {
                 return base.Symbolizer as ILineSymbolizer;
             }
+
             set
             {
                 base.Symbolizer = value;
@@ -150,11 +116,40 @@ namespace DotSpatial.Symbology
         [Serialize("Symbology")]
         public new ILineScheme Symbology
         {
-            get { return base.Symbology as ILineScheme; }
+            get
+            {
+                return base.Symbology as ILineScheme;
+            }
+
             set
             {
                 base.Symbology = value;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Draws some section of the extent to the specified graphics object.
+        /// </summary>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="p">The projection interface that specifies how to transform geographic coordinates to an image.</param>
+        public override void DrawSnapShot(Graphics g, IProj p)
+        {
+            // First pass is the "border" which actually fills things in, but then will be painted over with the fill.
+            throw new NotImplementedException();
+        }
+
+        private void Configure(IFeatureSet inFeatureSet)
+        {
+            if (inFeatureSet.FeatureType != FeatureType.Line)
+            {
+                throw new LineFeatureTypeException();
+            }
+
+            Symbology = new LineScheme();
         }
 
         #endregion

@@ -125,7 +125,7 @@ namespace DotSpatial.Positioning.Forms
         private List<Satellite> _satellites;
         private RotationOrientation _rotationOrientation = RotationOrientation.TrackUp;
 
-        //private object RenderSyncLock = new object();
+        // private object RenderSyncLock = new object();
 
         private static readonly PointD[] _icon = new[]
 			{
@@ -179,7 +179,7 @@ namespace DotSpatial.Positioning.Forms
         public SatelliteViewer()
             : base("DotSpatial.Positioning Multithreaded Satellite Viewer Control (http://dotspatial.codeplex.com)")
         {
-            //MessageBox.Show("SatelliteViewer Initialization started.");
+            // MessageBox.Show("SatelliteViewer Initialization started.");
 
             _satellites = new List<Satellite>();
             Orientation = PolarCoordinateOrientation.Clockwise;
@@ -251,7 +251,7 @@ namespace DotSpatial.Positioning.Forms
         /// <inheritdocs/>
         protected override void OnInitialize()
         {
-            //MessageBox.Show("SatelliteViewer OnInitialize.");
+            // MessageBox.Show("SatelliteViewer OnInitialize.");
 
             base.OnInitialize();
 
@@ -270,7 +270,7 @@ namespace DotSpatial.Positioning.Forms
                 }
             }
 
-            //MessageBox.Show("SatelliteViewer OnInitialize completed.");
+            // MessageBox.Show("SatelliteViewer OnInitialize completed.");
         }
 
         /// <inheritdocs/>
@@ -278,7 +278,7 @@ namespace DotSpatial.Positioning.Forms
         {
 #if PocketPC && !Framework20 && !DesignTime
 
-            //MessageBox.Show("SatelliteViewer Dispose.");
+            // MessageBox.Show("SatelliteViewer Dispose.");
 
 			// Bind global events when GPS data changes
 			try
@@ -481,7 +481,7 @@ namespace DotSpatial.Positioning.Forms
                 if (_isUsingRealTimeData == value)
                     return;
 
-                //MessageBox.Show("IsUsingRealTimeData started.");
+                // MessageBox.Show("IsUsingRealTimeData started.");
 
                 _isUsingRealTimeData = value;
 
@@ -1079,7 +1079,7 @@ namespace DotSpatial.Positioning.Forms
                 // If this becomes active, set the current bearing
                 Rotation = _rotationOrientation == RotationOrientation.TrackUp ? new Angle(-Devices.Bearing.DecimalDegrees) : Angle.Empty;
 
-                //InvokeRepaint();
+                // InvokeRepaint();
             }
         }
 
@@ -1456,7 +1456,7 @@ namespace DotSpatial.Positioning.Forms
 
         private void Devices_CurrentSatellitesChanged(object sender, SatelliteListEventArgs e)
         {
-            //TODO should this be done here or in a user defined event handler?
+            // TODO should this be done here or in a user defined event handler?
             if (_isUsingRealTimeData) Satellites = (List<Satellite>)e.Satellites;
             InvokeRepaint();
         }

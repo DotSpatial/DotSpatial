@@ -671,7 +671,7 @@ namespace DotSpatial.Positioning.Forms
             }
         }
 
-        //public new bool Visible
+        // public new bool Visible
         //{
         //    get
         //    {
@@ -1537,7 +1537,7 @@ namespace DotSpatial.Positioning.Forms
 #if PocketPC
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //Do nothing
+            // Do nothing
         }
 #endif
 
@@ -1642,7 +1642,7 @@ namespace DotSpatial.Positioning.Forms
         }
 
 #if PocketPC
-        //Controls whether bitmaps rendered on-screen are shifted slightly to correct display problems on newer devices.
+        // Controls whether bitmaps rendered on-screen are shifted slightly to correct display problems on newer devices.
         public bool IsUpperLeftCornerAdjusted
 		{
 			get
@@ -1898,23 +1898,23 @@ namespace DotSpatial.Positioning.Forms
         /// <returns></returns>
         public static Color ColorFromAhsb(int a, float h, float s, float b)
         {
-            //if (0 > a || 255 < a)
+            // if (0 > a || 255 < a)
             //{
             //    return Color.Magenta;
             //    throw new ArgumentOutOfRangeException("a", a,
             //      Resources.InvalidAlpha);
             //}
-            //if (0f > h || 360f < h)
+            // if (0f > h || 360f < h)
             //{
             //    throw new ArgumentOutOfRangeException("h", h,
             //      Resources.InvalidHue);
             //}
-            //if (0f > s || 1f < s)
+            // if (0f > s || 1f < s)
             //{
             //    throw new ArgumentOutOfRangeException("s", s,
             //      Resources.InvalidSaturation);
             //}
-            //if (0f > b || 1f < b)
+            // if (0f > b || 1f < b)
             //{
             //    throw new ArgumentOutOfRangeException("b", b,
             //      Resources.InvalidBrightness);

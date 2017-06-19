@@ -1,3 +1,6 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -14,7 +17,13 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
     /// </summary>
     public class DynamicXMLNode : DynamicObject
     {
-        private XElement node;
+        #region Fields
+
+        private readonly XElement _node;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicXMLNode"/> class.
@@ -22,16 +31,16 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// <param name="node">The node.</param>
         public DynamicXMLNode(XElement node)
         {
-            this.node = node;
+            _node = node;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicXMLNode"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public DynamicXMLNode(String name)
+        public DynamicXMLNode(string name)
         {
-            node = new XElement(name);
+            _node = new XElement(name);
         }
 
         /// <summary>
@@ -41,11 +50,15 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         {
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Loads the specified URI.
         /// </summary>
         /// <param name="uri">The URI.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(string uri)
         {
             return new DynamicXMLNode(XElement.Load(uri));
@@ -55,7 +68,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Loads the specified stream.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(Stream stream)
         {
             return new DynamicXMLNode(XElement.Load(stream));
@@ -65,7 +78,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Loads the specified text reader.
         /// </summary>
         /// <param name="textReader">The text reader.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(TextReader textReader)
         {
             return new DynamicXMLNode(XElement.Load(textReader));
@@ -75,7 +88,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Loads the specified reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(XmlReader reader)
         {
             return new DynamicXMLNode(XElement.Load(reader));
@@ -86,7 +99,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="options">The options.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(Stream stream, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(stream, options));
@@ -97,7 +110,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="uri">The URI.</param>
         /// <param name="options">The options.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(string uri, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(uri, options));
@@ -108,7 +121,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="textReader">The text reader.</param>
         /// <param name="options">The options.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(TextReader textReader, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(textReader, options));
@@ -119,7 +132,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="options">The options.</param>
-        /// <returns></returns>
+        /// <returns>The resulting DynamicXMLNode</returns>
         public static DynamicXMLNode Load(XmlReader reader, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(reader, options));
@@ -129,7 +142,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Parses the specified text.
         /// </summary>
         /// <param name="text">The text.</param>
-        /// <returns></returns>
+        /// <returns>The parse result.</returns>
         public static DynamicXMLNode Parse(string text)
         {
             return new DynamicXMLNode(XElement.Parse(text));
@@ -140,39 +153,63 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="options">The options.</param>
-        /// <returns></returns>
+        /// <returns>The parse result.</returns>
         public static DynamicXMLNode Parse(string text, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Parse(text, options));
         }
 
         /// <summary>
-        /// Provides the implementation for operations that set member values. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations such as setting a value for a property.
+        /// Provides implementation for type conversion operations. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations that convert an object from one type to another.
         /// </summary>
-        /// <param name="binder">Provides information about the object that called the dynamic operation. The binder.Name property provides the name of the member to which the value is being assigned. For example, for the statement sampleObject.SampleProperty = "Test", where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, binder.Name returns "SampleProperty". The binder.IgnoreCase property specifies whether the member name is case-sensitive.</param>
-        /// <param name="value">The value to set to the member. For example, for sampleObject.SampleProperty = "Test", where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, the <paramref name="value"/> is "Test".</param>
+        /// <param name="binder">Provides information about the conversion operation. The binder.Type property provides the type to which the object must be converted. For example, for the statement (String)sampleObject in C# (CType(sampleObject, Type) in Visual Basic), where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, binder.Type returns the <see cref="T:System.String"/> type. The binder.Explicit property provides information about the kind of conversion that occurs. It returns true for explicit conversion and false for implicit conversion.</param>
+        /// <param name="result">The result of the type conversion operation.</param>
         /// <returns>
         /// true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a language-specific run-time exception is thrown.)
         /// </returns>
-        public override bool TrySetMember(SetMemberBinder binder, object value)
+        public override bool TryConvert(ConvertBinder binder, out object result)
         {
-            XElement setNode = node.Element(binder.Name);
-            if (setNode != null)
+            if (binder.Type == typeof(XElement))
             {
-                setNode.SetValue(value);
+                result = _node;
+            }
+            else if (binder.Type == typeof(string))
+            {
+                result = _node.Value;
             }
             else
             {
-                if (value.GetType() == typeof(DynamicXMLNode))
+                result = false;
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Provides the implementation for operations that get a value by index. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for indexing operations.
+        /// </summary>
+        /// <param name="binder">Provides information about the operation.</param>
+        /// <param name="indexes">The indexes that are used in the operation. </param>
+        /// <param name="result">The result of the index operation.</param>
+        /// <returns>
+        /// true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a run-time exception is thrown.)
+        /// </returns>
+        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
+        {
+            var s = indexes[0] as string;
+            if (s != null)
+            {
+                XAttribute attr = _node.Attribute(s);
+                if (attr != null)
                 {
-                    node.Add(new XElement(binder.Name));
-                }
-                else
-                {
-                    node.Add(new XElement(binder.Name, value));
+                    result = attr.Value;
+                    return true;
                 }
             }
-            return true;
+
+            result = null;
+            return false;
         }
 
         /// <summary>
@@ -185,17 +222,15 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            XElement getNode = node.Element(binder.Name);
+            XElement getNode = _node.Element(binder.Name);
             if (getNode != null)
             {
                 result = new DynamicXMLNode(getNode);
                 return true;
             }
-            else
-            {
-                result = null;
-                return false;
-            }
+
+            result = null;
+            return false;
         }
 
         /// <summary>
@@ -214,7 +249,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             {
                 // unwrap parameters: if the parameters are DynamicXMLNode then pass in the inner XElement node
                 List<object> newargs = null;
-                var argtypes = args.Select(x => x.GetType()); // because GetTypeArray is not supported in Silverlight
+                var argtypes = args.Select(x => x.GetType()).ToList(); // because GetTypeArray is not supported in Silverlight
                 if (argtypes.Contains(typeof(DynamicXMLNode)) || argtypes.Contains(typeof(DynamicXMLNode[])))
                 {
                     newargs = new List<object>();
@@ -222,12 +257,12 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                     {
                         if (arg.GetType() == typeof(DynamicXMLNode))
                         {
-                            newargs.Add(((DynamicXMLNode)arg).node);
+                            newargs.Add(((DynamicXMLNode)arg)._node);
                         }
                         else if (arg.GetType() == typeof(DynamicXMLNode[]))
                         {
                             // unwrap array of DynamicXMLNode
-                            newargs.Add(((DynamicXMLNode[])arg).Select(x => (x).node));
+                            newargs.Add(((DynamicXMLNode[])arg).Select(x => x._node));
                         }
                         else
                         {
@@ -236,20 +271,15 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                     }
                 }
 
-                result = xmlType.InvokeMember(
-                          binder.Name,
-                          BindingFlags.InvokeMethod |
-                          BindingFlags.Public |
-                          BindingFlags.Instance,
-                          null, node, newargs == null ? args : newargs.ToArray());
+                result = xmlType.InvokeMember(binder.Name, BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, _node, newargs?.ToArray() ?? args);
 
                 // wrap return value: if the results are an IEnumerable<XElement>, then return a wrapped collection of DynamicXMLNode
                 if (result != null && typeof(IEnumerable<XElement>).IsAssignableFrom(result.GetType()))
                 {
                     result = ((IEnumerable<XElement>)result).Select(x => new DynamicXMLNode(x));
                 }
-                // Note: we could wrap single XElement too but nothing returns that
 
+                // Note: we could wrap single XElement too but nothing returns that
                 return true;
             }
             catch
@@ -270,74 +300,39 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </returns>
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
-            if (indexes[0].GetType() == typeof(String))
+            var s = indexes[0] as string;
+            if (s != null)
             {
-                node.SetAttributeValue((string)indexes[0], value);
+                _node.SetAttributeValue(s, value);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         /// <summary>
-        /// Provides the implementation for operations that get a value by index. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for indexing operations.
+        /// Provides the implementation for operations that set member values. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations such as setting a value for a property.
         /// </summary>
-        /// <param name="binder">Provides information about the operation.</param>
-        /// <param name="indexes">The indexes that are used in the operation. </param>
-        /// <param name="result">The result of the index operation.</param>
-        /// <returns>
-        /// true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a run-time exception is thrown.)
-        /// </returns>
-        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
-        {
-            if (indexes[0].GetType() == typeof(String))
-            {
-                XAttribute attr = node.Attribute((string)indexes[0]);
-                if (attr != null)
-                {
-                    result = attr.Value;
-                    return true;
-                }
-                else
-                {
-                    result = null;
-                    return false;
-                }
-            }
-            else
-            {
-                result = null;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Provides implementation for type conversion operations. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations that convert an object from one type to another.
-        /// </summary>
-        /// <param name="binder">Provides information about the conversion operation. The binder.Type property provides the type to which the object must be converted. For example, for the statement (String)sampleObject in C# (CType(sampleObject, Type) in Visual Basic), where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, binder.Type returns the <see cref="T:System.String"/> type. The binder.Explicit property provides information about the kind of conversion that occurs. It returns true for explicit conversion and false for implicit conversion.</param>
-        /// <param name="result">The result of the type conversion operation.</param>
+        /// <param name="binder">Provides information about the object that called the dynamic operation. The binder.Name property provides the name of the member to which the value is being assigned. For example, for the statement sampleObject.SampleProperty = "Test", where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, binder.Name returns "SampleProperty". The binder.IgnoreCase property specifies whether the member name is case-sensitive.</param>
+        /// <param name="value">The value to set to the member. For example, for sampleObject.SampleProperty = "Test", where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, the <paramref name="value"/> is "Test".</param>
         /// <returns>
         /// true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a language-specific run-time exception is thrown.)
         /// </returns>
-        public override bool TryConvert(ConvertBinder binder, out object result)
+        public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            if (binder.Type == typeof(XElement))
+            XElement setNode = _node.Element(binder.Name);
+            if (setNode != null)
             {
-                result = node;
-            }
-            else if (binder.Type == typeof(String))
-            {
-                result = node.Value;
+                setNode.SetValue(value);
             }
             else
             {
-                result = false;
-                return false;
+                _node.Add(value.GetType() == typeof(DynamicXMLNode) ? new XElement(binder.Name) : new XElement(binder.Name, value));
             }
 
             return true;
         }
+
+        #endregion
     }
 }

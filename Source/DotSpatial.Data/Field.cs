@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Data;
@@ -23,31 +12,22 @@ namespace DotSpatial.Data
     /// </summary>
     public class Field : DataColumn
     {
-        /// <summary>
-        /// Represents the number of decimals to preserve after a 0.
-        /// </summary>
-        private byte _decimalCount;
-
-        /// <summary>
-        /// The length of a field in bytes
-        /// </summary>
-        private byte _length;
-
         #region Properties
 
         /// <summary>
-        /// Creates a new default field empty field - needed for datatable copy and clone methods.
+        /// Initializes a new instance of the <see cref="Field"/> class that is empty.
+        /// This is needed for datatable copy and clone methods.
         /// </summary>
         public Field()
         {
-
         }
 
         /// <summary>
-        /// Creates a new default field given the specified DataColumn.  Numeric types
+        /// Initializes a new instance of the <see cref="Field"/> class.
+        /// Creates a new default field given the specified DataColumn. Numeric types
         /// default to a size of 255, but will be shortened during the save opperation.
         /// The default decimal count for double and long is 0, for Currency is 2, for float is
-        /// 3, and for double is 8.  These can be changed by changing the DecimalCount property.
+        /// 3, and for double is 8. These can be changed by changing the DecimalCount property.
         /// </summary>
         /// <param name="inColumn">A System.Data.DataColumn to create a Field from</param>
         public Field(DataColumn inColumn)
@@ -56,22 +36,22 @@ namespace DotSpatial.Data
             SetupDecimalCount();
             if (inColumn.DataType == typeof(string))
             {
-                _length = inColumn.MaxLength <= 254 ? (byte) inColumn.MaxLength : (byte) 254;
+                Length = inColumn.MaxLength <= 254 ? (byte)inColumn.MaxLength : (byte)254;
             }
             else if (inColumn.DataType == typeof(DateTime))
             {
-                _length = 8;
+                Length = 8;
             }
             else if (inColumn.DataType == typeof(bool))
             {
-                _length = 1;
+                Length = 1;
             }
         }
 
         /// <summary>
-        /// Creates a new instance of a field given only a column name
+        /// Initializes a new instance of the <see cref="Field"/> class, as type string, using the specified column name.
         /// </summary>
-        /// <param name="inColumnName">The string Column Name for the new field</param>
+        /// <param name="inColumnName">The string name of the column.</param>
         public Field(string inColumnName)
             : base(inColumnName)
         {
@@ -79,9 +59,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new Field with a specific name for a specified data type
+        /// Initializes a new instance of the <see cref="Field"/> class with a specific name for a specified data type.
         /// </summary>
-        /// <param name="inColumnName">The string name of the column</param>
+        /// <param name="inColumnName">The string name of the column.</param>
         /// <param name="inDataType">The System.Type describing the datatype of the field</param>
         public Field(string inColumnName, Type inDataType)
             : base(inColumnName, inDataType)
@@ -90,9 +70,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new field with a specific name and using a simplified enumeration of possible types.
+        /// Initializes a new instance of the <see cref="Field"/> class with a specific name and using a simplified enumeration of possible types.
         /// </summary>
-        /// <param name="inColumnName">the string column name.</param>
+        /// <param name="inColumnName">The string name of the column.</param>
         /// <param name="type">The type enumeration that clarifies which basic data type to use.</param>
         public Field(string inColumnName, FieldDataType type)
             : base(inColumnName)
@@ -104,38 +84,39 @@ namespace DotSpatial.Data
 
         /*
          * Field Types Specified by the dBASE Format Specifications
-         * 
+         *
          * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
-         * 
+         *
          * Symbol |  Data  Type  | Description
          * -------+--------------+-------------------------------------------------------------------------------------
          *   B    |       Binary | 10 digits representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
          *   C    |    Character | All OEM code page characters - padded with blanks to the width of the field.
          *   D    |         Date | 8 bytes - date stored as a string in the format YYYYMMDD.
-         *   N    |      Numeric | Number stored as a string, right justified, and padded with blanks to the width of the field. 
+         *   N    |      Numeric | Number stored as a string, right justified, and padded with blanks to the width of the field.
          *   L    |      Logical | 1 byte - initialized to 0x20 (space) otherwise T or F.
          *   M    |         Memo | 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
-         *   @    |    Timestamp | 8 bytes - two longs, first for date, second for time.  The date is the number of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+         *   @    |    Timestamp | 8 bytes - two longs, first for date, second for time. The date is the number of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
          *   I    |         Long | 4 bytes. Leftmost bit used to indicate sign, 0 negative.
          *   +    |Autoincrement | Same as a Long
-         *   F    |        Float | Number stored as a string, right justified, and padded with blanks to the width of the field. 
+         *   F    |        Float | Number stored as a string, right justified, and padded with blanks to the width of the field.
          *   O    |       Double | 8 bytes - no conversions, stored as a double.
          *   G    |          OLE | 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks.
          */
 
         /// <summary>
-        /// This creates a new instance.  Since the data type is
+        /// Initializes a new instance of the <see cref="Field"/> class.
         /// </summary>
-        /// <param name="columnName"></param>
-        /// <param name="typeCode"></param>
-        /// <param name="length"></param>
-        /// <param name="decimalCount"></param>
+        /// <param name="columnName">The string name of the column.</param>
+        /// <param name="typeCode">A code specified by the dBASE Format Specifications that indicates what type should be used.</param>
+        /// <param name="length">The character length of the field.</param>
+        /// <param name="decimalCount">Represents the number of decimals to preserve after a 0.</param>
         public Field(string columnName, char typeCode, byte length, byte decimalCount)
             : base(columnName)
         {
             Length = length;
             ColumnName = columnName;
             DecimalCount = decimalCount;
+
             // Date or Timestamp
             if (typeCode == 'D' || typeCode == '@')
             {
@@ -143,30 +124,34 @@ namespace DotSpatial.Data
                 DataType = typeof(DateTime);
                 return;
             }
+
             if (typeCode == 'L')
             {
                 DataType = typeof(bool);
                 return;
             }
+
             // Long or AutoIncrement
             if (typeCode == 'I' || typeCode == '+')
             {
                 DataType = typeof(int);
                 return;
             }
+
             if (typeCode == 'O')
             {
                 DataType = typeof(double);
                 return;
             }
+
             if (typeCode == 'N' || typeCode == 'B' || typeCode == 'M' || typeCode == 'F' || typeCode == 'G')
             {
                 // The strategy here is to assign the smallest type that we KNOW will be large enough
                 // to hold any value with the length (in digits) and characters.
                 // even though double can hold as high a value as a "Number" can go, it can't
-                // preserve the extraordinary 255 digit precision that a Number has.  The strategy
+                // preserve the extraordinary 255 digit precision that a Number has. The strategy
                 // is to assess the length in characters and assign a numeric type where no
-                // value may exist outside the range.  (They can always change the datatype later.)
+                // value may exist outside the range. (They can always change the datatype later.)
 
                 // The basic encoding we are using here
                 if (decimalCount == 0)
@@ -177,18 +162,21 @@ namespace DotSpatial.Data
                         DataType = typeof(byte);
                         return;
                     }
+
                     if (length < 5)
                     {
                         // -32768 to 32767
                         DataType = typeof(short); // Int16
                         return;
                     }
+
                     if (length < 10)
                     {
                         // -2147483648 to 2147483647
                         DataType = typeof(int); // Int32
                         return;
                     }
+
                     if (length < 19)
                     {
                         // -9223372036854775808 to -9223372036854775807
@@ -211,22 +199,21 @@ namespace DotSpatial.Data
                 // Decimals -79228162514264337593543950335 to 79228162514264337593543950335
 
                 // Doubles have the range to handle any number with the 255 character size,
-                // but won't preserve the precision that is possible.  It is still
+                // but won't preserve the precision that is possible. It is still
                 // preferable to have a numeric type in 99% of cases, and double is the easiest.
-
                 DataType = typeof(double);
 
                 return;
             }
+
             // Type code is either C or not recognized, in which case we will just end up with a string
             // representation of whatever the characters are.
-
             DataType = typeof(string);
             MaxLength = length;
         }
 
         /// <summary>
-        /// This is the single character dBase code.  Only some of these are supported with Esri.
+        /// Gets the single character dBase code. Only some of these are supported with Esri.
         /// C - Character (Chars, Strings, objects - as ToString(), and structs - as  )
         /// D - Date (DateTime)
         /// T - Time (DateTime)
@@ -259,48 +246,27 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the number of places to keep after the 0 in number formats.
-        /// As far as dbf fields are concerned, all numeric datatypes use the same
-        /// database number format.
+        /// As far as dbf fields are concerned, all numeric datatypes use the same database number format.
         /// </summary>
-        public byte DecimalCount
-        {
-            get
-            {
-                return _decimalCount;
-            }
-            set
-            {
-                _decimalCount = value;
-            }
-        }
+        public byte DecimalCount { get; set; }
 
         /// <summary>
-        /// The character length of the field
+        /// Gets or sets the length of the field in bytes.
         /// </summary>
-        public byte Length
-        {
-            get
-            {
-                return _length;
-            }
-            set
-            {
-                _length = value;
-            }
-        }
+        public byte Length { get; set; }
 
         /// <summary>
-        /// The offset of the field on a row in the file
+        /// Gets or sets the offset of the field on a row in the file
         /// </summary>
         public int DataAddress { get; set; }
 
-        ///<summary>
-        /// Number Converter associated with this field.
-        ///</summary>
+        /// <summary>
+        /// Gets or sets the Number Converter associated with this field.
+        /// </summary>
         public NumberConverter NumberConverter { get; set; }
 
         /// <summary>
-        /// Internal method that decides an appropriate decimal count, given a data column
+        /// Internal method that decides an appropriate decimal count, given a data column.
         /// </summary>
         private void SetupDecimalCount()
         {
@@ -310,56 +276,60 @@ namespace DotSpatial.Data
 
             // These sizes represent the "maximized" length and decimal counts that will be shrunk in order
             // to fit the data before saving.
-
             if (DataType == typeof(float))
             {
-                //_decimalCount = (byte)40;  // Singles  -3.402823E+38 to 3.402823E+38
-                //_length = (byte)40;
-                _length = 18;
-                _decimalCount = 6;
+                //// _decimalCount = (byte)40;  // Singles  -3.402823E+38 to 3.402823E+38
+                //// _length = (byte)40;
+                Length = 18;
+                DecimalCount = 6;
                 return;
             }
+
             if (DataType == typeof(double))
             {
-                //_decimalCount = (byte)255; // Doubles -1.79769313486232E+308 to 1.79769313486232E+308
-                //_length = (byte)255;
-                _length = 18;
-                _decimalCount = 9;
+                //// _decimalCount = (byte)255; // Doubles -1.79769313486232E+308 to 1.79769313486232E+308
+                //// _length = (byte)255;
+                Length = 18;
+                DecimalCount = 9;
                 return;
             }
+
             if (DataType == typeof(decimal))
             {
-                _length = 18;
-                _decimalCount = 9; // Decimals -79228162514264337593543950335 to 79228162514264337593543950335
+                Length = 18;
+                DecimalCount = 9; // Decimals -79228162514264337593543950335 to 79228162514264337593543950335
                 return;
             }
+
             if (DataType == typeof(byte))
             {
                 // 0 to 255
-                _decimalCount = 0;
-                _length = 3;
+                DecimalCount = 0;
+                Length = 3;
                 return;
             }
+
             if (DataType == typeof(short))
             {
                 // -32768 to 32767
-                _length = 6;
-                _decimalCount = 0;
+                Length = 6;
+                DecimalCount = 0;
                 return;
             }
+
             if (DataType == typeof(int))
             {
                 // -2147483648 to 2147483647
-                _length = 11;
-                _decimalCount = 0;
+                Length = 11;
+                DecimalCount = 0;
                 return;
             }
+
             if (DataType == typeof(long))
             {
                 // -9223372036854775808 to -9223372036854775807
-                _length = 20;
-                _decimalCount = 0;
-                return;
+                Length = 20;
+                DecimalCount = 0;
             }
         }
 

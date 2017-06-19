@@ -64,7 +64,7 @@
             this.rsOpacity.TickColor = System.Drawing.Color.DarkGray;
             this.rsOpacity.TickSpacing = 5F;
             this.rsOpacity.Value = 1D;
-            this.rsOpacity.ValueChanged += new System.EventHandler(this.rsOpacity_ValueChanged);
+            this.rsOpacity.ValueChanged += new System.EventHandler(this.RsOpacityValueChanged);
             // 
             // ImageCategoryControl
             // 

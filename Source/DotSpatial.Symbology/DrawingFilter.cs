@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/24/2009 2:36:26 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections;
@@ -20,26 +10,17 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// DrawingFilter
+    /// </summary>
     public class DrawingFilter : IDrawingFilter
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs after this filter has built its internal list of items.
-        /// </summary>
-        public event EventHandler Initialized;
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private IFeatureCategory _category;
         private int _chunk;
-        private int _chunkSize;
         private int _count;
         private bool _countIsValid;
-        private IDictionary<IFeature, IDrawnState> _drawnStates;
-        private IFeatureList _featureList;
         private bool _isInitialized;
         private IFeatureScheme _scheme;
         private bool _selected;
@@ -54,48 +35,308 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawingFilter without using any chunks.  The use chunks
-        /// value will be false, and sub-categories will not be selected based on the chunk.
+        /// Initializes a new instance of the <see cref="DrawingFilter"/> class without using any chunks.
+        /// The use chunks value will be false, and sub-categories will not be selected based on the chunk.
         /// </summary>
+        /// <param name="features">The feature list containing the features that get filtered.</param>
+        /// <param name="scheme">The scheme used getting the drawing characteristics from.</param>
         public DrawingFilter(IFeatureList features, IFeatureScheme scheme)
         {
             _useChunks = false;
-            _chunkSize = -1;
+            ChunkSize = -1;
             Configure(features, scheme);
         }
 
         /// <summary>
-        /// Creates a new instance of DrawingFilter, sub-dividing the features into chunks.
-        /// regardless of selection or category, chunks simply subdivide the filter
-        /// into chunks of equal size.
+        /// Initializes a new instance of the <see cref="DrawingFilter"/> class, sub-dividing the features into chunks.
+        /// Regardless of selection or category, chunks simply subdivide the filter into chunks of equal size.
         /// </summary>
+        /// <param name="features">The feature list containing the features that get filtered.</param>
+        /// <param name="scheme">The scheme used getting the drawing characteristics from.</param>
+        /// <param name="chunkSize">Size of the chunks that should be used.</param>
         public DrawingFilter(IFeatureList features, IFeatureScheme scheme, int chunkSize)
         {
             _useChunks = true;
-            _chunkSize = chunkSize;
+            ChunkSize = chunkSize;
             Configure(features, scheme);
         }
 
-        private void Configure(IFeatureList features, IFeatureScheme scheme)
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs after this filter has built its internal list of items.
+        /// </summary>
+        public event EventHandler Initialized;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the scheme category to use.
+        /// </summary>
+        public IFeatureCategory Category
         {
-            _featureList = features;
-            _scheme = scheme;
-            //features.FeatureAdded += new EventHandler<FeatureEventArgs>(features_FeatureAdded);
-            //features.FeatureRemoved += new EventHandler<FeatureEventArgs>(features_FeatureRemoved);
+            get
+            {
+                return _category;
+            }
+
+            set
+            {
+                if (_category != value) _countIsValid = false;
+                _category = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the integer chunk that the filter should use.
+        /// </summary>
+        public int Chunk
+        {
+            get
+            {
+                return _chunk;
+            }
+
+            set
+            {
+                if (_chunk != value) _countIsValid = false;
+                _chunk = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the integer size of each chunk. Setting this to
+        /// a new value will cycle through and update the chunk on all the features.
+        /// </summary>
+        public int ChunkSize { get; set; }
+
+        /// <summary>
+        /// Gets the count. If the drawing state for any features has changed, or else if the
+        /// state of any members has changed, this will cycle through the filter members and cache
+        /// a new count. If nothing has changed, then this will simply return the cached value.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                if (_countIsValid) return _count;
+
+                using (IEnumerator<IFeature> en = GetEnumerator())
+                {
+                    _count = 0;
+                    while (en.MoveNext())
+                    {
+                        _count++;
+                    }
+
+                    _countIsValid = true;
+                    return _count;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the default category for the scheme.
+        /// </summary>
+        public IFeatureCategory DefaultCategory => _scheme.GetCategories().First();
+
+        /// <summary>
+        /// Gets the dictionary of drawn states that this drawing filter uses.
+        /// </summary>
+        public IDictionary<IFeature, IDrawnState> DrawnStates { get; private set; }
+
+        /// <summary>
+        /// Gets the underlying list of features that this drawing filter
+        /// is ultimately based upon.
+        /// </summary>
+        public IFeatureList FeatureList { get; private set; }
+
+        /// <summary>
+        /// Gets the total count of chunks when chunks are used.
+        /// Otherwise, this returns 1 as everything is effectively in one chunk.
+        /// </summary>
+        public int NumChunks
+        {
+            get
+            {
+                if (_useChunks) return Convert.ToInt32(Math.Ceiling(FeatureList.Count / (double)ChunkSize));
+
+                return 1;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether values are selected. If UseSelection is true, this will get or set the boolean selection state
+        /// that will be used to select values.
+        /// </summary>
+        public bool Selected
+        {
+            get
+            {
+                return _selected;
+            }
+
+            set
+            {
+                if (_selected != value)
+                {
+                    _countIsValid = false;
+                    _selected = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the filter should subdivide based on category.
+        /// </summary>
+        public bool UseCategory
+        {
+            get
+            {
+                return _useCategory;
+            }
+
+            set
+            {
+                if (_useCategory != value)
+                {
+                    _countIsValid = false;
+                }
+
+                _useCategory = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether we should use the chunk.
+        /// </summary>
+        public bool UseChunks
+        {
+            get
+            {
+                return _useChunks;
+            }
+
+            set
+            {
+                if (_useChunks != value) _countIsValid = false;
+                _useChunks = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this filter should use the Selected.
+        /// </summary>
+        public bool UseSelection
+        {
+            get
+            {
+                return _useSelection;
+            }
+
+            set
+            {
+                if (_useSelection != value) _countIsValid = false;
+                _useSelection = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this feature should be drawn.
+        /// </summary>
+        public bool UseVisibility
+        {
+            get
+            {
+                return _useVisibility;
+            }
+
+            set
+            {
+                if (_useVisibility != value) _countIsValid = false;
+                _useVisibility = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to return visible, or hidden features if UseVisibility is true.
+        /// </summary>
+        public bool Visible
+        {
+            get
+            {
+                return _visible;
+            }
+
+            set
+            {
+                if (_visible != value) _countIsValid = false;
+                _visible = value;
+            }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// This uses the feature as the key and attempts to find the specified drawn state
+        /// that describes selection, chunk and category.
+        /// </summary>
+        /// <param name="key">The feature</param>
+        /// <remarks>The strength is that if someone inserts a new member or re-orders
+        /// the features in the featureset, we don't forget which ones are selected.
+        /// The disadvantage is that duplicate features in the same featureset
+        /// will cause an exception.</remarks>
+        /// <returns>The drawn state of the given feature.</returns>
+        public IDrawnState this[IFeature key]
+        {
+            get
+            {
+                if (!_isInitialized) DoInitialize();
+
+                return DrawnStates?[key];
+            }
+
+            set
+            {
+                if (!_isInitialized) DoInitialize();
+
+                // this will cause an exception if _drawnStates is null, but that might be what is needed
+                if (DrawnStates[key] != value) _countIsValid = false;
+                DrawnStates[key] = value;
+            }
+        }
+
+        /// <summary>
+        /// This is less direct as it requires searching two indices rather than one, but
+        /// allows access to the drawn state based on the feature ID.
+        /// </summary>
+        /// <param name="index">The integer index in the underlying featureSet.</param>
+        /// <returns>The current IDrawnState for the current feature.</returns>
+        public IDrawnState this[int index]
+        {
+            get
+            {
+                if (!_isInitialized) DoInitialize();
+                return DrawnStates[FeatureList[index]];
+            }
+
+            set
+            {
+                if (!_isInitialized) DoInitialize();
+                if (DrawnStates[FeatureList[index]] != value) _countIsValid = false;
+                DrawnStates[FeatureList[index]] = value;
+            }
         }
 
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Creates a shallow copy
-        /// </summary>
-        /// <returns>Returns a shallow copy of this object.</returns>
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
 
         /// <summary>
         /// This will use the filter expressions on the categories to change the categories for those members.
@@ -112,20 +353,21 @@ namespace DotSpatial.Symbology
             if (fc.Count == 1 && string.IsNullOrEmpty(fc[0].FilterExpression))
             {
                 // Replace SchemeCategory in _drawnStates
-                foreach (var drawnState in _drawnStates)
+                foreach (var drawnState in DrawnStates)
                 {
                     drawnState.Value.SchemeCategory = fc[0];
                 }
+
                 return;
             }
 
             var tables = new List<DataTable>(); // just in case there is more than one Table somehow
             var allRows = new Dictionary<DataRow, int>();
             var tempList = new List<DataTable>();
-            var containsFID = fc.Any(category => category.FilterExpression != null && category.FilterExpression.Contains("[FID]"));
+            var containsFid = fc.Any(category => category.FilterExpression != null && category.FilterExpression.Contains("[FID]"));
 
             var featureIndex = 0;
-            foreach (var f in _featureList)
+            foreach (var f in FeatureList)
             {
                 if (f.DataRow == null)
                 {
@@ -138,15 +380,17 @@ namespace DotSpatial.Symbology
                     if (tables.Contains(t) == false)
                     {
                         tables.Add(t);
-                        if (containsFID && t.Columns.Contains("FID") == false)
+                        if (containsFid && t.Columns.Contains("FID") == false)
                         {
                             f.ParentFeatureSet.AddFid();
                             tempList.Add(t);
                         }
                     }
+
                     allRows.Add(f.DataRow, featureIndex);
                 }
-                if (_drawnStates.ContainsKey(f)) _drawnStates[f].SchemeCategory = null;
+
+                if (DrawnStates.ContainsKey(f)) DrawnStates[f].SchemeCategory = null;
                 featureIndex++;
             }
 
@@ -159,13 +403,14 @@ namespace DotSpatial.Symbology
                     foreach (DataRow dr in rows)
                     {
                         int index;
-                        if (allRows.TryGetValue (dr, out index))
+                        if (allRows.TryGetValue(dr, out index))
                         {
-                            _drawnStates[_featureList[index]].SchemeCategory = cat;
+                            DrawnStates[FeatureList[index]].SchemeCategory = cat;
                         }
                     }
                 }
             }
+
             foreach (DataTable table in tempList)
             {
                 table.Columns.Remove("FID");
@@ -173,9 +418,18 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Creates a shallow copy
+        /// </summary>
+        /// <returns>Returns a shallow copy of this object.</returns>
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+
+        /// <summary>
         /// If UseChunks is true, this uses the index value combined with the chunk size
         /// to calculate the chunk, and also sets the category to the [0] category and the
-        /// selection state to unselected.  This can be overridden in sub-classes to come up
+        /// selection state to unselected. This can be overridden in sub-classes to come up
         /// with a different default state.
         /// </summary>
         /// <param name="index">The integer index to get the default state of</param>
@@ -184,8 +438,9 @@ namespace DotSpatial.Symbology
         {
             if (_useChunks)
             {
-                return new DrawnState(_scheme.GetCategories().First(), false, index / _chunkSize, true);
+                return new DrawnState(_scheme.GetCategories().First(), false, index / ChunkSize, true);
             }
+
             return new DrawnState(_scheme.GetCategories().First(), false, 0, true);
         }
 
@@ -196,7 +451,7 @@ namespace DotSpatial.Symbology
         /// <returns>An Enumerator for cycling through the values</returns>
         public IEnumerator<IFeature> GetEnumerator()
         {
-            if (_isInitialized == false) DoInitialize();
+            if (!_isInitialized) DoInitialize();
 
             Func<IDrawnState, bool> alwaysTrue = drawnState => true;
             Func<IDrawnState, bool> visConstraint = alwaysTrue; // by default, don't test visibility
@@ -207,36 +462,26 @@ namespace DotSpatial.Symbology
             {
                 visConstraint = drawnState => drawnState.IsVisible == _visible;
             }
+
             if (_useChunks)
             {
                 chunkConstraint = drawnState => drawnState.Chunk == _chunk;
             }
+
             if (_useSelection)
             {
                 selConstraint = drawnState => drawnState.IsSelected == _selected;
             }
+
             if (_useCategory)
             {
                 catConstraint = drawnState => drawnState.SchemeCategory == _category;
             }
 
-            Func<IDrawnState, bool> constraint = drawnState => selConstraint(drawnState)
-                                                               && chunkConstraint(drawnState)
-                                                               && catConstraint(drawnState)
-                                                               && visConstraint(drawnState);
+            Func<IDrawnState, bool> constraint = drawnState => selConstraint(drawnState) && chunkConstraint(drawnState) && catConstraint(drawnState) && visConstraint(drawnState);
 
-            var query =
-                from kvp in _drawnStates
-                where
-                    constraint(kvp.Value)
-                select kvp.Key;
-            query.Count();
+            var query = from kvp in DrawnStates where constraint(kvp.Value) select kvp.Key;
             return query.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         /// <summary>
@@ -248,249 +493,14 @@ namespace DotSpatial.Symbology
             _isInitialized = false;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the scheme category to use
+        /// Gets the enumerstor.
         /// </summary>
-        public IFeatureCategory Category
+        /// <returns>The enumerator</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            get { return _category; }
-            set
-            {
-                if (_category != value) _countIsValid = false;
-                _category = value;
-            }
+            return GetEnumerator();
         }
-
-        /// <summary>
-        /// Gets the integer chunk that the filter should use
-        /// </summary>
-        public int Chunk
-        {
-            get { return _chunk; }
-            set
-            {
-                if (_chunk != value) _countIsValid = false;
-                _chunk = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the integer size of each chunk.  Setting this to
-        /// a new value will cycle through and update the chunk on all
-        /// the features.
-        /// </summary>
-        public int ChunkSize
-        {
-            get { return _chunkSize; }
-            set
-            {
-                if (_chunkSize != value)
-                {
-                    _chunkSize = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// If the drawing state for any features has changed, or else if
-        /// the state of any members has changed, this will cycle through
-        /// the filter members and cache a new count.  If nothing has
-        /// changed, then this will simply return the cached value.
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                if (_countIsValid) return _count;
-                IEnumerator<IFeature> en = GetEnumerator();
-                _count = 0;
-                while (en.MoveNext())
-                {
-                    _count++;
-                }
-                _countIsValid = true;
-                return _count;
-            }
-        }
-
-        /// <summary>
-        /// Gets the default category for the scheme.
-        /// </summary>
-        public IFeatureCategory DefaultCategory
-        {
-            get { return _scheme.GetCategories().First(); }
-        }
-
-        /// <summary>
-        /// Gets the dictionary of drawn states that this drawing filter uses.
-        /// </summary>
-        public IDictionary<IFeature, IDrawnState> DrawnStates
-        {
-            get { return _drawnStates; }
-        }
-
-        /// <summary>
-        /// Gets the underlying list of features that this drawing filter
-        /// is ultimately based upon.
-        /// </summary>
-        public IFeatureList FeatureList
-        {
-            get { return _featureList; }
-        }
-
-        /// <summary>
-        /// If chunks are being used, then this indicates the total count of chunks.
-        /// Otherwise, this returns 1 as everything is effectively in one chunk.
-        /// </summary>
-        public int NumChunks
-        {
-            get
-            {
-                if (_useChunks) return Convert.ToInt32(Math.Ceiling(_featureList.Count / (double)_chunkSize));
-                return 1;
-            }
-        }
-
-        /// <summary>
-        /// If UseSelection is true, this will get or set the boolean selection state
-        /// that will be used to select values.
-        /// </summary>
-        public bool Selected
-        {
-            get { return _selected; }
-            set
-            {
-                if (_selected != value)
-                {
-                    _countIsValid = false;
-                    _selected = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// This uses the feature as the key and attempts to find the specified drawn state
-        /// that describes selection, chunk and category.
-        /// </summary>
-        /// <param name="key">The feature</param>
-        /// <remarks>The strength is that if someone inserts a new member or re-orders
-        /// the features in the featureset, we don't forget which ones are selected.
-        /// The disadvantage is that duplicate features in the same featureset
-        /// will cause an exception.</remarks>
-        /// <returns></returns>
-        public IDrawnState this[IFeature key]
-        {
-            get
-            {
-                if (_isInitialized == false) DoInitialize();
-                if (_drawnStates == null) return null;
-                return _drawnStates[key];
-            }
-            set
-            {
-                if (_isInitialized == false) DoInitialize();
-                // this will cause an exception if _drawnStates is null, but that might be what is needed
-                if (_drawnStates[key] != value) _countIsValid = false;
-                _drawnStates[key] = value;
-            }
-        }
-
-        /// <summary>
-        /// This is less direct as it requires searching two indices rather than one, but
-        /// allows access to the drawn state based on the feature ID.
-        /// </summary>
-        /// <param name="index">The integer index in the underlying featureSet.</param>
-        /// <returns>The current IDrawnState for the current feature.</returns>
-        public IDrawnState this[int index]
-        {
-            get
-            {
-                if (_isInitialized == false) DoInitialize();
-                return _drawnStates[_featureList[index]];
-            }
-            set
-            {
-                if (_isInitialized == false) DoInitialize();
-                if (_drawnStates[_featureList[index]] != value) _countIsValid = false;
-                _drawnStates[_featureList[index]] = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether the filter should subdivide based on category.
-        /// </summary>
-        public bool UseCategory
-        {
-            get { return _useCategory; }
-            set
-            {
-                if (_useCategory != value)
-                {
-                    _countIsValid = false;
-                }
-                _useCategory = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether we should use the chunk
-        /// </summary>
-        public bool UseChunks
-        {
-            get { return _useChunks; }
-            set
-            {
-                if (_useChunks != value) _countIsValid = false;
-                _useChunks = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that indicates whether this filter should use the Selected
-        /// </summary>
-        public bool UseSelection
-        {
-            get { return _useSelection; }
-            set
-            {
-                if (_useSelection != value) _countIsValid = false;
-                _useSelection = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the boolean indicating whether or not this feature should be drawn.
-        /// </summary>
-        public bool UseVisibility
-        {
-            get { return _useVisibility; }
-            set
-            {
-                if (_useVisibility != value) _countIsValid = false;
-                _useVisibility = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that specifies whether to return visible, or hidden features if UseVisibility is true.
-        /// </summary>
-        public bool Visible
-        {
-            get { return _visible; }
-            set
-            {
-                if (_visible != value) _countIsValid = false;
-                _visible = value;
-            }
-        }
-
-        #endregion
-
-        #region Protected Method
 
         /// <summary>
         /// Fires the Initialized Event
@@ -498,41 +508,32 @@ namespace DotSpatial.Symbology
         protected virtual void OnInitialize()
         {
             _isInitialized = true;
-            if (Initialized != null) Initialized(this, EventArgs.Empty);
+            Initialized?.Invoke(this, EventArgs.Empty);
         }
 
-        #endregion
+        private void Configure(IFeatureList features, IFeatureScheme scheme)
+        {
+            FeatureList = features;
+            _scheme = scheme;
 
-        #region Event Handlers
-
-        //void features_FeatureRemoved(object sender, FeatureEventArgs e)
-        //{
-        //    _drawnStates.Remove(e.Feature);
-        //}
-
-        //void features_FeatureAdded(object sender, FeatureEventArgs e)
-        //{
-        //    IDrawnState defaultState = GetDefaultState(_featureList.Count);
-        //    _drawnStates.Add(new KeyValuePair<IFeature, IDrawnState>(e.Feature, defaultState));
-        //}
-
-        #endregion
-
-        #region Private Methods
+            // features.FeatureAdded += new EventHandler<FeatureEventArgs>(features_FeatureAdded);
+            // features.FeatureRemoved += new EventHandler<FeatureEventArgs>(features_FeatureRemoved);
+        }
 
         /// <summary>
         /// This block of code actually cycles through the source features, and assigns a default
-        /// drawing state to each feature.  I thought duplicate features would be less of a problem
+        /// drawing state to each feature. I thought duplicate features would be less of a problem
         /// then people re-ordering an indexed list at some point, so for now we are using
         /// features to index the values.
         /// </summary>
         private void DoInitialize()
         {
-            _drawnStates = new Dictionary<IFeature, IDrawnState>();
-            for (int i = 0; i < _featureList.Count; i++)
+            DrawnStates = new Dictionary<IFeature, IDrawnState>();
+            for (int i = 0; i < FeatureList.Count; i++)
             {
-                _drawnStates.Add(new KeyValuePair<IFeature, IDrawnState>(_featureList[i], GetDefaultState(i)));
+                DrawnStates.Add(new KeyValuePair<IFeature, IDrawnState>(FeatureList[i], GetDefaultState(i)));
             }
+
             OnInitialize();
         }
 

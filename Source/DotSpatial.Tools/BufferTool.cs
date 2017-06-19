@@ -1,18 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.Buffer.cs
-// Description:  Wraps DotSpatial.Feature.Buffer in a tool wrapper for use through the DotSptial toolbox.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/24/2009         |  Cleaned up some unnecessary references using re-sharper
-// KP                 |  9/2009            |  Used IDW as model for Buffer
-// Ping  Yang         |  12/2009           |  Cleaning code and fixing bugs.
-// Dan Ames           |  3/2013            |  Cleaning up header and interface as model for other tools. 
-// *******************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Analysis;
 using DotSpatial.Data;
@@ -22,13 +9,13 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// This tool provides access to buffer functionality native to DotSpatial.Features. 
+    /// This tool provides access to buffer functionality native to DotSpatial.Features.
     /// DotSpatial tools are intended to be used through the DotSpatial toolbox or modeler.
     /// To perform buffer analysis through code, consider using DotSpatial.Feature.Buffer directly.
     /// </summary>
     public class BufferTool : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         // Declare input and output parameter arrays
         private Parameter[] _inputParam;
@@ -36,57 +23,47 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructor
+        #region  Constructors
 
         /// <summary>
-        /// Create a new instance of the buffer tool
+        /// Initializes a new instance of the <see cref="BufferTool"/> class.
         /// </summary>
         public BufferTool()
         {
-            this.Name = TextStrings.Buffer;
-            this.Category = TextStrings.Analysis;
-            this.Description = TextStrings.BufferDescription;
-            this.ToolTip = TextStrings.Bufferwithdistance;
+            Name = TextStrings.Buffer;
+            Category = TextStrings.Analysis;
+            Description = TextStrings.BufferDescription;
+            ToolTip = TextStrings.Bufferwithdistance;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array. 
-        /// Number of parameter and parameter types are defined during initialize. 
+        /// Gets the input paramater array.
+        /// Number of parameter and parameter types are defined during initialize.
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the input paramater array. 
-        /// Number of parameter and parameter types are defined during initialize. 
+        /// Gets the input paramater array.
+        /// Number of parameter and parameter types are defined during initialize.
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured, the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured, the Execute command can be called, it returns true if successful.
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
-            //Get the needed input and output parameters
+            // Get the needed input and output parameters
             IFeatureSet inputFeatures = _inputParam[0].Value as IFeatureSet;
             DoubleParam dp = _inputParam[1] as DoubleParam;
             double bufferDistance = 1;
@@ -94,20 +71,19 @@ namespace DotSpatial.Tools
             {
                 bufferDistance = dp.Value;
             }
+
             IFeatureSet outputFeatures = _outputParam[0].Value as IFeatureSet;
-            
+
             if (Buffer.AddBuffer(inputFeatures, bufferDistance, outputFeatures, cancelProgressHandler))
             {
+                if (outputFeatures == null) return false;
                 outputFeatures.Save();
                 return true;
             }
-            else
-            {
-                _outputParam = null;
-                return false;
-            }
-        }
 
+            _outputParam = null;
+            return false;
+        }
 
         /// <summary>
         /// Inititalize input and output arrays with parameter types and default values.

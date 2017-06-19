@@ -1,21 +1,14 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/9/2009 1:23:02 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.Data;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// Interface for AttributeSource.
+    /// </summary>
     public interface IAttributeSource
     {
         /// <summary>
@@ -39,13 +32,13 @@ namespace DotSpatial.Data
         /// Converts a page of content from a DataTable format, saving it back to the source.
         /// </summary>
         /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table)</param>
-        /// <param name="pageValues">The DataTable representing the rows to set.  If the row count is larger than the dataset, this will add the rows instead.</param>
+        /// <param name="pageValues">The DataTable representing the rows to set. If the row count is larger than the dataset, this will add the rows instead.</param>
         void SetAttributes(int startIndex, DataTable pageValues);
 
         /// <summary>
-        /// The number of rows
+        /// Gets the number of rows.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The number of rows.</returns>
         int NumRows();
 
         /// <summary>
@@ -56,9 +49,10 @@ namespace DotSpatial.Data
         DataColumn GetColumn(string name);
 
         /// <summary>
-        /// Gets a copy of the fields used to build the data structure.  This is useful for learning
+        /// Gets a copy of the fields used to build the data structure. This is useful for learning
         /// about the existing fields, but doesn't allow direct changes to the underlying data structure.
         /// </summary>
+        /// <returns>The columns.</returns>
         DataColumn[] GetColumns();
 
         /// <summary>
@@ -92,7 +86,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="expressions">The array of string expressions to test</param>
         /// <param name="progressHandler">The progress handler that might also instruct this step to be canceled.</param>
-        /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts.  If this is negative, it will not be used.</param>
+        /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts. If this is negative, it will not be used.</param>
         /// <returns>An array of integer counts of the members that match the expression</returns>
         int[] GetCounts(string[] expressions, ICancelProgressHandler progressHandler, int maxSampleSize);
     }

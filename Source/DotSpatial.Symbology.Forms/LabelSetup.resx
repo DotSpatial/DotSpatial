@@ -685,7 +685,7 @@
     <value>Prevent Collisions</value>
   </data>
   <data name="chkPreventCollision.ToolTip" xml:space="preserve">
-    <value>If this is not checked, high priority labels will be drawn over low priority labels.  If it is checked only the higher priority label of two overlapping labels will be placed.</value>
+    <value>If this is not checked, high priority labels will be drawn over low priority labels. If it is checked only the higher priority label of two overlapping labels will be placed.</value>
   </data>
   <data name="&gt;&gt;chkPreventCollision.Name" xml:space="preserve">
     <value>chkPreventCollision</value>
@@ -739,7 +739,7 @@
     <value>4</value>
   </data>
   <data name="cmbPriorityField.ToolTip" xml:space="preserve">
-    <value>By default, the FID is used to prioritize labels.  This allows values from a field to be used instead.</value>
+    <value>By default, the FID is used to prioritize labels. This allows values from a field to be used instead.</value>
   </data>
   <data name="&gt;&gt;cmbPriorityField.Name" xml:space="preserve">
     <value>cmbPriorityField</value>
@@ -2272,7 +2272,7 @@
     <value>0</value>
   </data>
   <data name="lblHelp.Text" xml:space="preserve">
-    <value>Each symbol group can have many members.  Use the Members page to add or remove members manually, or based on a field characteristics.  If no members appear in the Ungrouped list, you should first remove the labels from an existing group.</value>
+    <value>Each symbol group can have many members. Use the Members page to add or remove members manually, or based on a field characteristics. If no members appear in the Ungrouped list, you should first remove the labels from an existing group.</value>
   </data>
   <data name="lblHelp.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

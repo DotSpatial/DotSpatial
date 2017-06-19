@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 9/27/2009 9:32:38 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -20,38 +10,29 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class StatisticalEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private Statistics _stats;
+        #region Fields
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of StatisticalEventArgs
+        /// Initializes a new instance of the <see cref="StatisticalEventArgs"/> class.
         /// </summary>
+        /// <param name="statistics">The statistics of this event.</param>
         public StatisticalEventArgs(Statistics statistics)
         {
-            _stats = statistics;
+            Statistics = statistics;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the set of statistics related to this event.
+        /// Gets or sets the set of statistics related to this event.
         /// </summary>
-        public Statistics Statistics
-        {
-            get { return _stats; }
-            protected set { _stats = value; }
-        }
+        public Statistics Statistics { get; protected set; }
 
         #endregion
     }

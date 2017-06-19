@@ -1,16 +1,5 @@
-﻿﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Initial Developer of this Original Code is  Peter Hammond/Jia Liang Liu
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name                        |   Date             |         Comments
-//-----------------------------|--------------------|-----------------------------------------------
-// Peter Hammond/Jia Liang Liu |  02/20/2010        |  a map control that can be panned infinite horizentally 
-//                             |                    |  and crosses dateline
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -21,36 +10,62 @@ namespace DotSpatial.Controls
 {
     /// <summary>
     /// Based on Ted's original idea in https://dotspatial.codeplex.com/discussions/232535 discussion thread,
-    /// a second frame is added to complement the main frame to handle dateline crossing. 
-    /// First the main frame is normalized so that its left edge is in range [-180..180] and its width is bound to 360 but 
-    /// retain its aspect ratio.
+    /// a second frame is added to complement the main frame to handle dateline crossing.
+    /// First the main frame is normalized so that its left edge is in range [-180..180] and its width is bound to 360 but retains its aspect ratio.
     /// After the normalization, if main frame's right edge > 180 which indicates dateline crossing, then the main frame is clipped
     /// to 180 degrees, and the secondary frame takes over, shifted to -180 degrees to the required width.
     /// </summary>
     /// <remarks>Dateline crossing map works correctly only with WGS84 datum Mercator projection.</remarks>
     public class DatelineCrossingMap : Map
     {
+        #region Fields
+
         private readonly MapFrame _geoSlaveMapFrame;
         private bool _viewExtentsBeingChanged;
 
-        public IMapFrame SecondaryMapFrame
-        {
-            get { return _geoSlaveMapFrame; }
-        }
+        #endregion
 
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatelineCrossingMap"/> class.
+        /// </summary>
         public DatelineCrossingMap()
         {
-            _geoSlaveMapFrame = new MapFrame(this, new Extent(0, 0, 0, 0));
+            _geoSlaveMapFrame = new MapFrame(this, new Extent(0, 0, 0, 0))
+                                {
+                                    Layers = MapFrame.Layers
+                                }; // give the slave frame something to draw.
 
-            // give the slave frame something to draw.
-            _geoSlaveMapFrame.Layers = MapFrame.Layers;
-            // Changing layers causes a resize event to be fired. If that event reaches the slave frame after the main frame, 
-            // then it can get misaligned. So, re-assign the layers to the main frame, causing the main frame to re-register its event handlers so that the main frame resize happens second. 
+            // Changing layers causes a resize event to be fired. If that event reaches the slave frame after the main frame, then it can get misaligned.
+            // So, re-assign the layers to the main frame, causing the main frame to re-register its event handlers so that the main frame resize happens second.
             // Note that the fact that events are fired in order is an implementation detail of C#; if that changes, we might get misaligned frames after adding layers.
             MapFrame.Layers = MapFrame.Layers;
             _viewExtentsBeingChanged = false;
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the map frame that is used to show the second part of the map.
+        /// </summary>
+        public IMapFrame SecondaryMapFrame
+        {
+            get
+            {
+                return _geoSlaveMapFrame;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Clips the view extents so each map frame shows what it is supposed to.
+        /// </summary>
         public void ClipViewExtents()
         {
             MapFrame.ViewExtents = MapFrame.ViewExtents.Normalised();
@@ -58,30 +73,15 @@ namespace DotSpatial.Controls
             if (MapFrame.ViewExtents.IsCrossDateline())
             {
                 double minx = MapFrame.ViewExtents.X - 360.0;
-                _geoSlaveMapFrame.ViewExtents = new Extent(minx, MapFrame.ViewExtents.MinY,
-                    minx + MapFrame.ViewExtents.Width, MapFrame.ViewExtents.MaxY);
-                var visible_slave_width = _geoSlaveMapFrame.ViewExtents.MaxX - (-180);
-                int slave_screen_width =
-                    Convert.ToInt32((double) Width*visible_slave_width/_geoSlaveMapFrame.ViewExtents.Width);
-                ((MapFrame) MapFrame).ClipRectangle = new Rectangle(0, 0, Width - slave_screen_width, Height);
-                _geoSlaveMapFrame.ClipRectangle = new Rectangle(Width - slave_screen_width, 0, slave_screen_width,
-                    Height);
+                _geoSlaveMapFrame.ViewExtents = new Extent(minx, MapFrame.ViewExtents.MinY, minx + MapFrame.ViewExtents.Width, MapFrame.ViewExtents.MaxY);
+                var visibleSlaveWidth = _geoSlaveMapFrame.ViewExtents.MaxX - -180;
+                int slaveScreenWidth = Convert.ToInt32(Width * visibleSlaveWidth / _geoSlaveMapFrame.ViewExtents.Width);
+                ((MapFrame)MapFrame).ClipRectangle = new Rectangle(0, 0, Width - slaveScreenWidth, Height);
+                _geoSlaveMapFrame.ClipRectangle = new Rectangle(Width - slaveScreenWidth, 0, slaveScreenWidth, Height);
             }
         }
 
         /// <inheritdoc />
-        protected override void OnViewExtentsChanged(object sender, ExtentArgs args)
-        {
-            if (!_viewExtentsBeingChanged)
-            {
-                _viewExtentsBeingChanged = true;
-                ClipViewExtents();
-                base.OnViewExtentsChanged(sender, args);
-                _viewExtentsBeingChanged = false;
-                Invalidate();
-            }
-        }
-
         protected override void Draw(Graphics g, PaintEventArgs e)
         {
             if (!MapFrame.ViewExtents.IsCrossDateline())
@@ -112,73 +112,37 @@ namespace DotSpatial.Controls
             base.OnIncludeMapFrame(mapFrame);
         }
 
+        /// <inheritdoc />
+        protected override void OnViewExtentsChanged(object sender, ExtentArgs args)
+        {
+            if (!_viewExtentsBeingChanged)
+            {
+                _viewExtentsBeingChanged = true;
+                ClipViewExtents();
+                base.OnViewExtentsChanged(sender, args);
+                _viewExtentsBeingChanged = false;
+                Invalidate();
+            }
+        }
+
         private void MapFrameViewChanged(object sender, ViewChangedEventArgs e)
         {
-            int x_diff = e.NewView.X - e.OldView.X;
-            int y_diff = e.NewView.Y - e.OldView.Y;
-            int w_diff = e.NewView.Width - e.OldView.Width;
-            int h_diff = e.NewView.Height - e.OldView.Height;
-            Rectangle curr_view = _geoSlaveMapFrame.View;
-            _geoSlaveMapFrame.View = new Rectangle(curr_view.X + x_diff, curr_view.Y + y_diff,
-                curr_view.Width + w_diff, curr_view.Height + h_diff);
+            int xDiff = e.NewView.X - e.OldView.X;
+            int yDiff = e.NewView.Y - e.OldView.Y;
+            int wDiff = e.NewView.Width - e.OldView.Width;
+            int hDiff = e.NewView.Height - e.OldView.Height;
+            Rectangle currView = _geoSlaveMapFrame.View;
+            _geoSlaveMapFrame.View = new Rectangle(currView.X + xDiff, currView.Y + yDiff, currView.Width + wDiff, currView.Height + hDiff);
 
             // clip rectangles needs to move in opposite direction of view
-            Rectangle curr_slaveClipRectangle = _geoSlaveMapFrame.ClipRectangle;
-            _geoSlaveMapFrame.ClipRectangle = new Rectangle(curr_slaveClipRectangle.X - x_diff,
-                curr_slaveClipRectangle.Y - y_diff,
-                curr_slaveClipRectangle.Width - w_diff, curr_slaveClipRectangle.Height - h_diff);
+            Rectangle currSlaveClipRect = _geoSlaveMapFrame.ClipRectangle;
+            _geoSlaveMapFrame.ClipRectangle = new Rectangle(currSlaveClipRect.X - xDiff, currSlaveClipRect.Y - yDiff, currSlaveClipRect.Width - wDiff, currSlaveClipRect.Height - hDiff);
 
             var mf = (MapFrame)MapFrame;
-            Rectangle curr_masterClipRectangle = mf.ClipRectangle;
-            mf.ClipRectangle = new Rectangle(curr_masterClipRectangle.X - x_diff, curr_masterClipRectangle.Y - y_diff,
-                curr_masterClipRectangle.Width - w_diff, curr_masterClipRectangle.Height - h_diff);
-        }
-    }
-
-    /// <summary>
-    /// Extension of Extent class to deal with dateline crossing
-    /// </summary>
-    public static class DatelineCrossingExtentExtension
-    {
-        // Modifies the extent such that its left edge is normalised into the range [-180..180] degrees. 
-        // It width remains constant unless it was originally greater than 360 degrees, 
-        // in which case it is scaled to 360 degrees with and retains its aspect ratio.
-        public static Extent Normalised(this Extent extent)
-        {
-            var new_extent = (Extent)extent.Clone();
-            if (new_extent.Width > 360.0)
-            {
-                const double new_width = 360.0;
-                double new_height = new_extent.Height * new_width / new_extent.Width;
-                double x_offset = (new_extent.Width - new_width) / 2.0;
-                double y_offset = (new_extent.Height - new_height) / 2.0;
-                new_extent.Width = new_width;
-                new_extent.Height = new_height;
-                new_extent.X += x_offset;
-                new_extent.Y -= y_offset; // pinned to top left.
-            }
-
-            while (new_extent.X < -180)
-            {
-                double x = new_extent.X + 360.0;
-                if (x == new_extent.X)
-                    throw new ArgumentException("Extent.X is too large for degrees to be significant");
-                new_extent.X = x;
-            }
-
-            while (new_extent.X > 180)
-            {
-                double x = new_extent.X - 360.0;
-                if (x == new_extent.X)
-                    throw new ArgumentException("Extent.X is too large for degrees to be significant");
-                new_extent.X = x;
-            }
-            return new_extent;
+            Rectangle currMasterClipRect = mf.ClipRectangle;
+            mf.ClipRectangle = new Rectangle(currMasterClipRect.X - xDiff, currMasterClipRect.Y - yDiff, currMasterClipRect.Width - wDiff, currMasterClipRect.Height - hDiff);
         }
 
-        public static bool IsCrossDateline(this Extent extent)
-        {
-            return extent.MaxX > 180.0;
-        }
+        #endregion
     }
 }

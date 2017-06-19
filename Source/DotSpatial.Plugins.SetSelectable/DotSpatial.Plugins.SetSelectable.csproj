@@ -25,6 +25,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\Debug\Plugins\DotSpatial.Plugins.SetSelectable\DotSpatial.Plugins.SetSelectable.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +35,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Release\DotSpatial.Plugins.SetSelectable.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,12 +53,13 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DGV_Select.cs">
+    <Compile Include="DgvSelect.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DGV_Select.Designer.cs">
-      <DependentUpon>DGV_Select.cs</DependentUpon>
+    <Compile Include="DgvSelect.Designer.cs">
+      <DependentUpon>DgvSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="LayerSelection.cs" />
     <Compile Include="LocalizationStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -69,11 +74,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DGV_Select.de-DE.resx">
-      <DependentUpon>DGV_Select.cs</DependentUpon>
+    <EmbeddedResource Include="DgvSelect.de-DE.resx">
+      <DependentUpon>DgvSelect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DGV_Select.resx">
-      <DependentUpon>DGV_Select.cs</DependentUpon>
+    <EmbeddedResource Include="DgvSelect.resx">
+      <DependentUpon>DgvSelect.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LocalizationStrings.de-DE.resx" />
     <EmbeddedResource Include="LocalizationStrings.resx">
@@ -86,7 +92,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Resources\checkall.png" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +129,11 @@
       <Name>DotSpatial.Symbology</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

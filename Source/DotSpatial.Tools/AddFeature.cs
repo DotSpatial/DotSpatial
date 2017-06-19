@@ -1,17 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.AddFeature.cs
-// Description:  A tool for adding a feature to a featureset.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for AddFeature
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -25,7 +13,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class AddFeature : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -33,65 +21,49 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the AddFeature class.
+        /// Initializes a new instance of the <see cref="AddFeature"/> class.
         /// </summary>
         public AddFeature()
         {
-            this.Name = TextStrings.AddFeature;
-            this.Category = TextStrings.VectorOverlay;
-            this.Description = TextStrings.AddFeatureDescription;
-            this.ToolTip = TextStrings.AddFeatureintheFeatureSet;
+            Name = TextStrings.AddFeature;
+            Category = TextStrings.VectorOverlay;
+            Description = TextStrings.AddFeatureDescription;
+            ToolTip = TextStrings.AddFeatureintheFeatureSet;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True if executed successfully</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;
-            if (input1 != null)
-            {
-                input1.FillAttributes();
-            }
+            input1?.FillAttributes();
 
             IFeatureSet input2 = _inputParam[1].Value as IFeatureSet;
-            if (input2 != null)
-            {
-                input2.FillAttributes();
-            }
+            input2?.FillAttributes();
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
@@ -99,16 +71,14 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the add features Opaeration tool programaticaly.
-        /// Ping deleted "static" for external Testing
+        /// Executes the add features Opaeration tool programmatically.
         /// </summary>
         /// <param name="input1">The input FeatureSet.</param>
         /// <param name="input2">The input2 featureSet which has the new features to add.</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns></returns>
-        public bool Execute(
-            IFeatureSet input1, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
+        /// <returns>True, if executed successfully.</returns>
+        public bool Execute(IFeatureSet input1, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input1 == null || input2 == null || output == null)
@@ -151,13 +121,11 @@ namespace DotSpatial.Tools
             }
 
             output.SaveAs(output.Filename, true);
-
-            // cancelProgressHandler.Progress("", 100, 100.ToString() + TextStrings.progresscompleted);
             return true;
         }
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

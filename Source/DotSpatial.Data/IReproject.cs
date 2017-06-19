@@ -1,28 +1,19 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-// The Initial Developer of this Original Code is Ted Dunsford.  Created 11/25/2010 8:55 AM
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using DotSpatial.Projections;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// This interface supports the basic Reprojection content.  CanReproject tests to see if the
-    /// DotSpatial.Projections library exists and will return false if it does not exist.  In
+    /// This interface supports the basic Reprojection content. CanReproject tests to see if the
+    /// DotSpatial.Projections library exists and will return false if it does not exist. In
     /// such a case the
     /// </summary>
     public interface IReproject
     {
         /// <summary>
-        /// Gets a value indicating whether the DotSpatial.Projections assembly is loaded.  If
+        /// Gets a value indicating whether the DotSpatial.Projections assembly is loaded. If
         /// not, this returns false, and neither ProjectionInfo nor the Reproject() method should
         /// be used.
         /// </summary>
@@ -35,8 +26,8 @@ namespace DotSpatial.Data
         ProjectionInfo Projection { get; set; }
 
         /// <summary>
-        /// Gets or sets the proj4 string for this dataset.  This exists in
-        /// case the Projections library is not loaded.  If the projection
+        /// Gets or sets the proj4 string for this dataset. This exists in
+        /// case the Projections library is not loaded. If the projection
         /// library is loaded, this also updates the Projection property.
         /// Setting this behaves like defining the projection and will not
         /// reproject the values.

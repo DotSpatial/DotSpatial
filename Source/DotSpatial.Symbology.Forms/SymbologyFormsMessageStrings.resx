@@ -229,13 +229,13 @@
     <value>rows</value>
   </data>
   <data name="LabelSetup_Help1" xml:space="preserve">
-    <value>Each symbol group can define a separate string expression that includes attribute values.  Double click fields to add it to the expression.</value>
+    <value>Each symbol group can define a separate string expression that includes attribute values. Double click fields to add it to the expression.</value>
   </data>
   <data name="LabelSetup_Help2" xml:space="preserve">
     <value>Use the Members tab to design a filter expression that restricts which features will be assigned to a specific label.</value>
   </data>
   <data name="LabelSetup_Help3" xml:space="preserve">
-    <value>Use the Expression Tab to design the text that should appear in a label.  Fields indicated with brackets will be substituted with real values.</value>
+    <value>Use the Expression Tab to design the text that should appear in a label. Fields indicated with brackets will be substituted with real values.</value>
   </data>
   <data name="LabelSetup_Help4" xml:space="preserve">
     <value>Each group can specify its own basic design characteristics.</value>
@@ -299,5 +299,50 @@
   </data>
   <data name="DetailedPolygonSymbolControl_CenterColor" xml:space="preserve">
     <value>Center Color</value>
+  </data>
+  <data name="ExportFeature_ExtensionNotSupported" xml:space="preserve">
+    <value>The path you entered does not have an extension that matches a supported format. Please check the filename to ensure that it has a supported extension like .shp and try again.</value>
+  </data>
+  <data name="ExportFeature_InvalidFileFormat" xml:space="preserve">
+    <value>Invalid file format</value>
+  </data>
+  <data name="SelectByAttributes_ErrorWhileAttemptingToApplyExpression" xml:space="preserve">
+    <value>There was an error attempting to apply this expression.</value>
+  </data>
+  <data name="ChangeScaleMode" xml:space="preserve">
+    <value>Change Scale Mode?</value>
+  </data>
+  <data name="ForceDrawingToUseGeographicScaleMode" xml:space="preserve">
+    <value>Choosing this option will force the drawing to use a Geographic scale mode. Do you wish to continue?</value>
+  </data>
+  <data name="ForceDrawingToUseSymbolicScaleMode" xml:space="preserve">
+    <value>Chosing this option will force the drawing to use a Symbolic scale mode. Do you wish to continue?</value>
+  </data>
+  <data name="JoinDialog_SelectExcelFile" xml:space="preserve">
+    <value>Select an excel file first.</value>
+  </data>
+  <data name="JoinDialog_SelectLocalField" xml:space="preserve">
+    <value>Choose a local field to join on first.</value>
+  </data>
+  <data name="JoinDialog_SelectForeignField" xml:space="preserve">
+    <value>Choose a foreign field to join on first.</value>
+  </data>
+  <data name="JoinDialog_SelectOutputFile" xml:space="preserve">
+    <value>Select an output file first.</value>
+  </data>
+  <data name="LayerDialog_InvalidExpressionProvided" xml:space="preserve">
+    <value>The expression you provided for one of the rows is not valid. Try revising the expression to look like '[FieldId] &gt;= Value'</value>
+  </data>
+  <data name="CalculatorUserGuide_RichTextboxText" xml:space="preserve">
+    <value>
+1) always use double click on the Fields or Function or Operation in order to add them to the Expression. When you click, it will put spaces in front and back automatically( ).
+
+2) use space to use constant or number ex. _3_  or  (_3_*_4_)_-_2  
+
+3) Make sure to close the backets when using functions.
+
+eg. Abs(-222.34 )
+or  3 * pow(Area, 2 )  this is equal to 3*pow(Area, 2)
+</value>
   </data>
 </root>

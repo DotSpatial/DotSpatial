@@ -1,34 +1,46 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
+using DotSpatial.Plugins.SpatiaLite.Properties;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
-    public partial class frmQuery : Form
+    /// <summary>
+    /// The window can be used to query SpatiaLite databases.
+    /// </summary>
+    public partial class FrmQuery : Form
     {
-        private string connString;
-        private IMap mainMap;
-        private IFeatureSet queryResult;
+        private readonly string _connString;
+        private readonly IMap _mainMap;
+        private IFeatureSet _queryResult;
 
-        public frmQuery(string dbConnection, IMap map)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FrmQuery"/> class.
+        /// </summary>
+        /// <param name="dbConnection">The connectionstring for the SpatiaLite database.</param>
+        /// <param name="map">The map layers get added to.</param>
+        public FrmQuery(string dbConnection, IMap map)
         {
             InitializeComponent();
 
-            connString = dbConnection;
-            mainMap = map;
+            _connString = dbConnection;
+            _mainMap = map;
 
             SpatiaLiteHelper slh = new SpatiaLiteHelper();
             List<GeometryColumnInfo> geometryColumnList = slh.GetGeometryColumns(dbConnection);
 
-            //get names of tables
-            List<string> tableNameList = slh.GetTableNames(connString);
+            // get names of tables
+            List<string> tableNameList = slh.GetTableNames(_connString);
             foreach (string tableName in tableNameList)
             {
                 try
                 {
-                    List<string> colNames = slh.GetColumnNames(connString, tableName);
+                    List<string> colNames = slh.GetColumnNames(_connString, tableName);
                     TreeNode nTableName = treeTables.Nodes.Add(tableName);
                     foreach (string cn in colNames)
                     {
@@ -39,44 +51,26 @@ namespace DotSpatial.Plugins.SpatiaLite
             }
         }
 
-        //when clicking "OK"
-        private void btnOK_Click(object sender, EventArgs e)
+        // when clicking "OK"
+        private void BtnOkClick(object sender, EventArgs e)
         {
-            queryResult = null;
+            _queryResult = null;
             SpatiaLiteHelper slh = new SpatiaLiteHelper();
-            queryResult = slh.ReadFeatureSet(connString, txtQuery.Text);
+            _queryResult = slh.ReadFeatureSet(_connString, txtQuery.Text);
 
-            dgQueryResult.DataSource = queryResult.DataTable;
-
-            //SpatiaLiteHelper slh = new SpatiaLiteHelper();
-
-            //foreach (DataGridViewRow r in dgGeometryColumns.Rows)
-            //{
-            //    if (r.Selected)
-            //    {
-            //        GeometryColumnInfo item = r.DataBoundItem as GeometryColumnInfo;
-            //        if (item != null)
-            //        {
-            //            IFeatureSet fs = slh.ReadFeatureSet(connString, item);
-
-            //            IMapFeatureLayer lay = mainMap.Layers.Add(fs);
-            //            //lay.EditMode = false;
-
-            //        }
-            //    }
-            //}
+            dgQueryResult.DataSource = _queryResult.DataTable;
         }
 
-        private void btnAddToMap_Click(object sender, EventArgs e)
+        private void BtnAddToMapClick(object sender, EventArgs e)
         {
-            if (queryResult == null)
+            if (_queryResult == null)
             {
-                MessageBox.Show("No valid query result found. Please re-run the query.");
+                MessageBox.Show(Resources.NoValidQueryResultFound);
                 return;
             }
 
-            queryResult.Name = "Query 1";
-            mainMap.Layers.Add(queryResult);
+            _queryResult.Name = "Query 1";
+            _mainMap.Layers.Add(_queryResult);
         }
     }
 }

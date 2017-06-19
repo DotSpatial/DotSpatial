@@ -565,7 +565,7 @@
     <value>12</value>
   </data>
   <data name="dgvStatistics.ToolTip" xml:space="preserve">
-    <value>Describes the summary statistics for the values in the field.  This may only be a representative sample.</value>
+    <value>Describes the summary statistics for the values in the field. This may only be a representative sample.</value>
   </data>
   <data name="&gt;&gt;dgvStatistics.Name" xml:space="preserve">
     <value>dgvStatistics</value>

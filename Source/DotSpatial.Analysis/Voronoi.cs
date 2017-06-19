@@ -1,26 +1,15 @@
-// *******************************************************************************************************
-// Product: DotSpatial.Analysis.Voroni.cs
-// Description: Creates a delaunay tesselation where each point is effectively converted into triangles.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/26/2009         |  Initially written.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  6/30/2010         |  Moved to DotSpatial.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Dan Ames           |  3/2013            |  Updated and standarded licence and header info.  
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
+
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
 using DotSpatial.NTSExtension.Voronoi;
+
 using GeoAPI.Geometries;
+
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis
@@ -30,6 +19,8 @@ namespace DotSpatial.Analysis
     /// </summary>
     public static class Voronoi
     {
+        #region Methods
+
         /// <summary>
         /// The Voronoi Graph calculation creates a delaunay tesselation where
         /// each point is effectively converted into triangles.
@@ -45,9 +36,10 @@ namespace DotSpatial.Analysis
             {
                 Coordinate c1 = edge.RightData.ToCoordinate();
                 Coordinate c2 = edge.LeftData.ToCoordinate();
-                LineString ls = new LineString(new [] { c1, c2 });
+                LineString ls = new LineString(new[] { c1, c2 });
                 result.AddFeature(ls);
             }
+
             return result;
         }
 
@@ -68,9 +60,10 @@ namespace DotSpatial.Analysis
             {
                 Coordinate c1 = edge.VVertexA.ToCoordinate();
                 Coordinate c2 = edge.VVertexB.ToCoordinate();
-                LineString ls = new LineString(new [] { c1, c2 });
+                LineString ls = new LineString(new[] { c1, c2 });
                 result.AddFeature(ls);
             }
+
             return result;
         }
 
@@ -119,8 +112,10 @@ namespace DotSpatial.Analysis
                     {
                         continue;
                     }
+
                     myEdges.Add(edge);
                 }
+
                 List<Coordinate> coords = new List<Coordinate>();
                 VoronoiEdge firstEdge = myEdges[0];
                 coords.Add(firstEdge.VVertexA.ToCoordinate());
@@ -170,6 +165,7 @@ namespace DotSpatial.Analysis
                         }
                     }
                 }
+
                 for (int j = 0; j < coords.Count; j++)
                 {
                     Coordinate cA = coords[j];
@@ -190,6 +186,7 @@ namespace DotSpatial.Analysis
                         }
                     }
                 }
+
                 foreach (Coordinate coord in coords)
                 {
                     if (double.IsNaN(coord.X) || double.IsNaN(coord.Y))
@@ -197,6 +194,7 @@ namespace DotSpatial.Analysis
                         coords.Remove(coord);
                     }
                 }
+
                 if (coords.Count <= 2)
                 {
                     continue;
@@ -228,7 +226,6 @@ namespace DotSpatial.Analysis
                     f.CopyAttributes(points.Features[i]);
                 }
             }
-            return;
         }
 
         /// <summary>
@@ -253,8 +250,7 @@ namespace DotSpatial.Analysis
                     continue;
                 }
 
-                boundSegments.Add(
-                    new LineString(new [] { edge.VVertexA.ToCoordinate(), edge.VVertexB.ToCoordinate() }));
+                boundSegments.Add(new LineString(new[] { edge.VVertexA.ToCoordinate(), edge.VVertexB.ToCoordinate() }));
             }
 
             // calculate a length to extend a ray to look for intersections
@@ -262,14 +258,12 @@ namespace DotSpatial.Analysis
             double h = env.Height;
             double w = env.Width;
             double len = Math.Sqrt((w * w) + (h * h));
-            // len is now long enough to pass entirely through the dataset no matter where it starts
 
+            // len is now long enough to pass entirely through the dataset no matter where it starts
             foreach (VoronoiEdge edge in unboundEdges)
             {
                 // the unbound line passes thorugh start
-                Coordinate start = (edge.VVertexB.ContainsNan())
-                                       ? edge.VVertexA.ToCoordinate()
-                                       : edge.VVertexB.ToCoordinate();
+                Coordinate start = edge.VVertexB.ContainsNan() ? edge.VVertexA.ToCoordinate() : edge.VVertexB.ToCoordinate();
 
                 // the unbound line should have a direction normal to the line joining the left and right source points
                 double dx = edge.LeftData.X - edge.RightData.X;
@@ -297,7 +291,7 @@ namespace DotSpatial.Analysis
 
                 if (edge.VVertexA.ContainsNan())
                 {
-                    edge.VVertexA = new Vector2(end.X,end.Y);
+                    edge.VVertexA = new Vector2(end.X, end.Y);
                 }
                 else
                 {
@@ -305,5 +299,7 @@ namespace DotSpatial.Analysis
                 }
             }
         }
+
+        #endregion
     }
 }

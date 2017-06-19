@@ -87,7 +87,7 @@ namespace DotSpatial.Positioning.Forms
         private readonly ColorInterpolator _outlineExcellent = new ColorInterpolator(Color.Gray, Color.LightGreen, 10);
 
         //// Defines a 5-pointed star shape
-        //private PolarCoordinate[] StarShape = new PolarCoordinate[] {
+        // private PolarCoordinate[] StarShape = new PolarCoordinate[] {
         //    new PolarCoordinate(0, Angle.Empty),
 
         // private object RenderSyncLock = new object();
@@ -327,7 +327,7 @@ namespace DotSpatial.Positioning.Forms
             if (DesignMode)
             {
                 // TODO: Random satellites
-                //pSatellites = SatelliteCollection.Random(45);
+                // pSatellites = SatelliteCollection.Random(45);
             }
             else if (_isUsingRealTimeData)
                 _satellites = Devices.Satellites;
@@ -350,7 +350,7 @@ namespace DotSpatial.Positioning.Forms
 #if PocketPC
                 if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 {
-                    //SatellitesToRender = SatelliteCollection.Random(45);
+                    // SatellitesToRender = SatelliteCollection.Random(45);
                 }
                 else
                 {
@@ -1012,7 +1012,7 @@ namespace DotSpatial.Positioning.Forms
         {
             if (_isUsingRealTimeData)
             {
-                //TODO should this be done here or assigned from a user defined handler for the event?
+                // TODO should this be done here or assigned from a user defined handler for the event?
                 Satellites = (List<Satellite>)e.Satellites;
                 InvokeRepaint();
             }

@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="PackageManager.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
@@ -16,16 +13,21 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class PackageManager
     {
+        #region Methods
+
         /// <summary>
-        /// Marks the package for removal.
+        /// Ensures the extension is deactivated.
         /// </summary>
-        /// <param name="appManager">The app manager.</param>
-        /// <param name="path">The path.</param>
-        public static void MarkPackageForRemoval(this AppManager appManager, string path)
+        /// <param name="appManager">The AppManager.</param>
+        /// <param name="extensionName">Name of the extension.</param>
+        /// <returns>The extension.</returns>
+        public static IExtension EnsureDeactivated(this AppManager appManager, string extensionName)
         {
-            // Add it to a list to be delete on application restart.
-            Settings.Default.PackagesToRemove.Add(Path.Combine(AppManager.PackageDirectory, path));
-            Settings.Default.Save();
+            var ext = appManager.GetExtension(extensionName);
+            if (ext != null && ext.IsActive)
+                ext.Deactivate();
+
+            return ext;
         }
 
         /// <summary>
@@ -41,18 +43,68 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Ensures the extension is deactivated.
+        /// Marks the package for removal.
         /// </summary>
-        /// <param name="appManager">The AppManager.</param>
-        /// <param name="extensionName">Name of the extension.</param>
-        /// <returns></returns>
-        public static IExtension EnsureDeactivated(this AppManager appManager, string extensionName)
+        /// <param name="appManager">The app manager.</param>
+        /// <param name="path">The path.</param>
+        public static void MarkPackageForRemoval(this AppManager appManager, string path)
         {
-            var ext = appManager.GetExtension(extensionName);
-            if (ext != null && ext.IsActive)
-                ext.Deactivate();
+            // Add it to a list to be delete on application restart.
+            Settings.Default.PackagesToRemove.Add(Path.Combine(AppManager.PackageDirectory, path));
+            Settings.Default.Save();
+        }
 
-            return ext;
+        /// <summary>
+        /// Deletes everything in the DotSpatial.Controls.AppManager.AbsolutePathToExtensions folder.
+        /// </summary>
+        public static void TryDeleteAllPackages()
+        {
+            if (Directory.Exists(AppManager.AbsolutePathToExtensions))
+            {
+                try
+                {
+                    DeleteDirectory(AppManager.AbsolutePathToExtensions);
+                }
+                catch (ArgumentException)
+                {
+                }
+                catch (DirectoryNotFoundException)
+                {
+                }
+                catch (IOException)
+                {
+                }
+                catch (NotSupportedException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deletes the directory and any files, recursively.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        internal static void DeleteDirectory(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            string[] dirs = Directory.GetDirectories(path);
+
+            foreach (string file in files)
+            {
+                // Prevent errors caused by readonly files.
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+
+            Directory.Delete(path, false);
         }
 
         /// <summary>
@@ -86,11 +138,21 @@ namespace DotSpatial.Controls
             {
                 DeleteDirectory(path);
             }
-            catch (ArgumentException) { }
-            catch (DirectoryNotFoundException) { }
-            catch (IOException) { }
-            catch (NotSupportedException) { }
-            catch (UnauthorizedAccessException) { }
+            catch (ArgumentException)
+            {
+            }
+            catch (DirectoryNotFoundException)
+            {
+            }
+            catch (IOException)
+            {
+            }
+            catch (NotSupportedException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
         }
 
         private static void TryDeleteFile(string path)
@@ -101,54 +163,23 @@ namespace DotSpatial.Controls
                 File.SetAttributes(path, FileAttributes.Normal);
                 File.Delete(path);
             }
-            catch (ArgumentException) { }
-            catch (DirectoryNotFoundException) { }
-            catch (IOException) { }
-            catch (NotSupportedException) { }
-            catch (UnauthorizedAccessException) { }
-        }
-
-        /// <summary>
-        /// Deletes everything in the DotSpatial.Controls.AppManager.AbsolutePathToExtensions folder.
-        /// </summary>
-        public static void TryDeleteAllPackages()
-        {
-            if (Directory.Exists(AppManager.AbsolutePathToExtensions))
+            catch (ArgumentException)
             {
-                try
-                {
-                    DeleteDirectory(AppManager.AbsolutePathToExtensions);
-                }
-                catch (ArgumentException) { }
-                catch (DirectoryNotFoundException) { }
-                catch (IOException) { }
-                catch (NotSupportedException) { }
-                catch (UnauthorizedAccessException) { }
+            }
+            catch (DirectoryNotFoundException)
+            {
+            }
+            catch (IOException)
+            {
+            }
+            catch (NotSupportedException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
             }
         }
 
-        /// <summary>
-        /// Deletes the directory and any files, recursively.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        internal static void DeleteDirectory(string path)
-        {
-            string[] files = Directory.GetFiles(path);
-            string[] dirs = Directory.GetDirectories(path);
-
-            foreach (string file in files)
-            {
-                // Prevent errors caused by readonly files.
-                File.SetAttributes(file, FileAttributes.Normal);
-                File.Delete(file);
-            }
-
-            foreach (string dir in dirs)
-            {
-                DeleteDirectory(dir);
-            }
-
-            Directory.Delete(path, false);
-        }
+        #endregion
     }
 }

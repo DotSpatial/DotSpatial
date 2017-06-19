@@ -1,71 +1,45 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 9/14/2009 8:50:58 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// RasterEditorSettings
+    /// </summary>
     [Serializable]
     public class RasterEditorSettings : EditorSettings
     {
-        #region Private Variables
-
-        private double _max;
-        private double _min;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of VectorEditorSettings
+        /// Initializes a new instance of the <see cref="RasterEditorSettings"/> class.
         /// </summary>
         public RasterEditorSettings()
         {
             NumBreaks = 2;
             MaxSampleCount = 10000;
-            _min = -100000;
-            _max = 1000000;
+            Min = -100000;
+            Max = 1000000;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the minimum value that will contribute to statistics
-        /// </summary>
-        [Serialize("Min")]
-        public double Min
-        {
-            get { return _min; }
-            set { _min = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the maximum value that will contribute to statistics.
         /// </summary>
         [Serialize("Max")]
-        public double Max
-        {
-            get { return _max; }
-            set { _max = value; }
-        }
+        public double Max { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value that will contribute to statistics
+        /// </summary>
+        [Serialize("Min")]
+        public double Min { get; set; }
 
         #endregion
     }

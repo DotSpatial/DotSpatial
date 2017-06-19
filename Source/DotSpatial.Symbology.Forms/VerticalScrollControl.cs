@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/7/2009 10:20:32 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -24,36 +14,26 @@ namespace DotSpatial.Symbology.Forms
     /// This is useful if the content should simply autosize to fit the horizontal width of the control.
     /// </summary>
     [ToolboxItem(false)]
-    public class VerticalScrollControl : Control
+    public partial class VerticalScrollControl : Control
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs after the base drawing content has been rendered to the page.
-        /// </summary>
-        public event EventHandler<PaintEventArgs> Initialized;
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private readonly Brush _controlBrush;
-        private Brush _backImageBrush;
         private Brush _backcolorBrush;
+        private Brush _backImageBrush;
         private Bitmap _buffer;
 
         private Rectangle _controlRectangle;
         private Rectangle _documentRectangle;
         private bool _firstDrawing;
-        private bool _isInitialized;
         private VScrollBar _scrVertical;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of ScrollingControl
+        /// Initializes a new instance of the <see cref="VerticalScrollControl"/> class.
         /// </summary>
         public VerticalScrollControl()
         {
@@ -68,43 +48,116 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        private void InitializeComponent()
+        #region Events
+
+        /// <summary>
+        /// Occurs after the base drawing content has been rendered to the page.
+        /// </summary>
+        public event EventHandler<PaintEventArgs> Initialized;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the background color to use for this control.
+        /// </summary>
+        public override Color BackColor
         {
-            _scrVertical = new VScrollBar();
-            SuspendLayout();
-            //
-            // scrVertical
-            //
-            _scrVertical.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom)
-                                 | AnchorStyles.Right;
-            _scrVertical.Location = new Point(170, 0);
-            _scrVertical.Name = "_scrVertical";
-            _scrVertical.Size = new Size(17, 425);
-            _scrVertical.TabIndex = 0;
-            _scrVertical.Scroll += scrVertical_Scroll;
-            //
-            // VerticalScrollControl
-            //
-            Controls.Add(_scrVertical);
-            Name = "ScrollingControl";
-            Size = new Size(187, 428);
-            ResumeLayout(false);
+            get
+            {
+                return base.BackColor;
+            }
+
+            set
+            {
+                _backcolorBrush?.Dispose();
+                _backcolorBrush = new SolidBrush(value);
+                base.BackColor = value;
+            }
         }
 
-        private void scrVertical_Scroll(object sender, ScrollEventArgs e)
+        /// <summary>
+        /// Gets or sets the background image.
+        /// </summary>
+        public override Image BackgroundImage
         {
-            _controlRectangle.Y = _scrVertical.Value;
-            IsInitialized = false;
-            Invalidate();
+            get
+            {
+                return base.BackgroundImage;
+            }
+
+            set
+            {
+                base.BackgroundImage = value;
+                _backImageBrush?.Dispose();
+                if (value != null) _backImageBrush = new TextureBrush(BackgroundImage);
+            }
         }
+
+        /// <summary>
+        /// Gets or sets the rectangular region of the control in page coordinates.
+        /// </summary>
+        public Rectangle ControlRectangle
+        {
+            get
+            {
+                return _controlRectangle;
+            }
+
+            set
+            {
+                _controlRectangle = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the rectangle for the entire content, whether on the page buffer or not.
+        /// X and Y for this are always 0.
+        /// </summary>
+        public virtual Rectangle DocumentRectangle
+        {
+            get
+            {
+                return _documentRectangle;
+            }
+
+            set
+            {
+                _documentRectangle = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the page for this control has been drawn.
+        /// </summary>
+        public bool IsInitialized { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the vertical scroll should be permitted.
+        /// </summary>
+        public bool VerticalScrollEnabled
+        {
+            get
+            {
+                return _scrVertical.Enabled;
+            }
+
+            set
+            {
+                _scrVertical.Enabled = value;
+            }
+        }
+
+        #endregion
 
         #region Methods
 
         /// <summary>
-        /// Gets a rectangle in document coordinates for hte specified rectangle in client coordinates
+        /// Gets a rectangle in document coordinates for hte specified rectangle in client coordinates.
         /// </summary>
-        /// <param name="rect"></param>
-        /// <returns></returns>
+        /// <param name="rect">Rectangle in client coordinates.</param>
+        /// <returns>Rectangle in document coordinates.</returns>
         public Rectangle ClientToDocument(Rectangle rect)
         {
             Rectangle result = rect;
@@ -114,10 +167,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Translates a rectangle from document coordinates to coordinates relative to the client control
+        /// Translates a rectangle from document coordinates to coordinates relative to the client control.
         /// </summary>
-        /// <param name="rect"></param>
-        /// <returns></returns>
+        /// <param name="rect">Rectangle in document coordinates.</param>
+        /// <returns>Rectangle in client coordinates.</returns>
         public Rectangle DocumentToClient(Rectangle rect)
         {
             Rectangle result = rect;
@@ -146,134 +199,65 @@ namespace DotSpatial.Symbology.Forms
             {
                 _scrVertical.Visible = false;
             }
-            else
+            else if (_scrVertical.Enabled)
             {
-                if (_scrVertical.Enabled) _scrVertical.Visible = true;
-            }
-
-            //if (_documentRectangle.Width > 3 * Width || _documentRectangle.Height > 3 * Height)
-            //{
-            //    ResetPage();
-            //}
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the background color to use for this control
-        /// </summary>
-        public override Color BackColor
-        {
-            get
-            {
-                return base.BackColor;
-            }
-            set
-            {
-                if (_backcolorBrush != null) _backcolorBrush.Dispose();
-                _backcolorBrush = new SolidBrush(value);
-                base.BackColor = value;
+                _scrVertical.Visible = true;
             }
         }
 
         /// <summary>
-        ///
+        /// Disposes the unmanaged memory objects and optionally disposes
+        /// the managed memory objects
         /// </summary>
-        public override Image BackgroundImage
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            get
+            _backcolorBrush?.Dispose();
+            _controlBrush?.Dispose();
+            _backImageBrush?.Dispose();
+            _buffer?.Dispose();
+            if (disposing) components?.Dispose();
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Occurs during custom drawing.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnDraw(PaintEventArgs e)
+        {
+            if (_firstDrawing == false)
             {
-                return base.BackgroundImage;
+                ResetScroll();
+                _firstDrawing = true;
             }
-            set
-            {
-                base.BackgroundImage = value;
-                if (_backImageBrush != null) _backImageBrush.Dispose();
-                if (value != null) _backImageBrush = new TextureBrush(BackgroundImage);
-            }
+
+            e.Graphics.FillRectangle(_backcolorBrush, e.ClipRectangle); // in client coordinates, the clip-rectangle is the area to clear
+            e.Graphics.DrawImage(_buffer, e.ClipRectangle, e.ClipRectangle, GraphicsUnit.Pixel);
         }
 
         /// <summary>
-        /// Gets the rectangular region of the control in page coordinates.
+        /// Occurs during custom drawing when erasing things
         /// </summary>
-        public Rectangle ControlRectangle
+        /// <param name="e">The event args.</param>
+        protected virtual void OnDrawBackground(PaintEventArgs e)
         {
-            get { return _controlRectangle; }
-            set { _controlRectangle = value; }
         }
 
         /// <summary>
-        /// Gets or sets the rectangle for the entire content, whether on the page buffer or not.  X and Y for this
-        /// are always 0.
+        /// Fires the Initialized event
         /// </summary>
-        public virtual Rectangle DocumentRectangle
+        /// <param name="e">The event args.</param>
+        protected virtual void OnInitialize(PaintEventArgs e)
         {
-            get { return _documentRectangle; }
-            set { _documentRectangle = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets whether or not the page for this control has been drawn.
-        /// </summary>
-        public bool IsInitialized
-        {
-            get { return _isInitialized; }
-            set { _isInitialized = value; }
-        }
-
-        ///// <summary>
-        ///// Gets or sets the page image being used as a buffer.  This is useful
-        ///// for content changes that need to be made rapidly.  First refresh
-        ///// a small region of this page, and then invalidate the client rectangle.
-        ///// </summary>
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //public Bitmap Page
-        //{
-        //    get { return _page; }
-        //    set { _page = value; }
-        //}
-
-        ///// <summary>
-        ///// A page is the buffered scrollable content.  Content off the page
-        ///// must be drawn to the page before it can be displayed in the client.
-        ///// The Page Rectangle is in document coordinates.
-        ///// </summary>
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //public Rectangle PageRectangle
-        //{
-        //    get { return _pageRectangle; }
-        //    set { _pageRectangle = value; }
-        //}
-
-        /// <summary>
-        /// Gets or sets a boolean indicating whether the vertical scroll should be permitted
-        /// </summary>
-        public bool VerticalScrollEnabled
-        {
-            get { return _scrVertical.Enabled; }
-            set { _scrVertical.Enabled = value; }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Prevent flicker by preventing this
-        /// </summary>
-        /// <param name="pevent"></param>
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            // Do Nothing
+            Initialized?.Invoke(this, e);
         }
 
         /// <summary>
         /// On Paint only paints the specified clip rectangle, but paints
         /// it from the page buffer.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             Rectangle clip = e.ClipRectangle;
@@ -297,68 +281,24 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Occurs during custom drawing when erasing things
+        /// Prevent flicker by preventing this
         /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnDrawBackground(PaintEventArgs e)
+        /// <param name="e">The event args.</param>
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //  e.Graphics.FillRectangle(_backcolorBrush, e.ClipRectangle);
-
-            //  e.Graphics.DrawImage(_page, e.ClipRectangle, ClientToPage(e.ClipRectangle), GraphicsUnit.Pixel);
+            // Do Nothing
         }
 
         /// <summary>
-        /// Occurs during custom drawing
+        /// Handles the resize event.
         /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnDraw(PaintEventArgs e)
-        {
-            if (_firstDrawing == false)
-            {
-                ResetScroll();
-                _firstDrawing = true;
-            }
-            e.Graphics.FillRectangle(_backcolorBrush, e.ClipRectangle); // in client coordinates, the clip-rectangle is the area to clear
-            e.Graphics.DrawImage(_buffer, e.ClipRectangle, e.ClipRectangle, GraphicsUnit.Pixel);
-        }
-
-        /// <summary>
-        /// Disposes the unmanaged memory objects and optionally disposes
-        /// the managed memory objects
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected override void Dispose(bool disposing)
-        {
-            if (_backcolorBrush != null) _backcolorBrush.Dispose();
-            if (_controlBrush != null) _controlBrush.Dispose();
-            if (_backImageBrush != null) _backImageBrush.Dispose();
-            if (_buffer != null) _buffer.Dispose();
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Fires the Initialized event
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnInitialize(PaintEventArgs e)
-        {
-            if (Initialized != null) Initialized(this, e);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            // ResetPage();
+
             ResetScroll();
         }
-
-        #endregion
-
-        #region Private Methods
 
         // Redraws the entire contents of the page.
         private void Initialize()
@@ -367,6 +307,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 _documentRectangle = ClientRectangle;
             }
+
             if (_controlRectangle.IsEmpty)
             {
                 _controlRectangle = ClientRectangle;
@@ -387,26 +328,35 @@ namespace DotSpatial.Symbology.Forms
                 {
                     g.DrawImage(BackgroundImage, ClientRectangle, ClientToDocument(ClientRectangle), GraphicsUnit.Pixel);
                 }
+
                 if (BackgroundImageLayout == ImageLayout.Center)
                 {
                     int x = (Width - BackgroundImage.Width) / 2;
                     int y = (Height - BackgroundImage.Height) / 2;
                     g.DrawImage(BackgroundImage, new Point(x, y));
                 }
+
                 if (BackgroundImageLayout == ImageLayout.Stretch || BackgroundImageLayout == ImageLayout.Zoom)
                 {
                     g.DrawImage(BackgroundImage, ClientRectangle);
                 }
+
                 if (BackgroundImageLayout == ImageLayout.Tile)
                 {
-                    //g.DrawImage(BackgroundImage, new Point(0, 0));
-
                     g.FillRectangle(_backImageBrush, ClientRectangle);
                 }
             }
+
             g.TranslateTransform(-(float)_controlRectangle.X, -(float)_controlRectangle.Y);
             OnInitialize(new PaintEventArgs(g, ClientRectangle));
             g.Dispose();
+        }
+
+        private void ScrVerticalScroll(object sender, ScrollEventArgs e)
+        {
+            _controlRectangle.Y = _scrVertical.Value;
+            IsInitialized = false;
+            Invalidate();
         }
 
         #endregion

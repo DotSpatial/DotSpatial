@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.Parameters
-// Description:  Parameters passed back from a ITool to the toolbox manager
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -22,162 +11,92 @@ namespace DotSpatial.Modeling.Forms
     /// <summary>
     /// EventHandler delegate for the tool parameter when a value is changed.
     /// </summary>
-    /// <param name="sender"></param>
+    /// <param name="sender">Sender that raised the event.</param>
     public delegate void EventHandlerValueChanged(Parameter sender);
 
     /// <summary>
-    /// This is the base class for the parameter array to be passed into a ITool
+    /// This is the base class for the parameter array to be passed into an ITool.
     /// </summary>
     public abstract class Parameter : ICloneable
     {
-        #region variables
+        #region Fields
 
         private object _dataValue;
-        private bool _defaultSpecified;
-        private Bitmap _helpImage;
-        private string _helpText = string.Empty;
-        private string _modelName = string.Empty;
-        private string _name;
-        private string _paramType;
-        private ShowParamInModel _paramVisible;
+
+        #endregion
+
+        #region Events
 
         /// <summary>
         /// Fires when the parameter's value is changed
         /// </summary>
         internal event EventHandlerValueChanged ValueChanged;
 
-        #endregion variables
-
-        #region events
-
-        /// <summary>
-        /// Call this when the parameter's value is changed
-        /// </summary>
-        protected void OnValueChanged()
-        {
-            if (ValueChanged != null)
-                ValueChanged(this);
-        }
-
         #endregion
 
-        #region methods
+        #region Properties
 
         /// <summary>
-        /// Populates the parameter with default values
+        /// Gets or sets a value indicating whether the parameter contains a value.
         /// </summary>
-        public virtual void GenerateDefaultOutput(string path)
-        {
-        }
+        public bool DefaultSpecified { get; set; }
 
         /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
+        /// Gets or sets the help image that will appear beside the parameter element when it is clicked
         /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
-        public virtual DialogElement InputDialogElement(List<DataSetArray> dataSets)
-        {
-            return null;
-        }
+        public Bitmap HelpImage { get; set; }
 
         /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+        /// Gets or sets the help text that will appear beside the parameter element when it is clicked
         /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
-        public virtual DialogElement OutputDialogElement(List<DataSetArray> dataSets)
-        {
-            return null;
-        }
-
-        #endregion
-
-        #region properties
+        public string HelpText { get; set; } = string.Empty;
 
         /// <summary>
-        /// Specify if a graphic should be added to the model to represent the parameter
+        /// Gets or sets the model name. This is used to identify this parameter in the modeler, it will be set automatically by the modeler.
         /// </summary>
-        public ShowParamInModel ParamVisible
-        {
-            get { return _paramVisible; }
-            set { _paramVisible = value; }
-        }
+        public string ModelName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Used to identify this parameter in the modeler, it will be set automatically by the modeler
+        /// Gets or sets the name of that parameter that shows up in auto generated forms.
         /// </summary>
-        public string ModelName
-        {
-            get { return _modelName; }
-            set { _modelName = value; }
-        }
+        public string Name { get; protected set; }
 
         /// <summary>
-        /// Gets true if the parameter contains a value and false if none has been specified
+        /// Gets or sets the type of data used in this parameter.
         /// </summary>
-        public bool DefaultSpecified
-        {
-            get { return _defaultSpecified; }
-            set { _defaultSpecified = value; }
-        }
+        public string ParamType { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the value of the parameter
+        /// Gets or sets a value indicating whether a graphic should be added to the model to represent the parameter.
+        /// </summary>
+        public ShowParamInModel ParamVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of the parameter.
         /// </summary>
         public object Value
         {
-            get { return _dataValue; }
+            get
+            {
+                return _dataValue;
+            }
+
             set
             {
                 _dataValue = value;
-                if (_dataValue != null)
-                    _defaultSpecified = true;
-                else
-                    _defaultSpecified = false;
+                DefaultSpecified = _dataValue != null;
                 OnValueChanged();
             }
         }
 
-        /// <summary>
-        /// The name of that parameter that shows up in auto generated forms
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            protected set { _name = value; }
-        }
+        #endregion
 
-        /// <summary>
-        /// Gets the type of data used in this parameter
-        /// </summary>
-        public string ParamType
-        {
-            get { return _paramType; }
-            protected set { _paramType = value; }
-        }
-
-        /// <summary>
-        /// Gets or Sets the help image that will appear beside the parameter element when it is clicked
-        /// </summary>
-        public Bitmap HelpImage
-        {
-            get { return _helpImage; }
-            set { _helpImage = value; }
-        }
-
-        /// <summary>
-        /// Gets or Sets the help text that will appear beside the parameter element when it is clicked
-        /// </summary>
-        public String HelpText
-        {
-            get { return _helpText; }
-            set { _helpText = value; }
-        }
+        #region Methods
 
         /// <summary>
         /// This returns a duplicate of this object.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The copy.</returns>
         public object Clone()
         {
             return Copy();
@@ -192,6 +111,42 @@ namespace DotSpatial.Modeling.Forms
             return MemberwiseClone() as Parameter;
         }
 
-        #endregion properties
+        /// <summary>
+        /// Populates the parameter with default values.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        public virtual void GenerateDefaultOutput(string path)
+        {
+        }
+
+        /// <summary>
+        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
+        /// </summary>
+        /// <param name="dataSets">A list of DataSetArrays.</param>
+        /// <returns>The dialog component that should be used to visualise INPUT to this parameter.</returns>
+        public virtual DialogElement InputDialogElement(List<DataSetArray> dataSets)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+        /// </summary>
+        /// <param name="dataSets">A list of DataSetArrays.</param>
+        /// <returns>The dialog component that should be used to visualise OUTPUT to this parameter.</returns>
+        public virtual DialogElement OutputDialogElement(List<DataSetArray> dataSets)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Call this when the parameter's value is changed
+        /// </summary>
+        protected void OnValueChanged()
+        {
+            ValueChanged?.Invoke(this);
+        }
+
+        #endregion
     }
 }

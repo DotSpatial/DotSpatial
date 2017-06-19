@@ -57,7 +57,7 @@ namespace DotSpatial.Positioning
         /// <param name="sentence"></param>
         public NmeaSentence(string sentence)
         {
-            Sentence = sentence; //set the sentence and parse it to the properties
+            Sentence = sentence; // set the sentence and parse it to the properties
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace DotSpatial.Positioning
         /// be preserved using this constructor.  To process an entire sentence, use the entire NMEA string as a constructor.</remarks>
         protected NmeaSentence(string sentence, string commandWord, string[] words, string validChecksum)
         {
-            _sentence = sentence; //set _sentence directly so that it won't be split into the properties, because the properties are set to the parameters afterwards anyway
+            _sentence = sentence; // set _sentence directly so that it won't be split into the properties, because the properties are set to the parameters afterwards anyway
             CommandWord = commandWord;
             Words = words;
             ExistingChecksum = validChecksum;
@@ -136,7 +136,7 @@ namespace DotSpatial.Positioning
 
             // Next, get the index of the asterisk
             int asteriskIndex = Sentence.IndexOf("*", StringComparison.Ordinal);
-            int dataEndIndex = asteriskIndex == -1 ? Sentence.Length - 1 : asteriskIndex - 1; //dataEndIndex is before asterix if it exists, otherwise it's the last character
+            int dataEndIndex = asteriskIndex == -1 ? Sentence.Length - 1 : asteriskIndex - 1; // dataEndIndex is before asterix if it exists, otherwise it's the last character
 
             // Determine if the data is properly formated. Not propertly formated data leads to a negative length.
             if (dataEndIndex < dataStartIndex) return;
@@ -212,7 +212,7 @@ namespace DotSpatial.Positioning
             if (Words.Length <= position || Words[position].Length == 0) return FixMethod.Unknown;
 
             int value = int.Parse(Words[position], NmeaCultureInfo);
-            if (noFixAt1) value -= 1; //if noFix starts at 1 we subtract 1 so that we can use the value in the switch block
+            if (noFixAt1) value -= 1; // if noFix starts at 1 we subtract 1 so that we can use the value in the switch block
 
             switch (value)
             {
@@ -299,7 +299,7 @@ namespace DotSpatial.Positioning
         {
             List<int> positions = new List<int> { latitudeValuePosition, latitudeHemispherePosition, longitudeValuePosition, longitudeHemispherePosition };
 
-            if (Words.Length <= positions.Max() || positions.Any(pos => Words[pos].Length < 1)) //not enough words or empty field result in invalid position
+            if (Words.Length <= positions.Max() || positions.Any(pos => Words[pos].Length < 1)) // not enough words or empty field result in invalid position
                 return Position.Invalid;
 
             // Parse the latitude

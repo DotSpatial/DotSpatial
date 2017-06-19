@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/8/2010 10:24:50 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,7 +30,7 @@ namespace DotSpatial.Data
         /// This is very generic, but allows the user to cycle through the images currently in the image set,
         /// regardless of whether they are in a list or an array or other data structure.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The images of the image set.</returns>
         IEnumerable<IImageData> GetImages();
     }
 }

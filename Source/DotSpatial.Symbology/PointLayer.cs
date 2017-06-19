@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Modified to do 3D in January 2008 by Ted Dunsford
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +16,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// This creates a new layer with an empty dataset configured to the point feature type.
+        /// Initializes a new instance of the <see cref="PointLayer"/> class with an empty dataset configured to the point feature type.
         /// </summary>
         public PointLayer()
             : this(new FeatureSet(FeatureType.Point), null)
@@ -35,7 +24,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of a PointLayer without sending any status messages
+        /// Initializes a new instance of the <see cref="PointLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">The IFeatureLayer of data values to turn into a graphical PointLayer</param>
         /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
@@ -46,7 +35,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of a PointLayer for storing and drawing points
+        /// Initializes a new instance of the <see cref="PointLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">Any implementation of an IFeatureLayer</param>
         /// <param name="progressHandler">A valid implementation of the IProgressHandler interface.</param>
@@ -58,7 +47,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of a PointLayer for storing and drawing points.
+        /// Initializes a new instance of the <see cref="PointLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">Any implementation of an IFeatureLayer.</param>
         /// <param name="container">An IContainer to contain this layer.</param>
@@ -71,26 +60,6 @@ namespace DotSpatial.Symbology
             Configure(inFeatureSet);
         }
 
-        private void Configure(IFeatureSet inFeatureSet)
-        {
-            FeatureType ft = inFeatureSet.FeatureType;
-            if (ft != FeatureType.Point && ft != FeatureType.MultiPoint && ft != FeatureType.Unspecified)
-            {
-                throw new PointFeatureTypeException();
-            }
-            if (inFeatureSet.NumRows() == 0)
-            {
-                MyExtent = new Extent();
-            }
-            else if (inFeatureSet.NumRows() == 1)
-            {
-                MyExtent = inFeatureSet.Extent.Copy();
-                MyExtent.ExpandBy(10, 10);
-            }
-            else { MyExtent = inFeatureSet.Extent.Copy(); }
-            Symbology = new PointScheme();
-        }
-
         #endregion
 
         #region Properties
@@ -98,13 +67,16 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the pointSymbolizer characteristics to use for the selected features.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets the symbolic characteristics to use for the selected features."),
-            //TypeConverter(typeof(GeneralTypeConverter)),
-            //Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
-         ShallowCopy]
+        [Category("Appearance")]
+        [Description("Gets or sets the symbolic characteristics to use for the selected features.")]
+        [ShallowCopy]
         public new IPointSymbolizer SelectionSymbolizer
         {
-            get { return base.SelectionSymbolizer as IPointSymbolizer; }
+            get
+            {
+                return base.SelectionSymbolizer as IPointSymbolizer;
+            }
+
             set
             {
                 base.SelectionSymbolizer = value;
@@ -114,16 +86,16 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolic characteristics for this layer.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets the symbolic characteristics for this layer."),
-            //TypeConverter(typeof(GeneralTypeConverter)),
-            // Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
-         ShallowCopy]
+        [Category("Appearance")]
+        [Description("Gets or sets the symbolic characteristics for this layer.")]
+        [ShallowCopy]
         public new IPointSymbolizer Symbolizer
         {
             get
             {
                 return base.Symbolizer as IPointSymbolizer;
             }
+
             set
             {
                 base.Symbolizer = value;
@@ -131,26 +103,32 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the currently applied scheme.  Because setting the scheme requires a processor intensive
-        /// method, we use the ApplyScheme method for assigning a new scheme.  This allows access
+        /// Gets or sets the currently applied scheme. Because setting the scheme requires a processor intensive
+        /// method, we use the ApplyScheme method for assigning a new scheme. This allows access
         /// to editing the members of an existing scheme directly, however.
         /// </summary>
-        [Category("Appearance"), Description("Gets the currently applied scheme."),
-            //TypeConverter(typeof(GeneralTypeConverter)),
-            //Editor(typeof(PointSchemePropertyGridEditor), typeof(UITypeEditor)),
-         Serialize("Symbology")]
+        [Category("Appearance")]
+        [Description("Gets the currently applied scheme.")]
+        [Serialize("Symbology")]
         public new IPointScheme Symbology
         {
-            get { return base.Symbology as IPointScheme; }
-            set { base.Symbology = value; }
+            get
+            {
+                return base.Symbology as IPointScheme;
+            }
+
+            set
+            {
+                base.Symbology = value;
+            }
         }
 
         #endregion
 
-        #region Static Methods
+        #region Methods
 
         /// <summary>
-        /// Attempts to create a new PointLayer using the specified file.  If the filetype is not
+        /// Attempts to create a new PointLayer using the specified file. If the filetype is not
         /// does not generate a point layer, an exception will be thrown.
         /// </summary>
         /// <param name="fileName">A string fileName to create a point layer for.</param>
@@ -163,7 +141,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Attempts to create a new PointLayer using the specified file.  If the filetype is not
+        /// Attempts to create a new PointLayer using the specified file. If the filetype is not
         /// does not generate a point layer, an exception will be thrown.
         /// </summary>
         /// <param name="fileName">A string fileName to create a point layer for.</param>
@@ -172,6 +150,31 @@ namespace DotSpatial.Symbology
         {
             IFeatureLayer fl = LayerManager.DefaultLayerManager.OpenVectorLayer(fileName);
             return fl as PointLayer;
+        }
+
+        private void Configure(IFeatureSet inFeatureSet)
+        {
+            FeatureType ft = inFeatureSet.FeatureType;
+            if (ft != FeatureType.Point && ft != FeatureType.MultiPoint && ft != FeatureType.Unspecified)
+            {
+                throw new PointFeatureTypeException();
+            }
+
+            if (inFeatureSet.NumRows() == 0)
+            {
+                MyExtent = new Extent();
+            }
+            else if (inFeatureSet.NumRows() == 1)
+            {
+                MyExtent = inFeatureSet.Extent.Copy();
+                MyExtent.ExpandBy(10, 10);
+            }
+            else
+            {
+                MyExtent = inFeatureSet.Extent.Copy();
+            }
+
+            Symbology = new PointScheme();
         }
 
         #endregion

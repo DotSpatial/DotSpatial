@@ -94,7 +94,7 @@ namespace DotSpatial.Symbology.Forms
             this._cmbField.FormattingEnabled = true;
             resources.ApplyResources(this._cmbField, "_cmbField");
             this._cmbField.Name = "_cmbField";
-            this._cmbField.SelectedIndexChanged += new System.EventHandler(this.cmbField_SelectedIndexChanged);
+            this._cmbField.SelectedIndexChanged += new System.EventHandler(this.CmbFieldSelectedIndexChanged);
             // 
             // _lblFieldName
             // 
@@ -107,7 +107,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnRamp.Name = "btnRamp";
             this.ttHelp.SetToolTip(this.btnRamp, resources.GetString("btnRamp.ToolTip"));
             this.btnRamp.UseVisualStyleBackColor = true;
-            this.btnRamp.Click += new System.EventHandler(this.btnRamp_Click);
+            this.btnRamp.Click += new System.EventHandler(this.BtnRampClick);
             // 
             // cmdRefresh
             // 
@@ -115,7 +115,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmdRefresh.Name = "cmdRefresh";
             this.ttHelp.SetToolTip(this.cmdRefresh, resources.GetString("cmdRefresh.ToolTip"));
             this.cmdRefresh.UseVisualStyleBackColor = true;
-            this.cmdRefresh.Click += new System.EventHandler(this.cmdRefresh_Click);
+            this.cmdRefresh.Click += new System.EventHandler(this.CmdRefreshClick);
             // 
             // btnExclude
             // 
@@ -123,7 +123,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnExclude.Name = "btnExclude";
             this.ttHelp.SetToolTip(this.btnExclude, resources.GetString("btnExclude.ToolTip"));
             this.btnExclude.UseVisualStyleBackColor = true;
-            this.btnExclude.Click += new System.EventHandler(this.btnExclude_Click);
+            this.btnExclude.Click += new System.EventHandler(this.BtnExcludeClick);
             // 
             // radUniqueValues
             // 
@@ -133,7 +133,7 @@ namespace DotSpatial.Symbology.Forms
             this.radUniqueValues.TabStop = true;
             this.ttHelp.SetToolTip(this.radUniqueValues, resources.GetString("radUniqueValues.ToolTip"));
             this.radUniqueValues.UseVisualStyleBackColor = true;
-            this.radUniqueValues.CheckedChanged += new System.EventHandler(this.radUniqueValues_CheckedChanged);
+            this.radUniqueValues.CheckedChanged += new System.EventHandler(this.RadUniqueValuesCheckedChanged);
             // 
             // radQuantities
             // 
@@ -141,7 +141,7 @@ namespace DotSpatial.Symbology.Forms
             this.radQuantities.Name = "radQuantities";
             this.ttHelp.SetToolTip(this.radQuantities, resources.GetString("radQuantities.ToolTip"));
             this.radQuantities.UseVisualStyleBackColor = true;
-            this.radQuantities.CheckedChanged += new System.EventHandler(this.radQuantities_CheckedChanged);
+            this.radQuantities.CheckedChanged += new System.EventHandler(this.RadQuantitiesCheckedChanged);
             // 
             // btnAdd
             // 
@@ -150,7 +150,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnAdd.Name = "btnAdd";
             this.ttHelp.SetToolTip(this.btnAdd, resources.GetString("btnAdd.ToolTip"));
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.Click += new System.EventHandler(this.BtnAddClick);
             // 
             // btnDelete
             // 
@@ -159,7 +159,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnDelete.Name = "btnDelete";
             this.ttHelp.SetToolTip(this.btnDelete, resources.GetString("btnDelete.ToolTip"));
             this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            this.btnDelete.Click += new System.EventHandler(this.BtnDeleteClick);
             // 
             // btnUp
             // 
@@ -168,7 +168,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnUp.Name = "btnUp";
             this.ttHelp.SetToolTip(this.btnUp, resources.GetString("btnUp.ToolTip"));
             this.btnUp.UseVisualStyleBackColor = true;
-            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
+            this.btnUp.Click += new System.EventHandler(this.BtnUpClick);
             // 
             // btnDown
             // 
@@ -178,7 +178,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnDown.Name = "btnDown";
             this.ttHelp.SetToolTip(this.btnDown, resources.GetString("btnDown.ToolTip"));
             this.btnDown.UseVisualStyleBackColor = false;
-            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
+            this.btnDown.Click += new System.EventHandler(this.BtnDownClick);
             // 
             // cmbNormField
             // 
@@ -186,7 +186,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbNormField, "cmbNormField");
             this.cmbNormField.Name = "cmbNormField";
             this.ttHelp.SetToolTip(this.cmbNormField, resources.GetString("cmbNormField.ToolTip"));
-            this.cmbNormField.SelectedIndexChanged += new System.EventHandler(this.cmbNormField_SelectedIndexChanged);
+            this.cmbNormField.SelectedIndexChanged += new System.EventHandler(this.CmbNormFieldSelectedIndexChanged);
             // 
             // nudSigFig
             // 
@@ -198,7 +198,7 @@ namespace DotSpatial.Symbology.Forms
             0});
             this.nudSigFig.Name = "nudSigFig";
             this.ttHelp.SetToolTip(this.nudSigFig, resources.GetString("nudSigFig.ToolTip"));
-            this.nudSigFig.ValueChanged += new System.EventHandler(this.nudSigFig_ValueChanged);
+            this.nudSigFig.ValueChanged += new System.EventHandler(this.NudSigFigValueChanged);
             // 
             // cmbIntervalSnapping
             // 
@@ -206,7 +206,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbIntervalSnapping, "cmbIntervalSnapping");
             this.cmbIntervalSnapping.Name = "cmbIntervalSnapping";
             this.ttHelp.SetToolTip(this.cmbIntervalSnapping, resources.GetString("cmbIntervalSnapping.ToolTip"));
-            this.cmbIntervalSnapping.SelectedIndexChanged += new System.EventHandler(this.cmbIntervalSnapping_SelectedIndexChanged);
+            this.cmbIntervalSnapping.SelectedIndexChanged += new System.EventHandler(this.CmbIntervalSnappingSelectedIndexChanged);
             // 
             // dgvStatistics
             // 
@@ -296,7 +296,7 @@ namespace DotSpatial.Symbology.Forms
             this.cmbInterval.FormattingEnabled = true;
             resources.ApplyResources(this.cmbInterval, "cmbInterval");
             this.cmbInterval.Name = "cmbInterval";
-            this.cmbInterval.SelectedIndexChanged += new System.EventHandler(this.cmbInterval_SelectedIndexChanged);
+            this.cmbInterval.SelectedIndexChanged += new System.EventHandler(this.CmbIntervalSelectedIndexChanged);
             // 
             // nudCategoryCount
             // 
@@ -307,7 +307,7 @@ namespace DotSpatial.Symbology.Forms
             0,
             0,
             0});
-            this.nudCategoryCount.ValueChanged += new System.EventHandler(this.nudCategoryCount_ValueChanged);
+            this.nudCategoryCount.ValueChanged += new System.EventHandler(this.NudCategoryCountValueChanged);
             // 
             // lblBreaks
             // 
@@ -355,28 +355,28 @@ namespace DotSpatial.Symbology.Forms
             0,
             0,
             0});
-            this.nudColumns.ValueChanged += new System.EventHandler(this.nudColumns_ValueChanged);
+            this.nudColumns.ValueChanged += new System.EventHandler(this.NudColumnsValueChanged);
             // 
             // chkLog
             // 
             resources.ApplyResources(this.chkLog, "chkLog");
             this.chkLog.Name = "chkLog";
             this.chkLog.UseVisualStyleBackColor = true;
-            this.chkLog.CheckedChanged += new System.EventHandler(this.chkLog_CheckedChanged);
+            this.chkLog.CheckedChanged += new System.EventHandler(this.ChkLogCheckedChanged);
             // 
             // chkShowStd
             // 
             resources.ApplyResources(this.chkShowStd, "chkShowStd");
             this.chkShowStd.Name = "chkShowStd";
             this.chkShowStd.UseVisualStyleBackColor = true;
-            this.chkShowStd.CheckedChanged += new System.EventHandler(this.chkShowStd_CheckedChanged);
+            this.chkShowStd.CheckedChanged += new System.EventHandler(this.ChkShowStdCheckedChanged);
             // 
             // chkShowMean
             // 
             resources.ApplyResources(this.chkShowMean, "chkShowMean");
             this.chkShowMean.Name = "chkShowMean";
             this.chkShowMean.UseVisualStyleBackColor = true;
-            this.chkShowMean.CheckedChanged += new System.EventHandler(this.chkShowMean_CheckedChanged);
+            this.chkShowMean.CheckedChanged += new System.EventHandler(this.ChkShowMeanCheckedChanged);
             // 
             // breakSliderGraph1
             // 
@@ -400,14 +400,14 @@ namespace DotSpatial.Symbology.Forms
             this.breakSliderGraph1.Title = "Statistical Breaks:";
             this.breakSliderGraph1.TitleColor = System.Drawing.Color.Black;
             this.breakSliderGraph1.TitleFont = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Bold);
-            this.breakSliderGraph1.SliderMoved += new System.EventHandler<DotSpatial.Symbology.Forms.BreakSliderEventArgs>(this.breakSliderGraph1_SliderMoved);
+            this.breakSliderGraph1.SliderMoved += new System.EventHandler<DotSpatial.Symbology.Forms.BreakSliderEventArgs>(this.BreakSliderGraph1SliderMoved);
             // 
             // chkUseGradients
             // 
             resources.ApplyResources(this.chkUseGradients, "chkUseGradients");
             this.chkUseGradients.Name = "chkUseGradients";
             this.chkUseGradients.UseVisualStyleBackColor = true;
-            this.chkUseGradients.CheckedChanged += new System.EventHandler(this.chkUseGradients_CheckedChanged);
+            this.chkUseGradients.CheckedChanged += new System.EventHandler(this.ChkUseGradientsCheckedChanged);
             // 
             // dgvCategories
             // 
@@ -460,7 +460,7 @@ namespace DotSpatial.Symbology.Forms
             this.radCustom.Name = "radCustom";
             this.radCustom.TabStop = true;
             this.radCustom.UseVisualStyleBackColor = true;
-            this.radCustom.CheckedChanged += new System.EventHandler(this.radCustom_CheckedChanged);
+            this.radCustom.CheckedChanged += new System.EventHandler(this.RadCustomCheckedChanged);
             // 
             // angGradientAngle
             // 
@@ -471,7 +471,7 @@ namespace DotSpatial.Symbology.Forms
             this.angGradientAngle.KnobColor = System.Drawing.Color.Green;
             this.angGradientAngle.Name = "angGradientAngle";
             this.angGradientAngle.StartAngle = 0;
-            this.angGradientAngle.AngleChanged += new System.EventHandler(this.angGradientAngle_AngleChanged);
+            this.angGradientAngle.AngleChanged += new System.EventHandler(this.AngGradientAngleAngleChanged);
             // 
             // featureSizeRangeControl1
             // 
@@ -479,7 +479,7 @@ namespace DotSpatial.Symbology.Forms
             this.featureSizeRangeControl1.Name = "featureSizeRangeControl1";
             this.featureSizeRangeControl1.Scheme = null;
             this.featureSizeRangeControl1.SizeRange = null;
-            this.featureSizeRangeControl1.SizeRangeChanged += new System.EventHandler<DotSpatial.Symbology.Forms.SizeRangeEventArgs>(this.pointSizeRangeControl1_SizeRangeChanged);
+            this.featureSizeRangeControl1.SizeRangeChanged += new System.EventHandler<DotSpatial.Symbology.Forms.SizeRangeEventArgs>(this.PointSizeRangeControl1SizeRangeChanged);
             // 
             // tccColorRange
             // 
@@ -489,7 +489,7 @@ namespace DotSpatial.Symbology.Forms
             this.tccColorRange.Name = "tccColorRange";
             this.tccColorRange.StartColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.tccColorRange.UseRangeChecked = true;
-            this.tccColorRange.ColorChanged += new System.EventHandler<DotSpatial.Symbology.Forms.ColorRangeEventArgs>(this.tccColorRange_ColorChanged);
+            this.tccColorRange.ColorChanged += new System.EventHandler<DotSpatial.Symbology.Forms.ColorRangeEventArgs>(this.TccColorRangeColorChanged);
             // 
             // dataGridViewImageColumn1
             // 

@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/2/2010 1:08:29 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.NTSExtension;
@@ -38,6 +28,7 @@ namespace DotSpatial.Data
             {
                 throw new FeatureTypeMismatchException();
             }
+
             self.Parent.FeatureType = FeatureType.Point;
             self.Add(new Feature(new Point(point)));
         }
@@ -67,30 +58,28 @@ namespace DotSpatial.Data
         /// <exception cref="UnspecifiedFeaturetypeException">Thrown if the current FeatureType for the shapefile is unspecified.</exception>
         public static void Add(this IFeatureList self, IEnumerable<Coordinate> points)
         {
-            if (self.Parent.FeatureType == FeatureType.Unspecified)
+            switch (self.Parent.FeatureType)
             {
-                throw new UnspecifiedFeaturetypeException();
-            }
-            if (self.Parent.FeatureType == FeatureType.Point)
-            {
-                self.SuspendEvents();
-                foreach (Coordinate point in points)
-                {
-                    self.Add(new Feature(new Point(point)));
-                }
-                self.ResumeEvents();
-            }
-            if (self.Parent.FeatureType == FeatureType.Line)
-            {
-                self.Add(new Feature(new LineString(points as Coordinate[])));
-            }
-            if (self.Parent.FeatureType == FeatureType.Polygon)
-            {
-                self.Add(new Feature(new Polygon(new LinearRing(points as Coordinate[]))));
-            }
-            if (self.Parent.FeatureType == FeatureType.MultiPoint)
-            {
-                self.Add(new Feature(new MultiPoint(points.CastToPointArray())));
+                case FeatureType.Unspecified:
+                    throw new UnspecifiedFeaturetypeException();
+                case FeatureType.Point:
+                    self.SuspendEvents();
+                    foreach (Coordinate point in points)
+                    {
+                        self.Add(new Feature(new Point(point)));
+                    }
+
+                    self.ResumeEvents();
+                    break;
+                case FeatureType.Line:
+                    self.Add(new Feature(new LineString(points as Coordinate[])));
+                    break;
+                case FeatureType.Polygon:
+                    self.Add(new Feature(new Polygon(new LinearRing(points as Coordinate[]))));
+                    break;
+                case FeatureType.MultiPoint:
+                    self.Add(new Feature(new MultiPoint(points.CastToPointArray())));
+                    break;
             }
         }
 
@@ -100,7 +89,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="self">This feature list</param>
         /// <param name="geometry">The geometry to create a new feature from.</param>
-        /// <exception cref="FeatureTypeMismatchException">Thrown if the new geometry does not match the currently specified feature type.  </exception>
+        /// <exception cref="FeatureTypeMismatchException">Thrown if the new geometry does not match the currently specified feature type. </exception>
         public static void Add(this IFeatureList self, IGeometry geometry)
         {
             Feature f = new Feature(geometry);
@@ -108,6 +97,7 @@ namespace DotSpatial.Data
             {
                 throw new FeatureTypeMismatchException();
             }
+
             self.Add(f);
         }
 

@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/12/2009 3:28:34 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -35,6 +25,26 @@ namespace DotSpatial.Data
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether or not the events have been suspended.
+        /// </summary>
+        bool EventsSuspended { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether attribute Table information will be copied when features will be added to the list.
+        /// This will allow the attributes to be loaded in a more on-demand later.
+        /// </summary>
+        bool IncludeAttributes { get; set; }
+
+        /// <summary>
+        /// Gets the parent featureset for this list.
+        /// </summary>
+        IFeatureSet Parent { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -49,31 +59,11 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This is a re-expression of the features using a strong typed
-        /// list.  This may be the inner list or a copy depending on
+        /// list. This may be the inner list or a copy depending on
         /// implementation.
         /// </summary>
         /// <returns>The features as a List of IFeature.</returns>
         List<IFeature> ToList();
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets whether or not the events have been suspended
-        /// </summary>
-        bool EventsSuspended { get; }
-
-        /// <summary>
-        /// If this is false, then features will be added to the list without copying over attribute Table information.
-        /// This will allow the attributes to be loaded in a more on-demand later.
-        /// </summary>
-        bool IncludeAttributes { get; set; }
-
-        /// <summary>
-        /// Gets the parent featureset for this list.
-        /// </summary>
-        IFeatureSet Parent { get; }
 
         #endregion
     }

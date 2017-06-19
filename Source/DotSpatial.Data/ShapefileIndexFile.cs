@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 10/9/2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +12,29 @@ namespace DotSpatial.Data
     /// </summary>
     public class ShapefileIndexFile
     {
+        #region Fields
+
         private string _filename;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the file name of this shx file. If a relative path gets assigned it is changed to the absolute path including the file extension.
+        /// </summary>
+        public string Filename
+        {
+            get
+            {
+                return _filename;
+            }
+
+            set
+            {
+                _filename = Path.GetFullPath(value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the header
@@ -31,24 +42,19 @@ namespace DotSpatial.Data
         public ShapefileHeader Header { get; set; }
 
         /// <summary>
-        /// Gets or sets the file name of this shx file. If a relative path gets assigned it is changed to the absolute path including the file extension.
-        /// </summary>
-        public string Filename
-        {
-            get { return _filename; }
-            set { _filename = Path.GetFullPath(value); }
-        }
-
-        /// <summary>
         /// Gets or sets the list of shape headers
         /// </summary>
         public List<ShapeHeader> Shapes { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Opens the index file of the specified fileName.  If the fileName is not the .shx extension,
+        /// Opens the index file of the specified fileName. If the fileName is not the .shx extension,
         /// then the fileName will be changed too that extension first.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">The file name.</param>
         public void Open(string fileName)
         {
             Filename = Path.ChangeExtension(fileName, ".shx");
@@ -78,10 +84,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves the file to the specified fileName.  If the extension is not a correct shx extension,
+        /// Saves the file to the specified fileName. If the extension is not a correct shx extension,
         /// it will be changed to that extensions.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">The file name.</param>
         public void SaveAs(string fileName)
         {
             Filename = Path.ChangeExtension(fileName, ".shx");
@@ -102,10 +108,12 @@ namespace DotSpatial.Data
             {
                 shxFilename = Path.ChangeExtension(fileName, ".shx");
             }
+
             if (shxFilename == null)
             {
                 throw new NullReferenceException(fileName);
             }
+
             if (File.Exists(shxFilename) == false)
             {
                 throw new FileNotFoundException(fileName);
@@ -134,12 +142,13 @@ namespace DotSpatial.Data
             for (long i = 0; i < numRecords; i++)
             {
                 ShapeHeader sh = new ShapeHeader
-                                     {
-                                         Offset = bbReader.ReadInt32(false),
-                                         ContentLength = bbReader.ReadInt32(false)
-                                     };
+                {
+                    Offset = bbReader.ReadInt32(false),
+                    ContentLength = bbReader.ReadInt32(false)
+                };
                 result.Add(sh);
             }
+
             bbReader.Close();
             return result;
         }
@@ -163,37 +172,26 @@ namespace DotSpatial.Data
 
             FileStream bbWriter = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None, 100);
 
-            bbWriter.WriteBe(header.FileCode);                     //  Byte 0          File Code       9994        Integer     Big
+            bbWriter.WriteBe(header.FileCode);       // Byte 0          File Code       9994        Integer     Big
 
             byte[] bt = new byte[20];
-            bbWriter.Write(bt, 0, 20);                                   //  Bytes 4 - 20 are unused
+            bbWriter.Write(bt, 0, 20);               // Bytes 4 - 20 are unused
 
             // This is overwritten later
-            bbWriter.WriteBe(50 + 4 * numShapes);                //  Byte 24         File Length     File Length Integer     Big
-
-            bbWriter.WriteLe(header.Version);                             //  Byte 28         Version         1000        Integer     Little
-
-            bbWriter.WriteLe((int)header.ShapeType);                      //  Byte 32         Shape Type      Shape Type  Integer     Little
-
-            bbWriter.WriteLe(header.Xmin);                                //  Byte 36         Bounding Box    Xmin        Double      Little
-
-            bbWriter.WriteLe(header.Ymin);                                //  Byte 44         Bounding Box    Ymin        Double      Little
-
-            bbWriter.WriteLe(header.Xmax);                                //  Byte 52         Bounding Box    Xmax        Double      Little
-
-            bbWriter.WriteLe(header.Ymax);                                //  Byte 60         Bounding Box    Ymax        Double      Little
-
-            bbWriter.WriteLe(header.Zmin);                                //  Byte 68         Bounding Box    Zmin        Double      Little
-
-            bbWriter.WriteLe(header.Zmax);                                //  Byte 76         Bounding Box    Zmax        Double      Little
-
-            bbWriter.WriteLe(header.Mmin);                                //  Byte 84         Bounding Box    Mmin        Double      Little
-
-            bbWriter.WriteLe(header.Mmax);                                //  Byte 92         Bounding Box    Mmax        Double      Little
-
-            // ------------ WRITE TO SHP FILE -------------------------
-
+            bbWriter.WriteBe(50 + (4 * numShapes));  // Byte 24         File Length     File Length Integer     Big
+            bbWriter.WriteLe(header.Version);        // Byte 28         Version         1000        Integer     Little
+            bbWriter.WriteLe((int)header.ShapeType); // Byte 32         Shape Type      Shape Type  Integer     Little
+            bbWriter.WriteLe(header.Xmin);           // Byte 36         Bounding Box    Xmin        Double      Little
+            bbWriter.WriteLe(header.Ymin);           // Byte 44         Bounding Box    Ymin        Double      Little
+            bbWriter.WriteLe(header.Xmax);           // Byte 52         Bounding Box    Xmax        Double      Little
+            bbWriter.WriteLe(header.Ymax);           // Byte 60         Bounding Box    Ymax        Double      Little
+            bbWriter.WriteLe(header.Zmin);           // Byte 68         Bounding Box    Zmin        Double      Little
+            bbWriter.WriteLe(header.Zmax);           // Byte 76         Bounding Box    Zmax        Double      Little
+            bbWriter.WriteLe(header.Mmin);           // Byte 84         Bounding Box    Mmin        Double      Little
+            bbWriter.WriteLe(header.Mmax);           // Byte 92         Bounding Box    Mmax        Double      Little
             bbWriter.Close();
         }
+
+        #endregion
     }
 }

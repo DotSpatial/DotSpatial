@@ -1,8 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Tool.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using DotSpatial.Data;
@@ -15,114 +12,108 @@ namespace DotSpatial.Modeling.Forms
     /// </summary>
     public abstract class Tool : AssemblyInformation, ITool
     {
-        #region Constants and Fields
+        #region Fields
 
-        private string author;
-        private string description;
-        private string name;
+        private string _author;
+        private string _description;
+        private string _name;
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Author of the plugin.
+        /// Gets or sets the author of the plugin.
         /// </summary>
         public override string Author
         {
             get
             {
-                if (author == null)
-                    author = base.Author;
-
-                return author;
+                return _author ?? (_author = base.Author);
             }
+
             set
             {
-                author = value;
+                _author = value;
             }
         }
 
         /// <summary>
-        /// Returns the category of tool that the ITool should be added to
+        /// Gets or sets the category of tool that the ITool should be added to.
         /// </summary>
         public virtual string Category { get; set; }
 
         /// <summary>
-        /// Short description of the plugin.
+        /// Gets or sets a short description of the plugin.
         /// </summary>
         public override string Description
         {
             get
             {
-                if (description == null)
-                    description = base.Description;
-
-                return description;
+                return _description ?? (_description = base.Description);
             }
+
             set
             {
-                description = value;
+                _description = value;
             }
         }
 
         /// <summary>
-        /// Image displayed in the help area when no input field is selected
+        /// Gets or sets an image displayed in the help area when no input field is selected.
         /// </summary>
         public virtual Bitmap HelpImage { get; set; }
 
         /// <summary>
-        /// Returns the address of the tools help web page in HTTP://... format. Returns null if no URL has been specified.
+        /// Gets or sets the address of the tools help web page in HTTP://... format. Returns null if no URL has been specified.
         /// </summary>
         public virtual string HelpUrl { get; set; }
 
         /// <summary>
-        /// 32x32 Bitmap - The Large icon that will appears in the Tool Dialog Next to the tools name
+        /// Gets or sets a 32x32 Bitmap - The Large icon that will appears in the Tool Dialog Next to the tools name.
         /// </summary>
         public virtual Bitmap Icon { get; set; }
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array,
         /// </summary>
         public abstract Parameter[] InputParameters { get; }
 
         /// <summary>
-        /// Name of the plugin.
+        /// Gets or sets the name of the plugin.
         /// </summary>
         public override string Name
         {
             get
             {
-                if (name == null)
-                    name = base.Name;
-
-                return name;
+                return _name ?? (_name = base.Name);
             }
+
             set
             {
-                name = value;
+                _name = value;
             }
         }
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public abstract Parameter[] OutputParameters { get; }
 
         /// <summary>
-        /// Returns a brief description displayed when the user hovers over the tool in the toolbox
+        /// Gets or sets a brief description displayed when the user hovers over the tool in the toolbox
         /// </summary>
         public virtual string ToolTip { get; set; }
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
         /// </summary>
         /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
-        /// <returns></returns>
+        /// <returns>True, if the tool was executed successfully.</returns>
         public abstract bool Execute(ICancelProgressHandler cancelProgressHandler);
 
         /// <summary>
@@ -133,8 +124,10 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Fires when one of the paramters value has beend changed, usually when a user changes a input or output parameters value, this can be used to populate other parameters default values.
         /// </summary>
-        /// <param name="sender"></param>
-        public virtual void ParameterChanged(Parameter sender) { }
+        /// <param name="sender">Sender that raised the event.</param>
+        public virtual void ParameterChanged(Parameter sender)
+        {
+        }
 
         #endregion
     }

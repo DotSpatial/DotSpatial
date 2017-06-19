@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="HeaderControl.cs" company="DotSpatial Team">
-//
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -17,10 +14,7 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public abstract class HeaderControl : IHeaderControl
     {
-        /// <summary>
-        /// The key of the home root item.
-        /// </summary>
-        public const string HomeRootItemKey = "kHome";
+        #region Fields
 
         /// <summary>
         /// The key of the Application Menu item.
@@ -34,33 +28,36 @@ namespace DotSpatial.Controls.Header
         public const string HeaderHelpItemKey = "kHeaderHelpItemKey";
 
         /// <summary>
+        /// The key of the home root item.
+        /// </summary>
+        public const string HomeRootItemKey = "kHome";
+
+        /// <summary>
         /// A key to use for the root container of any extensions that do not provider a root key.
         /// </summary>
         protected const string ExtensionsRootKey = "kExtensions";
 
         private readonly Dictionary<string, HeaderItemDesc> _items = new Dictionary<string, HeaderItemDesc>();
 
-        #region IHeaderControl Members
+        #endregion
+
+        #region Events
 
         /// <summary>
-        /// Removes all items the plugin created by calling Remove() individually for each.
+        /// Occurs when a root item is selected
         /// </summary>
-        /// <remarks>Should only be called by the plugin (from the plugin assembly).</remarks>
-        public virtual void RemoveAll()
-        {
-            string assemblyName = Assembly.GetCallingAssembly().FullName;
-            // create a copy of the enumeration so that we can remove items from the original collection.
-            var toRemove = _items.Where(i => i.Value.AssemblyName == assemblyName).ToArray();
-            foreach (var item in toRemove)
-            {
-                Remove(item.Key);
-            }
-        }
+        public event EventHandler<RootItemEventArgs> RootItemSelected;
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This will add a new item that will appear on the standard toolbar or ribbon control.
         /// </summary>
+        /// <param name="item">Item taht gets added.</param>
         /// <remarks>Should only be called by the plugin (from the plugin assembly).</remarks>
+        /// <returns>The added item.</returns>
         public virtual object Add(HeaderItem item)
         {
             Contract.Requires(item != null, "item is null.");
@@ -81,10 +78,54 @@ namespace DotSpatial.Controls.Header
 
             // Bypass static type checking until runtime.
             dynamic test = item;
+
             // The correct overload of Add will be called below as the specifc type of item is determined at runtime.
             // See http://msdn.microsoft.com/en-us/library/dd264736.aspx
             return Add(test);
         }
+
+        /// <summary>
+        /// Adds the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
+        public abstract object Add(SimpleActionItem item);
+
+        /// <summary>
+        /// Adds the menu container item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
+        public abstract object Add(MenuContainerItem item);
+
+        /// <summary>
+        /// Adds the specified root item.
+        /// </summary>
+        /// <param name="item">The root item.</param>
+        /// <remarks>The RootItem should not be visible until it contains other items.</remarks>
+        /// <returns>The added item.</returns>
+        public abstract object Add(RootItem item);
+
+        /// <summary>
+        /// Adds a combo box style item
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
+        public abstract object Add(DropDownActionItem item);
+
+        /// <summary>
+        /// Adds a visible separator.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
+        public abstract object Add(SeparatorItem item);
+
+        /// <summary>
+        /// Adds the specified textbox item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
+        public abstract object Add(TextEntryActionItem item);
 
         /// <summary>
         /// Remove item from the standard toolbar or ribbon control. Also removes groups or parents when all
@@ -101,67 +142,26 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
+        /// Removes all items the plugin created by calling Remove() individually for each.
+        /// </summary>
+        /// <remarks>Should only be called by the plugin (from the plugin assembly).</remarks>
+        public virtual void RemoveAll()
+        {
+            string assemblyName = Assembly.GetCallingAssembly().FullName;
+
+            // create a copy of the enumeration so that we can remove items from the original collection.
+            var toRemove = _items.Where(i => i.Value.AssemblyName == assemblyName).ToArray();
+            foreach (var item in toRemove)
+            {
+                Remove(item.Key);
+            }
+        }
+
+        /// <summary>
         /// Selects the root, making it the active root.
         /// </summary>
         /// <param name="key">The key.</param>
         public abstract void SelectRoot(string key);
-
-        /// <summary>
-        /// Occurs when a root item is selected
-        /// </summary>
-        public event EventHandler<RootItemEventArgs> RootItemSelected;
-
-        #endregion
-
-        /// <summary>
-        /// Adds the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public abstract object Add(SimpleActionItem item);
-
-        /// <summary>
-        /// Adds the menu container item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public abstract object Add(MenuContainerItem item);
-
-        /// <summary>
-        /// Adds the specified root item.
-        /// </summary>
-        /// <param name="item">The root item.</param>
-        /// <remarks>The RootItem should not be visible until it contains other items.</remarks>
-        public abstract object Add(RootItem item);
-
-        /// <summary>
-        /// Adds a combo box style item
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public abstract object Add(DropDownActionItem item);
-
-        /// <summary>
-        /// Adds a visible separator.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public abstract object Add(SeparatorItem item);
-
-        /// <summary>
-        /// Adds the specified textbox item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public abstract object Add(TextEntryActionItem item);
-
-        /// <summary>
-        /// Adds the item to dictionary so that it can be removed later.
-        /// </summary>
-        /// <param name="item">Item to add.</param>
-        /// <param name="assemblyFullName">Full name of the assembly.</param>
-        protected void RecordItemAdd(HeaderItem item, string assemblyFullName)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(assemblyFullName), "assemblyFullName is null or empty.");
-            Contract.Requires(!string.IsNullOrEmpty(item.Key), "key is null or empty.");
-
-            _items.Add(item.Key, new HeaderItemDesc(item, assemblyFullName));
-        }
 
         /// <summary>
         /// Gets header item by key
@@ -182,21 +182,47 @@ namespace DotSpatial.Controls.Header
         /// <param name="key">The key of the new selected root item</param>
         protected void OnRootItemSelected(string key)
         {
-            var h = RootItemSelected;
-            if (h != null)
-                h(this, new RootItemEventArgs(key));
+            RootItemSelected?.Invoke(this, new RootItemEventArgs(key));
         }
+
+        /// <summary>
+        /// Adds the item to dictionary so that it can be removed later.
+        /// </summary>
+        /// <param name="item">Item to add.</param>
+        /// <param name="assemblyFullName">Full name of the assembly.</param>
+        protected void RecordItemAdd(HeaderItem item, string assemblyFullName)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(assemblyFullName), "assemblyFullName is null or empty.");
+            Contract.Requires(!string.IsNullOrEmpty(item.Key), "key is null or empty.");
+
+            _items.Add(item.Key, new HeaderItemDesc(item, assemblyFullName));
+        }
+
+        #endregion
+
+        #region Classes
 
         private class HeaderItemDesc
         {
+            #region  Constructors
+
             public HeaderItemDesc(HeaderItem headerItem, string assemblyName)
             {
                 HeaderItem = headerItem;
                 AssemblyName = assemblyName;
             }
 
-            public HeaderItem HeaderItem { get; private set; }
-            public string AssemblyName { get; private set; }
+            #endregion
+
+            #region Properties
+
+            public string AssemblyName { get; }
+
+            public HeaderItem HeaderItem { get; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

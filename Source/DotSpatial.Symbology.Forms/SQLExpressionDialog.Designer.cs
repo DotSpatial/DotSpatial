@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
 {
-   partial class SQLExpressionDialog
+    partial class SqlExpressionDialog
     {
-       #region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -17,12 +12,12 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SQLExpressionDialog));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SqlExpressionDialog));
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
-            this.sqlQueryControl1 = new DotSpatial.Symbology.Forms.SQLQueryControl();
+            this.sqlQueryControl1 = new DotSpatial.Symbology.Forms.SqlQueryControl();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             //
@@ -39,7 +34,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btnApply, "btnApply");
             this.btnApply.Name = "btnApply";
             this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            this.btnApply.Click += new System.EventHandler(this.BtnApplyClick);
             //
             // btnCancel
             //
@@ -47,7 +42,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancelClick);
             //
             // btnOk
             //
@@ -55,7 +50,7 @@ namespace DotSpatial.Symbology.Forms
             this.btnOk.Name = "btnOk";
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            this.btnOk.Click += new System.EventHandler(this.BtnOkClick);
             //
             // sqlQueryControl1
             //
@@ -75,7 +70,7 @@ namespace DotSpatial.Symbology.Forms
             this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "SQLExpressionDialog";
+            this.Name = "SqlExpressionDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.panel1.ResumeLayout(false);
@@ -88,7 +83,7 @@ namespace DotSpatial.Symbology.Forms
         private Button btnCancel;
         private Button btnOk;
         private Panel panel1;
-        private SQLQueryControl sqlQueryControl1;
+        private SqlQueryControl sqlQueryControl1;
 
 
     }

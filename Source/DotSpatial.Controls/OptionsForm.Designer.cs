@@ -53,7 +53,7 @@ namespace DotSpatial.Controls
             this.btOk.Name = "btOk";
             this.toolTip1.SetToolTip(this.btOk, resources.GetString("btOk.ToolTip"));
             this.btOk.UseVisualStyleBackColor = true;
-            this.btOk.Click += new System.EventHandler(this.btOk_Click);
+            this.btOk.Click += new System.EventHandler(this.BtOkClick);
             // 
             // btCancel
             // 

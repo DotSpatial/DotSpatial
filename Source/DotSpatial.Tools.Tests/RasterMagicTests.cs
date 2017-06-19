@@ -1,28 +1,37 @@
-﻿using System.IO;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Tools.Tests
 {
+    /// <summary>
+    /// Tests for RasterMagic.
+    /// </summary>
     [TestFixture]
-    class RasterMagicTests
+    internal class RasterMagicTests
     {
+        /// <summary>
+        /// Tests that the output of the raster math operation has the same bounds as the input.
+        /// </summary>
         [Test]
-        public void RasterMath_OutputHasSameBounds()
+        public void RasterMathOutputHasSameBounds()
         {
             // Prepare input raster
-            const double xllcorner = 3267132.224761;
-            const double yllcorner = 5326939.203029;
-            const int ncols = 39;
-            const int nrows = 57;
-            const double cellsize = 500;
-            const double x2 = xllcorner + (cellsize * ncols);
-            const double y2 = yllcorner + (cellsize * nrows);
-            var myExtent = new Extent(xllcorner, yllcorner, x2, y2);
-            var source = new Raster<int>(nrows, ncols)
+            const double Xllcorner = 3267132.224761;
+            const double Yllcorner = 5326939.203029;
+            const int Ncols = 39;
+            const int Nrows = 57;
+            const double Cellsize = 500;
+            const double X2 = Xllcorner + (Cellsize * Ncols);
+            const double Y2 = Yllcorner + (Cellsize * Nrows);
+            var myExtent = new Extent(Xllcorner, Yllcorner, X2, Y2);
+            var source = new Raster<int>(Nrows, Ncols)
             {
-                Bounds = new RasterBounds(nrows, ncols, myExtent),
+                Bounds = new RasterBounds(Nrows, Ncols, myExtent),
                 NoDataValue = -9999
             };
             var mRow = source.Bounds.NumRows;
@@ -38,7 +47,7 @@ namespace DotSpatial.Tools.Tests
             }
 
             var target = new RasterMultiply();
-            IRaster outRaster = new Raster {Filename = FileTools.GetTempFileName(".bgd")};
+            IRaster outRaster = new Raster { Filename = FileTools.GetTempFileName(".bgd") };
             target.Execute(source, source, outRaster, new MockProgressHandler());
             outRaster = Raster.Open(outRaster.Filename);
             File.Delete(outRaster.Filename);

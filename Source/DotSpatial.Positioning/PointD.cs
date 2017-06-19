@@ -486,7 +486,7 @@ namespace DotSpatial.Positioning
         public PointD Add(PointD offset)
         {
             return new PointD(_x + offset.X, _y + offset.Y);
-            //return Offset(offset.X, offset.Y);
+            // return Offset(offset.X, offset.Y);
         }
 
         /// <summary>

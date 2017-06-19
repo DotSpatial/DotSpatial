@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/18/2009 2:23:17 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using GeoAPI.Geometries;
@@ -31,11 +21,22 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this item is actively supporting selection.
+        /// </summary>
+        bool SelectionEnabled { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// Removes any members from existing in the selected state
+        /// Removes any members from existing in the selected state.
         /// </summary>
+        /// <param name="affectedArea">The affected area.</param>
+        /// <returns>Boolean, true if members were removed from the selection</returns>
         bool ClearSelection(out Envelope affectedArea);
 
         /// <summary>
@@ -68,15 +69,6 @@ namespace DotSpatial.Symbology
         /// <param name="affectedArea">The geographic region containing all the shapes that were altered</param>
         /// <returns>Boolean, true if any members were removed from the selection</returns>
         bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the Boolean indicating whether this item is actively supporting selection
-        /// </summary>
-        bool SelectionEnabled { get; set; }
 
         #endregion
     }

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace DotSpatial.Modeling.Forms
@@ -5,6 +6,8 @@ namespace DotSpatial.Modeling.Forms
     public partial class ToolDialog
     {
         #region Windows Form Designer generated code
+        private readonly IContainer components = null;
+
         private SplitContainer splitContainer1;
         private Panel panelOkCancel;
         private Button btnCancel;
@@ -71,7 +74,7 @@ namespace DotSpatial.Modeling.Forms
             this.panelElementContainer.Name = "panelElementContainer";
             this.panelElementContainer.Size = new System.Drawing.Size(527, 442);
             this.panelElementContainer.TabIndex = 2;
-            this.panelElementContainer.Click += new System.EventHandler(this.otherElement_Click);
+            this.panelElementContainer.Click += new System.EventHandler(this.OtherElementClick);
             // 
             // panelOkCancel
             // 
@@ -84,7 +87,7 @@ namespace DotSpatial.Modeling.Forms
             this.panelOkCancel.Name = "panelOkCancel";
             this.panelOkCancel.Size = new System.Drawing.Size(527, 34);
             this.panelOkCancel.TabIndex = 1;
-            this.panelOkCancel.Click += new System.EventHandler(this.otherElement_Click);
+            this.panelOkCancel.Click += new System.EventHandler(this.OtherElementClick);
             // 
             // helpHyperlink
             // 
@@ -96,7 +99,7 @@ namespace DotSpatial.Modeling.Forms
             this.helpHyperlink.TabIndex = 2;
             // this.helpHyperlink.TabStop = true;
             this.helpHyperlink.Text = "Tool Help";
-            this.helpHyperlink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.helpHyperlink_LinkClicked);
+            this.helpHyperlink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.HelpHyperlinkLinkClicked);
             // 
             // btnCancel
             // 
@@ -107,7 +110,7 @@ namespace DotSpatial.Modeling.Forms
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancelClick);
             // 
             // btnOK
             // 
@@ -117,7 +120,7 @@ namespace DotSpatial.Modeling.Forms
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new System.EventHandler(this.BtnOkClick);
             // 
             // panelHelp
             // 
@@ -129,7 +132,7 @@ namespace DotSpatial.Modeling.Forms
             this.panelHelp.Name = "panelHelp";
             this.panelHelp.Size = new System.Drawing.Size(261, 476);
             this.panelHelp.TabIndex = 0;
-            this.panelHelp.SizeChanged += new System.EventHandler(this.panelHelp_SizeChanged);
+            this.panelHelp.SizeChanged += new System.EventHandler(this.PanelHelpSizeChanged);
             // 
             // panelToolIcon
             // 
@@ -139,7 +142,7 @@ namespace DotSpatial.Modeling.Forms
             this.panelToolIcon.Name = "panelToolIcon";
             this.panelToolIcon.Size = new System.Drawing.Size(32, 32);
             this.panelToolIcon.TabIndex = 2;
-            this.panelToolIcon.Click += new System.EventHandler(this.otherElement_Click);
+            this.panelToolIcon.Click += new System.EventHandler(this.OtherElementClick);
             // 
             // pnlHelpImage
             // 
@@ -187,7 +190,7 @@ namespace DotSpatial.Modeling.Forms
             this.Name = "ToolDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ToolDialog";
-            this.Click += new System.EventHandler(this.otherElement_Click);
+            this.Click += new System.EventHandler(this.OtherElementClick);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);

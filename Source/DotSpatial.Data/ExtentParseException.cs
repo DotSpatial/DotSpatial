@@ -1,25 +1,18 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/14/2009 3:58:48 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Runtime.Serialization;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// ExtentParseException
+    /// </summary>
     public class ExtentParseException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the ExtentParseException
+        /// Initializes a new instance of the <see cref="ExtentParseException"/> class.
         /// </summary>
         /// <param name="message">The string message to parse.</param>
         public ExtentParseException(string message)
@@ -28,7 +21,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the ExtentParseException
+        /// Initializes a new instance of the <see cref="ExtentParseException"/> class.
         /// </summary>
         /// <param name="message">The string message to parse.</param>
         /// <param name="innerException">The inner exception that caused this exception.</param>
@@ -38,7 +31,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the ExtentParseException
+        /// Initializes a new instance of the <see cref="ExtentParseException"/> class.
         /// </summary>
         /// <param name="info">The Serialization info class that holds the serialized object about which
         /// the exception is being thrown.</param>
@@ -50,7 +43,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the string expression that provoked the exception.
+        /// Gets or sets the string expression that provoked the exception.
         /// </summary>
         public string Expression { get; set; }
     }

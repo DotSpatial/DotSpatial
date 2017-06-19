@@ -1,10 +1,12 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// A geometric angle mesured in degrees or radians
-    /// the angle will wrap around, so setting larger values will
+    /// A geometric angle mesured in degrees or radians the angle will wrap around, so setting larger values will
     /// result in an appropriate angle.
     /// </summary>
     public struct Angle
@@ -14,15 +16,17 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// The value of 3.14159 or whatever from Math.PI
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public const double PI = Math.PI;
-        double _rad;
+
+        private double _rad;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of an angle with the radians specified
+        /// Initializes a new instance of the <see cref="Angle"/> struct with the radians specified.
         /// </summary>
         /// <param name="radians">The angle in radians</param>
         public Angle(double radians)
@@ -32,6 +36,7 @@ namespace DotSpatial.NTSExtension
                 _rad = radians % (Math.PI * 2);
                 return;
             }
+
             _rad = radians;
         }
 
@@ -48,6 +53,7 @@ namespace DotSpatial.NTSExtension
             {
                 return _rad * 180 / Math.PI;
             }
+
             set
             {
                 if (value > 360 || value < -360)
@@ -55,6 +61,7 @@ namespace DotSpatial.NTSExtension
                     _rad = (value % 360) * Math.PI / 180;
                     return;
                 }
+
                 _rad = value * Math.PI / 180;
             }
         }
@@ -71,26 +78,30 @@ namespace DotSpatial.NTSExtension
                 {
                     return 360 + dg;
                 }
+
                 return dg;
             }
+
             set
             {
                 double dg = value;
 
                 if (value > 360 || value < -360)
                 {
-                    dg = (dg % 360);
+                    dg = dg % 360;
                 }
+
                 if (dg < 360)
                 {
                     dg = 360 - dg;
                 }
+
                 _rad = dg * Math.PI / 180;
             }
         }
 
         /// <summary>
-        /// Only allows values from -2PI to 2PI.
+        /// Gets or sets the radians. Only allows values from -2PI to 2PI.
         /// </summary>
         public double Radians
         {
@@ -98,6 +109,7 @@ namespace DotSpatial.NTSExtension
             {
                 return _rad;
             }
+
             set
             {
                 if (value > 2 * Math.PI || value < -2 * Math.PI)
@@ -105,50 +117,12 @@ namespace DotSpatial.NTSExtension
                     _rad = value % (Math.PI * 2);
                     return;
                 }
+
                 _rad = value;
             }
         }
 
         #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Returns a new instance of the Angle class with the same angle as this object.
-        /// </summary>
-        /// <returns>Angle which has the same values</returns>
-        public Angle Copy()
-        {
-            Angle newAngle = new Angle(_rad);
-            return newAngle;
-        }
-
-        /// <summary>
-        /// False for anything that is not an angle.
-        /// Tests two angles to see if they have the same value.
-        /// </summary>
-        /// <param name="obj">An object to test.</param>
-        /// <returns>Boolean, true if the angles have the same value.</returns>
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != typeof(Angle)) return false;
-            Angle a = (Angle)obj;
-            if (a.Radians == Radians) return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Gets a hash code
-        /// </summary>
-        /// <returns>Int hash code</returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        #endregion
-
-        #region ---------------------- Operators ---------------------------
 
         /// <summary>
         /// Returns a new angle object with an angle of Value in radians
@@ -178,7 +152,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>Boolean, true if they are equal.</returns>
         public static bool operator ==(Angle a, Angle b)
         {
-            return (a.Radians == b.Radians);
+            return a.Radians == b.Radians;
         }
 
         /// <summary>
@@ -189,7 +163,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>Boolean, true if they are equal.</returns>
         public static bool operator !=(Angle a, Angle b)
         {
-            return (a.Radians != b.Radians);
+            return a.Radians != b.Radians;
         }
 
         /// <summary>
@@ -235,10 +209,6 @@ namespace DotSpatial.NTSExtension
         {
             return new Angle(a.Radians * b.Radians);
         }
-
-        #endregion
-
-        #region -------------------- TRIG OVERLOADS -------------------------
 
         /// <summary>
         /// Returns the mathematical Cos of the angle specified
@@ -298,6 +268,42 @@ namespace DotSpatial.NTSExtension
         public static Angle ASin(double value)
         {
             return new Angle(Math.Asin(value));
+        }
+
+        #region Methods
+
+        /// <summary>
+        /// Returns a new instance of the Angle class with the same angle as this object.
+        /// </summary>
+        /// <returns>Angle which has the same values</returns>
+        public Angle Copy()
+        {
+            Angle newAngle = new Angle(_rad);
+            return newAngle;
+        }
+
+        /// <summary>
+        /// False for anything that is not an angle.
+        /// Tests two angles to see if they have the same value.
+        /// </summary>
+        /// <param name="obj">An object to test.</param>
+        /// <returns>Boolean, true if the angles have the same value.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (obj.GetType() != typeof(Angle)) return false;
+            Angle a = (Angle)obj;
+            if (a.Radians == Radians) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a hash code
+        /// </summary>
+        /// <returns>Int hash code</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         #endregion

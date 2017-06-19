@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 10/14/2008 8:46:23 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Data
 {
@@ -19,9 +9,36 @@ namespace DotSpatial.Data
     /// </summary>
     public class DotNetImageProvider : IImageDataProvider
     {
-        #region Private Variables
+        #region Properties
 
-        private IProgressHandler _prog;
+        /// <summary>
+        /// Gets a basic description of what your provider does.
+        /// </summary>
+        public string Description => "A Dot Net Image object driven image handling system.";
+
+        /// <summary>
+        /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
+        /// by the | symbol. Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
+        /// on this object.
+        /// </summary>
+        public string DialogReadFilter => "Images|*.bmp;*.emf;*.exf;*.gif;*.ico;*.jpg;*.mbp;*.png;*.tif;*.wmf|Bitmap|*.bmp";
+
+        /// <summary>
+        /// Gets a dialog filter that lists each of the file type descriptions and extensions for a Save File Dialog.
+        /// Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided on this object.
+        /// </summary>
+        public string DialogWriteFilter => "Images|*.bmp;*.emf;*.exf;*.gif;*.ico;*.jpg;*.mbp;*.png;*.tif;*.wmf|Bitmap|*.bmp";
+
+        /// <summary>
+        /// Gets a prefereably short name that identifies this data provider. Example might be GDAL.
+        /// This will be prepended to each of the DialogReadFilter members from this plugin.
+        /// </summary>
+        public string Name => "DotNet Image";
+
+        /// <summary>
+        /// Gets or sets the progress handler.
+        /// </summary>
+        public IProgressHandler ProgressHandler { get; set; }
 
         #endregion
 
@@ -47,7 +64,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens a new Image with the specified fileName
+        /// Opens a new Image with the specified fileName.
         /// </summary>
         /// <param name="fileName">The string file to open</param>
         /// <returns>An IImageData object</returns>
@@ -57,67 +74,15 @@ namespace DotSpatial.Data
             return data;
         }
 
+        /// <summary>
+        /// Opens a new Image with the specified fileName.
+        /// </summary>
+        /// <param name="fileName">The string file to open</param>
+        /// <returns>An IDataSet object</returns>
         IDataSet IDataProvider.Open(string fileName)
         {
             InRamImageData data = new InRamImageData(fileName);
             return data;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
-        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
-        /// on this object.
-        /// </summary>
-        public string DialogReadFilter
-        {
-            get
-            {
-                return "Images|*.bmp;*.emf;*.exf;*.gif;*.ico;*.jpg;*.mbp;*.png;*.tif;*.wmf" +
-                       "|Bitmap | *.bmp";
-            }
-        }
-
-        /// <summary>
-        /// Gets a dialog filter that lists each of the file type descriptions and extensions for a Save File Dialog.
-        /// Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided on this object.
-        /// </summary>
-        public string DialogWriteFilter
-        {
-            get
-            {
-                return "Images|*.bmp;*.emf;*.exf;*.gif;*.ico;*.jpg;*.mbp;*.png;*.tif;*.wmf" +
-                       "|Bitmap | *.bmp";
-            }
-        }
-
-        /// <summary>
-        /// Gets a prefereably short name that identifies this data provider.  Example might be GDAL.
-        /// This will be prepended to each of the DialogReadFilter members from this plugin.
-        /// </summary>
-        public string Name
-        {
-            get { return "DotNet Image"; }
-        }
-
-        /// <summary>
-        /// This provides a basic description of what your provider does.
-        /// </summary>
-        public string Description
-        {
-            get { return "A Dot Net Image object driven image handling system."; }
-        }
-
-        /// <summary>
-        /// Gets or sets the progress handler
-        /// </summary>
-        public IProgressHandler ProgressHandler
-        {
-            get { return _prog; }
-            set { _prog = value; }
         }
 
         #endregion

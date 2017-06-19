@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/24/2009 8:43:21 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using DotSpatial.Data;
@@ -38,6 +28,7 @@ namespace DotSpatial.Symbology
             {
                 self.Add(f);
             }
+
             self.ResumeChanges();
         }
 
@@ -68,11 +59,12 @@ namespace DotSpatial.Symbology
             {
                 self.Remove(f);
             }
+
             self.ResumeChanges();
         }
 
         /// <summary>
-        /// Tests each member currently in the selected features based on the SelectionMode. 
+        /// Tests each member currently in the selected features based on the SelectionMode.
         /// If it passes, it will remove the feature from the selection.
         /// </summary>
         /// <param name="self">The IFeatureSelection that this should be applied to.</param>

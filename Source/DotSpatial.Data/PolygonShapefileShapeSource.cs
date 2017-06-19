@@ -1,22 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 10/10/2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |-----------------|----------|---------------------------------------------------------------------
-// |      Name       |  Date    |                        Comments
-// |-----------------|----------|----------------------------------------------------------------------
-// | Kyle Ellison    |10/13/2010| Performance improvement. Keep shx cached during repeated GetShapes calls
-// | Kyle Ellison    |12/02/2010| Pushed common code into base class and derived from it.
-// | Kyle Ellison    |12/15/2010| Added method to get multiple shapes by index values, and consolidated code.
-// |-----------------|----------|----------------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.IO;
 using GeoAPI.Geometries;
@@ -29,8 +12,10 @@ namespace DotSpatial.Data
     /// </summary>
     public class PolygonShapefileShapeSource : ShapefileShapeSource
     {
+        #region Constructors
+
         /// <summary>
-        /// Creates a new instance of the PolygonShapefileShapeSource with the specified polygon
+        /// Initializes a new instance of the <see cref="PolygonShapefileShapeSource"/> class with the specified polygon
         /// shapefile as the source.
         /// </summary>
         /// <param name="fileName">The string fileName</param>
@@ -40,67 +25,68 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new instance of the PolygonShapefileShapeSource with the specified polygon shapefile as the source and provided indices
+        /// Initializes a new instance of the <see cref="PolygonShapefileShapeSource"/> class with the specified polygon shapefile as the source and provided indices
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="spatialIndex"></param>
-        /// <param name="shx"></param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="spatialIndex">The spatial index.</param>
+        /// <param name="shx">The shapefile index file.</param>
         public PolygonShapefileShapeSource(string fileName, ISpatialIndex<int> spatialIndex, ShapefileIndexFile shx)
             : base(fileName, spatialIndex, shx)
         {
         }
 
-        /// <inheritdocs/>
-        protected override ShapeType ShapeType
-        {
-            get { return ShapeType.Polygon; }
-        }
+        #endregion
 
-        /// <inheritdocs/>
-        protected override ShapeType ShapeTypeM
-        {
-            get { return ShapeType.PolygonM; }
-        }
+        #region Properties
 
-        /// <inheritdocs/>
-        protected override ShapeType ShapeTypeZ
-        {
-            get { return ShapeType.PolygonZ; }
-        }
+        /// <inheritdoc />
+        public override FeatureType FeatureType => FeatureType.Polygon;
 
-        /// <inheritdocs/>
-        public override FeatureType FeatureType
-        {
-            get { return FeatureType.Polygon; }
-        }
+        /// <inheritdoc />
+        protected override ShapeType ShapeType => ShapeType.Polygon;
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
+        protected override ShapeType ShapeTypeM => ShapeType.PolygonM;
+
+        /// <inheritdoc />
+        protected override ShapeType ShapeTypeZ => ShapeType.PolygonZ;
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         protected override Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, Envelope envelope)
         {
             // Read from the index file because some deleted records
             // might still exist in the .shp file.
-            long offset = (shx.Shapes[shp].ByteOffset);
+            long offset = shx.Shapes[shp].ByteOffset;
             fs.Seek(offset, SeekOrigin.Begin);
-            // Position     Value               Type        Number      Byte Order
-            ShapeRange shape = new ShapeRange(FeatureType.Polygon); //--------------------------------------------------------------------
-            shape.RecordNumber = fs.ReadInt32(Endian.BigEndian);     // Byte 0       Record Number       Integer     1           Big
-            shape.ContentLength = fs.ReadInt32(Endian.BigEndian);    // Byte 4       Content Length      Integer     1           Big
-            shape.ShapeType = (ShapeType)fs.ReadInt32(); // Byte 8       Shape Type          Integer     1           Little
-            shape.StartIndex = 0;
+
+            ShapeRange shape = new ShapeRange(FeatureType.Polygon) // Position     Value               Type        Number      Byte Order
+            {
+                RecordNumber = fs.ReadInt32(Endian.BigEndian),     // Byte 0       Record Number       Integer     1           Big
+                ContentLength = fs.ReadInt32(Endian.BigEndian),    // Byte 4       Content Length      Integer     1           Big
+                ShapeType = (ShapeType)fs.ReadInt32(),             // Byte 8       Shape Type          Integer     1           Little
+                StartIndex = 0
+            };
+
             if (shape.ShapeType == ShapeType.NullShape)
             {
                 return null;
             }
 
-            Shape myShape = new Shape();
-            myShape.Range = shape;
+            Shape myShape = new Shape
+            {
+                Range = shape
+            };
 
-            //bbReader.Read(allBounds, shp*32, 32);
-            double xMin = fs.ReadDouble();                // Byte 12      Xmin                Double      1           Little
-            double yMin = fs.ReadDouble();                // Byte 20      Ymin                Double      1           Little
-            double xMax = fs.ReadDouble();                // Byte 28      Xmax                Double      1           Little
-            double yMax = fs.ReadDouble();                // Byte 36      Ymax                Double      1           Little
+            double xMin = fs.ReadDouble(); // Byte 12      Xmin                Double      1           Little
+            double yMin = fs.ReadDouble(); // Byte 20      Ymin                Double      1           Little
+            double xMax = fs.ReadDouble(); // Byte 28      Xmax                Double      1           Little
+            double yMax = fs.ReadDouble(); // Byte 36      Ymax                Double      1           Little
             shape.Extent = new Extent(xMin, yMin, xMax, yMax);
+
             // Don't add this shape to the result
             if (envelope != null)
             {
@@ -110,12 +96,11 @@ namespace DotSpatial.Data
                 }
             }
 
-            shape.NumParts = fs.ReadInt32();              // Byte 44      NumParts            Integer     1           Little
-            //feature.NumPoints = bbReader.ReadInt32();             // Byte 48      NumPoints           Integer     1           Little
-            shape.NumPoints = fs.ReadInt32();
+            shape.NumParts = fs.ReadInt32(); // Byte 44      NumParts            Integer     1           Little
+            shape.NumPoints = fs.ReadInt32();             // Byte 48      NumPoints           Integer     1           Little
 
             // Create an envelope from the extents box in the file.
-            //feature.Envelope = new Envelope(xMin, xMax, yMin, yMax);
+            // feature.Envelope = new Envelope(xMin, xMax, yMin, yMax);
             int[] partIndices = fs.ReadInt32(shape.NumParts);
             myShape.Vertices = fs.ReadDouble(shape.NumPoints * 2);
 
@@ -124,7 +109,7 @@ namespace DotSpatial.Data
                 // These are listed as "optional" but there isn't a good indicator of how to determine if they were added.
                 // To handle the "optional" M values, check the contentLength for the feature.
                 // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
+                if (shape.ContentLength * 2 > 44 + (4 * shape.NumParts) + (16 * shape.NumPoints))
                 {
                     myShape.MinM = fs.ReadDouble();
                     myShape.MaxM = fs.ReadDouble();
@@ -135,9 +120,10 @@ namespace DotSpatial.Data
             }
             else if (header.ShapeType == ShapeType.PolygonZ)
             {
-                bool hasM = shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints;
+                bool hasM = shape.ContentLength * 2 > 60 + (4 * shape.NumParts) + (24 * shape.NumPoints);
                 myShape.MinZ = fs.ReadDouble();
                 myShape.MaxZ = fs.ReadDouble();
+
                 // For Z shapefiles, the Z part is not optional.
                 myShape.Z = fs.ReadDouble(shape.NumPoints);
 
@@ -149,10 +135,12 @@ namespace DotSpatial.Data
                     myShape.MinM = fs.ReadDouble();
                     myShape.MaxM = fs.ReadDouble();
                     myShape.M = fs.ReadDouble(shape.NumPoints);
-                    shape.Extent = new ExtentMZ(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
+                    shape.Extent = new ExtentMz(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
                 }
                 else
-                    shape.Extent = new ExtentMZ(shape.Extent.MinX, shape.Extent.MinY, double.MaxValue, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, double.MinValue, myShape.MaxZ);
+                {
+                    shape.Extent = new ExtentMz(shape.Extent.MinX, shape.Extent.MinY, double.MaxValue, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, double.MinValue, myShape.MaxZ);
+                }
             }
 
             myShape.Range = shape;
@@ -165,11 +153,17 @@ namespace DotSpatial.Data
                 {
                     pointCount = partIndices[part + 1] - partOff;
                 }
-                PartRange partR = new PartRange(myShape.Vertices, 0, partOff, FeatureType.Polygon) { NumVertices = pointCount };
+
+                PartRange partR = new PartRange(myShape.Vertices, 0, partOff, FeatureType.Polygon)
+                {
+                    NumVertices = pointCount
+                };
                 shape.Parts.Add(partR);
             }
 
             return myShape;
         }
+
+        #endregion
     }
 }

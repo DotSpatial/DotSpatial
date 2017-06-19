@@ -218,7 +218,7 @@
     <value>Kollisionen vermeiden</value>
   </data>
   <data name="chkPreventCollision.ToolTip" xml:space="preserve">
-    <value>Wenn diese Option nicht aktiviert ist, werden hohe Priorität Etiketten über niedrige Priorität Etiketten gezeichnet.  Wenn es aktiviert ist, wird nur die höhere Priorität-Bezeichnung der zwei überlappende Beschriftungen platziert werden.</value>
+    <value>Wenn diese Option nicht aktiviert ist, werden hohe Priorität Etiketten über niedrige Priorität Etiketten gezeichnet. Wenn es aktiviert ist, wird nur die höhere Priorität-Bezeichnung der zwei überlappende Beschriftungen platziert werden.</value>
   </data>
   <data name="lblPriorityField.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 13</value>
@@ -230,7 +230,7 @@
     <value>107, 246</value>
   </data>
   <data name="cmbPriorityField.ToolTip" xml:space="preserve">
-    <value>Standardmäßig wird der FID verwendet, um Etiketten zu priorisieren.  Dadurch können die Werte aus einem Feld stattdessen verwendet werden.</value>
+    <value>Standardmäßig wird der FID verwendet, um Etiketten zu priorisieren. Dadurch können die Werte aus einem Feld stattdessen verwendet werden.</value>
   </data>
   <data name="chkBorder.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 17</value>
@@ -424,7 +424,7 @@
     <value>Anwenden</value>
   </data>
   <data name="lblHelp.Text" xml:space="preserve">
-    <value>Jede Gruppe Symbol kann viele Mitglieder haben.  Verwendung der Member Seite zum Hinzufügen oder Entfernen von Mitgliedern manuell oder auf Basis eines Feld-Eigenschaften.  Wenn keine Mitglieder in der Gruppierung Liste angezeigt werden, sollten Sie zuerst die Etiketten aus einer bestehenden Gruppe entfernen.</value>
+    <value>Jede Gruppe Symbol kann viele Mitglieder haben. Verwendung der Member Seite zum Hinzufügen oder Entfernen von Mitgliedern manuell oder auf Basis eines Feld-Eigenschaften. Wenn keine Mitglieder in der Gruppierung Liste angezeigt werden, sollten Sie zuerst die Etiketten aus einer bestehenden Gruppe entfernen.</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 464</value>

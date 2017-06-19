@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/11/2009 12:24:28 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -21,10 +11,11 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Common symbolizer for features.
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)), Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class FeatureSymbolizer : LegendItem, IFeatureSymbolizer
     {
-        #region Private Variables
+        #region Fields
 
         private bool _isVisible;
         private ScaleMode _scaleMode;
@@ -36,7 +27,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of FeatureSymbolizer
+        /// Initializes a new instance of the <see cref="FeatureSymbolizer"/> class.
         /// </summary>
         protected FeatureSymbolizer()
         {
@@ -48,7 +39,93 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this specific feature should be drawn.
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Gets or sets a boolean indicating whether or not this should be drawn.")]
+        [Serialize("IsVisible")]
+        public virtual bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                _isVisible = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets a ScaleModes enumeration that determines whether non-coordinate drawing
+        /// properties like width or size use pixels or world coordinates. If pixels are
+        /// specified, a back transform is used to approximate pixel sizes.
+        /// </summary>
+        [Serialize("ScaleModes")]
+        public virtual ScaleMode ScaleMode
+        {
+            get
+            {
+                return _scaleMode;
+            }
+
+            set
+            {
+                _scaleMode = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether things should be anti-aliased. By default this is set to antialias.
+        /// </summary>
+        [Serialize("Smoothing")]
+        public virtual bool Smoothing
+        {
+            get
+            {
+                return _smoothing;
+            }
+
+            set
+            {
+                _smoothing = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the graphics unit to work with.
+        /// </summary>
+        [Serialize("Units")]
+        public GraphicsUnit Units
+        {
+            get
+            {
+                return _unit;
+            }
+
+            set
+            {
+                _unit = value;
+            }
+        }
+
+        #endregion
+
         #region Methods
+
+        /// <summary>
+        /// Draws a simple rectangle in the specified location.
+        /// </summary>
+        /// <param name="g">The graphics object used for drawing.</param>
+        /// <param name="target">The rectangle that gets drawn.</param>
+        public virtual void Draw(Graphics g, Rectangle target)
+        {
+            g.DrawRectangle(Pens.Black, target);
+        }
 
         /// <summary>
         /// Sets the outline, assuming that the symbolizer either supports outlines, or
@@ -62,16 +139,6 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Draws a simple rectangle in the specified location.
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="target"></param>
-        public virtual void Draw(Graphics g, Rectangle target)
-        {
-            g.DrawRectangle(Pens.Black, target);
-        }
-
-        /// <summary>
         /// Occurs during the copy properties method, when copying properties from the source symbolizer
         /// to this symbolizer.
         /// </summary>
@@ -80,60 +147,6 @@ namespace DotSpatial.Symbology
         {
             base.OnCopyProperties(source);
             OnItemChanged();
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets a boolean indicating whether or not this specific feature should be drawn.
-        /// </summary>
-        [Category("Appearance"), Description("Gets or sets a boolean indicating whether or not this should be drawn.")]
-        [Serialize("IsVisible")]
-        public virtual bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or Sets a ScaleModes enumeration that determines whether non-coordinate drawing
-        /// properties like width or size use pixels or world coordinates.  If pixels are
-        /// specified, a back transform is used to approximate pixel sizes.
-        /// </summary>
-        [Serialize("ScaleModes")]
-        public virtual ScaleMode ScaleMode
-        {
-            get { return _scaleMode; }
-            set { _scaleMode = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the smoothing mode to use that controls advanced features like
-        /// anti-aliasing.  By default this is set to antialias.
-        /// </summary>
-        [Serialize("Smoothing")]
-        public virtual bool Smoothing
-        {
-            get { return _smoothing; }
-            set { _smoothing = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the graphics unit to work with.
-        /// </summary>
-        [Serialize("Units")]
-        public GraphicsUnit Units
-        {
-            get { return _unit; }
-            set { _unit = value; }
         }
 
         #endregion

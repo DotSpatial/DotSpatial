@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -26,18 +12,13 @@ namespace DotSpatial.Positioning.Design
     /// <summary>
     /// Type converter for angles in radians
     /// </summary>
+    // The Original Code is from http://geoframework.codeplex.com/ version 2.0
     public sealed class RadianConverter : PositioningNumericObjectConverter
     {
-        /// <inheritdoc/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Radian";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Radian";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
@@ -48,9 +29,8 @@ namespace DotSpatial.Positioning.Design
                 Type sourceType = value.GetType();
 
                 // Get the properties needed to generate a constructor
-                object[] constructorParameters = new[] {
-                                                           sourceType.GetProperty("Value").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double) };
+                object[] constructorParameters = { sourceType.GetProperty("Value").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = sourceType.GetConstructor(constructorTypes);

@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Drawing.PredefinedSymbols.dll Alpha
-// Description:  The basic module for PredefinedSymbolControl version 6.0
-// ********************************************************************************************************
-//
-// The Original Code is from DotSpatial.Drawing.PredefinedSymbols.dll version 6.0
-//
-// The Initial Developer of this Original Code is Jiri Kadlec. Created 5/15/2009 9:56:44 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -26,51 +16,31 @@ namespace DotSpatial.Symbology.Forms
     [DefaultEvent("SymbolSelected")]
     public class PredefinedLineSymbolControl : VerticalScrollControl
     {
-        #region Public Events
-
-        /// <summary>
-        /// Occurs when a symbol is selected
-        /// </summary>
-        public event EventHandler SymbolSelected;
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private readonly IWindowsFormsEditorService _editorService;
         private readonly CustomLineSymbolProvider _provider;
-        private int _cellMargin;
         private Size _cellSize;
-        private string _defaultCategoryFilter = "All";
-        private bool _dynamicColumns;
         private bool _isSelected;
         private string _mapCategory;
-        private int _numColumns;
         private int _selectedIndex = -1;
-        private Color _selectionBackColor;
-        private Color _selectionForeColor;
-        private bool _showSymbolNames = true;
-        private List<CustomLineSymbolizer> _symbolizerList;
-        private Font _textFont;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the predefined symbol control.
+        /// Initializes a new instance of the <see cref="PredefinedLineSymbolControl"/> class.
         /// </summary>
         public PredefinedLineSymbolControl()
         {
-            _symbolizerList = new List<CustomLineSymbolizer>();
+            SymbolizerList = new List<CustomLineSymbolizer>();
             _provider = new CustomLineSymbolProvider();
-            //_symbolizerList = _provider.GetAllSymbols();
-
             Configure();
         }
 
         /// <summary>
-        /// Creates a new instance of the predefined symbol control that uses the specific symbol provider
+        /// Initializes a new instance of the <see cref="PredefinedLineSymbolControl"/> class that uses the specific symbol provider.
         /// </summary>
         /// <param name="prov">The provider class that is used to retrieve the predefined custom symbols from
         /// the XML file or another data source</param>
@@ -80,58 +50,78 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Creates a new instance of a Predefined symbol control designed to display a list of specific symbolizer
+        /// Initializes a new instance of the <see cref="PredefinedLineSymbolControl"/> class.
         /// </summary>
-        /// <param name="editorService"></param>
-        /// <param name="symbols"></param>
+        /// <param name="editorService">The windows forms editor service.</param>
+        /// <param name="symbols">The custom line symbolizers.</param>
         public PredefinedLineSymbolControl(IWindowsFormsEditorService editorService, List<CustomLineSymbolizer> symbols)
         {
             _editorService = editorService;
             _provider = new CustomLineSymbolProvider();
-            _symbolizerList = symbols;
+            SymbolizerList = symbols;
             Configure();
-        }
-
-        private void Configure()
-        {
-            _symbolizerList = _provider.GetAllSymbols();
-
-            _cellSize = new Size(50, 50);
-            _textFont = new Font("Arial", 9);
-            _cellMargin = 4;
-            _numColumns = GetMaxNumColumns();
-            _dynamicColumns = true;
-            _selectionBackColor = Color.LightGray;
-            _selectionForeColor = Color.White;
-            DocumentRectangle = new Rectangle(0, 0, _cellSize.Width * 16, _cellSize.Height * 16);
-            ResetScroll();
         }
 
         #endregion
 
-        #region Methods
+        #region Events
 
         /// <summary>
-        /// Adds a new symbolizer to the control. The added symbolizer will be selected
-        /// by default
+        /// Occurs when a symbol is selected
         /// </summary>
-        /// <param name="newSymbolizer">The added custom symbolizer</param>
-        public void AddSymbolizer(CustomLineSymbolizer newSymbolizer)
-        {
-            _symbolizerList.Add(newSymbolizer);
-            SelectedIndex = _symbolizerList.Count - 1;
-        }
+        public event EventHandler SymbolSelected;
 
         #endregion
 
         #region Properties
 
         /// <summary>
+        /// Gets or sets the category of symbol displayed in the control.
+        /// </summary>
+        public string CategoryFilter
+        {
+            get
+            {
+                return _mapCategory;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    _mapCategory = string.Empty;
+                }
+                else if (value.ToLower() == DefaultCategoryFilter.ToLower())
+                {
+                    _mapCategory = string.Empty;
+                }
+                else
+                {
+                    _mapCategory = value;
+                }
+
+                SymbolizerList = _provider.GetSymbolsByCategory(_mapCategory);
+                _selectedIndex = 0;
+
+                Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the margin of each symbolizer preview cell in pixels.
+        /// </summary>
+        public int CellMargin { get; set; }
+
+        /// <summary>
         /// Gets or sets the cell size in pixels.
         /// </summary>
         public Size CellSize
         {
-            get { return _cellSize; }
+            get
+            {
+                return _cellSize;
+            }
+
             set
             {
                 _cellSize = value;
@@ -140,16 +130,13 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the margin of each symbolizer preview cell in pixels
+        /// Gets or sets the default category filter. When the 'Category Filter' is set to this value then
+        /// all available custom symbols are displayed.
         /// </summary>
-        public int CellMargin
-        {
-            get { return _cellMargin; }
-            set { _cellMargin = value; }
-        }
+        public string DefaultCategoryFilter { get; set; } = "All";
 
         /// <summary>
-        /// Overrides underlying behavior to hide it in the properties list for this control from serialization
+        /// Gets or sets the document rectangle. This overrides underlying behavior to hide it in the properties list for this control from serialization.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override Rectangle DocumentRectangle
@@ -158,6 +145,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 return base.DocumentRectangle;
             }
+
             set
             {
                 base.DocumentRectangle = value;
@@ -165,74 +153,21 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets the list of custom symbolizers displayed in this control
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<CustomLineSymbolizer> SymbolizerList
-        {
-            get
-            {
-                return _symbolizerList;
-            }
-            set
-            {
-                _symbolizerList = value;
-            }
-        }
-
-        /// <summary>
-        /// When the 'Category Filter' is set to this value then
-        /// all available custom symbols are displayed
-        /// </summary>
-        public string DefaultCategoryFilter
-        {
-            get { return _defaultCategoryFilter; }
-            set { _defaultCategoryFilter = value; }
-        }
-
-        /// <summary>
-        /// Indicates whether the custom symbolizer names should be shown
-        /// </summary>
-        public bool ShowSymbolNames
-        {
-            get { return _showSymbolNames; }
-            set { _showSymbolNames = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the font to use for the text that describes the predifined symbol control
-        /// </summary>
-        public Font TextFont
-        {
-            get
-            {
-                return _textFont;
-            }
-            set
-            {
-                _textFont = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that, if true, indicates that this form should restructure the columns
+        /// Gets or sets a value indicating whether this form should restructure the columns
         /// as it is resized so that all the columns are visible.
         /// </summary>
-        public bool DynamicColumns
-        {
-            get { return _dynamicColumns; }
-            set
-            {
-                _dynamicColumns = value;
-            }
-        }
+        public bool DynamicColumns { get; set; }
 
         /// <summary>
-        /// Gets or sets whether or not a feature symbolizer is selected
+        /// Gets or sets a value indicating whether or not a feature symbolizer is selected.
         /// </summary>
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get
+            {
+                return _isSelected;
+            }
+
             set
             {
                 _isSelected = value;
@@ -244,29 +179,9 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the index of the selected symbolizer item
+        /// Gets the number of columns.
         /// </summary>
-        public int SelectedIndex
-        {
-            get { return _selectedIndex; }
-            set
-            {
-                if (_selectedIndex >= _symbolizerList.Count)
-                {
-                    _selectedIndex = 0;
-                }
-                _selectedIndex = value;
-                OnSymbolSelected();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the number of columns
-        /// </summary>
-        public int NumColumns
-        {
-            get { return _numColumns; }
-        }
+        public int NumColumns { get; private set; }
 
         /// <summary>
         /// Gets the number of rows, which is controlled by having to show 256 cells
@@ -276,109 +191,111 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                if (_numColumns == 0) return _symbolizerList.Count;
-                return (int)Math.Ceiling(_symbolizerList.Count / (double)_numColumns);
+                if (NumColumns == 0) return SymbolizerList.Count;
+                return (int)Math.Ceiling(SymbolizerList.Count / (double)NumColumns);
             }
         }
 
         /// <summary>
-        /// Gets or sets the background color for the selection
+        /// Gets or sets the index of the selected symbolizer item.
         /// </summary>
-        public Color SelectionBackColor
+        public int SelectedIndex
         {
-            get { return _selectionBackColor; }
-            set { _selectionBackColor = value; }
+            get
+            {
+                return _selectedIndex;
+            }
+
+            set
+            {
+                if (_selectedIndex >= SymbolizerList.Count)
+                {
+                    _selectedIndex = 0;
+                }
+
+                _selectedIndex = value;
+                OnSymbolSelected();
+            }
         }
 
         /// <summary>
-        /// The Font Color for the selection
-        /// </summary>
-        public Color SelectionForeColor
-        {
-            get { return _selectionForeColor; }
-            set { _selectionForeColor = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the selected symbolizer
+        /// Gets the selected symbolizer.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CustomLineSymbolizer SelectedSymbolizer
         {
             get
             {
-                if (_symbolizerList.Count == 0 || SelectedIndex < 0)
+                if (SymbolizerList.Count == 0 || SelectedIndex < 0)
                 {
                     return null;
                 }
 
-                if (_selectedIndex >= _symbolizerList.Count)
+                if (_selectedIndex >= SymbolizerList.Count)
                 {
-                    _selectedIndex = _symbolizerList.Count - 1;
+                    _selectedIndex = SymbolizerList.Count - 1;
                 }
-                return _symbolizerList[_selectedIndex];
+
+                return SymbolizerList[_selectedIndex];
             }
         }
 
         /// <summary>
-        /// The category of symbol displayed in the control
+        /// Gets or sets the background color for the selection.
         /// </summary>
-        public string CategoryFilter
-        {
-            get
-            {
-                return _mapCategory;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    _mapCategory = string.Empty;
-                }
-                else if (value.ToLower() == _defaultCategoryFilter.ToLower())
-                {
-                    _mapCategory = String.Empty;
-                }
-                else
-                {
-                    _mapCategory = value;
-                }
-                _symbolizerList = _provider.GetSymbolsByCategory(_mapCategory);
-                _selectedIndex = 0;
+        public Color SelectionBackColor { get; set; }
 
-                Invalidate();
-            }
-        }
+        /// <summary>
+        /// Gets or sets the Font Color for the selection.
+        /// </summary>
+        public Color SelectionForeColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the custom symbolizer names should be shown.
+        /// </summary>
+        public bool ShowSymbolNames { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the list of custom symbolizers displayed in this control.
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public List<CustomLineSymbolizer> SymbolizerList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font to use for the text that describes the predifined symbol control.
+        /// </summary>
+        public Font TextFont { get; set; }
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Checks if the control contains the specified symbolizer
+        /// Adds a new symbolizer to the control. The added symbolizer will be selected by default.
+        /// </summary>
+        /// <param name="newSymbolizer">The added custom symbolizer</param>
+        public void AddSymbolizer(CustomLineSymbolizer newSymbolizer)
+        {
+            SymbolizerList.Add(newSymbolizer);
+            SelectedIndex = SymbolizerList.Count - 1;
+        }
+
+        /// <summary>
+        /// Checks if the control contains the specified symbolizer.
         /// </summary>
         /// <param name="symbolizer">the line symbolizer to be checked</param>
         /// <returns>true if found, false otherwise</returns>
         public bool ContainsSymbolizer(ILineSymbolizer symbolizer)
         {
-            foreach (ILineSymbolizer sym in _symbolizerList)
+            foreach (ILineSymbolizer sym in SymbolizerList)
             {
                 if (symbolizer == sym)
                 {
                     return true;
                 }
             }
-            return false;
-        }
 
-        /// <summary>
-        /// Saves the list of symbolizers to a file using serialization
-        /// (not yet implemented)
-        /// </summary>
-        /// <param name="fileName"></param>
-        public void Save(string fileName)
-        {
-            //_provider.Save(fileName);
+            return false;
         }
 
         /// <summary>
@@ -388,51 +305,21 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="fileName">The file name from which to load</param>
         public void Load(string fileName)
         {
-            //_symbolizerList = (List<CustomLineSymbolizer>)_provider.Load(fileName);
-            //Refresh();
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Handles the situation where a mouse up should show a magnified version of the character.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            if (e.X < 0) return;
-            if (e.Y < 0) return;
-            int col = (e.X + ControlRectangle.X) / _cellSize.Width;
-            int row = (e.Y + ControlRectangle.Y) / _cellSize.Height;
-
-            if ((_numColumns * row + col) < 256)
-            {
-                _isSelected = true;
-                _selectedIndex = (_numColumns * row + col);
-                OnSymbolSelected();
-            }
-            Invalidate();
-            base.OnMouseUp(e);
         }
 
         /// <summary>
-        /// Fires the SymbolSelected event args, and closes a drop down editor if it exists.
+        /// Saves the list of symbolizers to a file using serialization
+        /// (not yet implemented)
         /// </summary>
-        protected virtual void OnSymbolSelected()
+        /// <param name="fileName">The file name to save to.</param>
+        public void Save(string fileName)
         {
-            if (_editorService != null)
-            {
-                _editorService.CloseDropDown();
-            }
-            if (SymbolSelected != null) SymbolSelected(this, EventArgs.Empty);
         }
 
         /// <summary>
         /// Takes place when the control is initialized or invalidated
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnInitialize(PaintEventArgs e)
         {
             if (_cellSize.Width == 0)
@@ -441,42 +328,43 @@ namespace DotSpatial.Symbology.Forms
                 _cellSize.Height = 50;
             }
 
-            if (_textFont == null)
+            if (TextFont == null)
             {
-                _textFont = new Font("Arial", 9);
+                TextFont = new Font("Arial", 9);
             }
 
-            DocumentRectangle = new Rectangle(0, 0, _numColumns * _cellSize.Width + 1, NumRows * _cellSize.Height + 1);
+            DocumentRectangle = new Rectangle(0, 0, (NumColumns * _cellSize.Width) + 1, (NumRows * _cellSize.Height) + 1);
 
-            if (_dynamicColumns)
+            if (DynamicColumns)
             {
                 int newColumns = (Width - 20) / _cellSize.Width;
-                if (newColumns != _numColumns)
+                if (newColumns != NumColumns)
                 {
                     e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle);
-                    _numColumns = newColumns;
+                    NumColumns = newColumns;
                     Invalidate();
                     return;
                 }
             }
-            if (_numColumns == 0)
+
+            if (NumColumns == 0)
             {
-                _numColumns = 1;
+                NumColumns = 1;
             }
 
-            for (int i = 0; i < _symbolizerList.Count; i++)
+            for (int i = 0; i < SymbolizerList.Count; i++)
             {
-                int row = i / _numColumns;
-                int col = i % _numColumns;
+                int row = i / NumColumns;
+                int col = i % NumColumns;
 
-                CustomSymbolizer sym = _symbolizerList[i];
+                CustomSymbolizer sym = SymbolizerList[i];
                 Point pointLocation = new Point(col * _cellSize.Width, row * _cellSize.Height);
                 Rectangle rect = new Rectangle(pointLocation, _cellSize);
                 DrawSymbolizer(e.Graphics, rect, sym);
             }
 
-            Brush backBrush = new SolidBrush(_selectionBackColor);
-            Brush foreBrush = new SolidBrush(_selectionForeColor);
+            Brush backBrush = new SolidBrush(SelectionBackColor);
+            Brush foreBrush = new SolidBrush(SelectionForeColor);
 
             if (_isSelected)
             {
@@ -494,24 +382,60 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
+        /// Handles the situation where a mouse up should show a magnified version of the character.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (e.X < 0) return;
+            if (e.Y < 0) return;
+            int col = (e.X + ControlRectangle.X) / _cellSize.Width;
+            int row = (e.Y + ControlRectangle.Y) / _cellSize.Height;
+
+            if (((NumColumns * row) + col) < 256)
+            {
+                _isSelected = true;
+                _selectedIndex = (NumColumns * row) + col;
+                OnSymbolSelected();
+            }
+
+            Invalidate();
+            base.OnMouseUp(e);
+        }
+
+        /// <summary>
         /// Occurs whenever this control is resized, and forces invalidation of the entire control because
         /// we are completely changing how the paging works.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             Invalidate();
         }
 
-        #endregion
-
-        #region Private Methods
-
-        //gets the maximum available number of columns based on cell margin and width
-        private int GetMaxNumColumns()
+        /// <summary>
+        /// Fires the SymbolSelected event args, and closes a drop down editor if it exists.
+        /// </summary>
+        protected virtual void OnSymbolSelected()
         {
-            return (int)(Width / (double)(_cellSize.Width + _cellMargin));
+            _editorService?.CloseDropDown();
+            SymbolSelected?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Configure()
+        {
+            SymbolizerList = _provider.GetAllSymbols();
+
+            _cellSize = new Size(50, 50);
+            TextFont = new Font("Arial", 9);
+            CellMargin = 4;
+            NumColumns = GetMaxNumColumns();
+            DynamicColumns = true;
+            SelectionBackColor = Color.LightGray;
+            SelectionForeColor = Color.White;
+            DocumentRectangle = new Rectangle(0, 0, _cellSize.Width * 16, _cellSize.Height * 16);
+            ResetScroll();
         }
 
         /// <summary>
@@ -523,38 +447,42 @@ namespace DotSpatial.Symbology.Forms
         private void DrawSymbolizer(Graphics g, Rectangle rect, ICustomSymbolizer sym)
         {
             int textHeight = GetStringHeight(g, sym.Name);
-            int innerCellWidth = _cellSize.Width - 2 * _cellMargin;
-            int innerCellHeight = _cellSize.Height - 2 * _cellMargin - textHeight;
+            int innerCellWidth = _cellSize.Width - (2 * CellMargin);
+            int innerCellHeight = _cellSize.Height - (2 * CellMargin) - textHeight;
 
             Rectangle newRect = new Rectangle(rect.Left + CellMargin, rect.Top + CellMargin, innerCellWidth, innerCellHeight);
             sym.Symbolizer.Draw(g, newRect);
 
-            if (_showSymbolNames)
+            if (ShowSymbolNames)
             {
                 StringFormat fmt = new StringFormat();
-                //fmt.Alignment = StringAlignment.Center;
-                //fmt.LineAlignment = StringAlignment.Center;
-
                 PointF textLocation = new Point(rect.Left, rect.Bottom - textHeight);
-                g.DrawString(sym.Name, _textFont, Brushes.Black, textLocation, fmt);
+                g.DrawString(sym.Name, TextFont, Brushes.Black, textLocation, fmt);
             }
         }
 
-        private int GetStringHeight(Graphics g, string str)
+        // gets the maximum available number of columns based on cell margin and width
+        private int GetMaxNumColumns()
         {
-            if (_showSymbolNames)
-            {
-                return Convert.ToInt32(g.MeasureString(str, _textFont).Height);
-            }
-            return 0;
+            return (int)(Width / (double)(_cellSize.Width + CellMargin));
         }
 
         private Rectangle GetSelectedRectangle()
         {
-            int row = _selectedIndex / _numColumns;
-            int col = _selectedIndex % _numColumns;
+            int row = _selectedIndex / NumColumns;
+            int col = _selectedIndex % NumColumns;
 
             return new Rectangle(col * _cellSize.Width, row * _cellSize.Height, _cellSize.Width, CellSize.Height);
+        }
+
+        private int GetStringHeight(Graphics g, string str)
+        {
+            if (ShowSymbolNames)
+            {
+                return Convert.ToInt32(g.MeasureString(str, TextFont).Height);
+            }
+
+            return 0;
         }
 
         #endregion

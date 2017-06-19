@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/1/2008 1:21:00 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -21,12 +11,18 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// PropertyGridEditor
+    /// LineSchemePropertyGridEditor
     /// </summary>
     public class LineSchemePropertyGridEditor : UITypeEditor
     {
+        #region Fields
+
         private ILineScheme _editCopy;
         private ILineScheme _original;
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This should launch an open file dialog instead of the usual thing.
@@ -40,13 +36,23 @@ namespace DotSpatial.Symbology.Forms
             _original = value as ILineScheme;
             _editCopy = _original.Copy();
 
-            IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider?.GetService(typeof(IWindowsFormsEditorService));
             NamedList<ILineCategory> cats = new NamedList<ILineCategory>(_editCopy.Categories, "Category");
             CollectionPropertyGrid frm = new CollectionPropertyGrid(cats);
             frm.ChangesApplied += FrmChangesApplied;
             frm.AddItemClicked += FrmAddItemClicked;
-            dialogProvider.ShowDialog(frm);
+            dialogProvider?.ShowDialog(frm);
             return _original; // don't bother swapping out the edit copy, just store copies of the categories when changes are applied.
+        }
+
+        /// <summary>
+        /// Either allows the editor to work or else nips it in the butt
+        /// </summary>
+        /// <param name="context">The type descriptor context.</param>
+        /// <returns>The UITypeEditorEditStyle</returns>
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
         }
 
         private void FrmAddItemClicked(object sender, EventArgs e)
@@ -59,14 +65,6 @@ namespace DotSpatial.Symbology.Forms
             _original.Categories = _editCopy.Categories.Copy();
         }
 
-        /// <summary>
-        /// Either allows the editor to work or else nips it in the butt
-        /// </summary>
-        /// <param name="context">ITypeDescriptorContext</param>
-        /// <returns>UITypeEditorEditStyle</returns>
-        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-        {
-            return UITypeEditorEditStyle.Modal;
-        }
+        #endregion
     }
 }

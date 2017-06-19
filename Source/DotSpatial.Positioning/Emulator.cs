@@ -1123,9 +1123,9 @@ namespace DotSpatial.Positioning
         // TODO: Cloning isn't necessary for NMEA. I imagine it's not necessary for
         // the text emulator either, so it's removed.
 
-        //public abstract Emulator Clone();
+        // public abstract Emulator Clone();
 
-        //protected Emulator Clone(Emulator emulator)
+        // protected Emulator Clone(Emulator emulator)
         //{
         //    // Copy over config values
         //    emulator._Altitude = this._Altitude;

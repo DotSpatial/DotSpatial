@@ -1,17 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 9/21/2009 4:30:25 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// 9/22/09: Chris Wilson--changed order of buttons and removed hotkeys to conform to Windows standards
-//          Automatically sets AcceptButton and CancelButton properties of owner form
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -22,39 +10,14 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// DialogButtons
     /// </summary>
-    [DefaultEvent("OkClicked"), ToolboxItem(true)]
-    public class DialogButtons : UserControl
+    [DefaultEvent("OkClicked")]
+    [ToolboxItem(true)]
+    public partial class DialogButtons : UserControl
     {
-        #region Events
-
-        /// <summary>
-        /// The OK button was clicked
-        /// </summary>
-        public event EventHandler OkClicked;
-        /// <summary>
-        /// The Apply button was clicked
-        /// </summary>
-        public event EventHandler ApplyClicked;
-        /// <summary>
-        /// The Cancel button was clicked
-        /// </summary>
-        public event EventHandler CancelClicked;
-
-        #endregion
-
-        private Button btnApply;
-        private Button btnCancel;
-        private Button btnOK;
-        private HelpProvider helpProvider1;
-
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DialogButtons
+        /// Initializes a new instance of the <see cref="DialogButtons"/> class.
         /// </summary>
         public DialogButtons()
         {
@@ -63,74 +26,33 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        private void InitializeComponent()
-        {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(DialogButtons));
-            this.btnOK = new Button();
-            this.btnCancel = new Button();
-            this.btnApply = new Button();
-            this.helpProvider1 = new HelpProvider();
-            this.SuspendLayout();
-            //
-            // btnOK
-            //
-            resources.ApplyResources(this.btnOK, "btnOK");
-            this.btnOK.DialogResult = DialogResult.OK;
-            this.btnOK.Name = "btnOK";
-            this.helpProvider1.SetShowHelp(this.btnOK, ((bool)(resources.GetObject("btnOK.ShowHelp"))));
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += this.btnOK_Click;
-            //
-            // btnCancel
-            //
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.DialogResult = DialogResult.Cancel;
-            this.btnCancel.Name = "btnCancel";
-            this.helpProvider1.SetShowHelp(this.btnCancel, ((bool)(resources.GetObject("btnCancel.ShowHelp"))));
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += this.btnCancel_Click;
-            //
-            // btnApply
-            //
-            resources.ApplyResources(this.btnApply, "btnApply");
-            this.helpProvider1.SetHelpString(this.btnApply, resources.GetString("btnApply.HelpString"));
-            this.btnApply.Name = "btnApply";
-            this.helpProvider1.SetShowHelp(this.btnApply, ((bool)(resources.GetObject("btnApply.ShowHelp"))));
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += this.btnApply_Click;
-            //
-            // DialogButtons
-            //
-            this.Controls.Add(this.btnApply);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.btnCancel);
-            this.Name = "DialogButtons";
-            this.helpProvider1.SetShowHelp(this, ((bool)(resources.GetObject("$this.ShowHelp"))));
-            resources.ApplyResources(this, "$this");
-            this.ResumeLayout(false);
-        }
-
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            OnOKClicked();
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            OnCancelClicked();
-        }
-
-        private void btnApply_Click(object sender, EventArgs e)
-        {
-            OnApplyClicked();
-        }
+        #region Events
 
         /// <summary>
-        /// Fires the ok clicked event
+        /// The Apply button was clicked
         /// </summary>
-        protected virtual void OnOKClicked()
+        public event EventHandler ApplyClicked;
+
+        /// <summary>
+        /// The Cancel button was clicked
+        /// </summary>
+        public event EventHandler CancelClicked;
+
+        /// <summary>
+        /// The OK button was clicked
+        /// </summary>
+        public event EventHandler OkClicked;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Fires the Apply Clicked event
+        /// </summary>
+        protected virtual void OnApplyClicked()
         {
-            if (OkClicked != null) OkClicked(this, EventArgs.Empty);
+            ApplyClicked?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -138,15 +60,32 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnCancelClicked()
         {
-            if (CancelClicked != null) CancelClicked(this, EventArgs.Empty);
+            CancelClicked?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// Fires the Apply Clicked event
+        /// Fires the ok clicked event
         /// </summary>
-        protected virtual void OnApplyClicked()
+        protected virtual void OnOkClicked()
         {
-            if (ApplyClicked != null) ApplyClicked(this, EventArgs.Empty);
+            OkClicked?.Invoke(this, EventArgs.Empty);
         }
+
+        private void BtnApplyClick(object sender, EventArgs e)
+        {
+            OnApplyClicked();
+        }
+
+        private void BtnCancelClick(object sender, EventArgs e)
+        {
+            OnCancelClicked();
+        }
+
+        private void BtnOkClick(object sender, EventArgs e)
+        {
+            OnOkClicked();
+        }
+
+        #endregion
     }
 }

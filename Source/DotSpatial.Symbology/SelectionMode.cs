@@ -1,18 +1,11 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/25/2009 4:05:32 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// The selection mode that can be used when selecting things.
+    /// </summary>
     public enum SelectionMode
     {
         /// <summary>
@@ -56,7 +49,7 @@ namespace DotSpatial.Symbology
         IntersectsExtent,
 
         /// <summary>
-        /// The most inclusive possible.  If any element is touching or overlapping the region in any
+        /// The most inclusive possible. If any element is touching or overlapping the region in any
         /// way, then this will be true.
         /// </summary>
         Intersects,

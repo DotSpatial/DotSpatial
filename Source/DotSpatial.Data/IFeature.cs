@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Data;
@@ -20,8 +9,8 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// A feature doesn't need to be abstract because the geometry is generic and the other
-    /// properties are all the same.  It supports IRenderable so that even if you don't
-    /// know what type of feature this is, you can still tell it to draw itself.  You won't
+    /// properties are all the same. It supports IRenderable so that even if you don't
+    /// know what type of feature this is, you can still tell it to draw itself. You won't
     /// be able to specify any drawing characteristics from this object however.
     /// </summary>
     public interface IFeature : ICloneable, IComparable<IFeature>
@@ -29,25 +18,12 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets a valid IBasicGeometry associated with the data elements of this feature.
-        /// This will be enough geometry information to cast into a full fledged geometry
-        /// that can be used in coordination with DotSpatial.Analysis
-        /// </summary>
-        IGeometry Geometry { get; set; }
-
-        ///// <summary>
-        ///// Gets or sets the content length.  If the geometry for this shape was loaded from a file, this contains the size
-        ///// of this shape in 16-bit words as per the Esri Shapefile specification.
-        ///// </summary>
-        //int ContentLength { get; set; }
-
-        /// <summary>
-        /// Gets the datarow containing all the attributes related to this geometry
+        /// Gets or sets the datarow containing all the attributes related to this geometry
         /// </summary>
         DataRow DataRow { get; set; }
 
         /// <summary>
-        /// Returns the FeatureType of the feature. This can either be Point, Multipoint, Line, Polygon or Unspecified if the feature has no geometry.
+        /// Gets the FeatureType of the feature. This can either be Point, Multipoint, Line, Polygon or Unspecified if the feature has no geometry.
         /// </summary>
         FeatureType FeatureType { get; }
 
@@ -58,33 +34,29 @@ namespace DotSpatial.Data
         int Fid { get; }
 
         /// <summary>
-        /// Gets a reference to the IFeatureLayer that contains this item.
+        /// Gets or sets a valid IBasicGeometry associated with the data elements of this feature.
+        /// This will be enough geometry information to cast into a full fledged geometry
+        /// that can be used in coordination with DotSpatial.Analysis
+        /// </summary>
+        IGeometry Geometry { get; set; }
+
+        /// <summary>
+        /// Gets or sets a reference to the IFeatureLayer that contains this item.
         /// </summary>
         IFeatureSet ParentFeatureSet { get; set; }
 
-        ///// <summary>
-        ///// An index value that is saved in some file formats.
-        ///// </summary>
-        //int RecordNumber { get; set; }
-
         /// <summary>
-        /// This is simply a quick access to the Vertices list for this specific
-        /// feature.  If the Vertices have not yet been defined, this will be null.
+        /// Gets or sets a quick access to the Vertices list for this specific
+        /// feature. If the Vertices have not yet been defined, this will be null.
         /// </summary>
         ShapeRange ShapeIndex { get; set; }
-
-        ///// <summary>
-        ///// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
-        ///// and whether or not the shape is null.
-        ///// </summary>
-        //ShapeType ShapeType { get; set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Creates a deep copy of this feature.  the new datarow created will not be connected
+        /// Creates a deep copy of this feature. the new datarow created will not be connected
         /// to a data Table, so it should be added to one.
         /// </summary>
         /// <returns>Returns a deep copy of this feature as an IFeature</returns>

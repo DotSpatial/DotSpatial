@@ -1,31 +1,21 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/10/2008 3:05:28 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Event args for events that need a layer.
+    /// </summary>
     public class LayerEventArgs : EventArgs
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of LayerEventArgs
+        /// Initializes a new instance of the <see cref="LayerEventArgs"/> class.
         /// </summary>
+        /// <param name="layer">The layer of the event.</param>
         public LayerEventArgs(ILayer layer)
         {
             Layer = layer;
@@ -33,14 +23,10 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets a layer
+        /// Gets or sets a layer.
         /// </summary>
         public ILayer Layer { get; protected set; }
 

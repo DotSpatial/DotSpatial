@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/2/2010 10:07:31 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -18,19 +8,29 @@ using NetTopologySuite.IO;
 
 namespace DotSpatial.Data
 {
-    public static class WKBFeatureReader
+    /// <summary>
+    /// A reader that reads features from WKB text.
+    /// </summary>
+    public static class WkbFeatureReader
     {
-        private static ByteOrder _endian;
+        #region Fields
+
+        private static ByteOrder endian;
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Given the array of bytes, this reverses the bytes based on size.  So if size if 4, the
+        /// Given the array of bytes, this reverses the bytes based on size. So if size if 4, the
         /// reversal will flip uints of 4 bytes at a time.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="size"></param>
+        /// <param name="data">Data that gets reversed.</param>
+        /// <param name="size">Number of bytes that will be flipped together.</param>
         public static void CheckEndian(byte[] data, int size)
         {
-            if ((_endian == ByteOrder.LittleEndian) == BitConverter.IsLittleEndian) return;
+            if ((endian == ByteOrder.LittleEndian) == BitConverter.IsLittleEndian) return;
+
             int count = data.Length / size;
             for (int i = 0; i < count; i++)
             {
@@ -42,40 +42,42 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        ///
+        /// Since WKB can in fact store different kinds of shapes, this will split out
+        /// each type of shape into a different featureset. If all the shapes are
+        /// the same kind of feature, thre will only be one list of feature types.
         /// </summary>
-        /// <param name="data">The raw byte data.</param>
-        /// <returns></returns>
-        public static int ReadInt32(Stream data)
+        /// <param name="data">Data to get the feature sets from.</param>
+        /// <returns>The feature sets gotten from the data.</returns>
+        public static FeatureSetPack GetFeatureSets(byte[] data)
         {
-            byte[] vals = new byte[4];
-            data.Read(vals, 0, 4);
-            CheckEndian(vals, 4);
-            return BitConverter.ToInt32(vals, 0);
+            MemoryStream ms = new MemoryStream(data);
+            return GetFeatureSets(ms);
         }
 
         /// <summary>
-        ///
+        /// Gets a FeatureSetPack from the WKB
         /// </summary>
-        /// <param name="data">The raw byte data.</param>
-        /// <param name="count">The count of integers, not bytes.</param>
-        /// <returns></returns>
-        public static int[] ReadInt32(Stream data, int count)
+        /// <param name="data">Data to get the feature sets from.</param>
+        /// <returns>The feature sets gotten from the data.</returns>
+        public static FeatureSetPack GetFeatureSets(Stream data)
         {
-            byte[] vals = new byte[4 * count];
-            data.Read(vals, 0, 4 * count);
-            CheckEndian(vals, 4);
-            int[] result = new int[count];
-            Buffer.BlockCopy(vals, 0, result, 0, count * 4);
+            FeatureSetPack result = new FeatureSetPack();
+
+            while (data.Position < data.Length)
+            {
+                ReadFeature(data, result);
+            }
+
+            result.StopEditing();
             return result;
         }
 
         /// <summary>
-        /// Reads the specified number of doubles
+        /// Reads the specified number of doubles.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <param name="data">Data to read the double from.</param>
+        /// <param name="count">Number of doubles that should be read.</param>
+        /// <returns>The doubles that were read.</returns>
         public static double[] ReadDouble(Stream data, int count)
         {
             byte[] vals = new byte[8 * count];
@@ -87,43 +89,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Since WKB can in fact store different kinds of shapes, this will split out
-        /// each type of shape into a different featureset.  If all the shapes are
-        /// the same kind of feature, thre will only be one list of feature types.
+        /// Reads only a single geometry into a feature. This may be a multi-part geometry.
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static FeatureSetPack GetFeatureSets(byte[] data)
-        {
-            MemoryStream ms = new MemoryStream(data);
-            return GetFeatureSets(ms);
-        }
-
-        /// <summary>
-        /// Gets a FeatureSetPack from the WKB
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static FeatureSetPack GetFeatureSets(Stream data)
-        {
-            FeatureSetPack result = new FeatureSetPack();
-
-            while (data.Position < data.Length)
-            {
-                ReadFeature(data, result);
-            }
-            result.StopEditing();
-            return result;
-        }
-
-        /// <summary>
-        /// Reads only a single geometry into a feature.  This may be a multi-part geometry.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="results"></param>
+        /// <param name="data">The data to read the features from.</param>
+        /// <param name="results">FeatureSetPack the read features get added to.</param>
         public static void ReadFeature(Stream data, FeatureSetPack results)
         {
-            _endian = (ByteOrder)data.ReadByte();
+            endian = (ByteOrder)data.ReadByte();
             WKBGeometryTypes type = (WKBGeometryTypes)ReadInt32(data);
 
             switch (type)
@@ -153,30 +125,79 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads only a single geometry into a feature.  This may be a multi-part geometry,
-        /// but cannot be a mixed part geometry.  Anything that registers as "geometryCollection"
+        /// Reads an int from the stream.
+        /// </summary>
+        /// <param name="data">The raw byte data.</param>
+        /// <returns>The int that was read.</returns>
+        public static int ReadInt32(Stream data)
+        {
+            byte[] vals = new byte[4];
+            data.Read(vals, 0, 4);
+            CheckEndian(vals, 4);
+            return BitConverter.ToInt32(vals, 0);
+        }
+
+        /// <summary>
+        /// Reads ints from the stream.
+        /// </summary>
+        /// <param name="data">The raw byte data.</param>
+        /// <param name="count">The count of integers, not bytes.</param>
+        /// <returns>The ints that were read.</returns>
+        public static int[] ReadInt32(Stream data, int count)
+        {
+            byte[] vals = new byte[4 * count];
+            data.Read(vals, 0, 4 * count);
+            CheckEndian(vals, 4);
+            int[] result = new int[count];
+            Buffer.BlockCopy(vals, 0, result, 0, count * 4);
+            return result;
+        }
+
+        /// <summary>
+        /// Reads a point from the data. This assumes that the byte order and shapetype have already been read.
+        /// </summary>
+        /// <param name="data">Data to read the point from.</param>
+        /// <returns>The read point as shape.</returns>
+        public static Shape ReadPoint(Stream data)
+        {
+            Shape result = new Shape
+            {
+                Range = new ShapeRange(FeatureType.Point)
+            };
+            PartRange prt = new PartRange(FeatureType.Point)
+            {
+                NumVertices = 1
+            };
+            result.Range.Parts.Add(prt);
+            result.Vertices = ReadDouble(data, 2);
+            return result;
+        }
+
+        /// <summary>
+        /// Reads only a single geometry into a feature. This may be a multi-part geometry,
+        /// but cannot be a mixed part geometry. Anything that registers as "geometryCollection"
         /// will trigger an exception.
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        /// <param name="data">The data to read from.</param>
+        /// <returns>The shape that was read.</returns>
         public static Shape ReadShape(Stream data)
         {
             return ReadShape(data, FeatureType.Unspecified);
         }
 
         /// <summary>
-        /// Attempts to read in an entry to the specified feature type.  If the feature type does not match
-        /// the geometry type, this will return null.  (A Point geometry will be accepted by MultiPoint
-        /// feature type, but not the other way arround.  Either way, this will advance the reader
-        /// through the shape feature.  Using the Unspecified will always return the shape it reads,
+        /// Attempts to read in an entry to the specified feature type. If the feature type does not match
+        /// the geometry type, this will return null. (A Point geometry will be accepted by MultiPoint
+        /// feature type, but not the other way arround. Either way, this will advance the reader
+        /// through the shape feature. Using the Unspecified will always return the shape it reads,
         /// or null in the case of mixed feature collections which are not supported.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="featureType"></param>
-        /// <returns></returns>
+        /// <param name="data">Data that contains the WKB feature.</param>
+        /// <param name="featureType">The feature type.</param>
+        /// <returns>The resulting shape.</returns>
         public static Shape ReadShape(Stream data, FeatureType featureType)
         {
-            _endian = (ByteOrder)data.ReadByte();
+            endian = (ByteOrder)data.ReadByte();
             WKBGeometryTypes type = (WKBGeometryTypes)ReadInt32(data);
             Shape result;
             switch (type)
@@ -187,6 +208,7 @@ namespace DotSpatial.Data
                     {
                         return result;
                     }
+
                     return null;
                 case WKBGeometryTypes.WKBLineString:
                     result = ReadLineString(data);
@@ -194,6 +216,7 @@ namespace DotSpatial.Data
                     {
                         return result;
                     }
+
                     return null;
                 case WKBGeometryTypes.WKBPolygon:
                     result = ReadPolygon(data);
@@ -201,6 +224,7 @@ namespace DotSpatial.Data
                     {
                         return result;
                     }
+
                     return null;
                 case WKBGeometryTypes.WKBMultiPoint:
                     result = ReadMultiPoint(data);
@@ -208,6 +232,7 @@ namespace DotSpatial.Data
                     {
                         return result;
                     }
+
                     return null;
                 case WKBGeometryTypes.WKBMultiLineString:
                     result = ReadMultiLineString(data);
@@ -215,6 +240,7 @@ namespace DotSpatial.Data
                     {
                         return result;
                     }
+
                     return null;
                 case WKBGeometryTypes.WKBMultiPolygon:
                     result = ReadMultiPolygon(data);
@@ -222,37 +248,55 @@ namespace DotSpatial.Data
                     {
                         return result;
                     }
+
                     return null;
-                case WKBGeometryTypes.WKBGeometryCollection:
-                    throw new ArgumentException("Mixed shape type collections are not supported by this method.");
+                case WKBGeometryTypes.WKBGeometryCollection: throw new ArgumentException("Mixed shape type collections are not supported by this method.");
             }
+
             return null;
         }
 
         /// <summary>
-        /// This assumes that the byte order and shapetype have already been read.
+        /// Calculates the area and if the area is negative, this is considered a hole.
         /// </summary>
-        /// <param name="data"></param>
-        public static Shape ReadPoint(Stream data)
+        /// <param name="coords">Coordinates whose direction gets checked.</param>
+        /// <returns>Boolean, true if this has a negative area and should be thought of as a hole</returns>
+        private static bool IsCounterClockwise(double[] coords)
         {
-            Shape result = new Shape();
-            result.Range = new ShapeRange(FeatureType.Point);
-            PartRange prt = new PartRange(FeatureType.Point);
-            prt.NumVertices = 1;
-            result.Range.Parts.Add(prt);
-            result.Vertices = ReadDouble(data, 2);
-            return result;
+            double area = 0;
+            for (int i = 0; i < coords.Length / 2; i++)
+            {
+                double x1 = coords[i * 2];
+                double y1 = coords[(i * 2) + 1];
+                double x2, y2;
+                if (i == (coords.Length / 2) - 1)
+                {
+                    x2 = coords[0];
+                    y2 = coords[1];
+                }
+                else
+                {
+                    x2 = coords[(i + 1) * 2];
+                    y2 = coords[((i + 1) * 2) + 1];
+                }
+
+                double trapArea = (x1 * y2) - (x2 * y1);
+                area += trapArea;
+            }
+
+            return area >= 0;
         }
 
         private static void ReadGeometryCollection(Stream data, FeatureSetPack results)
         {
             int numGeometries = ReadInt32(data);
-            // Don't worry about "multi-parting" these.  Simply create a separate shape
+
+            // Don't worry about "multi-parting" these. Simply create a separate shape
             // entry for every single geometry here since we have to split out the features
-            // based on feature type.  (currently we don't have a mixed feature type for drawing.)
+            // based on feature type. (currently we don't have a mixed feature type for drawing.)
             for (int i = 0; i < numGeometries; i++)
             {
-                _endian = (ByteOrder)data.ReadByte();
+                endian = (ByteOrder)data.ReadByte();
                 WKBGeometryTypes type = (WKBGeometryTypes)ReadInt32(data);
                 switch (type)
                 {
@@ -281,71 +325,15 @@ namespace DotSpatial.Data
             }
         }
 
-        /// <summary>
-        /// This assumes that the byte order and shapetype have already been read.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="results"></param>
-        private static void ReadPoint(Stream data, FeatureSetPack results)
-        {
-            ShapeRange sr = new ShapeRange(FeatureType.MultiPoint);
-            PartRange prt = new PartRange(FeatureType.MultiPoint);
-            prt.NumVertices = 1;
-            sr.Parts.Add(prt);
-            double[] coord = ReadDouble(data, 2);
-            results.Add(coord, sr);
-        }
-
-        /// <summary>
-        /// Reads one multipoint shape from a data stream.
-        /// (this assumes that the two bytes (endian and type) have already been read.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        private static Shape ReadMultiPoint(Stream data)
-        {
-            Shape result = new Shape(FeatureType.MultiPoint);
-            int count = ReadInt32(data);
-            PartRange prt = new PartRange(FeatureType.MultiPoint);
-            prt.NumVertices = count;
-            result.Range.Parts.Add(prt);
-            double[] vertices = new double[count * 2];
-            for (int iPoint = 0; iPoint < count; iPoint++)
-            {
-                data.ReadByte(); // ignore endian
-                ReadInt32(data); // ignore geometry type
-                double[] coord = ReadDouble(data, 2);
-                Array.Copy(coord, 0, vertices, iPoint * 2, 2);
-            }
-            result.Vertices = vertices;
-            return result;
-        }
-
-        private static void ReadMultiPoint(Stream data, FeatureSetPack results)
-        {
-            int count = ReadInt32(data);
-            ShapeRange sr = new ShapeRange(FeatureType.MultiPoint);
-            PartRange prt = new PartRange(FeatureType.MultiPoint);
-            prt.NumVertices = count;
-            sr.Parts.Add(prt);
-            double[] vertices = new double[count * 2];
-            for (int iPoint = 0; iPoint < count; iPoint++)
-            {
-                data.ReadByte(); // ignore endian
-                ReadInt32(data); // ignore geometry type
-                double[] coord = ReadDouble(data, 2);
-                Array.Copy(coord, 0, vertices, iPoint * 2, 2);
-            }
-            results.Add(vertices, sr);
-        }
-
         private static Shape ReadLineString(Stream data)
         {
             Shape result = new Shape(FeatureType.Line);
             int count = ReadInt32(data);
             double[] coords = ReadDouble(data, 2 * count);
-            PartRange lPrt = new PartRange(FeatureType.Line);
-            lPrt.NumVertices = count;
+            PartRange lPrt = new PartRange(FeatureType.Line)
+            {
+                NumVertices = count
+            };
             result.Range.Parts.Add(lPrt);
             result.Vertices = coords;
             return result;
@@ -356,8 +344,10 @@ namespace DotSpatial.Data
             int count = ReadInt32(data);
             double[] coords = ReadDouble(data, 2 * count);
             ShapeRange lShp = new ShapeRange(FeatureType.Line);
-            PartRange lPrt = new PartRange(FeatureType.Line);
-            lPrt.NumVertices = count;
+            PartRange lPrt = new PartRange(FeatureType.Line)
+            {
+                NumVertices = count
+            };
             lShp.Parts.Add(lPrt);
             results.Add(coords, lShp);
         }
@@ -371,16 +361,19 @@ namespace DotSpatial.Data
             for (int iString = 0; iString < numLineStrings; iString++)
             {
                 // Each of these needs to read a full WKBLineString
-                data.Seek(5, SeekOrigin.Current); //ignore header
+                data.Seek(5, SeekOrigin.Current); // ignore header
                 int numPoints = ReadInt32(data);
                 double[] coords = ReadDouble(data, 2 * numPoints);
-                PartRange lPrt = new PartRange(FeatureType.Line);
-                lPrt.PartOffset = partOffset;
-                lPrt.NumVertices = numPoints;
+                PartRange lPrt = new PartRange(FeatureType.Line)
+                {
+                    PartOffset = partOffset,
+                    NumVertices = numPoints
+                };
                 result.Range.Parts.Add(lPrt);
                 partOffset += coords.Length / 2;
                 strings.Add(coords);
             }
+
             double[] allVertices = new double[partOffset * 2];
             int offset = 0;
             foreach (double[] ring in strings)
@@ -388,6 +381,7 @@ namespace DotSpatial.Data
                 Array.Copy(ring, 0, allVertices, offset, ring.Length);
                 offset += ring.Length;
             }
+
             result.Vertices = allVertices;
             return result;
         }
@@ -401,16 +395,19 @@ namespace DotSpatial.Data
             for (int iString = 0; iString < numLineStrings; iString++)
             {
                 // Each of these needs to read a full WKBLineString
-                data.Seek(5, SeekOrigin.Current); //ignore header
+                data.Seek(5, SeekOrigin.Current); // ignore header
                 int numPoints = ReadInt32(data);
                 double[] coords = ReadDouble(data, 2 * numPoints);
-                PartRange lPrt = new PartRange(FeatureType.Line);
-                lPrt.PartOffset = partOffset;
-                lPrt.NumVertices = numPoints;
+                PartRange lPrt = new PartRange(FeatureType.Line)
+                {
+                    PartOffset = partOffset,
+                    NumVertices = numPoints
+                };
                 shp.Parts.Add(lPrt);
                 partOffset += coords.Length / 2;
                 strings.Add(coords);
             }
+
             double[] allVertices = new double[partOffset * 2];
             int offset = 0;
             foreach (double[] ring in strings)
@@ -418,86 +415,57 @@ namespace DotSpatial.Data
                 Array.Copy(ring, 0, allVertices, offset, ring.Length);
                 offset += ring.Length;
             }
+
             results.Add(allVertices, shp);
         }
 
-        private static Shape ReadPolygon(Stream data)
+        /// <summary>
+        /// Reads one multipoint shape from a data stream.
+        /// (this assumes that the two bytes (endian and type) have already been read.
+        /// </summary>
+        /// <param name="data">The data to read from.</param>
+        /// <returns>The multipoint that was read as shape.</returns>
+        private static Shape ReadMultiPoint(Stream data)
         {
-            Shape result = new Shape(FeatureType.Polygon);
-            int numRings = ReadInt32(data);
-            List<double[]> rings = new List<double[]>();
-            int partOffset = 0;
-            for (int iRing = 0; iRing < numRings; iRing++)
+            Shape result = new Shape(FeatureType.MultiPoint);
+            int count = ReadInt32(data);
+            PartRange prt = new PartRange(FeatureType.MultiPoint)
             {
-                int numPoints = ReadInt32(data); // ring structures are like a linestring without the final point.
-                double[] coords = ReadDouble(data, 2 * numPoints);
-                if (iRing == 0)
-                {
-                    // By shapefile standard, the shell should be clockwise
-                    if (IsCounterClockwise(coords))
-                        coords = ReverseCoords(coords);
-                }
-                else
-                {
-                    // By shapefile standard, the holes should be counter clockwise.
-                    if (!IsCounterClockwise(coords))
-                        coords = ReverseCoords(coords);
-                }
-                PartRange lPrt = new PartRange(FeatureType.Polygon);
-                lPrt.PartOffset = partOffset;
-                lPrt.NumVertices = numPoints;
-                result.Range.Parts.Add(lPrt);
-                partOffset += coords.Length / 2;
-                rings.Add(coords);
-            }
-            double[] allVertices = new double[partOffset * 2];
-            int offset = 0;
-            foreach (double[] ring in rings)
+                NumVertices = count
+            };
+            result.Range.Parts.Add(prt);
+            double[] vertices = new double[count * 2];
+            for (int iPoint = 0; iPoint < count; iPoint++)
             {
-                Array.Copy(ring, 0, allVertices, offset, ring.Length);
-                offset += ring.Length;
+                data.ReadByte(); // ignore endian
+                ReadInt32(data); // ignore geometry type
+                double[] coord = ReadDouble(data, 2);
+                Array.Copy(coord, 0, vertices, iPoint * 2, 2);
             }
-            result.Vertices = allVertices;
+
+            result.Vertices = vertices;
             return result;
         }
 
-        private static void ReadPolygon(Stream data, FeatureSetPack results)
+        private static void ReadMultiPoint(Stream data, FeatureSetPack results)
         {
-            int numRings = ReadInt32(data);
-            ShapeRange lShp = new ShapeRange(FeatureType.Polygon);
-            List<double[]> rings = new List<double[]>();
-            int partOffset = 0;
-            for (int iRing = 0; iRing < numRings; iRing++)
+            int count = ReadInt32(data);
+            ShapeRange sr = new ShapeRange(FeatureType.MultiPoint);
+            PartRange prt = new PartRange(FeatureType.MultiPoint)
             {
-                int numPoints = ReadInt32(data); // ring structures are like a linestring without the final point.
-                double[] coords = ReadDouble(data, 2 * numPoints);
-                if (iRing == 0)
-                {
-                    // By shapefile standard, the shell should be clockwise
-                    if (IsCounterClockwise(coords))
-                        coords = ReverseCoords(coords);
-                }
-                else
-                {
-                    // By shapefile standard, the holes should be counter clockwise.
-                    if (!IsCounterClockwise(coords))
-                        coords = ReverseCoords(coords);
-                }
-                PartRange lPrt = new PartRange(FeatureType.Polygon);
-                lPrt.PartOffset = partOffset;
-                lPrt.NumVertices = numPoints;
-                lShp.Parts.Add(lPrt);
-                partOffset += coords.Length / 2;
-                rings.Add(coords);
-            }
-            double[] allVertices = new double[partOffset * 2];
-            int offset = 0;
-            foreach (double[] ring in rings)
+                NumVertices = count
+            };
+            sr.Parts.Add(prt);
+            double[] vertices = new double[count * 2];
+            for (int iPoint = 0; iPoint < count; iPoint++)
             {
-                Array.Copy(ring, 0, allVertices, offset, ring.Length);
-                offset += ring.Length;
+                data.ReadByte(); // ignore endian
+                ReadInt32(data); // ignore geometry type
+                double[] coord = ReadDouble(data, 2);
+                Array.Copy(coord, 0, vertices, iPoint * 2, 2);
             }
-            results.Add(allVertices, lShp);
+
+            results.Add(vertices, sr);
         }
 
         private static Shape ReadMultiPolygon(Stream data)
@@ -517,18 +485,19 @@ namespace DotSpatial.Data
                     if (iRing == 0)
                     {
                         // By shapefile standard, the shell should be clockwise
-                        if (IsCounterClockwise(coords))
-                            coords = ReverseCoords(coords);
+                        if (IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                     }
                     else
                     {
                         // By shapefile standard, the holes should be counter clockwise.
-                        if (!IsCounterClockwise(coords))
-                            coords = ReverseCoords(coords);
+                        if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                     }
-                    PartRange lPrt = new PartRange(FeatureType.Polygon);
-                    lPrt.PartOffset = partOffset;
-                    lPrt.NumVertices = numPoints;
+
+                    PartRange lPrt = new PartRange(FeatureType.Polygon)
+                    {
+                        PartOffset = partOffset,
+                        NumVertices = numPoints
+                    };
                     result.Range.Parts.Add(lPrt);
                     partOffset += coords.Length / 2;
                     rings.Add(coords);
@@ -542,6 +511,7 @@ namespace DotSpatial.Data
                 Array.Copy(ring, 0, allVertices, offset, ring.Length);
                 offset += ring.Length;
             }
+
             result.Vertices = allVertices;
             return result;
         }
@@ -563,18 +533,19 @@ namespace DotSpatial.Data
                     if (iRing == 0)
                     {
                         // By shapefile standard, the shell should be clockwise
-                        if (IsCounterClockwise(coords))
-                            coords = ReverseCoords(coords);
+                        if (IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                     }
                     else
                     {
                         // By shapefile standard, the holes should be counter clockwise.
-                        if (!IsCounterClockwise(coords))
-                            coords = ReverseCoords(coords);
+                        if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                     }
-                    PartRange lPrt = new PartRange(FeatureType.Polygon);
-                    lPrt.PartOffset = partOffset;
-                    lPrt.NumVertices = numPoints;
+
+                    PartRange lPrt = new PartRange(FeatureType.Polygon)
+                    {
+                        PartOffset = partOffset,
+                        NumVertices = numPoints
+                    };
                     lShp.Parts.Add(lPrt);
                     partOffset += coords.Length / 2;
                     rings.Add(coords);
@@ -588,6 +559,109 @@ namespace DotSpatial.Data
                 Array.Copy(ring, 0, allVertices, offset, ring.Length);
                 offset += ring.Length;
             }
+
+            results.Add(allVertices, lShp);
+        }
+
+        /// <summary>
+        /// This assumes that the byte order and shapetype have already been read.
+        /// </summary>
+        /// <param name="data">The data to read from.</param>
+        /// <param name="results">The featureSetPack the read point gets added to.</param>
+        private static void ReadPoint(Stream data, FeatureSetPack results)
+        {
+            ShapeRange sr = new ShapeRange(FeatureType.MultiPoint);
+            PartRange prt = new PartRange(FeatureType.MultiPoint)
+            {
+                NumVertices = 1
+            };
+            sr.Parts.Add(prt);
+            double[] coord = ReadDouble(data, 2);
+            results.Add(coord, sr);
+        }
+
+        private static Shape ReadPolygon(Stream data)
+        {
+            Shape result = new Shape(FeatureType.Polygon);
+            int numRings = ReadInt32(data);
+            List<double[]> rings = new List<double[]>();
+            int partOffset = 0;
+            for (int iRing = 0; iRing < numRings; iRing++)
+            {
+                int numPoints = ReadInt32(data); // ring structures are like a linestring without the final point.
+                double[] coords = ReadDouble(data, 2 * numPoints);
+                if (iRing == 0)
+                {
+                    // By shapefile standard, the shell should be clockwise
+                    if (IsCounterClockwise(coords)) coords = ReverseCoords(coords);
+                }
+                else
+                {
+                    // By shapefile standard, the holes should be counter clockwise.
+                    if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
+                }
+
+                PartRange lPrt = new PartRange(FeatureType.Polygon)
+                {
+                    PartOffset = partOffset,
+                    NumVertices = numPoints
+                };
+                result.Range.Parts.Add(lPrt);
+                partOffset += coords.Length / 2;
+                rings.Add(coords);
+            }
+
+            double[] allVertices = new double[partOffset * 2];
+            int offset = 0;
+            foreach (double[] ring in rings)
+            {
+                Array.Copy(ring, 0, allVertices, offset, ring.Length);
+                offset += ring.Length;
+            }
+
+            result.Vertices = allVertices;
+            return result;
+        }
+
+        private static void ReadPolygon(Stream data, FeatureSetPack results)
+        {
+            int numRings = ReadInt32(data);
+            ShapeRange lShp = new ShapeRange(FeatureType.Polygon);
+            List<double[]> rings = new List<double[]>();
+            int partOffset = 0;
+            for (int iRing = 0; iRing < numRings; iRing++)
+            {
+                int numPoints = ReadInt32(data); // ring structures are like a linestring without the final point.
+                double[] coords = ReadDouble(data, 2 * numPoints);
+                if (iRing == 0)
+                {
+                    // By shapefile standard, the shell should be clockwise
+                    if (IsCounterClockwise(coords)) coords = ReverseCoords(coords);
+                }
+                else
+                {
+                    // By shapefile standard, the holes should be counter clockwise.
+                    if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
+                }
+
+                PartRange lPrt = new PartRange(FeatureType.Polygon)
+                {
+                    PartOffset = partOffset,
+                    NumVertices = numPoints
+                };
+                lShp.Parts.Add(lPrt);
+                partOffset += coords.Length / 2;
+                rings.Add(coords);
+            }
+
+            double[] allVertices = new double[partOffset * 2];
+            int offset = 0;
+            foreach (double[] ring in rings)
+            {
+                Array.Copy(ring, 0, allVertices, offset, ring.Length);
+                offset += ring.Length;
+            }
+
             results.Add(allVertices, lShp);
         }
 
@@ -604,39 +678,13 @@ namespace DotSpatial.Data
             double[] newCoords = new double[numCoords];
             for (int i = numCoords - 1; i >= 0; i -= 2)
             {
-                newCoords[i - 1] = coords[numCoords - i - 1]; //X
-                newCoords[i] = coords[numCoords - i]; //Y
+                newCoords[i - 1] = coords[numCoords - i - 1]; // X
+                newCoords[i] = coords[numCoords - i]; // Y
             }
+
             return newCoords;
         }
 
-        /// <summary>
-        /// Calculates the area and if the area is negative, this is considered a hole.
-        /// </summary>
-        /// <returns>Boolean, true if this has a negative area and should be thought of as a hole</returns>
-        private static bool IsCounterClockwise(double[] coords)
-        {
-            double area = 0;
-            for (int i = 0; i < coords.Length / 2; i++)
-            {
-                double x1 = coords[i * 2];
-                double y1 = coords[i * 2 + 1];
-                double x2, y2;
-                if (i == coords.Length / 2 - 1)
-                {
-                    x2 = coords[0];
-                    y2 = coords[1];
-                }
-                else
-                {
-                    x2 = coords[(i + 1) * 2];
-                    y2 = coords[(i + 1) * 2 + 1];
-                }
-
-                double trapArea = (x1 * y2) - (x2 * y1);
-                area += trapArea;
-            }
-            return area >= 0;
-        }
+        #endregion
     }
 }

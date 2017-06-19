@@ -1,3 +1,6 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System.Drawing;
 
 namespace DotSpatial.Controls.Header
@@ -7,7 +10,13 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class MenuContainerItem : ActionItem
     {
-        private Image largeImage;
+        #region Fields
+
+        private Image _largeImage;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuContainerItem"/> class.
@@ -17,21 +26,30 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the MenuContainerItem class.
+        /// Initializes a new instance of the <see cref="MenuContainerItem"/> class.
         /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         public MenuContainerItem(string key, string caption)
             : base(key, caption)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the MenuContainerItem class.
+        /// Initializes a new instance of the <see cref="MenuContainerItem"/> class.
         /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         public MenuContainerItem(string rootKey, string key, string caption)
             : this(key, caption)
         {
             RootKey = rootKey;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the large image.
@@ -39,13 +57,19 @@ namespace DotSpatial.Controls.Header
         /// <value>The large image.</value>
         public Image LargeImage
         {
-            get { return largeImage; }
+            get
+            {
+                return _largeImage;
+            }
+
             set
             {
-                if (largeImage == value) return;
-                largeImage = value;
+                if (_largeImage == value) return;
+                _largeImage = value;
                 OnPropertyChanged("LargeImage");
             }
         }
+
+        #endregion
     }
 }

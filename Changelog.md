@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-Be aware that code written for 1.9 will not work out of the box because DotSpatial.Topology was replaced by DotSpatial.GeoAPI and DotSpatial.NetTopologySuite (#786).
+Be aware that code written for 1.9 will not work out of the box because DotSpatial.Topology was replaced by DotSpatial.GeoAPI and DotSpatial.NetTopologySuite (#786). Have a look at the [Wiki](https://github.com/DotSpatial/DotSpatial/wiki/Switching-from-DotSpatial-1.9-to-2.0) for more information.
 
 ### Added
 - Aliases to Satellite of DotSpatial.Positioning
@@ -17,6 +17,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Jenks Natural Breaks support in categories binning.
 - Test that checks correct creation of GpggkSentence objects from string
 - Constructing Shapefiles in memory as single zip archives (#885)
+- StyleCop.Analyzers to enforce a set of style and consistency rules
+- chm file with DotSpatial API documentation
 
 ### Changed
 - Switched to VS2015 and C#6

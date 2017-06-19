@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/21/2009 4:01:18 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Symbology
 {
@@ -18,26 +8,10 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class FastDrawnState
     {
-        #region Fields
+        #region Constructors
 
         /// <summary>
-        /// The category that describes the symbolic drawing for this item.
-        /// </summary>
-        public IFeatureCategory Category;
-
-        /// <summary>
-        /// Boolean, true if this item should be drawn as being selected
-        /// </summary>
-        public bool Selected;
-
-        /// <summary>
-        /// A Boolean that indicates whether or not this feature should be drawn at all.
-        /// This should default to true.
-        /// </summary>
-        public bool Visible;
-
-        /// <summary>
-        /// Creates a blank fast drawn state
+        /// Initializes a new instance of the <see cref="FastDrawnState"/> class.
         /// </summary>
         public FastDrawnState()
         {
@@ -45,35 +19,51 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new FastDrawnState with the specified parameters
+        /// Initializes a new instance of the <see cref="FastDrawnState"/> class with the specified parameters.
         /// </summary>
-        /// <param name="sel"></param>
-        /// <param name="cat"></param>
-        public FastDrawnState(bool sel, IFeatureCategory cat)
+        /// <param name="selected">Indicates whether the feature should be drawn selected.</param>
+        /// <param name="category">The category that describes the symbolic drawing for this item.</param>
+        public FastDrawnState(bool selected, IFeatureCategory category)
         {
-            Selected = sel;
-            Category = cat;
+            Selected = selected;
+            Category = category;
             Visible = true;
         }
 
-        /// <summary>
-        /// Overrides ToString to give a description of the FastDrawnState.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return "Selected: " + Selected + ", Category: " + Category;
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// Equality based on the Boolean and category settings
+        /// Gets or sets the category that describes the symbolic drawing for this item.
+        /// </summary>
+        public IFeatureCategory Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this item should be drawn as being selected-
+        /// </summary>
+        public bool Selected { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this feature should be drawn at all.
+        /// This should default to true.
+        /// </summary>
+        public bool Visible { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Equality based on the Boolean and category settings.
         /// </summary>
         /// <param name="obj">The fast drawn state to compare with</param>
-        /// <returns></returns>
+        /// <returns>True, if both items are equal.</returns>
         public override bool Equals(object obj)
         {
             FastDrawnState item = obj as FastDrawnState;
             if (item == null) return false;
+
             return item.Selected == Selected && item.Category == Category && Visible == item.Visible;
         }
 
@@ -94,8 +84,19 @@ namespace DotSpatial.Symbology
             {
                 sel = 1;
             }
+
             if (Category == null) return 0;
+
             return Category.GetHashCode() * sel;
+        }
+
+        /// <summary>
+        /// Overrides ToString to give a description of the FastDrawnState.
+        /// </summary>
+        /// <returns>A string that shows the selected state and category of the FastDrawnState.</returns>
+        public override string ToString()
+        {
+            return "Selected: " + Selected + ", Category: " + Category;
         }
 
         #endregion

@@ -1,14 +1,16 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System;
 
 namespace DotSpatial.Controls.Header
 {
     /// <summary>
-    ///
+    /// Event args of the SelectedValueChanged event.
     /// </summary>
     public class SelectedValueChangedEventArgs : EventArgs
     {
-        // Fields...
-        private object _SelectedItem;
+        #region  Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedValueChangedEventArgs"/> class.
@@ -18,13 +20,17 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the SelectedValueChangedEventArgs class.
+        /// Initializes a new instance of the <see cref="SelectedValueChangedEventArgs"/> class.
         /// </summary>
-        /// <param name="selectedItem"></param>
+        /// <param name="selectedItem">The selected item.</param>
         public SelectedValueChangedEventArgs(object selectedItem)
         {
-            _SelectedItem = selectedItem;
+            SelectedItem = selectedItem;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the selected item.
@@ -32,10 +38,8 @@ namespace DotSpatial.Controls.Header
         /// <value>
         /// The selected item.
         /// </value>
-        public object SelectedItem
-        {
-            get { return _SelectedItem; }
-            set { _SelectedItem = value; }
-        }
+        public object SelectedItem { get; set; }
+
+        #endregion
     }
 }

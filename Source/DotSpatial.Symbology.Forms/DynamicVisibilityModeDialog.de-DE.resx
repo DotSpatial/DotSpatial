@@ -693,7 +693,7 @@
 		<value>True</value>
 	</metadata>
 	<data name="label1.Text" xml:space="preserve">
-		<value>Dynamische Sichtbarkeit kann zwei Möglichkeiten arbeiten.  In einem Fall ist die Schicht nur sichtbar, wenn Sie näher als diesem Umfang vergrößert.  In die andere Richtung ist es nur sichtbar, wenn darüber hinaus insofern herausgezoomt.  Wählen Sie den Modus, der sichtbar bleiben sollte.</value>
+		<value>Dynamische Sichtbarkeit kann zwei Möglichkeiten arbeiten. In einem Fall ist die Schicht nur sichtbar, wenn Sie näher als diesem Umfang vergrößert. In die andere Richtung ist es nur sichtbar, wenn darüber hinaus insofern herausgezoomt. Wählen Sie den Modus, der sichtbar bleiben sollte.</value>
 	</data>
 	<data name="btnZoomedOut.Text" xml:space="preserve">
 		<value>Verkleinerter</value>

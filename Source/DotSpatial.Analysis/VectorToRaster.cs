@@ -1,19 +1,5 @@
-// *******************************************************************************************************
-// Product: DotSpatial.Analysis.VectorToRaster.cs
-// Description: Converts Vectors to Raster by drawing them to a GDI bitmap
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/20/2009         |  Initially written.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  6/30/2010         |  Moved to DotSpatial.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Dan Ames           |  3/2013            |  Updated and standarded licence and header info.  
-// *******************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections;
@@ -22,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Reflection;
+
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -35,6 +22,8 @@ namespace DotSpatial.Analysis
     /// </summary>
     public static class VectorToRaster
     {
+        #region Methods
+
         /// <summary>
         /// Creates a new raster with the specified cell size.  If the cell size
         /// is zero, this will default to the shorter of the width or height
@@ -70,8 +59,7 @@ namespace DotSpatial.Analysis
         ///  passed in as a string array.  In most cases an empty string is perfectly acceptable.</param>
         /// <param name="progressHandler">An interface for handling the progress messages.</param>
         /// <returns>Generates a raster from the vectors.</returns>
-        public static IRaster ToRaster(IFeatureSet fs, double cellSize, string fieldName, string outputFileName,
-                                       string driverCode, string[] options, IProgressHandler progressHandler)
+        public static IRaster ToRaster(IFeatureSet fs, double cellSize, string fieldName, string outputFileName, string driverCode, string[] options, IProgressHandler progressHandler)
         {
             return ToRaster(fs, fs.Extent, cellSize, fieldName, outputFileName, driverCode, options, progressHandler);
         }
@@ -95,9 +83,7 @@ namespace DotSpatial.Analysis
         ///  passed in as a string array.  In most cases an empty string is perfectly acceptable.</param>
         /// <param name="progressHandler">An interface for handling the progress messages.</param>
         /// <returns>Generates a raster from the vectors.</returns>
-        public static IRaster ToRaster(IFeatureSet fs, Extent extent, double cellSize, string fieldName,
-                                       string outputFileName,
-                                       string driverCode, string[] options, IProgressHandler progressHandler)
+        public static IRaster ToRaster(IFeatureSet fs, Extent extent, double cellSize, string fieldName, string outputFileName, string driverCode, string[] options, IProgressHandler progressHandler)
         {
             Extent env = extent;
             if (cellSize == 0)
@@ -111,17 +97,20 @@ namespace DotSpatial.Analysis
                     cellSize = env.Height / 256;
                 }
             }
+
             int w = (int)Math.Ceiling(env.Width / cellSize);
             if (w > 8000)
             {
                 w = 8000;
                 cellSize = env.Width / 8000;
             }
+
             int h = (int)Math.Ceiling(env.Height / cellSize);
             if (h > 8000)
             {
                 h = 8000;
             }
+
             Bitmap bmp = new Bitmap(w, h);
             Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.Transparent);
@@ -141,6 +130,7 @@ namespace DotSpatial.Analysis
                         mpl.Symbology = ps;
                         mpl.DrawRegions(args, new List<Extent> { env });
                     }
+
                     break;
                 case FeatureType.Line:
                     {
@@ -150,6 +140,7 @@ namespace DotSpatial.Analysis
                         mpl.Symbology = ps;
                         mpl.DrawRegions(args, new List<Extent> { env });
                     }
+
                     break;
                 default:
                     {
@@ -159,19 +150,22 @@ namespace DotSpatial.Analysis
                         mpl.Symbology = ps;
                         mpl.DrawRegions(args, new List<Extent> { env });
                     }
+
                     break;
             }
+
             Type tp = fieldName == "FID" ? typeof(int) : fs.DataTable.Columns[fieldName].DataType;
+
             // We will try to convert to double if it is a string
             if (tp == typeof(string))
             {
                 tp = typeof(double);
             }
+
             InRamImageData image = new InRamImageData(bmp, env);
             ProgressMeter pm = new ProgressMeter(progressHandler, "Converting To Raster Cells", h);
 
-            IRaster output;
-            output = Raster.Create(outputFileName, driverCode, w, h, 1, tp, options);
+            var output = Raster.Create(outputFileName, driverCode, w, h, 1, tp, options);
             output.Bounds = new RasterBounds(h, w, env);
 
             double noDataValue = output.NoDataValue;
@@ -179,8 +173,8 @@ namespace DotSpatial.Analysis
             if (fieldName != "FID")
             {
                 // We can't use this method to calculate Max on a non-existent FID field.
-                double dtMax = Convert.ToDouble(fs.DataTable.Compute("Max(" + fieldName + ")", ""));
-                double dtMin = Convert.ToDouble(fs.DataTable.Compute("Min(" + fieldName + ")", ""));
+                double dtMax = Convert.ToDouble(fs.DataTable.Compute("Max(" + fieldName + ")", string.Empty));
+                double dtMin = Convert.ToDouble(fs.DataTable.Compute("Min(" + fieldName + ")", string.Empty));
 
                 if (dtMin <= noDataValue && dtMax >= noDataValue)
                 {
@@ -227,22 +221,24 @@ namespace DotSpatial.Analysis
                         }
                     }
                 }
+
                 pm.CurrentValue = row;
             }
-            const int maxIterations = 5;
+
+            const int MaxIterations = 5;
             int iteration = 0;
             while (locations.Count > 0)
             {
                 List<RcIndex> newLocations = new List<RcIndex>();
                 foreach (RcIndex location in locations)
                 {
-                    object val = GetCellValue(w, h, location.Row, location.Column, image,
-                                              image.GetColor(location.Row, location.Column), colorTable, newLocations);
+                    object val = GetCellValue(w, h, location.Row, location.Column, image, image.GetColor(location.Row, location.Column), colorTable, newLocations);
                     output.Value[location.Row, location.Column] = GetDouble(val, failureList);
                 }
+
                 locations = newLocations;
                 iteration++;
-                if (iteration > maxIterations)
+                if (iteration > MaxIterations)
                 {
                     break;
                 }
@@ -252,16 +248,58 @@ namespace DotSpatial.Analysis
             return output;
         }
 
-        private static double GetFieldValue(Type tp, string fieldstr)
+        private static object GetCellValue(int w, int h, int row, int col, IImageData image, Color c, Hashtable colorTable, ICollection<RcIndex> locations)
         {
-            FieldInfo field = tp.GetField(fieldstr, BindingFlags.Public | BindingFlags.Static);
-            if (field == null)
+            double dmin = double.MaxValue;
+            object val = 0;
+            bool empty = true;
+
+            // Search 8 neighbor cells for likely blended neighbors
+            // (otherwise distant shapes might match better incorrectly)
+            for (int i = -1; i < 2; i++)
             {
-                // There's no TypeArgumentException, unfortunately. You might want
-                // to create one :)
-                throw new InvalidOperationException("Invalid type argument for GetFieldValue: " + tp.Name);
+                for (int j = -1; j < 2; j++)
+                {
+                    if (i == j && j == 0)
+                    {
+                        continue;
+                    }
+
+                    if (row + i < 0 || row + i >= h)
+                    {
+                        continue;
+                    }
+
+                    if (col + j < 0 || col + j >= w)
+                    {
+                        continue;
+                    }
+
+                    Color nc = image.GetColor(row + i, col + j);
+                    if (colorTable.ContainsKey(nc) == false)
+                    {
+                        continue;
+                    }
+
+                    double d = ((nc.R - c.R) * (nc.R - c.R)) + ((nc.G - c.G) * (nc.G - c.G)) + ((nc.B - c.B) * (nc.B - c.B));
+                    if (d >= dmin)
+                    {
+                        continue;
+                    }
+
+                    val = colorTable[nc];
+                    dmin = d;
+                    empty = false;
+                    image.SetColor(row, col, nc);
+                }
             }
-            return Convert.ToDouble(field.GetValue(null));
+
+            if (empty)
+            {
+                locations.Add(new RcIndex(row, col));
+            }
+
+            return val;
         }
 
         private static double GetDouble(object val, IList<string> failureList)
@@ -280,57 +318,23 @@ namespace DotSpatial.Analysis
                     dVal = failureList.Count - 1;
                 }
             }
+
             return dVal;
         }
 
-        private static object GetCellValue(int w, int h, int row, int col, IImageData image, Color c,
-                                           Hashtable colorTable, ICollection<RcIndex> locations)
+        private static double GetFieldValue(Type tp, string fieldstr)
         {
-            double dmin = double.MaxValue;
-            object val = 0;
-            bool empty = true;
-
-            // Search 8 neighbor cells for likely blended neighbors
-            // (otherwise distant shapes might match better incorrectly)
-            for (int i = -1; i < 2; i++)
+            FieldInfo field = tp.GetField(fieldstr, BindingFlags.Public | BindingFlags.Static);
+            if (field == null)
             {
-                for (int j = -1; j < 2; j++)
-                {
-                    if (i == j && j == 0)
-                    {
-                        continue;
-                    }
-                    if (row + i < 0 || row + i >= h)
-                    {
-                        continue;
-                    }
-                    if (col + j < 0 || col + j >= w)
-                    {
-                        continue;
-                    }
-                    Color nc = image.GetColor(row + i, col + j);
-                    if (colorTable.ContainsKey(nc) == false)
-                    {
-                        continue;
-                    }
-                    double d = ((nc.R - c.R) * (nc.R - c.R)) + ((nc.G - c.G) * (nc.G - c.G)) +
-                               ((nc.B - c.B) * (nc.B - c.B));
-                    if (d >= dmin)
-                    {
-                        continue;
-                    }
+                // There's no TypeArgumentException, unfortunately. You might want
+                // to create one :)
+                throw new InvalidOperationException("Invalid type argument for GetFieldValue: " + tp.Name);
+            }
 
-                    val = colorTable[nc];
-                    dmin = d;
-                    empty = false;
-                    image.SetColor(row, col, nc);
-                }
-            }
-            if (empty)
-            {
-                locations.Add(new RcIndex(row, col));
-            }
-            return val;
+            return Convert.ToDouble(field.GetValue(null));
         }
+
+        #endregion
     }
 }

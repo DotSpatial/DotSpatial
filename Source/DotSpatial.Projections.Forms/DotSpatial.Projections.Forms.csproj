@@ -49,8 +49,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\bin\Debug\DotSpatial.Projections.Forms.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -60,6 +60,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\DotSpatial.Projections.Forms.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfoShared.cs">
@@ -68,8 +69,14 @@
     <Compile Include="DoubleBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="DoubleBox.Designer.cs">
+      <DependentUpon>DoubleBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProjectionCustomDialog.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectionCustomDialog.Designer.cs">
+      <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectionSelectControl.cs">
       <SubType>UserControl</SubType>
@@ -185,7 +192,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotSpatial.Projections.Forms.nuspec" />
+    <None Include="packages.config" />
     <None Include="Projections.Forms.4.0.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +235,11 @@
       <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
       <Name>DotSpatial.Projections</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

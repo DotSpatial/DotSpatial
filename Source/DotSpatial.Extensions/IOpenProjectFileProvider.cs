@@ -1,3 +1,6 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System.ComponentModel.Composition;
 
 namespace DotSpatial.Extensions
@@ -12,7 +15,7 @@ namespace DotSpatial.Extensions
         /// Opens the specified file name.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <returns></returns>
+        /// <returns>True, if the file was opened.</returns>
         bool Open(string fileName);
     }
 }

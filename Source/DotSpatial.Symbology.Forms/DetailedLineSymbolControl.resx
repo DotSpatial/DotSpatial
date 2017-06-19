@@ -482,7 +482,7 @@
     <value>tabSimple</value>
   </data>
   <data name="dblWidth.ToolTip" xml:space="preserve">
-    <value>Set the width of the stroke.  The scale mode determines the measurement units.</value>
+    <value>Set the width of the stroke. The scale mode determines the measurement units.</value>
   </data>
   <data name="&gt;&gt;tabDash.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -962,7 +962,7 @@
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cmbStrokeStyle.ToolTip" xml:space="preserve">
-    <value>Allows some simpler dash styles.  For more complicated styles, select Cartographic strokes.</value>
+    <value>Allows some simpler dash styles. For more complicated styles, select Cartographic strokes.</value>
   </data>
   <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1196,7 +1196,7 @@
     <value>True</value>
   </data>
   <data name="cmbScaleMode.ToolTip" xml:space="preserve">
-    <value>Geographic lines get wider as you zoom in and use map units for controling width.  Symbolic and simple keep the same width as you zoom.</value>
+    <value>Geographic lines get wider as you zoom in and use map units for controling width. Symbolic and simple keep the same width as you zoom.</value>
   </data>
   <data name="lblDecorationPreview.Location" type="System.Drawing.Point, System.Drawing">
     <value>307, 27</value>
@@ -1464,7 +1464,7 @@
     <value>sldOpacityCartographic</value>
   </data>
   <data name="nudDecorationCount.ToolTip" xml:space="preserve">
-    <value>The first two are drawn on the start and end locations.  After that, the line is divided evenly.
+    <value>The first two are drawn on the start and end locations. After that, the line is divided evenly.
 If only one decoration is added its position can be set percentually.</value>
   </data>
   <data name="cbColorSimple.TabIndex" type="System.Int32, mscorlib">

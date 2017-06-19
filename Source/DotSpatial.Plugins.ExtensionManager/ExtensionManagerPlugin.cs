@@ -1,11 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtensionManagerPlugin.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -13,27 +9,41 @@ using DotSpatial.Plugins.ExtensionManager.Properties;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
+    /// <summary>
+    /// This plugin is used to add the extension manager.
+    /// </summary>
     public class ExtensionManagerPlugin : Extension
     {
-        ExtensionManagerForm form = new ExtensionManagerForm();
-        Thread updateThread;
+        #region Fields
 
+        private readonly ExtensionManagerForm _form = new ExtensionManagerForm();
+        private Thread _updateThread;
+
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtensionManagerPlugin"/> class.
+        /// </summary>
         public ExtensionManagerPlugin()
         {
             DeactivationAllowed = false;
         }
 
-        #region Public Methods
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc />
         public override void Activate()
         {
             AddButtons();
-            form.App = App;
+            _form.App = App;
 
-            updateThread = new Thread(() => Update.autoUpdateController(App));
-            updateThread.Start();
-            App.UpdateSplashScreen("Looking for updates");
+            _updateThread = new Thread(() => Update.AutoUpdateController(App));
+            _updateThread.Start();
+            App.UpdateSplashScreen(Resources.LookingForUpdates);
             App.ExtensionsActivated += ExtensionsActivated;
 
             base.Activate();
@@ -46,16 +56,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             base.Deactivate();
         }
 
-        #endregion
-
-        #region Methods
-
         private void AddButtons()
         {
             switch (App.ShowExtensionsDialogMode)
             {
                 case ShowExtensionsDialogMode.Default:
-                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Extension Manager...", ExtensionManager_Click)
+                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, Resources.ExtensionManager, ExtensionManagerClick)
                     {
                         GroupCaption = HeaderControl.ApplicationMenuKey,
                         SmallImage = Resources.plugin_16x16,
@@ -64,8 +70,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                     };
                     App.HeaderControl.Add(simpleAction);
 
-                    //sample projects menu
-                    var simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenSampleProjects_Click)
+                    // sample projects menu
+                    var simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, Resources.OpenSampleProject, OpenSampleProjectsClick)
                     {
                         GroupCaption = HeaderControl.ApplicationMenuKey,
                         SmallImage = Resources.plugin_16x16,
@@ -76,26 +82,30 @@ namespace DotSpatial.Plugins.ExtensionManager
                     break;
 
                 case ShowExtensionsDialogMode.MapGlyph:
-                    var fun = new AppFunction { Manager = App, Map = App.Map };
+                    var fun = new AppFunction
+                    {
+                        Manager = App,
+                        Map = App.Map
+                    };
                     App.Map.MapFunctions.Insert(0, fun);
                     fun.Activate();
                     break;
             }
         }
 
+        private void ExtensionManagerClick(object sender, EventArgs e)
+        {
+            _form.Show();
+        }
+
         private void ExtensionsActivated(object sender, EventArgs e)
         {
-            App.UpdateSplashScreen("Looking for updates");
-            updateThread.Join();
-            App.UpdateSplashScreen("Finished.");
+            App.UpdateSplashScreen(Resources.LookingForUpdates);
+            _updateThread.Join();
+            App.UpdateSplashScreen(Resources.Finished);
         }
 
-        private void ExtensionManager_Click(object sender, EventArgs e)
-        {
-            form.Show();
-        }
-
-        private void OpenSampleProjects_Click(object sender, EventArgs e)
+        private void OpenSampleProjectsClick(object sender, EventArgs e)
         {
             var sampleProjForm = new SampleProjectsForm(App);
             sampleProjForm.Show();

@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/11/2008 3:54:51 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using System.Windows.Forms;
@@ -21,20 +11,20 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionPan : MapFunction
     {
-        #region Private Variables
+        #region Fields
 
         private Point _dragStart;
-        private bool _isDragging;
         private bool _preventDrag;
         private Rectangle _source;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the MapFunctionPan class.
+        /// Initializes a new instance of the <see cref="MapFunctionPan"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionPan(IMap inMap)
             : base(inMap)
         {
@@ -44,36 +34,34 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// This indicates that this tool is currently being used.
+        /// Gets or sets a value indicating whether the map function is currently interacting with the map.
         /// </summary>
-        public bool IsDragging
-        {
-            get { return _isDragging; }
-        }
+        public bool BusySet { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this tool is currently being used.
+        /// </summary>
+        public bool IsDragging { get; private set; }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
 
         /// <summary>
         /// Handles the actions that the tool controls during the OnMouseDown event
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left && _preventDrag == false)
             {
-                //PreventBackBuffer = true;
                 _dragStart = e.Location;
                 _source = e.Map.MapFrame.View;
             }
+
             base.OnMouseDown(e);
         }
 
@@ -81,7 +69,7 @@ namespace DotSpatial.Controls
         /// Handles the mouse move event, changing the viewing extents to match the movements
         /// of the mouse if the left mouse button is down.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_dragStart != Point.Empty && _preventDrag == false)
@@ -92,24 +80,28 @@ namespace DotSpatial.Controls
                     BusySet = true;
                 }
 
-                _isDragging = true;
-                Point diff = new Point { X = _dragStart.X - e.X, Y = _dragStart.Y - e.Y };
-                e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width,
-                                                    _source.Height);
+                IsDragging = true;
+                Point diff = new Point
+                             {
+                                 X = _dragStart.X - e.X,
+                                 Y = _dragStart.Y - e.Y
+                             };
+                e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width, _source.Height);
                 Map.Invalidate();
             }
+
             base.OnMouseMove(e);
         }
 
         /// <summary>
         /// Mouse Up
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
-            if (e.Button == MouseButtons.Left && _isDragging)
+            if (e.Button == MouseButtons.Left && IsDragging)
             {
-                _isDragging = false;
+                IsDragging = false;
 
                 _preventDrag = true;
                 e.Map.MapFrame.ResetExtents();
@@ -117,13 +109,12 @@ namespace DotSpatial.Controls
                 Map.IsBusy = false;
                 BusySet = false;
             }
+
             _dragStart = Point.Empty;
 
             base.OnMouseUp(e);
         }
 
         #endregion
-
-        public bool BusySet { get; set; }
     }
 }

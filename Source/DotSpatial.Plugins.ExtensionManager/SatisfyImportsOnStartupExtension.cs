@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="SatisfyImportsOnStarupExtension.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -11,6 +8,7 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
 using DotSpatial.Extensions;
+using DotSpatial.Plugins.ExtensionManager.Properties;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -19,16 +17,27 @@ namespace DotSpatial.Plugins.ExtensionManager
     /// </summary>
     public class SatisfyImportsOnStartupExtension : ISatisfyImportsExtension
     {
-        private readonly Packages packages = new Packages();
+        #region Fields
+
+        private readonly Packages _packages = new Packages();
+
+        #endregion
+
+        #region Properties
+
+        /// <inheritdoc />
+        public int Priority => 0;
 
         /// <summary>
-        /// Gets the AppManager that is responsible for activating and deactivating plugins as well as coordinating
+        /// Gets or sets the AppManager that is responsible for activating and deactivating plugins as well as coordinating
         /// all of the other properties.
         /// </summary>
         [Import]
         private AppManager App { get; set; }
 
-        #region ISatisfyImportsExtension Members
+        #endregion
+
+        #region Methods
 
         /// <inheritdoc />
         public void Activate()
@@ -40,31 +49,25 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (isDockManagerNeeded && isHeaderControlNeeded && isStatusControlNeeded)
             {
                 App.UpdateProgress("Downloading a Ribbon extension...");
-                var package = packages.Install("DotSpatial.Plugins.Ribbon");
+                var package = _packages.Install("DotSpatial.Plugins.Ribbon");
                 if (package == null)
                 {
-                    MessageBox.Show("No HeaderControl was available, but we couldn't download the ribbon. Please make sure you are connected to the Internet.");
+                    MessageBox.Show(Resources.NoHeaderControlErrorDownloadingRibbon);
                 }
                 else
                 {
                     // Download the other extensions.
                     App.UpdateProgress("Downloading a DockManager extension...");
-                    packages.Install("DotSpatial.Plugins.DockManager");
+                    _packages.Install("DotSpatial.Plugins.DockManager");
 
                     App.UpdateProgress("Downloading a MenuBar extension...");
-                    packages.Install("DotSpatial.Plugins.MenuBar");
-                    packages.Install("DotSpatial.Plugins.Measure");
-                    packages.Install("DotSpatial.Plugins.TableEditor");
+                    _packages.Install("DotSpatial.Plugins.MenuBar");
+                    _packages.Install("DotSpatial.Plugins.Measure");
+                    _packages.Install("DotSpatial.Plugins.TableEditor");
 
                     App.RefreshExtensions();
                 }
             }
-        }
-
-        /// <inheritdoc />
-        public int Priority
-        {
-            get { return 0; }
         }
 
         #endregion

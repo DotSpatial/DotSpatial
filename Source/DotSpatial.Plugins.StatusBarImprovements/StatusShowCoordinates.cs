@@ -1,9 +1,6 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="StatusBarCoordinates.cs" company="">
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
@@ -14,38 +11,54 @@ namespace DotSpatial.Plugins.StatusBarImprovements
     /// </summary>
     public class StatusShowCoordinates : Extension
     {
-        private Map _Map;
-        private StatusPanel xPanel;
-        private StatusPanel yPanel;
+        #region Fields
 
+        private Map _map;
+        private StatusPanel _xPanel;
+        private StatusPanel _yPanel;
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override void Activate()
         {
-            _Map = (Map)App.Map;
-            _Map.GeoMouseMove += Map_GeoMouseMove;
+            _map = (Map)App.Map;
+            _map.GeoMouseMove += MapGeoMouseMove;
 
-            xPanel = new StatusPanel { Width = 160 };
-            yPanel = new StatusPanel { Width = 160 };
-            App.ProgressHandler.Add(xPanel);
-            App.ProgressHandler.Add(yPanel);
+            _xPanel = new StatusPanel
+                     {
+                         Width = 160
+                     };
+            _yPanel = new StatusPanel
+                     {
+                         Width = 160
+                     };
+            App.ProgressHandler.Add(_xPanel);
+            App.ProgressHandler.Add(_yPanel);
 
             base.Activate();
         }
 
+        /// <inheritdoc />
         public override void Deactivate()
         {
-            _Map.GeoMouseMove -= Map_GeoMouseMove;
+            _map.GeoMouseMove -= MapGeoMouseMove;
 
-            App.ProgressHandler.Remove(xPanel);
-            App.ProgressHandler.Remove(yPanel);
+            App.ProgressHandler.Remove(_xPanel);
+            App.ProgressHandler.Remove(_yPanel);
 
             App.HeaderControl.RemoveAll();
             base.Deactivate();
         }
 
-        private void Map_GeoMouseMove(object sender, GeoMouseArgs e)
+        private void MapGeoMouseMove(object sender, GeoMouseArgs e)
         {
-            xPanel.Caption = String.Format("X: {0:.#####}", e.GeographicLocation.X);
-            yPanel.Caption = String.Format("Y: {0:.#####}", e.GeographicLocation.Y);
+            _xPanel.Caption = string.Format("X: {0:.#####}", e.GeographicLocation.X);
+            _yPanel.Caption = string.Format("Y: {0:.#####}", e.GeographicLocation.Y);
         }
+
+        #endregion
     }
 }

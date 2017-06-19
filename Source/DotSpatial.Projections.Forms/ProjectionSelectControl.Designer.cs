@@ -85,7 +85,7 @@ namespace DotSpatial.Projections.Forms
             this.radProjected.TabIndex = 0;
             this.radProjected.Text = "&Projected";
             this.radProjected.UseVisualStyleBackColor = true;
-            this.radProjected.CheckedChanged += new System.EventHandler(this.radProjected_CheckedChanged);
+            this.radProjected.CheckedChanged += new System.EventHandler(this.RadProjectedCheckedChanged);
             // 
             // cmbMinorCategory
             // 
@@ -98,7 +98,7 @@ namespace DotSpatial.Projections.Forms
             this.cmbMinorCategory.Name = "cmbMinorCategory";
             this.cmbMinorCategory.Size = new System.Drawing.Size(282, 21);
             this.cmbMinorCategory.TabIndex = 6;
-            this.cmbMinorCategory.SelectedIndexChanged += new System.EventHandler(this.cmbMinorCategory_SelectedIndexChanged);
+            this.cmbMinorCategory.SelectedIndexChanged += new System.EventHandler(this.CmbMinorCategorySelectedIndexChanged);
             // 
             // cmbMajorCategory
             // 
@@ -111,7 +111,7 @@ namespace DotSpatial.Projections.Forms
             this.cmbMajorCategory.Name = "cmbMajorCategory";
             this.cmbMajorCategory.Size = new System.Drawing.Size(281, 21);
             this.cmbMajorCategory.TabIndex = 5;
-            this.cmbMajorCategory.SelectedIndexChanged += new System.EventHandler(this.cmbMajorCategory_SelectedIndexChanged);
+            this.cmbMajorCategory.SelectedIndexChanged += new System.EventHandler(this.CmbMajorCategorySelectedIndexChanged);
             // 
             // nudEpsgCode
             // 
@@ -136,7 +136,7 @@ namespace DotSpatial.Projections.Forms
             this.btnFromEpsgCode.TabIndex = 8;
             this.btnFromEpsgCode.Text = "Find";
             this.btnFromEpsgCode.UseVisualStyleBackColor = true;
-            this.btnFromEpsgCode.Click += new System.EventHandler(this.btnFromEpsgCode_Click);
+            this.btnFromEpsgCode.Click += new System.EventHandler(this.BtnFromEpsgCodeClick);
             // 
             // groupBox1
             // 
@@ -189,7 +189,7 @@ namespace DotSpatial.Projections.Forms
             this.chbEsri.TabIndex = 10;
             this.chbEsri.Text = "ESRI (otherwise Proj4)";
             this.chbEsri.UseVisualStyleBackColor = true;
-            this.chbEsri.CheckedChanged += new System.EventHandler(this.chbEsri_CheckedChanged);
+            this.chbEsri.CheckedChanged += new System.EventHandler(this.ChbEsriCheckedChanged);
             // 
             // tbEsriProj4
             // 
@@ -212,7 +212,7 @@ namespace DotSpatial.Projections.Forms
             this.btnUseESRI.TabIndex = 8;
             this.btnUseESRI.Text = "Parse";
             this.btnUseESRI.UseVisualStyleBackColor = true;
-            this.btnUseESRI.Click += new System.EventHandler(this.btnUseESRI_Click);
+            this.btnUseESRI.Click += new System.EventHandler(this.BtnUseEsriClick);
             // 
             // ProjectionSelectControl
             // 

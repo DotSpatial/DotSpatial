@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/26/2009 11:22:18 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -20,20 +10,16 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PointSchemeCategory
+    /// PolygonCategory
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)),
-    Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class PolygonCategory : FeatureCategory, IPolygonCategory
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PointSchemeCategory
+        /// Initializes a new instance of the <see cref="PolygonCategory"/> class.
         /// </summary>
         public PolygonCategory()
         {
@@ -42,7 +28,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Specifies a category that is made up from a simple color.
+        /// Initializes a new instance of the <see cref="PolygonCategory"/> class that is made up from a simple color.
         /// </summary>
         /// <param name="fillColor">The color to fill the polygons with</param>
         /// <param name="outlineColor">The border color for the polygons</param>
@@ -54,8 +40,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new PolygonCategory with the specified image being tiled within the category.
-        /// The s
+        /// Initializes a new instance of the <see cref="PolygonCategory"/> class with the specified image being tiled within the category.
         /// </summary>
         /// <param name="picture">The picture to draw</param>
         /// <param name="wrap">The way to wrap the picture</param>
@@ -67,7 +52,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new PolygonCategory with the specified image being tiled within the category.
+        /// Initializes a new instance of the <see cref="PolygonCategory"/> class with the specified image being tiled within the category.
         /// The simple outline characteristics are also defined.
         /// </summary>
         /// <param name="picture">The picture to draw</param>
@@ -82,7 +67,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of a Gradient Pattern using the specified colors and angle
+        /// Initializes a new instance of the <see cref="PolygonCategory"/> class using a Gradient Pattern with the specified colors and angle.
         /// </summary>
         /// <param name="startColor">The start color</param>
         /// <param name="endColor">The end color</param>
@@ -97,8 +82,8 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new category based on a symbolizer, and uses the same symbolizer, but with a fill and border color of light cyan
-        /// for the selection symbolizer
+        /// Initializes a new instance of the <see cref="PolygonCategory"/> class based on a symbolizer,
+        /// and uses the same symbolizer, but with a fill and border color of light cyan for the selection symbolizer.
         /// </summary>
         /// <param name="polygonSymbolizer">The symbolizer to use in order to create a category</param>
         public PolygonCategory(IPolygonSymbolizer polygonSymbolizer)
@@ -110,17 +95,56 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the symbolizer to use to draw selected features from this category.
+        /// </summary>
+        [Description("Gets or sets the symbolizer to use to draw selected features from this category.")]
+        public new IPolygonSymbolizer SelectionSymbolizer
+        {
+            get
+            {
+                return base.SelectionSymbolizer as IPolygonSymbolizer;
+            }
+
+            set
+            {
+                base.SelectionSymbolizer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the symbolizer for this category
+        /// </summary>
+        [Description("Gets or sets the symbolizer for this category")]
+        public new IPolygonSymbolizer Symbolizer
+        {
+            get
+            {
+                return base.Symbolizer as IPolygonSymbolizer;
+            }
+
+            set
+            {
+                base.Symbolizer = value;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// This gets a single color that attempts to represent the specified
-        /// category.  For polygons, for example, this is the fill color (or central fill color)
-        /// of the top pattern.  If an image is being used, the color will be gray.
+        /// category. For polygons, for example, this is the fill color (or central fill color)
+        /// of the top pattern. If an image is being used, the color will be gray.
         /// </summary>
         /// <returns>The System.Color that can be used as an approximation to represent this category.</returns>
         public override Color GetColor()
         {
-            if (Symbolizer == null || Symbolizer.Patterns == null || Symbolizer.Patterns.Count == 0) return Color.Gray;
+            if (Symbolizer?.Patterns == null || Symbolizer.Patterns.Count == 0) return Color.Gray;
+
             IPattern p = Symbolizer.Patterns[0];
             return p.GetFillColor();
         }
@@ -131,7 +155,8 @@ namespace DotSpatial.Symbology
         /// <param name="color">Sets the color of the top most pattern for the principal symbolizer.</param>
         public override void SetColor(Color color)
         {
-            if (Symbolizer == null || Symbolizer.Patterns == null || Symbolizer.Patterns.Count == 0) return;
+            if (Symbolizer?.Patterns == null || Symbolizer.Patterns.Count == 0) return;
+
             Symbolizer.Patterns[0].SetFillColor(color);
         }
 
@@ -142,34 +167,6 @@ namespace DotSpatial.Symbology
         public override string ToString()
         {
             return "Filter: " + FilterExpression + " Color: " + Symbolizer.GetFillColor();
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the symbolizer for this category
-        /// </summary>
-        [Description("Gets or sets the symbolizer for this category")]
-        //[TypeConverter(typeof(GeneralTypeConverter)),
-        //Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
-        public new IPolygonSymbolizer Symbolizer
-        {
-            get { return base.Symbolizer as IPolygonSymbolizer; }
-            set { base.Symbolizer = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the symbolizer to use to draw selected features from this category.
-        /// </summary>
-        [Description("Gets or sets the symbolizer to use to draw selected features from this category.")]
-        //[TypeConverter(typeof(GeneralTypeConverter)),
-        //Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
-        public new IPolygonSymbolizer SelectionSymbolizer
-        {
-            get { return base.SelectionSymbolizer as IPolygonSymbolizer; }
-            set { base.SelectionSymbolizer = value; }
         }
 
         #endregion

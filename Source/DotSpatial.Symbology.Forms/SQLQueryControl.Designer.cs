@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
 {
-    partial class SQLQueryControl
+    partial class SqlQueryControl
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SQLQueryControl));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SqlQueryControl));
             this.lblMax = new System.Windows.Forms.Label();
             this.lblMin = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -107,98 +107,98 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.rtbFilterText, "rtbFilterText");
             this.rtbFilterText.Name = "rtbFilterText";
-            this.rtbFilterText.TextChanged += new System.EventHandler(this.rtbFilterText_TextChanged);
+            this.rtbFilterText.TextChanged += new System.EventHandler(this.RtbFilterTextTextChanged);
             // 
             // btnGetUniqueValues
             // 
             resources.ApplyResources(this.btnGetUniqueValues, "btnGetUniqueValues");
             this.btnGetUniqueValues.Name = "btnGetUniqueValues";
             this.btnGetUniqueValues.UseVisualStyleBackColor = true;
-            this.btnGetUniqueValues.Click += new System.EventHandler(this.btnGetUniqueValues_Click);
+            this.btnGetUniqueValues.Click += new System.EventHandler(this.BtnGetUniqueValuesClick);
             // 
             // btnNot
             // 
             resources.ApplyResources(this.btnNot, "btnNot");
             this.btnNot.Name = "btnNot";
             this.btnNot.UseVisualStyleBackColor = true;
-            this.btnNot.Click += new System.EventHandler(this.btnNot_Click);
+            this.btnNot.Click += new System.EventHandler(this.BtnNotClick);
             // 
             // btnParenthasis
             // 
             resources.ApplyResources(this.btnParenthasis, "btnParenthasis");
             this.btnParenthasis.Name = "btnParenthasis";
             this.btnParenthasis.UseVisualStyleBackColor = true;
-            this.btnParenthasis.Click += new System.EventHandler(this.btnParenthasis_Click);
+            this.btnParenthasis.Click += new System.EventHandler(this.BtnParenthasisClick);
             // 
             // btnAsterix
             // 
             resources.ApplyResources(this.btnAsterix, "btnAsterix");
             this.btnAsterix.Name = "btnAsterix";
             this.btnAsterix.UseVisualStyleBackColor = true;
-            this.btnAsterix.Click += new System.EventHandler(this.btnAsterix_Click);
+            this.btnAsterix.Click += new System.EventHandler(this.BtnAsterixClick);
             // 
             // btnOr
             // 
             resources.ApplyResources(this.btnOr, "btnOr");
             this.btnOr.Name = "btnOr";
             this.btnOr.UseVisualStyleBackColor = true;
-            this.btnOr.Click += new System.EventHandler(this.btnOr_Click);
+            this.btnOr.Click += new System.EventHandler(this.BtnOrClick);
             // 
             // btnLessThanOrEqual
             // 
             resources.ApplyResources(this.btnLessThanOrEqual, "btnLessThanOrEqual");
             this.btnLessThanOrEqual.Name = "btnLessThanOrEqual";
             this.btnLessThanOrEqual.UseVisualStyleBackColor = true;
-            this.btnLessThanOrEqual.Click += new System.EventHandler(this.btnLessThanOrEqual_Click);
+            this.btnLessThanOrEqual.Click += new System.EventHandler(this.BtnLessThanOrEqualClick);
             // 
             // btnLessThan
             // 
             resources.ApplyResources(this.btnLessThan, "btnLessThan");
             this.btnLessThan.Name = "btnLessThan";
             this.btnLessThan.UseVisualStyleBackColor = true;
-            this.btnLessThan.Click += new System.EventHandler(this.btnLessThan_Click);
+            this.btnLessThan.Click += new System.EventHandler(this.BtnLessThanClick);
             // 
             // btnAnd
             // 
             resources.ApplyResources(this.btnAnd, "btnAnd");
             this.btnAnd.Name = "btnAnd";
             this.btnAnd.UseVisualStyleBackColor = true;
-            this.btnAnd.Click += new System.EventHandler(this.btnAnd_Click);
+            this.btnAnd.Click += new System.EventHandler(this.BtnAndClick);
             // 
             // btnGreaterThanOrEqual
             // 
             resources.ApplyResources(this.btnGreaterThanOrEqual, "btnGreaterThanOrEqual");
             this.btnGreaterThanOrEqual.Name = "btnGreaterThanOrEqual";
             this.btnGreaterThanOrEqual.UseVisualStyleBackColor = true;
-            this.btnGreaterThanOrEqual.Click += new System.EventHandler(this.btnGreaterThanOrEqual_Click);
+            this.btnGreaterThanOrEqual.Click += new System.EventHandler(this.BtnGreaterThanOrEqualClick);
             // 
             // btnGreaterThan
             // 
             resources.ApplyResources(this.btnGreaterThan, "btnGreaterThan");
             this.btnGreaterThan.Name = "btnGreaterThan";
             this.btnGreaterThan.UseVisualStyleBackColor = true;
-            this.btnGreaterThan.Click += new System.EventHandler(this.btnGreaterThan_Click);
+            this.btnGreaterThan.Click += new System.EventHandler(this.BtnGreaterThanClick);
             // 
             // btnLike
             // 
             resources.ApplyResources(this.btnLike, "btnLike");
             this.btnLike.Name = "btnLike";
             this.btnLike.UseVisualStyleBackColor = true;
-            this.btnLike.Click += new System.EventHandler(this.btnLike_Click);
+            this.btnLike.Click += new System.EventHandler(this.BtnLikeClick);
             // 
             // btnNotEqual
             // 
             resources.ApplyResources(this.btnNotEqual, "btnNotEqual");
             this.btnNotEqual.Name = "btnNotEqual";
             this.btnNotEqual.UseVisualStyleBackColor = true;
-            this.btnNotEqual.Click += new System.EventHandler(this.btnNotEqual_Click);
+            this.btnNotEqual.Click += new System.EventHandler(this.BtnNotEqualClick);
             // 
             // btnEquals
             // 
             resources.ApplyResources(this.btnEquals, "btnEquals");
             this.btnEquals.Name = "btnEquals";
             this.btnEquals.UseVisualStyleBackColor = true;
-            this.btnEquals.Click += new System.EventHandler(this.btnEquals_Click);
+            this.btnEquals.Click += new System.EventHandler(this.BtnEqualsClick);
             // 
             // lbxUniqueValues
             // 
@@ -206,36 +206,36 @@ namespace DotSpatial.Symbology.Forms
             this.lbxUniqueValues.BackColor = System.Drawing.SystemColors.Control;
             this.lbxUniqueValues.FormattingEnabled = true;
             this.lbxUniqueValues.Name = "lbxUniqueValues";
-            this.lbxUniqueValues.DoubleClick += new System.EventHandler(this.lbxUniqueValues_DoubleClick);
+            this.lbxUniqueValues.DoubleClick += new System.EventHandler(this.LbxUniqueValuesDoubleClick);
             // 
             // lbxFields
             // 
             resources.ApplyResources(this.lbxFields, "lbxFields");
             this.lbxFields.FormattingEnabled = true;
             this.lbxFields.Name = "lbxFields";
-            this.lbxFields.SelectedIndexChanged += new System.EventHandler(this.lbxFields_SelectedIndexChanged);
-            this.lbxFields.DoubleClick += new System.EventHandler(this.lbxFields_DoubleClick);
+            this.lbxFields.SelectedIndexChanged += new System.EventHandler(this.LbxFieldsSelectedIndexChanged);
+            this.lbxFields.DoubleClick += new System.EventHandler(this.LbxFieldsDoubleClick);
             // 
             // btnNull
             // 
             resources.ApplyResources(this.btnNull, "btnNull");
             this.btnNull.Name = "btnNull";
             this.btnNull.UseVisualStyleBackColor = true;
-            this.btnNull.Click += new System.EventHandler(this.btnNull_Click);
+            this.btnNull.Click += new System.EventHandler(this.BtnNullClick);
             // 
             // btnNotNull
             // 
             resources.ApplyResources(this.btnNotNull, "btnNotNull");
             this.btnNotNull.Name = "btnNotNull";
             this.btnNotNull.UseVisualStyleBackColor = true;
-            this.btnNotNull.Click += new System.EventHandler(this.btnNotNull_Click);
+            this.btnNotNull.Click += new System.EventHandler(this.BtnNotNullClick);
             // 
             // btnValidate
             // 
             resources.ApplyResources(this.btnValidate, "btnValidate");
             this.btnValidate.Name = "btnValidate";
             this.btnValidate.UseVisualStyleBackColor = true;
-            this.btnValidate.Click += new System.EventHandler(this.btnValidate_Click);
+            this.btnValidate.Click += new System.EventHandler(this.BtnValidateClick);
             // 
             // lblResult
             // 
@@ -278,7 +278,7 @@ namespace DotSpatial.Symbology.Forms
             this.Controls.Add(this.btnEquals);
             this.Controls.Add(this.lbxUniqueValues);
             this.Controls.Add(this.lbxFields);
-            this.Name = "SQLQueryControl";
+            this.Name = "SqlQueryControl";
             this.ResumeLayout(false);
             this.PerformLayout();
 

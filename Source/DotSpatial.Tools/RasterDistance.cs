@@ -1,17 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.RasterDistance.cs
-// Description:  This tool calculates the euclidean distance from each raster cell to the nearest target cell.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//---------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|-------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// KP                     |  9/2009                |  Used IDW as model for RasterDistance
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -21,11 +9,11 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Raster Distance tool
+    /// This tool calculates the euclidean distance from each raster cell to the nearest target cell.
     /// </summary>
     public class RasterDistance : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -33,52 +21,42 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the RasterDistance class.
+        /// Initializes a new instance of the <see cref="RasterDistance"/> class.
         /// </summary>
         public RasterDistance()
         {
-            this.Name = TextStrings.RasterDistanceproximity;
-            this.Category = TextStrings.RasterOverlay;
-            this.Description = TextStrings.Calculateseuclideandistance;
-            this.ToolTip = TextStrings.RasterDistanceproximity;
+            Name = TextStrings.RasterDistanceproximity;
+            Category = TextStrings.RasterOverlay;
+            Description = TextStrings.Calculateseuclideandistance;
+            ToolTip = TextStrings.RasterDistanceproximity;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>Boolean, true if the execute was successful.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IRaster inputRaster = _inputParam[0].Value as IRaster;
@@ -98,7 +76,7 @@ namespace DotSpatial.Tools
         /// <param name="maxDistance">The maximum distance value. Cells with a larger distance to nearest
         /// target cell than maxDistance will be assigned 'no data' value.</param>
         /// <param name="cancelProgressHandler">The progress handler</param>
-        /// <returns>true if execution successful, false otherwise</returns>
+        /// <returns>true if execution was successful, false otherwise</returns>
         public bool Execute(IRaster input, IRaster output, double maxDistance, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -110,12 +88,7 @@ namespace DotSpatial.Tools
             // Creates the output raster with the same bounds as the input
             RasterBounds bounds = (RasterBounds)input.Bounds.Copy();
 
-            output = Raster.CreateRaster(
-                output.Filename, string.Empty, bounds.NumColumns, bounds.NumRows, 1, typeof(int), new[] { string.Empty });
-
-            // output.CreateNew(output.Filename, "", bounds.NumColumns, bounds.NumRows, 1, typeof(int), new string[] { "" });
-
-            // output = Raster.CreateNewRaster(output.Filename, bounds.NumRows, bounds.NumColumns, RasterDataTypes.INTEGER);
+            output = Raster.CreateRaster(output.Filename, string.Empty, bounds.NumColumns, bounds.NumRows, 1, typeof(int), new[] { string.Empty });
             output.Bounds = bounds;
 
             // internally we reference output as an integer type raster.
@@ -137,8 +110,8 @@ namespace DotSpatial.Tools
                 int[][] aRy = new int[numRows][];
                 int[][] aSqDist = new int[numRows][];
 
-                const int infD = int.MaxValue;
-                const int targetVal = 0;
+                const int InfD = int.MaxValue;
+                const int TargetVal = 0;
 
                 // initialize the arrays
                 for (int i = 0; i < numRows; i++)
@@ -146,7 +119,7 @@ namespace DotSpatial.Tools
                     aRx[i] = new int[numColumns];
                     aRy[i] = new int[numColumns];
                     aSqDist[i] = new int[numColumns];
-                    ReadInputRow(input, i, aSqDist[i], targetVal, infD);
+                    ReadInputRow(input, i, aSqDist[i], TargetVal, InfD);
                 }
 
                 // *******************************************************************
@@ -159,15 +132,14 @@ namespace DotSpatial.Tools
 
                 for (int row = 1; row < numRows; row++)
                 {
-                    ////read the row from input raster
+                    //// read the row from input raster
                     // ReadInputRow(input, rowIndex, row2, targetVal, infD);
-
                     for (int col = 1; col < numColumns - 1; col++)
                     {
                         int val = aSqDist[row][col];
 
                         // Continue processing only if the current cell is not a target
-                        if (val == targetVal)
+                        if (val == TargetVal)
                         {
                             continue;
                         }
@@ -179,14 +151,10 @@ namespace DotSpatial.Tools
                         aNcels[3] = aSqDist[row - 1][col + 1]; // NE
 
                         // calculate the squared euclidean distances to each neighbouring cell and to the nearest target cell
-                        aDiff[0] = (aNcels[0] < infD) ? aNcels[0] + 2 * aRx[row][col - 1] + 1 : infD;
-                        aDiff[1] = (aNcels[1] < infD)
-                                       ? aNcels[1] + 2 * (aRx[row - 1][col - 1] + aRy[row - 1][col - 1] + 1)
-                                       : infD;
-                        aDiff[2] = (aNcels[2] < infD) ? aNcels[2] + 2 * aRy[row - 1][col] + 1 : infD;
-                        aDiff[3] = (aNcels[3] < infD)
-                                       ? aNcels[3] + 2 * (aRx[row - 1][col + 1] + aRy[row - 1][col + 1] + 1)
-                                       : infD;
+                        aDiff[0] = (aNcels[0] < InfD) ? aNcels[0] + (2 * aRx[row][col - 1]) + 1 : InfD;
+                        aDiff[1] = (aNcels[1] < InfD) ? aNcels[1] + (2 * (aRx[row - 1][col - 1] + aRy[row - 1][col - 1] + 1)) : InfD;
+                        aDiff[2] = (aNcels[2] < InfD) ? aNcels[2] + (2 * aRy[row - 1][col]) + 1 : InfD;
+                        aDiff[3] = (aNcels[3] < InfD) ? aNcels[3] + (2 * (aRx[row - 1][col + 1] + aRy[row - 1][col + 1] + 1)) : InfD;
 
                         // find neighbouring cell with minimum distance difference
                         int minDiff = aDiff[0];
@@ -201,7 +169,7 @@ namespace DotSpatial.Tools
                         }
 
                         // if a neighbouring cell with known distance was found:
-                        if (minDiff < infD)
+                        if (minDiff < InfD)
                         {
                             // assign the minimum euclidean distance
                             aSqDist[row][col] = minDiff;
@@ -236,8 +204,7 @@ namespace DotSpatial.Tools
                     if (percent > lastUpdate)
                     {
                         lastUpdate += 1;
-                        cancelProgressHandler.Progress(
-                            string.Empty, lastUpdate, TextStrings.Pass1 + lastUpdate + TextStrings.progresscompleted);
+                        cancelProgressHandler.Progress(string.Empty, lastUpdate, TextStrings.Pass1 + lastUpdate + TextStrings.progresscompleted);
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
@@ -260,7 +227,7 @@ namespace DotSpatial.Tools
                         int val = aSqDist[row][col];
 
                         // Continue processing only if the current cell is not a target
-                        if (val == targetVal)
+                        if (val == TargetVal)
                         {
                             continue;
                         }
@@ -272,14 +239,10 @@ namespace DotSpatial.Tools
                         aNcels[3] = aSqDist[row + 1][col - 1]; // SW
 
                         // calculate the squared euclidean distances to each neighbouring cell and to the nearest target cell
-                        aDiff[0] = (aNcels[0] < infD) ? aNcels[0] + 2 * aRx[row][col + 1] + 1 : infD;
-                        aDiff[1] = (aNcels[1] < infD)
-                                       ? aNcels[1] + 2 * (aRx[row + 1][col + 1] + aRy[row + 1][col + 1] + 1)
-                                       : infD;
-                        aDiff[2] = (aNcels[2] < infD) ? aNcels[2] + 2 * aRy[row + 1][col] + 1 : infD;
-                        aDiff[3] = (aNcels[3] < infD)
-                                       ? aNcels[3] + 2 * (aRx[row + 1][col - 1] + aRy[row + 1][col - 1] + 1)
-                                       : infD;
+                        aDiff[0] = (aNcels[0] < InfD) ? aNcels[0] + (2 * aRx[row][col + 1]) + 1 : InfD;
+                        aDiff[1] = (aNcels[1] < InfD) ? aNcels[1] + (2 * (aRx[row + 1][col + 1] + aRy[row + 1][col + 1] + 1)) : InfD;
+                        aDiff[2] = (aNcels[2] < InfD) ? aNcels[2] + (2 * aRy[row + 1][col]) + 1 : InfD;
+                        aDiff[3] = (aNcels[3] < InfD) ? aNcels[3] + (2 * (aRx[row + 1][col - 1] + aRy[row + 1][col - 1] + 1)) : InfD;
 
                         // find neighbouring cell with minimum distance difference
                         int minDiff = aDiff[0];
@@ -332,8 +295,7 @@ namespace DotSpatial.Tools
                     if (percent > lastUpdate)
                     {
                         lastUpdate += 1;
-                        cancelProgressHandler.Progress(
-                            string.Empty, lastUpdate, TextStrings.Pass2 + lastUpdate + TextStrings.progresscompleted);
+                        cancelProgressHandler.Progress(string.Empty, lastUpdate, TextStrings.Pass2 + lastUpdate + TextStrings.progresscompleted);
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
@@ -374,16 +336,12 @@ namespace DotSpatial.Tools
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Reads and converts the specified row from input raster to an array of integer
-        /// It assigns noDataVal to 'noData' values and assigns dataVal to other values
+        /// It assigns noDataVal to 'noData' values and assigns dataVal to other values.
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="rowNumber"></param>
+        /// <param name="input">Raster from which the row is read.</param>
+        /// <param name="rowNumber">Number of the row that gets converted.</param>
         /// <param name="rowArray">The array where the row is saved. This array must be correctly dimensioned.</param>
         /// <param name="dataVal">New value which will be assigned to value cells</param>
         /// <param name="noDataVal">New value which will be assigned to 'no data value' cells</param>
@@ -409,11 +367,11 @@ namespace DotSpatial.Tools
 
         /// <summary>
         /// Writes the integer row array to the output raster. The square distance is
-        /// converted to a normal distance. Unknown distance is converted to 'no data' value
+        /// converted to a normal distance. Unknown distance is converted to 'no data' value.
         /// </summary>
-        /// <param name="output"></param>
-        /// <param name="rowNumber"></param>
-        /// <param name="rowArray"></param>
+        /// <param name="output">The raster the row array is written to.</param>
+        /// <param name="rowNumber">Number of the row.</param>
+        /// <param name="rowArray">The array that contains the row. This array must be correctly dimensioned.</param>
         private static void WriteOutputRow(Raster<int> output, int rowNumber, int[] rowArray)
         {
             int noDataVal = (int)output.NoDataValue;

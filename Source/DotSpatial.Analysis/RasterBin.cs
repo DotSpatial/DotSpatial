@@ -1,20 +1,9 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Analysis.RasterBin.cs
-// Description: Class for binning raster data, for example into a histogram of values.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Ted Dunsford       |  8/2007            |  Initially written.  
-//--------------------|--------------------|--------------------------------------------------------------
-// Dan Ames           |  3/2013            |  Updating and standardizing licence and header info.  
-// *******************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
+
 using DotSpatial.Data;
 
 namespace DotSpatial.Analysis
@@ -25,12 +14,14 @@ namespace DotSpatial.Analysis
     public class RasterBin
     {
         /// <summary>
-        /// Initializes a new instance of the RasterBin class.
+        /// Initializes a new instance of the <see cref="RasterBin"/> class.
         /// </summary>
         public RasterBin()
         {
             BinSize = 10;
         }
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the "origin" of the bins.  Bins may occur above or below this,
@@ -42,6 +33,10 @@ namespace DotSpatial.Analysis
         /// Gets or sets the double value separating the bins for the raster.  The default is 10.
         /// </summary>
         public double BinSize { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This uses the BaseValue and BinSize properties in order to categorize the values
@@ -58,8 +53,7 @@ namespace DotSpatial.Analysis
             IRaster result;
             try
             {
-                result = Raster.Create(destName, String.Empty, source.NumColumns, source.NumRows, source.NumBands,
-                                       source.DataType, new string[] { });
+                result = Raster.Create(destName, string.Empty, source.NumColumns, source.NumRows, source.NumBands, source.DataType, new string[] { });
                 result.Bounds = source.Bounds.Copy();
                 result.Projection = source.Projection;
             }
@@ -68,6 +62,7 @@ namespace DotSpatial.Analysis
                 File.Copy(source.Filename, destName);
                 result = Raster.Open(destName);
             }
+
             bool finished;
 
             if (source.DataType == typeof(int))
@@ -94,10 +89,12 @@ namespace DotSpatial.Analysis
             {
                 finished = BinRasterSlow(source, result, progressHandler);
             }
+
             if (finished)
             {
                 result.Save();
             }
+
             return finished;
         }
 
@@ -113,12 +110,14 @@ namespace DotSpatial.Analysis
                     int sign = Math.Sign(value);
                     value = (value - BaseValue) / BinSize;
                     value = Math.Floor(value);
-                    value = BinSize * value + sign * BinSize / 2;
+                    value = (BinSize * value) + (sign * BinSize / 2);
                     result.Data[row][col] = (T)Convert.ChangeType(value, typeof(T));
                 }
+
                 pm.Next();
                 if (progressHandler.Cancel) return false;
             }
+
             return true;
         }
 
@@ -133,14 +132,18 @@ namespace DotSpatial.Analysis
                     int sign = Math.Sign(value);
                     value = (value - BaseValue) / BinSize;
                     value = Math.Floor(value);
-                    value = BinSize * value + sign * BinSize / 2;
+                    value = (BinSize * value) + (sign * BinSize / 2);
                     result.Value[row, col] = value;
                 }
+
                 pm.Next();
                 if (progressHandler.Cancel) return false;
             }
+
             pm.Reset();
             return true;
         }
+
+        #endregion
     }
 }

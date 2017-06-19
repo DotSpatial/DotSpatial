@@ -1,21 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Kyle Ellison. Created 11/23/2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |-----------------|----------|---------------------------------------------------------------------
-// |      Name       |  Date    |                        Comments
-// |-----------------|----------|----------------------------------------------------------------------
-// | Kyle Ellison    |12/02/2010| Pushed common code into base class and derived from it.
-// | Kyle Ellison    |12/15/2010| Added method to get multiple shapes by index values, and consolidated code.
-// |-----------------|----------|----------------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.IO;
 using GeoAPI.Geometries;
@@ -28,8 +12,10 @@ namespace DotSpatial.Data
     /// </summary>
     public class PointShapefileShapeSource : ShapefileShapeSource
     {
+        #region Constructors
+
         /// <summary>
-        /// Creates a new instance of the PointShapefileShapeSource with the specified point
+        /// Initializes a new instance of the <see cref="PointShapefileShapeSource"/> class with the specified point
         /// shapefile as the source.
         /// </summary>
         /// <param name="fileName">The string fileName</param>
@@ -39,66 +25,64 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new instance of the PointShapefileShapeSource with the specified polygon shapefile as the source and provided indices
+        /// Initializes a new instance of the <see cref="PointShapefileShapeSource"/> class with the specified polygon shapefile as the source and provided indices
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="spatialIndex"></param>
-        /// <param name="shx"></param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="spatialIndex">The spatial index.</param>
+        /// <param name="shx">The shapefile index file.</param>
         public PointShapefileShapeSource(string fileName, ISpatialIndex<int> spatialIndex, ShapefileIndexFile shx)
             : base(fileName, spatialIndex, shx)
         {
         }
 
-        /// <inheritdocs/>
-        protected override ShapeType ShapeType
-        {
-            get { return ShapeType.Point; }
-        }
+        #endregion
 
-        /// <inheritdocs/>
-        protected override ShapeType ShapeTypeM
-        {
-            get { return ShapeType.PointM; }
-        }
+        #region Properties
 
-        /// <inheritdocs/>
-        protected override ShapeType ShapeTypeZ
-        {
-            get { return ShapeType.PointZ; }
-        }
+        /// <inheritdoc />
+        public override FeatureType FeatureType => FeatureType.Point;
 
-        /// <inheritdocs/>
-        public override FeatureType FeatureType
-        {
-            get { return FeatureType.Point; }
-        }
+        /// <inheritdoc />
+        protected override ShapeType ShapeType => ShapeType.Point;
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
+        protected override ShapeType ShapeTypeM => ShapeType.PointM;
+
+        /// <inheritdoc />
+        protected override ShapeType ShapeTypeZ => ShapeType.PointZ;
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         protected override Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, Envelope envelope)
         {
             // Read from the index file because some deleted records
             // might still exist in the .shp file.
-            long offset = (shx.Shapes[shp].ByteOffset);
+            long offset = shx.Shapes[shp].ByteOffset;
             fs.Seek(offset, SeekOrigin.Begin);
             Shape myShape = new Shape();
-            // Position     Value               Type        Number      Byte Order
-            ShapeRange shape = new ShapeRange(FeatureType.Point); //--------------------------------------------------------------------
-            shape.RecordNumber = fs.ReadInt32(Endian.BigEndian);     // Byte 0       Record Number       Integer     1           Big
-            shape.ContentLength = fs.ReadInt32(Endian.BigEndian);    // Byte 4       Content Length      Integer     1           Big
-            ShapeType shapeType = (ShapeType)fs.ReadInt32(); // Byte 8       Shape Type          Integer     1           Little
+
+            ShapeRange shape = new ShapeRange(FeatureType.Point) // Position     Value               Type        Number      Byte Order
+            {
+                RecordNumber = fs.ReadInt32(Endian.BigEndian),  // Byte 0       Record Number       Integer     1           Big
+                ContentLength = fs.ReadInt32(Endian.BigEndian), // Byte 4       Content Length      Integer     1           Big
+            };
+
+            ShapeType shapeType = (ShapeType)fs.ReadInt32();    // Byte 8       Shape Type          Integer     1           Little
             if (shapeType == ShapeType.NullShape)
             {
                 return null;
             }
+
             double[] vertices = fs.ReadDouble(2);
             double x = vertices[0], y = vertices[1];
+
             // Don't add this shape to the result
-            if (envelope != null)
+            if (envelope != null && !envelope.Contains(new Coordinate(x, y)))
             {
-                if (!envelope.Contains(new Coordinate(x, y)))
-                {
-                    return null;
-                }
+                return null;
             }
 
             shape.StartIndex = 0;
@@ -122,14 +106,19 @@ namespace DotSpatial.Data
                 myShape.MinZ = myShape.MaxZ = myShape.Z[0];
                 myShape.M = fs.ReadDouble(1);
                 myShape.MinM = myShape.MaxM = myShape.M[0];
-                shape.Extent = new ExtentMZ(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
+                shape.Extent = new ExtentMz(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
             }
 
-            PartRange partR = new PartRange(myShape.Vertices, 0, 0, FeatureType.Point) { NumVertices = 1 };
+            PartRange partR = new PartRange(myShape.Vertices, 0, 0, FeatureType.Point)
+            {
+                NumVertices = 1
+            };
             shape.Parts.Add(partR);
             myShape.Range = shape;
 
             return myShape;
         }
+
+        #endregion
     }
 }

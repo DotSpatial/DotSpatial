@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/13/2010 7:40:48 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using DotSpatial.Data;
@@ -21,9 +11,11 @@ namespace DotSpatial.Symbology
     /// </summary>
     public static class ExtentExt
     {
+        #region Methods
+
         /// <summary>
         /// This method assumes that there was a direct correlation between this envelope and the original
-        /// rectangle.  This reproportions this window to match the specified newRectangle.
+        /// rectangle. This reproportions this window to match the specified newRectangle.
         /// </summary>
         /// <param name="self">The original envelope</param>
         /// <param name="original">The original rectangle </param>
@@ -33,9 +25,11 @@ namespace DotSpatial.Symbology
         {
             double dx = self.Width * (newRectangle.X - original.X) / original.Width;
             double dy = self.Height * (newRectangle.Y - original.Y) / original.Height;
-            double w = (self.Width * newRectangle.Width / original.Width);
-            double h = (self.Height * newRectangle.Height / original.Height);
+            double w = self.Width * newRectangle.Width / original.Width;
+            double h = self.Height * newRectangle.Height / original.Height;
             return new Extent(self.X + dx, self.Y + dy - h, self.X + dx + w, self.Y + dy);
         }
+
+        #endregion
     }
 }

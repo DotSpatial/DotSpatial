@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The core assembly for the DotSpatial 6.0 distribution.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/30/2009 11:29:27 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Data;
@@ -21,15 +11,14 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// SQLExpressionDialog
     /// </summary>
-    // ReSharper disable once InconsistentNaming
-    public partial class SQLExpressionDialog : Form
+    public partial class SqlExpressionDialog : Form
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of CollectionPropertyGrid
+        /// Initializes a new instance of the <see cref="SqlExpressionDialog"/> class.
         /// </summary>
-        public SQLExpressionDialog()
+        public SqlExpressionDialog()
         {
             InitializeComponent();
         }
@@ -52,18 +41,32 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public IAttributeSource AttributeSource
         {
-            get { return sqlQueryControl1.AttributeSource; }
-            set { sqlQueryControl1.AttributeSource = value; }
+            get
+            {
+                return sqlQueryControl1.AttributeSource;
+            }
+
+            set
+            {
+                sqlQueryControl1.AttributeSource = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the string expression.  Setting this will set the initial
+        /// Gets or sets the string expression. Setting this will set the initial
         /// text content in the dialog.
         /// </summary>
         public string Expression
         {
-            get { return sqlQueryControl1.ExpressionText; }
-            set { sqlQueryControl1.ExpressionText = value; }
+            get
+            {
+                return sqlQueryControl1.ExpressionText;
+            }
+
+            set
+            {
+                sqlQueryControl1.ExpressionText = value;
+            }
         }
 
         /// <summary>
@@ -71,26 +74,41 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public DataTable Table
         {
-            get { return sqlQueryControl1.Table; }
-            set { sqlQueryControl1.Table = value; }
+            get
+            {
+                return sqlQueryControl1.Table;
+            }
+
+            set
+            {
+                sqlQueryControl1.Table = value;
+            }
         }
 
         #endregion
 
         #region Methods
 
-        private void btnApply_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Fires the ChangesApplied event.
+        /// </summary>
+        protected virtual void OnApplyChanges()
+        {
+            ChangesApplied?.Invoke(this, new FilterEventArgs(sqlQueryControl1.ExpressionText));
+        }
+
+        private void BtnApplyClick(object sender, EventArgs e)
         {
             if (!sqlQueryControl1.ValidateExpression()) return;
             OnApplyChanges();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancelClick(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnOkClick(object sender, EventArgs e)
         {
             if (!sqlQueryControl1.ValidateExpression())
             {
@@ -100,14 +118,6 @@ namespace DotSpatial.Symbology.Forms
 
             OnApplyChanges();
             Close();
-        }
-
-        /// <summary>
-        /// Fires the ChangesApplied event
-        /// </summary>
-        protected virtual void OnApplyChanges()
-        {
-            if (ChangesApplied != null) ChangesApplied(this, new FilterEventArgs(sqlQueryControl1.ExpressionText));
         }
 
         #endregion

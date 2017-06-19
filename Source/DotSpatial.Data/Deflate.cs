@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/19/2010 12:10:46 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
@@ -26,10 +16,10 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Compress
+        /// Compresses the given values.
         /// </summary>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        /// <param name="values">The values.</param>
+        /// <returns>The compressed values.</returns>
         public static byte[] Compress(byte[] values)
         {
             MemoryStream msOut = new MemoryStream(values.Length);
@@ -49,10 +39,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Decompress
+        /// Decompresses the given values.
         /// </summary>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        /// <param name="values">The values.</param>
+        /// <returns>The decompressed values.</returns>
         public static byte[] Decompress(byte[] values)
         {
             // chop off header and tail
@@ -72,9 +62,10 @@ namespace DotSpatial.Data
                 a = (a + data[index]) % 65521;
                 b = (b + a) % 65521;
             }
+
             return (b << 16) | a;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

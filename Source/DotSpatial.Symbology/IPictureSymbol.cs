@@ -1,31 +1,20 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/11/2009 4:28:17 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for PictureSymbol.
+    /// </summary>
     public interface IPictureSymbol : IOutlinedSymbol, IDisposable
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Gets or sets the image to use when the PictureMode is set to Image
+        /// Gets or sets the image to use when the PictureMode is set to Image.
         /// </summary>
         Image Image { get; set; }
 
@@ -36,7 +25,7 @@ namespace DotSpatial.Symbology
         string ImageFilename { get; set; }
 
         /// <summary>
-        /// Gets or sets the opacity for this image.  Setting this will automatically change the image in memory.
+        /// Gets or sets the opacity for this image. Setting this will automatically change the image in memory.
         /// </summary>
         float Opacity { get; set; }
 

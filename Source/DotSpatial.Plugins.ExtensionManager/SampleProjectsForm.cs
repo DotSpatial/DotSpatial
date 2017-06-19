@@ -1,43 +1,226 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Extensions;
+using DotSpatial.Plugins.ExtensionManager.Properties;
 using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-    internal class SampleProjectsForm : Form
+    /// <summary>
+    /// Shows the DotSpatial sample projects.
+    /// </summary>
+    internal partial class SampleProjectsForm : Form
     {
-        private readonly Packages packages = new Packages();
-        private IContainer components;
-        private TabControl tabControl1;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
-        private Button btnOK;
-        private ListBox listBoxTemplates;
-        private Label label1;
-        private Button btnInstall;
-        private ListBox uxOnlineProjects;
-        private Label label2;
-        private Button btnUninstall;
-        private ComboBox uxFeedSelection;
-        private readonly DownloadForm downloadDialog = new DownloadForm();
-        public IEnumerable<SampleProjectInfo> SampleProjects {
-            get;
-            set;
+        #region Fields
+        private readonly DownloadForm _downloadDialog = new DownloadForm();
+        private readonly Packages _packages = new Packages();
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SampleProjectsForm"/> class.
+        /// </summary>
+        /// <param name="app">The app manager.</param>
+        public SampleProjectsForm(AppManager app)
+        {
+            InitializeComponent();
+            App = app;
+            uxFeedSelection.SelectedIndexChanged += UxFeedSelectionSelectedIndexChanged;
+            uxFeedSelection.SelectedIndex = 0;
+            SampleProjects = new List<SampleProjectInfo>();
+            listBoxTemplates.SelectedIndexChanged += ListBoxTemplatesSelectedIndexChanged;
+            uxOnlineProjects.SelectedIndexChanged += UxOnlineProjectsSelectedIndexChanged;
+            var dataService = _packages.Repo as DataServicePackageRepository;
+            if (dataService != null)
+            {
+                dataService.ProgressAvailable += DataServiceProgressAvailable;
+            }
+
+            var packageManager = _packages.Manager;
+            if (packageManager != null)
+            {
+                packageManager.PackageInstalling += PackageInstalling;
+            }
         }
-        public AppManager App {
-            get;
-            set;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the app manager.
+        /// </summary>
+        public AppManager App { get; set; }
+
+        /// <summary>
+        /// Gets or sets the sample projects.
+        /// </summary>
+        public IEnumerable<SampleProjectInfo> SampleProjects { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Updates the progress bar.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        public void DataServiceProgressAvailable(object sender, ProgressEventArgs e)
+        {
+            if (e.PercentComplete > 0)
+            {
+                _downloadDialog.SetProgressBarPercent(e.PercentComplete);
+            }
         }
-      
-        private IEnumerable<SampleProjectInfo> FindSampleProjectFiles() {
+
+        /// <summary>
+        /// Shows which package is currently installing.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        public void PackageInstalling(object sender, PackageOperationEventArgs e)
+        {
+            _downloadDialog.SetProgressBarPercent(100);
+            _downloadDialog.Show(string.Format(Resources.Installing, e.Package));
+        }
+
+        private static string GetPackageFolderName(IPackage pack)
+        {
+            return $"{pack.Id}.{pack.Version}";
+        }
+
+        private static string GetPackagePath(IPackage pack)
+        {
+            return Path.Combine(AppManager.AbsolutePathToExtensions, "Packages", GetPackageFolderName(pack));
+        }
+
+        private static bool IsPackageInstalled(IPackage pack)
+        {
+            string packagePath = GetPackagePath(pack);
+
+            // return Directory.Exists(packagePath) &&  // Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories).Any<string>();
+            if (!Directory.Exists(packagePath)) return false;
+            return EnumerableExtensions.Any(Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories));
+        }
+
+        private void BtnOkClick(object sender, EventArgs e)
+        {
+            SampleProjectInfo sample = listBoxTemplates.SelectedItem as SampleProjectInfo;
+            OpenSampleProject(sample);
+            Close();
+        }
+
+        private void BtnOkOnlineClick(object sender, EventArgs e)
+        {
+            IPackage pack = uxOnlineProjects.SelectedItem as IPackage;
+            if (pack == null) return;
+
+            btnInstall.Enabled = false;
+            _downloadDialog.Show();
+
+            var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
+
+            Task task = Task.Factory.StartNew(() =>
+                {
+                    var dependency = pack.Dependencies.ToList();
+                    if (dependency.Count > 0)
+                    {
+                        foreach (PackageDependency dependentPackage in dependency)
+                        {
+                            App.ProgressHandler.Progress(null, 0, string.Format(Resources.DownloadingDependency, dependentPackage.Id));
+                            _downloadDialog.ShowDownloadStatus(dependentPackage);
+                            _downloadDialog.SetProgressBarPercent(0);
+
+                            var dependentpack = _packages.Install(dependentPackage.Id);
+                            if (dependentpack == null)
+                            {
+                                MessageBox.Show(string.Format(Resources.CannotDownloadCheckInternetConnection, dependentPackage.Id));
+                                return;
+                            }
+                        }
+                    }
+
+                    App.ProgressHandler.Progress(null, 0, string.Format(Resources.Downloading, pack.Title));
+                    _downloadDialog.ShowDownloadStatus(pack);
+                    _downloadDialog.SetProgressBarPercent(0);
+
+                    _packages.Install(pack.Id);
+                });
+            task.ContinueWith(
+                t =>
+                    {
+                        App.ProgressHandler.Progress(null, 0, string.Format(Resources.Installing, pack.Title));
+                        UpdateInstalledProjectsList();
+
+                        // Load the extension.
+                        App.RefreshExtensions();
+                        App.ProgressHandler.Progress(null, 50, string.Format(Resources.Installing, pack.Title));
+
+                        // Activate the extension(s) that was installed.
+                        var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && !a.IsActive).ToList();
+
+                        if (extensions.Count > 0 && !App.EnsureRequiredImportsAreAvailable())
+                            return;
+
+                        foreach (var item in extensions)
+                        {
+                            item.TryActivate();
+                        }
+
+                        App.ProgressHandler.Progress(null, 0, Resources.Ready);
+                        _downloadDialog.Visible = false;
+                    },
+                TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private void BtnUninstallClick(object sender, EventArgs e)
+        {
+            SampleProjectInfo sample = listBoxTemplates.SelectedItem as SampleProjectInfo;
+            UninstallSampleProject(sample);
+            UpdateInstalledProjectsList();
+        }
+
+        private string CopyToDocumentsFolder(string projectFile)
+        {
+            string directoryName = Path.GetDirectoryName(projectFile);
+            if (directoryName == null) return string.Empty;
+
+            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string text = Path.Combine(folderPath, "DotSpatial");
+            if (!Directory.Exists(text))
+            {
+                Directory.CreateDirectory(text);
+            }
+
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(projectFile);
+            string text2 = Path.Combine(text, fileNameWithoutExtension);
+            if (!Directory.Exists(text2))
+            {
+                Directory.CreateDirectory(text2);
+            }
+
+            string[] files = Directory.GetFiles(directoryName);
+            for (int i = 0; i < files.Length; i++)
+            {
+                string text3 = files[i];
+                if (text3 != null) File.Copy(text3, Path.Combine(text2, Path.GetFileName(text3)), true);
+            }
+
+            return Path.Combine(text2, Path.GetFileName(projectFile));
+        }
+
+        private IEnumerable<SampleProjectInfo> FindSampleProjectFiles()
+        {
             List<SampleProjectInfo> list = new List<SampleProjectInfo>();
             if (Directory.Exists(AppManager.AbsolutePathToExtensions))
             {
@@ -52,442 +235,153 @@ namespace DotSpatial.Plugins.ExtensionManager
                     });
                 }
             }
+
             return list;
         }
-        public SampleProjectsForm(AppManager app) {
-            this.InitializeComponent();
-            this.App = app;
-            uxFeedSelection.SelectedIndexChanged += uxFeedSelection_SelectedIndexChanged;
-            this.uxFeedSelection.SelectedIndex = 0;
-            this.SampleProjects = new List<SampleProjectInfo>();
-            this.listBoxTemplates.SelectedIndexChanged += new EventHandler(this.listBoxTemplates_SelectedIndexChanged);
-            this.uxOnlineProjects.SelectedIndexChanged += new EventHandler(this.uxOnlineProjects_SelectedIndexChanged);
-            var dataService = packages.Repo as DataServicePackageRepository;
-            if (dataService != null)
-            {
-                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
-            }
-            var packageManager = packages.Manager;
-            if (packageManager != null)
-            {
-                packageManager.PackageInstalling += new EventHandler<PackageOperationEventArgs>(Package_Installing);
-            }
+
+        private void ListBoxTemplatesDoubleClick(object sender, EventArgs e)
+        {
+            SampleProjectInfo sample = listBoxTemplates.SelectedItem as SampleProjectInfo;
+            OpenSampleProject(sample);
+            Close();
         }
-        private void TemplateForm_Load(object sender, EventArgs e) {
-            this.UpdateInstalledProjectsList();
-        }
-        private void UpdateInstalledProjectsList() {
-            this.SampleProjects = this.FindSampleProjectFiles();
-            if (!EnumerableExtensions.Any<SampleProjectInfo>(this.SampleProjects))
+
+        private void ListBoxTemplatesSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxTemplates.SelectedIndex >= 0 && listBoxTemplates.SelectedItem.ToString() != Resources.NoProjectTemplatesPleaseInstall)
             {
-                this.listBoxTemplates.DataSource = null;
-                this.listBoxTemplates.Items.Add("No project templates were found. Please install the templates.");
+                btnUninstall.Enabled = true;
                 return;
             }
-            this.listBoxTemplates.DataSource = this.SampleProjects;
-            this.listBoxTemplates.DisplayMember = "Name";
-            this.uxOnlineProjects.SelectedIndex = 0;
-            this.btnInstall.Enabled = true;
+
+            btnUninstall.Enabled = false;
         }
-        private void UpdatePackageList() {
-            this.uxOnlineProjects.Items.Add("Loading...");
-            Task<IPackage[]> task = Task.Factory.StartNew<IPackage[]>(delegate
-            {
-                return (
-                    from p in this.packages.Repo.GetPackages()
-                    where p.IsLatestVersion && (p.Tags.Contains("DotSpatialSampleProject") || p.Tags.Contains("SampleProject"))
-                    select p).ToArray<IPackage>();
-            });
-            task.ContinueWith(delegate(Task<IPackage[]> t)
-            {
-                this.uxOnlineProjects.Items.Clear();
-                if (t.Exception == null)
-                {
-                    this.uxOnlineProjects.Items.AddRange(t.Result);
-                    return;
-                }
-                this.uxOnlineProjects.Items.Add(t.Exception.Message);
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-        }
-        private void btnOK_Click(object sender, EventArgs e) {
-            SampleProjectInfo sample = this.listBoxTemplates.SelectedItem as SampleProjectInfo;
-            this.OpenSampleProject(sample);
-            this.Close();
-        }
-        private void listBoxTemplates_SelectedIndexChanged(object sender, EventArgs e) {
-            if (this.listBoxTemplates.SelectedIndex >= 0 && this.listBoxTemplates.SelectedItem.ToString() != "No project templates were found. Please install the templates.")
-            {
-                this.btnUninstall.Enabled = true;
-                return;
-            }
-            this.btnUninstall.Enabled = false;
-        }
-        private void uxOnlineProjects_SelectedIndexChanged(object sender, EventArgs e) {
-            if (this.uxOnlineProjects.Items.Count == 0)
-            {
-                this.btnInstall.Enabled = false;
-                return;
-            }
-            IPackage package = this.uxOnlineProjects.SelectedItem as IPackage;
-            if (package == null)
-            {
-                this.btnInstall.Enabled = false;
-                return;
-            }
-            if (IsPackageInstalled(package))
-            {
-                this.btnInstall.Enabled = false;
-                return;
-            }
-            this.btnInstall.Enabled = true;
-        }
-        private void OpenSampleProject(SampleProjectInfo sample) {
+
+        private void OpenSampleProject(SampleProjectInfo sample)
+        {
             string absolutePathToProjectFile = sample.AbsolutePathToProjectFile;
             try
             {
-                this.App.SerializationManager.OpenProject(absolutePathToProjectFile);
+                App.SerializationManager.OpenProject(absolutePathToProjectFile);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + " File: " + absolutePathToProjectFile);
+                MessageBox.Show(string.Format(Resources.ErrorFilePath, ex.Message, absolutePathToProjectFile));
             }
         }
-        private void UninstallSampleProject(SampleProjectInfo sample) {
-            if (this.App.SerializationManager.CurrentProjectFile == sample.AbsolutePathToProjectFile)
+
+        private void TemplateFormLoad(object sender, EventArgs e)
+        {
+            UpdateInstalledProjectsList();
+        }
+
+        private void UninstallSampleProject(SampleProjectInfo sample)
+        {
+            if (App.SerializationManager.CurrentProjectFile == sample.AbsolutePathToProjectFile)
             {
-                MessageBox.Show("Cannot uninstall " + sample.Name + ". The project is currently open. Please close current project and try again.");
+                MessageBox.Show(string.Format(Resources.CannotUninstallProjectOpen, sample.Name));
                 return;
             }
+
             string directoryName = Path.GetDirectoryName(sample.AbsolutePathToProjectFile);
-            DirectoryInfo parent = Directory.GetParent(directoryName);
-            try
+            if (directoryName != null)
             {
-                foreach (string current in Directory.EnumerateFiles(directoryName))
+                DirectoryInfo parent = Directory.GetParent(directoryName);
+                try
                 {
-                    File.Delete(current);
-                }
-                Directory.Delete(directoryName);
-                FileInfo[] files = parent.GetFiles();
-                for (int i = 0; i < files.Length; i++)
-                {
-                    FileInfo fileInfo = files[i];
-                    fileInfo.Delete();
-                }
-                if (!EnumerableExtensions.Any<DirectoryInfo>(parent.GetDirectories()) && !EnumerableExtensions.Any<FileInfo>(parent.GetFiles()))
-                {
-                    parent.Delete();
-                }
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show("Some files could not be uninstalled. " + ex.Message);
-            }
-            MessageBox.Show("The project was successfully uninstalled.");
-        }
-        private string CopyToDocumentsFolder(string projectFile) {
-            string directoryName = Path.GetDirectoryName(projectFile);
-            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            string text = Path.Combine(folderPath, "DotSpatial");
-            if (!Directory.Exists(text))
-            {
-                Directory.CreateDirectory(text);
-            }
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(projectFile);
-            string text2 = Path.Combine(text, fileNameWithoutExtension);
-            if (!Directory.Exists(text2))
-            {
-                Directory.CreateDirectory(text2);
-            }
-            string[] files = Directory.GetFiles(directoryName);
-            for (int i = 0; i < files.Length; i++)
-            {
-                string text3 = files[i];
-                File.Copy(text3, Path.Combine(text2, Path.GetFileName(text3)), true);
-            }
-            return Path.Combine(text2, Path.GetFileName(projectFile));
-        }
-        private static string GetPackagePath(IPackage pack) {
-            return Path.Combine(AppManager.AbsolutePathToExtensions, "Packages", GetPackageFolderName(pack));
-        }
-        private static string GetPackageFolderName(IPackage pack) {
-            return string.Format("{0}.{1}", pack.Id, pack.Version);
-        }
-        private static bool IsPackageInstalled(IPackage pack) {
-            string packagePath = GetPackagePath(pack);
-            //return Directory.Exists(packagePath) &&  //Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories).Any<string>();
-
-            if (Directory.Exists(packagePath))
-            {
-                return EnumerableExtensions.Any<string>(Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories));
-            }
-            else
-            {
-                return false;
-            }
-        }
-        private void btnOKOnline_Click(object sender, EventArgs e) {
-            if (this.uxOnlineProjects.SelectedItem != null)
-            {
-                this.btnInstall.Enabled = false;
-                downloadDialog.Show();
-                IPackage pack = this.uxOnlineProjects.SelectedItem as IPackage;
-
-                var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
-
-                Task task = Task.Factory.StartNew(delegate
-                {
-                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                    if (dependency.Count() > 0)
+                    foreach (string current in Directory.EnumerateFiles(directoryName))
                     {
-                        foreach (PackageDependency dependentPackage in dependency)
+                        File.Delete(current);
+                    }
+
+                    Directory.Delete(directoryName);
+                    FileInfo[] files = parent.GetFiles();
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        FileInfo fileInfo = files[i];
+                        fileInfo.Delete();
+                    }
+
+                    if (!EnumerableExtensions.Any(parent.GetDirectories()) && !EnumerableExtensions.Any(parent.GetFiles()))
+                    {
+                        parent.Delete();
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show(string.Format(Resources.SomeFilesCouldNotBeUninstalled, ex.Message));
+                }
+            }
+
+            MessageBox.Show(Resources.ProjectSuccessfullyUninstalled);
+        }
+
+        private void UpdateInstalledProjectsList()
+        {
+            SampleProjects = FindSampleProjectFiles();
+            if (!EnumerableExtensions.Any(SampleProjects))
+            {
+                listBoxTemplates.DataSource = null;
+                listBoxTemplates.Items.Add(Resources.NoProjectTemplatesPleaseInstall);
+                return;
+            }
+
+            listBoxTemplates.DataSource = SampleProjects;
+            listBoxTemplates.DisplayMember = "Name";
+            uxOnlineProjects.SelectedIndex = 0;
+            btnInstall.Enabled = true;
+        }
+
+        private void UpdatePackageList()
+        {
+            uxOnlineProjects.Items.Add("Loading...");
+            Task<IPackage[]> task = Task.Factory.StartNew(() => (from p in _packages.Repo.GetPackages() where p.IsLatestVersion && (p.Tags.Contains("DotSpatialSampleProject") || p.Tags.Contains("SampleProject")) select p).ToArray());
+            task.ContinueWith(
+                t =>
+                    {
+                        uxOnlineProjects.Items.Clear();
+                        if (t.Exception == null)
                         {
-                            App.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
-                            downloadDialog.ShowDownloadStatus(dependentPackage);
-                            downloadDialog.SetProgressBarPercent(0);
-
-                            var dependentpack = packages.Install(dependentPackage.Id);
-                            if (dependentpack == null)
-                            {
-                                string message = "We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet.";
-                                MessageBox.Show(message);
-                                return;
-                            }
+                            uxOnlineProjects.Items.AddRange(t.Result);
+                            return;
                         }
-                    }
 
-                    this.App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
-                    downloadDialog.ShowDownloadStatus(pack);
-                    downloadDialog.SetProgressBarPercent(0);
-
-                    this.packages.Install(pack.Id);
-                });
-                task.ContinueWith(delegate(Task t)
-                {
-                    this.App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
-                    this.UpdateInstalledProjectsList();
-                    // Load the extension.
-                    App.RefreshExtensions();
-                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                    App.ProgressHandler.Progress(null, 50, "Installing " + pack.Title);
-
-                    // Activate the extension(s) that was installed.
-                    var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
-
-                    if (extensions.Count() > 0 && !App.EnsureRequiredImportsAreAvailable())
-                        return;
-
-                    foreach (var item in extensions)
-                    {
-                        item.TryActivate();
-                    }
-                    this.App.ProgressHandler.Progress(null, 0, "Ready.");
-                    downloadDialog.Visible = false;
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-            }
+                        uxOnlineProjects.Items.Add(t.Exception.Message);
+                    },
+                TaskScheduler.FromCurrentSynchronizationContext());
         }
-        public void Package_Installing(object sender, PackageOperationEventArgs e)
+
+        private void UxFeedSelectionSelectedIndexChanged(object sender, EventArgs e)
         {
-            downloadDialog.SetProgressBarPercent(100);
-            downloadDialog.Show("Installing " + e.Package);
+            string feedUrl = uxFeedSelection.SelectedIndex == 1 ? "https://nuget.org/api/v2/" : "https://www.myget.org/F/cuahsi/";
+            _packages.SetNewSource(feedUrl);
+            UpdatePackageList();
         }
-        public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
+
+        private void UxOnlineProjectsSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (e.PercentComplete > 0)
+            if (uxOnlineProjects.Items.Count == 0)
             {
-                downloadDialog.SetProgressBarPercent(e.PercentComplete);
+                btnInstall.Enabled = false;
+                return;
             }
-        }
-        private void ListBoxTemplates_DoubleClick(object sender, EventArgs e) {
-            SampleProjectInfo sample = this.listBoxTemplates.SelectedItem as SampleProjectInfo;
-            this.OpenSampleProject(sample);
-            base.Close();
-        }
-        private void btnUninstall_Click(object sender, EventArgs e) {
-            SampleProjectInfo sample = this.listBoxTemplates.SelectedItem as SampleProjectInfo;
-            this.UninstallSampleProject(sample);
-            this.UpdateInstalledProjectsList();
-        }
-        protected override void Dispose(bool disposing) {
-            if (disposing && this.components != null)
+
+            IPackage package = uxOnlineProjects.SelectedItem as IPackage;
+            if (package == null)
             {
-                this.components.Dispose();
+                btnInstall.Enabled = false;
+                return;
             }
-            base.Dispose(disposing);
-        }
-        private void InitializeComponent() {
-            this.tabControl1 = new TabControl();
-            this.tabPage1 = new TabPage();
-            this.btnUninstall = new Button();
-            this.btnOK = new Button();
-            this.listBoxTemplates = new ListBox();
-            this.label1 = new Label();
-            this.tabPage2 = new TabPage();
-            this.uxFeedSelection = new ComboBox();
-            this.btnInstall = new Button();
-            this.uxOnlineProjects = new ListBox();
-            this.label2 = new Label();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = DockStyle.Fill;
-            this.tabControl1.Location = new Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new Size(439, 262);
-            this.tabControl1.TabIndex = 3;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.btnUninstall);
-            this.tabPage1.Controls.Add(this.btnOK);
-            this.tabPage1.Controls.Add(this.listBoxTemplates);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new Padding(3);
-            this.tabPage1.Size = new Size(431, 236);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Installed Sample Projects";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // btnUninstall
-            // 
-            this.btnUninstall.Anchor = ((AnchorStyles)((AnchorStyles.Bottom | AnchorStyles.Right)));
-            this.btnUninstall.Enabled = false;
-            this.btnUninstall.Location = new Point(351, 6);
-            this.btnUninstall.Name = "btnUninstall";
-            this.btnUninstall.Size = new Size(72, 23);
-            this.btnUninstall.TabIndex = 6;
-            this.btnUninstall.Text = "Uninstall";
-            this.btnUninstall.UseVisualStyleBackColor = true;
-            this.btnUninstall.Click += new EventHandler(this.btnUninstall_Click);
-            // 
-            // btnOK
-            // 
-            this.btnOK.Anchor = ((AnchorStyles)((AnchorStyles.Bottom | AnchorStyles.Right)));
-            this.btnOK.Location = new Point(356, 210);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new Size(72, 23);
-            this.btnOK.TabIndex = 5;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new EventHandler(this.btnOK_Click);
-            // 
-            // listBoxTemplates
-            // 
-            this.listBoxTemplates.Anchor = ((AnchorStyles)((((AnchorStyles.Top | AnchorStyles.Bottom) 
-            | AnchorStyles.Left) 
-            | AnchorStyles.Right)));
-            this.listBoxTemplates.FormattingEnabled = true;
-            this.listBoxTemplates.Location = new Point(3, 32);
-            this.listBoxTemplates.Name = "listBoxTemplates";
-            this.listBoxTemplates.Size = new Size(422, 173);
-            this.listBoxTemplates.TabIndex = 3;
-            this.listBoxTemplates.DoubleClick += new EventHandler(this.ListBoxTemplates_DoubleClick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new Point(6, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new Size(192, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Please select a sample project to open:";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.uxFeedSelection);
-            this.tabPage2.Controls.Add(this.btnInstall);
-            this.tabPage2.Controls.Add(this.uxOnlineProjects);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Location = new Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new Padding(3);
-            this.tabPage2.Size = new Size(431, 236);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Online";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // uxFeedSelection
-            // 
-            this.uxFeedSelection.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.uxFeedSelection.Font = new Font("Arial Narrow", 8.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            this.uxFeedSelection.FormattingEnabled = true;
-            this.uxFeedSelection.Items.AddRange(new object[] {
-            "Official Sample Projects",
-            "User Uploaded Sample Projects"});
-            this.uxFeedSelection.Location = new Point(246, 6);
-            this.uxFeedSelection.Name = "uxFeedSelection";
-            this.uxFeedSelection.Size = new Size(179, 23);
-            this.uxFeedSelection.TabIndex = 16;
-            this.uxFeedSelection.Visible = false;
-            // 
-            // btnInstall
-            // 
-            this.btnInstall.Anchor = ((AnchorStyles)((AnchorStyles.Top | AnchorStyles.Right)));
-            this.btnInstall.Enabled = false;
-            this.btnInstall.Location = new Point(356, 210);
-            this.btnInstall.Name = "btnInstall";
-            this.btnInstall.Size = new Size(72, 23);
-            this.btnInstall.TabIndex = 7;
-            this.btnInstall.Text = "Install";
-            this.btnInstall.UseVisualStyleBackColor = true;
-            this.btnInstall.Click += new EventHandler(this.btnOKOnline_Click);
-            // 
-            // uxOnlineProjects
-            // 
-            this.uxOnlineProjects.Anchor = ((AnchorStyles)((((AnchorStyles.Top | AnchorStyles.Bottom) 
-            | AnchorStyles.Left) 
-            | AnchorStyles.Right)));
-            this.uxOnlineProjects.FormattingEnabled = true;
-            this.uxOnlineProjects.Location = new Point(3, 32);
-            this.uxOnlineProjects.Name = "uxOnlineProjects";
-            this.uxOnlineProjects.Size = new Size(422, 173);
-            this.uxOnlineProjects.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new Point(6, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new Size(234, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Please select an online sample project  to install:";
-            // 
-            // SampleProjectsForm
-            // 
-            this.AcceptButton = this.btnOK;
-            this.ClientSize = new Size(439, 262);
-            this.Controls.Add(this.tabControl1);
-            this.Name = "SampleProjectsForm";
-            this.Text = "Open Sample Project";
-            this.Load += new EventHandler(this.TemplateForm_Load);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.ResumeLayout(false);
 
+            if (IsPackageInstalled(package))
+            {
+                btnInstall.Enabled = false;
+                return;
+            }
+
+            btnInstall.Enabled = true;
         }
 
-        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string feedUrl;
-            if (uxFeedSelection.SelectedIndex == 1)
-                feedUrl = "https://nuget.org/api/v2/";
-            else
-                feedUrl = "https://www.myget.org/F/cuahsi/";
-
-            packages.SetNewSource(feedUrl);
-            this.UpdatePackageList();
-        }
+        #endregion
     }
 }
-

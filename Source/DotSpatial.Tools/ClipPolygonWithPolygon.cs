@@ -1,16 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.ClipPolygonWithPolygon.cs
-// Description:  Clip a polygon with another polygon.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// KP                     |  9/2009                |  Used IDW as model for ClipPolygonWithPolygon
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Data;
 using DotSpatial.Data;
@@ -24,7 +13,7 @@ namespace DotSpatial.Tools
     /// </summary>
     public class ClipPolygonWithPolygon : Tool
     {
-        #region Constants and Fields
+        #region Fields
 
         private Parameter[] _inputParam;
 
@@ -32,65 +21,49 @@ namespace DotSpatial.Tools
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ClipPolygonWithPolygon class.
+        /// Initializes a new instance of the <see cref="ClipPolygonWithPolygon"/> class.
         /// </summary>
         public ClipPolygonWithPolygon()
         {
-            this.Name = TextStrings.ClipFeatureSetWithPolygon;
-            this.Category = TextStrings.VectorOverlay;
-            this.Description = TextStrings.tooltakesafeatureset;
-            this.ToolTip = TextStrings.Clipslayerwithlayer;
+            Name = TextStrings.ClipFeatureSetWithPolygon;
+            Category = TextStrings.VectorOverlay;
+            Description = TextStrings.tooltakesafeatureset;
+            ToolTip = TextStrings.Clipslayerwithlayer;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler for progress message updates</param>
+        /// <returns>True if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input = _inputParam[0].Value as IFeatureSet;
-            if (input != null)
-            {
-                input.FillAttributes();
-            }
+            input?.FillAttributes();
 
             IFeatureSet input2 = _inputParam[1].Value as IFeatureSet;
-            if (input2 != null)
-            {
-                input2.FillAttributes();
-            }
+            input2?.FillAttributes();
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
@@ -104,8 +77,7 @@ namespace DotSpatial.Tools
         /// <param name="input2">The input polygon feature set to clip with</param>
         /// <param name="output">The output feature set</param>
         /// <param name="cancelProgressHandler">The progress handler for progress message updates</param>
-        /// <returns></returns>
-        /// Ping delete "static" for external testing
+        /// <returns>True if executed successfully.</returns>
         public bool Execute(IFeatureSet input, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data

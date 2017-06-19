@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in October, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -23,11 +12,11 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// This contains the shared symbolizer properties between Points, Lines and Polygons.
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)),
-    Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class FeatureSymbolizerOld : LegendItem, IFeatureSymbolizerOld
     {
-        #region Variables
+        #region Fields
 
         private Brush _fillBrush;
         private Color _fillColor;
@@ -42,9 +31,10 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region constructors
+        #region  Constructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureSymbolizerOld"/> class.
         /// This constructor takes on some default values, and assumes that it
         /// has no other underlying symblizer to reference.
         /// </summary>
@@ -57,28 +47,7 @@ namespace DotSpatial.Symbology
             _isVisible = true; // This is boolean and should be true by default
             _smoothing = SmoothingMode.AntiAlias;
             LegendType = LegendType.Symbol;
-            base.LegendSymbolMode = SymbolMode.Symbol;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc />
-        public override Size GetLegendSymbolSize()
-        {
-            return new Size(16, 16);
-        }
-
-        /// <summary>
-        /// Draws a basic symbol to the specified rectangle
-        /// </summary>
-        /// <param name="g">The graphics surface to draw on</param>
-        /// <param name="target">The target to draw the symbol to</param>
-        public virtual void Draw(Graphics g, Rectangle target)
-        {
-            g.FillRectangle(FillBrush, target);
-            g.DrawRectangle(Pens.Black, target);
+            LegendSymbolMode = SymbolMode.Symbol;
         }
 
         #endregion
@@ -86,18 +55,27 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not this specific feature should be drawn.
+        /// Gets or sets the Brush to be used when filling this point.
+        /// Setting this value will also change the FillColor property, but only if
+        /// the brush is a SolidBrush.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets a boolean indicating whether or not this should be drawn.")]
-        public virtual bool IsVisible
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public virtual Brush FillBrush
         {
             get
             {
-                return _isVisible;
+                return _fillBrush;
             }
+
             set
             {
-                _isVisible = value;
+                _fillBrush = value;
+                var brush = value as SolidBrush;
+                if (brush != null)
+                {
+                    _fillColor = brush.Color;
+                }
             }
         }
 
@@ -105,10 +83,15 @@ namespace DotSpatial.Symbology
         /// Gets or sets the solid color to be used for filling the symbol.
         /// This will also change the FillBrush to a solid brush of the specified color.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets the solid color to be used for filling the symbol.")]
+        [Category("Appearance")]
+        [Description("Gets or sets the solid color to be used for filling the symbol.")]
         public virtual Color FillColor
         {
-            get { return _fillColor; }
+            get
+            {
+                return _fillColor;
+            }
+
             set
             {
                 _fillColor = value;
@@ -117,32 +100,39 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the Brush to be used when filling this point.
-        /// Setting this value will also change the FillColor property, but only if
-        /// the brush is a SolidBrush.
+        /// Gets or sets a value indicating whether to use the specified TextureImage during drawing
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual Brush FillBrush
+        [Category("Appearance")]
+        [Description("Gets or sets whether to use the specified TextureImage during drawing")]
+        public virtual bool IsTextured
         {
-            get { return _fillBrush; }
+            get
+            {
+                return _isTextured;
+            }
+
             set
             {
-                _fillBrush = value;
-                if (value is SolidBrush)
-                {
-                    _fillColor = ((SolidBrush)value).Color;
-                }
+                _isTextured = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets whether to use the specified TextureImage during drawing
+        /// Gets or sets a value indicating whether or not this specific feature should be drawn.
         /// </summary>
-        [Category("Appearance"), Description("Gets or sets whether to use the specified TextureImage during drawing")]
-        public virtual bool IsTextured
+        [Category("Appearance")]
+        [Description("Gets or sets a boolean indicating whether or not this should be drawn.")]
+        public virtual bool IsVisible
         {
-            get { return _isTextured; }
-            set { _isTextured = value; }
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                _isVisible = value;
+            }
         }
 
         /// <summary>
@@ -150,20 +140,30 @@ namespace DotSpatial.Symbology
         /// </summary>
         public virtual string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get
+            {
+                return _name;
+            }
+
+            set
+            {
+                _name = value;
+            }
         }
 
         /// <summary>
         /// Gets or sets a float value from 0 to 1 where 0 is completely transparent
-        /// and 1 is completely solid.  Setting an alpha of a specific feature, like
+        /// and 1 is completely solid. Setting an alpha of a specific feature, like
         /// FillColor, to something less than 255 will control that feature's transparency
-        /// without affecting the others.  The final transparency of the feature will
+        /// without affecting the others. The final transparency of the feature will
         /// be that alpha multiplied by this value and rounded to the nearest byte.
         /// </summary>
         public virtual float Opacity
         {
-            get { return _opacity; }
+            get
+            {
+                return _opacity;
+            }
 
             set
             {
@@ -178,34 +178,51 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or Sets a ScaleModes enumeration that determines whether non-coordinate drawing
-        /// properties like width or size use pixels or world coordinates.  If pixels are
+        /// properties like width or size use pixels or world coordinates. If pixels are
         /// specified, a back transform is used to approximate pixel sizes.
         /// </summary>
         public virtual ScaleMode ScaleMode
         {
-            get { return _scaleMode; }
-            set { _scaleMode = value; }
+            get
+            {
+                return _scaleMode;
+            }
+
+            set
+            {
+                _scaleMode = value;
+            }
         }
 
         /// <summary>
         /// Gets or sets the smoothing mode to use that controls advanced features like
-        /// anti-aliasing.  By default this is set to antialias.
+        /// anti-aliasing. By default this is set to antialias.
         /// </summary>
         public SmoothingMode Smoothing
         {
-            get { return _smoothing; }
-            set { _smoothing = value; }
+            get
+            {
+                return _smoothing;
+            }
+
+            set
+            {
+                _smoothing = value;
+            }
         }
 
         /// <summary>
         /// Gets or sets the string TextureFile to define the fill texture
         /// </summary>
-        [Category("Appearance"),
-            //Editor(typeof(Forms.OpenFileEditor), typeof(UITypeEditor)),
-         Description("Gets or sets the string TextureFile to define the fill texture")]
+        [Category("Appearance")]
+        [Description("Gets or sets the string TextureFile to define the fill texture")]
         public string TextureFile
         {
-            get { return _textureFile; }
+            get
+            {
+                return _textureFile;
+            }
+
             set
             {
                 _textureFile = value;
@@ -221,7 +238,11 @@ namespace DotSpatial.Symbology
         /// </summary>
         public Bitmap TextureImage
         {
-            get { return _textureImage; }
+            get
+            {
+                return _textureImage;
+            }
+
             set
             {
                 _textureImage = value;
@@ -231,14 +252,31 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region IFeatureSymbolizerOld Members
+        #region Methods
+
+        /// <summary>
+        /// Draws a basic symbol to the specified rectangle
+        /// </summary>
+        /// <param name="g">The graphics surface to draw on</param>
+        /// <param name="target">The target to draw the symbol to</param>
+        public virtual void Draw(Graphics g, Rectangle target)
+        {
+            g.FillRectangle(FillBrush, target);
+            g.DrawRectangle(Pens.Black, target);
+        }
+
+        /// <inheritdoc />
+        public override Size GetLegendSymbolSize()
+        {
+            return new Size(16, 16);
+        }
 
         /// <summary>
         /// Occurs in response to the legend symbol being painted
         /// </summary>
         /// <param name="g">The Graphics surface to draw on</param>
         /// <param name="box">The box to draw to</param>
-        public override void LegendSymbol_Painted(Graphics g, Rectangle box)
+        public override void LegendSymbolPainted(Graphics g, Rectangle box)
         {
             SolidBrush b = new SolidBrush(FillColor);
             g.FillRectangle(b, box);

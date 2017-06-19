@@ -1,22 +1,11 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/20/2009 3:52:22 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
@@ -26,11 +15,11 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// PointScheme
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter)),
-    Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Serializable]
     public class PointScheme : FeatureScheme, IPointScheme
     {
-        #region Private Variables
+        #region Fields
 
         private PointCategoryCollection _categories;
 
@@ -39,7 +28,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of PointScheme with no categories added to the list yet.
+        /// Initializes a new instance of the <see cref="PointScheme"/> class.
         /// </summary>
         public PointScheme()
         {
@@ -49,8 +38,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// creates a new instance of the PointScheme, but assigns the specified symbolizer
-        /// as the symbolizer to use on a single default category.
+        /// Initializes a new instance of the <see cref="PointScheme"/> class.
         /// </summary>
         /// <param name="extent">The geographic point size for the default will be 1/100th the specified extent</param>
         public PointScheme(IRectangle extent)
@@ -58,160 +46,6 @@ namespace DotSpatial.Symbology
             Configure();
             PointCategory def = new PointCategory(extent);
             Categories.Add(def);
-        }
-
-        private void Configure()
-        {
-            _categories = new PointCategoryCollection();
-            OnIncludeCategories(_categories);
-        }
-
-        private void CategoriesItemChanged(object sender, EventArgs e)
-        {
-            OnItemChanged(sender);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Draws the regular symbolizer for the specified cateogry to the specified graphics
-        /// surface in the specified bounding rectangle.
-        /// </summary>
-        /// <param name="index">The integer index of the feature to draw.</param>
-        /// <param name="g">The Graphics object to draw to</param>
-        /// <param name="bounds">The rectangular bounds to draw in</param>
-        public override void DrawCategory(int index, Graphics g, Rectangle bounds)
-        {
-            Categories[index].Symbolizer.Draw(g, bounds);
-        }
-
-        /// <summary>
-        /// Adds a new scheme, assuming that the new scheme is the correct type.
-        /// </summary>
-        /// <param name="category">The category to add</param>
-        public override void AddCategory(ICategory category)
-        {
-            IPointCategory pc = category as IPointCategory;
-            if (pc != null) _categories.Add(pc);
-        }
-
-        /// <summary>
-        /// Reduces the index value of the specified category by 1 by
-        /// exchaning it with the category before it.  If there is no
-        /// category before it, then this does nothing.
-        /// </summary>
-        /// <param name="category">The category to decrease the index of</param>
-        public override bool DecreaseCategoryIndex(ICategory category)
-        {
-            IPointCategory pc = category as IPointCategory;
-            return pc != null && Categories.DecreaseIndex(pc);
-        }
-
-        /// <summary>
-        /// Re-orders the specified member by attempting to exchange it with the next higher
-        /// index category.  If there is no higher index, this does nothing.
-        /// </summary>
-        /// <param name="category">The category to increase the index of</param>
-        public override bool IncreaseCategoryIndex(ICategory category)
-        {
-            IPointCategory pc = category as IPointCategory;
-            return pc != null && Categories.IncreaseIndex(pc);
-        }
-
-        /// <summary>
-        /// Removes the specified category
-        /// </summary>
-        /// <param name="category">The category to insert</param>
-        public override void RemoveCategory(ICategory category)
-        {
-            IPointCategory pc = category as IPointCategory;
-            if (pc != null) _categories.Remove(pc);
-        }
-
-        /// <summary>
-        /// Inserts the category at the specified index
-        /// </summary>
-        /// <param name="index">The integer index where the category should be inserted</param>
-        /// <param name="category">The category to insert</param>
-        public override void InsertCategory(int index, ICategory category)
-        {
-            IPointCategory pc = category as IPointCategory;
-            if (pc != null) _categories.Insert(index, pc);
-        }
-
-        /// <summary>
-        /// Suspends the category events
-        /// </summary>
-        public override void SuspendEvents()
-        {
-            _categories.SuspendEvents();
-        }
-
-        /// <summary>
-        /// Resumes the category events
-        /// </summary>
-        public override void ResumeEvents()
-        {
-            _categories.ResumeEvents();
-        }
-
-        /// <summary>
-        /// Clears the categories
-        /// </summary>
-        public override void ClearCategories()
-        {
-            _categories.Clear();
-        }
-
-        /// <summary>
-        /// Uses the settings on this scheme to create a random category.
-        /// </summary>
-        /// <returns>A new IFeatureCategory</returns>
-        public override IFeatureCategory CreateRandomCategory(string filterExpression)
-        {
-            PointCategory result = new PointCategory();
-            Color fillColor = CreateRandomColor();
-            result.Symbolizer = new PointSymbolizer(fillColor, PointShape.Ellipse, 10);
-            result.FilterExpression = filterExpression;
-            result.LegendText = filterExpression;
-            return result;
-        }
-
-        /// <summary>
-        /// If possible, use the template to control the colors.  Otherwise, just use the default
-        /// settings for creating "unbounded" colors.
-        /// </summary>
-        /// <param name="count">The integer count.</param>
-        /// <returns>The List of colors</returns>
-        protected override List<Color> GetDefaultColors(int count)
-        {
-            if (EditorSettings != null)
-            {
-                IPointSymbolizer ps = EditorSettings.TemplateSymbolizer as IPointSymbolizer;
-                if (ps != null)
-                {
-                    List<Color> result = new List<Color>();
-                    Color c = ps.GetFillColor();
-                    for (int i = 0; i < count; i++)
-                    {
-                        result.Add(c);
-                    }
-                    return result;
-                }
-            }
-            return base.GetDefaultColors(count);
-        }
-
-        /// <summary>
-        /// Calculates the unique colors as a scheme
-        /// </summary>
-        /// <param name="fs">The featureset with the data Table definition</param>
-        /// <param name="uniqueField">The unique field</param>
-        public Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField)
-        {
-            return GenerateUniqueColors(fs, uniqueField, color => new PointCategory(color, PointShape.Rectangle, 10));
         }
 
         #endregion
@@ -227,10 +61,15 @@ namespace DotSpatial.Symbology
         /// </remarks>
         [Description("Gets the list of categories.")]
         [Serialize("Categories")]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PointCategoryCollection Categories
         {
-            get { return _categories; }
+            get
+            {
+                return _categories;
+            }
+
             set
             {
                 OnExcludeCategories(_categories);
@@ -240,26 +79,43 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the point categories cast as FeatureCategories.  This is enumerable,
-        /// but should be thought of as a copy of the original, not the original itself.
+        /// Gets the number of categories in this scheme.
         /// </summary>
-        /// <returns></returns>
-        public override IEnumerable<IFeatureCategory> GetCategories()
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public override int NumCategories => _categories?.Count ?? 0;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Adds a new scheme, assuming that the new scheme is the correct type.
+        /// </summary>
+        /// <param name="category">The category to add</param>
+        public override void AddCategory(ICategory category)
         {
-            // Leave the cast so 3.5 can use this code.
-            return _categories.Cast<IFeatureCategory>();
+            IPointCategory pc = category as IPointCategory;
+            if (pc != null) _categories.Add(pc);
         }
 
         /// <summary>
-        /// Creates the category using a random fill color
+        /// Clears the categories.
+        /// </summary>
+        public override void ClearCategories()
+        {
+            _categories.Clear();
+        }
+
+        /// <summary>
+        /// Creates the category using a random fill color.
         /// </summary>
         /// <param name="fillColor">The base color to use for creating the category</param>
         /// <param name="size">The double size of the larger dimension of the point.</param>
         /// <returns>A new polygon category</returns>
         public override ICategory CreateNewCategory(Color fillColor, double size)
         {
-            IPointSymbolizer ps = EditorSettings.TemplateSymbolizer.Copy() as IPointSymbolizer ??
-                                  new PointSymbolizer(fillColor, PointShape.Ellipse, size);
+            IPointSymbolizer ps = EditorSettings.TemplateSymbolizer.Copy() as IPointSymbolizer ?? new PointSymbolizer(fillColor, PointShape.Ellipse, size);
             ps.SetFillColor(fillColor);
             Size2D oSize = ps.GetSize();
             double rat = size / Math.Max(oSize.Width, oSize.Height);
@@ -268,22 +124,137 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the number of categories in this scheme
+        /// Uses the settings on this scheme to create a random category.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override int NumCategories
+        /// <param name="filterExpression">Used as filterExpression and LegendText in the resulting category.</param>
+        /// <returns>A new IFeatureCategory</returns>
+        public override IFeatureCategory CreateRandomCategory(string filterExpression)
         {
-            get
+            PointCategory result = new PointCategory();
+            Color fillColor = CreateRandomColor();
+            result.Symbolizer = new PointSymbolizer(fillColor, PointShape.Ellipse, 10);
+            result.FilterExpression = filterExpression;
+            result.LegendText = filterExpression;
+            return result;
+        }
+
+        /// <summary>
+        /// Reduces the index value of the specified category by 1 by
+        /// exchaning it with the category before it. If there is no
+        /// category before it, then this does nothing.
+        /// </summary>
+        /// <param name="category">The category to decrease the index of</param>
+        /// <returns>True, if index was decreased.</returns>
+        public override bool DecreaseCategoryIndex(ICategory category)
+        {
+            IPointCategory pc = category as IPointCategory;
+            return pc != null && Categories.DecreaseIndex(pc);
+        }
+
+        /// <summary>
+        /// Draws the regular symbolizer for the specified cateogry to the specified graphics
+        /// surface in the specified bounding rectangle.
+        /// </summary>
+        /// <param name="index">The integer index of the feature to draw.</param>
+        /// <param name="g">The Graphics object to draw to</param>
+        /// <param name="bounds">The rectangular bounds to draw in</param>
+        public override void DrawCategory(int index, Graphics g, Rectangle bounds)
+        {
+            Categories[index].Symbolizer.Draw(g, bounds);
+        }
+
+        /// <summary>
+        /// Calculates the unique colors as a scheme
+        /// </summary>
+        /// <param name="fs">The featureset with the data Table definition</param>
+        /// <param name="uniqueField">The unique field</param>
+        /// <returns>A hashtable with the generated unique colors.</returns>
+        public Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField)
+        {
+            return GenerateUniqueColors(fs, uniqueField, color => new PointCategory(color, PointShape.Rectangle, 10));
+        }
+
+        /// <summary>
+        /// Gets the point categories cast as FeatureCategories. This is enumerable,
+        /// but should be thought of as a copy of the original, not the original itself.
+        /// </summary>
+        /// <returns>The categories.</returns>
+        public override IEnumerable<IFeatureCategory> GetCategories()
+        {
+            return _categories;
+        }
+
+        /// <summary>
+        /// Re-orders the specified member by attempting to exchange it with the next higher
+        /// index category. If there is no higher index, this does nothing.
+        /// </summary>
+        /// <param name="category">The category to increase the index of</param>
+        /// <returns>True, if index was increased.</returns>
+        public override bool IncreaseCategoryIndex(ICategory category)
+        {
+            IPointCategory pc = category as IPointCategory;
+            return pc != null && Categories.IncreaseIndex(pc);
+        }
+
+        /// <summary>
+        /// Inserts the category at the specified index
+        /// </summary>
+        /// <param name="index">The integer index where the category should be inserted</param>
+        /// <param name="category">The category to insert</param>
+        public override void InsertCategory(int index, ICategory category)
+        {
+            IPointCategory pc = category as IPointCategory;
+            if (pc != null) _categories.Insert(index, pc);
+        }
+
+        /// <summary>
+        /// Removes the specified category
+        /// </summary>
+        /// <param name="category">The category to insert</param>
+        public override void RemoveCategory(ICategory category)
+        {
+            IPointCategory pc = category as IPointCategory;
+            if (pc != null) _categories.Remove(pc);
+        }
+
+        /// <summary>
+        /// Resumes the category events
+        /// </summary>
+        public override void ResumeEvents()
+        {
+            _categories.ResumeEvents();
+        }
+
+        /// <summary>
+        /// Suspends the category events
+        /// </summary>
+        public override void SuspendEvents()
+        {
+            _categories.SuspendEvents();
+        }
+
+        /// <summary>
+        /// If possible, use the template to control the colors. Otherwise, just use the default
+        /// settings for creating "unbounded" colors.
+        /// </summary>
+        /// <param name="count">The integer count.</param>
+        /// <returns>The List of colors</returns>
+        protected override List<Color> GetDefaultColors(int count)
+        {
+            IPointSymbolizer ps = EditorSettings?.TemplateSymbolizer as IPointSymbolizer;
+            if (ps != null)
             {
-                if (_categories != null)
+                List<Color> result = new List<Color>();
+                Color c = ps.GetFillColor();
+                for (int i = 0; i < count; i++)
                 {
-                    return _categories.Count;
+                    result.Add(c);
                 }
-                else
-                {
-                    return 0;
-                }
+
+                return result;
             }
+
+            return base.GetDefaultColors(count);
         }
 
         /// <summary>
@@ -293,6 +264,7 @@ namespace DotSpatial.Symbology
         protected virtual void OnExcludeCategories(PointCategoryCollection categories)
         {
             if (categories == null) return;
+
             categories.Scheme = null;
             categories.ItemChanged -= CategoriesItemChanged;
             categories.SelectFeatures -= OnSelectFeatures;
@@ -306,10 +278,22 @@ namespace DotSpatial.Symbology
         protected virtual void OnIncludeCategories(PointCategoryCollection categories)
         {
             if (categories == null) return;
+
             categories.Scheme = this;
             categories.ItemChanged += CategoriesItemChanged;
             categories.SelectFeatures += OnSelectFeatures;
             categories.DeselectFeatures += OnDeselectFeatures;
+        }
+
+        private void CategoriesItemChanged(object sender, EventArgs e)
+        {
+            OnItemChanged(sender);
+        }
+
+        private void Configure()
+        {
+            _categories = new PointCategoryCollection();
+            OnIncludeCategories(_categories);
         }
 
         #endregion

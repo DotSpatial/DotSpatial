@@ -1,18 +1,5 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.GenerateCentroid.cs
-// Description:  Generate a centroid featureset from an input featureset.
-
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name                   |   Date                 |         Comments
-//------------------------|------------------------|------------------------------------------------------
-// Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
-// Ted Dunsford           |  9/17/2009             |  Copy attributes from the original featureset.
-// KP                     |  9/2009                |  Used IDW as model for GenerateCentroid
-// Ping Yang              |  12/2009               |  Cleaning code and fixing bugs.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Data;
@@ -22,71 +9,55 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Generate Centroid tool
+    /// Generate a centroid featureset from an input featureset.
     /// </summary>
     public class GenerateCentroid : Tool
     {
-        #region Constants and Fields
-
+        #region Fields
         private Parameter[] _inputParam;
-
         private Parameter[] _outputParam;
-
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of the centroid tool
+        /// Initializes a new instance of the <see cref="GenerateCentroid"/> class.
         /// </summary>
         public GenerateCentroid()
         {
-            this.Name = TextStrings.GenerateCentroid;
-            this.Category = TextStrings.VectorOverlay;
-            this.Description = TextStrings.GenerateCentroidDescription;
-            this.ToolTip = TextStrings.GenerateCentroidfrominputFeatureSet;
+            Name = TextStrings.GenerateCentroid;
+            Category = TextStrings.VectorOverlay;
+            Description = TextStrings.GenerateCentroidDescription;
+            ToolTip = TextStrings.GenerateCentroidfrominputFeatureSet;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or Sets the input paramater array
+        /// Gets the input paramater array
         /// </summary>
-        public override Parameter[] InputParameters
-        {
-            get
-            {
-                return _inputParam;
-            }
-        }
+        public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets or Sets the output paramater array
+        /// Gets the output paramater array
         /// </summary>
-        public override Parameter[] OutputParameters
-        {
-            get
-            {
-                return _outputParam;
-            }
-        }
+        public override Parameter[] OutputParameters => _outputParam;
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if succesful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
         /// </summary>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;
-            if (input1 != null)
-            {
-                input1.FillAttributes();
-            }
+            input1?.FillAttributes();
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
@@ -94,20 +65,17 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the generate centroid FeatureSet Opaeration tool programaticaly.
+        /// Executes the generate centroid FeatureSet Opaeration tool programmatically.
         /// Ping deleted static for external testing 01/2010
         /// </summary>
         /// <param name="input1">The input FeatureSet.</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns></returns>
+        /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input1, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
-            if (input1 == null || output == null)
-            {
-                return false;
-            }
+            if (input1 == null || output == null) return false;
 
             bool multiPoint = false;
             foreach (IFeature f1 in input1.Features)
@@ -162,15 +130,15 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[1];
             _inputParam[0] = new FeatureSetParam(TextStrings.input1FeatureSet)
-                                 {
-                                     HelpText = TextStrings.InputFeatureSettogenerate
-                                 };
+            {
+                HelpText = TextStrings.InputFeatureSettogenerate
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet)
-                                  {
-                                      HelpText = TextStrings.SelectResultFeatureSetDirectory
-                                  };
+            {
+                HelpText = TextStrings.SelectResultFeatureSetDirectory
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 

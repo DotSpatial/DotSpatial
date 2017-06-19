@@ -1,21 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Kyle Ellison. Created 12/01/2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// |-----------------|----------|---------------------------------------------------------------------
-// |      Name       |  Date    |                        Comments
-// |-----------------|----------|----------------------------------------------------------------------
-// | Kyle Ellison    |12/22/2010| Made FeatureType and ShapeType properties public
-// |-----------------|----------|----------------------------------------------------------------------
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
@@ -24,13 +8,13 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// This class is strictly the vector access code.  This does not handle
+    /// This class is strictly the vector access code. This does not handle
     /// the attributes, which must be handled independently.
     /// </summary>
     public class PointShapefileFeatureSource : ShapefileFeatureSource
     {
         /// <summary>
-        /// Sets the fileName and creates a new PointShapefileFeatureSource for the specified file.
+        /// Initializes a new instance of the <see cref="PointShapefileFeatureSource"/> class from the specified file.
         /// </summary>
         /// <param name="fileName">The fileName to work with.</param>
         public PointShapefileFeatureSource(string fileName)
@@ -39,42 +23,54 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Sets the fileName and creates a new PointshapefileFeatureSource for the specified file (and builds spatial index if requested)
+        /// Initializes a new instance of the <see cref="PointShapefileFeatureSource"/> class from the specified file and builds spatial index if requested.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="useSpatialIndexing"></param>
-        /// <param name="trackDeletedRows"></param>
+        /// <param name="fileName">The fileName to work with.</param>
+        /// <param name="useSpatialIndexing">Indicates whether the spatial index should be build.</param>
+        /// <param name="trackDeletedRows">Indicates whether deleted records should be tracked.</param>
         public PointShapefileFeatureSource(string fileName, bool useSpatialIndexing, bool trackDeletedRows)
             : base(fileName, useSpatialIndexing, trackDeletedRows)
         {
         }
 
-        /// <inheritdocs/>
-        public override FeatureType FeatureType
+        /// <inheritdoc />
+        public override FeatureType FeatureType => FeatureType.Point;
+
+        /// <inheritdoc />
+        public override ShapeType ShapeType => ShapeType.Point;
+
+        /// <inheritdoc />
+        public override ShapeType ShapeTypeM => ShapeType.PointM;
+
+        /// <inheritdoc />
+        public override ShapeType ShapeTypeZ => ShapeType.PointZ;
+
+        /// <inheritdoc />
+        public override IShapeSource CreateShapeSource()
         {
-            get { return FeatureType.Point; }
+            return new PointShapefileShapeSource(Filename, Quadtree, null);
         }
 
-        /// <inheritdocs/>
-        public override ShapeType ShapeType
+        /// <inheritdoc />
+        public override void UpdateExtents()
         {
-            get { return ShapeType.Point; }
+            UpdateExtents(new PointShapefileShapeSource(Filename));
         }
 
-        /// <inheritdocs/>
-        public override ShapeType ShapeTypeM
+        /// <inheritdoc/>
+        public override IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
         {
-            get { return ShapeType.PointM; }
+            return Select(new PointShapefileShapeSource(Filename, Quadtree, null), filterExpression, envelope, ref startIndex, maxCount);
         }
 
-        /// <inheritdocs/>
-        public override ShapeType ShapeTypeZ
+        /// <inheritdoc/>
+        public override void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
         {
-            get { return ShapeType.PointZ; }
+            SearchAndModifyAttributes(new PointShapefileShapeSource(Filename, Quadtree, null), envelope, chunkSize, rowCallback);
         }
 
-        /// <inheritdocs/>
-        protected override void AppendBasicGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
+        /// <inheritdoc />
+        protected override void AppendGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
         {
             var fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
@@ -88,12 +84,13 @@ namespace DotSpatial.Data
             {
                 contentLength += 4; // one additional value (m)
             }
+
             if (header.ShapeType == ShapeType.PointZ)
             {
                 contentLength += 8; // 2 additional values (m, z)
             }
 
-            //                                              Index File
+            ////                                            Index File
             //                                              ---------------------------------------------------------
             //                                              Position     Value               Type        Number      Byte Order
             //                                              ---------------------------------------------------------
@@ -101,7 +98,7 @@ namespace DotSpatial.Data
             shxStream.WriteBe(contentLength);               // Byte 4    Content Length      Integer     1           Big
             shxStream.Flush();
             shxStream.Close();
-            //                                              X Y Points
+            ////                                            X Y Points
             //                                              ---------------------------------------------------------
             //                                              Position     Value               Type        Number      Byte Order
             //                                              ---------------------------------------------------------
@@ -113,48 +110,24 @@ namespace DotSpatial.Data
                 return;
             }
 
-            shpStream.WriteLe(point.X);             // Byte 12      X                   Double      1           Little
-            shpStream.WriteLe(point.Y);             // Byte 20      Y                   Double      1           Little
+            shpStream.WriteLe(point.X);                     // Byte 12      X                   Double      1           Little
+            shpStream.WriteLe(point.Y);                     // Byte 20      Y                   Double      1           Little
 
             if (header.ShapeType == ShapeType.PointM)
             {
-                shpStream.WriteLe(point.M);                            // Byte 28      M                   Double      1           Little
+                shpStream.WriteLe(point.M);                 // Byte 28      M                   Double      1           Little
             }
             else if (header.ShapeType == ShapeType.PointZ)
             {
-                shpStream.WriteLe(point.Z);                            // Byte 28      Z                   Double      1           Little
-                shpStream.WriteLe(point.M);                            // Byte 36      M                   Double      1           Little
+                shpStream.WriteLe(point.Z);                 // Byte 28      Z                   Double      1           Little
+                shpStream.WriteLe(point.M);                 // Byte 36      M                   Double      1           Little
             }
+
             shpStream.Flush();
             shpStream.Close();
             offset += contentLength;
             Shapefile.WriteFileLength(Filename, offset + 4); // Add 4 for the record header
             Shapefile.WriteFileLength(header.ShxFilename, 50 + numFeatures * 4);
-        }
-
-        /// <inheritdocs/>
-        public override IShapeSource CreateShapeSource()
-        {
-            return new PointShapefileShapeSource(Filename, Quadtree, null);
-        }
-
-        /// <inheritdocs/>
-        public override void UpdateExtents()
-        {
-            UpdateExtents(new PointShapefileShapeSource(Filename));
-        }
-
-        /// <inheritdoc/>
-        public override IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
-        {
-            return Select(new PointShapefileShapeSource(Filename, Quadtree, null), filterExpression, envelope, ref startIndex,
-                          maxCount);
-        }
-
-        /// <inheritdoc/>
-        public override void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
-        {
-            SearchAndModifyAttributes(new PointShapefileShapeSource(Filename, Quadtree, null), envelope, chunkSize, rowCallback);
         }
     }
 }

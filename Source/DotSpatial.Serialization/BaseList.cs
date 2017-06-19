@@ -1,18 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Serialization.dll
-// Description:  A module that supports common functions like serialization.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is  Ted Dunsford. Created 2/20/2009 4:24:20 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |-----------------|---------|---------------------------------------------------------------------
-// |      Name       |  Date   |                        Comments
-// |-----------------|---------|----------------------------------------------------------------------
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -22,9 +9,36 @@ namespace DotSpatial.Serialization
     /// <summary>
     /// BaseList
     /// </summary>
+    /// <typeparam name="T">Type of the contained items.</typeparam>
     [Serializable]
-    public class BaseList<T> : BaseCollection<T>, IList<T> where T : class
+    public class BaseList<T> : BaseCollection<T>, IList<T>
+        where T : class
     {
+        #region Indexers
+
+        /// <summary>
+        /// Gets or sets the value of type T at the specified index
+        /// </summary>
+        /// <param name="index">The zero-base integer index marking the position of the item</param>
+        /// <returns>The item</returns>
+        public T this[int index]
+        {
+            get
+            {
+                return InnerList[index];
+            }
+
+            set
+            {
+                Exclude(InnerList[index]);
+                Include(value);
+                InnerList[index] = value;
+                OnIncludeComplete(value);
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -48,37 +62,22 @@ namespace DotSpatial.Serialization
             DoInsert(index, item);
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets or sets the value of type T at the specified index
+        /// Removes the item from the specified index
         /// </summary>
-        /// <param name="index">The zero-base integer index marking the position of the item</param>
-        /// <returns>The item</returns>
-        public T this[int index]
+        /// <param name="index">The zero based integer index</param>
+        public void RemoveAt(int index)
         {
-            get
-            {
-                return InnerList[index];
-            }
-            set
-            {
-                Exclude(InnerList[index]);
-                Include(value);
-                InnerList[index] = value;
-                OnIncludeComplete(value);
-            }
+            T item = InnerList[index];
+            InnerList.RemoveAt(index);
+            OnExclude(item);
         }
 
-        #endregion
-
-        #region Protected Methods
-
         /// <summary>
-        /// This happens after an item of type T was added to the list
+        /// This happens after an item of type T was added to the list.
         /// </summary>
+        /// <param name="index">Index where the item was inserted.</param>
+        /// <param name="item">Item that was inserted.</param>
         protected virtual void OnInsert(int index, T item)
         {
         }
@@ -102,32 +101,14 @@ namespace DotSpatial.Serialization
         {
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void DoInsert(int index, T item)
         {
             if (IsReadOnly) throw new ReadOnlyException();
+
             Include(item);
             InnerList.Insert(index, item);
             OnInsert(index, item);
             OnIncludeComplete(item);
-        }
-
-        #endregion
-
-        #region IList<T> Members
-
-        /// <summary>
-        /// Removes the item from the specified index
-        /// </summary>
-        /// <param name="index">The zero based integer index</param>
-        public void RemoveAt(int index)
-        {
-            T item = InnerList[index];
-            InnerList.RemoveAt(index);
-            OnExclude(item);
         }
 
         #endregion

@@ -621,7 +621,7 @@ namespace DotSpatial.Positioning
         /// <returns>A <strong>TimeSpan</strong> object representing the total time required to travel the entire distance.</returns>
         public TimeSpan GetMinimumTravelTime(Speed speed)
         {
-            //Dim AdjustedDestination As Position = destination.ToDatum(Datum)
+            // Dim AdjustedDestination As Position = destination.ToDatum(Datum)
             double travelDistance = ToMeters().Value;
             double travelSpeed = speed.ToMetersPerSecond().Value;
             // Perform the calculation
@@ -1403,7 +1403,7 @@ namespace DotSpatial.Positioning
         ///// </summary>
         ///// <param name="pixels"></param>
         ///// <returns></returns>
-        //public static Distance FromPixels(double pixels)
+        // public static Distance FromPixels(double pixels)
         //{
         //    return new Distance(pixels / CurrentPixelsPerInch, DistanceUnit.Inches);
         //}
@@ -2144,7 +2144,7 @@ namespace DotSpatial.Positioning
             {
                 throw new FormatException(Resources.Distance_InvalidFormat, ex);
             }
-            //catch
+            // catch
             //{
             //    throw new FormatException(Properties.Resources.Distance_InvalidFormat));
             //}

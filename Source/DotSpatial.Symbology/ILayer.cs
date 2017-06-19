@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  The core libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll for the DotSpatial project
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in August, 2007.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -23,10 +12,19 @@ namespace DotSpatial.Symbology
     /// It is recommended to create derived classes that inherit from an
     /// abstract layer that implements the majority of this shared functionality
     /// </summary>
-    public interface ILayer : ILegendItem, IRenderable, ISelectable, IDynamicVisibility, IDisposable, IDisposeLock,
-        IReproject
+    public interface ILayer : ILegendItem, IRenderable, ISelectable, IDynamicVisibility, IDisposable, IDisposeLock, IReproject
     {
         #region Events
+
+        /// <summary>
+        /// Occurs when all aspects of the layer finish loading.
+        /// </summary>
+        event EventHandler FinishedLoading;
+
+        /// <summary>
+        /// Occurs if this layer was selected
+        /// </summary>
+        event EventHandler<LayerSelectedEventArgs> LayerSelected;
 
         /// <summary>
         /// Occurs before the properties are actually shown, also allowing the event to be handled.
@@ -37,42 +35,6 @@ namespace DotSpatial.Symbology
         /// Occurs if the maps should zoom to this layer.
         /// </summary>
         event EventHandler<EnvelopeArgs> ZoomToLayer;
-
-        /// <summary>
-        /// Occurs if this layer was selected
-        /// </summary>
-        event EventHandler<LayerSelectedEventArgs> LayerSelected;
-
-        /// <summary>
-        /// Occurs when all aspects of the layer finish loading.
-        /// </summary>
-        event EventHandler FinishedLoading;
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Given a geographic extent, this tests the "IsVisible", "UseDynamicVisibility",
-        /// "DynamicVisibilityMode" and "DynamicVisibilityWidth"
-        /// In order to determine if this layer is visible.
-        /// </summary>
-        /// <param name="geographicExtent">The geographic extent, where the width will be tested.</param>
-        /// <returns>Boolean, true if this layer should be visible for this extent.</returns>
-        bool VisibleAtExtent(Extent geographicExtent);
-
-        /// <summary>
-        /// Notifies the layer that the next time an area that intersects with this region
-        /// is specified, it must first re-draw content to the image buffer.
-        /// </summary>
-        /// <param name="region">The envelope where content has become invalidated.</param>
-        void Invalidate(Extent region);
-
-        /// <summary>
-        /// Queries this layer and the entire parental tree up to the map frame to determine if
-        /// this layer is within the selected layers.
-        /// </summary>
-        bool IsWithinLegendSelection();
 
         #endregion
 
@@ -89,7 +51,7 @@ namespace DotSpatial.Symbology
         Extent InvalidRegion { get; }
 
         /// <summary>
-        /// Gets the MapFrame that contains this layer.
+        /// Gets or sets the MapFrame that contains this layer.
         /// </summary>
         IFrame MapFrame { get; set; }
 
@@ -97,6 +59,33 @@ namespace DotSpatial.Symbology
         /// Gets or sets the progress handler
         /// </summary>
         IProgressHandler ProgressHandler { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Notifies the layer that the next time an area that intersects with this region
+        /// is specified, it must first re-draw content to the image buffer.
+        /// </summary>
+        /// <param name="region">The envelope where content has become invalidated.</param>
+        void Invalidate(Extent region);
+
+        /// <summary>
+        /// Queries this layer and the entire parental tree up to the map frame to determine if
+        /// this layer is within the selected layers.
+        /// </summary>
+        /// <returns>True, if the layer is within legend selection.</returns>
+        bool IsWithinLegendSelection();
+
+        /// <summary>
+        /// Given a geographic extent, this tests the "IsVisible", "UseDynamicVisibility",
+        /// "DynamicVisibilityMode" and "DynamicVisibilityWidth"
+        /// In order to determine if this layer is visible.
+        /// </summary>
+        /// <param name="geographicExtent">The geographic extent, where the width will be tested.</param>
+        /// <returns>Boolean, true if this layer should be visible for this extent.</returns>
+        bool VisibleAtExtent(Extent geographicExtent);
 
         #endregion
     }

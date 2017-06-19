@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -24,13 +13,19 @@ namespace DotSpatial.Data.Forms
     /// </summary>
     public partial class ExtentDialog : Form
     {
+        #region  Constructors
+
         /// <summary>
-        /// Initializes a new instance of the ExtentDialog class.
+        /// Initializes a new instance of the <see cref="ExtentDialog"/> class.
         /// </summary>
         public ExtentDialog()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the extent specified by this form.
@@ -42,23 +37,27 @@ namespace DotSpatial.Data.Forms
                 Extent result;
                 if (chkZ.Checked)
                 {
-                    ExtentMZ mz = new ExtentMZ();
+                    ExtentMz mz = new ExtentMz();
                     if (dbxMinimumZ.IsValid)
                     {
                         mz.MinZ = dbxMinimumZ.Value;
                     }
+
                     if (dbxMaximumZ.IsValid)
                     {
                         mz.MaxZ = dbxMaximumZ.Value;
                     }
+
                     if (dbxMinimumM.IsValid)
                     {
                         mz.MinM = dbxMinimumM.Value;
                     }
+
                     if (dbxMaximumM.IsValid)
                     {
                         mz.MaxM = dbxMaximumM.Value;
                     }
+
                     result = mz;
                 }
                 else if (chkM.Checked)
@@ -68,34 +67,42 @@ namespace DotSpatial.Data.Forms
                     {
                         m.MinM = dbxMinimumM.Value;
                     }
+
                     if (dbxMaximumM.IsValid)
                     {
                         m.MaxM = dbxMaximumM.Value;
                     }
+
                     result = m;
                 }
                 else
                 {
                     result = new Extent();
                 }
+
                 if (dbxMinimumX.IsValid)
                 {
                     result.MinX = dbxMinimumX.Value;
                 }
+
                 if (dbxMaximumX.IsValid)
                 {
                     result.MaxX = dbxMaximumX.Value;
                 }
+
                 if (dbxMinimumY.IsValid)
                 {
                     result.MinY = dbxMinimumY.Value;
                 }
+
                 if (dbxMaximumY.IsValid)
                 {
                     result.MaxY = dbxMaximumY.Value;
                 }
+
                 return result;
             }
+
             set
             {
                 if (value == null)
@@ -103,7 +110,8 @@ namespace DotSpatial.Data.Forms
                     Clear();
                     return;
                 }
-                ExtentMZ mz = value as ExtentMZ;
+
+                ExtentMz mz = value as ExtentMz;
                 ExtentM m = value as ExtentM;
                 if (mz != null)
                 {
@@ -138,6 +146,10 @@ namespace DotSpatial.Data.Forms
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Resets all the values to 0.
         /// </summary>
@@ -163,6 +175,7 @@ namespace DotSpatial.Data.Forms
             {
                 return;
             }
+
             List<string> names = new List<string>();
             if (chkZ.Checked)
             {
@@ -170,46 +183,53 @@ namespace DotSpatial.Data.Forms
                 {
                     names.Add("Minimum Z");
                 }
+
                 if (!dbxMaximumZ.IsValid)
                 {
                     names.Add("Maximum Z");
                 }
             }
+
             if (chkM.Checked)
             {
                 if (!dbxMinimumM.IsValid)
                 {
                     names.Add("Minimum M");
                 }
+
                 if (!dbxMaximumM.IsValid)
                 {
                     names.Add("Maximum M");
                 }
             }
+
             if (!dbxMinimumX.IsValid)
             {
                 names.Add("Minimum X");
             }
+
             if (!dbxMaximumX.IsValid)
             {
                 names.Add("Maximum X");
             }
+
             if (!dbxMinimumY.IsValid)
             {
                 names.Add("Minimum Y");
             }
+
             if (!dbxMaximumY.IsValid)
             {
                 names.Add("Maximum Y");
             }
+
             if (names.Count > 0)
             {
-                MessageBox.Show(DataFormsMessageStrings.ExtentDialog_Fail_Pre + Join(names) +
-                                DataFormsMessageStrings.ExtentDialog_Fail_Post,
-                                DataFormsMessageStrings.ExtentDialog_Fail_Invalid_Value);
+                MessageBox.Show(DataFormsMessageStrings.ExtentDialog_Fail_Pre + Join(names) + DataFormsMessageStrings.ExtentDialog_Fail_Post, DataFormsMessageStrings.ExtentDialog_Fail_Invalid_Value);
 
                 e.Cancel = true;
             }
+
             base.OnClosing(e);
         }
 
@@ -220,6 +240,7 @@ namespace DotSpatial.Data.Forms
             {
                 return result;
             }
+
             if (names.Count > 2)
             {
                 for (int i = 1; i < names.Count - 1; i++)
@@ -227,11 +248,12 @@ namespace DotSpatial.Data.Forms
                     result += ", " + names[i];
                 }
             }
+
             result += ", and " + names[names.Count - 1];
             return result;
         }
 
-        private void chkM_CheckedChanged(object sender, EventArgs e)
+        private void ChkMCheckedChanged(object sender, EventArgs e)
         {
             if (chkM.Checked)
             {
@@ -245,7 +267,7 @@ namespace DotSpatial.Data.Forms
             }
         }
 
-        private void chkZ_CheckedChanged(object sender, EventArgs e)
+        private void ChkZCheckedChanged(object sender, EventArgs e)
         {
             if (chkZ.Checked)
             {
@@ -258,5 +280,7 @@ namespace DotSpatial.Data.Forms
                 dbxMaximumZ.Enabled = false;
             }
         }
+
+        #endregion
     }
 }

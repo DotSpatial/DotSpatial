@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-// The Initial Developer of this Original Code is Ted Dunsford. Created Before 2010.
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// |   Ted Dunsford       |  6/30/2010  |  Moved to DotSpatial
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -23,9 +13,9 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the extent for the dataset.  Usages to Envelope were replaced
+        /// Gets or sets the extent for the dataset. Usages to Envelope were replaced
         /// as they required an explicit using to DotSpatial.Topology which is not
-        /// as intuitive.  Extent.ToEnvelope() and new Extent(myEnvelope) convert them.
+        /// as intuitive. Extent.ToEnvelope() and new Extent(myEnvelope) convert them.
         /// </summary>
         Extent Extent { get; set; }
 
@@ -40,12 +30,12 @@ namespace DotSpatial.Data
         string FilePath { get; set; }
 
         /// <summary>
-        /// True if the dispose method has been called on this dataset.
+        /// Gets a value indicating whether the dispose method has been called on this dataset.
         /// </summary>
         bool IsDisposed { get; }
 
         /// <summary>
-        /// Gets or sets a string name identifying this dataset
+        /// Gets or sets a string name identifying this dataset.
         /// </summary>
         string Name { get; set; }
 
@@ -59,7 +49,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// This closes the data set.  Many times this will simply do nothing, but
+        /// This closes the data set. Many times this will simply do nothing, but
         /// in some cases this may close an open connection to a data source.
         /// </summary>
         void Close();

@@ -1,15 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  An open source drawing pad that is super simple, but extendable
-// ********************************************************************************************************
-//
-// The Original Code is from SketchPad.exe
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/8/2008 1:01:26 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -21,16 +11,7 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     internal class AngleTextBox : ValidTextBox
     {
-        #region Events
-
-        /// <summary>
-        /// Occurs continuously as someone drags the angle control around
-        /// </summary>
-        public event EventHandler AngleChanged;
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private int _angle;
         private int _maxAngle;
@@ -41,7 +22,7 @@ namespace DotSpatial.Symbology.Forms
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of AngleTextBox
+        /// Initializes a new instance of the <see cref="AngleTextBox"/> class.
         /// </summary>
         public AngleTextBox()
         {
@@ -51,7 +32,12 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Methods
+        #region Events
+
+        /// <summary>
+        /// Occurs continuously as someone drags the angle control around
+        /// </summary>
+        public event EventHandler AngleChanged;
 
         #endregion
 
@@ -66,6 +52,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 return _angle;
             }
+
             set
             {
                 _angle = value;
@@ -74,24 +61,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the minimum valid angle.  An angle below the minimum will
-        /// register an error and show the error color.
-        /// </summary>
-        public int MinAngle
-        {
-            get
-            {
-                return _minAngle;
-            }
-            set
-            {
-                _minAngle = value;
-                NormalToolTipText = "Enter an integer degree between " + _minAngle + " and " + _maxAngle + ".";
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the maximum valid angle.  An angle above the maximum will
+        /// Gets or sets the maximum valid angle. An angle above the maximum will
         /// register an error and show the error color.
         /// </summary>
         public int MaxAngle
@@ -100,6 +70,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 return _maxAngle;
             }
+
             set
             {
                 _maxAngle = value;
@@ -107,12 +78,41 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the minimum valid angle. An angle below the minimum will
+        /// register an error and show the error color.
+        /// </summary>
+        public int MinAngle
+        {
+            get
+            {
+                return _minAngle;
+            }
+
+            set
+            {
+                _minAngle = value;
+                NormalToolTipText = "Enter an integer degree between " + _minAngle + " and " + _maxAngle + ".";
+            }
+        }
+
         #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Fires the AngleChanged event
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected void OnAngleChanged(EventArgs e)
+        {
+            AngleChanged?.Invoke(this, e);
+        }
 
         /// <summary>
         /// Fires the TextChanged method and also determines whether or not the text is a valid integer.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnTextChanged(EventArgs e)
         {
             if (int.TryParse(Text, out _angle) == false)
@@ -133,16 +133,10 @@ namespace DotSpatial.Symbology.Forms
 
                 OnAngleChanged(EventArgs.Empty);
             }
+
             base.OnTextChanged(e);
         }
 
-        /// <summary>
-        /// Fires the AngleChanged event
-        /// </summary>
-        /// <param name="e"></param>
-        protected void OnAngleChanged(EventArgs e)
-        {
-            if (AngleChanged != null) AngleChanged(this, e);
-        }
+        #endregion
     }
 }

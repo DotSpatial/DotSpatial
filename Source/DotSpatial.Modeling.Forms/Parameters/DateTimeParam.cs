@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.DateTime
-// Description:  String Parameters returned by an ITool allows the tool to specify a default value
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Teva Veluppillai. Created in March, 2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -23,10 +12,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
     /// </summary>
     public class DateTimeParam : Parameter
     {
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new string parameter
+        /// Initializes a new instance of the <see cref="DateTimeParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         public DateTimeParam(string name)
@@ -38,7 +27,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Creates a new string parameter
+        /// Initializes a new instance of the <see cref="DateTimeParam"/> class.
         /// </summary>
         /// <param name="name">The name of the parameter</param>
         /// <param name="value">The default value</param>
@@ -53,8 +42,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         #endregion
 
+        #region Properties
+
         /// <summary>
-        /// Specifies the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input)
         /// </summary>
         public new DateTime Value
         {
@@ -63,6 +54,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
                 if (DefaultSpecified) return (DateTime)base.Value;
                 return DateTime.Now;
             }
+
             set
             {
                 base.Value = value;
@@ -70,24 +62,22 @@ namespace DotSpatial.Modeling.Forms.Parameters
             }
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override DialogElement InputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new DateTimeElement(this));
+            return new DateTimeElement(this);
         }
 
-        /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
-        /// </summary>
-        /// <param name="dataSets"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DialogElement OutputDialogElement(List<DataSetArray> dataSets)
         {
-            return (new DateTimeElement(this));
+            return new DateTimeElement(this);
         }
+
+        #endregion
     }
 }

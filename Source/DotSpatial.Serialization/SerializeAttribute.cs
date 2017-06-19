@@ -1,18 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Serialization.dll
-// Description:  A module that supports common functions like serialization.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Darrel Brown. Created 9/10/2009
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |-----------------|---------|---------------------------------------------------------------------
-// |      Name       |  Date   |                        Comments
-// |-----------------|---------|----------------------------------------------------------------------
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -25,7 +12,7 @@ namespace DotSpatial.Serialization
     public sealed class SerializeAttribute : Attribute
     {
         /// <summary>
-        /// Creates a new instance of the SerializeAttribute.
+        /// Initializes a new instance of the <see cref="SerializeAttribute"/> class.
         /// </summary>
         /// <param name="name">The name to use when serializing the associated member.</param>
         public SerializeAttribute(string name)
@@ -35,19 +22,19 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// The name to use when serializing the associated member.
+        /// Gets the name to use when serializing the associated member.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// The constructor argument index that the associated member represents.
+        /// Gets or sets the constructor argument index that the associated member represents.
         /// The default value is -1, which indicates that the associated member is
         /// not used as a constructor argument.
         /// </summary>
         public int ConstructorArgumentIndex { get; set; }
 
         /// <summary>
-        /// The type of the formatter to use for the associated value.
+        /// Gets or sets the type of the formatter to use for the associated value.
         /// The type must be derived from <see cref="SerializationFormatter"/>.
         /// </summary>
         public Type Formatter { get; set; }

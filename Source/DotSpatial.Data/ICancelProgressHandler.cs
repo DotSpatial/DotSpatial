@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.ICancelProgressHandler
-// Description:  Interface for tools for the DotSpatial toolbox
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Oct, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Data
 {
@@ -20,7 +9,7 @@ namespace DotSpatial.Data
     public interface ICancelProgressHandler : IProgressHandler
     {
         /// <summary>
-        /// Returns true if the progress handler has been notified that the running process should be cancelled
+        /// Gets a value indicating whether the progress handler has been notified that the running process should be cancelled.
         /// </summary>
         bool Cancel { get; }
     }

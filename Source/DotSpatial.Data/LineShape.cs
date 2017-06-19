@@ -1,20 +1,13 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/1/2010 11:01:12 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// A line shape.
+    /// </summary>
     public static class LineShape
     {
         /// <summary>
@@ -36,7 +29,7 @@ namespace DotSpatial.Data
         {
             if (lineShape.FeatureType != FeatureType.Line)
             {
-                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "lineShape", "line", lineShape.FeatureType)); 
+                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "lineShape", "line", lineShape.FeatureType));
             }
 
             // Implemented in PolygonShape
@@ -82,6 +75,7 @@ namespace DotSpatial.Data
                     }
                 }
             }
+
             return false;
         }
 
@@ -90,7 +84,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="lineShape">A Line or Polygon shape</param>
         /// <param name="otherShape">Another line or polygon shape</param>
-        /// <returns></returns>
+        /// <returns>True, if any segments intersect.</returns>
         public static bool SegmentsIntersect(ShapeRange lineShape, ShapeRange otherShape)
         {
             if (lineShape.FeatureType != FeatureType.Line && lineShape.FeatureType != FeatureType.Polygon)
@@ -116,7 +110,6 @@ namespace DotSpatial.Data
             }
 
             // If the other segment is a polygon, we need to check the "
-
             return false;
         }
     }

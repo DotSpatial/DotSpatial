@@ -1,38 +1,30 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/25/2008 4:41:00 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// An exception that gets thrown for elements that may not be null.
+    /// </summary>
     public class NullException : ArgumentNullException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the NullLogException, but does not set the message
-        /// or log the exception.
+        /// Initializes a new instance of the <see cref="NullException"/> class.
         /// </summary>
         public NullException()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of NullException
+        /// Initializes a new instance of the <see cref="NullException"/> class.
         /// </summary>
+        /// <param name="parameterName">Name of the parameter that is null.</param>
         public NullException(string parameterName)
-            : base(DataStrings.Argument_Null_S.Replace("%S", parameterName))
+            : base(string.Format(DataStrings.Argument_Null_S, parameterName))
         {
         }
 

@@ -179,42 +179,42 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btnClaculate, "btnClaculate");
             this.btnClaculate.Name = "btnClaculate";
             this.btnClaculate.UseVisualStyleBackColor = true;
-            this.btnClaculate.Click += new System.EventHandler(this.btnClaculate_Click);
+            this.btnClaculate.Click += new System.EventHandler(this.BtnClaculateClick);
             // 
             // btnClose
             // 
             resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.Click += new System.EventHandler(this.BtnCloseClick);
             // 
             // btnPlus
             // 
             resources.ApplyResources(this.btnPlus, "btnPlus");
             this.btnPlus.Name = "btnPlus";
             this.btnPlus.UseVisualStyleBackColor = true;
-            this.btnPlus.Click += new System.EventHandler(this.btnPlus_Click);
+            this.btnPlus.Click += new System.EventHandler(this.BtnPlusClick);
             // 
             // btnDivide
             // 
             resources.ApplyResources(this.btnDivide, "btnDivide");
             this.btnDivide.Name = "btnDivide";
             this.btnDivide.UseVisualStyleBackColor = true;
-            this.btnDivide.Click += new System.EventHandler(this.btnDivide_Click);
+            this.btnDivide.Click += new System.EventHandler(this.BtnDivideClick);
             // 
             // btnMultiply
             // 
             resources.ApplyResources(this.btnMultiply, "btnMultiply");
             this.btnMultiply.Name = "btnMultiply";
             this.btnMultiply.UseVisualStyleBackColor = true;
-            this.btnMultiply.Click += new System.EventHandler(this.btnMultiply_Click);
+            this.btnMultiply.Click += new System.EventHandler(this.BtnMultiplyClick);
             // 
             // btnMinus
             // 
             resources.ApplyResources(this.btnMinus, "btnMinus");
             this.btnMinus.Name = "btnMinus";
             this.btnMinus.UseVisualStyleBackColor = true;
-            this.btnMinus.Click += new System.EventHandler(this.btnMinus_Click);
+            this.btnMinus.Click += new System.EventHandler(this.BtnMinusClick);
             // 
             // lblDestinationFieldTitle
             // 
@@ -242,7 +242,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.linkLabel1, "linkLabel1");
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel1LinkClicked);
             // 
             // lblComputaion
             // 
@@ -286,13 +286,13 @@ namespace DotSpatial.Symbology.Forms
             {
                 if (temp.Length > 2)
                 {
-                    //temp = "[" + temp +"]";
+                    // temp = "[" + temp +"]";
                     temp = " " + temp + " ";
                     if (temp != null)
                     {
                         Expression = rtxtComputaion.Text;
                         Expression = Expression + temp;
-                        //DisplyExpression();
+                        // DisplyExpression();
                         rtxtComputaion.Focus();
                         rtxtComputaion.Text = Expression;
                         rtxtComputaion.Select(Expression.Length - 4, 1);
@@ -303,13 +303,13 @@ namespace DotSpatial.Symbology.Forms
             {
                 if (temp.Length > 4)
                 {
-                    //temp = "[" + temp +"]";
+                    // temp = "[" + temp +"]";
                     temp = " " + temp + " ";
                     if (temp != null)
                     {
                         Expression = rtxtComputaion.Text;
                         Expression = Expression + temp;
-                        //DisplyExpression();
+                        // DisplyExpression();
                         rtxtComputaion.Focus();
                         rtxtComputaion.Text = Expression;
                         rtxtComputaion.Select(Expression.Length - 6, 1);
@@ -318,8 +318,8 @@ namespace DotSpatial.Symbology.Forms
             }
             else
             {
-                //temp = "[" + temp + "]"; //symbols
-                temp = " " + temp + " "; //symbols
+                // temp = "[" + temp + "]"; // symbols
+                temp = " " + temp + " "; // symbols
                 if (temp != null)
                 {
                     Expression = rtxtComputaion.Text;

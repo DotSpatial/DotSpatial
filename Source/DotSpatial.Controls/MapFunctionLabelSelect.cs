@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 8/29/2008 3:21:30 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -25,54 +15,58 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapFunctionLabelSelect : MapFunction
     {
-        #region Private Variables
+        #region Fields
+
+        private readonly Pen _selectionPen;
 
         private readonly Timer _selectTimer;
-        private readonly Pen _selectionPen;
         private Point _currentPoint;
         private bool _doSelect;
         private Coordinate _geoStartPoint;
         private bool _isDragging;
-        private Envelope _selectionEnvelope;
         private Point _startPoint;
 
         #endregion
 
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the MapFunctionLabelSelect class.
+        /// Initializes a new instance of the <see cref="MapFunctionLabelSelect"/> class.
         /// </summary>
+        /// <param name="inMap">The map the tool should work on.</param>
         public MapFunctionLabelSelect(IMap inMap)
             : base(inMap)
         {
-            _selectionPen = new Pen(Color.Black) { DashStyle = DashStyle.Dash };
+            _selectionPen = new Pen(Color.Black)
+            {
+                DashStyle = DashStyle.Dash
+            };
             _doSelect = false;
-            _selectTimer = new Timer { Interval = 10 };
+            _selectTimer = new Timer
+            {
+                Interval = 10
+            };
             _selectTimer.Tick += SelectTimerTick;
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton | YieldStyles.Keyboard;
         }
 
-        /// <summary>
-        /// Selection envelope
-        /// </summary>
-        public Envelope SelectionEnvelope
-        {
-            get { return _selectionEnvelope; }
-        }
+        #endregion
 
-        private void SelectTimerTick(object sender, EventArgs e)
-        {
-            _selectTimer.Stop();
-            Map.ResetBuffer();
-        }
+        #region Properties
+
+        /// <summary>
+        /// Gets the selection envelope.
+        /// </summary>
+        public Envelope SelectionEnvelope { get; private set; }
 
         #endregion
 
+        #region Methods
+
         /// <summary>
-        ///
+        /// Draws the label.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnDraw(MapDrawArgs e)
         {
             if (_isDragging)
@@ -83,32 +77,26 @@ namespace DotSpatial.Controls
                 e.Graphics.DrawRectangle(Pens.White, r);
                 e.Graphics.DrawRectangle(_selectionPen, r);
             }
+
             if (_doSelect)
             {
                 foreach (IMapLayer lyr in Map.MapFrame.Layers)
                 {
                     IMapFeatureLayer fl = lyr as IMapFeatureLayer;
-                    if (fl == null)
-                    {
-                        continue;
-                    }
-                    IMapLabelLayer gll = fl.LabelLayer;
-                    //gll.Select(_selectionEnvelope, e); // using this form of selection can test the actual pixel rectangles
-                    if (gll != null)
-                    {
-                        gll.Invalidate();
-                    }
+                    fl?.LabelLayer?.Invalidate();
                 }
+
                 _doSelect = false;
                 _selectTimer.Start();
             }
+
             base.OnDraw(e);
         }
 
         /// <summary>
-        /// Handles the MouseDown
+        /// Handles the MouseDown.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -117,13 +105,14 @@ namespace DotSpatial.Controls
                 _geoStartPoint = e.GeographicLocation;
                 _isDragging = true;
             }
+
             base.OnMouseDown(e);
         }
 
         /// <summary>
-        /// Handles MouseMove
+        /// Handles MouseMove.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             _currentPoint = e.Location;
@@ -132,9 +121,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Handles the Mouse Up situation
+        /// Handles the Mouse Up situation.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             _currentPoint = e.Location;
@@ -142,25 +131,16 @@ namespace DotSpatial.Controls
             Map.Invalidate();
             if (_geoStartPoint != null)
             {
-                _selectionEnvelope = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y,
-                                                  e.GeographicLocation.Y);
+                SelectionEnvelope = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
             }
 
             // If they are not pressing shift, then first clear the selection before adding new members to it.
-            if (((Control.ModifierKeys & Keys.Shift) == Keys.Shift) == false)
+            if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift)
             {
                 foreach (IMapLayer lyr in Map.MapFrame.Layers)
                 {
                     IMapFeatureLayer fl = lyr as IMapFeatureLayer;
-                    if (fl == null)
-                    {
-                        continue;
-                    }
-                    IMapLabelLayer gll = fl.LabelLayer;
-                    if (gll != null)
-                    {
-                        gll.ClearSelection();
-                    }
+                    fl?.LabelLayer?.ClearSelection();
                 }
             }
 
@@ -170,14 +150,12 @@ namespace DotSpatial.Controls
             base.OnMouseUp(e);
         }
 
-        ///// <summary>
-        ///// Disposes the selection pen
-        ///// </summary>
-        ///// <param name="disposing"></param>
-        //protected override void Dispose(bool disposing)
-        //{
-        //    _selectionPen.Dispose();
-        //    base.Dispose(disposing);
-        //}
+        private void SelectTimerTick(object sender, EventArgs e)
+        {
+            _selectTimer.Stop();
+            Map.ResetBuffer();
+        }
+
+        #endregion
     }
 }

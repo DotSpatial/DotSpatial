@@ -104,7 +104,7 @@ namespace DotSpatial.Positioning
         }
 
         // TODO: We should be able to get rid of this. Not used internally anymore.
-        //public override Emulator Clone()
+        // public override Emulator Clone()
         //{
         //    // Return a copy of this emulator
         //    return new TextFileEmulator(_FilePath);

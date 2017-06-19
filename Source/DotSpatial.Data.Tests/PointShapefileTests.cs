@@ -1,50 +1,31 @@
-﻿using System.Linq;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Linq;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for point shapefiles.
+    /// </summary>
     [TestFixture]
-    class PointShapefileTests
+    internal class PointShapefileTests
     {
-        /// <summary>
-        /// Checks whether point shapefiles that have a z but no m value can be loaded.
-        /// </summary>
-        [Test]
-        public void CanReadPointZWithoutM()
-        {
-            const string path = @"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp";
-            var target = new PointShapefile(path);
-            Assert.AreEqual(CoordinateType.Z, target.CoordinateType);
-            Assert.IsNotNull(target.Z);
-            Assert.IsNotNull(target.M);
-            Assert.IsTrue(target.M.All(d => d < -1e38));
-        }
-
-        /// <summary>
-        /// Checks whether point shapefiles that contain NullShapes can be loaded without loosing the NullShapes.
-        /// </summary>
-        [Test]
-        public void CanLoadShapePointWithNullShapes()
-        {
-            const string path = @"Data\Shapefiles\Yield\Yield 2012.shp";
-            var target = new PointShapefile(path);
-            Assert.IsNotNull(target);
-            Assert.AreEqual(target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape), 1792);
-            Assert.AreEqual(target.Features.Count(d => d.Geometry.IsEmpty), 1792);
-        }
+        #region Methods
 
         /// <summary>
         /// Checks whether point shapefiles that contain NullShapes can be exported without loosing the NullShapes.
         /// </summary>
-        /// <param name="indexMode"></param>
+        /// <param name="indexMode">Indicates whether IndexMode is used.</param>
         [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void CanExportPointShapeWithNullShapes(bool indexMode)
         {
-            const string path = @"Data\Shapefiles\Yield\Yield 2012.shp";
-            var target = new PointShapefile(path);
+            const string Path = @"Data\Shapefiles\Yield\Yield 2012.shp";
+            var target = new PointShapefile(Path);
             Assert.IsTrue(target.Features.Count > 0);
             target.IndexMode = indexMode;
 
@@ -66,5 +47,33 @@ namespace DotSpatial.Data.Tests
             }
         }
 
+        /// <summary>
+        /// Checks whether point shapefiles that contain NullShapes can be loaded without loosing the NullShapes.
+        /// </summary>
+        [Test]
+        public void CanLoadShapePointWithNullShapes()
+        {
+            const string Path = @"Data\Shapefiles\Yield\Yield 2012.shp";
+            var target = new PointShapefile(Path);
+            Assert.IsNotNull(target);
+            Assert.AreEqual(target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape), 1792);
+            Assert.AreEqual(target.Features.Count(d => d.Geometry.IsEmpty), 1792);
+        }
+
+        /// <summary>
+        /// Checks whether point shapefiles that have a z but no m value can be loaded.
+        /// </summary>
+        [Test]
+        public void CanReadPointZWithoutM()
+        {
+            const string Path = @"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp";
+            var target = new PointShapefile(Path);
+            Assert.AreEqual(CoordinateType.Z, target.CoordinateType);
+            Assert.IsNotNull(target.Z);
+            Assert.IsNotNull(target.M);
+            Assert.IsTrue(target.M.All(d => d < -1e38));
+        }
+
+        #endregion
     }
 }

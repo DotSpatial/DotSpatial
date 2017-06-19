@@ -1,3 +1,6 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,15 +11,36 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
+    /// <summary>
+    /// Deserializer for version 2 project files.
+    /// </summary>
     public class ProjectFileVer2Deserializer
     {
+        #region Fields
+
         private readonly IMap _map;
 
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProjectFileVer2Deserializer"/> class.
+        /// </summary>
+        /// <param name="map">The map.</param>
         public ProjectFileVer2Deserializer(IMap map)
         {
             _map = map;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Deserializes beginning from the given root.
+        /// </summary>
+        /// <param name="xmlRoot">Root to use as string point.</param>
         public void Deserialize(dynamic xmlRoot)
         {
             var mapwin4Section = xmlRoot.MapWindow4;
@@ -42,13 +66,13 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 var groupInd = Convert.ToInt32(layer["GroupIndex"]);
                 if (!allLayers.ContainsKey(groupInd)) allLayers[groupInd] = new List<ILayer>();
                 var listLayers = allLayers[groupInd];
-                
+
                 IMapLayer layerToAdd = null;
                 foreach (var layersDesc in layersDescs)
                 {
                     if (layersDesc["LayerName"] == name)
                     {
-                        var lt = (string) layersDesc["LayerType"]; 
+                        var lt = (string)layersDesc["LayerType"];
                         switch (lt)
                         {
                             case "Image":
@@ -70,13 +94,16 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                                 }
                                 else
                                 {
-                                    Trace.WriteLine("Unsupported FeatureSet Type: " + fs.GetType());
+                                    var type = (object)fs.GetType().ToString();
+                                    Trace.WriteLine("Unsupported FeatureSet Type: " + type);
                                 }
+
                                 break;
                             default:
                                 Trace.WriteLine("Unsupported LayerType: " + lt);
                                 break;
                         }
+
                         break;
                     }
                 }
@@ -102,11 +129,14 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 {
                     foreach (var layer in gl)
                     {
-                       g.Add(layer);
+                        g.Add(layer);
                     }
                 }
+
                 _map.MapFrame.Layers.Add(g);
             }
         }
+
+        #endregion
     }
 }

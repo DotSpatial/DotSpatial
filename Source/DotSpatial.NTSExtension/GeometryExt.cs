@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.NTSExtension
@@ -8,11 +11,12 @@ namespace DotSpatial.NTSExtension
     /// </summary>
     public static class GeometryExt
     {
+        #region Methods
 
         /// <summary>
         /// Rotates the geometry by the given radian angle around the origin.
         /// </summary>
-        /// <param name="self"/>
+        /// <param name="self">this</param>
         /// <param name="origin">Coordinate the geometry gets rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
         public static void Rotate(this IGeometry self, Coordinate origin, double radAngle)
@@ -25,14 +29,16 @@ namespace DotSpatial.NTSExtension
                     {
                         RotateCoordinateRad(origin, ref pnt.Coordinate.X, ref pnt.Coordinate.Y, radAngle);
                     }
+
                     break;
                 case OgcGeometryType.LineString:
                     ILineString l = self as ILineString;
                     if (l != null)
                     {
-                        for (int i = 0; i < l.Coordinates.Length; i++)
-                            RotateCoordinateRad(origin, ref l.Coordinates[i].X, ref l.Coordinates[i].Y, radAngle);
+                        foreach (Coordinate c in l.Coordinates)
+                            RotateCoordinateRad(origin, ref c.X, ref c.Y, radAngle);
                     }
+
                     break;
                 case OgcGeometryType.Polygon:
                     IPolygon p = self as IPolygon;
@@ -42,6 +48,7 @@ namespace DotSpatial.NTSExtension
                         foreach (var h in p.Holes)
                             h.Rotate(origin, radAngle);
                     }
+
                     break;
                 case OgcGeometryType.GeometryCollection:
                     IGeometryCollection geocol = self as IGeometryCollection;
@@ -50,10 +57,11 @@ namespace DotSpatial.NTSExtension
                         foreach (IGeometry geo in geocol.Geometries)
                             geo.Rotate(origin, radAngle);
                     }
+
                     break;
             }
         }
-      
+
         /// <summary>
         /// Rotates the given coordinate by the given radian angle around the origin.
         /// </summary>
@@ -63,11 +71,12 @@ namespace DotSpatial.NTSExtension
         /// <param name="radAngle">Rotation angle in radian.</param>
         private static void RotateCoordinateRad(Coordinate origin, ref double coordX, ref double coordY, double radAngle)
         {
-            double x = origin.X + (Math.Cos(radAngle) * (coordX - origin.X) - Math.Sin(radAngle) * (coordY - origin.Y));
-            double y = origin.Y + (Math.Sin(radAngle) * (coordX - origin.X) + Math.Cos(radAngle) * (coordY - origin.Y));
+            double x = origin.X + ((Math.Cos(radAngle) * (coordX - origin.X)) - (Math.Sin(radAngle) * (coordY - origin.Y)));
+            double y = origin.Y + ((Math.Sin(radAngle) * (coordX - origin.X)) + (Math.Cos(radAngle) * (coordY - origin.Y)));
             coordX = x;
             coordY = y;
         }
 
+        #endregion
     }
 }

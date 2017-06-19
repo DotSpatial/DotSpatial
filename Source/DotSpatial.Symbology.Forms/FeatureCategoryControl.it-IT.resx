@@ -568,7 +568,7 @@
 		<value>12</value>
 	</data>
 	<data name="dgvStatistics.ToolTip" xml:space="preserve">
-    <value>Descrive le statistiche di riepilogo per i valori in campo.  Questo può essere solo un campione rappresentativo.</value>
+    <value>Descrive le statistiche di riepilogo per i valori in campo. Questo può essere solo un campione rappresentativo.</value>
   </data>
 	<data name="&gt;&gt;dgvStatistics.Name" xml:space="preserve">
     <value>dgvStatistics</value>

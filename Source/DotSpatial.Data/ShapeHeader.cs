@@ -1,48 +1,31 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.Vectors.Shapefiles.dll Alpha
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is from DotSpatial.Data.Vectors.Shapefiles.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in February 2008
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A simple structure that contains the elements of a shapefile that must exist
+    /// A simple structure that contains the elements of a shapefile that must exist.
     /// </summary>
     public struct ShapeHeader
     {
         /// <summary>
-        /// The content length
+        /// Gets or sets the content length.
         /// </summary>
-        public int ContentLength;
+        public int ContentLength { get; set; }
 
         /// <summary>
-        /// The offset in 16-bit words
+        /// Gets or sets the offset in 16-bit words.
         /// </summary>
-        public int Offset;
+        public int Offset { get; set; }
 
         /// <summary>
-        /// The offset in bytes
+        /// Gets the offset in bytes.
         /// </summary>
-        public int ByteOffset
-        {
-            get { return Offset * 2; }
-        }
+        public int ByteOffset => Offset * 2;
 
         /// <summary>
-        /// The length in bytes
+        /// Gets the length in bytes.
         /// </summary>
-        public int ByteLength
-        {
-            get { return ContentLength * 2; }
-        }
+        public int ByteLength => ContentLength * 2;
     }
 }

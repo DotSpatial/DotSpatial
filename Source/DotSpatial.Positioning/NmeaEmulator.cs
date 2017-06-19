@@ -138,7 +138,7 @@ namespace DotSpatial.Positioning
         ///// Copies the settings of the NMEA Emulator.
         ///// </summary>
         ///// <returns> A new NMEA Emulator with the same settings. </returns>
-        //public override Emulator Clone()
+        // public override Emulator Clone()
         //{
         //    // Make a new emulator
         //    NmeaEmulator emulator = (NmeaEmulator)Clone(new NmeaEmulator());
@@ -198,7 +198,7 @@ namespace DotSpatial.Positioning
                 {
                     int sats = Seed.Next(4, 12);
 
-                    //Satellites.Add(new Satellite(32, new Azimuth(225), new Elevation(45), new SignalToNoiseRatio(25)));
+                    // Satellites.Add(new Satellite(32, new Azimuth(225), new Elevation(45), new SignalToNoiseRatio(25)));
 
                     Satellites.Add(new Satellite(32, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
                     if (sats > 1)
@@ -320,7 +320,7 @@ namespace DotSpatial.Positioning
 
                 // Queue the sentence to the read buffer
                 WriteSentenceToClient(new GpggaSentence(UtcDateTime.TimeOfDay, CurrentPosition, _fixQuality, trackedCount,
-                    _horizontalDOP, Altitude.Add(EmulateError(_verticalDOP)), Distance.Empty, TimeSpan.Zero, -1)); //Add an error to the altitude written to the client but don't change the actual value (otherwise it will "walk")
+                    _horizontalDOP, Altitude.Add(EmulateError(_verticalDOP)), Distance.Empty, TimeSpan.Zero, -1)); // Add an error to the altitude written to the client but don't change the actual value (otherwise it will "walk")
             }
 
             // $GPRMC
@@ -405,7 +405,7 @@ namespace DotSpatial.Positioning
         protected virtual Distance EmulateError(DilutionOfPrecision dop)
         {
             // Calculate the error variance
-            //return Distance.FromMeters((Seed.NextDouble() * dop.Value) + DilutionOfPrecision.CurrentAverageDevicePrecision.ToMeters().Value); really? isn't that what the estimated precision is for and shouldn't it be +/- the estimated precision range divided by 2 as below
+            // return Distance.FromMeters((Seed.NextDouble() * dop.Value) + DilutionOfPrecision.CurrentAverageDevicePrecision.ToMeters().Value); really? isn't that what the estimated precision is for and shouldn't it be +/- the estimated precision range divided by 2 as below
             return Distance.FromMeters(dop.EstimatedPrecision.ToMeters().Value * (Seed.NextDouble() - 0.5));
         }
 

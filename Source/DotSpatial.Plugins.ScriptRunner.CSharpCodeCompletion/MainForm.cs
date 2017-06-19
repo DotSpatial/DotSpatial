@@ -25,7 +25,6 @@
 // IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 // OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -36,8 +35,13 @@ using ICSharpCode.SharpDevelop.Dom.NRefactoryResolver;
 
 namespace CSharpEditor
 {
+    /// <summary>
+    /// The main form of the script runner.
+    /// </summary>
     public partial class MainForm : UserControl
     {
+        #region Fields
+
         /// <summary>
         /// Many SharpDevelop.Dom methods take a file name, which is really just a unique identifier
         /// for a file - Dom methods don't try to access code files on disk, so the file does not have
@@ -47,74 +51,20 @@ namespace CSharpEditor
         /// </summary>
         public const string DummyFileName = "edited.cs";
 
-        private static string gErrorMsg = "";
+        private Thread _parserThread;
 
-        /// <summary>
-        ///
-        /// </summary>
-        public static bool IsVisualBasic;
+        #endregion
 
-        static readonly LanguageProperties CurrentLanguageProperties = IsVisualBasic ? LanguageProperties.VBNet : LanguageProperties.CSharp;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string Language = "VBNET";
-
-        /// <summary>
-        ///
-        /// </summary>
-        public ICompilationUnit lastCompilationUnit;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public DefaultProjectContent myProjectContent;
-        /// <summary>
-        ///
-        /// </summary>
-        public ParseInformation parseInformation = new ParseInformation();
-
-        Thread parserThread;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public ProjectContentRegistry pcRegistry;
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
         /// </summary>
         public MainForm()
         {
-            //
             // The InitializeComponent() call is required for Windows Forms designer support.
-            //
             InitializeComponent();
 
-            //            if (IsVisualBasic) {
-            //                textEditorControl1.Text = @"
-            //Class A
-            // Sub B
-            //  Dim xx As String
-            //
-            // End Sub
-            //End Class
-            //";
-            //                textEditorControl1.SetHighlighting("VBNET");
-            //            } else {
-            //                textEditorControl1.Text = @"using System;
-            //class A
-            //{
-            // void B()
-            // {
-            //  string x;
-            //
-            // }
-            //}
-            //";
-            //                textEditorControl1.SetHighlighting("C#");
-            //            }
             textEditorControl1.ShowEOLMarkers = false;
             textEditorControl1.ShowInvalidLines = false;
 
@@ -122,25 +72,61 @@ namespace CSharpEditor
             CodeCompletionKeyHandler.Attach(this, textEditorControl1);
             ToolTipProvider.Attach(this, textEditorControl1);
 
-            pcRegistry = new ProjectContentRegistry(); // Default .NET 2.0 registry
+            PcRegistry = new ProjectContentRegistry(); // Default .NET 2.0 registry
 
-            // Persistence lets SharpDevelop.Dom create a cache file on disk so that
-            // future starts are faster.
-            // It also caches XML documentation files in an on-disk hash table, thus
-            // reducing memory usage.
+            // Persistence lets SharpDevelop.Dom create a cache file on disk so that future starts are faster.
+            // It also caches XML documentation files in an on-disk hash table, thus reducing memory usage.
             // Paul Meems, 1 Sept. 2010: Create the file if it doesn't exist (Bug #1763):
             string cacheFolder = Path.Combine(Path.GetTempPath(), "CSharpCodeCompletion");
             if (!Directory.Exists(cacheFolder))
             {
                 Directory.CreateDirectory(cacheFolder);
             }
-            pcRegistry.ActivatePersistence(cacheFolder);
 
-            myProjectContent = new DefaultProjectContent();
-            myProjectContent.Language = CurrentLanguageProperties;
+            PcRegistry.ActivatePersistence(cacheFolder);
+
+            MyProjectContent = new DefaultProjectContent
+            {
+                Language = IsVisualBasic ? LanguageProperties.VBNet : LanguageProperties.CSharp
+            };
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
+        /// Gets or sets a value indicating whether to use VB or C#.
+        /// </summary>
+        public static bool IsVisualBasic { get; set; }
+
+        /// <summary>
+        /// Gets or sets the language.
+        /// </summary>
+        public string Language { get; set; } = "VBNET";
+
+        /// <summary>
+        /// Gets or sets the last compilation unit.
+        /// </summary>
+        public ICompilationUnit LastCompilationUnit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DefaultProjectContent.
+        /// </summary>
+        public DefaultProjectContent MyProjectContent { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ParseInformation.
+        /// </summary>
+        public ParseInformation ParseInformation { get; set; } = new ParseInformation();
+
+        /// <summary>
+        /// Gets or sets the ProjectContentRegistry.
+        /// </summary>
+        public ProjectContentRegistry PcRegistry { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text.
         /// </summary>
         /// <returns>The text associated with this control.</returns>
         public override string Text
@@ -149,20 +135,49 @@ namespace CSharpEditor
             {
                 return textEditorControl1.Text;
             }
+
             set
             {
                 textEditorControl1.Text = value;
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Inits this instance.
         /// </summary>
         public void Init()
         {
-            parserThread = new Thread(ParserThread);
-            parserThread.IsBackground = true;
-            parserThread.Start();
+            _parserThread = new Thread(ParserThread)
+            {
+                IsBackground = true
+            };
+            _parserThread.Start();
+        }
+
+        /// <summary>
+        /// Sets as CS.
+        /// </summary>
+        public void SetCs()
+        {
+            Language = "C#";
+            textEditorControl1.SetHighlighting(Language);
+            MyProjectContent.Language = LanguageProperties.CSharp;
+            IsVisualBasic = false;
+        }
+
+        /// <summary>
+        /// Sets as VB.
+        /// </summary>
+        public void SetVb()
+        {
+            Language = "VBNET";
+            textEditorControl1.SetHighlighting(Language);
+            MyProjectContent.Language = LanguageProperties.VBNet;
+            IsVisualBasic = true;
         }
 
         /// <summary>
@@ -170,35 +185,20 @@ namespace CSharpEditor
         /// </summary>
         public void Shutdown()
         {
-            if (parserThread != null) parserThread.Abort();
+            _parserThread?.Abort();
         }
 
-        /// <summary>
-        /// Sets as VB.
-        /// </summary>
-        public void SetVB()
+        private ICompilationUnit ConvertCompilationUnit(CompilationUnit cu)
         {
-            Language = "VBNET";
-            textEditorControl1.SetHighlighting(Language);
-            myProjectContent.Language = LanguageProperties.VBNet;
-            IsVisualBasic = true;
-        }
-
-        /// <summary>
-        /// Sets as CS.
-        /// </summary>
-        public void SetCS()
-        {
-            Language = "C#";
-            textEditorControl1.SetHighlighting(Language);
-            myProjectContent.Language = LanguageProperties.CSharp;
-            IsVisualBasic = false;
+            var converter = new NRefactoryASTConvertVisitor(MyProjectContent);
+            cu.AcceptVisitor(converter, null);
+            return converter.Cu;
         }
 
         private void ParserThread()
         {
-            BeginInvoke(new MethodInvoker(delegate { parserThreadLabel.Text = "Loading mscorlib..."; }));
-            myProjectContent.AddReferencedContent(pcRegistry.Mscorlib);
+            BeginInvoke(new MethodInvoker(() => parserThreadLabel.Text = "Loading mscorlib..."));
+            MyProjectContent.AddReferencedContent(PcRegistry.Mscorlib);
 
             // do one initial parser step to enable code-completion while other
             // references are loading
@@ -206,53 +206,31 @@ namespace CSharpEditor
             try
             {
                 string appPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\";
-                //string[] referencedAssemblies = {
-                //     "System", "System.Data", "System.Drawing", "System.Xml", "System.Windows.Forms", "Microsoft.VisualBasic", appPath + "Interop.MapWinGIS.dll", appPath + "MapWinInterfaces.dll", appPath + "MapWinGeoProc.dll"
-                //};
-                string[] referencedAssemblies = {
-                     "System", "System.Data", "System.Drawing", "System.Xml", "System.Windows.Forms", "Microsoft.VisualBasic", appPath + "DotSpatial.Controls.dll", appPath + "DotSpatial.Data.dll", appPath + "DotSpatial.Topology.dll"
-                };
+
+                string[] referencedAssemblies = { "System", "System.Data", "System.Drawing", "System.Xml", "System.Windows.Forms", "Microsoft.VisualBasic", appPath + "DotSpatial.Controls.dll", appPath + "DotSpatial.Data.dll", appPath + "DotSpatial.Topology.dll" };
                 foreach (string assemblyName in referencedAssemblies)
                 {
                     string assemblyNameCopy = assemblyName; // copy for anonymous method
-                    BeginInvoke(new MethodInvoker(delegate { parserThreadLabel.Text = "Loading " + assemblyNameCopy + "..."; }));
-                    IProjectContent referenceProjectContent = pcRegistry.GetProjectContentForReference(assemblyName, assemblyName);
+                    BeginInvoke(new MethodInvoker(() => parserThreadLabel.Text = "Loading " + assemblyNameCopy + "..."));
+                    IProjectContent referenceProjectContent = PcRegistry.GetProjectContentForReference(assemblyName, assemblyName);
 
-                    //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-                    //if (assemblyNameCopy.Contains("Interop.MapWinGIS.dll"))
-                    //{
-                    //    Dom.DefaultCompilationUnit myDefaultCompilationUnit = new Dom.DefaultCompilationUnit(referenceProjectContent);
-                    //    foreach (Dom.IClass iClass in referenceProjectContent.Classes)
-                    //    {
-                    //        //*********  ADD CLASSES TO HIDE HERE ******************
-                    //        if (iClass.Name.StartsWith("_"))
-                    //            myDefaultCompilationUnit.Classes.Add(iClass);
-                    //    }
-                    //    referenceProjectContent.RemoveCompilationUnit(myDefaultCompilationUnit);
-                    //}
-                    //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-
-                    myProjectContent.AddReferencedContent(referenceProjectContent);
-                    if (referenceProjectContent is ReflectionProjectContent)
-                    {
-                        (referenceProjectContent as ReflectionProjectContent).InitializeReferences();
-                    }
+                    MyProjectContent.AddReferencedContent(referenceProjectContent);
+                    (referenceProjectContent as ReflectionProjectContent)?.InitializeReferences();
                 }
             }
-            catch (Exception e)
+            catch
             {
-                gErrorMsg = e.Message + e;
             }
 
             if (IsVisualBasic)
             {
-                myProjectContent.DefaultImports = new DefaultUsing(myProjectContent);
-                myProjectContent.DefaultImports.Usings.Add("System");
-                myProjectContent.DefaultImports.Usings.Add("System.Text");
-                myProjectContent.DefaultImports.Usings.Add("Microsoft.VisualBasic");
+                MyProjectContent.DefaultImports = new DefaultUsing(MyProjectContent);
+                MyProjectContent.DefaultImports.Usings.Add("System");
+                MyProjectContent.DefaultImports.Usings.Add("System.Text");
+                MyProjectContent.DefaultImports.Usings.Add("Microsoft.VisualBasic");
             }
 
-            BeginInvoke(new MethodInvoker(delegate { parserThreadLabel.Text = "Ready"; }));
+            BeginInvoke(new MethodInvoker(() => parserThreadLabel.Text = "Ready"));
 
             // Parse the current file every 2 seconds
             while (!IsDisposed)
@@ -266,17 +244,10 @@ namespace CSharpEditor
         private void ParseStep()
         {
             string code = null;
-            Invoke(new MethodInvoker(delegate
-            {
-                code = textEditorControl1.Text;
-            }));
+            Invoke(new MethodInvoker(() => code = textEditorControl1.Text));
             TextReader textReader = new StringReader(code);
             ICompilationUnit newCompilationUnit;
-            SupportedLanguage supportedLanguage;
-            if (IsVisualBasic)
-                supportedLanguage = SupportedLanguage.VBNet;
-            else
-                supportedLanguage = SupportedLanguage.CSharp;
+            var supportedLanguage = IsVisualBasic ? SupportedLanguage.VBNet : SupportedLanguage.CSharp;
             using (IParser p = ParserFactory.CreateParser(supportedLanguage, textReader))
             {
                 // we only need to parse types and method definitions, no method bodies
@@ -286,18 +257,13 @@ namespace CSharpEditor
                 p.Parse();
                 newCompilationUnit = ConvertCompilationUnit(p.CompilationUnit);
             }
+
             // Remove information from lastCompilationUnit and add information from newCompilationUnit.
-            myProjectContent.UpdateCompilationUnit(lastCompilationUnit, newCompilationUnit, DummyFileName);
-            lastCompilationUnit = newCompilationUnit;
-            parseInformation.SetCompilationUnit(newCompilationUnit);
+            MyProjectContent.UpdateCompilationUnit(LastCompilationUnit, newCompilationUnit, DummyFileName);
+            LastCompilationUnit = newCompilationUnit;
+            ParseInformation.SetCompilationUnit(newCompilationUnit);
         }
 
-        private ICompilationUnit ConvertCompilationUnit(CompilationUnit cu)
-        {
-            NRefactoryASTConvertVisitor converter;
-            converter = new NRefactoryASTConvertVisitor(myProjectContent);
-            cu.AcceptVisitor(converter, null);
-            return converter.Cu;
-        }
+        #endregion
     }
 }

@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.DataElement
-// Description:  This class represents data in the model
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,16 +11,12 @@ namespace DotSpatial.Modeling.Forms
     /// </summary>
     public class BlankElement : ModelElement
     {
-        #region --------------- class variables
-
-        #endregion
-
-        #region --------------- Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the Data Element
-        /// <param name="modelElements">A list of all the elements in the model</param>
+        /// Initializes a new instance of the <see cref="BlankElement"/> class.
         /// </summary>
+        /// <param name="modelElements">A list of all the elements in the model</param>
         public BlankElement(List<ModelElement> modelElements)
             : base(modelElements)
         {
@@ -39,10 +24,14 @@ namespace DotSpatial.Modeling.Forms
             Height = 0;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Does nothing
         /// </summary>
-        /// <param name="graph"></param>
+        /// <param name="graph">Graphics object used for drawing.</param>
         public override void Paint(Graphics graph)
         {
         }

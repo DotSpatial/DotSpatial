@@ -1,20 +1,13 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 10/6/2009 12:19:18 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Expression Arguments for events.
+    /// </summary>
     public class ExpressionEventArgs : EventArgs
     {
         #region Private Variables
@@ -24,7 +17,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of ExpressionEventArgs.
+        /// Initializes a new instance of the <see cref="ExpressionEventArgs"/> class.
         /// </summary>
         /// <param name="expression">The string expression for this event args.</param>
         public ExpressionEventArgs(string expression)
@@ -37,7 +30,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// The string expression for this event.
+        /// Gets or sets the string expression for this event.
         /// </summary>
         public string Expression { get; protected set; }
 

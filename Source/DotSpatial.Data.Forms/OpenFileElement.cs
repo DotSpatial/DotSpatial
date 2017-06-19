@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  A library module for the DotSpatial geospatial framework for .Net.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 11/12/2008 1:15:49 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Drawing;
@@ -19,47 +9,36 @@ namespace DotSpatial.Data.Forms
 {
     /// <summary>
     /// The OpenFileElement can be added directly to a form and supports all of the
-    /// basic dialog options that are important for browsing vector/raster/image
-    /// data.
+    /// basic dialog options that are important for browsing vector/raster/image data.
     /// </summary>
     internal class OpenFileElement : UserControl
     {
-        private IContainer components = null;
-        private ImageList imlImages;
+        #region Fields
 
-        #region Private Variables
-
-        #endregion
-
-        #region Constructors
+        private IContainer _components;
+        private ImageList _imlImages;
 
         #endregion
-
-        private void InitializeComponent()
-        {
-            this.components = new Container();
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(OpenFileElement));
-            this.imlImages = new ImageList(this.components);
-            this.SuspendLayout();
-            //
-            // imlImages
-            //
-            this.imlImages.ColorDepth = ColorDepth.Depth32Bit;
-            resources.ApplyResources(this.imlImages, "imlImages");
-            this.imlImages.TransparentColor = Color.Transparent;
-            //
-            // OpenFileElement
-            //
-            this.Name = "OpenFileElement";
-            resources.ApplyResources(this, "$this");
-            this.ResumeLayout(false);
-        }
 
         #region Methods
 
-        #endregion
+        private void InitializeComponent()
+        {
+            _components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(OpenFileElement));
+            _imlImages = new ImageList(_components);
+            SuspendLayout();
 
-        #region Properties
+            // imlImages
+            _imlImages.ColorDepth = ColorDepth.Depth32Bit;
+            resources.ApplyResources(_imlImages, "_imlImages");
+            _imlImages.TransparentColor = Color.Transparent;
+
+            // OpenFileElement
+            Name = "OpenFileElement";
+            resources.ApplyResources(this, "$this");
+            ResumeLayout(false);
+        }
 
         #endregion
     }

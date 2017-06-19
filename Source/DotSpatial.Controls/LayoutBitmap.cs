@@ -1,17 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Layout.Elements.LayoutBitmap
-// Description:  The DotSpatial LayoutBitmap element, holds bitmaps loaded from disk for the layout
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll Version 6.0
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Jul, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// ------------------|------------|---------------------------------------------------------------
-// Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Drawing;
@@ -36,8 +24,10 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region  Constructors
+
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="LayoutBitmap"/> class.
         /// </summary>
         public LayoutBitmap()
         {
@@ -47,33 +37,43 @@ namespace DotSpatial.Controls
             ResizeStyle = ResizeStyle.StretchToFit;
         }
 
+        #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Preserves the aspect ratio if this boolean is true, otherwise it allows stretching of
-        /// the bitmap to occur
+        /// Gets or sets bitmap to use
         /// </summary>
-        [Browsable(true), Category("Symbol")]
-        public bool PreserveAspectRatio
+        [Browsable(false)]
+        public Bitmap Bitmap
         {
-            get { return _preserveAspectRatio; }
+            get
+            {
+                return _bitmap;
+            }
+
             set
             {
-                if (_preserveAspectRatio == value) return;
-                _preserveAspectRatio = value;
+                if (_bitmap == value) return;
+                _bitmap?.Dispose();
+                _bitmap = value;
                 UpdateThumbnail();
                 OnInvalidate();
             }
         }
 
         /// <summary>
-        /// Modifies the brightness of the bitmap relative to its original brightness +/- 255 Doesn't modify original bitmap
+        /// Gets or sets the brightness of the bitmap relative to its original brightness +/- 255. Doesn't modify original bitmap.
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public int Brightness
         {
-            get { return _brightness; }
+            get
+            {
+                return _brightness;
+            }
+
             set
             {
                 if (_brightness == value) return;
@@ -86,12 +86,17 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Modifies the contrast of the bitmap relative to its original contrast +/- 255 Doesn't modify original bitmap
+        /// Gets or sets the contrast of the bitmap relative to its original contrast +/- 255. Doesn't modify original bitmap.
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         public int Contrast
         {
-            get { return _contrast; }
+            get
+            {
+                return _contrast;
+            }
+
             set
             {
                 if (_contrast == value) return;
@@ -106,31 +111,41 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the string fileName of the bitmap to use
         /// </summary>
-        [Browsable(true), Category("Symbol")]
+        [Browsable(true)]
+        [Category("Symbol")]
         [Editor("System.Windows.Forms.Design.FileNameEditor, System.Design", typeof(UITypeEditor))]
         public string Filename
         {
-            get { return _fileName; }
+            get
+            {
+                return _fileName;
+            }
+
             set
             {
                 if (_fileName == value) return;
                 _fileName = value;
-                Bitmap = File.Exists(_fileName) ? new Bitmap(_fileName) : null;              
+                Bitmap = File.Exists(_fileName) ? new Bitmap(_fileName) : null;
             }
         }
 
         /// <summary>
-        /// Gets or sets bitmap to use
+        /// Gets or sets a value indicating whether the aspect ratio is preserved. If false stretching of
+        /// the bitmap is allowed to occur.
         /// </summary>
-        [Browsable(false)]
-        public Bitmap Bitmap
+        [Browsable(true)]
+        [Category("Symbol")]
+        public bool PreserveAspectRatio
         {
-            get { return _bitmap; }
+            get
+            {
+                return _preserveAspectRatio;
+            }
+
             set
             {
-                if (_bitmap == value) return;
-                if (_bitmap != null) _bitmap.Dispose();
-                _bitmap = value;
+                if (_preserveAspectRatio == value) return;
+                _preserveAspectRatio = value;
                 UpdateThumbnail();
                 OnInvalidate();
             }
@@ -138,7 +153,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Public methods
+        #region Methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -148,29 +163,17 @@ namespace DotSpatial.Controls
         public override void Draw(Graphics g, bool printing)
         {
             if (_bitmap == null) return;
-          
-            //This color matrix is used to adjust how the image is drawn to the graphics object
+
+            // This color matrix is used to adjust how the image is drawn to the graphics object
             var bright = _brightness / 255.0F;
             var cont = (_contrast + 255.0F) / 255.0F;
-            float[][] colorArray =
-            {
-                new[] {cont, 0, 0, 0, 0},
-                new[] {0, cont, 0, 0, 0},
-                new[] {0, 0, cont, 0, 0},
-                new float[] {0, 0, 0, 1, 0},
-                new[] {bright, bright, bright, 0, 1}
-            };
+            float[][] colorArray = { new[] { cont, 0, 0, 0, 0 }, new[] { 0, cont, 0, 0, 0 }, new[] { 0, 0, cont, 0, 0 }, new float[] { 0, 0, 0, 1, 0 }, new[] { bright, bright, bright, 0, 1 } };
             var cm = new ColorMatrix(colorArray);
             var imgAttrib = new ImageAttributes();
             imgAttrib.SetColorMatrix(cm);
 
-            //Defines a parallelgram where the image is to be drawn
-            var destPoints = new[]
-            {
-                LocationF,
-                new PointF(LocationF.X + Size.Width, LocationF.Y),
-                new PointF(LocationF.X, LocationF.Y + Size.Height)
-            };
+            // Defines a parallelgram where the image is to be drawn
+            var destPoints = new[] { LocationF, new PointF(LocationF.X + Size.Width, LocationF.Y), new PointF(LocationF.X, LocationF.Y + Size.Height) };
 
             var destSize = _bitmap.Size;
             if (_preserveAspectRatio)
@@ -180,6 +183,7 @@ namespace DotSpatial.Controls
                 else
                     destPoints[1] = new PointF(LocationF.X + (Size.Height * destSize.Width / destSize.Height), LocationF.Y);
             }
+
             var srcRect = new Rectangle(0, 0, _bitmap.Width, _bitmap.Height);
             g.DrawImage(_bitmap, destPoints, srcRect, GraphicsUnit.Pixel, imgAttrib);
             imgAttrib.Dispose();

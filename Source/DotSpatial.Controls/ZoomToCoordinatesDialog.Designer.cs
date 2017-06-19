@@ -52,7 +52,7 @@ namespace DotSpatial.Controls
             this.BT_Accept.TabIndex = 3;
             this.BT_Accept.Text = "OK";
             this.BT_Accept.UseVisualStyleBackColor = true;
-            this.BT_Accept.Click += new System.EventHandler(this.AcceptButton_Click);
+            this.BT_Accept.Click += new System.EventHandler(this.AcceptButtonClick);
             // 
             // BT_Cancel
             // 

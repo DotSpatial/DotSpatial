@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 
 namespace DotSpatial.Controls.Header
 {
@@ -7,6 +10,8 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class RootItemEventArgs : EventArgs
     {
+        #region  Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RootItemEventArgs"/> class.
         /// </summary>
@@ -15,13 +20,17 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the RootItemEventArgs class.
+        /// Initializes a new instance of the <see cref="RootItemEventArgs"/> class.
         /// </summary>
         /// <param name="selectedKey">The key of the selected root item</param>
         public RootItemEventArgs(string selectedKey)
         {
             SelectedRootKey = selectedKey;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the selected root item key.
@@ -30,5 +39,7 @@ namespace DotSpatial.Controls.Header
         /// The selected root item key
         /// </value>
         public string SelectedRootKey { get; set; }
+
+        #endregion
     }
 }

@@ -1,54 +1,50 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/20/2009 1:58:46 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Interface for FeatureCategory.
+    /// </summary>
     public interface IFeatureCategory : ICategory
     {
-        /// <summary>
-        /// Occurs when the select features context menu is clicked.
-        /// </summary>
-        event EventHandler<ExpressionEventArgs> SelectFeatures;
+        #region Events
 
         /// <summary>
         /// Occurs when the deselect features context menu is clicked.
         /// </summary>
         event EventHandler<ExpressionEventArgs> DeselectFeatures;
 
+        /// <summary>
+        /// Occurs when the select features context menu is clicked.
+        /// </summary>
+        event EventHandler<ExpressionEventArgs> SelectFeatures;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the filter expression that is used to add members to generate a category based on this scheme.
+        /// </summary>
+        string FilterExpression { get; set; }
+
+        /// <summary>
+        /// Gets or sets the symbolizer used for this category.
+        /// </summary>
+        IFeatureSymbolizer SelectionSymbolizer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the symbolizer used for this category.
+        /// </summary>
+        IFeatureSymbolizer Symbolizer { get; set; }
+
+        #endregion
+
         #region Methods
-
-        /// <summary>
-        /// Queries this layer and the entire parental tree up to the map frame to determine if
-        /// this layer is within the selected layers.
-        /// </summary>
-        bool IsWithinLegendSelection();
-
-        /// <summary>
-        /// This gets a single color that attempts to represent the specified
-        /// category.  For polygons, for example, this is the fill color (or central fill color)
-        /// of the top pattern.  If an image is being used, the color will be gray.
-        /// </summary>
-        /// <returns>The System.Color that can be used as an approximation to represent this category.</returns>
-        Color GetColor();
-
-        /// <summary>
-        /// This applies the color to the top symbol stroke or pattern.
-        /// </summary>
-        /// <param name="color">The Color to apply</param>
-        void SetColor(Color color);
 
         /// <summary>
         /// In some cases, it is useful to simply be able to show an approximation of the actual expression.
@@ -56,24 +52,26 @@ namespace DotSpatial.Symbology
         /// </summary>
         void DisplayExpression();
 
-        #endregion
-
-        #region Properties
+        /// <summary>
+        /// This gets a single color that attempts to represent the specified
+        /// category. For polygons, for example, this is the fill color (or central fill color)
+        /// of the top pattern. If an image is being used, the color will be gray.
+        /// </summary>
+        /// <returns>The System.Color that can be used as an approximation to represent this category.</returns>
+        Color GetColor();
 
         /// <summary>
-        /// Gets or sets the symbolizer used for this category.
+        /// Queries this layer and the entire parental tree up to the map frame to determine if
+        /// this layer is within the selected layers.
         /// </summary>
-        IFeatureSymbolizer Symbolizer { get; set; }
+        /// <returns>True, if this item is within legend selection.</returns>
+        bool IsWithinLegendSelection();
 
         /// <summary>
-        /// Gets or sets the symbolizer used for this category
+        /// This applies the color to the top symbol stroke or pattern.
         /// </summary>
-        IFeatureSymbolizer SelectionSymbolizer { get; set; }
-
-        /// <summary>
-        /// Gets or set the filter expression that is used to add members to generate a category based on this scheme.
-        /// </summary>
-        string FilterExpression { get; set; }
+        /// <param name="color">The Color to apply</param>
+        void SetColor(Color color);
 
         #endregion
     }

@@ -1,30 +1,21 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/16/2009 2:15:12 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using DotSpatial.NTSExtension;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// FeatureSetEM contains extension methods that should work for any IFeatureSet
+    /// FeatureSetExt contains extension methods that should work for any IFeatureSet.
     /// </summary>
     public static class FeatureSetExt
     {
+        #region Methods
+
         /// <summary>
         /// Creates a new polygon featureset that is created by buffering each of the individual shapes.
         /// </summary>
@@ -35,12 +26,13 @@ namespace DotSpatial.Data
         /// <returns>The newly created IFeatureSet</returns>
         public static IFeatureSet Buffer(this IFeatureSet self, double distance, bool copyAttributes)
         {
-            // Dimension the new, output featureset.  Buffered shapes are polygons, even if the
+            // Dimension the new, output featureset. Buffered shapes are polygons, even if the
             // original geometry is a point or a line.
             IFeatureSet result = new FeatureSet(FeatureType.Polygon);
 
             result.CopyTableSchema(self);
             result.Projection = self.Projection;
+
             // Cycle through the features, and buffer each one separately.
             foreach (IFeature original in self.Features)
             {
@@ -58,6 +50,7 @@ namespace DotSpatial.Data
                     buffer.CopyAttributes(original);
                 }
             }
+
             return result;
         }
 
@@ -67,7 +60,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="self">This featureset</param>
         /// <param name="other">The other featureset to combine fields with.</param>
-        /// <returns></returns>
+        /// <returns>The created featureset.</returns>
         public static IFeatureSet CombinedFields(this IFeatureSet self, IFeatureSet other)
         {
             IFeatureSet result = new FeatureSet(self.FeatureType);
@@ -83,16 +76,18 @@ namespace DotSpatial.Data
                         name = dc.ColumnName + i;
                         i++;
                     }
+
                     uniqueNames.Add(name);
                     result.DataTable.Columns.Add(new DataColumn(name, dc.DataType));
                 }
             }
+
             return result;
         }
 
         /// <summary>
         /// Calculates a union of any features that have a common value in the specified field.
-        /// The output will only contain the specified field.  Example: Disolving a county
+        /// The output will only contain the specified field. Example: Disolving a county
         /// shapefile based on state name to produce a single polygon shaped like the state.
         /// </summary>
         /// <param name="self">The original featureSet to disolve the features of</param>
@@ -113,7 +108,7 @@ namespace DotSpatial.Data
                     IFeature union = new Feature(resultFeatures[value].Geometry.Union(feature.Geometry));
                     union.DataRow = result.DataTable.NewRow();
                     union.DataRow[fieldName] = value;
-                    resultFeatures[value] = union; //TODO does this work without leaving remnants of the old datarow?
+                    resultFeatures[value] = union; // TODO does this work without leaving remnants of the old datarow?
                 }
                 else
                 {
@@ -128,6 +123,108 @@ namespace DotSpatial.Data
             {
                 result.Features.Add(feature);
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// This tests each feature of the input
+        /// </summary>
+        /// <param name="self">This featureSet</param>
+        /// <param name="other">The featureSet to perform intersection with</param>
+        /// <param name="joinType">The attribute join type</param>
+        /// <param name="progHandler">A progress handler for status messages</param>
+        /// <returns>An IFeatureSet with the intersecting features, broken down based on the join Type</returns>
+        public static IFeatureSet Intersection(this IFeatureSet self, IFeatureSet other, FieldJoinType joinType, IProgressHandler progHandler)
+        {
+            IFeatureSet result = null;
+            ProgressMeter pm = new ProgressMeter(progHandler, "Calculating Intersection", self.Features.Count);
+            if (joinType == FieldJoinType.All)
+            {
+                result = CombinedFields(self, other);
+
+                // Intersection is symmetric, so only consider I X J where J <= I
+                if (!self.AttributesPopulated) self.FillAttributes();
+                if (!other.AttributesPopulated) other.FillAttributes();
+
+                for (int i = 0; i < self.Features.Count; i++)
+                {
+                    IFeature selfFeature = self.Features[i];
+                    List<IFeature> potentialOthers = other.Select(selfFeature.Geometry.EnvelopeInternal.ToExtent());
+                    foreach (IFeature otherFeature in potentialOthers)
+                    {
+                        selfFeature.Intersection(otherFeature, result, joinType);
+                    }
+
+                    pm.CurrentValue = i;
+                }
+
+                pm.Reset();
+            }
+            else if (joinType == FieldJoinType.LocalOnly)
+            {
+                if (!self.AttributesPopulated) self.FillAttributes();
+
+                result = new FeatureSet();
+                result.CopyTableSchema(self);
+                result.FeatureType = self.FeatureType;
+                if (other.Features != null && other.Features.Count > 0)
+                {
+                    pm = new ProgressMeter(progHandler, "Calculating Union", other.Features.Count);
+                    IFeature union = other.Features[0];
+                    for (int i = 1; i < other.Features.Count; i++)
+                    {
+                        union = union.Union(other.Features[i].Geometry);
+                        pm.CurrentValue = i;
+                    }
+
+                    pm.Reset();
+                    pm = new ProgressMeter(progHandler, "Calculating Intersections", self.NumRows());
+                    Extent otherEnvelope = union.Geometry.EnvelopeInternal.ToExtent();
+                    for (int shp = 0; shp < self.ShapeIndices.Count; shp++)
+                    {
+                        if (!self.ShapeIndices[shp].Extent.Intersects(otherEnvelope)) continue;
+
+                        IFeature selfFeature = self.GetFeature(shp);
+                        selfFeature.Intersection(union, result, joinType);
+                        pm.CurrentValue = shp;
+                    }
+
+                    pm.Reset();
+                }
+            }
+            else if (joinType == FieldJoinType.ForeignOnly)
+            {
+                if (!other.AttributesPopulated) other.FillAttributes();
+
+                result = new FeatureSet();
+                result.CopyTableSchema(other);
+                result.FeatureType = other.FeatureType;
+                if (self.Features != null && self.Features.Count > 0)
+                {
+                    pm = new ProgressMeter(progHandler, "Calculating Union", self.Features.Count);
+                    IFeature union = self.Features[0];
+                    for (int i = 1; i < self.Features.Count; i++)
+                    {
+                        union = union.Union(self.Features[i].Geometry);
+                        pm.CurrentValue = i;
+                    }
+
+                    pm.Reset();
+                    if (other.Features != null)
+                    {
+                        pm = new ProgressMeter(progHandler, "Calculating Intersection", other.Features.Count);
+                        for (int i = 0; i < other.Features.Count; i++)
+                        {
+                            other.Features[i].Intersection(union, result, FieldJoinType.LocalOnly);
+                            pm.CurrentValue = i;
+                        }
+                    }
+
+                    pm.Reset();
+                }
+            }
+
             return result;
         }
 
@@ -155,6 +252,7 @@ namespace DotSpatial.Data
             {
                 return UnionIntersecting(self);
             }
+
             return UnionAll(self);
         }
 
@@ -168,7 +266,8 @@ namespace DotSpatial.Data
             {
                 f = f.Union(fs.Features[i], fsunion, FieldJoinType.LocalOnly);
             }
-            fsunion.AddFeature(f.Geometry); //TODO jany_ why union feature if only geometry is used to create new feature?
+
+            fsunion.AddFeature(f.Geometry); // TODO jany_ why union feature if only geometry is used to create new feature?
             return fsunion;
         }
 
@@ -179,6 +278,7 @@ namespace DotSpatial.Data
             // This is needed or else the table won't have the columns for copying attributes.
             fsunion.CopyTableSchema(fs);
             fsunion.Projection = fs.Projection;
+
             // Create a list of all the original shapes so if we union A->B we don't also union B->A
             var freeFeatures = fs.Features.Select((t, i) => i).ToList();
 
@@ -190,7 +290,7 @@ namespace DotSpatial.Data
                 // We also don't want to waste time unioning shapes to themselves.
                 freeFeatures.RemoveAt(0);
 
-                // This is the unioned result.  Remember, we may just add the original feature if no
+                // This is the unioned result. Remember, we may just add the original feature if no
                 // shapes present themselves for unioning.
                 IFeature fResult = null;
 
@@ -208,7 +308,7 @@ namespace DotSpatial.Data
                             fResult = intersectSource.Union(fs.Features[index].Geometry);
                             shapeChanged = true;
 
-                            // Don't modify the "freefeatures" list during a loop.  Keep track until later.
+                            // Don't modify the "freefeatures" list during a loop. Keep track until later.
                             mergedList.Add(index);
 
                             // Less double-checking happens if we break rather than finishing the loop
@@ -222,104 +322,16 @@ namespace DotSpatial.Data
                         // We don't want to add the same shape twice.
                         freeFeatures.Remove(index);
                     }
-                } while (shapeChanged);
+                }
+                while (shapeChanged);
 
                 // Add fResult, unless it is null, in which case add fOriginal.
                 fsunion.Features.Add(fResult ?? fOriginal);
             }
+
             return fsunion;
         }
 
-        /// <summary>
-        /// This tests each feature of the input
-        /// </summary>
-        /// <param name="self">This featureSet</param>
-        /// <param name="other">The featureSet to perform intersection with</param>
-        /// <param name="joinType">The attribute join type</param>
-        /// <param name="progHandler">A progress handler for status messages</param>
-        /// <returns>An IFeatureSet with the intersecting features, broken down based on the join Type</returns>
-        public static IFeatureSet Intersection(this IFeatureSet self, IFeatureSet other, FieldJoinType joinType, IProgressHandler progHandler)
-        {
-            IFeatureSet result = null;
-            ProgressMeter pm = new ProgressMeter(progHandler, "Calculating Intersection", self.Features.Count);
-            if (joinType == FieldJoinType.All)
-            {
-                result = CombinedFields(self, other);
-                // Intersection is symmetric, so only consider I X J where J <= I
-                if (!self.AttributesPopulated) self.FillAttributes();
-                if (!other.AttributesPopulated) other.FillAttributes();
-
-                for (int i = 0; i < self.Features.Count; i++)
-                {
-                    IFeature selfFeature = self.Features[i];
-                    List<IFeature> potentialOthers = other.Select(selfFeature.Geometry.EnvelopeInternal.ToExtent());
-                    foreach (IFeature otherFeature in potentialOthers)
-                    {
-                        selfFeature.Intersection(otherFeature, result, joinType);
-                    }
-                    pm.CurrentValue = i;
-                }
-                pm.Reset();
-            }
-            else if (joinType == FieldJoinType.LocalOnly)
-            {
-                if (!self.AttributesPopulated) self.FillAttributes();
-
-                result = new FeatureSet();
-                result.CopyTableSchema(self);
-                result.FeatureType = self.FeatureType;
-                if (other.Features != null && other.Features.Count > 0)
-                {
-                    pm = new ProgressMeter(progHandler, "Calculating Union", other.Features.Count);
-                    IFeature union = other.Features[0];
-                    for (int i = 1; i < other.Features.Count; i++)
-                    {
-                        union = union.Union(other.Features[i].Geometry);
-                        pm.CurrentValue = i;
-                    }
-                    pm.Reset();
-                    pm = new ProgressMeter(progHandler, "Calculating Intersections", self.NumRows());
-                    Extent otherEnvelope = union.Geometry.EnvelopeInternal.ToExtent();
-                    for (int shp = 0; shp < self.ShapeIndices.Count; shp++)
-                    {
-                        if (!self.ShapeIndices[shp].Extent.Intersects(otherEnvelope)) continue;
-                        IFeature selfFeature = self.GetFeature(shp);
-                        selfFeature.Intersection(union, result, joinType);
-                        pm.CurrentValue = shp;
-                    }
-                    pm.Reset();
-                }
-            }
-            else if (joinType == FieldJoinType.ForeignOnly)
-            {
-                if (!other.AttributesPopulated) other.FillAttributes();
-
-                result = new FeatureSet();
-                result.CopyTableSchema(other);
-                result.FeatureType = other.FeatureType;
-                if (self.Features != null && self.Features.Count > 0)
-                {
-                    pm = new ProgressMeter(progHandler, "Calculating Union", self.Features.Count);
-                    IFeature union = self.Features[0];
-                    for (int i = 1; i < self.Features.Count; i++)
-                    {
-                        union = union.Union(self.Features[i].Geometry);
-                        pm.CurrentValue = i;
-                    }
-                    pm.Reset();
-                    if (other.Features != null)
-                    {
-                        pm = new ProgressMeter(progHandler, "Calculating Intersection", other.Features.Count);
-                        for (int i = 0; i < other.Features.Count; i++)
-                        {
-                            other.Features[i].Intersection(union, result, FieldJoinType.LocalOnly);
-                            pm.CurrentValue = i;
-                        }
-                    }
-                    pm.Reset();
-                }
-            }
-            return result;
-        }
+        #endregion
     }
 }

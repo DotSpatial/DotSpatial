@@ -124,8 +124,8 @@
     <value>The argument %S1 could not be successfully cast into %S2.</value>
   </data>
   <data name="ArgumentNull_S" xml:space="preserve">
-    <value>The argument %S was null.  Try testing for the null case before calling this method.</value>
-    <comment>Using %S as a string wildcard.  Use String.Replace to replace that in code.</comment>
+    <value>The argument %S was null. Try testing for the null case before calling this method.</value>
+    <comment>Using %S as a string wildcard. Use String.Replace to replace that in code.</comment>
   </data>
   <data name="ArgumentOfWrongType_S1_S2" xml:space="preserve">
     <value>The argument %S1 was incorrect for %S2.</value>
@@ -191,7 +191,7 @@
     <value>Cannot read past the end of the file.</value>
   </data>
   <data name="FeatureTypeCannotChange" xml:space="preserve">
-    <value>The feature type cannot be changed here.  Try creating a new feature of the appropriate type.</value>
+    <value>The feature type cannot be changed here. Try creating a new feature of the appropriate type.</value>
   </data>
   <data name="FeatureTypeNotLine" xml:space="preserve">
     <value>The FeatureType specified was not the line feature type.</value>
@@ -203,7 +203,7 @@
     <value>The FeatureType specified was not the polygon feature type.</value>
   </data>
   <data name="FileExists_S" xml:space="preserve">
-    <value>The fileName %S already exists.  Do you wish to overwrite it?</value>
+    <value>The fileName %S already exists. Do you wish to overwrite it?</value>
   </data>
   <data name="FileNotFound_S" xml:space="preserve">
     <value>The fileName %S was not found.</value>
@@ -215,7 +215,7 @@
     <value>The fileName %S contains a feature type other than points.</value>
   </data>
   <data name="FileTooLarge" xml:space="preserve">
-    <value>The file was too large to fit into memory all at once.  Try using a DataSource instead.</value>
+    <value>The file was too large to fit into memory all at once. Try using a DataSource instead.</value>
   </data>
   <data name="FileTypeNotSupported" xml:space="preserve">
     <value>The specified file type is not supported.</value>
@@ -227,10 +227,10 @@
     <value>There was an error while attempting to index %S</value>
   </data>
   <data name="InvalidNumberFormat" xml:space="preserve">
-    <value>The value entered was not understood.  Please use either numbers or syntax 'start - end', e.g. '1-5'</value>
+    <value>The value entered was not understood. Please use either numbers or syntax 'start - end', e.g. '1-5'</value>
   </data>
   <data name="MoreThan100UniqueValues" xml:space="preserve">
-    <value>There are more than 100 unique values.  Are you sure you want to continue?</value>
+    <value>There are more than 100 unique values. Are you sure you want to continue?</value>
   </data>
   <data name="NotImplemented" xml:space="preserve">
     <value>This has not yet been implemented.</value>
@@ -242,7 +242,7 @@
     <value>For now, only the shapefile vector format is being supported.</value>
   </data>
   <data name="Opacity" xml:space="preserve">
-    <value>Opacity controls how transparent the item is.  A 0 is fully transparent, while 1 is fully opaque.</value>
+    <value>Opacity controls how transparent the item is. A 0 is fully transparent, while 1 is fully opaque.</value>
   </data>
   <data name="OpacityInvalid" xml:space="preserve">
     <value>Opacity should be a floating decimal point between 0 and 1.</value>
@@ -254,7 +254,7 @@
     <value>Painting Hillshade To Bitmap</value>
   </data>
   <data name="ParseFailed_S" xml:space="preserve">
-    <value>The value you entered could not be parsed into a %S.  Make sure the value is in the valid range.</value>
+    <value>The value you entered could not be parsed into a %S. Make sure the value is in the valid range.</value>
   </data>
   <data name="RasterRequiresCast" xml:space="preserve">
     <value>To work with anything other than an in-memory raster window, you must first cast this raster to the correct data format.</value>
@@ -311,7 +311,7 @@
     <value>The specified number of significant digits (%S) is too large for this field.</value>
   </data>
   <data name="CurrentElementNotSpecified" xml:space="preserve">
-    <value>The current element was not defined.  Before attempting to read the element, first assign the value of the current XML Element to read.</value>
+    <value>The current element was not defined. Before attempting to read the element, first assign the value of the current XML Element to read.</value>
   </data>
   <data name="Selection_FeatureNotFound" xml:space="preserve">
     <value>The specified feature was not found in the feature list and could not be selected.</value>
@@ -590,7 +590,7 @@
     <value>Close</value>
   </data>
   <data name="StringFieldInvalid" xml:space="preserve">
-    <value>Fields that are the string datatype cannot be converted to a raster.  Do you wish to use the FID value instead?</value>
+    <value>Fields that are the string datatype cannot be converted to a raster. Do you wish to use the FID value instead?</value>
   </data>
   <data name="LayoutMenuStripRefresh" xml:space="preserve">
     <value>Refresh</value>

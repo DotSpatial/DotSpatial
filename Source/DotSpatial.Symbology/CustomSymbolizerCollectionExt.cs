@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Drawing.PredefinedSymbols.dll Alpha
-// Description:  The basic module for DotSpatial.Drawing version 6.0
-// ********************************************************************************************************
-//
-// The Original Code is from DotSpatial.Drawing.PredefinedSymbols.dll version 6.0
-//
-// The Initial Developer of this Original Code is Jiri Kadlec. Created 5/27/2009 12:33:20 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Extension methods for a collection of custom symbolizers
+    /// Extension methods for a collection of custom symbolizers.
     /// </summary>
     public static class CustomSymbolizerCollectionExt
     {
@@ -37,7 +27,6 @@ namespace DotSpatial.Symbology
                 bformatter.Serialize(myStream, self);
             }
         }
-       
 
         #endregion
     }

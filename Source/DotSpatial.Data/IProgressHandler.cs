@@ -1,22 +1,10 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created Before 2010.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// |   Ted Dunsford       |  6/30/2010  |  Moved to DotSpatial
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// An interface for sending progress messages.  Percent is an integer from 0 to 100.
+    /// An interface for sending progress messages. Percent is an integer from 0 to 100.
     /// </summary>
     public interface IProgressHandler
     {

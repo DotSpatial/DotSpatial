@@ -1,25 +1,18 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 9/14/2009 8:50:58 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// FeatureEditorSettings
+    /// </summary>
     [Serializable]
     public class FeatureEditorSettings : EditorSettings
     {
-        #region Private Variables
+        #region Fields
 
         private ClassificationType _classificationType;
         private double _endSize;
@@ -36,7 +29,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of VectorEditorSettings
+        /// Initializes a new instance of the <see cref="FeatureEditorSettings"/> class.
         /// </summary>
         public FeatureEditorSettings()
         {
@@ -48,10 +41,6 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -60,8 +49,15 @@ namespace DotSpatial.Symbology
         [Serialize("ClassificationType")]
         public ClassificationType ClassificationType
         {
-            get { return _classificationType; }
-            set { _classificationType = value; }
+            get
+            {
+                return _classificationType;
+            }
+
+            set
+            {
+                _classificationType = value;
+            }
         }
 
         /// <summary>
@@ -70,8 +66,15 @@ namespace DotSpatial.Symbology
         [Serialize("EndSize")]
         public double EndSize
         {
-            get { return _endSize; }
-            set { _endSize = value; }
+            get
+            {
+                return _endSize;
+            }
+
+            set
+            {
+                _endSize = value;
+            }
         }
 
         /// <summary>
@@ -80,18 +83,15 @@ namespace DotSpatial.Symbology
         [Serialize("FieldName")]
         public string FieldName
         {
-            get { return _fieldName; }
-            set { _fieldName = value; }
-        }
+            get
+            {
+                return _fieldName;
+            }
 
-        /// <summary>
-        /// Gets or sets the normalization field
-        /// </summary>
-        [Serialize("NormField")]
-        public string NormField
-        {
-            get { return _normField; }
-            set { _normField = value; }
+            set
+            {
+                _fieldName = value;
+            }
         }
 
         /// <summary>
@@ -101,8 +101,32 @@ namespace DotSpatial.Symbology
         [Serialize("GradientAngle")]
         public int GradientAngle
         {
-            get { return _gradientAngle; }
-            set { _gradientAngle = value; }
+            get
+            {
+                return _gradientAngle;
+            }
+
+            set
+            {
+                _gradientAngle = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the normalization field
+        /// </summary>
+        [Serialize("NormField")]
+        public string NormField
+        {
+            get
+            {
+                return _normField;
+            }
+
+            set
+            {
+                _normField = value;
+            }
         }
 
         /// <summary>
@@ -111,8 +135,15 @@ namespace DotSpatial.Symbology
         [Serialize("StartSize")]
         public double StartSize
         {
-            get { return _startSize; }
-            set { _startSize = value; }
+            get
+            {
+                return _startSize;
+            }
+
+            set
+            {
+                _startSize = value;
+            }
         }
 
         /// <summary>
@@ -122,31 +153,51 @@ namespace DotSpatial.Symbology
         [Serialize("TemplateSymbolizer")]
         public IFeatureSymbolizer TemplateSymbolizer
         {
-            get { return _templateSymbolizer; }
-            set { _templateSymbolizer = value; }
+            get
+            {
+                return _templateSymbolizer;
+            }
+
+            set
+            {
+                _templateSymbolizer = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether or not to
-        /// use a gradient when randomly calculating polygon
-        /// forms.
+        /// Gets or sets a value indicating whether or not to use a gradient
+        /// when randomly calculating polygon forms.
         /// </summary>
         [Serialize("UseGradient")]
         public bool UseGradient
         {
-            get { return _useGradient; }
-            set { _useGradient = value; }
+            get
+            {
+                return _useGradient;
+            }
+
+            set
+            {
+                _useGradient = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether the size range should be used instead of
+        /// Gets or sets a value indicating whether the size range should be used instead of
         /// the size specified by the template.
         /// </summary>
         [Serialize("UseSizeRange")]
         public bool UseSizeRange
         {
-            get { return _useSizeRange; }
-            set { _useSizeRange = value; }
+            get
+            {
+                return _useSizeRange;
+            }
+
+            set
+            {
+                _useSizeRange = value;
+            }
         }
 
         #endregion

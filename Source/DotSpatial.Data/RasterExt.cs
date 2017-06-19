@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/12/2009 5:30:52 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -29,8 +19,10 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// determine if the shape is partially inside grid extents
+        /// Determines if the shape is partially inside grid extents.
         /// </summary>
+        /// <param name="raster">Raster that should be checked.</param>
+        /// <param name="shape">Shape that should be checked.</param>
         /// <returns>false, if the shape is completely outside grid extents
         /// true, if it's at least partially inside </returns>
         public static bool ContainsFeature(this IRaster raster, IFeature shape)
@@ -44,6 +36,8 @@ namespace DotSpatial.Data
         /// Gets a boolean that is true if the Window extents contain are all the information for the raster.
         /// In otherwords, StartRow = StartColumn = 0, EndRow = NumRowsInFile - 1, and EndColumn = NumColumnsInFile - 1
         /// </summary>
+        /// <param name="raster">Raster that should be checked.</param>
+        /// <returns>True, if the whole raster is inside the window.</returns>
         public static bool IsFullyWindowed(this IRaster raster)
         {
             if (raster.StartRow != 0) return false;
@@ -60,7 +54,7 @@ namespace DotSpatial.Data
         /// This doesn't change the data, but instead performs a translation where the upper left coordinate
         /// is specified in world coordinates.
         /// </summary>
-        /// <param name="raster">Moves this raster so that the upper left coordinate will match the specified position.  The skew and cellsize will remain unaltered</param>
+        /// <param name="raster">Moves this raster so that the upper left coordinate will match the specified position. The skew and cellsize will remain unaltered</param>
         /// <param name="position">The location to move the upper left corner of the raster to in world coordinates.</param>
         public static void MoveTo(this IRaster raster, Coordinate position)
         {
@@ -77,9 +71,9 @@ namespace DotSpatial.Data
         /// <param name="degrees">The angle in degrees to rotate the image counter clockwise.</param>
         public static void Rotate(this IRaster raster, float degrees)
         {
-            Matrix m = raster.Bounds.Get_AffineMatrix();
+            Matrix m = raster.Bounds.GetAffineMatrix();
             m.Rotate(degrees);
-            raster.Bounds.Set_AffineMatrix(m);
+            raster.Bounds.SetAffineMatrix(m);
         }
 
         /// <summary>
@@ -91,13 +85,13 @@ namespace DotSpatial.Data
         /// <param name="center">The point that marks the center of the desired rotation in geographic coordiantes.</param>
         public static void RotateAt(this IRaster raster, float degrees, Coordinate center)
         {
-            Matrix m = raster.Bounds.Get_AffineMatrix();
+            Matrix m = raster.Bounds.GetAffineMatrix();
             m.RotateAt(degrees, new PointF(Convert.ToSingle(center.X), Convert.ToSingle(center.Y)));
-            raster.Bounds.Set_AffineMatrix(m);
+            raster.Bounds.SetAffineMatrix(m);
         }
 
         /// <summary>
-        /// This method uses a matrix transform to adjust the scale.  The precision of using
+        /// This method uses a matrix transform to adjust the scale. The precision of using
         /// a Drawing2D transform is float precision, so some accuracy may be lost.
         /// </summary>
         /// <param name="raster">The raster to apply the scale transform to</param>
@@ -105,13 +99,13 @@ namespace DotSpatial.Data
         /// <param name="scaleY">The multiplier to adjust the geographic extents of the raster in the Y direction</param>
         public static void Scale(this IRaster raster, float scaleX, float scaleY)
         {
-            Matrix m = raster.Bounds.Get_AffineMatrix();
+            Matrix m = raster.Bounds.GetAffineMatrix();
             m.Scale(scaleX, scaleY);
-            raster.Bounds.Set_AffineMatrix(m);
+            raster.Bounds.SetAffineMatrix(m);
         }
 
         /// <summary>
-        /// This method uses a matrix transform to adjust the shear.  The precision of using
+        /// This method uses a matrix transform to adjust the shear. The precision of using
         /// a Drawing2D transform is float precision, so some accuracy may be lost.
         /// </summary>
         /// <param name="raster">The raster to apply the transform to</param>
@@ -119,9 +113,9 @@ namespace DotSpatial.Data
         /// <param name="shearY">The floating ponit vertical shear factor</param>
         public static void Shear(this IRaster raster, float shearX, float shearY)
         {
-            Matrix m = raster.Bounds.Get_AffineMatrix();
+            Matrix m = raster.Bounds.GetAffineMatrix();
             m.Shear(shearX, shearY);
-            raster.Bounds.Set_AffineMatrix(m);
+            raster.Bounds.SetAffineMatrix(m);
         }
 
         /// <summary>
@@ -141,7 +135,7 @@ namespace DotSpatial.Data
         #region Nearest Values
 
         /// <summary>
-        /// Retrieves the data from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the data from the cell that is closest to the specified coordinates. This will
         /// return a No-Data value if the specified coordintes are outside of the grid.
         /// </summary>
         /// <param name="raster">The raster to get the value from</param>
@@ -156,7 +150,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Retrieves the data from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the data from the cell that is closest to the specified coordinates. This will
         /// return a No-Data value if the specified coordintes are outside of the grid.
         /// </summary>
         /// <param name="raster">The raster to get the value from</param>
@@ -172,7 +166,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Retrieves the location from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the location from the cell that is closest to the specified coordinates. This will
         /// do nothing if the specified coordinates are outside of the raster.
         /// </summary>
         /// <param name="raster">The IRaster to set the value for</param>
@@ -188,7 +182,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Retrieves the location from the cell that is closest to the specified coordinates.  This will
+        /// Retrieves the location from the cell that is closest to the specified coordinates. This will
         /// do nothing if the specified coordinates are outside of the raster.
         /// </summary>
         /// <param name="raster">The IRaster to set the value for</param>
@@ -214,9 +208,7 @@ namespace DotSpatial.Data
         /// <returns>The geographic location of the center of the specified cell</returns>
         public static Coordinate CellToProj(this IRaster raster, RcIndex position)
         {
-            if (raster == null) return null;
-            if (raster.Bounds == null) return null;
-            return raster.Bounds.CellCenter_ToProj(position.Row, position.Column);
+            return raster?.Bounds?.CellCenterToProj(position.Row, position.Column);
         }
 
         /// <summary>
@@ -228,9 +220,7 @@ namespace DotSpatial.Data
         /// <returns>The geographic location of the center of the specified cell</returns>
         public static Coordinate CellToProj(this IRaster raster, int row, int col)
         {
-            if (raster == null) return null;
-            if (raster.Bounds == null) return null;
-            return raster.Bounds.CellCenter_ToProj(row, col);
+            return raster?.Bounds?.CellCenterToProj(row, col);
         }
 
         /// <summary>
@@ -241,8 +231,7 @@ namespace DotSpatial.Data
         /// <returns>The RcIndex that describes the zero based integer row and column indices</returns>
         public static RcIndex ProjToCell(this IRaster raster, Coordinate location)
         {
-            if (raster == null) return RcIndex.Empty;
-            if (raster.Bounds == null) return RcIndex.Empty;
+            if (raster?.Bounds == null) return RcIndex.Empty;
             return raster.Bounds.ProjToCell(location);
         }
 
@@ -255,8 +244,7 @@ namespace DotSpatial.Data
         /// <returns>The RcIndex that describes the zero based integer row and column indices</returns>
         public static RcIndex ProjToCell(this IRaster raster, double x, double y)
         {
-            if (raster == null) return RcIndex.Empty;
-            if (raster.Bounds == null) return RcIndex.Empty;
+            if (raster?.Bounds == null) return RcIndex.Empty;
             return raster.Bounds.ProjToCell(new Coordinate(x, y));
         }
 

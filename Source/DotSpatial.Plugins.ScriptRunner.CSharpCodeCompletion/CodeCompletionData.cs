@@ -24,99 +24,75 @@ namespace CSharpEditor
     /// </summary>
     internal class CodeCompletionData : DefaultCompletionData, ICompletionData
     {
-        static VBNetAmbience vbAmbience = new VBNetAmbience();
-        static CSharpAmbience csharpAmbience = new CSharpAmbience();
-        IClass c;
-        string description;
-        IMember member;
-        int overloads;
+        #region Fields
 
+        private static readonly CSharpAmbience CsharpAmbience = new CSharpAmbience();
+        private static readonly VBNetAmbience VbAmbience = new VBNetAmbience();
+        private readonly IClass _c;
+        private readonly IMember _member;
+        private string _description;
+        private int _overloads;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeCompletionData"/> class.
+        /// </summary>
+        /// <param name="member">Member used for initialization.</param>
         public CodeCompletionData(IMember member)
             : base(member.Name, null, GetMemberImageIndex(member))
         {
-            this.member = member;
+            _member = member;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeCompletionData"/> class.
+        /// </summary>
+        /// <param name="c">Class used for initialization.</param>
         public CodeCompletionData(IClass c)
             : base(c.Name, null, GetClassImageIndex(c))
         {
-            this.c = c;
+            _c = c;
         }
 
-        #region ICompletionData Members
+        #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets a description.
+        /// </summary>
         string ICompletionData.Description
         {
             get
             {
-                if (description == null)
+                if (_description == null)
                 {
-                    IEntity entity = (IEntity)member ?? c;
-                    description = GetText(entity);
-                    if (overloads > 1)
+                    IEntity entity = (IEntity)_member ?? _c;
+                    _description = GetText(entity);
+                    if (_overloads > 1)
                     {
-                        description += " (+" + overloads + " overloads)";
+                        _description += " (+" + _overloads + " overloads)";
                     }
-                    description += Environment.NewLine + XmlDocumentationToText(entity.Documentation);
+
+                    _description += Environment.NewLine + XmlDocumentationToText(entity.Documentation);
                 }
-                return description;
+
+                return _description;
             }
         }
 
         #endregion
 
-        public void AddOverload()
-        {
-            overloads++;
-        }
-
-        private static int GetMemberImageIndex(IMember member)
-        {
-            // Missing: different icons for private/public member
-            if (member is IMethod)
-                return 1;
-            if (member is IProperty)
-                return 2;
-            if (member is IField)
-                return 3;
-            if (member is IEvent)
-                return 6;
-            return 3;
-        }
-
-        private static int GetClassImageIndex(IClass c)
-        {
-            switch (c.ClassType)
-            {
-                case ClassType.Enum:
-                    return 4;
-                default:
-                    return 0;
-            }
-        }
+        #region Methods
 
         /// <summary>
-        /// Converts a member to text.
-        /// Returns the declaration of the member as C# or VB code, e.g.
-        /// "public void MemberName(string parameter)"
+        /// Converts the given XML documentation to text.
         /// </summary>
-        private static string GetText(IEntity entity)
-        {
-            IAmbience ambience = MainForm.IsVisualBasic ? (IAmbience)vbAmbience : csharpAmbience;
-            if (entity is IMethod)
-                return ambience.Convert(entity as IMethod);
-            if (entity is IProperty)
-                return ambience.Convert(entity as IProperty);
-            if (entity is IEvent)
-                return ambience.Convert(entity as IEvent);
-            if (entity is IField)
-                return ambience.Convert(entity as IField);
-            if (entity is IClass)
-                return ambience.Convert(entity as IClass);
-            // unknown entity:
-            return entity.ToString();
-        }
-
+        /// <param name="xmlDoc">XML documentation that gets converted.</param>
+        /// <returns>The result of the conversion.</returns>
         public static string XmlDocumentationToText(string xmlDoc)
         {
             Debug.WriteLine(xmlDoc);
@@ -159,21 +135,17 @@ namespace CSharpEditor
                                         else
                                         {
                                             reader.MoveToContent();
-                                            if (reader.HasValue)
-                                            {
-                                                b.Append(reader.Value);
-                                            }
-                                            else
-                                            {
-                                                b.Append(reader.GetAttribute("cref"));
-                                            }
+                                            b.Append(reader.HasValue ? reader.Value : reader.GetAttribute("cref"));
                                         }
+
                                         break;
                                 }
+
                                 break;
                         }
                     }
                 }
+
                 return b.ToString();
             }
             catch (XmlException)
@@ -181,5 +153,65 @@ namespace CSharpEditor
                 return xmlDoc;
             }
         }
+
+        /// <summary>
+        /// Adds an overload.
+        /// </summary>
+        public void AddOverload()
+        {
+            _overloads++;
+        }
+
+        private static int GetClassImageIndex(IClass c)
+        {
+            switch (c.ClassType)
+            {
+                case ClassType.Enum: return 4;
+                default: return 0;
+            }
+        }
+
+        private static int GetMemberImageIndex(IMember member)
+        {
+            // Missing: different icons for private/public member
+            if (member is IMethod) return 1;
+            if (member is IProperty) return 2;
+            if (member is IField) return 3;
+            if (member is IEvent) return 6;
+
+            return 3;
+        }
+
+        /// <summary>
+        /// Converts a member to text.
+        /// Returns the declaration of the member as C# or VB code, e.g.
+        /// "public void MemberName(string parameter)"
+        /// </summary>
+        /// <param name="entity">Entity that gets converted.</param>
+        /// <returns>The result of the conversion</returns>
+        private static string GetText(IEntity entity)
+        {
+            IAmbience ambience = MainForm.IsVisualBasic ? (IAmbience)VbAmbience : CsharpAmbience;
+
+            var method = entity as IMethod;
+            if (method != null) return ambience.Convert(method);
+
+            var property = entity as IProperty;
+            if (property != null) return ambience.Convert(property);
+
+            var entityAsEvent = entity as IEvent;
+            if (entityAsEvent != null) return ambience.Convert(entityAsEvent);
+
+            var field = entity as IField;
+            if (field != null) return ambience.Convert(field);
+
+            var entityAsClass = entity as IClass;
+            if (entityAsClass != null) return ambience.Convert(entityAsClass);
+
+            // unknown entity:
+            return entity.ToString();
+        }
+
+        #endregion
     }
 }

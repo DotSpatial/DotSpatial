@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,13 +10,31 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
-using Point = System.Drawing.Point;
 using PointShape = DotSpatial.Symbology.PointShape;
 
 namespace DotSpatial.Plugins.LiDAR
 {
-    public class LiDARLayer : Layer, IMapLayer
+    /// <summary>
+    /// Layer used for LiDAR data.
+    /// </summary>
+    public class LiDarLayer : Layer, IMapLayer
     {
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiDarLayer"/> class.
+        /// </summary>
+        public LiDarLayer()
+        {
+            Configure();
+
+            // assign the data set
+            // DataSet = new LiDARDataSet();
+            DataSet = new LiDarDataSet("C:\\Tile_1.las");
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -23,63 +44,85 @@ namespace DotSpatial.Plugins.LiDAR
 
         #endregion
 
-        #region Private Variables
+        #region Properties
 
-        // private bool _isPreventingOverlap;
-        // private KDTree _regularTree;
+        /// <summary>
+        /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image BackBuffer { get; set; }
 
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private Envelope _bufferExtent; // the geographic extent of the current buffer.
-        private Rectangle _bufferRectangle;
-        private Image _stencil; // draw features to the stencil
+        /// <summary>
+        /// Gets or sets the current buffer.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image Buffer { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Envelope BufferEnvelope { get; set; }
 
-        #region Constructors
+        /// <summary>
+        /// Gets or sets the rectangle in pixels to use as the back buffer.
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [ShallowCopy]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Rectangle BufferRectangle { get; set; }
 
-        public LiDARLayer()
-        {
-            Configure();
-            //assign the data set
-            //DataSet = new LiDARDataSet();
-            DataSet = new LiDARDataSet("C:\\Tile_1.las");
-        }
-
-        //public new LiDARDataSet MyDataSet
-        //{
-        //    get;
-        //    set;
-        //}
-
-        public new LiDARDataSet DataSet
-        {
-            get;
-            set;
-        }
-
+        /// <summary>
+        /// Gets or sets the chunk size.
+        /// </summary>
         public int ChunkSize { get; set; }
 
-        public bool EditMode
-        {
-            get { return false; }
-        }
+        /// <summary>
+        /// Gets or sets  the dataset.
+        /// </summary>
+        public new LiDarDataSet DataSet { get; set; }
 
-        public override Extent Extent
-        {
-            get
-            {
-                return DataSet.Extent;
-            }
-        }
+        /// <summary>
+        /// Gets a value indicating whether the layer is in edit mode.
+        /// </summary>
+        public bool EditMode { get; } = false;
 
-        private void Configure()
-        {
-            ChunkSize = 50000;
-        }
+        /// <inheritdoc />
+        public override Extent Extent => DataSet.Extent;
 
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Call StartDrawing before using this.
+        /// </summary>
+        /// <param name="rectangles">The rectangular region in pixels to clear.</param>
+        /// <param name= "color">The color to use when clearing.  Specifying transparent
+        /// will replace content with transparent pixels.</param>
+        public void Clear(List<Rectangle> rectangles, Color color)
+        {
+            if (BackBuffer == null) return;
+            Graphics g = Graphics.FromImage(BackBuffer);
+            foreach (Rectangle r in rectangles)
+            {
+                if (r.IsEmpty == false)
+                {
+                    g.Clip = new Region(r);
+                    g.Clear(color);
+                }
+            }
+
+            g.Dispose();
+        }
 
         /// <summary>
         /// This will draw any features that intersect this region.  To specify the features
@@ -93,7 +136,7 @@ namespace DotSpatial.Plugins.LiDAR
         {
             foreach (Extent boundingBox in regions)
             {
-                Graphics g = args.Device ?? Graphics.FromImage(_backBuffer);
+                Graphics g = args.Device ?? Graphics.FromImage(BackBuffer);
                 Matrix origTransform = g.Transform;
                 FeatureType featureType = FeatureType.Point;
 
@@ -102,15 +145,15 @@ namespace DotSpatial.Plugins.LiDAR
                 double dx = args.Dx;
                 double dy = args.Dy;
 
-                //reads the point array from the data source
-                //DataSet implements or uses IShapeSource to read the points that are within the bounding box
+                // reads the point array from the data source
+                // DataSet implements or uses IShapeSource to read the points that are within the bounding box
                 double[] vertices = DataSet.GetPointArray(boundingBox);
 
-                //setup the point symbol
+                // setup the point symbol
                 Color randomColor = CreateRandomColor();
                 Bitmap normalSymbol = CreateDefaultSymbol(randomColor, 4);
 
-                //run the drawing operation
+                // run the drawing operation
                 int numPoints = vertices.Length / 2;
 
                 for (int index = 0; index < numPoints; index++)
@@ -119,9 +162,7 @@ namespace DotSpatial.Plugins.LiDAR
 
                     if (featureType == FeatureType.Point)
                     {
-                        Point pt = new Point();
-                        pt.X = Convert.ToInt32((vertices[index * 2] - minX) * dx);
-                        pt.Y = Convert.ToInt32((maxY - (vertices[index * 2 + 1])) * dy);
+                        Point pt = new Point(Convert.ToInt32((vertices[index * 2] - minX) * dx), Convert.ToInt32((maxY - vertices[(index * 2) + 1]) * dy));
 
                         Matrix shift = origTransform.Clone();
                         shift.Translate(pt.X, pt.Y);
@@ -137,35 +178,14 @@ namespace DotSpatial.Plugins.LiDAR
         }
 
         /// <summary>
-        /// Call StartDrawing before using this.
-        /// </summary>
-        /// <param name="rectangles">The rectangular region in pixels to clear.</param>
-        /// <param name= "color">The color to use when clearing.  Specifying transparent
-        /// will replace content with transparent pixels.</param>
-        public void Clear(List<Rectangle> rectangles, Color color)
-        {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
-            foreach (Rectangle r in rectangles)
-            {
-                if (r.IsEmpty == false)
-                {
-                    g.Clip = new Region(r);
-                    g.Clear(color);
-                }
-            }
-            g.Dispose();
-        }
-
-        /// <summary>
         /// Indicates that the drawing process has been finalized and swaps the back buffer
         /// to the front buffer.
         /// </summary>
         public void FinishDrawing()
         {
             OnFinishDrawing();
-            if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
-            _stencil = _backBuffer;
+            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
+            Buffer = BackBuffer;
         }
 
         /// <summary>
@@ -178,25 +198,19 @@ namespace DotSpatial.Plugins.LiDAR
         public void StartDrawing(bool preserve)
         {
             Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
-            if (Buffer != null)
+            if (Buffer?.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
             {
-                if (Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
+                if (preserve)
                 {
-                    if (preserve)
-                    {
-                        Graphics g = Graphics.FromImage(backBuffer);
-                        g.DrawImageUnscaled(Buffer, 0, 0);
-                    }
+                    Graphics g = Graphics.FromImage(backBuffer);
+                    g.DrawImageUnscaled(Buffer, 0, 0);
                 }
             }
+
             if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
             BackBuffer = backBuffer;
             OnStartDrawing();
         }
-
-        #endregion
-
-        #region Protected Methods
 
         /// <summary>
         /// Fires the OnBufferChanged event
@@ -226,18 +240,7 @@ namespace DotSpatial.Plugins.LiDAR
         {
         }
 
-        #endregion
-
-        #region Private  Methods
-
-        private Color CreateRandomColor()
-        {
-            Random rnd = new Random();
-            Color randomColor = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
-            return randomColor;
-        }
-
-        private Bitmap CreateDefaultSymbol(Color color, int symbolSize)
+        private static Bitmap CreateDefaultSymbol(Color color, int symbolSize)
         {
             double scaleSize = 1;
             Size2D size = new Size2D(symbolSize, symbolSize);
@@ -251,58 +254,22 @@ namespace DotSpatial.Plugins.LiDAR
             bg.SmoothingMode = category.Symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
             Matrix trans = bg.Transform;
 
-            trans.Translate(((float)(size.Width * scaleSize) / 2 - 1), (float)(size.Height * scaleSize) / 2 - 1);
+            trans.Translate(((float)(size.Width * scaleSize) / 2) - 1, ((float)(size.Height * scaleSize) / 2) - 1);
             bg.Transform = trans;
             category.Symbolizer.Draw(bg, 1);
             return normalSymbol;
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
-        /// </summary>
-        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer
+        private static Color CreateRandomColor()
         {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
+            Random rnd = new Random();
+            Color randomColor = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+            return randomColor;
         }
 
-        /// <summary>
-        /// Gets the current buffer.
-        /// </summary>
-        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer
+        private void Configure()
         {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the geographic region represented by the buffer
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Envelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the rectangle in pixels to use as the back buffer.
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
+            ChunkSize = 50000;
         }
 
         #endregion

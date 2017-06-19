@@ -190,7 +190,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         private const double KPS_PER_MPS = 1000;
 
-        //private const int DefaultPrecisionDigits = 10;
+        // private const int DefaultPrecisionDigits = 10;
 
         #endregion Constants
 
@@ -1471,7 +1471,7 @@ namespace DotSpatial.Positioning
                 throw new ArgumentException(Resources.Speed_InvalidFormat, "format", ex);
 #endif
             }
-            //catch
+            // catch
             //{
             //    throw new ArgumentException(Properties.Resources.Speed_InvalidFormat), "value");
             //}

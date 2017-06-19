@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/23/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -26,18 +12,13 @@ namespace DotSpatial.Positioning.Design
     /// <summary>
     /// Provides functionality to convert string values to and from SignalToNoiseRatio objects at design time.
     /// </summary>
+    // The Original Code is from http://gps3.codeplex.com/ version 3.0
     public sealed class SignalToNoiseRatioConverter : PositioningFormsNumericObjectConverter
     {
-        /// <inheritdocs/>
-        protected override string HandledTypeName
-        {
-            get
-            {
-                return "GeoFramework.Gps.SignalToNoiseRatio";
-            }
-        }
+        /// <inheritdoc />
+        protected override string HandledTypeName => "GeoFramework.Gps.SignalToNoiseRatio";
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             // What is the destination type?
@@ -49,8 +30,8 @@ namespace DotSpatial.Positioning.Design
                 Type signalToNoiseRatioType = value.GetType();
 
                 // Build the parameters for the type converter
-                object[] constructorParameters = new[] { signalToNoiseRatioType.GetProperty("Value").GetValue(value, null) };
-                Type[] constructorTypes = new[] { typeof(double) };
+                object[] constructorParameters = { signalToNoiseRatioType.GetProperty("Value").GetValue(value, null) };
+                Type[] constructorTypes = { typeof(double) };
 
                 // Now activate the constructor
                 ConstructorInfo constructor = signalToNoiseRatioType.GetConstructor(constructorTypes);
@@ -61,23 +42,19 @@ namespace DotSpatial.Positioning.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            return new StandardValuesCollection(new[] {
-                    "FullSignal",
-                    "HalfSignal",
-                    "NoSignal"
-                     });
+            return new StandardValuesCollection(new[] { "FullSignal", "HalfSignal", "NoSignal" });
         }
 
-        /// <inheritdocs/>
+        /// <inheritdoc />
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return false;

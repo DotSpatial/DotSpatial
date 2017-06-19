@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 7/1/2008 12:50:00 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -17,11 +7,11 @@ using System.Drawing;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// DrawArgs contains the parameters necessary for 2D drawing
+    /// DrawArgs contains the parameters necessary for 2D drawing.
     /// </summary>
     public class DrawArgs : EventArgs
     {
-        #region Private Variables
+        #region Fields
 
         private DrawWindow _drawWindow;
         private Graphics _graphics;
@@ -31,7 +21,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawArgs
+        /// Initializes a new instance of the <see cref="DrawArgs"/> class.
         /// </summary>
         /// <param name="inGraphics">A System.Windows.Drawing.Graphics object</param>
         /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
@@ -41,7 +31,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of DrawArgs
+        /// Initializes a new instance of the <see cref="DrawArgs"/> class.
         /// </summary>
         /// <param name="inGraphics">A System.Windows.Drawing.Graphics object</param>
         /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
@@ -52,7 +42,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instance of DrawArgs
+        /// Initializes a new instance of the <see cref="DrawArgs"/> class.
         /// </summary>
         /// <param name="inGraphics">A System.Windows.Drawing.Graphics object</param>
         /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
@@ -71,30 +61,44 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the Graphics device to draw to
-        /// </summary>
-        public virtual Graphics Graphics
-        {
-            get { return _graphics; }
-            protected set { _graphics = value; }
-        }
-
-        /// <summary>
-        /// Gets the geographic extent for the drawing operation
+        /// Gets or sets the geographic extent for the drawing operation.
         /// </summary>
         public virtual DrawWindow DrawWindow
         {
-            get { return _drawWindow; }
-            protected set { _drawWindow = value; }
+            get
+            {
+                return _drawWindow;
+            }
+
+            protected set
+            {
+                _drawWindow = value;
+            }
         }
 
         /// <summary>
-        /// Gets the part index being drawn.
+        /// Gets or sets the Graphics device to draw to.
+        /// </summary>
+        public virtual Graphics Graphics
+        {
+            get
+            {
+                return _graphics;
+            }
+
+            protected set
+            {
+                _graphics = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the part index being drawn.
         /// </summary>
         public int Part { get; protected set; }
 
         /// <summary>
-        /// Gets the integer stage index.  As an example, if all the borders are drawn first, and then all the fillings are drawn,
+        /// Gets or sets the integer stage index. As an example, if all the borders are drawn first, and then all the fillings are drawn,
         /// but each stage has several parts, the stage gives a way to subdivide a larger object into several drawing passes.
         /// </summary>
         public int Stage { get; protected set; }

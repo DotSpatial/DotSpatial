@@ -1,16 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in February, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -28,13 +17,15 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a MultiPointShapefile for in-ram handling only.
+        /// Initializes a new instance of the <see cref="MultiPointShapefile"/> class for in-ram handling only.
         /// </summary>
         public MultiPointShapefile()
-            : base(FeatureType.MultiPoint, ShapeType.MultiPoint) { }
+            : base(FeatureType.MultiPoint, ShapeType.MultiPoint)
+        {
+        }
 
         /// <summary>
-        /// Creates a new instance of a MultiPointShapefile that is loaded from the supplied fileName.
+        /// Initializes a new instance of the <see cref="MultiPointShapefile"/> class that is loaded from the supplied fileName.
         /// </summary>
         /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
         public MultiPointShapefile(string fileName)
@@ -46,6 +37,92 @@ namespace DotSpatial.Data
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Gets the feature at the specified index offset
+        /// </summary>
+        /// <param name="index">the integer index</param>
+        /// <returns>An IFeature created from the shape at the specified offset</returns>
+        public override IFeature GetFeature(int index)
+        {
+            IFeature f;
+            if (!IndexMode)
+            {
+                f = Features[index];
+            }
+            else
+            {
+                f = GetMultiPoint(index);
+                if (f != null)
+                {
+                    f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+                }
+            }
+
+            return f;
+        }
+
+        /// <summary>
+        /// Opens a shapefile
+        /// </summary>
+        /// <param name="fileName">The string fileName of the point shapefile to load</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        public void Open(string fileName, IProgressHandler progressHandler)
+        {
+            IndexMode = true;
+            Filename = fileName;
+            FeatureType = FeatureType.MultiPoint;
+            Header = new ShapefileHeader(Filename);
+
+            switch (Header.ShapeType)
+            {
+                case ShapeType.MultiPointM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.MultiPointZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
+            }
+
+            Extent = Header.ToExtent();
+            Name = Path.GetFileNameWithoutExtension(fileName);
+            Attributes.Open(Filename);
+            FillPoints(Filename, progressHandler);
+            ReadProjection();
+        }
+
+        /// <inheritdoc />
+        protected override StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
+        {
+            if (indexed) return LineShapefile.PopulateStreamsIndexed(shpStream, shxStream, this, ShapeType.MultiPointZ, ShapeType.MultiPointM, false);
+
+            return LineShapefile.PopulateStreamsNotIndexed(shpStream, shxStream, this, AddPoints, ShapeType.MultiPointZ, ShapeType.MultiPointM, false);
+        }
+
+        /// <inheritdoc />
+        protected override void SetHeaderShapeType()
+        {
+            if (CoordinateType == CoordinateType.Regular) Header.ShapeType = ShapeType.MultiPoint;
+            else if (CoordinateType == CoordinateType.M) Header.ShapeType = ShapeType.MultiPointM;
+            else if (CoordinateType == CoordinateType.Z) Header.ShapeType = ShapeType.MultiPointZ;
+        }
+
+        /// <summary>
+        /// Adds the parts and points of the given feature to the given parts and points lists.
+        /// </summary>
+        /// <param name="parts">List of parts, where the features parts get added.</param>
+        /// <param name="points">List of points, where the features points get added.</param>
+        /// <param name="f">Feature, whose parts and points get added to the lists.</param>
+        private static void AddPoints(List<int> parts, List<Coordinate> points, IFeature f)
+        {
+            for (int i = 0; i < f.Geometry.NumGeometries; i++)
+            {
+                points.AddRange(f.Geometry.GetGeometryN(i).Coordinates);
+            }
+        }
 
         // X Y MultiPoints
         // ---------------------------------------------------------
@@ -104,29 +181,8 @@ namespace DotSpatial.Data
         /// <param name="progressHandler">Progress handler</param>
         private void FillPoints(string fileName, IProgressHandler progressHandler)
         {
-            // Check to ensure the fileName is not null
-            if (fileName == null)
-            {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", "fileName"));
-            }
-
-            if (!File.Exists(fileName))
-            {
-                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
-            }
-
-            // Get the basic header information.
-            // Check to ensure that the fileName is the correct shape type
-            if (Header.ShapeType != ShapeType.MultiPoint && Header.ShapeType != ShapeType.MultiPointM && Header.ShapeType != ShapeType.MultiPointZ)
-            {
-                throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
-            }
-
-            if (new FileInfo(fileName).Length == 100)
-            {
-                // the file is empty so we are done reading
-                return;
-            }
+            // Check whether file is empty or not all parameters are set correctly.
+            if (!CanBeRead(fileName, this, ShapeType.MultiPoint, ShapeType.MultiPointM, ShapeType.MultiPointZ)) return;
 
             // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
             List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
@@ -163,7 +219,7 @@ namespace DotSpatial.Data
                         StartIndex = totalPointsCount,
                         NumParts = 1
                     };
-                    Debug.Assert(shape.RecordNumber == shp + 1);
+                    Debug.Assert(shape.RecordNumber == shp + 1, "shape.RecordNumber == shp + 1");
 
                     if (shape.ShapeType != ShapeType.NullShape)
                     {
@@ -193,10 +249,8 @@ namespace DotSpatial.Data
 
                 int mArrayInd = 0, zArrayInd = 0;
                 double[] mArray = null, zArray = null;
-                if (isM)
-                    mArray = new double[totalPointsCount];
-                if (isZ)
-                    zArray = new double[totalPointsCount];
+                if (isM) mArray = new double[totalPointsCount];
+                if (isZ) zArray = new double[totalPointsCount];
 
                 int partsOffset = 0;
                 for (int shp = 0; shp < numShapes; shp++)
@@ -210,7 +264,7 @@ namespace DotSpatial.Data
                     reader.Seek(3 * 4 + 32 + 4, SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumPoints)
 
                     // Read points
-                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); //Numpoints * Point (X(8) + Y(8))
+                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); // Numpoints * Point (X(8) + Y(8))
                     Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
                     vertInd += 8 * 2 * shape.NumPoints;
 
@@ -224,6 +278,7 @@ namespace DotSpatial.Data
                         {
                             endIndex = parts[partsOffset + p + 1] + shape.StartIndex;
                         }
+
                         int count = endIndex - startIndex;
                         var part = new PartRange(vert, shape.StartIndex, parts[partsOffset + p], FeatureType.MultiPoint)
                         {
@@ -231,6 +286,7 @@ namespace DotSpatial.Data
                         };
                         shape.Parts.Add(part);
                     }
+
                     partsOffset += shape.NumParts;
 
                     // Fill M and Z arrays
@@ -247,6 +303,7 @@ namespace DotSpatial.Data
                                 Buffer.BlockCopy(mBytes, 0, mArray, mArrayInd, mBytes.Length);
                                 mArrayInd += 8 * shape.NumPoints;
                             }
+
                             break;
                         case ShapeType.MultiPointZ:
                             var zExt = (IExtentZ)shape.Extent;
@@ -277,95 +334,6 @@ namespace DotSpatial.Data
             }
 
             progressMeter.Reset();
-        }
-
-        /// <summary>
-        /// Gets the feature at the specified index offset
-        /// </summary>
-        /// <param name="index">the integer index</param>
-        /// <returns>An IFeature created from the shape at the specified offset</returns>
-        public override IFeature GetFeature(int index)
-        {
-            IFeature f;
-            if (!IndexMode)
-            {
-                f = Features[index];
-            }
-            else
-            {
-                f = GetMultiPoint(index);
-                if (f != null)
-                {
-                    f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
-                }
-            }
-            return f;
-        }
-
-        /// <summary>
-        /// Opens a shapefile
-        /// </summary>
-        /// <param name="fileName">The string fileName of the point shapefile to load</param>
-        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
-        public void Open(string fileName, IProgressHandler progressHandler)
-        {
-            IndexMode = true;
-            Filename = fileName;
-            FeatureType = FeatureType.MultiPoint;
-            Header = new ShapefileHeader(Filename);
-
-            switch (Header.ShapeType)
-            {
-                case ShapeType.MultiPointM:
-                    CoordinateType = CoordinateType.M;
-                    break;
-                case ShapeType.MultiPointZ:
-                    CoordinateType = CoordinateType.Z;
-                    break;
-                default:
-                    CoordinateType = CoordinateType.Regular;
-                    break;
-            }
-
-            Extent = Header.ToExtent();
-            Name = Path.GetFileNameWithoutExtension(fileName);
-            Attributes.Open(Filename);
-            FillPoints(Filename, progressHandler);
-            ReadProjection();
-        }
-
-        /// <inheritdoc />
-        protected override void SetHeaderShapeType()
-        {
-            if (CoordinateType == CoordinateType.Regular)
-                Header.ShapeType = ShapeType.MultiPoint;
-            else if (CoordinateType == CoordinateType.M)
-                Header.ShapeType = ShapeType.MultiPointM;
-            else if (CoordinateType == CoordinateType.Z)
-                Header.ShapeType = ShapeType.MultiPointZ;
-        }
-
-        /// <summary>
-        /// Adds the parts and points of the given feature to the given parts and points lists.
-        /// </summary>
-        /// <param name="parts">List of parts, where the features parts get added.</param>
-        /// <param name="points">List of points, where the features points get added.</param>
-        /// <param name="f">Feature, whose parts and points get added to the lists.</param>
-        private static void AddPoints(List<int> parts, List<Coordinate> points, IFeature f)
-        {
-            for (int i = 0; i < f.Geometry.NumGeometries; i++)
-            {
-                points.AddRange(f.Geometry.GetGeometryN(i).Coordinates);
-            }
-        }
-
-        /// <inheritdoc />
-        protected override StreamLengthPair PopulateShpAndShxStreams(Stream shpStream, Stream shxStream, bool indexed)
-        {
-            if (indexed)
-                return LineShapefile.PopulateStreamsIndexed(shpStream, shxStream, this, ShapeType.MultiPointZ, ShapeType.MultiPointM, false);
-
-            return LineShapefile.PopulateStreamsNotIndexed(shpStream, shxStream, this, AddPoints, ShapeType.MultiPointZ, ShapeType.MultiPointM, false);
         }
 
         #endregion

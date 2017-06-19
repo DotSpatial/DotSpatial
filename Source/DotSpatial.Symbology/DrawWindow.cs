@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 7/4/2008 4:36:35 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -20,11 +10,11 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// A Draw Window is a special type of envelope that supports some basic transformations
+    /// A Draw Window is a special type of envelope that supports some basic transformations.
     /// </summary>
     public class DrawWindow : Envelope
     {
-        #region Private Variables
+        #region Fields
 
         private Envelope _geographicView;
 
@@ -33,7 +23,8 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawWindow, making the assumption that the map is in Geographic coordinates of decimal degrees
+        /// Initializes a new instance of the <see cref="DrawWindow"/> class,
+        /// making the assumption that the map is in Geographic coordinates of decimal degrees.
         /// </summary>
         public DrawWindow()
         {
@@ -41,7 +32,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new draw window with the specified coordinates
+        /// Initializes a new instance of the <see cref="DrawWindow"/> class with the specified coordinates.
         /// </summary>
         /// <param name="x1">The first x-value.</param>
         /// <param name="x2">The second x-value.</param>
@@ -49,18 +40,18 @@ namespace DotSpatial.Symbology
         /// <param name="y2">The second y-value.</param>
         /// <param name="z1">The first z-value.</param>
         /// <param name="z2">The second z-value.</param>
-        public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2) :
-            base(x1, x2, y1, y2)
+        public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2)
+            : base(x1, x2, y1, y2)
         {
-            this.InitZ(z1,z2);
+            this.InitZ(z1, z2);
             _geographicView = new Envelope(x1, x2, y1, y2);
         }
 
         /// <summary>
-        /// Constructs a new DrawWindow based on the specified Envelope.  The envelope becomes
-        /// the GeographicView for this DrawWindow.
+        /// Initializes a new instance of the <see cref="DrawWindow"/> class based on the specified Envelope.
+        /// The envelope becomes the GeographicView for this DrawWindow.
         /// </summary>
-        /// <param name="env"></param>
+        /// <param name="env">Envelope the DrawWindow is based on.</param>
         public DrawWindow(Envelope env)
             : base(env)
         {
@@ -69,34 +60,120 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// Replaces the inherited Envelope copy in order to create a copy of the DrawWindow instead
+        /// Gets or sets the current extent of the map in geographic coordinates.
         /// </summary>
-        /// <returns></returns>
-        public DrawWindow Copy()
+        public virtual Envelope GeographicView
         {
-            
-            Envelope env = base.Clone();
-            DrawWindow dw = new DrawWindow(env) {GeographicView = _geographicView};
-            return dw;
+            get
+            {
+                return _geographicView;
+            }
+
+            set
+            {
+                _geographicView = value;
+            }
         }
 
         /// <summary>
-        /// Replaces the inherited clone in order to make a copy of the DrawWindow
+        /// Gets the MinX value of the GeographicView, in DrawWindow coordinates.
         /// </summary>
-        /// <returns></returns>
+        public RectangleF View => ProjToDrawWindow(_geographicView);
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Replaces the inherited clone in order to make a copy of the DrawWindow.
+        /// </summary>
+        /// <returns>A copy of the DrawWindow.</returns>
         public new object Clone()
         {
             return Copy();
         }
 
         /// <summary>
-        /// Converts two dimensions of the specified coordinate into a two dimensional PointF
+        /// Replaces the inherited Envelope copy in order to create a copy of the DrawWindow instead.
         /// </summary>
-        /// <param name="inX"></param>
-        /// <param name="inY"></param>
+        /// <returns>A copy of the DrawWindow.</returns>
+        public DrawWindow Copy()
+        {
+            Envelope env = base.Clone();
+            return new DrawWindow(env)
+            {
+                GeographicView = _geographicView
+            };
+        }
+
+        /// <summary>
+        /// Converts a PointF from the draw window back into the double precision data coordinate.
+        /// </summary>
+        /// <param name="inPoint">Point to convert.</param>
+        /// <returns>The resulting double precision data coordinate.</returns>
+        public Coordinate DrawWindowToProj(PointF inPoint)
+        {
+            double x = Convert.ToDouble(inPoint);
+            double y = Convert.ToDouble(inPoint);
+            x = (Width * x) + MinX;
+            y = (Height * y) + MinY;
+            return new Coordinate(x, y);
+        }
+
+        /// <summary>
+        /// Converts an Array of PointF values from the draw window back into the double precision data coordinates.
+        /// There will be uncertainty based on how zoomed in you are.
+        /// </summary>
+        /// <param name="inPoints">Points to convert.</param>
+        /// <returns>The resulting list of double precision data coordinates.</returns>
+        public List<Coordinate> DrawWindowToProj(PointF[] inPoints)
+        {
+            List<Coordinate> result = new List<Coordinate>();
+
+            double minX = MinX;
+            double minY = MinY;
+            double w = Width;
+            double h = Height;
+            foreach (PointF point in inPoints)
+            {
+                double x = Convert.ToDouble(point);
+                double y = Convert.ToDouble(point);
+                x = (w * x) + minX;
+                y = (h * y) + minY;
+                result.Add(new Coordinate(x, y));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculates a geographic envelope from the specified window in the DrawWindow coordinates.
+        /// </summary>
+        /// <param name="window">The rectangle to convert.</param>
+        /// <returns>The resulting double precision envelope.</returns>
+        public Envelope DrawWindowToProj(RectangleF window)
+        {
+            PointF lr = new PointF(window.Right, window.Bottom);
+            return new Envelope(DrawWindowToProj(window.Location), DrawWindowToProj(lr));
+        }
+
+        /// <summary>
+        /// This calculates the DrawWindowView from the GeographicView.
+        /// </summary>
+        /// <returns>The draw window view.</returns>
+        public virtual RectangleF GetDrawWindowView()
+        {
+            return ProjToDrawWindow(_geographicView);
+        }
+
+        /// <summary>
+        /// Converts two dimensions of the specified coordinate into a two dimensional PointF.
+        /// </summary>
+        /// <param name="inX">The x value.</param>
+        /// <param name="inY">The y value.</param>
         /// <returns>A PointF</returns>
         public PointF ProjToDrawWindow(double inX, double inY)
         {
@@ -108,7 +185,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Converts two dimensions of the specified coordinate into a two dimensional PointF
+        /// Converts two dimensions of the specified coordinate into a two dimensional PointF.
         /// </summary>
         /// <param name="inCoord">Any valid ICoordinate</param>
         /// <returns>A PointF</returns>
@@ -124,11 +201,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Converts two dimensions of the specified coordinate into a two dimensional PointF.
         /// </summary>
-        /// <param name="inCoords"></param>
-        /// <returns></returns>
+        /// <param name="inCoords">The coordinates to convert.</param>
+        /// <returns>The resulting list of converted points.</returns>
         public PointF[] ProjToDrawWindow(List<Coordinate> inCoords)
         {
             if (inCoords == null || inCoords.Count == 0) return null;
+
             double minX = MinX;
             double minY = MinY;
             double w = Width;
@@ -142,101 +220,20 @@ namespace DotSpatial.Symbology
                 y = y / h;
                 result[i] = new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
             }
+
             return result;
         }
 
         /// <summary>
-        /// Converts a PointF from the draw window back into the double precision data coordinate.
+        /// Calculates a window in the DrawWindow coordinates from the specified geographic envelope.
         /// </summary>
-        /// <param name="inPoint"></param>
-        /// <returns></returns>
-        public Coordinate DrawWindowToProj(PointF inPoint)
-        {
-            double x = Convert.ToDouble(inPoint);
-            double y = Convert.ToDouble(inPoint);
-            x = Width * x + MinX;
-            y = Height * y + MinY;
-            return new Coordinate(x, y);
-        }
-
-        /// <summary>
-        /// Converts an Array of PointF values from the draw window back into the double precision data coordinates.
-        /// There will be uncertainty based on how zoomed in you are.
-        /// </summary>
-        /// <param name="inPoints"></param>
-        /// <returns></returns>
-        public List<Coordinate> DrawWindowToProj(PointF[] inPoints)
-        {
-            List<Coordinate> result = new List<Coordinate>();
-
-            double minX = MinX;
-            double minY = MinY;
-            double w = Width;
-            double h = Height;
-            foreach (PointF point in inPoints)
-            {
-                double x = Convert.ToDouble(point);
-                double y = Convert.ToDouble(point);
-                x = w * x + minX;
-                y = h * y + minY;
-                result.Add(new Coordinate(x, y));
-            }
-            return result;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="env"></param>
-        /// <returns></returns>
+        /// <param name="env">Envelope that gets converted.</param>
+        /// <returns>The resulting window in DrawWindow coordinates.</returns>
         public RectangleF ProjToDrawWindow(Envelope env)
         {
             PointF ul = ProjToDrawWindow(env.MinX, env.MaxY);
             PointF lr = ProjToDrawWindow(env.MaxX, env.MinY);
             return new RectangleF(ul.X, ul.Y, lr.X - ul.X, ul.Y - lr.Y);
-        }
-
-        /// <summary>
-        /// Calculates a geographic envelope from the specified window in the DrawWindow coordinates.
-        /// </summary>
-        /// <param name="window"></param>
-        /// <returns></returns>
-        public Envelope DrawWindowToProj(RectangleF window)
-        {
-            PointF lr = new PointF(window.Right, window.Bottom);
-            return new Envelope(DrawWindowToProj(window.Location), DrawWindowToProj(lr));
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// This is the the current extent of the map in geographic coordinates.
-        /// </summary>
-        public virtual Envelope GeographicView
-        {
-            get { return _geographicView; }
-            set { _geographicView = value; }
-        }
-
-        /// <summary>
-        /// Retrieves the MinX value of the GeographicView, in DrawWindow coordinates
-        /// </summary>
-        public RectangleF View
-        {
-            get
-            {
-                return ProjToDrawWindow(_geographicView);
-            }
-        }
-
-        /// <summary>
-        /// This calculates the DrawWindowView from the GeographicView
-        /// </summary>
-        public virtual RectangleF GetDrawWindowView()
-        {
-            return ProjToDrawWindow(_geographicView);
         }
 
         #endregion

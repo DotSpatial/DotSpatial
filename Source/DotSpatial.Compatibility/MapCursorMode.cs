@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Compatibility.dll
-// Description:  Supports DotSpatial interfaces organized for a MapWindow 4 plugin context.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 1/20/2009 3:55:28 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Compatibility
 {
@@ -37,58 +27,74 @@ namespace DotSpatial.Compatibility
         /// App starting icon
         /// </summary>
         AppStarting,
+
         /// <summary>
         /// typical white arrow with black border
         /// </summary>
         Arrow,
+
         /// <summary>
         /// A right angle cross
         /// </summary>
         Cross,
+
         /// <summary>
         /// Question mark
         /// </summary>
         Help,
+
         /// <summary>
         /// An IBeam like for editing text
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         IBeam,
+
         /// <summary>
         /// An arrow
         /// </summary>
         MapDefault,
+
         /// <summary>
         /// A circle with a diagonal line
         /// </summary>
         No,
+
         /// <summary>
         /// Arrows pointing north, south, east and west
         /// </summary>
         SizeAll,
+
         /// <summary>
         /// A diagonal line with arrows pointing northeast and southwest
         /// </summary>
+        // ReSharper disable InconsistentNaming
         SizeNESW,
+
         /// <summary>
         /// A vertical line with arrows up and down
         /// </summary>
         SizeNS,
+
         /// <summary>
         /// A diagonal line with arrows pointing northwest and southeast
         /// </summary>
         SizeNWSE,
+
         /// <summary>
         /// A horizontal line with arrows pointing west and east
         /// </summary>
-        SizeWE,
+        SizeWE, // ReSharper restore InconsistentNaming
+
         /// <summary>
         /// An up pointed arrow
         /// </summary>
         UpArrow,
+
         /// <summary>
         /// Use a custom icon
         /// </summary>
         UserDefined,
+
         /// <summary>
         /// Windows wait cursor (varies from system to system)
         /// </summary>

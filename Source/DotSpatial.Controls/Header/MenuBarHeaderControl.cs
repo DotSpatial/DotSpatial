@@ -1,8 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MenuBarHeaderControl.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -20,38 +17,43 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class MenuBarHeaderControl : HeaderControl
     {
-        #region Constants and Fields
+        #region Fields
 
-        internal const string DEFAULT_GROUP_NAME = "Default Group";
-        private ToolStripPanel _tsPanel;
+        /// <summary>
+        /// The default group name.
+        /// </summary>
+        internal const string DefaultGroupName = "Default Group";
+        private readonly List<ToolstripPosition> _stripPosList = new List<ToolstripPosition>(); // List to remember ToolstripPositions for saving on exit.
         private MenuStrip _menuStrip;
         private List<ToolStrip> _strips;
         private bool _toolstripsLoaded; // indicates whether toolstrips were loaded after programstart
-        private readonly List<ToolstripPosition> _stripPosList = new List<ToolstripPosition>(); // List to remember ToolstripPositions for saving on exit.
+        private ToolStripPanel _tsPanel;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// If set the userdefined toolstrip-order won't be saved/loaded;
+        /// Gets or sets a value indicating whether the userdefined toolstrip-order won't be saved/loaded.
         /// </summary>
         /// <remarks>Enables the user to ignore Toolstrippositionsaving (e.g. in DesignMode)</remarks>
         public bool IgnoreToolstripPositionSaving { get; set; }
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
-        /// Adds the item.
+        /// Adds the menu item.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
+        /// <param name="item">The item.</param>
+        /// <returns>The added menu item.</returns>
         public override object Add(MenuContainerItem item)
         {
-            var menu = new ToolStripMenuItem(item.Caption) { Name = item.Key };
+            var menu = new ToolStripMenuItem(item.Caption)
+            {
+                Name = item.Key
+            };
 
             var root = _menuStrip.Items[item.RootKey] as ToolStripDropDownButton;
             if (root != null)
@@ -67,15 +69,13 @@ namespace DotSpatial.Controls.Header
         /// Adds the separator.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added separator.</returns>
         public override object Add(SeparatorItem item)
         {
             var separator = new ToolStripSeparator();
             var strip = GetOrCreateStrip(item.GroupCaption);
 
-            if (strip != null)
-            {
-                strip.Items.Add(separator);
-            }
+            strip?.Items.Add(separator);
 
             return separator;
         }
@@ -83,11 +83,8 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Adds the specified root item.
         /// </summary>
-        /// <param name="item">
-        /// The root item.
-        /// </param>
-        /// <remarks>
-        /// </remarks>
+        /// <param name="item">The root item.</param>
+        /// <returns>The added root item.</returns>
         public override object Add(RootItem item)
         {
             // The root may have already been created.
@@ -113,18 +110,18 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// This will add a new item that will appear on the standard toolbar or ribbon control.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <remarks>
-        /// </remarks>
+        /// <param name="item">The item.</param>
+        /// <returns>The added button.</returns>
         public override object Add(SimpleActionItem item)
         {
             ToolStripItem menu;
 
             if (IsForMenuStrip(item) || item.GroupCaption == ApplicationMenuKey)
             {
-                menu = new ToolStripMenuItem(item.Caption) { Image = item.SmallImage };
+                menu = new ToolStripMenuItem(item.Caption)
+                {
+                    Image = item.SmallImage
+                };
             }
             else
             {
@@ -139,13 +136,13 @@ namespace DotSpatial.Controls.Header
                 {
                     var button = (ToolStripButton)menu;
                     button.CheckOnClick = true;
-                    button.CheckedChanged += button_CheckedChanged;
+                    button.CheckedChanged += ButtonCheckedChanged;
 
                     item.Toggling += (sender, args) =>
-                    {
-                        UncheckButtonsExcept(button);
-                        button.Checked = !button.Checked;
-                    };
+                        {
+                            UncheckButtonsExcept(button);
+                            button.Checked = !button.Checked;
+                        };
                 }
             }
 
@@ -172,30 +169,26 @@ namespace DotSpatial.Controls.Header
                 else
                 {
                     var strip = GetOrCreateStrip(item.GroupCaption);
-                    if (strip != null)
-                    {
-                        strip.Items.Add(menu);
-                    }
+                    strip?.Items.Add(menu);
+
                     menu.ToolTipText = string.IsNullOrWhiteSpace(item.ToolTipText) == false ? item.ToolTipText : item.Caption;
                 }
             }
             else
             {
                 var subMenu = root.DropDownItems[item.MenuContainerKey] as ToolStripMenuItem;
-                if (subMenu != null)
-                {
-                    subMenu.DropDownItems.Add(menu);
-                }
+                subMenu?.DropDownItems.Add(menu);
             }
 
-            item.PropertyChanged += SimpleActionItem_PropertyChanged;
+            item.PropertyChanged += SimpleActionItemPropertyChanged;
             return menu;
         }
 
         /// <summary>
-        /// Adds a combo box style item
+        /// Adds a combo box style item.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added ComboBox.</returns>
         public override object Add(DropDownActionItem item)
         {
             var strip = GetOrCreateStrip(item.GroupCaption);
@@ -210,18 +203,16 @@ namespace DotSpatial.Controls.Header
             }
 
             combo.Items.AddRange(item.Items.ToArray());
-            combo.SelectedIndexChanged += delegate
-                                              {
-                                                  item.PropertyChanged -= DropDownActionItem_PropertyChanged;
-                                                  item.SelectedItem = combo.SelectedItem;
-                                                  item.PropertyChanged += DropDownActionItem_PropertyChanged;
-                                              };
+            combo.SelectedIndexChanged += (sender, args) =>
+                {
+                    item.PropertyChanged -= DropDownActionItemPropertyChanged;
+                    item.SelectedItem = combo.SelectedItem;
+                    item.PropertyChanged += DropDownActionItemPropertyChanged;
+                };
 
-            if (strip != null)
-            {
-                strip.Items.Add(combo);
-            }
-            item.PropertyChanged += DropDownActionItem_PropertyChanged;
+            strip?.Items.Add(combo);
+
+            item.PropertyChanged += DropDownActionItemPropertyChanged;
             return combo;
         }
 
@@ -229,6 +220,7 @@ namespace DotSpatial.Controls.Header
         /// Adds the specified textbox item.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <returns>The added textbox.</returns>
         public override object Add(TextEntryActionItem item)
         {
             var strip = GetOrCreateStrip(item.GroupCaption);
@@ -238,18 +230,15 @@ namespace DotSpatial.Controls.Header
                 textBox.Width = item.Width;
             }
 
-            textBox.TextChanged += delegate
-                                       {
-                                           item.PropertyChanged -= TextEntryActionItem_PropertyChanged;
-                                           item.Text = textBox.Text;
-                                           item.PropertyChanged += TextEntryActionItem_PropertyChanged;
-                                       };
-            if (strip != null)
-            {
-                strip.Items.Add(textBox);
-            }
+            textBox.TextChanged += (sender, args) =>
+                {
+                    item.PropertyChanged -= TextEntryActionItemPropertyChanged;
+                    item.Text = textBox.Text;
+                    item.PropertyChanged += TextEntryActionItemPropertyChanged;
+                };
+            strip?.Items.Add(textBox);
 
-            item.PropertyChanged += TextEntryActionItem_PropertyChanged;
+            item.PropertyChanged += TextEntryActionItemPropertyChanged;
             return textBox;
         }
 
@@ -260,13 +249,13 @@ namespace DotSpatial.Controls.Header
         /// <param name="menuStrip">Menu strip.</param>
         public void Initialize(ToolStripPanel toolStripPanel, MenuStrip menuStrip)
         {
-            if (toolStripPanel == null) throw new ArgumentNullException("toolStripPanel");
-            if (menuStrip == null) throw new ArgumentNullException("menuStrip");
+            if (toolStripPanel == null) throw new ArgumentNullException(nameof(toolStripPanel));
+            if (menuStrip == null) throw new ArgumentNullException(nameof(menuStrip));
 
             if (_tsPanel != null)
             {
                 RemoveAll();
-                _menuStrip.ItemClicked -= MenuStrip_ItemClicked;
+                _menuStrip.ItemClicked -= MenuStripItemClicked;
                 _tsPanel.Layout -= RememberLayout;
                 Application.ApplicationExit -= SaveToolstripPositions;
                 _stripPosList.Clear();
@@ -277,9 +266,12 @@ namespace DotSpatial.Controls.Header
             LoadToolstripPositions();
             Application.ApplicationExit += SaveToolstripPositions;
             _menuStrip = menuStrip;
-            _menuStrip.ItemClicked += MenuStrip_ItemClicked;
-            _strips = new List<ToolStrip> { _menuStrip };
-            if (_stripPosList.Count == 0) //set the default position of the menustrip for it to show on top
+            _menuStrip.ItemClicked += MenuStripItemClicked;
+            _strips = new List<ToolStrip>
+                      {
+                          _menuStrip
+                      };
+            if (_stripPosList.Count == 0) // set the default position of the menustrip for it to show on top
                 _stripPosList.Add(new ToolstripPosition(_menuStrip.Name, 0, 0));
         }
 
@@ -290,34 +282,35 @@ namespace DotSpatial.Controls.Header
         {
             _toolstripsLoaded = false;
             _tsPanel.Controls.Clear();
-            foreach (var i in _stripPosList.OrderBy(tsp => tsp.Row).ThenByDescending(tsp => tsp.Column)) //add toolstrips after saved order
+            foreach (var i in _stripPosList.OrderBy(tsp => tsp.Row).ThenByDescending(tsp => tsp.Column))
             {
+                // add toolstrips after saved order
                 var ts = _strips.Find(_ => _.Name == i.Name);
                 if (ts != null)
                 {
                     _tsPanel.Join(ts, i.Row);
                 }
             }
-            _toolstripsLoaded = true; //all toolstrips in _StripPosList are added, any missing strips can now be added
 
-            var index = Math.Max(1, _tsPanel.Rows.Length - 1); //add toolstrips that were added after saving (e.g. Plugins dropped into Plugin-folder)
-            foreach (var strip in Enumerable.Reverse(_strips)) //Reverse order because join adds at the beginning of the ToolStripPanelRow
+            _toolstripsLoaded = true; // all toolstrips in _StripPosList are added, any missing strips can now be added
+
+            var index = Math.Max(1, _tsPanel.Rows.Length - 1); // add toolstrips that were added after saving (e.g. Plugins dropped into Plugin-folder)
+            foreach (var strip in Enumerable.Reverse(_strips))
             {
+                // Reverse order because join adds at the beginning of the ToolStripPanelRow
                 if (!_stripPosList.Exists(_ => _.Name == strip.Name))
                 {
                     _tsPanel.Join(strip, index);
                 }
             }
         }
-        
+
         /// <summary>
         /// Remove item from the standard toolbar or ribbon control
         /// </summary>
         /// <param name="key">
         /// The string itemName to remove from the standard toolbar or ribbon control
         /// </param>
-        /// <remarks>
-        /// </remarks>
         public override void Remove(string key)
         {
             var item = GetItem(key);
@@ -335,11 +328,12 @@ namespace DotSpatial.Controls.Header
                 var headerItem = GetHeaderItemByKey(key);
                 if (headerItem != null)
                 {
-                    headerItem.PropertyChanged -= SimpleActionItem_PropertyChanged;
-                    headerItem.PropertyChanged -= DropDownActionItem_PropertyChanged;
-                    headerItem.PropertyChanged -= TextEntryActionItem_PropertyChanged;
+                    headerItem.PropertyChanged -= SimpleActionItemPropertyChanged;
+                    headerItem.PropertyChanged -= DropDownActionItemPropertyChanged;
+                    headerItem.PropertyChanged -= TextEntryActionItemPropertyChanged;
                 }
             }
+
             base.Remove(key);
         }
 
@@ -352,16 +346,21 @@ namespace DotSpatial.Controls.Header
             // we won't do anything here.
         }
 
-        #endregion
-
-        #region Methods
+        /// <summary>
+        /// Gets the path to the MenuBarHeaderControl.config-file in which the toolstrip-order is saved.
+        /// </summary>
+        /// <returns>The path of theMenuBarHeaderControl.config file.</returns>
+        private static string GetMenuBarHeaderControlConfigPath()
+        {
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Application.ProductName);
+            path = Path.Combine(path, "MenuBarHeaderControl.config");
+            return path;
+        }
 
         /// <summary>
         /// Determines whether [is for tool strip]  being that it has an icon. Otherwise it should go on a menu.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
+        /// <param name="item">The item.</param>
         /// <returns>
         /// <c>true</c> if [is for tool strip] [the specified item]; otherwise, <c>false</c>.
         /// </returns>
@@ -375,25 +374,7 @@ namespace DotSpatial.Controls.Header
             combo.DropDownStyle = item.AllowEditingText ? ComboBoxStyle.DropDown : ComboBoxStyle.DropDownList;
         }
 
-        private void RefreshRootItemOrder()
-        {
-            // Get a list of all the menus
-            var pages = new List<ToolStripItem>(_menuStrip.Items.Cast<ToolStripItem>().OrderBy(_ => _.MergeIndex));
-
-            // Re add all of the items in the new order.
-            _menuStrip.Items.Clear();
-            foreach (var sortedPage in pages)
-            {
-                _menuStrip.Items.Add(sortedPage);
-            }
-        }
-
-        private void MenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            OnRootItemSelected(e.ClickedItem.Name);
-        }
-
-        private void ActionItem_PropertyChanged(ActionItem item, PropertyChangedEventArgs e)
+        private void ActionItemPropertyChanged(ActionItem item, PropertyChangedEventArgs e)
         {
             var guiItem = GetItem(item.Key);
 
@@ -428,99 +409,41 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Loads the saved toolstrippositions from file.
-        /// </summary>
-        private void LoadToolstripPositions()
-        {
-            if (IgnoreToolstripPositionSaving) return;
-            var path = GetMenuBarHeaderControlConfigPath();
-            if (!File.Exists(path)) return;
-            using (var stream = File.Open(path, FileMode.Open))
-            {
-                var bin = new BinaryFormatter();
-                _stripPosList.Clear();
-                _stripPosList.AddRange((List<ToolstripPosition>)bin.Deserialize(stream));
-            }
-        }
-
-        /// <summary>
-        /// When the user moves toolstrips, the new position gets remembered for saving.
-        /// </summary>
-        private void RememberLayout(object sender, EventArgs e)
-        {
-            if (IgnoreToolstripPositionSaving) return;
-            // Because we don't know what was moved where we correct all positions. 
-            // This is done in reverse, because we don't want to repeat the first rows while the last row throws an exception.
-            for (var i = _tsPanel.Rows.Length - 1; i >= 0; i--)
-            {
-                try
-                {
-                    var c = _tsPanel.Rows[i].Controls;
-                    for (var k = 0; k < c.Length; k++)
-                    {
-                        var ts = (ToolStrip)c[k];
-                        var erg = _stripPosList.Find(_ => _.Name == ts.Name);
-                        if (erg != null)
-                        {
-                            erg.Row = i;
-                            erg.Column = k;
-                        }
-                        else
-                        {
-                            _stripPosList.Add(new ToolstripPosition(ts.Name, i, k));
-                        }
-                    }
-                }
-                catch (ArgumentException) // The Controls of newly added rows throw this error. Then we ignore this RememberLayout-event because it gets raised again with correct Controls.
-                { }
-            }
-        }
-
-        /// <summary>
-        /// Gets the path to the MenuBarHeaderControl.config-file in which the toolstrip-order is saved.
-        /// </summary>
-        private static string GetMenuBarHeaderControlConfigPath()
-        {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Application.ProductName);
-            path = Path.Combine(path, "MenuBarHeaderControl.config");
-            return path;
-        }
-        
-        /// <summary>
-        /// Saves the toolstrips positions so that the user doesn't have to reorder them on next start.
-        /// </summary>
-        private void SaveToolstripPositions(object sender, EventArgs e)
-        {
-            if (IgnoreToolstripPositionSaving) return;
-            var path = GetMenuBarHeaderControlConfigPath();
-            var dir = Path.GetDirectoryName(path);
-            Debug.Assert(dir != null);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
-            using (var stream = File.Open(path, FileMode.Create))
-            {
-                var bin = new BinaryFormatter();
-                bin.Serialize(stream, _stripPosList);
-            }
-        }
-
-        /// <summary>
         /// Adds a toolstrip with the given name to the _strips-List. If the toolbars were already loaded it is added to the _tsPanel as well.
         /// </summary>
         /// <param name="groupName">Name of the toolstrip that will be added.</param>
         /// <returns>ToolStrip that was created.</returns>
         private ToolStrip AddToolStrip(string groupName)
         {
-            var strip = new ToolStrip { Name = groupName };
+            var strip = new ToolStrip
+            {
+                Name = groupName
+            };
             _strips.Add(strip);
             if (_toolstripsLoaded)
             {
                 if (!_stripPosList.Exists(_ => _.Name == groupName))
-                { _tsPanel.Join(strip); }
-                else { LoadToolstrips(); } //if toolstrip exists, reload all for it to appear at the remembered position
+                {
+                    _tsPanel.Join(strip);
+                }
+                else
+                {
+                    LoadToolstrips();
+                }
+
+                // if toolstrip exists, reload all for it to appear at the remembered position
             }
+
             return strip;
+        }
+
+        private void ButtonCheckedChanged(object sender, EventArgs e)
+        {
+            var button = (ToolStripButton)sender;
+            if (button.Checked)
+            {
+                UncheckButtonsExcept(button);
+            }
         }
 
         private ToolStripDropDownButton CreateToolStripDropDownButton(RootItem item)
@@ -536,7 +459,7 @@ namespace DotSpatial.Controls.Header
             return menu;
         }
 
-        private void DropDownActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void DropDownActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var item = (DropDownActionItem)sender;
             var guiItem = (ToolStripComboBox)GetItem(item.Key);
@@ -566,7 +489,7 @@ namespace DotSpatial.Controls.Header
                     break;
 
                 default:
-                    ActionItem_PropertyChanged(item, e);
+                    ActionItemPropertyChanged(item, e);
                     break;
             }
         }
@@ -586,8 +509,7 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Make sure the root key is present or use a default.
         /// </summary>
-        /// <param name="item">
-        /// </param>
+        /// <param name="item">Item that is checked for having a root key.</param>
         private void EnsureNonNullRoot(ActionItem item)
         {
             if (item.RootKey == null)
@@ -613,14 +535,105 @@ namespace DotSpatial.Controls.Header
 
         private ToolStrip GetOrCreateStrip(string groupCaption)
         {
-            var query = from s in _strips
-                        where s.Name == (groupCaption ?? DEFAULT_GROUP_NAME)
-                        select s;
+            var query = from s in _strips where s.Name == (groupCaption ?? DefaultGroupName) select s;
 
             return query.FirstOrDefault() ?? AddToolStrip(groupCaption);
         }
 
-        private void SimpleActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        /// <summary>
+        /// Loads the saved toolstrippositions from file.
+        /// </summary>
+        private void LoadToolstripPositions()
+        {
+            if (IgnoreToolstripPositionSaving) return;
+            var path = GetMenuBarHeaderControlConfigPath();
+            if (!File.Exists(path)) return;
+            using (var stream = File.Open(path, FileMode.Open))
+            {
+                var bin = new BinaryFormatter();
+                _stripPosList.Clear();
+                _stripPosList.AddRange((List<ToolstripPosition>)bin.Deserialize(stream));
+            }
+        }
+
+        private void MenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            OnRootItemSelected(e.ClickedItem.Name);
+        }
+
+        private void RefreshRootItemOrder()
+        {
+            // Get a list of all the menus
+            var pages = new List<ToolStripItem>(_menuStrip.Items.Cast<ToolStripItem>().OrderBy(_ => _.MergeIndex));
+
+            // Re add all of the items in the new order.
+            _menuStrip.Items.Clear();
+            foreach (var sortedPage in pages)
+            {
+                _menuStrip.Items.Add(sortedPage);
+            }
+        }
+
+        /// <summary>
+        /// When the user moves toolstrips, the new position gets remembered for saving.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void RememberLayout(object sender, EventArgs e)
+        {
+            if (IgnoreToolstripPositionSaving) return;
+
+            // Because we don't know what was moved where we correct all positions.
+            // This is done in reverse, because we don't want to repeat the first rows while the last row throws an exception.
+            for (var i = _tsPanel.Rows.Length - 1; i >= 0; i--)
+            {
+                try
+                {
+                    var c = _tsPanel.Rows[i].Controls;
+                    for (var k = 0; k < c.Length; k++)
+                    {
+                        var ts = (ToolStrip)c[k];
+                        var erg = _stripPosList.Find(_ => _.Name == ts.Name);
+                        if (erg != null)
+                        {
+                            erg.Row = i;
+                            erg.Column = k;
+                        }
+                        else
+                        {
+                            _stripPosList.Add(new ToolstripPosition(ts.Name, i, k));
+                        }
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    // The Controls of newly added rows throw this error. Then we ignore this RememberLayout-event because it gets raised again with correct Controls.
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves the toolstrips positions so that the user doesn't have to reorder them on next start.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void SaveToolstripPositions(object sender, EventArgs e)
+        {
+            if (IgnoreToolstripPositionSaving) return;
+            var path = GetMenuBarHeaderControlConfigPath();
+            var dir = Path.GetDirectoryName(path);
+            Debug.Assert(dir != null, "dir may not be null");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            using (var stream = File.Open(path, FileMode.Create))
+            {
+                var bin = new BinaryFormatter();
+                bin.Serialize(stream, _stripPosList);
+            }
+        }
+
+        private void SimpleActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var item = (SimpleActionItem)sender;
             var guiItem = GetItem(item.Key);
@@ -641,12 +654,12 @@ namespace DotSpatial.Controls.Header
                     break;
 
                 default:
-                    ActionItem_PropertyChanged(item, e);
+                    ActionItemPropertyChanged(item, e);
                     break;
             }
         }
 
-        private void TextEntryActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void TextEntryActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var item = (TextEntryActionItem)sender;
             var guiItem = (ToolStripTextBox)GetItem(item.Key);
@@ -662,11 +675,11 @@ namespace DotSpatial.Controls.Header
                     break;
 
                 case "FontColor":
-                    guiItem.TextBox.ForeColor = item.FontColor;
+                    if (guiItem.TextBox != null) guiItem.TextBox.ForeColor = item.FontColor;
                     break;
 
                 default:
-                    ActionItem_PropertyChanged(item, e);
+                    ActionItemPropertyChanged(item, e);
                     break;
             }
         }
@@ -696,33 +709,6 @@ namespace DotSpatial.Controls.Header
             }
         }
 
-        private void button_CheckedChanged(object sender, EventArgs e)
-        {
-            var button = (ToolStripButton)sender;
-            if (button.Checked)
-            {
-                UncheckButtonsExcept(button);
-            }
-        }
-
         #endregion
-    }
-
-    /// <summary>
-    /// Helper-Class to remember the Toolstrip-Positions to save to file on exit.
-    /// </summary>
-    [Serializable]
-    internal class ToolstripPosition
-    {
-        public string Name { get; private set; }
-        public int Row { get; set; }
-        public int Column { get; set; }
-
-        public ToolstripPosition(string name, int row, int column)
-        {
-            Name = name;
-            Row = row;
-            Column = column;
-        }
     }
 }

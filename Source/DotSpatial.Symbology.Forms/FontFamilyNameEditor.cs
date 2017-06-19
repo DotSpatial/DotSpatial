@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The Windows Forms user interface layer for the DotSpatial.Symbology library.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 3/31/2009 9:59:36 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -25,20 +15,33 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class FontFamilyNameEditor : UITypeEditor
     {
+        #region Fields
+
         private IWindowsFormsEditorService _dialogProvider;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether the drop down is resizeable.
+        /// </summary>
+        public override bool IsDropDownResizable => true;
+
+        #endregion
 
         #region Methods
 
         /// <summary>
         /// Edits a value based on some user input which is collected from a character control.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="provider"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <param name="provider">The service provider.</param>
+        /// <param name="value">Not used.</param>
+        /// <returns>The selected font family name.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _dialogProvider = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+            _dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             ListBox cmb = new ListBox();
             FontFamily[] fams = FontFamily.Families;
             cmb.SuspendLayout();
@@ -46,41 +49,27 @@ namespace DotSpatial.Symbology.Forms
             {
                 cmb.Items.Add(fam.Name);
             }
+
             cmb.SelectedValueChanged += CmbSelectedValueChanged;
             cmb.ResumeLayout();
-            if (_dialogProvider != null) _dialogProvider.DropDownControl(cmb);
+            _dialogProvider?.DropDownControl(cmb);
             string test = (string)cmb.SelectedItem;
             return test;
-        }
-
-        private void CmbSelectedValueChanged(object sender, EventArgs e)
-        {
-            _dialogProvider.CloseDropDown();
         }
 
         /// <summary>
         /// Gets the UITypeEditorEditStyle, which in this case is drop down.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">The type descriptor context.</param>
+        /// <returns>The UITypeEditorEditStyle</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Overrides the ISDropDownResizable to allow this control to be adjusted.
-        /// </summary>
-        public override bool IsDropDownResizable
+        private void CmbSelectedValueChanged(object sender, EventArgs e)
         {
-            get
-            {
-                return true;
-            }
+            _dialogProvider.CloseDropDown();
         }
 
         #endregion

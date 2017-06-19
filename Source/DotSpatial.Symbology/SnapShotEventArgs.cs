@@ -1,37 +1,29 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.dll
-// Description:  Contains the business logic for symbology layers and symbol categories.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/5/2009 12:14:19 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Event args of a SnapShot event.
+    /// </summary>
     public class SnapShotEventArgs : EventArgs
     {
         #region Private Variables
-
-        private Bitmap _picture;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of SnapShotEventArgs
+        /// Initializes a new instance of the <see cref="SnapShotEventArgs"/> class.
         /// </summary>
+        /// <param name="inPicture">The bitmap of the event.</param>
         public SnapShotEventArgs(Bitmap inPicture)
         {
-            _picture = inPicture;
+            Picture = inPicture;
         }
 
         #endregion
@@ -39,13 +31,9 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the picture that was taken by the snapshot
+        /// Gets or sets the picture that was taken by the snapshot.
         /// </summary>
-        public Bitmap Picture
-        {
-            get { return _picture; }
-            protected set { _picture = value; }
-        }
+        public Bitmap Picture { get; protected set; }
 
         #endregion
     }

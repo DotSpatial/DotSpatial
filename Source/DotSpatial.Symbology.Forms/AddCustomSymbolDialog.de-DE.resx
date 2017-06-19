@@ -477,7 +477,7 @@
     <value>tabSimple</value>
   </data>
   <data name="dblWidth.ToolTip" xml:space="preserve">
-    <value>Set the width of the stroke.  The scale mode determines the measurement units.</value>
+    <value>Set the width of the stroke. The scale mode determines the measurement units.</value>
   </data>
   <data name="&gt;&gt;tabDash.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -879,7 +879,7 @@
     <value>315, 19</value>
   </data>
   <data name="cmbStrokeStyle.ToolTip" xml:space="preserve">
-    <value>Allows some simpler dash styles.  For more complicated styles, select Cartographic strokes.</value>
+    <value>Allows some simpler dash styles. For more complicated styles, select Cartographic strokes.</value>
   </data>
   <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1077,7 +1077,7 @@
     <value>Controls how to flip the symbols.</value>
   </data>
   <data name="cmbScaleMode.ToolTip" xml:space="preserve">
-    <value>Geographic lines get wider as you zoom in and use map units for controling width.  Symbolic and simple keep the same width as you zoom.</value>
+    <value>Geographic lines get wider as you zoom in and use map units for controling width. Symbolic and simple keep the same width as you zoom.</value>
   </data>
   <data name="lblStartCap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1278,7 +1278,7 @@
     <value>label5</value>
   </data>
   <data name="nudDecorationCount.ToolTip" xml:space="preserve">
-    <value>The first two are drawn on the start and end locations.  After that, the line is divided evenly.</value>
+    <value>The first two are drawn on the start and end locations. After that, the line is divided evenly.</value>
   </data>
   <data name="&gt;&gt;tabDecoration.Parent" xml:space="preserve">
     <value>tabStrokeProperties</value>

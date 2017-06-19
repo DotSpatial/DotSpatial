@@ -1,8 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SimpleActionItem.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing;
@@ -14,22 +11,24 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class SimpleActionItem : ActionItem
     {
-        #region Constants and Fields
+        #region Fields
 
-        private Image largeImage;
-        private string menuContainerKey;
-        private bool showInQuickAccessToolbar;
-        private Image smallImage;
-        private short sortOrder;
-        private string toggleGroupKey;
+        private Image _largeImage;
+        private string _menuContainerKey;
+        private bool _showInQuickAccessToolbar;
+        private Image _smallImage;
+        private short _sortOrder;
+        private string _toggleGroupKey;
 
         #endregion
 
-        #region Constructors and Destructors
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the SimpleActionItem class.
+        /// Initializes a new instance of the <see cref="SimpleActionItem"/> class.
         /// </summary>
+        /// <param name="caption">The caption.</param>
+        /// <param name="clickEventHandler">The click event handler.</param>
         public SimpleActionItem(string caption, EventHandler clickEventHandler)
         {
             Caption = caption;
@@ -37,8 +36,11 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the SimpleActionItem class.
+        /// Initializes a new instance of the <see cref="SimpleActionItem"/> class.
         /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="caption">The caption.</param>
+        /// <param name="clickEventHandler">The click event handler.</param>
         public SimpleActionItem(string rootKey, string caption, EventHandler clickEventHandler)
             : this(caption, clickEventHandler)
         {
@@ -46,8 +48,12 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the SimpleActionItem class.
+        /// Initializes a new instance of the <see cref="SimpleActionItem"/> class.
         /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="menuContainerKey">The menu container key.</param>
+        /// <param name="caption">The caption.</param>
+        /// <param name="clickEventHandler">The click event handler.</param>
         public SimpleActionItem(string rootKey, string menuContainerKey, string caption, EventHandler clickEventHandler)
             : this(rootKey, caption, clickEventHandler)
         {
@@ -56,7 +62,7 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        #region Public Events
+        #region Events
 
         /// <summary>
         /// Gets or sets the click event handler.
@@ -71,26 +77,7 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        #region Public Properties
-
-        /// <summary>
-        /// True if an associated quick-access button is shown.
-        /// False if the associated quick-access button is not shown.
-        /// </summary>
-        public bool ShowInQuickAccessToolbar
-        {
-            get
-            {
-                return showInQuickAccessToolbar;
-            }
-
-            set
-            {
-                if (showInQuickAccessToolbar == value) return;
-                showInQuickAccessToolbar = value;
-                OnPropertyChanged("ShowInQuickAccessToolbar");
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets or sets the large image.
@@ -100,13 +87,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return largeImage;
+                return _largeImage;
             }
 
             set
             {
-                if (largeImage == value) return;
-                largeImage = value;
+                if (_largeImage == value) return;
+                _largeImage = value;
                 OnPropertyChanged("LargeImage");
             }
         }
@@ -119,13 +106,32 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return menuContainerKey;
+                return _menuContainerKey;
             }
+
             set
             {
-                if (menuContainerKey == value) return;
-                menuContainerKey = value;
+                if (_menuContainerKey == value) return;
+                _menuContainerKey = value;
                 OnPropertyChanged("MenuContainerKey");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether an associated quick-access button is shown.
+        /// </summary>
+        public bool ShowInQuickAccessToolbar
+        {
+            get
+            {
+                return _showInQuickAccessToolbar;
+            }
+
+            set
+            {
+                if (_showInQuickAccessToolbar == value) return;
+                _showInQuickAccessToolbar = value;
+                OnPropertyChanged("ShowInQuickAccessToolbar");
             }
         }
 
@@ -137,13 +143,13 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return smallImage;
+                return _smallImage;
             }
 
             set
             {
-                if (smallImage == value) return;
-                smallImage = value;
+                if (_smallImage == value) return;
+                _smallImage = value;
                 OnPropertyChanged("SmallImage");
             }
         }
@@ -152,54 +158,61 @@ namespace DotSpatial.Controls.Header
         /// Gets or sets the sort order. Lower values will suggest that an item should appear further left in a LeftToRight environment. Or higher up in a top to bottom environment.
         /// </summary>
         /// <remarks>Use a multiple of 100 or so to allow other developers some 'space' to place their groups.</remarks>
-        /// <value>
-        /// The sort order.
-        /// </value>
+        /// <value>The sort order.</value>
         public short SortOrder
         {
             get
             {
-                return sortOrder;
+                return _sortOrder;
             }
+
             set
             {
-                if (sortOrder == value) return;
-                sortOrder = value;
+                if (_sortOrder == value) return;
+                _sortOrder = value;
                 OnPropertyChanged("SortOrder");
             }
         }
 
         /// <summary>
-        /// Gets or sets the toggle button group key used to select what buttons should toggle each other..
+        /// Gets or sets the toggle button group key used to select what buttons should toggle each other.
         /// </summary>
         /// <value>The toggle button key.</value>
         public string ToggleGroupKey
         {
             get
             {
-                return toggleGroupKey;
+                return _toggleGroupKey;
             }
+
             set
             {
-                if (toggleGroupKey == value) return;
-                toggleGroupKey = value;
+                if (_toggleGroupKey == value) return;
+                _toggleGroupKey = value;
                 OnPropertyChanged("ToggleGroupKey");
             }
         }
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <summary>
         /// Triggers the Click event.
         /// </summary>
-        public virtual void OnClick(EventArgs ea)
+        /// <param name="e">The event args.</param>
+        public virtual void OnClick(EventArgs e)
         {
-            if (Click != null)
-            {
-                Click(this, ea);
-            }
+            Click?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Triggers the Toggling event.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        public virtual void OnToggle(EventArgs e)
+        {
+            Toggling?.Invoke(this, e);
         }
 
         /// <summary>
@@ -211,19 +224,6 @@ namespace DotSpatial.Controls.Header
             if (ToggleGroupKey != null)
                 OnToggle(EventArgs.Empty);
         }
-
-        #region OnToggling
-
-        /// <summary>
-        /// Triggers the Toggling event.
-        /// </summary>
-        public virtual void OnToggle(EventArgs ea)
-        {
-            if (Toggling != null)
-                Toggling(this, ea);
-        }
-
-        #endregion
 
         #endregion
     }

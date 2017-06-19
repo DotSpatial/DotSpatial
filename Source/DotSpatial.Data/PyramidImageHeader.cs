@@ -1,24 +1,43 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 2/11/2010 10:13:10 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Xml.Serialization;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// PyramidImageHeader
+    /// </summary>
     public class PyramidImageHeader
     {
-        #region Private Variables
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the affine coefficients for this image in ABCDEF order.
+        /// X' = A + BX + CY
+        /// Y' = D + EX + FY
+        /// </summary>
+        [XmlAttribute("Affine")]
+        public double[] Affine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of columns.
+        /// </summary>
+        [XmlAttribute("NumColumns")]
+        public int NumColumns { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of rows.
+        /// </summary>
+        [XmlAttribute("NumRows")]
+        public int NumRows { get; set; }
+
+        /// <summary>
+        ///  Gets or sets the offsets.
+        /// </summary>
+        [XmlAttribute("Offset")]
+        public long Offset { get; set; }
 
         #endregion
 
@@ -41,54 +60,24 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Sets the number of rows based on the integer scale
+        /// Sets the number of columns based on the integer scale.
         /// </summary>
-        /// <param name="originalNumRows"></param>
-        /// <param name="scale">integer starts at 0 for the original image</param>
-        public void SetNumRows(int originalNumRows, int scale)
-        {
-            NumRows = (int)(originalNumRows / Math.Pow(2, scale));
-        }
-
-        /// <summary>
-        /// Sets the number of columns based on the integer scale
-        /// </summary>
-        /// <param name="originalNumColumns"></param>
+        /// <param name="originalNumColumns">The number of columns.</param>
         /// <param name="scale">integer starts at 0 for the original image</param>
         public void SetNumColumns(int originalNumColumns, int scale)
         {
             NumColumns = (int)(originalNumColumns / Math.Pow(2, scale));
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Offsets
+        /// Sets the number of rows based on the integer scale.
         /// </summary>
-        [XmlAttribute("Offset")]
-        public long Offset { get; set; }
-
-        /// <summary>
-        /// Integer number of rows
-        /// </summary>
-        [XmlAttribute("NumRows")]
-        public int NumRows { get; set; }
-
-        /// <summary>
-        /// Integer number of columns
-        /// </summary>
-        [XmlAttribute("NumColumns")]
-        public int NumColumns { get; set; }
-
-        /// <summary>
-        /// Gets or sets the affine coefficients for this image in ABCDEF order
-        /// X' = A + BX + CY
-        /// Y' = D + EX + FY
-        /// </summary>
-        [XmlAttribute("Affine")]
-        public double[] Affine { get; set; }
+        /// <param name="originalNumRows">The number of rows.</param>
+        /// <param name="scale">integer starts at 0 for the original image</param>
+        public void SetNumRows(int originalNumRows, int scale)
+        {
+            NumRows = (int)(originalNumRows / Math.Pow(2, scale));
+        }
 
         #endregion
     }

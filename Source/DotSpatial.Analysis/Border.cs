@@ -1,16 +1,6 @@
-// *******************************************************************************************************
-// Product: DotSpatial.Analysis.Border.cs
-// Description:  Simple struct for holding a line segment. May be redundant with segments defined in 
-// DotSpatial.Topology. 
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-// *******************************************************************************************************
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Dan Ames           |  3/2013            |  Adding this header.  
-// *******************************************************************************************************
 namespace DotSpatial.Analysis
 {
     /// <summary>

@@ -37,7 +37,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1DB6E371-0643-46F2-8EAD-B7D92AD133D5}"
 	ProjectSection(SolutionItems) = preProject
 		AssemblyInfoShared.cs = AssemblyInfoShared.cs
+		DotSpatial.ruleset = DotSpatial.ruleset
+		Licence.txt = Licence.txt
 		Readme.md = Readme.md
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ShapeEditor", "DotSpatial.Plugins.ShapeEditor\DotSpatial.Plugins.ShapeEditor.csproj", "{715F4E59-7362-4EB6-BA2E-3FFC54CBAA41}"

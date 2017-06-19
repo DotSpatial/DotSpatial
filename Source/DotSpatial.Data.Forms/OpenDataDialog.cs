@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.dll Alpha
-// Description:  The core assembly for the DotSpatial 6.0 distribution.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 12/10/2008 2:15:33 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -17,61 +7,25 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// frmOpenDataDialog
+    /// OpenDataDialog
     /// </summary>
     public class OpenDataDialog : Form
     {
-        private DirectoryView directoryView1;
-
-        #region Private Variables
+        #region Fields
 
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private IContainer components = null;
+        private readonly IContainer _components = null;
+
+        private DirectoryView _directoryView1;
 
         #endregion
 
-        #region Windows Form Designer generated code
+        #region  Constructors
 
         /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpenDataDialog));
-            this.directoryView1 = new DotSpatial.Data.Forms.DirectoryView();
-            this.SuspendLayout();
-            //
-            // directoryView1
-            //
-            resources.ApplyResources(this.directoryView1, "directoryView1");
-            this.directoryView1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 600, 495);
-            this.directoryView1.Directory = null;
-            this.directoryView1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 600, 1);
-            this.directoryView1.HorizontalScrollEnabled = true;
-            this.directoryView1.IsInitialized = false;
-            this.directoryView1.MinimumSize = new System.Drawing.Size(5, 5);
-            this.directoryView1.Name = "directoryView1";
-            this.directoryView1.ResetOnResize = false;
-            this.directoryView1.SelectedItem = null;
-            this.directoryView1.VerticalScrollEnabled = true;
-            //
-            // OpenDataDialog
-            //
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.directoryView1);
-            this.Name = "OpenDataDialog";
-            this.ResumeLayout(false);
-        }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of frmOpenDataDialog
+        /// Initializes a new instance of the <see cref="OpenDataDialog"/> class.
         /// </summary>
         public OpenDataDialog()
         {
@@ -80,15 +34,7 @@ namespace DotSpatial.Data.Forms
 
         #endregion
 
-        #region Events
-
-        #endregion
-
-        #region Event Handlers
-
-        #endregion
-
-        #region Private Functions
+        #region Methods
 
         /// <summary>
         /// Clean up any resources being used.
@@ -96,11 +42,42 @@ namespace DotSpatial.Data.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                _components?.Dispose();
             }
+
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(OpenDataDialog));
+            _directoryView1 = new DirectoryView();
+            SuspendLayout();
+
+            // directoryView1
+            resources.ApplyResources(_directoryView1, "_directoryView1");
+            _directoryView1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 600, 495);
+            _directoryView1.Directory = null;
+            _directoryView1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 600, 1);
+            _directoryView1.HorizontalScrollEnabled = true;
+            _directoryView1.IsInitialized = false;
+            _directoryView1.MinimumSize = new System.Drawing.Size(5, 5);
+            _directoryView1.Name = "_directoryView1";
+            _directoryView1.ResetOnResize = false;
+            _directoryView1.SelectedItem = null;
+            _directoryView1.VerticalScrollEnabled = true;
+
+            // OpenDataDialog
+            resources.ApplyResources(this, "$this");
+            Controls.Add(_directoryView1);
+            Name = "OpenDataDialog";
+            ResumeLayout(false);
         }
 
         #endregion

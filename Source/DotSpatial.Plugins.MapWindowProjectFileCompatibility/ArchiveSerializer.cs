@@ -1,4 +1,6 @@
-using System;
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +14,8 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
     /// </summary>
     public class ArchiveSerializer
     {
+        #region Methods
+
         /// <summary>
         /// Saves the specified xml and referenced layers into a zip file.
         /// </summary>
@@ -25,15 +29,14 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 zip.AddEntry("theProject.dspx", xml);
 
                 XDocument xmlDoc = XDocument.Parse(xml);
-                var files = from f in xmlDoc.Descendants("member")
-                            where f.Attribute("name").Value == "FilePath"
-                            select f.Attribute("value").Value;
+                var files = from f in xmlDoc.Descendants("member") where f.Attribute("name").Value == "FilePath" select f.Attribute("value").Value;
 
                 var filesToInclude = GetRelatedFiles(files);
                 foreach (string file in filesToInclude)
                 {
                     zip.AddFile(file);
                 }
+
                 zip.Save(fileName);
             }
         }
@@ -42,7 +45,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Gets the related metadata files (e.g., includes shx and dbf when given a shp file).
         /// </summary>
         /// <param name="files">The files.</param>
-        /// <returns></returns>
+        /// <returns>The related metadata files (e.g., includes shx and dbf when given a shp file).</returns>
         private static IEnumerable<string> GetRelatedFiles(IEnumerable<string> files)
         {
             List<string> shapeExtentions = new List<string> { "dbf", "shx", "shpxml", "lbl" };
@@ -52,20 +55,26 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             {
                 yield return file;
 
-                string basePath = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file));
-
-                IEnumerable<string> extensions = metadataExtentions;
-                if (Path.GetExtension(file).ToLower().EndsWith(".shp"))
+                var directory = Path.GetDirectoryName(file);
+                if (directory != null)
                 {
-                    extensions = extensions.Concat(shapeExtentions);
-                }
+                    string basePath = Path.Combine(directory, Path.GetFileNameWithoutExtension(file));
 
-                foreach (string ext in extensions)
-                {
-                    string relatedFile = String.Format("{0}.{1}", basePath, ext);
-                    if (File.Exists(relatedFile)) yield return relatedFile;
+                    IEnumerable<string> extensions = metadataExtentions;
+                    if (Path.GetExtension(file).ToLower().EndsWith(".shp"))
+                    {
+                        extensions = extensions.Concat(shapeExtentions);
+                    }
+
+                    foreach (string ext in extensions)
+                    {
+                        string relatedFile = $"{basePath}.{ext}";
+                        if (File.Exists(relatedFile)) yield return relatedFile;
+                    }
                 }
             }
         }
+
+        #endregion
     }
 }

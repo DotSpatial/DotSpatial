@@ -1,16 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Tools.DataElement
-// Description:  This class represents data in the model
-//
-// ********************************************************************************************************
-//
-// The Original Code is Toolbox.dll for the DotSpatial 4.6/6 ToolManager project
-//
-// The Initial Developer of this Original Code is Brian Marchionni. Created in Nov, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
 
@@ -21,53 +10,45 @@ namespace DotSpatial.Modeling.Forms
     /// </summary>
     public class DataElement : ModelElement
     {
-        #region --------------- class variables
-
-        private Parameter _parameter;
+        #region Fields
 
         #endregion
 
-        #region --------------- Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates an instance of the Data Element
+        /// Initializes a new instance of the <see cref="DataElement"/> class.
+        /// </summary>
         /// <param name="parameter">One of Brian's Parameter classes</param>
         /// <param name="modelElements">A list of all the elements in the model</param>
-        /// </summary>
         public DataElement(Parameter parameter, List<ModelElement> modelElements)
             : base(modelElements)
         {
-            _parameter = parameter;
+            Parameter = parameter;
         }
 
         #endregion
 
-        #region --------------- Properties
+        #region Properties
 
         /// <summary>
-        /// Gets the dataType of the DataElement
+        /// Gets the dataType of the DataElement.
         /// </summary>
-        public string DataType
-        {
-            get { return _parameter.ParamType; }
-        }
+        public string DataType => Parameter.ParamType;
 
         /// <summary>
-        /// Gets or sets the Data set that this element represents
+        /// Gets or sets the Data set that this element represents.
         /// </summary>
-        public Parameter Parameter
-        {
-            get { return _parameter; }
-            set { _parameter = value; }
-        }
+        public Parameter Parameter { get; set; }
 
         #endregion
 
-        #region --------------- Methods
+        #region Methods
 
         /// <summary>
-        /// When the user doulbe clicks on a tool call this method
+        /// When the user doulbe clicks on a tool call this method.
         /// </summary>
+        /// <returns>True</returns>
         public override bool DoubleClick()
         {
             return true;

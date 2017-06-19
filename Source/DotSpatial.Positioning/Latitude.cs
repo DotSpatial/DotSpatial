@@ -1012,7 +1012,7 @@ Math.Round(
 #endif
             // Get the amount in seconds
             double newSeconds = Seconds;
-            //double HalfInterval = interval * 0.5;
+            // double HalfInterval = interval * 0.5;
             // Loop through all intervals to find the right rounding
             for (double value = 0; value < 60; value += interval)
             {
@@ -1177,7 +1177,7 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, int minutes, double seconds)
         {
-            //return hours < 0
+            // return hours < 0
             //    ? -Math.Round(-hours + minutes / 60.0 + seconds / 3600.0, MaximumPrecisionDigits)
             //    : Math.Round(hours + minutes / 60.0 + seconds / 3600.0, MaximumPrecisionDigits);
             return hours < 0
@@ -1199,7 +1199,7 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, double decimalMinutes)
         {
-            //return hours < 0
+            // return hours < 0
             //    ? -Math.Round(-hours + decimalMinutes / 60.0, MaximumPrecisionDigits)
             //    : Math.Round(hours + decimalMinutes / 60.0, MaximumPrecisionDigits);
             return hours < 0
@@ -1230,7 +1230,7 @@ Math.Round(
         /// <remarks>The specified value will be converted to decimal degrees, then rounded to thirteen digits, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, double decimalMinutes, LatitudeHemisphere hemisphere)
         {
-            //switch (hemisphere)
+            // switch (hemisphere)
             //{
             //    case LatitudeHemisphere.South:
             //        return -Math.Abs(hours) - Math.Round(decimalMinutes / 60.0, MaximumPrecisionDigits);
@@ -1261,7 +1261,7 @@ Math.Round(
         /// <remarks>The specified value will be rounded to thirteen digits, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(double decimalDegrees, LatitudeHemisphere hemisphere)
         {
-            //switch (hemisphere)
+            // switch (hemisphere)
             //{
             //    case LatitudeHemisphere.South:
             //        return -Math.Abs(Math.Round(decimalDegrees, MaximumPrecisionDigits));
@@ -1297,7 +1297,7 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, int minutes, double seconds, LatitudeHemisphere hemisphere)
         {
-            //switch (hemisphere)
+            // switch (hemisphere)
             //{
             //    case LatitudeHemisphere.South:
             //        return -Math.Abs(hours) - Math.Round(minutes / 60.0, MaximumPrecisionDigits) - Math.Round(seconds / 3600.0, MaximumPrecisionDigits);

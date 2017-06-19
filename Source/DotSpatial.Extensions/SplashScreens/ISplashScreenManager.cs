@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ISplashScreenManager.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel.Composition;
@@ -21,7 +18,7 @@ namespace DotSpatial.Extensions.SplashScreens
         void Activate();
 
         /// <summary>
-        ///
+        /// Processes the given command with the given arguments.
         /// </summary>
         /// <param name="cmd">A SplashScreenCommand enum value.</param>
         /// <param name="arg">The argument to pass to the command. See SplashScreenCommand for details reguarding each individual command.</param>

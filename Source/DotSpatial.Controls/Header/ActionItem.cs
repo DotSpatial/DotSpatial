@@ -1,3 +1,6 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
 using System;
 
 namespace DotSpatial.Controls.Header
@@ -7,13 +10,19 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public abstract class ActionItem : GroupedItem
     {
-        private string caption;
-        private bool enabled = true;
-        private string toolTipText;
-        private bool visible = true;
+        #region Fields
+
+        private string _caption;
+        private bool _enabled = true;
+        private string _toolTipText;
+        private bool _visible = true;
+
+        #endregion
+
+        #region  Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ActionItem class.
+        /// Initializes a new instance of the <see cref="ActionItem"/> class.
         /// </summary>
         protected ActionItem()
         {
@@ -30,13 +39,19 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Initializes a new instance of the ActionItem class.
+        /// Initializes a new instance of the <see cref="ActionItem"/> class.
         /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="caption">The caption.</param>
         protected ActionItem(string key, string caption)
         {
-            this.Key = key;
-            this.Caption = caption;
+            Key = key;
+            Caption = caption;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the caption.
@@ -46,31 +61,14 @@ namespace DotSpatial.Controls.Header
         {
             get
             {
-                return caption;
+                return _caption;
             }
-            set
-            {
-                if (caption == value) return;
-                caption = value;
-                OnPropertyChanged("Caption");
-            }
-        }
 
-        /// <summary>
-        /// Gets or sets the simple tool tip.
-        /// </summary>
-        /// <value>The simple tool tip.</value>
-        public string ToolTipText
-        {
-            get
-            {
-                return toolTipText;
-            }
             set
             {
-                if (toolTipText == value) return;
-                toolTipText = value;
-                OnPropertyChanged("ToolTipText");
+                if (_caption == value) return;
+                _caption = value;
+                OnPropertyChanged("Caption");
             }
         }
 
@@ -82,12 +80,35 @@ namespace DotSpatial.Controls.Header
         /// </value>
         public bool Enabled
         {
-            get { return enabled; }
+            get
+            {
+                return _enabled;
+            }
+
             set
             {
-                if (enabled == value) return;
-                enabled = value;
+                if (_enabled == value) return;
+                _enabled = value;
                 OnPropertyChanged("Enabled");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the simple tool tip.
+        /// </summary>
+        /// <value>The simple tool tip.</value>
+        public string ToolTipText
+        {
+            get
+            {
+                return _toolTipText;
+            }
+
+            set
+            {
+                if (_toolTipText == value) return;
+                _toolTipText = value;
+                OnPropertyChanged("ToolTipText");
             }
         }
 
@@ -99,13 +120,19 @@ namespace DotSpatial.Controls.Header
         /// </value>
         public bool Visible
         {
-            get { return visible; }
+            get
+            {
+                return _visible;
+            }
+
             set
             {
-                if (visible == value) return;
-                visible = value;
+                if (_visible == value) return;
+                _visible = value;
                 OnPropertyChanged("Visible");
             }
         }
+
+        #endregion
     }
 }

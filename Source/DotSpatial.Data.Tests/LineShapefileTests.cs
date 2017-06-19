@@ -1,29 +1,42 @@
-﻿using System.Linq;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System.Linq;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {
+    /// <summary>
+    /// Tests for line shapefiles.
+    /// </summary>
     [TestFixture]
-    class LineShapefileTests
+    internal class LineShapefileTests
     {
+        /// <summary>
+        /// Tests that line shapefiles with null shapes can be read.
+        /// </summary>
         [Test]
         public void CanReadLineShapeWithNullShapes()
         {
-            const string path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
-            var target = new LineShapefile(path);
+            const string Path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
+            var target = new LineShapefile(Path);
             Assert.IsNotNull(target);
             Assert.AreEqual(11, target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape));
             Assert.AreEqual(11, target.Features.Count(d => d.Geometry.IsEmpty));
         }
 
+        /// <summary>
+        /// Tests that line shapefiles with null shapes can be written to file.
+        /// </summary>
+        /// <param name="indexMode">Indicates whether writing uses IndexMode.</param>
         [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void CanExportLineShapeWithNullShapes(bool indexMode)
         {
-            const string path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
-            var target = new LineShapefile(path);
+            const string Path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
+            var target = new LineShapefile(Path);
             Assert.IsTrue(target.Features.Count > 0);
             target.IndexMode = indexMode;
 
@@ -34,7 +47,7 @@ namespace DotSpatial.Data.Tests
             {
                 var actual = new LineShapefile(exportPath);
                 Assert.IsNotNull(actual);
-                Assert.AreEqual(target.Extent,actual.Extent);
+                Assert.AreEqual(target.Extent, actual.Extent);
                 Assert.AreEqual(target.ShapeIndices.Count, actual.ShapeIndices.Count);
                 Assert.AreEqual(target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape), actual.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape));
                 Assert.AreEqual(target.Features.Count, actual.Features.Count);

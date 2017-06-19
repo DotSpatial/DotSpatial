@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
@@ -6,68 +9,46 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.SetSelectable
 {
+    /// <summary>
+    /// A plugin that adds a panel to the dock manager that enables the user to manage the layers selections.
+    /// </summary>
     public class SetSelectablePlugin : Extension
     {
-        #region variables and properties
+        #region Fields
 
-        DGV_Select _DGV_Selection;
+        private DgvSelect _dgvSelection;
 
-        /// <summary>
-        /// High Priority allows legend to be loaded first.
-        /// </summary>
-        public override int Priority
-        {
-            get { return 100; }
-        }
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the priority. The high Priority allows legend to be loaded first.
+        /// </summary>
+        public override int Priority => 100;
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
         public override void Activate()
         {
-            _DGV_Selection = new DGV_Select();
-            App.DockManager.Add(new DockablePanel("kSetSelectable", LocalizationStrings.PanelHeader, _DGV_Selection, DockStyle.Left));
-            App.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            _dgvSelection = new DgvSelect();
+            App.DockManager.Add(new DockablePanel("kSetSelectable", LocalizationStrings.PanelHeader, _dgvSelection, DockStyle.Left));
+            App.SerializationManager.Deserializing += SerializationManagerDeserializing;
             AttachLayerAddedEvents();
             base.Activate();
         }
 
+        /// <inheritdoc />
         public override void Deactivate()
         {
             // detach events
-            if (App.Legend != null) App.Legend.OrderChanged -= Legend_OrderChanged;
-            App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
+            if (App.Legend != null) App.Legend.OrderChanged -= LegendOrderChanged;
+            App.SerializationManager.Deserializing -= SerializationManagerDeserializing;
             DetachLayerAddedEvents();
             base.Deactivate();
-        }
-
-        /// <summary>
-        /// Attaches the LayerAdded/LayerRemoved events to the groups and the map.
-        /// </summary>
-        private void AttachLayerAddedEvents()
-        {
-            App.Map.Layers.LayerMoved += Layers_LayerMoved;
-            App.Map.LayerAdded += Map_LayerAdded;
-            App.Map.MapFrame.LayerRemoved += Map_LayerRemoved;
-            if (App.Legend != null) App.Legend.OrderChanged += Legend_OrderChanged;
-
-            foreach (ILayer layer in App.Map.Layers)
-            {
-                AddLayer(layer);
-            }
-        }
-
-        /// <summary>
-        /// Detaches the LayerAdded/LayerRemoved events from the groups.
-        /// </summary>
-        private void DetachLayerAddedEvents()
-        {
-            App.Map.Layers.LayerMoved -= Layers_LayerMoved;
-            App.Map.LayerAdded -= Map_LayerAdded;
-            App.Map.MapFrame.LayerRemoved -= Map_LayerRemoved;
-            foreach (IGroup grp in App.Map.MapFrame.GetAllGroups())
-            {
-                grp.LayerAdded -= Map_LayerAdded;
-                grp.LayerRemoved -= Map_LayerRemoved;
-            }
         }
 
         /// <summary>
@@ -81,59 +62,102 @@ namespace DotSpatial.Plugins.SetSelectable
             var grp = addedLayer as IMapGroup;
             if (grp != null)
             {
-                //handle layerAdded event separately for groups because map.layerAdded event doesn't fire for groups.
-                grp.LayerAdded += Map_LayerAdded;
-                grp.LayerRemoved += Map_LayerRemoved;
-                foreach (ILayer layer in grp.Layers)
+                // handle layerAdded event separately for groups because map.layerAdded event doesn't fire for groups.
+                grp.LayerAdded += MapLayerAdded;
+                grp.LayerRemoved += MapLayerRemoved;
+                foreach (IMapLayer layer in grp.Layers)
                 {
                     AddLayer(layer);
                 }
             }
             else
             {
-                _DGV_Selection.AddLayer(addedLayer);
+                _dgvSelection.AddLayer(addedLayer);
             }
         }
 
         /// <summary>
-        /// Sorts the selectable layers according to the changed legend-order.
+        /// Attaches the LayerAdded/LayerRemoved events to the groups and the map.
         /// </summary>
-        private void Legend_OrderChanged(object sender, EventArgs e)
+        private void AttachLayerAddedEvents()
         {
-            _DGV_Selection.MoveLayers(App.Map.Layers);
+            App.Map.Layers.LayerMoved += LayersLayerMoved;
+            App.Map.LayerAdded += MapLayerAdded;
+            App.Map.MapFrame.LayerRemoved += MapLayerRemoved;
+            if (App.Legend != null) App.Legend.OrderChanged += LegendOrderChanged;
+
+            foreach (IMapLayer layer in App.Map.Layers)
+            {
+                AddLayer(layer);
+            }
         }
 
         /// <summary>
-        /// Adds the layers to DGV_Selection after a project gets loaded.
+        /// Detaches the LayerAdded/LayerRemoved events from the groups.
         /// </summary>
-        private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
+        private void DetachLayerAddedEvents()
         {
-            DetachLayerAddedEvents();
-            AttachLayerAddedEvents();
+            App.Map.Layers.LayerMoved -= LayersLayerMoved;
+            App.Map.LayerAdded -= MapLayerAdded;
+            App.Map.MapFrame.LayerRemoved -= MapLayerRemoved;
+            foreach (IMapGroup grp in App.Map.MapFrame.GetAllGroups())
+            {
+                grp.LayerAdded -= MapLayerAdded;
+                grp.LayerRemoved -= MapLayerRemoved;
+            }
         }
 
         /// <summary>
         /// Moves the given layer to the new position inside DGV_Selection.
         /// </summary>
-        private void Layers_LayerMoved(object sender, LayerMovedEventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void LayersLayerMoved(object sender, LayerMovedEventArgs e)
         {
-            _DGV_Selection.MoveLayer(e.Layer, e.NewPosition);
+            _dgvSelection.MoveLayer(e.Layer, e.NewPosition);
+        }
+
+        /// <summary>
+        /// Sorts the selectable layers according to the changed legend-order.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void LegendOrderChanged(object sender, EventArgs e)
+        {
+            _dgvSelection.MoveLayers(App.Map.Layers);
         }
 
         /// <summary>
         /// Adds the layer that was added to the map to the DGV_Selection.
         /// </summary>
-        private void Map_LayerAdded(object sender, LayerEventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void MapLayerAdded(object sender, LayerEventArgs e)
         {
-            _DGV_Selection.AddLayer(e.Layer);
+            _dgvSelection.AddLayer(e.Layer);
         }
 
         /// <summary>
         /// Removes the layer, that was removed from map from the DGV_Selection.
         /// </summary>
-        private void Map_LayerRemoved(object sender, LayerEventArgs e)
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void MapLayerRemoved(object sender, LayerEventArgs e)
         {
-            _DGV_Selection.RemoveLayer(e.Layer);
+            _dgvSelection.RemoveLayer(e.Layer);
         }
+
+        /// <summary>
+        /// Adds the layers to DGV_Selection after a project gets loaded.
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
+        {
+            DetachLayerAddedEvents();
+            AttachLayerAddedEvents();
+        }
+
+        #endregion
     }
 }

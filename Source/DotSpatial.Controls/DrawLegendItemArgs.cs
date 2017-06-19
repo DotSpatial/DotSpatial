@@ -1,15 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 12/2/2008 4:47:48 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
 using DotSpatial.Symbology;
@@ -21,10 +11,10 @@ namespace DotSpatial.Controls
     /// </summary>
     public class DrawLegendItemArgs
     {
-        #region Constructors
+        #region  Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawLegendItemArgs.
+        /// Initializes a new instance of the <see cref="DrawLegendItemArgs"/> class.
         /// </summary>
         /// <param name="g">A Graphics surface to draw on.</param>
         /// <param name="item">The legend item to draw.</param>
@@ -43,24 +33,24 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the interface for the legend item being drawn.
-        /// </summary>
-        public ILegendItem Item { get; protected set; }
-
-        /// <summary>
-        /// Gets the rectangle that limits where drawing should occur.
+        /// Gets or sets the rectangle that limits where drawing should occur.
         /// </summary>
         public Rectangle ClipRectangle { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the graphics object for drawing to.
+        /// </summary>
+        public Graphics Graphics { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the interface for the legend item being drawn.
+        /// </summary>
+        public ILegendItem Item { get; protected set; }
 
         /// <summary>
         /// Gets or sets the point that is the top left position where this item should start drawing, counting indentation.
         /// </summary>
         public PointF TopLeft { get; protected set; }
-
-        /// <summary>
-        /// Gets the graphics object for drawing to.
-        /// </summary>
-        public Graphics Graphics { get; protected set; }
 
         #endregion
     }
