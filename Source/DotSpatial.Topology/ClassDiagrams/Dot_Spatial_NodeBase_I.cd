@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.Index.Bintree.Node">
+    <Position X="20.5" Y="24" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAAAAAAAAAEIEAASAAEAAIAAAAAQAgBAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.NodeBase">
+    <Position X="21.25" Y="19.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAACBAAAAAAAAQAABAEIAAgAAAIBAAAAAE=</HashCode>
+      <FileName>Index\Bintree\NodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.Root">
+    <Position X="22.75" Y="24" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAACAAABAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Root.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

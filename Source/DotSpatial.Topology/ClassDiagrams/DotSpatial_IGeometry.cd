@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Geometries.Geometry">
+    <Position X="17.25" Y="12.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="DotSpatial.Geometries.Geometry.GeometryChangedFilter">
+        <TypeIdentifier>
+          <NewMemberFileName>Geometry.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>KQBAQBQUgJBIlITMsEgQQABIYCxiTABAoDTCASBZXIg=</HashCode>
+      <FileName>Geometry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.GeometryCollection">
+    <Position X="12.75" Y="32.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AQBAQAAUgJAIBBCCGAYAQARIICAAQAAAABBAAQAEBAA=</HashCode>
+      <FileName>GeometryCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.LinearRing">
+    <Position X="21.75" Y="41" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIEAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>LinearRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.LineString">
+    <Position X="21.75" Y="32.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQBQZAgUAJAARAAAmAIAQARIYCAAQEAAAFBCAAAAhAg=</HashCode>
+      <FileName>LineString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MultiLineString">
+    <Position X="13" Y="40.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAAAAAACAIAAAAIQAAAQEAAAABCAAAABAA=</HashCode>
+      <FileName>MultiLineString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MultiPoint">
+    <Position X="16.25" Y="40.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAABAAACAoAAAAIQAAAQAAAAABAAAAABAA=</HashCode>
+      <FileName>MultiPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MultiPolygon">
+    <Position X="10" Y="40.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAQAAIAAAAAAAAIAAAAIQAAAQAAAAABAAAAABAA=</HashCode>
+      <FileName>MultiPolygon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Point">
+    <Position X="19" Y="32.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQBAQEAUAJAIDACAHAoAwAAIYAQAQABAABBgAAJAZAE=</HashCode>
+      <FileName>Point.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Polygon">
+    <Position X="24.75" Y="32.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AwBAQAAUALQABAAIEAIAQARIYAQEQAADABBAQQAABAA=</HashCode>
+      <FileName>Polygon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

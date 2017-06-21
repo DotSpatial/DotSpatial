@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Iesi.Collections.DictionarySet">
+    <Position X="10" Y="9" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAASABBAAAAAAFAQQAACAAAEAIBAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\DictionarySet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.HashedSet">
+    <Position X="11" Y="14.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\HashedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.HybridSet">
+    <Position X="13.75" Y="14.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\HybridSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.ListSet">
+    <Position X="5.75" Y="14.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\ListSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Set">
+    <Position X="9.75" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAATAABAAAAEGFAQBAAIAAIEAIBAAAQBQIBA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Set.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi.Collections.SortedSet">
+    <Position X="8.25" Y="14.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\SortedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

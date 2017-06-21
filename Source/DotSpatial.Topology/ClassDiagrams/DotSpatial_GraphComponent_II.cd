@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Edge">
+    <Position X="8.5" Y="27.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAKIAAIAAEQhASEgAAAABQAIAgAAMAiIBAAAIEEWjA=</HashCode>
+      <FileName>GeometryGraph\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.GraphComponent">
+    <Position X="6.75" Y="22.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEgAABADAABBAAEAAAAAAIAAAIAAIAAAEEAA=</HashCode>
+      <FileName>GeometryGraph\GraphComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Node">
+    <Position X="5.5" Y="27.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAJAgAAAAAAEBACEAABAAAAAAAIBAAAAIAAAAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.RelateNode">
+    <Position X="5.75" Y="32.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

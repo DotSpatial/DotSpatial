@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+  <Identifier Id="DotSpatial.Plugins.e9e9a389-0b83-44df-9681-ac1de97c386c">
+    <Name>DotSpatial Plugin Template</Name>
+    <Author>DotSpatial Team</Author>
+    <Version>1.0.0.14</Version>
+    <Description xml:space="preserve">A C# project for creating an extension which be loaded in DotSpatial and MapWindow 6.</Description>
+    <Locale>1033</Locale>
+    <MoreInfoUrl>http://dotspatial.codeplex.com</MoreInfoUrl>
+    <License>Ms-PL.txt</License>
+    <Icon>DotSpatialGlobe.ico</Icon>
+    <PreviewImage>DemoMap.png</PreviewImage>
+    <SupportedProducts>
+      <VisualStudio Version="10.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>VCSExpress</Edition>
+      </VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition MinVersion="4.0" MaxVersion="4.0" />
+  </Identifier>
+  <References>
+    <Reference Id="NuPackToolsVsix.Microsoft.67e54e40-0ae3-42c5-a949-fddf5739e7a5" MinVersion="1.6.21215.9133">
+      <Name>NuGet Package Manager</Name>
+      <MoreInfoUrl>http://docs.nuget.org/</MoreInfoUrl>
+    </Reference>
+  </References>
+  <Content>
+    <ProjectTemplate>ProjectTemplates</ProjectTemplate>
+  </Content>
+</Vsix>

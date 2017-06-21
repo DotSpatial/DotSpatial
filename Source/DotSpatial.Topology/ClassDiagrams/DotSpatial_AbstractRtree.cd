@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.Index.Strtree.AbstractStRtree">
+    <Position X="17.25" Y="19.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Interface Name="DotSpatial.Topology.Index.Strtree.AbstractStRtree.IIntersectsOp">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\AbstractSTRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EAEIBUgQAAAQACCgAAEABAQAQAAAgAgkAQAAAYAAAAA=</HashCode>
+      <FileName>Index\Strtree\AbstractSTRtree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.SiRtree">
+    <Position X="15.5" Y="27.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="DotSpatial.Topology.Index.Strtree.SiRtree.AnnonymousComparerImpl">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\SIRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="DotSpatial.Topology.Index.Strtree.SiRtree.AnonymousIntersectsOpImpl">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\SIRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="DotSpatial.Topology.Index.Strtree.SiRtree.AnonymousAbstractNodeImpl">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\SIRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABEAAEAAAAAAAAAAAAEAAAAAAAAAAAggAQAAAAAAAAA=</HashCode>
+      <FileName>Index\Strtree\SIRtree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.StRtree">
+    <Position X="18.75" Y="27.75" Width="3" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="DotSpatial.Topology.Index.Strtree.StRtree.AnonymousXComparerImpl">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\STRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="DotSpatial.Topology.Index.Strtree.StRtree.AnonymousYComparerImpl">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\STRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="DotSpatial.Topology.Index.Strtree.StRtree.AnonymousAbstractNodeImpl">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\STRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DotSpatial.Topology.Index.Strtree.StRtree.AnonymousIntersectsOpImpl">
+        <TypeIdentifier>
+          <NewMemberFileName>Index\Strtree\STRtree.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAEABEBAAAACAAAAAAEABDAAAAAAAAgAAQAAIAAEAAA=</HashCode>
+      <FileName>Index\Strtree\STRtree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

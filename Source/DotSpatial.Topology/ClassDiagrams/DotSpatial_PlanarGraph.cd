@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.LineMergeGraph">
+    <Position X="6.5" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.PolygonizeGraph">
+    <Position X="8.5" Y="21.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AiABBAIAMgAIAAAACAAAAAAAEAAAAAAAAAAyAAABEAA=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.PlanarGraph">
+    <Position X="7.25" Y="17" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIgiCAAAAAgAAAAAABABBAAAAAAAAAAQAgQAAAABAA=</HashCode>
+      <FileName>Planargraph\PlanarGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

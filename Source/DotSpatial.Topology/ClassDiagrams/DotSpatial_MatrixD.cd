@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Geometries.Matrix4">
+    <Position X="11.75" Y="29.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAWAAAAAAAAIACAAAAAAAAAAAAAAAAAEAEAAAAAAA=</HashCode>
+      <FileName>Geometries\Matrix4.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MatrixD">
+    <Position X="11.5" Y="25.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAIAAABAAAAAAAAAAAAAAAoABKBACA=</HashCode>
+      <FileName>Geometries\MatrixD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
