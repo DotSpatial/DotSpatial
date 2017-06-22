@@ -18,7 +18,7 @@ namespace DotSpatial.Symbology
         public static bool ClearSelection(this ISelectable self)
         {
             Envelope ignoreMe;
-            return self.ClearSelection(out ignoreMe);
+            return self.ClearSelection(out ignoreMe, true);
         }
 
         /// <summary>

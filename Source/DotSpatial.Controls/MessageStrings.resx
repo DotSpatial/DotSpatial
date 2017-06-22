@@ -751,10 +751,10 @@ Reproject the layer to match the map coordinate system? This will not affect the
     <value>Projection Mismatch</value>
   </data>
   <data name="MapFunctionSelect_NoSelectableLayer" xml:space="preserve">
-    <value>No layers are currently selectable layers active in the legend. Select the layer or group in the legend for which selection should occur.</value>
+    <value>There are no visible layers, that are selection enabled.</value>
   </data>
   <data name="MapFunctionSelect_OnKeyDown_No_Deletable_Layers" xml:space="preserve">
-    <value>There was no selected feature layer in the legend to clarify which features to delete. Please select a layer or group in the legend.</value>
+    <value>There are no visible layers, that contain features that may be deleted.</value>
   </data>
   <data name="MapFrame_Projection" xml:space="preserve">
     <value>Projection</value>

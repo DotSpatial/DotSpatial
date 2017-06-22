@@ -5,10 +5,10 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
-using SelectionMode = DotSpatial.Symbology.SelectionMode;
 
 namespace DotSpatial.Controls
 {
@@ -24,7 +24,6 @@ namespace DotSpatial.Controls
         private Coordinate _geoStartPoint;
         private bool _isDragging;
         private Point _startPoint;
-        private ILayer _former;
 
         #endregion
 
@@ -76,22 +75,13 @@ namespace DotSpatial.Controls
             bool changed = false;
             if (e.KeyCode == Keys.Delete)
             {
-                bool selectable = false;
-                foreach (ILayer layer in Map.MapFrame.GetAllLayers())
+                foreach (var fl in Map.MapFrame.GetAllFeatureLayers().Where(_ => _.SelectionEnabled && _.IsVisible && _.Selection.Count > 0))
                 {
-                    IFeatureLayer fl = layer as IFeatureLayer;
-                    if (fl == null) continue;
-
-                    if (fl.IsWithinLegendSelection())
-                    {
-                        selectable = true;
-                        fl.RemoveSelectedFeatures();
-                        changed = true;
-                        break;
-                    }
+                    fl.RemoveSelectedFeatures();
+                    changed = true;
                 }
 
-                if (selectable == false)
+                if (!changed)
                 {
                     MessageBox.Show(MessageStrings.MapFunctionSelect_OnKeyDown_No_Deletable_Layers);
                 }
@@ -153,8 +143,6 @@ namespace DotSpatial.Controls
             _currentPoint = e.Location;
             _isDragging = false;
 
-            // Map.Invalidate(); // Get rid of the selection box
-            // Application.DoEvents();
             Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
             Envelope tolerant = env;
 
@@ -172,36 +160,13 @@ namespace DotSpatial.Controls
                 tolerant = new Envelope(c1, c2);
             }
 
-            _former = null;
-            foreach (var l in Map.MapFrame.GetAllLayers())
-            {
-                if (l.IsSelected)
-                {
-                    _former = l;
-                    l.IsSelected = false;
-                }
-            }
-
-            if (_former == null && Map.MapFrame.IsSelected)
-            {
-                _former = Map.MapFrame;
-            }
-
-            Map.MapFrame.IsSelected = true;
-            Map.MapFrame.SuspendEvents();
             HandleSelection(tolerant, env);
-            Map.MapFrame.IsSelected = false;
-            if (_former != null)
-            {
-                _former.IsSelected = true;
-            }
 
             Map.MapFrame.ResumeEvents();
 
             // Force an invalidate to clear the dotted lines, even if we haven't changed anything.
             e.Map.Invalidate();
 
-            // e.Map.MapFrame.Initialize();
 #if DEBUG
             sw.Stop();
             Debug.WriteLine("Initialize: " + sw.ElapsedMilliseconds);
@@ -213,45 +178,33 @@ namespace DotSpatial.Controls
         private void HandleSelection(Envelope tolerant, Envelope strict)
         {
             Keys key = Control.ModifierKeys;
-            if ((((key & Keys.Shift) == Keys.Shift) == false) && (((key & Keys.Control) == Keys.Control) == false))
+            if ((key & Keys.Shift) != Keys.Shift && (key & Keys.Control) != Keys.Control)
             {
-                // If they are not pressing shift, then first clear the selection before adding new members to it.
-                Envelope region;
 #if DEBUG
                 var sw = new Stopwatch();
                 sw.Start();
 #endif
-                Map.ClearSelection(out region);
+
+                // If they are not pressing shift or control, clear the selection before adding new members to it.
+                Map.ClearSelection();
+
 #if DEBUG
                 sw.Stop();
                 Debug.WriteLine("Clear: " + sw.ElapsedMilliseconds);
 #endif
             }
 
-            if ((key & Keys.Control) == Keys.Control)
+            if (!Map.MapFrame.GetAllLayers().Any(_ => _.SelectionEnabled && _.IsVisible))
             {
-                Envelope region;
-                Map.InvertSelection(tolerant, strict, SelectionMode.Intersects, out region);
+                MessageBox.Show(MessageStrings.MapFunctionSelect_NoSelectableLayer);
+            }
+            else if ((key & Keys.Control) == Keys.Control)
+            {
+                Map.InvertSelection(tolerant, strict);
             }
             else
             {
-                bool selectable = false;
-                foreach (ILayer layer in Map.MapFrame.GetAllLayers())
-                {
-                    if ((layer.IsVisible && layer.IsWithinLegendSelection()) || layer.IsSelected)
-                    {
-                        selectable = true;
-                        break;
-                    }
-                }
-
-                if (selectable == false)
-                {
-                    MessageBox.Show(MessageStrings.MapFunctionSelect_NoSelectableLayer);
-                }
-
-                Envelope region;
-                Map.Select(tolerant, strict, SelectionMode.Intersects, out region);
+                Map.Select(tolerant, strict);
             }
         }
 

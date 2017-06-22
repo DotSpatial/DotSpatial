@@ -23,10 +23,42 @@ namespace DotSpatial.Symbology
         {
             if (self.LegendItems != null && self.LegendItems.Any())
             {
-                return BottomMember(self.LegendItems.First());
+                var items = self.LegendItems.ToList();
+
+                for (int i = items.Count - 1; i >= 0; i--)
+                {
+                    if (items[i].LegendItemVisible)
+                    {
+                        if (items[i].IsExpanded)
+                        {
+                            return BottomMember(items[i]);
+                        }
+
+                        return items[i];
+                    }
+                }
             }
 
             return self;
+        }
+
+        /// <summary>
+        /// Checks whether the item is a child item of the given parent.
+        /// </summary>
+        /// <param name="self">This legend item.</param>
+        /// <param name="parent">The parent item.</param>
+        /// <returns>True, if this is a child of the given parent.</returns>
+        public static bool IsChildOf(this ILegendItem self, ILegendItem parent)
+        {
+            if (self == null || parent == null) return false;
+
+            var item = self;
+            while ((item = item.GetParentItem()) != null)
+            {
+                if (item == parent) return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -54,31 +86,36 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Given the starting position, which might not be able to contain the drop item,
-        /// determine the index in the valid container where this item should end up.
+        /// Gets the index at which the positionBase is situated in the parent. This can be used to determine the index the item that gets moved should be inserted.
         /// </summary>
-        /// <param name="startItem">The legend item that may not be a sibling or be able to contain the drop item</param>
-        /// <param name="dropItem">The item being added to the legend</param>
-        /// <returns>The integer index of the valid container where insertion should occur when dropping onto this item.</returns>
-        public static int InsertIndex(this ILegendItem startItem, ILegendItem dropItem)
+        /// <param name="parent">The legend item the moving item should be added to.</param>
+        /// <param name="positionBase">The item that is used to determine the new position of the moving item.</param>
+        /// <returns>The new position of the moving item.</returns>
+        public static int InsertIndex(this ILegendItem parent, ILegendItem positionBase)
         {
-            ILegendItem container = GetValidContainerFor(startItem, dropItem);
-            if (container == null) return -1;
+            if (parent == null || positionBase == null) return -1;
 
-            ILegendItem insertTarget = GetInsertTarget(startItem, dropItem);
-            if (insertTarget == null) return container.LegendItems.Count();
-            if (insertTarget == container)
+            ILegendItem item = positionBase;
+
+            if (item == parent)
             {
-                return container.LegendItems.Count();
+                return item.LegendItems.Count();
             }
 
-            List<ILegendItem> items = container.LegendItems.ToList();
-            if (items.Contains(insertTarget))
+            while (item != null)
             {
-                return items.IndexOf(insertTarget);
+                var p = item.GetParentItem();
+
+                if (p == parent)
+                {
+                    var items = p.LegendItems.ToList();
+                    return items.IndexOf(item);
+                }
+
+                item = p;
             }
 
-            return container.LegendItems.Count();
+            return -1;
         }
 
         /// <summary>
@@ -97,25 +134,6 @@ namespace DotSpatial.Symbology
 
                 current = current.GetParentItem();
                 frame = current as IFrame;
-            }
-
-            return null;
-        }
-
-        private static ILegendItem GetInsertTarget(ILegendItem startItem, ILegendItem dropItem)
-        {
-            if (startItem == null || dropItem == null) return null;
-            if (startItem.CanReceiveItem(dropItem)) return startItem;
-
-            ILegendItem item = startItem;
-            while (item.GetParentItem() != null)
-            {
-                if (item.GetParentItem().CanReceiveItem(dropItem))
-                {
-                    return item;
-                }
-
-                item = item.GetParentItem();
             }
 
             return null;

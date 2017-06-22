@@ -38,6 +38,7 @@ namespace DotSpatial.Plugins.SetSelectable
             App.DockManager.Add(new DockablePanel("kSetSelectable", LocalizationStrings.PanelHeader, _dgvSelection, DockStyle.Left));
             App.SerializationManager.Deserializing += SerializationManagerDeserializing;
             AttachLayerAddedEvents();
+            App.Legend.UseLegendForSelection = false;
             base.Activate();
         }
 
@@ -45,14 +46,19 @@ namespace DotSpatial.Plugins.SetSelectable
         public override void Deactivate()
         {
             // detach events
-            if (App.Legend != null) App.Legend.OrderChanged -= LegendOrderChanged;
+            if (App.Legend != null)
+            {
+                App.Legend.OrderChanged -= LegendOrderChanged;
+                App.Legend.UseLegendForSelection = true;
+            }
+
             App.SerializationManager.Deserializing -= SerializationManagerDeserializing;
             DetachLayerAddedEvents();
             base.Deactivate();
         }
 
         /// <summary>
-        /// Adds the layer to DGV_Selection if its not a MapGroup. Else the EventHandlers get attached and the Groups children get added to DGV_Selection.
+        /// Adds the layer to DgvSelection if its not a MapGroup. Otherwise the EventHandlers get attached and the groups children get added to DgvSelection.
         /// </summary>
         /// <param name="addedLayer">Layer, that should be added to DGV_Selection.</param>
         private void AddLayer(ILayer addedLayer)
@@ -100,7 +106,7 @@ namespace DotSpatial.Plugins.SetSelectable
             App.Map.Layers.LayerMoved -= LayersLayerMoved;
             App.Map.LayerAdded -= MapLayerAdded;
             App.Map.MapFrame.LayerRemoved -= MapLayerRemoved;
-            foreach (IMapGroup grp in App.Map.MapFrame.GetAllGroups())
+            foreach (var grp in App.Map.MapFrame.GetAllGroups())
             {
                 grp.LayerAdded -= MapLayerAdded;
                 grp.LayerRemoved -= MapLayerRemoved;

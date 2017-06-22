@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DGV_Selectable_Tooltip" xml:space="preserve">
+  <data name="DgvSelectableTooltip" xml:space="preserve">
     <value>Legen Sie hierüber fest, ob Feature in diesem Layer ausgewählt werden können.</value>
   </data>
-  <data name="DGVC_Unselect_Tooltip" xml:space="preserve">
+  <data name="DgvcUnselectTooltip" xml:space="preserve">
     <value>Deselektiert die ausgewählten Feature dieses Layers.</value>
   </data>
-  <data name="DGVC_Count_Tooltip" xml:space="preserve">
+  <data name="DgvcCountTooltip" xml:space="preserve">
     <value>Anzahl der momentan in diesem Layer selektierten Feature.</value>
   </data>
   <data name="PanelHeader" xml:space="preserve">

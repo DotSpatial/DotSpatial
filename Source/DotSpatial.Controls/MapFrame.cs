@@ -38,7 +38,6 @@ namespace DotSpatial.Controls
         private List<Rectangle> _clipRegions;
         private int _currentChunk;
         private bool _extendBuffer;
-        private ILayer _former;
         private int _height;
         private bool _isPanning;
 
@@ -339,14 +338,7 @@ namespace DotSpatial.Controls
         /// Gets the layers cast as legend items. This allows
         /// easier cycling in recursive legend code.
         /// </summary>
-        public override IEnumerable<ILegendItem> LegendItems
-        {
-            get
-            {
-                // leave cast for 3.5 compatibility
-                return _layers.Cast<ILegendItem>();
-            }
-        }
+        public override IEnumerable<ILegendItem> LegendItems => _layers;
 
         /// <summary>
         /// Gets or sets the parent control for this map frame.
@@ -603,32 +595,21 @@ namespace DotSpatial.Controls
         }
 
         /// <inheritdoc />
-        public override bool ClearSelection(out Envelope affectedAreas)
+        public override bool ClearSelection(out Envelope affectedAreas, bool force = false)
         {
-            _former = null;
-            foreach (var l in this.GetAllLayers())
+            affectedAreas = new Envelope();
+            bool changed = false;
+            foreach (ILayer layer in GetAllLayers())
             {
-                if (l.IsSelected)
+                Envelope layerArea;
+                if (layer.ClearSelection(out layerArea, force))
                 {
-                    _former = l;
-                    l.IsSelected = false;
+                    changed = true;
+                    affectedAreas.ExpandToInclude(layerArea);
                 }
             }
 
-            if (_former == null && IsSelected)
-            {
-                _former = this;
-            }
-
-            IsSelected = true;
-            bool cleared = base.ClearSelection(out affectedAreas);
-            IsSelected = false;
-            if (_former != null)
-            {
-                _former.IsSelected = true;
-            }
-
-            return cleared;
+            return changed;
         }
 
         /// <inheritdoc />

@@ -30,6 +30,7 @@ namespace DotSpatial.Plugins.SetSelectable
         {
             InitializeComponent();
             _layers = new List<LayerSelection>();
+            DgvLayer.AutoGenerateColumns = false;
         }
 
         #endregion
@@ -60,10 +61,8 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         public void ChangeDataSource()
         {
-            if (DGV_Layer.DataSource != null) DGV_Layer.DataSource = null;
-            DGV_Layer.DataSource = _layers;
-            var deselectColumn = DGV_Layer.Columns[DGVC_Unselect.Name];
-            if (deselectColumn != null) deselectColumn.DisplayIndex = 2; // Corrects the position of the deselect button
+            if (DgvLayer.DataSource != null) DgvLayer.DataSource = null;
+            DgvLayer.DataSource = _layers;
         }
 
         /// <summary>
@@ -82,11 +81,11 @@ namespace DotSpatial.Plugins.SetSelectable
             LayerSelection old = _layers[index];
             _layers.RemoveAt(index);
 
-            if (_layers.Count <= newPosition) // hinter der Liste
+            if (_layers.Count <= newPosition) // after the list
                 _layers.Add(old);
-            else if (newPosition < 0) // vor der liste
+            else if (newPosition < 0) // before the list
                 _layers.Insert(0, old);
-            else _layers.Insert(newPosition, old); // irgendwo innerhalb
+            else _layers.Insert(newPosition, old); // somewhere inside
             ChangeDataSource();
         }
 
@@ -146,8 +145,8 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="e">The event args.</param>
         public void SelectionChanged(object sender, EventArgs e)
         {
-            DGV_Layer.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            DGV_Layer.Refresh();
+            DgvLayer.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            DgvLayer.Refresh();
         }
 
         /// <summary>
@@ -159,14 +158,14 @@ namespace DotSpatial.Plugins.SetSelectable
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            if (DGV_Layer.Columns[e.ColumnIndex].Name == DGVC_Selectable.Name)
+            if (DgvLayer.Columns[e.ColumnIndex].Name == DgvcSelectable.Name)
             {
-                DataGridViewRow row = DGV_Layer.Rows[e.RowIndex];
+                DataGridViewRow row = DgvLayer.Rows[e.RowIndex];
                 row.Cells[e.ColumnIndex].Value = !(bool)row.Cells[e.ColumnIndex].Value;
             }
-            else if (DGV_Layer.Columns[e.ColumnIndex].Name == DGVC_Unselect.Name)
+            else if (DgvLayer.Columns[e.ColumnIndex].Name == DgvcUnselect.Name)
             {
-                ((LayerSelection)DGV_Layer.Rows[e.RowIndex].DataBoundItem).Layer.UnSelectAll();
+                ((LayerSelection)DgvLayer.Rows[e.RowIndex].DataBoundItem).Layer.UnSelectAll();
             }
         }
 
@@ -179,17 +178,17 @@ namespace DotSpatial.Plugins.SetSelectable
         {
             if (e.ColumnIndex < 0) return;
 
-            if (DGV_Layer.Columns[e.ColumnIndex].Name == DGVC_Selectable.Name)
+            if (DgvLayer.Columns[e.ColumnIndex].Name == DgvcSelectable.Name)
             {
-                e.ToolTipText = LocalizationStrings.DGV_Selectable_Tooltip;
+                e.ToolTipText = LocalizationStrings.DgvSelectableTooltip;
             }
-            else if (DGV_Layer.Columns[e.ColumnIndex].Name == DGVC_Unselect.Name)
+            else if (DgvLayer.Columns[e.ColumnIndex].Name == DgvcUnselect.Name)
             {
-                e.ToolTipText = LocalizationStrings.DGVC_Unselect_Tooltip;
+                e.ToolTipText = LocalizationStrings.DgvcUnselectTooltip;
             }
-            else if (DGV_Layer.Columns[e.ColumnIndex].Name == DGVC_Count.Name)
+            else if (DgvLayer.Columns[e.ColumnIndex].Name == DgvcCount.Name)
             {
-                e.ToolTipText = LocalizationStrings.DGVC_Count_Tooltip;
+                e.ToolTipText = LocalizationStrings.DgvcCountTooltip;
             }
         }
 
@@ -210,9 +209,9 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="e">The event args.</param>
         private void TsbCheckAllClick(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in DGV_Layer.Rows)
+            foreach (DataGridViewRow row in DgvLayer.Rows)
             {
-                row.Cells[DGVC_Selectable.Name].Value = true;
+                row.Cells[DgvcSelectable.Name].Value = true;
             }
         }
 
@@ -223,9 +222,9 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="e">The event args.</param>
         private void TsbCheckNoneClick(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in DGV_Layer.Rows)
+            foreach (DataGridViewRow row in DgvLayer.Rows)
             {
-                row.Cells[DGVC_Selectable.Name].Value = false;
+                row.Cells[DgvcSelectable.Name].Value = false;
             }
         }
 
@@ -236,9 +235,9 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="e">The event args.</param>
         private void TsbSelectAllClick(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in DGV_Layer.Rows)
+            foreach (DataGridViewRow row in DgvLayer.Rows)
             {
-                if ((bool)row.Cells[DGVC_Selectable.Name].Value)
+                if ((bool)row.Cells[DgvcSelectable.Name].Value)
                 {
                     ((LayerSelection)row.DataBoundItem).Layer.DataSet.UpdateExtent();
                     ((LayerSelection)row.DataBoundItem).Layer.SelectAll();
@@ -253,9 +252,9 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="e">The event args.</param>
         private void TsbSelectNoneClick(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in DGV_Layer.Rows)
+            foreach (DataGridViewRow row in DgvLayer.Rows)
             {
-                if ((bool)row.Cells[DGVC_Selectable.Name].Value)
+                if ((bool)row.Cells[DgvcSelectable.Name].Value)
                 {
                     ((LayerSelection)row.DataBoundItem).Layer.UnSelectAll();
                 }

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -61,7 +60,7 @@ namespace DotSpatial.Controls
             _frmFeatureIdentifier.SuspendLayout();
             _frmFeatureIdentifier.Clear();
 
-            Identify(e.Map.MapFrame.GetLayers(), strict, tolerant);
+            Identify(e.Map.MapFrame.GetLayers().Reverse(), strict, tolerant);
 
             _frmFeatureIdentifier.ReSelect();
             _frmFeatureIdentifier.ResumeLayout();
@@ -105,36 +104,13 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Highlights the feature that is selected in the indentify windows treeview.
+        /// </summary>
+        /// <param name="map">The map used to clear the selection.</param>
         private void SetSelectToSelectedNode(IMap map)
         {
-            // todo: Maxim: not sure that we need this...
-            // Why we are selecting only one layer when the tool can return more than one?
-            // Maybe need to do this selecting stuff optional?
-
-            /* This logic is used to clear all selections on the entire map and only select a single feature when using the identify tool
-                 To get it exactly as desired, I had to get the top layer, which is the mapframe, and perform a ClearSelection from there and then return
-                 to the original layer selected in the legend. */
-            var layers = map.MapFrame.GetAllLayers();
-            ILayer tempLayer = null;
-            foreach (var mapLayer in layers)
-            {
-                if (mapLayer.IsSelected)
-                {
-                    tempLayer = mapLayer;
-                    mapLayer.IsSelected = false;
-                }
-            }
-
-            if (tempLayer == null)
-            {
-                tempLayer = map.MapFrame;
-            }
-
-            map.MapFrame.IsSelected = true;
-            Envelope env;
-            map.MapFrame.ClearSelection(out env);
-            map.MapFrame.IsSelected = false;
-            tempLayer.IsSelected = true;
+            map.ClearSelection();
 
             var selectedNode = _frmFeatureIdentifier.treFeatures.SelectedNode;
             if (selectedNode?.Parent == null) return;

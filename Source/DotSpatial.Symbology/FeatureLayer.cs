@@ -340,8 +340,7 @@ namespace DotSpatial.Symbology
                            };
                 }
 
-                // Leave this cast in place for compatibility with 3.5.
-                return Symbology.GetCategories().Cast<ILegendItem>();
+                return Symbology.GetCategories();
             }
         }
 
@@ -613,25 +612,24 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Clears the current selection, reverting the geometries back to their
-        /// normal colors.
+        /// Clears the current selection, reverting the geometries back to their normal colors.
         /// </summary>
-        /// <param name="affectedArea">
-        /// An out value that represents the envelope that was modified by the clear selection instruction
-        /// </param>
-        /// <returns>
-        /// The clear selection.
-        /// </returns>
-        public override bool ClearSelection(out Envelope affectedArea)
+        /// <param name="affectedArea">An out value that represents the envelope that was modified by the clear selection instruction.</param>
+        /// <param name="force">Indicates whether the selection should be cleared although SelectionEnabled is false.</param>
+        /// <returns> The clear selection.</returns>
+        public override bool ClearSelection(out Envelope affectedArea, bool force = false)
         {
             affectedArea = Selection.Envelope;
-            if (!_drawnStatesNeeded)
+            if (!_drawnStatesNeeded && !force && !SelectionEnabled)
             {
                 return false;
             }
 
             bool changed = false;
-            if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
+            var cats = _scheme.GetCategories().ToList();
+
+            // we're clearing by force or all categorys are selection enabled, so a simple clear of the list is enough
+            if (force || cats.All(_ => _.SelectionEnabled))
             {
                 if (Selection.Count > 0)
                 {
@@ -642,19 +640,25 @@ namespace DotSpatial.Symbology
             }
             else
             {
+                // we're clearing only the categories that are selection enabled
                 SuspendChangeEvent();
-                foreach (IFeatureCategory category in _scheme.GetCategories())
+                Envelope area = new Envelope();
+
+                foreach (var cat in cats.Where(_ => _.SelectionEnabled))
                 {
-                    if (!category.IsWithinLegendSelection())
+                    Envelope categoryArea;
+
+                    Selection.RegionCategory = cat;
+                    if (Selection.RemoveRegion(affectedArea, out categoryArea))
                     {
-                        continue;
+                        changed = true;
+                        area.ExpandToInclude(categoryArea);
                     }
 
-                    Selection.RegionCategory = category;
-                    Selection.Clear();
                     Selection.RegionCategory = null;
                 }
 
+                affectedArea = area;
                 ResumeChangeEvent();
             }
 
@@ -786,22 +790,20 @@ namespace DotSpatial.Symbology
                 AssignFastDrawnStates();
             }
 
-            Envelope region = tolerant;
-            if (DataSet.FeatureType == FeatureType.Polygon)
-            {
-                region = strict;
-            }
-
-            affectedArea = new Envelope();
+            Envelope region = DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant;
             bool changed = false;
-
             Selection.SelectionMode = selectionMode;
-            if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
+
+            var cats = _scheme.GetCategories().ToList();
+
+            // all categories are selection enabled, so a category independent selection inversion is enough
+            if (cats.All(_ => _.SelectionEnabled))
             {
                 changed = Selection.InvertSelection(region, out affectedArea);
             }
             else
             {
+                // not all categories are selection enabled, so we're inverting only those that are
                 if (!_drawnStatesNeeded)
                 {
                     AssignFastDrawnStates();
@@ -809,22 +811,23 @@ namespace DotSpatial.Symbology
 
                 SuspendChangeEvent();
                 Selection.SuspendChanges();
-                List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
-                foreach (IFeatureCategory category in categories)
-                {
-                    if (!category.IsWithinLegendSelection())
-                    {
-                        continue;
-                    }
 
-                    Selection.RegionCategory = category;
-                    if (Selection.AddRegion(region, out affectedArea))
+                Envelope area = new Envelope();
+
+                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
+                {
+                    Envelope categoryArea;
+                    Selection.RegionCategory = cat;
+                    if (Selection.InvertSelection(region, out categoryArea))
                     {
                         changed = true;
+                        area.ExpandToInclude(categoryArea);
                     }
 
                     Selection.RegionCategory = null;
                 }
+
+                affectedArea = area;
 
                 Selection.ResumeChanges();
                 ResumeChangeEvent();
@@ -895,21 +898,25 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if items were selected.</returns>
         public override bool Select(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
-            if (!_drawnStatesNeeded && !_editMode) AssignFastDrawnStates();
+            if (!_drawnStatesNeeded && !_editMode)
+            {
+                AssignFastDrawnStates();
+            }
 
-            Envelope region = tolerant;
-            if (DataSet.FeatureType == FeatureType.Polygon) region = strict;
-
-            affectedArea = Selection.Envelope;
+            Envelope region = DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant;
+            Selection.SelectionMode = selectionMode;
 
             bool changed = false;
-            if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
+            var cats = _scheme.GetCategories().ToList();
+
+            // all categories are selection enabled, so a category independent selection is enough
+            if (cats.All(_ => _.SelectionEnabled))
             {
-                Selection.SelectionMode = selectionMode;
                 changed = Selection.AddRegion(region, out affectedArea);
             }
             else
             {
+                // not all categories are selection enabled, so we're selecting only those that are
                 if (!_drawnStatesNeeded)
                 {
                     AssignFastDrawnStates();
@@ -918,18 +925,22 @@ namespace DotSpatial.Symbology
                 SuspendChangeEvent();
                 Selection.ProgressHandler = ProgressHandler;
                 Selection.SuspendChanges();
-                List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
-                foreach (IFeatureCategory category in categories)
+                Envelope area = new Envelope();
+
+                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
                 {
-                    if (!category.IsSelected)
+                    Envelope categoryArea;
+                    Selection.RegionCategory = cat;
+                    if (Selection.AddRegion(region, out categoryArea))
                     {
-                        continue;
+                        changed = true;
+                        area.ExpandToInclude(categoryArea);
                     }
 
-                    Selection.RegionCategory = category;
-                    Selection.AddRegion(region, out affectedArea);
                     Selection.RegionCategory = null;
                 }
+
+                affectedArea = area;
 
                 Selection.ResumeChanges();
                 ResumeChangeEvent();
@@ -1001,7 +1012,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Cycles through all the features and selects them.
+        /// Selects all features of the categories that are selection enabled.
         /// </summary>
         public virtual void SelectAll()
         {
@@ -1010,23 +1021,24 @@ namespace DotSpatial.Symbology
                 AssignFastDrawnStates();
             }
 
-            Envelope ignoreme;
-            if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
+            Envelope ignoreMe;
+            var region = Extent.ToEnvelope();
+            var cats = _scheme.GetCategories().ToList();
+
+            // all categories are selection enabled, so a category independent selection is enough
+            if (cats.All(_ => _.SelectionEnabled))
             {
-                Selection.AddRegion(Extent.ToEnvelope(), out ignoreme);
+                Selection.AddRegion(region, out ignoreMe);
             }
             else
             {
+                // not all categories are selection enabled, so we're selecting only those that are
                 SuspendChangeEvent();
-                foreach (IFeatureCategory category in _scheme.GetCategories())
-                {
-                    if (!category.IsWithinLegendSelection())
-                    {
-                        continue;
-                    }
 
-                    Selection.RegionCategory = category;
-                    Selection.AddRegion(Extent.ToEnvelope(), out ignoreme);
+                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
+                {
+                    Selection.RegionCategory = cat;
+                    Selection.AddRegion(region, out ignoreMe);
                     Selection.RegionCategory = null;
                 }
 
@@ -1355,44 +1367,38 @@ namespace DotSpatial.Symbology
                 AssignFastDrawnStates();
             }
 
-            Envelope region = tolerant;
-            if (DataSet.FeatureType == FeatureType.Polygon)
-            {
-                region = strict;
-            }
-
-            affectedArea = new Envelope();
+            Envelope region = DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant;
+            Selection.SelectionMode = selectionMode;
 
             bool changed = false;
-            if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
+            var cats = _scheme.GetCategories().ToList();
+
+            // all categories are selection enabled, so a category independent unselect is enough
+            if (cats.All(_ => _.SelectionEnabled))
             {
-                if (_editMode)
-                {
-                    Selection.SelectionMode = selectionMode;
-                    changed = Selection.RemoveRegion(region, out affectedArea);
-                }
-                else
-                {
-                    Selection.SelectionMode = selectionMode;
-                    changed = Selection.RemoveRegion(region, out affectedArea);
-                }
+                changed = Selection.RemoveRegion(region, out affectedArea);
             }
             else
             {
+                // not all categories are selection enabled, so we're unselecting only those that are
                 SuspendChangeEvent();
                 Selection.SuspendChanges();
-                List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
-                foreach (IFeatureCategory category in categories)
+                Envelope area = new Envelope();
+
+                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
                 {
-                    if (!category.IsSelected)
+                    Envelope categoryArea;
+                    Selection.RegionCategory = cat;
+                    if (Selection.RemoveRegion(region, out categoryArea))
                     {
-                        continue;
+                        changed = true;
+                        area.ExpandToInclude(categoryArea);
                     }
 
-                    Selection.RegionCategory = category;
-                    Selection.RemoveRegion(region, out affectedArea);
                     Selection.RegionCategory = null;
                 }
+
+                affectedArea = area;
 
                 Selection.ResumeChanges();
                 ResumeChangeEvent();

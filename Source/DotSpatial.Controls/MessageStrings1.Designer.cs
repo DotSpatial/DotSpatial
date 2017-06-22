@@ -1804,7 +1804,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No layers are currently selectable layers active in the legend. Select the layer or group in the legend for which selection should occur..
+        ///   Looks up a localized string similar to There are no visible layers, that are selection enabled..
         /// </summary>
         internal static string MapFunctionSelect_NoSelectableLayer {
             get {
@@ -1813,7 +1813,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was no selected feature layer in the legend to clarify which features to delete. Please select a layer or group in the legend..
+        ///   Looks up a localized string similar to There are no visible layers, that contain features that may be deleted..
         /// </summary>
         internal static string MapFunctionSelect_OnKeyDown_No_Deletable_Layers {
             get {

@@ -118,23 +118,29 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="TSB_SelectAll.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="TsbCheckAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 20</value>
+  </data>
+  <data name="&gt;&gt;TsbCheckNone.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DgvcSelectable.Name" xml:space="preserve">
+    <value>DgvcSelectable</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.LeftToolStripPanel.Parent" xml:space="preserve">
     <value>ToolStripContainer1</value>
   </data>
-  <data name="TSB_CheckAll.Text" xml:space="preserve">
-    <value>Set all layers as selectable.</value>
-  </data>
   <data name="&gt;&gt;ToolStripContainer1.ContentPanel.Name" xml:space="preserve">
     <value>ToolStripContainer1.ContentPanel</value>
+  </data>
+  <data name="TsbSelectNone.Text" xml:space="preserve">
+    <value>Unselect all feaures of the selectable layers.</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;DataGridViewImageColumn1.Name" xml:space="preserve">
-    <value>DataGridViewImageColumn1</value>
+  <data name="DgvcSelectable.HeaderText" xml:space="preserve">
+    <value>Selectable</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.RightToolStripPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -142,51 +148,44 @@
   <data name="&gt;&gt;ToolStripContainer1.RightToolStripPanel.Parent" xml:space="preserve">
     <value>ToolStripContainer1</value>
   </data>
-  <data name="DGVC_Selectable.HeaderText" xml:space="preserve">
-    <value>Selectable</value>
+  <data name="TsbCheckNone.Text" xml:space="preserve">
+    <value>Set all layers as not selectable.</value>
   </data>
-  <data name="ToolStripContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 213</value>
+  <data name="TsbCheckAll.Text" xml:space="preserve">
+    <value>Set all layers as selectable.</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.BottomToolStripPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;DGV_Layer.Parent" xml:space="preserve">
-    <value>ToolStripContainer1.ContentPanel</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>DGV_Select</value>
+    <value>DgvSelect</value>
   </data>
-  <data name="&gt;&gt;TSB_SelectNone.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;DgvcUnselect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewImageColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;DGV_Layer.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="TsbSelectAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="&gt;&gt;DGVC_LayerName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="TsbSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 20</value>
   </data>
-  <data name="&gt;&gt;ToolStripContainer1.RightToolStripPanel.Name" xml:space="preserve">
-    <value>ToolStripContainer1.RightToolStripPanel</value>
+  <data name="DgvLayer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 190</value>
   </data>
-  <data name="&gt;&gt;DGVC_Selectable.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="TsbSelectNone.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="DataGridViewImageColumn1.HeaderText" xml:space="preserve">
-    <value>Clear selection</value>
-  </data>
-  <data name="&gt;&gt;TSB_CheckAll.Name" xml:space="preserve">
-    <value>TSB_CheckAll</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ToolStripContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;ToolStrip1.Name" xml:space="preserve">
+    <value>ToolStrip1</value>
   </data>
   <data name="ToolStripContainer1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="ToolStripContainer1.Text" xml:space="preserve">
     <value>ToolStripContainer1</value>
+  </data>
+  <data name="&gt;&gt;ToolStripContainer1.ContentPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="ToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -195,17 +194,24 @@
   <data name="ToolStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="TSB_SelectAll.Text" xml:space="preserve">
-    <value>Select all features of the selectable layers.</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DgvLayer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;DgvLayer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TsbCheckNone.Name" xml:space="preserve">
+    <value>TsbCheckNone</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.LeftToolStripPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="DataGridViewImageColumn1.Width" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="TsbCheckNone.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 20</value>
   </data>
-  <data name="TSB_SelectAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="&gt;&gt;ToolStripContainer1.RightToolStripPanel.Name" xml:space="preserve">
+    <value>ToolStripContainer1.RightToolStripPanel</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.LeftToolStripPanel.Name" xml:space="preserve">
     <value>ToolStripContainer1.LeftToolStripPanel</value>
@@ -216,8 +222,14 @@
   <data name="&gt;&gt;ToolStripContainer1.TopToolStripPanel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="DGV_Layer.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="DgvcUnselect.HeaderText" xml:space="preserve">
+    <value>Unselect</value>
+  </data>
+  <data name="DgvcLayerName.HeaderText" xml:space="preserve">
+    <value>Layer</value>
+  </data>
+  <data name="DgvcLayer.Width" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
@@ -225,8 +237,8 @@
   <data name="&gt;&gt;ToolStripContainer1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="ToolStripContainer1.ContentPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 190</value>
+  <data name="DvcLayer.Width" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.LeftToolStripPanel.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -234,89 +246,89 @@
   <data name="&gt;&gt;ToolStripContainer1.TopToolStripPanel.Parent" xml:space="preserve">
     <value>ToolStripContainer1</value>
   </data>
-  <data name="&gt;&gt;ToolStrip1.Name" xml:space="preserve">
-    <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;DGVC_Selectable.Name" xml:space="preserve">
-    <value>DGVC_Selectable</value>
+  <data name="TsbSelectNone.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 20</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.BottomToolStripPanel.Name" xml:space="preserve">
     <value>ToolStripContainer1.BottomToolStripPanel</value>
   </data>
-  <data name="TSB_CheckAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 20</value>
-  </data>
-  <data name="&gt;&gt;TSB_CheckNone.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DGVC_Count.Width" type="System.Int32, mscorlib">
+  <data name="DgvcLayerName.Width" type="System.Int32, mscorlib">
     <value>5</value>
+  </data>
+  <data name="&gt;&gt;TsbSelectNone.Name" xml:space="preserve">
+    <value>TsbSelectNone</value>
+  </data>
+  <data name="ToolStripContainer1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 213</value>
   </data>
   <data name="ToolStrip1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="&gt;&gt;DGVC_Unselect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewImageColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DgvcCount.Width" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.Name" xml:space="preserve">
     <value>ToolStripContainer1</value>
   </data>
-  <data name="TSB_CheckNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 20</value>
+  <data name="&gt;&gt;DgvcLayer.Name" xml:space="preserve">
+    <value>DgvcLayer</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.ContentPanel.Parent" xml:space="preserve">
     <value>ToolStripContainer1</value>
   </data>
-  <data name="&gt;&gt;TSB_CheckAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;DgvcLayerName.Name" xml:space="preserve">
+    <value>DgvcLayerName</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.BottomToolStripPanel.Parent" xml:space="preserve">
     <value>ToolStripContainer1</value>
   </data>
-  <data name="&gt;&gt;DGVC_LayerName.Name" xml:space="preserve">
-    <value>DGVC_LayerName</value>
-  </data>
-  <data name="TSB_SelectNone.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;DGVC_Unselect.Name" xml:space="preserve">
-    <value>DGVC_Unselect</value>
-  </data>
-  <data name="DGVC_Selectable.Width" type="System.Int32, mscorlib">
+  <data name="DgvcUnselect.Width" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="TSB_SelectNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 20</value>
+  <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
+    <value>ToolStripContainer1.TopToolStripPanel</value>
   </data>
-  <data name="&gt;&gt;DGV_Layer.Name" xml:space="preserve">
-    <value>DGV_Layer</value>
+  <data name="ToolStripContainer1.ContentPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 190</value>
+  </data>
+  <data name="TsbCheckNone.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="ToolStripContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="DgvcLayer.HeaderText" xml:space="preserve">
+    <value>Layer</value>
+  </data>
+  <data name="&gt;&gt;TsbSelectAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="DgvcSelectable.Width" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;TsbCheckAll.Name" xml:space="preserve">
+    <value>TsbCheckAll</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="DGV_Layer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="&gt;&gt;DGVC_Count.Name" xml:space="preserve">
-    <value>DGVC_Count</value>
-  </data>
   <data name="&gt;&gt;ToolStripContainer1.TopToolStripPanel.Name" xml:space="preserve">
     <value>ToolStripContainer1.TopToolStripPanel</value>
   </data>
-  <data name="DGV_Layer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 190</value>
+  <data name="DgvLayer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="TSB_CheckNone.Text" xml:space="preserve">
-    <value>Set all layers as not selectable.</value>
+  <data name="&gt;&gt;DgvLayer.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;TSB_SelectNone.Name" xml:space="preserve">
-    <value>TSB_SelectNone</value>
+  <data name="&gt;&gt;DgvcLayer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="DGVC_Unselect.Width" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="DgvcCount.HeaderText" xml:space="preserve">
+    <value>Count</value>
   </data>
-  <data name="&gt;&gt;DGV_Layer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;DgvcSelectable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -324,17 +336,8 @@
   <data name="&gt;&gt;ToolStripContainer1.RightToolStripPanel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;TSB_CheckNone.Name" xml:space="preserve">
-    <value>TSB_CheckNone</value>
-  </data>
-  <data name="&gt;&gt;TSB_SelectAll.Name" xml:space="preserve">
-    <value>TSB_SelectAll</value>
-  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 213</value>
-  </data>
-  <data name="&gt;&gt;DGVC_Count.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.ContentPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripContentPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -342,58 +345,76 @@
   <data name="&gt;&gt;ToolStripContainer1.TopToolStripPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="DGVC_LayerName.HeaderText" xml:space="preserve">
+  <data name="TsbCheckAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;DgvcCount.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="DgvLayer.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;TsbSelectAll.Name" xml:space="preserve">
+    <value>TsbSelectAll</value>
+  </data>
+  <data name="&gt;&gt;DgvcCount.Name" xml:space="preserve">
+    <value>DgvcCount</value>
+  </data>
+  <data name="DvcLayer.HeaderText" xml:space="preserve">
     <value>Layer</value>
   </data>
-  <data name="DGVC_LayerName.Width" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="&gt;&gt;TsbSelectNone.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TSB_SelectNone.Text" xml:space="preserve">
-    <value>Unselect all feaures of the selectable layers.</value>
+  <data name="&gt;&gt;DvcLayer.Name" xml:space="preserve">
+    <value>DvcLayer</value>
   </data>
-  <data name="&gt;&gt;DataGridViewImageColumn1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewImageColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;DgvLayer.Parent" xml:space="preserve">
+    <value>ToolStripContainer1.ContentPanel</value>
   </data>
-  <data name="DGVC_Unselect.HeaderText" xml:space="preserve">
-    <value>Unselect</value>
-  </data>
-  <data name="&gt;&gt;ToolStripContainer1.ContentPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="DGVC_Count.HeaderText" xml:space="preserve">
-    <value>Count</value>
-  </data>
-  <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
-    <value>ToolStripContainer1.TopToolStripPanel</value>
+  <data name="&gt;&gt;DvcLayer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TSB_CheckNone.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="&gt;&gt;TsbCheckAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DgvcLayerName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ToolStripContainer1.BottomToolStripPanel.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="DGV_Layer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;DgvcUnselect.Name" xml:space="preserve">
+    <value>DgvcUnselect</value>
   </data>
   <data name="ToolStripContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;TSB_SelectAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;DgvLayer.Name" xml:space="preserve">
+    <value>DgvLayer</value>
   </data>
-  <data name="TSB_CheckAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="TsbSelectAll.Text" xml:space="preserve">
+    <value>Select all features of the selectable layers.</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <metadata name="ToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="ToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>de-DE</value>
+  </metadata>
+  <metadata name="DvcLayer.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="DgvcLayer.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
 </root>

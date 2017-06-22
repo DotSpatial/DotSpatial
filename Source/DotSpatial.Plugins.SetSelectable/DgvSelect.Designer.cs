@@ -1,8 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
-using DotSpatial.Plugins.SetSelectable.Properties;
 
 namespace DotSpatial.Plugins.SetSelectable
 {
@@ -12,14 +9,13 @@ namespace DotSpatial.Plugins.SetSelectable
         /// Erforderliche Designervariable.
         /// </summary>
         private IContainer components = null;
-        internal DataGridView DGV_Layer;
+        internal DataGridView DgvLayer;
         internal ToolStripContainer ToolStripContainer1;
         internal ToolStrip ToolStrip1;
-        internal ToolStripButton TSB_CheckAll;
-        internal ToolStripButton TSB_CheckNone;
-        internal ToolStripButton TSB_SelectAll;
-        internal ToolStripButton TSB_SelectNone;
-        internal DataGridViewImageColumn DataGridViewImageColumn1;
+        internal ToolStripButton TsbCheckAll;
+        internal ToolStripButton TsbCheckNone;
+        internal ToolStripButton TsbSelectAll;
+        internal ToolStripButton TsbSelectNone;
 
         /// <summary> 
         /// Verwendete Ressourcen bereinigen.
@@ -42,23 +38,22 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(DgvSelect));
-            this.ToolStripContainer1 = new ToolStripContainer();
-            this.DGV_Layer = new DataGridView();
-            this.ToolStrip1 = new ToolStrip();
-            this.TSB_CheckAll = new ToolStripButton();
-            this.TSB_CheckNone = new ToolStripButton();
-            this.TSB_SelectAll = new ToolStripButton();
-            this.TSB_SelectNone = new ToolStripButton();
-            this.DataGridViewImageColumn1 = new DataGridViewImageColumn();
-            this.DGVC_Selectable = new DataGridViewCheckBoxColumn();
-            this.DGVC_LayerName = new DataGridViewTextBoxColumn();
-            this.DGVC_Count = new DataGridViewTextBoxColumn();
-            this.DGVC_Unselect = new DataGridViewImageColumn();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DgvSelect));
+            this.ToolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.DgvLayer = new System.Windows.Forms.DataGridView();
+            this.ToolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.TsbCheckAll = new System.Windows.Forms.ToolStripButton();
+            this.TsbCheckNone = new System.Windows.Forms.ToolStripButton();
+            this.TsbSelectAll = new System.Windows.Forms.ToolStripButton();
+            this.TsbSelectNone = new System.Windows.Forms.ToolStripButton();
+            this.DgvcSelectable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.DgvcLayerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DgvcUnselect = new System.Windows.Forms.DataGridViewImageColumn();
+            this.DgvcCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolStripContainer1.ContentPanel.SuspendLayout();
             this.ToolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.ToolStripContainer1.SuspendLayout();
-            ((ISupportInitialize)(this.DGV_Layer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgvLayer)).BeginInit();
             this.ToolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,7 +68,7 @@ namespace DotSpatial.Plugins.SetSelectable
             // ToolStripContainer1.ContentPanel
             // 
             resources.ApplyResources(this.ToolStripContainer1.ContentPanel, "ToolStripContainer1.ContentPanel");
-            this.ToolStripContainer1.ContentPanel.Controls.Add(this.DGV_Layer);
+            this.ToolStripContainer1.ContentPanel.Controls.Add(this.DgvLayer);
             // 
             // ToolStripContainer1.LeftToolStripPanel
             // 
@@ -89,145 +84,136 @@ namespace DotSpatial.Plugins.SetSelectable
             resources.ApplyResources(this.ToolStripContainer1.TopToolStripPanel, "ToolStripContainer1.TopToolStripPanel");
             this.ToolStripContainer1.TopToolStripPanel.Controls.Add(this.ToolStrip1);
             // 
-            // DGV_Layer
+            // DgvLayer
             // 
-            resources.ApplyResources(this.DGV_Layer, "DGV_Layer");
-            this.DGV_Layer.AllowUserToAddRows = false;
-            this.DGV_Layer.AllowUserToDeleteRows = false;
-            this.DGV_Layer.AllowUserToResizeRows = false;
-            this.DGV_Layer.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
-            this.DGV_Layer.BackgroundColor = Color.White;
-            this.DGV_Layer.BorderStyle = BorderStyle.None;
-            this.DGV_Layer.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            this.DGV_Layer.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_Layer.ColumnHeadersVisible = false;
-            this.DGV_Layer.Columns.AddRange(new DataGridViewColumn[] {
-            this.DGVC_Selectable,
-            this.DGVC_LayerName,
-            this.DGVC_Count,
-            this.DGVC_Unselect});
-            this.DGV_Layer.EditMode = DataGridViewEditMode.EditProgrammatically;
-            this.DGV_Layer.MultiSelect = false;
-            this.DGV_Layer.Name = "DGV_Layer";
-            this.DGV_Layer.RowHeadersVisible = false;
-            this.DGV_Layer.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGV_Layer.CellContentClick += new DataGridViewCellEventHandler(this.DgvLayerCellContentClick);
-            this.DGV_Layer.CellToolTipTextNeeded += new DataGridViewCellToolTipTextNeededEventHandler(this.DgvLayerCellToolTipTextNeeded);
+            resources.ApplyResources(this.DgvLayer, "DgvLayer");
+            this.DgvLayer.AllowUserToAddRows = false;
+            this.DgvLayer.AllowUserToDeleteRows = false;
+            this.DgvLayer.AllowUserToResizeRows = false;
+            this.DgvLayer.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+            this.DgvLayer.BackgroundColor = System.Drawing.Color.White;
+            this.DgvLayer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.DgvLayer.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.DgvLayer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvLayer.ColumnHeadersVisible = false;
+            this.DgvLayer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DgvcSelectable,
+            this.DgvcLayerName,
+            this.DgvcUnselect,
+            this.DgvcCount});
+            this.DgvLayer.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.DgvLayer.MultiSelect = false;
+            this.DgvLayer.Name = "DgvLayer";
+            this.DgvLayer.RowHeadersVisible = false;
+            this.DgvLayer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DgvLayer.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvLayerCellContentClick);
+            this.DgvLayer.CellToolTipTextNeeded += new System.Windows.Forms.DataGridViewCellToolTipTextNeededEventHandler(this.DgvLayerCellToolTipTextNeeded);
             // 
             // ToolStrip1
             // 
             resources.ApplyResources(this.ToolStrip1, "ToolStrip1");
-            this.ToolStrip1.GripStyle = ToolStripGripStyle.Hidden;
-            this.ToolStrip1.Items.AddRange(new ToolStripItem[] {
-            this.TSB_CheckAll,
-            this.TSB_CheckNone,
-            this.TSB_SelectAll,
-            this.TSB_SelectNone});
-            this.ToolStrip1.LayoutStyle = ToolStripLayoutStyle.Flow;
+            this.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.ToolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TsbCheckAll,
+            this.TsbCheckNone,
+            this.TsbSelectAll,
+            this.TsbSelectNone});
+            this.ToolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.ToolStrip1.Name = "ToolStrip1";
             this.ToolStrip1.Stretch = true;
             // 
-            // TSB_CheckAll
+            // TsbCheckAll
             // 
-            resources.ApplyResources(this.TSB_CheckAll, "TSB_CheckAll");
-            this.TSB_CheckAll.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.TSB_CheckAll.Image = Resources.checkall;
-            this.TSB_CheckAll.Name = "TSB_CheckAll";
-            this.TSB_CheckAll.Click += new EventHandler(this.TsbCheckAllClick);
+            resources.ApplyResources(this.TsbCheckAll, "TsbCheckAll");
+            this.TsbCheckAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TsbCheckAll.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.checkall;
+            this.TsbCheckAll.Name = "TsbCheckAll";
+            this.TsbCheckAll.Click += new System.EventHandler(this.TsbCheckAllClick);
             // 
-            // TSB_CheckNone
+            // TsbCheckNone
             // 
-            resources.ApplyResources(this.TSB_CheckNone, "TSB_CheckNone");
-            this.TSB_CheckNone.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.TSB_CheckNone.Image = Resources.uncheckall;
-            this.TSB_CheckNone.Name = "TSB_CheckNone";
-            this.TSB_CheckNone.Click += new EventHandler(this.TsbCheckNoneClick);
+            resources.ApplyResources(this.TsbCheckNone, "TsbCheckNone");
+            this.TsbCheckNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TsbCheckNone.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.uncheckall;
+            this.TsbCheckNone.Name = "TsbCheckNone";
+            this.TsbCheckNone.Click += new System.EventHandler(this.TsbCheckNoneClick);
             // 
-            // TSB_SelectAll
+            // TsbSelectAll
             // 
-            resources.ApplyResources(this.TSB_SelectAll, "TSB_SelectAll");
-            this.TSB_SelectAll.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.TSB_SelectAll.Image = Resources.select_all;
-            this.TSB_SelectAll.Name = "TSB_SelectAll";
-            this.TSB_SelectAll.Click += new EventHandler(this.TsbSelectAllClick);
+            resources.ApplyResources(this.TsbSelectAll, "TsbSelectAll");
+            this.TsbSelectAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TsbSelectAll.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.select_all;
+            this.TsbSelectAll.Name = "TsbSelectAll";
+            this.TsbSelectAll.Click += new System.EventHandler(this.TsbSelectAllClick);
             // 
-            // TSB_SelectNone
+            // TsbSelectNone
             // 
-            resources.ApplyResources(this.TSB_SelectNone, "TSB_SelectNone");
-            this.TSB_SelectNone.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.TSB_SelectNone.Image = Resources.select_none;
-            this.TSB_SelectNone.Name = "TSB_SelectNone";
-            this.TSB_SelectNone.Click += new EventHandler(this.TsbSelectNoneClick);
+            resources.ApplyResources(this.TsbSelectNone, "TsbSelectNone");
+            this.TsbSelectNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TsbSelectNone.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.select_none;
+            this.TsbSelectNone.Name = "TsbSelectNone";
+            this.TsbSelectNone.Click += new System.EventHandler(this.TsbSelectNoneClick);
             // 
-            // DataGridViewImageColumn1
+            // DgvcSelectable
             // 
-            resources.ApplyResources(this.DataGridViewImageColumn1, "DataGridViewImageColumn1");
-            this.DataGridViewImageColumn1.Image = Resources.select_none;
-            this.DataGridViewImageColumn1.Name = "DataGridViewImageColumn1";
-            this.DataGridViewImageColumn1.ReadOnly = true;
-            this.DataGridViewImageColumn1.Resizable = DataGridViewTriState.True;
+            this.DgvcSelectable.DataPropertyName = "DgvcSelectable";
+            this.DgvcSelectable.FalseValue = "0";
+            resources.ApplyResources(this.DgvcSelectable, "DgvcSelectable");
+            this.DgvcSelectable.Name = "DgvcSelectable";
+            this.DgvcSelectable.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DgvcSelectable.TrueValue = "1";
             // 
-            // DGVC_Selectable
+            // DgvcLayerName
             // 
-            this.DGVC_Selectable.DataPropertyName = "DGVC_Selectable";
-            this.DGVC_Selectable.FalseValue = "0";
-            resources.ApplyResources(this.DGVC_Selectable, "DGVC_Selectable");
-            this.DGVC_Selectable.Name = "DGVC_Selectable";
-            this.DGVC_Selectable.Resizable = DataGridViewTriState.False;
-            this.DGVC_Selectable.TrueValue = "1";
+            this.DgvcLayerName.DataPropertyName = "DgvcLayerName";
+            resources.ApplyResources(this.DgvcLayerName, "DgvcLayerName");
+            this.DgvcLayerName.Name = "DgvcLayerName";
+            this.DgvcLayerName.ReadOnly = true;
+            this.DgvcLayerName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // DGVC_LayerName
+            // DgvcUnselect
             // 
-            this.DGVC_LayerName.DataPropertyName = "DGVC_LayerName";
-            resources.ApplyResources(this.DGVC_LayerName, "DGVC_LayerName");
-            this.DGVC_LayerName.Name = "DGVC_LayerName";
-            this.DGVC_LayerName.ReadOnly = true;
-            this.DGVC_LayerName.SortMode = DataGridViewColumnSortMode.NotSortable;
+            resources.ApplyResources(this.DgvcUnselect, "DgvcUnselect");
+            this.DgvcUnselect.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.select_none;
+            this.DgvcUnselect.Name = "DgvcUnselect";
+            this.DgvcUnselect.ReadOnly = true;
+            this.DgvcUnselect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // DGVC_Count
+            // DgvcCount
             // 
-            this.DGVC_Count.DataPropertyName = "DGVC_Count";
-            resources.ApplyResources(this.DGVC_Count, "DGVC_Count");
-            this.DGVC_Count.Name = "DGVC_Count";
-            this.DGVC_Count.ReadOnly = true;
-            this.DGVC_Count.SortMode = DataGridViewColumnSortMode.NotSortable;
+            this.DgvcCount.DataPropertyName = "DgvcCount";
+            resources.ApplyResources(this.DgvcCount, "DgvcCount");
+            this.DgvcCount.Name = "DgvcCount";
+            this.DgvcCount.ReadOnly = true;
+            this.DgvcCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // DGVC_Unselect
-            // 
-            resources.ApplyResources(this.DGVC_Unselect, "DGVC_Unselect");
-            this.DGVC_Unselect.Image = Resources.select_none;
-            this.DGVC_Unselect.Name = "DGVC_Unselect";
-            this.DGVC_Unselect.ReadOnly = true;
-            this.DGVC_Unselect.Resizable = DataGridViewTriState.True;
-            // 
-            // DGV_Select
+            // DgvSelect
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ToolStripContainer1);
-            this.Name = "DGV_Select";
-            this.Load += new EventHandler(this.DgvSelectLoad);
+            this.Name = "DgvSelect";
+            this.Load += new System.EventHandler(this.DgvSelectLoad);
             this.ToolStripContainer1.ContentPanel.ResumeLayout(false);
             this.ToolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this.ToolStripContainer1.TopToolStripPanel.PerformLayout();
             this.ToolStripContainer1.ResumeLayout(false);
             this.ToolStripContainer1.PerformLayout();
-            ((ISupportInitialize)(this.DGV_Layer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgvLayer)).EndInit();
             this.ToolStrip1.ResumeLayout(false);
             this.ToolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
+
+
+
         #endregion
 
-        private DataGridViewCheckBoxColumn DGVC_Selectable;
-        private DataGridViewTextBoxColumn DGVC_LayerName;
-        private DataGridViewTextBoxColumn DGVC_Count;
-        private DataGridViewImageColumn DGVC_Unselect;
-
-
-
-
+        private DataGridViewCheckBoxColumn DgvcSelectable;
+        private DataGridViewTextBoxColumn DgvcLayerName;
+        private DataGridViewImageColumn DgvcUnselect;
+        private DataGridViewTextBoxColumn DgvcCount;
     }
 }

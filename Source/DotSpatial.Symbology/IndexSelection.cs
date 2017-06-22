@@ -138,120 +138,9 @@ namespace DotSpatial.Symbology
         /// <returns>True if any item was actually added to the collection</returns>
         public bool AddRegion(Envelope region, out Envelope affectedArea)
         {
-            bool added = false;
-            SuspendChanges();
-            Extent affected = new Extent();
-            IPolygon reg = region.ToPolygon();
+            Action<FastDrawnState> addToSelection = state => state.Selected = SelectionState;
 
-            for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
-            {
-                if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
-
-                bool doAdd = false;
-                ShapeRange shape = _shapes[shp];
-
-                if (SelectionMode == SelectionMode.Intersects)
-                {
-                    // Prevent geometry creation (which is slow) and use ShapeRange instead
-                    ShapeRange env = new ShapeRange(region);
-                    if (env.Intersects(shape))
-                    {
-                        _layer.DrawnStates[shp].Selected = SelectionState;
-                        affected.ExpandToInclude(shape.Extent);
-                        added = true;
-                        OnChanged();
-                    }
-                }
-                else if (SelectionMode == SelectionMode.IntersectsExtent)
-                {
-                    if (shape.Extent.Intersects(region))
-                    {
-                        _layer.DrawnStates[shp].Selected = SelectionState;
-                        affected.ExpandToInclude(shape.Extent);
-                        added = true;
-                        OnChanged();
-                    }
-                }
-                else if (SelectionMode == SelectionMode.ContainsExtent)
-                {
-                    if (shape.Extent.Within(region))
-                    {
-                        _layer.DrawnStates[shp].Selected = SelectionState;
-                        affected.ExpandToInclude(shape.Extent);
-                        added = true;
-                        OnChanged();
-                    }
-                }
-                else if (SelectionMode == SelectionMode.Disjoint)
-                {
-                    if (shape.Extent.Intersects(region))
-                    {
-                        IGeometry g = _layer.DataSet.GetFeature(shp).Geometry;
-                        if (reg.Disjoint(g)) doAdd = true;
-                    }
-                    else
-                    {
-                        doAdd = true;
-                    }
-                }
-                else
-                {
-                    if (!shape.Extent.Intersects(region)) continue;
-
-                    IGeometry geom = _layer.DataSet.GetFeature(shp).Geometry;
-                    switch (SelectionMode)
-                    {
-                        case SelectionMode.Contains:
-                            if (shape.Extent.Within(region))
-                            {
-                                doAdd = true;
-                            }
-                            else if (shape.Extent.Intersects(region))
-                            {
-                                if (reg.Contains(geom)) doAdd = true;
-                            }
-
-                            break;
-                        case SelectionMode.CoveredBy:
-                            if (reg.CoveredBy(geom)) doAdd = true;
-                            break;
-                        case SelectionMode.Covers:
-                            if (reg.Covers(geom)) doAdd = true;
-                            break;
-                        case SelectionMode.Intersects:
-                            if (shape.Extent.Within(region))
-                            {
-                                doAdd = true;
-                            }
-                            else if (shape.Extent.Intersects(region))
-                            {
-                                if (reg.Intersects(geom)) doAdd = true;
-                            }
-
-                            break;
-                        case SelectionMode.Overlaps:
-                            if (reg.Overlaps(geom)) doAdd = true;
-                            break;
-                        case SelectionMode.Touches:
-                            if (reg.Touches(geom)) doAdd = true;
-                            break;
-                        case SelectionMode.Within:
-                            if (reg.Within(geom)) doAdd = true;
-                            break;
-                    }
-                }
-
-                if (!doAdd) continue;
-
-                OnChanged();
-                _layer.DrawnStates[shp].Selected = SelectionState;
-                affected.ExpandToInclude(shape.Extent);
-                added = true;
-            }
-
-            ResumeChanges();
-            affectedArea = affected.ToEnvelope();
-            return added;
+            return DoAction(addToSelection, region, out affectedArea);
         }
 
         /// <inheritdoc />
@@ -438,110 +327,9 @@ namespace DotSpatial.Symbology
         /// <returns>True, if the selection was changed.</returns>
         public bool InvertSelection(Envelope region, out Envelope affectedArea)
         {
-            SuspendChanges();
-            bool flipped = false;
-            Extent affected = new Extent();
-            IPolygon reg = region.ToPolygon();
-            for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
-            {
-                if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
+            Action<FastDrawnState> invertSelection = state => state.Selected = !state.Selected;
 
-                bool doFlip = false;
-                ShapeRange shape = _shapes[shp];
-                if (SelectionMode == SelectionMode.Intersects)
-                {
-                    // Prevent geometry creation (which is slow) and use ShapeRange instead
-                    ShapeRange env = new ShapeRange(region);
-                    if (env.Intersects(shape))
-                    {
-                        _layer.DrawnStates[shp].Selected = !_layer.DrawnStates[shp].Selected;
-                        affected.ExpandToInclude(shape.Extent);
-                        flipped = true;
-                        OnChanged();
-                    }
-                }
-                else if (SelectionMode == SelectionMode.IntersectsExtent)
-                {
-                    if (shape.Extent.Intersects(region))
-                    {
-                        _layer.DrawnStates[shp].Selected = !_layer.DrawnStates[shp].Selected;
-                        affected.ExpandToInclude(shape.Extent);
-                        flipped = true;
-                        OnChanged();
-                    }
-                }
-                else if (SelectionMode == SelectionMode.ContainsExtent)
-                {
-                    if (shape.Extent.Within(region))
-                    {
-                        _layer.DrawnStates[shp].Selected = !_layer.DrawnStates[shp].Selected;
-                        affected.ExpandToInclude(shape.Extent);
-                        flipped = true;
-                        OnChanged();
-                    }
-                }
-                else if (SelectionMode == SelectionMode.Disjoint)
-                {
-                    if (shape.Extent.Intersects(region))
-                    {
-                        IGeometry g = _layer.DataSet.GetFeature(shp).Geometry;
-                        if (reg.Disjoint(g)) doFlip = true;
-                    }
-                    else
-                    {
-                        doFlip = true;
-                    }
-                }
-                else
-                {
-                    if (!shape.Extent.Intersects(region)) continue;
-
-                    IGeometry geom = _layer.DataSet.GetFeature(shp).Geometry; // only get this if envelopes intersect
-                    switch (SelectionMode)
-                    {
-                        case SelectionMode.Contains:
-                            if (region.Intersects(geom.EnvelopeInternal))
-                            {
-                                if (reg.Contains(geom)) doFlip = true;
-                            }
-
-                            break;
-                        case SelectionMode.CoveredBy:
-                            if (reg.CoveredBy(geom)) doFlip = true;
-                            break;
-                        case SelectionMode.Covers:
-                            if (reg.Covers(geom)) doFlip = true;
-                            break;
-                        case SelectionMode.Intersects:
-                            if (region.Intersects(geom.EnvelopeInternal))
-                            {
-                                if (reg.Intersects(geom)) doFlip = true;
-                            }
-
-                            break;
-                        case SelectionMode.Overlaps:
-                            if (reg.Overlaps(geom)) doFlip = true;
-                            break;
-                        case SelectionMode.Touches:
-                            if (reg.Touches(geom)) doFlip = true;
-                            break;
-                        case SelectionMode.Within:
-                            if (reg.Within(geom)) doFlip = true;
-                            break;
-                    }
-                }
-
-                if (!doFlip) continue;
-
-                flipped = true;
-                OnChanged();
-                _layer.DrawnStates[shp].Selected = !_layer.DrawnStates[shp].Selected;
-                affected.ExpandToInclude(shape.Extent);
-            }
-
-            affectedArea = affected.ToEnvelope();
-            ResumeChanges();
-            return flipped;
+            return DoAction(invertSelection, region, out affectedArea);
         }
 
         /// <inheritdoc />
@@ -600,117 +388,9 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if the collection was changed</returns>
         public bool RemoveRegion(Envelope region, out Envelope affectedArea)
         {
-            bool removed = false;
-            SuspendChanges();
+            Action<FastDrawnState> removeFromSelection = state => state.Selected = !SelectionState;
 
-            Extent affected = new Extent();
-            IPolygon reg = region.ToPolygon();
-
-            for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
-            {
-                if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
-
-                bool doRemove = false;
-                ShapeRange shape = _shapes[shp];
-                if (SelectionMode == SelectionMode.Intersects)
-                {
-                    // Prevent geometry creation (which is slow) and use ShapeRange instead
-                    ShapeRange env = new ShapeRange(region);
-                    if (env.Intersects(shape))
-                    {
-                        _layer.DrawnStates[shp].Selected = !SelectionState;
-                        affected.ExpandToInclude(shape.Extent);
-                        removed = true;
-                    }
-                }
-                else if (SelectionMode == SelectionMode.IntersectsExtent)
-                {
-                    if (shape.Extent.Intersects(region))
-                    {
-                        _layer.DrawnStates[shp].Selected = !SelectionState;
-                        affected.ExpandToInclude(shape.Extent);
-                        removed = true;
-                    }
-                }
-                else if (SelectionMode == SelectionMode.ContainsExtent)
-                {
-                    if (shape.Extent.Within(region))
-                    {
-                        _layer.DrawnStates[shp].Selected = !SelectionState;
-                        affected.ExpandToInclude(shape.Extent);
-                        removed = true;
-                    }
-                }
-                else if (SelectionMode == SelectionMode.Disjoint)
-                {
-                    if (shape.Extent.Intersects(region))
-                    {
-                        IGeometry g = _layer.DataSet.Features[shp].Geometry;
-                        if (reg.Disjoint(g)) doRemove = true;
-                    }
-                    else
-                    {
-                        doRemove = true;
-                    }
-                }
-                else
-                {
-                    if (!shape.Extent.Intersects(region)) continue;
-
-                    IGeometry geom = _layer.DataSet.Features[shp].Geometry;
-                    switch (SelectionMode)
-                    {
-                        case SelectionMode.Contains:
-                            if (shape.Extent.Within(region))
-                            {
-                                doRemove = true;
-                            }
-                            else if (shape.Extent.Intersects(region))
-                            {
-                                if (reg.Contains(geom)) doRemove = true;
-                            }
-
-                            break;
-                        case SelectionMode.CoveredBy:
-                            if (reg.CoveredBy(geom)) doRemove = true;
-                            break;
-                        case SelectionMode.Covers:
-                            if (reg.Covers(geom)) doRemove = true;
-                            break;
-                        case SelectionMode.Intersects:
-                            if (shape.Extent.Within(region))
-                            {
-                                doRemove = true;
-                            }
-                            else if (shape.Extent.Intersects(region))
-                            {
-                                if (reg.Intersects(geom)) doRemove = true;
-                            }
-
-                            break;
-                        case SelectionMode.Overlaps:
-                            if (reg.Overlaps(geom)) doRemove = true;
-                            break;
-                        case SelectionMode.Touches:
-                            if (reg.Touches(geom)) doRemove = true;
-                            break;
-                        case SelectionMode.Within:
-                            if (reg.Within(geom)) doRemove = true;
-                            break;
-                    }
-                }
-
-                if (!doRemove) continue;
-
-                OnChanged();
-                _layer.DrawnStates[shp].Selected = !SelectionState;
-                affected.ExpandToInclude(shape.Extent);
-                removed = true;
-            }
-
-            affectedArea = affected.ToEnvelope();
-            ResumeChanges();
-            return removed;
+            return DoAction(removeFromSelection, region, out affectedArea);
         }
 
         /// <inheritdoc />
@@ -774,6 +454,103 @@ namespace DotSpatial.Symbology
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Runs the given action for all the shapes that are affected by the current SelectionMode and the given region.
+        /// </summary>
+        /// <param name="action">Action that is run on the affected shapes.</param>
+        /// <param name="region">Region that is used to determine the affected shapes.</param>
+        /// <param name="affectedArea">Area that results from the affected shapes.</param>
+        /// <returns>True, if at least one shape was affected.</returns>
+        private bool DoAction(Action<FastDrawnState> action, Envelope region, out Envelope affectedArea)
+        {
+            bool somethingChanged = false;
+            SuspendChanges();
+            Extent affected = new Extent();
+            IPolygon reg = region.ToPolygon();
+            ShapeRange env = new ShapeRange(region);
+
+            for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
+            {
+                if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
+
+                bool doAction = false;
+                ShapeRange shape = _shapes[shp];
+
+                switch (SelectionMode)
+                {
+                    case SelectionMode.Intersects:
+
+                        // Prevent geometry creation (which is slow) and use ShapeRange instead
+                        doAction = env.Intersects(shape);
+                        break;
+
+                    case SelectionMode.IntersectsExtent:
+                        doAction = shape.Extent.Intersects(region);
+                        break;
+
+                    case SelectionMode.ContainsExtent:
+                        doAction = shape.Extent.Within(region);
+                        break;
+
+                    case SelectionMode.Disjoint:
+                        if (!shape.Extent.Intersects(region))
+                        {
+                            doAction = true;
+                        }
+                        else
+                        {
+                            IGeometry g = _layer.DataSet.GetFeature(shp).Geometry;
+                            doAction = reg.Disjoint(g);
+                        }
+
+                        break;
+                }
+
+                if (shape.Extent.Intersects(region))
+                {
+                    IGeometry geom = _layer.DataSet.GetFeature(shp).Geometry;
+                    switch (SelectionMode)
+                    {
+                        case SelectionMode.Contains:
+                            doAction = shape.Extent.Within(region) || reg.Contains(geom);
+                            break;
+
+                        case SelectionMode.CoveredBy:
+                            doAction = reg.CoveredBy(geom);
+                            break;
+
+                        case SelectionMode.Covers:
+                            doAction = reg.Covers(geom);
+                            break;
+
+                        case SelectionMode.Overlaps:
+                            doAction = reg.Overlaps(geom);
+                            break;
+
+                        case SelectionMode.Touches:
+                            doAction = reg.Touches(geom);
+                            break;
+
+                        case SelectionMode.Within:
+                            doAction = reg.Within(geom);
+                            break;
+                    }
+                }
+
+                if (doAction)
+                {
+                    action(_layer.DrawnStates[shp]);
+                    affected.ExpandToInclude(shape.Extent);
+                    somethingChanged = true;
+                    OnChanged();
+                }
+            }
+
+            ResumeChanges();
+            affectedArea = affected.ToEnvelope();
+            return somethingChanged;
         }
 
         private int GetSourceIndex(int selectedIndex)

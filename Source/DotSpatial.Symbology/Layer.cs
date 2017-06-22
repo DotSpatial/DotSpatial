@@ -264,7 +264,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets the ProgressHandler for this layer. Setting this overrides the default
-        /// behavior which is to use the
+        /// behavior which is to use the ProgressHandler of the DefaultDataManager.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -450,7 +450,7 @@ namespace DotSpatial.Symbology
         /// <returns>The layer after it has been created and added to the container</returns>
         public static ILayer OpenFile(string fileName, ICollection<ILayer> container)
         {
-            if (File.Exists(fileName) == false) return null;
+            if (!File.Exists(fileName)) return null;
 
             var dm = LayerManager.DefaultLayerManager;
             return dm.OpenLayer(fileName, container);
@@ -476,8 +476,9 @@ namespace DotSpatial.Symbology
         /// This is overriden in sub-classes.
         /// </summary>
         /// <param name="affectedArea">The area affecting by the clearing.</param>
+        /// <param name="force">Indicates whether the selection should be cleared although SelectionEnabled is false.</param>
         /// <returns>False.</returns>
-        public virtual bool ClearSelection(out Envelope affectedArea)
+        public virtual bool ClearSelection(out Envelope affectedArea, bool force = false)
         {
             affectedArea = null;
             return false;
@@ -534,26 +535,6 @@ namespace DotSpatial.Symbology
         public virtual bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = null;
-            return false;
-        }
-
-        /// <summary>
-        /// Queries this layer and the entire parental tree up to the map frame to determine if
-        /// this layer is within the selected layers.
-        /// </summary>
-        /// <returns>True, if the layer is within the legend selection.</returns>
-        public bool IsWithinLegendSelection()
-        {
-            if (IsSelected) return true;
-
-            ILayer lyr = GetParentItem() as ILayer;
-            while (lyr != null)
-            {
-                if (lyr.IsSelected) return true;
-
-                lyr = lyr.GetParentItem() as ILayer;
-            }
-
             return false;
         }
 
@@ -842,7 +823,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Removes this layer from its parent list
+        /// Removes this layer from its parent list.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

@@ -19,7 +19,6 @@ namespace DotSpatial.Symbology
         #region Fields
 
         private ILayerCollection _layers;
-        private bool _selectionEnabled;
 
         #endregion
 
@@ -298,16 +297,15 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public override bool ClearSelection(out Envelope affectedAreas)
+        public override bool ClearSelection(out Envelope affectedAreas, bool force = false)
         {
             affectedAreas = new Envelope();
             bool changed = false;
-            if (!_selectionEnabled) return false;
             MapFrame.SuspendEvents();
-            foreach (ILayer layer in GetLayers())
+            foreach (ILayer layer in GetAllLayers())
             {
                 Envelope layerArea;
-                if (layer.ClearSelection(out layerArea))
+                if (layer.ClearSelection(out layerArea, force))
                 {
                     changed = true;
                     affectedAreas.ExpandToInclude(layerArea);
@@ -315,9 +313,7 @@ namespace DotSpatial.Symbology
             }
 
             MapFrame.ResumeEvents();
-
             OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
-
             return changed;
         }
 
@@ -359,6 +355,88 @@ namespace DotSpatial.Symbology
             }
 
             return count;
+        }
+
+        /// <summary>
+        /// Gets all feature layers of this group including feature layers which are nested
+        /// within child groups. The group objects themselves are not included in this list.
+        /// </summary>
+        /// <returns>The list of the feature layers</returns>
+        public List<IFeatureLayer> GetAllFeatureLayers()
+        {
+            return GetAllTypeLayers<IFeatureLayer>();
+        }
+
+        /// <summary>
+        /// Gets all map groups in this group including the nested groups.
+        /// </summary>
+        /// <returns>the list of the groups</returns>
+        public List<IGroup> GetAllGroups()
+        {
+            var groupList = new List<IGroup>();
+            GetNestedGroups(this, groupList);
+            return groupList;
+        }
+
+        /// <summary>
+        /// Gets all image layers of this group including image layers which are nested
+        /// within child groups. The group objects themselves are not included in this list.
+        /// </summary>
+        /// <returns>The list of the image layers</returns>
+        public List<IImageLayer> GetAllImageLayers()
+        {
+            return GetAllTypeLayers<IImageLayer>();
+        }
+
+        /// <summary>
+        /// Gets all layers of this group including layers which are nested
+        /// within child groups. The group objects themselves are not included in this list,
+        /// but all FeatureLayers, RasterLayers, ImageLayers and other layers are included.
+        /// </summary>
+        /// <returns>The list of the layers</returns>
+        public List<ILayer> GetAllLayers()
+        {
+            return GetAllTypeLayers<ILayer>();
+        }
+
+        /// <summary>
+        /// Gets all line layers of this group including line layers which are nested
+        /// within child groups. The group objects themselves are not included in this list.
+        /// </summary>
+        /// <returns>The list of the line layers</returns>
+        public List<ILineLayer> GetAllLineLayers()
+        {
+            return GetAllTypeLayers<ILineLayer>();
+        }
+
+        /// <summary>
+        /// Gets all point layers of this group including point layers which are nested
+        /// within child groups. The group objects themselves are not included in this list.
+        /// </summary>
+        /// <returns>The list of the point layers</returns>
+        public List<IPointLayer> GetAllPointLayers()
+        {
+            return GetAllTypeLayers<IPointLayer>();
+        }
+
+        /// <summary>
+        /// Gets all polygon layers of this group including polygon layers which are nested
+        /// within child groups. The group objects themselves are not included in this list.
+        /// </summary>
+        /// <returns>The list of the polygon layers</returns>
+        public List<IPolygonLayer> GetAllPolygonLayers()
+        {
+            return GetAllTypeLayers<IPolygonLayer>();
+        }
+
+        /// <summary>
+        /// Gets all raster layers of this group including raster layers which are nested
+        /// within child groups. The group objects themselves are not included in this list.
+        /// </summary>
+        /// <returns>The list of the raster layers</returns>
+        public List<IRasterLayer> GetAllRasterLayers()
+        {
+            return GetAllTypeLayers<IRasterLayer>();
         }
 
         /// <inheritdoc />
@@ -407,12 +485,11 @@ namespace DotSpatial.Symbology
         public override bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
-            if (!_selectionEnabled) return false;
             bool somethingChanged = false;
             MapFrame.SuspendEvents();
-            foreach (ILayer s in GetLayers())
+
+            foreach (ILayer s in GetAllLayers().Where(_ => _.SelectionEnabled && _.IsVisible))
             {
-                if (s.SelectionEnabled == false) continue;
                 Envelope layerArea;
                 if (s.InvertSelection(tolerant, strict, mode, out layerArea))
                 {
@@ -466,11 +543,10 @@ namespace DotSpatial.Symbology
         public override bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
-            if (!_selectionEnabled) return false;
             bool somethingChanged = false;
             MapFrame.SuspendEvents();
 
-            foreach (var s in GetLayers().Reverse().Where(_ => _.SelectionEnabled && _.IsVisible))
+            foreach (var s in GetAllLayers().Where(_ => _.SelectionEnabled && _.IsVisible))
             {
                 Envelope layerArea;
                 if (s.Select(tolerant, strict, mode, out layerArea))
@@ -478,15 +554,6 @@ namespace DotSpatial.Symbology
                     somethingChanged = true;
                     affectedArea.ExpandToInclude(layerArea);
                 }
-
-                // removed by jany_: this selected only features of the first layer with features in the selected area, if user wanted to select features of another layer too they get ignored
-                // added SelectPlugin enables user to choose the layers in which he wants to select features
-                // if (somethingChanged)
-                // {
-                //    MapFrame.ResumeEvents();
-                //    OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
-                //    return somethingChanged;
-                // }
             }
 
             MapFrame.ResumeEvents();
@@ -504,10 +571,10 @@ namespace DotSpatial.Symbology
         public override bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
-            if (!_selectionEnabled) return false;
             bool somethingChanged = false;
             SuspendEvents();
-            foreach (ILayer s in GetLayers())
+
+            foreach (ILayer s in GetAllLayers().Where(_ => _.SelectionEnabled && _.IsVisible))
             {
                 Envelope layerArea;
                 if (s.UnSelect(tolerant, strict, mode, out layerArea))
@@ -572,7 +639,6 @@ namespace DotSpatial.Symbology
             collection.LayerSelected += CollectionLayerSelected;
             collection.LayerAdded += LayersLayerAdded;
             collection.LayerRemoved += LayersLayerRemoved;
-
             collection.SelectionChanged += CollectionSelectionChanged;
         }
 
@@ -591,7 +657,6 @@ namespace DotSpatial.Symbology
             collection.LayerSelected -= CollectionLayerSelected;
             collection.LayerAdded -= LayersLayerAdded;
             collection.LayerRemoved -= LayersLayerRemoved;
-
             collection.SelectionChanged -= CollectionSelectionChanged;
         }
 
@@ -626,6 +691,56 @@ namespace DotSpatial.Symbology
             LayerRemoved?.Invoke(sender, e);
         }
 
+        /// <summary>
+        /// Recursively adds all the groups to groupList.
+        /// </summary>
+        /// <param name="grp">Group to search through.</param>
+        /// <param name="groupList">The list the groups should be added to.</param>
+        private static void GetNestedGroups(IGroup grp, List<IGroup> groupList)
+        {
+            // initialize the layer list if required
+            if (groupList == null) groupList = new List<IGroup>();
+
+            // recursive function -- all nested groups and layers are considered
+            foreach (var lyr in grp.GetLayers())
+            {
+                grp = lyr as IGroup;
+                if (grp != null)
+                {
+                    GetNestedGroups(grp, groupList);
+                    groupList.Add(grp);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Recursively adds all the layers of the given type that are found in group to layerList.
+        /// </summary>
+        /// <typeparam name="T">Type of the layers that should be included.</typeparam>
+        /// <param name="group">Group that contains the layers.</param>
+        /// <param name="layerList">The list the layers should be added to.</param>
+        private static void GetNestedLayers<T>(IGroup group, List<T> layerList)
+            where T : class
+        {
+            if (layerList == null) layerList = new List<T>();
+            foreach (var layer in group.GetLayers())
+            {
+                var grp = layer as IGroup;
+                if (grp != null)
+                {
+                    GetNestedLayers(grp, layerList);
+                }
+                else
+                {
+                    var tlayer = layer as T;
+                    if (tlayer != null)
+                    {
+                        layerList.Add(tlayer);
+                    }
+                }
+            }
+        }
+
         private void CollectionLayerSelected(object sender, LayerSelectedEventArgs e)
         {
             OnLayerSelected(e.Layer, e.IsSelected);
@@ -653,12 +768,24 @@ namespace DotSpatial.Symbology
                                    new SymbologyMenuItem("Zoom to Group", (sender, args) => ZoomToGroup()),
                                    new SymbologyMenuItem("Create new Group", CreateGroupClick)
                                };
-            _selectionEnabled = true;
         }
 
         private void CreateGroupClick(object sender, EventArgs e)
         {
             OnCreateGroup();
+        }
+
+        /// <summary>
+        /// Gets all the layers of the given type.
+        /// </summary>
+        /// <typeparam name="T">Type of the layers that should be included.</typeparam>
+        /// <returns>The list of the layers with the given type.</returns>
+        private List<T> GetAllTypeLayers<T>()
+            where T : class
+        {
+            var layerList = new List<T>();
+            GetNestedLayers(this, layerList);
+            return layerList;
         }
 
         private void LayersItemChanged(object sender, EventArgs e)
