@@ -18,7 +18,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Test that checks correct creation of GpggkSentence objects from string
 - Constructing Shapefiles in memory as single zip archives (#885)
 - StyleCop.Analyzers to enforce a set of style and consistency rules
-- chm file with DotSpatial API documentation
+- Chm file with DotSpatial API documentation
+- Example for Buffer.AddBuffer method (#1002)
 
 ### Changed
 - Switched to VS2015 and C#6

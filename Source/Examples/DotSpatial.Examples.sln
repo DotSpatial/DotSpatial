@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppManagerCustomizationDesignTime", "AppManagerCustomizationDesignTime\AppManagerCustomizationDesignTime.csproj", "{E9CD3F46-B385-4BF8-9D09-D439514E5137}"
 EndProject
@@ -15,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "SimpleApp\SimpleApp.csproj", "{AE2B37D2-031B-401C-A257-84C05876BB7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyHeaderControl", "DummyHeaderControl\DummyHeaderControl.csproj", "{6AB60B40-E91A-4459-9837-FB0D509F091A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSnippets", "CodeSnippets\CodeSnippets.csproj", "{37F844C7-7372-4AF4-B19B-1FF6189E851F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{6AB60B40-E91A-4459-9837-FB0D509F091A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AB60B40-E91A-4459-9837-FB0D509F091A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AB60B40-E91A-4459-9837-FB0D509F091A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F844C7-7372-4AF4-B19B-1FF6189E851F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F844C7-7372-4AF4-B19B-1FF6189E851F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F844C7-7372-4AF4-B19B-1FF6189E851F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F844C7-7372-4AF4-B19B-1FF6189E851F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
