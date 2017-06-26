@@ -20,6 +20,9 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - StyleCop.Analyzers to enforce a set of style and consistency rules
 - Chm file with DotSpatial API documentation
 - Example for Buffer.AddBuffer method (#1002)
+- Legend.UseLegendForSelection property to be able to decide whether the legend should be used for selection or not. (#1008)
+- Possibility to drag layers out of their group into the parent group (in legend) (#1008)
+
 
 ### Changed
 - Switched to VS2015 and C#6
@@ -38,6 +41,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - DS Feature refactorings (#906)
 - LegendText ReadOnly (#750)
 - Made Shapefile class abstract, because we already have FeatureSet for creating unspecified Shapefiles (#890)
+- Moved MapFrame extension methods to Group (#1008)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -107,3 +111,9 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - ArcMap does show M and Z as NaN (#935)
 - Recognize NullShapes not only for polygon / line shapes when in IndexMode, but also in !IndexMode and for points and multipoints (#890)
 - Legends are in an opposite order in the map legend and in the Print Preview. (#970)
+- FeatureLayer.ClearSelection / SelectAll only work when FeatureLayer is selected in Legend (#659)
+- Using the Identifier tool isn't intuitive (#418)
+- Selection Options (#283)
+- Legend drag line so it doesn't look as if you can move a layer in between categories (#1008)
+- Legend selection to be able to select features of a category (#1008)
+- Some errors in SetSelectable plugin (#1008)

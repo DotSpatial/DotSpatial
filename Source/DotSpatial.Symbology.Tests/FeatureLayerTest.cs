@@ -1,10 +1,12 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
+using GeoAPI.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Symbology.Tests
@@ -59,6 +61,176 @@ namespace DotSpatial.Symbology.Tests
             target.ExportSelection(fileOut);
 
             File.Delete(fileOut);
+        }
+
+        /// <summary>
+        /// Tests whether FeatureLayer.Select honors the SelectionEnabled property.
+        /// </summary>
+        /// <param name="selectionEnabled">Indicates the state of the SelectionEnabled property.</param>
+        /// <param name="catSelectionEnabled">Indicates the state of the categories SelectionEnabled property.</param>
+        [Test]
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public void Select(bool selectionEnabled, bool catSelectionEnabled)
+        {
+            PolygonCategory cat;
+            var fl = GetFeatureLayer(out cat);
+            fl.SelectionEnabled = selectionEnabled;
+            cat.SelectionEnabled = catSelectionEnabled;
+            Envelope e = new Envelope(-72, -66, 40, 48);
+            Assert.AreEqual(selectionEnabled, fl.Select(e, e));
+
+            var resultValue = 7;
+
+            if (!selectionEnabled)
+            {
+                resultValue = 0;
+            }
+            else if (!catSelectionEnabled)
+            {
+                resultValue = 6;
+            }
+
+            Assert.AreEqual(resultValue, fl.Selection.Count, "Error selecting 50mil_us_states");
+        }
+
+        /// <summary>
+        /// Tests whether FeatureLayer.InvertSelection honors the SelectionEnabled property.
+        /// </summary>
+        /// <param name="selectionEnabled">Indicates the state of the SelectionEnabled property.</param>
+        /// <param name="catSelectionEnabled">Indicates the state of the categories SelectionEnabled property.</param>
+        [Test]
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public void InvertSelection(bool selectionEnabled, bool catSelectionEnabled)
+        {
+            PolygonCategory cat;
+            var fl = GetFeatureLayer(out cat);
+            Envelope e = new Envelope(-72, -66, 40, 48);
+            Assert.IsTrue(fl.Select(e, e));
+
+            fl.SelectionEnabled = selectionEnabled;
+            cat.SelectionEnabled = catSelectionEnabled;
+
+            Envelope e2 = new Envelope(-78, -66, 40, 48);
+            Assert.AreEqual(selectionEnabled, fl.InvertSelection(e2, e2));
+
+            var resultValue = 3;
+
+            if (!selectionEnabled)
+            {
+                resultValue = 7;
+            }
+            else if (!catSelectionEnabled)
+            {
+                resultValue = 4;
+            }
+
+            Assert.AreEqual(resultValue, fl.Selection.Count, "Error inverting selection 50mil_us_states");
+        }
+
+        /// <summary>
+        /// Tests whether FeatureLayer.UnSelect honors the SelectionEnabled property.
+        /// </summary>
+        /// <param name="selectionEnabled">Indicates the state of the SelectionEnabled property.</param>
+        /// <param name="catSelectionEnabled">Indicates the state of the categories SelectionEnabled property.</param>
+        [Test]
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public void UnSelect(bool selectionEnabled, bool catSelectionEnabled)
+        {
+            PolygonCategory cat;
+            var fl = GetFeatureLayer(out cat);
+            Envelope e = new Envelope(-72, -66, 40, 48);
+            Assert.IsTrue(fl.Select(e, e));
+
+            fl.SelectionEnabled = selectionEnabled;
+            cat.SelectionEnabled = catSelectionEnabled;
+
+            Envelope e2 = new Envelope(-78, -66, 40, 48);
+            Assert.AreEqual(selectionEnabled, fl.UnSelect(e2, e2));
+
+            var resultValue = 0;
+
+            if (!selectionEnabled)
+            {
+                resultValue = 7;
+            }
+            else if (!catSelectionEnabled)
+            {
+                resultValue = 1;
+            }
+
+            Assert.AreEqual(resultValue, fl.Selection.Count, "Error inverting selection 50mil_us_states");
+        }
+
+        /// <summary>
+        /// Tests whether FeatureLayer.SelectAll honors the SelectionEnabled property.
+        /// </summary>
+        /// <param name="selectionEnabled">Indicates the state of the SelectionEnabled property.</param>
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SelectAll(bool selectionEnabled)
+        {
+            PolygonCategory cat;
+            var fl = GetFeatureLayer(out cat);
+            fl.SelectionEnabled = selectionEnabled;
+            fl.SelectAll();
+
+            Assert.AreEqual(selectionEnabled ? fl.DataSet.ShapeIndices.Count : 0, fl.Selection.Count, "Error inverting selection 50mil_us_states");
+        }
+
+        /// <summary>
+        /// Tests whether FeatureLayer.UnSelectAll honors the SelectionEnabled property.
+        /// </summary>
+        /// <param name="selectionEnabled">Indicates the state of the SelectionEnabled property.</param>
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void UnSelectAll(bool selectionEnabled)
+        {
+            PolygonCategory cat;
+            var fl = GetFeatureLayer(out cat);
+            fl.SelectAll();
+            fl.SelectionEnabled = selectionEnabled;
+            fl.UnSelectAll();
+
+            Assert.AreEqual(selectionEnabled ? 0 : fl.DataSet.ShapeIndices.Count, fl.Selection.Count, "Error inverting selection 50mil_us_states");
+        }
+
+        /// <summary>
+        /// Gets the FeatureLayer that is used for the selection tests.
+        /// </summary>
+        /// <param name="cat">Reference to the second category.</param>
+        /// <returns>The FeatureLayer.</returns>
+        private static IFeatureLayer GetFeatureLayer(out PolygonCategory cat)
+        {
+            // load layer with us states
+            ShapefileLayerProvider provider = new ShapefileLayerProvider();
+            var fl = (IFeatureLayer)provider.OpenLayer(Path.Combine(@"TestFiles", "50mil_us_states.shp"), false, null, null);
+            Assert.IsNotNull(fl);
+
+            // add two categories for testing category.SelectionEnabled
+            PolygonScheme scheme = new PolygonScheme();
+            scheme.ClearCategories();
+            scheme.AddCategory(new PolygonCategory(Color.LightBlue, Color.DarkBlue, 1)
+            {
+                FilterExpression = "[FIPS] >= 10",
+                LegendText = ">= 10"
+            });
+            cat = new PolygonCategory(Color.Pink, Color.DarkRed, 1)
+            {
+                FilterExpression = "[FIPS] < 10",
+                LegendText = "< 10"
+            };
+            scheme.AddCategory(cat);
+            fl.Symbology = scheme;
+            Assert.IsTrue(cat.SelectionEnabled, "Categories must be initialized with SelectionEnabled = true.");
+            return fl;
         }
 
         #endregion

@@ -619,8 +619,14 @@ namespace DotSpatial.Symbology
         /// <returns> The clear selection.</returns>
         public override bool ClearSelection(out Envelope affectedArea, bool force = false)
         {
+            if (!force && !SelectionEnabled)
+            {
+                affectedArea = new Envelope();
+                return false;
+            }
+
             affectedArea = Selection.Envelope;
-            if (!_drawnStatesNeeded && !force && !SelectionEnabled)
+            if (!_drawnStatesNeeded)
             {
                 return false;
             }
@@ -785,6 +791,12 @@ namespace DotSpatial.Symbology
         /// <returns>The invert selection.</returns>
         public override bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
+            if (!SelectionEnabled)
+            {
+                affectedArea = new Envelope();
+                return false;
+            }
+
             if (!_drawnStatesNeeded && !_editMode)
             {
                 AssignFastDrawnStates();
@@ -898,6 +910,12 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if items were selected.</returns>
         public override bool Select(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
+            if (!SelectionEnabled)
+            {
+                affectedArea = new Envelope();
+                return false;
+            }
+
             if (!_drawnStatesNeeded && !_editMode)
             {
                 AssignFastDrawnStates();
@@ -1016,6 +1034,11 @@ namespace DotSpatial.Symbology
         /// </summary>
         public virtual void SelectAll()
         {
+            if (!SelectionEnabled)
+            {
+                return;
+            }
+
             if (!_drawnStatesNeeded && !_editMode)
             {
                 AssignFastDrawnStates();
@@ -1362,6 +1385,12 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if members were removed from the selection.</returns>
         public override bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
+            if (!SelectionEnabled)
+            {
+                affectedArea = new Envelope();
+                return false;
+            }
+
             if (!_drawnStatesNeeded && !_editMode)
             {
                 AssignFastDrawnStates();
@@ -1412,6 +1441,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public virtual void UnSelectAll()
         {
+            if (!SelectionEnabled) return;
             Selection.Clear();
         }
 
