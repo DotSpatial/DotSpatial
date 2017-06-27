@@ -1388,30 +1388,12 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms the specified map element to the full extent of its layers.
-        /// </summary>
-        /// <param name="lm">The layout map.</param>
-        public void ZoomFullExtentMap(LayoutMap lm)
-        {
-            lm.ZoomToFullExtent();
-        }
-
-        /// <summary>
         /// Zooms all map elements to the full extent of their layers.
         /// </summary>
         public void ZoomFullExtentMap()
         {
             foreach (var mapCtrl in LayoutElements.OfType<LayoutMap>())
                 mapCtrl.ZoomToFullExtent();
-        }
-
-        /// <summary>
-        /// Zoom the specified map to the extent of the data view.
-        /// </summary>
-        /// <param name="lm">The layout map.</param>
-        public void ZoomFullViewExtentMap(LayoutMap lm)
-        {
-            lm.ZoomViewExtent();
         }
 
         /// <summary>
@@ -1432,15 +1414,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms the specified map element in by 10%.
-        /// </summary>
-        /// <param name="lm">The layout map.</param>
-        public void ZoomInMap(LayoutMap lm)
-        {
-            lm.ZoomInMap();
-        }
-
-        /// <summary>
         /// Zooms all map elements in by 10%.
         /// </summary>
         public void ZoomInMap()
@@ -1455,15 +1428,6 @@ namespace DotSpatial.Controls
         public void ZoomOut()
         {
             Zoom = Zoom - 0.1F;
-        }
-
-        /// <summary>
-        /// Zooms the specified map element out by 10%.
-        /// </summary>
-        /// <param name="lm">The layout map.</param>
-        public void ZoomOutMap(LayoutMap lm)
-        {
-            lm.ZoomOutMap();
         }
 
         /// <summary>

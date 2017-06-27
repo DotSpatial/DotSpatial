@@ -47,25 +47,25 @@ namespace DotSpatial.Controls
         // Fires when the user clicks the zoom to full extent button
         private void BtnZoomFullExtentClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomFullExtentMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
+            (LayoutControl.SelectedLayoutElements[0] as LayoutMap)?.ZoomToFullExtent();
         }
 
         // Fires the zoom in control on the modeler
         private void BtnZoomInClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomInMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
+            (LayoutControl.SelectedLayoutElements[0] as LayoutMap)?.ZoomInMap();
         }
 
         // Fires the zoom out control on the modeler
         private void BtnZoomOutClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomOutMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
+            (LayoutControl.SelectedLayoutElements[0] as LayoutMap)?.ZoomOutMap();
         }
 
         // Zoom the map to the extent of the layout
         private void BtnZoomViewExtentClick(object sender, EventArgs e)
         {
-            LayoutControl.ZoomFullViewExtentMap(LayoutControl.SelectedLayoutElements[0] as LayoutMap);
+            (LayoutControl.SelectedLayoutElements[0] as LayoutMap)?.ZoomViewExtent();
         }
 
         // If the toolbar is disabled we disable the pan checked button state
