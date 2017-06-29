@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Geometries.Utilities.ShortCircuitedGeometryVisitor">
+    <Position X="15.5" Y="16.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAQAAAAAAAAAAAAAAAAAAABAIAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\ShortCircuitedGeometryVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.EnvelopeIntersectsVisitor">
+    <Position X="12.75" Y="19.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAQAEAAAAAAAAAABAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.ContainsPointVisitor">
+    <Position X="15.5" Y="19.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAQAQABAAAAAAAABAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.LineIntersectsVisitor">
+    <Position X="18.25" Y="19.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAQAQAEABAAAAAAAQBAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

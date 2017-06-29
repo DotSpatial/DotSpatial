@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>DotSpatial_x86</id>
+    <version>1.0.0</version>
+    <authors>DotSpatial</authors> 
+    <description>DotSpatial aims to provide a free, open source.</description>
+    <language>en-US</language>
+    <projectUrl>http://dotspatial.codeplex.com/</projectUrl>
+    <licenseUrl>http://dotspatial.codeplex.com/license</licenseUrl>
+ <!--  <dependencies> -->
+      <!-- zlib nunit are in now -->
+     <!-- <dependency id="zlib.net" version="1.0.3.0"/> -->
+      <!--  <dependency id="NUnit" version="2.5.7.10213"/> -->
+      <!-- future-->
+      <!--  <dependency id="GDAL" version="3.0.0" /-->
+      <!--   <dependency id="ProjNet"/> -->
+      <!--   <dependency id="NetTopology"/> -->
+      <!--   <dependency id="OGR"/> -->
+ <!--   </dependencies> -->
+
+ 
+  </metadata>
+  <files>
+      <file src="Release\bin\DotSpatial*.*" target="lib" />
+      <!-- <file src="Release\bin\zh-CN\**" target="lib\zh-CN" /> -->
+      <!-- <file src="Release\bin\en-US\**" target="lib\en-US" /> -->
+      <!-- <file src="Release\bin\cs\**" target="lib\cs" /> -->
+   <!--   <file src="Release\bin\apps\**" target="lib\apps" /> -->
+    </files>
+</package>

@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ExportFeature_FeaturesAll" xml:space="preserve">
+    <value>All Features</value>
+  </data>
+  <data name="ExportFeature_FeaturesExtent" xml:space="preserve">
+    <value>All Features in View Extent</value>
+  </data>
+  <data name="ExportFeature_FeaturesSelected" xml:space="preserve">
+    <value>Selected features</value>
+  </data>
+  <data name="DoubleBox_DoubleError" xml:space="preserve">
+    <value>The value entered could not be correctly parsed into a valid double precision floating point value.</value>
+  </data>
+  <data name="DoubleBox_DoubleHelp" xml:space="preserve">
+    <value>Enter a double precision floating point value.</value>
+  </data>
+  <data name="AttributeCalculator_ParameterInvalid" xml:space="preserve">
+    <value>The parameter is invalid</value>
+  </data>
+  <data name="AttributeCalculator_IncompatibleDestinationField" xml:space="preserve">
+    <value>The destination field data type is incompatible (double or string or integer)</value>
+  </data>
+  <data name="AttributeCalculator_FactGreaterThanZero" xml:space="preserve">
+    <value>Factorial value should be grater than 0</value>
+  </data>
+  <data name="AttributeCalculator_NonStandardFunction" xml:space="preserve">
+    <value>The function name was not recognized as one of the standard function names.</value>
+  </data>
+  <data name="AttributeCalculator_RootNthRootIncorrect" xml:space="preserve">
+    <value>The root n-th root is incorrect</value>
+  </data>
+  <data name="AttributeCalculator_TooManyClosingBrackets" xml:space="preserve">
+    <value>There were too many closing brackets in the string expression.</value>
+  </data>
+  <data name="TableEditorControl_RemoveFields" xml:space="preserve">
+    <value>Are you sure you want to remove the fields?</value>
+  </data>
+  <data name="TableEditorControl_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="TableEditorControl_CouldNotExecuteQuery" xml:space="preserve">
+    <value>Could not execute the query.</value>
+  </data>
+  <data name="TableEditorControl_CouldNotFindReplace" xml:space="preserve">
+    <value>Could not find or replace items.</value>
+  </data>
+  <data name="TableEditorControl_EnterFindString" xml:space="preserve">
+    <value>Enter Find String</value>
+  </data>
+  <data name="TableEditorControl_FieldImportFailed" xml:space="preserve">
+    <value>Could not import column fields.</value>
+  </data>
+  <data name="TableEditorControl_Find" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="TableEditorControl_NoMatch" xml:space="preserve">
+    <value>None of the rows contain a value that matches the specified value.</value>
+  </data>
+  <data name="FeatureCategoryControl_CustomOnly" xml:space="preserve">
+    <value>In order to specify a custom filter expression, the custom mode must be selected first.</value>
+  </data>
+  <data name="LargeEditsNotSupported" xml:space="preserve">
+    <value>This feature is not yet supported for tables with more than 50, 000 rows.</value>
+  </data>
+  <data name="TableEditorControl_NewFieldFail" xml:space="preserve">
+    <value>Could not create new field</value>
+  </data>
+  <data name="TableEditorControl_CopyFid_Could_not_copy_FID" xml:space="preserve">
+    <value>Could not copy FID</value>
+  </data>
+  <data name="TableEditorControl_CopyFid_Couldnt_find_field" xml:space="preserve">
+    <value>Could not find the field in the attribute Table colums</value>
+  </data>
+  <data name="TableEditorControl_DisplaySelectedRowNumberLable__of_" xml:space="preserve">
+    <value> of </value>
+  </data>
+  <data name="TableEditorControl_DisplaySelectedRowNumberLable__Selected" xml:space="preserve">
+    <value> Selected</value>
+  </data>
+  <data name="TableEditorControl_ImportFieldsFromDbf_Could_not_import_column_fields" xml:space="preserve">
+    <value>Could not import column fields</value>
+  </data>
+  <data name="TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF" xml:space="preserve">
+    <value>DBase Files (*.dbf)|*.dbf</value>
+  </data>
+  <data name="TableEditorControl_SaveEdits_Unable_to_save_edits__" xml:space="preserve">
+    <value>Unable to save edits. </value>
+  </data>
+  <data name="TableEditorControl_removeFieldToolStripMenuItem_Click_Column_edits_are_not_yet_supported_for_datasets_with_more_than_50_000_attributes" xml:space="preserve">
+    <value>Column edits are not yet supported for datasets with more than 50, 000 attributes</value>
+  </data>
+  <data name="TableEditorControl_renameFieldToolStripMenuItem_Click_This_feature_is_not_yet_supported_for_datasets_with_larger_than_50_000_rows_" xml:space="preserve">
+    <value>This feature is not yet supported for datasets with larger than 50, 000 rows.</value>
+  </data>
+  <data name="TableEditorControl_exportSelectedFeaturesToolStripMenuItem_Click_Shapefiles____shp_____SHP" xml:space="preserve">
+    <value>Shapefiles (*.shp) |*.shp</value>
+  </data>
+  <data name="TableEditorControl_ReplaceString_Unfamilar_data_type_to_replace" xml:space="preserve">
+    <value>Unfamilar data type to replace</value>
+  </data>
+  <data name="TableEditorControl_SelectedRowCountStringFormat" xml:space="preserve">
+    <value>{0} of {1} selected.</value>
+  </data>
+  <data name="TableEditorControl_SelectedRowCountPluralization" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="TableEditorControl_Row" xml:space="preserve">
+    <value>row</value>
+  </data>
+  <data name="TableEditorControl_RowPlural" xml:space="preserve">
+    <value>rows</value>
+  </data>
+  <data name="LabelSetup_Help1" xml:space="preserve">
+    <value>Each symbol group can define a separate string expression that includes attribute values.  Double click fields to add it to the expression.</value>
+  </data>
+  <data name="LabelSetup_Help2" xml:space="preserve">
+    <value>Use the Members tab to design a filter expression that restricts which features will be assigned to a specific label.</value>
+  </data>
+  <data name="LabelSetup_Help3" xml:space="preserve">
+    <value>Use the Expression Tab to design the text that should appear in a label.  Fields indicated with brackets will be substituted with real values.</value>
+  </data>
+  <data name="LabelSetup_Help4" xml:space="preserve">
+    <value>Each group can specify its own basic design characteristics.</value>
+  </data>
+  <data name="LabelSetup_Help5" xml:space="preserve">
+    <value>Each group can specify its advanced characteristics.</value>
+  </data>
+</root>

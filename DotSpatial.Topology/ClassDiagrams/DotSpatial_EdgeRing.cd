@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeRing">
+    <Position X="12.25" Y="22.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ogAGgEAAEoIQBCQEEFBAAAQgAAQgAAIAICAAAAhAABA=</HashCode>
+      <FileName>GeometryGraph\EdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.MaximalEdgeRing">
+    <Position X="10.5" Y="31" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAgAAAAAAIAAQAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\MaximalEdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.MinimalEdgeRing">
+    <Position X="14.25" Y="31" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\MinimalEdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

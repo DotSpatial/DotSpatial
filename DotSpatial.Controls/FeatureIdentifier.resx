@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="treFeatures.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="treFeatures.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="treFeatures.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 199</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="treFeatures.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;treFeatures.Name" xml:space="preserve">
+    <value>treFeatures</value>
+  </data>
+  <data name="&gt;&gt;treFeatures.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;treFeatures.Parent" xml:space="preserve">
+    <value>splitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;treFeatures.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
+    <value>splitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="dgvAttributes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dgvAttributes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="dgvAttributes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 199</value>
+  </data>
+  <data name="dgvAttributes.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;dgvAttributes.Name" xml:space="preserve">
+    <value>dgvAttributes</value>
+  </data>
+  <data name="&gt;&gt;dgvAttributes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvAttributes.Parent" xml:space="preserve">
+    <value>splitContainer1.Panel2</value>
+  </data>
+  <data name="&gt;&gt;dgvAttributes.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.Name" xml:space="preserve">
+    <value>splitContainer1.Panel2</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>416, 199</value>
+  </data>
+  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
+    <value>169</value>
+  </data>
+  <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Name" xml:space="preserve">
+    <value>splitContainer1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>416, 199</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAgBAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA
+        AA0AAAAUAAAAFQAAAA8AAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAUAAAAXAAAALwAAAD8AAABBAAAAMgAAABYAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAFAAAAGQAAADiSaD3EpXVC/6V1Qv+ecULiAAAAMwAAABQAAAADAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAABQAAABkAAAA6n3FB7cOfef/37N3/9+zd/8Ofef+QZjvBAAAAMgAAABQAAAADAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAUAAAAZAAAAOZ9wQOvCn3r/9evc//Ln1//y59f/9evc/8Kfev+QZTrBAAAAMgAA
+        ABQAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAFAAAAGQAAADmfcEDrwp97//bs3v/x5tT/0ax8/9GsfP/x5tT/9uze/8Kf
+        e/+QZTrBAAAAMgAAABQAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAABkAAAA5n3BA68Kgev/37+H/8efX/9Gsfv/LoWz/y6Fs/9Gs
+        fv/x59f/9+/h/8Kgev+QZTrBAAAAMgAAABQAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAZAAAAOZ9wQOvDoHv/9/Dj//Po2v/Qq33/yaBs/8qi
+        b//Kom//yaBs/9Crff/z6Nr/9/Dj/8Oge/+QZTrBAAAAMgAAABQAAAADAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAGQAAADmfcEDrw6F9//jx5f/06tz/z6l8/8if
+        af/KoW3/yqJv/8qib//KoW3/yJ9p/8+pfP/06tz/+PHl/8Ohff+QZTrBAAAAMgAAABQAAAADAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAABkAAAA5n3BA68Ohfv/68uj/9Ovd/8yn
+        ev/GnGf/x55q/8efa//Hn2v/x59r/8efa//Hnmr/xpxn/8ynev/0693/+vLo/8Ohfv+QZTrBAAAAMgAA
+        ABQAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAZAAAAOZ9wP+vDon3/+vXq//Tt
+        4P/Lpnn/xZpm/8WbaP/EmWX/w5hj/8OXYv/Dl2L/w5hj/8SZZf/Fm2j/xZpm/8umef/07eD/+vXq/8Oi
+        ff+QZTnBAAAAMgAAABQAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAGQAAADmfcD/rxKJ///v2
+        7f/27uP/yqV3/8KYZP/Emmj/w5hl//bu4v/y6Nn/8ebW//Hm1v/y6Nn/9u7i/8OYZf/Emmj/wphk/8ql
+        d//27uP/+/bt/8Sif/+QZTnBAAAAMgAAABQAAAADAAAAAAAAAAAAAAAAAAAABQAAABkAAAA6n3A/68Sj
+        gP/89+//9+/l/8mkdv/ClWL/xJlm/8SaZ//Cl2T/vpBa//Po2v/w49P/8OPT//Po2v++kFr/wpdk/8Sa
+        Z//EmWb/wpVi/8mkdv/37+X//Pfv/8SjgP+QZTnBAAAAMgAAABQAAAADAAAAAAAAAAMAAAAWAAAAOJ9w
+        P+vEo3///Pjx//fw5v/Io3X/v5Rh/8GYZf/CmWf/wpln/8GYZf+9kVv/9ezf//Hl1v/x5db/9ezf/72R
+        W//BmGX/wpln/8KZZ//BmGX/v5Rh/8ijdf/38Ob//Pjx/8Sjf/+QZTnBAAAAMwAAABYAAAAFAAAADAAA
+        AC6gcUDsxKOA//359P/58un/x6B0/76SXv/BlmP/wZdl/8GXZf/Bl2X/wJZj/7yPWf/37+X/8+nb//Pp
+        2//37+X/vI9Z/8CWY//Bl2X/wZdl/8GXZf/BlmP/vpJe/8egdP/58un//fn0/8SjgP+PZTnCAAAAMgAA
+        AA8AAAAUjmU7r8alg//++/X/+PPq/8afcv+8kFz/vpRh/7+VY/+/lWP/v5Vj/7+VY/++k2H/uYxW//jy
+        6v/06t//9Orf//jy6v+5jFb/vpNh/7+VY/+/lWP/v5Vj/7+VY/++lGH/vJBc/8afcv/48+r//vv1/8al
+        gv+ecUHgAAAAFQAAABSldED/+/fv//z59P/Cm2z/uo1Z/72RYP++k2L/vpNi/76TYv++k2L/vpNi/72R
+        YP+4iVT/+fXu//Xu4//17uP/+fXu/7iJVP+9kWD/vpNi/76TYv++k2L/vpNi/76TYv+9kWD/uo1Z/8Ka
+        bP/8+fP////7/6t8TP8AAAAUAAAADKV0QP/7+PH/+PLq/8GZa/+4ilf/u49e/7yRYP+8kWD/vJFg/7yR
+        YP+8kWD/uo5b/7SETf/8+PL/+PLp//jy6f/8+PL/tIRN/7qOW/+8kWD/vJFg/7yRYP+8kWD/vJFg/7uP
+        Xv+4ilf/wZlq//369f/79/D/pXNA/wAAAAwAAAADnnFBn8amhf////3/+/bw/8Gbbv+4ilb/uo5c/7uQ
+        Xv+7kF7/u5Be/7uPXf+4i1f////////+/P/9+/f//fv3///+/P//////uItX/7uPXf+7kF7/u5Be/7uQ
+        Xv+6jlz/uIpW/8Gbbv/79vD////9/8amhf+ecUGfAAAAAwAAAAAAAAAEn3A/r8amhf//////+/jz/8CZ
+        bf+2iFX/uIxb/7mOXf+5jl3/uY5d/7eLWf+0hVH/sH5H/616Qf+tekH/sH5H/7SFUf+3i1n/uY5d/7mO
+        Xf+5jl3/uIxb/7aIVf/AmW3/+/jz///////GpoT/n3A/rwAAAAQAAAAAAAAAAAAAAAAAAAADn28+rsam
+        hP///////Pn2/76Xa/+zhlP/topZ/7eMW/+3jFv/totZ/7KFUf/awqj////////////awqj/soVR/7aL
+        Wf+3jFv/t4xb/7aKWf+zhlP/vpdr//z59v//////xqaE/59vPq4AAAADAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAEoHA/wMamhf///////vv3/72Wav+yhFD/tYhX/7aKWf+1iFf/sIBL/////////v3///79////
+        //+wgEv/tYhX/7aKWf+1iFf/soRQ/72Wav/++/f//////8amhf+fbz6uAAAAAwAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAFo3NA5sanhv///////v36/7yVaf+wgk//s4ZW/7OGVv+ufkr/////////
+        /////////////65+Sv+zhlb/s4ZW/7CCT/+8lWn//v36///////Gp4b/n28+rgAAAAMAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFo3NA5cenhv////////37/7uTaP+vgE3/sYNS/69/
+        Tf/axq7////////////axq7/r39N/7GDUv+vgE3/u5No///9+///////x6eG/59vPq4AAAADAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFo3M/5ceoh//////////+/7qS
+        Z/+sfkr/roFO/6x+Sv+qekX/qnpF/6x+Sv+ugU7/rH5K/7qSZ/////7//////8eoh/+fbz2uAAAAAwAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFo3M/5ceo
+        iP///////////7mQZf+rfEj/roBO/6+BT/+vgU//roBO/6t8SP+5kGX////////////HqIj/n289rgAA
+        AAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAFo3M/5cepif///////////7ePZP+pekj/rH9O/6x/Tv+pekj/t49k////////////x6mJ/59v
+        Pa4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAFo3M/5cipif///////////7aOYv+ndkP/p3ZD/7aOYv///////////8ip
+        if+fbz2uAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFo3M/5ciqiv///////////7KHW/+yh1v/////////
+        ///Iqor/n289rgAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFo3I/5ciqi///////////////
+        ////////yKqL/59uPa4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFpHM/5sqs
+        jv///////////8qsjv+fbz2uAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAADonJCmqRyP/+kcj//o3NCsAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA//gf///wD///4Af//8AD//+AAf//AAD//gAAf/wAAD/4AAAf8AAAD+AA
+        AAfAAAADgAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAHAAAAD4AAAB/AAAA/4AAAf/AAAP/4A
+        AH//AAD//4AB///AA///4Af///AP///4H/8=
+</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Identify</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FeatureIdentifier</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

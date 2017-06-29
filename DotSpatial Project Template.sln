@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ProjectTemplateVSIX", "DotSpatial.Plugins.ProjectTemplateVSIX\DotSpatial.Plugins.ProjectTemplateVSIX.csproj", "{309B546C-5DF5-4E4C-94E0-57FB34BC3E2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Template", "DotSpatial.Plugins.ProjectTemplatePackage\DS.Template.csproj", "{1DD58FFD-2A77-4128-AA66-52185B1C0B83}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DotSpatial.Plugins.ProjectTemplateVSIX\\DotSpatial.Plugins.ProjectTemplateVSIX.csproj
+		SccProjectName1 = DotSpatial.Plugins.ProjectTemplateVSIX
+		SccLocalPath1 = DotSpatial.Plugins.ProjectTemplateVSIX
+		SccProjectUniqueName2 = DotSpatial.Plugins.ProjectTemplatePackage\\DS.Template.csproj
+		SccProjectName2 = DotSpatial.Plugins.ProjectTemplatePackage
+		SccLocalPath2 = DotSpatial.Plugins.ProjectTemplatePackage
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{309B546C-5DF5-4E4C-94E0-57FB34BC3E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{309B546C-5DF5-4E4C-94E0-57FB34BC3E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{309B546C-5DF5-4E4C-94E0-57FB34BC3E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{309B546C-5DF5-4E4C-94E0-57FB34BC3E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD58FFD-2A77-4128-AA66-52185B1C0B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD58FFD-2A77-4128-AA66-52185B1C0B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD58FFD-2A77-4128-AA66-52185B1C0B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD58FFD-2A77-4128-AA66-52185B1C0B83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Positioning.Gps</RootNamespace>
+    <AssemblyName>DotSpatial.Positioning.Gps</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>CodePlex.snk</AssemblyOriginatorKeyFile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Debug\x64\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\..\Debug\x64\DotSpatial.Positioning.Gps.XML</DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Release\x64\</OutputPath>
+    <DefineConstants>TRACE;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Release\x64\DotSpatial.Positioning.Gps.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
+    <DocumentationFile>bin\Release\DF40\DotSpatial.Positioning.Gps.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Altimeter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Clock.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ColorInterpolator.cs" />
+    <Compile Include="Controls\Compass.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DoubleBufferedControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GraphicsSettings.cs" />
+    <Compile Include="Controls\PolarControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PolarCoordinate.cs" />
+    <Compile Include="Controls\PolarGraphics.cs" />
+    <Compile Include="Controls\SatelliteSignalBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\SatelliteViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Speedometer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Devices\BluetoothAddress.cs" />
+    <Compile Include="Devices\BluetoothDevice.cs" />
+    <Compile Include="Devices\BluetoothEndPoint.cs" />
+    <Compile Include="Devices\BluetoothRadio.cs" />
+    <Compile Include="Devices\NetworkDevice.cs" />
+    <Compile Include="Devices\SerialPort.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Devices\VirtualDevice.cs" />
+    <Compile Include="DilutionOfPrecision.cs" />
+    <Compile Include="Emulators\Emulator.cs" />
+    <Compile Include="Emulators\NmeaEmulator.cs" />
+    <Compile Include="Emulators\RouteFileEmulator.cs" />
+    <Compile Include="Emulators\TextFileEmulator.cs" />
+    <Compile Include="Enumerations.cs" />
+    <Compile Include="EventArguments.cs" />
+    <Compile Include="Devices\NativeMethods.cs" />
+    <Compile Include="Filters\Filter.cs" />
+    <Compile Include="Filters\KalmanFilter.cs" />
+    <Compile Include="Filters\PositionAverageFilter.cs" />
+    <Compile Include="Filters\SquareMatrix3D.cs" />
+    <Compile Include="Interpreter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BinaryPacket.cs" />
+    <Compile Include="Devices\Device.cs" />
+    <Compile Include="Devices.cs" />
+    <Compile Include="Devices\SerialDevice.cs">
+    </Compile>
+    <Compile Include="Nmea\GpggaSentence.cs" />
+    <Compile Include="Nmea\GpggkSentence.cs" />
+    <Compile Include="Nmea\GpgllSentence.cs" />
+    <Compile Include="Nmea\GpgsaSentence.cs" />
+    <Compile Include="Nmea\GpgsvSentence.cs" />
+    <Compile Include="Nmea\GprmcSentence.cs" />
+    <Compile Include="Nmea\GpvtgSentence.cs" />
+    <Compile Include="Nmea\Interfaces.cs" />
+    <Compile Include="Nmea\NmeaInterpreter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Nmea\NmeaReader.cs" />
+    <Compile Include="Nmea\NmeaSentence.cs" />
+    <Compile Include="Nmea\PgrmfSentence.cs" />
+    <Compile Include="Packet.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Satellite.cs" />
+    <Compile Include="SignalToNoiseRatio.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CodePlex.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\Altimeter.bmp" />
+    <Content Include="Controls\Clock.bmp" />
+    <Content Include="Controls\Compass.bmp" />
+    <Content Include="Controls\SatelliteSignalBar.bmp" />
+    <Content Include="Controls\SatelliteViewer.bmp" />
+    <Content Include="Controls\Speedometer.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoSpatial\DotSpatial.Positioning.csproj">
+      <Project>{26E18588-B04D-4987-BF36-8206A7E36FF9}</Project>
+      <Name>DotSpatial.Positioning %28Desktop Framework 4.0%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

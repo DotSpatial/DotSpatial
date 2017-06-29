@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArgumentCannotBeNegative_S" xml:space="preserve">
+    <value>The argument %S cannot be negative.</value>
+  </data>
+  <data name="ArgumentNull_S" xml:space="preserve">
+    <value>The argument %S was null.  Try testing for the null case before calling this method.</value>
+  </data>
+  <data name="ArgumentOfWrongType_S1_S2" xml:space="preserve">
+    <value>The argument %S1 was incorrect for %S2.</value>
+  </data>
+  <data name="Argument_Null_S" xml:space="preserve">
+    <value>The argument %S cannot be null.</value>
+  </data>
+  <data name="CalculatingStatistics" xml:space="preserve">
+    <value>Calculating Statistics</value>
+  </data>
+  <data name="CannotCopyToSelf_S" xml:space="preserve">
+    <value>The fileName %S cannot be copied to itself.</value>
+  </data>
+  <data name="CopyingValues" xml:space="preserve">
+    <value>Copying Values</value>
+  </data>
+  <data name="CurrentElementNotSpecified" xml:space="preserve">
+    <value>The current element was not defined.  Before attempting to read the element, first assign the value of the current XML Element to read.</value>
+  </data>
+  <data name="EndOfFile" xml:space="preserve">
+    <value>Cannot read past the end of the file.</value>
+  </data>
+  <data name="FeatureTypeMismatch" xml:space="preserve">
+    <value>The FeatureType of the feature you are trying to add does not match the feature type of this featureset.</value>
+  </data>
+  <data name="FeaturetypeUnspecified" xml:space="preserve">
+    <value>The FeatureType was not specified.  Please specify a featuretype before attempting to call this method.</value>
+  </data>
+  <data name="FileExists_S" xml:space="preserve">
+    <value>The fileName %S already exists.  Do you wish to overwrite it?</value>
+  </data>
+  <data name="FileNotFound_S" xml:space="preserve">
+    <value>The fileName %S was not found.</value>
+  </data>
+  <data name="FileNotLines_S" xml:space="preserve">
+    <value>The fileName %S contains a feature type other than lines.</value>
+  </data>
+  <data name="FileNotPoints_S" xml:space="preserve">
+    <value>The fileName %S contains a feature type other than points.</value>
+  </data>
+  <data name="FileTypeNotSupported" xml:space="preserve">
+    <value>The specified file type is not supported.</value>
+  </data>
+  <data name="HfaEnumerationNotFound" xml:space="preserve">
+    <value>Attepted to set the enumeration field to the value '%s', which is not known.</value>
+  </data>
+  <data name="HfaFieldTypeException" xml:space="preserve">
+    <value>The specified charcter '%S' was not a known field type: 124cCesStlLfdmMbox"</value>
+  </data>
+  <data name="HfaInvalidCountException" xml:space="preserve">
+    <value>The number of rows and number of columns must both be greater than 0, but the header for this item returned %S1 rows and %S2 columns.</value>
+  </data>
+  <data name="HfaNotCompressedException" xml:space="preserve">
+    <value>You must first compress the data before accessing this value.</value>
+  </data>
+  <data name="HfaPointerInsertNotSupportedException" xml:space="preserve">
+    <value>Insertion via SetInstValue() is not yet supported for pointers.</value>
+  </data>
+  <data name="IndexingErrorIn_S" xml:space="preserve">
+    <value>There was an error while attempting to index %S</value>
+  </data>
+  <data name="IO_FileNotFound_S" xml:space="preserve">
+    <value>The file %S could not be found.</value>
+  </data>
+  <data name="NotImplemented" xml:space="preserve">
+    <value>This has not yet been implemented.</value>
+  </data>
+  <data name="NumberException_TooLarge_S" xml:space="preserve">
+    <value>The value %S was too large to encode with 18 ASCII characters.</value>
+  </data>
+  <data name="NumberException_TooSmall_S" xml:space="preserve">
+    <value>The value %S was too small to be encoded with 18 ASCII characters.</value>
+  </data>
+  <data name="ParseFailed_S" xml:space="preserve">
+    <value>The value you entered could not be parsed into a %S.  Make sure the value is in the valid range.</value>
+  </data>
+  <data name="PngInsuficientLengthException" xml:space="preserve">
+    <value>The desired length of %S1 was too long.  The total length was %S2 and the offset was %S3.</value>
+  </data>
+  <data name="PngInvalidSignatureException" xml:space="preserve">
+    <value>The beginning eight bytes of the specified file did not match the png signature.</value>
+  </data>
+  <data name="PyramidByteMismatchException" xml:space="preserve">
+    <value>The number of bytes should be 4 * rows * cols since only ARGB format is supported.</value>
+  </data>
+  <data name="PyramidHeaderException" xml:space="preserve">
+    <value>The header has not been defined for the image scale you are attempting to access.</value>
+  </data>
+  <data name="PyramidOutOfBoundsException" xml:space="preserve">
+    <value>The rows or columns would extend beyond the specified number of columns or rows for the specified scale.</value>
+  </data>
+  <data name="RasterRequiresCast" xml:space="preserve">
+    <value>To work with anything other than an in-memory raster window, you must first cast this raster to the correct data format.</value>
+  </data>
+  <data name="RastersNeedSameCellSize" xml:space="preserve">
+    <value>The rasters must have equally sized cells to use this method.</value>
+  </data>
+  <data name="RasterTooLarge" xml:space="preserve">
+    <value>The specified raster would be too large to store in memory.</value>
+  </data>
+  <data name="ReadingValuesFrom_S" xml:space="preserve">
+    <value>Reading values from %S</value>
+  </data>
+  <data name="WritingValues_S" xml:space="preserve">
+    <value>Writing values to %S</value>
+  </data>
+</root>

@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="_lblFieldName.Text" xml:space="preserve">
+    <value>&amp;字段:</value>
+  </data>
+
+  <data name="btnRamp.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADIAAAAgCAYAAABQISshAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK+gAA
+        CvoBGdj/dAAAAppJREFUWEftmSGzqzAQhftXKiuvrEUikbGRkZGxSCQyFomMxCKRkdhIJPK83XDphWne
+        feoNdAYRQXbo7Lc5CdnT2zzPt08Z0zTBaA0tBFSewzkHnuP8TwnBya1jLTI/Z88M8zgiEICvKtQEw2Cn
+        BAkhwBgDIw10odC2bYTiOYbYgvRSQtzvMX6qFeGE8izHHGZMXYC3A6yoqeoERXJKgTRZFiEPA+FKxwRp
+        8CqwPPh58qT5DcigO8iHOCeIJl27tkPvAprKQwodJaRISikQVzTHgnBympZ9W3WeY4gwzi+QUvYoMnlO
+        kKZp4LoeHUnFdh5CGfCckjpCvIE8y2NBWN/e+zjWo5ITbgkiTPMLRDcDcqGijFIgMiPIo6Q1DANMVULX
+        FUSpYRuLkY5IqTR8mN5AMlUfC8LJcdI81qrznKBzfJwnuOBReYeiIXnQRi6kSoIUpTsOpO97VHWJ0tKm
+        rRWsrWPVtdERYgsie4uHzM8HsshEIswBfejQegvd0umiFQSNFEjWmGNBrLX0haQLGSW4blw+78fJ70Cq
+        QeOpv84JIqWAHzpMVHU/WJRGkIQsHZlFEkS64nwgnDBDzCSfFWToNKTMPgtEKUG3R/4G7EFs/XEgRRLE
+        NSSfT5KWomRTK3KBHHX8Xitytg/itSLXivynfuSS1iWtS1q/G3Ts0qWuKFI8cLvdktf4L/mI7l6qsbqL
+        xflL9eyPXMZYynz4uosY+5tB90/LNJrD2XN3+7XV949+x7YdorI/sSfZldtWN6+pHY6FmcCxrYsiDDdu
+        S4zN6K0dJPPFFn0Z1TvLtNq996uJvZjE3B1SG6v2dj3HuD+XWqBIxkxssnJqB7Y2//KeiY4KmxFvMUqc
+        raEif49FK5X8L5WMpf9W+ANkUb2g6l2YQAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btnRamp.ToolTip" xml:space="preserve">
+    <value>建立序列化的颜色列表而非随机生成的列表</value>
+  </data>
+  <data name="cmdRefresh.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACQAAAAbCAYAAAAULC3gAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK+gAA
+        CvoBGdj/dAAAAwRJREFUWEe9161SHUEQhuFzCbkFZGQkt8AlYCMjI2ORSCQWiURikZHIWCQSucmzlZca
+        lj0/oepkqqaWM9M/X3/d0zNsNkca93e/pvOzm+n66uf0+Pg8HcnNYWYvftxPX89vp6en5+n25nH6/u1u
+        Oju9nqz/V3AAYAUIDH0+uZyn34Y1oMgcHVwpwkDOgTn5dDGnDUuA+L68vMxMXV4+zExao38Y/3+lRM9w
+        0TFqy5dBkxMOyHA2jtMvVzM48+HhaZYnC0ippbcTFAdRzEAFGhsMV7iAMRwrvuQ4ZcMeeXJSGDj61grk
+        HaARBEOMGgBlpIJVqJigE0uccWyQS4ecvb50yFV32ZgBLUFUByPlwDGO+orUPtaaRQ8IsNZHgIHz5YM8
+        OcEA5rvhqIrvZOT4TREMP8h3guiI1G/rjWqOwxEchugARMdv/nwFsKnyCSxzuw1QdcJQRVlBA7IcZQC7
+        ZkXMXz47FBvIKs4xFf4Gtr6ydCKasadUtNXPtmDsm0AClx1pnuvHpsXyGaiRhVJRpOUdO50QBnO2DUzr
+        7LGBYf5qHTOgfhAOVAA5wCADouE0AxkfT1InZx8grNMTNLvV8euRl78GoxQMwhXkWm2QIStScsa+lJEB
+        pL5Ft0BXAQWs1NV/6kfL6MnVlw4BVBZGhunX+WdQUlQtYaUogBgb275ULAGxK+WcNfgBwDTIvLvHuuhs
+        dtfUDgI0pizwawDHlKU79ic+KugOxOr9Fe0BEllzdDKytlYvHK4VfGu9lTokAl0FVD+q0fV2WbIwnqpY
+        8y014y2PAUxX8GzVHkrn1ts9+gLQpbcENLZ6e/TqWfbGE7uW0mqnW37ncwMrY4RjZNsKWtqqFVFLRW+m
+        ZauIybJx0IOsmzd6OyE9FZbAHIj6EIddAT0n6jHpdecdBIZQRhkokvHpscYUne615SN+fJL0LNlayNtQ
+        1hs63qVkmcKa4utNvSdsQN40wINp+iOoDsp5RdsJ7HHevfYvdj8s280uIrP/HA5l48OOdylWF+MtfxRH
+        g9Hf+Adbt0PyGE0AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cmdRefresh.ToolTip" xml:space="preserve">
+    <value>采用初始目录随机重新生成颜色</value>
+  </data>
+  <data name="btnExclude.Text" xml:space="preserve">
+    <value>剔除成员</value>
+  </data>
+  <data name="btnExclude.ToolTip" xml:space="preserve">
+    <value>设计一个过滤表达式使没选中的要素进行显示</value>
+  </data>
+  <data name="radUniqueValues.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 17</value>
+  </data>
+  <data name="radUniqueValues.Text" xml:space="preserve">
+    <value>&amp;特征值</value>
+  </data>
+
+  <data name="radQuantities.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 17</value>
+  </data>
+  <data name="radQuantities.Text" xml:space="preserve">
+    <value>&amp;数量</value>
+  </data>
+
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>正规化字段</value>
+  </data>
+
+  <data name="lblSigFig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
+  <data name="lblSigFig.Text" xml:space="preserve">
+    <value>舍入数位</value>
+  </data>
+
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>捕捉区间</value>
+  </data>
+
+  <data name="_stat.HeaderText" xml:space="preserve">
+    <value>统计</value>
+  </data>
+  <data name="_value.HeaderText" xml:space="preserve">
+    <value>值</value>
+  </data>
+
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>分区方法</value>
+  </data>
+
+  <data name="cmbInterval.Items" xml:space="preserve">
+    <value>平均区间</value>
+  </data>
+  <data name="cmbInterval.Items1" xml:space="preserve">
+    <value>手工定制</value>
+  </data>
+  <data name="cmbInterval.Items2" xml:space="preserve">
+    <value>分位数</value>
+  </data>
+
+  <data name="lblBreaks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 13</value>
+  </data>
+  <data name="lblBreaks.Text" xml:space="preserve">
+    <value>区分点个数</value>
+  </data>
+
+  <data name="tabStatistics.Text" xml:space="preserve">
+    <value>统计值</value>
+  </data>
+
+  <data name="lblColumns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 13</value>
+  </data>
+  <data name="lblColumns.Text" xml:space="preserve">
+    <value>列</value>
+  </data>
+
+  <data name="chkLog.Text" xml:space="preserve">
+    <value>原始比例</value>
+  </data>
+
+  <data name="chkShowStd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 17</value>
+  </data>
+  <data name="chkShowStd.Text" xml:space="preserve">
+    <value>标准显示</value>
+  </data>
+
+  <data name="chkShowMean.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 17</value>
+  </data>
+  <data name="chkShowMean.Text" xml:space="preserve">
+    <value>均值显示</value>
+  </data>
+
+  <data name="breakSliderGraph1.Text" xml:space="preserve">
+    <value>间断滑条图形</value>
+  </data>
+
+  <data name="tabGraph.Text" xml:space="preserve">
+    <value>图形</value>
+  </data>
+
+  <data name="chkUseGradients.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 17</value>
+  </data>
+  <data name="chkUseGradients.Text" xml:space="preserve">
+    <value>采用坡度</value>
+  </data>
+
+  <data name="colSymbol.HeaderText" xml:space="preserve">
+    <value>符号</value>
+  </data>
+  <data name="colValues.HeaderText" xml:space="preserve">
+    <value>属性值</value>
+  </data>
+  <data name="colLegendText.HeaderText" xml:space="preserve">
+    <value>注记文字</value>
+  </data>
+  <data name="colCount.HeaderText" xml:space="preserve">
+    <value>计数</value>
+  </data>
+
+  <data name="radCustom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 17</value>
+  </data>
+  <data name="radCustom.Text" xml:space="preserve">
+    <value>定制</value>
+  </data>
+
+  <data name="dataGridViewImageColumn1.HeaderText" xml:space="preserve">
+    <value>符号</value>
+  </data>
+
+</root>
