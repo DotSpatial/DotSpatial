@@ -1,74 +1,32 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceProvider.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Collections.Generic;
-using DotSpatial.Plugins.WebMap.Resources;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using DotSpatial.Topology;
 
 namespace DotSpatial.Plugins.WebMap
 {
     public class ServiceProvider
     {
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the ServiceProvider class.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="url"></param>
-        public ServiceProvider(string name, string url)
+        public ServiceProvider(string name)
         {
-            Url = url;
+            if (name == null) throw new ArgumentNullException("name");
             Name = name;
         }
 
-        public ServiceProvider()
-        {
-        }
-
-        #endregion
-
         #region Public Properties
 
-        public string Name { get; set; }
-
-        public string Url { get; set; }
+        public string Name { get; private set; }
+        public virtual bool NeedConfigure { get; protected set; }
+        public Func<bool> Configure { get; protected set; } 
 
         #endregion
 
         #region Public Methods
 
-        public static IEnumerable<ServiceProvider> GetDefaultServiceProviders()
+        public virtual Bitmap GetBitmap(int x, int y, Envelope envelope, int zoom)
         {
-            List<string> extraServices = new List<string>(){
-            Properties.Resources.BingHybrid,
-            Properties.Resources.GoogleSatellite,
-            Properties.Resources.GoogleMap/*,
-            Properties.Resources.WMSMap Commented out for 1.6 HydroDesktop release. See https://hydrodesktop.codeplex.com/workitem/8731 */
-            };
-
-            foreach (var item in Services.Default.List)
-            {
-                var serviceDescArr = item.Split(',');
-
-                var serviceName = serviceDescArr[0];
-                var serviceUrl = serviceDescArr[1];
-
-                while (extraServices.Count > 0 && extraServices[0].ToUpper()[0] < serviceName.ToUpper()[0])
-                {
-                    yield return new ServiceProvider(extraServices[0], null);
-                    extraServices.Remove(extraServices[0]);
-                }
-
-                yield return new ServiceProvider(serviceName, serviceUrl);
-            }
-
-            foreach (var item in extraServices)
-            {
-                yield return new ServiceProvider(item, null);
-            }
+            return null;
         }
 
         public override string ToString()
@@ -77,5 +35,23 @@ namespace DotSpatial.Plugins.WebMap
         }
 
         #endregion
+
+        protected static Bitmap ExceptionToBitmap(Exception ex, int width, int height)
+        {
+            using (var bitmap = new Bitmap(width, height))
+            {
+                using (var graphics = Graphics.FromImage(bitmap))
+                {
+                    graphics.DrawString(ex.Message, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Black),
+                        new RectangleF(0, 0, width, height));
+                }
+
+                using (var m = new MemoryStream())
+                {
+                    bitmap.Save(m, ImageFormat.Png);
+                    return new Bitmap(m);
+                }
+            }
+        }
     }
 }

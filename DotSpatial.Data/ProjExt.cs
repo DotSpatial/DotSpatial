@@ -24,6 +24,7 @@ using System.Drawing;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using Point = System.Drawing.Point;
+using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
@@ -32,6 +33,7 @@ namespace DotSpatial.Symbology
     /// </summary>
     public static class ProjExt
     {
+		
         #region Methods
 
         /// <summary>
@@ -46,9 +48,10 @@ namespace DotSpatial.Symbology
             double y = Convert.ToDouble(position.Y);
             if (self != null && self.GeographicExtents != null)
             {
-                x = x * self.GeographicExtents.Width / self.ImageRectangle.Width + self.GeographicExtents.MinX;
-                y = self.GeographicExtents.MaxY - y * self.GeographicExtents.Height / self.ImageRectangle.Height;
+                x = (x - self.ImageRectangle.X) * self.GeographicExtents.Width / self.ImageRectangle.Width + self.GeographicExtents.MinX;
+                y = self.GeographicExtents.MaxY - (y - self.ImageRectangle.Y) * self.GeographicExtents.Height / self.ImageRectangle.Height;
             }
+
             return new Coordinate(x, y, 0.0);
         }
 
@@ -94,12 +97,16 @@ namespace DotSpatial.Symbology
         public static Point ProjToPixel(this IProj self, Coordinate location)
         {
             if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0) return Point.Empty;
+            //CGX
+            if (location == null) return Point.Empty;
             try
             {
-                int x = Convert.ToInt32((location.X - self.GeographicExtents.MinX) *
-                                        (self.ImageRectangle.Width / self.GeographicExtents.Width));
-                int y = Convert.ToInt32((self.GeographicExtents.MaxY - location.Y) *
+
+                int x = Convert.ToInt32(self.ImageRectangle.X + (location.X - self.GeographicExtents.MinX) *
+                                    (self.ImageRectangle.Width / self.GeographicExtents.Width));
+                int y = Convert.ToInt32(self.ImageRectangle.Y + (self.GeographicExtents.MaxY - location.Y) *
                                         (self.ImageRectangle.Height / self.GeographicExtents.Height));
+
                 return new Point(x, y);
             }
             catch (System.OverflowException)
@@ -152,10 +159,6 @@ namespace DotSpatial.Symbology
         {
             return (distance * self.ImageRectangle.Width / self.GeographicExtents.Width);
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

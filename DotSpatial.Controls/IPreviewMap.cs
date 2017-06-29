@@ -19,13 +19,12 @@
 //
 // ********************************************************************************************************
 
+using System;
 using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    ///
-    /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface IPreviewMap : IView, IUserControl
     {
     }

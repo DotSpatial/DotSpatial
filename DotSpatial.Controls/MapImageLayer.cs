@@ -22,15 +22,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using System.Drawing.Imaging;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoImageLayer
-    /// </summary>
     public class MapImageLayer : ImageLayer, IMapImageLayer
     {
         #region Events
@@ -46,10 +43,6 @@ namespace DotSpatial.Controls
         #region Private Variables
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private Extent _bufferExtent; // the geographic extent of the current buffer.
-        private Rectangle _bufferRectangle;
-        private bool _isInitialized;
-        private Image _stencil; // draw features to the stencil
         private Color transparent;
 
         #endregion
@@ -67,10 +60,7 @@ namespace DotSpatial.Controls
         /// Creates a new instance of GeoImageLayer
         /// </summary>
         public MapImageLayer(IImageData baseImage)
-            : base(baseImage)
-        {
-            Configure(baseImage);
-        }
+            : base(baseImage) { }
 
         /// <summary>
         /// Creates a new instance of a GeoImageLayer
@@ -78,10 +68,7 @@ namespace DotSpatial.Controls
         /// <param name="baseImage">The image to draw as a layer</param>
         /// <param name="container">The Layers collection that keeps track of the image layer</param>
         public MapImageLayer(IImageData baseImage, ICollection<ILayer> container)
-            : base(baseImage, container)
-        {
-            Configure(baseImage);
-        }
+            : base(baseImage, container) { }
 
         /// <summary>
         /// Creates a new instance of a GeoImageLayer
@@ -91,23 +78,22 @@ namespace DotSpatial.Controls
         public MapImageLayer(IImageData baseImage, Color transparent)
             : base(baseImage)
         {
-            Configure(baseImage);
             this.transparent = transparent;
-        }
-
-        private void Configure(IImageData baseImage)
-        {
-            _bufferRectangle = new Rectangle(0, 0, baseImage.Width, baseImage.Height);
-            _bufferExtent = baseImage.Bounds.Extent;
-            base.IsVisible = true;
-            MyExtent = baseImage.Extent;
-            base.LegendText = Path.GetFileName(baseImage.Filename);
-            OnFinishedLoading();
         }
 
         #endregion
 
         #region Methods
+
+        protected override void OnDataSetChanged(IImageData value)
+        {
+            base.OnDataSetChanged(value);
+
+            BufferRectangle = value == null ? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
+            BufferExtent = value == null ? null : value.Bounds.Extent;
+            MyExtent = value == null ? null : value.Extent;
+            OnFinishedLoading();
+        }
 
         /// <summary>
         /// This will draw any features that intersect this region.  To specify the features
@@ -144,41 +130,25 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+        public Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
-        public Extent BufferExtent
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+        public Extent BufferExtent { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+        public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// Gets or sets whether the image layer is initialized
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool IsInitialized
-        {
-            get { return _isInitialized; }
-            set { _isInitialized = value; }
-        }
+        public new bool IsInitialized { get; set; }
 
         #endregion
 
@@ -192,17 +162,8 @@ namespace DotSpatial.Controls
         {
             if (BufferChanged != null)
             {
-                ClipArgs e = new ClipArgs(clipRectangles);
-                BufferChanged(this, e);
+                BufferChanged(this, new ClipArgs(clipRectangles));
             }
-        }
-
-        /// <summary>
-        /// Indiciates that whatever drawing is going to occur has finished and the contents
-        /// are about to be flipped forward to the front buffer.
-        /// </summary>
-        protected virtual void OnFinishDrawing()
-        {
         }
 
         #endregion
@@ -225,7 +186,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                if (_backBuffer == null) _backBuffer = new Bitmap(_bufferRectangle.Width, _bufferRectangle.Height);
+                if (_backBuffer == null) _backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
                 g = Graphics.FromImage(_backBuffer);
             }
             int numBounds = Math.Min(regions.Count, clipRectangles.Count);
@@ -237,13 +198,13 @@ namespace DotSpatial.Controls
                 // but should correspond to 1 pixel in the source image.
 
                 int dx = (int)Math.Ceiling(DataSet.Bounds.AffineCoefficients[1] * clipRectangles[i].Width / regions[i].Width);
-                Rectangle r = RectangleExt.ExpandBy(clipRectangles[i], dx * 2);
+                Rectangle r = clipRectangles[i].ExpandBy(dx * 2);
                 if (r.X < 0) r.X = 0;
                 if (r.Y < 0) r.Y = 0;
                 if (r.Width > 2 * clipRectangles[i].Width) r.Width = 2 * clipRectangles[i].Width;
                 if (r.Height > 2 * clipRectangles[i].Height) r.Height = 2 * clipRectangles[i].Height;
                 Extent env = regions[i].Reproportion(clipRectangles[i], r);
-                Bitmap bmp;
+                Bitmap bmp = null;
                 try
                 {
                     bmp = DataSet.GetBitmap(env, r);
@@ -251,10 +212,24 @@ namespace DotSpatial.Controls
                 }
                 catch
                 {
+                    if (bmp != null) bmp.Dispose();
                     continue;
                 }
                 if (bmp == null) continue;
-                g.DrawImage(bmp, r);
+
+                if (this.Symbolizer != null && this.Symbolizer.Opacity < 1)
+                {
+                    ColorMatrix matrix = new ColorMatrix(); //draws the image not completely opaque
+                    matrix.Matrix33 = Symbolizer.Opacity;
+                    ImageAttributes attributes = new ImageAttributes();
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
+                    attributes.Dispose();
+                }
+                else
+                {
+                    g.DrawImage(bmp, r);
+                }
                 bmp.Dispose();
             }
             if (args.Device == null) g.Dispose();

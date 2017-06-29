@@ -58,6 +58,7 @@ namespace DotSpatial.Symbology
 
         #region Properties
 
+
         /// <summary>
         /// Gets or sets a boolean that controls whether or not a newly added layer
         /// will also force a zoom to that layer.  If this is true, then nothing

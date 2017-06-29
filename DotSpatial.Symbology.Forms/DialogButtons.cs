@@ -29,7 +29,7 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// DialogButtons
     /// </summary>
-    [DefaultEvent("OkClicked"), ToolboxItem(false)]
+    [DefaultEvent("OkClicked"), ToolboxItem(true)]
     public class DialogButtons : UserControl
     {
         #region Events
@@ -137,7 +137,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnOKClicked()
         {
-            if (OkClicked != null) OkClicked(this, new EventArgs());
+            if (OkClicked != null) OkClicked(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnCancelClicked()
         {
-            if (CancelClicked != null) CancelClicked(this, new EventArgs());
+            if (CancelClicked != null) CancelClicked(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnApplyClicked()
         {
-            if (ApplyClicked != null) ApplyClicked(this, new EventArgs());
+            if (ApplyClicked != null) ApplyClicked(this, EventArgs.Empty);
         }
     }
 }

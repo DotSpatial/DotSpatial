@@ -1,8 +1,5 @@
 ﻿namespace DotSpatial.Extensions
 {
-    /// <summary>
-    ///
-    /// </summary>
     public interface IProjectFileProvider
     {
         /// <summary>

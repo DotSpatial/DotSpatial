@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
@@ -41,7 +42,14 @@ namespace DotSpatial.Symbology
         /// A Boolean that indicates whether or not this feature should be drawn at all.
         /// This should default to true.
         /// </summary>
+        /// 
+        //CGX
+        [Serialize("Visible")]
         public bool Visible;
+
+        //CGX
+        [Serialize("Index")]
+        public int Index;
 
         /// <summary>
         /// Creates a blank fast drawn state

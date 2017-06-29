@@ -30,35 +30,30 @@ namespace DotSpatial.Data.Forms
     public static class DataManagerExt
     {
         /// <summary>
-        /// This opens a file, but populates the dialog filter with only raster formats.
+        /// This opens a file, but populates the dialog filter with only vector formats.
         /// </summary>
-        /// <returns>An IFeatureSet with the data from the file specified in a dialog</returns>
+        /// <returns>An IFeatureSet with the data from the file specified in a dialog, or null if nothing load.</returns>
         public static IFeatureSet OpenVector(this IDataManager self)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = self.VectorReadFilter;
+            var ofd = new OpenFileDialog {Filter = self.VectorReadFilter};
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler) as IFeatureSet;
         }
 
         /// <summary>
-        /// This uses an open dialog filter with only raster extensions but where multi-select is
-        /// enabled, hence allowing multiple rasters to be returned in this list.
+        /// This uses an open dialog filter with only vector extensions but where multi-select is
+        /// enabled, hence allowing multiple vectors to be returned in this list.
         /// </summary>
-        /// <returns>The list or rasters</returns>
-        public static List<IFeatureSet> OpenVectors(this IDataManager self)
+        /// <returns>The enumerable or vectors.</returns>
+        public static IEnumerable<IFeatureSet> OpenVectors(this IDataManager self)
         {
-            List<IFeatureSet> result = new List<IFeatureSet>();
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = self.VectorReadFilter;
-            ofd.Multiselect = true;
-            if (ofd.ShowDialog() != DialogResult.OK) return null;
-            foreach (string name in ofd.FileNames)
+            var ofd = new OpenFileDialog {Filter = self.VectorReadFilter, Multiselect = true};
+            if (ofd.ShowDialog() != DialogResult.OK) yield break;
+            foreach (var name in ofd.FileNames)
             {
-                IFeatureSet ds = self.OpenVector(name, self.LoadInRam, self.ProgressHandler);
-                if (ds != null) result.Add(ds);
+                var ds = self.OpenVector(name, self.LoadInRam, self.ProgressHandler);
+                if (ds != null) yield return ds;
             }
-            return result;
         }
 
         /// <summary>
@@ -67,8 +62,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>for now an IDataSet</returns>
         public static IImageData OpenImage(this IDataManager self)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = self.ImageReadFilter;
+            var ofd = new OpenFileDialog {Filter = self.ImageReadFilter};
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler) as IImageData;
         }
@@ -78,19 +72,15 @@ namespace DotSpatial.Data.Forms
         /// but where multi-select is enabled, and so allowing multiple images to be returned at once.
         /// </summary>
         /// <returns></returns>
-        public static List<IImageData> OpenImages(this IDataManager self)
+        public static IEnumerable<IImageData> OpenImages(this IDataManager self)
         {
-            List<IImageData> result = new List<IImageData>();
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = self.ImageReadFilter;
-            ofd.Multiselect = true;
-            if (ofd.ShowDialog() != DialogResult.OK) return null;
-            foreach (string name in ofd.FileNames)
+            var ofd = new OpenFileDialog {Filter = self.ImageReadFilter, Multiselect = true};
+            if (ofd.ShowDialog() != DialogResult.OK) yield break;
+            foreach (var name in ofd.FileNames)
             {
-                IImageData id = self.OpenImage(name, self.ProgressHandler);
-                if (id != null) result.Add(id);
+                var id = self.OpenImage(name, self.ProgressHandler);
+                if (id != null) yield return id;
             }
-            return result;
         }
 
         /// <summary>
@@ -98,8 +88,7 @@ namespace DotSpatial.Data.Forms
         /// </summary>
         public static IDataSet OpenFile(this IDataManager self)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = self.DialogReadFilter;
+            var ofd = new OpenFileDialog {Filter = self.DialogReadFilter};
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler);
         }
@@ -108,20 +97,16 @@ namespace DotSpatial.Data.Forms
         /// This launches an open file dialog that allows loading of several files at once
         /// and returns the datasets in a list.
         /// </summary>
-        /// <returns>A list of all the files that were opened</returns>
-        public static List<IDataSet> OpenFiles(this IDataManager self)
+        /// <returns>An enumerable of all the files that were opened.</returns>
+        public static IEnumerable<IDataSet> OpenFiles(this IDataManager self)
         {
-            List<IDataSet> result = new List<IDataSet>();
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
-            ofd.Filter = self.DialogReadFilter;
-            if (ofd.ShowDialog() != DialogResult.OK) return null;
-            foreach (string name in ofd.FileNames)
+            var ofd = new OpenFileDialog {Multiselect = true, Filter = self.DialogReadFilter};
+            if (ofd.ShowDialog() != DialogResult.OK) yield break;
+            foreach (var name in ofd.FileNames)
             {
-                IDataSet ds = self.OpenFile(name, self.LoadInRam, self.ProgressHandler);
-                if (ds != null) result.Add(ds);
+                var ds = self.OpenFile(name, self.LoadInRam, self.ProgressHandler);
+                if (ds != null) yield return ds;
             }
-            return result;
         }
 
         /// <summary>
@@ -130,8 +115,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
         public static IRaster OpenRaster(this IDataManager self)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = self.RasterReadFilter;
+            var ofd = new OpenFileDialog {Filter = self.RasterReadFilter};
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return self.OpenFile(ofd.FileName, self.LoadInRam, self.ProgressHandler) as IRaster;
         }
@@ -140,20 +124,16 @@ namespace DotSpatial.Data.Forms
         /// This uses an open dialog filter with only raster extensions but where multi-select is
         /// enabled, hence allowing multiple rasters to be returned in this list.
         /// </summary>
-        /// <returns>The list or rasters</returns>
-        public static List<IRaster> OpenRasters(this IDataManager self)
+        /// <returns>An enumerable or rasters.</returns>
+        public static IEnumerable<IRaster> OpenRasters(this IDataManager self)
         {
-            List<IRaster> result = new List<IRaster>();
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = self.RasterReadFilter;
-            ofd.Multiselect = true;
-            if (ofd.ShowDialog() != DialogResult.OK) return null;
-            foreach (string name in ofd.FileNames)
+            var ofd = new OpenFileDialog {Filter = self.RasterReadFilter, Multiselect = true};
+            if (ofd.ShowDialog() != DialogResult.OK) yield break;
+            foreach (var name in ofd.FileNames)
             {
-                IRaster ds = self.OpenRaster(name, self.LoadInRam, self.ProgressHandler);
-                if (ds != null) result.Add(ds);
+                var ds = self.OpenRaster(name, self.LoadInRam, self.ProgressHandler);
+                if (ds != null) yield return ds;
             }
-            return result;
         }
     }
 }

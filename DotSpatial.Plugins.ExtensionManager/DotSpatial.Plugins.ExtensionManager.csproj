@@ -24,7 +24,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\bin\Application Extensions\</OutputPath>
+    <OutputPath>..\..\Bin\Debug\Application Extensions\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,28 +33,47 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Release\bin\Plugins\</OutputPath>
+    <OutputPath>..\..\Bin\Release\Application Extensions\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Data.Forms">
-      <HintPath>..\Debug\bin\DotSpatial.Data.Forms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Projections">
-      <HintPath>..\Debug\bin\DotSpatial.Projections.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Serialization">
-      <HintPath>..\Debug\bin\DotSpatial.Serialization.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Symbology.Forms">
-      <HintPath>..\DotSpatial.Symbology.Forms\obj\Debug\DotSpatial.Symbology.Forms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+      <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
+      <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
+      <Project>{1da244ce-5862-4dfb-8943-244a80b7e3ee}</Project>
+      <Name>DotSpatial.Projections.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj">
+      <Project>{97ede2ad-90d0-44b6-adb6-ad20052c0b6f}</Project>
+      <Name>DotSpatial.Symbology.Forms</Name>
+    </ProjectReference>
     <Reference Include="NuGet.Core, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>SupportFiles\NuGet.Core.dll</HintPath>
@@ -190,7 +209,6 @@
     <Folder Include="SupportFiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

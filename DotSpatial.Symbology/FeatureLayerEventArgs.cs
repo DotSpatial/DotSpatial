@@ -22,17 +22,8 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FeatureLayerEventArgs
-    /// </summary>
     public class FeatureLayerEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private IFeatureLayer _featureLayer;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -40,7 +31,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public FeatureLayerEventArgs(IFeatureLayer featureLayer)
         {
-            _featureLayer = featureLayer;
+            FeatureLayer = featureLayer;
         }
 
         #endregion
@@ -50,11 +41,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the feature layer for this event
         /// </summary>
-        public IFeatureLayer FeatureLayer
-        {
-            get { return _featureLayer; }
-            protected set { _featureLayer = value; }
-        }
+        public IFeatureLayer FeatureLayer { get; protected set; }
 
         #endregion
     }

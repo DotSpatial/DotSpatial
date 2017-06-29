@@ -240,7 +240,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the Table that has the data row values to use for statistics.
         /// </summary>
-        public DataTable Table
+        public DotSpatial.Data.IDataTable Table // CGX AERO GLZ
         {
             get { return breakSliderGraph1.Table; }
             set { breakSliderGraph1.Table = value; }

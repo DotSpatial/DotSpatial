@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
+using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
@@ -29,6 +30,19 @@ namespace DotSpatial.Symbology
     public interface ICartographicStroke : ISimpleStroke
     {
         #region Methods
+
+        /// <summary>
+        /// Draws the line with max. 2 decorations. Otherwise the legend line might show only decorations.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="path"></param>
+        /// <param name="scaleWidth"></param>
+        void DrawLegendPath(Graphics g, GraphicsPath path, double scaleWidth);
+
+        /// <summary>
+        /// Gets the width and height that is needed to draw this stroke with max. 2 decorations.
+        /// </summary>
+        Size GetLegendSymbolSize();
 
         #endregion
 

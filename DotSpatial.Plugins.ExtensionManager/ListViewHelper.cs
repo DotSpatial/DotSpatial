@@ -49,8 +49,11 @@ namespace DotSpatial.Plugins.ExtensionManager
                 listView.Items.Add(item);
                 item.Tag = package;
 
-                var task = BeginGetImage(package.IconUrl.ToString());
-                tasks.Add(task);
+                if (package.IconUrl != null)
+                {
+                    var task = BeginGetImage(package.IconUrl.ToString());
+                    tasks.Add(task);
+                }
             }
             listView.EndUpdate();
 

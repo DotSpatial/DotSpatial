@@ -126,7 +126,7 @@
     <value>19, 36</value>
   </data>
   <data name="tbPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>316, 20</value>
+    <value>316, 22</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="tbPath.TabIndex" type="System.Int32, mscorlib">
@@ -148,10 +148,10 @@
     <value>Top, Right</value>
   </data>
   <data name="cmdBrowse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>342, 36</value>
+    <value>342, 34</value>
   </data>
   <data name="cmdBrowse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 20</value>
+    <value>52, 26</value>
   </data>
   <data name="cmdBrowse.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -175,10 +175,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="cbLocalField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>119, 68</value>
+    <value>143, 68</value>
   </data>
   <data name="cbLocalField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 21</value>
+    <value>251, 24</value>
   </data>
   <data name="cbLocalField.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -202,7 +202,7 @@
     <value>17, 71</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
+    <value>106, 17</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -229,7 +229,7 @@
     <value>17, 98</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 13</value>
+    <value>120, 17</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -253,10 +253,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="cbForeignField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>119, 95</value>
+    <value>143, 95</value>
   </data>
   <data name="cbForeignField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 21</value>
+    <value>251, 24</value>
   </data>
   <data name="cbForeignField.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -334,7 +334,7 @@
     <value>19, 134</value>
   </data>
   <data name="tbSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>316, 20</value>
+    <value>316, 22</value>
   </data>
   <data name="tbSave.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -385,7 +385,7 @@
     <value>16, 9</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>246, 13</value>
+    <value>326, 17</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>

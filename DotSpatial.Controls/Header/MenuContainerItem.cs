@@ -31,7 +31,7 @@ namespace DotSpatial.Controls.Header
         public MenuContainerItem(string rootKey, string key, string caption)
             : this(key, caption)
         {
-            this.RootKey = rootKey;
+            RootKey = rootKey;
         }
 
         /// <summary>
@@ -43,10 +43,9 @@ namespace DotSpatial.Controls.Header
             get { return largeImage; }
             set
             {
-                if (largeImage == value)
-                    return;
+                if (largeImage == value) return;
                 largeImage = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("LargeImage"));
+                OnPropertyChanged("LargeImage");
             }
         }
     }

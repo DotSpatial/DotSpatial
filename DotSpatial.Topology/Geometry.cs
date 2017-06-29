@@ -349,7 +349,7 @@ namespace DotSpatial.Topology
         /// For all empty <c>Geometry</c>s, <c>IsSimple==true</c>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this <c>Geometry</c> has any points of
+        /// <c>false</c> if this <c>Geometry</c> has any points of
         /// self-tangency, self-intersection or other anomalous points.
         /// </returns>
         public abstract bool IsSimple { get; }
@@ -1244,6 +1244,13 @@ namespace DotSpatial.Topology
             }
         }
 
+        /// <summary>
+        /// Rotates the geometry by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the geometry gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public abstract void Rotate(Coordinate Origin, Double radAngle);
+
         #endregion
 
         /// <summary>
@@ -1265,15 +1272,24 @@ namespace DotSpatial.Topology
             if (p != null) return new Point(p);
 
             // if that fails, test for multi-geometry
-            IBasicGeometry test = geom.GetBasicGeometryN(0);
-            pg = test as IBasicPolygon;
-            if (pg != null) return new MultiPolygon(geom);
+            if (geom.NumGeometries > 0)
+            {
+                IBasicGeometry test = geom.GetBasicGeometryN(0);
+                pg = test as IBasicPolygon;
+                if (pg != null) return new MultiPolygon(geom);
 
-            ls = test as IBasicLineString;
-            if (ls != null) return new MultiLineString(geom);
+                ls = test as IBasicLineString;
+                if (ls != null) return new MultiLineString(geom);
 
-            p = test as IBasicPoint;
-            if (p != null) return new MultiPoint(geom);
+                p = test as IBasicPoint;
+                if (p != null) return new MultiPoint(geom);
+            }
+            else
+            {
+                // test for empty geometries
+                var iGeometry = geom as IGeometry;
+                if (iGeometry != null && iGeometry.IsEmpty) return iGeometry;
+            }
 
             return null;
         }
@@ -1423,6 +1439,21 @@ namespace DotSpatial.Topology
                 return a.Equals(b);
 
             return a.Distance(b) <= tolerance;
+        }
+
+        /// <summary>
+        /// Rotates the given coordinate by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the geometry gets rotated around.</param>
+        /// <param name="CoordX">X-value of the coordinate that gets rotated.</param>
+        /// <param name="CoordY">Y-value of the coordinate that gets rotated.</param>
+        /// <param name="RadAngle">Rotation angle in radian.</param>
+        protected void RotateCoordinateRad(Coordinate Origin, ref Double CoordX, ref Double CoordY, Double RadAngle)
+        {
+            Double x = Origin.X + (Math.Cos(RadAngle) * (CoordX - Origin.X) - Math.Sin(RadAngle) * (CoordY - Origin.Y));
+            Double y = Origin.Y + (Math.Sin(RadAngle) * (CoordX - Origin.X) + Math.Cos(RadAngle) * (CoordY - Origin.Y));
+            CoordX = x;
+            CoordY = y;
         }
 
         /// <summary>

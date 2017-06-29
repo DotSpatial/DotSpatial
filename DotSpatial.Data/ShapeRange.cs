@@ -24,9 +24,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// ShapeIndex
-    /// </summary>
     public sealed class ShapeRange : ICloneable
     {
         #region Private Variables
@@ -34,27 +31,27 @@ namespace DotSpatial.Data
         /// <summary>
         /// The feature type
         /// </summary>
-        public readonly FeatureType FeatureType;
+        public FeatureType FeatureType { get; private set; }
 
         /// <summary>
         /// The content length
         /// </summary>
-        public int ContentLength;
+        public int ContentLength { get; set; }
 
         /// <summary>
         /// Control the epsilon to use for the intersect calculations
         /// </summary>
-        public double Epsilon = double.Epsilon;
+        public const double Epsilon = double.Epsilon;
 
         /// <summary>
         /// If this is null, then there is only one part for this ShapeIndex.
         /// </summary>
-        public List<PartRange> Parts;
+        public List<PartRange> Parts { get; private set; }
 
         /// <summary>
-        /// The record number
+        /// The record number (for .shp files usually 1-based)
         /// </summary>
-        public int RecordNumber;
+        public int RecordNumber { get; set; }
 
         private Extent _extent;
         private int _numParts;
@@ -141,7 +138,7 @@ namespace DotSpatial.Data
         public object Clone()
         {
             ShapeRange copy = (ShapeRange)MemberwiseClone();
-            copy.Parts = new List<PartRange>();
+            copy.Parts = new List<PartRange>(Parts.Count);
             foreach (PartRange part in Parts)
             {
                 copy.Parts.Add(part.Copy());
@@ -189,39 +186,27 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Creates a blank instance of a shaperange where vertices can be assigned later.
-        /// </summary>
-        public ShapeRange(FeatureType type)
-        {
-            FeatureType = type;
-            Parts = new List<PartRange>();
-            _numParts = -1; // default to relying on the parts list instead of the cached value.
-            _numPoints = -1; // rely on accumulation from parts instead of a solid number
-            _extent = new Extent();
-        }
-
-        /// <summary>
-        /// Creates a blank instance of a shaperange where vertices can be assigned later.
         /// <param name="type">the feature type clarifies point, line, or polygon.</param>
         /// <param name="coordType">The coordinate type clarifies whether M or Z values exist.</param>
         /// </summary>
-        public ShapeRange(FeatureType type, CoordinateType coordType)
+        public ShapeRange(FeatureType type, CoordinateType coordType = CoordinateType.Regular)
         {
             FeatureType = type;
             Parts = new List<PartRange>();
             _numParts = -1; // default to relying on the parts list instead of the cached value.
             _numPoints = -1; // rely on accumulation from parts instead of a solid number
 
-            if (coordType == CoordinateType.Z)
+            switch (coordType)
             {
-                _extent = new ExtentMZ();
-            }
-            else if (coordType == CoordinateType.M)
-            {
-                _extent = new ExtentM();
-            }
-            else
-            {
-                _extent = new Extent();
+                case CoordinateType.Z:
+                    _extent = new ExtentMZ();
+                    break;
+                case CoordinateType.M:
+                    _extent = new ExtentM();
+                    break;
+                default:
+                    _extent = new Extent();
+                    break;
             }
         }
 
@@ -248,32 +233,8 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to turn into a shape range.</param>
         public ShapeRange(IEnvelope env)
+            :this(env.ToExtent())
         {
-            Extent = env.ToExtent();
-            Parts = new List<PartRange>();
-            _numParts = -1;
-            // Counter clockwise
-            // 1 2
-            // 4 3
-            double[] coords = new double[8];
-            // C1
-            coords[0] = Extent.MinX;
-            coords[1] = Extent.MaxY;
-            // C2
-            coords[2] = Extent.MaxX;
-            coords[3] = Extent.MaxY;
-            // C3
-            coords[4] = Extent.MaxX;
-            coords[5] = Extent.MinY;
-            // C4
-            coords[6] = Extent.MinX;
-            coords[7] = Extent.MinY;
-
-            FeatureType = FeatureType.Polygon;
-            ShapeType = ShapeType.Polygon;
-            PartRange pr = new PartRange(coords, 0, 0, FeatureType.Polygon);
-            pr.NumVertices = 4;
-            Parts.Add(pr);
         }
 
         /// <summary>

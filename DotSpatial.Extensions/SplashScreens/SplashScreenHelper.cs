@@ -8,12 +8,11 @@ using System;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace DotSpatial.Extensions.SplashScreens
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public sealed class SplashScreenHelper
     {
         /// <summary>
@@ -23,24 +22,39 @@ namespace DotSpatial.Extensions.SplashScreens
         public static ISplashScreenManager GetSplashScreenManager()
         {
             // This is a specific directory where a splash screen may be located.
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Application Extensions");
-            if (!Directory.Exists(path))
-                return null;
+            Assembly asm = Assembly.GetEntryAssembly();
+            var directories = new List<string> { AppDomain.CurrentDomain.BaseDirectory + "Application Extensions", 
+                                                 AppDomain.CurrentDomain.BaseDirectory + "Plugins",
+                                                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), asm.ManifestModule.Name, "Extensions"),
+                                                 AppDomain.CurrentDomain.BaseDirectory + "Extensions"};
 
-            string file = Directory.EnumerateFiles(path, "*SplashScreen*.dll").FirstOrDefault();
-            if (file == null) return null;
-
-            using (AggregateCatalog splashCatalog = new AggregateCatalog())
+            foreach (string directory in directories)
             {
-                splashCatalog.Catalogs.Add(new AssemblyCatalog(file));
-                using (CompositionContainer splashBatch = new CompositionContainer(splashCatalog))
+                if (!Directory.Exists(directory))
+                    continue;
+
+                string file = Directory.EnumerateFiles(directory, "*SplashScreen*.dll", SearchOption.AllDirectories).FirstOrDefault();
+                if (file == null)
+                    continue;
+
+                using (AggregateCatalog splashCatalog = new AggregateCatalog())
                 {
-                    var splash = splashBatch.GetExportedValueOrDefault<ISplashScreenManager>();
-                    if (splash != null)
-                        splash.Activate();
-                    return splash;
+                    splashCatalog.Catalogs.Add(new AssemblyCatalog(file));
+
+                    using (CompositionContainer splashBatch = new CompositionContainer(splashCatalog))
+                    {
+                        var splash = splashBatch.GetExportedValueOrDefault<ISplashScreenManager>();
+
+                        if (splash != null)
+                            splash.Activate();
+
+                        return splash;
+                    }
                 }
+
             }
+
+            return null;
         }
     }
 }

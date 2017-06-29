@@ -272,12 +272,13 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Draws the point symbol to the specified graphics object by cycling through each of the layers and
-        /// drawing the content.  This assumes that the graphics object has been translated to the specified point.
+        /// drawing the content. This assumes that the graphics object has been translated to the specified point.
         /// </summary>
-        /// <param name="g"></param>
+        /// <param name="g">Graphics object that is used for drawing.</param>
         /// <param name="scaleSize">Scale size represents the constant to multiply to the geographic measures in order to turn them into pixel coordinates </param>
         public void Draw(Graphics g, double scaleSize)
         {
+            GraphicsState s = g.Save();
             if (Smoothing)
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -292,6 +293,7 @@ namespace DotSpatial.Symbology
             {
                 symbol.Draw(g, scaleSize);
             }
+            g.Restore(s); //Changed by jany_ (2015-07-06) remove smoothing because we might not want to smooth whatever is drawn with g afterwards
         }
 
         /// <summary>

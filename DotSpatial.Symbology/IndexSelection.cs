@@ -43,7 +43,9 @@ namespace DotSpatial.Symbology
         {
             foreach (int index in indices)
             {
-                _layer.DrawnStates[index].Selected = _selectionState;
+                //CGX
+                if(_layer.DrawnStates.Length > index)
+                    _layer.DrawnStates[index].Selected = _selectionState;
             }
             OnChanged();
         }
@@ -63,6 +65,10 @@ namespace DotSpatial.Symbology
             //ProgressMeter pm = new ProgressMeter(ProgressHandler, "Selecting shapes", _layer.DrawnStates.Length);
             for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
             {
+                //CGX
+                if (!_layer.DrawnStates[shp].Visible) continue;
+                //fin CGX
+
                 //pm.Next();
                 if (_regionCategory != null && _layer.DrawnStates[shp].Category != _regionCategory) continue;
                 bool doAdd = false;
@@ -485,44 +491,22 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public DataTable GetAttributes(int startIndex, int numRows)
+        public IDataTable GetAttributes(int startIndex, int numRows) // CGX AERO GLZ
         {
-            AttributeCache c = new AttributeCache(_layer.DataSet, numRows);
-            DataTable result = new DataTable();
-            result.Columns.AddRange(_layer.DataSet.GetColumns());
-            int i = 0;
-            FastDrawnState[] drawnStates = _layer.DrawnStates;
-            for (int fid = 0; fid < drawnStates.Length; fid++)
-            {
-                if (drawnStates[fid].Selected)
-                {
-                    i++;
-                    if (i < startIndex) continue;
-                    DataRow dr = result.NewRow();
-                    Dictionary<string, object> vals = c.RetrieveElement(fid);
-                    foreach (KeyValuePair<string, object> pair in vals)
-                    {
-                        dr[pair.Key] = pair.Value;
-                    }
-                    result.Rows.Add(dr);
-                    if (i > startIndex + numRows) break;
-                }
-            }
-            return result;
+            return GetAttributes(startIndex, numRows, _layer.DataSet.GetColumns().Select(d => d.ColumnName));
         }
 
         /// <inheritdoc />
-        public DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames) // CGX AERO GLZ
         {
-            AttributeCache c = new AttributeCache(_layer.DataSet, numRows);
-            DataTable result = new DataTable();
-            List<DataColumn> dc = new List<DataColumn>();
-            DataColumn[] original = _layer.DataSet.GetColumns();
-            foreach (DataColumn col in original)
+            var c = new AttributeCache(_layer.DataSet, numRows);
+            var fn = new HashSet<string>(fieldNames);
+            var result = new DS_DataTable(); // CGX AERO GLZ
+            foreach (DataColumn col in _layer.DataSet.GetColumns())
             {
-                if (fieldNames.Contains(col.ColumnName))
+                if (fn.Contains(col.ColumnName))
                 {
-                    dc.Add(col);
+                    result.Columns.Add(col);
                 }
             }
 
@@ -534,11 +518,12 @@ namespace DotSpatial.Symbology
                 {
                     i++;
                     if (i < startIndex) continue;
-                    DataRow dr = result.NewRow();
+                    IDataRow dr = result.NewRow(); // CGX AERO GLZ
                     Dictionary<string, object> vals = c.RetrieveElement(fid);
                     foreach (KeyValuePair<string, object> pair in vals)
                     {
-                        dr[pair.Key] = pair.Value;
+                        if (fn.Contains(pair.Key))
+                            dr[pair.Key] = pair.Value;
                     }
                     result.Rows.Add(dr);
                     if (i > startIndex + numRows) break;
@@ -548,7 +533,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void SetAttributes(int startIndex, DataTable values)
+        public void SetAttributes(int startIndex, IDataTable values) // CGX AERO GLZ
         {
             FastDrawnState[] drawnStates = _layer.DrawnStates;
             int sind = -1;
@@ -688,7 +673,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void AddRow(DataRow values)
+        public void AddRow(IDataRow values) // CGX AERO GLZ
         {
             // Don't worry about the index in this case.
             _layer.DataSet.AddRow(values);
@@ -702,7 +687,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void Edit(int index, DataRow values)
+        public void Edit(int index, IDataRow values) // CGX AERO GLZ
         {
             int sourceIndex = GetSourceIndex(index);
             _layer.DataSet.Edit(sourceIndex, values);
@@ -728,7 +713,7 @@ namespace DotSpatial.Symbology
             if (!requiresRun) return counts;
             AttributePager ap = new AttributePager(_layer.DataSet, 100000);
             int numinTable = 0;
-            DataTable result = new DataTable();
+            IDataTable result = new DS_DataTable(); // CGX AERO GLZ
             result.Columns.AddRange(_layer.DataSet.GetColumns());
             FastDrawnState[] drawnStates = _layer.DrawnStates;
             for (int shp = 0; shp < drawnStates.Length; shp++)
@@ -821,7 +806,7 @@ namespace DotSpatial.Symbology
                 {
                     _current++;
                 } while (_current < _states.Length && _states[_current].Selected != _selectionState);
-                return !(_current == _states.Length);
+                return _current != _states.Length;
             }
 
             /// <inheritdoc />

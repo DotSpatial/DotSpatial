@@ -220,26 +220,13 @@ namespace DotSpatial.Data
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
 
-            Raster<T> result = new Raster<T>(numRows, numCols);
+            var result = new Raster<T>(numRows, numCols);
 
             result.Projection = Projection;
 
             // The affine coefficients defining the world file are the same except that they are translated over.  Only the position of the
             // upper left corner changes.  Everything else is the same as the previous raster.
-
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds.AffineCoefficients = new double[6];
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
+            result.Bounds.AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
 
             ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, numRows);
             // copy values directly using both data structures
@@ -312,10 +299,8 @@ namespace DotSpatial.Data
                 }
             }
 
-            double test = Global.ToDouble(min);
-
             Value.Updated = false;
-            Minimum = test;
+            Minimum = Global.ToDouble(min); 
             Maximum = Global.ToDouble(max);
             Mean = total / count;
             NumValueCells = count;
@@ -364,20 +349,7 @@ namespace DotSpatial.Data
             result.FileType = FileType;
 
             // Reposition the new "raster" so that it matches the specified window, not the whole raster
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds.AffineCoefficients = new double[6];
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
-
+            result.Bounds.AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
             // Now we can copy any values currently in memory.
 
             ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow);
@@ -525,7 +497,7 @@ namespace DotSpatial.Data
             Array.Copy(Bounds.AffineCoefficients, 0, aff, 0, 6);
             aff[0] = topLeft.X;
             aff[3] = topLeft.Y;
-            result.Bounds = new RasterBounds(sizeX, sizeY, aff);
+            result.Bounds = new RasterBounds(sizeY, sizeX, aff);
             result.NoDataValue = NoDataValue;
             result.Projection = Projection;
             result.IsInRam = true;
@@ -638,10 +610,15 @@ namespace DotSpatial.Data
 
         #region Properties
 
+
+        
         /// <summary>
-        /// This only works for a few numeric types, and will return 0 if it is not identifiable as one
-        /// of these basic types: byte, short, int, long, float, double, decimal, UInt16, UInt32, UInt64,
+        /// Gets the size of each raster element in bytes.
         /// </summary>
+        /// <remarks>
+        /// This only works for a few numeric types, and will return 0 if it is not identifiable as one
+        /// of these basic types: byte, short, int, long, float, double, decimal, sbyte, ushort, uint, ulong, bool.
+        /// </remarks>
         public override int ByteSize
         {
             get
@@ -658,10 +635,13 @@ namespace DotSpatial.Data
             if (value is long) return 8;
             if (value is float) return 4;
             if (value is double) return 8;
-            if (value is decimal) return 16;
-            if (value is UInt16) return 2;
-            if (value is UInt32) return 4;
-            if (value is UInt64) return 8;
+
+            if (value is sbyte) return 1;
+            if (value is ushort) return 2;
+            if (value is uint) return 4;
+            if (value is ulong) return 8;
+
+            if (value is bool) return 1;
 
             return 0;
         }

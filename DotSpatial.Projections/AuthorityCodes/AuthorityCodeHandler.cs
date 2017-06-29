@@ -30,15 +30,7 @@ namespace DotSpatial.Projections.AuthorityCodes
     /// </summary>
     public sealed class AuthorityCodeHandler
     {
-        /// <summary>
-        /// The one and only <see cref="AuthorityCodeHandler"/>
-        /// </summary>
-        public static readonly AuthorityCodeHandler Instance;
-
-        static AuthorityCodeHandler()
-        {
-            Instance = new AuthorityCodeHandler();
-        }
+        #region Constructor
 
         /// <summary>
         /// Creates an instance of this class
@@ -49,12 +41,24 @@ namespace DotSpatial.Projections.AuthorityCodes
             ReadCustom();
         }
 
+        #endregion
+
         #region Fields
 
+        private static readonly Lazy<AuthorityCodeHandler> _lazyInstance = new Lazy<AuthorityCodeHandler>(() => new AuthorityCodeHandler(), true);
         private readonly IDictionary<string, ProjectionInfo> _authorityCodeToProjectionInfo = new Dictionary<string, ProjectionInfo>();
         private readonly IDictionary<string, ProjectionInfo> _authorityNameToProjectionInfo = new Dictionary<string, ProjectionInfo>();
 
         #endregion
+
+
+        /// <summary>
+        /// The one and only <see cref="AuthorityCodeHandler"/>
+        /// </summary>
+        public static AuthorityCodeHandler Instance
+        {
+            get { return _lazyInstance.Value; }
+        }
 
         /// <summary>
         /// Gets the
@@ -76,17 +80,17 @@ namespace DotSpatial.Projections.AuthorityCodes
 
         private void ReadDefault()
         {
-            using (Stream s =
+            using (var s =
                 Assembly.GetCallingAssembly().GetManifestResourceStream(
                     "DotSpatial.Projections.AuthorityCodes.AuthorityCodeToProj4.ds"))
             {
-                using (MemoryStream msUncompressed = new MemoryStream())
+                using (var msUncompressed = new MemoryStream())
                 {
-                    using (DeflateStream ds = new DeflateStream(s, CompressionMode.Decompress, true))
+                    using (var ds = new DeflateStream(s, CompressionMode.Decompress, true))
                     {
                         //replaced by jirikadlec2 to compile for .NET Framework 3.5
                         //ds.CopyTo(msUncompressed);
-                        byte[] buffer = new byte[4096];
+                        var buffer = new byte[4096];
                         int numRead;
                         while ((numRead = ds.Read(buffer, 0, buffer.Length)) != 0)
                         {
@@ -101,7 +105,7 @@ namespace DotSpatial.Projections.AuthorityCodes
 
         private void ReadCustom()
         {
-            string fileName = Assembly.GetCallingAssembly().Location + "\\AdditionalProjections.proj4";
+            var fileName = Assembly.GetCallingAssembly().Location + "\\AdditionalProjections.proj4";
             if (File.Exists(fileName))
             {
                 ReadFromStream(File.OpenRead(fileName), true);
@@ -110,16 +114,16 @@ namespace DotSpatial.Projections.AuthorityCodes
 
         private void ReadFromStream(Stream s, bool replace)
         {
-            using (StreamReader sr = new StreamReader(s))
+            using (var sr = new StreamReader(s))
             {
-                char[] seperator = new[] { '\t' };
+                var seperator = new[] { '\t' };
                 while (!sr.EndOfStream)
                 {
-                    string line = sr.ReadLine();
+                    var line = sr.ReadLine();
                     if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
                         continue;
 
-                    string[] parts = line.Split(seperator, 3);
+                    var parts = line.Split(seperator, 3);
                     if (parts.Length > 1)
                     {
                         if (parts.Length == 2)
@@ -176,33 +180,47 @@ namespace DotSpatial.Projections.AuthorityCodes
         /// <param name="replace">a value indicating if a previously defined projection should be replaced or not.</param>
         public void Add(string authority, int code, string name, string proj4String, bool replace)
         {
-            string authorityCode = string.Format("{0}:{1}", authority, code);
+            var authorityCode = string.Format("{0}:{1}", authority, code);
             Add(authorityCode, name, proj4String, replace);
             AddToAdditionalProjections(authorityCode, name, proj4String);
         }
 
         private static void AddToAdditionalProjections(string authorityCode, string name, string proj4String)
         {
-            string fileName = Assembly.GetCallingAssembly().Location + "\\AdditionalProjections.proj4";
+            var fileName = Assembly.GetCallingAssembly().Location + "\\AdditionalProjections.proj4";
 
-            FileMode fm = File.Exists(fileName) ? FileMode.Append : FileMode.CreateNew;
-            using (FileStream fileStream = File.Open(fileName, fm, FileAccess.Write, FileShare.None))
-            using (StreamWriter sw = new StreamWriter(fileStream, Encoding.ASCII))
-                sw.WriteLine(String.Format("{0}\t{1}\t{2}", authorityCode, name, proj4String));
+            var fm = File.Exists(fileName) ? FileMode.Append : FileMode.CreateNew;
+            using (var fileStream = File.Open(fileName, fm, FileAccess.Write, FileShare.None))
+            using (var sw = new StreamWriter(fileStream, Encoding.ASCII))
+                sw.WriteLine("{0}\t{1}\t{2}", authorityCode, name, proj4String);
         }
 
         private void Add(string authorityCode, string name, string proj4String, bool replace)
         {
-            if (replace && _authorityCodeToProjectionInfo.ContainsKey(authorityCode))
-                _authorityCodeToProjectionInfo.Remove(authorityCode);
-            _authorityCodeToProjectionInfo.Add(authorityCode, ProjectionInfo.FromProj4String(proj4String));
+            var pos = authorityCode.IndexOf(':');
+            if (pos == -1)
+                throw new ArgumentOutOfRangeException("authorityCode", "Invalid authorityCode");
+
+            if (!replace && _authorityCodeToProjectionInfo.ContainsKey(authorityCode))
+            {
+                throw new ArgumentOutOfRangeException("authorityCode", "Such projection already added.");
+            }
+             var pi = ProjectionInfo.FromProj4String(proj4String);
+             pi.Authority = authorityCode.Substring(0, pos);
+             pi.AuthorityCode = int.Parse(authorityCode.Substring(pos + 1));
+             pi.EpsgCode = int.Parse(authorityCode.Substring(pos + 1));
+             pi.Name = String.IsNullOrEmpty(name) ? authorityCode : name;
+
+             _authorityCodeToProjectionInfo[authorityCode] =  pi;
 
             if (string.IsNullOrEmpty(name))
                 return;
 
-            if (replace && _authorityNameToProjectionInfo.ContainsKey(name))
-                _authorityNameToProjectionInfo.Remove(name);
-            _authorityNameToProjectionInfo.Add(name, ProjectionInfo.FromProj4String(proj4String));
+            if (!replace && _authorityNameToProjectionInfo.ContainsKey(name))
+            {
+                throw new ArgumentOutOfRangeException("name", "Such projection already added.");
+            }
+            _authorityNameToProjectionInfo[name] = pi;
         }
     }
 }

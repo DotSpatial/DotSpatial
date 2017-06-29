@@ -46,7 +46,6 @@ namespace DotSpatial.Data
         /// Creates a new default field empty field - needed for datatable copy and clone methods.
         /// </summary>
         public Field()
-            :base()
         {
 
         }
@@ -64,8 +63,7 @@ namespace DotSpatial.Data
             SetupDecimalCount();
             if (inColumn.DataType == typeof(string))
             {
-                // Looks like this is 255 (0 based not 1 based) per http://dotspatial.codeplex.com/workitem/22193
-                _length = 254;
+                _length = inColumn.MaxLength <= 254 ? (byte) inColumn.MaxLength : (byte) 254;
             }
             else if (inColumn.DataType == typeof(DateTime))
             {

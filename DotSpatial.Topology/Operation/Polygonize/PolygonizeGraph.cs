@@ -24,9 +24,9 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Planargraph;
 using DotSpatial.Topology.Utilities;
-using Iesi.Collections;
 
 namespace DotSpatial.Topology.Operation.Polygonize
 {
@@ -444,7 +444,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         public virtual IList DeleteDangles()
         {
             IList nodesToRemove = FindNodesOfDegree(1);
-            ISet dangleLines = new HashedSet();
+            var dangleLines = new HashSet<LineString>();
 
             Stack nodeStack = new Stack();
             for (IEnumerator i = nodesToRemove.GetEnumerator(); i.MoveNext(); )
@@ -474,7 +474,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
                         nodeStack.Push(toNode);
                 }
             }
-            return new ArrayList(dangleLines);
+            return new ArrayList(dangleLines.ToList());
         }
     }
 }

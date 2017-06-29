@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ExportFeature_FeaturesAll" xml:space="preserve">
+    <value>Todos os recursos</value>
+  </data>
+  <data name="ExportFeature_FeaturesExtent" xml:space="preserve">
+    <value>Todos os recursos do ponto de vista</value>
+  </data>
+  <data name="ExportFeature_FeaturesSelected" xml:space="preserve">
+    <value>Recursos selecionados</value>
+  </data>
+  <data name="DoubleBox_DoubleError" xml:space="preserve">
+    <value>O valor inserido não pôde ser analisado corretamente em um valor de ponto flutuante de precisão dupla válida.</value>
+  </data>
+  <data name="DoubleBox_DoubleHelp" xml:space="preserve">
+    <value>Digite um valor de ponto flutuante de precisão dupla.</value>
+  </data>
+  <data name="AttributeCalculator_ParameterInvalid" xml:space="preserve">
+    <value>O parâmetro é inválido</value>
+  </data>
+  <data name="AttributeCalculator_IncompatibleDestinationField" xml:space="preserve">
+    <value>O tipo de dados do campo de destino é incompatível (double ou string ou inteiro)</value>
+  </data>
+  <data name="AttributeCalculator_FactGreaterThanZero" xml:space="preserve">
+    <value>O Valor fatorial deve ser maior que 0</value>
+  </data>
+  <data name="AttributeCalculator_NonStandardFunction" xml:space="preserve">
+    <value>O nome da função não foi reconhecido como um dos nomes de função padrão.</value>
+  </data>
+  <data name="AttributeCalculator_RootNthRootIncorrect" xml:space="preserve">
+    <value>A raiz n-ésima da raiz está incorreta</value>
+  </data>
+  <data name="AttributeCalculator_TooManyClosingBrackets" xml:space="preserve">
+    <value>Há muitos colchetes de fechamento na expressão de seqüência de caracteres.</value>
+  </data>
+  <data name="TableEditorControl_RemoveFields" xml:space="preserve">
+    <value>Tem certeza que deseja remover os campos?</value>
+  </data>
+  <data name="TableEditorControl_Confirm" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="TableEditorControl_CouldNotExecuteQuery" xml:space="preserve">
+    <value>Não foi possível executar a consulta.</value>
+  </data>
+  <data name="TableEditorControl_CouldNotFindReplace" xml:space="preserve">
+    <value>Não foi possível encontrar ou substituir os itens.</value>
+  </data>
+  <data name="TableEditorControl_EnterFindString" xml:space="preserve">
+    <value>Digite o texto para procurar</value>
+  </data>
+  <data name="TableEditorControl_FieldImportFailed" xml:space="preserve">
+    <value>Não foi possível importar campos da coluna.</value>
+  </data>
+  <data name="TableEditorControl_Find" xml:space="preserve">
+    <value>Encontrar</value>
+  </data>
+  <data name="TableEditorControl_NoMatch" xml:space="preserve">
+    <value>Nenhuma das linhas contêm um valor que corresponde ao valor especificado.</value>
+  </data>
+  <data name="FeatureCategoryControl_CustomOnly" xml:space="preserve">
+    <value>Para especificar uma expressão de filtro personalizado, o modo personalizado deve ser selecionado primeiro.</value>
+  </data>
+  <data name="LargeEditsNotSupported" xml:space="preserve">
+    <value>Esse recurso não é suportado para tabelas com mais de 50, 000 linhas.</value>
+  </data>
+  <data name="TableEditorControl_NewFieldFail" xml:space="preserve">
+    <value>Não foi possível criar um novo campo</value>
+  </data>
+  <data name="TableEditorControl_CopyFid_Could_not_copy_FID" xml:space="preserve">
+    <value>Não foi possível copiar FID</value>
+  </data>
+  <data name="TableEditorControl_CopyFid_Couldnt_find_field" xml:space="preserve">
+    <value>Não foi possível localizar o campo nas colunas de atributo da tabela</value>
+  </data>
+  <data name="TableEditorControl_DisplaySelectedRowNumberLable__of_" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="TableEditorControl_DisplaySelectedRowNumberLable__Selected" xml:space="preserve">
+    <value>Selecionado</value>
+  </data>
+  <data name="TableEditorControl_ImportFieldsFromDbf_Could_not_import_column_fields" xml:space="preserve">
+    <value>Não foi possível importar os campos da coluna</value>
+  </data>
+  <data name="TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF" xml:space="preserve">
+    <value>Arquivos DBase (dbf)|*. dbf</value>
+  </data>
+  <data name="TableEditorControl_SaveEdits_Unable_to_save_edits__" xml:space="preserve">
+    <value>Não é possível salvar alterações.</value>
+  </data>
+  <data name="TableEditorControl_removeFieldToolStripMenuItem_Click_Column_edits_are_not_yet_supported_for_datasets_with_more_than_50_000_attributes" xml:space="preserve">
+    <value>Edições da coluna ainda não são suportadas pelos conjuntos de dados com mais de 50, 000 atributos</value>
+  </data>
+  <data name="TableEditorControl_renameFieldToolStripMenuItem_Click_This_feature_is_not_yet_supported_for_datasets_with_larger_than_50_000_rows_" xml:space="preserve">
+    <value>Esse recurso não é suportado para conjuntos de dados com mais de 50, 000 linhas.</value>
+  </data>
+  <data name="TableEditorControl_exportSelectedFeaturesToolStripMenuItem_Click_Shapefiles____shp_____SHP" xml:space="preserve">
+    <value>Shapefiles (*.shp)|*. shp</value>
+  </data>
+  <data name="TableEditorControl_ReplaceString_Unfamilar_data_type_to_replace" xml:space="preserve">
+    <value>Tipo de dados desconhecido para substituir</value>
+  </data>
+  <data name="TableEditorControl_SelectedRowCountStringFormat" xml:space="preserve">
+    <value>{0} de {1} selecionado.</value>
+  </data>
+  <data name="TableEditorControl_SelectedRowCountPluralization" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="TableEditorControl_Row" xml:space="preserve">
+    <value>linha</value>
+  </data>
+  <data name="TableEditorControl_RowPlural" xml:space="preserve">
+    <value>linhas</value>
+  </data>
+  <data name="LabelSetup_Help1" xml:space="preserve">
+    <value>Cada grupo de símbolo pode definir uma expressão de seqüência de caracteres separadas que inclui valores de atributo.  Dê um duplo clique em campos para adicioná-lo à expressão.</value>
+  </data>
+  <data name="LabelSetup_Help2" xml:space="preserve">
+    <value>Use a guia Membros ao design, uma expressão de filtro que restringe quais recursos será atribuída para um rótulo específico.</value>
+  </data>
+  <data name="LabelSetup_Help3" xml:space="preserve">
+    <value>Use a expressão guia para projetar o texto que deve aparecer em um rótulo.  Campos indicados com colchetes serão substituídos com valores reais.</value>
+  </data>
+  <data name="LabelSetup_Help4" xml:space="preserve">
+    <value>Cada grupo pode especificar suas próprias características de projeto básico.</value>
+  </data>
+  <data name="LabelSetup_Help5" xml:space="preserve">
+    <value>Cada grupo pode especificar suas características avançadas.</value>
+  </data>
+</root>

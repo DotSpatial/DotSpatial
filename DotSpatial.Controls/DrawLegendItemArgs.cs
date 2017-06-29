@@ -23,20 +23,8 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// DrawLegendItemArgs
-    /// </summary>
     public class DrawLegendItemArgs
     {
-        #region Private Variables
-
-        private Rectangle _clipRectangle;
-        private Graphics _graphics;
-        private ILegendItem _item;
-        private PointF _topLeft;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -48,15 +36,11 @@ namespace DotSpatial.Controls
         /// <param name="topLeft">The position of the top left corner where drawing should start.</param>
         public DrawLegendItemArgs(Graphics g, ILegendItem item, Rectangle clipRectangle, PointF topLeft)
         {
-            _topLeft = topLeft;
-            _graphics = g;
-            _item = item;
-            _clipRectangle = clipRectangle;
+            TopLeft = topLeft;
+            Graphics = g;
+            Item = item;
+            ClipRectangle = clipRectangle;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -65,38 +49,22 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the interface for the legend item being drawn
         /// </summary>
-        public ILegendItem Item
-        {
-            get { return _item; }
-            protected set { _item = value; }
-        }
+        public ILegendItem Item { get; protected set; }
 
         /// <summary>
         /// Gets the rectangle that limits where drawing should occur
         /// </summary>
-        public Rectangle ClipRectangle
-        {
-            get { return _clipRectangle; }
-            protected set { _clipRectangle = value; }
-        }
+        public Rectangle ClipRectangle { get; protected set; }
 
         /// <summary>
         /// Gets or sets the point that is the top left position where this item should start drawing, counting indentation.
         /// </summary>
-        public PointF TopLeft
-        {
-            get { return _topLeft; }
-            protected set { _topLeft = value; }
-        }
+        public PointF TopLeft { get; protected set; }
 
         /// <summary>
         /// Gets the graphics object for drawing to
         /// </summary>
-        public Graphics Graphics
-        {
-            get { return _graphics; }
-            protected set { _graphics = value; }
-        }
+        public Graphics Graphics { get; protected set; }
 
         #endregion
     }

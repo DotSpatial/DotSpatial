@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
@@ -58,12 +59,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// The _data table.
         /// </summary>
-        private DataTable _dataTable;
+        private IDataTable _dataTable; // CGX AERO GLZ
 
         /// <summary>
         /// The _feature lookup.
         /// </summary>
-        private Dictionary<DataRow, IFeature> _featureLookup;
+        private readonly Dictionary<IDataRow, IFeature> _featureLookup; // CGX AERO GLZ
 
         /// <summary>
         /// The _features.
@@ -106,11 +107,11 @@ namespace DotSpatial.Data
         public FeatureSet()
         {
             IndexMode = false; // this is false unless we are loading it from a specific shapefile case.
-            _featureLookup = new Dictionary<DataRow, IFeature>();
+            _featureLookup = new Dictionary<IDataRow, IFeature>(); // CGX AERO GLZ
             _features = new FeatureList(this);
             _features.FeatureAdded += FeaturesFeatureAdded;
             _features.FeatureRemoved += FeaturesFeatureRemoved;
-            _dataTable = new DataTable();
+            _dataTable = new DS_DataTable(); // CGX AERO GLZ
         }
 
         /// <summary>
@@ -139,14 +140,14 @@ namespace DotSpatial.Data
         /// </param>
         /// <param name="type">
         /// </param>
-        public FeatureSet(DataTable wkbTable, int wkbColumnIndex, bool indexed, FeatureType type)
+        public FeatureSet(IDataTable wkbTable, int wkbColumnIndex, bool indexed, FeatureType type) // CGX AERO GLZ
             : this()
         {
             if (IndexMode)
             {
                 // Assume this DataTable has WKB in column[0] and the rest of the columns are attributes.
                 FeatureSetPack result = new FeatureSetPack();
-                foreach (DataRow row in wkbTable.Rows)
+                foreach (IDataRow row in wkbTable.Rows) // CGX AERO GLZ
                 {
                     byte[] data = (byte[])row[0];
                     MemoryStream ms = new MemoryStream(data);
@@ -160,10 +161,10 @@ namespace DotSpatial.Data
                 result.Polygons.CopyTableSchema(wkbTable);
 
                 // Assume that all the features happened to be polygons
-                foreach (DataRow row in wkbTable.Rows)
+                foreach (IDataRow row in wkbTable.Rows) // CGX AERO GLZ
                 {
                     // Create a new row
-                    DataRow dest = result.Polygons.DataTable.NewRow();
+                    IDataRow dest = result.Polygons.DataTable.NewRow(); // CGX AERO GLZ
                     dest.ItemArray = row.ItemArray;
                 }
             }
@@ -181,7 +182,6 @@ namespace DotSpatial.Data
         public FeatureSet(IList<IFeature> inFeatures)
             : this()
         {
-            _dataTable = new DataTable();
             _dataTable.RowDeleted += DataTableRowDeleted;
 
             if (inFeatures.Count > 0)
@@ -209,6 +209,8 @@ namespace DotSpatial.Data
                 {
                     IFeature myFeature = f.Copy();
                     _features.Add(myFeature);
+                    if (myFeature.DataRow != null)
+                        _featureLookup.Add(myFeature.DataRow, myFeature);
                 }
 
                 _features.ResumeEvents();
@@ -239,7 +241,7 @@ namespace DotSpatial.Data
         /// <param name="e">
         /// The e.
         /// </param>
-        private void DataTableRowDeleted(object sender, DataRowChangeEventArgs e)
+        private void DataTableRowDeleted(object sender, IDataRowChangeEventArgs e) // CGX AERO GLZ
         {
             Features.Remove(_featureLookup[e.Row]);
             _featureLookup.Remove(e.Row);
@@ -262,15 +264,7 @@ namespace DotSpatial.Data
                 return;
             }
 
-            if (_featureLookup.ContainsKey(e.Feature.DataRow))
-            {
-                _featureLookup[e.Feature.DataRow] = e.Feature;
-            }
-            else
-            {
-                _featureLookup.Add(e.Feature.DataRow, e.Feature);
-            }
-
+            _featureLookup[e.Feature.DataRow] = e.Feature;
             if (FeatureAdded != null)
             {
                 FeatureAdded(sender, e);
@@ -289,6 +283,7 @@ namespace DotSpatial.Data
         private void FeaturesFeatureRemoved(object sender, FeatureEventArgs e)
         {
             _verticesAreValid = false;
+            ShapeIndices.Remove(e.Feature.ShapeIndex);
             _featureLookup.Remove(e.Feature.DataRow);
             if (FeatureRemoved != null)
             {
@@ -302,11 +297,11 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Adds the FID values as a field called FID, but only if the FID field
-        /// does not already exist
+        /// does not already exist.
         /// </summary>
         public void AddFid()
         {
-            DataTable dt = DataTable;
+            IDataTable dt = DataTable; // CGX AERO GLZ
             if (dt.Columns.Contains("FID"))
             {
                 return;
@@ -390,6 +385,10 @@ namespace DotSpatial.Data
 
                 Features.Add(addedFeature);
                 addedFeature.DataRow = AddAttributes(shape);
+
+                if (_features.EventsSuspended && addedFeature.DataRow != null) // Changed by jany_: If feature gets added while _features events are suspended _features and _featureLookup get out of sync
+                    _featureLookup[addedFeature.DataRow] = addedFeature;
+
                 if (!shape.Range.Extent.IsEmpty())
                 {
                     Extent.ExpandToInclude(new Extent(addedFeature.Envelope));
@@ -543,9 +542,9 @@ namespace DotSpatial.Data
                     // We need to copy the attributes, but just copy a datarow
                     if (copyAttributes)
                     {
-                        foreach (DataRow row in source.DataTable.Rows)
+                        foreach (IDataRow row in source.DataTable.Rows) // CGX AERO GLZ
                         {
-                            DataRow result = DataTable.NewRow();
+                            IDataRow result = DataTable.NewRow(); // CGX AERO GLZ
                             result.ItemArray = row.ItemArray.Copy();
                             DataTable.Rows.Add(result);
                         }
@@ -586,7 +585,7 @@ namespace DotSpatial.Data
                             numRows = numPages - (pageSize * i);
                         }
 
-                        DataTable dt = source.GetAttributes(i * pageSize, numRows);
+                        IDataTable dt = source.GetAttributes(i * pageSize, numRows); // CGX AERO GLZ
                         SetAttributes(i * pageSize, dt);
                     }
                 }
@@ -623,7 +622,7 @@ namespace DotSpatial.Data
         public void CopyTableSchema(IFeatureSet source)
         {
             DataTable.Columns.Clear();
-            DataTable dt = source.DataTable;
+            IDataTable dt = source.DataTable; // CGX AERO GLZ
             foreach (DataColumn dc in dt.Columns)
             {
                 if (dc != null)
@@ -636,7 +635,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public void CopyTableSchema(DataTable sourceTable)
+        public void CopyTableSchema(IDataTable sourceTable) // CGX AERO GLZ
         {
             DataTable.Columns.Clear();
             foreach (DataColumn dc in sourceTable.Columns)
@@ -651,7 +650,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public IFeature FeatureFromRow(DataRow row)
+        public IFeature FeatureFromRow(IDataRow row) // CGX AERO GLZ
         {
             return _featureLookup[row];
         }
@@ -668,10 +667,12 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Marked obsolete in 1.7.
         public List<int> Find(string filterExpression)
         {
-            DataRow[] hits = _dataTable.Select(filterExpression);
-            return hits.Select(dr => _dataTable.Rows.IndexOf(dr)).ToList();
+            var dt = DataTable;
+            IDataRow[] hits = dt.Select(filterExpression); // CGX AERO GLZ
+            return hits.Select(dr => dt.Rows.IndexOf(dr)).ToList();
         }
 
         /// <summary>
@@ -769,7 +770,7 @@ namespace DotSpatial.Data
             }
             else
             {
-                DataTable dt = GetAttributes(index, 1);
+                IDataTable dt = GetAttributes(index, 1); // CGX AERO GLZ
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     result.Attributes = dt.Rows[0].ItemArray;
@@ -848,7 +849,7 @@ namespace DotSpatial.Data
                     new DataColumn(column.ColumnName, column.DataType, column.Expression, column.ColumnMapping));
             }
 
-            foreach (DataRow row in res.DataTable.Rows)
+            foreach (IDataRow row in res.DataTable.Rows) // CGX AERO GLZ
             {
                 string query;
                 if (dt.Columns[xlsJoinField].DataType == typeof(string))
@@ -885,11 +886,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public void Save()
         {
-            if (!AttributesPopulated)
-            {
-                FillAttributes();
-            }
-
+            if (!AttributesPopulated) FillAttributes();
             SaveAs(Filename, true);
         }
 
@@ -924,6 +921,7 @@ namespace DotSpatial.Data
             result.ShapeIndices = ShapeIndices;
             result.Extent = Extent;
             result.IndexMode = IndexMode; // added by JamesP@esdm.co.uk as this was not being passed into result
+            result.CoordinateType = CoordinateType;
             if (!IndexMode)
             {
                 result.Features = Features;
@@ -940,6 +938,19 @@ namespace DotSpatial.Data
             result.ProgressHandler = ProgressHandler;
             result.Projection = Projection;
             result.Save();
+            Filename = result.Filename;
+        }
+
+        [Obsolete("Use Select(region) instead")] // Marked in 1.7
+        public List<IFeature> IdentifySelect(Extent region)
+        {
+            return Select(region);
+        }
+
+        [Obsolete("Use Select(region, out affectedRegion) instead")] // Marked in 1.7
+        public List<IFeature> IdentifySelect(Extent region, out Extent affectedRegion)
+        {
+            return Select(region, out affectedRegion);
         }
 
         /// <inheritdoc/>
@@ -952,55 +963,32 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual List<IFeature> Select(Extent region, out Extent affectedRegion)
         {
-            List<IFeature> result = new List<IFeature>();
-            if (IndexMode)
-            {
-                ShapeRange aoi = new ShapeRange(region);
-                Extent affected = new Extent();
-                List<ShapeRange> shapes = ShapeIndices;
-                if (shapes != null)
-                {
-                    //ProgressMeter = new ProgressMeter(ProgressHandler, "Selecting shapes", shapes.Count);
-                    for (int shp = 0; shp < shapes.Count; shp++)
-                    {
-                        //ProgressMeter.Next();
-                        if (!shapes[shp].Intersects(aoi))
-                        {
-                            continue;
-                        }
-
-                        IFeature f = GetFeature(shp);
-                        affected.ExpandToInclude(shapes[shp].Extent);
-                        result.Add(f);
-                    }
-                    //ProgressMeter.Reset();
-                }
-
-                affectedRegion = affected;
-                return result;
-            }
-
+            var result = new List<IFeature>();
             affectedRegion = new Extent();
 
-            bool useProgress = (Features.Count > 10000);
-            //ProgressMeter = new ProgressMeter(ProgressHandler, "Selecting Features", Features.Count);
-            foreach (IFeature feature in Features)
+            if (IndexMode)
             {
-                //if (useProgress)
-                //    ProgressMeter.Next();
-                if (!region.Intersects(feature.Envelope))
+                var aoi = new ShapeRange(region);
+                var shapes = ShapeIndices;
+                for (var shp = 0; shp < shapes.Count; shp++)
                 {
-                    continue;
+                    if (!shapes[shp].Intersects(aoi)) continue;
+
+                    var feature = GetFeature(shp);
+                    affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
+                    result.Add(feature);
                 }
-                if (!feature.Intersects(region.ToEnvelope()))
-                {
-                    continue;
-                }
-                result.Add(feature);
-                affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
             }
-            //if (useProgress)
-            //    ProgressMeter.Reset();
+            else
+            {
+                foreach (var feature in Features)
+                {
+                    if (!region.Intersects(feature.Envelope) || !feature.Intersects(region.ToEnvelope())) continue;
+
+                    result.Add(feature);
+                    affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
+                }
+            }
 
             return result;
         }
@@ -1018,8 +1006,7 @@ namespace DotSpatial.Data
         /// </returns>
         public virtual List<IFeature> SelectByAttribute(string filterExpression)
         {
-            List<IFeature> result = new List<IFeature>();
-            DataTable dt = DataTable;
+            IDataTable dt = DataTable; // CGX AERO GLZ
             bool isTemp = false;
             if (filterExpression != null)
             {
@@ -1030,12 +1017,8 @@ namespace DotSpatial.Data
                 }
             }
 
-            DataRow[] rows = dt.Select(filterExpression);
-            if (FeatureLookup != null && FeatureLookup.Any())
-            {
-                result.AddRange(rows.Select(dr => FeatureLookup[dr]));
-            }
-
+            IDataRow[] rows = dt.Select(filterExpression); // CGX AERO GLZ
+            var result = rows.Select(dr => FeatureLookup[dr]).ToList();
             if (isTemp)
             {
                 dt.Columns.Remove("FID");
@@ -1056,24 +1039,22 @@ namespace DotSpatial.Data
         /// </returns>
         public virtual List<int> SelectIndexByAttribute(string filterExpression)
         {
-            List<int> result = new List<int>();
+            var result = new List<int>();
             if (AttributesPopulated && DataTable != null)
             {
-                DataRow[] rows = DataTable.Select(filterExpression);
+                var rows = DataTable.Select(filterExpression);
                 result.AddRange(rows.Select(row => DataTable.Rows.IndexOf(row)));
             }
             else
             {
-                // page in sets of 10, 000 rows
-                int numPages = (int)Math.Ceiling((double)NumRows() / 10000);
+                const int rowsPerPage = 10000;
+                var numPages = (int)Math.Ceiling((double)NumRows() / rowsPerPage);
                 for (int page = 0; page < numPages; page++)
                 {
-                    DataTable table = GetAttributes(page * 10000, 10000);
-                    DataRow[] rows = table.Select(filterExpression);
-
-                    foreach (DataRow row in rows)
+                    var table = GetAttributes(page * rowsPerPage, rowsPerPage);
+                    foreach (var row in table.Select(filterExpression))
                     {
-                        result.Add(table.Rows.IndexOf(row) + page * 10000);
+                        result.Add(table.Rows.IndexOf(row) + page * rowsPerPage);
                     }
                 }
             }
@@ -1104,25 +1085,20 @@ namespace DotSpatial.Data
         /// Retrieves a subset using exclusively the features matching the specified values.
         /// </summary>
         /// <param name="indices">
-        /// An integer list of indices to copy into the new FeatureSet
+        /// An integer list of indices to copy into the new FeatureSet.
         /// </param>
         /// <returns>
         /// A FeatureSet with the new items.
         /// </returns>
         public FeatureSet CopySubset(List<int> indices)
         {
-            FeatureSet copy = MemberwiseClone() as FeatureSet;
-            if (copy == null)
-            {
-                return null;
-            }
-
-            copy.Features = new FeatureList(copy);
+            List<IFeature> f = new List<IFeature>();
             foreach (int row in indices)
             {
-                copy.Features.Add(Features[row]);
+                f.Add(GetFeature(row));
             }
-
+            FeatureSet copy = new FeatureSet(f);
+            copy.Projection = Projection.Copy();
             copy.InvalidateEnvelope(); // the new set will likely have a different envelope bounds
             return copy;
         }
@@ -1176,10 +1152,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the line for the specified index
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetLine(int index)
         {
             ShapeRange shape = ShapeIndices[index];
@@ -1222,15 +1194,15 @@ namespace DotSpatial.Data
             {
                 geom = FeatureGeometryFactory.CreateLineString(lines[0].Coordinates);
             }
-            else return null;
+            else
+            {
+                geom = FeatureGeometryFactory.CreateMultiLineString(new IBasicLineString[] { });
+            }
 
-            Feature f = new Feature(geom)
+            var f = new Feature(geom)
                             {
                                 ParentFeatureSet = this,
                                 ShapeIndex = shape,
-                                RecordNumber = shape.RecordNumber,
-                                ContentLength = shape.ContentLength,
-                                ShapeType = shape.ShapeType
                             };
 
             // Attribute reading is only handled in the overridden case.
@@ -1240,10 +1212,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns a single multipoint feature for the shape at the specified index
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetMultiPoint(int index)
         {
             ShapeRange shape = ShapeIndices[index];
@@ -1274,19 +1242,23 @@ namespace DotSpatial.Data
                 FeatureGeometryFactory = GeometryFactory.Default;
             }
 
-            IMultiPoint mp = FeatureGeometryFactory.CreateMultiPoint(coords);
-            return new Feature(mp);
+            var mp = FeatureGeometryFactory.CreateMultiPoint(coords);
+            var f = new Feature(mp)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape,
+            };
+
+            // Attribute reading is only handled in the overridden case.
+            return f;
         }
 
         /// <summary>
         /// Gets the point for the shape at the specified index
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetPoint(int index)
         {
+            ShapeRange shape = ShapeIndices[index];
             Coordinate c = new Coordinate(Vertex[index * 2], Vertex[index * 2 + 1]);
             if (M != null && M.Length != 0)
             {
@@ -1304,7 +1276,11 @@ namespace DotSpatial.Data
             }
 
             IPoint p = FeatureGeometryFactory.CreatePoint(c);
-            Feature f = new Feature(p) { ParentFeatureSet = this, RecordNumber = index };
+            var f = new Feature(p)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape,
+            };
 
             // Attributes only retrieved in the overridden case
             return f;
@@ -1314,10 +1290,6 @@ namespace DotSpatial.Data
         /// If the FeatureType is polygon, this is the code for converting the vertex array
         /// into a feature.
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetPolygon(int index)
         {
             if (FeatureGeometryFactory == null)
@@ -1415,7 +1387,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            IPolygon[] polygons = new Polygon[shells.Count];
+            var polygons = new IPolygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
                 polygons[i] = FeatureGeometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray());
@@ -1431,12 +1403,8 @@ namespace DotSpatial.Data
                 feature.BasicGeometry = FeatureGeometryFactory.CreateMultiPolygon(polygons);
             }
 
-            // feature.FID = feature.RecordNumber; FID is now dynamic
             feature.ParentFeatureSet = this;
             feature.ShapeIndex = shape;
-            feature.RecordNumber = shape.RecordNumber;
-            feature.ContentLength = shape.ContentLength;
-            feature.ShapeType = shape.ShapeType;
 
             // Attributes handled in the overridden case
             return feature;
@@ -1450,7 +1418,7 @@ namespace DotSpatial.Data
         /// <returns>
         /// A data row, but only if attributes are populated
         /// </returns>
-        private DataRow AddAttributes(Shape shape)
+        private IDataRow AddAttributes(Shape shape) // CGX AERO GLZ
         {
             // Handle attributes if the array is not null.  Assumes compatible schema.
             if (shape.Attributes != null)
@@ -1458,7 +1426,7 @@ namespace DotSpatial.Data
                 DataColumn[] columns = GetColumns();
                 Dictionary<string, object> rowContent = new Dictionary<string, object>();
                 object[] fixedContent = new object[columns.Length];
-                DataRow addedRow;
+                IDataRow addedRow; // CGX AERO GLZ
                 if (shape.Attributes.Length != columns.Length)
                 {
                     throw new ArgumentException("Attribute column count mismatch.");
@@ -1507,7 +1475,7 @@ namespace DotSpatial.Data
         /// </returns>
         private FeatureSet CopySubset(string filterExpression)
         {
-            return CopySubset(Find(filterExpression));
+            return CopySubset(SelectIndexByAttribute(filterExpression));
         }
 
         /// <summary>
@@ -1532,7 +1500,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the surrent file path. This is the relative path relative to
+        /// Gets or sets the current file path. This is the relative path relative to
         /// the current project folder. For feature sets coming from a database
         /// or a web service, the FilePath property is NULL.
         /// </summary>
@@ -1541,6 +1509,7 @@ namespace DotSpatial.Data
         /// </value>
         /// <remarks>This property is used when saving source file information to a DSPX project.</remarks>
         [Serialize("FilePath")]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual string FilePath
         {
             get
@@ -1576,13 +1545,15 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the coordinate type across the entire featureset.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CoordinateType CoordinateType { get; set; }
 
         /// <summary>
         /// DataTable is the System.Data.DataTable for all the attributes of this FeatureSet.
         /// This will call FillAttributes if it is accessed and that has not yet been called.
         /// </summary>
-        public virtual DataTable DataTable
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public virtual IDataTable DataTable // CGX AERO GLZ
         {
             get
             {
@@ -1604,7 +1575,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (MyExtent == null)
+                if (MyExtent == null || MyExtent.IsEmpty())
                 {
                     UpdateExtent();
                 }
@@ -1620,12 +1591,14 @@ namespace DotSpatial.Data
         /// This is an optional GeometryFactory that can be set to control how the geometries on features are
         /// created.  The "Feature" prefix allows us to access the static Default instance on GeometryFactory.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IGeometryFactory FeatureGeometryFactory { get; set; }
 
         /// <summary>
         /// Gets the feature lookup Table itself.
         /// </summary>
-        public Dictionary<DataRow, IFeature> FeatureLookup
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Dictionary<IDataRow, IFeature> FeatureLookup // CGX AERO GLZ
         {
             get
             {
@@ -1638,30 +1611,32 @@ namespace DotSpatial.Data
         /// featureset contains Lines, Points, Polygons or an
         /// unspecified type.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FeatureType FeatureType { get; set; }
 
         /// <summary>
         /// A list of the features in this layer
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IFeatureList Features
         {
             get
             {
-                if (IndexMode && (_features == null || _features.Count == 0))
+                if (_features == null || _features.Count == 0) //Changed by jany_: sometimes _features are empty when indexMode is false, so we have to load them then too
                 {
                     // People working with features like this probably want to see changes from the features themselves.
+                    IndexMode = true;
                     FeaturesFromVertices();
                     IndexMode = false;
                 }
-
                 return _features;
             }
 
             set
             {
-                OnIncludeFeatures(_features);
                 OnExcludeFeatures(_features);
                 _features = value;
+                OnIncludeFeatures(_features);
             }
         }
 
@@ -1677,9 +1652,11 @@ namespace DotSpatial.Data
         /// and features are created on demand.  Otherwise the list of Features
         /// is used directly.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IndexMode { get; set; }
 
         /// <inheritdoc/>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double[] M
         {
             get
@@ -1808,24 +1785,24 @@ namespace DotSpatial.Data
         /// </param>
         public void RemoveShapesAt(IEnumerable<int> indices)
         {
+            List<int> remove = indices.ToList(); // moved by jany_ (2015-06-11) because in non index mode the features have to be removed from largest to smallest index
+            remove.Sort();
+            if (remove.Count == 0)
+                return;
+
             if (IndexMode == false)
             {
-                foreach (int index in indices)
+                for (int i = remove.Count - 1; i >= 0; i--)
                 {
-                    if (index < 0 || index >= _shapeIndices.Count)
+                    if (remove[i] < 0 || remove[i] >= _shapeIndices.Count)
                         continue;
-                    Features.RemoveAt(index);
+                    Features.RemoveAt(remove[i]);
                 }
                 InitializeVertices();
                 return;
             }
 
-            List<int> remove = indices.ToList();
-            remove.Sort();
-            if (remove.Count == 0)
-                return;
             List<int> remaining = new List<int>();
-
             for (int i = 0; i < _shapeIndices.Count; i++)
             {
                 if (remove.Count > 0 && remove[0] == i)
@@ -1943,16 +1920,12 @@ namespace DotSpatial.Data
         {
             Projections.Reproject.ReprojectPoints(Vertex, Z, Projection, targetProjection, 0, Vertex.Length / 2);
             if (!IndexMode)
-            {
                 UpdateCoordinates();
-            }
 
             foreach (ShapeRange shape in ShapeIndices)
             {
                 foreach (PartRange part in shape.Parts)
-                {
                     part.Vertices = Vertex;
-                }
             }
 
             UpdateExtent();
@@ -1964,15 +1937,12 @@ namespace DotSpatial.Data
         /// fast acting sealed classes and are not meant to be overridden or support clever
         /// new implementations.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<ShapeRange> ShapeIndices
         {
             get
             {
-                if (_shapeIndices == null)
-                {
-                    OnInitializeVertices();
-                }
-
+                if (_shapeIndices == null) OnInitializeVertices();
                 return _shapeIndices;
             }
 
@@ -1993,21 +1963,35 @@ namespace DotSpatial.Data
             {
                 if (Features == null || Features.Count <= 0)
                 {
-                    MyExtent = new Extent(-180, -90, 180, 90);
-                    return;
+                     // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
+                    return; 
                 }
 
                 foreach (IFeature feature in Features)
                 {
                     feature.UpdateEnvelope();
-                    MyExtent.ExpandToInclude(new Extent(feature.Envelope));
+                    //CGX
+                    if (feature.Envelope != null)
+                    {
+                        MyExtent.ExpandToInclude(new Extent(feature.Envelope));
+                    }
+                    //Fin CGX
                 }
+                //CGX
+                if (_shapeIndices != null)
+                {
+                    foreach (ShapeRange range in _shapeIndices)
+                    {
+                        range.CalculateExtents();
+                    }
+                }
+                //Fin CGX
             }
             else
             {
                 if (_shapeIndices == null || _shapeIndices.Count == 0)
                 {
-                    MyExtent = new Extent(-180, -90, 180, 90);
+                    // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
                     return;
                 }
 
@@ -2051,6 +2035,7 @@ namespace DotSpatial.Data
         /// Gets a Boolean that indicates whether or not the InvalidateVertices has been called
         /// more recently than the cached vertex array has been built.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VerticesAreValid
         {
             get
@@ -2060,6 +2045,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double[] Z
         {
             get
@@ -2107,37 +2093,25 @@ namespace DotSpatial.Data
             if (toPath == null)
                 throw new ArgumentNullException("toPath");
 
-            bool isRooted = Path.IsPathRooted(fromDirectory)
-                            && Path.IsPathRooted(toPath);
-
-            if (isRooted)
+            if (Path.IsPathRooted(fromDirectory) && Path.IsPathRooted(toPath))
             {
-                bool isDifferentRoot = string.Compare(
-                    Path.GetPathRoot(fromDirectory),
-                    Path.GetPathRoot(toPath), true) != 0;
-
-                if (isDifferentRoot)
+                if (string.Compare(Path.GetPathRoot(fromDirectory), Path.GetPathRoot(toPath), true) != 0)
                     return toPath;
             }
 
             StringCollection relativePath = new StringCollection();
-            string[] fromDirectories = fromDirectory.Split(
-                Path.DirectorySeparatorChar);
+            string[] fromDirectories = fromDirectory.Split(Path.DirectorySeparatorChar);
 
-            string[] toDirectories = toPath.Split(
-                Path.DirectorySeparatorChar);
+            string[] toDirectories = toPath.Split(Path.DirectorySeparatorChar);
 
-            int length = Math.Min(
-                fromDirectories.Length,
-                toDirectories.Length);
+            int length = Math.Min(fromDirectories.Length, toDirectories.Length);
 
             int lastCommonRoot = -1;
 
             // find common root
             for (int x = 0; x < length; x++)
             {
-                if (string.Compare(fromDirectories[x],
-                                   toDirectories[x], true) != 0)
+                if (string.Compare(fromDirectories[x], toDirectories[x], true) != 0)
                     break;
 
                 lastCommonRoot = x;
@@ -2158,11 +2132,8 @@ namespace DotSpatial.Data
             string[] relativeParts = new string[relativePath.Count];
             relativePath.CopyTo(relativeParts, 0);
 
-            string newPath = string.Join(
-                Path.DirectorySeparatorChar.ToString(),
-                relativeParts);
+            return string.Join(Path.DirectorySeparatorChar.ToString(), relativeParts);
 
-            return newPath;
         }
 
         /// <summary>
@@ -2179,7 +2150,7 @@ namespace DotSpatial.Data
             if (String.IsNullOrEmpty(toPath))
                 throw new ArgumentNullException("toPath");
 
-            if (Path.GetDirectoryName(toPath) == String.Empty)
+            if (string.IsNullOrEmpty(Path.GetDirectoryName(toPath)))
                 // it looks like we only have a file name.
                 return toPath;
 
@@ -2195,7 +2166,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Calculates the features from the shape indices and vertex array
+        /// Calculates the features from the shape indices and vertex array.
         /// </summary>
         protected void FeaturesFromVertices()
         {
@@ -2208,17 +2179,20 @@ namespace DotSpatial.Data
                 // need to preserve event handler already attached to this feature list
                 _features.Clear();
                 _features.IncludeAttributes = false;
+                _featureLookup.Clear();
             }
 
             _features.SuspendEvents();
             for (int shp = 0; shp < ShapeIndices.Count; shp++)
             {
-                _features.Add(GetFeature(shp));
+                var f = GetFeature(shp);
+                _features.Add(f);
                 if (AttributesPopulated)
                 {
                     // Don't force population if we haven't populated yet, but
                     // definitely assign the DataRow if it already exists.
                     _features[shp].DataRow = DataTable.Rows[shp];
+                    _featureLookup.Add(_features[shp].DataRow, _features[shp]); //Added by jany_: sync the _featureLookup
                 }
             }
 
@@ -2233,7 +2207,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="dataTable">
         /// </param>
-        protected virtual void OnDataTableExcluded(DataTable dataTable)
+        protected virtual void OnDataTableExcluded(IDataTable dataTable) // CGX AERO GLZ
         {
             if (dataTable != null)
             {
@@ -2246,7 +2220,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="dataTable">
         /// </param>
-        protected virtual void OnDataTableIncluded(DataTable dataTable)
+        protected virtual void OnDataTableIncluded(IDataTable dataTable) // CGX AERO GLZ
         {
             if (dataTable != null)
             {
@@ -2296,7 +2270,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public virtual void AddRow(DataRow values)
+        public virtual void AddRow(IDataRow values) // CGX AERO GLZ
         {
         }
 
@@ -2306,52 +2280,14 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public virtual void Edit(int index, DataRow values)
+        public virtual void Edit(int index, IDataRow values) // CGX AERO GLZ
         {
         }
 
         /// <inheritdoc />
-        public virtual DataTable GetAttributes(int startIndex, int numRows)
+        public virtual IDataTable GetAttributes(int startIndex, int numRows) // CGX AERO GLZ
         {
-            // overridden in sub-classes
-            DataTable result = new DataTable();
-            DataColumn[] columns = GetColumns();
-
-            // Always add FID in this paging scenario.
-            bool hasFid = false;
-            foreach (DataColumn col in columns)
-            {
-                if (col.ColumnName == "FID")
-                {
-                    hasFid = true;
-                }
-            }
-
-            if (!hasFid)
-            {
-                result.Columns.Add("FID", typeof(int));
-            }
-
-            int i = 0;
-            for (int row = startIndex; i < numRows; row++)
-            {
-                DataRow myRow = result.NewRow();
-                myRow["FID"] = row;
-                foreach (DataColumn col in columns)
-                {
-                    if (col.ColumnName == "FID")
-                    {
-                        continue; // prefer our own FID here for indexing.
-                    }
-
-                    myRow[col.ColumnName] = _dataTable.Rows[row][col.ColumnName];
-                }
-
-                result.Rows.Add(myRow);
-                i++;
-            }
-
-            return result;
+            return GetAttributes(startIndex, numRows, GetColumns().Select(d => d.ColumnName));
         }
 
         /// <summary>
@@ -2369,44 +2305,38 @@ namespace DotSpatial.Data
         /// <returns>
         /// A DataTable populated with data rows with only the specified values.
         /// </returns>
-        public virtual DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public virtual IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames) // CGX AERO GLZ
         {
             // overridden in subclasses.
-            DataTable result = new DataTable();
+            var result = new DS_DataTable();
             DataColumn[] columns = GetColumns();
 
             // Always add FID in this paging scenario.  This is for the in-ram case.  A more appropriate
             // implementation exists
-            result.Columns.Add("FID", typeof(int));
-            foreach (string name in fieldNames)
+            if (columns.All(c => c.ColumnName != "FID"))
             {
-                foreach (var col in columns)
+                result.Columns.Add("FID", typeof(int));
+            }
+
+            var fn = new HashSet<string>(fieldNames);
+            foreach (var col in columns)
+            {
+                if (fn.Contains(col.ColumnName))
                 {
-                    if (col.ColumnName == name)
-                    {
-                        result.Columns.Add(col);
-                        break;
-                    }
+                    result.Columns.Add(col);
                 }
             }
 
-            int i = 0;
-            for (int row = startIndex; i < numRows; row++)
+            for (int row = startIndex, i = 0; i < numRows && row < _dataTable.Rows.Count; row++, i++)
             {
-                DataRow myRow = result.NewRow();
+                IDataRow myRow = result.NewRow(); // CGX AERO GLZ
                 myRow["FID"] = row;
-                foreach (string name in fieldNames)
+                foreach (var name in fn.Where(d => d != "FID"))
                 {
-                    if (name == "FID")
-                    {
-                        continue;
-                    }
-
                     myRow[name] = _dataTable.Rows[row][name];
                 }
 
                 result.Rows.Add(myRow);
-                i++;
             }
 
             return result;
@@ -2431,26 +2361,32 @@ namespace DotSpatial.Data
         {
             int[] counts = null;
 
-            if (expressions != null && expressions.Length > 0)
+            // CGX TRY CATCH
+            try
             {
-                counts = new int[expressions.Length];
-                for (int i = 0; i < expressions.Length; i++)
+                if (expressions != null && expressions.Length > 0)
                 {
-                    if (expressions[i] != null)
+                    counts = new int[expressions.Length];
+                    for (int i = 0; i < expressions.Length; i++)
                     {
-                        if (expressions[i].Contains("=[NULL]"))
+                        if (expressions[i] != null)
                         {
-                            expressions[i] = expressions[i].Replace("=[NULL]", " is NULL");
-                        }
-                        else
-                            if (expressions[i].Contains("= '[NULL]'"))
+                            if (expressions[i].Contains("=[NULL]"))
                             {
-                                expressions[i] = expressions[i].Replace("= '[NULL]'", " is NULL");
+                                expressions[i] = expressions[i].Replace("=[NULL]", " is NULL");
                             }
+                            else
+                                if (expressions[i].Contains("= '[NULL]'"))
+                                {
+                                    expressions[i] = expressions[i].Replace("= '[NULL]'", " is NULL");
+                                }
+                        }
+                        counts[i] = DataTable.Select(expressions[i]).Length;
                     }
-                    counts[i] = DataTable.Select(expressions[i]).Length;
                 }
             }
+            catch (Exception)
+            { }
 
             return counts;
         }
@@ -2463,13 +2399,13 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public virtual void SetAttributes(int startIndex, DataTable pageValues)
+        public virtual void SetAttributes(int startIndex, IDataTable pageValues) // CGX AERO GLZ
         {
             // overridden in sub-classes, but default implementation is for the in-ram only case.
             int row = startIndex;
             if (_dataTable == null)
             {
-                _dataTable = new DataTable();
+                _dataTable = new DS_DataTable(); // CGX AERO GLZ
             }
 
             List<string> names = new List<string>();
@@ -2479,7 +2415,7 @@ namespace DotSpatial.Data
                 names.Add(c.ColumnName);
             }
 
-            foreach (DataRow dataRow in pageValues.Rows)
+            foreach (IDataRow dataRow in pageValues.Rows) // CGX AERO GLZ
             {
                 foreach (string name in names)
                 {
@@ -2510,10 +2446,7 @@ namespace DotSpatial.Data
                 // this should be all the coordinates, for all parts of the geometry.
                 IList<Coordinate> coords = f.Coordinates;
 
-                if (coords == null)
-                {
-                    continue;
-                }
+                if (coords == null) continue;
 
                 foreach (Coordinate c in coords)
                 {
@@ -2530,13 +2463,17 @@ namespace DotSpatial.Data
             int vIndex = 0;
             foreach (IFeature f in _features)
             {
-                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Envelope) };
+                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Envelope), StartIndex = vIndex };
+
+                //CGX
+                if (f.Envelope != null) { shx.Extent = new Extent(f.Envelope); }
+                //Fin CGX
+
                 _shapeIndices.Add(shx);
                 f.ShapeIndex = shx;
 
                 // for simplicity in looping, there is always at least one part.
                 // That way, the shape range can be ignored and the parts loop used instead.
-                shx.Parts = new List<PartRange>();
                 int shapeStart = vIndex;
                 for (int part = 0; part < f.NumGeometries; part++)
                 {
@@ -2546,7 +2483,6 @@ namespace DotSpatial.Data
                     {
                         // Account for the Shell
                         prtx.NumVertices = bp.Shell.NumPoints;
-
                         vIndex += bp.Shell.NumPoints;
 
                         // The part range should be adjusted to no longer include the holes
@@ -2568,9 +2504,10 @@ namespace DotSpatial.Data
                         vIndex += numPoints;
                         prtx.NumVertices = numPoints;
                     }
-
                     shx.Parts.Add(prtx);
                 }
+                shx.NumParts = shx.Parts.Count;
+                shx.NumPoints = vIndex - shx.StartIndex; //Changed by jany_: has to be initialized to correctly paint multipoints 
             }
             _verticesAreValid = true;
         }
@@ -2582,7 +2519,7 @@ namespace DotSpatial.Data
         {
             if (VerticesInvalidated != null)
             {
-                VerticesInvalidated(this, new EventArgs());
+                VerticesInvalidated(this, EventArgs.Empty);
             }
         }
 
@@ -2620,7 +2557,6 @@ namespace DotSpatial.Data
         {
             if (disposeManagedResources)
             {
-                _featureLookup = null;
                 _features = null;
                 Filename = null;
                 _m = null;

@@ -48,10 +48,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (groupCaption == value)
-                    return;
+                if (groupCaption == value) return;
                 groupCaption = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("GroupCaption"));
+                OnPropertyChanged("GroupCaption");
             }
         }
 
@@ -67,10 +66,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (rootKey == value)
-                    return;
+                if (rootKey == value) return;
                 rootKey = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("RootKey"));
+                OnPropertyChanged("RootKey");
             }
         }
     }

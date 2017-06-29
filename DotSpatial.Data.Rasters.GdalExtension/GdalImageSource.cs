@@ -50,6 +50,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
         #region Constructors
 
+        static GdalImageSource()
+        {
+            GdalConfiguration.ConfigureGdal();
+        }
+
         /// <summary>
         /// Creates a new instance of gdalImage, and gets much of the header information without actually
         /// reading any values from the file.
@@ -57,7 +62,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         public GdalImageSource(string fileName)
         {
             Filename = fileName;
-            GdalHelper.Configure();
             ReadHeader();
         }
 
@@ -66,7 +70,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         public GdalImageSource()
         {
-            GdalHelper.Configure();
         }
 
         /// <summary>
@@ -221,21 +224,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             if (_dataset == null)
             {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_Update);
-                }
-                catch
-                {
-                    try
-                    {
-                        _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new GdalException(ex.ToString());
-                    }
-                }
+                _dataset = Helpers.Open(Filename);
             }
         }
 

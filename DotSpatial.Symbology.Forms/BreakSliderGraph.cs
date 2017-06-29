@@ -124,7 +124,7 @@ namespace DotSpatial.Symbology.Forms
                 _breaks[i].NextCategory = _breaks[i + 1].Category;
                 // We use the maximums to set up breaks.  Minimums should simply
                 // be set to work with the maximums of the previous category.
-                _breaks[i + 1].Category.Minimum = _breaks[i].Value;
+                //_breaks[i + 1].Category.Minimum = _breaks[i].Value; REMOVED BY jany_ (2015-07-07) Don't set minimum, because that changes the minimum of the rasters category which causes the colors to change when saving in RasterColorControl without making changes or for example only applying opacity without wanting to use statistics.
             }
 
             if (_breaks.Count == 0) return;
@@ -238,13 +238,12 @@ namespace DotSpatial.Symbology.Forms
             if (_isRaster)
             {
                 if (_raster == null) return;
-                ReadValues();
-                FillBins();
-                UpdateBreaks();
-                return;
             }
-            if (_source == null && _table == null) return;
-            if (!IsValidField(_fieldName)) return;
+            else
+            {
+                if (_source == null && _table == null) return;
+                if (!IsValidField(_fieldName)) return;
+            }
             ReadValues();
             FillBins();
             UpdateBreaks();
@@ -355,7 +354,7 @@ namespace DotSpatial.Symbology.Forms
         private BreakSlider _selectedSlider;
         private IAttributeSource _source;
         private Statistics _statistics;
-        private DataTable _table;
+        private IDataTable _table; // CGX AERO GLZ
         private List<double> _values;
 
         #endregion
@@ -944,7 +943,7 @@ namespace DotSpatial.Symbology.Forms
         /// Gets or sets the data Table for which the statistics should be applied
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DataTable Table
+        public IDataTable Table // CGX AERO GLZ
         {
             get { return _table; }
             set
@@ -1094,8 +1093,6 @@ namespace DotSpatial.Symbology.Forms
                 _rasterSymbolizer = _rasterLayer.Symbolizer;
                 ResetExtents();
                 UpdateBins();
-
-                UpdateBreaks();
             }
         }
 

@@ -31,6 +31,7 @@ namespace DotSpatial.Symbology
     /// A smaller interface that just gives the user enough control to draw on a map surface
     /// without giving them the ability to change the base control.
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface IView : IRenderable
     {
         #region Methods

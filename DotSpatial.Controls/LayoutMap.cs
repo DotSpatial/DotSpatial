@@ -23,6 +23,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using DotSpatial.Data;
 using DotSpatial.Topology;
@@ -34,11 +35,39 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutMap : LayoutElement
     {
+        #region Fields
+
         private Bitmap _buffer;
         private IEnvelope _envelope;
         private bool _extentChanged = true;
         private Map _mapControl;
         private RectangleF _oldRectangle;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructor to build a new LayoutMap control with map control
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Throws if mapControl is null.</exception>
+        public LayoutMap(Map mapControl)
+        {
+            if (mapControl == null) throw new ArgumentNullException("mapControl");
+
+            Name = "Map";
+            _mapControl = mapControl;
+            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+            if (_mapControl.ExtendBuffer)
+            {
+                // if ExtendBuffer, Envelope must be three times smaller
+                viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
+            }
+            _envelope = viewExtentEnvelope;
+            ResizeStyle = ResizeStyle.NoScaling;
+        }
+
+        #endregion
 
         #region ------------------ Public Properties
 
@@ -84,14 +113,18 @@ namespace DotSpatial.Controls
         public Map MapControl
         {
             get { return _mapControl; }
-            set { _mapControl = value; }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value");
+                _mapControl = value;
+            }
         }
 
         /// <summary>
         /// A mathematical calculation using the map
         /// </summary>
         [Browsable(true), Category("Map")]
-        public virtual int Scale
+        public virtual long Scale
         {
             get
             {
@@ -99,14 +132,18 @@ namespace DotSpatial.Controls
                     return (100000);
                 if (Resizing)
                     return (100000);
-                else
-                    return Convert.ToInt32((UnitMeterConversion() * _envelope.Width * 39.3700787 * 100D) / Size.Width);
+                return Convert.ToInt64((UnitMeterConversion() * _envelope.Width * 39.3700787 * 100D) / Size.Width);
             }
             set
             {
                 if (_mapControl.Layers.Count < 1)
                     return;
                 IEnvelope tempEnv = Envelope;
+
+                //CGX
+                Coordinate EnvelopeCenter = Envelope.Center();
+                //CGX END
+
                 double xtl = tempEnv.X;
                 double ytl = tempEnv.Y;
                 tempEnv.Width = (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D);
@@ -114,42 +151,51 @@ namespace DotSpatial.Controls
                 tempEnv.X = xtl;
                 tempEnv.Y = ytl;
                 Envelope = tempEnv;
+
+                
+                //CGX
+                Envelope.SetCenter(EnvelopeCenter);
+
+                if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+                    _mapControl.MapFrame.CurrentScale = Scale;
+                // CGX END
             }
         }
 
         private double UnitMeterConversion()
         {
+            //CGX
             if (_mapControl == null) return 1;
             if (_mapControl.Layers.Count == 0) return 1;
-            if (_mapControl.Layers[0].DataSet == null) return 1;
-            if (_mapControl.Layers[0].DataSet.Projection == null) return 1;
-            if (_mapControl.Layers[0].DataSet.Projection.IsLatLon)
-                return _mapControl.Layers[0].DataSet.Projection.GeographicInfo.Unit.Radians * 6354101.943;
-            return _mapControl.Layers[0].DataSet.Projection.Unit.Meters;
+            if (_mapControl.MapFrame.Projection == null) return 1;
+            if (_mapControl.MapFrame.Projection.IsLatLon)
+                return _mapControl.MapFrame.Projection.GeographicInfo.Unit.Radians * 6354101.943;
+            return _mapControl.MapFrame.Projection.Unit.Meters;
+            //Fin CGX
         }
 
         #endregion
 
         #region ------------------- public methods
-
-        /// <summary>
-        /// The constructor to build a new LayoutMap control
+        
+		/// <summary>
+        /// Destructor
         /// </summary>
-        public LayoutMap()
+         public void DisposeBitmaps()
         {
-            Name = "Map";
+            if (_buffer != null)
+            {
+                _buffer.Dispose();
+                _buffer = null;
+            }
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public LayoutMap(Map mapControl)
-        {
-            Name = "Map";
-            _mapControl = mapControl;
-            _envelope = _mapControl.ViewExtents.ToEnvelope();
-            ResizeStyle = ResizeStyle.NoScaling;
-        }
+         //CGX
+         public void Center()
+         {
+             Envelope.SetCenter(_mapControl.MapFrame.ViewExtents.ToEnvelope().Center());
+         }
+         //Fin CGX
 
         /// <summary>
         /// Updates the size of the control
@@ -160,7 +206,15 @@ namespace DotSpatial.Controls
             {
                 //If the size has never been set before we set the maps extent to that of the map
                 if (_oldRectangle.Width == 0 && _oldRectangle.Height == 0)
-                    Envelope = MapControl.ViewExtents.ToEnvelope();
+                {
+                    Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+                    if (_mapControl.ExtendBuffer)
+                    {
+                        // if ExtendBuffer, Envelope must be three times smaller
+                        viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
+                    }
+                    Envelope = viewExtentEnvelope;
+                }
                 else
                 {
                     double dx = Envelope.Width / _oldRectangle.Width;
@@ -188,6 +242,16 @@ namespace DotSpatial.Controls
             Envelope = MapControl.Extent.ToEnvelope();
             base.OnThumbnailChanged();
             base.OnInvalidate();
+
+            //CGX
+            if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+            {
+                _mapControl.MapFrame.CurrentScale = Scale;
+                Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+                extent.SetCenter(Envelope.Center());
+                _mapControl.MapFrame.ViewExtents = extent;
+            }
+            // CGX END
         }
 
         /// <summary>
@@ -195,7 +259,18 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ZoomViewExtent()
         {
-            Envelope = _mapControl.ViewExtents.ToEnvelope();
+            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+            if (_mapControl.ExtendBuffer)
+            {
+                // if ExtendBuffer, Envelope must be three times smaller
+                viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
+            }
+            
+            Envelope = viewExtentEnvelope;
+
+            //CGX
+            Scale = Convert.ToInt64(_mapControl.MapFrame.CurrentScale);
+            // CGX END
         }
 
         /// <summary>
@@ -211,6 +286,16 @@ namespace DotSpatial.Controls
             envl.Maximum.X = Envelope.Maximum.X - tenPerWidth;
             envl.Maximum.Y = Envelope.Maximum.Y - tenPerWidth;
             Envelope = envl;
+
+            //CGX
+            if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+            {
+                _mapControl.MapFrame.CurrentScale = Scale;
+                Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+                extent.SetCenter(Envelope.Center());
+                _mapControl.MapFrame.ViewExtents = extent;
+            }
+            // CGX END
         }
 
         /// <summary>
@@ -226,6 +311,16 @@ namespace DotSpatial.Controls
             envl.Maximum.X = Envelope.Maximum.X + tenPerWidth;
             envl.Maximum.Y = Envelope.Maximum.Y + tenPerWidth;
             Envelope = envl;
+
+            //CGX
+            if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+            {
+                _mapControl.MapFrame.CurrentScale = Scale;
+                Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+                extent.SetCenter(Envelope.Center());
+                _mapControl.MapFrame.ViewExtents = extent;
+            }
+            // CGX END
         }
 
         /// <summary>
@@ -236,6 +331,10 @@ namespace DotSpatial.Controls
         public virtual void PanMap(double x, double y)
         {
             Envelope = new Envelope(Envelope.Minimum.X - x, Envelope.Maximum.X - x, Envelope.Minimum.Y - y, Envelope.Maximum.Y - y);
+            Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+            extent.SetCenter(Envelope.Center());
+            _mapControl.MapFrame.ViewExtents = extent;
+            //Fin CGX
         }
 
         /// <summary>
@@ -245,12 +344,18 @@ namespace DotSpatial.Controls
         /// <param name="printing">Boolean, true if the drawing is printing to an actual page</param>
         public override void Draw(Graphics g, bool printing)
         {
-            if (printing == false)
+            //JME A finir print vectoriel
+            //if (printing == false)
             {
+                //CGX
+                int iResolution = 300;
+
+                g.FillRectangle(new SolidBrush(Background.GetFillColor()), new RectangleF(this.LocationF.X, this.LocationF.Y, Size.Width, Size.Height));
+
                 if (MapControl.Layers.Count <= 0 || Convert.ToInt32(Size.Width) <= 0 || Convert.ToInt32(Size.Height) <= 0)
                     return;
 
-                if (_buffer != null && ((_buffer.Width != Convert.ToInt32(Size.Width * 96 / 100) || _buffer.Height != Convert.ToInt32(Size.Height * 96 / 100)) || _extentChanged))
+                if (_buffer != null && ((_buffer.Width != Convert.ToInt32(Size.Width * iResolution / 100) || _buffer.Height != Convert.ToInt32(Size.Height * iResolution / 100)) || _extentChanged))
                 {
                     _extentChanged = false;
                     _buffer.Dispose();
@@ -259,21 +364,20 @@ namespace DotSpatial.Controls
 
                 if (_buffer == null)
                 {
-                    _buffer = new Bitmap(Convert.ToInt32(Size.Width * 96 / 100), Convert.ToInt32(Size.Height * 96 / 100), PixelFormat.Format32bppArgb);
-                    _buffer.SetResolution(96, 96);
+                    _buffer = new Bitmap(Convert.ToInt32(Size.Width * iResolution / 100), Convert.ToInt32(Size.Height * iResolution / 100), PixelFormat.Format32bppArgb);
+                    _buffer.SetResolution(iResolution, iResolution);
                     Graphics graph = Graphics.FromImage(_buffer);
                     MapControl.Print(graph, new Rectangle(0, 0, _buffer.Width, _buffer.Height), _envelope.ToExtent());
                     graph.Dispose();
                 }
                 g.DrawImage(_buffer, Rectangle);
             }
-            else
-            {
-                MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width),
-                                                  Convert.ToInt32(Size.Height)), _envelope.ToExtent());
-            }
+            //else
+            //{
+            //    MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+            //}
+            //JME A finir print vectoriel
         }
-
         #endregion
     }
 }

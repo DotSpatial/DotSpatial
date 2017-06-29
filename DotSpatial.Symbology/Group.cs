@@ -199,25 +199,29 @@ namespace DotSpatial.Symbology
             if (!_selectionEnabled) return false;
             bool somethingChanged = false;
             MapFrame.SuspendEvents();
-
-            List<ILayer> layers = (List<ILayer>)GetLayers();
-            layers.Reverse();
-
-            foreach (ILayer s in layers)
+            
+            try
             {
-                if (s.SelectionEnabled == false) continue;
-                if (s.IsVisible == false) continue;
-                IEnvelope layerArea;
-                if (s.Select(tolerant, strict, mode, out layerArea)) somethingChanged = true;
-                affectedArea.ExpandToInclude(layerArea);
-                if (somethingChanged == true)
+                foreach (var s in GetLayers()
+                    .Reverse()
+                    .Where(_ => _.SelectionEnabled && _.IsVisible))
                 {
-                    MapFrame.ResumeEvents();
-                    OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
-                    return somethingChanged;
-                }
+                    IEnvelope layerArea;
+                    if (s.Select(tolerant, strict, mode, out layerArea)) somethingChanged = true;
+                    affectedArea.ExpandToInclude(layerArea);
+				    // removed by jany_: this selected only features of the first layer with features in the selected area, if user wanted to select features of another layer too they get ignored
+                    // added SelectPlugin enables user to choose the layers in which he wants to select features
+			        //if (somethingChanged)
+                    //{
+                    //    MapFrame.ResumeEvents();
+                    //    OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
+                    //    return somethingChanged;
+                    //}
                 
+                }
             }
+            catch (Exception)
+            { }
             MapFrame.ResumeEvents();
             OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
             return somethingChanged;
@@ -360,7 +364,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// The envelope that contains all of the layers for this data frame.  Essentially this would be
+        /// The envelope that contains all of the layers for this data frame. Essentially this would be
         /// the extents to use if you want to zoom to the world view.
         /// </summary>
         public override Extent Extent
@@ -373,16 +377,12 @@ namespace DotSpatial.Symbology
                 {
                     foreach (ILayer layer in layers)
                     {
-                        if (layer.Extent != null)
+                        if (layer.Extent != null && !layer.Extent.IsEmpty()) // changed by jany (2015-07-17) don't add extents of empty layers, because they cause a wrong overall extent 
                         {
                             if (ext == null)
-                            {
                                 ext = (Extent)layer.Extent.Clone();
-                            }
                             else
-                            {
                                 ext.ExpandToInclude(layer.Extent);
-                            }
                         }
                     }
                 }

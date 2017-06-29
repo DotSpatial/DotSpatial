@@ -50,7 +50,7 @@ namespace DotSpatial.Symbology
         private FastLabelDrawnState[] _fastDrawnStates;
         private IFeatureLayer _featureLayer;
         private IFeatureSet _featureSet;
-        private IList<ILabel> _labels;
+
         [Serialize("Symbology")]
         private ILabelScheme _symbology;
 
@@ -126,7 +126,7 @@ namespace DotSpatial.Symbology
             foreach (ILabelCategory category in Symbology.Categories)
             {
                 List<IFeature> features;
-                if (category.FilterExpression != null)
+                if (!string.IsNullOrWhiteSpace(category.FilterExpression))
                 {
                     features = FeatureSet.SelectByAttribute(category.FilterExpression);
                 }
@@ -245,11 +245,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets a valid IList of ILabels.  This can just be a List of labels, but allows for
         /// custom list development later.
         /// </summary>
-        public IList<ILabel> Labels
-        {
-            get { return _labels; }
-            set { _labels = value; }
-        }
+        public IList<ILabel> Labels { get; set; }
 
         /// <summary>
         /// Gets or sets the featureSet that defines the text for the labels on this layer.

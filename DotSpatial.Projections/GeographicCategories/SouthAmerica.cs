@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.GeographicCategories
     /// </summary>
     public class SouthAmerica : CoordinateSystemCategory
     {
-        #region Private Variables
+        #region Fields
 
         public readonly ProjectionInfo Aratu;
         public readonly ProjectionInfo Bogota;
@@ -94,33 +94,6 @@ namespace DotSpatial.Projections.GeographicCategories
             Yacare = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             Zanderij = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
 
-            Aratu.IsLatLon = true;
-            Bogota.IsLatLon = true;
-            BogotaBogota.IsLatLon = true;
-            CampoInchauspe.IsLatLon = true;
-            ChosMalal1914.IsLatLon = true;
-            Chua.IsLatLon = true;
-            CorregoAlegre.IsLatLon = true;
-            GuyaneFrancaise.IsLatLon = true;
-            HitoXVIII1963.IsLatLon = true;
-            LaCanoa.IsLatLon = true;
-            Lake.IsLatLon = true;
-            LomaQuintana.IsLatLon = true;
-            MountDillon.IsLatLon = true;
-            Naparima1955.IsLatLon = true;
-            Naparima1972.IsLatLon = true;
-            PampadelCastillo.IsLatLon = true;
-            POSGAR.IsLatLon = true;
-            POSGAR1998.IsLatLon = true;
-            ProvisionalSouthAmer.IsLatLon = true;
-            REGVEN.IsLatLon = true;
-            SapperHill1943.IsLatLon = true;
-            SIRGAS.IsLatLon = true;
-            SouthAmericanDatum1969.IsLatLon = true;
-            Trinidad1903.IsLatLon = true;
-            Yacare.IsLatLon = true;
-            Zanderij.IsLatLon = true;
-
             Aratu.GeographicInfo.Name = "GCS_Aratu";
             Bogota.GeographicInfo.Name = "GCS_Bogota";
             BogotaBogota.GeographicInfo.Name = "GCS_Bogota_Bogota";
@@ -175,14 +148,6 @@ namespace DotSpatial.Projections.GeographicCategories
             Yacare.GeographicInfo.Datum.Name = "D_Yacare";
             Zanderij.GeographicInfo.Datum.Name = "D_Zanderij";
         }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

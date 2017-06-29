@@ -22,17 +22,8 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FeatureSymbolizerEventArgs
-    /// </summary>
     public class FeatureSymbolizerEventArgs : EventArgs
     {
-        #region Private Variables
-
-        private IFeatureSymbolizer _symbolizer;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -40,7 +31,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public FeatureSymbolizerEventArgs(IFeatureSymbolizer symbolizer)
         {
-            _symbolizer = symbolizer;
+            Symbolizer = symbolizer;
         }
 
         #endregion
@@ -54,11 +45,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the feature symbolizer for this event
         /// </summary>
-        public IFeatureSymbolizer Symbolizer
-        {
-            get { return _symbolizer; }
-            protected set { _symbolizer = value; }
-        }
+        public IFeatureSymbolizer Symbolizer { get; protected set; }
 
         #endregion
     }

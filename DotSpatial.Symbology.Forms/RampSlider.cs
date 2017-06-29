@@ -456,7 +456,9 @@ namespace DotSpatial.Symbology.Forms
          Description("Gets or sets the position of the slider relative to the left side of the slider control")]
         public double Value
         {
-            get { return _value; }
+            //get { return _value; }
+            //CGX
+            get { return Math.Round(_value, 2); }
             set
             {
                 _value = value;
@@ -810,7 +812,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 _colorButton.Color = _colorButton.Color.ToOpaque().ToTransparent((float)Value);
             }
-            if (ValueChanged != null) ValueChanged(this, new EventArgs());
+            if (ValueChanged != null) ValueChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

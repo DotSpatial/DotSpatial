@@ -1,0 +1,11 @@
+C:\D4F_SRC\D4F\bin\Debug\DotSpatial.Symbology.dll
+C:\D4F_SRC\D4F\bin\Debug\DotSpatial.Symbology.pdb
+C:\D4F_SRC\D4F\bin\Debug\de-DE\DotSpatial.Symbology.resources.dll
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\DotSpatial.Symbology.csprojResolveAssemblyReference.cache
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\DotSpatial.Symbology.SymbologyImages.resources
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\DotSpatial.Symbology.SymbologyMessageStrings.resources
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\DotSpatial.Symbology.SymbologyMessageStrings.de-DE.resources
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\DotSpatial.Symbology.csproj.GenerateResource.Cache
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\de-DE\DotSpatial.Symbology.resources.dll
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\DotSpatial.Symbology.dll
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Symbology\obj\x86\Debug\DotSpatial.Symbology.pdb

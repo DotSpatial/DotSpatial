@@ -126,7 +126,7 @@
     <value>0, 0</value>
   </data>
   <data name="ffdNames.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 21</value>
+    <value>302, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ffdNames.TabIndex" type="System.Int32, mscorlib">
@@ -136,7 +136,7 @@
     <value>ffdNames</value>
   </data>
   <data name="&gt;&gt;ffdNames.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.FontFamilyDropDown, DotSpatial.Symbology.Forms, Version=1.0.2011.2, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.FontFamilyDropDown, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ffdNames.Parent" xml:space="preserve">
     <value>$this</value>

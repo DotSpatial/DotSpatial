@@ -18,7 +18,6 @@
 //
 // ********************************************************************************************************
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -26,22 +25,17 @@ using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using System.Diagnostics;
-
-
 
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// IdentifyFunction
+    /// Map Identify Function. Used to show information about map layers under map cursor.
     /// </summary>
     public class MapFunctionIdentify : MapFunction
     {
         #region Private Variables
 
         private FeatureIdentifier _frmFeatureIdentifier;
-        private IFeature feature;
-        private IFeatureLayer layer;
 
         #endregion
 
@@ -64,119 +58,104 @@ namespace DotSpatial.Controls
         /// Overrides the OnMouseUp event to handle the situation where we are trying to
         /// identify the vector features in the specified area.
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
-            
             if (e.Button != MouseButtons.Left) return;
-            Rectangle rtol = new Rectangle(e.X - 8, e.Y - 8, 16, 16);
-            Rectangle rstr = new Rectangle(e.X - 1, e.Y - 1, 2, 2);
-            Extent tolerant = e.Map.PixelToProj(rtol);
-            Extent strict = e.Map.PixelToProj(rstr);
 
-            if (_frmFeatureIdentifier == null)
+            var rtol = new Rectangle(e.X - 8, e.Y - 8, 16, 16);
+            var rstr = new Rectangle(e.X - 1, e.Y - 1, 2, 2);
+            var tolerant = e.Map.PixelToProj(rtol);
+            var strict = e.Map.PixelToProj(rstr);
+
+            if (_frmFeatureIdentifier == null || _frmFeatureIdentifier.IsDisposed)
             {
                 _frmFeatureIdentifier = new FeatureIdentifier();
             }
-
             _frmFeatureIdentifier.treFeatures.BeginUpdate();
             _frmFeatureIdentifier.SuspendLayout();
             _frmFeatureIdentifier.Clear();
 
             Identify(e.Map.MapFrame.GetLayers(), strict, tolerant);
- 
+
             _frmFeatureIdentifier.ReSelect();
             _frmFeatureIdentifier.ResumeLayout();
+           
+            SetSelectToSelectedNode(e.Map);
+            _frmFeatureIdentifier.treFeatures.EndUpdate();
 
-             if (_frmFeatureIdentifier.Visible == false)
-             {
-                 _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
-             }
-             base.OnMouseUp(e);
-
-                //Code for making the Identify Tool actually highlight what is being clicked.  
-                //However, it needs more adjusting to work properly and will be shelved for now
-            try
+            if (!_frmFeatureIdentifier.Visible)
             {
-                
-                feature = _frmFeatureIdentifier.treFeatures.SelectedNode.Tag as IFeature;
-                layer = _frmFeatureIdentifier.treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
+                _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
+            }
 
-                /* This logic is used to clear all selections on the entire map and only select a single feature when using the identify tool
+            base.OnMouseUp(e);
+        }
+
+        private void SetSelectToSelectedNode(IMap map)
+        {
+            // todo: Maxim: not sure that we need this...
+            // Why we are selecting only one layer when the tool can return more than one? 
+            // Maybe need to do this selecting stuff optional?
+
+            /* This logic is used to clear all selections on the entire map and only select a single feature when using the identify tool
                  To get it exactly as desired, I had to get the top layer, which is the mapframe, and perform a ClearSelection from there and then return
                  to the original layer selected in the legend. */
-                var layers = e.Map.MapFrame.GetAllLayers();
-                ILayer tempLayer = null;
-                foreach (var mapLayer in layers)
-                {
-                    if (mapLayer.IsSelected)
-                    {
-                        tempLayer = mapLayer;
-                        mapLayer.IsSelected = false;
-                    }
-                }
-                if (tempLayer == null)
-                {
-                    tempLayer = e.Map.MapFrame;
-                }
-                e.Map.MapFrame.IsSelected = true;
-                IEnvelope env = new Envelope();
-                e.Map.MapFrame.ClearSelection(out env);
-                e.Map.MapFrame.IsSelected = false;
-                tempLayer.IsSelected = true;
-              
 
-                if (feature != null && layer != null && layer.IsVisible == true)
+            var layers = map.MapFrame.GetAllLayers();
+            ILayer tempLayer = null;
+            foreach (var mapLayer in layers)
+            {
+                if (mapLayer.IsSelected)
                 {
-                    layer.Select(feature);
+                    tempLayer = mapLayer;
+                    mapLayer.IsSelected = false;
                 }
             }
-            catch (NullReferenceException ex)
+            if (tempLayer == null)
             {
-                Debug.WriteLine("Clicked area has a null reference");
+                tempLayer = map.MapFrame;
             }
-            finally
+            map.MapFrame.IsSelected = true;
+            IEnvelope env;
+            map.MapFrame.ClearSelection(out env);
+            map.MapFrame.IsSelected = false;
+            tempLayer.IsSelected = true;
+
+            var selectedNode = _frmFeatureIdentifier.treFeatures.SelectedNode;
+            if (selectedNode == null || selectedNode.Parent == null) return;
+            var feature = selectedNode.Tag as IFeature;
+            var layer = selectedNode.Parent.Tag as IFeatureLayer;
+            if (feature != null && layer != null && layer.IsVisible)
             {
-                _frmFeatureIdentifier.treFeatures.EndUpdate();
+                layer.Select(feature);
             }
         }
 
         private void Identify(IEnumerable<ILayer> layers, Extent strict, Extent tolerant)
         {
-            
-            List<ILayer> layers2 = layers.ToList();
-            if (layers is IGroup) layers2.Reverse();
-
-            foreach (IMapLayer layer in layers2)
+            if (layers is IGroup) layers = layers.Reverse();
+            foreach (var lr in layers)
             {
-               
-                IGroup grp = layer as IGroup;
+                var grp = lr as IGroup;
                 if (grp != null)
                 {
                     Identify(grp, strict, tolerant);
                 }
                 else
                 {
-                    var gfl = layer as IMapFeatureLayer;
-                    if (gfl != null && gfl.IsVisible)
+                    var gfl = lr as IMapFeatureLayer;
+                    if (gfl != null && gfl.IsVisible /*CGX*/&& gfl.SelectionEnabled)
                     {
-                        if (gfl.DataSet.FeatureType == FeatureType.Polygon)
-                        {
-                            if (true == _frmFeatureIdentifier.Add(gfl, strict))
-                                return;
-                        }
-                        else
-                        {
-                            if (true == _frmFeatureIdentifier.Add(gfl, tolerant))
-                                return;
-                        }
-                       
+                        _frmFeatureIdentifier.Add(gfl,
+                            gfl.DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant);
+                        continue;
                     }
 
-                    var rl = layer as IMapRasterLayer;
+                    var rl = lr as IMapRasterLayer;
                     if (rl != null)
                     {
                         _frmFeatureIdentifier.Add(rl, strict);
+                        continue;
                     }
                 }
             }

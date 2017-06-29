@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         private string _classificationField;
         private string _normalizationField;
         private int _numCategories;
-        private DataTable _table;
+        private DotSpatial.Data.IDataTable _table; // CGX AERO GLZ
         private ISymbol _template;
 
         #endregion
@@ -45,7 +45,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a new instance of PointSchemeFactory where the data Table is specified.
         /// </summary>
-        public PointSchemeFactory(DataTable table)
+        public PointSchemeFactory(DotSpatial.Data.IDataTable table) // CGX AERO GLZ
         {
             _table = table;
             _template = new SimpleSymbol(Color.Green, PointShape.Ellipse, 4);
@@ -91,7 +91,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the data Table that provides necessary information about the attributes for unique values to
         /// be calculated
         /// </summary>
-        public DataTable Table
+        public DotSpatial.Data.IDataTable Table // CGX AERO GLZ
         {
             get { return _table; }
             set { _table = value; }

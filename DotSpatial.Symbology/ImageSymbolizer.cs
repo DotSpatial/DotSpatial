@@ -18,27 +18,27 @@
 //
 // ********************************************************************************************************
 
+using DotSpatial.Serialization;
+using System;
+
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ImageSymbolizer
-    /// </summary>
-    public class ImageSymbolizer : IImageSymbolizer
+    [Serializable]
+    public class ImageSymbolizer : LegendItem, IImageSymbolizer
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
-
-        #endregion
-
-        #region Methods
-
+        public ImageSymbolizer()
+        {
+            Opacity = 1;
+        }
         #endregion
 
         #region Properties
-
+        /// <summary>
+        /// Gets or sets a float value from 0 to 1, where 1 is fully opaque while 0 is fully transparent.
+        /// </summary>
+        [Serialize("Opacity")]
+        public float Opacity { get; set; }
         #endregion
     }
 }

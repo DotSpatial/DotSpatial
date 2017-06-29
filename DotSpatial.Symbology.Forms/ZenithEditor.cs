@@ -62,7 +62,10 @@ namespace DotSpatial.Symbology.Forms
             rs.RampTextBehindRamp = false;
             rs.Value = Convert.ToDouble(value);
             rs.ValueChanged += RsValueChanged;
-            rs.ShowValue = false;
+            //rs.ShowValue = false;
+            // CGX
+            rs.ShowValue = true;
+            // CGX END
             rs.Width = 75;
             rs.Height = 50;
             if (_dialogProvider != null) _dialogProvider.DropDownControl(rs);

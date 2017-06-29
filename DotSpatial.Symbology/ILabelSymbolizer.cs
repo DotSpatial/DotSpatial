@@ -42,12 +42,40 @@ namespace DotSpatial.Symbology
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the orientation of line labels.
+        /// </summary>
+        [Category("General"), Description("Gets or sets the orientation of line labels.")]
+        LineOrientation LineOrientation { get; set; }
+
+        /// <summary>
+        /// Gets or sets a boolean indicating if the text follow the line geometry.
+        /// </summary>
+        [Category("General"), Description("Gets or sets a boolean indicating if the text follow the line geometry.")]
+        bool FollowLineGeometry { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a boolean indicating whether or not the LineOrientation gets used.
+        /// </summary>
+         [Category("General"), Description("Gets or sets a boolean indicating whether or not LineOrientation should be used.")]
+        bool UseLineOrientation { get; set; }
 
         /// <summary>
         /// Gets or sets the labeling method
         /// </summary>
         [Category("General"), Description("Gets or sets the labeling method.")]
         LabelPlacementMethod LabelPlacementMethod
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the labeling method
+        /// </summary>
+        [Category("General"), Description("Gets or sets the labeling method for line labels.")]
+        LineLabelPlacementMethod LineLabelPlacementMethod
         {
             get;
             set;
@@ -306,6 +334,12 @@ namespace DotSpatial.Symbology
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets format string used to draw float fields. E.g.:
+        /// #.##, 0.000. If empty - then format not used.
+        /// </summary>
+        string FloatingFormat { get; set; }
 
         #endregion
     }

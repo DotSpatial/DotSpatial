@@ -26,6 +26,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Globalization;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
@@ -116,6 +117,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog settings
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new FeatureEditorSettings EditorSettings
         {
             get { return base.EditorSettings as FeatureEditorSettings; }
@@ -125,6 +127,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the UITypeEditor to use for editing this FeatureScheme
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UITypeEditor PropertyEditor
         {
             get { return _propertyEditor; }
@@ -134,6 +137,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of categories in this scheme
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int NumCategories
         {
             get { return 0; }
@@ -250,7 +254,7 @@ namespace DotSpatial.Symbology
         /// If the method is
         /// </summary>
         /// <param name="table">The System.DataTable to that has the data values to use</param>
-        public void CreateCategories(DataTable table)
+        public void CreateCategories(IDataTable table) // CGX AERO GLZ
         {
             string fieldName = EditorSettings.FieldName;
             if (EditorSettings.ClassificationType == ClassificationType.Custom) return;
@@ -351,11 +355,11 @@ namespace DotSpatial.Symbology
                 for (int ipage = 0; ipage < numPages; ipage++)
                 {
                     int numRows = (ipage == numPages - 1) ? source.NumRows() % pageSize : pageSize;
-                    DataTable table = source.GetAttributes(ipage * pageSize, numRows);
+                    IDataTable table = source.GetAttributes(ipage * pageSize, numRows); // CGX AERO GLZ
                     if (!string.IsNullOrEmpty(EditorSettings.ExcludeExpression))
                     {
-                        DataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")");
-                        foreach (DataRow row in rows)
+                        IDataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")"); // CGX AERO GLZ
+                        foreach (IDataRow row in rows) // CGX AERO GLZ
                         {
                             double val;
                             if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
@@ -374,7 +378,7 @@ namespace DotSpatial.Symbology
                     }
                     else
                     {
-                        foreach (DataRow row in table.Rows)
+                        foreach (IDataRow row in table.Rows) // CGX AERO GLZ
                         {
                             double val;
                             if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
@@ -414,7 +418,7 @@ namespace DotSpatial.Symbology
                         do
                         {
                             index = rnd.Next(ap.StartIndex, ap.StartIndex + pageSize);
-                            DataRow dr = ap.Row(index);
+                            IDataRow dr = ap.Row(index); // CGX AERO GLZ
                             if (!double.TryParse(dr[fieldName].ToString(), out val)) failed = true;
                             if (normField == null) continue;
                             if (!double.TryParse(dr[normField].ToString(), out norm))
@@ -440,7 +444,6 @@ namespace DotSpatial.Symbology
             }
             Values.Sort();
             Statistics.Calculate(Values);
-            return;
         }
 
         /// <summary>
@@ -448,15 +451,15 @@ namespace DotSpatial.Symbology
         /// to updated the cache of values that govern statistics and break placement.
         /// </summary>
         /// <param name="table">The data Table to use.</param>
-        public void GetValues(DataTable table)
+        public void GetValues(IDataTable table) // CGX AERO GLZ
         {
             Values = new List<double>();
             string normField = EditorSettings.NormField;
             string fieldName = EditorSettings.FieldName;
             if (!string.IsNullOrEmpty(EditorSettings.ExcludeExpression))
             {
-                DataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")");
-                foreach (DataRow row in rows)
+                IDataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")"); // CGX AERO GLZ
+                foreach (IDataRow row in rows) // CGX AERO GLZ
                 {
                     if (rows.Length < EditorSettings.MaxSampleCount)
                     {
@@ -513,7 +516,7 @@ namespace DotSpatial.Symbology
             if (table.Rows.Count < EditorSettings.MaxSampleCount)
             {
                 // Simply grab all the values
-                foreach (DataRow row in table.Rows)
+                foreach (IDataRow row in table.Rows) // CGX AERO GLZ
                 {
                     double val;
                     if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
@@ -526,7 +529,6 @@ namespace DotSpatial.Symbology
                     double norm;
                     if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
                     Values.Add(val / norm);
-                    continue;
                 }
             }
             else
@@ -637,20 +639,33 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets a list of all unique values of the attribute field.
         /// </summary>
-        private static List<Break> GetUniqueValues(string fieldName, DataTable table)
+        private static List<Break> GetUniqueValues(string fieldName, IDataTable table) // CGX AERO GLZ
         {
             ArrayList lst = new ArrayList();
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             bool containsNull = false;
-            foreach (DataRow dr in table.Rows)
+
+            foreach (object dr in table.Rows) // CGX AERO GLZ
             {
-                object val = dr[fieldName];
-                if (val == null || dr[fieldName] is DBNull)
+                object val = null;
+                if (dr is IDataRow)
                 {
-                    val = "[NULL]";
-                    containsNull = true;
+                    val = ((IDataRow)dr)[fieldName];
+                    if (val == null || ((IDataRow)dr)[fieldName] is DBNull)
+                    {
+                        val = "[NULL]";
+                        containsNull = true;
+                    }
                 }
+                else if (dr is DataRow)
+                {
+                    val = ((DataRow)dr)[fieldName];
+                    if (val == null || ((DataRow)dr)[fieldName] is DBNull)
+                    {
+                        val = "[NULL]";
+                        containsNull = true;
+                    }
+                }
+                
                 if (val.ToString() == string.Empty)
                 {
                     containsNull = true;
@@ -660,14 +675,13 @@ namespace DotSpatial.Symbology
                 if (lst.Contains(val)) continue;
                 if (val.ToString() != "[NULL]") lst.Add(val);
             }
-            sw.Stop();
-            //Debug.WriteLine("GetUniqueValuesTime: " + sw.ElapsedMilliseconds);
+
             lst.Sort(); // breaks if a value is null.
             List<Break> result = new List<Break>();
             if (containsNull) result.Add(new Break("[NULL]"));
             foreach (object item in lst)
             {
-                result.Add(new Break(item.ToString()));
+                result.Add(new Break(String.Format(CultureInfo.InvariantCulture, "{0}", item))); // Changed by jany_ (2015-07-27) use InvariantCulture because this is used in Datatable.Select in FeatureCategoryControl and causes error when german localization is used
             }
             return result;
         }
@@ -675,7 +689,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This checks the type of the specified field whether it's a string field
         /// </summary>
-        private static bool CheckFieldType(string fieldName, DataTable table)
+        private static bool CheckFieldType(string fieldName, IDataTable table) // CGX AERO GLZ
         {
             return table.Columns[fieldName].DataType == typeof(string);
         }
@@ -726,7 +740,7 @@ namespace DotSpatial.Symbology
             pm.Reset();
         }
 
-        private void CreateUniqueCategories(string fieldName, DataTable table)
+        private void CreateUniqueCategories(string fieldName, IDataTable table) // CGX AERO GLZ
         {
             Breaks = GetUniqueValues(fieldName, table);
             List<double> sizeRamp = GetSizeSet(Breaks.Count);
@@ -853,6 +867,70 @@ namespace DotSpatial.Symbology
                     result.Add(size);
                 }
             }
+            return result;
+        }
+
+
+        /// <summary>
+        /// Calculates the unique colors as a scheme
+        /// </summary>
+        /// <param name="fs">The featureset with the data Table definition</param>
+        /// <param name="uniqueField">The unique field</param>
+        /// <param name="categoryFunc">Func for creating category</param>
+        protected Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField, Func<Color, IFeatureCategory> categoryFunc)
+        {
+            if (categoryFunc == null) throw new ArgumentNullException("categoryFunc");
+
+            var result = new Hashtable(); // a hashtable of colors
+            var dt = fs.DataTable;
+            var vals = new ArrayList();
+            var i = 0;
+            var rnd = new Random();
+            foreach (IDataRow row in dt.Rows) // CGX AERO GLZ
+            {
+                var ind = -1;
+                if (uniqueField != "FID")
+                {
+                    if (vals.Contains(row[uniqueField]) == false)
+                    {
+                        ind = vals.Add(row[uniqueField]);
+                    }
+                }
+                else
+                {
+                    ind = vals.Add(i);
+                    i++;
+                }
+                if (ind == -1) continue;
+
+                var item = vals[ind];
+                var c = rnd.NextColor();
+                while (result.ContainsKey(c))
+                {
+                    c = rnd.NextColor();
+                }
+                var cat = categoryFunc(c);
+                string flt = "[" + uniqueField + "] = ";
+                if (uniqueField == "FID")
+                {
+                    flt += item;
+                }
+                else
+                {
+                    if (dt.Columns[uniqueField].DataType == typeof(string))
+                    {
+                        flt += "'" + item + "'";
+                    }
+                    else
+                    {
+                        flt += Convert.ToString(item, CultureInfo.InvariantCulture);
+                    }
+                }
+                cat.FilterExpression = flt;
+                AddCategory(cat);
+                result.Add(c, item);
+            }
+
             return result;
         }
 

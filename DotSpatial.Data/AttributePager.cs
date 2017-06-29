@@ -28,13 +28,13 @@ namespace DotSpatial.Data
     /// <summary>
     /// AttributePager
     /// </summary>
-    public class AttributePager : IEnumerable<DataTable>, IEnumerator<DataTable>
+    public class AttributePager : IEnumerable<IDataTable>, IEnumerator<IDataTable> // CGX AERO GLZ
     {
         #region Private Variables
 
         private readonly int _numRows;
         private readonly IAttributeSource _source;
-        private DataTable _currentTable;
+        private IDataTable _currentTable; // CGX AERO GLZ
         private int _pageIndex;
         private int _pageSize;
 
@@ -50,10 +50,10 @@ namespace DotSpatial.Data
             _pageSize = pageSize;
         }
 
-        #region IEnumerable<DataTable> Members
+        #region IEnumerable<IDataTable> Members
 
         /// <inheritdoc />
-        public IEnumerator<DataTable> GetEnumerator()
+        public IEnumerator<IDataTable> GetEnumerator() // CGX AERO GLZ
         {
             return this;
         }
@@ -70,7 +70,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the current table
         /// </summary>
-        public DataTable Current
+        public IDataTable Current // CGX AERO GLZ
         {
             get { return _currentTable; }
         }
@@ -135,7 +135,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public DataTable this[int pageIndex]
+        public IDataTable this[int pageIndex] // CGX AERO GLZ
         {
             get
             {
@@ -174,7 +174,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="rowIndex">The integer row index</param>
         /// <returns>The DataRow</returns>
-        public DataRow Row(int rowIndex)
+        public IDataRow Row(int rowIndex) // CGX AERO GLZ
         {
             int page = PageOfRow(rowIndex);
             if (_pageIndex != page || _currentTable == null)

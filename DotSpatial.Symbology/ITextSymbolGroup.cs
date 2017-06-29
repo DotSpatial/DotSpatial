@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
@@ -25,6 +26,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// ITextSymbolGroup
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface ITextSymbolGroup : ILegendItem
     {
         #region Methods

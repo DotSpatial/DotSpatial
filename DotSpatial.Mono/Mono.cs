@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace DotSpatial.Mono
 {
-    public class Mono
+    public static class Mono
     {
         public static bool IsRunningOnMono()
         {

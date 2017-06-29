@@ -182,17 +182,14 @@ namespace DotSpatial.Symbology
         private void ZoomToMapFrame_Click(object sender, EventArgs e)
         {
             // work item #42
-            // to prevent exception when zoom to layer with one single point
-            double eps = 1e-7;
-            if (Extent.Width < eps || Extent.Height < eps)
-            {
-                Extent newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-                ViewExtents = newExtent;
-            }
-            else
-            {
-                ViewExtents = Extent;
-            }
+            // to prevent exception when zoom to map with one layer with one point
+            const double eps = 1e-7;
+            var maxExtent = Extent.Width < eps || Extent.Height < eps
+                ? new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps)
+                : Extent;
+            maxExtent.ExpandBy(maxExtent.Width / 10, maxExtent.Height / 10); // work item #84
+
+            ViewExtents = maxExtent;
         }
 
         #endregion
@@ -279,18 +276,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (_viewExtents == null)
-                {
-                    if (Extent != null)
-                    {
-                        _viewExtents = Extent.Copy();
-                    }
-                    else
-                    {
-                        _viewExtents = new Extent(-180, -90, 180, 90);
-                    }
-                }
-                return _viewExtents;
+                return _viewExtents ?? (_viewExtents = Extent != null ? Extent.Copy() : new Extent(-180, -90, 180, 90));
             }
             set
             {
@@ -355,7 +341,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnUpdateMap()
         {
-            if (UpdateMap != null) UpdateMap(this, new EventArgs());
+            if (UpdateMap != null) UpdateMap(this, EventArgs.Empty);
         }
 
         /// <summary>

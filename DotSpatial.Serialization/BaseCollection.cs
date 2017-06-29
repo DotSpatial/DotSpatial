@@ -104,6 +104,28 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
+        /// Moves the given item to the new position.
+        /// </summary>
+        /// <param name="item">Item that gets moved.</param>
+        /// <param name="newPosition">Position the item is moved to.</param>
+        public void Move(T item, int newPosition)
+        {
+            if (!InnerList.Contains(item)) return;
+
+            int index = InnerList.IndexOf(item);
+            if (index == newPosition) return;
+            InnerList.RemoveAt(index);
+
+            if (InnerList.Count <= newPosition) // position past list end 
+            { InnerList.Add(item); }
+            else if (newPosition < 0) // position before list start
+            { InnerList.Insert(0, item); }
+            else { InnerList.Insert(newPosition, item); } // position inside list
+
+            OnMoved(item, InnerList.IndexOf(item));
+        }
+
+        /// <summary>
         /// Removes the specified item from the collection
         /// </summary>
         /// <param name="item">The item to remove from the collection</param>
@@ -158,9 +180,7 @@ namespace DotSpatial.Serialization
         /// After serialization, the inner list is directly set.  This is uzed by the FeatureLayer, for instance,
         /// to apply the new scheme.
         /// </summary>
-        protected virtual void OnInnerListSet()
-        {
-        }
+        protected virtual void OnInnerListSet() { }
 
         /// <summary>
         /// Clears this collection
@@ -243,26 +263,27 @@ namespace DotSpatial.Serialization
         /// and did not previously exist in the collection
         /// </summary>
         /// <param name="item"></param>
-        protected virtual void OnInclude(T item)
-        {
-        }
+        protected virtual void OnInclude(T item) { }
+
+        /// <summary>
+        /// Occurs whenever a layer is moved.
+        /// </summary>
+        /// <param name="item">Layer that is moved.</param>
+        /// <param name="newPosition">Position the layer is moved to.</param>
+        protected virtual void OnMoved(T item, int newPosition) { }
 
         /// <summary>
         /// Occurs after the item has been included either by set, insert, or addition.
         /// </summary>
         /// <param name="item"></param>
-        protected virtual void OnIncludeComplete(T item)
-        {
-        }
+        protected virtual void OnIncludeComplete(T item) { }
 
         /// <summary>
         /// Occurs any time an item is removed from the collection and no longer
         /// exists anywhere in the collection
         /// </summary>
         /// <param name="item"></param>
-        protected virtual void OnExclude(T item)
-        {
-        }
+        protected virtual void OnExclude(T item) { }
 
         /// <summary>
         /// Includes the specified item.  This should be called BEFORE an item

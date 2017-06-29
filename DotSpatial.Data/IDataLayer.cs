@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
@@ -27,6 +28,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// IDataLayer
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface IDataLayer
     {
         #region Methods
@@ -49,7 +51,7 @@ namespace DotSpatial.Data
         /// <param name="shape"></param>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        bool CreateShape(Shape shape, DataRow attributes);
+        bool CreateShape(Shape shape, IDataRow attributes); // CGX AERO GLZ
 
         /// <summary>
         /// Creates a new field for this data layer in the data source
@@ -135,7 +137,7 @@ namespace DotSpatial.Data
         /// <param name="shape"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        bool SetShape(int fid, Shape shape, DataRow values);
+        bool SetShape(int fid, Shape shape, IDataRow values); // CGX AERO GLZ
 
         /// <summary>
         /// Sets the spatial filter by using the specified rectangular extents instead of a geometry.

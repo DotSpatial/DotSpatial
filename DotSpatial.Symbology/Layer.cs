@@ -30,10 +30,7 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Layer
-    /// </summary>
-    [ToolboxItem(false)]
+   [ToolboxItem(false)]
     public class Layer : RenderableLegendItem, ILayer
     {
         #region Events
@@ -63,25 +60,25 @@ namespace DotSpatial.Symbology
         /// </summary>
         public event EventHandler SelectionChanged;
 
+        /// <summary>
+        /// Occurs when layer disposed.
+        /// </summary>
+        public event EventHandler Disposed;
+
         #endregion Events
 
         #region Private Variables
 
         private IDataSet _dataSet;
         private int _disposeLockCount;
-        private DynamicVisibilityMode _dynamicVisibilityMode;
-        private double _dynamicVisibilityWidth;
-        private Layer _editCopy;
         private Extent _invalidatedRegion; // When a region is invalidated instead of the whole layer.
         private bool _isDisposed;
-        private IFrame _mapFrame;
         private IProgressHandler _progressHandler;
         private ProgressMeter _progressMeter;
         private ProjectionInfo _projection;
         private string _projectionString;
         private IPropertyDialogProvider _propertyDialogProvider;
         private bool _selectionEnabled;
-        private bool _useDynamicVisibility;
 
         #endregion Private Variables
 
@@ -140,7 +137,7 @@ namespace DotSpatial.Symbology
                                             new SymbologyMenuItem(SymbologyMessageStrings.SetDynamicVisibilityScale, SymbologyImages.ZoomScale,
                                                                   SetDynamicVisibility)
                                         };
-            SymbologyMenuItem mnuData = new SymbologyMenuItem("Data");
+            SymbologyMenuItem mnuData = new SymbologyMenuItem(SymbologyMessageStrings.Data);
             mnuData.MenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.ExportData, SymbologyImages.save, ExportDataClick));
             base.ContextMenuItems.Add(mnuData);
             base.ContextMenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.Properties, SymbologyImages.color_scheme, ShowPropertiesClick));
@@ -199,12 +196,8 @@ namespace DotSpatial.Symbology
         public override bool CanReceiveItem(ILegendItem item)
         {
             if (item.GetParentItem() != this) return false;
-            ILayer lyr = item as ILayer;
+            var lyr = item as ILayer;
             if (lyr != null) return false;
-            IFrame mf = item as IFrame;
-            if (mf != null) return false;
-            IGroup gr = item as IGroup;
-            if (gr != null) return false;
             return true;
         }
 
@@ -293,7 +286,10 @@ namespace DotSpatial.Symbology
                     }
                 }
                 _dataSet = value;
-                _dataSet.LockDispose();
+                if (_dataSet != null)
+                {
+                    _dataSet.LockDispose();
+                }
             }
         }
 
@@ -301,25 +297,15 @@ namespace DotSpatial.Symbology
         /// Dynamic visibility represents layers that only appear when you zoom in close enough.
         /// This value represents the geographic width where that happens.
         /// </summary>
-        [Serialize("DynamicVisibilityWidth")]
-        [Category("Behavior"), Description("Dynamic visibility represents layers that only appear when the zoom scale is closer (or further) from a set scale.  This value represents the geographic width where the change takes place.")]
-        public double DynamicVisibilityWidth
-        {
-            get { return _dynamicVisibilityWidth; }
-            set { _dynamicVisibilityWidth = value; }
-        }
+        [Serialize("DynamicVisibilityWidth"), Category("Behavior"), Description("Dynamic visibility represents layers that only appear when the zoom scale is closer (or further) from a set scale.  This value represents the geographic width where the change takes place.")]
+        public double DynamicVisibilityWidth { get; set; }
 
         /// <summary>
         /// This controls whether the layer is visible when zoomed in closer than the dynamic
         /// visibility width or only when further away from the dynamic visibility width
         /// </summary>
-        [Serialize("DynamicVisibilityMode")]
-        [Category("Behavior"), Description("This controls whether the layer is visible when zoomed in closer than the dynamic visiblity width or only when further away from the dynamic visibility width")]
-        public DynamicVisibilityMode DynamicVisibilityMode
-        {
-            get { return _dynamicVisibilityMode; }
-            set { _dynamicVisibilityMode = value; }
-        }
+        [Serialize("DynamicVisibilityMode"), Category("Behavior"), Description("This controls whether the layer is visible when zoomed in closer than the dynamic visiblity width or only when further away from the dynamic visibility width")]
+        public DynamicVisibilityMode DynamicVisibilityMode { get; set; }
 
         /// <summary>
         /// Gets the currently invalidated region.
@@ -335,17 +321,7 @@ namespace DotSpatial.Symbology
         /// Gets the map frame of the parent LayerCollection.
         /// </summary>
         [Browsable(false), ShallowCopy]
-        public virtual IFrame MapFrame
-        {
-            get
-            {
-                return _mapFrame;
-            }
-            set
-            {
-                _mapFrame = value;
-            }
-        }
+        public virtual IFrame MapFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the ProgressHandler for this layer.  Setting this overrides the default
@@ -371,13 +347,8 @@ namespace DotSpatial.Symbology
         /// Gets or sets a boolean indicating whether to allow the dynamic visibility
         /// envelope to control visibility.
         /// </summary>
-        [Serialize("UseDynamicVisibility")]
-        [Category("Behavior"), Description("Gets or sets a boolean indicating whether to allow the dynamic visibility envelope to control visibility.")]
-        public bool UseDynamicVisibility
-        {
-            get { return _useDynamicVisibility; }
-            set { _useDynamicVisibility = value; }
-        }
+        [Serialize("UseDynamicVisibility"), Category("Behavior"), Description("Gets or sets a boolean indicating whether to allow the dynamic visibility envelope to control visibility.")]
+        public bool UseDynamicVisibility { get; set; }
 
         /// <inheritdoc />
         [Category("Behavior"), Description("Gets or sets a boolean indicating whether this layer is selected in the legend.")]
@@ -417,13 +388,15 @@ namespace DotSpatial.Symbology
         #region Protected Methods
 
         /// <summary>
-        /// Fires the zoom to layer event
+        /// Fires the zoom to layer event.
         /// </summary>
         protected virtual void OnZoomToLayer()
         {
-            if (ZoomToLayer == null) return;
-            IEnvelope env = Extent.ToEnvelope();
-            ZoomToLayer(this, new EnvelopeArgs(env));
+            var h = ZoomToLayer;
+            if (h != null && !Extent.IsEmpty()/*CGXTODO*/) // changed by jany_ (2015-07-17) zooming to an empty layer makes no sense
+            {
+                h(this, new EnvelopeArgs(Extent.ToEnvelope()));
+            }
         }
 
         /// <summary>
@@ -432,9 +405,10 @@ namespace DotSpatial.Symbology
         /// <param name="env">IEnvelope env</param>
         protected virtual void OnZoomToLayer(IEnvelope env)
         {
-            if (ZoomToLayer != null)
+            var h = ZoomToLayer;
+            if (h != null)
             {
-                ZoomToLayer(this, new EnvelopeArgs(env));
+                h(this, new EnvelopeArgs(env));
             }
         }
 
@@ -455,10 +429,10 @@ namespace DotSpatial.Symbology
             if (result.Handled) return;
 
             if (_propertyDialogProvider == null) return;
-            _editCopy = this.Copy();
-            CopyProperties(_editCopy); // for some reason we are getting blank layers during edits, this tries to fix that
-
-            _propertyDialogProvider.ShowDialog(_editCopy);
+            var editCopy = this.Copy();
+            CopyProperties(editCopy); // for some reason we are getting blank layers during edits, this tries to fix that
+            _propertyDialogProvider.ShowDialog(editCopy);
+            editCopy.Dispose();
             LayerManager.DefaultLayerManager.ActiveProjectLayers = new List<ILayer>();
         }
 
@@ -498,7 +472,8 @@ namespace DotSpatial.Symbology
         /// <param name="e"></param>
         protected virtual void OnShowProperties(HandledEventArgs e)
         {
-            if (ShowProperties != null) ShowProperties(this, e);
+            var h = ShowProperties;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
@@ -541,8 +516,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnLayerSelected(ILayer sender, bool selected)
         {
-            if (LayerSelected == null) return;
-            LayerSelected(this, new LayerSelectedEventArgs(sender, selected));
+            var h = LayerSelected;
+            if (h != null) h(this, new LayerSelectedEventArgs(sender, selected));
         }
 
         /// <summary>
@@ -550,7 +525,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected void OnFinishedLoading()
         {
-            if (FinishedLoading != null) FinishedLoading(this, new EventArgs());
+            var h = FinishedLoading;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -746,6 +722,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the boolean that controls whether or not items from the layer can be selected
         /// </summary>
+        [Serialize("SelectionEnabled")] 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool SelectionEnabled
         {
@@ -769,6 +746,7 @@ namespace DotSpatial.Symbology
             // in release mode rather than throwing an exception.
             Debug.Assert(IsDisposeLocked == false);
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -825,6 +803,9 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                var current = Projection;
+                if (current == value) return;
+
                 if (DataSet != null)
                 {
                     DataSet.Projection = value;
@@ -849,21 +830,21 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                var current = ProjectionString;
+                if (current == value) return;
+
                 if (DataSet != null)
                 {
                     DataSet.ProjectionString = value;
-                    return;
                 }
                 _projectionString = value;
-                if (Data.DataSet.ProjectionSupported())
+
+                var test = ProjectionInfo.FromProj4String(value);
+                if (!test.IsValid)
                 {
-                    ProjectionInfo test = ProjectionInfo.FromProj4String(value);
-                    if (!test.IsValid)
-                    {
-                        test.TryParseEsriString(value);
-                    }
-                    if (test.IsValid) Projection = test;
+                    test.TryParseEsriString(value);
                 }
+                if (test.IsValid) Projection = test;
             }
         }
 
@@ -888,7 +869,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            if (SelectionChanged != null) SelectionChanged(this, new EventArgs());
+            var h = SelectionChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -905,36 +887,16 @@ namespace DotSpatial.Symbology
         /// <param name="disposeManagedResources">True if managed resources should be set to null.</param>
         protected virtual void Dispose(bool disposeManagedResources)
         {
-            if (_isDisposed)
-            {
-                return;
-            }
+            if (_isDisposed) return;
+            
             if (disposeManagedResources)
             {
-                LayerSelected = null;
-                ZoomToLayer = null;
-                ShowProperties = null;
-                FinishedLoading = null;
-                SelectionChanged = null;
-                base.ContextMenuItems = null;
-                MyExtent = null;
-                base.LegendText = null;
-                _progressHandler = null;
-                _progressMeter = null;
-                _invalidatedRegion = null;
-                _mapFrame = null;
-                _propertyDialogProvider = null;
+                DataSet = null;
+
+                var h = Disposed;
+                if (h != null) h(this, EventArgs.Empty);
             }
-            // Since the InnerDataset likely contains unmanaged memory constructs, dispose of it here.
-            if (_dataSet != null)
-            {
-                _dataSet.UnlockDispose();
-                if (!_dataSet.IsDisposeLocked)
-                {
-                    _dataSet.Dispose();
-                }
-            }
-            if (_editCopy != null) _editCopy.Dispose();
+           
             _isDisposed = true;
         }
     }

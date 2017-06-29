@@ -170,7 +170,7 @@ namespace DotSpatial.Symbology.Forms
 
             if (ChangesApplied != null)
             {
-                ChangesApplied(this, new EventArgs());
+                ChangesApplied(this, EventArgs.Empty);
             }
         }
 

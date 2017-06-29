@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotSpatial.Topology;
@@ -32,16 +33,14 @@ namespace DotSpatial.Data
     /// </summary>
     public class LineShapefile : Shapefile
     {
-        private const int BLOCKSIZE = 16000000;
-
         /// <summary>
         /// Creates a new instance of a LineShapefile for in-ram handling only.
         /// </summary>
         public LineShapefile()
+            : base(FeatureType.Line)
         {
             Attributes = new AttributeTable();
             Header = new ShapefileHeader { FileLength = 100, ShapeType = ShapeType.PolyLine };
-            FeatureType = FeatureType.Line;
         }
 
         /// <summary>
@@ -61,31 +60,30 @@ namespace DotSpatial.Data
         /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
-            if (!File.Exists(fileName))
-            {
-                Attributes = new AttributeTable();
-                Header = new ShapefileHeader { FileLength = 100, ShapeType = ShapeType.PolyLine };
-                FeatureType = FeatureType.Line;
-                return;
-            }
+            if (!File.Exists(fileName)) return;
 
             Filename = fileName;
-            FeatureType = FeatureType.Line;
-            Header = new ShapefileHeader(fileName);
-            CoordinateType = CoordinateType.Regular;
             IndexMode = true;
-            if (Header.ShapeType == ShapeType.PolyLineM)
+            Header = new ShapefileHeader(fileName);
+
+            switch (Header.ShapeType)
             {
-                CoordinateType = CoordinateType.M;
+                case ShapeType.PolyLineM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.PolyLineZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
             }
-            if (Header.ShapeType == ShapeType.PolyLineZ)
-            {
-                CoordinateType = CoordinateType.Z;
-            }
-            MyExtent = Header.ToExtent();
+
+            Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(fileName);
-            FillLines(fileName, progressHandler);
+
+            FillLines(fileName, progressHandler, this, FeatureType.Line);
             ReadProjection();
         }
 
@@ -147,174 +145,245 @@ namespace DotSpatial.Data
         /// <param name="index">The integer index</param>
         public override IFeature GetFeature(int index)
         {
-            IFeature f = GetLine(index);
-            if (f != null)
+            IFeature f;
+            if (!IndexMode)
             {
-                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+                f = Features[index];
+            }
+            else
+            {
+                f = GetLine(index);
+                if (f != null)
+                {
+                    f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+                }
             }
             return f;
         }
 
-        private void FillLines(string fileName, IProgressHandler progressHandler)
+
+        internal static void FillLines(string fileName, IProgressHandler progressHandler, Shapefile shapefile,
+            FeatureType featureType)
         {
             // Check to ensure the fileName is not null
             if (fileName == null)
             {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
+                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", "fileName"));
             }
+            if (shapefile == null) throw new ArgumentNullException("shapefile");
 
             if (File.Exists(fileName) == false)
             {
                 throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
             }
 
-            // Get the basic header information.
-            ShapefileHeader header = new ShapefileHeader(fileName);
-            Extent = new Extent(new[] { header.Xmin, header.Ymin, header.Xmax, header.Ymax });
-            // Check to ensure that the fileName is the correct shape type
-            if (header.ShapeType != ShapeType.PolyLine &&
-                 header.ShapeType != ShapeType.PolyLineM &&
-                 header.ShapeType != ShapeType.PolyLineZ)
+            if (featureType != FeatureType.Line && featureType != FeatureType.Polygon)
             {
-                throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
+                throw new NotSupportedException();
             }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
-
-            // This will set up a reader so that we can read values in huge chunks, which is much faster
-            // than one value at a time.
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(fileName, progressHandler);
-
-            if (bbReader.FileLength == 100)
+            var header = shapefile.Header;
+            // Check to ensure that the fileName is the correct shape type
+            switch (featureType)
             {
-                // We have reached the end of the file so we can close the file
-                bbReader.Close();
+                case FeatureType.Line:
+                    if (header.ShapeType != ShapeType.PolyLine &&
+                        header.ShapeType != ShapeType.PolyLineM &&
+                        header.ShapeType != ShapeType.PolyLineZ)
+                    {
+                        throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
+                    }
+                    break;
+                case FeatureType.Polygon:
+                    if (header.ShapeType != ShapeType.Polygon &&
+                        header.ShapeType != ShapeType.PolygonM &&
+                        header.ShapeType != ShapeType.PolygonZ)
+                    {
+                        throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
+                    }
+                    break;
+            }
+
+            if (new FileInfo(fileName).Length == 100)
+            {
+                // the file is empty so we are done reading
                 return;
             }
 
-            // Skip the shapefile header by skipping the first 100 bytes in the shapefile
-            bbReader.Seek(100, SeekOrigin.Begin);
-
+            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
+            var shapeHeaders = shapefile.ReadIndexFile(fileName);
             int numShapes = shapeHeaders.Count;
 
-            int[] partOffsets = new int[numShapes];
-            byte[] allBounds = new byte[numShapes * 32];
-            // probably all will be in one block, but use a byteBlock just in case.
-            ByteBlock allParts = new ByteBlock(BLOCKSIZE);
-            ByteBlock allCoords = new ByteBlock(BLOCKSIZE);
-            bool isM = (header.ShapeType == ShapeType.PolyLineM || header.ShapeType == ShapeType.PolyLineZ);
-            bool isZ = (header.ShapeType == ShapeType.PolyLineZ);
-            ByteBlock allZ = null;
-            ByteBlock allM = null;
-            if (isZ)
+            bool isM = false, isZ = false;
+            switch (header.ShapeType)
             {
-                allZ = new ByteBlock(BLOCKSIZE);
-            }
-            if (isM)
-            {
-                allM = new ByteBlock(BLOCKSIZE);
+                case ShapeType.PolyLineM:
+                case ShapeType.PolygonM:
+                    isM = true;
+                    break;
+                case ShapeType.PolyLineZ:
+                case ShapeType.PolygonZ:
+                    isZ = true;
+                    isM = true;
+                    break;
             }
 
-            int pointOffset = 0;
-            for (int shp = 0; shp < numShapes; shp++)
+            int totalPointsCount = 0;
+            int totalPartsCount = 0;
+            var shapeIndices = new List<ShapeRange>(numShapes);
+
+            var progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName))
             {
-                // Read from the index file because some deleted records
-                // might still exist in the .shp file.
-                long offset = (shapeHeaders[shp].ByteOffset);
-                bbReader.Seek(offset, SeekOrigin.Begin);
-
-                // time: 200 ms
-                ShapeRange shape = new ShapeRange(FeatureType.Line)
-                                   {
-                                       RecordNumber = bbReader.ReadInt32(false),
-                                       ContentLength = bbReader.ReadInt32(false),
-                                       ShapeType = (ShapeType)bbReader.ReadInt32(),
-                                       StartIndex = pointOffset
-                                   };
-
-                if (shape.ShapeType == ShapeType.NullShape)
+                StepPercent = 5
+            };
+            using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
+            {
+                var boundsBytes = new byte[4 * 8];
+                var bounds = new double[4];
+                for (int shp = 0; shp < numShapes; shp++)
                 {
-                    continue;
-                }
-                bbReader.Read(allBounds, shp * 32, 32);
-                shape.NumParts = bbReader.ReadInt32();   // Byte 44      NumParts    Integer     1      Little
-                shape.NumPoints = bbReader.ReadInt32();  // Byte 48      NumPoints   Integer     1      Little
+                    progressMeter.CurrentPercent = (int)(shp * 50.0 / numShapes);
 
-                partOffsets[shp] = allParts.IntOffset();
-                allParts.Read(shape.NumParts * 4, bbReader);
+                    // Read from the index file because some deleted records
+                    // might still exist in the .shp file.
+                    long offset = (shapeHeaders[shp].ByteOffset);
+                    reader.Seek(offset, SeekOrigin.Begin);
 
-                allCoords.Read(shape.NumPoints * 16, bbReader);
-
-                pointOffset += shape.NumPoints;
-
-                if (header.ShapeType == ShapeType.PolyLineM)
-                {
-                    // These are listed as "optional" but there isn't a good indicator of how to
-                    // determine if they were added.
-                    // To handle the "optional" M values, check the contentLength for the feature.
-                    // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                    if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
+                    var shape = new ShapeRange(featureType, shapefile.CoordinateType)
                     {
-                        //mMin = bbReader.ReadDouble();
-                        //mMax = bbReader.ReadDouble();
-                        bbReader.Seek(16, SeekOrigin.Current);
-                        if (allM != null) allM.Read(shape.NumPoints * 8, bbReader);
+                        RecordNumber = reader.ReadInt32(Endian.BigEndian),
+                        ContentLength = reader.ReadInt32(Endian.BigEndian),
+                        ShapeType = (ShapeType)reader.ReadInt32(),
+                        StartIndex = totalPointsCount
+                    };
+                    Debug.Assert(shape.RecordNumber == shp + 1);
+
+                    if (shape.ShapeType != ShapeType.NullShape)
+                    {
+                        // Bounds
+                        reader.Read(boundsBytes, 0, boundsBytes.Length);
+                        Buffer.BlockCopy(boundsBytes, 0, bounds, 0, boundsBytes.Length);
+                        shape.Extent.MinX = bounds[0];
+                        shape.Extent.MinY = bounds[1];
+                        shape.Extent.MaxX = bounds[2];
+                        shape.Extent.MaxY = bounds[3];
+
+                        // Num Parts
+                        shape.NumParts = reader.ReadInt32();
+                        totalPartsCount += shape.NumParts;
+
+                        // Num Points
+                        shape.NumPoints = reader.ReadInt32();
+                        totalPointsCount += shape.NumPoints;
+                    }
+
+                    shapeIndices.Add(shape);
+                }
+
+                var vert = new double[totalPointsCount * 2];
+                var vertInd = 0;
+
+                var parts = new int[totalPartsCount];
+                var partsInd = 0;
+
+                double[] mArray = null, zArray = null;
+                if (isM)
+                {
+                    mArray = new double[totalPointsCount];
+                }
+                int mArrayInd = 0;
+                if (isZ)
+                {
+                    zArray = new double[totalPointsCount];
+                }
+                int zArrayInd = 0;
+
+                int partsOffset = 0;
+                for (int shp = 0; shp < numShapes; shp++)
+                {
+                    progressMeter.CurrentPercent = (int)(50 + shp * 50.0 / numShapes);
+
+                    var shape = shapeIndices[shp];
+                    if (shape.ShapeType == ShapeType.NullShape) continue;
+                    reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
+                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes
+
+                    // Read parts
+                    var partsBytes = reader.ReadBytes(4 * shape.NumParts);
+                    Buffer.BlockCopy(partsBytes, 0, parts, partsInd, partsBytes.Length);
+                    partsInd += 4 * shape.NumParts;
+
+                    // Read points
+                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints);
+                    Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
+                    vertInd += 8 * 2 * shape.NumPoints;
+
+                    // Fill parts
+                    shape.Parts.Capacity = shape.NumParts;
+                    for (int part = 0; part < shape.NumParts; part++)
+                    {
+                        int endIndex = shape.NumPoints + shape.StartIndex;
+                        int startIndex = parts[partsOffset + part] + shape.StartIndex;
+                        if (part < shape.NumParts - 1)
+                        {
+                            endIndex = parts[partsOffset + part + 1] + shape.StartIndex;
+                        }
+                        int count = endIndex - startIndex;
+                        var partR = new PartRange(vert, shape.StartIndex, parts[partsOffset + part], featureType)
+                        {
+                            NumVertices = count
+                        };
+                        shape.Parts.Add(partR);
+                    }
+                    partsOffset += shape.NumParts;
+
+                    // Fill M and Z arrays
+                    switch (header.ShapeType)
+                    {
+                        case ShapeType.PolyLineM:
+                        case ShapeType.PolygonM:
+                            if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
+                            {
+                                var mExt = (IExtentM)shape.Extent;
+                                mExt.MinM = reader.ReadDouble();
+                                mExt.MaxM = reader.ReadDouble();
+
+                                var mBytes = reader.ReadBytes(8 * shape.NumPoints);
+                                Buffer.BlockCopy(mBytes, 0, mArray, mArrayInd, mBytes.Length);
+                                mArrayInd += 8 * shape.NumPoints;
+                            }
+                            break;
+                        case ShapeType.PolyLineZ:
+                        case ShapeType.PolygonZ:
+                            var zExt = (IExtentZ)shape.Extent;
+                            zExt.MinZ = reader.ReadDouble();
+                            zExt.MaxZ = reader.ReadDouble();
+
+                            var zBytes = reader.ReadBytes(8 * shape.NumPoints);
+                            Buffer.BlockCopy(zBytes, 0, zArray, zArrayInd, zBytes.Length);
+                            zArrayInd += 8 * shape.NumPoints;
+
+
+                            // These are listed as "optional" but there isn't a good indicator of how to
+                            // determine if they were added.
+                            // To handle the "optional" M values, check the contentLength for the feature.
+                            // The content length does not include the 8-byte record header and is listed in 16-bit words.
+                            if (shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints)
+                            {
+                                goto case ShapeType.PolyLineM;
+                            }
+
+                            break;
                     }
                 }
-                if (header.ShapeType == ShapeType.PolyLineZ)
-                {
-                    bool hasM = shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints;
-                    IExtentZ zExt = (IExtentZ)shape.Extent;
-                    zExt.MinZ = bbReader.ReadDouble();
-                    zExt.MaxZ = bbReader.ReadDouble();
-                    if (allZ != null) allZ.Read(shape.NumPoints * 8, bbReader);
 
-                    // These are listed as "optional" but there isn't a good indicator of how to
-                    // determine if they were added.
-                    // To handle the "optional" M values, check the contentLength for the feature.
-                    // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                    IExtentM mExt = (IExtentM)shape.Extent;
-                    if (hasM)
-                    {
-                        mExt.MinM = bbReader.ReadDouble();
-                        mExt.MaxM = bbReader.ReadDouble();
-                        if (allM != null) allM.Read(shape.NumPoints * 8, bbReader);
-                    }
-                }
-
-                // Now that we have read all the values, create the geometries from the points and parts arrays.
-                ShapeIndices.Add(shape);
-            }
-            double[] vert = allCoords.ToDoubleArray();
-            Vertex = vert;
-            if (isM) M = allM.ToDoubleArray();
-            if (isZ) Z = allZ.ToDoubleArray();
-            List<ShapeRange> shapes = ShapeIndices;
-            double[] bounds = new double[numShapes * 4];
-            Buffer.BlockCopy(allBounds, 0, bounds, 0, allBounds.Length);
-            int[] parts = allParts.ToIntArray();
-            for (int shp = 0; shp < numShapes; shp++)
-            {
-                ShapeRange shape = shapes[shp];
-                shape.Extent = new Extent(bounds, shp * 4);
-                for (int part = 0; part < shape.NumParts; part++)
-                {
-                    int offset = partOffsets[shp];
-                    int endIndex = shape.NumPoints + shape.StartIndex;
-                    int startIndex = parts[offset + part] + shape.StartIndex;
-                    if (part < shape.NumParts - 1)
-                    {
-                        int prt = parts[offset + part + 1];
-                        endIndex = prt + shape.StartIndex;
-                    }
-                    int count = endIndex - startIndex;
-                    PartRange partR = new PartRange(vert, shape.StartIndex, parts[offset + part], FeatureType.Line) { NumVertices = count };
-                    shape.Parts.Add(partR);
-                }
+                if (isM) shapefile.M = mArray;
+                if (isZ) shapefile.Z = zArray;
+                shapefile.ShapeIndices = shapeIndices;
+                shapefile.Vertex = vert;
             }
 
-            bbReader.Dispose();
+            progressMeter.Reset();
         }
 
         /// <summary>
@@ -324,26 +393,10 @@ namespace DotSpatial.Data
         /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
         public override void SaveAs(string fileName, bool overwrite)
         {
-            if (IndexMode)
-            {
-                SaveAsIndexed(fileName, overwrite);
-                return;
-            }
+            EnsureValidFileToSave(fileName, overwrite);
             Filename = fileName;
-            string dir = Path.GetDirectoryName(fileName);
-            if (dir != null && !Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            if (File.Exists(fileName))
-            {
-                if (fileName != Filename && overwrite == false) throw new IOException("File exists.");
-                File.Delete(fileName);
-                string shx = Path.ChangeExtension(fileName, ".shx");
-                if (File.Exists(shx)) File.Delete(shx);
-            }
-            InvalidateEnvelope();
 
+            // Set ShapeType before setting header.
             if (CoordinateType == CoordinateType.Regular)
             {
                 Header.ShapeType = ShapeType.PolyLine;
@@ -356,15 +409,16 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.PolyLineZ;
             }
+            HeaderSaveAs(fileName);
 
-            // Set ShapeType before setting header.
-            //Changed by Jiri Kadlec from SetExtent(MyExtent) to SetExtent(Extent)
-            Header.SetExtent(Extent); //Header.SetExtent(MyExtent);
-            Header.ShxLength = Features.Count * 4 + 50;
-            Header.SaveAs(fileName);
+            if (IndexMode)
+            {
+                SaveAsIndexed(fileName);
+                return;
+            }
 
-            BufferedBinaryWriter bbWriter = new BufferedBinaryWriter(fileName);
-            BufferedBinaryWriter indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
+            var bbWriter = new BufferedBinaryWriter(fileName);
+            var indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
             int fid = 0;
             int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
             int contentLength = 0;
@@ -380,12 +434,10 @@ namespace DotSpatial.Data
                     parts.Add(points.Count);
                     IBasicLineString bl = f.GetBasicGeometryN(iPart) as IBasicLineString;
                     if (bl == null) continue;
-                    foreach (Coordinate coord in bl.Coordinates)
-                    {
-                        points.Add(coord);
-                    }
+                    points.AddRange(bl.Coordinates);
                 }
                 contentLength += 2 * parts.Count;
+
                 if (Header.ShapeType == ShapeType.PolyLine)
                 {
                     contentLength += points.Count * 8; // x, y
@@ -491,50 +543,8 @@ namespace DotSpatial.Data
             SaveProjection();
         }
 
-        /// <summary>
-        /// Saves the file to a new location
-        /// </summary>
-        /// <param name="fileName">The fileName to save</param>
-        /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
-        private void SaveAsIndexed(string fileName, bool overwrite)
+        private void SaveAsIndexed(string fileName)
         {
-            Filename = fileName;
-            string dir = Path.GetDirectoryName(fileName);
-            if (dir != null && !Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            if (File.Exists(fileName))
-            {
-                if (fileName != Filename && overwrite == false) throw new IOException("File exists.");
-                File.Delete(fileName);
-
-                string shx = Path.ChangeExtension(fileName, ".shx");
-                if (File.Exists(shx)) File.Delete(shx);
-            }
-
-            // comment out by keen edge as per this discussion
-            // http://dotspatial.codeplex.com/Thread/View.aspx?ThreadId=234754
-            // InvalidateEnvelope();
-
-            if (CoordinateType == CoordinateType.Regular)
-            {
-                Header.ShapeType = ShapeType.PolyLine;
-            }
-            if (CoordinateType == CoordinateType.M)
-            {
-                Header.ShapeType = ShapeType.PolyLineM;
-            }
-            if (CoordinateType == CoordinateType.Z)
-            {
-                Header.ShapeType = ShapeType.PolyLineZ;
-            }
-            // Set Header.ShapeType before calling SetExtent.
-            Header.SetExtent(MyExtent);
-
-            Header.ShxLength = ShapeIndices.Count * 4 + 50;
-            Header.SaveAs(fileName);
-
             FileStream shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
             FileStream shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
             int fid = 0;
@@ -547,19 +557,23 @@ namespace DotSpatial.Data
 
                 contentLength = 22;
                 contentLength += 2 * shape.Parts.Count;
-                if (Header.ShapeType == ShapeType.PolyLine)
+
+                switch (shape.ShapeType)
                 {
-                    contentLength += shape.NumPoints * 8; // x, y
-                }
-                if (Header.ShapeType == ShapeType.PolyLineM)
-                {
-                    contentLength += 8; // mmin mmax
-                    contentLength += shape.NumPoints * 12; // x, y, m
-                }
-                if (Header.ShapeType == ShapeType.PolyLineZ)
-                {
-                    contentLength += 16; // mmin, mmax, zmin, zmax
-                    contentLength += shape.NumPoints * 16; // x, y, z, m
+                    case ShapeType.PolyLine:
+                        contentLength += shape.NumPoints * 8; // x, y
+                        break;
+                    case ShapeType.PolyLineM:
+                        contentLength += 8; // mmin mmax
+                        contentLength += shape.NumPoints * 12; // x, y, m
+                        break;
+                    case ShapeType.PolyLineZ:
+                        contentLength += 16; // mmin, mmax, zmin, zmax
+                        contentLength += shape.NumPoints * 16; // x, y, z, m
+                        break;
+                    case ShapeType.NullShape:
+                        contentLength = 2;
+                        break;
                 }
 
                 //                                              Index File
@@ -575,11 +589,12 @@ namespace DotSpatial.Data
                 //                                              ---------------------------------------------------------
                 shpStream.WriteBe(fid + 1);                     // Byte 0       Record Number       Integer     1           Big
                 shpStream.WriteBe(contentLength);               // Byte 4       Content Length      Integer     1           Big
-                shpStream.WriteLe((int)Header.ShapeType);       // Byte 8       Shape Type 3        Integer     1           Little
-                if (Header.ShapeType == ShapeType.NullShape)
+                shpStream.WriteLe((int)shape.ShapeType);        // Byte 8       Shape Type 3        Integer     1           Little
+                if (shape.ShapeType == ShapeType.NullShape)
                 {
-                    continue;
+                    goto fin;
                 }
+
                 shpStream.WriteLe(shape.Extent.MinX);             // Byte 12      Xmin                Double      1           Little
                 shpStream.WriteLe(shape.Extent.MinY);             // Byte 20      Ymin                Double      1           Little
                 shpStream.WriteLe(shape.Extent.MaxX);             // Byte 28      Xmax                Double      1           Little
@@ -616,12 +631,12 @@ namespace DotSpatial.Data
                     }
                 }
 
+            fin:
+
                 fid++;
                 offset += 4; // header bytes
             }
 
-            shpStream.Flush();
-            shxStream.Flush();
             shpStream.Close();
             shxStream.Close();
 

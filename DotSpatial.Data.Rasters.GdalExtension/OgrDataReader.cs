@@ -22,6 +22,7 @@ using System;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
+using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using OSGeo.OGR;
@@ -37,62 +38,43 @@ namespace DotSpatial.Data
     {
         #region private fields
 
-        OSGeo.OGR.Feature _currentFeature;
+        private OSGeo.OGR.Feature _currentFeature;
         private const string FidFieldName = "FID";
         private const int FidFieldOrdinal = 1;
         private const string GeometryFieldName = "Geometry";
         private const int GeometryFieldOrdinal = 0;
-        private readonly int _iFeatureCount;
-        private int _iFeatureIndex;
         private readonly int _iFieldCount;
-        DataSource _ogrDataSource;
-        readonly FeatureDefn _ogrFeatureDefinition;
-        Layer _ogrLayer;
-        private DataTable _schemaTable;
+        // CGX private -> protected
+        protected readonly DataSource _ogrDataSource;
+        private readonly FeatureDefn _ogrFeatureDefinition;
+        private readonly Layer _ogrLayer;
+        private DS_DataTable _schemaTable; // CGX AERO GLZ
         private bool bClosed = true;
-
-        //DotSpatial.Data.WKBReader wkbReader = null;
 
         #endregion
 
         #region constructors
 
-        private OgrDataReader()
+        static OgrDataReader()
         {
+            GdalConfiguration.ConfigureOgr();
         }
 
         public OgrDataReader(string sDataSource)
+            :this(sDataSource, null)
         {
-            //wkbReader = new DotSpatial.Data.WKBReader();
-
-            _ogrDataSource = Ogr.Open(sDataSource, 0);
-
-            _ogrLayer = _ogrDataSource.GetLayerByIndex(0);
-
-            _iFeatureCount = _ogrLayer.GetFeatureCount(1);
-            _ogrFeatureDefinition = _ogrLayer.GetLayerDefn();
-            _iFieldCount = _ogrFeatureDefinition.GetFieldCount();
-
-            BuildSchemaTable();
-
-            _currentFeature = null;
-            bClosed = false;
         }
 
         public OgrDataReader(string sDataSource, string sLayer)
         {
-            //wkbReader = new DotSpatial.Data.WKBReader();
-
             _ogrDataSource = Ogr.Open(sDataSource, 0);
+            _ogrLayer = sLayer != null
+                ? _ogrDataSource.GetLayerByName(sLayer)
+                : _ogrDataSource.GetLayerByIndex(0);
 
-            _ogrLayer = _ogrDataSource.GetLayerByName(sLayer);
-
-            _iFeatureCount = _ogrLayer.GetFeatureCount(1);
             _ogrFeatureDefinition = _ogrLayer.GetLayerDefn();
             _iFieldCount = _ogrFeatureDefinition.GetFieldCount();
-
             BuildSchemaTable();
-
             _currentFeature = null;
             bClosed = false;
         }
@@ -111,7 +93,9 @@ namespace DotSpatial.Data
         {
             string sProj4String;
 
-            SpatialReference osrSpatialref = _ogrLayer.GetSpatialRef();
+            //SpatialReference osrSpatialref = _ogrLayer.GetSpatialRef();
+            // CGX
+            OSGeo.OSR.SpatialReference osrSpatialref = _ogrLayer.GetSpatialRef();
             osrSpatialref.ExportToProj4(out sProj4String);
             return ProjectionInfo.FromProj4String(sProj4String);
         }
@@ -194,22 +178,22 @@ namespace DotSpatial.Data
             }
         }
 
-        private DataColumn AddDataColumn(DataTable table, string columnName, Type type)
+        private DataColumn AddDataColumn(IDataTable table, string columnName, Type type) // CGX AERO GLZ
         {
             DataColumn column = new DataColumn(columnName, type);
             table.Columns.Add(column);
             return column;
         }
 
-        private void AddDataColumn(DataTable table, string columnName, Type type, object defaultValue)
+        private void AddDataColumn(IDataTable table, string columnName, Type type, object defaultValue) // CGX AERO GLZ
         {
             DataColumn column = AddDataColumn(table, columnName, type);
             column.DefaultValue = defaultValue;
         }
 
-        private DataRow AddDataRow(DataTable table, string name, int ordinal, int size, Type type, bool allowNull, bool isUnique, bool isKey)
+        private IDataRow AddDataRow(IDataTable table, string name, int ordinal, int size, Type type, bool allowNull, bool isUnique, bool isKey) // CGX AERO GLZ
         {
-            DataRow row = table.NewRow();
+            IDataRow row = table.NewRow(); // CGX AERO GLZ
             row[SchemaTableColumn.ColumnName] = name;
             row[SchemaTableColumn.ColumnOrdinal] = ordinal;
             row[SchemaTableColumn.DataType] = type;
@@ -222,9 +206,9 @@ namespace DotSpatial.Data
             return row;
         }
 
-        private DataTable BuildSchemaTable()
+        private IDataTable BuildSchemaTable() // CGX AERO GLZ
         {
-            _schemaTable = new DataTable("SchemaTable");
+            _schemaTable = new DS_DataTable("SchemaTable"); // CGX AERO GLZ
             _schemaTable.Locale = CultureInfo.InvariantCulture;
 
             AddDataColumn(_schemaTable, SchemaTableColumn.ColumnName, typeof(string));
@@ -284,9 +268,9 @@ namespace DotSpatial.Data
         /// Gets the DataTable with the schema.
         /// </summary>
         /// <returns></returns>
-        public DataTable GetSchemaTable()
+        public DataTable GetSchemaTable() // CGX AERO GLZ
         {
-            return _schemaTable;
+            return _schemaTable.Table; // CGX AERO GLZ
         }
 
         /// <summary>
@@ -315,17 +299,8 @@ namespace DotSpatial.Data
         /// <returns>Boolean</returns>
         public bool Read()
         {
-            if (_iFeatureIndex < _iFeatureCount)
-            {
-                _currentFeature = _ogrLayer.GetFeature(_iFeatureIndex);
-                _iFeatureIndex++;
-
-                return _iFeatureIndex <= _iFeatureCount;
-            }
-            else
-            {
-                return false;
-            }
+            _currentFeature = _ogrLayer.GetNextFeature();
+            return _currentFeature != null;
         }
 
         /// <summary>
@@ -375,25 +350,17 @@ namespace DotSpatial.Data
             return GetFieldAsDateTime(i - 2);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
         public string GetDataTypeName(int i)
         {
             if (i == 1)
             {
                 return typeof(Int32).ToString();
             }
-            else if (i == 0)
+            if (i == 0)
             {
                 return typeof(byte[]).ToString();
             }
-            else
-            {
-                return _ogrFeatureDefinition.GetFieldDefn(i - 2).GetFieldType().ToString();
-            }
+            return _ogrFeatureDefinition.GetFieldDefn(i - 2).GetFieldType().ToString();
         }
 
         public double GetDouble(int i)
@@ -556,12 +523,7 @@ namespace DotSpatial.Data
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
+        
         public long GetInt64(int i)
         {
             throw new NotImplementedException();
@@ -575,11 +537,18 @@ namespace DotSpatial.Data
 
             int h;
             int m;
-            int s;
+            float s;
             int flag;
 
             _currentFeature.GetFieldAsDateTime(i - 2, out year, out month, out day, out h, out m, out s, out flag);
-            return new DateTime(year, month, day, h, m, s);
+            try
+            {
+                return new DateTime(year, month, day, h, m, (int)s);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return DateTime.MinValue;
+            }
         }
 
         #endregion

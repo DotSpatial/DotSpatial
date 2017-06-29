@@ -350,7 +350,7 @@ namespace DotSpatial.Plugins.Measure
 
         private void OnMeasureModeChanged()
         {
-            if (MeasureModeChanged != null) MeasureModeChanged(this, new EventArgs());
+            if (MeasureModeChanged != null) MeasureModeChanged(this, EventArgs.Empty);
         }
 
         private void DistanceButton_Click(object sender, EventArgs e)
@@ -384,6 +384,11 @@ namespace DotSpatial.Plugins.Measure
             lblTotalUnits.Text = cmbUnits.Text;
             lblPartialValue.Text = String.Empty;
             lblTotalValue.Text = String.Empty;
+
+            // CGX
+            lblPartialValue.Text = (_distance * _distIntoMeters).ToString("#,###");
+            lblTotalValue.Text = (_totalDistance * _distIntoMeters).ToString("#,###");
+            // Fin CGX
         }
 
         private void tsbClear_Click(object sender, EventArgs e)

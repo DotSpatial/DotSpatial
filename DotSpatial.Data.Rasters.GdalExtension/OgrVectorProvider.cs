@@ -23,9 +23,9 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Topology;
 using DotSpatial.Topology.Utilities;
-using OSGeo.OGR;
 
 namespace DotSpatial.Data.OgrExtension
 {
@@ -42,12 +42,9 @@ namespace DotSpatial.Data.OgrExtension
 
         #region Constructors
 
-        /// <summary>
-        /// Creates a new instance of OgrVectorProvider
-        /// </summary>
-        public OgrVectorProvider()
+        static OgrVectorProvider()
         {
-            Ogr.RegisterAll();
+            GdalConfiguration.ConfigureOgr();
         }
 
         #endregion
@@ -107,8 +104,10 @@ namespace DotSpatial.Data.OgrExtension
 
         public FeatureType GetFeatureType(string fileName)
         {
-            OgrDataReader reader = new OgrDataReader(fileName);
-            return reader.GetFeatureType();
+            using (var reader = new OgrDataReader(fileName))
+            {
+                return reader.GetFeatureType();
+            }
         }
 
         #endregion
@@ -120,54 +119,56 @@ namespace DotSpatial.Data.OgrExtension
         /// <returns></returns>
         public IFeatureSet Open(string fileName)
         {
-            WkbReader wkbReader = new WkbReader();
-
-            OgrDataReader reader = new OgrDataReader(fileName);
             IFeatureSet fs = new FeatureSet();
             fs.Name = Path.GetFileNameWithoutExtension(fileName);
             fs.Filename = fileName;
-            // skip the geometry column which is always column 0
-            for (int i = 1; i < reader.FieldCount; i++)
+            using (var reader = new OgrDataReader(fileName))
             {
-                string sFieldName = reader.GetName(i);
-                Type type = reader.GetFieldType(i);
-
-                int uniqueNumber = 1;
-                string uniqueName = sFieldName;
-                while (fs.DataTable.Columns.Contains(uniqueName))
-                {
-                    uniqueName = sFieldName + uniqueNumber;
-                    uniqueNumber++;
-                }
-                fs.DataTable.Columns.Add(new DataColumn(uniqueName, type));
-            }
-            while (reader.Read())
-            {
-                byte[] wkbGeometry = (byte[])reader["Geometry"];
-
-                IGeometry geometry = wkbReader.Read(wkbGeometry);
-
-                IFeature feature = new Feature(geometry);
-                feature.DataRow = fs.DataTable.NewRow();
+                // skip the geometry column which is always column 0
                 for (int i = 1; i < reader.FieldCount; i++)
                 {
-                    object value = reader[i];
-                    if (value == null)
-                    {
-                        value = DBNull.Value;
-                    }
-                    feature.DataRow[i - 1] = value;
-                }
-                fs.Features.Add(feature);
-            }
+                    string sFieldName = reader.GetName(i);
+                    Type type = reader.GetFieldType(i);
 
-            try
-            {
-                fs.Projection = reader.GetProj4ProjectionInfo();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex);
+                    int uniqueNumber = 1;
+                    string uniqueName = sFieldName;
+                    while (fs.DataTable.Columns.Contains(uniqueName))
+                    {
+                        uniqueName = sFieldName + uniqueNumber;
+                        uniqueNumber++;
+                    }
+                    fs.DataTable.Columns.Add(new DataColumn(uniqueName, type));
+                }
+
+                var wkbReader = new WkbReader();
+                while (reader.Read())
+                {
+                    var wkbGeometry = (byte[]) reader["Geometry"];
+
+                    var geometry = wkbReader.Read(wkbGeometry);
+
+                    IFeature feature = new Feature(geometry);
+                    feature.DataRow = fs.DataTable.NewRow();
+                    for (int i = 1; i < reader.FieldCount; i++)
+                    {
+                        object value = reader[i];
+                        if (value == null)
+                        {
+                            value = DBNull.Value;
+                        }
+                        feature.DataRow[i - 1] = value;
+                    }
+                    fs.Features.Add(feature);
+                }
+
+                try
+                {
+                    fs.Projection = reader.GetProj4ProjectionInfo();
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex);
+                }
             }
 
             return fs;

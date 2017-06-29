@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotSpatial.Topology</RootNamespace>
     <AssemblyName>DotSpatial.Topology</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DotSpatial.Topology.4.0.snk</AssemblyOriginatorKeyFile>
@@ -33,20 +33,21 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\bin\</OutputPath>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -74,15 +75,37 @@
     <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Release\bin\</OutputPath>
+    <OutputPath>..\..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Release\bin\DotSpatial.Topology.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\Release\DotSpatial.Topology.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\..\bin\Release\DotSpatial.Topology.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -403,24 +426,6 @@
     <Compile Include="Utilities\CollectionUtil.cs" />
     <Compile Include="Utilities\Global.cs" />
     <Compile Include="Utilities\HexConverter.cs" />
-    <Compile Include="Utilities\Iesi.Collections\DictionarySet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\CollectionWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\DictionarySet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\EnumerableWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\EnumeratorWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\HashedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\HybridSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ISet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ReadOnlyException.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\Set.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\SetWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\SortedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\HashedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\HybridSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ISet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ListSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Set.cs" />
-    <Compile Include="Utilities\Iesi.Collections\SortedSet.cs" />
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
     <Compile Include="Voronoi\FortuneVoronoi.cs" />
     <Compile Include="Voronoi\HashSet.cs" />
@@ -497,7 +502,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

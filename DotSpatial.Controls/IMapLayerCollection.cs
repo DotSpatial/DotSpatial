@@ -81,6 +81,13 @@ namespace DotSpatial.Controls
         /// <returns>An interface to the newly created MapImageLayer</returns>
         IMapImageLayer Add(IImageData image);
 
+        /// <summary>
+        /// Moves the given layer to the new position.
+        /// </summary>
+        /// <param name="layer">Layer that is moved.</param>
+        /// <param name="newPosition">Position the layer is moved to.</param>
+        void Move(IMapLayer layer, int newPosition);
+
         #endregion
 
         #region Properties

@@ -23,9 +23,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// VectorEditorSettings
-    /// </summary>
     [Serializable]
     public class FeatureEditorSettings : EditorSettings
     {

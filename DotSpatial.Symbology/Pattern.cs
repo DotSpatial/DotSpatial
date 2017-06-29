@@ -140,7 +140,6 @@ namespace DotSpatial.Symbology
             if (_innerPattern != null)
             {
                 _innerPattern.FillPath(g, gp);
-                return;
             }
             // Does nothing by default, and must be handled in sub-classes
         }
@@ -246,7 +245,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnItemChanged()
         {
-            if (ItemChanged != null) ItemChanged(this, new EventArgs());
+            if (ItemChanged != null) ItemChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -254,7 +253,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnRemoveItem()
         {
-            if (RemoveItem != null) RemoveItem(this, new EventArgs());
+            if (RemoveItem != null) RemoveItem(this, EventArgs.Empty);
         }
 
         #endregion

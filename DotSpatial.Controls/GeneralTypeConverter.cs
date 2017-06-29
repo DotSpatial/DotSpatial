@@ -24,9 +24,6 @@ using System.Globalization;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// PropertyGridTypeConverter
-    /// </summary>
     public class GeneralTypeConverter : StringConverter
     {
         /// <summary>

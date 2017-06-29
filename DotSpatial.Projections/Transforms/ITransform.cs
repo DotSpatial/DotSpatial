@@ -63,6 +63,23 @@ namespace DotSpatial.Projections.Transforms
 
         #region Properties
 
+
+        /// <summary>
+        /// </summary>
+        bool Rotated
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// </summary>
+        double Angle
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Gets or sets the string name of this projection.  This should uniquely define the projection,
         /// and controls what appears in the .prj files.  This name is required.

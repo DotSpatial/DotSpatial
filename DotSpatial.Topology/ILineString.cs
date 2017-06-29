@@ -56,6 +56,13 @@ namespace DotSpatial.Topology
         /// </summary>
         double Angle { get; }
 
+        // CGX : The true angle and not rotated if the text is upside down
+        /// <summary>
+        /// Returns the value of the angle between the <see cref="StartPoint" />
+        /// and the <see cref="EndPoint" />.
+        /// </summary>
+        double TrueAngle { get; }
+
         /// <summary>
         /// Retrieves a topologically complete IPoint for the n'th coordinate in the
         /// 0 based index of point values.

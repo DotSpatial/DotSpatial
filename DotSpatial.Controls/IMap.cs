@@ -104,6 +104,7 @@ namespace DotSpatial.Controls
         /// <param name="filterExpression">The string filter expression that controls which features are labeled.  Field names are in square brackets, strings in single quotes.</param>
         /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this category.</param>
         /// <param name="name">The name of the category.</param>
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
         void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
                        ILabelSymbolizer symbolizer, string name);
 
@@ -115,6 +116,7 @@ namespace DotSpatial.Controls
         /// <param name="filterExpression">The string filter expression that controls which features are labeled.  Field names are in square brackets, strings in single quotes.</param>
         /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this category.</param>
         /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than this value, labels should appear.</param>
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
         void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
                        ILabelSymbolizer symbolizer, double width);
 

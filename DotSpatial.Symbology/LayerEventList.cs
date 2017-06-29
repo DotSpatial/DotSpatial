@@ -49,6 +49,11 @@ namespace DotSpatial.Symbology
         public event EventHandler<LayerEventArgs> LayerAdded;
 
         /// <summary>
+        /// Occurs when a layer is moved.
+        /// </summary>
+        public event EventHandler<LayerMovedEventArgs> LayerMoved;
+
+        /// <summary>
         /// Occurs when a layer is removed from this item.
         /// </summary>
         public event EventHandler<LayerEventArgs> LayerRemoved;
@@ -75,7 +80,6 @@ namespace DotSpatial.Symbology
         private int _disposeLockCount;
         private bool _isDisposed;
         private bool _isInitialized; // True if layers already existed before a member change
-        private bool _layerAddedFired;
         private ILayer _selectedLayer;
 
         #endregion
@@ -223,7 +227,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            if (SelectionChanged != null) SelectionChanged(this, new EventArgs());
+            if (SelectionChanged != null) SelectionChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -233,6 +237,12 @@ namespace DotSpatial.Symbology
         protected override void OnIncludeComplete(T item)
         {
             OnLayerAdded(this, new LayerEventArgs(item));
+        }
+
+        protected override void OnMoved(T item, int newPosition)
+        {
+            base.OnListChanged();
+            OnLayerMoved(this, new LayerMovedEventArgs(item, newPosition));
         }
 
         /// <summary>
@@ -264,12 +274,28 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the LayerRemoved event
+        /// Fires the LayerMoved event.
+        /// </summary>
+        /// <param name="sender">The layer that was moved.</param>
+        /// <param name="e">LayerEventArgs</param>
+        protected virtual void OnLayerMoved(object sender, LayerMovedEventArgs e)
+        {
+            if (EventsSuspended) return;
+
+            var h = LayerMoved;
+            if (h != null) h(sender, e);
+        }
+
+        /// <summary>
+        /// Fires the LayerRemoved event.
         /// </summary>
         /// <param name="item"></param>
         protected virtual void OnLayerRemoved(T item)
         {
-            if (LayerRemoved != null) LayerRemoved(this, new LayerEventArgs(item));
+            if (EventsSuspended) return;
+
+            var h = LayerRemoved;
+            if (h != null) h(this, new LayerEventArgs(item));
         }
 
         /// <summary>
@@ -346,22 +372,10 @@ namespace DotSpatial.Symbology
         /// <param name="e">LayerEventArgs</param>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
-            // todo: only LayerAdded event is suspended, there are lots of other events that need to be suspended, too.
-            if (EventsSuspended)
-            {
-                _layerAddedFired = true;
-                return;
-            }
-            if (LayerAdded != null) LayerAdded(sender, e);
-        }
+            if (EventsSuspended) return;
 
-        /// <summary>
-        /// This occurs when the Resume events method is fired.
-        /// </summary>
-        protected override void OnResumeEvents()
-        {
-            if (_layerAddedFired) OnLayerAdded(this, new LayerEventArgs(null));
-            base.OnResumeEvents();
+            var h = LayerAdded;
+            if (h != null) h(sender, e);
         }
 
         /// <summary>
@@ -412,7 +426,7 @@ namespace DotSpatial.Symbology
                 Debug.Assert(_disposeLockCount == 0);
                 if (disposeManagedMemory)
                 {
-                    foreach (ILayer layer in this)
+                    foreach (var layer in this)
                     {
                         if (layer != null)
                         {
@@ -420,13 +434,6 @@ namespace DotSpatial.Symbology
                             if (!layer.IsDisposeLocked) layer.Dispose();
                         }
                     }
-                    ZoomToLayer = null;
-                    LayerVisibleChanged = null;
-                    LayerAdded = null;
-                    LayerRemoved = null;
-                    LayerSelected = null;
-                    SelectionChanging = null;
-                    SelectionChanged = null;
                 }
             }
             _isDisposed = true;

@@ -1,18 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DotSpatial.Analysis")]
-[assembly:
-    AssemblyDescription(
-        "Allows DotSpatial to check if it is being run on Mono or not.")]
+[assembly: AssemblyTitle("DotSpatial.Mono")]
+[assembly: AssemblyDescription("DotSpatial Mono tools.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Mono")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2013")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,6 +31,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5")]
-[assembly: AssemblyInformationalVersion("1.5 Experimental Release")]
-[assembly: AssemblyFileVersion("1.5.1.0")]
+[assembly: AssemblyVersion("1.9")]
+[assembly: AssemblyInformationalVersion("1.9")]
+[assembly: AssemblyFileVersion("1.9")]

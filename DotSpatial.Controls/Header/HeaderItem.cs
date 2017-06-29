@@ -42,7 +42,7 @@ namespace DotSpatial.Controls.Header
                 if (key == value)
                     return;
                 key = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Key"));
+                OnPropertyChanged("Key");
             }
         }
 
@@ -55,13 +55,16 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        /// <summary>
-        /// Triggers the PropertyChanged event.
-        /// </summary>
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs ea)
+        /// <summary>
+        /// Triggers the PropertyChanged event.
+        /// </summary>
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, ea);
+            var h = PropertyChanged;
+            if (h != null)
+            {
+                h(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

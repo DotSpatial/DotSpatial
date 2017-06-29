@@ -2,9 +2,6 @@
 
 namespace DotSpatial.Extensions
 {
-    /// <summary>
-    ///
-    /// </summary>
     [InheritedExport]
     public interface ISaveProjectFileProvider : IProjectFileProvider
     {

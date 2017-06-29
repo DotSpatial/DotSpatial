@@ -308,20 +308,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads a double from the buffer, automatically loading the next buffer if necessary.
-        /// </summary>
-        /// <returns>A double value converted from bytes in the file.</returns>
-        public double ReadDouble()
-        {
-            return ReadDouble(true);
-        }
-
-        /// <summary>
         /// Reads a double-precision floating point from 8 bytes in the buffer, automatically loading the next buffer if necessary.
         /// </summary>
         /// <param name="isLittleEndian">Boolean, true if the value should be returned with little endian byte ordering.</param>
         /// <returns>A double value converted from bytes in the file.</returns>
-        public double ReadDouble(bool isLittleEndian)
+        public double ReadDouble(bool isLittleEndian = true)
         {
             // Integers are 8 Bytes long.
 
@@ -473,53 +464,59 @@ namespace DotSpatial.Data
         /// <param name="count">The number of values to copy into the parameter buffer</param>
         public void Read(byte[] buffer, int index, int count)
         {
-            bool finished = false;
-            int bytesPasted = 0;
-            if (_isBufferLoaded == false) AdvanceBuffer();
-            do
+            //CGX
+            try
             {
-                int bytesInBuffer = _bufferSize - _readOffset;
-
-                if (count - bytesPasted <= bytesInBuffer)
+                bool finished = false;
+                int bytesPasted = 0;
+                if (_isBufferLoaded == false) AdvanceBuffer();
+                do
                 {
-                    // Read the specified bytes and advance
+                    int bytesInBuffer = _bufferSize - _readOffset;
 
-                    Buffer.BlockCopy(_buffer, _readOffset, buffer, index, count - bytesPasted);
-                    _readOffset += count - bytesPasted;
-                    _fileOffset += count - bytesPasted;
-                    if (_fileOffset >= _fileLength)
+                    if (count - bytesPasted <= bytesInBuffer)
                     {
-                        OnFinishedReading(); // We got to the end of the file.
-                    }
-                    finished = true;
-                }
-                else
-                {
-                    // Read what we can from the array and then advance the buffer
-                    Buffer.BlockCopy(_buffer, _readOffset, buffer, index, bytesInBuffer);
-                    index += bytesInBuffer;
-                    bytesPasted += bytesInBuffer;
-                    _fileOffset += bytesInBuffer;
+                        // Read the specified bytes and advance
 
-                    if (bytesPasted >= count)
-                    {
-                        // Sometimes there might be less than count bytes left in the file.
-                        // In those cases, we actually finish reading down here instead.
+                        Buffer.BlockCopy(_buffer, _readOffset, buffer, index, count - bytesPasted);
+                        _readOffset += count - bytesPasted;
+                        _fileOffset += count - bytesPasted;
                         if (_fileOffset >= _fileLength)
                         {
-                            OnFinishedReading(); // We reached the end of the file
+                            OnFinishedReading(); // We got to the end of the file.
                         }
-                        finished = true; // Even if we aren't at the end of the file, we are done with this read session
+                        finished = true;
                     }
                     else
                     {
-                        // We haven't pasted enough bytes, so advance the buffer and continue reading
-                        AdvanceBuffer();
+                        // Read what we can from the array and then advance the buffer
+                        Buffer.BlockCopy(_buffer, _readOffset, buffer, index, bytesInBuffer);
+                        index += bytesInBuffer;
+                        bytesPasted += bytesInBuffer;
+                        _fileOffset += bytesInBuffer;
+
+                        if (bytesPasted >= count)
+                        {
+                            // Sometimes there might be less than count bytes left in the file.
+                            // In those cases, we actually finish reading down here instead.
+                            if (_fileOffset >= _fileLength)
+                            {
+                                OnFinishedReading(); // We reached the end of the file
+                            }
+                            finished = true; // Even if we aren't at the end of the file, we are done with this read session
+                        }
+                        else
+                        {
+                            // We haven't pasted enough bytes, so advance the buffer and continue reading
+                            AdvanceBuffer();
+                        }
                     }
                 }
+                while (finished == false);
+                if (_isFinishedReading == false) _progressMeter.CurrentValue = _fileOffset;
             }
-            while (finished == false);
-            if (_isFinishedReading == false) _progressMeter.CurrentValue = _fileOffset;
+            catch (Exception)
+            { }
         }
 
         #endregion
@@ -650,7 +647,7 @@ namespace DotSpatial.Data
             _progressMeter.Reset();
             _buffer = null;
             if (FinishedReading == null) return;
-            FinishedReading(this, new EventArgs());
+            FinishedReading(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -667,7 +664,7 @@ namespace DotSpatial.Data
             _isFinishedBuffering = true;
 
             if (FinishedBuffering == null) return;
-            FinishedBuffering(this, new EventArgs());
+            FinishedBuffering(this, EventArgs.Empty);
         }
 
         #endregion

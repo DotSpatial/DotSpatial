@@ -24,7 +24,7 @@ using System.Drawing;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// ColorEM
+    /// Misc extensions for <see cref="Color"/> class
     /// </summary>
     public static class ColorExt
     {

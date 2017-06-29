@@ -36,7 +36,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the datarow containing all the attributes related to this geometry
         /// </summary>
-        DataRow DataRow
+        IDataRow DataRow // CGX AERO GLZ
         {
             get;
             set;

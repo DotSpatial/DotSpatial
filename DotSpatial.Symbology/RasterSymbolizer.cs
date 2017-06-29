@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
@@ -135,21 +136,25 @@ namespace DotSpatial.Symbology
                 var Colors = _raster.CategoryColors();
                 if (Colors != null && Colors.Length > 0)
                 {   // Use colors that are built into the raster, e.g. GeoTIFF with palette
-                    var Names = _raster.CategoryNames();
-                    bool overMaxCount = false;
-                    var UniqueValues = _raster.GetUniqueValues(Colors.Length, out overMaxCount);
                     _isElevation = false;
-                    for (int i = 0; i < Colors.Length; i++)
-                    {   //Only add colors to the legend if they appear in the layer
-                        //NLCD CategoryColors include 256 colors, but only 16 are valid
-                        if (UniqueValues.Contains(Convert.ToDouble(i)))
-                        {   // It seems buggy that using value i - 1 below works
-                            ICategory newCat = new ColorCategory(i - 1, Colors[i]);
-                            if (Names != null && Names.Length > i)
-                                newCat.LegendText = Names[i];
-                            else
-                                newCat.LegendText = i.ToString();
+
+					//use all colors instead of unique colors because unique colors are not allways set/correct
+                    int lastColor = Colors[0].ToArgb(); //changed by jany_ 2015-06-02
+                    int firstNr = 0;
+
+					//group succeding values with the same color to the same category
+                    for (int i = 1; i < Colors.Length; i++)
+                    {
+                        int hash = Colors[i].ToArgb();
+                        if (hash != lastColor || i == Colors.Length - 1)
+                        {
+                            ICategory newCat = new ColorCategory(firstNr, i - 1, Colors[firstNr], Colors[firstNr]);
+                            newCat.Range.MaxIsInclusive = true;
+                            newCat.Range.MinIsInclusive = true;
+                            newCat.LegendText = firstNr.ToString();
                             Scheme.AddCategory(newCat);
+                            firstNr = i;
+                            lastColor = hash;
                         }
                     }
                 }
@@ -207,7 +212,7 @@ namespace DotSpatial.Symbology
         public virtual Color GetColor(double value)
         {
             if (value == Raster.NoDataValue) return NoDataColor;
-            foreach (ColorCategory cb in _scheme.Categories)
+            foreach (var cb in _scheme.Categories)
             {
                 if (cb.Contains(value))
                 {
@@ -299,8 +304,6 @@ namespace DotSpatial.Symbology
             // Copy the values back into the bitmap
             Marshal.Copy(rgbData, 0, bmpData.Scan0, numBytes);
             bitmap.UnlockBits(bmpData);
-
-            return;
         }
 
         /// <summary>
@@ -567,7 +570,7 @@ namespace DotSpatial.Symbology
             _colorSchemeHasUpdated = true;
             if (ColorSchemeUpdated != null)
             {
-                ColorSchemeUpdated(this, new EventArgs());
+                ColorSchemeUpdated(this, EventArgs.Empty);
             }
         }
 
@@ -579,7 +582,7 @@ namespace DotSpatial.Symbology
             _colorSchemeHasChanged = true;
             if (ColorSchemeChanged != null)
             {
-                ColorSchemeChanged(this, new EventArgs());
+                ColorSchemeChanged(this, EventArgs.Empty);
             }
         }
 
@@ -590,7 +593,7 @@ namespace DotSpatial.Symbology
         {
             if (SymbologyChanged != null)
             {
-                SymbologyChanged(this, new EventArgs());
+                SymbologyChanged(this, EventArgs.Empty);
             }
         }
 

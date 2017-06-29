@@ -44,6 +44,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public ImageLayer()
         {
+            Symbolizer = new ImageSymbolizer();
         }
 
         /// <summary>
@@ -52,8 +53,8 @@ namespace DotSpatial.Symbology
         /// <param name="fileName"></param>
         public ImageLayer(string fileName)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName);
-            Configure();
         }
 
         /// <summary>
@@ -66,8 +67,8 @@ namespace DotSpatial.Symbology
         public ImageLayer(string fileName, IProgressHandler progressHandler, ICollection<ILayer> container)
             : base(container)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName, progressHandler);
-            Configure();
         }
 
         /// <summary>
@@ -78,8 +79,8 @@ namespace DotSpatial.Symbology
         /// <param name="progressHandler">The progressHandler</param>
         public ImageLayer(string fileName, IProgressHandler progressHandler)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName, progressHandler);
-            Configure();
         }
 
         /// <summary>
@@ -87,8 +88,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         public ImageLayer(IImageData baseImage)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = baseImage;
-            Configure();
         }
 
         /// <summary>
@@ -99,14 +100,8 @@ namespace DotSpatial.Symbology
         public ImageLayer(IImageData baseImage, ICollection<ILayer> container)
             : base(container)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = baseImage;
-            Configure();
-        }
-
-        private void Configure()
-        {
-            base.IsVisible = true;
-            base.LegendText = Path.GetFileName(DataSet.Filename);
         }
 
         #endregion
@@ -120,7 +115,23 @@ namespace DotSpatial.Symbology
         public new IImageData DataSet
         {
             get { return base.DataSet as IImageData; }
-            set { base.DataSet = value; }
+            set
+            {
+                var current = DataSet;
+                if (current == value) return;
+                base.DataSet = value;
+                OnDataSetChanged(value);
+            }
+        }
+
+        protected virtual void OnDataSetChanged(IImageData value)
+        {
+            IsVisible = value != null;
+            // Change legendText only if image data refers to real file
+            if (value != null && File.Exists(value.Filename))
+            {
+                LegendText = Path.GetFileName(value.Filename);
+            }
         }
 
         /// <summary>
@@ -139,10 +150,17 @@ namespace DotSpatial.Symbology
         /// Gets or sets a class that has some basic parameters that control how the image layer
         /// is drawn.
         /// </summary>
+        [Browsable(false)]
+        [ShallowCopy]
+        [Serialize("Symbolizer")]
         public IImageSymbolizer Symbolizer
         {
             get { return _symbolizer; }
-            set { _symbolizer = value; }
+            set
+            {
+                _symbolizer = value;
+                OnItemChanged();
+            }
         }
 
         /// <summary>
@@ -192,11 +210,13 @@ namespace DotSpatial.Symbology
         /// <param name="disposeManagedResources">True if managed memory objects should be set to null.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            base.Dispose(disposeManagedResources);
             if (disposeManagedResources)
             {
                 _symbolizer = null;
+                ImageLayerActions = null;
             }
+
+            base.Dispose(disposeManagedResources);
         }
     }
 }

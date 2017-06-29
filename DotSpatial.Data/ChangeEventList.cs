@@ -303,7 +303,7 @@ namespace DotSpatial.Data
             }
             else
             {
-                if (ItemChanged != null) ItemChanged(sender, new EventArgs());
+                if (ItemChanged != null) ItemChanged(sender, EventArgs.Empty);
             }
         }
 
@@ -329,7 +329,7 @@ namespace DotSpatial.Data
                     // activate this remarked code to test if the handlers are getting copied somewhere.
                     //int count = ItemChanged.GetInvocationList().Length;
                     //if (count > 1) Debug.WriteLine(this + " has " + count + " item changed handlers.");
-                    ItemChanged(this, new EventArgs());
+                    ItemChanged(this, EventArgs.Empty);
                 }
             }
             else
@@ -344,7 +344,7 @@ namespace DotSpatial.Data
         /// </summary>
         protected virtual void OnRemoveItem()
         {
-            if (RemoveItem != null) RemoveItem(this, new EventArgs());
+            if (RemoveItem != null) RemoveItem(this, EventArgs.Empty);
         }
 
         #endregion

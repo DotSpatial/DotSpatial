@@ -41,7 +41,7 @@ namespace DotSpatial.Topology
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
+        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new List<Coordinate>());
 
         /// <summary>
         /// The points of this <c>LineString</c>.
@@ -64,10 +64,12 @@ namespace DotSpatial.Topology
             : base(factory)
         {
             if (points == null)
-                points = new Coordinate[] { };
+                points = new List<Coordinate>();
             if (points.Count == 1)
                 throw new ArgumentException("point array must contain 0 or > 1 elements");
-            _points = points;
+
+            if (points.GetType().IsArray) _points = points.ToList(); //fixed arrays cause errors in LinearRing.ValidateConstruction
+            else _points = points;
         }
 
         /// <summary>
@@ -78,28 +80,14 @@ namespace DotSpatial.Topology
         /// to create the empty point. Consecutive points may not be equal.
         /// </param>
         public LineString(IList<Coordinate> points)
-            : base(DefaultFactory)
-        {
-            if (points == null)
-                points = new Coordinate[] { };
-            if (points.Count == 1)
-                throw new ArgumentException("point array must contain 0 or >1 elements");
-            _points = points;
-        }
+            : this(points, DefaultFactory) { }
 
         /// <summary>
         /// Creates a new topologically complete LineString from a LineStringBase
         /// </summary>
         /// <param name="lineStringBase"></param>
         public LineString(IBasicLineString lineStringBase)
-            : base(DefaultFactory)
-        {
-            if (lineStringBase.NumPoints == 0)
-                _points = new Coordinate[] { };
-            if (lineStringBase.NumPoints == 1)
-                throw new ArgumentException("point array must contain 0 or > 1 elements");
-            _points = lineStringBase.Coordinates;
-        }
+            : this(lineStringBase.Coordinates, DefaultFactory) { }
 
         /// <summary>
         /// Constructor
@@ -110,14 +98,7 @@ namespace DotSpatial.Topology
         /// </param>
         /// <param name="factory"></param>
         public LineString(IBasicLineString lineString, IGeometryFactory factory)
-            : base(factory)
-        {
-            if (lineString.Coordinates == null)
-                _points = new Coordinate[] { };
-            if (lineString.NumPoints == 1)
-                throw new ArgumentException("point array must contain 0 or >1 elements");
-            _points = lineString.Coordinates;
-        }
+            : this(lineString.Coordinates, factory) { }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
@@ -128,7 +109,7 @@ namespace DotSpatial.Topology
         public LineString(IGeometryFactory factory)
             : base(factory)
         {
-            _points = new Coordinate[] { };
+            _points = new List<Coordinate>();
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
@@ -145,8 +126,13 @@ namespace DotSpatial.Topology
                 _points = new List<Coordinate>();
                 return;
             }
-            _points = coordinates as IList<Coordinate>;
-            if (_points != null) return;
+
+            if (!coordinates.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
+            {
+                _points = coordinates as IList<Coordinate>;
+                if (_points != null) return;
+            }
+
             _points = new List<Coordinate>();
             foreach (Coordinate c in coordinates)
             {
@@ -166,8 +152,13 @@ namespace DotSpatial.Topology
                 _points = new List<Coordinate>();
                 return;
             }
-            _points = coordinates as IList<Coordinate>;
-            if (_points != null) return;
+
+            if (!coordinates.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
+            {
+                _points = coordinates as IList<Coordinate>;
+                if (_points != null) return;
+            }
+
             _points = new List<Coordinate>();
             foreach (ICoordinate c in coordinates)
             {
@@ -325,7 +316,7 @@ namespace DotSpatial.Topology
                 if (!_points[i].Equals(_points[j]))
                 {
                     if (_points[i].CompareTo(_points[j]) > 0)
-                        _points.Reverse();
+                        _points = _points.Reverse().ToList();
                     return;
                 }
             }
@@ -427,6 +418,19 @@ namespace DotSpatial.Topology
             // the standpoint of drawing an offset.
         }
 
+        /// <summary>
+        /// Rotates the LineString by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the LineString gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public override void Rotate(Coordinate Origin, double radAngle)
+        {
+            for (int i = 0; i < _points.Count; i++)
+            {
+                base.RotateCoordinateRad(Origin, ref _points[i].X, ref _points[i].Y, radAngle);
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -483,6 +487,25 @@ namespace DotSpatial.Topology
             }
         }
 
+        // CGX
+        /// <summary>
+        /// Gets the value of the angle between the <see cref="StartPoint" />
+        /// and the <see cref="EndPoint" />.
+        /// </summary>
+        public virtual double TrueAngle
+        {
+            get
+            {
+                double angle = Angle;
+
+                if ((StartPoint.X > EndPoint.X))
+                    angle = 180 + angle;
+
+                return angle;
+            }
+        }
+        // ENd CGX
+
         /* END ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
@@ -538,7 +561,11 @@ namespace DotSpatial.Topology
             }
             set
             {
-                _points = value;
+                if (value.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
+                {
+                    _points = value.ToList();
+                }
+                else { _points = value; }
             }
         }
 
@@ -629,7 +656,7 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Gets a boolean that is true if any part of this LineString intersects with itself
+        /// Gets a boolean that is false if any part of this LineString intersects with itself.
         /// </summary>
         public override bool IsSimple
         {

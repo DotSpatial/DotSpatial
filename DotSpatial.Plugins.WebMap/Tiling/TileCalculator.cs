@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 using DotSpatial.Topology;
 using MWPoint = DotSpatial.Topology.Point;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {
-    internal class TileCalculator
+    public static class TileCalculator
     {
         /* Adapted from methods at http://msdn.microsoft.com/en-us/library/bb259689.aspx */
 
@@ -41,16 +42,9 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
                 if (metersAcrossPerPixel > groundRes)
                 {
-                    //System.Diagnostics.Debug.WriteLine("metersPerPixel: " + metersAcrossPerPixel);
-                    //System.Diagnostics.Debug.WriteLine("groundRes:      " + groundRes);
-                    //double ratio = metersAcrossPerPixel / groundRes;
-                    //System.Diagnostics.Debug.WriteLine("ratio: " + ratio);
-
                     //fix zoom level..
                     //changed to a slightly lower zoom level to increase readability
                     if (i > 2 && i < 18) return i - 1;
-
-                    ////MessageBox.Show("MAPP: "+metersAcrossPerPixel+" , zoom: "+(i-1));
                     return i;
                 }
             }
@@ -262,49 +256,12 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         }
 
         /// <summary>
-        /// Converts a Bing QuadKey into tile XY coordinates.
-        /// </summary>
-        /// <param name="quadKey">QuadKey of the tile.</param>
-        /// <param name="tileX">Output parameter receiving the tile X coordinate.</param>
-        /// <param name="tileY">Output parameter receiving the tile Y coordinate.</param>
-        /// <param name="levelOfDetail">Output parameter receiving the level of detail.</param>
-        public static void BingQuadKeyToTileXY(string quadKey, out int tileX, out int tileY, out int levelOfDetail)
-        {
-            tileX = tileY = 0;
-            levelOfDetail = quadKey.Length;
-            for (int i = levelOfDetail; i > 0; i--)
-            {
-                int mask = 1 << (i - 1);
-                switch (quadKey[levelOfDetail - i])
-                {
-                    case '0':
-                        break;
-
-                    case '1':
-                        tileX |= mask;
-                        break;
-
-                    case '2':
-                        tileY |= mask;
-                        break;
-
-                    case '3':
-                        tileX |= mask;
-                        tileY |= mask;
-                        break;
-
-                    default:
-                        throw new ArgumentException("Invalid QuadKey digit sequence.");
-                }
-            }
-        }
-
-        /// <summary>
         /// Takes a 2-dimensional array of tiles and stitches it into a single Bitmap for display on the Map
         /// </summary>
         /// <param name="tiles">2-dimensional array of tiles, [x by y]</param>
+        /// <param name="opacity">Opacity of final image</param>
         /// <returns>Bitmap of the tiles stitched together</returns>
-        public static Bitmap StitchTiles(Tile[,] tiles)
+        public static Bitmap StitchTiles(Bitmap[,] tiles, short opacity)
         {
             var width = tiles.GetLength(0) * 256;
             var height = tiles.GetLength(1) * 256;
@@ -313,23 +270,27 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             var finalImage = new Bitmap(width, height);
 
             //get a graphics object from the image so we can draw on it
-            using (Graphics g = Graphics.FromImage(finalImage))
+            using (var g = Graphics.FromImage(finalImage))
             {
                 //set background color
                 g.Clear(Color.Transparent);
 
-                //go through each image and "draw" it on the final image
-
-                for (var y = 0; y < tiles.GetLength(1); y++)
+                using (var iaPic = new ImageAttributes())
                 {
-                    for (var x = 0; x < tiles.GetLength(0); x++)
-                    {
-                        if (tiles[x, y] != null)
-                        {
-                            var tile = tiles[x, y].Bitmap;
+                    var cmxPic = new ColorMatrix {Matrix33 = opacity/100f};
+                    iaPic.SetColorMatrix(cmxPic, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                            g.DrawImage(tile,
-                            new Rectangle(x * 256, y * 256, tile.Width, tile.Height));
+                    //go through each image and "draw" it on the final image
+                    for (var y = 0; y < tiles.GetLength(1); y++)
+                    {
+                        for (var x = 0; x < tiles.GetLength(0); x++)
+                        {
+                            if (tiles[x, y] != null)
+                            {
+                                var tile = tiles[x, y];
+                                g.DrawImage(tile, new Rectangle(x*256, y*256, tile.Width, tile.Height),
+                                    0, 0, tile.Width, tile.Height, GraphicsUnit.Pixel, iaPic);
+                            }
                         }
                     }
                 }

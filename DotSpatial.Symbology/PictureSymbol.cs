@@ -123,14 +123,18 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public override void SetColor(Color color)
         {
-            Bitmap bm = new Bitmap(_image.Width, _image.Height);
-            Graphics g = Graphics.FromImage(bm);
+            //CGX
+            if (_image != null)
+            {
+                //Fin CGX
+                Bitmap bm = new Bitmap(_image.Width, _image.Height);
+                Graphics g = Graphics.FromImage(bm);
 
-            float r = (color.R / 255f) / 2;
-            float gr = (color.G / 255f) / 2;
-            float b = (color.B / 255f) / 2;
+                float r = (color.R / 255f) / 2;
+                float gr = (color.G / 255f) / 2;
+                float b = (color.B / 255f) / 2;
 
-            ColorMatrix cm = new ColorMatrix(new[]
+                ColorMatrix cm = new ColorMatrix(new[]
                                                  {   new[]{r, gr, b, 0, 0},
                                                      new[]{r, gr, b, 0, 0},
                                                      new[]{r, gr, b, 0, 0},
@@ -138,11 +142,12 @@ namespace DotSpatial.Symbology
                                                      new float[]{0, 0, 0, 0, 1, 0},
                                                      new float[]{0, 0, 0, 0, 0, 1}});
 
-            ImageAttributes ia = new ImageAttributes();
-            ia.SetColorMatrix(cm);
-            g.DrawImage(_image, new Rectangle(0, 0, _image.Width, _image.Height), 0, 0, _image.Width, _image.Height, GraphicsUnit.Pixel, ia);
-            g.Dispose();
-            _image = bm;
+                ImageAttributes ia = new ImageAttributes();
+                ia.SetColorMatrix(cm);
+                g.DrawImage(_image, new Rectangle(0, 0, _image.Width, _image.Height), 0, 0, _image.Width, _image.Height, GraphicsUnit.Pixel, ia);
+                g.Dispose();
+                _image = bm;
+            }
         }
 
         /// <summary>
@@ -181,10 +186,7 @@ namespace DotSpatial.Symbology
                 {
                     return ConvertImageToBase64(Image);
                 }
-                else
-                {
-                    return String.Empty;
-                }
+                return String.Empty;
             }
             set
             {

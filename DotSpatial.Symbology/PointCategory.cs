@@ -141,7 +141,7 @@ namespace DotSpatial.Symbology
             Symbolizer = new PointSymbolizer(symbols);
             List<ISymbol> copy = symbols.CloneList();
 
-            if (copy.Count() > 0)
+            if (copy.Any())
             {
                 IColorable c = symbols.Last() as IColorable;
                 if (c != null)
@@ -187,8 +187,6 @@ namespace DotSpatial.Symbology
         /// Gets or sets the symbolizer for this category
         /// </summary>
         [Description("Gets or sets the symbolizer for this category")]
-        //TypeConverter(typeof(GeneralTypeConverter)),
-        //Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor))]
         public new IPointSymbolizer Symbolizer
         {
             get { return base.Symbolizer as IPointSymbolizer; }
@@ -211,8 +209,6 @@ namespace DotSpatial.Symbology
         /// Gets or sets the symbolizer to use to draw selected features from this category.
         /// </summary>
         [Description("Gets or sets the symbolizer to use to draw selected features from this category.")]
-        //TypeConverter(typeof(GeneralTypeConverter)),
-        //Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor))]
         public new IPointSymbolizer SelectionSymbolizer
         {
             get { return base.SelectionSymbolizer as IPointSymbolizer; }

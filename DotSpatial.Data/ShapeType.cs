@@ -24,7 +24,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// An enumeration listing the various valid shape types supported by Esri Shapefile formats
     /// </summary>
-    public enum ShapeType
+    public enum ShapeType : byte
     {
         /// <summary>
         /// 0 - No shape type specified, or the shapetype is invalid

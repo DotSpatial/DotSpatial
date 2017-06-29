@@ -26,6 +26,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// An EventArgs specifically tailored to Raster.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class RasterEventArgs : EventArgs
     {
         private IRaster _raster;

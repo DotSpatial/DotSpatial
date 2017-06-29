@@ -18,6 +18,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
+// Bart Adriaanse      | 30/11/2013 |  Added DutchRD definitions, DoubleStereographic
 // ********************************************************************************************************
 
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace DotSpatial.Projections.Transforms
             _transforms.Add(new Cassini());
             _transforms.Add(new CylindricalEqualArea());
             _transforms.Add(new CrasterParabolic());
+            _transforms.Add(new DoubleStereographic());
             _transforms.Add(new Eckert1());
             _transforms.Add(new Eckert2());
             _transforms.Add(new Eckert3());
@@ -146,7 +148,7 @@ namespace DotSpatial.Projections.Transforms
                 string[] esriNames = transform.Name.Split(';');
                 foreach (string esriName in esriNames)
                 {
-                    if (name == esriName)
+                    if (name.Replace("_", " ") == esriName.Replace("_", " ")) // allow alternative names with spaces instead underscores i.e. "Transverse_Mercator" == "Transverse Mercator"
                     {
                         ITransform copy = transform.Copy();
                         // kellison: The Name property in the copy can have multiples separated by semi-colons at this point.

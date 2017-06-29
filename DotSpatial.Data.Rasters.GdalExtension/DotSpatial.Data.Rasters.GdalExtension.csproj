@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotSpatial.Data.Rasters.GdalExtension</RootNamespace>
     <AssemblyName>DotSpatial.Data.Rasters.GdalExtension</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -31,7 +31,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -43,7 +44,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\bin\Windows Extensions\GDAL\</OutputPath>
+    <OutputPath>..\..\Bin\Debug\Plugins\GDAL\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,16 +52,19 @@
     </DocumentationFile>
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Release\bin\Plugins\GDAL\</OutputPath>
+    <OutputPath>..\..\Bin\Release\Plugins\GDAL\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -68,15 +72,41 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>DotSpatial.Data.Rasters.GdalExtension.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Bin\Debug\Plugins\GDAL\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\Bin\Release\Plugins\GDAL\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="gdal_csharp">
-      <HintPath>..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\csharp\gdal_csharp.dll</HintPath>
+    <Reference Include="gdalconst_csharp, Version=1.0.4704.32537, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GDAL.1.9.2\lib\net40\gdalconst_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="ogr_csharp">
-      <HintPath>..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\csharp\ogr_csharp.dll</HintPath>
+    <Reference Include="gdal_csharp, Version=1.0.4704.32537, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GDAL.1.9.2\lib\net40\gdal_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="osr_csharp">
-      <HintPath>..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\csharp\osr_csharp.dll</HintPath>
+    <Reference Include="ogr_csharp, Version=1.0.4704.32537, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GDAL.1.9.2\lib\net40\ogr_csharp.dll</HintPath>
+    </Reference>
+    <Reference Include="osr_csharp, Version=1.0.4704.32536, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GDAL.1.9.2\lib\net40\osr_csharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -89,8 +119,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GdalFileOverviewImage.cs" />
-    <Compile Include="GdalHelper.cs" />
+    <Compile Include="GdalConfiguration.cs" />
     <Compile Include="GdalImageSource.cs" />
     <Compile Include="GdalTiledImage.cs" />
     <Compile Include="GdalException.cs" />
@@ -98,6 +127,7 @@
     <Compile Include="GdalImageProvider.cs" />
     <Compile Include="GdalRaster.cs" />
     <Compile Include="GdalRasterProvider.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="OgrDataReader.cs" />
     <Compile Include="OgrVectorProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -129,6 +159,7 @@
     <None Include="package.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -138,9 +169,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Content Include="!HowTo-64bit.txt" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
@@ -163,9 +191,17 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <ItemGroup>
+    <Content Include="Readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\*.dll" "$(TargetDir)" /Y
-xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\plugins\*.dll" "$(TargetDir)gdalplugins\" /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>xcopy "$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1700\x86\$(ConfigurationName)\*_csharp*.dll" "$(SolutionDir)\Bin\$(ConfigurationName)\Plugins\GDAL\" /D /f /y
+xcopy "$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1700\x86\$(ConfigurationName)\*_wrap*.dll" "$(SolutionDir)\Bin\$(ConfigurationName)\Plugins\GDAL\" /D /f /y</PreBuildEvent>
   </PropertyGroup>
 </Project>

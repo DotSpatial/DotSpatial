@@ -28,6 +28,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// Represents a nongeneric collection of key/value pairs.
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface IEventDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         /// <summary>

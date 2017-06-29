@@ -215,7 +215,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnGradientChanged()
         {
-            if (GradientChanged != null) GradientChanged(this, new EventArgs());
+            if (GradientChanged != null) GradientChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnGradientChanging()
         {
-            if (GradientChanging != null) GradientChanging(this, new EventArgs());
+            if (GradientChanging != null) GradientChanging(this, EventArgs.Empty);
         }
 
         #endregion

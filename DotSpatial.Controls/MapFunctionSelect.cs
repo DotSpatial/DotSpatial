@@ -87,6 +87,7 @@ namespace DotSpatial.Controls
             if (e.Button == MouseButtons.Left)
             {
                 _startPoint = e.Location;
+				_currentPoint = _startPoint;
                 _geoStartPoint = e.GeographicLocation;
                 _isDragging = true;
                 Map.IsBusy = true;
@@ -151,9 +152,11 @@ namespace DotSpatial.Controls
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (Map == null) Map = e.Map;
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             if (_isDragging == false) return;
+#if DEBUG
+            var sw = new Stopwatch();
+            sw.Start();
+#endif
             _currentPoint = e.Location;
             _isDragging = false;
             //Map.Invalidate(); // Get rid of the selection box
@@ -177,15 +180,15 @@ namespace DotSpatial.Controls
             }
 
             former = null;
-            foreach (Layer l in Map.MapFrame.GetAllLayers())
+            foreach (var l in Map.MapFrame.GetAllLayers())
             {
-                if (l.IsSelected == true)
+                if (l.IsSelected)
                 {
                     former = l;
                     l.IsSelected = false;
                 }
             }
-            if (former == null && Map.MapFrame.IsSelected == true)
+            if (former == null && Map.MapFrame.IsSelected)
             {
                 former = Map.MapFrame;
             }
@@ -201,9 +204,10 @@ namespace DotSpatial.Controls
             // Force an invalidate to clear the dotted lines, even if we haven't changed anything.
             e.Map.Invalidate();
             //e.Map.MapFrame.Initialize();
+#if DEBUG
             sw.Stop();
-
             Debug.WriteLine("Initialize: " + sw.ElapsedMilliseconds);
+#endif
             base.OnMouseUp(e);
             Map.IsBusy = false;
         }
@@ -216,12 +220,15 @@ namespace DotSpatial.Controls
             {
                 // If they are not pressing shift, then first clear the selection before adding new members to it.
                 IEnvelope region;
-                Stopwatch sw = new Stopwatch();
+#if DEBUG
+                var sw = new Stopwatch();
                 sw.Start();
-
+#endif
                 Map.ClearSelection(out region);
+#if DEBUG
                 sw.Stop();
                 Debug.WriteLine("Clear: " + sw.ElapsedMilliseconds);
+#endif
             }
 
             if ((key & Keys.Control) == Keys.Control)

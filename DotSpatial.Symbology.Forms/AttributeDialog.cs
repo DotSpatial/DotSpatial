@@ -21,7 +21,6 @@
 // ********************************************************************************************************
 
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
@@ -29,78 +28,9 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// Atrribute Table editor form
     /// </summary>
-    public class AttributeDialog : Form
+    public partial class AttributeDialog : Form
     {
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(AttributeDialog));
-            this.btnClose = new Button();
-            this.tableEditorControl1 = new TableEditorControl();
-            this.SuspendLayout();
-            //
-            // btnClose
-            //
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.Name = "btnClose";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new EventHandler(this.btnClose_Click_1);
-            //
-            // tableEditorControl1
-            //
-            resources.ApplyResources(this.tableEditorControl1, "tableEditorControl1");
-            this.tableEditorControl1.IgnoreSelectionChanged = false;
-            this.tableEditorControl1.IsEditable = true;
-            this.tableEditorControl1.Name = "tableEditorControl1";
-            this.tableEditorControl1.ShowFileName = true;
-            this.tableEditorControl1.ShowMenuStrip = true;
-            this.tableEditorControl1.ShowProgressBar = false;
-            this.tableEditorControl1.ShowSelectedRowsOnly = false;
-            this.tableEditorControl1.ShowToolStrip = true;
-            //
-            // AttributeDialog
-            //
-            resources.ApplyResources(this, "$this");
-            //
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.tableEditorControl1);
-            this.Name = "AttributeDialog";
-            this.ResumeLayout(false);
-        }
-
-        #endregion
-
-        #region Variables
-
-        private Button btnClose;
-        private TableEditorControl tableEditorControl1;
-
-        #endregion
-
-        #region Constructor
+       #region Constructor
 
         /// <summary>
         /// Creates a new instance of the attribute Table editor form
@@ -124,10 +54,6 @@ namespace DotSpatial.Symbology.Forms
         {
             Close();
         }
-
-        #endregion
-
-        #region Protected Methods
 
         #endregion
     }

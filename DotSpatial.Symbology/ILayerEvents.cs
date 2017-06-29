@@ -34,6 +34,11 @@ namespace DotSpatial.Symbology
         event EventHandler<LayerEventArgs> LayerAdded;
 
         /// <summary>
+        /// Occurs when a layer is moved.
+        /// </summary>
+        event EventHandler<LayerMovedEventArgs> LayerMoved;
+
+        /// <summary>
         /// Occurs when a layer is removed from this item.
         /// </summary>
         event EventHandler<LayerEventArgs> LayerRemoved;

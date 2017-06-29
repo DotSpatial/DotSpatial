@@ -28,6 +28,7 @@ namespace DotSpatial.Controls
     /// The extended and complete set of events associated with the PreviewMap
     /// Implementing this avoids having to manually add handlers for every event.
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface IPreviewMapHandler
     {
         /// <summary>

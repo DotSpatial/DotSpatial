@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
+using System.Text;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Data
@@ -42,7 +44,6 @@ namespace DotSpatial.Data
         private IEnumerable<IDataProvider> _dataProviders;
 
         private string _dialogReadFilter;
-
         private string _dialogWriteFilter;
         private string _imageReadFilter;
         private string _imageWriteFilter;
@@ -136,39 +137,32 @@ namespace DotSpatial.Data
 
             // First check for the extension in the preferred plugins list
 
-            string ext = Path.GetExtension(fileName);
-            if (ext != null)
+            var ext = Path.GetExtension(fileName);
+            IDataProvider pdp;
+            if (PreferredProviders.TryGetValue(ext, out pdp))
             {
-                IFeatureSet result;
-                if (PreferredProviders.ContainsKey(ext))
+                var vp = pdp as IVectorProvider;
+                if (vp != null)
                 {
-                    IVectorProvider vp = PreferredProviders[ext] as IVectorProvider;
-                    if (vp != null)
-                    {
-                        result = vp.CreateNew(fileName, featureType, true, progHandler);
-                        if (result != null)
-                            return result;
-                    }
-                    // if we get here, we found the provider, but it did not succeed in opening the file.
+                    var result = vp.CreateNew(fileName, featureType, true, progHandler);
+                    if (result != null)
+                        return result;
                 }
+                // if we get here, we found the provider, but it did not succeed in opening the file.
+            }
 
-                // Then check the general list of developer specified providers... but not the directory providers
-
-                foreach (IDataProvider dp in DataProviders)
+            // Then check the general list of developer specified providers... but not the directory providers
+            foreach (var dp in DataProviders.OfType<IVectorProvider>())
+            {
+                if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
                 {
-                    if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
-                    {
-                        IVectorProvider vp = dp as IVectorProvider;
-                        if (vp != null)
-                        {
-                            // attempt to open with the fileName.
-                            result = vp.CreateNew(fileName, featureType, true, progHandler);
-                            if (result != null)
-                                return result;
-                        }
-                    }
+                    // attempt to open with the fileName.
+                    var result = dp.CreateNew(fileName, featureType, true, progHandler);
+                    if (result != null)
+                        return result;
                 }
             }
+
             throw new IOException(DataStrings.FileTypeNotSupported);
         }
 
@@ -528,34 +522,39 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public virtual IRaster OpenFileAsIRaster(string fileName, bool inRam, IProgressHandler progressHandler)
         {
-            // First check for the extension in the preferred plugins list
-            string ext = Path.GetExtension(fileName);
-            if (ext != null)
+            //CGX
+            if (File.Exists(fileName))
             {
-                ext = ext.ToLower();
-                IRaster result;
-                if (PreferredProviders.ContainsKey(ext))
+                // First check for the extension in the preferred plugins list
+                string ext = Path.GetExtension(fileName);
+                if (ext != null)
                 {
-                    result = PreferredProviders[ext].Open(fileName) as IRaster;
-                    if (result != null)
-                        return result;
-                    // if we get here, we found the provider, but it did not succeed in opening the file.
-                }
+                    ext = ext.ToLower();
+                    IRaster result;
+                    if (PreferredProviders.ContainsKey(ext))
+                    {
+                        result = PreferredProviders[ext].Open(fileName) as IRaster;
+                        if (result != null)
+                            return result;
+                        // if we get here, we found the provider, but it did not succeed in opening the file.
+                    }
 
-                // Then check the general list of developer specified providers... but not the directory providers
+                    // Then check the general list of developer specified providers... but not the directory providers
 
-                foreach (IDataProvider dp in DataProviders)
-                {
-                    if (!GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
-                        continue;
-                    // attempt to open with the fileName.
-                    dp.ProgressHandler = ProgressHandler;
+                    foreach (IDataProvider dp in DataProviders)
+                    {
+                        if (!GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
+                            continue;
+                        // attempt to open with the fileName.
+                        dp.ProgressHandler = ProgressHandler;
 
-                    result = dp.Open(fileName) as IRaster;
-                    if (result != null)
-                        return result;
+                        result = dp.Open(fileName) as IRaster;
+                        if (result != null)
+                            return result;
+                    }
                 }
             }
+            else return null;
 
             throw new ApplicationException(DataStrings.FileTypeNotSupported);
         }
@@ -605,17 +604,10 @@ namespace DotSpatial.Data
                 if (_dialogReadFilter != null)
                     return _dialogReadFilter;
 
-                List<string> extensions = new List<string>();
-                List<string> rasterExtensions = new List<string>();
-                List<string> vectorExtensions = new List<string>();
-                List<string> imageExtensions = new List<string>();
-                List<string> LiDARExtensions = new List<string>();
-
-                foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
-                {
-                    // we don't have to check for uniqueness here because it is enforced by the HashTable
-                    extensions.Add(item.Key);
-                }
+                var rasterExtensions = new List<string>();
+                var vectorExtensions = new List<string>();
+                var imageExtensions = new List<string>();
+                var extensions = PreferredProviders.Select(item => item.Key).ToList();
 
                 foreach (IDataProvider dp in DataProviders)
                 {
@@ -637,8 +629,6 @@ namespace DotSpatial.Data
                                         vectorExtensions.Add(potentialExtension);
                                 if (dp is IImageDataProvider)
                                     imageExtensions.Add(potentialExtension);
-                                if (dp is ILiDARDataProvider)
-                                    LiDARExtensions.Add(potentialExtension);
                             }
                         }
                     }
@@ -647,20 +637,18 @@ namespace DotSpatial.Data
                 // We now have a list of all the file extensions supported
                 extensions.Remove("*.dbf");
                 extensions.Remove("*.shx");
-                string result = "All Supported Formats|" + String.Join(";", extensions.ToArray());
+                var result = new StringBuilder("All Supported Formats|" + String.Join(";", extensions.ToArray()));
                 if (vectorExtensions.Count > 0)
-                    result += "|Vectors|" + String.Join(";", vectorExtensions.ToArray());
+                    result.Append("|Vectors|" + String.Join(";", vectorExtensions.ToArray()));
                 if (rasterExtensions.Count > 0)
-                    result += "|Rasters|" + String.Join(";", rasterExtensions.ToArray());
+                    result.Append("|Rasters|" + String.Join(";", rasterExtensions.ToArray()));
                 if (imageExtensions.Count > 0)
-                    result += "|Images|" + String.Join(";", imageExtensions.ToArray());
-                if (LiDARExtensions.Count > 0)
-                    result += "|LiDAR|" + String.Join(";", LiDARExtensions.ToArray());
+                    result.Append("|Images|" + String.Join(";", imageExtensions.ToArray()));
 
                 foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
                 {
                     // we don't have to check for uniqueness here because it is enforced by the HashTable
-                    result += String.Format("| [{0}] - {1}| {0}", item.Key, item.Value.Name);
+                    result.AppendFormat("| [{0}] - {1}| {0}", item.Key, item.Value.Name);
                 }
                 // Now add each of the individual lines, prepended with the provider name
                 foreach (IDataProvider dp in DataProviders)
@@ -683,17 +671,17 @@ namespace DotSpatial.Data
                                 res = res.Replace(";*.dbf", String.Empty).Replace("*.dbf", String.Empty);
                                 if (formats[i] != "*.shx" && formats[i] != "*.shp")
                                 {
-                                    result += potentialFormat;
-                                    result += "|" + res;
+                                    result.Append(potentialFormat);
+                                    result.Append("|" + res);
                                 }
                             }
                         }
                     }
                 }
-                result += "|All Files (*.*) |*.*";
-                _dialogReadFilter = result;
-                return result;
+                result.Append("|All Files (*.*) |*.*");
+                return result.ToString();
             }
+            set { _dialogReadFilter = value; }
         }
 
         /// <summary>
@@ -710,15 +698,10 @@ namespace DotSpatial.Data
                 if (_dialogWriteFilter != null)
                     return _dialogWriteFilter;
 
-                List<string> extensions = new List<string>();
-                List<string> rasterExtensions = new List<string>();
-                List<string> vectorExtensions = new List<string>();
-                List<string> imageExtensions = new List<string>();
-
-                foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
-                {
-                    extensions.Add(item.Key);
-                }
+                var rasterExtensions = new List<string>();
+                var vectorExtensions = new List<string>();
+                var imageExtensions = new List<string>();
+                var extensions = PreferredProviders.Select(item => item.Key).ToList();
 
                 foreach (IDataProvider dp in DataProviders)
                 {
@@ -746,19 +729,19 @@ namespace DotSpatial.Data
                 }
 
                 // We now have a list of all the file extensions supported
-                string result = "All Supported Formats|" + String.Join(";", extensions.ToArray());
+                var result = new StringBuilder("All Supported Formats|" + String.Join(";", extensions.ToArray()));
 
                 if (vectorExtensions.Count > 0)
-                    result += "|Vectors|" + String.Join(";", vectorExtensions.ToArray());
+                    result.Append("|Vectors|" + String.Join(";", vectorExtensions.ToArray()));
                 if (rasterExtensions.Count > 0)
-                    result += "|Rasters|" + String.Join(";", rasterExtensions.ToArray());
+                    result.Append("|Rasters|" + String.Join(";", rasterExtensions.ToArray()));
                 if (imageExtensions.Count > 0)
-                    result += "|Images|" + String.Join(";", imageExtensions.ToArray());
-
+                    result.Append("|Images|" + String.Join(";", imageExtensions.ToArray()));
+                
                 foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
                 {
-                    // we don't have to check for uniqueness here because it is enforced by the HashTable
-                    result += String.Format("| [{0}] - {1}| {0}", item.Key, item.Value.Name);
+                    // we don't have to check for uniqueness here because it is enforced by the HashTable    
+                    result.AppendFormat("| [{0}] - {1}| {0}", item.Key, item.Value.Name);
                 }
 
                 // Now add each of the individual lines, prepended with the provider name
@@ -771,21 +754,21 @@ namespace DotSpatial.Data
                         if (i % 2 == 0)
                         {
                             // For descriptions, prepend the name:
-                            potentialFormat += "|" + dp.Name + " - " + formats[i];
+                            potentialFormat = "|" + dp.Name + " - " + formats[i];
                         }
                         else
                         {
                             if (PreferredProviders.ContainsKey(formats[i]) == false)
                             {
-                                result += potentialFormat;
-                                result += "|" + formats[i];
+                                result.Append(potentialFormat);
+                                result.Append("|" + formats[i]);
                             }
                         }
                     }
                 }
 
-                result += "|All Files (*.*) |*.*";
-                return result;
+                result.Append("|All Files (*.*) |*.*");
+                return result.ToString();
             }
             set
             {
@@ -961,10 +944,9 @@ namespace DotSpatial.Data
         [Description("Gets or sets the object that implements the IProgressHandler interface for recieving status messages.")]
         public virtual IProgressHandler ProgressHandler { get; set; }
 
-        private string GetReadFilter<T>(string description) where T : IDataProvider
+        private string GetFilter<T>(string description, Func<IDataProvider, string> dpFilter) where T : IDataProvider
         {
-            // todo: combine this method with GetWriteFilter
-            List<string> extensions = new List<string>();
+            var extensions = new List<string>();
 
             foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
             {
@@ -977,7 +959,7 @@ namespace DotSpatial.Data
 
             foreach (IDataProvider dp in DataProviders)
             {
-                string[] formats = dp.DialogReadFilter.Split('|');
+                string[] formats = dpFilter(dp).Split('|');
                 // We don't care about the description strings, just the extensions.
                 for (int i = 1; i < formats.Length; i += 2)
                 {
@@ -993,23 +975,23 @@ namespace DotSpatial.Data
                     }
                 }
             }
-            string result = null;
+            var result = new StringBuilder();
             // We now have a list of all the file extensions supported
             if (extensions.Count > 0)
-                result = String.Format("{0}|", description) + String.Join(";", extensions.ToArray());
+                result.Append(String.Format("{0}|", description) + String.Join(";", extensions.ToArray()));
 
             foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
             {
                 if (item.Value is T)
                 {
                     // we don't have to check for uniqueness here because it is enforced by the HashTable
-                    result += String.Format("| [{0}] - {1}| {0}", item.Key, item.Value.Name);
+                    result.AppendFormat("| [{0}] - {1}| {0}", item.Key, item.Value.Name);
                 }
             }
             // Now add each of the individual lines, prepended with the provider name
             foreach (IDataProvider dp in DataProviders)
             {
-                string[] formats = dp.DialogReadFilter.Split('|');
+                string[] formats = dpFilter(dp).Split('|');
                 string potentialFormat = null;
                 for (int i = 0; i < formats.Length; i++)
                 {
@@ -1025,93 +1007,25 @@ namespace DotSpatial.Data
                         {
                             if (dp is T)
                             {
-                                result += potentialFormat;
-                                result += "|" + formats[i];
+                                result.Append(potentialFormat);
+                                result.Append("|" + formats[i]);
                             }
                         }
                     }
                 }
             }
-            result += "|All Files (*.*) |*.*";
-            return result;
+            result.Append("|All Files (*.*) |*.*");
+            return result.ToString();
+        }
+
+        private string GetReadFilter<T>(string description) where T : IDataProvider
+        {
+            return GetFilter<T>(description, d => d.DialogReadFilter);
         }
 
         private string GetWriteFilter<T>(string description) where T : IDataProvider
         {
-            // todo: combine this method with GetReadFilter
-            string result = null;
-            List<string> extensions = new List<string>();
-
-            foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
-            {
-                if (item.Value is T)
-                {
-                    extensions.Add(item.Key);
-                }
-            }
-
-            foreach (IDataProvider dp in DataProviders)
-            {
-                string[] formats = dp.DialogWriteFilter.Split('|');
-
-                // We don't care about the description strings, just the extensions.
-                for (int i = 1; i < formats.Length; i += 2)
-                {
-                    // Multiple extension types are separated by semicolons
-                    string[] potentialExtensions = formats[i].Split(';');
-                    foreach (string potentialExtension in potentialExtensions)
-                    {
-                        if (extensions.Contains(potentialExtension) == false)
-                        {
-                            if (dp is T)
-                                extensions.Add(potentialExtension);
-                        }
-                    }
-                }
-            }
-
-            // We now have a list of all the file extensions supported
-
-            if (extensions.Count > 0)
-                result += String.Format("{0}|", description) + String.Join(";", extensions.ToArray());
-
-            foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
-            {
-                if (item.Value is T)
-                {
-                    // we don't have to check for uniqueness here because it is enforced by the HashTable
-                    result += "| [" + item.Key + "] - " + item.Value.Name + "| " + item.Key;
-                }
-            }
-
-            // Now add each of the individual lines, prepended with the provider name
-            foreach (IDataProvider dp in DataProviders)
-            {
-                string[] formats = dp.DialogWriteFilter.Split('|');
-                string potentialFormat = null;
-                for (int i = 0; i < formats.Length; i++)
-                {
-                    if (i % 2 == 0)
-                    {
-                        // For descriptions, prepend the name:
-                        potentialFormat += "|" + dp.Name + " - " + formats[i];
-                    }
-                    else
-                    {
-                        if (PreferredProviders.ContainsKey(formats[i]) == false)
-                        {
-                            if (dp is T)
-                            {
-                                result += potentialFormat;
-                                result += "|" + formats[i];
-                            }
-                        }
-                    }
-                }
-            }
-
-            result += "|All Files (*.*) |*.*";
-            return result;
+            return GetFilter<T>(description, d => d.DialogWriteFilter);
         }
 
         #endregion

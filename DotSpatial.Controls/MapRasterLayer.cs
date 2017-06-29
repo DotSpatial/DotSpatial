@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -30,9 +29,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoImageLayer
-    /// </summary>
     public class MapRasterLayer : RasterLayer, IMapRasterLayer
     {
         #region Events
@@ -66,27 +62,27 @@ namespace DotSpatial.Controls
             : base(fileName, symbolizer)
         {
             base.LegendText = Path.GetFileNameWithoutExtension(fileName);
-            if (DataSet.NumRows * DataSet.NumColumns > 8000)
+
+            //CGX
+            if (File.Exists(fileName))
             {
-                string pyrFile = Path.ChangeExtension(fileName, ".mwi");
-                if (File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh")))
+                //Fin CGX
+                if ((long)DataSet.NumRows * DataSet.NumColumns > MaxCellsInMemory)
                 {
-                    BitmapGetter = new PyramidImage(pyrFile);
+                    string pyrFile = Path.ChangeExtension(fileName, ".mwi");
+                    BitmapGetter = File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh"))
+                        ? new PyramidImage(pyrFile)
+                        : CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
                 }
                 else
                 {
-                    BitmapGetter = CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
-                }
-            }
-            else
-            {
-                Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows);
-                symbolizer.Raster = DataSet;
+                    Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows);
+                    symbolizer.Raster = DataSet;
 
-                DataSet.DrawToBitmap(symbolizer, bmp, null);
-                InRamImage id = new InRamImage(bmp);
-                id.Bounds = DataSet.Bounds;
-                BitmapGetter = id;
+                    DataSet.DrawToBitmap(symbolizer, bmp);
+                    var id = new InRamImage(bmp) { Bounds = DataSet.Bounds };
+                    BitmapGetter = id;
+                }
             }
         }
 
@@ -111,7 +107,7 @@ namespace DotSpatial.Controls
             base.LegendText = Path.GetFileNameWithoutExtension(raster.Filename);
             // string imageFile = Path.ChangeExtension(raster.Filename, ".png");
             // if (File.Exists(imageFile)) File.Delete(imageFile);
-            if (raster.NumRows * raster.NumColumns > 8000 * 8000)
+            if ((long)raster.NumRows * raster.NumColumns > MaxCellsInMemory)
             {
                 // For huge images, assume that GDAL or something was needed anyway,
                 // and we would rather avoid having to re-create the pyramids if there is any chance
@@ -128,13 +124,12 @@ namespace DotSpatial.Controls
                 }
             }
             else
-            {                
+            {
                 // Ensure smaller images match the scheme.
                 Bitmap bmp = new Bitmap(raster.NumColumns, raster.NumRows);
-                raster.PaintColorSchemeToBitmap(base.Symbolizer, bmp, raster.ProgressHandler);
+                raster.PaintColorSchemeToBitmap(Symbolizer, bmp, raster.ProgressHandler);
 
-                InRamImage id = new InRamImage(bmp);
-                id.Bounds.AffineCoefficients = raster.Bounds.AffineCoefficients;
+                var id = new InRamImage(bmp) { Bounds = { AffineCoefficients = raster.Bounds.AffineCoefficients } };
                 BitmapGetter = id;
             }
         }
@@ -313,6 +308,28 @@ namespace DotSpatial.Controls
         {
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_stencil != _backBuffer && _stencil != null)
+                {
+                    _stencil.Dispose();
+                    _stencil = null;
+                }
+                if (_backBuffer != null)
+                {
+                    _backBuffer.Dispose();
+                    _backBuffer = null;
+                }
+
+                _bufferExtent = null;
+                _bufferRectangle = Rectangle.Empty;
+                _isInitialized = false;
+            }
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         #region Private Methods
@@ -338,11 +355,17 @@ namespace DotSpatial.Controls
             }
 
             int numBounds = Math.Min(regions.Count, clipRectangles.Count);
-
-            for (int i = 0; i < numBounds; i++)
+            //CGX
+            if (BitmapGetter != null)
             {
-                Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]);
-                if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
+                //Fin CGX
+                for (int i = 0; i < numBounds; i++)
+                {
+                    using (Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]))
+                    {
+                        if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
+                    }
+                }
             }
             if (args.Device == null) g.Dispose();
         }

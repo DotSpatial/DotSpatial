@@ -25,9 +25,6 @@ using System.Diagnostics;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Cache
-    /// </summary>
     public class AttributeCache : IEnumerable<Dictionary<string, object>>
     {
         private static int _rowsPerPage;
@@ -104,7 +101,7 @@ namespace DotSpatial.Data
         public void SaveChanges()
         {
             _dataSupply.Edit(EditRowIndex, EditRow);
-            DataRow dr = null;
+            IDataRow dr = null; // CGX AERO GLZ
             if (IsRowCachedInPage(0, _editRowIndex))
             {
                 dr = Pages[0].Table.Rows[_editRowIndex];
@@ -147,7 +144,7 @@ namespace DotSpatial.Data
         {
             if (IsRowCachedInPage(0, rowIndex))
             {
-                DataRow dr = Pages[0].Table.Rows[rowIndex % _rowsPerPage];
+                IDataRow dr = Pages[0].Table.Rows[rowIndex % _rowsPerPage]; // CGX AERO GLZ
                 foreach (DataColumn column in Pages[0].Table.Columns)
                 {
                     string name = column.ColumnName;
@@ -157,7 +154,7 @@ namespace DotSpatial.Data
             }
             if (IsRowCachedInPage(1, rowIndex))
             {
-                DataRow dr = Pages[1].Table.Rows[rowIndex % _rowsPerPage];
+                IDataRow dr = Pages[1].Table.Rows[rowIndex % _rowsPerPage]; // CGX AERO GLZ
                 foreach (DataColumn column in Pages[0].Table.Columns)
                 {
                     string name = column.ColumnName;
@@ -223,7 +220,7 @@ namespace DotSpatial.Data
             int rowIndex, int columnIndex)
         {
             // Retrieve a page worth of data containing the requested value.
-            DataTable table = _dataSupply.GetAttributes(
+            IDataTable table = _dataSupply.GetAttributes( // CGX AERO GLZ
                 DataPage.MapToLowerBoundary(rowIndex), _rowsPerPage);
 
             // Replace the cached page furthest from the requested cell
@@ -236,7 +233,7 @@ namespace DotSpatial.Data
         private Dictionary<string, object> RetrieveDataCacheItThenReturnElement(int rowIndex)
         {
             // Retrieve a page worth of data containing the requested value.
-            DataTable table = _dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowIndex), _rowsPerPage);
+            IDataTable table = _dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowIndex), _rowsPerPage); // CGX AERO GLZ
 
             // Replace the cached page furthest from the requested cell
             // with a new page containing the newly retrieved data.
@@ -349,7 +346,7 @@ namespace DotSpatial.Data
             /// <summary>
             /// The data Table
             /// </summary>
-            public readonly DataTable Table;
+            public readonly IDataTable Table; // CGX AERO GLZ
 
             private readonly int _highestIndexValue;
             private readonly int _lowestIndexValue;
@@ -359,7 +356,7 @@ namespace DotSpatial.Data
             /// </summary>
             /// <param name="table">The DataTable that controls the content</param>
             /// <param name="rowIndex">The integer row index</param>
-            public DataPage(DataTable table, int rowIndex)
+            public DataPage(IDataTable table, int rowIndex) // CGX AERO GLZ
             {
                 Table = table;
 

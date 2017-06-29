@@ -25,16 +25,11 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Category
-    /// </summary>
     public class Category : LegendItem
     {
         #region Private Variables
 
         private Range _range;
-        private string _status;
-        object _tag;
 
         #endregion
 
@@ -82,23 +77,11 @@ namespace DotSpatial.Symbology
                 case IntervalSnapMethod.SignificantFigures:
                     if (Maximum != null)
                     {
-                        int digits = numDigits;
-                        double max = (double)Maximum;
-                        int md = (int)Math.Ceiling(Math.Log10(max));
-                        md -= digits;
-                        double norm = Math.Pow(10, md);
-                        double val = (double)Maximum;
-                        Maximum = norm * Math.Round(val / norm);
+                        Maximum = SigFig(Maximum.Value, numDigits);
                     }
                     if (Minimum != null)
                     {
-                        int digits = numDigits;
-                        double min = (double)Minimum;
-                        int md = (int)Math.Ceiling(Math.Log10(min));
-                        md -= digits;
-                        double norm = Math.Pow(10, md);
-                        double val = (double)Minimum;
-                        Minimum = norm * Math.Round(val / norm);
+                        Minimum = SigFig(Minimum.Value, numDigits);
                     }
                     break;
                 case IntervalSnapMethod.Rounding:
@@ -122,6 +105,14 @@ namespace DotSpatial.Symbology
                     }
                     break;
             }
+        }
+
+        private static double SigFig(double value, int numFigures)
+        {
+            int md = (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
+            md -= numFigures;
+            double norm = Math.Pow(10, md);
+            return norm * Math.Round(value / norm);
         }
 
         /// <summary>
@@ -241,21 +232,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a status message for this string.
         /// </summary>
-        public string Status
-        {
-            get { return _status; }
-            set { _status = value; }
-        }
+        public string Status { get; set; }
 
         /// <summary>
         /// This is not used by DotSpatial, but is provided for convenient linking for this object
         /// in plugins or other applications.
         /// </summary>
-        public object Tag
-        {
-            get { return _tag; }
-            set { _tag = value; }
-        }
+        public object Tag { get; set; }
 
         #endregion
     }

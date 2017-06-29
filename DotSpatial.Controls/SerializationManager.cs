@@ -25,10 +25,10 @@ namespace DotSpatial.Controls
     /// </summary>
     public class SerializationManager
     {
-        private static ResourceManager resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
-        AppManager _applicationManager;
-        ProjectChangeTracker _changeTracker;
-        private Dictionary<string, object> _customSettings;
+        private static readonly ResourceManager resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
+        readonly AppManager _applicationManager;
+        readonly ProjectChangeTracker _changeTracker;
+        private readonly Dictionary<string, object> _customSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializationManager"/> class.
@@ -142,9 +142,9 @@ namespace DotSpatial.Controls
         private void SetCurrentProjectDirectory(string fileName)
         {
             // we set the working directory to the location of the project file. All filenames will be relative to this path.
-            if (String.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName))
             {
-                CurrentProjectFile = CurrentProjectDirectory = String.Empty;
+                CurrentProjectFile = CurrentProjectDirectory = string.Empty;
             }
             else
             {
@@ -365,8 +365,7 @@ namespace DotSpatial.Controls
             object result;
             if (_customSettings.TryGetValue(uniqueName, out result))
                 return (T)result;
-            else
-                return defaultValue;
+            return defaultValue;
         }
 
         /// <summary>
@@ -443,8 +442,7 @@ namespace DotSpatial.Controls
 
             if (String.IsNullOrEmpty(dspxProjectionEsriString)) return;
 
-            MapFrameProjectionHelper.ReprojectMapFrame(_applicationManager.Map.MapFrame, dspxProjectionEsriString);
-
+            _applicationManager.Map.MapFrame.ReprojectMapFrame(dspxProjectionEsriString);
             _applicationManager.Map.MapFrame.ResetExtents();
         }
 

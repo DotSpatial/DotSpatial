@@ -88,6 +88,11 @@ namespace DotSpatial.Extensions
         /// </summary>
         string AssemblyQualifiedName { get; }
 
+        /// <summary>
+        /// Specifies the activation priority order
+        /// </summary>
+        int Priority { get; }
+
         #endregion
     }
 }

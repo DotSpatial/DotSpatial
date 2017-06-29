@@ -81,45 +81,34 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(DynamicVisibilityControl));
-            this.chkUseDynamicVisibility = new CheckBox();
-            this.btnGrabExtents = new Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DynamicVisibilityControl));
+            this.chkUseDynamicVisibility = new System.Windows.Forms.CheckBox();
+            this.btnGrabExtents = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            //
+            // 
             // chkUseDynamicVisibility
-            //
-            this.chkUseDynamicVisibility.AccessibleDescription = null;
-            this.chkUseDynamicVisibility.AccessibleName = null;
+            // 
             resources.ApplyResources(this.chkUseDynamicVisibility, "chkUseDynamicVisibility");
-            this.chkUseDynamicVisibility.BackgroundImage = null;
-            this.chkUseDynamicVisibility.Font = null;
             this.chkUseDynamicVisibility.Name = "chkUseDynamicVisibility";
             this.chkUseDynamicVisibility.UseVisualStyleBackColor = true;
-            this.chkUseDynamicVisibility.CheckedChanged += new EventHandler(this.chkUseDynamicVisibility_CheckedChanged);
-            //
+            this.chkUseDynamicVisibility.CheckedChanged += new System.EventHandler(this.chkUseDynamicVisibility_CheckedChanged);
+            // 
             // btnGrabExtents
-            //
-            this.btnGrabExtents.AccessibleDescription = null;
-            this.btnGrabExtents.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnGrabExtents, "btnGrabExtents");
-            this.btnGrabExtents.BackgroundImage = null;
-            this.btnGrabExtents.Font = null;
             this.btnGrabExtents.Name = "btnGrabExtents";
             this.btnGrabExtents.UseVisualStyleBackColor = true;
-            this.btnGrabExtents.Click += new EventHandler(this.btnGrabExtents_Click);
-            //
+            this.btnGrabExtents.Click += new System.EventHandler(this.btnGrabExtents_Click);
+            // 
             // DynamicVisibilityControl
-            //
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
-            resources.ApplyResources(this, "$this");
-            this.BackColor = SystemColors.Control;
-            this.BackgroundImage = null;
+            // 
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.btnGrabExtents);
             this.Controls.Add(this.chkUseDynamicVisibility);
-            this.Font = null;
             this.Name = "DynamicVisibilityControl";
+            resources.ApplyResources(this, "$this");
             this.ResumeLayout(false);
+
         }
 
         #endregion

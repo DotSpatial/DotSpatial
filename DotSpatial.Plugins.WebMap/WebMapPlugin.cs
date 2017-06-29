@@ -1,26 +1,16 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WebMapPlugin.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
-using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
-using DotSpatial.Plugins.WebMap.Resources;
 using DotSpatial.Plugins.WebMap.Tiling;
-using DotSpatial.Plugins.WebMap.WMS;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
-using Microsoft.VisualBasic;
 using System.Diagnostics;
-using System.Collections.Generic;
 using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.WebMap
@@ -30,42 +20,31 @@ namespace DotSpatial.Plugins.WebMap
         #region Constants and Fields
 
         private const string Other = "Other";
-
         private const string PluginName = "FetchBasemap";
-
         private const string STR_KeyOpacityDropDown = "kOpacityDropDown";
-
         private const string STR_KeyServiceDropDown = "kServiceDropDown";
+
         private readonly ProjectionInfo WebMercProj = ProjectionInfo.FromEsriString(KnownCoordinateSystems.Projected.World.WebMercator.ToEsriString());
         private readonly ProjectionInfo Wgs84Proj = ProjectionInfo.FromEsriString(KnownCoordinateSystems.Geographic.World.WGS1984.ToEsriString());
-
-        //reference to the main application and its UI items
+        
         private MapImageLayer _baseMapLayer;
-
-        private Bitmap _basemapImage;
-
         private BackgroundWorker _bw;
-
         private ServiceProvider _emptyProvider;
-
         private IMapFeatureLayer _featureSetLayer;
-
         private Int16 _opacity = 100;
+        private TileManager _tileManager;
+        private bool _busySet;
 
         private DropDownActionItem _opacityDropDown;
-
-        private ServiceProvider _provider;
-
         private DropDownActionItem _serviceDropDown;
-
-        private TileManager _tileManager;
+        private SimpleActionItem _optionsAction;
 
         #endregion
 
         public WebMapPlugin()
         {
             DeactivationAllowed = false;
-            BusySet = false;
+            _busySet = false;
         }
 
         #region Public Methods
@@ -76,17 +55,38 @@ namespace DotSpatial.Plugins.WebMap
         public override void Activate()
         {
             // Add Menu or Ribbon buttons.
-            AddButtons();
+            AddServiceDropDown(App.HeaderControl);
+            
+            _optionsAction = new SimpleActionItem("Configure", delegate
+            {
+                var p = CurrentProvider;
+                if (p == null) return;
+                var cf = p.Configure;
+                if (cf != null)
+                {
+                    if (cf())
+                    {
+                        // Update map if configuration changed
+                        EnableBasemapFetching(p);
+                    }
+                }
+            })
+            {
+                Key = "kOptions",
+                RootKey = HeaderControl.HomeRootItemKey,
+                GroupCaption = Properties.Resources.Panel_Name,
+                Enabled = false,
+            };
+            App.HeaderControl.Add(_optionsAction);
+            AddOpaticyDropDown(App.HeaderControl);
 
-            //Create the tile manager
-            _tileManager = new TileManager();
+            _serviceDropDown.SelectedValueChanged += ServiceSelected;
+            _serviceDropDown.SelectedItem = _emptyProvider;
 
             //Add handlers for saving/restoring settings
             App.SerializationManager.Serializing += SerializationManagerSerializing;
             App.SerializationManager.Deserializing += SerializationManagerDeserializing;
             App.SerializationManager.NewProjectCreated += SerializationManagerNewProject;
-
-            //EnsureMapProjectionIsWebMercator();
 
             //Setup the background worker
             _bw = new BackgroundWorker { WorkerSupportsCancellation = true, WorkerReportsProgress = true };
@@ -118,94 +118,42 @@ namespace DotSpatial.Plugins.WebMap
 
         #region Methods
 
-        /// <summary>
-        /// Returns the input bitmap after making it transparent
-        /// </summary>
-        /// <returns>Opacity-modified bitmap of the basemap image</returns>
-        private static Bitmap GetTransparentBasemapImage(Bitmap originalImage, int opacity)
+        private ServiceProvider CurrentProvider
         {
-            if (originalImage == null)
-                return null;
-
-            try
-            {
-                var newImage = new Bitmap(originalImage.Width, originalImage.Height);
-                using (var gfxPic = Graphics.FromImage(newImage))
-                {
-                    using (var iaPic = new ImageAttributes())
-                    {
-                        var cmxPic = new ColorMatrix { Matrix33 = opacity / 100f };
-                        iaPic.SetColorMatrix(cmxPic, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                        gfxPic.DrawImage(originalImage, new Rectangle(0, 0, originalImage.Width, originalImage.Height), 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, iaPic);
-                    }
-                }
-
-                return newImage;
-            }
-            catch
-            {
-                return originalImage;
-            }
+            get { return (ServiceProvider) _serviceDropDown.SelectedItem; }
         }
-
-        /// <summary>
-        /// Inserts the _baseMapLayer below point layers and line layers
-        /// </summary>
+        
         private void AddBasemapLayerToMap()
         {
-            //check all top-level map point layers, line layers
-            int groupOrLayerIndex = FindPointOrLineLayerIndex(App.Map.MapFrame);
-            if (groupOrLayerIndex >= 0)
-            {
-                //App.Map.Layers.Insert(groupOrLayerIndex, _baseMapLayer);
-            }
-            else
+            if (!InsertBaseMapLayer(App.Map.MapFrame))
             {
                 App.Map.Layers.Add(_baseMapLayer);
             }
         }
 
-        private int FindPointOrLineLayerIndex(IMapGroup group)
+        private bool InsertBaseMapLayer(IMapGroup group)
         {
-            int index = -1;
-          
-            foreach (IMapLayer layer in group.Layers)
+            for (var i = 0; i < @group.Layers.Count; i++)
             {
-                index++;
-
-                IMapGroup childGroup = layer as IMapGroup;
+                var layer = @group.Layers[i];
+                var childGroup = layer as IMapGroup;
                 if (childGroup != null)
                 {
-                    int groupIndex = FindPointOrLineLayerIndex(childGroup);
-                    if (groupIndex != -1) return index;
+                    var ins = InsertBaseMapLayer(childGroup);
+                    if (ins) return true;
                 }
 
                 if (layer is IMapPointLayer || layer is IMapLineLayer)
                 {
-                    
-                    if (layer != null)
-                        {
-                            IGroup grp = layer.GetParentItem() as IGroup;
-                        
-                            if (grp != null)
-                            {
-                                grp.Insert(index, _baseMapLayer);
-                            }
-                          
-                        }
-                      
-                    return index;
+                    var grp = layer.GetParentItem() as IGroup;
+                    if (grp != null)
+                    {
+                        grp.Insert(i, _baseMapLayer);
+                        return true;
+                    }
                 }
             }
-            //if no layer was found, return -1
-            return -1;
-        }
-
-        private void AddButtons()
-        {
-            var header = App.HeaderControl;
-            AddServiceDropDown(header);
-            AddOpaticyDropDown(header);
+            return false;
         }
 
         private void AddOpaticyDropDown(IHeaderControl header)
@@ -214,8 +162,8 @@ namespace DotSpatial.Plugins.WebMap
             _opacityDropDown = new DropDownActionItem
                                    {
                                        AllowEditingText = true,
-                                       Caption = resources.Opacity_Box_Text,
-                                       ToolTipText = resources.Opacity_Box_ToolTip,
+                                       Caption = Properties.Resources.Opacity_Box_Text,
+                                       ToolTipText = Properties.Resources.Opacity_Box_ToolTip,
                                        Width = 45,
                                        Key = STR_KeyOpacityDropDown
                                    };
@@ -223,7 +171,7 @@ namespace DotSpatial.Plugins.WebMap
             //Make some opacity settings
             for (var i = 100; i > 0; i -= 10)
             {
-                string opacity = i.ToString();
+                var opacity = i.ToString(CultureInfo.InvariantCulture);
                 if (i == 100)
                 {
                     defaultOpacity = opacity;
@@ -231,7 +179,7 @@ namespace DotSpatial.Plugins.WebMap
                 _opacityDropDown.Items.Add(opacity);
             }
 
-            _opacityDropDown.GroupCaption = resources.Panel_Name;
+            _opacityDropDown.GroupCaption = Properties.Resources.Panel_Name;
             _opacityDropDown.SelectedValueChanged += OpacitySelected;
             _opacityDropDown.RootKey = HeaderControl.HomeRootItemKey;
 
@@ -243,57 +191,47 @@ namespace DotSpatial.Plugins.WebMap
 
         private void AddServiceDropDown(IHeaderControl header)
         {
-            _serviceDropDown = new DropDownActionItem();
-            _serviceDropDown.Key = STR_KeyServiceDropDown;
+            _serviceDropDown = new DropDownActionItem
+            {
+                Key = STR_KeyServiceDropDown,
+                RootKey = HeaderControl.HomeRootItemKey,
+                Width = 145,
+                AllowEditingText = false,
+                ToolTipText = Properties.Resources.Service_Box_ToolTip,
+                GroupCaption = Properties.Resources.Panel_Name
+            };
 
-            //Create "None" Option
-            _emptyProvider = new ServiceProvider(resources.None, null);
+            // "None" provider
+            _emptyProvider = new ServiceProvider(Properties.Resources.None);
             _serviceDropDown.Items.Add(_emptyProvider);
 
-            // no option presently for group image.
-            // Image = resources.AddOnlineBasemap.GetThumbnailImage(32, 32, null, IntPtr.Zero),
+            // Default providers
+            _serviceDropDown.Items.AddRange(ServiceProviderFactory.GetDefaultServiceProviders());
 
-            _serviceDropDown.Width = 145;
-            _serviceDropDown.AllowEditingText = false;
-            _serviceDropDown.ToolTipText = resources.Service_Box_ToolTip;
-            _serviceDropDown.SelectedValueChanged += ServiceSelected;
-            _serviceDropDown.GroupCaption = resources.Panel_Name;
-            _serviceDropDown.Items.AddRange(ServiceProvider.GetDefaultServiceProviders());
-            _serviceDropDown.RootKey = HeaderControl.HomeRootItemKey;
-
-            //Create "Other" Option
-            var otherProvider = new ServiceProvider(Other, null);
-            _serviceDropDown.Items.Add(otherProvider);
+            // "Other" provider
+            _serviceDropDown.Items.Add(ServiceProviderFactory.Create(Other));
 
             //Add it to the Header
             header.Add(_serviceDropDown);
-
-            _serviceDropDown.SelectedItem = _emptyProvider;
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+       
         private void BaseMapLayerRemoveItem(object sender, EventArgs e)
         {
+            if (_baseMapLayer != null)
+            {
+                _baseMapLayer.RemoveItem -= BaseMapLayerRemoveItem;
+            }
             _baseMapLayer = null;
             _serviceDropDown.SelectedItem = _emptyProvider;
             App.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void BwDoWork(object sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            if (App.Map != null && !BusySet)
+            if (App.Map != null && !_busySet)
             {
-                BusySet = true;
+                _busySet = true;
                 App.Map.IsBusy = true;
             }
 
@@ -314,18 +252,12 @@ namespace DotSpatial.Plugins.WebMap
         private void BwProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // Do we know what what our progress completion percent is (instead of 50)?
-            // TODO: make this localizable
             App.ProgressHandler.Progress("Loading Basemap ...", e.ProgressPercentage, "Loading Basemap ...");
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+       
         private void BwRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Cancelled && !_bw.IsBusy)
+            if (e.Cancelled)
             {
                 _bw.RunWorkerAsync();
                 return;
@@ -334,7 +266,7 @@ namespace DotSpatial.Plugins.WebMap
             if (App.Map != null)
             {
                 App.Map.IsBusy = false;
-                BusySet = false;
+                _busySet = false;
                 App.Map.MapFrame.Invalidate();
                 App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
             }
@@ -343,34 +275,19 @@ namespace DotSpatial.Plugins.WebMap
         /// <summary>
         /// Changes the opacity of the current basemap image and invalidates the map
         /// </summary>
-        /// <param name="opacity">The opacity as a value between 0 and 100, inclusive.</param>
-        private void ChangeBasemapOpacity(short opacity)
+        private void ChangeBasemapOpacity()
         {
             MapFrameExtentsChanged(this, new ExtentArgs(App.Map.ViewExtents)); //this forces the map layer to refresh
-
-            //using (Bitmap newBasemapImage = GetTransparentBasemapImage(_baseMapLayer.Image.GetBitmap(), opacity))
-            //{
-            //    _baseMapLayer.Image.SetBitmap(newBasemapImage);
-            //}
-
-            ////Calling Refresh() or Invalidate() or ResetBuffer() completely cleared the map and did not redraw
-            ////the basemap layer image.
-            ////Calling ResetExtents() refreshes the map because it triggers MapFrame.ExtentsChanged() and
-            ////re-gets the basemap layer from the web.
-            ////TODO: find a faster method here
-            //App.Map.MapFrame.ResetExtents();
+          
         }
-
-        /// <summary>
-        ///
-        /// </summary>
+       
         private void DisableBasemapLayer()
         {
             RemoveBasemapLayer(_baseMapLayer);
             RemoveBasemapLayer(_featureSetLayer);
 
+            _optionsAction.Enabled = false;
             _baseMapLayer = null;
-            _basemapImage = null;
             _featureSetLayer = null;
 
             App.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
@@ -378,10 +295,8 @@ namespace DotSpatial.Plugins.WebMap
 
         private void ForceMaxExtentZoom()
         {
-            ProjectionInfo webMerc = KnownCoordinateSystems.Projected.World.WebMercator;
-
             //special case when there are no other layers in the map. Set map projection to WebMercator and zoom to max ext.
-            MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, webMerc.ToEsriString());
+            MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, WebMercProj.ToEsriString());
 
             // modifying the view extents didn't get the job done, so we are creating a new featureset.
             // App.Map.ViewExtents = new Extent(TileCalculator.MinWebMercX, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercX, TileCalculator.MaxWebMercY);
@@ -398,73 +313,39 @@ namespace DotSpatial.Plugins.WebMap
             App.Map.ZoomToMaxExtent();
         }
 
-        private void EnableBasemapFetching(string tileServerName, string tileServerUrl)
+        private void EnableBasemapFetching(ServiceProvider provider)
         {
-            ProjectionInfo webMerc = KnownCoordinateSystems.Projected.World.WebMercator;
-
             // Zoom out as much as possible if there are no other layers.
-            //reproject any existing layer in non-webMercator projection.
-            //if (App.Map.Layers.Count == 0 || App.Map.Projection != webMerc)
+            // reproject any existing layer in non-webMercator projection.
             if (App.Map.Layers.Count == 0)
             {
                 ForceMaxExtentZoom();
             }
-            else if (!App.Map.Projection.Equals(webMerc))
+            else if (!App.Map.Projection.Equals(WebMercProj))
             {
                 //get original view extents
                 App.ProgressHandler.Progress(String.Empty, 0, "Reprojecting Map Layers...");
-                double[] viewExtentXY = new[] { App.Map.ViewExtents.MinX, App.Map.ViewExtents.MinY, App.Map.ViewExtents.MaxX, App.Map.ViewExtents.MaxY };
-                double[] viewExtentZ = new[] { 0.0, 0.0 };
+                double[] viewExtentXY = { App.Map.ViewExtents.MinX, App.Map.ViewExtents.MinY, App.Map.ViewExtents.MaxX, App.Map.ViewExtents.MaxY };
+                double[] viewExtentZ = { 0.0, 0.0 };
 
                 //reproject view extents
-                Reproject.ReprojectPoints(viewExtentXY, viewExtentZ, App.Map.Projection, webMerc, 0, 2);
+                Reproject.ReprojectPoints(viewExtentXY, viewExtentZ, App.Map.Projection, WebMercProj, 0, 2);
 
                 //set the new map extents
                 App.Map.ViewExtents = new Extent(viewExtentXY);
 
                 //if projection is not WebMercator - reproject all layers:
-                MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, webMerc.ToEsriString());
+                MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, WebMercProj.ToEsriString());
 
                 App.ProgressHandler.Progress(String.Empty, 0, "Loading Basemap...");
             }
 
-            // Special case for WMS
-            if (tileServerName.Equals(Properties.Resources.WMSMap, StringComparison.InvariantCultureIgnoreCase))
-            {
-                using (var wmsDialog = new WMSServerParameters())
-                {
-                    if (wmsDialog.ShowDialog() != DialogResult.OK)
-                    {
-                        return;
-                    }
-                    _tileManager.WmsServerInfo = wmsDialog.WmsServerInfo;
-                }
-            }
-
-            // Other is a custom service
-            if (tileServerName.Equals(Other, StringComparison.InvariantCultureIgnoreCase))
-            {
-                tileServerUrl = Interaction.InputBox("Please provide the Url for the service.",
-                                                     DefaultResponse: "http://tiles.virtualearth.net/tiles/h{key}.jpeg?g=461&mkt=en-us&n=z");
-
-                // Let the user cancel...
-                if (String.IsNullOrWhiteSpace(tileServerUrl))
-                    return;
-            }
 
             EnableBasemapLayer();
-
-            _tileManager.ChangeService(tileServerName, tileServerUrl);
-
-            if (_bw.IsBusy != true)
-            {
-                _bw.RunWorkerAsync();
-            }
+            _tileManager = new TileManager(provider);
+            RunOrCancelBW();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         private void EnableBasemapLayer()
         {
             if (_baseMapLayer == null)
@@ -473,41 +354,33 @@ namespace DotSpatial.Plugins.WebMap
                 // another thread.
 
                 //First create a temporary imageData with an Envelope (otherwise adding to the map will fail)
-                var tempImageData = new InRamImageData(resources.NoDataTile, new Extent(1, 1, 2, 2));
+                var tempImageData = new InRamImageData(Properties.Resources.nodata, new Extent(1, 1, 2, 2));
 
                 _baseMapLayer = new MapImageLayer(tempImageData)
                                 {
                                     Projection = App.Map.Projection,
-                                    LegendText = resources.Legend_Title
+                                    LegendText = Properties.Resources.Legend_Title
                                 };
 
                 _baseMapLayer.RemoveItem += BaseMapLayerRemoveItem;
-
                 AddBasemapLayerToMap();
             }
 
+            App.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
             App.Map.MapFrame.ViewExtentsChanged += MapFrameExtentsChanged;
         }
 
-        private void EnsureMapProjectionIsWebMercator()
-        {
-            if (App.Map.Projection != KnownCoordinateSystems.Projected.World.WebMercator)
-            {
-                App.Map.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MapFrameExtentsChanged(object sender, ExtentArgs e)
+        private void RunOrCancelBW()
         {
             if (_bw.IsBusy != true)
                 _bw.RunWorkerAsync();
             else
                 _bw.CancelAsync();
+        }
+      
+        private void MapFrameExtentsChanged(object sender, ExtentArgs e)
+        {
+            RunOrCancelBW();
         }
 
         private void OpacitySelected(object sender, SelectedValueChangedEventArgs e)
@@ -524,20 +397,22 @@ namespace DotSpatial.Plugins.WebMap
                 _opacityDropDown.SelectedItem = opacityInt;
             }
             _opacity = opacityInt;
-            ChangeBasemapOpacity(opacityInt);
+            ChangeBasemapOpacity();
         }
 
         /// <summary>
         /// Finds and removes the online basemap layer
         /// </summary>
-        /// <param name="Layer"></param>
         private void RemoveBasemapLayer(IMapLayer Layer)
         {
             //attempt to remove from the top-level
             if (App.Map.Layers.Remove(Layer)) return;
 
             //Remove from other groups if the user has moved it
-            App.Map.Layers.OfType<IMapGroup>().Any(grp => grp.Remove(Layer));
+            foreach (var group in App.Map.Layers.OfType<IMapGroup>())
+            {
+                group.Remove(Layer);
+            }
         }
 
         private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
@@ -545,28 +420,31 @@ namespace DotSpatial.Plugins.WebMap
             try
             {
                 var opacity = App.SerializationManager.GetCustomSetting(PluginName + "_Opacity", "100");
-                var basemapName = App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName", resources.None);
+                var basemapName = App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName", Properties.Resources.None);
                 //Set opacity
                 _opacityDropDown.SelectedItem = opacity;
                 _opacity = Convert.ToInt16(opacity);
 
-                _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == resources.Legend_Title);
+                _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == Properties.Resources.Legend_Title);
 
-                if (basemapName.Equals("None"))
+                if (basemapName.Equals(Properties.Resources.None))
                 {
                     if (_baseMapLayer != null)
                     {
                         DisableBasemapLayer();
-                        _provider = _emptyProvider;
-                        _serviceDropDown.SelectedItem = _provider;
+                        _serviceDropDown.SelectedItem = _emptyProvider;
                     }
                 }
                 else
                 {
                     //hack: need to set provider to original object, not a new one.
-                    _provider = ServiceProvider.GetDefaultServiceProviders().FirstOrDefault(p => p.Name.Equals(basemapName, StringComparison.InvariantCultureIgnoreCase));
-                    _serviceDropDown.SelectedItem = _provider;
-                    EnableBasemapFetching(_provider.Name, _provider.Url);
+                    _serviceDropDown.SelectedItem = _serviceDropDown.Items.OfType<ServiceProvider>()
+                        .FirstOrDefault(p => p.Name.Equals(basemapName, StringComparison.InvariantCultureIgnoreCase));
+                    var pp = CurrentProvider;
+                    if (pp != null)
+                    {
+                        EnableBasemapFetching(pp);
+                    }
                 }
             }
             catch (Exception ex)
@@ -577,28 +455,38 @@ namespace DotSpatial.Plugins.WebMap
 
         private void SerializationManagerSerializing(object sender, SerializingEventArgs e)
         {
-            App.SerializationManager.SetCustomSetting(PluginName + "_BasemapName", _provider.Name);
-            App.SerializationManager.SetCustomSetting(PluginName + "_Opacity", _opacity.ToString());
+            var p = CurrentProvider;
+            App.SerializationManager.SetCustomSetting(PluginName + "_BasemapName", p != null? p.Name : Properties.Resources.None);
+            App.SerializationManager.SetCustomSetting(PluginName + "_Opacity", _opacity.ToString(CultureInfo.InvariantCulture));
         }
 
         private void SerializationManagerNewProject(object sender, SerializingEventArgs e)
         {
             //deactivate the web map
-            if (_baseMapLayer != null)
-            {
-                DisableBasemapLayer();
-                _provider = _emptyProvider;
-                _serviceDropDown.SelectedItem = _provider;
-            }
+            if (_baseMapLayer == null) return;
+            DisableBasemapLayer();
+            _serviceDropDown.SelectedItem = _emptyProvider;
         }
 
         private void ServiceSelected(object sender, SelectedValueChangedEventArgs e)
         {
-            _provider = e.SelectedItem as ServiceProvider;
-            if (_provider==null ||_provider.Name == resources.None)
+            var p = CurrentProvider;
+            if (p == null || p.Name == Properties.Resources.None)
+            {
                 DisableBasemapLayer();
+            }
             else
-                EnableBasemapFetching(_provider.Name, _provider.Url);
+            {
+                _optionsAction.Enabled = p.Configure != null;
+                if (p.NeedConfigure)
+                {
+                    if (p.Configure != null)
+                    {
+                        p.Configure();
+                    }
+                }
+                EnableBasemapFetching(p);
+            }
         }
 
         /// <summary>
@@ -607,112 +495,78 @@ namespace DotSpatial.Plugins.WebMap
         private void UpdateStichedBasemap(DoWorkEventArgs e)
         {
             var map = App.Map as Map;
-            if (map != null)
+            if (map == null) return;
+            
+            var bwProgress = (Func<int, bool>) (delegate(int p)
             {
-                var rectangle = map.Bounds;
-                var webMercExtent = map.ViewExtents;
-
-                //Clip the reported Web Merc Envelope to be within possible Web Merc extents
-                //  This fixes an issue with Reproject returning bad results for very large (impossible) web merc extents reported from the Map
-                var webMercTopLeftX = TileCalculator.Clip(webMercExtent.MinX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
-                var webMercTopLeftY = TileCalculator.Clip(webMercExtent.MaxY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
-                var webMercBtmRightX = TileCalculator.Clip(webMercExtent.MaxX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
-                var webMercBtmRightY = TileCalculator.Clip(webMercExtent.MinY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
-
-                //report progress and check for cancel
-                _bw.ReportProgress(25);
+                _bw.ReportProgress(p);
                 if (_bw.CancellationPending)
                 {
                     e.Cancel = true;
-                    return;
+                    return false;
                 }
+                return true;
+            });
 
-                //Get the web mercator vertices of the current map view
-                var mapVertices = new[] { webMercTopLeftX, webMercTopLeftY, webMercBtmRightX, webMercBtmRightY };
+            var rectangle = map.Bounds;
+            var webMercExtent = map.ViewExtents;
 
-                double[] z = { 0, 0 };
+            //Clip the reported Web Merc Envelope to be within possible Web Merc extents
+            //  This fixes an issue with Reproject returning bad results for very large (impossible) web merc extents reported from the Map
+            var webMercTopLeftX = TileCalculator.Clip(webMercExtent.MinX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
+            var webMercTopLeftY = TileCalculator.Clip(webMercExtent.MaxY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
+            var webMercBtmRightX = TileCalculator.Clip(webMercExtent.MaxX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
+            var webMercBtmRightY = TileCalculator.Clip(webMercExtent.MinY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
+            
+            if (!bwProgress(25)) return;
 
-                //Reproject from web mercator to WGS1984 geographic
-                Reproject.ReprojectPoints(mapVertices, z, WebMercProj, Wgs84Proj, 0, mapVertices.Length / 2);
-                var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
+            //Get the web mercator vertices of the current map view
+            var mapVertices = new[] { webMercTopLeftX, webMercTopLeftY, webMercBtmRightX, webMercBtmRightY };
+            double[] z = { 0, 0 };
 
-                //report progress and check for cancel
-                _bw.ReportProgress(40);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
+            //Reproject from web mercator to WGS1984 geographic
+            Reproject.ReprojectPoints(mapVertices, z, WebMercProj, Wgs84Proj, 0, mapVertices.Length / 2);
+            var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
+            
+            if (!bwProgress(40)) return;
 
-                //Grab the tiles
-                var tiles = _tileManager.GetTiles(geogEnv, rectangle);
+            //Grab the tiles
+            var tiles = _tileManager.GetTiles(geogEnv, rectangle, _bw);
+            if (!bwProgress(50)) return;
 
-                //report progress and check for cancel
-                _bw.ReportProgress(60);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
+            //Stitch them into a single image
+            var stitchedBasemap = TileCalculator.StitchTiles(tiles.Bitmaps, _opacity);
+            var tileImage = new InRamImageData(stitchedBasemap);
 
-                //Stitch them into a single image
-                var stitchedBasemap = TileCalculator.StitchTiles(tiles);
+            //report progress and check for cancel
+            if (!bwProgress(70)) return;
 
-                _basemapImage = stitchedBasemap;
+            // Tiles will have often slightly different bounds from what we are displaying on screen
+            // so we need to get the top left and bottom right tiles' bounds to get the proper extent
+            // of the tiled image
+            var tileVertices = new[]
+            {
+                tiles.TopLeftTile.TopLeft().X, tiles.TopLeftTile.TopLeft().Y,
+                tiles.BottomRightTile.BottomRight().X, tiles.BottomRightTile.BottomRight().Y
+            };
 
-                stitchedBasemap = GetTransparentBasemapImage(stitchedBasemap, _opacity);
+            //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map
+            Reproject.ReprojectPoints(tileVertices, z, Wgs84Proj, WebMercProj, 0, tileVertices.Length / 2);
 
-                var tileImage = new InRamImageData(stitchedBasemap);
+            tileImage.Bounds = new RasterBounds(stitchedBasemap.Height, stitchedBasemap.Width,
+                new Extent(tileVertices[0], tileVertices[3], tileVertices[2], tileVertices[1]));
 
-                //report progress and check for cancel
-                _bw.ReportProgress(70);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
+            //report progress and check for cancel
+            if (!bwProgress(90)) return;
 
-                //Tiles will have often slightly different bounds from what we are displaying on screen
-                // so we need to get the top left and bottom right tiles' bounds to get the proper extent
-                // of the tiled image
-                var topLeftTile = tiles[0, 0];
-                var bottomRightTile = tiles[tiles.GetLength(0) - 1, tiles.GetLength(1) - 1];
-
-                var tileVertices = new[]
-                                       {
-                                           topLeftTile.Envelope.TopLeft().X, topLeftTile.Envelope.TopLeft().Y,
-                                           bottomRightTile.Envelope.BottomRight().X,
-                                           bottomRightTile.Envelope.BottomRight().Y
-                                       };
-
-                //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map
-                Reproject.ReprojectPoints(tileVertices, z, Wgs84Proj, WebMercProj, 0, tileVertices.Length / 2);
-
-                tileImage.Bounds = new RasterBounds(stitchedBasemap.Height, stitchedBasemap.Width,
-                                                    new Extent(tileVertices[0], tileVertices[3], tileVertices[2], tileVertices[1]));
-
-                //report progress and check for cancel
-                _bw.ReportProgress(90);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
-                _baseMapLayer.Image = tileImage;
-
-                //report progress and check for cancel
-                _bw.ReportProgress(99);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-            }
+            _baseMapLayer.Image = tileImage;
+            
+// ReSharper disable RedundantJumpStatement
+            //report progress and check for cancel
+            if (!bwProgress(99)) return;
+// ReSharper restore RedundantJumpStatement
         }
 
         #endregion
-
-        public bool BusySet { get; set; }
     }
 }

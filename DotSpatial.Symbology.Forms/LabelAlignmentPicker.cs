@@ -163,7 +163,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="sender"></param>
         protected virtual void OnValueChanged(LabelAlignmentButton sender)
         {
-            if (ValueChanged != null) ValueChanged(sender, new EventArgs());
+            if (ValueChanged != null) ValueChanged(sender, EventArgs.Empty);
         }
 
         /// <summary>

@@ -138,7 +138,7 @@ namespace DotSpatial.Symbology.Forms
                     ClearError();
                 }
 
-                OnAngleChanged(new EventArgs());
+                OnAngleChanged(EventArgs.Empty);
             }
             base.OnTextChanged(e);
         }

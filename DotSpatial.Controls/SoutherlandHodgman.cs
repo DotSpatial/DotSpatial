@@ -49,7 +49,9 @@ namespace DotSpatial.Controls
         /// Create southerlandHodgman polygon clipper with default clipping rectangle
         /// </summary>
         public SoutherlandHodgman()
-        { }
+        { 
+            ClippingRectangle = new Rectangle(-32000, -32000, 64000, 64000); 
+        }
 
         /// <summary>
         /// Get or set the clipping rectangle used in subsequent Clip calls.

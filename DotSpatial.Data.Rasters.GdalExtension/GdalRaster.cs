@@ -27,6 +27,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using DotSpatial.Projections;
 using OSGeo.GDAL;
+using System.IO;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
@@ -54,6 +55,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             _dataset = fromDataset;
             base.Filename = name;
+            base.Name = Path.GetFileNameWithoutExtension(name);
             ReadHeader();
             int numBands = _dataset.RasterCount;
             if (numBands == 1)
@@ -79,6 +81,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             _dataset = fromDataset;
             _band = fromBand;
             base.Filename = fileName;
+            base.Name = Path.GetFileNameWithoutExtension(fileName);
             ReadHeader();
         }
 
@@ -163,8 +166,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             else
             {
-                Stopwatch sw = new Stopwatch();
+#if DEBUG
+                var sw = new Stopwatch();
                 sw.Start();
+#endif
                 List<T> result = new List<T>();
                 foreach (long index in indices)
                 {
@@ -190,8 +195,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
                     result.Add(data[0]);
                 }
+#if DEBUG
                 sw.Stop();
                 Debug.WriteLine("Time to read values from file:" + sw.ElapsedMilliseconds);
+#endif
                 return result;
             }
         }
@@ -391,7 +398,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 }
                 else
                 {
-                    foreach (GdalRaster<T> raster in Bands)
+                    foreach (var raster in Bands)
                     {
                         raster.NoDataValue = value;
                     }

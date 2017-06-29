@@ -214,14 +214,8 @@ namespace DotSpatial.Data.Forms
             {
                 if (scrVertical.Enabled) scrVertical.Visible = true;
             }
-            if (scrVertical.Visible || scrHorizontal.Visible)
-            {
-                lblCorner.Visible = true;
-            }
-            else
-            {
-                lblCorner.Visible = false;
-            }
+
+            lblCorner.Visible = scrVertical.Visible || scrHorizontal.Visible;
         }
 
         #endregion
@@ -355,24 +349,31 @@ namespace DotSpatial.Data.Forms
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            Rectangle clip = e.ClipRectangle;
-            if (clip.IsEmpty) clip = ClientRectangle;
-            if (IsInitialized == false || _page == null)
+            // CGX TRY CATCH
+            try
             {
-                Initialize(); // redraw the entire page buffer if necessary
+                Rectangle clip = e.ClipRectangle;
+                if (clip.IsEmpty) clip = ClientRectangle;
+                if (IsInitialized == false || _page == null)
+                {
+                    Initialize(); // redraw the entire page buffer if necessary
+                }
+
+                using (var buffer = new Bitmap(clip.Width, clip.Height))
+                using (var g = Graphics.FromImage(buffer))
+                using (var mat = new Matrix())
+                {
+                    mat.Translate(-clip.X, -clip.Y); // draw in "client" coordinates
+                    g.Transform = mat;
+
+                    OnDraw(new PaintEventArgs(g, clip)); // draw content to the small temporary buffer.
+                    e.Graphics.DrawImage(buffer, clip); // draw from our small, temporary buffer to the screen
+                }
             }
-
-            Bitmap buffer = new Bitmap(clip.Width, clip.Height);
-            Graphics g = Graphics.FromImage(buffer);
-            Matrix mat = new Matrix();
-            mat.Translate(-clip.X, -clip.Y); // draw in "client" coordinates
-            g.Transform = mat;
-
-            OnDraw(new PaintEventArgs(g, clip)); // draw content to the small temporary buffer.
-
-            g.Dispose();
-            e.Graphics.DrawImage(buffer, clip); // draw from our small, temporary buffer to the screen
-            buffer.Dispose();
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -408,10 +409,13 @@ namespace DotSpatial.Data.Forms
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            if (_backcolorBrush != null) _backcolorBrush.Dispose();
-            if (_controlBrush != null) _controlBrush.Dispose();
-            if (_backImageBrush != null) _backImageBrush.Dispose();
-            if (_page != null) _page.Dispose();
+            if (disposing)
+            {
+                if (_backcolorBrush != null) _backcolorBrush.Dispose();
+                if (_controlBrush != null) _controlBrush.Dispose();
+                if (_backImageBrush != null) _backImageBrush.Dispose();
+                if (_page != null) _page.Dispose();
+            }
             base.Dispose(disposing);
         }
 

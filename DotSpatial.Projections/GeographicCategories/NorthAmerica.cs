@@ -31,7 +31,7 @@ namespace DotSpatial.Projections.GeographicCategories
     /// </summary>
     public class NorthAmerica : CoordinateSystemCategory
     {
-        #region Private Variables
+        #region Fields
 
         public readonly ProjectionInfo ATS1977;
         public readonly ProjectionInfo AlaskanIslands;
@@ -98,34 +98,6 @@ namespace DotSpatial.Projections.GeographicCategories
             StLawrenceIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
             StPaulIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk66 +no_defs ");
 
-            AlaskanIslands.IsLatLon = true;
-            AmericanSamoa1962.IsLatLon = true;
-            Ammassalik1958.IsLatLon = true;
-            ATS1977.IsLatLon = true;
-            Barbados.IsLatLon = true;
-            Bermuda1957.IsLatLon = true;
-            Bermuda2000.IsLatLon = true;
-            CapeCanaveral.IsLatLon = true;
-            Guam1963.IsLatLon = true;
-            Helle1954.IsLatLon = true;
-            Jamaica1875.IsLatLon = true;
-            Jamaica1969.IsLatLon = true;
-            NAD1927CGQ77.IsLatLon = true;
-            NAD1927Definition1976.IsLatLon = true;
-            NADMichigan.IsLatLon = true;
-            NorthAmerican1983CSRS98.IsLatLon = true;
-            NorthAmerican1983HARN.IsLatLon = true;
-            NorthAmericanDatum1927.IsLatLon = true;
-            NorthAmericanDatum1983.IsLatLon = true;
-            OldHawaiian.IsLatLon = true;
-            PuertoRico.IsLatLon = true;
-            Qornoq.IsLatLon = true;
-            Qornoq1927.IsLatLon = true;
-            Scoresbysund1952.IsLatLon = true;
-            StGeorgeIsland.IsLatLon = true;
-            StLawrenceIsland.IsLatLon = true;
-            StPaulIsland.IsLatLon = true;
-
             AlaskanIslands.GeographicInfo.Name = "GCS_Alaskan_Islands";
             AmericanSamoa1962.GeographicInfo.Name = "GCS_American_Samoa_1962";
             Ammassalik1958.GeographicInfo.Name = "GCS_Ammassalik_1958";
@@ -154,14 +126,6 @@ namespace DotSpatial.Projections.GeographicCategories
             StLawrenceIsland.GeographicInfo.Name = "GCS_St_Lawrence_Island";
             StPaulIsland.GeographicInfo.Name = "GCS_St_Paul_Island";
         }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

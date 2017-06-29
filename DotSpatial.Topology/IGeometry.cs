@@ -285,6 +285,13 @@ namespace DotSpatial.Topology
         /// </summary>
         XmlReader ToGmlFeature();
 
+        /// <summary>
+        /// Rotates the geometry by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the geometry gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        void Rotate(Coordinate Origin, double radAngle);
+
         #endregion
 
         #region Properties

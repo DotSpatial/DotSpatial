@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using DotSpatial.Data;
 
 namespace DotSpatial.Symbology.Forms
 {

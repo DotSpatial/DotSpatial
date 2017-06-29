@@ -21,9 +21,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using DotSpatial.Serialization;
@@ -87,6 +89,7 @@ namespace DotSpatial.Data
         /// Reading and writing from the disk is faster when done all at once.  The larger this number the more effective
         /// the disk management, but the more ram will be required (and the more likely to trip an out of memory error).
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int BufferSize
         {
             get { return _bufferSize; }
@@ -96,6 +99,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets whether or not the attributes have all been loaded into the data table.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override bool AttributesPopulated
         {
             get
@@ -111,7 +115,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// This re-directs the DataTable to work with the attribute Table instead.
         /// </summary>
-        public override DataTable DataTable
+        public override IDataTable DataTable // CGX AERO GLZ
         {
             get
             {
@@ -126,6 +130,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// A general header structure that stores some basic information about the shapefile.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ShapefileHeader Header
         {
             get { return _header; }
@@ -135,13 +140,22 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the attribute Table used by this shapefile.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public AttributeTable Attributes
         {
             get { return _attributeTable; }
             set
             {
+                if (_attributeTable == value) return;
+                if (_attributeTable != null)
+                {
+                    _attributeTable.AttributesFilled -= AttributeTableAttributesFilled;
+                }
                 _attributeTable = value;
-                _attributeTable.AttributesFilled += AttributeTableAttributesFilled;
+                if (_attributeTable != null)
+                {
+                    _attributeTable.AttributesFilled += AttributeTableAttributesFilled;
+                }
             }
         }
 
@@ -187,7 +201,7 @@ namespace DotSpatial.Data
             // Don't bother to use a sampling approach if the number of rows is on the same order of magnitude as the number of samples.
             if (maxSampleSize > 0 && maxSampleSize < NumRows() / 2)
             {
-                DataTable sample = new DataTable();
+                IDataTable sample = new DS_DataTable(); // CGX AERO GLZ
                 sample.Columns.AddRange(GetColumns());
                 Dictionary<int, int> usedRows = new Dictionary<int, int>();
                 int samplesPerPage = maxSampleSize / ap.NumPages();
@@ -214,7 +228,7 @@ namespace DotSpatial.Data
                 {
                     try
                     {
-                        DataRow[] dr = sample.Select(expressions[i]);
+                        IDataRow[] dr = sample.Select(expressions[i]); // CGX AERO GLZ
                         counts[i] += dr.Length;
                     }
                     catch (Exception ex)
@@ -229,7 +243,7 @@ namespace DotSpatial.Data
             {
                 for (int i = 0; i < expressions.Length; i++)
                 {
-                    DataRow[] dr = ap[page].Select(expressions[i]);
+                    IDataRow[] dr = ap[page].Select(expressions[i]); // CGX AERO GLZ
                     counts[i] += dr.Length;
                 }
                 pm.CurrentValue = page;
@@ -277,16 +291,13 @@ namespace DotSpatial.Data
         /// <returns>A correct shapefile object which is exclusively for reading the .shp data</returns>
         public static new Shapefile OpenFile(string fileName, IProgressHandler progressHandler)
         {
-            string ext = Path.GetExtension(fileName).ToLower();
+            var ext = Path.GetExtension(fileName);
+            if (ext != null) ext = ext.ToLower();
             if (ext != ".shp" && ext != ".shx" && ext != ".dbf")
                 throw new ArgumentException(String.Format("The file extension {0} is not supported by Shapefile data provider.", ext));
             string name = Path.ChangeExtension(fileName, ".shp");
-            ShapefileHeader head = new ShapefileHeader();
+            var head = new ShapefileHeader();
             head.Open(name);
-            PointShapefile psf;
-            LineShapefile lsf;
-            PolygonShapefile pgsf;
-            MultiPointShapefile mpsf;
             switch (head.ShapeType)
             {
                 case ShapeType.MultiPatch:
@@ -295,7 +306,7 @@ namespace DotSpatial.Data
                 case ShapeType.MultiPoint:
                 case ShapeType.MultiPointM:
                 case ShapeType.MultiPointZ:
-                    mpsf = new MultiPointShapefile();
+                    var mpsf = new MultiPointShapefile();
                     mpsf.Open(name, progressHandler);
                     return mpsf;
 
@@ -305,26 +316,21 @@ namespace DotSpatial.Data
                 case ShapeType.Point:
                 case ShapeType.PointM:
                 case ShapeType.PointZ:
-
-                    // Instantiate a new object to handle the point shapefile
-                    psf = new PointShapefile();
-
-                    // Open the geometric components of the data (but not the dbf components)
+                    var psf = new PointShapefile();
                     psf.Open(name, progressHandler);
-
                     return psf;
 
                 case ShapeType.Polygon:
                 case ShapeType.PolygonM:
                 case ShapeType.PolygonZ:
-                    pgsf = new PolygonShapefile();
+                    var pgsf = new PolygonShapefile();
                     pgsf.Open(name, progressHandler);
                     return pgsf;
 
                 case ShapeType.PolyLine:
                 case ShapeType.PolyLineM:
                 case ShapeType.PolyLineZ:
-                    lsf = new LineShapefile();
+                    var lsf = new LineShapefile();
                     lsf.Open(name, progressHandler);
                     return lsf;
             }
@@ -347,7 +353,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="index">the integer row (or FID) index</param>
         /// <param name="values">The object array holding the new values to store.</param>
-        public override void Edit(int index, DataRow values)
+        public override void Edit(int index, IDataRow values) // CGX AERO GLZ
         {
             _attributeTable.Edit(index, values);
         }
@@ -365,13 +371,13 @@ namespace DotSpatial.Data
         /// Saves the new row to the data source and updates the file with new content.
         /// </summary>
         /// <param name="values">The values organized against the dictionary of field names.</param>
-        public override void AddRow(DataRow values)
+        public override void AddRow(IDataRow values) // CGX AERO GLZ
         {
             _attributeTable.AddRow(values);
         }
 
         /// <inheritdoc />
-        public override DataTable GetAttributes(int startIndex, int numRows)
+        public override IDataTable GetAttributes(int startIndex, int numRows) // CGX AERO GLZ
         {
             return _attributeTable.SupplyPageOfData(startIndex, numRows);
         }
@@ -381,7 +387,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table)</param>
         /// <param name="pageValues">The DataTable representing the rows to set.  If the row count is larger than the dataset, this will add the rows instead.</param>
-        public new void SetAttributes(int startIndex, DataTable pageValues)
+        public new void SetAttributes(int startIndex, IDataTable pageValues) // CGX AERO GLZ
         {
             // overridden in sub-classes
             _attributeTable.SetAttributes(startIndex, pageValues);
@@ -394,7 +400,7 @@ namespace DotSpatial.Data
             {
                 _attributeTable.Fill(_attributeTable.NumRecords);
             }
-            if (FeatureLookup == null || FeatureLookup.Count == 0)
+            if (FeatureLookup.Count == 0)
             {
                 SetupFeatureLookup();
             }
@@ -402,11 +408,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// reads the attributes from the specified attribute Table.
+        /// Reads the attributes from the specified attribute Table.
         /// </summary>
         public override void FillAttributes()
         {
-            _attributeTable.Fill(NumRows());
+            _attributeTable.AttributesPopulated = false; // attributeTable.Table fills itself if attributes are not populated
             DataTable = _attributeTable.Table;
             base.AttributesPopulated = true;
             // Link the data rows to the vectors in this object
@@ -417,24 +423,10 @@ namespace DotSpatial.Data
         /// </summary>
         private void SetupFeatureLookup()
         {
-            if (!IndexMode)
+            for (var i = 0; i < _attributeTable.Table.Rows.Count; i++)
             {
-                int i = 0;
-
-                foreach (DataRow dr in _attributeTable.Table.Rows)
-                {
-                    Features[i].DataRow = dr;
-                    if (FeatureLookup.ContainsKey(dr))
-                    {
-                        FeatureLookup[dr] = Features[i];
-                    }
-                    else
-                    {
-                        FeatureLookup.Add(dr, Features[i]);
-                    }
-
-                    i++;
-                }
+                Features[i].DataRow = _attributeTable.Table.Rows[i];
+                FeatureLookup[Features[i].DataRow] = Features[i];
             }
         }
 
@@ -453,18 +445,11 @@ namespace DotSpatial.Data
             WriteBytes(headerData, 0, 9994, false);          //  Byte 0          File Code       9994        Integer     Big
             // Bytes 4 - 20 are unused
             WriteBytes(headerData, 24, length, false);       //  Byte 24         File Length     File Length Integer     Big
-
-            // Create a new file stream for a .SHP file
-            FileStream fs = new FileStream(fileName, FileMode.Open);
-
-            // Create a binary writer in order to write the byte values to the file
-            BinaryWriter bw = new BinaryWriter(fs);
-
-            // Actnaully write our byte array to the file
-            bw.Write(headerData);
-
-            // Close the file, which we are now finished writing the header to.
-            bw.Close();
+            using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Open)))
+            {
+                // Actually write our byte array to the file
+                bw.Write(headerData);
+            }
         }
 
         /// <summary>
@@ -594,37 +579,36 @@ namespace DotSpatial.Data
                 throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
             }
 
-            // This will store the header elements that we read from the file.
-            List<ShapeHeader> result = new List<ShapeHeader>();
+            var fileLen = new FileInfo(shxFilename).Length;
+            if (fileLen == 100)
+            {
+                // the file is empty so we are done reading
+                return Enumerable.Empty<ShapeHeader>().ToList();
+            }
 
             // Use a the length of the file to dimension the byte array
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(shxFilename);
-
-            if (bbReader.FileLength == 100)
+            using (var bbReader = new FileStream(shxFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
             {
-                // the file is empty, so we are done
-                bbReader.Close();
+                // Skip the header and begin reading from the first record
+                bbReader.Seek(100, SeekOrigin.Begin);
+
+                _header.ShxLength = (int)(fileLen / 2);
+                var length = (int)(fileLen - 100);
+                var numRecords = length / 8;
+                // Each record consists of 2 Big-endian integers for a total of 8 bytes.
+                // This will store the header elements that we read from the file.
+                var result = new List<ShapeHeader>(numRecords);
+                for (var i = 0; i < numRecords; i++)
+                {
+                    result.Add(new ShapeHeader
+                    {
+                        Offset = bbReader.ReadInt32(Endian.BigEndian),
+                        ContentLength = bbReader.ReadInt32(Endian.BigEndian),
+                    });
+                }
+
                 return result;
             }
-
-            // Skip the header and begin reading from the first record
-            bbReader.Seek(100, SeekOrigin.Begin);
-
-            _header.ShxLength = (int)bbReader.FileLength / 2;
-            long length = bbReader.FileLength - 100;
-
-            long numRecords = length / 8; // Each record consists of 2 Big-endian integers for a total of 8 bytes.
-            for (long i = 0; i < numRecords; i++)
-            {
-                ShapeHeader sh = new ShapeHeader
-                                 {
-                                     Offset = bbReader.ReadInt32(false),
-                                     ContentLength = bbReader.ReadInt32(false)
-                                 };
-                result.Add(sh);
-            }
-            bbReader.Close();
-            return result;
         }
 
         /// <summary>
@@ -657,14 +641,14 @@ namespace DotSpatial.Data
             else
             {
                 // Only add an FID field if there are no attributes at all.
-                DataTable newTable = new DataTable();
+                IDataTable newTable = new DS_DataTable(); // CGX AERO GLZ
                 newTable.Columns.Add("FID");
                 //for (int i = 0; i < Features.Count; i++)
                 //Added by JamesP@esdm.co.uk - Index mode has no attributes and no features - so Features.count is Null and so was not adding any rows and failing
                 int iNumRows = IndexMode ? ShapeIndices.Count : Features.Count;
                 for (int i = 0; i < iNumRows; i++)
                 {
-                    DataRow dr = newTable.NewRow();
+                    IDataRow dr = newTable.NewRow(); // CGX AERO GLZ
                     dr["FID"] = i;
                     newTable.Rows.Add(dr);
                 }
@@ -713,10 +697,10 @@ namespace DotSpatial.Data
         /// <param name="numRows">The integer number of attribute rows to return for the page</param>
         /// <param name="fieldNames">The list or array of fieldnames to return.</param>
         /// <returns>A DataTable populated with data rows with only the specified values.</returns>
-        public override DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public override IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames) // CGX AERO GLZ
         {
             if (AttributesPopulated) return base.GetAttributes(startIndex, numRows, fieldNames);
-            DataTable result = new DataTable();
+            IDataTable result = new DS_DataTable(); // CGX AERO GLZ
             DataColumn[] columns = GetColumns();
             // Always add FID in this paging scenario.
             result.Columns.Add("FID", typeof(int));
@@ -724,7 +708,7 @@ namespace DotSpatial.Data
             {
                 foreach (var col in columns)
                 {
-                    if (col.ColumnName.ToLower() == name.ToLower())
+                    if (String.Equals(col.ColumnName, name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         result.Columns.Add(col);
                         break;
@@ -733,7 +717,7 @@ namespace DotSpatial.Data
             }
             for (int i = 0; i < numRows; i++)
             {
-                DataRow dr = result.NewRow();
+                IDataRow dr = result.NewRow(); // CGX AERO GLZ
                 dr["FID"] = startIndex + i;
                 result.Rows.Add(dr);
             }
@@ -768,12 +752,46 @@ namespace DotSpatial.Data
         /// </summary>
         public override DataColumn[] GetColumns()
         {
-            List<Field> result = new List<Field>();
-            foreach (Field field in _attributeTable.Columns)
+            var result = new DataColumn[_attributeTable.Columns.Count];
+            for (var i = 0; i < _attributeTable.Columns.Count; i++)
             {
-                result.Add(new Field(field.ColumnName, field.TypeCharacter, field.Length, field.DecimalCount));
+                var field = _attributeTable.Columns[i];
+                result[i] = new Field(field.ColumnName, field.TypeCharacter, field.Length, field.DecimalCount);
             }
-            return result.ToArray();
+            return result;
+        }
+
+        /// <summary>
+        /// Checks that shape file can be saved to given fileName.
+        /// </summary>
+        /// <param name="fileName">File name to save.</param>
+        /// <param name="overwrite">Overwrite file or not.</param>
+        protected void EnsureValidFileToSave(string fileName, bool overwrite)
+        {
+            string dir = Path.GetDirectoryName(fileName);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            else if (File.Exists(fileName))
+            {
+                if (fileName != Filename && overwrite == false) throw new ArgumentOutOfRangeException("fileName", "File exists and overwrite = False.");
+                File.Delete(fileName);
+                var shx = Path.ChangeExtension(fileName, ".shx");
+                if (File.Exists(shx)) File.Delete(shx);
+            }
+        }
+
+        /// <summary>
+        /// Saves header
+        /// </summary>
+        /// <param name="fileName">File to save.</param>
+        protected void HeaderSaveAs(string fileName)
+        {
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
+            Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
+            Header.SaveAs(fileName);
         }
     }
 }

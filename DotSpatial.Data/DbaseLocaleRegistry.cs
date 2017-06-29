@@ -27,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
-using DotSpatial.Mono;
 
 namespace DotSpatial.Data
 {
@@ -90,8 +89,6 @@ namespace DotSpatial.Data
                                 return Encoding.GetEncoding(CultureInfo.TextInfo.ANSICodePage);
                             case CodePageChoice.Mac:
                                 return Encoding.GetEncoding(CultureInfo.TextInfo.MacCodePage);
-                            case CodePageChoice.Oem:
-                            case CodePageChoice.Custom:
                             default:
                                 return Encoding.GetEncoding(CultureInfo.TextInfo.OEMCodePage);
                         }

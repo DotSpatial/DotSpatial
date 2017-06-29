@@ -18,11 +18,14 @@
 //
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Data
 {
     /// <summary>
     /// PyramidByteMismatch
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class PyramidByteMismatchException : PyramidException
     {
         #region Constructors

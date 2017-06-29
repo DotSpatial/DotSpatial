@@ -110,7 +110,7 @@ namespace DotSpatial.Projections.ProjectedCategories
         public NationalGridsNewZealand()
         {
             ChathamIslands1979MapGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-44 +lon_0=-176.5 +k=0.999600 +x_0=350000 +y_0=650000 +ellps=intl +units=m +no_defs ");
-            NewZealandMapGrid = ProjectionInfo.FromProj4String("+proj=nzmg +lat_0=-41 +lon_0=173 +x_0=2510000 +y_0=6023150 +ellps=intl +units=m +no_defs ");
+            NewZealandMapGrid = ProjectionInfo.FromProj4String("+proj=nzmg +lat_0=-41 +lon_0=173 +x_0=2510000 +y_0=6023150 +ellps=intl +datum=nzgd49 +units=m +no_defs ");
             NewZealandNorthIsland = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-39 +lon_0=175.5 +k=1.000000 +x_0=274319.5243848086 +y_0=365759.3658464114 +ellps=intl +to_meter=0.9143984146160287 +no_defs ");
             NewZealandSouthIsland = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-44 +lon_0=171.5 +k=1.000000 +x_0=457199.2073080143 +y_0=457199.2073080143 +ellps=intl +to_meter=0.9143984146160287 +no_defs ");
             NZGD1949AmuriCircuit = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-42.68911658333333 +lon_0=173.0101333888889 +k=1.000000 +x_0=300000 +y_0=700000 +ellps=intl +units=m +no_defs ");

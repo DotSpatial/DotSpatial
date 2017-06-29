@@ -27,7 +27,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Tool
+    /// Common implementation of IMapFunction interface.
     /// </summary>
     public class MapFunction : IMapFunction
     {
@@ -77,12 +77,9 @@ namespace DotSpatial.Controls
 
         #region Private Variables
 
-        private Image _buttonImage;
-        private Bitmap _cursorBitmap;
         private bool _enabled;
         private IMap _map;
         private string _name;
-        private bool _preventBackBuffer;
 
         #endregion
 
@@ -166,6 +163,12 @@ namespace DotSpatial.Controls
             OnMouseWheel(e);
         }
 
+        /// <inheritdoc />
+        public void DoKeyDown(KeyEventArgs e)
+        {
+            OnKeyDown(e);
+        }
+
         /// <summary>
         /// This is the method that is called by the drawPanel.  The graphics coordinates are
         /// in pixels relative to the image being edited.
@@ -228,81 +231,63 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// fires the KeyUp event
+        /// Allows for inheriting tools to control KeyUp.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">A KeyEventArgs parameter</param>
         protected virtual void OnKeyUp(KeyEventArgs e)
         {
-            if (KeyUp == null)
-            {
-                return;
-            }
-            KeyUp(this, e);
+            var h = KeyUp;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
-        /// Fires the DoubleClick event
+        /// Allows for inheriting tools to control OnMouseDoubleClick.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">A GeoMouseArgs parameter</param>
         protected virtual void OnMouseDoubleClick(GeoMouseArgs e)
         {
-            if (MouseDoubleClick == null)
-            {
-                return;
-            }
-            MouseDoubleClick(this, e);
+            var h = MouseDoubleClick;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
-        /// fires the MouseDown event
+        /// Allows for inheriting tools to control OnMouseDown.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">A GeoMouseArgs parameter</param>
         protected virtual void OnMouseDown(GeoMouseArgs e)
         {
-            if (MouseDown == null)
-            {
-                return;
-            }
-            MouseDown(this, e);
+            var h = MouseDown;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
-        /// allows for inheriting tools to control OnMouseMove
+        /// Allows for inheriting tools to control OnMouseMove.
         /// </summary>
         /// <param name="e">A GeoMouseArgs parameter</param>
         protected virtual void OnMouseMove(GeoMouseArgs e)
         {
-            if (MouseMove == null)
-            {
-                return;
-            }
-            MouseMove(this, e);
+            var h = MouseMove;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
-        /// Fires the MouseUP event
+        /// Allows for inheriting tools to control OnMouseUp.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">A GeoMouseArgs parameter</param>
         protected virtual void OnMouseUp(GeoMouseArgs e)
         {
-            if (MouseUp == null)
-            {
-                return;
-            }
-            MouseUp(this, e);
+            var h = MouseUp;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
-        /// Allows for inheriting tools to override the behavior
+        /// Allows for inheriting tools to control OnMouseWheel.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">A GeoMouseArgs parameter</param>
         protected virtual void OnMouseWheel(GeoMouseArgs e)
         {
-            if (MouseWheel == null)
-            {
-                return;
-            }
-            MouseWheel(this, e);
+            var h = MouseWheel;
+            if (h != null) h(this, e);
         }
 
         #endregion
@@ -312,28 +297,18 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Describes a button image
         /// </summary>
-        [Category("Appearance"),
-         Description("This controls is the image that will be used for buttons that activate this tool.")]
-        public Image ButtonImage
-        {
-            get { return _buttonImage; }
-            set { _buttonImage = value; }
-        }
+        [Category("Appearance"), Description("This controls is the image that will be used for buttons that activate this tool.")]
+        public Image ButtonImage { get; set; }
 
         /// <summary>
         /// This controls the cursor that this tool uses, unless the action has been cancelled by attempting
         /// to use the tool outside the bounds of the image.
         /// </summary>
-        [Category("Appearance"),
-         Description(
-             "This controls the cursor that this tool uses, unless the action has been cancelled by " +
-             "attempting to use the tool outside the bounds of the image."
-             )]
-        public Bitmap CursorBitmap
-        {
-            get { return _cursorBitmap; }
-            set { _cursorBitmap = value; }
-        }
+        [Category("Appearance"), Description(
+            "This controls the cursor that this tool uses, unless the action has been cancelled by " +
+            "attempting to use the tool outside the bounds of the image."
+            )]
+        public Bitmap CursorBitmap { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that is true if this tool should be handed drawing instructions
@@ -370,11 +345,7 @@ namespace DotSpatial.Controls
         /// If this is false, then the typical contents from the map's back buffer are drawn first,
         /// followed by the contents of this tool.
         /// </summary>
-        public virtual bool PreventBackBuffer
-        {
-            get { return _preventBackBuffer; }
-            protected set { _preventBackBuffer = value; }
-        }
+        public virtual bool PreventBackBuffer { get; protected set; }
 
         /// <inheritdoc/>
         public YieldStyles YieldStyle { get; set; }
@@ -415,10 +386,9 @@ namespace DotSpatial.Controls
         protected virtual void OnActivate()
         {
             _enabled = true;
-            if (FunctionActivated != null)
-            {
-                FunctionActivated(this, EventArgs.Empty);
-            }
+
+            var h = FunctionActivated;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -427,10 +397,9 @@ namespace DotSpatial.Controls
         protected virtual void OnDeactivate()
         {
             _enabled = false;
-            if (FunctionDeactivated != null)
-            {
-                FunctionDeactivated(this, EventArgs.Empty);
-            }
+
+            var h = FunctionDeactivated;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -446,16 +415,6 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnUnload()
         {
-        }
-
-        #endregion
-
-        #region IMapFunction Members
-
-        /// <inheritdoc />
-        public void DoKeyDown(KeyEventArgs e)
-        {
-            OnKeyDown(e);
         }
 
         #endregion

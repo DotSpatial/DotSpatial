@@ -101,12 +101,12 @@ namespace DotSpatial.Projections
 
                     case DatumType.Param3:
                         Debug.Assert(_toWgs84.Length >= 3);
-                        str = String.Format(" +towgs84={0},{1},{2}", _toWgs84[0], _toWgs84[1], _toWgs84[2]);
+                        str = String.Format(CultureInfo.InvariantCulture, " +towgs84={0},{1},{2}", _toWgs84[0], _toWgs84[1], _toWgs84[2]);
                         break;
 
                     case DatumType.Param7:
                         Debug.Assert(_toWgs84.Length >= 7);
-                        str = String.Format(" +towgs84={0},{1},{2},{3},{4},{5},{6}",
+                        str = String.Format(CultureInfo.InvariantCulture, " +towgs84={0},{1},{2},{3},{4},{5},{6}",
                                             _toWgs84[0],
                                             _toWgs84[1],
                                             _toWgs84[2],

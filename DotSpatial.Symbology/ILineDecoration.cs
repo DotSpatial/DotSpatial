@@ -39,6 +39,11 @@ namespace DotSpatial.Symbology
         /// <param name="scaleWidth">The double scale width for controling markers</param>
         void Draw(Graphics g, GraphicsPath path, double scaleWidth);
 
+        /// <summary>
+        /// Gets the size that is needed to draw this decoration with max. 2 symbols.
+        /// </summary>
+        Size GetLegendSymbolSize();
+
         #endregion
 
         #region Properties
@@ -88,6 +93,15 @@ namespace DotSpatial.Symbology
         /// line.  (not each segment).
         /// </summary>
         int NumSymbols
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the percentual position between line start and end at which the single decoration gets drawn.
+        /// </summary>
+        int PercentualPosition
         {
             get;
             set;

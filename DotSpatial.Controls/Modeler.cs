@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Data;
@@ -37,6 +38,8 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A modeler form which allows users to create models with visual representations of tools
     /// </summary>
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class Modeler : UserControl
     {
         #region ------------------- Class Variables
@@ -314,16 +317,19 @@ namespace DotSpatial.Controls
             get { return _toolShape; }
             set
             {
-                Stopwatch sw = new Stopwatch();
+#if DEBUG
+                var sw = new Stopwatch();
                 sw.Start();
-
+#endif
                 foreach (ModelElement modelEl in _modelElements)
                 {
                     if (modelEl as ToolElement != null)
                         modelEl.Shape = value;
                 }
+#if DEBUG
                 sw.Stop();
                 Debug.WriteLine("my sw: " + sw.ElapsedMilliseconds);
+#endif
 
                 _toolShape = value;
                 IsInitialized = false;
@@ -488,7 +494,7 @@ namespace DotSpatial.Controls
                                      Shape = _dataShape,
                                      Name = name
                                  };
-            de.Name = par.ModelName != string.Empty ? par.ModelName : par.Name;
+            de.Name = string.IsNullOrEmpty(par.ModelName) ? par.Name : par.ModelName;
             AddElement(de, location);
             par.ModelName = de.Name;
             return de;
@@ -714,8 +720,7 @@ namespace DotSpatial.Controls
             modelXmlDoc.AppendChild(root);
 
             //Saves the Tools and their output configuration to the model
-            List<ModelElement> toolElements = _modelElements.FindAll(o => (o as ToolElement != null));
-            foreach (ToolElement te in toolElements)
+            foreach (var te in _modelElements.OfType<ToolElement>())
             {
                 XmlElement tool = modelXmlDoc.CreateElement("Tool");
                 tool.SetAttribute("ToolUniqueName", te.Tool.AssemblyQualifiedName);
@@ -1020,8 +1025,7 @@ namespace DotSpatial.Controls
             }
 
             //Finaly we clean up any arrows that are hanging around
-            List<ModelElement> arrowElements = _modelElements.FindAll(o => (o as ArrowElement != null));
-            foreach (ArrowElement selectedElement in arrowElements)
+            foreach (var selectedElement in _modelElements.OfType<ArrowElement>())
             {
                 if (!_modelElements.Contains(selectedElement.StartElement) || !_modelElements.Contains(selectedElement.StopElement))
                     DeleteElement(selectedElement);
@@ -1294,8 +1298,6 @@ namespace DotSpatial.Controls
             {
                 case Keys.Delete:
                     DeleteSelectedElements();
-                    break;
-                default:
                     break;
             }
         }

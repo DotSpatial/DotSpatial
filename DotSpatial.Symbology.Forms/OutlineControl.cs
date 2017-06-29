@@ -147,7 +147,12 @@ namespace DotSpatial.Symbology.Forms
             this.sldOutlineOpacity.ShowMaximum = true;
             this.sldOutlineOpacity.ShowMinimum = true;
             this.sldOutlineOpacity.ShowTicks = true;
-            this.sldOutlineOpacity.ShowValue = false;
+
+            //this.sldOutlineOpacity.ShowValue = false;
+            // CGX
+            this.sldOutlineOpacity.ShowValue = true;
+            // CGX END
+            
             this.sldOutlineOpacity.SliderColor = Color.SteelBlue;
             this.sldOutlineOpacity.SliderRadius = 4F;
             this.sldOutlineOpacity.TickColor = Color.DarkGray;
@@ -287,7 +292,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnOutlineChanged()
         {
-            if (OutlineChanged != null) OutlineChanged(this, new EventArgs());
+            if (OutlineChanged != null) OutlineChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -295,7 +300,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnChangesApplied()
         {
-            if (ChangesApplied != null) ChangesApplied(this, new EventArgs());
+            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
         }
 
         #endregion
@@ -309,7 +314,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 _pattern.UseOutline = chkUseOutline.Checked;
             }
-            OutlineChanged(this, new EventArgs());
+            OutlineChanged(this, EventArgs.Empty);
         }
 
         private void btnEditOutline_Click(object sender, EventArgs e)

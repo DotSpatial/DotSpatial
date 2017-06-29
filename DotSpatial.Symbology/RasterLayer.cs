@@ -39,10 +39,18 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class RasterLayer : Layer, IRasterLayer
     {
-        #region Private Variables
+        #region Fields
 
         [Serialize("Symbolizer", ConstructorArgumentIndex = 1)]
         private IRasterSymbolizer _symbolizer;
+
+        private IGetBitmap _bitmapGetter;
+
+        /// <summary>
+        /// Gets or sets maximum number of cells which can be stored in memory.
+        /// By default it is 8000 * 8000.
+        /// </summary>
+        public static int MaxCellsInMemory = 8000 * 8000;
 
         #endregion
 
@@ -55,13 +63,8 @@ namespace DotSpatial.Symbology
         /// <param name="symbolizer"></param>
         public RasterLayer(string fileName, IRasterSymbolizer symbolizer)
         {
-            IRaster r = DataManager.DefaultDataManager.OpenRaster(fileName);
-            DataSet = r;
-            _symbolizer = symbolizer;
-            _symbolizer.ParentLayer = this;
-            _symbolizer.Scheme.SetParentItem(this);
-
-            symbolizer.ColorSchemeUpdated += _symbolizer_SymbologyUpdated;
+            DataSet = DataManager.DefaultDataManager.OpenRaster(fileName);
+            Symbolizer = symbolizer;
         }
 
         /// <summary>
@@ -70,10 +73,10 @@ namespace DotSpatial.Symbology
         /// <param name="fileName">The string fileName to use in order to open the file</param>
         /// <param name="inProgressHandler">The progress handler to show progress messages</param>
         public RasterLayer(string fileName, IProgressHandler inProgressHandler)
+            : base(inProgressHandler)
         {
-            base.ProgressHandler = inProgressHandler;
-            IRaster r = DataManager.DefaultDataManager.OpenRaster(fileName, true, inProgressHandler);
-            Configure(r);
+            DataSet = DataManager.DefaultDataManager.OpenRaster(fileName, true, inProgressHandler);
+            Symbolizer = new RasterSymbolizer(this);
         }
 
         /// <summary>
@@ -82,7 +85,8 @@ namespace DotSpatial.Symbology
         /// <param name="raster">The raster to create this layer for</param>
         public RasterLayer(IRaster raster)
         {
-            Configure(raster);
+            DataSet = raster;
+            Symbolizer = new RasterSymbolizer(this);
         }
 
         /// <summary>
@@ -91,17 +95,12 @@ namespace DotSpatial.Symbology
         /// <param name="raster">The Raster</param>
         /// <param name="inProgressHandler">The Progress handler for any status updates</param>
         public RasterLayer(IRaster raster, IProgressHandler inProgressHandler)
-        {
-            base.ProgressHandler = inProgressHandler;
-            Configure(raster);
-        }
-
-        private void Configure(IRaster raster)
+            : base(inProgressHandler)
         {
             DataSet = raster;
-            _symbolizer = new RasterSymbolizer(this);
-            _symbolizer.ColorSchemeUpdated += _symbolizer_SymbologyUpdated;
+            Symbolizer = new RasterSymbolizer(this);
         }
+
 
         #endregion
 
@@ -151,11 +150,12 @@ namespace DotSpatial.Symbology
 
             IImageData result = DataManager.DefaultDataManager.CreateImage(fileName, rows, cols, false, progressHandler, bandType);
             int numBlocks = 1;
-            if (rows * cols > 8000 * 8000)
+            const int maxRC = 8000 * 8000;
+            if (rows * cols > maxRC)
             {
-                numBlocks = Convert.ToInt32(Math.Ceiling(8000 * 8000 / (double)cols));
+                numBlocks = Convert.ToInt32(Math.Ceiling(maxRC / (double)cols));
             }
-            int blockRows = (8000 * 8000) / cols;
+            int blockRows = maxRC / cols;
             ProjectionHelper ph = new ProjectionHelper(DataSet.Extent, new Rectangle(0, 0, cols, rows));
             for (int iblock = 0; iblock < numBlocks; iblock++)
             {
@@ -173,12 +173,13 @@ namespace DotSpatial.Symbology
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            // Grid is
-
             if (disposing)
             {
-                _symbolizer = null;
+                BitmapGetter = null;
+                RasterLayerActions = null;
+                Symbolizer = null;
             }
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -246,59 +247,67 @@ namespace DotSpatial.Symbology
         /// <param name="progressHandler"></param>
         protected void DefaultWriteBitmap(IProgressHandler progressHandler)
         {
-            if (DataSet.NumRowsInFile * DataSet.NumColumnsInFile > 8000 * 8000)
+            //CGX ajout de try catch
+            try
             {
-                // For huge images, assume that GDAL or something was needed anyway,
-                // and we would rather avoid having to re-create the pyramids if there is any chance
-                // that the old values will work ok.
-                string pyrFile = Path.ChangeExtension(DataSet.Filename, ".mwi");
-
-                BitmapGetter = CreatePyramidImage(pyrFile, progressHandler);
-                OnItemChanged(this);
-                return;
-            }
-
-            Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows, PixelFormat.Format32bppArgb);
-
-            if (_symbolizer.DrapeVectorLayers == false)
-            {
-                // Generate the colorscheme, modified by hillshading if that hillshading is used all in one pass
-
-                DataSet.DrawToBitmap(Symbolizer, bmp, progressHandler);
-            }
-            else
-            {
-                // work backwards.  when we get to this layer do the colorscheme.
-                // First, use this raster and its colorscheme to drop the background
-                DataSet.PaintColorSchemeToBitmap(Symbolizer, bmp, progressHandler);
-                // Set up a graphics object with a transformation pre-set so drawing a geographic coordinate
-                // will draw to the correct location on the bitmap
-                Graphics g = Graphics.FromImage(bmp);
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-
-                Extent extents = DataSet.Extent;
-                Rectangle target = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                ImageProjection ip = new ImageProjection(extents, target);
-                // Cycle through each layer, and as long as it is not this layer, draw the bmp
-                foreach (ILegendItem layer in GetParentItem().LegendItems)
+                if ((long)DataSet.NumRowsInFile * DataSet.NumColumnsInFile > MaxCellsInMemory)
                 {
-                    // Temporarily I am only interested in doing this for vector datasets
-                    IFeatureLayer fl = layer as IFeatureLayer;
-                    if (fl == null) continue;
-                    fl.DrawSnapShot(g, ip);
+                    // For huge images, assume that GDAL or something was needed anyway,
+                    // and we would rather avoid having to re-create the pyramids if there is any chance
+                    // that the old values will work ok.
+                    string pyrFile = Path.ChangeExtension(DataSet.Filename, ".mwi");
+
+                    BitmapGetter = CreatePyramidImage(pyrFile, progressHandler);
+                    OnItemChanged(this);
+                    return;
                 }
-                if (Symbolizer.ShadedRelief.IsUsed)
+
+                Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows, PixelFormat.Format32bppArgb);
+
+                if (_symbolizer.DrapeVectorLayers == false)
                 {
-                    // After we have drawn the underlying texture, apply a hillshade if it is requested
-                    Symbolizer.PaintShadingToBitmap(bmp, progressHandler);
+                    // Generate the colorscheme, modified by hillshading if that hillshading is used all in one pass
+
+                    DataSet.DrawToBitmap(Symbolizer, bmp, progressHandler);
                 }
+                else
+                {
+                    // work backwards.  when we get to this layer do the colorscheme.
+                    // First, use this raster and its colorscheme to drop the background
+                    DataSet.PaintColorSchemeToBitmap(Symbolizer, bmp, progressHandler);
+                    // Set up a graphics object with a transformation pre-set so drawing a geographic coordinate
+                    // will draw to the correct location on the bitmap
+                    Graphics g = Graphics.FromImage(bmp);
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    Extent extents = DataSet.Extent;
+                    Rectangle target = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                    ImageProjection ip = new ImageProjection(extents, target);
+                    // Cycle through each layer, and as long as it is not this layer, draw the bmp
+                    foreach (ILegendItem layer in GetParentItem().LegendItems)
+                    {
+                        // Temporarily I am only interested in doing this for vector datasets
+                        IFeatureLayer fl = layer as IFeatureLayer;
+                        if (fl == null) continue;
+                        fl.DrawSnapShot(g, ip);
+                    }
+                    if (Symbolizer.ShadedRelief.IsUsed)
+                    {
+                        // After we have drawn the underlying texture, apply a hillshade if it is requested
+                        Symbolizer.PaintShadingToBitmap(bmp, progressHandler);
+                    }
+                }
+                InRamImage image = new InRamImage(bmp);
+                image.Bounds = DataSet.Bounds.Copy();
+                BitmapGetter = image;
+                Symbolizer.Validate();
+                OnInvalidate(this, EventArgs.Empty);
+                OnItemChanged();
             }
-            InRamImage image = new InRamImage(bmp);
-            image.Bounds = DataSet.Bounds.Copy();
-            BitmapGetter = image;
-            Symbolizer.Validate();
-            OnInvalidate(this, new EventArgs());
-            OnItemChanged();
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex);
+            }
         }
 
         /// <summary>
@@ -342,13 +351,9 @@ namespace DotSpatial.Symbology
             set
             {
                 if (DataSet != null)
-                {
                     DataSet.Bounds = value;
-                }
                 if (BitmapGetter != null)
-                {
                     BitmapGetter.Bounds = value;
-                }
             }
         }
 
@@ -358,7 +363,16 @@ namespace DotSpatial.Symbology
         /// that that would be slow, so caching is probably better.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IGetBitmap BitmapGetter { get; set; }
+        public IGetBitmap BitmapGetter
+        {
+            get { return _bitmapGetter; }
+            set
+            {
+                if (value == _bitmapGetter) return;
+                if (_bitmapGetter != null) _bitmapGetter.Dispose(); // Dispose previous bitmapGetter to avoid memory leaks
+                _bitmapGetter = value;
+            }
+        }
 
         /// <summary>
         /// Gets the geographic height of the cells for this raster (North-South)
@@ -429,14 +443,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
-                        return DataSet.Bounds.Right();
-                    }
-                }
-                return 0;
+                return (DataSet != null && DataSet.Bounds != null) ? DataSet.Bounds.Right() : 0;
             }
         }
 
@@ -468,9 +475,7 @@ namespace DotSpatial.Symbology
             get
             {
                 if (DataSet != null)
-                {
                     return DataSet.Extent;
-                }
                 return null;
             }
         }
@@ -531,8 +536,9 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                if (_symbolizer == null) return;
                 _symbolizer.IsVisible = value;
-                OnVisibleChanged(this, new EventArgs());
+                OnVisibleChanged(this, EventArgs.Empty);
             }
         }
 
@@ -558,9 +564,7 @@ namespace DotSpatial.Symbology
             get
             {
                 if (base.LegendText == null && DataSet != null)
-                {
                     base.LegendText = DataSet.Name;
-                }
                 return base.LegendText;
             }
             set { base.LegendText = value; }
@@ -616,13 +620,8 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
-                        return DataSet.Bounds.Top();
-                    }
-                }
+                if (DataSet != null && DataSet.Bounds != null)
+                    return DataSet.Bounds.Top();
                 return 0;
             }
         }
@@ -681,6 +680,7 @@ namespace DotSpatial.Symbology
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Description("This gives access to more comprehensive information about the underlying data.")]
         [ShallowCopy]
+        [Browsable(false)]
         public new IRaster DataSet
         {
             get { return base.DataSet as IRaster; }
@@ -694,6 +694,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Category("Symbology")]
         [DisplayName(@"Color Scheme")]
+        [Browsable(false)]
         [ShallowCopy]
         public IRasterSymbolizer Symbolizer
         {
@@ -701,7 +702,9 @@ namespace DotSpatial.Symbology
             set
             {
                 if (_symbolizer == value) return;
+                if (_symbolizer != null) _symbolizer.ColorSchemeUpdated -= _symbolizer_SymbologyUpdated;
                 _symbolizer = value;
+                if (_symbolizer == null) return;
                 _symbolizer.ParentLayer = this;
                 _symbolizer.Scheme.SetParentItem(this);
                 _symbolizer.ColorSchemeUpdated += _symbolizer_SymbologyUpdated;
@@ -716,13 +719,8 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
+                if (DataSet != null && DataSet.Bounds != null)
                         return DataSet.Bounds.Bottom();
-                    }
-                }
                 return 0;
             }
         }
@@ -735,13 +733,8 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
+                if (DataSet != null && DataSet.Bounds != null)
                         return DataSet.Bounds.Left();
-                    }
-                }
                 return 0;
             }
         }
@@ -756,9 +749,7 @@ namespace DotSpatial.Symbology
         {
             var rla = RasterLayerActions;
             if (rla != null)
-            {
                 rla.ShowProperties(this);
-            }
             e.Handled = true;
         }
 
@@ -785,6 +776,34 @@ namespace DotSpatial.Symbology
         private void _symbolizer_SymbologyUpdated(object sender, EventArgs e)
         {
             OnItemChanged();
+        }
+
+        #endregion
+
+        #region Nested Class : ProjectionHelper
+
+        private class ProjectionHelper : IProj
+        {
+            /// <summary>
+            /// Initializes a new instance of the ProjectionHelper class.
+            /// </summary>
+            /// <param name="geographicExtents">The geographic extents to project to and from.</param>
+            /// <param name="viewRectangle">The view rectangle in pixels to transform with.</param>
+            public ProjectionHelper(Extent geographicExtents, Rectangle viewRectangle)
+            {
+                GeographicExtents = geographicExtents;
+                ImageRectangle = viewRectangle;
+            }
+
+            /// <summary>
+            /// Gets or sets the geographic extent to use.
+            /// </summary>
+            public Extent GeographicExtents { get; set; }
+
+            /// <summary>
+            /// Gets or sets the rectangular pixel region to use.
+            /// </summary>
+            public Rectangle ImageRectangle { get; set; }
         }
 
         #endregion

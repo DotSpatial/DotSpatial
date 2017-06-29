@@ -243,4 +243,19 @@
   <data name="LabelSetup_Help5" xml:space="preserve">
     <value>Each group can specify its advanced characteristics.</value>
   </data>
+  <data name="FeatureLayerActions_FeaturesExported" xml:space="preserve">
+    <value>The layer was exported.</value>
+  </data>
+  <data name="FeatureLayerActions_LoadFeatures" xml:space="preserve">
+    <value>Do you want to load the shapefile?</value>
+  </data>
+  <data name="ExpressionControl_EmptyExpression" xml:space="preserve">
+    <value>The expression is empty.</value>
+  </data>
+  <data name="LabelSetup_OneCategoryNeededErr" xml:space="preserve">
+    <value>Categories must contain at least one category!</value>
+  </data>
+  <data name="LabelSetup_OneCategoryNeededErrCaption" xml:space="preserve">
+    <value>Unable to delete category</value>
+  </data>
 </root>

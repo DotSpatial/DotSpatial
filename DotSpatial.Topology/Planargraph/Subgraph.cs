@@ -24,7 +24,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Iesi.Collections.Generic;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -47,7 +46,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         ///
         /// </summary>
-        protected readonly Iesi.Collections.Generic.ISet<Edge> Edges = new HashedSet<Edge>();
+        protected readonly ISet<Edge> Edges = new HashSet<Edge>();
 
         /// <summary>
         ///

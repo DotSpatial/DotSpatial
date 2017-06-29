@@ -56,31 +56,46 @@ namespace DotSpatial.Data
         public virtual IRaster Open(string fileName)
         {
             RasterDataType fileDataType = GetDataType(fileName);
+            Raster raster = null;
             switch (fileDataType)
             {
-                case RasterDataType.SINGLE:
-                    BgdRaster<float> fRast = new BgdRaster<float> { ProgressHandler = _progressHandler, Filename = fileName };
-                    fRast.Open();
-                    return fRast;
-                case RasterDataType.DOUBLE:
-                    BgdRaster<double> dRast = new BgdRaster<double> { ProgressHandler = _progressHandler, Filename = fileName };
-                    dRast.Open();
-                    return dRast;
-                case RasterDataType.SHORT:
-                    BgdRaster<short> sRast = new BgdRaster<short> { ProgressHandler = _progressHandler, Filename = fileName };
-                    sRast.Open();
-                    return sRast;
-                case RasterDataType.INTEGER:
-                    BgdRaster<int> iRast = new BgdRaster<int> { ProgressHandler = _progressHandler, Filename = fileName };
-                    iRast.Open();
-                    return iRast;
                 case RasterDataType.BYTE:
-                    BgdRaster<byte> bRast = new BgdRaster<byte> { ProgressHandler = _progressHandler, Filename = fileName };
-                    bRast.Open();
-                    return bRast;
-                default:
-                    return null;
+                    raster = new BgdRaster<byte> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.SHORT:
+                    raster = new BgdRaster<short> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.INTEGER:
+                    raster = new BgdRaster<int> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.LONG:
+                    raster = new BgdRaster<long> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.SINGLE:
+                    raster = new BgdRaster<float> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.DOUBLE:
+                    raster = new BgdRaster<double> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.SBYTE:
+                    raster = new BgdRaster<sbyte> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.USHORT:
+                    raster = new BgdRaster<ushort> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.UINTEGER:
+                    raster = new BgdRaster<uint> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.ULONG:
+                    raster = new BgdRaster<ulong> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
+                case RasterDataType.BOOL:
+                    raster = new BgdRaster<bool> { ProgressHandler = _progressHandler, Filename = fileName };
+                    break;
             }
+
+            if (raster != null) raster.Open();
+            return raster;
         }
 
         IDataSet IDataProvider.Open(string fileName)
@@ -103,31 +118,38 @@ namespace DotSpatial.Data
         /// <returns>An IRaster</returns>
         public IRaster Create(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
-            if (dataType == typeof(short))
-            {
-                BgdRaster<short> r = new BgdRaster<short>(name, ySize, xSize);
-                return r;
-            }
-            if (dataType == typeof(int))
-            {
-                BgdRaster<int> r = new BgdRaster<int>(name, ySize, xSize);
-                return r;
-            }
-            if (dataType == typeof(float))
-            {
-                BgdRaster<float> r = new BgdRaster<float>(name, ySize, xSize);
-                return r;
-            }
-            if (dataType == typeof(double))
-            {
-                BgdRaster<double> r = new BgdRaster<double>(name, ySize, xSize);
-                return r;
-            }
             if (dataType == typeof(byte))
-            {
-                BgdRaster<byte> r = new BgdRaster<byte>(name, ySize, xSize);
-                return r;
-            }
+                return new BgdRaster<byte>(name, ySize, xSize);
+
+            if (dataType == typeof(short))
+                return new BgdRaster<short>(name, ySize, xSize);
+            
+            if (dataType == typeof(int))
+                return  new BgdRaster<int>(name, ySize, xSize);
+
+            if (dataType == typeof(long))
+                return new BgdRaster<long>(name, ySize, xSize);
+            
+            if (dataType == typeof(float))
+                return new BgdRaster<float>(name, ySize, xSize);
+            
+            if (dataType == typeof(double))
+                return new BgdRaster<double>(name, ySize, xSize);
+
+            if (dataType == typeof(sbyte))
+                return new BgdRaster<sbyte>(name, ySize, xSize);
+
+            if (dataType == typeof(ushort))
+                return new BgdRaster<ushort>(name, ySize, xSize);
+
+            if (dataType == typeof(uint))
+                return new BgdRaster<uint>(name, ySize, xSize);
+
+            if (dataType == typeof(ulong))
+                return new BgdRaster<ulong>(name, ySize, xSize);
+
+            if (dataType == typeof(bool))
+                return new BgdRaster<bool>(name, ySize, xSize);
 
             return null;
         }
@@ -148,16 +170,16 @@ namespace DotSpatial.Data
         /// </summary>
         public static RasterDataType GetDataType(string fileName)
         {
-            BinaryReader br = new BinaryReader(new FileStream(fileName, FileMode.Open));
-            br.ReadInt32(); // NumColumns
-            br.ReadInt32(); // NumRows
-            br.ReadDouble(); // CellWidth
-            br.ReadDouble(); // CellHeight
-            br.ReadDouble(); // xllcenter
-            br.ReadDouble(); // yllcenter
-            RasterDataType result = (RasterDataType)br.ReadInt32();
-            br.Close();
-            return result;
+            using (var br = new BinaryReader(new FileStream(fileName, FileMode.Open)))
+            {
+                br.ReadInt32(); // NumColumns
+                br.ReadInt32(); // NumRows
+                br.ReadDouble(); // CellWidth
+                br.ReadDouble(); // CellHeight
+                br.ReadDouble(); // xllcenter
+                br.ReadDouble(); // yllcenter
+                return (RasterDataType) br.ReadInt32();
+            }
         }
 
         #endregion

@@ -53,7 +53,10 @@ namespace DotSpatial.Symbology
         {
             _character = 'A';
             _fontFamilyName = "DotSpatialSymbols";
-            _color = Color.Green;
+            //_color = Color.Green;
+            //CGX
+            _color = Color.Black;
+            // CGX END
             _style = FontStyle.Regular;
             base.SymbolType = SymbolType.Character;
         }
@@ -345,8 +348,8 @@ namespace DotSpatial.Symbology
             //base.OnDraw(g, scaleSize); // handle rotation etc.
             Brush b = new SolidBrush(_color);
             string txt = new string(new[] { _character });
-            float fontPointSize = (float)(Size.Height * scaleSize * 72 / g.DpiY); // convert pixels to points
-            Font fnt = new Font(_fontFamilyName, fontPointSize, _style);
+            float fontPointSize = (float)(Size.Height * scaleSize);
+            Font fnt = new Font(_fontFamilyName, fontPointSize, _style, GraphicsUnit.Pixel);
             SizeF fSize = g.MeasureString(txt, fnt);
             float x = -fSize.Width / 2;
             float y = -fSize.Height / 2;
@@ -356,8 +359,6 @@ namespace DotSpatial.Symbology
                 // Use the width instead
                 y = -fSize.Width / 2;
             }
-            //float x = (float)(-scaleSize * Size.Width / 2);
-            //float y = (float)(-scaleSize * Size.Height / 2);
             g.DrawString(txt, fnt, b, new PointF(x, y));
             b.Dispose();
         }

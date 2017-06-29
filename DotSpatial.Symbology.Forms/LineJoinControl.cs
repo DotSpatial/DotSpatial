@@ -187,7 +187,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnValueChanged()
         {
-            if (ValueChanged != null) ValueChanged(this, new EventArgs());
+            if (ValueChanged != null) ValueChanged(this, EventArgs.Empty);
         }
 
         #endregion

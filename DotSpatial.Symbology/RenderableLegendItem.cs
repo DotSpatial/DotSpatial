@@ -75,7 +75,7 @@ namespace DotSpatial.Symbology
         public virtual void Invalidate()
         {
             _isInitialized = false;
-            OnInvalidate(this, new EventArgs());
+            OnInvalidate(this, EventArgs.Empty);
         }
 
         #endregion
@@ -131,7 +131,7 @@ namespace DotSpatial.Symbology
                 if (base.Checked != value)
                 {
                     base.Checked = value;
-                    OnVisibleChanged(this, new EventArgs());
+                    OnVisibleChanged(this, EventArgs.Empty);
                 }
             }
         }

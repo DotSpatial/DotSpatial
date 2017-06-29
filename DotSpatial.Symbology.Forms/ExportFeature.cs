@@ -61,55 +61,55 @@ namespace DotSpatial.Symbology.Forms
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            //
+            // 
             // cmbFeatureSpecification
-            //
+            // 
             resources.ApplyResources(this.cmbFeatureSpecification, "cmbFeatureSpecification");
             this.cmbFeatureSpecification.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFeatureSpecification.FormattingEnabled = true;
             this.cmbFeatureSpecification.Name = "cmbFeatureSpecification";
-            //
+            // 
             // label1
-            //
+            // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            //
+            // 
             // label2
-            //
+            // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            //
+            // 
             // txtOutput
-            //
+            // 
             resources.ApplyResources(this.txtOutput, "txtOutput");
             this.txtOutput.Name = "txtOutput";
-            //
+            // 
             // btnBrowse
-            //
+            // 
             resources.ApplyResources(this.btnBrowse, "btnBrowse");
             this.btnBrowse.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.FolderOpen;
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            //
+            // 
             // btnCancel
-            //
+            // 
             resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            //
+            // 
             // btnOK
-            //
+            // 
             resources.ApplyResources(this.btnOK, "btnOK");
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Name = "btnOK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            //
+            // 
             // ExportFeature
-            //
+            // 
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -124,6 +124,7 @@ namespace DotSpatial.Symbology.Forms
             this.ShowIcon = false;
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

@@ -22,14 +22,9 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// LayerEventArgs
-    /// </summary>
     public class LayerEventArgs : EventArgs
     {
         #region Private Variables
-
-        private ILayer _layer;
 
         #endregion
 
@@ -40,7 +35,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public LayerEventArgs(ILayer layer)
         {
-            _layer = layer;
+            Layer = layer;
         }
 
         #endregion
@@ -54,11 +49,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets a layer
         /// </summary>
-        public ILayer Layer
-        {
-            get { return _layer; }
-            protected set { _layer = value; }
-        }
+        public ILayer Layer { get; protected set; }
 
         #endregion
     }

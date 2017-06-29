@@ -138,7 +138,6 @@ namespace DotSpatial.Symbology
         public virtual void LegendSymbol_Painted(Graphics g, Rectangle box)
         {
             // throw new NotImplementedException("This should be implemented in a sub-class");
-            return;
         }
 
         /// <summary>
@@ -273,11 +272,15 @@ namespace DotSpatial.Symbology
             {
                 if (_changeOccured)
                 {
-                    Stopwatch sw = new Stopwatch();
+#if DEBUG
+                    var sw = new Stopwatch();
                     sw.Start();
+#endif
                     OnItemChanged();
+#if DEBUG
                     sw.Stop();
                     Debug.WriteLine("OnItemChanged time:" + sw.ElapsedMilliseconds);
+#endif
                 }
             }
             // Prevent forcing extra negatives.
@@ -327,6 +330,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets a boolean, that if false will prevent this item, or any of its child items
         /// from appearing in the legend when the legend is drawn.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool LegendItemVisible
         {
             get { return _legendItemVisible; }
@@ -363,6 +367,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean that indicates whether or not the legend should draw the child LegendItems for this category.
         /// </summary>
+        [Serialize("IsExpanded")] 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool IsExpanded
         {
@@ -435,6 +440,7 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                if (value == _legendText) return;
                 _legendText = value;
                 OnItemChanged(this);
             }
@@ -510,7 +516,7 @@ namespace DotSpatial.Symbology
                 return;
             }
             if (ItemChanged == null) return;
-            ItemChanged(sender, new EventArgs());
+            ItemChanged(sender, EventArgs.Empty);
         }
 
         /// <summary>
@@ -518,7 +524,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnRemoveItem()
         {
-            if (RemoveItem != null) RemoveItem(this, new EventArgs());
+            if (RemoveItem != null) RemoveItem(this, EventArgs.Empty);
             // Maybe we don't need RemoveItem event.  We could just invoke a method on the parent.
             // One less thing to wire.  But we currently need to wire parents.
         }

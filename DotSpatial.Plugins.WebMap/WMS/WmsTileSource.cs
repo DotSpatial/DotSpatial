@@ -1,49 +1,46 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using BruTile;
 using BruTile.Web;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {
-    public class WmsTileSource : ITileSource
+    public class WmsTileSource : TileSource
     {
-        private readonly ITileProvider _provider;
-        private readonly ITileSchema _schema;
-
-        public WmsTileSource(ITileProvider provider, ITileSchema schema)
+        private WmsTileSource(ITileProvider tileProvider, ITileSchema tileSchema) : base(tileProvider, tileSchema)
         {
-            _provider = provider;
-            _schema = schema;
         }
 
-        public ITileProvider Provider
+        public static WmsTileSource Create(WmsInfo info)
         {
-            get { return _provider; }
+            var schema = new TileSchema
+            {
+                Format = "image/png",
+                Srs = info.CRS,
+                Height = 256,
+                Width = 256,
+            };
+
+            var onlineResource = info.WmsCapabilities.Capability.Request.GetCapabilities.DCPType[0].Http.Get.OnlineResource.Href;
+            return new WmsTileSource(new WebTileProvider(new WmsRequest(new Uri(onlineResource), 
+                schema,
+                new List<string>{info.Layer.Name},
+                info.Style == null? null : new List<string>{info.Style},
+                info.CustomParameters, info.WmsCapabilities.Version.VersionString),
+                fetchTile: d => RequestHelper.FetchImage(d, info.Credentials)
+                ),
+                schema);
         }
+    }
 
-        public ITileSchema Schema
+    public static class RequestHelper
+    {
+        public static byte[] FetchImage(Uri uri, ICredentials credentials)
         {
-            get { return _schema; }
-        }
-
-        public static WmsTileSource Create(WmsServerInfo serverInfo)
-        {
-            var href = serverInfo.OnlineResource;
-            var layers = new List<string>
-                             {
-                                 serverInfo.Layer
-                             };
-
-            var schema =
-                //new GlobalMercator("image/png");
-                //new UnProjected();
-                new WmsTileSchema("schema", new Extent(-180, -90, 180, 90), "CRS:84", "image/png", 256, 4.291534423828125e-10, AxisDirection.Normal); 
-            var request = new WmscRequest(new Uri(href), schema, layers,
-                                          new List<string>(),               // styles
-                                          new Dictionary<string, string>(), // custom parameters
-                                          serverInfo.Version);
-            var provider = new WebTileProvider(request);
-            return new WmsTileSource(provider, schema);
+            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+            webRequest.Credentials = credentials;
+            return BruTile.Web.RequestHelper.FetchImage(webRequest);
         }
     }
 }

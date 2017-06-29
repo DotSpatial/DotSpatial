@@ -122,6 +122,24 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets the legend symbol size of the symbolizer for this category.
+        /// </summary>
+        public override Size GetLegendSymbolSize()
+        {
+            return Symbolizer.GetLegendSymbolSize();
+        }
+
+        /// <summary>
+        /// Controls what happens in the legend when this item is instructed to draw a symbol.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="box"></param>
+        public override void LegendSymbol_Painted(Graphics g, Rectangle box)
+        {
+            this.Symbolizer.DrawLegendSymbol(g, box);
+        }
+
+        /// <summary>
         /// Sets the specified color as the color for the top most stroke.
         /// </summary>
         /// <param name="color">The color to apply</param>
@@ -138,7 +156,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolizer for this category
         /// </summary>
-        //[TypeConverter(typeof(GeneralTypeConverter)), Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))]
         public new ILineSymbolizer Symbolizer
         {
             get { return base.Symbolizer as ILineSymbolizer; }
@@ -151,7 +168,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolizer to use to draw selected features from this category.
         /// </summary>
-        //[TypeConverter(typeof(GeneralTypeConverter)), Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))]
         public new ILineSymbolizer SelectionSymbolizer
         {
             get { return base.SelectionSymbolizer as ILineSymbolizer; }

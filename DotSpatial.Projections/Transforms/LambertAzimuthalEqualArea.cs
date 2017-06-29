@@ -309,8 +309,7 @@ namespace DotSpatial.Projections.Transforms
             }
             IsElliptical = true;
 
-            _qp = Proj.Qsfn(1, Es, OneEs);
-            // _mmf = .5/(1 - Es);
+            _qp = Proj.Qsfn(1, E, OneEs);
             _apa = Proj.Authset(Es);
             switch (_mode)
             {

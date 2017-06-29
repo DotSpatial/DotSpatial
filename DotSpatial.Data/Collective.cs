@@ -29,8 +29,6 @@ namespace DotSpatial.Data
     /// </summary>
     public class Collective<T> : EventArgs
     {
-        private IEnumerable<T> _collection;
-
         #region Methods
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace DotSpatial.Data
         /// <param name="inCollection">The IEnumerable&lt;T&gt; specified during the event"/></param>
         public Collective(IEnumerable<T> inCollection)
         {
-            _collection = inCollection;
+            Collection = inCollection;
         }
 
         #endregion
@@ -49,11 +47,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the list item being referenced by this event
         /// </summary>
-        public IEnumerable<T> Collection
-        {
-            get { return _collection; }
-            protected set { _collection = value; }
-        }
+        public IEnumerable<T> Collection { get; protected set; }
 
         #endregion
     }

@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {
@@ -189,6 +190,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the fileName.
         /// </summary>
+        [Serialize("Filename", ConstructorArgumentIndex = 0)]
         public string Filename { get; set; }
 
         /// <summary>
@@ -328,8 +330,8 @@ namespace DotSpatial.Data
         {
             // Bounds may be null when the image layer is being disposed.
             // We could probably skip calling this event in that case, but at any rate, we don't want to crash.
-            if (WorldFile != null && Bounds != null)
-                WorldFile.Affine = Bounds.AffineCoefficients;
+            if (WorldFile != null && bounds != null)
+                WorldFile.Affine = bounds.AffineCoefficients;
         }
 
         #endregion

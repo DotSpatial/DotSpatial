@@ -79,7 +79,9 @@ namespace DotSpatial.Symbology.Forms
             }
 
             dlgExpression.ChangesApplied += DlgExpressionChangesApplied;
-            return dialogProvider.ShowDialog(dlgExpression) != DialogResult.OK ? original : dlgExpression.Expression;
+            var result = dialogProvider.ShowDialog(dlgExpression);
+            dlgExpression.ChangesApplied -= DlgExpressionChangesApplied;
+            return result != DialogResult.OK ? original : dlgExpression.Expression;
         }
 
         private void DlgExpressionChangesApplied(object sender, EventArgs e)

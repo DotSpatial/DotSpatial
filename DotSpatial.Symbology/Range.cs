@@ -331,7 +331,7 @@ namespace DotSpatial.Symbology
             }
             if (method == IntervalSnapMethod.SignificantFigures)
             {
-                int dig = (int)Math.Ceiling(Math.Log10(value));
+                int dig = (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
                 dig = digits - dig;
                 if (dig < 0) dig = 0;
                 if (dig > 10)

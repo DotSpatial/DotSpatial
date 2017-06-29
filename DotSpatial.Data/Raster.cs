@@ -53,15 +53,10 @@ namespace DotSpatial.Data
         private double _minimum;
         // A float for no-data values
         private int _numColumns; // The count of the columns in the image
-        private int _numColumnsInFile;
         private int _numRows; // The number of rows in an image
-        private int _numRowsInFile;
-        private long _numValueCells;
         // todo: determine where _progressHandler should be used
         // private IProgressHandler _progressHandler;
         private List<IValueRow> _rows;
-        private int _startColumn;
-        private int _startRow;
         private double _stdDev;
         private object _tag;
         private IValueGrid _values;
@@ -520,17 +515,8 @@ namespace DotSpatial.Data
         /// Gets the integer count of the number of columns in the source or file that this
         /// raster is a window from.  (Usually this will be the same as NumColumns)
         /// </summary>
-        [Category("Window")]
-        [Description("Gets the integer count of the number of columns in the source or file that this raster is a window from.  (Usually this will be the same as NumColumns)")]
-        public virtual int NumColumnsInFile
-        {
-            get
-            {
-                return _numColumnsInFile;
-            }
-            protected
-                set { _numColumnsInFile = value; }
-        }
+        [Category("Window"), Description("Gets the integer count of the number of columns in the source or file that this raster is a window from.  (Usually this will be the same as NumColumns)")]
+        public virtual int NumColumnsInFile { get; protected set; }
 
         /// <summary>
         /// Gets the vertical count of the cells in the raster.
@@ -557,34 +543,15 @@ namespace DotSpatial.Data
         /// Gets the integer count of the number of rows in the source or file that this
         /// raster is a window from.  (Usually this will be the same as NumColumns.)
         /// </summary>
-        [Category("Window")]
-        [Description("Gets the integer count of the number of rows in the source or file that this raster is a window from.  (Usually this will be the same as NumColumns.)")]
-        public virtual
-            int NumRowsInFile
-        {
-            get
-            {
-                return _numRowsInFile;
-            }
-            protected
-                set { _numRowsInFile = value; }
-        }
+        [Category("Window"), Description("Gets the integer count of the number of rows in the source or file that this raster is a window from.  (Usually this will be the same as NumColumns.)")]
+        public virtual int NumRowsInFile { get; protected set; }
 
         /// <summary>
         /// Gets the count of the cells that are not no-data.  If the data is not InRam, then
         /// you will have to first call the GetStatistics() method to gain meaningul values.
         /// </summary>
-        [Category("Statistics")]
-        [Description("Gets the count of the cells that are not no-data.  If the data is not InRam, then you will have to first call the GetStatistics() method to gain meaningul values.")]
-        public virtual long NumValueCells
-        {
-            get
-            {
-                return _numValueCells;
-            }
-            protected
-                set { _numValueCells = value; }
-        }
+        [Category("Statistics"), Description("Gets the count of the cells that are not no-data.  If the data is not InRam, then you will have to first call the GetStatistics() method to gain meaningul values.")]
+        public virtual long NumValueCells { get; protected set; }
 
         /// <summary>
         /// An extra string array of options that exist for support of some types of GDAL supported raster drivers
@@ -611,34 +578,16 @@ namespace DotSpatial.Data
         /// be 0.  However, if this raster is a window taken from a file, then
         /// it will be the row index in the file for the top row of this raster.
         /// </summary>
-        [Category("Window")]
-        [Description("The integer column index for the left column of this raster.  Most of the time this will be 0.  However, if this raster is a window taken from a larger raster, then it will be the index of the startRow from the window.")]
-        public virtual int StartColumn
-        {
-            get
-            {
-                return _startColumn;
-            }
-            protected
-                set { _startColumn = value; }
-        }
+        [Category("Window"), Description("The integer column index for the left column of this raster.  Most of the time this will be 0.  However, if this raster is a window taken from a larger raster, then it will be the index of the startRow from the window.")]
+        public virtual int StartColumn { get; protected set; }
 
         /// <summary>
         /// The integer row index for the top row of this raster.  Most of the time this will
         /// be 0.  However, if this raster is a window taken from a file, then
         /// it will be the row index in the file for the left row of this raster.
         /// </summary>
-        [Category("Window")]
-        [Description("The integer row index for the top row of this raster.  Most of the time this will be 0.  However, if this raster is a window taken from a larger raster, then it will be the index of the startRow from the window.")]
-        public virtual int StartRow
-        {
-            get
-            {
-                return _startRow;
-            }
-            protected
-                set { _startRow = value; }
-        }
+        [Category("Window"), Description("The integer row index for the top row of this raster.  Most of the time this will be 0.  However, if this raster is a window taken from a larger raster, then it will be the index of the startRow from the window.")]
+        public virtual int StartRow { get; protected set; }
 
         /// <summary>
         /// Gets the standard deviation of all the Non-nodata cells.  If the data is not InRam,
@@ -814,29 +763,22 @@ namespace DotSpatial.Data
             {
                 if (Bands != null)
                 {
-                    foreach (IRaster r in Bands)
+                    foreach (var r in Bands)
                     {
                         r.Dispose();
                     }
                     Bands = null;
-                    Bounds = null;
-                    CustomFileType = null;
-                    DriverCode = null;
-                    Filename = null;
-                    Notes = null;
-                    Options = null;
-                    _rows = null;
-                    _tag = null;
-                    _values = null;
                 }
-            }
-            if (Bands != null)
-            {
-                foreach (IRaster r in Bands)
-                {
-                    if (!r.IsDisposeLocked) r.Dispose();
-                }
-                Bands = null;
+                
+                Bounds = null;
+                CustomFileType = null;
+                DriverCode = null;
+                Filename = null;
+                Notes = null;
+                Options = null;
+                _rows = null;
+                _tag = null;
+                _values = null;
             }
             base.Dispose(disposeManagedResources);
         }
@@ -924,22 +866,27 @@ namespace DotSpatial.Data
             string extension = Path.GetExtension(filename);
 
             // Compare the strings, ignoring case
-            if (String.Compare(extension, ".ASC", true) == 0) return RasterFileType.ASCII;
-            if (String.Compare(extension, ".ARC", true) == 0) return RasterFileType.ASCII;
-            if (String.Compare(extension, ".BGD", true) == 0) return RasterFileType.BINARY;
-            if (String.Compare(extension, ".FLT", true) == 0) return RasterFileType.FLT;
-            if (String.Compare(extension, ".ADF", true) == 0) return RasterFileType.ESRI;
-            if (String.Compare(extension, ".ECW", true) == 0) return RasterFileType.ECW;
-            if (String.Compare(extension, ".BIL", true) == 0) return RasterFileType.BIL;
-            if (String.Compare(extension, ".SID", true) == 0) return RasterFileType.MrSID;
-            if (String.Compare(extension, ".AUX", true) == 0) return RasterFileType.PAUX;
-            if (String.Compare(extension, ".PIX", true) == 0) return RasterFileType.PCIDsk;
-            if (String.Compare(extension, ".DHM", true) == 0) return RasterFileType.DTED;
-            if (String.Compare(extension, ".DT0", true) == 0) return RasterFileType.DTED;
-            if (String.Compare(extension, ".DT1", true) == 0) return RasterFileType.DTED;
-            if (String.Compare(extension, ".TIF", true) == 0) return RasterFileType.GeoTiff;
-            if (String.Compare(extension, ".IMG", true) == 0) return RasterFileType.BIL;
-            if (String.Compare(extension, ".DDF", true) == 0) return RasterFileType.SDTS;
+            var eUp = extension != null? extension.ToUpper() : string.Empty;
+            switch (eUp)
+            {
+               case  ".ASC": return RasterFileType.ASCII;
+               case  ".ARC": return RasterFileType.ASCII;
+               case  ".BGD": return RasterFileType.BINARY;
+               case  ".FLT": return RasterFileType.FLT;
+               case  ".ADF": return RasterFileType.ESRI;
+               case  ".ECW": return RasterFileType.ECW;
+               case  ".BIL": return RasterFileType.BIL;
+               case  ".SID": return RasterFileType.MrSID;
+               case  ".AUX": return RasterFileType.PAUX;
+               case  ".PIX": return RasterFileType.PCIDsk;
+               case  ".DHM": return RasterFileType.DTED;
+               case  ".DT0": return RasterFileType.DTED;
+               case  ".DT1": return RasterFileType.DTED;
+               case  ".TIF": return RasterFileType.GeoTiff;
+               case  ".IMG": return RasterFileType.BIL;
+               case  ".DDF": return RasterFileType.SDTS;        
+            }
+            
             return RasterFileType.CUSTOM;
         }
 

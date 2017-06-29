@@ -23,14 +23,9 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// EnvelopeArgs
-    /// </summary>
     public class EnvelopeArgs : EventArgs
     {
         #region Private Variables
-
-        private IEnvelope _envelope;
 
         #endregion
 
@@ -41,7 +36,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public EnvelopeArgs(IEnvelope inEnvelope)
         {
-            _envelope = inEnvelope;
+            Envelope = inEnvelope;
         }
 
         #endregion
@@ -51,11 +46,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the envelope specific to this event.
         /// </summary>
-        public IEnvelope Envelope
-        {
-            get { return _envelope; }
-            protected set { _envelope = value; }
-        }
+        public IEnvelope Envelope { get; protected set; }
 
         #endregion
     }

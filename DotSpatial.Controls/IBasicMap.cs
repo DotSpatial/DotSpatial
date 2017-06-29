@@ -82,8 +82,8 @@ namespace DotSpatial.Controls
         /// //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
         /// Gets the MaxExtents of current Map.
         /// </summary>
-        Extent GetMaxExtent();
-
+        /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%). </param>
+        Extent GetMaxExtent(bool expand = false);
 
         #endregion
 
@@ -216,6 +216,11 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <returns></returns>
         List<ILayer> GetLayers();
+
+        /// <summary>
+        /// This allows to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
+        /// </summary>
+        bool ZoomOutFartherThanMaxExtent { get; set; }
 
         #endregion
     }

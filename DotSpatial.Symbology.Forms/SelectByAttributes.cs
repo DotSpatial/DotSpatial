@@ -227,7 +227,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void Configure()
         {
-            DataTable dt = new DataTable();
+            DotSpatial.Data.IDataTable dt = new DotSpatial.Data.DS_DataTable(); // CGX AERO GLZ
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("Value", typeof(IFeatureLayer));
 
@@ -236,7 +236,7 @@ namespace DotSpatial.Symbology.Forms
                 IFeatureLayer fl = layer as IFeatureLayer;
                 if (fl != null)
                 {
-                    DataRow dr = dt.NewRow();
+                    DotSpatial.Data.IDataRow dr = dt.NewRow(); // CGX AERO GLZ
                     dr["Name"] = fl.LegendText;
                     dr["Value"] = fl;
                     dt.Rows.Add(dr);

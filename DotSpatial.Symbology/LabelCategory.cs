@@ -20,12 +20,10 @@
 
 using System.Drawing;
 using DotSpatial.Serialization;
+using System.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// LabelCategory
-    /// </summary>
     public class LabelCategory : ILabelCategory
     {
         #region Private Variables
@@ -45,6 +43,9 @@ namespace DotSpatial.Symbology
         [Serialize("Symbolizer")]
         private ILabelSymbolizer _symbolizer;
 
+
+        private Expression _exp;
+
         #endregion
 
         #region Constructors
@@ -55,8 +56,8 @@ namespace DotSpatial.Symbology
         public LabelCategory()
         {
             _symbolizer = new LabelSymbolizer();
-            _selectionSymbolizer = new LabelSymbolizer();
-            _selectionSymbolizer.FontColor = Color.Cyan;
+            _selectionSymbolizer = new LabelSymbolizer { FontColor = Color.Cyan };
+            _exp = new Expression();
         }
 
         #endregion
@@ -86,20 +87,41 @@ namespace DotSpatial.Symbology
         /// <returns>A shallow copy of this object.</returns>
         public virtual LabelCategory Copy()
         {
-            LabelCategory result = MemberwiseClone() as LabelCategory;
+            var result = MemberwiseClone() as LabelCategory;
             if (result == null) return null;
             result.Symbolizer = Symbolizer.Copy();
             result.SelectionSymbolizer = SelectionSymbolizer.Copy();
             return result;
         }
 
-        /// <summary>
-        /// Returns the name of this category.
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
-            return _name;
+            return string.IsNullOrEmpty(Name) ? "<No Name>" : Name;
+        }
+
+        /// <summary>
+        /// Updates the Expression-Object with the columns that exist inside the features that belong to this category. They are used for calculating the expression.
+        /// </summary>
+        /// <param name="columns">Columns that should be updated.</param>
+        /// <returns>False if columns were not set.</returns>
+        public bool UpdateExpressionColumns(Data.IDataColumnCollection columns) // CGX AERO GLZ
+        {
+            return _exp.UpdateFields(columns);
+        }
+
+        /// <summary>
+        /// Calculates the expression for the given row. The Expression.Columns have to be in sync with the Features columns for calculation to work without error.
+        /// </summary>
+        /// <param name="row">Datarow the expression gets calculated for.</param>
+        /// <param name="selected">Indicates whether the feature is selected.</param>
+        /// <param name="FID">The FID of the feature, the expression gets calculated for.</param>
+        /// <returns>null if there was an error while parsing the expression, else the calculated expression</returns>
+        public string CalculateExpression(DotSpatial.Data.IDataRow row, bool selected, int FID) // CGX AERO GLZ
+        {
+            string ff = (selected ? _selectionSymbolizer : _symbolizer).FloatingFormat;
+            _exp.FloatingFormat = ff != null ? ff.Trim() : "";
+            _exp.ParseExpression(_expression);
+            return _exp.CalculateRowValue(row, FID);
         }
 
         #endregion
@@ -117,10 +139,8 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the string expression that controls the integration
-        /// of field values into the label text.  This will not do calculations,
-        /// but will allow multiple fields to be conjoined in a string expression,
-        /// substituting a field value where each [FieldName] occurs.
+        /// Gets or sets the string expression that controls the integration of field values into the label text. 
+        /// This is the raw text that is used to do calculations and concat fields and strings.
         /// </summary>
         public string Expression
         {

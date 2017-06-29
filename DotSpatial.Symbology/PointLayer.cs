@@ -88,13 +88,14 @@ namespace DotSpatial.Symbology
             }
             if (inFeatureSet.NumRows() == 0)
             {
-                MyExtent = new Extent(-180, -90, 180, 90);
+                MyExtent = new Extent();
             }
-            if (inFeatureSet.NumRows() == 1)
+            else if (inFeatureSet.NumRows() == 1)
             {
                 MyExtent = inFeatureSet.Extent.Copy();
                 MyExtent.ExpandBy(10, 10);
             }
+            else { MyExtent = inFeatureSet.Extent.Copy(); }
             Symbology = new PointScheme();
         }
 

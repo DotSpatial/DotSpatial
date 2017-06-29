@@ -275,7 +275,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnShadingChanged()
         {
-            if (ShadingChanged != null) ShadingChanged(this, new EventArgs());
+            if (ShadingChanged != null) ShadingChanged(this, EventArgs.Empty);
         }
     }
 }

@@ -35,15 +35,15 @@ namespace DotSpatial.Data
     public class Extent : ICloneable, IExtent, IRectangle
     {
         /// <summary>
-        /// Creates a new instance of Extent.  This introduces no error checking and assumes
+        /// Creates a new instance of Extent. This introduces no error checking and assumes
         /// that the user knows what they are doing when working with this.
         /// </summary>
         public Extent()
         {
-            MinX = double.MaxValue;
-            MaxX = double.MinValue;
-            MinY = double.MaxValue;
-            MaxY = double.MinValue;
+            MinX = double.NaN; //changed by jany_ (2015-07-17) default extent is empty because if there is no content there is no extent
+            MaxX = double.NaN;
+            MinY = double.NaN;
+            MaxY = double.NaN;
         }
 
         /// <summary>
@@ -419,19 +419,19 @@ namespace DotSpatial.Data
             if (ext == null) //Simplify, avoiding nested if
                 return;
 
-            if (ext.MinX < MinX)
+            if (double.IsNaN(MinX) || ext.MinX < MinX)
             {
                 MinX = ext.MinX;
             }
-            if (ext.MinY < MinY)
+            if (double.IsNaN(MinY) || ext.MinY < MinY)
             {
                 MinY = ext.MinY;
             }
-            if (ext.MaxX > MaxX)
+            if (double.IsNaN(MaxX) || ext.MaxX > MaxX)
             {
                 MaxX = ext.MaxX;
             }
-            if (ext.MaxY > MaxY)
+            if (double.IsNaN(MaxY) || ext.MaxY > MaxY)
             {
                 MaxY = ext.MaxY;
             }
@@ -444,19 +444,19 @@ namespace DotSpatial.Data
         /// <param name="y"></param>
         public void ExpandToInclude(double x, double y)
         {
-            if (x < MinX)
+            if (double.IsNaN(MinX) || x < MinX)
             {
                 MinX = x;
             }
-            if (y < MinY)
+            if (double.IsNaN(MinY) || y < MinY)
             {
                 MinY = y;
             }
-            if (x > MaxX)
+            if (double.IsNaN(MaxX) ||  x > MaxX)
             {
                 MaxX = x;
             }
-            if (y > MaxY)
+            if (double.IsNaN(MaxY) || y > MaxY)
             {
                 MaxY = y;
             }
@@ -605,8 +605,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// If this is undefined, it will have a min that is larger than the max, or else
-        /// any value is NaN.  This only
-        /// applies to the X and Z terms.  Check HasM or HasZ higher dimensions.
+        /// any value is NaN. This only applies to the X and Z terms. Check HasM or HasZ higher dimensions.
         /// </summary>
         /// <returns>Boolean, true if the envelope has not had values set for it yet.</returns>
         public bool IsEmpty()
@@ -633,8 +632,10 @@ namespace DotSpatial.Data
             Extent result;
             string fail;
             if (TryParse(text, out result, out fail)) return result;
-            ExtentParseException ep = new ExtentParseException(String.Format("Attempting to read an extent string failed while reading the {0} term.", fail));
-            ep.Expression = text;
+            var ep = new ExtentParseException(String.Format("Attempting to read an extent string failed while reading the {0} term.", fail))
+            {
+                Expression = text
+            };
             throw ep;
         }
 
@@ -819,7 +820,7 @@ namespace DotSpatial.Data
         /// <returns>Boolean, true if the parse was successful.</returns>
         private static bool TryExtract(string entireText, string name, out double min, out double max)
         {
-            int i = entireText.IndexOf(name);
+            int i = entireText.IndexOf(name, StringComparison.Ordinal);
             i += name.Length + 1;
             int j = entireText.IndexOf(']', i);
             string vals = entireText.Substring(i, j - i);

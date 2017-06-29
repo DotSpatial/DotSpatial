@@ -88,7 +88,7 @@ namespace DotSpatial.Projections
             using (Stream str = GetStream())
             {
                 if (str == null) return;
-                using (BinaryReader br = new BinaryReader(str))
+                using (var br = new BinaryReader(str))
                 {
                     int numPhis = NumPhis;
                     int numLambdas = NumLambdas;

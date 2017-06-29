@@ -23,19 +23,8 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// MouseArgs
-    /// </summary>
     public class GeoMouseArgs : MouseEventArgs
     {
-        #region Private Variables
-
-        Coordinate _geographicLocation;
-        private bool _handled;
-        IMap _map;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -46,16 +35,10 @@ namespace DotSpatial.Controls
         public GeoMouseArgs(MouseEventArgs e, IMap inMap)
             : base(e.Button, e.Clicks, e.X, e.Y, e.Delta)
         {
-            if (inMap != null)
-            {
-                _geographicLocation = inMap.PixelToProj(e.Location);
-                _map = inMap;
-            }
+            if (inMap == null) return;
+            GeographicLocation = inMap.PixelToProj(e.Location);
+            Map = inMap;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 
@@ -64,30 +47,18 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the position of the Mouse Event in geographic coordinates
         /// </summary>
-        public Coordinate GeographicLocation
-        {
-            get { return _geographicLocation; }
-            protected set { _geographicLocation = value; }
-        }
+        public Coordinate GeographicLocation { get; protected set; }
 
         /// <summary>
         /// Gets a simple interface for the map where these events were generated
         /// </summary>
-        public IMap Map
-        {
-            get { return _map; }
-            protected set { _map = value; }
-        }
+        public IMap Map { get; protected set; }
 
         /// <summary>
         /// Gets or sets a handled.  If this is set to true, then the mouse event is considered to
         /// be handled and will not be passed to any other functions in the stack.
         /// </summary>
-        public bool Handled
-        {
-            get { return _handled; }
-            set { _handled = value; }
-        }
+        public bool Handled { get; set; }
 
         #endregion
     }

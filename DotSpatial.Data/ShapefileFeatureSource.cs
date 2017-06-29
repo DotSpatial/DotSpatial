@@ -322,14 +322,14 @@ namespace DotSpatial.Data
         public abstract void SearchAndModifyAttributes(IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
 
         /// <inheritdocs/>
-        public void EditAttributes(int fid, DataRow attributeValues)
+        public void EditAttributes(int fid, IDataRow attributeValues) // CGX AERO GLZ
         {
             AttributeTable at = GetAttributeTable(Filename);
             at.Edit(fid, attributeValues);
         }
 
         /// <inheritdocs/>
-        public void EditAttributes(IEnumerable<KeyValuePair<int, DataRow>> indexDataRowPairs)
+        public void EditAttributes(IEnumerable<KeyValuePair<int, IDataRow>> indexDataRowPairs) // CGX AERO GLZ
         {
             AttributeTable at = GetAttributeTable(Filename);
             at.Edit(indexDataRowPairs);
@@ -502,7 +502,7 @@ namespace DotSpatial.Data
             bool schemaDefined = false;
             foreach (var pair in shapes)
             {
-                DataTable td = at.SupplyPageOfData(pair.Key, 1);
+                IDataTable td = at.SupplyPageOfData(pair.Key, 1); // CGX AERO GLZ
                 if (td.Select(filterExpression).Length > 0)
                 {
                     if (!schemaDefined)

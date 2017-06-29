@@ -26,6 +26,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Feature Set Apply Edit Args.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class FeatureSetApplyEditArgs : EventArgs
     {
         #region Delegates

@@ -62,7 +62,9 @@ namespace DotSpatial.Symbology.Forms
                                     RampText = "Opacity",
                                     RampTextBehindRamp = true,
                                     Value = Convert.ToDouble(value),
-                                    ShowValue = false,
+                                    //ShowValue = false,
+                                    //CGX
+                                    ShowValue = true,
                                     Width = 75,
                                     Height = 50
                                 };

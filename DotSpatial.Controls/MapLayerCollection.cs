@@ -168,8 +168,6 @@ namespace DotSpatial.Controls
             if (r != null) return Add(r);
             var id = dataSet as IImageData;
             if (id != null) return Add(id);
-            ILiDARData ld = dataSet as ILiDARData;
-            if (ld != null) return Add(ld);
             return null;
         }
 
@@ -208,7 +206,7 @@ namespace DotSpatial.Controls
 
             return res;
         }
-      
+
 
         /// <summary>
         /// Adds the raster to layer collection
@@ -217,8 +215,10 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public virtual IMapRasterLayer Add(IRaster raster)
         {
+            if (raster == null) return null;
+
             raster.ProgressHandler = ProgressHandler;
-            MapRasterLayer gr = new MapRasterLayer(raster);
+            var gr = new MapRasterLayer(raster);
             Add(gr);
             return gr;
         }
@@ -230,22 +230,12 @@ namespace DotSpatial.Controls
         /// <returns>the IMapImageLayer interface for the layer that was added to the map.</returns>
         public IMapImageLayer Add(IImageData image)
         {
+            if (image == null) return null;
+
             if (image.Height == 0 || image.Width == 0) return null;
-            MapImageLayer il = new MapImageLayer(image);
+            var il = new MapImageLayer(image);
             base.Add(il);
             return il;
-        }
-
-        /// <summary>
-        /// Adds a special LiDAR dataset and creates a LiDAR layer, adding the layer to the map
-        /// </summary>
-        /// <param name="LiDARData">The specialized LiDAR Dataset</param>
-        /// <returns>The instance of the LiDAR layer</returns>
-        /// <remarks>This operation is not yet implemented.</remarks>
-        public virtual IMapLiDARLayer Add(ILiDARData LiDARData)
-        {
-            if (LiDARData == null) return null;
-            throw new NotImplementedException("adding LiDAR is not yet implemented");
         }
 
         #endregion
@@ -300,6 +290,16 @@ namespace DotSpatial.Controls
         public void Insert(int index, IMapLayer item)
         {
             base.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Moves the given layer to the given position.
+        /// </summary>
+        /// <param name="layer">Layer that gets moved.</param>
+        /// <param name="newPosition">Position, the layer is moved to.</param>
+        public void Move(IMapLayer layer, int newPosition)
+        {
+            base.Move(layer, newPosition);
         }
 
         /// <summary>

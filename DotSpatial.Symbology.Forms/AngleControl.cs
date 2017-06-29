@@ -228,7 +228,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnAngleChanged()
         {
-            if (AngleChanged != null) AngleChanged(this, new EventArgs());
+            if (AngleChanged != null) AngleChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnAngleChosen()
         {
-            if (AngleChosen != null) AngleChosen(this, new EventArgs());
+            if (AngleChosen != null) AngleChosen(this, EventArgs.Empty);
         }
 
         #endregion

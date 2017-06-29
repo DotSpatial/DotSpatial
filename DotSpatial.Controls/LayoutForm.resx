@@ -163,7 +163,7 @@
     <value>_layoutDocToolStrip1</value>
   </data>
   <data name="&gt;&gt;_layoutDocToolStrip1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutDocToolStrip, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutDocToolStrip, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutDocToolStrip1.Parent" xml:space="preserve">
     <value>_toolStripContainer1.TopToolStripPanel</value>
@@ -190,7 +190,7 @@
     <value>_layoutInsertToolStrip1</value>
   </data>
   <data name="&gt;&gt;_layoutInsertToolStrip1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutInsertToolStrip, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutInsertToolStrip, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutInsertToolStrip1.Parent" xml:space="preserve">
     <value>_toolStripContainer1.TopToolStripPanel</value>
@@ -214,7 +214,7 @@
     <value>_layoutListBox1</value>
   </data>
   <data name="&gt;&gt;_layoutListBox1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutListBox, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutListBox, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutListBox1.Parent" xml:space="preserve">
     <value>_splitContainer2.Panel1</value>
@@ -244,7 +244,7 @@
     <value>_layoutMapToolStrip1</value>
   </data>
   <data name="&gt;&gt;_layoutMapToolStrip1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutMapToolStrip, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutMapToolStrip, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutMapToolStrip1.Parent" xml:space="preserve">
     <value>_toolStripContainer1.TopToolStripPanel</value>
@@ -271,7 +271,7 @@
     <value>_layoutMenuStrip1</value>
   </data>
   <data name="&gt;&gt;_layoutMenuStrip1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutMenuStrip, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutMenuStrip, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutMenuStrip1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -295,7 +295,7 @@
     <value>_layoutPropertyGrid1</value>
   </data>
   <data name="&gt;&gt;_layoutPropertyGrid1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutPropertyGrid, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutPropertyGrid, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutPropertyGrid1.Parent" xml:space="preserve">
     <value>_splitContainer2.Panel2</value>
@@ -322,7 +322,7 @@
     <value>_layoutZoomToolStrip1</value>
   </data>
   <data name="&gt;&gt;_layoutZoomToolStrip1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutZoomToolStrip, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutZoomToolStrip, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutZoomToolStrip1.Parent" xml:space="preserve">
     <value>_toolStripContainer1.TopToolStripPanel</value>
@@ -343,7 +343,7 @@
     <value>_layoutControl1</value>
   </data>
   <data name="&gt;&gt;_layoutControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Controls.LayoutControl, DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
+    <value>DotSpatial.Controls.LayoutControl, DotSpatial.Controls, Version=1.9.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c</value>
   </data>
   <data name="&gt;&gt;_layoutControl1.Parent" xml:space="preserve">
     <value>_splitContainer1.Panel1</value>

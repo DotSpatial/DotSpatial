@@ -82,11 +82,8 @@ namespace DotSpatial.Controls
 
         private void UpdatePaperSize()
         {
-            if (ComboPaperSizes.SelectedIndex == -1 && ComboPaperSizes.Items.Count > 0)
-            {
-                ComboPaperSizes.SelectedIndex = 0;
-                lblPaperDimension.Text = (_printerSettings.PaperSizes[ComboPaperSizes.SelectedIndex].Width / 100) + "\" x " + (_printerSettings.PaperSizes[ComboPaperSizes.SelectedIndex].Height / 100) + "\"";
-            }
+            if (ComboPaperSizes.SelectedIndex == -1 && ComboPaperSizes.Items.Count > 0) ComboPaperSizes.SelectedIndex = 0;
+            lblPaperDimension.Text = ComboPaperSizes.SelectedIndex > -1 ? (_printerSettings.PaperSizes[ComboPaperSizes.SelectedIndex].Width / 100) + "\" x " + (_printerSettings.PaperSizes[ComboPaperSizes.SelectedIndex].Height / 100) + "\"" : "";
         }
 
         private void ComboPaperSizes_SelectedIndexChanged(object sender, EventArgs e)
@@ -234,23 +231,22 @@ namespace DotSpatial.Controls
             this.GroupBox1.SuspendLayout();
             this._groupBox2.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // Cancel_Button
-            //
-            resources.ApplyResources(this.Cancel_Button, "Cancel_Button");
+            // 
             this.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            resources.ApplyResources(this.Cancel_Button, "Cancel_Button");
             this.Cancel_Button.Name = "Cancel_Button";
             this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
-            //
+            // 
             // OK_Button
-            //
+            // 
             resources.ApplyResources(this.OK_Button, "OK_Button");
             this.OK_Button.Name = "OK_Button";
             this.OK_Button.Click += new System.EventHandler(this.OK_Button_Click);
-            //
+            // 
             // GroupBox1
-            //
-            resources.ApplyResources(this.GroupBox1, "GroupBox1");
+            // 
             this.GroupBox1.Controls.Add(this.txtBoxBottom);
             this.GroupBox1.Controls.Add(this.txtBoxTop);
             this.GroupBox1.Controls.Add(this.txtBoxLeft);
@@ -259,105 +255,106 @@ namespace DotSpatial.Controls
             this.GroupBox1.Controls.Add(this.Label3);
             this.GroupBox1.Controls.Add(this.Label6);
             this.GroupBox1.Controls.Add(this.Label4);
+            resources.ApplyResources(this.GroupBox1, "GroupBox1");
             this.GroupBox1.Name = "GroupBox1";
             this.GroupBox1.TabStop = false;
-            //
+            // 
             // txtBoxBottom
-            //
+            // 
             resources.ApplyResources(this.txtBoxBottom, "txtBoxBottom");
             this.txtBoxBottom.Name = "txtBoxBottom";
             this.txtBoxBottom.Leave += new System.EventHandler(this.txtBoxBottom_Leave);
-            //
+            // 
             // txtBoxTop
-            //
+            // 
             resources.ApplyResources(this.txtBoxTop, "txtBoxTop");
             this.txtBoxTop.Name = "txtBoxTop";
             this.txtBoxTop.Leave += new System.EventHandler(this.txtBoxTop_Leave);
-            //
+            // 
             // txtBoxLeft
-            //
+            // 
             resources.ApplyResources(this.txtBoxLeft, "txtBoxLeft");
             this.txtBoxLeft.Name = "txtBoxLeft";
             this.txtBoxLeft.Leave += new System.EventHandler(this.txtBoxLeft_Leave);
-            //
+            // 
             // Label5
-            //
+            // 
             resources.ApplyResources(this.Label5, "Label5");
             this.Label5.Name = "Label5";
-            //
+            // 
             // txtBoxRight
-            //
+            // 
             resources.ApplyResources(this.txtBoxRight, "txtBoxRight");
             this.txtBoxRight.Name = "txtBoxRight";
             this.txtBoxRight.Leave += new System.EventHandler(this.txtBoxRight_Leave);
-            //
+            // 
             // Label3
-            //
+            // 
             resources.ApplyResources(this.Label3, "Label3");
             this.Label3.Name = "Label3";
-            //
+            // 
             // Label6
-            //
+            // 
             resources.ApplyResources(this.Label6, "Label6");
             this.Label6.Name = "Label6";
-            //
+            // 
             // Label4
-            //
+            // 
             resources.ApplyResources(this.Label4, "Label4");
             this.Label4.Name = "Label4";
-            //
+            // 
             // lblPaperDimension
-            //
+            // 
             resources.ApplyResources(this.lblPaperDimension, "lblPaperDimension");
             this.lblPaperDimension.Name = "lblPaperDimension";
-            //
+            // 
             // Label2
-            //
+            // 
             resources.ApplyResources(this.Label2, "Label2");
             this.Label2.Name = "Label2";
-            //
+            // 
             // Label1
-            //
+            // 
             resources.ApplyResources(this.Label1, "Label1");
             this.Label1.Name = "Label1";
-            //
+            // 
             // ComboPaperSizes
-            //
-            resources.ApplyResources(this.ComboPaperSizes, "ComboPaperSizes");
+            // 
             this.ComboPaperSizes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboPaperSizes.FormattingEnabled = true;
+            resources.ApplyResources(this.ComboPaperSizes, "ComboPaperSizes");
             this.ComboPaperSizes.Name = "ComboPaperSizes";
             this.ComboPaperSizes.SelectedIndexChanged += new System.EventHandler(this.ComboPaperSizes_SelectedIndexChanged);
-            //
+            // 
             // _groupBox2
-            //
-            resources.ApplyResources(this._groupBox2, "_groupBox2");
+            // 
             this._groupBox2.Controls.Add(this._rdbLandscape);
             this._groupBox2.Controls.Add(this._rdbPortrait);
+            resources.ApplyResources(this._groupBox2, "_groupBox2");
             this._groupBox2.Name = "_groupBox2";
             this._groupBox2.TabStop = false;
-            //
+            // 
             // _rdbLandscape
-            //
+            // 
             resources.ApplyResources(this._rdbLandscape, "_rdbLandscape");
             this._rdbLandscape.Name = "_rdbLandscape";
             this._rdbLandscape.TabStop = true;
             this._rdbLandscape.UseVisualStyleBackColor = true;
             this._rdbLandscape.CheckedChanged += new System.EventHandler(this.rdbLandscape_CheckedChanged);
-            //
+            // 
             // _rdbPortrait
-            //
+            // 
             resources.ApplyResources(this._rdbPortrait, "_rdbPortrait");
             this._rdbPortrait.Name = "_rdbPortrait";
             this._rdbPortrait.TabStop = true;
             this._rdbPortrait.UseVisualStyleBackColor = true;
             this._rdbPortrait.CheckedChanged += new System.EventHandler(this.rdbPortrait_CheckedChanged);
-            //
+            // 
             // PageSetupForm
-            //
+            // 
             this.AcceptButton = this.OK_Button;
-            resources.ApplyResources(this, "$this");
             this.CancelButton = this.Cancel_Button;
+            resources.ApplyResources(this, "$this");
             this.Controls.Add(this._groupBox2);
             this.Controls.Add(this.Cancel_Button);
             this.Controls.Add(this.OK_Button);
@@ -376,6 +373,7 @@ namespace DotSpatial.Controls
             this._groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion Windows Form Designer generated code

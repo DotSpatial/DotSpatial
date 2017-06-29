@@ -21,12 +21,10 @@
 using System;
 using System.Drawing;
 using DotSpatial.Data;
+using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    ///
-    /// </summary>
     public class MapArgs : EventArgs, IProj
     {
         #region Private Variables
@@ -76,19 +74,22 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets the dX
+        /// Gets the Dx
         /// </summary>
         public double Dx
         {
-            get { return _bufferRectangle.Width / _bufferEnvelope.Width; }
+            get
+            {
+                return _bufferEnvelope.Width != 0.0? _bufferRectangle.Width / _bufferEnvelope.Width : 0.0;
+            }
         }
 
         /// <summary>
-        /// Gets the double valued
+        /// Gets the Dy
         /// </summary>
         public double Dy
         {
-            get { return _bufferRectangle.Height / _bufferEnvelope.Height; }
+            get { return _bufferEnvelope.Height != 0.0? _bufferRectangle.Height / _bufferEnvelope.Height : 0.0; }
         }
 
         /// <summary>
@@ -123,6 +124,15 @@ namespace DotSpatial.Controls
             get { return _bufferEnvelope; }
         }
 
+        // CGX
+        private Coordinate _Printlocation = null;
+
+        public Coordinate Printlocation
+        {
+            get { return _Printlocation; }
+            set { _Printlocation = value; }
+        }
+        // CGX END
         #endregion
     }
 }

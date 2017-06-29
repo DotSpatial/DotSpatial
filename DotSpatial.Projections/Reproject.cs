@@ -110,6 +110,25 @@ namespace DotSpatial.Projections
         /// <param name="numPoints"></param>
         public static void ReprojectPoints(double[] xy, double[] z, ProjectionInfo source, double srcZtoMeter, ProjectionInfo dest, double dstZtoMeter, IDatumTransform idt, int startIndex, int numPoints)
         {
+            //if the projection includes a rotation, rotation of -angle degrees in clockwise direction for projected points (=rotation of angle degrees in counterclockwise direction)
+            if (source.Transform.Rotated && source.Transform.Angle != 0)
+            {
+                double cosAngle = Math.Cos(Math.PI * source.Transform.Angle / 180.0);
+                double sinAngle = Math.Sin(Math.PI * source.Transform.Angle / 180.0);
+
+                for (int i = startIndex; i < startIndex + numPoints; i++)
+                {
+                    int x = i * 2;
+                    int y = i * 2 + 1;
+
+                    double x1 = cosAngle * xy[x] - sinAngle * xy[y];
+                    double y1 = sinAngle * xy[x] + cosAngle * xy[y];
+
+                    xy[x] = x1;
+                    xy[y] = y1;
+                }
+            }
+
             double toMeter = source.Unit.Meters;
 
             // Geocentric coordinates are centered at the core of the earth.  Z is up toward the north pole.
@@ -196,6 +215,25 @@ namespace DotSpatial.Projections
             else
             {
                 ConvertToProjected(dest, xy, z, dstZtoMeter, startIndex, numPoints);
+
+                //if the projection includes a rotation, rotation of angle degrees in clockwise direction for projected points (=rotation of -angle degrees in counterclockwise direction)
+                if (dest.Transform.Rotated && dest.Transform.Angle != 0)
+                {
+                    double cosAngle = Math.Cos(-Math.PI * dest.Transform.Angle / 180.0);
+                    double sinAngle = Math.Sin(-Math.PI * dest.Transform.Angle / 180.0);
+
+                    for (int i = startIndex; i < startIndex + numPoints; i++)
+                    {
+                        int x = i * 2;
+                        int y = i * 2 + 1;
+
+                        double x1 = cosAngle * xy[x] - sinAngle * xy[y];
+                        double y1 = sinAngle * xy[x] + cosAngle * xy[y];
+
+                        xy[x] = x1;
+                        xy[y] = y1;
+                    }
+                }
             }
         }
 
@@ -212,6 +250,7 @@ namespace DotSpatial.Projections
             if (dest.FalseEasting.HasValue) x0 = dest.FalseEasting.Value;
             if (dest.FalseNorthing.HasValue) y0 = dest.FalseNorthing.Value;
             double a = dest.GeographicInfo.Datum.Spheroid.EquatorialRadius;
+
             for (int i = startIndex; i < numPoints; i++)
             {
                 double lam = xy[2 * i];
@@ -239,23 +278,27 @@ namespace DotSpatial.Projections
             }
 
             // break this out because we don't want a chatty call to extension transforms
-            dest.Transform.Forward(xy, startIndex, numPoints);
+            //CGX (IF)
+            if (dest.Transform != null)
+            {
+                dest.Transform.Forward(xy, startIndex, numPoints);
 
-            if (dstZtoMeter == 1.0)
-            {
-                for (int i = startIndex; i < numPoints; i++)
+                if (dstZtoMeter == 1.0)
                 {
-                    xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
-                    xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
+                    for (int i = startIndex; i < numPoints; i++)
+                    {
+                        xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
+                        xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
+                    }
                 }
-            }
-            else
-            {
-                for (int i = startIndex; i < numPoints; i++)
+                else
                 {
-                    xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
-                    xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
-                    z[i] *= frmZMeter;
+                    for (int i = startIndex; i < numPoints; i++)
+                    {
+                        xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
+                        xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
+                        z[i] *= frmZMeter;
+                    }
                 }
             }
         }
@@ -389,6 +432,7 @@ namespace DotSpatial.Projections
             if (source.FalseEasting != null) x0 = source.FalseEasting.Value;
             double y0 = 0;
             if (source.FalseNorthing != null) y0 = source.FalseNorthing.Value;
+
             if (srcZtoMeter == 1.0)
             {
                 for (int i = startIndex; i < numPoints; i++)
@@ -398,6 +442,7 @@ namespace DotSpatial.Projections
                         // This might be error worthy, but not sure if we want to throw an exception here
                         continue;
                     }
+
                     // descale and de-offset
                     xy[i * 2] = (xy[i * 2] * toMeter - x0) * ra;
                     xy[i * 2 + 1] = (xy[i * 2 + 1] * toMeter - y0) * ra;
@@ -412,6 +457,7 @@ namespace DotSpatial.Projections
                         // This might be error worthy, but not sure if we want to throw an exception here
                         continue;
                     }
+
                     // descale and de-offset
                     xy[i * 2] = (xy[i * 2] * toMeter - x0) * ra;
                     xy[i * 2 + 1] = (xy[i * 2 + 1] * toMeter - y0) * ra;
@@ -419,13 +465,19 @@ namespace DotSpatial.Projections
                 }
             }
 
-            source.Transform.Inverse(xy, startIndex, numPoints);
+            if (source.Transform != null)
+            {
+                source.Transform.Inverse(xy, startIndex, numPoints);
+            }
 
             for (int i = startIndex; i < numPoints; i++)
             {
                 double lam0 = source.Lam0;
                 xy[i * 2] += lam0;
-                xy[i * 2] = Adjlon(xy[i * 2]);
+                if (!source.Over)
+                {
+                    xy[i*2] = Adjlon(xy[i*2]);
+                }
                 if (source.Geoc && Math.Abs(Math.Abs(xy[i * 2 + 1]) - Math.PI / 2) > EPS)
                 {
                     xy[i * 2 + 1] = Math.Atan(oneEs * Math.Tan(xy[i * 2 + 1]));

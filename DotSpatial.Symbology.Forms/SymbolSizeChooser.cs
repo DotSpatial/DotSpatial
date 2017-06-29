@@ -356,7 +356,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnSelectedSizeChanged()
         {
-            if (SelectedSizeChanged != null) SelectedSizeChanged(this, new EventArgs());
+            if (SelectedSizeChanged != null) SelectedSizeChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

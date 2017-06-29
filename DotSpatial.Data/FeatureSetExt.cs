@@ -76,32 +76,21 @@ namespace DotSpatial.Data
         public static IFeatureSet CombinedFields(this IFeatureSet self, IFeatureSet other)
         {
             IFeatureSet result = new FeatureSet(self.FeatureType);
-            Dictionary<string, DataColumn> resultColumns = new Dictionary<string, DataColumn>();
-            foreach (DataColumn dc in self.DataTable.Columns)
+            var uniqueNames = new HashSet<string>();
+            foreach (var fs in new []{self, other})
             {
-                string name = dc.ColumnName;
-                int i = 1;
-                while (resultColumns.ContainsKey(name))
+                foreach (DataColumn dc in fs.DataTable.Columns)
                 {
-                    name = dc.ColumnName + i;
-                    i++;
-                }
-                resultColumns.Add(name, dc);
-            }
-            foreach (DataColumn dc in other.DataTable.Columns)
-            {
-                string name = dc.ColumnName;
-                int i = 1;
-                while (resultColumns.ContainsKey(name))
-                {
-                    name = dc.ColumnName + i;
-                    i++;
-                }
-                resultColumns.Add(name, dc);
-            }
-            foreach (KeyValuePair<string, DataColumn> pair in resultColumns)
-            {
-                result.DataTable.Columns.Add(new DataColumn(pair.Key, pair.Value.DataType));
+                    var name = dc.ColumnName;
+                    var i = 1;
+                    while (uniqueNames.Contains(name))
+                    {
+                        name = dc.ColumnName + i;
+                        i++;
+                    }
+                    uniqueNames.Add(name);
+                    result.DataTable.Columns.Add(new DataColumn(name, dc.DataType));
+                }   
             }
             return result;
         }
@@ -190,17 +179,17 @@ namespace DotSpatial.Data
 
         private static IFeatureSet UnionIntersecting(IFeatureSet fs)
         {
-            FeatureSet fsunion = new FeatureSet();
+            var fsunion = new FeatureSet();
 
             // This is needed or else the table won't have the columns for copying attributes.
             fsunion.CopyTableSchema(fs);
             fsunion.Projection = fs.Projection;
             // Create a list of all the original shapes so if we union A->B we don't also union B->A
-            List<int> freeFeatures = fs.Features.Select((t, i) => i).ToList();
+            var freeFeatures = fs.Features.Select((t, i) => i).ToList();
 
             while (freeFeatures.Count > 0)
             {
-                IFeature fOriginal = fs.Features[freeFeatures[0]];
+                var fOriginal = fs.Features[freeFeatures[0]];
 
                 // Whether this gets unioned or not, it has been handled and should not be re-done.
                 // We also don't want to waste time unioning shapes to themselves.
@@ -211,38 +200,19 @@ namespace DotSpatial.Data
                 IFeature fResult = null;
 
                 // This is the list of any shapes that get unioned with our shape.
-                List<int> mergedList = new List<int>();
+                var mergedList = new List<int>();
                 bool shapeChanged;
                 do
                 {
                     shapeChanged = false; // reset this each time.
                     foreach (int index in freeFeatures)
                     {
-                        if (fResult == null)
+                        var intersectSource = fResult ?? fOriginal;
+                        if (intersectSource.Intersects(fs.Features[index]))
                         {
-                            if (fOriginal.Intersects(fs.Features[index]))
-                            {
-                                // If FieldJoinType is set to all, and large numbers of shapes are combined,
-                                // the attribute table will have a huge number of extra columns, since
-                                // every column will be replicated for each instance.
-                                fResult = fOriginal.Union(fs.Features[index], fsunion, FieldJoinType.LocalOnly);
+                            fResult = intersectSource.Union(fs.Features[index]);
+                            shapeChanged = true;
 
-                                // if the shape changed for an index greater than 0, then the newly unioned
-                                // shape might now union with an earlier shape that we skipped before.
-                                shapeChanged = true;
-                            }
-                        }
-                        else
-                        {
-                            if (fResult.Intersects(fs.Features[index]))
-                            {
-                                // snowball unioned features.  Keep adding features to the same unioned shape.
-                                fResult = fResult.Union(fs.Features[index], fsunion, FieldJoinType.LocalOnly);
-                                shapeChanged = true;
-                            }
-                        }
-                        if (shapeChanged)
-                        {
                             // Don't modify the "freefeatures" list during a loop.  Keep track until later.
                             mergedList.Add(index);
 
@@ -251,7 +221,8 @@ namespace DotSpatial.Data
                             break;
                         }
                     }
-                    foreach (int index in mergedList)
+
+                    foreach (var index in mergedList)
                     {
                         // We don't want to add the same shape twice.
                         freeFeatures.Remove(index);
@@ -260,10 +231,6 @@ namespace DotSpatial.Data
 
                 // Add fResult, unless it is null, in which case add fOriginal.
                 fsunion.Features.Add(fResult ?? fOriginal);
-
-                // Union doesn't actually add to the output featureset.  The featureset is only
-                // provided to the union method to handle column manipulation if necessary.
-                fsunion.Features.Add(fResult);
             }
             return fsunion;
         }
@@ -286,7 +253,7 @@ namespace DotSpatial.Data
                 // Intersection is symmetric, so only consider I X J where J <= I
                 if (!self.AttributesPopulated) self.FillAttributes();
                 if (!other.AttributesPopulated) other.FillAttributes();
-                
+
                 for (int i = 0; i < self.Features.Count; i++)
                 {
                     IFeature selfFeature = self.Features[i];
@@ -306,9 +273,9 @@ namespace DotSpatial.Data
                 result = new FeatureSet();
                 result.CopyTableSchema(self);
                 result.FeatureType = self.FeatureType;
-                pm = new ProgressMeter(progHandler, "Calculating Union", other.Features.Count);
                 if (other.Features != null && other.Features.Count > 0)
                 {
+                    pm = new ProgressMeter(progHandler, "Calculating Union", other.Features.Count);
                     IFeature union = other.Features[0];
                     for (int i = 1; i < other.Features.Count; i++)
                     {
@@ -331,8 +298,10 @@ namespace DotSpatial.Data
             else if (joinType == FieldJoinType.ForeignOnly)
             {
                 if (!other.AttributesPopulated) other.FillAttributes();
+
                 result = new FeatureSet();
                 result.CopyTableSchema(other);
+                result.FeatureType = other.FeatureType;
                 if (self.Features != null && self.Features.Count > 0)
                 {
                     pm = new ProgressMeter(progHandler, "Calculating Union", self.Features.Count);
@@ -348,11 +317,7 @@ namespace DotSpatial.Data
                         pm = new ProgressMeter(progHandler, "Calculating Intersection", other.Features.Count);
                         for (int i = 0; i < other.Features.Count; i++)
                         {
-                            IFeature test = other.Features[i].Intersection(union, result, joinType);
-                            if (test.BasicGeometry != null)
-                            {
-                                result.Features.Add(test);
-                            }
+                            other.Features[i].Intersection(union, result, FieldJoinType.LocalOnly);
                             pm.CurrentValue = i;
                         }
                     }

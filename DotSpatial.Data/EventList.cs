@@ -950,7 +950,7 @@ namespace DotSpatial.Data
         /// </summary>
         protected void OnAfterListCleared()
         {
-            if (AfterListCleared != null) AfterListCleared(this, new EventArgs());
+            if (AfterListCleared != null) AfterListCleared(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1064,7 +1064,7 @@ namespace DotSpatial.Data
         /// </summary>
         protected void OnListChanged()
         {
-            if (ListChanged != null) ListChanged(this, new EventArgs());
+            if (ListChanged != null) ListChanged(this, EventArgs.Empty);
         }
 
         #region Reverse
@@ -1109,7 +1109,7 @@ namespace DotSpatial.Data
         protected void OnAfterReversed()
         {
             if (AfterReversed == null) return;
-            AfterReversed(this, new EventArgs());
+            AfterReversed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1167,7 +1167,7 @@ namespace DotSpatial.Data
         protected void OnAfterListReversed()
         {
             if (AfterListReversed == null) return;
-            AfterListReversed(this, new EventArgs());
+            AfterListReversed(this, EventArgs.Empty);
         }
 
         #endregion
@@ -1360,7 +1360,7 @@ namespace DotSpatial.Data
         protected void OnAfterSort()
         {
             if (AfterSort == null) return;
-            AfterSort(this, new EventArgs());
+            AfterSort(this, EventArgs.Empty);
         }
 
         /// <summary>

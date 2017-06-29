@@ -808,13 +808,14 @@ namespace DotSpatial.Symbology.Forms
 
         private bool CreateNewColumn()
         {
-            AddNewColum addCol = new AddNewColum();
-            if (addCol.ShowDialog() == DialogResult.OK)
+            var addCol = new AddNewColum();
+            if (addCol.ShowDialog(this) == DialogResult.OK)
             {
                 _fs.DataTable.Columns.Add(addCol.Name, addCol.Type);
                 OnNewFieldAdded();
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -822,7 +823,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnNewFieldAdded()
         {
-            NewFieldAdded(this, new EventArgs());
+            NewFieldAdded(this, EventArgs.Empty);
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

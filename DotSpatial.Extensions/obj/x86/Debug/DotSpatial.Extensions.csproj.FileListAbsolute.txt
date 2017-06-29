@@ -1,0 +1,4 @@
+C:\D4F_SRC\D4F\bin\Debug\DotSpatial.Extensions.dll
+C:\D4F_SRC\D4F\bin\Debug\DotSpatial.Extensions.pdb
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Extensions\obj\x86\Debug\DotSpatial.Extensions.dll
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Extensions\obj\x86\Debug\DotSpatial.Extensions.pdb

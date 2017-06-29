@@ -39,12 +39,12 @@ namespace DotSpatial.Plugins.Measure
     public class MapFunctionMeasure : MapFunction
     {
         private bool _areaMode;
-        private List<Coordinate> _coordinates;
+        protected List<Coordinate> _coordinates;
         private double _currentArea;
         private double _currentDistance;
         private IFeatureSet _featureSet;
         private bool _firstPartIsCounterClockwise;
-        private MeasureDialog _measureDialog;
+        protected MeasureDialog _measureDialog;
         private Point _mousePosition;
         private double _previousDistance;
         private List<List<Coordinate>> _previousParts;
@@ -263,7 +263,7 @@ namespace DotSpatial.Plugins.Measure
             base.OnDraw(e);
         }
 
-        private double GetDist(Coordinate c1)
+        protected virtual double GetDist(Coordinate c1)
         {
             Coordinate c2 = _coordinates[_coordinates.Count - 1];
             double dx = Math.Abs(c2.X - c1.X);

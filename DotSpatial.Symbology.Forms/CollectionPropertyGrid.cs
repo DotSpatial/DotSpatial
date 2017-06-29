@@ -160,7 +160,7 @@ namespace DotSpatial.Symbology.Forms
             NamedList = list;
             ccItems.AddClicked += ccItems_AddClicked;
             ccItems.SelectedItemChanged += ccItems_SelectedItemChanged;
-            ccItems_SelectedItemChanged(ccItems, new EventArgs());
+            ccItems_SelectedItemChanged(ccItems, EventArgs.Empty);
             ccItems.RemoveClicked += ccItems_RemoveClicked;
             Configure();
         }
@@ -257,7 +257,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnAddClicked()
         {
-            if (AddItemClicked != null) AddItemClicked(this, new EventArgs());
+            if (AddItemClicked != null) AddItemClicked(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnApplyChanges()
         {
-            if (ChangesApplied != null) ChangesApplied(this, new EventArgs());
+            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
         }
 
         #endregion

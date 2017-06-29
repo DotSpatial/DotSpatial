@@ -29,13 +29,11 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Serialization;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// A layer with drawing characteristics for LineStrings
-    /// </summary>
     public class MapLineLayer : LineLayer, IMapLineLayer
     {
         #region Events
@@ -51,15 +49,6 @@ namespace DotSpatial.Controls
         #region Private variables
 
         const int SELECTED = 1;
-        private const int X = 0;
-        private const int Y = 1;
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
-        /*
-                private readonly Rectangle _drawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
-        */
-        private Rectangle _bufferRectangle;
-        private Image _stencil; // draw features to the stencil
 
         #endregion
 
@@ -119,6 +108,61 @@ namespace DotSpatial.Controls
 
         #endregion
 
+        #region CGX
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="inFeatureSet"></param>
+        public MapLineLayer(IFeatureSet inFeatureSet, FastDrawnState[] inVisibility)
+            : base(inFeatureSet)
+        {
+            Configure();
+            OnFinishedLoading();
+
+            Visibility = inVisibility;
+
+        }
+        FastDrawnState[] _Visibility = null;
+        [Serialize("FastDrawnState", ConstructorArgumentIndex = 1)]
+        public FastDrawnState[] Visibility
+        {
+            get
+            {
+
+
+
+                return _Visibility;
+            }
+
+            set
+            {
+
+                _Visibility = value;
+
+            }
+        }
+        public void StoreVisibility()
+        {
+            Visibility = DrawnStates;
+        }
+
+        public void SetVisibility()
+        {
+            DrawnStatesNeeded = true;
+            if (_Visibility != null && DrawnStates != null
+                && _Visibility.Length == DrawnStates.Length)
+            {
+                for (int i = 0; i < _Visibility.Length; i++)
+                {
+
+                    DrawnStates[i].Visible = _Visibility[i].Visible;
+
+
+                }
+            }
+        }
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -170,8 +214,8 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
+            if (BackBuffer == null) return;
+            Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -280,12 +324,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Builds a linestring into the graphics path, using minX, maxY, dx and dy for the transformations.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="ls"></param>
-        /// <param name="minX"></param>
-        /// <param name="maxY"></param>
-        /// <param name="dx"></param>
-        /// <param name="dy"></param>
         internal static void BuildLineString(GraphicsPath path, IBasicLineString ls, double minX, double maxY, double dx, double dy)
         {
             IList<Coordinate> cs = ls.Coordinates;
@@ -327,39 +365,38 @@ namespace DotSpatial.Controls
                 PartRange prtx = shpx.Parts[prt];
                 int start = prtx.StartIndex;
                 int end = prtx.EndIndex;
-                List<double[]> points = new List<double[]>();
+                var points = new List<double[]>(end - start + 1);
 
                 for (int i = start; i <= end; i++)
                 {
-                    double[] pt = new double[2];
-                    pt[X] = (vertices[i * 2] - minX) * dx;
-                    pt[Y] = (maxY - vertices[i * 2 + 1]) * dy;
+                    var pt = new[]
+                    {
+                        (vertices[i*2] - minX)*dx ,
+                        (maxY - vertices[i*2 + 1])*dy 
+                    };
                     points.Add(pt);
                 }
 
                 List<List<double[]>> multiLinestrings;
                 if (!shpx.Extent.Within(args.GeographicExtents))
                 {
-                    multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top,
-                                                                      clipRect.Right, clipRect.Bottom);
+                    multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top, clipRect.Right, clipRect.Bottom);
                 }
                 else
                 {
-                    multiLinestrings = new List<List<double[]>>();
-                    multiLinestrings.Add(points);
+                    multiLinestrings = new List<List<double[]>> { points };
                 }
 
                 foreach (List<double[]> linestring in multiLinestrings)
                 {
-                    List<Point> intPoints = DuplicationPreventer.Clean(linestring);
-                    if (intPoints.Count < 2)
+                    var intPoints = DuplicationPreventer.Clean(linestring).ToArray();
+                    if (intPoints.Length < 2)
                     {
-                        points.Clear();
                         continue;
                     }
+
                     path.StartFigure();
-                    Point[] pointArray = intPoints.ToArray();
-                    path.AddLines(pointArray);
+                    path.AddLines(intPoints);
                 }
             }
         }
@@ -372,43 +409,27 @@ namespace DotSpatial.Controls
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer
-        {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
-        }
+        public Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+        public Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+        public IEnvelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+        public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// Gets an integer number of chunks for this layer.
@@ -479,7 +500,7 @@ namespace DotSpatial.Controls
 
         private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
 
             if (DrawnStatesNeeded)
             {
@@ -497,14 +518,7 @@ namespace DotSpatial.Controls
                         // Define the symbology based on the category and selection state
                         ILineSymbolizer ls = category.Symbolizer;
                         if (selectState == SELECTED) ls = category.SelectionSymbolizer;
-                        if (ls.Smoothing)
-                        {
-                            g.SmoothingMode = SmoothingMode.AntiAlias;
-                        }
-                        else
-                        {
-                            g.SmoothingMode = SmoothingMode.None;
-                        }
+                        g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
 
                         // Compute a clipping rectangle that accounts for symbology
                         Rectangle clipRect = ComputeClippingRectangle(e, ls);
@@ -517,9 +531,17 @@ namespace DotSpatial.Controls
 
                         foreach (int index in indices)
                         {
+                            if (index >= states.Length) break;
                             FastDrawnState state = states[index];
                             if (state.Category == lineCategory && state.Selected == (i == 1) && state.Visible)
                             {
+                                //CGX
+                                if (Visibility != null && Visibility.Length > 0 && index < Visibility.Length)
+                                {
+                                    bool Visi = Visibility[index].Visible;
+                                    if (!Visi) continue;
+                                }
+                                // CGX END
                                 drawnFeatures.Add(index);
                             }
                         }
@@ -535,6 +557,16 @@ namespace DotSpatial.Controls
                         {
                             scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                         }
+
+
+                        //CGX
+                        if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                        {
+                            double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                            double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                            scale = dReferenceScale / dCurrentScale;
+                        }
+                        //Fin CGX
 
                         foreach (IStroke stroke in ls.Strokes)
                         {
@@ -552,14 +584,7 @@ namespace DotSpatial.Controls
                 ILineCategory category = Symbology.Categories[0];
                 ILineSymbolizer ls = category.Symbolizer;
 
-                if (ls.Smoothing)
-                {
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                }
-                else
-                {
-                    g.SmoothingMode = SmoothingMode.None;
-                }
+                g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
 
                 Rectangle clipRect = ComputeClippingRectangle(e, ls);
                 // Determine the subset of the specified features that are visible and match the category
@@ -575,6 +600,15 @@ namespace DotSpatial.Controls
                     scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                 }
 
+                //CGX
+                if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                {
+                    double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                    double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                    scale = dReferenceScale / dCurrentScale;
+                }
+                //Fin CGX
+
                 foreach (IStroke stroke in ls.Strokes)
                 {
                     stroke.DrawPath(g, graphPath, scale);
@@ -589,7 +623,7 @@ namespace DotSpatial.Controls
         // This draws the individual line features
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
 
             for (int selectState = 0; selectState < 2; selectState++)
             {
@@ -598,14 +632,7 @@ namespace DotSpatial.Controls
                     // Define the symbology based on the category and selection state
                     ILineSymbolizer ls = category.Symbolizer;
                     if (selectState == SELECTED) ls = category.SelectionSymbolizer;
-                    if (ls.Smoothing)
-                    {
-                        g.SmoothingMode = SmoothingMode.AntiAlias;
-                    }
-                    else
-                    {
-                        g.SmoothingMode = SmoothingMode.None;
-                    }
+                    g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
 
                     Rectangle clipRect = ComputeClippingRectangle(e, ls);
 
@@ -632,6 +659,15 @@ namespace DotSpatial.Controls
                         scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                     }
 
+                    //CGX
+                    if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                    {
+                        double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                        double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                        scale = dReferenceScale / dCurrentScale;
+                    }
+                    //Fin CGX
+
                     foreach (IStroke stroke in ls.Strokes)
                     {
                         stroke.DrawPath(g, graphPath, scale);
@@ -647,7 +683,7 @@ namespace DotSpatial.Controls
         {
             // Compute a clipping rectangle that accounts for symbology
             int maxLineWidth = 2 * (int)Math.Ceiling(ls.GetWidth());
-            Rectangle clipRect = new Rectangle(args.ImageRectangle.Location.X, args.ImageRectangle.Location.Y, args.ImageRectangle.Width, args.ImageRectangle.Height);
+            Rectangle clipRect = args.ProjToPixel(args.GeographicExtents); //use GeographicExtent for clipping because ImageRect clips to much
             clipRect.Inflate(maxLineWidth, maxLineWidth);
             return clipRect;
         }
@@ -664,9 +700,11 @@ namespace DotSpatial.Controls
                 for (int i = start; i <= end; i++)
                 {
                     if (double.IsNaN(vertices[i * 2]) || double.IsNaN(vertices[i * 2 + 1])) continue;
-                    Point pt = new Point();
-                    pt.X = Convert.ToInt32((vertices[i * 2] - minX) * dx);
-                    pt.Y = Convert.ToInt32((maxY - vertices[i * 2 + 1]) * dy);
+                    var pt = new Point
+                    {
+                        X = Convert.ToInt32((vertices[i * 2] - minX) * dx),
+                        Y = Convert.ToInt32((maxY - vertices[i * 2 + 1]) * dy)
+                    };
 
                     if (i == 0 || (pt.X != previousPoint.X || pt.Y != previousPoint.Y))
                     {
@@ -682,5 +720,7 @@ namespace DotSpatial.Controls
         }
 
         #endregion
+
+       
     }
 }

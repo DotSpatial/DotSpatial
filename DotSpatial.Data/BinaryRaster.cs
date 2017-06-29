@@ -144,27 +144,13 @@ namespace DotSpatial.Data
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
 
-            var result = new BinaryRaster<T>(fileName, numCols, numRows, inRam);
-
-            result.Projection = Projection;
+            var result = new BinaryRaster<T>(fileName, numCols, numRows, inRam) {Projection = Projection};
 
             // The affine coefficients defining the world file are the same except that they are translated over.  Only the position of the
             // upper left corner changes.  Everything else is the same as the previous raster.
-
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, new double[6]);
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
-
+            var ac = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
+            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, ac);
+            
             if (IsInRam)
             {
                 ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, numRows);
@@ -292,42 +278,35 @@ namespace DotSpatial.Data
         {
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
-            var result = new BinaryRaster<T>();
-            result.Filename = Filename;
-            result.Projection = Projection;
-            result.DataType = typeof(int);
-            result.NumRows = endRow - startRow + 1;
-            result.NumColumns = endColumn - startColumn + 1;
-            result.NumRowsInFile = NumRowsInFile;
-            result.NumColumnsInFile = NumColumnsInFile;
-            result.NoDataValue = NoDataValue;
-            result.StartColumn = startColumn + StartColumn;
-            result.StartRow = startRow + StartRow;
-            result.EndColumn = endColumn + StartColumn;
-            result.EndRow = EndRow + StartRow;
+            var result = new BinaryRaster<T>
+            {
+                Filename = Filename,
+                Projection = Projection,
+                DataType = typeof (int),
+                NumRows = endRow - startRow + 1,
+                NumColumns = endColumn - startColumn + 1,
+                NumRowsInFile = NumRowsInFile,
+                NumColumnsInFile = NumColumnsInFile,
+                NoDataValue = NoDataValue,
+                StartColumn = startColumn + StartColumn,
+                StartRow = startRow + StartRow,
+                EndColumn = endColumn + StartColumn,
+                EndRow = EndRow + StartRow
+            };
 
             // Reposition the "raster" so that it matches the window, not the whole raster
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, new double[6]);
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
-
+            var ac = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
+            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, ac);
+            
             // Now we can copy any values currently in memory.
             if (IsInRam)
             {
                 //result.ReadHeader(Filename);
                 result.Data = new T[numRows][];
-                ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow);
-                pm.StartValue = startRow;
+                ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow)
+                {
+                    StartValue = startRow
+                };
                 // copy values directly using both data structures
                 for (int row = 0; row < numRows; row++)
                 {
@@ -450,16 +429,7 @@ namespace DotSpatial.Data
             EndRow = EndRow;
 
             // Reposition the "raster" so that it matches the window, not the whole raster
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-
-            // Translation only needs to change two coefficients
-            Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] + Bounds.AffineCoefficients[1] * startColumn +
-                                           Bounds.AffineCoefficients[2] * startRow;
-
-            Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] + Bounds.AffineCoefficients[4] * startColumn +
-                                           Bounds.AffineCoefficients[5] * startRow;
-
+            Bounds.AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
             if (inRam)
             {
                 if (NumRows * NumColumns < 64000000)
@@ -767,41 +737,42 @@ namespace DotSpatial.Data
         /// <param name="fileName">a fileName to write data to</param>
         public void WriteHeader(string fileName)
         {
-            BinaryWriter bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate));
-            bw.Write(NumColumnsInFile);
-            bw.Write(NumRowsInFile);
-            bw.Write(CellWidth);
-            bw.Write(CellHeight);
-            bw.Write(Xllcenter);
-            bw.Write(Yllcenter);
-            bw.Write((int)RasterDataType.INTEGER);
-            bw.Write(Convert.ToInt32(NoDataValue));
-
-            // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
-            byte[] proj = new byte[255];
-            if (Projection != null)
+            using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate)))
             {
-                byte[] temp = Encoding.ASCII.GetBytes(Projection.ToProj4String());
-                int len = Math.Min(temp.Length, 255);
-                for (int i = 0; i < len; i++)
-                {
-                    proj[i] = temp[i];
-                }
-            }
-            bw.Write(proj);
-            byte[] note = new byte[255];
-            if (Notes != null)
-            {
-                byte[] temp = Encoding.ASCII.GetBytes(Notes);
-                int len = Math.Min(temp.Length, 255);
-                for (int i = 0; i < len; i++)
-                {
-                    note[i] = temp[i];
-                }
-            }
+                bw.Write(NumColumnsInFile);
+                bw.Write(NumRowsInFile);
+                bw.Write(CellWidth);
+                bw.Write(CellHeight);
+                bw.Write(Xllcenter);
+                bw.Write(Yllcenter);
+                bw.Write((int) RasterDataType.INTEGER);
+                bw.Write(Convert.ToInt32(NoDataValue));
 
-            bw.Write(note);
-            bw.Close();
+                // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
+                byte[] proj = new byte[255];
+                if (Projection != null)
+                {
+                    byte[] temp = Encoding.ASCII.GetBytes(Projection.ToProj4String());
+                    int len = Math.Min(temp.Length, 255);
+                    for (int i = 0; i < len; i++)
+                    {
+                        proj[i] = temp[i];
+                    }
+                }
+                bw.Write(proj);
+                byte[] note = new byte[255];
+                if (Notes != null)
+                {
+                    byte[] temp = Encoding.ASCII.GetBytes(Notes);
+                    int len = Math.Min(temp.Length, 255);
+                    for (int i = 0; i < len; i++)
+                    {
+                        note[i] = temp[i];
+                    }
+                }
+
+                bw.Write(note);
+            }
         }
 
         /// <summary>
@@ -813,13 +784,16 @@ namespace DotSpatial.Data
         /// <param name="value">The actual value to write.</param>
         public void WriteValue(int row, int column, int value)
         {
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.None);
-            fs.Seek(HeaderSize, SeekOrigin.Begin);
-            fs.Seek(row * NumColumnsInFile * ByteSize, SeekOrigin.Current);
-            fs.Seek(column * ByteSize, SeekOrigin.Current);
-            BinaryWriter bw = new BinaryWriter(fs);
-            bw.Write(value);
-            bw.Close();
+            using (var fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.None))
+            {
+                fs.Seek(HeaderSize, SeekOrigin.Begin);
+                fs.Seek(row*NumColumnsInFile*ByteSize, SeekOrigin.Current);
+                fs.Seek(column*ByteSize, SeekOrigin.Current);
+                using (var bw = new BinaryWriter(fs))
+                {
+                    bw.Write(value);
+                }
+            }
         }
 
         /// <summary>

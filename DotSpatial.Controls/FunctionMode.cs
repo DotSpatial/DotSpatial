@@ -38,6 +38,10 @@ namespace DotSpatial.Controls
         /// </summary>
         ZoomOut,
         /// <summary>
+        /// Zooms by scrolling the mouse wheel and pans by pressing the mouse wheel and moving the mouse.
+        /// </summary>
+        ZoomPan,
+        /// <summary>
         /// Pans the map with the left mouse button, context with the right and zooms with the mouse wheel
         /// </summary>
         Pan,
@@ -49,7 +53,6 @@ namespace DotSpatial.Controls
         /// Left button selects, moves or edits, right produces a context menu
         /// </summary>
         Label,
-
         /// <summary>
         /// Disables all the tools
         /// </summary>

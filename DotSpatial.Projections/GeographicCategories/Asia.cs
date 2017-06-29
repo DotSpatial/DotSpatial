@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.GeographicCategories
     /// </summary>
     public class Asia : CoordinateSystemCategory
     {
-        #region Private Variables
+        #region Fields
 
         public readonly ProjectionInfo AinelAbd1970;
         public readonly ProjectionInfo Batavia;
@@ -177,75 +177,7 @@ namespace DotSpatial.Projections.GeographicCategories
             Tokyo = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
             TrucialCoast1948 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=helmert +no_defs ");
             Xian1980 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378140 +b=6356755.288157528 +no_defs ");
-
-            AinelAbd1970.IsLatLon = true;
-            Batavia.IsLatLon = true;
-            BataviaJakarta.IsLatLon = true;
-            Beijing1954.IsLatLon = true;
-            BukitRimpah.IsLatLon = true;
-            DeirezZor.IsLatLon = true;
-            European1950ED77.IsLatLon = true;
-            EuropeanDatum1950.IsLatLon = true;
-            EverestBangladesh.IsLatLon = true;
-            EverestIndiaandNepal.IsLatLon = true;
-            Everestdef1962.IsLatLon = true;
-            Everestdef1967.IsLatLon = true;
-            Everestdef1975.IsLatLon = true;
-            Everest1830.IsLatLon = true;
-            EverestModified.IsLatLon = true;
-            Fahud.IsLatLon = true;
-            FD1958.IsLatLon = true;
-            Gandajika1970.IsLatLon = true;
-            GunungSegara.IsLatLon = true;
-            GunungSegaraJakarta.IsLatLon = true;
-            Hanoi1972.IsLatLon = true;
-            HeratNorth.IsLatLon = true;
-            HongKong1963.IsLatLon = true;
-            HongKong1980.IsLatLon = true;
-            HuTzuShan.IsLatLon = true;
-            IGM1995.IsLatLon = true;
-            IKBD1992.IsLatLon = true;
-            Indian1954.IsLatLon = true;
-            Indian1960.IsLatLon = true;
-            Indian1975.IsLatLon = true;
-            IndonesianDatum1974.IsLatLon = true;
-            Israel.IsLatLon = true;
-            JGD2000.IsLatLon = true;
-            Jordan.IsLatLon = true;
-            Kalianpur1880.IsLatLon = true;
-            Kalianpur1937.IsLatLon = true;
-            Kalianpur1962.IsLatLon = true;
-            Kalianpur1975.IsLatLon = true;
-            Kandawala.IsLatLon = true;
-            Kertau.IsLatLon = true;
-            KoreanDatum1985.IsLatLon = true;
-            KoreanDatum1995.IsLatLon = true;
-            KuwaitOilCompany.IsLatLon = true;
-            KuwaitUtility.IsLatLon = true;
-            Luzon1911.IsLatLon = true;
-            Makassar.IsLatLon = true;
-            MakassarJakarta.IsLatLon = true;
-            Nahrwan1967.IsLatLon = true;
-            NationalGeodeticNetworkKuwait.IsLatLon = true;
-            ObservatorioMeteorologico1965.IsLatLon = true;
-            Oman.IsLatLon = true;
-            Padang1884.IsLatLon = true;
-            Padang1884Jakarta.IsLatLon = true;
-            Palestine1923.IsLatLon = true;
-            Pulkovo1942.IsLatLon = true;
-            Pulkovo1995.IsLatLon = true;
-            Qatar.IsLatLon = true;
-            Qatar1948.IsLatLon = true;
-            QND1995.IsLatLon = true;
-            Rassadiran.IsLatLon = true;
-            Samboja.IsLatLon = true;
-            Segora.IsLatLon = true;
-            Serindung.IsLatLon = true;
-            SouthAsiaSingapore.IsLatLon = true;
-            Timbalai1948.IsLatLon = true;
-            Tokyo.IsLatLon = true;
-            TrucialCoast1948.IsLatLon = true;
-            Xian1980.IsLatLon = true;
+            
             AinelAbd1970.GeographicInfo.Name = "GCS_Ain_el_Abd_1970";
             Batavia.GeographicInfo.Name = "GCS_Batavia";
             BataviaJakarta.GeographicInfo.Name = "GCS_Batavia_Jakarta";

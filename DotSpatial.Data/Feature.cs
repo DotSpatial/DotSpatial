@@ -46,17 +46,11 @@ namespace DotSpatial.Data
         public static string ComparisonField;
 
         private IBasicGeometry _basicGeometry;
-        private int _contentLength;
-        private DataRow _dataRow;
+        private IDataRow _dataRow; // CGX AERO GLZ
         private CacheTypes _envelopSource;
         private IEnvelope _envelope;
         private int _numParts;
-        private CacheTypes _numPartsSource;
-        private long _offset;
         private IFeatureSet _parentFeatureSet;
-        private int _recordNumber;
-        private ShapeRange _shapeIndex;
-        private ShapeType _shapeType;
 
         #endregion
 
@@ -120,13 +114,7 @@ namespace DotSpatial.Data
             {
                 ReadPolygonShape(shape);
             }
-            else
-            {
-                // These properties are set by ReadPolygonShape, so set them here for everybody else.
-                RecordNumber = shape.Range.RecordNumber;
-                ContentLength = shape.Range.ContentLength;
-                ShapeType = shape.Range.ShapeType;
-            }
+
         }
 
         /// <summary>
@@ -225,7 +213,7 @@ namespace DotSpatial.Data
         /// <returns>An integer that controls the sorting based on the values for the specified field name.</returns>
         int IComparable<IFeature>.CompareTo(IFeature other)
         {
-            DataRow oDr = other.DataRow;
+            IDataRow oDr = other.DataRow; // CGX AERO GLZ
             if (_dataRow != null && oDr != null)
             {
                 if (_dataRow.Table != null && oDr.Table != null)
@@ -317,24 +305,16 @@ namespace DotSpatial.Data
                 IEnvelope minEnv = null;
                 IEnvelope testEnv = testRing.EnvelopeInternal;
                 Coordinate testPt = testRing.Coordinates[0];
-                ILinearRing tryRing;
+
                 for (int j = 0; j < shells.Count; j++)
                 {
-                    tryRing = shells[j];
+                    ILinearRing tryRing = shells[j];
                     IEnvelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
-                    bool isContained = false;
-
-                    if (tryEnv.Contains(testEnv)
-                        && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
-                            || (PointInList(testPt, tryRing.Coordinates))))
-                    {
-                        isContained = true;
-                    }
 
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (isContained)
+                    if (tryEnv.Contains(testEnv) && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates) || (PointInList(testPt, tryRing.Coordinates))))
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
                         {
@@ -345,7 +325,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            IPolygon[] polygons = new Polygon[shells.Count];
+            var polygons = new Polygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
                 polygons[i] = new Polygon(shells[i], holesForShells[i].ToArray());
@@ -360,10 +340,6 @@ namespace DotSpatial.Data
                 // It's a multi part
                 _basicGeometry = new MultiPolygon(polygons);
             }
-
-            RecordNumber = shape.Range.RecordNumber;
-            ContentLength = shape.Range.ContentLength;
-            ShapeType = shape.Range.ShapeType;
         }
 
         /// <summary>
@@ -430,6 +406,7 @@ namespace DotSpatial.Data
             if (_basicGeometry == null) return;
             _basicGeometry.UpdateEnvelope();
             _envelope = _basicGeometry.Envelope;
+            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
         /// <summary>
@@ -470,7 +447,7 @@ namespace DotSpatial.Data
             Feature clone = (Feature)MemberwiseClone();
             clone.BasicGeometry = BasicGeometry.Copy();
             clone.Envelope = Envelope.Copy();
-            DataTable table = ParentFeatureSet.DataTable;
+            IDataTable table = ParentFeatureSet.DataTable; // CGX AERO GLZ
             clone._dataRow = table.NewRow();
             if (DataRow != null)
             {
@@ -504,7 +481,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_numPartsSource == CacheTypes.Cached)
+                if (NumPartsSource == CacheTypes.Cached)
                 {
                     return _numParts;
                 }
@@ -535,7 +512,7 @@ namespace DotSpatial.Data
             set
             {
                 _numParts = value;
-                _numPartsSource = CacheTypes.Cached;
+                NumPartsSource = CacheTypes.Cached;
             }
         }
 
@@ -544,26 +521,13 @@ namespace DotSpatial.Data
         /// is dynamic, then NumParts will be read from the geometry on this feature.
         /// If it is cached, then the value is separate from the geometry.
         /// </summary>
-        public CacheTypes NumPartsSource
-        {
-            get { return _numPartsSource; }
-            set { _numPartsSource = value; }
-        }
+        public CacheTypes NumPartsSource { get; set; }
 
         /// <summary>
         /// This specifies the offset, if any in the data file
         /// </summary>
-        public long Offset
-        {
-            get
-            {
-                return _offset;
-            }
-            protected set
-            {
-                _offset = value;
-            }
-        }
+        [Obsolete("This property no longer used.")] // Marked in 1.7
+        public long Offset { get; protected set; }
 
         #region IFeature Members
 
@@ -591,8 +555,11 @@ namespace DotSpatial.Data
         /// </summary>
         public int ContentLength
         {
-            get { return _contentLength; }
-            set { _contentLength = value; }
+            get { return ShapeIndex != null ? ShapeIndex.ContentLength : 0; }
+            set
+            {
+                // nothing
+            }
         }
 
         /// <summary>
@@ -619,7 +586,7 @@ namespace DotSpatial.Data
         /// this is meaningless.  You should create a new Feature by doing
         /// FeatureLayer.Features.Add(), which will return a new Feature.
         /// </summary>
-        public virtual DataRow DataRow
+        public virtual IDataRow DataRow // CGX AERO GLZ
         {
             get
             {
@@ -696,9 +663,10 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_parentFeatureSet.AttributesPopulated == false)
+                if (_parentFeatureSet.IndexMode || !_parentFeatureSet.AttributesPopulated)
                 {
-                    return _recordNumber;
+                    return RecordNumber - 1; // -1 because RecordNumber for shapefiles is 1-based.
+                    // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
                 }
                 return _parentFeatureSet.Features.IndexOf(this);
             }
@@ -745,8 +713,11 @@ namespace DotSpatial.Data
         /// </summary>
         public int RecordNumber
         {
-            get { return _recordNumber; }
-            set { _recordNumber = value; }
+            get { return ShapeIndex != null ? ShapeIndex.RecordNumber : -1; }
+            set
+            {
+                // nothing
+            }
         }
 
         /// <summary>
@@ -764,19 +735,21 @@ namespace DotSpatial.Data
         /// </summary>
         public ShapeType ShapeType
         {
-            get { return _shapeType; }
-            set { _shapeType = value; }
+            get { return ShapeIndex != null ? ShapeIndex.ShapeType : ShapeType.NullShape; }
+            set
+            {
+                // nothing
+
+                // todo: Remove setters for ShapeType/RecordNumber/ContentLength from public interface
+                // They all must be available only through ShapeIndex property.
+            }
         }
 
         /// <summary>
         /// This is simply a quick access to the Vertices list for this specific
-        /// feature.  If the Vertices have not yet been defined, this will be null.
+        /// feature. If the Vertices have not yet been defined, this will be null.
         /// </summary>
-        public ShapeRange ShapeIndex
-        {
-            get { return _shapeIndex; }
-            set { _shapeIndex = value; }
-        }
+        public ShapeRange ShapeIndex { get; set; }
 
         #endregion
     }

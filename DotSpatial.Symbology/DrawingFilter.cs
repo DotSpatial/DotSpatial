@@ -27,9 +27,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// DrawingFilter
-    /// </summary>
     public class DrawingFilter : IDrawingFilter
     {
         #region Events
@@ -116,23 +113,25 @@ namespace DotSpatial.Symbology
         {
             _scheme = scheme;
             if (_isInitialized == false) DoInitialize();
-            List<IFeatureCategory> fc = _scheme.GetCategories().ToList();
-            // Short cut the rest of this (and prevent loading features) in the case where we know everything is in the default category
-            if (fc.Count == 1 && string.IsNullOrEmpty(fc[0].FilterExpression)) return;
-            List<DataTable> tables = new List<DataTable>(); // just in case there is more than one Table somehow
-            List<DataRow> allRows = new List<DataRow>();
-            List<DataTable> tempList = new List<DataTable>();
-            bool containsFID = false;
-            IEnumerable<IFeatureCategory> categories = _scheme.GetCategories();
+            var fc = _scheme.GetCategories().ToList();
 
-            foreach (var category in categories)
+            // Short cut the rest of this (and prevent loading features) in the case where we know everything is in the default category
+            if (fc.Count == 1 && string.IsNullOrEmpty(fc[0].FilterExpression))
             {
-                if (category.FilterExpression != null && category.FilterExpression.Contains("[FID]"))
+                // Replace SchemeCategory in _drawnStates
+                foreach (var drawnState in _drawnStates)
                 {
-                    containsFID = true;
+                    drawnState.Value.SchemeCategory = fc[0];
                 }
+                return;
             }
-            foreach (IFeature f in _featureList)
+
+            var tables = new List<IDataTable>(); // just in case there is more than one Table somehow // CGX AERO GLZ
+            var allRows = new List<IDataRow>(); // CGX AERO GLZ
+            var tempList = new List<IDataTable>(); // CGX AERO GLZ
+            var containsFID = fc.Any(category => category.FilterExpression != null && category.FilterExpression.Contains("[FID]"));
+
+            foreach (var f in _featureList)
             {
                 if (f.DataRow == null)
                 {
@@ -141,7 +140,7 @@ namespace DotSpatial.Symbology
 
                 if (f.DataRow != null)
                 {
-                    DataTable t = f.DataRow.Table;
+                    IDataTable t = f.DataRow.Table; // CGX AERO GLZ
                     if (tables.Contains(t) == false)
                     {
                         tables.Add(t);
@@ -155,23 +154,33 @@ namespace DotSpatial.Symbology
                 }
                 if (_drawnStates.ContainsKey(f)) _drawnStates[f].SchemeCategory = null;
             }
-            foreach (IFeatureCategory cat in categories)
-            {
-                foreach (DataTable dt in tables)
-                {
-                    DataRow[] rows = dt.Select(cat.FilterExpression);
 
-                    foreach (DataRow dr in rows)
+            foreach (IFeatureCategory cat in fc)
+            {
+                foreach (IDataTable dt in tables) // CGX AERO GLZ
+                {
+                     //CGX
+                    try
                     {
-                        int index = allRows.IndexOf(dr);
-                        if (index != -1)
+                        //Fin CGX
+                        IDataRow[] rows = dt.Select(cat.FilterExpression); // CGX AERO GLZ
+
+                        foreach (IDataRow dr in rows) // CGX AERO GLZ
                         {
-                            _drawnStates[_featureList[index]].SchemeCategory = cat;
+                            int index = allRows.IndexOf(dr);
+                            if (index != -1)
+                            {
+                                _drawnStates[_featureList[index]].SchemeCategory = cat;
+                            }
                         }
+                    //CGX
                     }
+                    catch (Exception)
+                    { }
+                    //Fin CGX
                 }
             }
-            foreach (DataTable table in tempList)
+            foreach (IDataTable table in tempList) // CGX AERO GLZ
             {
                 table.Columns.Remove("FID");
             }
@@ -504,7 +513,7 @@ namespace DotSpatial.Symbology
         protected virtual void OnInitialize()
         {
             _isInitialized = true;
-            if (Initialized != null) Initialized(this, new EventArgs());
+            if (Initialized != null) Initialized(this, EventArgs.Empty);
         }
 
         #endregion

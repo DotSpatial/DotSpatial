@@ -23,9 +23,6 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// CustomPolygonSymbolizer
-    /// </summary>
     [Serializable]
     public class CustomPolygonSymbolizer : CustomSymbolizer
     {

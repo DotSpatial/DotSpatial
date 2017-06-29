@@ -22,10 +22,10 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.GeometriesGraph.Index;
-using Iesi.Collections;
 
 namespace DotSpatial.Topology.Operation
 {
@@ -65,7 +65,7 @@ namespace DotSpatial.Topology.Operation
         {
             if (mp.IsEmpty)
                 return true;
-            ISet points = new ListSet();
+            var points = new HashSet<Coordinate>();
             for (int i = 0; i < mp.NumGeometries; i++)
             {
                 Point pt = (Point)mp.GetGeometryN(i);

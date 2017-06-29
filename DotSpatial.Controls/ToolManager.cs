@@ -36,12 +36,13 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This class provides a ToolManager for loading tools from .dll's
     /// </summary>
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class ToolManager : TreeView, IPartImportsSatisfiedNotification
     {
         #region Constants and Fields
 
         private readonly ToolTip _toolTipTree;
-        private ILegend _legend;
         private ITool toolToExecute;
 
         #endregion
@@ -76,11 +77,11 @@ namespace DotSpatial.Controls
             get
             {
                 List<DataSetArray> dataSets = new List<DataSetArray>();
-                if (_legend != null)
+                if (Legend != null)
                 {
-                    for (int i = 0; i < _legend.RootNodes.Count; i++)
+                    for (int i = 0; i < Legend.RootNodes.Count; i++)
                     {
-                        dataSets.AddRange(populateDataSets(_legend.RootNodes[i] as IGroup));
+                        dataSets.AddRange(populateDataSets(Legend.RootNodes[i] as IGroup));
                     }
                 }
                 return dataSets;
@@ -98,21 +99,12 @@ namespace DotSpatial.Controls
                     if (ml.DataSet != null)
                     {
                         dataSets.Add(new DataSetArray(ml.LegendText, ml.DataSet));
-
-
                         IFeatureLayer fl = ml as IFeatureLayer;
-                        if (fl != null)
-                        {
-                            if (fl.Selection.Count > 0)
-                            {
-                                dataSets.Add(new DataSetArray(fl.LegendText + " - Current Selection", fl.Selection.ToFeatureSet()));
-                            }
-                        }
+                        if (fl != null && fl.Selection.Count > 0)
+                            dataSets.Add(new DataSetArray(fl.LegendText + " - Current Selection", fl.Selection.ToFeatureSet()));
                     }
-                    if(ml.GetType().Equals(Type.GetType("DotSpatial.Controls.MapGroup")))
-                    {
+                    if (ml.GetType().Equals(Type.GetType("DotSpatial.Controls.MapGroup")))
                         dataSets.AddRange(populateDataSets(ml as IGroup));
-                    }
                 }
             }
             return dataSets;
@@ -122,14 +114,7 @@ namespace DotSpatial.Controls
         /// Gets or Sets the legend object. This is needed to automatically populate the list of data layers in tool dialogs.
         /// </summary>
         [Category("ToolManager Appearance"), Description("Gets or Sets the legend object. This is needed to automatically populate the list of data layers in tool dialogs.")]
-        public ILegend Legend
-        {
-            get { return _legend; }
-            set
-            {
-                _legend = value;
-            }
-        }
+        public ILegend Legend { get; set; }
 
         /// <summary>
         /// App is the current AppManager handle.
@@ -154,16 +139,9 @@ namespace DotSpatial.Controls
         public void OnImportsSatisfied()
         {
             if (InvokeRequired)
-            {
-                Invoke(new MethodInvoker(delegate
-                                             {
-                                                 RefreshTree();
-                                             }));
-            }
+                Invoke(new MethodInvoker(RefreshTree));
             else
-            {
                 RefreshTree();
-            }
         }
 
         /// <summary>
@@ -173,7 +151,7 @@ namespace DotSpatial.Controls
         /// <returns>true if the tool can be created otherwise false</returns>
         public bool CanCreateTool(string name)
         {
-            return Tools.Where(tool => tool.AssemblyQualifiedName == name).Any();
+            return Tools.Any(tool => tool.AssemblyQualifiedName == name);
         }
 
         /// <summary>
@@ -183,11 +161,9 @@ namespace DotSpatial.Controls
         /// <returns>Returns an new instance of the tool or NULL if the tools unique name doesn't exist in the manager</returns>
         public ITool GetTool(string name)
         {
-            ITool tool = Tools.Where(t => t.AssemblyQualifiedName == name).FirstOrDefault();
+            ITool tool = Tools.FirstOrDefault(t => t.AssemblyQualifiedName == name);
             if (tool != null)
-            {
                 tool.Initialize();
-            }
             return tool;
         }
 
@@ -200,7 +176,7 @@ namespace DotSpatial.Controls
             TreeNode selectedNode = SelectedNode;
             CollapseAll();
 
-            if (toolName == string.Empty || selectedNode == null)
+            if (string.IsNullOrEmpty(toolName) || selectedNode == null)
                 return;
 
             bool foundSelected = false;
@@ -232,7 +208,7 @@ namespace DotSpatial.Controls
         public void HighlightTool(string toolName)
         {
             CollapseAll();
-            if (toolName == string.Empty)
+            if (string.IsNullOrEmpty(toolName))
                 return;
 
             for (int i = 0; i < Nodes.Count; i++)
@@ -248,7 +224,6 @@ namespace DotSpatial.Controls
                 }
             }
             CollapseAll();
-            return;
         }
 
         /// <summary>
@@ -302,7 +277,7 @@ namespace DotSpatial.Controls
             if (theNode != null)
             {
                 // Verify that the tag property is not "null".
-                if ((theNode.Parent != null) && Tools.Where(tool => tool.Name == theNode.Name).Any())
+                if ((theNode.Parent != null) && Tools.Any(tool => tool.Name == theNode.Name))
                 {
                     DoDragDrop("ITool: " + theNode.Name, DragDropEffects.Copy);
                 }
@@ -324,7 +299,7 @@ namespace DotSpatial.Controls
             if (theNode != null)
             {
                 // Verify that the tag property is not "null".
-                var tool = Tools.Where(t => t.Name == theNode.Name).FirstOrDefault();
+                var tool = Tools.FirstOrDefault(t => t.Name == theNode.Name);
                 if (tool != null)
                 {
                     // Change the ToolTip only if the pointer moved to a new node.
@@ -347,7 +322,6 @@ namespace DotSpatial.Controls
 
         private static void BwDoWork(object sender, DoWorkEventArgs e)
         {
-            BackgroundWorker bw = sender as BackgroundWorker;
             object[] threadParameter = e.Argument as object[];
             if (threadParameter == null) return;
             ITool toolToExecute = threadParameter[0] as ITool;
@@ -358,35 +332,47 @@ namespace DotSpatial.Controls
             progForm.Progress(String.Empty, 0, "==================");
             progForm.Progress(String.Empty, 0, String.Format("Executing Tool: {0}", toolToExecute.Name));
             progForm.Progress(String.Empty, 0, "==================");
-            toolToExecute.Execute(progForm);
+            bool result = false;
+            try
+            {
+                result = toolToExecute.Execute(progForm);
+            }
+            catch (Exception ex)
+            {
+                progForm.Progress(String.Empty, 100, "Error: " + ex);
+            }
+            e.Result = result;
             progForm.ExecutionComplete();
             progForm.Progress(String.Empty, 100, "==================");
             progForm.Progress(String.Empty, 100, String.Format("Done Executing Tool: {0}", toolToExecute.Name));
             progForm.Progress(String.Empty, 100, "==================");
         }
 
-        private void executionComplete(object sender, AsyncCompletedEventArgs e)
+        private void executionComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (toolToExecute.OutputParameters != null)
+            if (toolToExecute.OutputParameters != null && (bool)e.Result)
             {
-                foreach (Parameter p in toolToExecute.OutputParameters)
+                foreach (var p in toolToExecute.OutputParameters)
                 {
-                    IFeatureSet featureset = p.Value as IFeatureSet;
-                    IRaster rasterset = p.Value as IRaster;
                     try
                     {
+                        var featureset = p.Value as IFeatureSet;
                         if (featureset != null)
                         {
                             App.Map.AddLayer(featureset.Filename);
                         }
-                        else if (rasterset != null)
+                        else
                         {
-                            App.Map.AddLayer(rasterset.Filename);
+                            var rasterset = p.Value as IRaster;
+                            if (rasterset != null)
+                            {
+                                App.Map.AddLayer(rasterset.Filename);
+                            }
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Error opening layer file.");
+                        MessageBox.Show("Unable to add layer. Reason: " + ex.Message);
                     }
                 }
             }
@@ -407,9 +393,9 @@ namespace DotSpatial.Controls
                 Extent ex = new Extent(-180, -90, 180, 90);
 
                 // it wasn't a category?
-                if (_legend != null)
+                if (Legend != null)
                 {
-                    IMapFrame mf = _legend.RootNodes[0] as IMapFrame;
+                    IMapFrame mf = Legend.RootNodes[0] as IMapFrame;
                     if (mf != null) ex = mf.ViewExtents;
                 }
 

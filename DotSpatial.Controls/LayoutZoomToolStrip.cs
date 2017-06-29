@@ -30,7 +30,8 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A Brian Marchioni original toolstrip... preloaded with content.
     /// </summary>
-    [ToolboxItem(true)]
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class LayoutZoomToolStrip : ToolStrip
     {
         #region "Private Variables"

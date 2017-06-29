@@ -19,6 +19,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.Data;
 
 namespace DotSpatial.Symbology
 {
@@ -35,15 +36,29 @@ namespace DotSpatial.Symbology
         /// <returns>A shallow copy of this object.</returns>
         ILabelCategory Copy();
 
+        /// <summary>
+        /// Calculates the expression for the given row. The Expression.Columns have to be in sync with the Features columns for calculation to work without error.
+        /// </summary>
+        /// <param name="row">Datarow the expression gets calculated for.</param>
+        /// <param name="selected">Indicates whether the feature is selected.</param>
+        /// <param name="FID">The FID of the feature, the expression gets calculated for.</param>
+        /// <returns>null if there was an error while parsing the expression, else the calculated expression</returns>
+        string CalculateExpression(DotSpatial.Data.IDataRow row, bool selected, int FID); // CGX AERO GLZ
+
+        /// <summary>
+        /// Updates the Expression-Object with the columns that exist inside the features that belong to this category. The will be used for calculating the expression.
+        /// </summary>
+        /// <param name="columns">Columns that should be updated.</param>
+        /// <returns>False if columns were not set.</returns>
+        bool UpdateExpressionColumns(Data.IDataColumnCollection columns); // CGX AERO GLZ
+
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the string expression that controls the integration
-        /// of field values into the label text.  This will not do calculations,
-        /// but will allow multiple fields to be conjoined in a string expression,
-        /// substituting a field value where each [FieldName] occurs.
+        /// Gets or sets the string expression that controls the integration of field values into the label text. 
+        /// This is the raw text that is used to do calculations and concat fields and strings.
         /// </summary>
         string Expression
         {

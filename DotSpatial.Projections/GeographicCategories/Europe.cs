@@ -18,7 +18,9 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
-// ********************************************************************************************************
+// Bart Adriaanse      | 30/11/2013 |  Added Amersfoort definition, the proper name for dutch datum
+//                     |            |  Note: please look for DutchRD in Pojected.NationalGrids
+// ************************************************************************************************* 
 
 #pragma warning disable 1591
 
@@ -32,6 +34,7 @@ namespace DotSpatial.Projections.GeographicCategories
         #region Private Variables
 
         public readonly ProjectionInfo ATFParis;
+        public readonly ProjectionInfo Amersfoort;
         public readonly ProjectionInfo Albanian1987;
         public readonly ProjectionInfo Belge1950Brussels;
         public readonly ProjectionInfo Belge1972;
@@ -115,6 +118,7 @@ namespace DotSpatial.Projections.GeographicCategories
         public Europe()
         {
             Albanian1987 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=krass +no_defs ");
+            Amersfoort = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812 +no_defs "); 
             ATFParis = ProjectionInfo.FromProj4String("+proj=longlat +a=6376523 +b=6355862.933255573 +pm=2.337229166666667 +no_defs ");
             Belge1950Brussels = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +pm=4.367975 +no_defs ");
             Belge1972 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
@@ -128,8 +132,7 @@ namespace DotSpatial.Projections.GeographicCategories
             DealulPiscului1933Romania = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             DealulPiscului1970Romania = ProjectionInfo.FromProj4String("+proj=longlat +ellps=krass +no_defs ");
             DeutscheHauptdreiecksnetz = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
-            DutchRD = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055999986 +lon_0=5.387638888999871 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs");
-            DutchRD = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
+            DutchRD = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812 +no_defs "); 
             Estonia1937 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
             Estonia1992 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
             Estonia1997 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
@@ -188,81 +191,6 @@ namespace DotSpatial.Projections.GeographicCategories
             SwissTRF1995 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
             TM65 = ProjectionInfo.FromProj4String("+proj=longlat +a=6377340.189 +b=6356034.447938534 +no_defs ");
             TM75 = ProjectionInfo.FromProj4String("+proj=longlat +a=6377340.189 +b=6356034.447938534 +no_defs ");
-
-            Albanian1987.IsLatLon = true;
-            ATFParis.IsLatLon = true;
-            Belge1950Brussels.IsLatLon = true;
-            Belge1972.IsLatLon = true;
-            Bern1898.IsLatLon = true;
-            Bern1898Bern.IsLatLon = true;
-            Bern1938.IsLatLon = true;
-            CH1903.IsLatLon = true;
-            Datum73.IsLatLon = true;
-            DatumLisboaBessel.IsLatLon = true;
-            DatumLisboaHayford.IsLatLon = true;
-            DealulPiscului1933Romania.IsLatLon = true;
-            DealulPiscului1970Romania.IsLatLon = true;
-            DeutscheHauptdreiecksnetz.IsLatLon = true;
-            DutchRD.IsLatLon = true;
-            DutchRD.IsLatLon = true;
-            Estonia1937.IsLatLon = true;
-            Estonia1992.IsLatLon = true;
-            Estonia1997.IsLatLon = true;
-            ETRF1989.IsLatLon = true;
-            ETRS1989.IsLatLon = true;
-            EUREFFIN.IsLatLon = true;
-            European1979.IsLatLon = true;
-            EuropeanDatum1950.IsLatLon = true;
-            EuropeanDatum1987.IsLatLon = true;
-            Greek.IsLatLon = true;
-            GreekAthens.IsLatLon = true;
-            GreekGeodeticRefSystem1987.IsLatLon = true;
-            Hermannskogel.IsLatLon = true;
-            Hjorsey1955.IsLatLon = true;
-            HungarianDatum1972.IsLatLon = true;
-            IRENET95.IsLatLon = true;
-            ISN1993.IsLatLon = true;
-            Kartastokoordinaattijarjestelma.IsLatLon = true;
-            Lisbon.IsLatLon = true;
-            LisbonLisbon.IsLatLon = true;
-            Lisbon1890.IsLatLon = true;
-            Lisbon1890Lisbon.IsLatLon = true;
-            LKS1992.IsLatLon = true;
-            LKS1994.IsLatLon = true;
-            Luxembourg1930.IsLatLon = true;
-            Madrid1870Madrid.IsLatLon = true;
-            MGIFerro.IsLatLon = true;
-            MilitarGeographischeInstitut.IsLatLon = true;
-            MonteMario.IsLatLon = true;
-            MonteMarioRome.IsLatLon = true;
-            NGO1948.IsLatLon = true;
-            NGO1948Oslo.IsLatLon = true;
-            NorddeGuerreParis.IsLatLon = true;
-            NouvelleTriangulationFrancaise.IsLatLon = true;
-            NTFParis.IsLatLon = true;
-            OSSN1980.IsLatLon = true;
-            OSGB1936.IsLatLon = true;
-            OSGB1970SN.IsLatLon = true;
-            OSNI1952.IsLatLon = true;
-            Pulkovo1942.IsLatLon = true;
-            Pulkovo1942Adj1958.IsLatLon = true;
-            Pulkovo1942Adj1983.IsLatLon = true;
-            Pulkovo1995.IsLatLon = true;
-            Qornoq.IsLatLon = true;
-            ReseauNationalBelge1950.IsLatLon = true;
-            ReseauNationalBelge1972.IsLatLon = true;
-            Reykjavik1900.IsLatLon = true;
-            RGF1993.IsLatLon = true;
-            Roma1940.IsLatLon = true;
-            RT1990.IsLatLon = true;
-            RT38.IsLatLon = true;
-            RT38Stockholm.IsLatLon = true;
-            S42Hungary.IsLatLon = true;
-            SJTSK.IsLatLon = true;
-            SWEREF99.IsLatLon = true;
-            SwissTRF1995.IsLatLon = true;
-            TM65.IsLatLon = true;
-            TM75.IsLatLon = true;
 
             Albanian1987.GeographicInfo.Name = "GCS_Albanian_1987";
             ATFParis.GeographicInfo.Name = "GCS_ATF_Paris";

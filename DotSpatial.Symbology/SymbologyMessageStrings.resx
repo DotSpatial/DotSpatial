@@ -212,4 +212,55 @@
     <value>Select All</value>
     <comment>Legend Context Menu: Selection - Select All</comment>
   </data>
+  <data name="Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Expression_OperandExpected" xml:space="preserve">
+    <value>Expected operand. Found character {0} at position {1}.</value>
+  </data>
+  <data name="Expression_OperatorExprected" xml:space="preserve">
+    <value>Expected operator. Found character {0} at position {1}.</value>
+  </data>
+  <data name="Expression_ClosingBracket" xml:space="preserve">
+    <value>The closing bracket wasn't found.</value>
+  </data>
+  <data name="Expression_EmptyField" xml:space="preserve">
+    <value>The expression contains empty fields.</value>
+  </data>
+  <data name="Expression_FieldNotFound" xml:space="preserve">
+    <value>The following field wasn't found:</value>
+  </data>
+  <data name="Expression_LeftOperandMissing" xml:space="preserve">
+    <value>No left operand was found.</value>
+  </data>
+  <data name="Expression_NotANumber" xml:space="preserve">
+    <value>The value is not a number:</value>
+  </data>
+  <data name="Expression_OperationNotFound" xml:space="preserve">
+    <value>Failed to find operation.</value>
+  </data>
+  <data name="Expression_OperationNotSupported" xml:space="preserve">
+    <value>Operation not supported.</value>
+  </data>
+  <data name="Expression_OpereratorInsteadOfValue" xml:space="preserve">
+    <value>There is an operator in place of a value.</value>
+  </data>
+  <data name="Expression_PlusNotAllowed" xml:space="preserve">
+    <value>+ operation isn't allowed for boolean values.</value>
+  </data>
+  <data name="Expression_RightOperandMissing" xml:space="preserve">
+    <value>No right operand was found.</value>
+  </data>
+  <data name="Expression_UnpairedBracket" xml:space="preserve">
+    <value>The expression contains unpaired square brackets.</value>
+  </data>
+  <data name="Expression_UnpairedTextquotes" xml:space="preserve">
+    <value>The expression contains unpaired text quotes.</value>
+  </data>
+  <data name="Expression_ZeroDivision" xml:space="preserve">
+    <value>Division by zero.</value>
+  </data>
+  <data name="Expression_Empty" xml:space="preserve">
+    <value>The expression is empty.</value>
+  </data>
 </root>

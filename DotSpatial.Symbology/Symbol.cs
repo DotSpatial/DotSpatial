@@ -126,6 +126,7 @@ namespace DotSpatial.Symbology
             float dy = (float)(scaleWidth * _offset.Y);
             adjust.Translate(dx, -dy);
             adjust.Rotate((float)_angle);
+            // End CGX
             g.Transform = adjust;
 
             OnDraw(g, scaleWidth);

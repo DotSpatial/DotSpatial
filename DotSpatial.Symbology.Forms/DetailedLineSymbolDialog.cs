@@ -203,7 +203,7 @@ namespace DotSpatial.Symbology.Forms
         protected virtual void OnApplyChanges()
         {
             detailedLineSymbolControl.ApplyChanges();
-            if (ChangesApplied != null) ChangesApplied(this, new EventArgs());
+            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
         }
 
         #endregion

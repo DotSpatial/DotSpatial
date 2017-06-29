@@ -5,7 +5,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel;
 using System.Drawing;
 
 namespace DotSpatial.Controls.Header
@@ -18,14 +17,10 @@ namespace DotSpatial.Controls.Header
         #region Constants and Fields
 
         private Image largeImage;
-
         private string menuContainerKey;
         private bool showInQuickAccessToolbar;
-
         private Image smallImage;
-
         private short sortOrder;
-
         private string toggleGroupKey;
 
         #endregion
@@ -91,13 +86,9 @@ namespace DotSpatial.Controls.Header
 
             set
             {
-                if (showInQuickAccessToolbar == value)
-                {
-                    return;
-                }
-
+                if (showInQuickAccessToolbar == value) return;
                 showInQuickAccessToolbar = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("ShowInQuickAccessToolbar"));
+                OnPropertyChanged("ShowInQuickAccessToolbar");
             }
         }
 
@@ -114,8 +105,9 @@ namespace DotSpatial.Controls.Header
 
             set
             {
+                if (largeImage == value) return;
                 largeImage = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("LargeImage"));
+                OnPropertyChanged("LargeImage");
             }
         }
 
@@ -129,11 +121,11 @@ namespace DotSpatial.Controls.Header
             {
                 return menuContainerKey;
             }
-
             set
             {
+                if (menuContainerKey == value) return;
                 menuContainerKey = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("MenuContainerKey"));
+                OnPropertyChanged("MenuContainerKey");
             }
         }
 
@@ -150,8 +142,9 @@ namespace DotSpatial.Controls.Header
 
             set
             {
+                if (smallImage == value) return;
                 smallImage = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("SmallImage"));
+                OnPropertyChanged("SmallImage");
             }
         }
 
@@ -168,16 +161,11 @@ namespace DotSpatial.Controls.Header
             {
                 return sortOrder;
             }
-
             set
             {
-                if (sortOrder == value)
-                {
-                    return;
-                }
-
+                if (sortOrder == value) return;
                 sortOrder = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("SortOrder"));
+                OnPropertyChanged("SortOrder");
             }
         }
 
@@ -191,11 +179,11 @@ namespace DotSpatial.Controls.Header
             {
                 return toggleGroupKey;
             }
-
             set
             {
+                if (toggleGroupKey == value) return;
                 toggleGroupKey = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("ToggleGroupKey"));
+                OnPropertyChanged("ToggleGroupKey");
             }
         }
 

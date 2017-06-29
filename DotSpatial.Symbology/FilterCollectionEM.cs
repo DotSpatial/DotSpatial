@@ -24,9 +24,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FilterCollectionEM
-    /// </summary>
     public static class FilterCollectionEM
     {
         #region Methods

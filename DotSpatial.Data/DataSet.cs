@@ -20,7 +20,7 @@
 
 using System;
 using System.ComponentModel;
-using System.Reflection;
+using System.Linq;
 using DotSpatial.Projections;
 
 namespace DotSpatial.Data
@@ -32,8 +32,8 @@ namespace DotSpatial.Data
     {
         #region Private Variables
 
-        private static bool _projectionLibraryTested;
-        private static bool _canProject;
+        private volatile static bool _projectionLibraryTested;
+        private volatile static bool _canProject;
         private IProgressHandler _progressHandler;
         private ProgressMeter _progressMeter;
         private string _proj4String;
@@ -51,15 +51,7 @@ namespace DotSpatial.Data
                 return _canProject;
             }
             _projectionLibraryTested = true;
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly assembly in assemblies)
-            {
-                if (assembly.GetName().Name == "DotSpatial.Projections")
-                {
-                    _canProject = true;
-                    break;
-                }
-            }
+            _canProject = AppDomain.CurrentDomain.GetAssemblies().Any(d => d.GetName().Name == "DotSpatial.Projections");
             return _canProject;
         }
 
@@ -127,21 +119,19 @@ namespace DotSpatial.Data
             }
             set
             {
-                if (ProjectionSupported())
-                {
-                    ProjectionInfo test = ProjectionInfo.FromProj4String(value);
-
-                    if (test.Transform == null)
-                    {
-                        // regardless of the result, the "Transform" will be null if this fails.
-                        test.TryParseEsriString(value);
-                    }
-                    if (test.Transform != null)
-                    {
-                        Projection = test;
-                    }
-                }
+                if (_proj4String == value) return;
                 _proj4String = value;
+
+                var test = ProjectionInfo.FromProj4String(value);
+                if (test.Transform == null)
+                {
+                    // regardless of the result, the "Transform" will be null if this fails.
+                    test.TryParseEsriString(value);
+                }
+                if (test.Transform != null)
+                {
+                    Projection = test;
+                }
             }
         }
 
@@ -149,6 +139,7 @@ namespace DotSpatial.Data
         /// Gets a value indicating whether the DotSpatial.Projections assembly is loaded
         /// </summary>
         /// <returns>Boolean, true if the value can reproject.</returns>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanReproject
         {
             get { return ProjectionSupported() && Projection != null && Projection.IsValid; }
@@ -198,11 +189,13 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets an enumeration specifying if this data supports time, space, both or neither.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SpaceTimeSupport SpaceTimeSupport { get; set; }
 
         /// <summary>
         /// Gets or sets the string type name that identifies this dataset
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string TypeName { get; set; }
 
         /// <summary>
@@ -242,6 +235,7 @@ namespace DotSpatial.Data
                 _progressHandler = null;
                 _progressMeter = null;
             }
+            base.Dispose(disposeManagedResources);
         }
 
         #endregion

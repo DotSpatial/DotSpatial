@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Projections")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2010-2012")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 // Assembly marked as compliant.
@@ -38,5 +38,6 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("f29830b5-1134-4a44-bef2-22d3143b618a")]
 
-[assembly: AssemblyVersion("0.11.9.6")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.9")]
+[assembly: AssemblyInformationalVersion("1.9")]
+[assembly: AssemblyFileVersion("1.9")]

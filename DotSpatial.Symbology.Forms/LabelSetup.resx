@@ -132,7 +132,7 @@
     <value>0, 31</value>
   </data>
   <data name="lbCategories.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 370</value>
+    <value>142, 403</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lbCategories.TabIndex" type="System.Int32, mscorlib">
@@ -250,7 +250,7 @@
     <value>Bottom</value>
   </data>
   <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 401</value>
+    <value>0, 434</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 31</value>
@@ -349,7 +349,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="sqlExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 400</value>
+    <value>363, 433</value>
   </data>
   <data name="sqlExpression.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -358,7 +358,7 @@
     <value>sqlExpression</value>
   </data>
   <data name="&gt;&gt;sqlExpression.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ExpressionControl, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sqlExpression.Parent" xml:space="preserve">
     <value>tabExpression</value>
@@ -373,7 +373,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>366, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabExpression.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -393,8 +393,110 @@
   <data name="&gt;&gt;tabExpression.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="tbFloatingFormat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbFloatingFormat.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 417</value>
+  </data>
+  <data name="tbFloatingFormat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>235, 20</value>
+  </data>
+  <data name="tbFloatingFormat.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.Name" xml:space="preserve">
+    <value>tbFloatingFormat</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.Parent" xml:space="preserve">
+    <value>tabBasic</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 420</value>
+  </data>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="label13.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>Floating Format:</value>
+  </data>
+  <data name="&gt;&gt;label13.Name" xml:space="preserve">
+    <value>label13</value>
+  </data>
+  <data name="&gt;&gt;label13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
+    <value>tabBasic</value>
+  </data>
+  <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="grbLabelRotation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="rbLineBasedAngle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rbLineBasedAngle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 72</value>
+  </data>
+  <data name="rbLineBasedAngle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 17</value>
+  </data>
+  <data name="rbLineBasedAngle.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="rbLineBasedAngle.Text" xml:space="preserve">
+    <value>Line based</value>
+  </data>
+  <data name="&gt;&gt;rbLineBasedAngle.Name" xml:space="preserve">
+    <value>rbLineBasedAngle</value>
+  </data>
+  <data name="&gt;&gt;rbLineBasedAngle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbLineBasedAngle.Parent" xml:space="preserve">
+    <value>grbLabelRotation</value>
+  </data>
+  <data name="&gt;&gt;rbLineBasedAngle.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cmbLineAngle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>186, 71</value>
+  </data>
+  <data name="cmbLineAngle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 21</value>
+  </data>
+  <data name="cmbLineAngle.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;cmbLineAngle.Name" xml:space="preserve">
+    <value>cmbLineAngle</value>
+  </data>
+  <data name="&gt;&gt;cmbLineAngle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbLineAngle.Parent" xml:space="preserve">
+    <value>grbLabelRotation</value>
+  </data>
+  <data name="&gt;&gt;cmbLineAngle.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="cmbLabelAngleField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 58</value>
+    <value>186, 44</value>
   </data>
   <data name="cmbLabelAngleField.Size" type="System.Drawing.Size, System.Drawing">
     <value>141, 21</value>
@@ -418,7 +520,7 @@
     <value>grbLabelRotation</value>
   </data>
   <data name="&gt;&gt;cmbLabelAngleField.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="rbIndividualAngle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -427,7 +529,7 @@
     <value>NoControl</value>
   </data>
   <data name="rbIndividualAngle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 58</value>
+    <value>9, 45</value>
   </data>
   <data name="rbIndividualAngle.Size" type="System.Drawing.Size, System.Drawing">
     <value>99, 17</value>
@@ -451,7 +553,7 @@
     <value>grbLabelRotation</value>
   </data>
   <data name="&gt;&gt;rbIndividualAngle.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="rbCommonAngle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -460,7 +562,7 @@
     <value>NoControl</value>
   </data>
   <data name="rbCommonAngle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 29</value>
+    <value>9, 19</value>
   </data>
   <data name="rbCommonAngle.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 17</value>
@@ -484,10 +586,10 @@
     <value>grbLabelRotation</value>
   </data>
   <data name="&gt;&gt;rbCommonAngle.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="nudAngle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 29</value>
+    <value>186, 18</value>
   </data>
   <data name="nudAngle.Size" type="System.Drawing.Size, System.Drawing">
     <value>141, 20</value>
@@ -508,13 +610,13 @@
     <value>grbLabelRotation</value>
   </data>
   <data name="&gt;&gt;nudAngle.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="grbLabelRotation.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 305</value>
   </data>
   <data name="grbLabelRotation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 93</value>
+    <value>352, 106</value>
   </data>
   <data name="grbLabelRotation.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -532,19 +634,16 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;grbLabelRotation.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="chkPrioritizeLow.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>2</value>
   </data>
   <data name="chkPrioritizeLow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkPrioritizeLow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>235, 250</value>
+    <value>192, 275</value>
   </data>
   <data name="chkPrioritizeLow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 17</value>
+    <value>167, 35</value>
   </data>
   <data name="chkPrioritizeLow.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -565,7 +664,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;chkPrioritizeLow.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="chkPreventCollision.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -598,7 +697,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;chkPreventCollision.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="lblPriorityField.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -628,13 +727,13 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;lblPriorityField.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="cmbPriorityField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 246</value>
+    <value>136, 249</value>
   </data>
   <data name="cmbPriorityField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 21</value>
+    <value>222, 21</value>
   </data>
   <data name="cmbPriorityField.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -652,7 +751,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;cmbPriorityField.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="chkBorder.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -703,7 +802,7 @@
     <value>cbBorderColor</value>
   </data>
   <data name="&gt;&gt;cbBorderColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbBorderColor.Parent" xml:space="preserve">
     <value>gpbBorderColor</value>
@@ -727,7 +826,7 @@
     <value>sldBorderOpacity</value>
   </data>
   <data name="&gt;&gt;sldBorderOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldBorderOpacity.Parent" xml:space="preserve">
     <value>gpbBorderColor</value>
@@ -757,7 +856,10 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;gpbBorderColor.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
+  </data>
+  <data name="gpbFont.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="lblFontColor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -789,6 +891,9 @@
   <data name="&gt;&gt;lblFontColor.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="sldFontOpacity.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="cbFontColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>211, 63</value>
   </data>
@@ -805,7 +910,7 @@
     <value>cbFontColor</value>
   </data>
   <data name="&gt;&gt;cbFontColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbFontColor.Parent" xml:space="preserve">
     <value>gpbFont</value>
@@ -829,7 +934,7 @@
     <value>sldFontOpacity</value>
   </data>
   <data name="&gt;&gt;sldFontOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldFontOpacity.Parent" xml:space="preserve">
     <value>gpbFont</value>
@@ -865,7 +970,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 16</value>
+    <value>6, 18</value>
   </data>
   <data name="lblFamily.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 13</value>
@@ -1036,7 +1141,7 @@
     <value>ffcFamilyName</value>
   </data>
   <data name="&gt;&gt;ffcFamilyName.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.FontFamilyControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.FontFamilyControl, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ffcFamilyName.Parent" xml:space="preserve">
     <value>gpbFont</value>
@@ -1066,7 +1171,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;gpbFont.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="lblPreview.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1093,7 +1198,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;lblPreview.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="cbBackgroundColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 24</value>
@@ -1111,7 +1216,7 @@
     <value>cbBackgroundColor</value>
   </data>
   <data name="&gt;&gt;cbBackgroundColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbBackgroundColor.Parent" xml:space="preserve">
     <value>gpbBackgroundColor</value>
@@ -1135,7 +1240,7 @@
     <value>sldBackgroundOpacity</value>
   </data>
   <data name="&gt;&gt;sldBackgroundOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldBackgroundOpacity.Parent" xml:space="preserve">
     <value>gpbBackgroundColor</value>
@@ -1180,7 +1285,7 @@
     <value>6, 168</value>
   </data>
   <data name="gpbBackgroundColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 72</value>
+    <value>184, 72</value>
   </data>
   <data name="gpbBackgroundColor.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1198,7 +1303,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;gpbBackgroundColor.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="tabBasic.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1207,7 +1312,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabBasic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabBasic.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1240,13 +1345,16 @@
     <value>labelAlignmentControl1</value>
   </data>
   <data name="&gt;&gt;labelAlignmentControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.LabelAlignmentControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.LabelAlignmentControl, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;labelAlignmentControl1.Parent" xml:space="preserve">
     <value>tabAdvanced</value>
   </data>
   <data name="&gt;&gt;labelAlignmentControl1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="grpOffset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="nudYOffset.Location" type="System.Drawing.Point, System.Drawing">
     <value>63, 19</value>
@@ -1354,7 +1462,7 @@
     <value>183, 169</value>
   </data>
   <data name="grpOffset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 73</value>
+    <value>178, 73</value>
   </data>
   <data name="grpOffset.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1471,7 +1579,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 315</value>
+    <value>6, 351</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 13</value>
@@ -1501,7 +1609,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 286</value>
+    <value>6, 304</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>128, 13</value>
@@ -1554,6 +1662,9 @@
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="cmbAlignment.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="cmbAlignment.Items" xml:space="preserve">
     <value>Left</value>
   </data>
@@ -1564,7 +1675,7 @@
     <value>Right</value>
   </data>
   <data name="cmbAlignment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, 254</value>
+    <value>9, 277</value>
   </data>
   <data name="cmbAlignment.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 21</value>
@@ -1584,8 +1695,11 @@
   <data name="&gt;&gt;cmbAlignment.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="cmbLabelingMethod.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="cmbLabelingMethod.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, 283</value>
+    <value>9, 324</value>
   </data>
   <data name="cmbLabelingMethod.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 21</value>
@@ -1605,8 +1719,11 @@
   <data name="&gt;&gt;cmbLabelingMethod.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
+  <data name="cmbLabelParts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="cmbLabelParts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, 312</value>
+    <value>9, 371</value>
   </data>
   <data name="cmbLabelParts.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 21</value>
@@ -1625,6 +1742,9 @@
   </data>
   <data name="&gt;&gt;cmbLabelParts.ZOrder" xml:space="preserve">
     <value>10</value>
+  </data>
+  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="clrHalo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1645,7 +1765,7 @@
     <value>clrHalo</value>
   </data>
   <data name="&gt;&gt;clrHalo.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorBox, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorBox, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;clrHalo.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -1676,6 +1796,9 @@
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>11</value>
+  </data>
+  <data name="gpbUseLabelShadow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="nudShadowOffsetY.Location" type="System.Drawing.Point, System.Drawing">
     <value>270, 35</value>
@@ -1825,7 +1948,7 @@
     <value>sliderOpacityShadow</value>
   </data>
   <data name="&gt;&gt;sliderOpacityShadow.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sliderOpacityShadow.Parent" xml:space="preserve">
     <value>gpbUseLabelShadow</value>
@@ -1879,7 +2002,7 @@
     <value>colorButtonShadow</value>
   </data>
   <data name="&gt;&gt;colorButtonShadow.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;colorButtonShadow.Parent" xml:space="preserve">
     <value>gpbUseLabelShadow</value>
@@ -1915,7 +2038,7 @@
     <value>4, 22</value>
   </data>
   <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>366, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabAdvanced.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1945,7 +2068,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="sqlMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 400</value>
+    <value>363, 433</value>
   </data>
   <data name="sqlMembers.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1954,7 +2077,7 @@
     <value>sqlMembers</value>
   </data>
   <data name="&gt;&gt;sqlMembers.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sqlMembers.Parent" xml:space="preserve">
     <value>tabMembers</value>
@@ -1969,7 +2092,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>366, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabMembers.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1996,7 +2119,7 @@
     <value>0, 0</value>
   </data>
   <data name="tabs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>377, 432</value>
+    <value>377, 465</value>
   </data>
   <data name="tabs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2026,7 +2149,7 @@
     <value>1</value>
   </data>
   <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>523, 432</value>
+    <value>523, 465</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
     <value>142</value>
@@ -2170,7 +2293,7 @@
     <value>Bottom</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 432</value>
+    <value>0, 465</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>523, 92</value>
@@ -2194,7 +2317,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>523, 524</value>
+    <value>523, 557</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

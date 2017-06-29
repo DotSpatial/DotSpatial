@@ -18,6 +18,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
+// Bart Adriaanse      | 30/11/2013 |  Added DutchRD definitions
 // ********************************************************************************************************
 
 #pragma warning disable 1591
@@ -335,7 +336,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             BahrainStateGrid = ProjectionInfo.FromProj4String("+proj=utm +zone=39 +ellps=intl +units=m +no_defs ");
             Barbados1938BarbadosGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=13.17638888888889 +lon_0=-59.55972222222222 +k=0.999999 +x_0=30000 +y_0=75000 +ellps=clrk80 +units=m +no_defs ");
             Barbados1938BritishWestIndiesGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
-            BataviaNEIEZ = ProjectionInfo.FromProj4String("+proj=merc +lat_ts=4.45405154589751 +lon_0=110 +k=1.000000 +x_0=3900000 +y_0=900000 +ellps=bessel +units=m +no_defs ");
+            BataviaNEIEZ = ProjectionInfo.FromProj4String("+proj=merc +lon_0=110 +k=0.997 +x_0=3900000 +y_0=900000 +ellps=bessel +units=m +no_defs ");
             BataviaTM109SE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=109 +k=0.999600 +x_0=500000 +y_0=10000000 +ellps=bessel +units=m +no_defs ");
             BelgeLambert1950 = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=49.83333333333334 +lat_2=51.16666666666666 +lat_0=90 +lon_0=-4.367975 +x_0=150000 +y_0=5400000 +ellps=intl +pm=4.367975 +units=m +no_defs ");
             BelgeLambert1972 = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=49.8333339 +lat_2=51.16666733333333 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.01256 +y_0=5400088.4378 +ellps=intl +units=m +no_defs ");
@@ -346,8 +347,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             CamacupaTM12SE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=12 +k=0.999600 +x_0=500000 +y_0=10000000 +ellps=clrk80 +units=m +no_defs ");
             CarthageTM11NE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=9.900000000000002 +k=0.999600 +x_0=500000 +y_0=0 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
             CentreFrance = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=-2.337229166666667 +k_0=0.99987742 +x_0=600000 +y_0=200000 +a=6378249.2 +b=6356514.999904194 +pm=2.337229166666667 +units=m +no_defs ");
-            CH1903LV03 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +units=m +no_defs ");
-            CH1903LV95 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +units=m +no_defs ");
+            CH1903LV03 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs ");
+            CH1903LV95 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs ");
             ChosMalal1914Argentina2 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-90 +lon_0=-69 +k=1.000000 +x_0=2500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             ColombiaBogotaZone = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=4.599047222222222 +lon_0=-74.08091666666667 +k=1.000000 +x_0=1000000 +y_0=1000000 +ellps=intl +units=m +no_defs ");
             ColombiaEastZone = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=4.599047222222222 +lon_0=-68.08091666666667 +k=1.000000 +x_0=1000000 +y_0=1000000 +ellps=intl +units=m +no_defs ");
@@ -356,8 +357,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             Corse = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=42.165 +lat_0=42.165 +lon_0=-2.337229166666667 +k_0=0.99994471 +x_0=234.358 +y_0=185861.369 +a=6378249.2 +b=6356514.999904194 +pm=2.337229166666667 +units=m +no_defs ");
             Datum73HayfordGaussIGeoE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1.000000 +x_0=200180.598 +y_0=299913.01 +ellps=intl +units=m +no_defs ");
             Datum73HayfordGaussIPCC = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1.000000 +x_0=180.598 +y_0=-86.99 +ellps=intl +units=m +no_defs ");
-            DeirezZorLevantStereographic = ProjectionInfo.FromProj4String("+a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
-            DeirezZorLevantZone = ProjectionInfo.FromProj4String("+a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
+            DeirezZorLevantStereographic = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=34.2 +lon_0=39.15 +k=0.9995341 +x_0=0 +y_0=0 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
+            DeirezZorLevantZone = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=34.65 +lat_0=34.65 +lon_0=37.35 +k_0=0.9996256 +x_0=300000 +y_0=300000 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
             DeirezZorSyriaLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=34.65 +lat_0=34.65 +lon_0=37.35 +k_0=0.9996256 +x_0=300000 +y_0=300000 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
             DHDN3DegreeGaussZone1 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=3 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             DHDN3DegreeGaussZone2 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=6 +k=1.000000 +x_0=2500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
@@ -366,7 +367,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             DHDN3DegreeGaussZone5 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=1.000000 +x_0=5500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             Dominica1945BritishWestIndiesGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
             Douala1948AOFWest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=10.5 +k=0.999000 +x_0=1000000 +y_0=1000000 +ellps=intl +units=m +no_defs ");
-            DutchRD = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369, 50.0087, 465.658, -0.406857330322398, 0.350732676542563, -1.8703473836068, 4.0812 +no_defs +to +proj=latlong +datum=WGS84 ");
+            DutchRD = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369, 50.0087, 465.658, -0.406857330322398, 0.350732676542563, -1.8703473836068, 4.0812 +no_defs");
             ED1950FranceEuroLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=2.337229166666667 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +ellps=intl +units=m +no_defs ");
             ED1950TM0N = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=0 +k=0.999600 +x_0=500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             ED1950TM27 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=27 +k=1.000000 +x_0=500000 +y_0=0 +ellps=intl +units=m +no_defs ");
@@ -417,7 +418,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             ETRS1989UWPP2000PAS7 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=21 +k=0.999923 +x_0=7500000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
             ETRS1989UWPP2000PAS8 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=24 +k=0.999923 +x_0=8500000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
             EUREFFINTM35FIN = ProjectionInfo.FromProj4String("+proj=utm +zone=35 +ellps=GRS80 +units=m +no_defs ");
-            EverestModified1969RSOMalayaMeters = ProjectionInfo.FromProj4String("+a=6377295.664 +b=6356094.667915204 +units=m +no_defs ");
+            EverestModified1969RSOMalayaMeters = ProjectionInfo.FromProj4String("+proj=longlat +a=6377295.664 +b=6356094.667915204 +no_defs ");
             FD1958Iraq = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=32.5 +lat_0=32.5 +lon_0=45 +k_0=0.9987864077700001 +x_0=1500000 +y_0=1166200 +ellps=clrk80 +units=m +no_defs ");
             FinlandZone1 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=21 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             FinlandZone2 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=24 +k=1.000000 +x_0=2500000 +y_0=0 +ellps=intl +units=m +no_defs ");
@@ -436,7 +437,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             GreekGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=24 +k=0.999600 +x_0=500000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
             Grenada1953BritishWestIndiesGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
             GuernseyGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=49.5 +lon_0=-2.416666666666667 +k=0.999997 +x_0=47000 +y_0=50000 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
-            GunungSegaraNEIEZ = ProjectionInfo.FromProj4String("+proj=merc +lat_ts=4.45405154589751 +lon_0=110 +k=1.000000 +x_0=3900000 +y_0=900000 +ellps=bessel +units=m +no_defs ");
+            GunungSegaraNEIEZ = ProjectionInfo.FromProj4String("+proj=merc +lon_0=110 +k=0.997 +x_0=3900000 +y_0=900000 +ellps=bessel +units=m +no_defs ");
             Hanoi1972GK106NE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=106 +k=1.000000 +x_0=500000 +y_0=0 +ellps=krass +units=m +no_defs ");
             HD1972EgysegesOrszagosVetuleti = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=47.14439372222 +lon_0=19.048571778 +x_0=650000 +y_0=200000 +ellps=GRS67 +units=m +no_defs ");
             Helle1954JanMayenGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-8.5 +k=1.000000 +x_0=50000 +y_0=-7800000 +ellps=intl +units=m +no_defs ");
@@ -452,8 +453,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             JordanJTM = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=37 +k=0.999800 +x_0=500000 +y_0=-3000000 +ellps=intl +units=m +no_defs ");
             KandawalaCeylonBeltIndianYards1937 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=7.000480277777778 +lon_0=80.77171111111112 +k=1.000000 +x_0=160933.56048 +y_0=160933.56048 +a=6377276.345 +b=6356075.41314024 +to_meter=0.91439523 +no_defs ");
             KandawalaCeylonBeltMeters = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=7.000480277777778 +lon_0=80.77171111111112 +k=1.000000 +x_0=160933.56048 +y_0=160933.56048 +a=6377276.345 +b=6356075.41314024 +units=m +no_defs ");
-            KertauRSOMalayaChains = ProjectionInfo.FromProj4String("+a=6377304.063 +b=6356103.038993155 +to_meter=20.11678249437587 +no_defs ");
-            KertauRSOMalayaMeters = ProjectionInfo.FromProj4String("+a=6377304.063 +b=6356103.038993155 +units=m +no_defs ");
+            KertauRSOMalayaChains = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=4 +lonc=102.25 +alpha=323.0257905 +k=0.99984 +x_0=804671.2997750348 +y_0=0 +no_uoff +gamma=323.1301023611111 +a=6377304.063 +b=6356103.038993155 +towgs84=-11,851,5,0,0,0,0 +to_meter=20.11678249437587 +no_defs ");
+            KertauRSOMalayaMeters = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=4 +lonc=102.25 +alpha=323.0257905 +k=0.99984 +x_0=804670.24 +y_0=0 +a=6377295.664 +b=6356094.667915204 +units=m +no_defs ");
             KertauSingaporeGrid = ProjectionInfo.FromProj4String("+proj=cass +lat_0=1.287646666666667 +lon_0=103.8530022222222 +x_0=30000 +y_0=30000 +a=6377304.063 +b=6356103.038993155 +units=m +no_defs ");
             KOCLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=32.5 +lat_0=32.5 +lon_0=45 +k_0=0.998786407767 +x_0=1500000 +y_0=1166200 +ellps=clrk80 +units=m +no_defs ");
             Korean1985KoreaCentralBelt = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=38 +lon_0=127 +k=1.000000 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs ");
@@ -473,7 +474,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             Locodjo1965TM5NW = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-5 +k=0.999600 +x_0=500000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
             Luxembourg1930Gauss = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=49.83333333333334 +lon_0=6.166666666666667 +k=1.000000 +x_0=80000 +y_0=100000 +ellps=intl +units=m +no_defs ");
             Madrid1870MadridSpain = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=40 +lat_0=40 +lon_0=3.687938888888889 +k_0=0.9988085293 +x_0=600000 +y_0=600000 +a=6378298.3 +b=6356657.142669561 +pm=-3.687938888888889 +units=m +no_defs ");
-            MakassarNEIEZ = ProjectionInfo.FromProj4String("+proj=merc +lat_ts=4.45405154589751 +lon_0=110 +k=1.000000 +x_0=3900000 +y_0=900000 +ellps=bessel +units=m +no_defs ");
+            MakassarNEIEZ = ProjectionInfo.FromProj4String("+proj=merc +lon_0=110 +k=0.997 +x_0=3900000 +y_0=900000 +ellps=bessel +towgs84=-587.8,519.75,145.76,0,0,0,0 +units=m +no_defs ");
             MGI3DegreeGaussZone5 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=1.000000 +x_0=5500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             MGI3DegreeGaussZone6 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18 +k=1.000000 +x_0=6500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             MGI3DegreeGaussZone7 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=21 +k=1.000000 +x_0=7500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
@@ -503,7 +504,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             NAD1983MichiganGeoReferencedMeters = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=45.30916666666666 +lonc=-86 +alpha=337.25556 +k=0.9996 +x_0=2546731.496 +y_0=-4354009.816 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
             NAD1983MichiganGeoRefMeters = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=45.30916666666666 +lonc=-86 +alpha=337.255555555556 +k=0.9996 +x_0=2546731.496 +y_0=-4354009.816 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
             NAD1983MichiganGeoRefUSfeet = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=45.30916666666666 +lonc=-86 +alpha=337.255555555556 +k=0.9996 +x_0=2546731.495961392 +y_0=-4354009.816002033 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs ");
-            NewZealandMapGrid = ProjectionInfo.FromProj4String("+proj=nzmg +lat_0=-41 +lon_0=173 +x_0=2510000 +y_0=6023150 +ellps=intl +units=m +no_defs ");
+            NewZealandMapGrid = ProjectionInfo.FromProj4String("+proj=nzmg +lat_0=-41 +lon_0=173 +x_0=2510000 +y_0=6023150 +ellps=intl +datum=nzgd49 +units=m +no_defs");
             NewZealandNorthIsland = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-39 +lon_0=175.5 +k=1.000000 +x_0=274319.5243848086 +y_0=365759.3658464114 +ellps=intl +to_meter=0.9143984146160287 +no_defs ");
             NewZealandSouthIsland = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-44 +lon_0=171.5 +k=1.000000 +x_0=457199.2073080143 +y_0=457199.2073080143 +ellps=intl +to_meter=0.9143984146160287 +no_defs ");
             NigeriaEastBelt = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=4 +lon_0=12.5 +k=0.999750 +x_0=1110369.7 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
@@ -544,7 +545,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             RassadiranNakhleTaqi = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=27.56882880555555 +lonc=52.60353916666667 +alpha=0.5716611944444444 +k=0.999895934 +x_0=658377.437 +y_0=3044969.194 +ellps=intl +units=m +no_defs ");
             RGF1993Lambert93 = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=44 +lat_2=49 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +units=m +no_defs ");
             RGNC1991LambertNewCaledonia = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=-20.66666666666667 +lat_2=-22.33333333333333 +lat_0=-21.5 +lon_0=166 +x_0=400000 +y_0=300000 +ellps=intl +units=m +no_defs ");
-            Rijksdriehoekstelsel = ProjectionInfo.FromProj4String("+ellps=bessel +units=m +no_defs ");
+            Rijksdriehoekstelsel = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369, 50.0087, 465.658, -0.406857330322398, 0.350732676542563, -1.8703473836068, 4.0812 +no_defs ");
             Roma1940GaussBoagaEst = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=0.999600 +x_0=2520000 +y_0=0 +ellps=intl +units=m +no_defs ");
             Roma1940GaussBoagaOvest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=9 +k=0.999600 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             RT9025gonWest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
@@ -557,8 +558,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             SJTSKFerroKrovakEastNorth = ProjectionInfo.FromProj4String("+proj=krovak +lat_0=49.5 +lon_0=60.16666666666667 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +pm=-17.66666666666667 +units=m +no_defs ");
             SJTSKKrovak = ProjectionInfo.FromProj4String("+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +no_defs ");
             SJTSKKrovakEastNorth = ProjectionInfo.FromProj4String("+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 +no_defs ");
-            Stereo1933 = ProjectionInfo.FromProj4String("+ellps=intl +units=m +no_defs ");
-            Stereo1970 = ProjectionInfo.FromProj4String("+ellps=krass +units=m +no_defs ");
+            Stereo1933 = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=45.9 +lon_0=25.39246588888889 +k=0.9996667 +x_0=500000 +y_0=500000 +ellps=intl +units=m +no_defs ");
+            Stereo1970 = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +units=m +no_defs ");
             StKitts1955BritishWestIndiesGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
             StLucia1955BritishWestIndiesGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
             StVincent1945BritishWestIndiesGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");

@@ -106,6 +106,12 @@ namespace DotSpatial.Controls
         private IProgressHandler _progressHandler;
         private Size _oldSize;
 
+        /// <summary>
+        /// This is used to remember the last minimal extent that was set by OnViewExtentsChanged.
+        /// It's used to stop a loop that starts if MapFrame.ResetAspectRatio makes the minExt smaller than 1e-7.
+        /// </summary>
+        private Extent _lastMinExtent;
+
         #endregion
 
         #region Constructors
@@ -134,16 +140,16 @@ namespace DotSpatial.Controls
             _oldSize = Size;
         }
 
-        public bool PreFilterMessage(ref Message m) 
+        public bool PreFilterMessage(ref Message m)
         {
-            if (m.Msg == (int)0x0100)
+            if (m.Msg == 0x0100)
             {
-                if(this.ContainsFocus)
+                if (ContainsFocus)
                     OnKeyDown(new KeyEventArgs((Keys)m.WParam.ToInt32()));
             }
-            else if (m.Msg == (int)0x0101)
+            else if (m.Msg == 0x0101)
             {
-                if (this.ContainsFocus)
+                if (ContainsFocus)
                     OnKeyUp(new KeyEventArgs((Keys)m.WParam.ToInt32()));
             }
             return false;
@@ -151,22 +157,22 @@ namespace DotSpatial.Controls
 
         private void Map_KeyUp(object sender, KeyEventArgs e)
         {
-
-            foreach (IMapFunction tool in MapFunctions)
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled) tool.DoKeyUp(e);
+                tool.DoKeyUp(e);
+                if (e.Handled) break;
             }
         }
 
         private void Map_KeyDown(object sender, KeyEventArgs e)
         {
-
-            foreach (IMapFunction tool in MapFunctions)
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled) tool.DoKeyDown(e);
+                tool.DoKeyDown(e);
+                if (e.Handled) break;
             }
         }
-       
+
         private void Configure()
         {
             MapFrame = new MapFrame(this, new Extent(0, 0, 0, 0));
@@ -180,14 +186,15 @@ namespace DotSpatial.Controls
             IMapFunction select = new MapFunctionSelect(this);
             IMapFunction zoomIn = new MapFunctionClickZoom(this);
             IMapFunction zoomOut = new MapFunctionZoomOut(this);
+            IMapFunction zoomPan = new MapFunctionZoom(this);
             MapFunctions = new List<IMapFunction>
                                {
-                                   new MapFunctionZoom(this),
                                    new MapFunctionKeyNavigation(this),
                                    pan,
                                    select,
                                    zoomIn,
                                    zoomOut,
+                                   zoomPan,
                                    label,
                                    info,
                                };
@@ -198,7 +205,8 @@ namespace DotSpatial.Controls
                                       {FunctionMode.Label, label},
                                       {FunctionMode.Select, select},
                                       {FunctionMode.ZoomIn, zoomIn},
-                                      {FunctionMode.ZoomOut, zoomOut}
+                                      {FunctionMode.ZoomOut, zoomOut},
+                                      {FunctionMode.ZoomPan, zoomPan}
                                   };
 
             CollisionDetection = false;
@@ -207,6 +215,11 @@ namespace DotSpatial.Controls
             ActivateMapFunction(KeyNavigation);
             //changed by Jiri Kadlec - default function mode is none
             FunctionMode = FunctionMode.None;
+        }
+
+        protected virtual void Draw(Graphics g, PaintEventArgs e)
+        {
+            _geoMapFrame.Draw(new PaintEventArgs(g, e.ClipRectangle));
         }
 
         private void MapFrameItemChanged(object sender, EventArgs e)
@@ -276,20 +289,10 @@ namespace DotSpatial.Controls
         /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this
         /// category.</param>
         /// <param name="name">The name of the category.</param>
-        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                              ILabelSymbolizer symbolizer, string name)
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
+        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, string name)
         {
-            if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
-            featureLayer.ShowLabels = true;
-            ILabelCategory lc = new LabelCategory
-                                    {
-                                        Expression = expression,
-                                        FilterExpression = filterExpression,
-                                        Symbolizer = symbolizer,
-                                        Name = name,
-                                    };
-            featureLayer.LabelLayer.Symbology.Categories.Add(lc);
-            featureLayer.LabelLayer.CreateLabels();
+            featureLayer.AddLabels(expression, filterExpression, symbolizer, name);
         }
 
         /// <summary>
@@ -304,21 +307,10 @@ namespace DotSpatial.Controls
         ///  category.</param>
         /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than
         /// this value, labels should appear.</param>
-        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                              ILabelSymbolizer symbolizer, double width)
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
+        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, double width)
         {
-            if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
-            featureLayer.ShowLabels = true;
-            ILabelCategory lc = new LabelCategory
-                                    {
-                                        Expression = expression,
-                                        FilterExpression = filterExpression,
-                                        Symbolizer = symbolizer
-                                    };
-            featureLayer.LabelLayer.UseDynamicVisibility = true;
-            featureLayer.LabelLayer.DynamicVisibilityWidth = width;
-            featureLayer.LabelLayer.Symbology.Categories.Add(lc);
-            featureLayer.LabelLayer.CreateLabels();
+            featureLayer.AddLabels(expression, filterExpression, symbolizer, width);
         }
 
         /// <summary>
@@ -448,32 +440,56 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual List<IMapLayer> AddLayers()
         {
-            List<IDataSet> sets = DataManager.DefaultDataManager.OpenFiles();
-            if (sets == null || sets.Count == 0) return null;
-            List<IMapLayer> results = new List<IMapLayer>();
-            foreach (IDataSet set in sets)
+            var results = new List<IMapLayer>();
+            /*foreach (var set in DataManager.DefaultDataManager.OpenFiles())
             {
-                if (set == null) return null;
-
-                IFeatureSet fs = set as IFeatureSet;
+                var fs = set as IFeatureSet;
                 if (fs != null)
                 {
                     results.Add(Layers.Add(fs));
                     continue;
                 }
-                IImageData id = set as IImageData;
+                var id = set as IImageData;
                 if (id != null)
                 {
                     results.Add(Layers.Add(id));
                     continue;
                 }
-                IRaster r = set as IRaster;
+                var r = set as IRaster;
                 if (r != null)
                 {
                     results.Add(Layers.Add(r));
                     continue;
                 }
+            }*/
+
+            // CGX
+            var files = DataManager.DefaultDataManager.OpenFiles();
+            if (files != null)
+            {
+                foreach (var set in files)
+                {
+                    var fs = set as IFeatureSet;
+                    if (fs != null)
+                    {
+                        results.Add(Layers.Add(fs));
+                        continue;
+                    }
+                    var id = set as IImageData;
+                    if (id != null)
+                    {
+                        results.Add(Layers.Add(id));
+                        continue;
+                    }
+                    var r = set as IRaster;
+                    if (r != null)
+                    {
+                        results.Add(Layers.Add(r));
+                        continue;
+                    }
+                }
             }
+            // CGX END
             return results;
         }
 
@@ -528,7 +544,7 @@ namespace DotSpatial.Controls
         /// <returns>A list of the IMapRasterLayers that were opened.</returns>
         public virtual List<IMapRasterLayer> AddRasterLayers()
         {
-            List<IRaster> sets = DataManager.DefaultDataManager.OpenRasters();
+            var sets = DataManager.DefaultDataManager.OpenRasters();
             return sets.Select(raster => Layers.Add(raster)).ToList();
         }
 
@@ -536,10 +552,11 @@ namespace DotSpatial.Controls
         /// Allows an open file dialog without multi-select enabled to add a single
         /// raster to the map as a layer, and returns the added layer.
         /// </summary>
-        /// <returns>The IMapRasterLayer that was added</returns>
+        /// <returns>The IMapRasterLayer that was added, or null.</returns>
         public virtual IMapRasterLayer AddRasterLayer()
         {
-            return Layers.Add(DataManager.DefaultDataManager.OpenRaster());
+            var raster = DataManager.DefaultDataManager.OpenRaster();
+            return raster == null ? null : Layers.Add(raster);
         }
 
         /// <summary>
@@ -549,7 +566,7 @@ namespace DotSpatial.Controls
         /// <returns>The list of added MapFeatureLayers</returns>
         public virtual List<IMapFeatureLayer> AddFeatureLayers()
         {
-            List<IFeatureSet> sets = DataManager.DefaultDataManager.OpenVectors();
+            var sets = DataManager.DefaultDataManager.OpenVectors();
             return sets.Select(featureSet => Layers.Add(featureSet)).ToList();
         }
 
@@ -557,10 +574,11 @@ namespace DotSpatial.Controls
         /// Allows an open file dialog without multi-select enabled to add a single
         /// raster tot he map as a layer, and returns the added layer.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The IMapFeatureLayer that was added, or null.</returns>
         public virtual IMapFeatureLayer AddFeatureLayer()
         {
-            return Layers.Add(DataManager.DefaultDataManager.OpenVector());
+            var vector = DataManager.DefaultDataManager.OpenVector();
+            return vector == null ? null : Layers.Add(vector);
         }
 
         /// <summary>
@@ -570,7 +588,7 @@ namespace DotSpatial.Controls
         /// <returns>The list of added MapImageLayers</returns>
         public virtual List<IMapImageLayer> AddImageLayers()
         {
-            List<IImageData> sets = DataManager.DefaultDataManager.OpenImages();
+            var sets = DataManager.DefaultDataManager.OpenImages();
             return sets.Select(imageData => Layers.Add(imageData)).ToList();
         }
 
@@ -578,10 +596,11 @@ namespace DotSpatial.Controls
         /// Allows an open dialog without multi-select to specify a single fileName
         /// to be added to the map as a new layer and returns the newly added layer.
         /// </summary>
-        /// <returns>The layer that was added to the map.</returns>
+        /// <returns>The layer that was added to the map, or null.</returns>
         public virtual IMapImageLayer AddImageLayer()
         {
-            return Layers.Add(DataManager.DefaultDataManager.OpenImage());
+            var image = DataManager.DefaultDataManager.OpenImage();
+            return image == null ? null : Layers.Add(image);
         }
 
         /// <summary>
@@ -601,9 +620,9 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void SaveLayer()
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            IMapLayer layer = _geoMapFrame.Layers[0];
-            IMapFeatureLayer mfl = layer as IMapFeatureLayer;
+            var sfd = new SaveFileDialog();
+            var layer = _geoMapFrame.Layers[0];
+            var mfl = layer as IMapFeatureLayer;
             if (mfl != null)
             {
                 sfd.Filter = DataManager.DefaultDataManager.VectorWriteFilter;
@@ -611,7 +630,8 @@ namespace DotSpatial.Controls
                 mfl.DataSet.SaveAs(sfd.FileName, true);
                 return;
             }
-            IMapRasterLayer mrl = layer as IMapRasterLayer;
+
+            var mrl = layer as IMapRasterLayer;
             if (mrl != null)
             {
                 sfd.Filter = DataManager.DefaultDataManager.RasterWriteFilter;
@@ -619,7 +639,8 @@ namespace DotSpatial.Controls
                 mrl.DataSet.SaveAs(sfd.FileName);
                 return;
             }
-            IMapImageLayer mil = layer as IMapImageLayer;
+
+            var mil = layer as IMapImageLayer;
             if (mil != null)
             {
                 sfd.Filter = DataManager.DefaultDataManager.ImageWriteFilter;
@@ -637,40 +658,27 @@ namespace DotSpatial.Controls
         public void ZoomToMaxExtent()
         {
             // to prevent exception when zoom to map with one layer with one point
-            const double eps = 1e-7;
-            if (Extent.Width < eps || Extent.Height < eps)
-            {
-                Extent newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-                ViewExtents = newExtent;
-            }
-            else
-            {
-                ViewExtents = Extent;
-            }
-
-            this.IsZoomedToMaxExtent = true;
+            ViewExtents = GetMaxExtent(true);
+            IsZoomedToMaxExtent = true;
         }
 
         //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
         /// <summary> 
-        /// Gets the MaxExtent Window of the current Map
+        /// Gets the MaxExtent Window of the current Map.
         /// </summary>
-        public Extent GetMaxExtent()
+        /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%). </param>
+        public Extent GetMaxExtent(bool expand = false)
         {
-            Extent MaxExtent;
             // to prevent exception when zoom to map with one layer with one point
             const double eps = 1e-7;
-            if (Extent.Width < eps || Extent.Height < eps)
-            {
-                MaxExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-            }
-            else
-            {
-                MaxExtent = Extent;
-            }
-            return MaxExtent;
-        }
+            var maxExtent = Extent.Width < eps || Extent.Height < eps
+                ? new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps)
+                : Extent;
 
+            if (ExtendBuffer) maxExtent.ExpandBy(maxExtent.Width, maxExtent.Height); // CGX
+
+            return maxExtent;
+        }
 
         /// <summary>
         /// This activates the labels for the specified feature layer that will be the specified expression
@@ -682,43 +690,19 @@ namespace DotSpatial.Controls
         /// [Name]</param>
         /// <param name="font">The font to use for these labels</param>
         /// <param name="fontColor">The color for the labels</param>
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
         public void AddLabels(IFeatureLayer featureLayer, string expression, Font font, Color fontColor)
         {
-            featureLayer.ShowLabels = true;
-
-            MapLabelLayer ll = new MapLabelLayer();
-            ll.Symbology.Categories.Clear();
-            LabelCategory lc = new LabelCategory { Expression = expression };
-            ll.Symbology.Categories.Add(lc);
-
-            ILabelSymbolizer ls = ll.Symbolizer;
-            ls.Orientation = ContentAlignment.MiddleCenter;
-            ls.BackColorEnabled = false;
-            ls.BackColorEnabled = false;
-            ls.FontColor = fontColor;
-            ls.FontFamily = font.FontFamily.ToString();
-            ls.FontSize = font.Size;
-            ls.FontStyle = font.Style;
-            ls.PartsLabelingMethod = PartLabelingMethod.LabelLargestPart;
-            featureLayer.LabelLayer = ll;
+            featureLayer.AddLabels(expression, font, fontColor);
         }
 
         /// <summary>
         /// Removes any existing label categories
         /// </summary>
+        [Obsolete("Use featureLayer.ClearLabels() instead")] // Marked in 1.7
         public void ClearLabels(IFeatureLayer featureLayer)
         {
-            featureLayer.ShowLabels = false;
-            if (featureLayer.LabelLayer == null) return;
-        }
-
-        /// <summary>
-        /// Opens a new layer and automatically adds it to the map.
-        /// </summary>
-        [Obsolete("Use AddLayers() with no parameters")]
-        public virtual void OpenLayer()
-        {
-            AddLayers();
+            featureLayer.ClearLabels();
         }
 
         /// <summary>
@@ -767,6 +751,27 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Gets or sets the clockwise map frame angle used for rotation.
+        /// </summary>
+        [Category("Behavior"), Description("Gets or sets the clockwise map frame angle used for rotation.")]
+        public double Angle
+        {
+            get
+            {
+                return _geoMapFrame != null ? _geoMapFrame.Angle : 0;
+            }
+            set
+            {
+                if (_geoMapFrame != null)
+                {
+                    _geoMapFrame.Angle = value;
+
+                }
+            }
+        }
+
+        
+        /// <summary>
         /// Gets or sets the Projection Esri string of the map. This property is used for serializing
         /// the projection string to the project file.
         /// </summary>
@@ -797,6 +802,7 @@ namespace DotSpatial.Controls
                 }
             }
         }
+
 
         /// <summary>
         /// Gets or sets a PromptMode enumeration that controls how users are prompted before adding layers
@@ -934,6 +940,7 @@ namespace DotSpatial.Controls
                     case FunctionMode.Label:
                         Cursor = Cursors.IBeam;
                         break;
+                    case FunctionMode.ZoomPan:
                     case FunctionMode.None:
                         Cursor = Cursors.Arrow;
                         break;
@@ -966,18 +973,21 @@ namespace DotSpatial.Controls
                 // Turn off functions that are not "Always on"
                 if (_functionMode == FunctionMode.None)
                 {
-                    foreach (MapFunction f in MapFunctions)
+                    foreach (var f in MapFunctions)
                     {
                         if ((f.YieldStyle & YieldStyles.AlwaysOn) != YieldStyles.AlwaysOn) f.Deactivate();
                     }
                 }
                 else
                 {
+                    if (_functionMode != FunctionMode.ZoomPan)
+                    {
+                        // Except for function mode "none" allow scrolling
+                        IMapFunction scroll = _functionLookup[FunctionMode.ZoomPan];
+                        ActivateMapFunction(scroll);
+                    }
                     IMapFunction newMode = _functionLookup[_functionMode];
                     ActivateMapFunction(newMode);
-                    // Except for function mode "none" allow scrolling
-                   IMapFunction scroll = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionZoom));
-                    ActivateMapFunction(scroll);
                 }
 
                 //function mode changed event
@@ -1000,7 +1010,7 @@ namespace DotSpatial.Controls
             {
                 MapFunctions.Add(function);
             }
-            foreach (MapFunction f in MapFunctions)
+            foreach (var f in MapFunctions)
             {
                 if ((f.YieldStyle & YieldStyles.AlwaysOn) == YieldStyles.AlwaysOn) continue; // ignore "Always On" functions
                 int test = (int)(f.YieldStyle & function.YieldStyle);
@@ -1033,8 +1043,7 @@ namespace DotSpatial.Controls
         /// If true then the map is zoomed to its full extents
         /// Added by Eric Hullinger 1/3/2013
         /// </summary>
-        public bool IsZoomedToMaxExtent
-        { get; set; }
+        public bool IsZoomedToMaxExtent { get; set; }
 
         /// <summary>
         /// Gets or sets the back buffer.  The back buffer should be in Format32bbpArgb bitmap.
@@ -1121,9 +1130,7 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public List<ILayer> GetLayers()
         {
-            List<ILayer> result = new List<ILayer>();
-            if (_geoMapFrame == null) return result;
-            return _geoMapFrame.Layers.Cast<ILayer>().ToList();
+            return _geoMapFrame == null ? Enumerable.Empty<ILayer>().ToList() : _geoMapFrame.Layers.Cast<ILayer>().ToList();
         }
 
         /// <summary>
@@ -1131,6 +1138,7 @@ namespace DotSpatial.Controls
         /// Loading subsequent, but non-matching projections should throw an alert, and allow reprojection.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public ProjectionInfo Projection
         {
             get
@@ -1238,11 +1246,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the LayerAdded event
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
-            if (LayerAdded != null) LayerAdded(sender, e);
+            var h = LayerAdded;
+            if (h != null) h(sender, e);
         }
 
         private void MapFrame_SelectionChanged(object sender, EventArgs e)
@@ -1255,7 +1262,8 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            if (SelectionChanged != null) SelectionChanged(this, new EventArgs());
+            var h = SelectionChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         private void MapFrame_BufferChanged(object sender, ClipArgs e)
@@ -1265,11 +1273,11 @@ namespace DotSpatial.Controls
             {
                 if (clip.IsEmpty == false)
                 {
-                    Rectangle mapClip = new Rectangle(clip.X - view.X, clip.Y - view.Y, clip.Width, clip.Height);
+                    var mapClip = new Rectangle(clip.X - view.X, clip.Y - view.Y, clip.Width, clip.Height);
                     Invalidate(mapClip);
                 }
             }
-          
+
         }
 
         /// <summary>
@@ -1291,6 +1299,12 @@ namespace DotSpatial.Controls
         {
             return _geoMapFrame != null ? _geoMapFrame.GetAllGroups() : null;
         }
+
+        /// <summary>
+        /// This allows to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
+        /// </summary>
+        [Serialize("ZoomOutFartherThanMaxExtent")]
+        public bool ZoomOutFartherThanMaxExtent { get; set; }
 
         #endregion
 
@@ -1365,7 +1379,6 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomIn()
         {
-           
             MapFrame.ZoomIn();
         }
 
@@ -1374,7 +1387,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomOut()
         {
-            MapFrame.ZoomOut();  
+            MapFrame.ZoomOut();
         }
 
         /// <summary>
@@ -1409,38 +1422,48 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_geoMapFrame.IsPanning) return;
-
-            Rectangle clip = e.ClipRectangle;
-            if (clip.IsEmpty) clip = ClientRectangle;
-
-            // if the area to paint is too small, there's nothing to paint.
-            // Added to fix http://dotspatial.codeplex.com/workitem/320
-            if (clip.Width < 1 || clip.Height < 1) return;
-
-            Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(stencil);
-            Brush b = new SolidBrush(BackColor);
-            g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
-            b.Dispose();
-            Matrix m = new Matrix();
-            m.Translate(-clip.X, -clip.Y);
-            g.Transform = m;
-
-            _geoMapFrame.Draw(new PaintEventArgs(g, e.ClipRectangle));
-
-            MapDrawArgs args = new MapDrawArgs(g, clip, _geoMapFrame);
-            foreach (IMapFunction tool in MapFunctions)
+            // CGX TRY CATCH
+            try
             {
-                if (tool.Enabled) tool.Draw(args);
+                if (_geoMapFrame.IsPanning) return;
+
+                var clip = e.ClipRectangle;
+                if (clip.IsEmpty) clip = ClientRectangle;
+
+                // if the area to paint is too small, there's nothing to paint.
+                // Added to fix http://dotspatial.codeplex.com/workitem/320
+                if (clip.Width < 1 || clip.Height < 1) return;
+
+                using (var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb))
+                using (var g = Graphics.FromImage(stencil))
+                {
+                    using (var b = new SolidBrush(BackColor))
+                        g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
+
+                    using (var m = new Matrix())
+                    {
+                        m.Translate(-clip.X, -clip.Y);
+                        g.Transform = m;
+
+                        Draw(g, e);
+
+                        var args = new MapDrawArgs(g, clip, _geoMapFrame);
+                        foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+                        {
+                            tool.Draw(args);
+                        }
+
+                        var pe = new PaintEventArgs(g, e.ClipRectangle);
+                        base.OnPaint(pe);
+                    }
+
+                    e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
+                }
             }
-
-            PaintEventArgs pe = new PaintEventArgs(g, e.ClipRectangle);
-            base.OnPaint(pe);
-
-            g.Dispose();
-            e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
-            stencil.Dispose();
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -1449,19 +1472,22 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public Bitmap SnapShot()
         {
-            Rectangle clip = ClientRectangle;
-            Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(stencil);
-            g.FillRectangle(Brushes.White, new Rectangle(0, 0, stencil.Width, stencil.Height));
+            var clip = ClientRectangle;
+            var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
+            using (var g = Graphics.FromImage(stencil))
+            {
+                g.FillRectangle(Brushes.White, new Rectangle(0, 0, stencil.Width, stencil.Height));
 
-            // Translate the buffer so that drawing occurs in client coordinates, regardless of whether
-            // there is a clip rectangle or not.
-            Matrix m = new Matrix();
-            m.Translate(-clip.X, -clip.Y);
-            g.Transform = m;
+                // Translate the buffer so that drawing occurs in client coordinates, regardless of whether
+                // there is a clip rectangle or not.
+                using (var m = new Matrix())
+                {
+                    m.Translate(-clip.X, -clip.Y);
+                    g.Transform = m;
+                    _geoMapFrame.Draw(new PaintEventArgs(g, clip));
+                }
+            }
 
-            _geoMapFrame.Draw(new PaintEventArgs(g, clip));
-            g.Dispose();
             return stencil;
         }
 
@@ -1472,12 +1498,13 @@ namespace DotSpatial.Controls
         /// <returns>A bitmap with the specified width</returns>
         public Bitmap SnapShot(int width)
         {
-            int height = (int)(width * (MapFrame.ViewExtents.Height / MapFrame.ViewExtents.Width));
-            Bitmap bmp = new Bitmap(height, width);
-            Graphics g = Graphics.FromImage(bmp);
-            g.Clear(Color.White);
-            _geoMapFrame.Print(g, new Rectangle(0, 0, width, height));
-            g.Dispose();
+            var height = (int)(width * (MapFrame.ViewExtents.Height / MapFrame.ViewExtents.Width));
+            var bmp = new Bitmap(height, width);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.White);
+                _geoMapFrame.Print(g, new Rectangle(0, 0, width, height));
+            }
             return bmp;
         }
 
@@ -1487,14 +1514,11 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
-                {
-                    tool.DoMouseDoubleClick(args);
-                    if (args.Handled) break;
-                }
+                tool.DoMouseDoubleClick(args);
+                if (args.Handled) break;
             }
 
             base.OnMouseDoubleClick(e);
@@ -1506,14 +1530,11 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
-                {
-                    tool.DoMouseDown(args);
-                    if (args.Handled) break;
-                }
+                tool.DoMouseDown(args);
+                if (args.Handled) break;
             }
 
             base.OnMouseDown(e);
@@ -1525,16 +1546,15 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
-                {
-                    tool.DoMouseUp(args);
-                    if (args.Handled) break;
-                }
+                tool.DoMouseUp(args);
+                if (args.Handled) break;
             }
+            //CGX
+            this.Focus();
+            //Fin CGX
             base.OnMouseUp(e);
         }
 
@@ -1544,19 +1564,27 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            //CGX
+            bool bWasHandled = false;
+            //CGX
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
+                tool.DoMouseMove(args);
+                if (args.Handled)
                 {
-                    tool.DoMouseMove(args);
-                    if (args.Handled) break;
+                    //CGX
+                    bWasHandled = true;
+                    //CGX
+                    break;
                 }
             }
-            if (GeoMouseMove != null)
-            {
-                GeoMouseMove(this, new GeoMouseArgs(e, this));
-            }
+
+            var h = GeoMouseMove;
+            if (h != null) h(this, args);
+            //CGX
+            if (bWasHandled) this.Focus();
+            //Fin CGX
             base.OnMouseMove(e);
         }
 
@@ -1564,71 +1592,112 @@ namespace DotSpatial.Controls
         /// Fires the OnMouseWheel event for the active tools
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseWheel(MouseEventArgs e) 
+        protected override void OnMouseWheel(MouseEventArgs e)
         {
-                GeoMouseArgs args = new GeoMouseArgs(e, this);
-                foreach (IMapFunction tool in MapFunctions)
-                {
-                    if (tool.Enabled)
-                    {
-                        tool.DoMouseWheel(args);
-                        if (args.Handled) break;
-                    }
-                }
-           
-                base.OnMouseWheel(e);        
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+            {
+                tool.DoMouseWheel(args);
+                if (args.Handled) break;
+            }
+            //CGX
+            this.Focus();
+            //Fin CGX
+            base.OnMouseWheel(e);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
         protected virtual void OnFinishedRefresh(EventArgs e)
         {
-            if (FinishedRefresh != null)
-            {
-                FinishedRefresh(this, e);
-            }
+            var h = FinishedRefresh;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
-        /// Fires the ProjectionChanged event
-        /// and also reprojects all map layers
+        /// Fires the ProjectionChanged event.
         /// </summary>
         protected virtual void OnProjectionChanged()
         {
-            if (ProjectionChanged != null) ProjectionChanged(this, null);
+            var h = ProjectionChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// Fires the ViewExtentsChanged event.
+        /// Fires the ViewExtentsChanged event. Corrects the ViewExtent if it is smaller than 1e-7. If ZoomOutFartherThanMaxExtent is set, it corrects the 
+        /// ViewExtent if it is bigger then 1e+9. Otherwise it corrects the ViewExtent if it is bigger than the Maps extent + 10%.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         protected virtual void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
-            if (ViewExtentsChanged != null) ViewExtentsChanged(sender, args);
+            /*double minExt = 1e-7;
+            double maxExt = 1e+9; //if we can zoom out farther than the maps extent we don't zoom out farther than this
+            var maxExtent = GetMaxExtent(true);
+            if (Math.Max(maxExtent.Height, maxExtent.Width) > maxExt) maxExt = Math.Max(maxExtent.Height, maxExtent.Width); // make sure maxExtent isn't bigger than maxExt
 
-            Extent MaxExtent = GetMaxExtent();
-
-            if (MaxExtent.Width != 0 && MaxExtent.Height != 0)
+            if (!ZoomOutFartherThanMaxExtent && (maxExtent.Width != 0 && maxExtent.Height != 0) && (ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
+            { // we only want to zoom out to the maps extent
+                ZoomToMaxExtent();
+            }
+            else if (ZoomOutFartherThanMaxExtent && ViewExtents.Width > maxExt) // we want to zoom out farther than the maps extent and the width is bigger than maxExt
             {
-                if ((this.ViewExtents.Width > (MaxExtent.Width + 1)) && (this.ViewExtents.Height > (MaxExtent.Height + 1)))
+                double x = ViewExtents.Center.X;
+                double y = ViewExtents.Center.Y;
+                double add = (maxExt / 2) - minExt;
+                ViewExtents = new Extent(x - add, y - 100, x + add, y + 100); // resizes the width to stay below maxExt
+            }
+            else if (ZoomOutFartherThanMaxExtent && ViewExtents.Height > maxExt) // we want to zoom out farther than the maps extent and the height is bigger than maxExt
+            {
+                double x = ViewExtents.Center.X;
+                double y = ViewExtents.Center.Y;
+                double add = (maxExt / 2) - minExt;
+                Extent newExtent = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2); // resize to stay above the minExt
+	 
+	            //changed by jany_ (2016-04-14) Remember the last minimum extent in case MapFrame.ResetAspectRatio decides to resize the ViewExtent to something smaller than this.
+	            //We don't want to cause a loop between this point and MapFrame.ResetAspectRatio switching ViewExtent between minExt and the corresponding extent that comes from fitting minExt to the maps aspect ratio.
+	            if (_lastMinExtent == null || !_lastMinExtent.Equals(newExtent))
+	            {
+	                _lastMinExtent = newExtent; 
+	                ViewExtents = newExtent;
+	            }
+            }
+            else if (ViewExtents.Width < minExt || ViewExtents.Height < minExt) // the current height or width is smaller than minExt
+            {
+                double x = ViewExtents.Center.X;
+                double y = ViewExtents.Center.Y;
+                ViewExtents = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2); // resize to stay above the minExt
+            }
+            else
+            {
+                var h = ViewExtentsChanged;
+                if (h != null) h(sender, args);
+            }*/
+            var h = ViewExtentsChanged;
+            if (h != null) h(sender, args);
+
+            var maxExtent = GetMaxExtent();
+            if (maxExtent.Width != 0 && maxExtent.Height != 0)
+            {
+                if (ExtendBuffer)
                 {
-                    this.ZoomToMaxExtent();
+                    if ((ViewExtents.Width > _geoMapFrame.ExtendBufferCoeff * (maxExtent.Width + 1)) && (ViewExtents.Height > _geoMapFrame.ExtendBufferCoeff * (maxExtent.Height + 1)))
+                    {
+                        ZoomToMaxExtent();
+                    }
+                }
+                else if ((ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
+                {
+                    ZoomToMaxExtent();
                 }
             }
-            
         }
 
         /// <summary>
         /// Fires the FunctionModeChanged event.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         protected virtual void OnFunctionModeChanged(object sender, EventArgs e)
         {
-            if (FunctionModeChanged != null) FunctionModeChanged(this, e);
+            var h = FunctionModeChanged;
+            if (h != null) h(this, e);
         }
 
         private void OnSizeChanged(object sender, EventArgs eventArgs)
@@ -1658,10 +1727,7 @@ namespace DotSpatial.Controls
         protected virtual void OnResized()
         {
             var handler = Resized;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            if (handler != null) handler(this, EventArgs.Empty);
         }
 
         #endregion

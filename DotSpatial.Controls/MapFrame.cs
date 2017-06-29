@@ -29,7 +29,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using DotSpatial.Controls.Core;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
@@ -40,6 +39,69 @@ using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
+
+    // CGX
+    public class CBookmarks
+    {
+        //====================================================================
+        #region Properties
+
+        string _sName = "";
+        Coordinate _pCenter = null;
+        double _dScale = 0.0;
+
+        #endregion
+
+        //====================================================================
+        #region Accesseurs
+
+        [Serialize("bookmark_name")]
+        public string Name
+        {
+            get { return _sName; }
+            set { _sName = value; }
+        }
+
+        [Serialize("bookmark_center")]
+        public Coordinate Center
+        {
+            get { return _pCenter; }
+            set { _pCenter = value; }
+        }
+
+        [Serialize("bookmark_scale")]
+        public double Scale
+        {
+            get { return _dScale; }
+            set { _dScale = value; }
+        }
+
+        #endregion
+
+        //====================================================================
+        #region Constructeur
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public CBookmarks()
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public CBookmarks(string sName, Coordinate pCenter, double dScale)
+        {
+            _sName = sName;
+            _pCenter = pCenter;
+            _dScale = dScale;
+        }
+
+        #endregion
+    }
+    // Fin CGX
+
     /// <summary>
     /// A MapFrame accomplishes two things.  Firstly, it organizes the layers to be drawn, and establishes the geographic
     /// extents.  Secondly, it hosts the back-buffer image that can be larger than the component that
@@ -68,6 +130,11 @@ namespace DotSpatial.Controls
         /// </summary>
         public event EventHandler<ClipArgs> BufferChanged;
 
+        /// <summary>
+        /// Occurs when View changed
+        /// </summary>
+        public event EventHandler<ViewChangedEventArgs> ViewChanged;
+
         #endregion Events
 
         #region Private Variables
@@ -79,6 +146,7 @@ namespace DotSpatial.Controls
         private List<Rectangle> _clipRegions;
         private int _currentChunk;
         private bool _extendBuffer;
+        private double _angle;
         private int _height;
         private bool _isPanning;
         private IMapLayerCollection _layers;
@@ -90,6 +158,13 @@ namespace DotSpatial.Controls
         private Rectangle _view;
         private int _width;
         private ILayer former;
+
+        //CGX
+        private double _referenceScale;
+        private Color _backgroundColor;
+        private List<CBookmarks> _bookMarks;
+        private static int _extendBufferCoeff = 3;
+        //Fin CGX
 
         private bool _isZoomingNextOrPrevious;
         private readonly LimitedStack<Extent> _previousExtents = new LimitedStack<Extent>();
@@ -111,11 +186,11 @@ namespace DotSpatial.Controls
             }
             _backBuffer = CreateBuffer();
             Layers = new MapLayerCollection(this);
-           
+
             base.IsSelected = true;  // by default allow the map frame to be selected
 
             //add properties context menu item
-            ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
+            base.ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
         }
 
         /// <summary>
@@ -243,21 +318,21 @@ namespace DotSpatial.Controls
         public override bool ClearSelection(out IEnvelope affectedAreas)
         {
             former = null;
-            foreach (Layer l in this.GetAllLayers())
+            foreach (var l in this.GetAllLayers())
             {
-                if (l.IsSelected == true)
+                if (l.IsSelected)
                 {
                     former = l;
                     l.IsSelected = false;
                 }
-           } 
-            if (former == null && this.IsSelected == true)
+            }
+            if (former == null && IsSelected)
             {
                 former = this;
             }
-            this.IsSelected = true;
+            IsSelected = true;
             bool cleared = base.ClearSelection(out affectedAreas);
-            this.IsSelected = false;
+            IsSelected = false;
             if (former != null)
             {
                 former.IsSelected = true;
@@ -295,57 +370,81 @@ namespace DotSpatial.Controls
         /// <param name="regions">The regions to initialize.</param>
         public virtual void Initialize(List<Extent> regions)
         {
-            bool setView = false;
-            if (_backBuffer == null)
+            //CGX Try catch
+            try
             {
-                _backBuffer = CreateBuffer();
+                bool setView = false;
+                if (_backBuffer == null)
+                {
+                    _backBuffer = CreateBuffer();
 
-                //set the view
-                setView = true;
+                    //set the view
+                    setView = true;
+                }
+
+                Graphics bufferDevice = Graphics.FromImage(_backBuffer);
+                MapArgs args = new MapArgs(ClientRectangle, ViewExtents, bufferDevice);
+                GraphicsPath gp = new GraphicsPath();
+                foreach (Extent region in regions)
+                {
+                    if (region == null) continue;
+                    Rectangle rect = args.ProjToPixel(region);
+                    gp.StartFigure();
+                    gp.AddRectangle(rect);
+                }
+                bufferDevice.Clip = new Region(gp);
+
+                // Draw the background color
+                if (null != _parent) bufferDevice.Clear(_parent.BackColor);
+                else bufferDevice.Clear(Color.White);
+
+                //CGX
+                if (null != _parent)
+                {
+                    if (!BackgroundColor.IsEmpty)
+                        _parent.BackColor = BackgroundColor;
+                    else
+                        _parent.BackColor = Color.White;
+                }
+                //Fin CGX
+
+                // First draw all the vector content
+                //CGX
+                foreach (IMapLayer layer in this.GetAllLayers()) //foreach (IMapLayer layer in Layers)
+                {
+                    if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
+                }
+                // Then labels
+                MapLabelLayer.ClearAllExistingLabels();
+                foreach (var layer in Layers)
+                {
+                    InitializeLabels(regions, args, layer);
+                }
+
+                // First draw all the vector content
+                foreach (var layer in DrawingLayers.OfType<IMapLayer>())
+                {
+                    if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
+                }
+
+                if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
+                _buffer = _backBuffer;
+                if (setView)
+                    _view = _backView;
+
+                Rectangle rectangle = ImageRectangle;
+                if (ExtendBuffer)
+                    rectangle = new Rectangle(_width / ExtendBufferCoeff, _height / ExtendBufferCoeff, _width / ExtendBufferCoeff, _height / ExtendBufferCoeff);
+
+                bufferDevice.Clip = new Region(rectangle);
+                gp.Dispose();
+                List<Rectangle> rects = args.ProjToPixel(regions);
+                OnBufferChanged(this, new ClipArgs(rects));
             }
-
-            Graphics bufferDevice = Graphics.FromImage(_backBuffer);
-            MapArgs args = new MapArgs(ClientRectangle, ViewExtents, bufferDevice);
-            GraphicsPath gp = new GraphicsPath();
-            foreach (Extent region in regions)
+            catch (Exception)
             {
-                if (region == null) continue;
-                Rectangle rect = args.ProjToPixel(region);
-                gp.StartFigure();
-                gp.AddRectangle(rect);
+                return;
             }
-            bufferDevice.Clip = new Region(gp);
-
-            // Draw the background color
-            if (null != _parent) bufferDevice.Clear(_parent.BackColor);
-            else bufferDevice.Clear(Color.White);
-
-            // First draw all the vector content
-            foreach (IMapLayer layer in Layers)
-            {
-                if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
-            }
-            // Then
-            MapLabelLayer.ExistingLabels = new List<RectangleF>();
-            foreach (IMapLayer layer in Layers)
-            {
-                InitializeLabels(regions, args, layer);
-            }
-
-            // First draw all the vector content
-            foreach (IMapLayer layer in DrawingLayers)
-            {
-                if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
-            }
-
-            if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
-            _buffer = _backBuffer;
-            if(setView)
-                _view = _backView;
-            bufferDevice.Clip = new Region(ImageRectangle);
-            gp.Dispose();
-            List<Rectangle> rects = args.ProjToPixel(regions);
-            OnBufferChanged(this, new ClipArgs(rects));
         }
 
         /// <summary>
@@ -359,9 +458,8 @@ namespace DotSpatial.Controls
             {
                 Initialize(new List<Extent> { ViewExtents });
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
-                return;
             }
         }
 
@@ -484,8 +582,8 @@ namespace DotSpatial.Controls
             {
                 _backView.X = _width;
                 _backView.Y = _height;
-                _width = _width * 3;
-                _height = _height * 3;
+                _width = _width * ExtendBufferCoeff;
+                _height = _height * ExtendBufferCoeff;
             }
 
             return new Bitmap(_width, _height);
@@ -503,30 +601,28 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Draw label content for a Map Layer
         /// </summary>
-        /// <param name="regions"></param>
-        /// <param name="args"></param>
-        /// <param name="layer"></param>
         protected virtual void InitializeLabels(List<Extent> regions, MapArgs args, IRenderable layer)
         {
-            IMapGroup grp = layer as IMapGroup;
-            if (layer.IsVisible)
-            {
-                if (grp != null)
-                {
-                    foreach (IMapLayer lyr in grp.Layers)
-                    {
-                        InitializeLabels(regions, args, lyr);
-                    }
-                    return;
-                }
+            if (!layer.IsVisible) return;
 
-                IMapFeatureLayer mfl = layer as IMapFeatureLayer;
-                if (mfl != null)
+            var grp = layer as IMapGroup;
+            if (grp != null)
+            {
+                foreach (IMapLayer lyr in grp.Layers)
                 {
-                    if (mfl.ShowLabels && mfl.LabelLayer != null)
+                    InitializeLabels(regions, args, lyr);
+                }
+                return;
+            }
+
+            var mfl = layer as IMapFeatureLayer;
+            if (mfl != null)
+            {
+                if (mfl.ShowLabels && mfl.LabelLayer != null)
+                {
+                    if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
                     {
-                        if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
-                            mfl.LabelLayer.DrawRegions(args, regions);
+                        mfl.LabelLayer.DrawRegions(args, regions);
                     }
                 }
             }
@@ -534,7 +630,7 @@ namespace DotSpatial.Controls
 
         private void PrintLayer(IMapLayer layer, MapArgs args)
         {
-            MapLabelLayer.ExistingLabels.Clear();
+            MapLabelLayer.ClearAllExistingLabels();
             IMapGroup group = layer as IMapGroup;
             if (group != null)
             {
@@ -628,7 +724,7 @@ namespace DotSpatial.Controls
         /// <param name="ext"></param>
         protected override void OnExtentsChanged(Extent ext)
         {
-            if (ext.X == -180 && ext.Y == 90) { return; }
+            if (ext.IsEmpty() || (ext.X == -180 && ext.Y == 90)) { return; }
             if (_isZoomingNextOrPrevious)
             {
                 // reset the flag for the next extents change
@@ -641,7 +737,7 @@ namespace DotSpatial.Controls
                 // Might be called too freqently in some case.
                 if (ViewExtents != _previousExtents.Peek())
                 {
-                    if (_lastExtent != null)
+                    if (_lastExtent != null && _lastExtent != ext) //changed by jany_ (2015-07-17) we don't want to jump between the views with the same extent
                         _previousExtents.Push(_lastExtent);
 
                     _lastExtent = ext;
@@ -707,6 +803,8 @@ namespace DotSpatial.Controls
             }
         }
 
+
+
         #endregion Methods
 
         #region Properties
@@ -746,27 +844,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the geographic extents to be drawn to a buffer.
-        /// If "ExtendBuffer" is true, then these extents are larger
-        /// than the geographic extents of the parent client,
-        /// and care should be taken when using PixelToProj,
-        /// as it will work differently.
-        /// </summary>
-        public Extent BufferExtents
-        {
-            get
-            {
-                if (_extendBuffer)
-                {
-                    Extent ext = ViewExtents.Copy();
-                    ext.ExpandBy(ext.Width, ext.Height);
-                    return ext;
-                }
-                return ViewExtents;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the height
         /// </summary>
         public int Height
@@ -774,7 +851,7 @@ namespace DotSpatial.Controls
             get { return _height; }
             set { _height = value; }
         }
-
+		
         /// <summary>
         /// Gets or sets the width in pixels for this map frame.
         /// </summary>
@@ -836,6 +913,25 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// </summary>
+        public int ExtendBufferCoeff
+        {
+            get { return _extendBufferCoeff; }
+            set { _extendBufferCoeff = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the clockwise map frame angle used for rotation.
+        /// </summary>
+        [Serialize("Angle")]
+        public double Angle
+        {
+            get { return _angle; }
+            set {_angle = value; }
+        }
+		
+        /// <summary>
         /// Gets or sets whether this map frame is currently in the process of redrawing the
         /// stencils after a pan operation.  Drawing should not take place if this is true.
         /// </summary>
@@ -844,7 +940,7 @@ namespace DotSpatial.Controls
             get { return _isPanning; }
             set { _isPanning = value; }
         }
-
+		
         /// <summary>
         /// When the control is being resized, the view needs to change in order to preserve the aspect ratio,
         /// even though we want to use the exact same extents.
@@ -929,7 +1025,23 @@ namespace DotSpatial.Controls
         public Rectangle View
         {
             get { return _view; }
-            set { _view = value; }
+            set
+            {
+                if (_view == value) return;
+
+                var h = ViewChanged;
+                if (h != null)
+                {
+                    var old_view = _view;
+                    _view = value;
+                    var args = new ViewChangedEventArgs { OldView = old_view, NewView = _view };
+                    h(this, args);
+                }
+                else
+                {
+                    _view = value;
+                }
+            }
         }
 
         /// <summary>
@@ -969,8 +1081,59 @@ namespace DotSpatial.Controls
             _resizing = false;
         }
 
+        // CGX
+        /// <summary>
+        /// gets or sets the map reference scale.
+        /// </summary>
+        [Serialize("ReferenceScale")]
+        public double ReferenceScale
+        {
+            get { return _referenceScale; }
+            set { _referenceScale = value; }
+        }
+        /// <summary>
+        /// gets the map current scale.
+        /// </summary>
+        public double CurrentScale
+        {
+            get { return ComputeScaleFromExtent(); }
+            set { ComputeExtentFromScale(value); }
+        }
+        /// <summary>
+        /// gets or sets the map background color.
+        /// </summary>
+        [Serialize("BackgroundColor")]
+        public Color BackgroundColor
+        {
+            get { return _backgroundColor; }
+            set
+            {
+                _backgroundColor = value;
+                if (Parent != null)
+                {
+                    Parent.BackColor = _backgroundColor;
+                    Parent.Refresh();
+                }
+            }
+        }
+        /// <summary>
+        /// Gets or sets the map bookmarks.
+        /// </summary>
+        [Serialize("Bookmarks")]
+        public List<CBookmarks> Bookmarks
+        {
+            get
+            {
+                if (_bookMarks == null)
+                    _bookMarks = new List<CBookmarks>();
+                return _bookMarks;
+            }
+            set { _bookMarks = value; }
+        }
+        //Fin CGX
+
         #endregion Properties
-         
+
         #region Protected Methods
 
         /// <summary>
@@ -1018,7 +1181,6 @@ namespace DotSpatial.Controls
             catch
             {
                 // There was an exception (probably because of sizing issues) so don't bother with the chunk timer.
-                return;
             }
 
             //base.OnPaint(pe);
@@ -1033,7 +1195,7 @@ namespace DotSpatial.Controls
         /// <returns>An ICoordinate describing the geographic position</returns>
         public Coordinate BufferToProj(Point position)
         {
-            IEnvelope view = BufferExtents.ToEnvelope();
+            IEnvelope view = ViewExtents.ToEnvelope();
             if (base.ViewExtents == null) return new Coordinate(0, 0);
             double x = Convert.ToDouble(position.X);
             double y = Convert.ToDouble(position.Y);
@@ -1050,8 +1212,23 @@ namespace DotSpatial.Controls
         /// <returns>An IEnvelope interface</returns>
         public Extent BufferToProj(Rectangle rect)
         {
-            Point tl = new Point(rect.X, rect.Y);
-            Point br = new Point(rect.Right, rect.Bottom);
+           //CGX
+            Point tl;
+            Point br;
+
+            if (ExtendBuffer)
+            {
+                Rectangle bufferRectangle = rect.ExpandBy(rect.Width, rect.Height);
+
+                tl = new Point(bufferRectangle.X, bufferRectangle.Y);
+                br = new Point(bufferRectangle.Right, bufferRectangle.Bottom);
+            }
+            //Fin CGX
+            else
+            {
+                tl = new Point(rect.X, rect.Y);
+                br = new Point(rect.Right, rect.Bottom);
+            }
             Coordinate topLeft = BufferToProj(tl);
             Coordinate bottomRight = BufferToProj(br);
             return new Extent(topLeft.X, bottomRight.Y, bottomRight.X, topLeft.Y);
@@ -1065,7 +1242,7 @@ namespace DotSpatial.Controls
         /// <returns>A Point with the new location.</returns>
         public Point ProjToBuffer(Coordinate location)
         {
-            IEnvelope view = BufferExtents.ToEnvelope();
+            IEnvelope view = ViewExtents.ToEnvelope();
             if (_width == 0 || _height == 0) return new Point(0, 0);
             int x = Convert.ToInt32((location.X - view.Minimum.X) * (_width / view.Width));
             int y = Convert.ToInt32((view.Maximum.Y - location.Y) * (_height / view.Height));
@@ -1124,7 +1301,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                if (_extendBuffer) return new Rectangle(_width / 3, _height / 3, _width / 3, _height / 3);
+                if (_extendBuffer) return new Rectangle(-_width / ExtendBufferCoeff, -_height / ExtendBufferCoeff, _width, _height);
                 return new Rectangle(0, 0, _width, _height);
             }
         }
@@ -1162,7 +1339,7 @@ namespace DotSpatial.Controls
         protected virtual void OnScreenUpdated()
         {
             if (ScreenUpdated == null) return;
-            ScreenUpdated(this, new EventArgs());
+            ScreenUpdated(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1172,7 +1349,7 @@ namespace DotSpatial.Controls
         {
             if (FinishedRefresh != null)
             {
-                FinishedRefresh(this, new EventArgs());
+                FinishedRefresh(this, EventArgs.Empty);
             }
         }
 
@@ -1200,10 +1377,25 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void Layers_ZoomToLayer(object sender, EnvelopeArgs e)
         {
-            ZoomToLayerEnvelope(e.Envelope);
+            //CGX
+            if (e.Envelope.Width == 0.0 && e.Envelope.Height == 0.0)
+            {
+                double dCurrentScale = CurrentScale;
+                ZoomToLayerEnvelope(e.Envelope);
+
+                if (dCurrentScale > 800000)
+                    CurrentScale = 800000;
+                else if (dCurrentScale < 1000)
+                    CurrentScale = 5000;
+                else
+                    CurrentScale = dCurrentScale;
+            }
+            else
+                ZoomToLayerEnvelope(e.Envelope);
         }
 
-        private void ZoomToLayerEnvelope(IEnvelope layerEnvelope)
+        //CGX Modif Private to Public
+        public void ZoomToLayerEnvelope(IEnvelope layerEnvelope)
         {
             if (_extendBuffer)
             {
@@ -1242,8 +1434,7 @@ namespace DotSpatial.Controls
         {
             IMapLayer layer = e.Layer as IMapLayer;
             if (layer == null) return;
-            if (!ExtentsInitialized || ViewExtents == null || ViewExtents.IsEmpty() ||
-                ViewExtents.Width == 0 || View.Height == 0)
+            if (!ExtentsInitialized || ViewExtents == null || ViewExtents.IsEmpty() || ViewExtents.Width == 0 || View.Height == 0)
             {
                 ExtentsInitialized = true;
                 Extent desired = e.Layer.Extent;
@@ -1261,6 +1452,7 @@ namespace DotSpatial.Controls
                         if (desired.Height > 0 && desired.Height < 1E300)
                         {
                             Extent env = desired.Copy();
+                            if (ExtendBuffer) env.ExpandBy(env.Width, env.Height);
                             env.ExpandBy(env.Width / 10, env.Height / 10); // Work item #84
                             ViewExtents = env;
                         }
@@ -1270,7 +1462,6 @@ namespace DotSpatial.Controls
 
             ReprojectOnTheFly(layer);
             Initialize();
-            return;
         }
 
         private void ReprojectOnTheFly(IMapLayer layer)
@@ -1278,7 +1469,7 @@ namespace DotSpatial.Controls
             if (layer.DataSet == null) return;
             if (!Data.DataSet.ProjectionSupported()) return;
 
-            bool preventReproject = DefineProjection(layer);
+            var preventReproject = DefineProjection(layer);
             if ((Projection == null || Layers.Count == 1))
             {
                 Projection = layer.DataSet.Projection;
@@ -1286,42 +1477,42 @@ namespace DotSpatial.Controls
             }
 
             if (preventReproject) return;
-
-            if (Data.DataSet.ProjectionSupported())
+            if (Projection.Equals(layer.DataSet.Projection)) return;
+            var bReproject = false;
+            if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
             {
-                if (!Projection.Equals(layer.DataSet.Projection))
+    			string message = String.Format(MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch, layer.DataSet.Name, layer.Projection.Name, Projection.Name);
+                if (ProjectionModeReproject == ActionMode.PromptOnce)
                 {
-                    Boolean bReproject = false;
-                    if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
-                    {
-                        string message = MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch;
-                        if (ProjectionModeReproject == ActionMode.PromptOnce)
-                        {
-                            message =
-                                "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map.  Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
-                        }
-                        DialogResult result = MessageBox.Show(
-                            message,
-                            MessageStrings.MapFrame_GlcLayerAdded_Projection_Mismatch,
-                            MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
-                        {
-                            bReproject = true;
-                        }
-                        if (ProjectionModeReproject == ActionMode.PromptOnce)
-                        {
-                            ProjectionModeReproject = result == DialogResult.Yes ?
-                                                                                     ActionMode.Always : ActionMode.Never;
-                        }
-                    }
-                    if (bReproject || ProjectionModeReproject == ActionMode.Always)
-                    {
-                        layer.Reproject(Projection);
-                    }
+                    message =
+                        "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map.  Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
                 }
+                DialogResult result = MessageBox.Show(
+                    message,
+                    MessageStrings.MapFrame_GlcLayerAdded_Projection_Mismatch,
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    bReproject = true;
+                }
+                if (ProjectionModeReproject == ActionMode.PromptOnce)
+                {
+                    ProjectionModeReproject = result == DialogResult.Yes
+                        ? ActionMode.Always
+                        : ActionMode.Never;
+                }
+            }
+            if (bReproject || ProjectionModeReproject == ActionMode.Always)
+            {
+                layer.Reproject(Projection);
             }
         }
 
+        /// <summary>
+        /// Prompts the user to define the projection of the given layer, if it doesn't not have one.
+        /// </summary>
+        /// <param name="layer">Layer whose projection gets checked.</param>
+        /// <returns>True if the layer doesn't have a projection.</returns>
         private bool DefineProjection(IMapLayer layer)
         {
             if (layer.DataSet.Projection == null || layer.DataSet.Projection.Transform == null)
@@ -1333,10 +1524,12 @@ namespace DotSpatial.Controls
                 ProjectionInfo result = _chosenProjection;
                 if (ProjectionModeDefine == ActionMode.Prompt || ProjectionModeDefine == ActionMode.PromptOnce)
                 {
-                    UndefinedProjectionDialog dlg = new UndefinedProjectionDialog();
-                    dlg.OriginalString = layer.DataSet.ProjectionString;
-
-                    dlg.MapProjection = Projection;
+                    var dlg = new UndefinedProjectionDialog
+                    {
+                        OriginalString = layer.DataSet.ProjectionString,
+                        MapProjection = Projection,
+                        LayerName = layer.DataSet.Name,
+                    };
 
                     if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;
                     dlg.AlwaysUse = (ProjectionModeDefine == ActionMode.PromptOnce);
@@ -1399,9 +1592,10 @@ namespace DotSpatial.Controls
         private void Projection_Click(object sender, EventArgs e)
         {
             //Launches a MapFrameProjectionDialog
-            MapFrameProjectionDialog dialog = new MapFrameProjectionDialog(this);
-            dialog.ShowDialog();
-            //MessageBox.Show(Projection.ToEsriString());
+            using (var dialog = new MapFrameProjectionDialog(this))
+            {
+                dialog.ShowDialog(Parent);
+            }
         }
 
         #endregion Protected Methods
@@ -1420,5 +1614,291 @@ namespace DotSpatial.Controls
         }
 
         #endregion IMapFrame Members
+
+        //CGX
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ComputeScaleFromExtent()
+        {
+            double dValue = 0.0;
+
+            try
+            {
+                if (null != Projection)
+                {
+                    double dMapWidthInMeters = 0.0;
+                    if (Projection.IsLatLon)
+                    {
+                        double dDegreesPerRadian = 180 / Math.PI;
+                        var dMapWidthInRadians = ViewExtents.Width * Projection.GeographicInfo.Unit.Radians;
+                        var dMapWidthInDegrees = dMapWidthInRadians * dDegreesPerRadian;
+                        var dMapLatInRadians = 0.0;//iMF.ViewExtents.Center.Y * iMF.Projection.GeographicInfo.Unit.Radians;
+                        var dMapLatInDegrees = dMapLatInRadians * dDegreesPerRadian;
+                        dMapWidthInMeters = MetersFromDecimalDegreesPoints(0.0, dMapLatInDegrees, dMapWidthInDegrees, dMapLatInDegrees);
+                    }
+                    else
+                        dMapWidthInMeters = ViewExtents.Width * Projection.Unit.Meters;
+
+                    double dInchesPerMeter = 39.3700787401575;
+                    if (BufferImage != null)
+                    {
+                        double dScreenWidthInMeters = (Convert.ToDouble(BufferImage.Width) / BufferImage.HorizontalResolution) / dInchesPerMeter;
+                        double dMetersPerScreenMeter = dMapWidthInMeters / dScreenWidthInMeters;
+
+                        dValue = dMetersPerScreenMeter;
+                    }
+                }
+            }
+            catch (Exception)
+            { }
+
+            return dValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ComputeExtentFromScale(double dScale)
+        {
+            try
+            {
+                double dWidth = Convert.ToDouble(BufferImage.Width);
+                double dHeight = Convert.ToDouble(BufferImage.Height);
+
+                ComputeDimensionsFromScale(dScale, ref dWidth, ref dHeight);
+
+                DotSpatial.Topology.Coordinate center = new DotSpatial.Topology.Coordinate();
+
+                center.X = (ViewExtents.MaxX + ViewExtents.MinX) / 2;
+                center.Y = (ViewExtents.MaxY + ViewExtents.MinY) / 2;
+
+                ViewExtents.SetValues(center.X - dWidth / 2, center.Y - dHeight / 2, center.X + dWidth / 2, center.Y + dHeight / 2);
+                ResetExtents();
+
+            }
+            catch (Exception)
+            { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ComputeExtentFromScale(double dScale, Point mousePosition)
+        {
+            try
+            {
+                /*      Rectangle r = View;
+                      int w = r.Width;
+                      int h = r.Height;
+                      double dWidth = r.Width / (CurrentScale / dScale);
+                      double dHeight = r.Height / (CurrentScale / dScale);
+
+                      r.Inflate(-(Convert.ToInt32(dWidth)), -(Convert.ToInt32(dHeight)));
+                          // The mouse cursor should anchor the geographic location during zoom.
+
+                      double dMouseX = (mousePosition.X / 2) / (CurrentScale / dScale);
+                      double dMouseY = (mousePosition.Y / 2) / (CurrentScale / dScale);
+
+                          r.X += Convert.ToInt32(dMouseX);
+                          r.Y += Convert.ToInt32(dMouseY);
+
+                      View = r;
+                      ResetExtents();*/
+
+                double dWidth = Convert.ToDouble(BufferImage.Width);
+                double dHeight = Convert.ToDouble(BufferImage.Height);
+
+                Rectangle r = View;
+                int w = r.Width;
+                int h = r.Height;
+
+                ComputeDimensionsFromScale(dScale, ref dWidth, ref dHeight);
+                dWidth = Math.Abs(dWidth);
+                dHeight = Math.Abs(dHeight);
+
+                DotSpatial.Topology.Coordinate center = new DotSpatial.Topology.Coordinate();
+                /*      if (mousePosition != null)
+                      {
+                          double dX = mousePosition.X;
+                          double dY = mousePosition.Y;
+
+                          ComputeDimensionsFromScale(CurrentScale, ref dX, ref dY);
+
+                          center.X = ViewExtents.MinX + dX;
+                          center.Y = ViewExtents.MaxY - dY;
+                      }
+                      else*/
+                {
+                    center.X = ViewExtents.Center.X;
+                    center.Y = ViewExtents.Center.Y;
+                }
+
+                // ViewExtents.SetCenter(center);
+                ViewExtents.SetValues(center.X - dWidth / 2, center.Y - dHeight / 2, center.X + dWidth / 2, center.Y + dHeight / 2);
+
+                ResetExtents();
+
+            }
+            catch (Exception)
+            { }
+        }
+
+
+
+        private void ComputeDimensionsFromScale(double dScale, ref double dWidth, ref double dHeight)
+        {
+            try
+            {
+
+
+                if (null != Projection)
+                {
+
+                    const double dInchesPerMeter = 39.3700787401575;
+
+                    double dScreenWidthInMeters = (dWidth / BufferImage.HorizontalResolution) / dInchesPerMeter;
+                    double dScreeHeightInMeters = (dHeight / BufferImage.VerticalResolution) / dInchesPerMeter;
+
+
+                    if (Projection.IsLatLon)
+                    {
+                        if (dScale > 80000000.0) dScale = 80000000.0;
+
+                        double dDegreesPerRadian = 180 / Math.PI;
+                        double dMapWidthInMeters = dScale * dScreenWidthInMeters;
+                        double dMapHeightInMeters = dScale * dScreeHeightInMeters;
+
+                        var dMapCenterLatInRadians = 0.0;//iM.MapFrame.ViewExtents.Center.Y * iM.MapFrame.Projection.GeographicInfo.Unit.Radians;
+                        var dMapCenterLatInDegrees = dMapCenterLatInRadians * dDegreesPerRadian;
+
+                        var dMapCenterLongInRadians = 0.0;//iM.MapFrame.ViewExtents.Center.X * iM.MapFrame.Projection.GeographicInfo.Unit.Radians;
+                        var dMapCenterLongInDegrees = dMapCenterLongInRadians * dDegreesPerRadian;
+
+                        double dMapLatInDegrees = 0.0; double dMapLatInDegrees_Temp = 0.0;
+                        double dMapLongInDegrees = 0.0; double dMapLongInDegrees_Temp = 0.0;
+
+                        DecimalDegreesPointsFromMetersAndAngle(dMapHeightInMeters / 1000.0, 0, dMapCenterLongInDegrees, 0, out dMapLongInDegrees_Temp, out dMapLatInDegrees);
+                        DecimalDegreesPointsFromMetersAndAngle(dMapWidthInMeters / 1000.0, 90, 0, dMapCenterLatInDegrees, out dMapLongInDegrees, out dMapLatInDegrees_Temp);
+
+                        double dMapWidthInRadians = Math.Abs(dMapLongInDegrees) / dDegreesPerRadian;
+                        double dMapHeightInRadians = Math.Abs(dMapLatInDegrees) / dDegreesPerRadian;
+
+                        dWidth = dMapWidthInRadians / Projection.GeographicInfo.Unit.Radians;
+                        dHeight = dMapHeightInRadians / Projection.GeographicInfo.Unit.Radians;
+
+                    }
+                    else
+                    {
+
+                        dWidth = (dScale * dScreenWidthInMeters) / Projection.Unit.Meters;
+                        dHeight = (dScale * dScreeHeightInMeters) / Projection.Unit.Meters;
+                    }
+                }
+            }
+            catch (Exception)
+            { }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private double MetersFromDecimalDegreesPoints(double dDegX1, double dDegY1, double dDegX2, double dDegY2)
+        {
+            double dValue = 0.0;
+
+            try
+            {
+                double dRadius = 6378007;  // radius of Earth in meters
+                double dCircumference = dRadius * 2 * Math.PI;
+                double dMetersPerLatDD = 111113.519;
+                double dDeltaXdd = 0.0;
+                double dDeltaYdd = 0.0;
+                double dDeltaXmeters = 0.0;
+                double dDeltaYmeters = 0.0;
+                double dMetersPerLongDD = 0.0;
+                double dCenterY = 0.0;
+
+                dDeltaXdd = Math.Abs(dDegX1 - dDegX2);
+                dDeltaYdd = Math.Abs(dDegY1 - dDegY2);
+                dCenterY = (dDegY1 + dDegY2) / 2.0;
+                dMetersPerLongDD = (Math.Cos(dCenterY * (Math.PI / 180.0)) * dCircumference) / 360.0;
+                dDeltaXmeters = dMetersPerLongDD * dDeltaXdd;
+                dDeltaYmeters = dMetersPerLatDD * dDeltaYdd;
+
+                dValue = Math.Sqrt(Math.Pow(dDeltaXmeters, 2.0) + Math.Pow(dDeltaYmeters, 2.0));
+            }
+            catch (Exception)
+            { }
+
+            return dValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void DecimalDegreesPointsFromMetersAndAngle(double dDistance_km, double dAngle_deg, double dDegX_Start, double dDegY_Start, out double dDegX, out double dDegY)
+        {
+            dDegX = 0.0;
+            dDegY = 0.0;
+
+            try
+            {
+                double dRadius = 6378.007;  // radius of Earth in meters
+                double dAngle_Rad = dAngle_deg * (Math.PI / 180.0);
+                double dRadX_Start = dDegX_Start * (Math.PI / 180.0);
+                double dRadY_Start = dDegY_Start * (Math.PI / 180.0);
+
+                double lat2 = Math.Asin(Math.Sin(dRadY_Start) * Math.Cos(dDistance_km / dRadius) + Math.Cos(dRadY_Start) * Math.Sin(dDistance_km / dRadius) * Math.Cos(dAngle_Rad));
+
+                double lon2 = dRadX_Start + Math.Atan2(Math.Sin(dAngle_Rad) * Math.Sin(dDistance_km / dRadius) * Math.Cos(dRadY_Start), Math.Cos(dDistance_km / dRadius) - Math.Sin(dRadY_Start) * Math.Sin(lat2));
+
+                lon2 = (lon2 + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+
+                dDegX = lon2 * (180.0 / Math.PI);
+                dDegY = lat2 * (180.0 / Math.PI);
+            }
+            catch (Exception)
+            { }
+
+        }
+        //Fin CGX
+    }
+
+    internal class LimitedStack<T>
+    {
+        public readonly int Limit;
+        private readonly List<T> _stack;
+
+        public LimitedStack(int limit = 32)
+        {
+            Limit = limit;
+            _stack = new List<T>(limit);
+        }
+
+        public void Push(T item)
+        {
+            if (_stack.Count == Limit) _stack.RemoveAt(0);
+            _stack.Add(item);
+        }
+
+        public T Peek()
+        {
+            if (_stack.Count == 0) return default(T);
+            return _stack[_stack.Count - 1];
+        }
+
+        public T Pop()
+        {
+            var item = _stack[_stack.Count - 1];
+            _stack.RemoveAt(_stack.Count - 1);
+            return item;
+        }
+
+        public int Count
+        {
+            get { return _stack.Count; }
+        }
     }
 }

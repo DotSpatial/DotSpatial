@@ -20,9 +20,6 @@
 
 namespace DotSpatial.Symbology.Forms
 {
-    /// <summary>
-    ///
-    /// </summary>
     public interface IErrorCheck
     {
         #region Properties

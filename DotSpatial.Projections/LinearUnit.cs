@@ -90,8 +90,8 @@ namespace DotSpatial.Projections
         public void ParseEsriString(string esriString)
         {
             if (esriString.Contains("UNIT") == false) return;
-            int iStart = esriString.IndexOf("UNIT") + 5;
-            int iEnd = esriString.IndexOf("]", iStart);
+            int iStart = esriString.IndexOf("UNIT", StringComparison.Ordinal) + 5;
+            int iEnd = esriString.IndexOf("]", iStart, StringComparison.Ordinal);
             if (iEnd < iStart) return;
             string extracted = esriString.Substring(iStart, iEnd - iStart);
             string[] terms = extracted.Split(',');
@@ -110,61 +110,68 @@ namespace DotSpatial.Projections
         /// <param name="uomCode"></param>
         public void ReadCode(int uomCode)
         {
+            var setUom = (Action<string, double>)
+                ((name, meters) =>
+                {
+                    _name = name;
+                    _meters = meters;
+                });
+
             switch (uomCode)
             {
-                case 9001: _name = "Metre"; _meters = 1; break;
-                case 9002: _name = "Foot"; _meters = 0.3048; break;
-                case 9003: _name = "Us Survey Foot"; _meters = 0.304800609601219; break;
-                case 9005: _name = "Clarke'S Foot"; _meters = 0.3047972654; break;
-                case 9014: _name = "Fathom"; _meters = 1.8288; break;
-                case 9030: _name = "Nautical Mile"; _meters = 1852; break;
-                case 9031: _name = "German Legal Metre"; _meters = 1.0000135965; break;
-                case 9033: _name = "Us Survey Chain"; _meters = 20.1168402336805; break;
-                case 9034: _name = "Us Survey Link"; _meters = 0.201168402336805; break;
-                case 9035: _name = "Us Survey Mile"; _meters = 1609.34721869444; break;
-                case 9036: _name = "Kilometre"; _meters = 1000; break;
-                case 9037: _name = "Clarke'S Yard"; _meters = 0.9143917962; break;
-                case 9038: _name = "Clarke'S Chain"; _meters = 20.1166195164; break;
-                case 9039: _name = "Clarke'S Link"; _meters = 0.201166195164; break;
-                case 9040: _name = "British Yard (Sears 1922)"; _meters = 0.914398414616029; break;
-                case 9041: _name = "British Foot (Sears 1922)"; _meters = 0.304799471538676; break;
-                case 9042: _name = "British Chain (Sears 1922)"; _meters = 20.1167651215526; break;
-                case 9043: _name = "British Link (Sears 1922)"; _meters = 0.201167651215526; break;
-                case 9050: _name = "British Yard (Benoit 1895 A)"; _meters = 0.9143992; break;
-                case 9051: _name = "British Foot (Benoit 1895 A)"; _meters = 0.304799733333333; break;
-                case 9052: _name = "British Chain (Benoit 1895 A)"; _meters = 20.1167824; break;
-                case 9053: _name = "British Link (Benoit 1895 A)"; _meters = 0.201167824; break;
-                case 9060: _name = "British Yard (Benoit 1895 B)"; _meters = 0.914399204289812; break;
-                case 9061: _name = "British Foot (Benoit 1895 B)"; _meters = 0.304799734763271; break;
-                case 9062: _name = "British Chain (Benoit 1895 B)"; _meters = 20.1167824943759; break;
-                case 9063: _name = "British Link (Benoit 1895 B)"; _meters = 0.201167824943759; break;
-                case 9070: _name = "British Foot (1865)"; _meters = 0.304800833333333; break;
-                case 9080: _name = "Indian Foot"; _meters = 0.304799510248147; break;
-                case 9081: _name = "Indian Foot (1937)"; _meters = 0.30479841; break;
-                case 9082: _name = "Indian Foot (1962)"; _meters = 0.3047996; break;
-                case 9083: _name = "Indian Foot (1975)"; _meters = 0.3047995; break;
-                case 9084: _name = "Indian Yard"; _meters = 0.914398530744441; break;
-                case 9085: _name = "Indian Yard (1937)"; _meters = 0.91439523; break;
-                case 9086: _name = "Indian Yard (1962)"; _meters = 0.9143988; break;
-                case 9087: _name = "Indian Yard (1975)"; _meters = 0.9143985; break;
-                case 9093: _name = "Statute Mile"; _meters = 1609.344; break;
-                case 9094: _name = "Gold Coast Foot"; _meters = 0.304799710181509; break;
-                case 9095: _name = "British Foot (1936)"; _meters = 0.3048007491; break;
-                case 9096: _name = "Yard"; _meters = 0.9144; break;
-                case 9097: _name = "Chain"; _meters = 20.1168; break;
-                case 9098: _name = "Link"; _meters = 0.201168; break;
-                case 9099: _name = "British Yard (Sears 1922 Truncated)"; _meters = 0.914398; break;
-                case 9204: _name = "Bin Width 330 Us Survey Foot"; _meters = 100.584201168402; break;
-                case 9205: _name = "Bin Width 165 Us Survey Foot"; _meters = 50.2921005842012; break;
-                case 9206: _name = "Bin Width 82.5 Us Survey Foot"; _meters = 25.1460502921006; break;
-                case 9207: _name = "Bin Width 37.5 Metre"; _meters = 37.5; break;
-                case 9208: _name = "Bin Width 25 Metre"; _meters = 25; break;
-                case 9209: _name = "Bin Width 12.5 Metre"; _meters = 12.5; break;
-                case 9210: _name = "Bin Width 6.25 Metre"; _meters = 6.25; break;
-                case 9211: _name = "Bin Width 3.125 Metre"; _meters = 3.125; break;
-                case 9300: _name = "British Foot (Sears 1922 Truncated)"; _meters = 0.304799333333333; break;
-                case 9301: _name = "British Chain (Sears 1922 Truncated)"; _meters = 20.116756; break;
-                case 9302: _name = "British Link (Sears 1922 Truncated)"; _meters = 0.20116756; break;
+                case 9001: setUom("Metre", 1); break;
+                case 9002: setUom("Foot", 0.3048); break;
+                case 9003: setUom("Us Survey Foot", 0.304800609601219); break;
+                case 9005: setUom("Clarke'S Foot", 0.3047972654); break;
+                case 9014: setUom("Fathom", 1.8288); break;
+                case 9030: setUom("Nautical Mile", 1852); break;
+                case 9031: setUom("German Legal Metre", 1.0000135965); break;
+                case 9033: setUom("Us Survey Chain", 20.1168402336805); break;
+                case 9034: setUom("Us Survey Link", 0.201168402336805); break;
+                case 9035: setUom("Us Survey Mile", 1609.34721869444); break;
+                case 9036: setUom("Kilometre", 1000); break;
+                case 9037: setUom("Clarke'S Yard", 0.9143917962); break;
+                case 9038: setUom("Clarke'S Chain", 20.1166195164); break;
+                case 9039: setUom("Clarke'S Link", 0.201166195164); break;
+                case 9040: setUom("British Yard (Sears 1922)", 0.914398414616029); break;
+                case 9041: setUom("British Foot (Sears 1922)", 0.304799471538676); break;
+                case 9042: setUom("British Chain (Sears 1922)", 20.1167651215526); break;
+                case 9043: setUom("British Link (Sears 1922)", 0.201167651215526); break;
+                case 9050: setUom("British Yard (Benoit 1895 A)", 0.9143992); break;
+                case 9051: setUom("British Foot (Benoit 1895 A)", 0.304799733333333); break;
+                case 9052: setUom("British Chain (Benoit 1895 A)", 20.1167824); break;
+                case 9053: setUom("British Link (Benoit 1895 A)", 0.201167824); break;
+                case 9060: setUom("British Yard (Benoit 1895 B)", 0.914399204289812); break;
+                case 9061: setUom("British Foot (Benoit 1895 B)", 0.304799734763271); break;
+                case 9062: setUom("British Chain (Benoit 1895 B)", 20.1167824943759); break;
+                case 9063: setUom("British Link (Benoit 1895 B)", 0.201167824943759); break;
+                case 9070: setUom("British Foot (1865)", 0.304800833333333); break;
+                case 9080: setUom("Indian Foot", 0.304799510248147); break;
+                case 9081: setUom("Indian Foot (1937)", 0.30479841); break;
+                case 9082: setUom("Indian Foot (1962)", 0.3047996); break;
+                case 9083: setUom("Indian Foot (1975)", 0.3047995); break;
+                case 9084: setUom("Indian Yard", 0.914398530744441); break;
+                case 9085: setUom("Indian Yard (1937)", 0.91439523); break;
+                case 9086: setUom("Indian Yard (1962)", 0.9143988); break;
+                case 9087: setUom("Indian Yard (1975)", 0.9143985); break;
+                case 9093: setUom("Statute Mile", 1609.344); break;
+                case 9094: setUom("Gold Coast Foot", 0.304799710181509); break;
+                case 9095: setUom("British Foot (1936)", 0.3048007491); break;
+                case 9096: setUom("Yard", 0.9144); break;
+                case 9097: setUom("Chain", 20.1168); break;
+                case 9098: setUom("Link", 0.201168); break;
+                case 9099: setUom("British Yard (Sears 1922 Truncated)", 0.914398); break;
+                case 9204: setUom("Bin Width 330 Us Survey Foot", 100.584201168402); break;
+                case 9205: setUom("Bin Width 165 Us Survey Foot", 50.2921005842012); break;
+                case 9206: setUom("Bin Width 82.5 Us Survey Foot", 25.1460502921006); break;
+                case 9207: setUom("Bin Width 37.5 Metre", 37.5); break;
+                case 9208: setUom("Bin Width 25 Metre", 25); break;
+                case 9209: setUom("Bin Width 12.5 Metre", 12.5); break;
+                case 9210: setUom("Bin Width 6.25 Metre", 6.25); break;
+                case 9211: setUom("Bin Width 3.125 Metre", 3.125); break;
+                case 9300: setUom("British Foot (Sears 1922 Truncated)", 0.304799333333333); break;
+                case 9301: setUom("British Chain (Sears 1922 Truncated)", 20.116756); break;
+                case 9302: setUom("British Link (Sears 1922 Truncated)", 0.20116756); break;
             }
         }
     }

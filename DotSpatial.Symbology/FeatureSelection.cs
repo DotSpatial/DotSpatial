@@ -28,9 +28,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FilterCollection
-    /// </summary>
     public class FeatureSelection : Changeable, IFeatureSelection
     {
         #region Events
@@ -144,9 +141,11 @@ namespace DotSpatial.Symbology
             bool added = false;
             SuspendChanges();
             affectedArea = new Envelope();
-            Stopwatch sw = new Stopwatch();
-            Stopwatch total = new Stopwatch();
+
+#if DEBUG            
+            var total = new Stopwatch();
             total.Start();
+#endif
             foreach (IFeature f in FeatureList)
             {
                 bool doAdd = false;
@@ -237,12 +236,21 @@ namespace DotSpatial.Symbology
                     added = true;
                 }
             }
+
+#if DEBUG
+            var sw = new Stopwatch();
             sw.Start();
+#endif
+
             ResumeChanges();
+
+#if DEBUG
             sw.Stop();
             total.Stop();
             Debug.WriteLine("Geometry Intersection Time: " + sw.ElapsedMilliseconds);
             Debug.WriteLine("Total Intersection Time: " + total.ElapsedMilliseconds);
+#endif
+
             return added;
         }
 
@@ -801,10 +809,10 @@ namespace DotSpatial.Symbology
         #region IFeatureSelection Members
 
         /// <inheritdoc />
-        public DataTable GetAttributes(int startIndex, int numRows)
+        public IDataTable GetAttributes(int startIndex, int numRows) // CGX AERO GLZ
         {
             int count = 0;
-            DataTable dt = new DataTable();
+            IDataTable dt = new DS_DataTable(); // CGX AERO GLZ
             dt.Columns.AddRange(_featureSet.GetColumns());
             foreach (IFeature feature in Filter)
             {
@@ -819,10 +827,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc/>
-        public DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames) // CGX AERO GLZ
         {
             int count = 0;
-            DataTable dt = new DataTable();
+            IDataTable dt = new DS_DataTable(); // CGX AERO GLZ
             List<DataColumn> dc = new List<DataColumn>();
             DataColumn[] original = _featureSet.GetColumns();
             foreach (DataColumn c in original)
@@ -839,7 +847,7 @@ namespace DotSpatial.Symbology
                 {
                     foreach (string name in fieldNames)
                     {
-                        DataRow dr = dt.NewRow();
+                        IDataRow dr = dt.NewRow(); // CGX AERO GLZ
                         dr[name] = feature.DataRow[name];
                         dt.Rows.Add(dr);
                     }
@@ -851,11 +859,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void SetAttributes(int startIndex, DataTable values)
+        public void SetAttributes(int startIndex, IDataTable values) // CGX AERO GLZ
         {
             int index = startIndex;
             List<IFeature> features = Filter.ToList();
-            foreach (DataRow row in values.Rows)
+            foreach (IDataRow row in values.Rows) // CGX AERO GLZ
             {
                 features[index].DataRow.ItemArray = row.ItemArray;
                 index++;
@@ -895,7 +903,7 @@ namespace DotSpatial.Symbology
         /// in any way, as that row is not associated with a featureset here.
         /// </summary>
         /// <param name="values"></param>
-        public void AddRow(DataRow values)
+        public void AddRow(IDataRow values) // CGX AERO GLZ
         {
             _featureSet.AddRow(values);
         }
@@ -908,7 +916,7 @@ namespace DotSpatial.Symbology
             {
                 if (count == index)
                 {
-                    DataColumnCollection dc = _featureSet.DataTable.Columns;
+                    IDataColumnCollection dc = _featureSet.DataTable.Columns; // CGX AERO GLZ
                     foreach (DataColumn column in dc)
                     {
                         feature.DataRow[column] = values[column.ColumnName];
@@ -920,14 +928,14 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void Edit(int index, DataRow values)
+        public void Edit(int index, IDataRow values) // CGX AERO GLZ
         {
             int count = 0;
             foreach (IFeature feature in Filter)
             {
                 if (count == index)
                 {
-                    DataColumnCollection dc = _featureSet.DataTable.Columns;
+                    IDataColumnCollection dc = _featureSet.DataTable.Columns; // CGX AERO GLZ
                     foreach (DataColumn column in dc)
                     {
                         feature.DataRow[column] = values[column.ColumnName];
@@ -946,8 +954,8 @@ namespace DotSpatial.Symbology
             {
                 string s = expressions[i];
                 int count = 0;
-                DataRow[] rows = _featureSet.DataTable.Select(s);
-                foreach (DataRow row in rows)
+                IDataRow[] rows = _featureSet.DataTable.Select(s);// CGX AERO GLZ
+                foreach (IDataRow row in rows) // CGX AERO GLZ
                 {
                     if (_filter.DrawnStates[_featureSet.FeatureLookup[row]].IsSelected == Selected) count++;
                 }

@@ -19,6 +19,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Drawing;
 
 namespace DotSpatial.Symbology
@@ -26,6 +27,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// A set of PaintEventArgs that can be used before a drawing function in order to cancel an event.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class DrawVerifyArgs : DrawArgs
     {
         private bool _cancel;

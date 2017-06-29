@@ -42,7 +42,7 @@ namespace DotSpatial.Data
 
         #region Private Variables
 
-        private readonly Random _rnd;
+        private static readonly Random _rnd = new Random();
         private int _decimalCount; // when the number is treated like a string, this is the number of recorded values after the decimal, plus one digit in front of the decimal.
         private int _length; // when the number is treated like a string, this is the total length, including minus signs and decimals.
 
@@ -66,8 +66,6 @@ namespace DotSpatial.Data
             {
                 _decimalCount = _length - 3;
             }
-            _rnd = new Random();
-
             UpdateDecimalFormatString();
         }
 
@@ -203,14 +201,7 @@ namespace DotSpatial.Data
         /// <returns>A string version of the specified number</returns>
         public string ToString(double number)
         {
-            StringBuilder sb = new StringBuilder();
-            string str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
-            for (int i = 0; i < _length - str.Length; i++)
-            {
-                sb.Append(' ');
-            }
-            sb.Append(str);
-            return sb.ToString();
+            return ToStringInternal(number);
         }
 
         /// <summary>
@@ -220,95 +211,7 @@ namespace DotSpatial.Data
         /// <returns>A string version of the specified number</returns>
         public string ToString(decimal number)
         {
-            StringBuilder sb = new StringBuilder();
-            string str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
-            for (int i = 0; i < _length - str.Length; i++)
-            {
-                sb.Append(' ');
-            }
-            sb.Append(str);
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
-        /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
-        public char[] ToChar(double number)
-        {
-            char[] c = new char[_length];
-            string str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
-            if (str.Length >= _length)
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    c[i] = str[i]; // keep the left characters, and chop off lesser characters
-                }
-            }
-            else
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    int ci = i - (_length - str.Length);
-                    c[i] = ci < 0 ? ' ' : str[ci];
-                }
-            }
-            return c;
-        }
-
-        /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
-        /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
-        public char[] ToChar(float number)
-        {
-            char[] c = new char[_length];
-            string str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
-            if (str.Length >= _length)
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    c[i] = str[i]; // keep the left characters, and chop off lesser characters
-                }
-            }
-            else
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    int ci = i - (_length - str.Length);
-                    c[i] = ci < 0 ? ' ' : str[ci];
-                }
-            }
-            return c;
-        }
-
-        /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
-        /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
-        public char[] ToChar(decimal number)
-        {
-            char[] c = new char[_length];
-            string str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
-            if (str.Length >= _length)
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    c[i] = str[i]; // keep the left characters, and chop off lesser characters
-                }
-            }
-            else
-            {
-                for (int i = 0; i < _length; i++)
-                {
-                    int ci = i - (_length - str.Length);
-                    c[i] = ci < 0 ? ' ' : str[ci];
-                }
-            }
-            return c;
+            return ToStringInternal(number);
         }
 
         /// <summary>
@@ -318,9 +221,75 @@ namespace DotSpatial.Data
         /// <returns>A string version of the specified number</returns>
         public string ToString(float number)
         {
-            return ToString((double)number);
+            return ToStringInternal(number);
         }
 
+
+        /// <summary>
+        /// Converts the specified decimal value to a string that can be used for the number field
+        /// </summary>
+        /// <param name="number">The decimal value to convert to a string</param>
+        /// <returns>A string version of the specified number</returns>
+        public char[] ToChar(double number)
+        {
+            return ToCharInternal(number);
+        }
+
+        /// <summary>
+        /// Converts the specified decimal value to a string that can be used for the number field
+        /// </summary>
+        /// <param name="number">The decimal value to convert to a string</param>
+        /// <returns>A string version of the specified number</returns>
+        public char[] ToChar(float number)
+        {
+            return ToCharInternal(number);
+        }
+
+        /// <summary>
+        /// Converts the specified decimal value to a string that can be used for the number field
+        /// </summary>
+        /// <param name="number">The decimal value to convert to a string</param>
+        /// <returns>A string version of the specified number</returns>
+        public char[] ToChar(decimal number)
+        {
+            return ToCharInternal(number);
+        }
+
+        private char[] ToCharInternal(object number)
+        {
+            char[] c = new char[_length];
+            string str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
+            if (str.Length >= _length)
+            {
+                for (int i = 0; i < _length; i++)
+                {
+                    c[i] = str[i]; // keep the left characters, and chop off lesser characters
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _length; i++)
+                {
+                    int ci = i - (_length - str.Length);
+                    c[i] = ci < 0 ? ' ' : str[ci];
+                }
+            }
+            return c;
+        }
+
+        private string ToStringInternal(object number)
+        {
+            var sb = new StringBuilder();
+            var str = String.Format(NumberConversionFormatProvider, DecimalFormatString, number);
+            for (var i = 0; i < _length - str.Length; i++)
+            {
+                sb.Append(' ');
+            }
+            sb.Append(str);
+            return sb.ToString();
+        }
+
+       
         /// <summary>
         /// Compute and update the DecimalFormatString from the precision specifier
         /// </summary>

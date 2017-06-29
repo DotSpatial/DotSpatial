@@ -22,11 +22,12 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using System.Linq;
 
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A MapFunction that can zoom the map using the scroll wheel.
+    /// A MapFunction that zooms the map by scrolling the scroll wheel and pans the map by pressing the mouse wheel and moving the mouse. 
     /// </summary>
     public class MapFunctionZoom : MapFunction
     {
@@ -38,6 +39,10 @@ namespace DotSpatial.Controls
         private double _sensitivity;
         private int _timerInterval;
         private Timer _zoomTimer;
+        private bool _isDragging;
+        private bool _preventDrag;
+        private Rectangle _source;
+        private Point _dragStart;
 
         #endregion
 
@@ -68,10 +73,7 @@ namespace DotSpatial.Controls
         private void ZoomTimerTick(object sender, EventArgs e)
         {
             _zoomTimer.Stop();
-            if (_mapFrame == null)
-            {
-                return;
-            }
+            if (_mapFrame == null) return;
             _client = Rectangle.Empty;
             _mapFrame.ResetExtents();
             Map.IsBusy = false;
@@ -131,23 +133,15 @@ namespace DotSpatial.Controls
         protected override void OnMouseWheel(GeoMouseArgs e) //Fix this
         {
             _zoomTimer.Stop(); // if the timer was already started, stop it.
-
-            Extent MaxExtent = e.Map.GetMaxExtent();
-         
-            if ((e.Map.IsZoomedToMaxExtent == true) && (_direction * e.Delta < 0))
-            {}
-            else
+            if (!(e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0)))
             {
                 e.Map.IsZoomedToMaxExtent = false;
-                Rectangle r = e.Map.MapFrame.View;
+                /*Rectangle r = e.Map.MapFrame.View;
 
                 // For multiple zoom steps before redrawing, we actually
                 // want the x coordinate relative to the screen, not
                 // the x coordinate relative to the previously modified view.
-                if (_client == Rectangle.Empty)
-                {
-                    _client = r;
-                }
+                if (_client == Rectangle.Empty) _client = r;
                 int cw = _client.Width;
                 int ch = _client.Height;
 
@@ -170,15 +164,47 @@ namespace DotSpatial.Controls
                     r.Inflate(Convert.ToInt32(w / _sensitivity), Convert.ToInt32(h / _sensitivity));
                     r.X += Convert.ToInt32(w / _sensitivity - (e.X * w / (outFactor * cw)));
                     r.Y += Convert.ToInt32(h / _sensitivity - (e.Y * h / (outFactor * ch)));
+                } */
+
+                int[] array = new int[83]{500000000,400000000,300000000,250000000,200000000,150000000,125000000,100000000,80000000,60000000,40000000,30000000,25000000,20000000,15000000,12500000,10000000,
+                    8000000,6000000,5000000,4000000,3000000,2500000,2000000,1500000,1250000,1000000,800000,700000,600000,500000,400000,300000,250000,200000,150000,125000,100000,80000,70000,60000,50000,
+                    40000,30000,25000,20000,15000,12500,10000,8000,6000,5000,4000,3000,2500,2000,1500,1250,1000,800,600,500,400,300,250,200,150,125,100,80,60,50,40,30,25,20,15,10,5,4,3,2,1};
+                int iTemp = Convert.ToInt32(e.Map.MapFrame.CurrentScale);
+                var closest = array.Aggregate((current, next) => Math.Abs((long)current - iTemp) < Math.Abs((long)next - iTemp) ? current : next);// array.OrderBy(v => Math.Abs((long)v - lTemp)).First();
+                int iTemp2 = Convert.ToInt32(closest);
+
+                if (_direction * e.Delta > 0)
+                {
+                    if (iTemp > 1)
+                    {
+                        while (iTemp2 >= iTemp)
+                        {
+                            array = array.Where(val => val != iTemp2).ToArray();
+                            closest = Convert.ToInt32(array.Aggregate((current, next) => Math.Abs((long)current - iTemp) < Math.Abs((long)next - iTemp) ? current : next));//  array.OrderBy(v => Math.Abs((long)v - lTemp)).First());
+                            iTemp2 = Convert.ToInt32(closest);
+                        }
+                    }
                 }
-                int mapHeight = e.Map.MapFrame.View.Height;
-                int mapWidth = e.Map.MapFrame.View.Width;
+                else
+                {
+                    if (iTemp > 1)
+                    {
+                        while (iTemp2 <= iTemp)
+                        {
+                            array = array.Where(val => val != iTemp2).ToArray();
+                            closest = Convert.ToInt32(array.Aggregate((current, next) => Math.Abs((long)current - iTemp) < Math.Abs((long)next - iTemp) ? current : next));//  array.OrderBy(v => Math.Abs((long)v - lTemp)).First());
+                            iTemp2 = Convert.ToInt32(closest);
+                        }
+                    }
+                }
+                e.Map.MapFrame.ComputeExtentFromScale(Convert.ToDouble(closest), e.Location);
+                // CGX END
 
-
-                e.Map.MapFrame.View = r;
+                /*e.Map.MapFrame.View = r;
                 e.Map.Invalidate();
                 _zoomTimer.Start();
-                _mapFrame = e.Map.MapFrame;
+                _mapFrame = e.Map.MapFrame;*/
+
                 if (!BusySet)
                 {
                     Map.IsBusy = true;
@@ -188,6 +214,63 @@ namespace DotSpatial.Controls
 
             }
 
+        }
+
+        /// <summary>
+        /// Handles the actions that the tool controls during the OnMouseDown event
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseDown(GeoMouseArgs e)
+        {
+            if (e.Button == MouseButtons.Middle && !_preventDrag)
+            {
+                _dragStart = e.Location;
+                _source = e.Map.MapFrame.View;
+            }
+            base.OnMouseDown(e);
+        }
+
+        /// <summary>
+        /// Handles the mouse move event, changing the viewing extents to match the movements
+        /// of the mouse if the left mouse button is down.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseMove(GeoMouseArgs e)
+        {
+            if (_dragStart != Point.Empty && !_preventDrag)
+            {
+                if (!BusySet)
+                {
+                    Map.IsBusy = true;
+                    BusySet = true;
+                }
+
+                _isDragging = true;
+                Point diff = new Point { X = _dragStart.X - e.X, Y = _dragStart.Y - e.Y };
+                e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width, _source.Height);
+                Map.Invalidate();
+            }
+            base.OnMouseMove(e);
+        }
+
+        /// <summary>
+        /// Mouse Up
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseUp(GeoMouseArgs e)
+        {
+            if (e.Button == MouseButtons.Middle && _isDragging)
+            {
+                _isDragging = false;
+                _preventDrag = true;
+                e.Map.MapFrame.ResetExtents();
+                _preventDrag = false;
+                Map.IsBusy = false;
+                BusySet = false;
+            }
+            _dragStart = Point.Empty;
+
+            base.OnMouseUp(e);
         }
 
         #endregion

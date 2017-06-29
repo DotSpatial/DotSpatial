@@ -271,7 +271,7 @@ namespace DotSpatial.Symbology.Forms
                 _symbol.Code = SelectedChar;
                 _editorService.CloseDropDown();
             }
-            if (PopupClicked != null) PopupClicked(this, new EventArgs());
+            if (PopupClicked != null) PopupClicked(this, EventArgs.Empty);
         }
 
         /// <summary>

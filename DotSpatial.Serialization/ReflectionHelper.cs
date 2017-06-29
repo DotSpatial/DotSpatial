@@ -55,7 +55,8 @@ namespace DotSpatial.Serialization
 
             var dlls = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories);
 
-            foreach (string assemblyPath in dlls)
+            // CGX
+            /*foreach (string assemblyPath in dlls)
             {
                 Assembly assembly;
 
@@ -91,7 +92,7 @@ namespace DotSpatial.Serialization
                 {
                     continue;
                 }
-            }
+            }*/
 
             return result;
         }

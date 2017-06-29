@@ -20,14 +20,9 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FeatureLayerSelectionEventArgs
-    /// </summary>
     public class FeatureLayerSelectionEventArgs : FeatureLayerEventArgs
     {
         #region Private Variables
-
-        private ISelection _selection;
 
         #endregion
 
@@ -39,7 +34,7 @@ namespace DotSpatial.Symbology
         public FeatureLayerSelectionEventArgs(IFeatureLayer fl, ISelection selection)
             : base(fl)
         {
-            _selection = selection;
+            Selection = selection;
         }
 
         #endregion
@@ -49,11 +44,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the list of changed features
         /// </summary>
-        public ISelection Selection
-        {
-            get { return _selection; }
-            protected set { _selection = value; }
-        }
+        public ISelection Selection { get; protected set; }
 
         #endregion
     }

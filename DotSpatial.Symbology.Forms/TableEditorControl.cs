@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -39,7 +40,7 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// A Table editor user control. This may be used for displaying attributes of a feature layer.
     /// </summary>
-    public class TableEditorControl : UserControl
+    public partial class TableEditorControl : UserControl
     {
         #region Events
 
@@ -65,445 +66,55 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        #region Private Variables
-
-        private readonly SQLExpressionDialog _queryDialog = new SQLExpressionDialog();
+        #region Fields
+        
         private IFeatureLayer _featureLayer;
         private string _fidField;
         private bool _ignoreSelectionChanged;
         private bool _ignoreTableSelectionChanged;
         private bool _isEditable = true;
-        private bool _loaded;
         private List<int> _selectedRows;
-        private DataTable _selection;
         private List<int> _selectionIndices;
         private bool _showOnlySelectedRows;
-        private bool _virtualHooked;
-
-        #region Windows Form Designer generated code
-
         private AttributeCache _attributeCache;
-        private ToolStripMenuItem addFieldToolStripMenuItem;
-        private IContainer components = null;
-        private ToolStripMenuItem copyShapeIDsToSpecifiedFieldToolStripMenuItem;
-        private DataGridView dataGridView1;
-        private ToolStripMenuItem enableEditingToolStripMenuItem;
-        private ToolStripMenuItem exportSelectedFeaturesToolStripMenuItem;
-        private ToolStripMenuItem fieldCalculatorToolToolStripMenuItem;
-        private ToolStripMenuItem findToolStripMenuItem;
-        private ToolStripMenuItem flashSelectedShapesToolStripMenuItem;
-        private ToolStripMenuItem generateOrUpdateMWShapeIDFieldsToolStripMenuItem;
-        private ToolStripMenuItem importFieldDefinitionsFromDBFToolStripMenuItem;
-        private ToolStripMenuItem invertSelectionToolStripMenuItem;
-        private Label lblFilePath;
-        private Label lblSelectedNumber;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem mnuEdit;
-        private ToolStripMenuItem mnuSelection;
-        private ToolStripMenuItem mnuTools;
-        private ToolStripMenuItem mnuView;
-        private Panel panel1;
-        private Panel panel2;
-        private ProgressBar progressBar;
-        private ToolStripMenuItem queryToolStripMenuItem;
-        private ToolStripMenuItem removeFieldToolStripMenuItem;
-        private ToolStripMenuItem renameFieldToolStripMenuItem;
-        private ToolStripMenuItem replaceToolStripMenuItem;
-        private ToolStripMenuItem saveEditsToolStripMenuItem;
-        private ToolStripMenuItem selectAllToolStripMenuItem;
-        private ToolStripMenuItem selectNoneToolStripMenuItem;
-        private ToolStripMenuItem showOnlySelectedShapesToolStripMenuItem;
-        private ToolStrip toolStrip;
-        private ToolStripButton tsbtnFieldCalculator;
-        private ToolStripButton tsbtnImportFieldsFromDBF;
-        private ToolStripButton tsbtnQuery;
-        private ToolStripButton tsbtnRefresh;
-        private ToolStripButton tsbtnRefreshMap;
-        private ToolStripButton tsbtnSaveEdits;
-        private ToolStripButton tsbtnShowSelected;
-        private ToolStripButton tsbtnZoomToSelected;
-        private ToolStripMenuItem zoomToSelectedShapesToolStripMenuItem;
-        private ToolStripMenuItem zoomToShapeBeingEditedToolStripMenuItem;
 
         #endregion
 
-        #endregion
-
-        #region Windows Form Designer generated code
+        #region Constructors
 
         /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// Creates a new instance of the Table editor control without any data
         /// </summary>
-        private void InitializeComponent()
+        public TableEditorControl()
+            : this(null)
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableEditorControl));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.lblSelectedNumber = new System.Windows.Forms.Label();
-            this.lblFilePath = new System.Windows.Forms.Label();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.addFieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeFieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.renameFieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.enableEditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveEditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
-            this.showOnlySelectedShapesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomToSelectedShapesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomToShapeBeingEditedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.flashSelectedShapesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSelection = new System.Windows.Forms.ToolStripMenuItem();
-            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectNoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.invertSelectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportSelectedFeaturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
-            this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.replaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importFieldDefinitionsFromDBFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fieldCalculatorToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyShapeIDsToSpecifiedFieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.tsbtnSaveEdits = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnZoomToSelected = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnShowSelected = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnImportFieldsFromDBF = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnFieldCalculator = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnRefreshMap = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnRefresh = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnQuery = new System.Windows.Forms.ToolStripButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.toolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.SuspendLayout();
-            //
-            // panel1
-            //
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.progressBar);
-            this.panel1.Controls.Add(this.lblSelectedNumber);
-            this.panel1.Controls.Add(this.lblFilePath);
-            this.panel1.Name = "panel1";
-            //
-            // progressBar
-            //
-            resources.ApplyResources(this.progressBar, "progressBar");
-            this.progressBar.Name = "progressBar";
-            //
-            // lblSelectedNumber
-            //
-            resources.ApplyResources(this.lblSelectedNumber, "lblSelectedNumber");
-            this.lblSelectedNumber.Name = "lblSelectedNumber";
-            this.lblSelectedNumber.Click += new System.EventHandler(this.lblSelectedNumber_Click);
-            //
-            // lblFilePath
-            //
-            resources.ApplyResources(this.lblFilePath, "lblFilePath");
-            this.lblFilePath.Name = "lblFilePath";
-            //
-            // menuStrip1
-            //
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                        this.mnuEdit,
-                                                                                        this.mnuView,
-                                                                                        this.mnuSelection,
-                                                                                        this.mnuTools});
-            resources.ApplyResources(this.menuStrip1, "menuStrip1");
-            this.menuStrip1.Name = "menuStrip1";
-            //
-            // mnuEdit
-            //
-            this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                             this.addFieldToolStripMenuItem,
-                                                                                             this.removeFieldToolStripMenuItem,
-                                                                                             this.renameFieldToolStripMenuItem,
-                                                                                             this.enableEditingToolStripMenuItem,
-                                                                                             this.saveEditsToolStripMenuItem});
-            this.mnuEdit.Name = "mnuEdit";
-            resources.ApplyResources(this.mnuEdit, "mnuEdit");
-            //
-            // addFieldToolStripMenuItem
-            //
-            this.addFieldToolStripMenuItem.Name = "addFieldToolStripMenuItem";
-            resources.ApplyResources(this.addFieldToolStripMenuItem, "addFieldToolStripMenuItem");
-            this.addFieldToolStripMenuItem.Click += new System.EventHandler(this.addFieldToolStripMenuItem_Click);
-            //
-            // removeFieldToolStripMenuItem
-            //
-            this.removeFieldToolStripMenuItem.Name = "removeFieldToolStripMenuItem";
-            resources.ApplyResources(this.removeFieldToolStripMenuItem, "removeFieldToolStripMenuItem");
-            this.removeFieldToolStripMenuItem.Click += new System.EventHandler(this.removeFieldToolStripMenuItem_Click);
-            //
-            // renameFieldToolStripMenuItem
-            //
-            this.renameFieldToolStripMenuItem.Name = "renameFieldToolStripMenuItem";
-            resources.ApplyResources(this.renameFieldToolStripMenuItem, "renameFieldToolStripMenuItem");
-            this.renameFieldToolStripMenuItem.Click += new System.EventHandler(this.renameFieldToolStripMenuItem_Click);
-            //
-            // enableEditingToolStripMenuItem
-            //
-            this.enableEditingToolStripMenuItem.Checked = true;
-            this.enableEditingToolStripMenuItem.CheckOnClick = true;
-            this.enableEditingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableEditingToolStripMenuItem.Name = "enableEditingToolStripMenuItem";
-            resources.ApplyResources(this.enableEditingToolStripMenuItem, "enableEditingToolStripMenuItem");
-            //
-            // saveEditsToolStripMenuItem
-            //
-            this.saveEditsToolStripMenuItem.Name = "saveEditsToolStripMenuItem";
-            resources.ApplyResources(this.saveEditsToolStripMenuItem, "saveEditsToolStripMenuItem");
-            this.saveEditsToolStripMenuItem.Click += new System.EventHandler(this.saveEditsToolStripMenuItem_Click);
-            //
-            // mnuView
-            //
-            this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                             this.showOnlySelectedShapesToolStripMenuItem,
-                                                                                             this.zoomToSelectedShapesToolStripMenuItem,
-                                                                                             this.zoomToShapeBeingEditedToolStripMenuItem,
-                                                                                             this.flashSelectedShapesToolStripMenuItem});
-            this.mnuView.Name = "mnuView";
-            resources.ApplyResources(this.mnuView, "mnuView");
-            //
-            // showOnlySelectedShapesToolStripMenuItem
-            //
-            this.showOnlySelectedShapesToolStripMenuItem.CheckOnClick = true;
-            this.showOnlySelectedShapesToolStripMenuItem.Name = "showOnlySelectedShapesToolStripMenuItem";
-            resources.ApplyResources(this.showOnlySelectedShapesToolStripMenuItem, "showOnlySelectedShapesToolStripMenuItem");
-            this.showOnlySelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.showOnlySelectedShapesToolStripMenuItem_Click);
-            //
-            // zoomToSelectedShapesToolStripMenuItem
-            //
-            this.zoomToSelectedShapesToolStripMenuItem.Name = "zoomToSelectedShapesToolStripMenuItem";
-            resources.ApplyResources(this.zoomToSelectedShapesToolStripMenuItem, "zoomToSelectedShapesToolStripMenuItem");
-            this.zoomToSelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.zoomToSelectedShapesToolStripMenuItem_Click);
-            //
-            // zoomToShapeBeingEditedToolStripMenuItem
-            //
-            this.zoomToShapeBeingEditedToolStripMenuItem.Name = "zoomToShapeBeingEditedToolStripMenuItem";
-            resources.ApplyResources(this.zoomToShapeBeingEditedToolStripMenuItem, "zoomToShapeBeingEditedToolStripMenuItem");
-            this.zoomToShapeBeingEditedToolStripMenuItem.Click += new System.EventHandler(this.zoomToShapeBeingEditedToolStripMenuItem_Click);
-            //
-            // flashSelectedShapesToolStripMenuItem
-            //
-            resources.ApplyResources(this.flashSelectedShapesToolStripMenuItem, "flashSelectedShapesToolStripMenuItem");
-            this.flashSelectedShapesToolStripMenuItem.Name = "flashSelectedShapesToolStripMenuItem";
-            this.flashSelectedShapesToolStripMenuItem.Click += new System.EventHandler(this.flashSelectedShapesToolStripMenuItem_Click);
-            //
-            // mnuSelection
-            //
-            this.mnuSelection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                                  this.queryToolStripMenuItem,
-                                                                                                  this.selectAllToolStripMenuItem,
-                                                                                                  this.selectNoneToolStripMenuItem,
-                                                                                                  this.invertSelectionToolStripMenuItem,
-                                                                                                  this.exportSelectedFeaturesToolStripMenuItem});
-            this.mnuSelection.Name = "mnuSelection";
-            resources.ApplyResources(this.mnuSelection, "mnuSelection");
-            //
-            // queryToolStripMenuItem
-            //
-            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
-            resources.ApplyResources(this.queryToolStripMenuItem, "queryToolStripMenuItem");
-            this.queryToolStripMenuItem.Click += new System.EventHandler(this.queryToolStripMenuItem_Click);
-            //
-            // selectAllToolStripMenuItem
-            //
-            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            resources.ApplyResources(this.selectAllToolStripMenuItem, "selectAllToolStripMenuItem");
-            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
-            //
-            // selectNoneToolStripMenuItem
-            //
-            this.selectNoneToolStripMenuItem.Name = "selectNoneToolStripMenuItem";
-            resources.ApplyResources(this.selectNoneToolStripMenuItem, "selectNoneToolStripMenuItem");
-            this.selectNoneToolStripMenuItem.Click += new System.EventHandler(this.selectNoneToolStripMenuItem_Click);
-            //
-            // invertSelectionToolStripMenuItem
-            //
-            this.invertSelectionToolStripMenuItem.Name = "invertSelectionToolStripMenuItem";
-            resources.ApplyResources(this.invertSelectionToolStripMenuItem, "invertSelectionToolStripMenuItem");
-            this.invertSelectionToolStripMenuItem.Click += new System.EventHandler(this.invertSelectionToolStripMenuItem_Click);
-            //
-            // exportSelectedFeaturesToolStripMenuItem
-            //
-            this.exportSelectedFeaturesToolStripMenuItem.Name = "exportSelectedFeaturesToolStripMenuItem";
-            resources.ApplyResources(this.exportSelectedFeaturesToolStripMenuItem, "exportSelectedFeaturesToolStripMenuItem");
-            this.exportSelectedFeaturesToolStripMenuItem.Click += new System.EventHandler(this.exportSelectedFeaturesToolStripMenuItem_Click);
-            //
-            // mnuTools
-            //
-            this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                              this.findToolStripMenuItem,
-                                                                                              this.replaceToolStripMenuItem,
-                                                                                              this.importFieldDefinitionsFromDBFToolStripMenuItem,
-                                                                                              this.fieldCalculatorToolToolStripMenuItem,
-                                                                                              this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem,
-                                                                                              this.copyShapeIDsToSpecifiedFieldToolStripMenuItem});
-            this.mnuTools.Name = "mnuTools";
-            resources.ApplyResources(this.mnuTools, "mnuTools");
-            //
-            // findToolStripMenuItem
-            //
-            this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-            resources.ApplyResources(this.findToolStripMenuItem, "findToolStripMenuItem");
-            this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
-            //
-            // replaceToolStripMenuItem
-            //
-            this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
-            resources.ApplyResources(this.replaceToolStripMenuItem, "replaceToolStripMenuItem");
-            this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
-            //
-            // importFieldDefinitionsFromDBFToolStripMenuItem
-            //
-            this.importFieldDefinitionsFromDBFToolStripMenuItem.Name = "importFieldDefinitionsFromDBFToolStripMenuItem";
-            resources.ApplyResources(this.importFieldDefinitionsFromDBFToolStripMenuItem, "importFieldDefinitionsFromDBFToolStripMenuItem");
-            this.importFieldDefinitionsFromDBFToolStripMenuItem.Click += new System.EventHandler(this.importFieldDefinitionsFromDBFToolStripMenuItem_Click);
-            //
-            // fieldCalculatorToolToolStripMenuItem
-            //
-            this.fieldCalculatorToolToolStripMenuItem.Name = "fieldCalculatorToolToolStripMenuItem";
-            resources.ApplyResources(this.fieldCalculatorToolToolStripMenuItem, "fieldCalculatorToolToolStripMenuItem");
-            this.fieldCalculatorToolToolStripMenuItem.Click += new System.EventHandler(this.fieldCalculatorToolToolStripMenuItem_Click);
-            //
-            // generateOrUpdateMWShapeIDFieldsToolStripMenuItem
-            //
-            resources.ApplyResources(this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem, "generateOrUpdateMWShapeIDFieldsToolStripMenuItem");
-            this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem.Name = "generateOrUpdateMWShapeIDFieldsToolStripMenuItem";
-            this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem.Click += new System.EventHandler(this.generateOrUpdateMWShapeIDFieldsToolStripMenuItem_Click);
-            //
-            // copyShapeIDsToSpecifiedFieldToolStripMenuItem
-            //
-            this.copyShapeIDsToSpecifiedFieldToolStripMenuItem.Name = "copyShapeIDsToSpecifiedFieldToolStripMenuItem";
-            resources.ApplyResources(this.copyShapeIDsToSpecifiedFieldToolStripMenuItem, "copyShapeIDsToSpecifiedFieldToolStripMenuItem");
-            this.copyShapeIDsToSpecifiedFieldToolStripMenuItem.Click += new System.EventHandler(this.copyShapeIDsToSpecifiedFieldToolStripMenuItem_Click);
-            //
-            // panel2
-            //
-            this.panel2.Controls.Add(this.toolStrip);
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Name = "panel2";
-            //
-            // toolStrip
-            //
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                       this.tsbtnSaveEdits,
-                                                                                       this.tsbtnZoomToSelected,
-                                                                                       this.tsbtnShowSelected,
-                                                                                       this.tsbtnImportFieldsFromDBF,
-                                                                                       this.tsbtnFieldCalculator,
-                                                                                       this.tsbtnRefreshMap,
-                                                                                       this.tsbtnRefresh,
-                                                                                       this.tsbtnQuery});
-            resources.ApplyResources(this.toolStrip, "toolStrip");
-            this.toolStrip.Name = "toolStrip";
-            //
-            // tsbtnSaveEdits
-            //
-            this.tsbtnSaveEdits.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnSaveEdits.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.Disk;
-            resources.ApplyResources(this.tsbtnSaveEdits, "tsbtnSaveEdits");
-            this.tsbtnSaveEdits.Name = "tsbtnSaveEdits";
-            this.tsbtnSaveEdits.Click += new System.EventHandler(this.tsbtnSaveEdits_Click);
-            //
-            // tsbtnZoomToSelected
-            //
-            this.tsbtnZoomToSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnZoomToSelected.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.zoom;
-            resources.ApplyResources(this.tsbtnZoomToSelected, "tsbtnZoomToSelected");
-            this.tsbtnZoomToSelected.Name = "tsbtnZoomToSelected";
-            this.tsbtnZoomToSelected.Click += new System.EventHandler(this.tsbtnZoomToSelected_Click);
-            //
-            // tsbtnShowSelected
-            //
-            this.tsbtnShowSelected.CheckOnClick = true;
-            this.tsbtnShowSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnShowSelected.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.Table_edit;
-            resources.ApplyResources(this.tsbtnShowSelected, "tsbtnShowSelected");
-            this.tsbtnShowSelected.Name = "tsbtnShowSelected";
-            this.tsbtnShowSelected.Click += new System.EventHandler(this.tsbtnShowSelected_Click);
-            //
-            // tsbtnImportFieldsFromDBF
-            //
-            this.tsbtnImportFieldsFromDBF.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnImportFieldsFromDBF.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.down;
-            resources.ApplyResources(this.tsbtnImportFieldsFromDBF, "tsbtnImportFieldsFromDBF");
-            this.tsbtnImportFieldsFromDBF.Name = "tsbtnImportFieldsFromDBF";
-            this.tsbtnImportFieldsFromDBF.Click += new System.EventHandler(this.tsbtnImportFieldsFromDBF_Click);
-            //
-            // tsbtnFieldCalculator
-            //
-            this.tsbtnFieldCalculator.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnFieldCalculator.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.calculator;
-            resources.ApplyResources(this.tsbtnFieldCalculator, "tsbtnFieldCalculator");
-            this.tsbtnFieldCalculator.Name = "tsbtnFieldCalculator";
-            this.tsbtnFieldCalculator.Click += new System.EventHandler(this.tsbtnFieldCalculator_Click);
-            //
-            // tsbtnRefreshMap
-            //
-            this.tsbtnRefreshMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnRefreshMap.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.color_scheme;
-            resources.ApplyResources(this.tsbtnRefreshMap, "tsbtnRefreshMap");
-            this.tsbtnRefreshMap.Name = "tsbtnRefreshMap";
-            this.tsbtnRefreshMap.Click += new System.EventHandler(this.tsbtnRefreshMap_Click);
-            //
-            // tsbtnRefresh
-            //
-            this.tsbtnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnRefresh.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.refresh;
-            resources.ApplyResources(this.tsbtnRefresh, "tsbtnRefresh");
-            this.tsbtnRefresh.Name = "tsbtnRefresh";
-            this.tsbtnRefresh.Click += new System.EventHandler(this.tsbtnRefresh_Click);
-            //
-            // tsbtnQuery
-            //
-            this.tsbtnQuery.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnQuery.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.script;
-            resources.ApplyResources(this.tsbtnQuery, "tsbtnQuery");
-            this.tsbtnQuery.Name = "tsbtnQuery";
-            this.tsbtnQuery.Click += new System.EventHandler(this.tsbtnQuery_Click);
-            //
-            // dataGridView1
-            //
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            resources.ApplyResources(this.dataGridView1, "dataGridView1");
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
-            //
-            // TableEditorControl
-            //
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.panel1);
-            this.Name = "TableEditorControl";
-            resources.ApplyResources(this, "$this");
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.toolStrip.ResumeLayout(false);
-            this.toolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+           
         }
+
+        /// <summary>
+        /// Creates a new Table editor control for editing a feature layer's attribute values. This allows interaction
+        /// with the map. If a row is selected in the Table the corresponding row is selected in the map
+        /// </summary>
+        /// <param name="layer">The symbolizer on the map</param>
+        public TableEditorControl(IFeatureLayer layer)
+        {
+            InitializeComponent();
+
+            FeatureLayer = layer;
+            _selectedRows = new List<int>();
+            enableEditingToolStripMenuItem.CheckedChanged += EnableEditingToolStripMenuItemCheckedChanged;
+            RemoveUnusedButtonsFromToolstrip();
+
+            Disposed += delegate { FeatureLayer = null; };
+            Load += delegate
+            {
+                SetSelectionFromLayer();
+                dataGridView1.SelectionChanged += DataGridView1SelectionChanged;
+            };
+        }
+       
+
+        #endregion
 
         private void dataGridView1_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
         {
@@ -523,42 +134,6 @@ namespace DotSpatial.Symbology.Forms
             _attributeCache.EditRowIndex = -1; // this also sets the EditRow to null;
         }
 
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of the Table editor control without any data
-        /// </summary>
-        public TableEditorControl()
-        {
-            Configure();
-        }
-
-        /// <summary>
-        /// Creates a new Table editor control for editing a feature layer's attribute values. This allows interaction
-        /// with the map. If a row is selected in the Table the corresponding row is selected in the map
-        /// </summary>
-        /// <param name="layer">The symbolizer on the map</param>
-        public TableEditorControl(IFeatureLayer layer)
-        {
-            FeatureLayer = layer;
-            Configure();
-        }
-
-        private void Configure()
-        {
-            InitializeComponent();
-            _selectedRows = new List<int>();
-            Load += TableEditorControlLoad;
-            enableEditingToolStripMenuItem.CheckedChanged += EnableEditingToolStripMenuItemCheckedChanged;
-            _queryDialog.ChangesApplied += QueryDialog_ChangesApplied;
-
-            RemoveUnusedButtonsFromToolstrip();
-            if (FeatureLayer != null)
-                FeatureLayer.ProgressHandler = null;
-        }
-
         private void RemoveUnusedButtonsFromToolstrip()
         {
             //removes the toolstrip buttons that are not working
@@ -574,42 +149,11 @@ namespace DotSpatial.Symbology.Forms
             this.mnuTools.DropDownItems.Remove(generateOrUpdateMWShapeIDFieldsToolStripMenuItem);
             this.mnuTools.DropDownItems.Remove(fieldCalculatorToolToolStripMenuItem);
         }
-
-        private void ParentFormShown(object sender, EventArgs e)
-        {
-            SetSelectionFromLayer();
-            dataGridView1.SelectionChanged += DataGridView1SelectionChanged;
-        }
-
-        private void ParentFormClosing(object sender, CancelEventArgs e)
-        {
-            //Need to prevent the change event from running James Rineer jrin@rti.org
-            _ignoreTableSelectionChanged = true;
-
-            if (_fidField != null)
-            {
-                if (_featureLayer.DataSet.DataTable.Columns.Contains(_fidField))
-                    _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
-            }
-        }
+       
 
         private void DataGridView1CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             e.Value = _attributeCache.RetrieveElement(e.RowIndex, e.ColumnIndex);
-        }
-
-        //when first loaded
-        private void TableEditorControlLoad(object sender, EventArgs e)
-        {
-            if (ParentForm == null) return;
-            ParentForm.FormClosed += ParentFormFormClosed;
-        }
-
-        //when the parent form is closed
-        private void ParentFormFormClosed(object sender, FormClosedEventArgs e)
-        {
-            _featureLayer = null;
-            Dispose();
         }
 
         //when the selected features are changed on the feature layer
@@ -620,84 +164,72 @@ namespace DotSpatial.Symbology.Forms
 
         private void SetSelectionFromLayer()
         {
-            dataGridView1.SuspendLayout();
             if (_featureLayer == null) return;
             if (_ignoreSelectionChanged) return;
+
+            dataGridView1.SuspendLayout();
             _ignoreSelectionChanged = true;
             _ignoreTableSelectionChanged = true;
-            if (!_featureLayer.EditMode)
-            {
-                FastDrawnState[] states = _featureLayer.DrawnStates;
-                if (_featureLayer.DataSet.AttributesPopulated)
-                {
-                    _ignoreSelectionChanged = true;
-                    _ignoreTableSelectionChanged = true;
-                    dataGridView1.SuspendLayout();
-                    if (states == null)
-                    {
-                        _ignoreSelectionChanged = false;
-                        _ignoreTableSelectionChanged = false;
-                        return;
-                    }
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        int fid = (int)row.Cells[_fidField].Value;
-                        row.Selected = states[fid].Selected;
-                    }
-                    dataGridView1.ResumeLayout();
-                    _ignoreSelectionChanged = false;
-                    _ignoreTableSelectionChanged = false;
-                }
-                else
-                {
-                    if (states == null)
-                    {
-                        return;
-                    }
-                    foreach (AttributeCache.DataPage page in _attributeCache.Pages)
-                    {
-                        for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
-                        {
-                            dataGridView1.Rows[row].Selected = states[row].Selected;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                IFeatureSelection fs = _featureLayer.Selection as IFeatureSelection;
-                if (fs == null) return;
-                if (_featureLayer.DataSet.AttributesPopulated)
-                {
-                    _ignoreSelectionChanged = true;
-                    _ignoreTableSelectionChanged = true;
-                    dataGridView1.SuspendLayout();
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        int fid = (int)row.Cells[_fidField].Value;
-                        row.Selected = fs.Filter.DrawnStates[_featureLayer.DataSet.Features[fid]].IsSelected;
-                    }
-                    dataGridView1.ResumeLayout();
-                    _ignoreSelectionChanged = false;
-                    _ignoreTableSelectionChanged = false;
-                }
-                else
-                {
-                    foreach (AttributeCache.DataPage page in _attributeCache.Pages)
-                    {
-                        for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
-                        {
-                            dataGridView1.Rows[row].Selected = fs.Filter.DrawnStates[_featureLayer.DataSet.Features[row]].IsSelected;
-                        }
-                    }
-                }
-            }
-            _ignoreSelectionChanged = false;
-            _ignoreTableSelectionChanged = false;
-            dataGridView1.ResumeLayout();
-        }
 
-        #endregion
+            try
+            {
+                if (!_featureLayer.EditMode)
+                {
+                    FastDrawnState[] states = _featureLayer.DrawnStates;
+                    if (states == null) return;
+
+                    if (_featureLayer.DataSet.AttributesPopulated)
+                    {
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            int fid = (int) row.Cells[_fidField].Value;
+                            row.Selected = states[fid].Selected;
+                        }
+                    }
+                    else
+                    {
+                        foreach (AttributeCache.DataPage page in _attributeCache.Pages)
+                        {
+                            for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
+                            {
+                                dataGridView1.Rows[row].Selected = states[row].Selected;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    IFeatureSelection fs = _featureLayer.Selection as IFeatureSelection;
+                    if (fs == null) return;
+                    if (_featureLayer.DataSet.AttributesPopulated)
+                    {
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            int fid = (int) row.Cells[_fidField].Value;
+                            row.Selected = fs.Filter.DrawnStates[_featureLayer.DataSet.Features[fid]].IsSelected;
+                        }
+                    }
+                    else
+                    {
+                        foreach (AttributeCache.DataPage page in _attributeCache.Pages)
+                        {
+                            for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
+                            {
+                                dataGridView1.Rows[row].Selected =
+                                    fs.Filter.DrawnStates[_featureLayer.DataSet.Features[row]].IsSelected;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _ignoreSelectionChanged = false;
+                _ignoreTableSelectionChanged = false;
+                dataGridView1.ResumeLayout();
+            }
+        }
+        
 
         #region Methods
 
@@ -718,9 +250,9 @@ namespace DotSpatial.Symbology.Forms
         public void ZoomToEditedRow()
         {
             if (dataGridView1.CurrentRow == null) return;
-            DataRowView drv = dataGridView1.CurrentRow.DataBoundItem as DataRowView;
+            IDataRow drv = dataGridView1.CurrentRow.DataBoundItem as IDataRow; // CGX AERO GLZ
             if (drv == null) return;
-            IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv.Row);
+            IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv); // CGX AERO GLZ
             LayerFrame frame = _featureLayer.ParentMapFrame() as LayerFrame;
             if (frame == null) return;
             IEnvelope env = currentFeature.Envelope.Copy();
@@ -774,14 +306,9 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="file"></param>
         public void DisplayFilePathLabel(string file)
         {
-            if (File.Exists(file))
-            {
-                lblFilePath.Text = Path.GetFullPath(file);
-            }
-            else
-            {
-                lblFilePath.Text = Resources.TableEditorControl_FileNameInMemory;
-            }
+            lblFilePath.Text = File.Exists(file)
+                ? Path.GetFullPath(file)
+                : Resources.TableEditorControl_FileNameInMemory;
         }
 
         #endregion
@@ -818,25 +345,62 @@ namespace DotSpatial.Symbology.Forms
         /// Gets or sets the feature layer used by this data Table
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public IFeatureLayer FeatureLayer
         {
             get { return _featureLayer; }
             set
             {
-                _featureLayer = value;
-                //to show the Filename label
+                if (_featureLayer == value) return;
                 if (_featureLayer != null)
                 {
-                    if (_featureLayer.DataSet != null)
+                    _featureLayer.SelectionChanged -= SelectedFeaturesChanged;
+                    if (_fidField != null)
                     {
-                        this.DisplayFilePathLabel(FeatureLayer.DataSet.Filename);
+                        _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
+                        _fidField = null;
                     }
                 }
-                FeatureLayerSetup();
-                if (ParentForm == null || _loaded) return;
-                ParentForm.Shown += ParentFormShown;
-                ParentForm.Closing += ParentFormClosing;
-                _loaded = true;
+                _featureLayer = value;
+
+                dataGridView1.CellValueNeeded -= DataGridView1CellValueNeeded;
+                dataGridView1.CellValuePushed -= dataGridView1_CellValuePushed;
+                dataGridView1.RowValidated -= dataGridView1_RowValidated;
+
+                if (_featureLayer != null)
+                {
+                    //to show the Filename label
+                    DisplayFilePathLabel(FeatureLayer.DataSet.Filename);
+
+                    _featureLayer.ProgressHandler = null;
+
+                    if (_featureLayer.DataSet.NumRows() < 10000 && !_featureLayer.DataSet.AttributesPopulated)
+                    {
+                        _featureLayer.DataSet.FillAttributes();
+                    }
+
+                    if (_featureLayer.DataSet.AttributesPopulated)
+                    {
+                        dataGridView1.VirtualMode = false;
+                        AddFid(_featureLayer.DataSet.DataTable);
+                        dataGridView1.DataSource = _featureLayer.DataSet.DataTable;
+                    }
+                    else
+                    {
+                        dataGridView1.VirtualMode = true;
+                        dataGridView1.CellValueNeeded += DataGridView1CellValueNeeded;
+                        dataGridView1.CellValuePushed += dataGridView1_CellValuePushed;
+                        dataGridView1.RowValidated += dataGridView1_RowValidated;
+
+                        _attributeCache = new AttributeCache(FeatureLayer.DataSet, 16);
+                        foreach (var field in _featureLayer.DataSet.GetColumns())
+                        {
+                            dataGridView1.Columns.Add(field.ColumnName, field.ColumnName);
+                        }
+                        dataGridView1.RowCount = _featureLayer.DataSet.NumRows();
+                    }
+                    _featureLayer.SelectionChanged += SelectedFeaturesChanged;
+                }
             }
         }
 
@@ -860,10 +424,12 @@ namespace DotSpatial.Symbology.Forms
             set { _ignoreSelectionChanged = value; }
         }
 
+
         /// <summary>
         /// set or get the relavant full featureset
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public IFeatureSet FeatureSetData
         {
             get { return _featureLayer.DataSet; }
@@ -947,50 +513,7 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private void FeatureLayerSetup()
-        {
-            if (_featureLayer == null) return;
-            if (_featureLayer.DataSet.NumRows() < 50000 && !_featureLayer.DataSet.AttributesPopulated)
-            {
-                _featureLayer.DataSet.FillAttributes();
-            }
-
-            if (_featureLayer.DataSet.AttributesPopulated)
-            {
-                dataGridView1.VirtualMode = false;
-                dataGridView1.AllowUserToOrderColumns = true;
-                dataGridView1.DataSource = _featureLayer.DataSet.DataTable;
-                if (_virtualHooked)
-                {
-                    dataGridView1.CellValueNeeded -= DataGridView1CellValueNeeded;
-                    dataGridView1.CellValuePushed -= dataGridView1_CellValuePushed;
-                    dataGridView1.RowValidated -= dataGridView1_RowValidated;
-                }
-                AddFid(_featureLayer.DataSet.DataTable);
-            }
-            else
-            {
-                dataGridView1.VirtualMode = true;
-                dataGridView1.AllowUserToOrderColumns = false;
-                if (!_virtualHooked)
-                {
-                    dataGridView1.CellValueNeeded += DataGridView1CellValueNeeded;
-                    dataGridView1.CellValuePushed += dataGridView1_CellValuePushed;
-                    dataGridView1.RowValidated += dataGridView1_RowValidated;
-                    _virtualHooked = true;
-                }
-                _attributeCache = new AttributeCache(FeatureLayer.DataSet, 16);
-                DataColumn[] columns = _featureLayer.DataSet.GetColumns();
-                foreach (DataColumn field in columns)
-                {
-                    dataGridView1.Columns.Add(field.ColumnName, field.ColumnName);
-                }
-                dataGridView1.RowCount = _featureLayer.DataSet.NumRows();
-            }
-            _featureLayer.SelectionChanged += SelectedFeaturesChanged;
-        }
-
-        private void AddFid(DataTable table)
+        private void AddFid(IDataTable table) // CGX AERO GLZ
         {
             const string name = "FID";
             int i = 0;
@@ -1000,7 +523,7 @@ namespace DotSpatial.Symbology.Forms
             }
             _fidField = name + i;
             table.Columns.Add(_fidField, typeof(int));
-            for (int row = 0; row < table.Rows.Count; row++)
+            for (var row = 0; row < table.Rows.Count; row++)
             {
                 table.Rows[row][_fidField] = row;
             }
@@ -1008,55 +531,72 @@ namespace DotSpatial.Symbology.Forms
 
         private void DataGridView1SelectionChanged(object sender, EventArgs e)
         {
+            if (!_featureLayer.DataSet.AttributesPopulated) return; // For now can handle only populated data sets with fid column
+            Debug.Assert(_fidField != null);
+
             if (_ignoreTableSelectionChanged) return;
             _ignoreSelectionChanged = true;
 
-            if (_featureLayer.DataSet.AttributesPopulated)
+            try
             {
-                //manage selection using the Selection property
-                IndexSelection sel = _featureLayer.Selection as IndexSelection;
-                if (sel != null)
+                //CGX
+                if (_featureLayer.DataSet != null)
                 {
-                    //check the 'fid' field
-                    if (string.IsNullOrEmpty(_fidField) || !_featureLayer.DataSet.DataTable.Columns.Contains(_fidField))
+                    if (_featureLayer.DataSet.AttributesPopulated)
                     {
-                        _ignoreSelectionChanged = false;
-                        return;
-                    }
-                    //set the selected state of the corresponding feature
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        int fid = (int)row.Cells[_fidField].Value;
-                        if (row.Selected)
+                        //manage selection using the Selection property
+                        IndexSelection sel = _featureLayer.Selection as IndexSelection;
+                        if (sel != null)
                         {
-                            sel.Add(fid);
+                            sel.SuspendChanges();
+                            //set the selected state of the corresponding feature
+                            foreach (DataGridViewRow row in dataGridView1.Rows)
+                            {
+                                if (row.Cells[_fidField].Value != null && row.Cells[_fidField].Value != DBNull.Value && row.Cells[_fidField].Value != "")
+                                {
+                                    int x = 0;
+
+                                    if (Int32.TryParse(row.Cells[_fidField].Value.ToString(), out x))
+                                    {
+                                        int fid = (int)row.Cells[_fidField].Value;
+                                        if (row.Selected)
+                                        {
+                                            sel.Add(fid);
+                                        }
+                                        else
+                                        {
+                                            sel.Remove(fid);
+                                        }
+                                    }
+                                }
+                            }
+                            sel.ResumeChanges();
                         }
                         else
                         {
-                            sel.Remove(fid);
+                            List<int> adds = new List<int>();
+                            List<int> removes = _selectedRows.ToList();
+                            
+                            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                            {
+                                //CGX
+                                if (row.Cells[_fidField].Value != null && row.Cells[_fidField].Value != DBNull.Value && row.Cells[_fidField].Value != "")
+                                {
+                                    if (!_selectedRows.Contains(row.Index))
+                                    {
+                                        adds.Add(row.Index);
+                                    }
+                                    removes.Remove(row.Index);
+                                }
+                            }
+                            _featureLayer.Select(adds);
+                            _featureLayer.UnSelect(removes);
                         }
                     }
                 }
-                else
-                {
-                    List<int> adds = new List<int>();
-                    List<int> removes = _selectedRows.ToList();
-                    foreach (DataGridViewRow row in dataGridView1.SelectedRows)
-                    {
-                        if (!_selectedRows.Contains(row.Index))
-                        {
-                            adds.Add(row.Index);
-                        }
-                        removes.Remove(row.Index);
-                    }
-                    _featureLayer.Select(adds);
-                    _featureLayer.UnSelect(removes);
-                }
-
-                if (_featureLayer != null)
-                {
-                    _featureLayer.Invalidate();
-                }
+            }
+            finally
+            {
                 _ignoreSelectionChanged = false;
             }
         }
@@ -1117,6 +657,7 @@ namespace DotSpatial.Symbology.Forms
         private void tsbtnZoomToSelected_Click(object sender, EventArgs e)
         {
             ZoomToSelected();
+            OnSelectionZoom();
         }
 
         #endregion
@@ -1130,17 +671,13 @@ namespace DotSpatial.Symbology.Forms
         {
             if (_ignoreSelectionChanged) return;
 
-            //when selection is changed by the user..
-
             _ignoreSelectionChanged = true;
-
-            //fire the SelectionChanged event of the layer
-            //_featureLayer.Selection.
-
-            if (SelectionChanged != null)
+            var h = SelectionChanged;
+            if (h != null)
             {
-                SelectionChanged(this, new EventArgs());
+                h(this, EventArgs.Empty);
             }
+
             _ignoreSelectionChanged = false;
         }
 
@@ -1152,8 +689,11 @@ namespace DotSpatial.Symbology.Forms
             if (_ignoreSelectionChanged) return;
 
             _ignoreSelectionChanged = true;
-            //if (tsbtnZoomToSelected.Click != null)
-            SelectionZoom(this, new EventArgs());
+            var h = SelectionZoom;
+            if (h != null)
+            {
+                h(this, EventArgs.Empty);
+            }
             _ignoreSelectionChanged = false;
         }
 
@@ -1165,8 +705,12 @@ namespace DotSpatial.Symbology.Forms
             if (_ignoreSelectionChanged) return;
             _ignoreSelectionChanged = true;
 
-            //Call the event Handler
-            MapRefreshed(this, new EventArgs());
+            var h = MapRefreshed;
+            if (h != null)
+            {
+                h(this, EventArgs.Empty);
+            }
+
             _ignoreSelectionChanged = false;
         }
 
@@ -1178,23 +722,13 @@ namespace DotSpatial.Symbology.Forms
             if (_ignoreSelectionChanged) return;
             _ignoreSelectionChanged = true;
 
-            //Call the event Handeler
-
-            ZoomToShapeBeingEdited(this, new EventArgs());
-            _ignoreSelectionChanged = false;
-        }
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
+            var h = ZoomToShapeBeingEdited;
+            if (h != null)
             {
-                components.Dispose();
+                h(this, EventArgs.Empty);
             }
-            base.Dispose(disposing);
+            
+            _ignoreSelectionChanged = false;
         }
 
         #endregion
@@ -1205,7 +739,6 @@ namespace DotSpatial.Symbology.Forms
         private void addFieldToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateNewColumn();
-
             SelectNone();
         }
 
@@ -1256,7 +789,7 @@ namespace DotSpatial.Symbology.Forms
             }
             //collect the field
             List<string> field = new List<string>();
-            DataTable dt = _featureLayer.DataSet.DataTable;
+            IDataTable dt = _featureLayer.DataSet.DataTable; // CGX AERO GLZ
             if (dt == null) return;
             foreach (DataColumn dc in dt.Columns)
                 field.Add(dc.ToString());
@@ -1333,11 +866,11 @@ namespace DotSpatial.Symbology.Forms
         private void exportSelectedFeaturesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sdlg = new SaveFileDialog
-                                      {
-                                          Filter =
-                                              SymbologyFormsMessageStrings.
-                                              TableEditorControl_exportSelectedFeaturesToolStripMenuItem_Click_Shapefiles____shp_____SHP
-                                      };
+            {
+                Filter =
+                    SymbologyFormsMessageStrings.
+                    TableEditorControl_exportSelectedFeaturesToolStripMenuItem_Click_Shapefiles____shp_____SHP
+            };
             if (sdlg.ShowDialog() == DialogResult.OK)
             {
                 _featureLayer.ExportSelection(sdlg.FileName);
@@ -1346,12 +879,14 @@ namespace DotSpatial.Symbology.Forms
 
         private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SeachAndReplaceDialog frmSeachAndReplaceDialog = new SeachAndReplaceDialog();
-            if (frmSeachAndReplaceDialog.ShowDialog() != DialogResult.OK) return;
-            string findString = frmSeachAndReplaceDialog.FindString;
-            string replaceString = frmSeachAndReplaceDialog.ReplaceString;
-            if (ReplaceString(findString, replaceString) == false)
-                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_CouldNotFindReplace);
+            using (var frmSeachAndReplaceDialog = new SearchAndReplaceDialog())
+            {
+                if (frmSeachAndReplaceDialog.ShowDialog(this) != DialogResult.OK) return;
+                if (!ReplaceString(frmSeachAndReplaceDialog.FindString, frmSeachAndReplaceDialog.ReplaceString))
+                {
+                    MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_CouldNotFindReplace);
+                }
+            }
         }
 
         private void importFieldDefinitionsFromDBFToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1416,40 +951,20 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void SetEditableIcons()
         {
-            if (_isEditable)
-            {
-                tsbtnSaveEdits.Visible = true;
-                tsbtnFieldCalculator.Visible = true;
-                tsbtnImportFieldsFromDBF.Visible = true;
-                tsbtnRefreshMap.Visible = true;
+            tsbtnSaveEdits.Visible = _isEditable;
+            tsbtnFieldCalculator.Visible = _isEditable;
+            tsbtnImportFieldsFromDBF.Visible = _isEditable;
+            tsbtnRefreshMap.Visible = _isEditable;
 
-                saveEditsToolStripMenuItem.Enabled = true;
-                addFieldToolStripMenuItem.Enabled = true;
-                removeFieldToolStripMenuItem.Enabled = true;
-                renameFieldToolStripMenuItem.Enabled = true;
-                fieldCalculatorToolToolStripMenuItem.Enabled = true;
-                importFieldDefinitionsFromDBFToolStripMenuItem.Enabled = true;
-                copyShapeIDsToSpecifiedFieldToolStripMenuItem.Enabled = true;
+            saveEditsToolStripMenuItem.Enabled = _isEditable;
+            addFieldToolStripMenuItem.Enabled = _isEditable;
+            removeFieldToolStripMenuItem.Enabled = _isEditable;
+            renameFieldToolStripMenuItem.Enabled = _isEditable;
+            fieldCalculatorToolToolStripMenuItem.Enabled = _isEditable;
+            importFieldDefinitionsFromDBFToolStripMenuItem.Enabled = _isEditable;
+            copyShapeIDsToSpecifiedFieldToolStripMenuItem.Enabled = _isEditable;
 
-                dataGridView1.ReadOnly = false;
-            }
-            else
-            {
-                tsbtnSaveEdits.Visible = false;
-                tsbtnFieldCalculator.Visible = false;
-                tsbtnImportFieldsFromDBF.Visible = false;
-                tsbtnRefreshMap.Visible = false;
-
-                saveEditsToolStripMenuItem.Enabled = false;
-                addFieldToolStripMenuItem.Enabled = false;
-                removeFieldToolStripMenuItem.Enabled = false;
-                renameFieldToolStripMenuItem.Enabled = false;
-                fieldCalculatorToolToolStripMenuItem.Enabled = false;
-                importFieldDefinitionsFromDBFToolStripMenuItem.Enabled = false;
-                copyShapeIDsToSpecifiedFieldToolStripMenuItem.Enabled = false;
-
-                dataGridView1.ReadOnly = true;
-            }
+            dataGridView1.ReadOnly = !_isEditable;
         }
 
         //Shows all rows (both selected and unselected)
@@ -1480,28 +995,32 @@ namespace DotSpatial.Symbology.Forms
         //Limits the displayed rows only to rows which are selected
         private void ShowOnlySelectedRows()
         {
+            _ignoreSelectionChanged = true;
+            _ignoreTableSelectionChanged = true;
             if (_featureLayer.DataSet.AttributesPopulated)
             {
                 int numRows = _featureLayer.DataSet.DataTable.Rows.Count;
                 dataGridView1.SuspendLayout();
-                _selection = new DataTable();
-                _selection.Columns.AddRange(_featureLayer.DataSet.GetColumns());
+                var selection = new DS_DataTable(); // CGX AERO GLZ
+                selection.Columns.AddRange(_featureLayer.DataSet.GetColumns());
 
-                if (!_selection.Columns.Contains(_fidField))
+                if (!selection.Columns.Contains(_fidField))
                 {
-                    _selection.Columns.Add(_fidField, typeof(int));
+                    selection.Columns.Add(_fidField, typeof(int));
                 }
                 if (_selectionIndices == null) _selectionIndices = new List<int>();
                 _selectionIndices.Clear();
+                _selectedRows.Clear();
                 for (int row = 0; row < numRows; row++)
                 {
                     if (!_featureLayer.DrawnStates[row].Selected) continue;
-                    DataRow dr = _selection.NewRow();
+                    IDataRow dr = selection.NewRow(); // CGX AERO GLZ
                     dr.ItemArray = _featureLayer.DataSet.DataTable.Rows[row].ItemArray;
-                    _selection.Rows.Add(dr);
+                    selection.Rows.Add(dr);
                     _selectionIndices.Add(row);
+                    _selectedRows.Add(row);
                 }
-                dataGridView1.DataSource = _selection;
+                dataGridView1.DataSource = selection;
                 dataGridView1.SelectAll();
                 dataGridView1.ResumeLayout();
             }
@@ -1511,8 +1030,10 @@ namespace DotSpatial.Symbology.Forms
                 dataGridView1.Rows.Clear(); // without this setting rowCount takes a looooong time
                 dataGridView1.RowCount = _featureLayer.Selection.Count;
             }
+
+            _ignoreTableSelectionChanged = false;
+            _ignoreSelectionChanged = false;
             _showOnlySelectedRows = true;
-            Refresh();
         }
 
         private void FieldCalculationExecute()
@@ -1534,42 +1055,49 @@ namespace DotSpatial.Symbology.Forms
             if (attributeCal != null) _featureLayer.DataSet = attributeCal.FeatureSet;
         }
 
-        private void ShowSelectedRowCount()
-        {
-            int numSelected = dataGridView1.SelectedRows.Count;
-
-            lblSelectedNumber.Text = String.Format(SymbologyFormsMessageStrings.TableEditorControl_SelectedRowCountStringFormat, numSelected, _featureLayer.DataSet.NumRows());
-        }
-
-        //saves edits to the data Table
         private void SaveEdits()
         {
+            dataGridView1.SuspendLayout();
+            _ignoreTableSelectionChanged = true;
+
             try
             {
-                dataGridView1.SuspendLayout();
 
-                //remove temporary columns
+                // remove fid column
+                if (_fidField != null)
+                {
+                    _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
+                }
 
                 _featureLayer.DataSet.Save();
 
-                dataGridView1.ResumeLayout();
+                // restore fid column
+                if (_fidField != null)
+                {
+                    AddFid(_featureLayer.DataSet.DataTable);
+                }
 
-                //ReloadDataSource();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_SaveEdits_Unable_to_save_edits__ + ex.Message);
+                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_SaveEdits_Unable_to_save_edits__ +
+                                ex.Message);
+            }
+            finally
+            {
+                _ignoreTableSelectionChanged = false;
+                dataGridView1.ResumeLayout();
             }
         }
 
         private void ImportFieldsFromDbf()
         {
             OpenFileDialog dlg = new OpenFileDialog
-                                     {
-                                         Filter =
-                                             SymbologyFormsMessageStrings.
-                                             TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF
-                                     };
+            {
+                Filter =
+                    SymbologyFormsMessageStrings.
+                    TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF
+            };
             FeatureSet fsTemp = new FeatureSet();
             fsTemp.CopyFeatures(_featureLayer.DataSet, true);
             if (dlg.ShowDialog() != DialogResult.OK)
@@ -1581,8 +1109,7 @@ namespace DotSpatial.Symbology.Forms
             int count = shapeFilePath2.Length;
             shapeFilePath2 = shapeFilePath2.Remove(count - 4, 4); //remove the extension of the file
             shapeFilePath2 = shapeFilePath2 + ".shp"; //add
-            IFeatureSet fs;
-            fs = FeatureSet.Open(shapeFilePath2);
+            IFeatureSet fs = FeatureSet.Open(shapeFilePath2);
 
             int noOfCol = fs.DataTable.Columns.Count;
             //Add all column header
@@ -1593,27 +1120,29 @@ namespace DotSpatial.Symbology.Forms
                     fsTemp.DataTable.Columns.Add(dtcol);
             }
             dataGridView1.DataSource = fsTemp.DataTable;
-            return;
         }
 
         //Executes a query
         private void QueryExe()
         {
+            var queryDialog = new SQLExpressionDialog();
+            queryDialog.ChangesApplied += QueryDialog_ChangesApplied;
             if (_featureLayer.DataSet.AttributesPopulated)
             {
-                _queryDialog.Table = _featureLayer.DataSet.DataTable;
+                queryDialog.Table = _featureLayer.DataSet.DataTable;
             }
             else
             {
-                _queryDialog.AttributeSource = _featureLayer.DataSet;
+                queryDialog.AttributeSource = _featureLayer.DataSet;
             }
 
-            _queryDialog.ShowDialog(this);
+            queryDialog.ShowDialog(this);
+            queryDialog.ChangesApplied -= QueryDialog_ChangesApplied;
         }
 
         private void QueryDialog_ChangesApplied(object sender, EventArgs e)
         {
-            string resultExpresion = _queryDialog.Expression;
+            string resultExpresion = ((SQLExpressionDialog)sender).Expression;
             if (resultExpresion != null)
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -1650,12 +1179,13 @@ namespace DotSpatial.Symbology.Forms
                 return;
             }
 
-            AddNewColum addCol = new AddNewColum();
-
-            if (addCol.ShowDialog() != DialogResult.OK)
+            var addCol = new AddNewColum();
+            if (addCol.ShowDialog(this) != DialogResult.OK)
             {
                 MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_NewFieldFail);
+                return;
             }
+
             _featureLayer.DataSet.DataTable.Columns.Add(addCol.Name, addCol.Type);
             dataGridView1.ClearSelection();
         }
@@ -1825,10 +1355,7 @@ namespace DotSpatial.Symbology.Forms
         private bool FindString(string exp)
         {
             if (exp == null) return false;
-
-            exp.Trim();
-            exp = exp.ToLower();
-
+            exp = exp.Trim().ToLower();
             string expression = BuildFindExpression(exp);
             _featureLayer.SelectByAttribute(expression);
 
@@ -1843,9 +1370,8 @@ namespace DotSpatial.Symbology.Forms
         private string BuildFindExpression(string findString)
         {
             List<string> conditions = new List<string>();
-            DataColumn[] columns = _featureLayer.DataSet.GetColumns();
             //for each column in the data grid view
-            foreach (Field col in columns)
+            foreach (var col in _featureLayer.DataSet.GetColumns())
             {
                 if (col.DataType != typeof(string)) continue;
                 string condition = "[" + col.ColumnName + "] LIKE '" + findString + "'";
@@ -1873,11 +1399,9 @@ namespace DotSpatial.Symbology.Forms
         /// <returns></returns>
         private bool ReplaceString(string exp, string expReplace)
         {
-            if (exp == null) return false;
-            exp.Trim();
-            exp = exp.ToLower();
+            if (string.IsNullOrWhiteSpace(exp)) return false;
+            exp = exp.Trim().ToLower();
             bool rowFiended = false;
-            string dgExp;
             int numRow = dataGridView1.RowCount;
             int numCol = dataGridView1.ColumnCount;
             progressBar.Visible = true;
@@ -1886,23 +1410,25 @@ namespace DotSpatial.Symbology.Forms
             progressBar.Value = 1;
             progressBar.Step = 1;
 
-            int category;
-            if (exp.IndexOf("*", 0) == 0)
+            Func<string, bool> categoryCheck;
+            if (exp.IndexOf("*", 0, StringComparison.Ordinal) == 0)
             {
                 //starting with "*"
-                category = 1;
                 exp = exp.Remove(0, 1);
+                //check it occur at the end
+                categoryCheck = s => s.EndsWith(exp);
             }
-            else if (exp.IndexOf("*", exp.Length - 1) == exp.Length - 1)
+            else if (exp.IndexOf("*", exp.Length - 1, StringComparison.Ordinal) == exp.Length - 1)
             {
                 //ending with "*"
-                category = 2;
                 exp = exp.Remove(exp.Length - 1, 1);
+                //check it occur at the begining
+                categoryCheck = s => s.StartsWith(exp);
             }
             else
             {
-                //take as normal case
-                category = 0;
+                // take as normal case
+                categoryCheck = s => s == exp;
             }
 
             for (int r = 0; r < numRow; r++)
@@ -1913,43 +1439,16 @@ namespace DotSpatial.Symbology.Forms
                 for (int c = 0; c < numCol; c++)
                 {
                     if (dataGridView1[c, r].Value == null) continue;
-                    dgExp = dataGridView1[c, r].Value.ToString(); //cell value
+                    string dgExp = dataGridView1[c, r].Value.ToString();
                     dgExp = dgExp.ToLower();
-                    bool itemReplaced = false;
-                    if (category == 1)
+                    var itemReplaced = categoryCheck(dgExp);
+                    if (itemReplaced)
                     {
-                        //stating with "*"
-                        if (dgExp.EndsWith(exp))
-                        {
-                            //check it occur at the end
-                            dataGridView1.Rows[r].Selected = true;
-                            rowFiended = true;
-                            itemReplaced = true;
-                        }
+                        dataGridView1.Rows[r].Selected = true;
+                        rowFiended = true;
                     }
-                    else if (category == 2)
-                    {
-                        //ending with "*"
-                        if (dgExp.StartsWith(exp))
-                        {
-                            //check it occur at the begining
-                            dataGridView1.Rows[r].Selected = true;
-                            rowFiended = true;
-                            itemReplaced = true;
-                        }
-                    }
-                    else
-                    {
-                        //take as normal case
-                        if (dgExp == exp)
-                        {
-                            //check it occur exacly same work
-                            dataGridView1.Rows[r].Selected = true;
-                            rowFiended = true;
-                            itemReplaced = true;
-                        }
-                    }
-                    //Replace the values
+
+                    // Replace the values
                     if (itemReplaced)
                     {
                         if (dataGridView1[c, r].ValueType == typeof(string))
@@ -2018,25 +1517,20 @@ namespace DotSpatial.Symbology.Forms
             for (int i = 0; i < _featureLayer.DataSet.DataTable.Rows.Count; i++)
             {
                 //assign the values
-                DataRow r = _featureLayer.DataSet.DataTable.Rows[i];
+                IDataRow r = _featureLayer.DataSet.DataTable.Rows[i]; // CGX AERO GLZ
                 IFeature f = fs.FeatureFromRow(r);
                 _featureLayer.DataSet.DataTable.Rows[i][colIndex] = f.Fid;
             }
             SelectNone();
-
-            return;
         }
 
         #endregion
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            ShowSelectedRowCount();
-            OnSelectionChanged();
-        }
+            lblSelectedNumber.Text = String.Format(SymbologyFormsMessageStrings.TableEditorControl_SelectedRowCountStringFormat, dataGridView1.SelectedRows.Count, _featureLayer.DataSet.NumRows());
 
-        private void lblSelectedNumber_Click(object sender, EventArgs e)
-        {
+            OnSelectionChanged();
         }
     }
 }

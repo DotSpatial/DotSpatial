@@ -57,6 +57,9 @@ namespace DotSpatial.Symbology
         /// Occurs before the label setup dialog is displayed, allowing the event to be handled.
         /// </summary>
         public event HandledEventHandler LabelSetup;
+        // CGX
+        public event HandledEventHandler LabelSetup2;
+        // CGX END
 
         #endregion
 
@@ -66,16 +69,6 @@ namespace DotSpatial.Symbology
         /// The _category extents.
         /// </summary>
         private IDictionary<IFeatureCategory, Extent> _categoryExtents;
-
-        /// <summary>
-        /// The _chunk size.
-        /// </summary>
-        private int _chunkSize;
-
-        /// <summary>
-        /// The _drawing bounds.
-        /// </summary>
-        private Rectangle _drawingBounds;
 
         /// <summary>
         /// The _drawing filter.
@@ -106,11 +99,6 @@ namespace DotSpatial.Symbology
         /// The _label layer.
         /// </summary>
         private ILabelLayer _labelLayer;
-
-        /// <summary>
-        /// The _name.
-        /// </summary>
-        private string _name;
 
         /// <summary>
         /// The _scheme.
@@ -187,6 +175,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the Boolean flag that controls whether the DrawnStates are needed.  If nothing is selected,
         /// and there is only one category, and there is no filter expression on that category, then this should be false.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DrawnStatesNeeded
         {
             get { return _drawnStatesNeeded; }
@@ -200,14 +189,16 @@ namespace DotSpatial.Symbology
                 _drawnStatesNeeded = value;
             }
         }
-        
+
 
         /// <summary>
         /// Zooms to the envelope of the selected features.
         /// </summary>
         public void ZoomToSelectedFeatures()
         {
-            ZoomToSelectedFeatures(2, 2);
+            //ZoomToSelectedFeatures(2, 2);
+            //CGX
+            ZoomToSelectedFeatures(0, 0);
         }
 
         /// <summary>
@@ -238,12 +229,14 @@ namespace DotSpatial.Symbology
         private void Configure(IFeatureSet featureSet)
         {
             _categoryExtents = new Dictionary<IFeatureCategory, Extent>();
-            _drawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
+            DrawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
             DataSet = featureSet;
             LegendText = featureSet.Name;
-            _name = featureSet.Name;
+            Name = featureSet.Name;
             var label = new SymbologyMenuItem(Msg.FeatureLayer_Labeling);
-            label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick));
+            //CGX AERO Nouvelle interface de Label
+            label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick2));
+            // CGX END
             label.MenuItems.Add(new SymbologyMenuItem(Msg.SetDynamicVisibilityScale, SymbologyImages.ZoomScale,
                                                       LabelExtentsClick));
             ContextMenuItems.Insert(4, label);
@@ -286,7 +279,7 @@ namespace DotSpatial.Symbology
             OnApplyScheme(Symbology);
             Invalidate();
         }
-        
+
         private void JoinExcel(object sender, EventArgs e)
         {
             var fla = FeatureLayerActions;
@@ -295,7 +288,7 @@ namespace DotSpatial.Symbology
                 fla.ExcelJoin(DataSet);
             }
         }
-       
+
         private void LabelExtentsClick(object sender, EventArgs e)
         {
             if (_labelLayer == null)
@@ -319,7 +312,7 @@ namespace DotSpatial.Symbology
             OnItemChanged();
             OnSelectionChanged();
         }
-        
+
         private void SelectionToLayerClick(object sender, EventArgs e)
         {
             IFeatureLayer newLayer;
@@ -336,15 +329,6 @@ namespace DotSpatial.Symbology
             }
         }
 
-        /// <summary>
-        /// The selection zoom click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SelectionZoomClick(object sender, EventArgs e)
         {
             ZoomToSelectedFeatures();
@@ -352,12 +336,12 @@ namespace DotSpatial.Symbology
 
         private void SelectAllClick(object sender, EventArgs e)
         {
-            this.SelectAll();
+            SelectAll();
         }
 
         private void UnselectAllClick(object sender, EventArgs e)
         {
-            this.UnSelectAll();
+            UnSelectAll();
         }
 
         #endregion
@@ -423,6 +407,9 @@ namespace DotSpatial.Symbology
                 ResumeChangeEvent();
             }
 
+            //CGX
+            OnSelectionChanged();
+
             return changed;
         }
 
@@ -484,6 +471,7 @@ namespace DotSpatial.Symbology
             }
 
             int index = DataSet.Features.IndexOf(feature);
+            if (index < 0) return null;
             return DrawnStates[index].Category;
         }
 
@@ -542,8 +530,7 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// The invert selection.
         /// </returns>
-        public override bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode,
-                                             out IEnvelope affectedArea)
+        public override bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode, out IEnvelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
             {
@@ -594,6 +581,9 @@ namespace DotSpatial.Symbology
                 ResumeChangeEvent();
             }
 
+            //CGX
+            OnSelectionChanged();
+
             return changed;
         }
 
@@ -617,19 +607,14 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// Boolean, true if items were selected.
         /// </returns>
-        public override bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode,
-                                    out IEnvelope affectedArea)
+        public override bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode, out IEnvelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
-            {
                 AssignFastDrawnStates();
-            }
 
             IEnvelope region = tolerant;
             if (DataSet.FeatureType == FeatureType.Polygon)
-            {
                 region = strict;
-            }
 
             affectedArea = _selection.Envelope;
 
@@ -666,6 +651,9 @@ namespace DotSpatial.Symbology
                 ResumeChangeEvent();
             }
 
+            //CGX
+            OnSelectionChanged();
+
             return changed;
         }
 
@@ -701,6 +689,9 @@ namespace DotSpatial.Symbology
                     sel.AddRange(featureIndices);
                 }
             }
+
+            //CGX
+            OnSelectionChanged();
         }
 
         /// <summary>
@@ -727,6 +718,9 @@ namespace DotSpatial.Symbology
                     sel.Add(featureIndex);
                 }
             }
+
+            //CGX
+            OnSelectionChanged();
         }
 
         /// <summary>
@@ -739,7 +733,7 @@ namespace DotSpatial.Symbology
         {
             if (_editMode)
             {
-                IFeatureSelection sel = _selection as IFeatureSelection;
+                var sel = _selection as IFeatureSelection;
                 if (sel != null)
                 {
                     sel.Add(feature);
@@ -747,12 +741,15 @@ namespace DotSpatial.Symbology
             }
             else
             {
-                IIndexSelection sel = _selection as IIndexSelection;
+                var sel = _selection as IIndexSelection;
                 if (sel != null)
                 {
-                    sel.Add(DataSet.Features.IndexOf(feature));
+                    sel.Add(feature.Fid);
                 }
             }
+
+            //CGX
+            OnSelectionChanged();
         }
 
         /// <summary>
@@ -787,6 +784,9 @@ namespace DotSpatial.Symbology
 
                 ResumeChangeEvent();
             }
+
+            //CGX
+            OnSelectionChanged();
         }
 
         /// <summary>
@@ -800,6 +800,8 @@ namespace DotSpatial.Symbology
         public void SelectByAttribute(string filterExpression)
         {
             SelectByAttribute(filterExpression, ModifySelectionMode.Replace);
+            //CGX
+            OnSelectionChanged();
         }
 
         /// <summary>
@@ -809,6 +811,8 @@ namespace DotSpatial.Symbology
         public void UnselectByAttribute(string filterExpression)
         {
             SelectByAttribute(filterExpression, ModifySelectionMode.Subtract);
+            //CGX
+            OnSelectionChanged();
         }
 
         /// <summary>
@@ -971,10 +975,6 @@ namespace DotSpatial.Symbology
         /// Sets the visible characteristic for an individual feature regardless of
         /// whether this layer is in edit mode.
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <param name="visible">
-        /// </param>
         public void SetVisible(int index, bool visible)
         {
             if (_editMode)
@@ -991,10 +991,6 @@ namespace DotSpatial.Symbology
         /// Sets the visible characteristic for a given feature, rather than using the index
         /// regardless of whether this layer is in edit mode.
         /// </summary>
-        /// <param name="feature">
-        /// </param>
-        /// <param name="visible">
-        /// </param>
         public void SetVisible(IFeature feature, bool visible)
         {
             if (_editMode)
@@ -1222,6 +1218,9 @@ namespace DotSpatial.Symbology
                 ResumeChangeEvent();
             }
 
+            //CGX
+            OnSelectionChanged();
+
             return changed;
         }
 
@@ -1293,11 +1292,7 @@ namespace DotSpatial.Symbology
         /// Coordinates outside this range will cause overflow exceptions to occur.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle DrawingBounds
-        {
-            get { return _drawingBounds; }
-            set { _drawingBounds = value; }
-        }
+        public Rectangle DrawingBounds { get; set; }
 
         /// <summary>
         /// Gets or sets the drawing filter that can be used to narrow the list of features and then
@@ -1315,24 +1310,14 @@ namespace DotSpatial.Symbology
         /// <summary>
         ///  Gets or sets a string name for this layer.  This is not necessarily the same as the legend text.
         /// </summary>
-        [Category("General"),
-         Description("Gets or sets a string name for this layer.  This is not necessarily the same as the legend text."
-             )]
-        public virtual string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        [Category("General"), Description("Gets or sets a string name for this layer.  This is not necessarily the same as the legend text.")]
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the chunk size on the drawing filter.  This should be controlled
         /// by drawing layers.
         /// </summary>
-        protected int ChunkSize
-        {
-            get { return _chunkSize; }
-            set { _chunkSize = value; }
-        }
+        protected int ChunkSize { get; set; }
 
         /// <summary>
         /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet
@@ -1355,9 +1340,23 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets underlying dataset for this layer
+        /// </summary>
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("FeatureSet Properties")]
+        public IFeatureSet FeatureSet
+        {
+            get
+            {
+                return DataSet;
+            }
+        }
+
+        /// <summary>
         /// Controls the drawn states according to a feature index.  This is used if the EditMode is
         /// false.  When EditMode is true, then drawn states are tied to the features instead.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FastDrawnState[] DrawnStates
         {
             get
@@ -1378,11 +1377,14 @@ namespace DotSpatial.Symbology
         /// are assumed to be entirely loaded into ram.  If edit mode is false, then index
         /// is used instead and features are not assumed to be loaded into ram.
         /// </summary>
+        [Browsable(true)]
+        [Description("If edit mode is true, feature index is ignored, and features are assumed to be entirely loaded into ram.  If edit mode is false, then index is used instead and features are not assumed to be loaded into ram.")]
         public bool EditMode
         {
             get { return _editMode; }
             set
             {
+                if (value == _editMode) return;
                 _editMode = value;
                 if (_editMode)
                 {
@@ -1404,12 +1406,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet == null || DataSet.Extent == null || DataSet.Extent.IsEmpty())
-                {
-                    return new Extent();
-                }
-
-                return DataSet.Extent;
+                return DataSet == null ? new Extent() : DataSet.Extent;
             }
         }
 
@@ -1442,8 +1439,7 @@ namespace DotSpatial.Symbology
             {
                 if (Symbology.AppearsInLegend)
                 {
-                    List<ILegendItem> list = new List<ILegendItem> { Symbology };
-                    return list;
+                    return new List<ILegendItem> { Symbology };
                 }
 
                 // Leave this cast in place for compatibility with 3.5.
@@ -1518,6 +1514,7 @@ namespace DotSpatial.Symbology
             get { return _showLabels; }
             set
             {
+                if (value == _showLabels) return;
                 _showLabels = value;
                 OnItemChanged();
             }
@@ -1681,23 +1678,11 @@ namespace DotSpatial.Symbology
         /// Occurs when selecting features and fires the SelectByAttribute event with
         /// the expression used as the filter expression
         /// </summary>
-        /// <param name="sender">
-        /// </param>
-        /// <param name="e">
-        /// </param>
         protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
         {
             UnselectByAttribute(e.Expression);
         }
-        /// <summary>
-        /// The data set feature added.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+
         private void DataSetFeatureAdded(object sender, FeatureEventArgs e)
         {
             if (_drawingFilter == null)
@@ -1713,15 +1698,6 @@ namespace DotSpatial.Symbology
             _drawingFilter.DrawnStates.Add(e.Feature, new DrawnState(Symbology.GetCategories().First(), false, 0, true));
         }
 
-        /// <summary>
-        /// The data set feature removed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void DataSetFeatureRemoved(object sender, FeatureEventArgs e)
         {
             if (_drawingFilter == null)
@@ -1732,13 +1708,6 @@ namespace DotSpatial.Symbology
             _drawingFilter.DrawnStates.Remove(e.Feature);
         }
 
-        /// <summary>
-        /// Echoes the ItemChanged event
-        /// </summary>
-        /// <param name="sender">
-        /// </param>
-        /// <param name="e">
-        /// </param>
         private void SchemeItemChanged(object sender, EventArgs e)
         {
             OnItemChanged(sender);
@@ -1782,7 +1751,7 @@ namespace DotSpatial.Symbology
             {
                 // We don't want to read the table multiple times for each category.  Just
                 // read a block and then do all the categories we can for that block.
-                List<string> names = new List<string>();
+                var names = new List<string>();
                 foreach (var category in categories)
                 {
                     var current = DistinctFieldsInExpression(category.FilterExpression);
@@ -1792,7 +1761,7 @@ namespace DotSpatial.Symbology
                     }
                 }
 
-                if (names.Count() == 0)
+                if (names.Count == 0)
                 {
                     for (int i = 0; i < DataSet.NumRows(); i++)
                     {
@@ -1808,20 +1777,33 @@ namespace DotSpatial.Symbology
                 for (int page = 0; page < numPages; page++)
                 {
                     int count = (page == numPages - 1) ? rowCount - page * size : size;
-                    DataTable expressionTable = DataSet.GetAttributes(page * size, count, names);
+                    IDataTable expressionTable = DataSet.GetAttributes(page * size, count, names); // CGX AERO GLZ
                     foreach (var category in categories)
                     {
-                        DataRow[] res = expressionTable.Select(category.FilterExpression);
+                        /*DataRow[] res = expressionTable.Select(category.FilterExpression);
                         foreach (DataRow r in res)
                         {
                             _drawnStates[(int)r["FID"]].Category = category;
+                        }*/
+
+                        //CGX
+                        try
+                        {
+                            IDataRow[] res = expressionTable.Select(category.FilterExpression); // CGX AERO GLZ
+                            foreach (IDataRow r in res) // CGX AERO GLZ
+                            {
+                                _drawnStates[(int)r["FID"]].Category = category;
+                            }
                         }
+                        catch (Exception)
+                        { }
+                        //Fin CGX
                     }
                 }
             }
             else
             {
-                DataTable table = DataSet.DataTable;
+                IDataTable table = DataSet.DataTable; // CGX AERO GLZ
                 foreach (var category in categories)
                 {
                     if (category.FilterExpression != null && category.FilterExpression.Contains("[FID]"))
@@ -1841,11 +1823,24 @@ namespace DotSpatial.Symbology
 
                 foreach (var category in categories)
                 {
-                    DataRow[] result = table.Select(category.FilterExpression);
+                    /*DataRow[] result = table.Select(category.FilterExpression);
                     foreach (DataRow row in result)
                     {
                         _drawnStates[table.Rows.IndexOf(row)].Category = category;
+                    }*/
+
+                    //CGX
+                    try
+                    {
+                        IDataRow[] result = table.Select(category.FilterExpression); // CGX AERO GLZ
+                        foreach (IDataRow row in result) // CGX AERO GLZ
+                        {
+                            _drawnStates[table.Rows.IndexOf(row)].Category = category;
+                        }
                     }
+                    catch (Exception)
+                    { }
+                    //Fin CGX
                 }
 
                 if (containsFid)
@@ -2007,7 +2002,7 @@ namespace DotSpatial.Symbology
         /// </param>
         protected virtual void OnApplyScheme(IFeatureScheme scheme)
         {
-            // _drawingFilter.ApplyScheme(scheme);
+            if (scheme == null) return;
             if (_editMode)
             {
                 _drawingFilter.ApplyScheme(scheme);
@@ -2114,21 +2109,27 @@ namespace DotSpatial.Symbology
         /// </param>
         protected virtual void OnLabelSetup(HandledEventArgs e)
         {
-            if (LabelSetup != null)
+            var h = LabelSetup;
+            if (h != null) h(this, e);
+        }
+
+        //CGX
+        protected virtual void OnLabelSetup2(HandledEventArgs e)
+        {
+            if (LabelSetup2 != null)
             {
-                LabelSetup(this, e);
+                LabelSetup2(this, e);
             }
         }
+        //Fin CGX
 
         /// <summary>
         /// This fires the scheme applied event after the scheme has been altered
         /// </summary>
         protected virtual void OnSchemeApplied()
         {
-            if (SchemeApplied != null)
-            {
-                SchemeApplied(this, new EventArgs());
-            }
+            var h = SchemeApplied;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -2138,10 +2139,8 @@ namespace DotSpatial.Symbology
         /// </param>
         protected virtual void OnSnapShotTaken(Bitmap e)
         {
-            if (SnapShotTaken != null)
-            {
-                SnapShotTaken(this, new SnapShotEventArgs(e));
-            }
+            var h = SnapShotTaken;
+            if (h != null) h(this, new SnapShotEventArgs(e));
         }
 
         /// <summary>
@@ -2154,10 +2153,8 @@ namespace DotSpatial.Symbology
         /// </param>
         protected virtual void OnViewAttributes(HandledEventArgs e)
         {
-            if (ViewAttributes != null)
-            {
-                ViewAttributes(this, e);
-            }
+            var h = ViewAttributes;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
@@ -2196,7 +2193,6 @@ namespace DotSpatial.Symbology
                 if (current == '[')
                 {
                     isField = true;
-                    continue;
                 }
             }
 
@@ -2206,7 +2202,7 @@ namespace DotSpatial.Symbology
         #endregion
 
         #region EventHandlers
-       
+
         private void LabelSetupClick(object sender, EventArgs e)
         {
             var result = new HandledEventArgs(false);
@@ -2229,34 +2225,46 @@ namespace DotSpatial.Symbology
             }
         }
 
+        //CGX AERO
+        private void LabelSetupClick2(object sender, EventArgs e)
+        {
+            var result = new HandledEventArgs(false);
+            OnLabelSetup2(result);
+            if (result.Handled)
+            {
+                return;
+            }
+
+            if (_labelLayer == null)
+            {
+                OnCreateLabels();
+                ShowLabels = true;
+            }
+
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.LabelSetup2(_labelLayer);
+            }
+        }
+
         #endregion
 
-        /// <summary>
-        /// Disposes memory objects
-        /// </summary>
-        /// <param name="disposeManagedResources">
-        /// </param>
         protected override void Dispose(bool disposeManagedResources)
         {
             if (disposeManagedResources)
             {
-                ViewAttributes = null;
-                LabelSetup = null;
-                SnapShotTaken = null;
-                SchemeApplied = null;
-                _name = null;
-                _scheme = null;
-                _selection = null;
-                _drawingFilter = null;
-                _featureSymbolizer = null;
-                _selectionFeatureSymbolizer = null;
-                _categoryExtents = null;
-                _drawnStates = null;
-            }
-
-            if (_labelLayer != null)
-            {
-                _labelLayer.Dispose();
+                DataSet = null;
+                Symbology = null;
+                if (_labelLayer != null)
+                {
+                    _labelLayer.Dispose();
+                    _labelLayer = null;
+                }
+                if (_selection != null)
+                {
+                    _selection.Changed -= SelectedFeaturesChanged;
+                }
             }
 
             base.Dispose(disposeManagedResources);

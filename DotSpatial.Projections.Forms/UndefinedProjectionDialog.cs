@@ -32,6 +32,9 @@ namespace DotSpatial.Projections.Forms
         private ProjectionInfo _mapProjection;
         private string _originalString;
         private ProjectionInfo _selectedProjection;
+        private string _layerName;
+        private string _originalFormText;
+        private bool _ignoreTextChanged;
 
         /// <summary>
         /// Initializes a new instance of the Undefined Projection Dialog
@@ -96,14 +99,7 @@ namespace DotSpatial.Projections.Forms
             set
             {
                 _originalString = value;
-                if (_originalString == null)
-                {
-                    lblOriginal.Text = Resources.Nothing;
-                }
-                else
-                {
-                    lblOriginal.Text = value;
-                }
+                lblOriginal.Text = _originalString == null ? Resources.Nothing : value;
             }
         }
 
@@ -117,13 +113,43 @@ namespace DotSpatial.Projections.Forms
         }
 
         /// <summary>
+        /// Gets or sets the layername of the layer that could not be identified.
+        /// </summary>
+        public string LayerName
+        {
+            get
+            {
+                return _layerName;
+            }
+            set
+            {
+                if (value == _layerName) return;
+                _layerName = value;
+
+                _ignoreTextChanged = true;
+                Text = String.IsNullOrWhiteSpace(value) ? _originalFormText : _originalFormText + " - " + value;
+                _ignoreTextChanged = false;
+            }
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+
+            if (!_ignoreTextChanged)
+            {
+                _originalFormText = Text;
+            }
+        }
+
+        /// <summary>
         /// Gets the action selected from the dialog.
         /// </summary>
         public UndefinedProjectionAction Action
         {
             get
             {
-                UndefinedProjectionAction result = UndefinedProjectionAction.Nothing;
+                var result = UndefinedProjectionAction.Nothing;
                 if (radLatLong.Checked)
                 {
                     result = UndefinedProjectionAction.WGS84;
@@ -166,10 +192,11 @@ namespace DotSpatial.Projections.Forms
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            ProjectionSelectDialog dialog = new ProjectionSelectDialog();
-            dialog.SelectedCoordinateSystem = SelectedCoordinateSystem;
-            if (dialog.ShowDialog(this) != DialogResult.OK) return;
-            SelectedCoordinateSystem = dialog.SelectedCoordinateSystem;
+            using (var dialog = new ProjectionSelectDialog {SelectedCoordinateSystem = SelectedCoordinateSystem})
+            {
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                SelectedCoordinateSystem = dialog.SelectedCoordinateSystem;
+            }
         }
     }
 }

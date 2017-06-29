@@ -355,7 +355,7 @@ namespace DotSpatial.Controls
             try
             {
                 IDataManager dataManager = DataManager.DefaultDataManager;
-                CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
+                if(CompositionContainer!=null) CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
             }
             catch (CompositionException compositionException)
             {
@@ -384,7 +384,7 @@ namespace DotSpatial.Controls
             // using only export IStatusControl and we would require each IStatusControl to
             //    [Export(typeof(DotSpatial.Data.IProgressHandler))]
             // To get that working.
-            DataManager.DefaultDataManager.ProgressHandler = this.ProgressHandler;
+            //DataManager.DefaultDataManager.ProgressHandler = this.ProgressHandler;
         }
 
         // Looks for the assembly in a path like Extensions\Packages\PackageName.Here-1.3.190\lib\net40
@@ -392,7 +392,9 @@ namespace DotSpatial.Controls
         {
             var knownExtensions = new[] { "dll", "exe" };
             string assemblyName = args.Name.Split(',').First();
-            var tempAssemblyName = assemblyName.Remove(assemblyName.LastIndexOf("."));
+            var tempAssemblyName = assemblyName;
+            if( assemblyName.Contains(".") )
+                tempAssemblyName = assemblyName.Remove(assemblyName.LastIndexOf("."));
 
             var packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
             if (!Directory.Exists(packagesFolder))

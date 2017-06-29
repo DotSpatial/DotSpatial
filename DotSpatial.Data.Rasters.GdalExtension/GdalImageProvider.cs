@@ -34,6 +34,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
     {
         private IProgressHandler _prog;
 
+        static GdalImageProvider ()
+        {
+            GdalConfiguration.ConfigureGdal();
+        }
+
         #region IImageDataProvider Members
 
         /// <summary>
@@ -48,25 +53,23 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <returns></returns>
         public IImageData Create(string fileName, int width, int height, bool inRam, IProgressHandler progHandler, ImageBandType bandType)
         {
-            Gdal.AllRegister();
             Driver d = GetDriverByExtension(fileName);
             if (d == null) return null;
             Dataset ds;
-            if (bandType == ImageBandType.ARGB)
+            switch (bandType)
             {
-                ds = d.Create(fileName, width, height, 4, DataType.GDT_Byte, new string[] { });
-            }
-            else if (bandType == ImageBandType.RGB)
-            {
-                ds = d.Create(fileName, width, height, 3, DataType.GDT_Byte, new string[] { });
-            }
-            else if (bandType == ImageBandType.PalletCoded)
-            {
-                ds = d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { });
-            }
-            else
-            {
-                ds = d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { });
+                case ImageBandType.ARGB:
+                    ds = d.Create(fileName, width, height, 4, DataType.GDT_Byte, new string[] { });
+                    break;
+                case ImageBandType.RGB:
+                    ds = d.Create(fileName, width, height, 3, DataType.GDT_Byte, new string[] { });
+                    break;
+                case ImageBandType.PalletCoded:
+                    ds = d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { });
+                    break;
+                default:
+                    ds = d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { });
+                    break;
             }
 
             return new GdalImage(fileName, ds, bandType);
@@ -208,31 +211,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             return null;
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
+        
         private IImageData OpenFile(string fileName)
         {
-            Dataset dataset;
-            try
-            {
-                dataset = Gdal.Open(fileName, Access.GA_Update);
-            }
-            catch
-            {
-                try
-                {
-                    dataset = Gdal.Open(fileName, Access.GA_ReadOnly);
-                }
-                catch (Exception ex)
-                {
-                    throw new GdalException(ex.ToString());
-                }
-            }
-
+            var dataset = Helpers.Open(fileName);
             bool hasOverviews;
             using (var red = dataset.GetRasterBand(1))
             {
@@ -244,7 +226,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 {
                     // This is an image, not a raster, so return null.
                     dataset.Dispose();
-                    dataset = null;
                     return null;
                 }
                 hasOverviews = red.GetOverviewCount() > 0;
@@ -284,16 +265,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     {
                         h = gs.Bounds.NumRows - j * blockHeight;
                     }
-                    Stopwatch sw = new Stopwatch();
-                    sw.Start();
                     byte[] vals = gs.ReadWindow(j * blockHeight, 0, h, width, 0);
-                    Debug.WriteLine("Reading Value time: " + sw.ElapsedMilliseconds);
+
                     pm.CurrentValue = j * 2 + 1;
-                    sw.Reset();
-                    sw.Start();
                     py.WriteWindow(vals, j * blockHeight, 0, h, width, 0);
-                    sw.Stop();
-                    Debug.WriteLine("Writing Pyramid time: " + sw.ElapsedMilliseconds);
                     pm.CurrentValue = (j + 1) * 2;
                 }
                 gs.Dispose();

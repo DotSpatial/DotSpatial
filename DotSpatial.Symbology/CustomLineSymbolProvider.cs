@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -197,8 +198,7 @@ namespace DotSpatial.Symbology
         /// <returns>The list of custom line symbolizers</returns>
         public IEnumerable<CustomLineSymbolizer> Load(string fileName)
         {
-            _list.Load(fileName);
-            return _list;
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -39,42 +39,13 @@ namespace DotSpatial.Symbology
         /// <param name="fileName">the file name</param>
         public static void Save(this IEnumerable<CustomLineSymbolizer> self, string fileName)
         {
-            Stream myStream = File.Open(fileName, FileMode.Create);
-            BinaryFormatter bformatter = new BinaryFormatter();
-
-            Console.WriteLine("Writing Symbolizers to file");
-            bformatter.Serialize(myStream, self);
-            myStream.Close();
+            using (var myStream = File.Open(fileName, FileMode.Create))
+            {
+                var bformatter = new BinaryFormatter();
+                bformatter.Serialize(myStream, self);
+            }
         }
-
-        /// <summary>
-        /// Saves a list of custom point symbolizers to a file
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="fileName"></param>
-        public static void Save(this IEnumerable<CustomPointSymbolizer> self, string fileName)
-        {
-        }
-
-        /// <summary>
-        /// Saves a list of custom polygon symbolizers to a file
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="fileName"></param>
-        public static void Save(this IEnumerable<CustomPolygonSymbolizer> self, string fileName)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Loads the list of custom line symbolizers from a file
-        /// </summary>
-        /// <param name="self">The list of custom line symbolizers</param>
-        /// <param name="fileName">the file name</param>
-        public static void Load(this IEnumerable<CustomLineSymbolizer> self, string fileName)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         #endregion
     }

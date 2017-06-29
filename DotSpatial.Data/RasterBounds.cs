@@ -31,8 +31,8 @@ namespace DotSpatial.Data
         #region Private Variables
 
         private double[] _affine;
-        private int _numColumns;
-        private int _numRows;
+        private readonly int _numColumns;
+        private readonly int _numRows;
         private string _worldFile;
 
         #endregion
@@ -128,7 +128,7 @@ namespace DotSpatial.Data
         /// <returns>A RasterBounds that has the same properties but does not point to the same internal array.</returns>
         public RasterBounds Copy()
         {
-            RasterBounds result = (RasterBounds)MemberwiseClone();
+            var result = (RasterBounds)MemberwiseClone();
             result.AffineCoefficients = new double[6];
             for (int i = 0; i < 6; i++)
             {
@@ -154,7 +154,6 @@ namespace DotSpatial.Data
             set
             {
                 _affine = value;
-                OnBoundsChanged();
             }
         }
 
@@ -374,17 +373,6 @@ namespace DotSpatial.Data
                 double dy = value - Y;
                 _affine[3] += dy; // resets the dY
             }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Fires the Bounds Changed event
-        /// </summary>
-        protected void OnBoundsChanged()
-        {
         }
 
         #endregion

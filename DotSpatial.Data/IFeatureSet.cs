@@ -121,7 +121,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="row">The DataRow for which to obtaind the feature</param>
         /// <returns>The feature to obtain that is associated with the specified data row.</returns>
-        IFeature FeatureFromRow(DataRow row);
+        IFeature FeatureFromRow(IDataRow row); // CGX AERO GLZ
 
         /// <summary>
         /// Generates a new feature, adds it to the features and returns the value.
@@ -169,7 +169,7 @@ namespace DotSpatial.Data
         /// from a DatatTable, but doesn't copy any values.
         /// </summary>
         /// <param name="sourceTable">The Table to obtain schema from.</param>
-        void CopyTableSchema(DataTable sourceTable);
+        void CopyTableSchema(IDataTable sourceTable); // CGX AERO GLZ
 
         /// <summary>
         /// Instructs the shapefile to read all the attributes from the file.
@@ -188,6 +188,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="filterExpression">The filter expression to find features for.</param>
         /// <returns>The list of integers that are the FIDs of the specified values.</returns>
+        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Marked obsolete in 1.7.
         List<int> Find(string filterExpression);
 
         /// <summary>
@@ -249,7 +250,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the DataTable associated with this specific feature.
         /// </summary>
-        DataTable DataTable
+        IDataTable DataTable // CGX AERO GLZ
         {
             get;
             set;
@@ -277,7 +278,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the feature lookup Table itself.
         /// </summary>
-        Dictionary<DataRow, IFeature> FeatureLookup
+        Dictionary<IDataRow, IFeature> FeatureLookup // CGX AERO GLZ
         {
             get;
         }

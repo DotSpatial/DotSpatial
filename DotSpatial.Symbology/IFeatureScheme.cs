@@ -56,7 +56,7 @@ namespace DotSpatial.Symbology
         /// Creates the categories using the specified data table
         /// </summary>
         /// <param name="table"></param>
-        void CreateCategories(DataTable table);
+        void CreateCategories(IDataTable table); // CGX AERO GLZ
 
         /// <summary>
         /// Uses the settings on this scheme to create a random category.

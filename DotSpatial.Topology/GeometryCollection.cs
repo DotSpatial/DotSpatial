@@ -579,6 +579,26 @@ namespace DotSpatial.Topology
             return envelope;
         }
 
+        /// <summary>
+        /// Rotates the geometries of the GeometryCollection by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the geometries get rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public override void Rotate(Coordinate Origin, Double radAngle)
+        {
+            foreach (IGeometry geo in Geometries)
+            {
+                IPolygon poly = geo as IPolygon;
+                if (poly != null) { poly.Rotate(Origin, radAngle); continue; }
+
+                ILineString ls = geo as ILineString;
+                if (ls != null) { ls.Rotate(Origin, radAngle); continue; }
+
+                IPoint pt = geo as IPoint;
+                if (pt != null) { pt.Rotate(Origin, radAngle); continue; }
+            }
+        }
+
         #region Nested type: Enumerator
 
         /// <summary>

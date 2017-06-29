@@ -137,7 +137,7 @@ namespace DotSpatial.Data
         public void SetValues(double minX, double minY, double minM, double minZ,
                               double maxX, double maxY, double maxM, double maxZ)
         {
-            SetValues(minX, minY, minM, maxX, maxY, maxZ);
+            SetValues(minX, minY, minM, maxX, maxY, maxM);
             MinZ = minZ;
             MaxZ = maxZ;
         }
@@ -187,9 +187,7 @@ namespace DotSpatial.Data
         {
             // Both parties must opt into an M comparison.
             if ((HasZ && !double.IsNaN(z)) && (z < MinZ || z > MaxZ))
-            {
                 return false;
-            }
             return Intersects(x, y, m);
         }
 
@@ -204,17 +202,8 @@ namespace DotSpatial.Data
         public override bool Intersects(IExtent ext)
         {
             IExtentZ mExt = ext as IExtentZ;
-            if (mExt != null && ext.HasZ && HasZ)
-            {
-                if (mExt.MaxZ < MinZ)
-                {
-                    return false;
-                }
-                if (mExt.MinZ > MaxZ)
-                {
-                    return false;
-                }
-            }
+            if (mExt != null && ext.HasZ && HasZ && (mExt.MaxZ < MinZ || mExt.MinZ > MaxZ))
+                return false;
             return base.Intersects(ext);
         }
 
@@ -228,14 +217,8 @@ namespace DotSpatial.Data
         {
             if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
-                if (env.Maximum.Z < MinZ)
-                {
+                if (env.Maximum.Z < MinZ || env.Minimum.Z > MaxZ)
                     return false;
-                }
-                if (env.Minimum.Z > MaxZ)
-                {
-                    return false;
-                }
             }
             return base.Intersects(env);
         }
@@ -293,13 +276,9 @@ namespace DotSpatial.Data
             if (mExt != null && ext.HasZ && HasZ)
             {
                 if (mExt.MinZ < MinZ)
-                {
                     MinZ = mExt.MinZ;
-                }
                 if (mExt.MaxZ > MaxZ)
-                {
                     MaxZ = mExt.MaxZ;
-                }
             }
             base.ExpandToInclude(ext);
         }
@@ -331,13 +310,9 @@ namespace DotSpatial.Data
             if (HasZ && !double.IsNaN(z))
             {
                 if (z < MinZ)
-                {
                     MinZ = m;
-                }
                 if (z > MaxZ)
-                {
                     MaxZ = m;
-                }
             }
             ExpandToInclude(x, y, m);
         }
@@ -353,14 +328,8 @@ namespace DotSpatial.Data
             IExtentZ mExt = ext as IExtentZ;
             if (mExt != null && ext.HasZ && HasZ)
             {
-                if (mExt.MaxZ < MaxZ)
-                {
+                if (mExt.MaxZ < MaxZ || mExt.MinZ > MinZ)
                     return false;
-                }
-                if (mExt.MinZ > MinZ)
-                {
-                    return false;
-                }
             }
             return base.Within(ext);
         }
@@ -375,14 +344,8 @@ namespace DotSpatial.Data
             IExtentZ mExt = ext as IExtentZ;
             if (mExt != null && ext.HasZ && HasZ)
             {
-                if (mExt.MaxZ > MaxZ)
-                {
+                if (mExt.MaxZ > MaxZ || mExt.MinZ < MinZ)
                     return false;
-                }
-                if (mExt.MinZ < MinZ)
-                {
-                    return false;
-                }
             }
             return base.Within(ext);
         }
@@ -397,14 +360,8 @@ namespace DotSpatial.Data
         {
             if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
-                if (env.Maximum.Z > MinZ)
-                {
+                if (env.Maximum.Z > MinZ || env.Minimum.Z < MaxZ)
                     return false;
-                }
-                if (env.Minimum.Z < MaxZ)
-                {
-                    return false;
-                }
             }
             return base.Within(env);
         }
@@ -419,14 +376,8 @@ namespace DotSpatial.Data
         {
             if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
-                if (env.Maximum.Z < MinZ)
-                {
+                if (env.Maximum.Z < MinZ || env.Minimum.Z > MaxZ)
                     return false;
-                }
-                if (env.Minimum.Z > MaxZ)
-                {
-                    return false;
-                }
             }
             return base.Contains(env);
         }
@@ -438,7 +389,7 @@ namespace DotSpatial.Data
         public override string ToString()
         {
             return "X[" + MinX + "|" + MaxX + "], Y[" + MinY + "|" + MaxY + "]" +
-                "M[" + MinM + "|" + MaxM + "], Z[" + MinZ + "|" + MaxZ + "]";
+                   "M[" + MinM + "|" + MaxM + "], Z[" + MinZ + "|" + MaxZ + "]";
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ using System.Drawing;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// RectangleEM
+    /// Contains various extensions for Rectangle
     /// </summary>
     public static class RectangleExt
     {
@@ -38,7 +38,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static bool IntersectsWith(this Rectangle self, RectangleF other)
         {
-            Rectangle temp = new Rectangle((int)other.X, (int)other.Y, (int)other.Width, (int)other.Height);
+            var temp = new Rectangle((int)other.X, (int)other.Y, (int)other.Width, (int)other.Height);
             return self.IntersectsWith(temp);
         }
 
@@ -70,10 +70,13 @@ namespace DotSpatial.Data
             return new Rectangle(self.X - distance, self.Y - distance, self.Width + 2 * distance, self.Height + 2 * distance);
         }
 
-        #endregion
-
-        #region Properties
-
+        /// <summary>
+        /// Expands the rectangle by the specified integer distances.
+        /// </summary>
+        public static Rectangle ExpandBy(this Rectangle self, int dx, int dy)
+        {
+            return new Rectangle(self.X - dx, self.Y - dy, self.Width + 2 * dx, self.Height + 2 * dy);
+        }
         #endregion
     }
 }

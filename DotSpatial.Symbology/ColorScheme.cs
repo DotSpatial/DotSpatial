@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -28,9 +29,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ColorScheme
-    /// </summary>
     [Serializable]
     public class ColorScheme : Scheme, IColorScheme
     {
@@ -269,6 +267,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the raster categories
         /// </summary>
         [Serialize("Categories")]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ColorCategoryCollection Categories
         {
             get { return _categories; }
@@ -284,6 +283,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the raster editor settings associated with this scheme.
         /// </summary>
         [Serialize("EditorSettings")]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new RasterEditorSettings EditorSettings
         {
             get { return base.EditorSettings as RasterEditorSettings; }

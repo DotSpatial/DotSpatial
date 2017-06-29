@@ -53,6 +53,11 @@ namespace DotSpatial.Controls
         /// </summary>
         event EventHandler<ClipArgs> BufferChanged;
 
+        /// <summary>
+        /// Occurs when View changed
+        /// </summary>
+        event EventHandler<ViewChangedEventArgs> ViewChanged;
+
         #endregion
 
         #region Methods
@@ -189,6 +194,13 @@ namespace DotSpatial.Controls
         /// </summary>
         void ZoomToPrevious();
 
+        // CGX
+        /// <summary>
+        /// 
+        /// </summary>
+        void ZoomToLayerEnvelope(IEnvelope layerEnvelope);
+        // CGX END
+
         #endregion
 
         #region Properties
@@ -224,6 +236,24 @@ namespace DotSpatial.Controls
         /// region to be the same size as the client, or three times larger.
         /// </summary>
         bool ExtendBuffer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the coefficient used for ExtendBuffer. This coefficient should not be modified.
+        /// </summary>
+        int ExtendBufferCoeff
+        {
+            get;
+        }
+
+
+        /// <summary>
+        /// Gets or sets the clockwise map frame angle used for rotation.
+        /// </summary>
+        double Angle
         {
             get;
             set;
@@ -277,6 +307,54 @@ namespace DotSpatial.Controls
             get;
             set;
         }
+
+        //CGX
+        double ComputeScaleFromExtent();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void ComputeExtentFromScale(double dScale);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void ComputeExtentFromScale(double dScale, Point mousePosition);
+
+        /// <summary>
+        /// Gets or sets the map reference scale.
+        /// </summary>
+        double ReferenceScale
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the map current scale.
+        /// </summary>
+        double CurrentScale
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// gets or sets the map background color.
+        /// </summary>
+        Color BackgroundColor
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the map bookmarks.
+        /// </summary>
+        List<CBookmarks> Bookmarks
+        {
+            get;
+            set;
+        }
+        //Fin CGX
 
         ///// <summary>
         ///// This instructs the MapFrame to abort any current efforts to update the back-buffer so that

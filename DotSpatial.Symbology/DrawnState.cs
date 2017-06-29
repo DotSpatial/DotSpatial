@@ -27,11 +27,6 @@ namespace DotSpatial.Symbology
     {
         #region Private Variables
 
-        private IFeatureCategory _category;
-        private int _chunk;
-        private bool _isSelected;
-        private bool _isVisible;
-
         #endregion
 
         #region Constructors
@@ -52,10 +47,10 @@ namespace DotSpatial.Symbology
         /// <param name="visible">A boolean indicating whether this feature is visible or not</param>
         public DrawnState(IFeatureCategory category, bool selected, int chunk, bool visible)
         {
-            _category = category;
-            _isSelected = selected;
-            _isVisible = visible;
-            _chunk = chunk;
+            SchemeCategory = category;
+            IsSelected = selected;
+            IsVisible = visible;
+            Chunk = chunk;
         }
 
         #endregion
@@ -65,38 +60,22 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the scheme category
         /// </summary>
-        public IFeatureCategory SchemeCategory
-        {
-            get { return _category; }
-            set { _category = value; }
-        }
+        public IFeatureCategory SchemeCategory { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean, true if this feature is currently selected
         /// </summary>
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set { _isSelected = value; }
-        }
+        public bool IsSelected { get; set; }
 
         /// <summary>
         /// Gets or sets whether this feature is currently being drawn.
         /// </summary>
-        public bool IsVisible
-        {
-            get { return _isVisible; }
-            set { _isVisible = value; }
-        }
+        public bool IsVisible { get; set; }
 
         /// <summary>
         /// Gets or sets the integer chunk that this item belongs to.
         /// </summary>
-        public int Chunk
-        {
-            get { return _chunk; }
-            set { _chunk = value; }
-        }
+        public int Chunk { get; set; }
 
         #endregion
 

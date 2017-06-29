@@ -171,8 +171,15 @@ namespace DotSpatial.Controls
             get { return _layoutControl; }
             set
             {
+                if (_layoutControl != null)
+                {
+                    _layoutControl.ElementsChanged -= LayoutControlElementsChanged;
+                }
                 _layoutControl = value;
-                _layoutControl.ElementsChanged += LayoutControlElementsChanged;
+                if (_layoutControl != null)
+                {
+                    _layoutControl.ElementsChanged += LayoutControlElementsChanged;
+                }
             }
         }
 

@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -30,13 +29,10 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using Point = System.Drawing.Point;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// A layer with drawing characteristics for LineStrings
-    /// </summary>
     public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer
     {
         #region Events
@@ -51,18 +47,7 @@ namespace DotSpatial.Controls
 
         #region Private variables
 
-        // All the lists of pens to use for drawing the various stages
-        // private List<Pen> _scaledPens;
-
         const int SELECTED = 1;
-        const int X = 0;
-        const int Y = 1;
-        private static object lock1 = new object();
-        private static double totalTime;
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
-        private Rectangle _bufferRectangle;
-        private Image _stencil; // draw features to the stencil
 
         #endregion
 
@@ -116,9 +101,64 @@ namespace DotSpatial.Controls
         private void Configure()
         {
             ChunkSize = 25000;
-            ProgressReportingEnabled = true;
+            ProgressReportingEnabled = false; // CGX true -> false
         }
 
+        #endregion
+
+        #region CGX
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="inFeatureSet"></param>
+        public MapPolygonLayer(IFeatureSet inFeatureSet, FastDrawnState[] inVisibility)
+            : base(inFeatureSet)
+        {
+            Configure();
+            OnFinishedLoading();
+
+            Visibility = inVisibility;
+
+        }
+        FastDrawnState[] _Visibility = null;
+        [Serialize("FastDrawnState", ConstructorArgumentIndex = 1)]
+        public FastDrawnState[] Visibility
+        {
+            get
+            {
+
+
+
+                return _Visibility;
+            }
+
+            set
+            {
+
+                _Visibility = value;
+
+            }
+        }
+        public void StoreVisibility()
+        {
+            Visibility = DrawnStates;
+        }
+
+        public void SetVisibility()
+        {
+            DrawnStatesNeeded = true;
+            if (_Visibility != null && DrawnStates != null
+                && _Visibility.Length == DrawnStates.Length)
+            {
+                for (int i = 0; i < _Visibility.Length; i++)
+                {
+
+                    DrawnStates[i].Visible = _Visibility[i].Visible;
+
+
+                }
+            }
+        }
         #endregion
 
         #region Methods
@@ -133,7 +173,7 @@ namespace DotSpatial.Controls
         public virtual void DrawRegions(MapArgs args, List<Extent> regions)
         {
             List<Rectangle> clipRects = args.ProjToPixel(regions);
-            if (EditMode)
+            if (EditMode) 
             {
                 List<IFeature> drawList = new List<IFeature>();
                 drawList = regions.Where(region => region != null).Aggregate(drawList, (current, region) => current.Union(DataSet.Select(region)).ToList());
@@ -143,16 +183,20 @@ namespace DotSpatial.Controls
             {
                 List<int> drawList = new List<int>();
                 List<ShapeRange> shapes = DataSet.ShapeIndices;
-                for (int shp = 0; shp < shapes.Count; shp++)
+                //CGX
+                if (shapes != null)
                 {
-                    foreach (Extent region in regions)
+                    for (int shp = 0; shp < shapes.Count; shp++)
                     {
-                        if (!shapes[shp].Extent.Intersects(region)) continue;
-                        drawList.Add(shp);
-                        break;
+                        foreach (Extent region in regions)
+                        {
+                            if (!shapes[shp].Extent.Intersects(region)) continue;
+                            drawList.Add(shp);
+                            break;
+                        }
                     }
+                    DrawFeatures(args, drawList, clipRects, true);
                 }
-                DrawFeatures(args, drawList, clipRects, true);
             }
         }
 
@@ -164,8 +208,8 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
+            if (BackBuffer == null) return;
+            Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -214,8 +258,7 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified,
         ///  this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<IFeature> features,
-                                         List<Rectangle> clipRectangles, bool useChunks)
+        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
         {
             if (useChunks == false)
             {
@@ -235,8 +278,8 @@ namespace DotSpatial.Controls
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
                     FinishDrawing();
-                    OnBufferChanged(clipRectangles);
                     Application.DoEvents();
+                    OnBufferChanged(clipRectangles);
                     //this.StartDrawing();
                 }
             }
@@ -269,8 +312,8 @@ namespace DotSpatial.Controls
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
                     // FinishDrawing();
-                    OnBufferChanged(clipRectangles);
                     Application.DoEvents();
+                    OnBufferChanged(clipRectangles);
                     // this.StartDrawing();
                 }
             }
@@ -282,8 +325,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public void FinishDrawing()
         {
-            if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
-            _stencil = _backBuffer;
+            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
+            Buffer = BackBuffer;
         }
 
         /// <summary>
@@ -319,57 +362,35 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer
-        {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
-        }
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+        public IEnvelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+        public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// true if the layer component reports progress messages, false otherwise
         /// </summary>
         [ShallowCopy,
          Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool ProgressReportingEnabled
-        {
-            get;
-            set;
-        }
+        public bool ProgressReportingEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the label layer that is associated with this polygon layer.
@@ -392,11 +413,9 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">The Rectangle in pixels</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
-            if (BufferChanged != null)
-            {
-                ClipArgs e = new ClipArgs(clipRectangles);
-                BufferChanged(this, e);
-            }
+            var h = BufferChanged;
+            if (h == null) return;
+            h(this, new ClipArgs(clipRectangles));
         }
 
         /// <summary>
@@ -422,16 +441,13 @@ namespace DotSpatial.Controls
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
             List<GraphicsPath> paths;
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             // First, use the coordinates to build the drawing paths
             BuildPaths(e, features, out paths);
+
             // Next draw all the paths using the various category symbols.
             DrawPaths(e, paths);
-            sw.Stop();
-            //Debug.WriteLine("Drawing time: " + sw.ElapsedMilliseconds);
 
-            foreach (GraphicsPath path in paths)
+            foreach (var path in paths)
             {
                 path.Dispose();
             }
@@ -442,11 +458,14 @@ namespace DotSpatial.Controls
         {
             if (DataSet.ShapeIndices == null) return;
             List<GraphicsPath> paths;
+
             // First, use the coordinates to build the drawing paths
             BuildPaths(e, indices, out paths);
+
             // Next draw all the paths using the various category symbols.
             DrawPaths(e, paths);
-            foreach (GraphicsPath path in paths)
+
+            foreach (var path in paths)
             {
                 path.Dispose();
             }
@@ -459,17 +478,20 @@ namespace DotSpatial.Controls
         /// <param name="paths"></param>
         private void DrawPaths(MapArgs e, IList<GraphicsPath> paths)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             int numCategories = Symbology.Categories.Count;
 
             if (!DrawnStatesNeeded && !EditMode)
             {
                 IPolygonSymbolizer ps = Symbolizer;
+
                 g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
                 Extent catBounds = DataSet.Extent;
-                RectangleF bounds = new RectangleF();
-                bounds.X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx);
-                bounds.Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy);
+                var bounds = new RectangleF
+                {
+                    X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
+                    Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
+                };
                 float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
                 bounds.Width = r - bounds.X;
                 float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
@@ -491,6 +513,16 @@ namespace DotSpatial.Controls
                 {
                     scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                 }
+
+                //CGX
+                if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                {
+                    double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                    double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                    scale = dReferenceScale / dCurrentScale;
+                }
+                //Fin CGX
+
                 foreach (IPattern pattern in ps.Patterns)
                 {
                     if (pattern.UseOutline)
@@ -507,18 +539,13 @@ namespace DotSpatial.Controls
                     foreach (IPolygonCategory category in Symbology.Categories)
                     {
                         Extent catBounds;
-                        if (CategoryExtents.Keys.Contains(category))
-                        {
-                            catBounds = CategoryExtents[category];
-                        }
-                        else
-                        {
-                            catBounds = CalculateCategoryExtent(category);
-                        }
+                        catBounds = CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category);
                         if (catBounds == null) catBounds = Extent;
-                        RectangleF bounds = new RectangleF();
-                        bounds.X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx);
-                        bounds.Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy);
+                        var bounds = new RectangleF
+                        {
+                            X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
+                            Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
+                        };
                         float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
                         bounds.Width = r - bounds.X;
                         float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
@@ -550,6 +577,16 @@ namespace DotSpatial.Controls
                         {
                             scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                         }
+
+                        //CGX
+                        if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                        {
+                            double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                            double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                            scale = dReferenceScale / dCurrentScale;
+                        }
+                        //Fin CGX
+
                         foreach (IPattern pattern in ps.Patterns)
                         {
                             if (pattern.UseOutline)
@@ -562,20 +599,18 @@ namespace DotSpatial.Controls
                 } // selectState
             }
 
-            for (int i = 0; i < Symbology.Categories.Count; i++)
-            {
-                paths[i].Dispose();
-            }
             if (e.Device == null) g.Dispose();
         }
 
         private void BuildPaths(MapArgs e, IEnumerable<int> indices, out List<GraphicsPath> paths)
         {
-            DateTime startTime = DateTime.Now;
-
             paths = new List<GraphicsPath>();
+            // CGX bug partie gauche des polygones intersectant le bord de la carte
+            //Extent drawExtents = e.GeographicExtents;
+            //Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
             Rectangle clipRect = ComputeClippingRectangle(e);
             Extent drawExtents = e.PixelToProj(clipRect);
+            // FIN CGX
             SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
 
             List<GraphicsPath> graphPaths = new List<GraphicsPath>();
@@ -637,29 +672,31 @@ namespace DotSpatial.Controls
                         AssignFastDrawnStates();
                         states = DrawnStates;
                     }
+                    //CGX
+                    if (Visibility != null && Visibility.Length > shp)
+                    {
+                        bool Visi = Visibility[shp].Visible;
+                        if (!Visi) continue;
+                    }
+                    //FIN CGX
                     if (states[shp].Visible == false) continue;
                     ShapeRange shape = shapes[shp];
-                    if (!shape.Extent.Intersects(e.GeographicExtents)) return;
+                    if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
                     if (drawExtents.Contains(shape.Extent))
                     {
                         FastDrawnState state = states[shp];
-                        if (!borders.ContainsKey(state)) return;
+                        if (!borders.ContainsKey(state)) continue;
                         BuildPolygon(vertices, shapes[shp], borders[state], e, null);
                     }
                     else
                     {
                         FastDrawnState state = states[shp];
-                        if (!borders.ContainsKey(state)) return;
+                        if (!borders.ContainsKey(state)) continue;
                         BuildPolygon(vertices, shapes[shp], borders[state], e, shClip);
                     }
                 }
             }
             if (ProgressReportingEnabled) ProgressMeter.Reset();
-
-            TimeSpan interval = DateTime.Now - startTime;
-            totalTime += interval.TotalMilliseconds;
-
-            //Console.WriteLine("Total milliseconds: " + totalTime.ToString());
         }
 
         private void BuildPaths(MapArgs e, IEnumerable<IFeature> features, out List<GraphicsPath> borderPaths)
@@ -719,37 +756,35 @@ namespace DotSpatial.Controls
                 PartRange prtx = shpx.Parts[prt];
                 int start = prtx.StartIndex;
                 int end = prtx.EndIndex;
-                List<double[]> points = new List<double[]>();
+                var points = new List<double[]>(end - start + 1);
 
                 for (int i = start; i <= end; i++)
                 {
-                    double[] pt = new double[2];
-                    pt[X] = (vertices[i * 2] - minX) * dx;
-                    pt[Y] = (maxY - vertices[i * 2 + 1]) * dy;
+                    var pt = new[]
+                    {
+                        (vertices[i*2] - minX)*dx,
+                        (maxY - vertices[i*2 + 1])*dy
+                    };
                     points.Add(pt);
                 }
                 if (null != shClip)
                 {
                     points = shClip.Clip(points);
                 }
-                List<Point> intPoints = DuplicationPreventer.Clean(points);
-                if (intPoints.Count < 2)
+                var intPoints = DuplicationPreventer.Clean(points).ToArray();
+                if (intPoints.Length < 2)
                 {
-                    points.Clear();
                     continue;
                 }
 
-                //Would be nice to figure out how to get rid of this lock
-                lock (lock1)
-                {
-                    borderPath.StartFigure();
-                    Point[] pointArray = intPoints.ToArray();
-                    borderPath.AddLines(pointArray);
-                }
-                points.Clear();
+                borderPath.StartFigure();
+                borderPath.AddLines(intPoints);
             }
         }
 
         #endregion
+
+       
+
     }
-}
+  }

@@ -82,6 +82,16 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        // CGX
+        public void LabelSetup2(ILabelLayer e)
+        {
+            using (var dlg = new LabelSetup2 { Layer = e })
+            {
+                ShowDialog(dlg);
+            }
+        }
+        // CGX END
+
         /// <summary>
         /// Show the attribute table editor.
         /// </summary>
@@ -106,11 +116,17 @@ namespace DotSpatial.Symbology.Forms
                 if (ShowDialog(frmExport) != DialogResult.OK) return;
 
                 // Create a FeatureSet of features that the client wants exported
-                FeatureSet fs = null;
+                //CGX
+                //FeatureSet fs = null;
+                IFeatureSet fs = null;
+                //Fin CGX
                 switch (frmExport.FeaturesIndex)
                 {
                     case 0:
-                        fs = (FeatureSet) e.DataSet;
+                        //CGX
+                        //fs = (FeatureSet) e.DataSet;
+                        fs = e.DataSet;
+                        //Fin CGX
                         break;
                     case 1:
                         fs = e.Selection.ToFeatureSet();
@@ -129,8 +145,8 @@ namespace DotSpatial.Symbology.Forms
 
                 fs.SaveAs(frmExport.Filename, true);
 
-                if (MessageBox.Show(Owner, "Do you want to load the shapefile?",
-                                    "The layer was exported.",
+                if (MessageBox.Show(Owner, SymbologyFormsMessageStrings.FeatureLayerActions_LoadFeatures,
+                                    SymbologyFormsMessageStrings.FeatureLayerActions_FeaturesExported,
                                     MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     LoadFeatureSetAsLayer(e, fs, Path.GetFileNameWithoutExtension(frmExport.Filename));
@@ -138,7 +154,9 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private static void LoadFeatureSetAsLayer(IFeatureLayer e, FeatureSet fs, string newLayerName)
+        //CGX
+      //  private static void LoadFeatureSetAsLayer(IFeatureLayer e, FeatureSet fs, string newLayerName)
+        private static void LoadFeatureSetAsLayer(IFeatureLayer e, IFeatureSet fs, string newLayerName)
         {
             var layerType = e.GetType();
             var newLayer = (FeatureLayer)Activator.CreateInstance(layerType, fs);

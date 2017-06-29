@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
@@ -30,91 +29,17 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// FeatureIdentifier
+    /// Feature Identifier form used to display output from MapFunctionIdentify.
     /// </summary>
-    public class FeatureIdentifier : Form
+    public partial class FeatureIdentifier : Form
     {
         private Extent _activeRegion;
         private readonly Dictionary<string, string> _featureIDFields;
-        private ListBoxDialog _lstBox = new ListBoxDialog();
         private readonly MenuItem _mnuAssignIdField;
         private readonly MenuItem _mnuSelectMenu;
-        private DataGridView dgvAttributes;
+        
         private readonly ContextMenu mnuTreeContext;
-        private SplitContainer splitContainer1;
-      
-        internal TreeView treFeatures;
-        internal string _previouslySelectedLayerName;
-
-        #region Private Variables
-
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
-
-        #endregion
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FeatureIdentifier));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.treFeatures = new System.Windows.Forms.TreeView();
-            this.dgvAttributes = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // splitContainer1
-            // 
-            resources.ApplyResources(this.splitContainer1, "splitContainer1");
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.treFeatures);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.dgvAttributes);
-            // 
-            // treFeatures
-            // 
-            resources.ApplyResources(this.treFeatures, "treFeatures");
-            this.treFeatures.Name = "treFeatures";
-            this.treFeatures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treFeatures_AfterSelect);
-            // 
-            // dgvAttributes
-            // 
-            this.dgvAttributes.AllowUserToAddRows = false;
-            this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            resources.ApplyResources(this.dgvAttributes, "dgvAttributes");
-            this.dgvAttributes.Name = "dgvAttributes";
-            // 
-            // FeatureIdentifier
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.splitContainer1);
-            this.Name = "FeatureIdentifier";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).EndInit();
-            this.ResumeLayout(false);
-
-        }
-
-        #endregion
+        private string _previouslySelectedLayerName;
 
         #region Constructors
 
@@ -134,42 +59,44 @@ namespace DotSpatial.Controls
             _featureIDFields = new Dictionary<string, string>();
         }
 
-      
+        #endregion
+
+        #region Methods
 
         private void _mnuAssignIdField_Click(object sender, EventArgs e)
         {
-            IFeatureLayer fl = treFeatures.SelectedNode.Tag as IFeatureLayer;
+            var fl = treFeatures.SelectedNode.Tag as IFeatureLayer;
             if (fl != null)
             {
-                _lstBox = new ListBoxDialog();
+                var lstBox = new ListBoxDialog();
 
-                int count = fl.DataSet.DataTable.Columns.Count;
-                object[] obj = new object[count];
-                for (int i = 0; i < count; i++)
+                var count = fl.DataSet.DataTable.Columns.Count;
+                var obj = new object[count];
+                for (var i = 0; i < count; i++)
                 {
                     obj[i] = fl.DataSet.DataTable.Columns[i].ColumnName;
                 }
-                _lstBox.Clear();
-                _lstBox.Add(obj);
-                if (_lstBox.ShowDialog(this) != DialogResult.OK) return;
+                lstBox.Clear();
+                lstBox.Add(obj);
+                if (lstBox.ShowDialog(this) != DialogResult.OK) return;
                 if (_featureIDFields.ContainsKey(fl.LegendText) == false)
                 {
-                    _featureIDFields.Add(fl.LegendText, (string)_lstBox.SelectedItem);
+                    _featureIDFields.Add(fl.LegendText, (string)lstBox.SelectedItem);
                 }
                 else
                 {
-                    _featureIDFields[fl.LegendText] = (string)_lstBox.SelectedItem;
+                    _featureIDFields[fl.LegendText] = (string)lstBox.SelectedItem;
                 }
                 SuspendLayout();
 
-                List<IFeatureLayer> oldLayers = new List<IFeatureLayer>();
+                var oldLayers = new List<IFeatureLayer>();
                 foreach (TreeNode node in treFeatures.Nodes)
                 {
                     oldLayers.Add(node.Tag as IFeatureLayer);
                 }
 
                 Clear();
-                foreach (IFeatureLayer layer in oldLayers)
+                foreach (var layer in oldLayers)
                 {
                     Add(layer, _activeRegion);
                 }
@@ -180,8 +107,8 @@ namespace DotSpatial.Controls
 
         private void selectMenu_Click(object sender, EventArgs e)
         {
-            IFeature feature = treFeatures.SelectedNode.Tag as IFeature;
-            IFeatureLayer layer = treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
+            var feature = treFeatures.SelectedNode.Tag as IFeature;
+            var layer = treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
             if (feature != null && layer != null)
             {
                 layer.Select(feature);
@@ -193,10 +120,10 @@ namespace DotSpatial.Controls
             // Create a customized context menu on right click in the tree.
             if (e.Button == MouseButtons.Right)
             {
-                TreeNode clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
+                var clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
                 if (clickedNode != null)
                 {
-                    IFeature f = clickedNode.Tag as IFeature;
+                    var f = clickedNode.Tag as IFeature;
                     if (f != null)
                     {
                         treFeatures.SelectedNode = clickedNode;
@@ -204,7 +131,7 @@ namespace DotSpatial.Controls
                         mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
                         mnuTreeContext.Show(treFeatures, e.Location);
                     }
-                    IFeatureLayer fl = clickedNode.Tag as IFeatureLayer;
+                    var fl = clickedNode.Tag as IFeatureLayer;
                     if (fl != null)
                     {
                         treFeatures.SelectedNode = clickedNode;
@@ -214,15 +141,7 @@ namespace DotSpatial.Controls
                     }
                 }  
             }
-            else if (e.Button == MouseButtons.Left)
-            {
-                TreeNode clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
-            }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Clears the items in the tree
@@ -231,15 +150,8 @@ namespace DotSpatial.Controls
         {
             if (treFeatures.SelectedNode != null)
             {
-                TreeNode node = treFeatures.SelectedNode;
-                if (node.Parent != null)
-                {
-                    _previouslySelectedLayerName = node.Parent.Text;
-                }
-                else
-                {
-                    _previouslySelectedLayerName = node.Text;
-                }
+                var node = treFeatures.SelectedNode;
+                _previouslySelectedLayerName = node.Parent != null ? node.Parent.Text : node.Text;
             }
             treFeatures.SuspendLayout();
             treFeatures.Nodes.Clear();
@@ -253,50 +165,36 @@ namespace DotSpatial.Controls
         /// <param name="bounds"></param>
         public virtual bool Add(IFeatureLayer layer, Extent bounds)
         {
-            List<IFeature> result = layer.DataSet.Select(bounds);
-            if (result.Count == 0)
+            // CGX
+            try
             {
-                return false;
-            }
-            _activeRegion = bounds;
-            treFeatures.SuspendLayout();
-
-            TreeNode nodeLayer = treFeatures.Nodes.Add(layer.LegendText);
-            nodeLayer.Tag = layer;
-            nodeLayer.Name = layer.LegendText;
-
-            foreach (IFeature feature in result)
-            {
-                DataRow dr = null;
-                if (!layer.DataSet.AttributesPopulated)
+                var result = ((FeatureSet)layer.DataSet).Select(bounds);
+                if (result.Count == 0)
                 {
-                    int fid;
-                    if (feature.ShapeIndex != null)
-                        fid = layer.DataSet.ShapeIndices.IndexOf(feature.ShapeIndex);
-                    else
-                        fid = feature.Fid;
+                    return false;
+                }
+                _activeRegion = bounds;
+                treFeatures.SuspendLayout();
 
-                    using (DataTable dt = layer.DataSet.GetAttributes(fid, 1))
+                var nodeLayer = treFeatures.Nodes.Add(layer.LegendText);
+                nodeLayer.Tag = layer;
+                nodeLayer.Name = layer.LegendText;
+
+                foreach (var feature in result)
+                {
+                    var dr = feature.DataRow;
+                    var name = feature.Fid.ToString(CultureInfo.InvariantCulture);
+                    if (_featureIDFields.ContainsKey(layer.LegendText))
                     {
-                        if ((dt != null) && (dt.Rows.Count > 0))
-                            dr = layer.DataSet.GetAttributes(fid, 1).Rows[0];
+                        if (dr != null) name += " - " + dr[_featureIDFields[layer.LegendText]];
                     }
-
-                    feature.DataRow = dr;
+                    var node = nodeLayer.Nodes.Add(name);
+                    node.Tag = feature;
                 }
-                else
-                {
-                    dr = feature.DataRow;
-                }
-                string name = feature.Fid.ToString(CultureInfo.InvariantCulture);
-                if (_featureIDFields.ContainsKey(layer.LegendText))
-                {
-                    if (dr != null) name += " - " + dr[_featureIDFields[layer.LegendText]];
-                }
-                TreeNode node = nodeLayer.Nodes.Add(name);
-                node.Tag = feature;
+                treFeatures.ResumeLayout();
             }
-            treFeatures.ResumeLayout();
+            catch (Exception)
+            { }
             return true;
         }
 
@@ -313,8 +211,8 @@ namespace DotSpatial.Controls
             if (index == RcIndex.Empty) return;
             var val = layer.DataSet.Value[index.Row, index.Column];
 
-            string text = String.Format("{0} = {1} ({2},{3})", layer.LegendText, val, index.Column, index.Row);
-            TreeNode nodeLayer = treFeatures.Nodes.Add(text);
+            var text = String.Format("{0} = {1} ({2},{3})", layer.LegendText, val, index.Column, index.Row);
+            var nodeLayer = treFeatures.Nodes.Add(text);
             nodeLayer.Tag = layer;
             nodeLayer.Name = layer.LegendText;
 
@@ -328,7 +226,7 @@ namespace DotSpatial.Controls
         {
             if (_previouslySelectedLayerName != null)
             {
-                TreeNode parent = treFeatures.Nodes[_previouslySelectedLayerName];
+                var parent = treFeatures.Nodes[_previouslySelectedLayerName];
                 if (parent != null)
                 {
                     if (parent.FirstNode == null)
@@ -338,7 +236,7 @@ namespace DotSpatial.Controls
                     else
                     {
                         parent.Expand();
-                        TreeNode child = parent.FirstNode;
+                        var child = parent.FirstNode;
                         treFeatures.SelectedNode = child;
                     }
                 }
@@ -366,46 +264,15 @@ namespace DotSpatial.Controls
            // treFeatures.Focus();
         }
 
-        #endregion
-
-        #region Properties
-
-        #endregion
-
-        #region Events
-
-        #endregion
-
-        #region Event Handlers
-
-        #endregion
-
-        #region Private Functions
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #endregion
-
         private void treFeatures_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            IFeature f = e.Node.Tag as IFeature;
+            var f = e.Node.Tag as IFeature;
             if (f == null)
             {
                 dgvAttributes.DataSource = null;
                 return;
             }
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("Field Name");
             dt.Columns.Add("Value");
 
@@ -413,10 +280,10 @@ namespace DotSpatial.Controls
             {
                 f.ParentFeatureSet.FillAttributes();
             }
-            DataColumn[] columns = f.ParentFeatureSet.GetColumns();
-            foreach (DataColumn fld in columns)
+            var columns = f.ParentFeatureSet.GetColumns();
+            foreach (var fld in columns)
             {
-                DataRow dr = dt.NewRow();
+                var dr = dt.NewRow();
                 dr["Field Name"] = fld.ColumnName;
                 if (f.DataRow != null) dr["Value"] = f.DataRow[fld.ColumnName].ToString();
                 dt.Rows.Add(dr);
@@ -424,17 +291,6 @@ namespace DotSpatial.Controls
             dgvAttributes.DataSource = dt;
         }
 
-        /// <summary>
-        /// Overrides the normal closing behavior to prevent accidentally referencing a
-        /// disposed form later.  This also allows the form to display slightly faster
-        /// after the first time.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            e.Cancel = true;
-            Hide();
-        }
-
+        #endregion
     }
 }

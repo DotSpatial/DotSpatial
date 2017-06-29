@@ -24,12 +24,9 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// LayerEnumerator
-    /// </summary>
     public class GeoLayerEnumerator : IEnumerator<IMapLayer>
     {
-        IEnumerator<ILayer> _internalEnumerator;
+        readonly IEnumerator<ILayer> _internalEnumerator;
 
         /// <summary>
         /// Creates a new instance of LayerEnumerator
@@ -73,7 +70,7 @@ namespace DotSpatial.Controls
         {
             while (_internalEnumerator.MoveNext())
             {
-                IMapLayer result = _internalEnumerator.Current as IMapLayer;
+                var result = _internalEnumerator.Current as IMapLayer;
                 if (result != null) return true;
             }
             return false;

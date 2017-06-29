@@ -130,7 +130,7 @@ namespace DotSpatial.Topology
         /// <param name="p">The Coordinate.</param>
         public Envelope(Coordinate p)
         {
-            DoInit(p, p.Copy());
+            DoInit(p.Copy(), p.Copy());
         }
 
         /// <summary>
@@ -597,7 +597,7 @@ namespace DotSpatial.Topology
         protected void OnEnvelopeChanged()
         {
             if (EnvelopeChanged == null) return;
-            EnvelopeChanged(this, new EventArgs());
+            EnvelopeChanged(this, EventArgs.Empty);
         }
 
         #endregion
