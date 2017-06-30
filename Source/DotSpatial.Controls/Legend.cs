@@ -222,6 +222,13 @@ namespace DotSpatial.Controls
 
         #region Methods
 
+        // CGX
+        public HashSet<ILegendItem> getSelection()
+        {
+            return _selection;
+        }
+        // FIN CGX
+
         /// <summary>
         /// Adds a map frame as a root node, and links an event handler to update
         /// when the mapframe triggers an ItemChanged event.
@@ -504,7 +511,7 @@ namespace DotSpatial.Controls
             {
                 if (!lb.Bounds.Contains(loc) || lb.CheckBox.Contains(loc)) continue;
                 ILineCategory lc = lb.Item as ILineCategory;
-                if (lc != null)
+                if (lc != null /*CGX*/ && lc.Symbolizer != null)
                 {
                     DetailedLineSymbolDialog lsDialog = new DetailedLineSymbolDialog(lc.Symbolizer);
                     lsDialog.ShowDialog();
@@ -514,7 +521,7 @@ namespace DotSpatial.Controls
                 }
 
                 IPointCategory pc = lb.Item as IPointCategory;
-                if (pc != null)
+                if (pc != null /*CGX*/ && pc.Symbolizer != null)
                 {
                     DetailedPointSymbolDialog dlg = new DetailedPointSymbolDialog(pc.Symbolizer);
                     dlg.ShowDialog();
@@ -524,13 +531,15 @@ namespace DotSpatial.Controls
                 }
 
                 IPolygonCategory polyCat = lb.Item as IPolygonCategory;
-                if (polyCat != null)
+                if (polyCat != null /*CGX*/ && polyCat.Symbolizer != null)
                 {
                     DetailedPolygonSymbolDialog dlg = new DetailedPolygonSymbolDialog(polyCat.Symbolizer);
                     dlg.ShowDialog();
                     IPolygonSymbolizer ps = polyCat.Symbolizer.Copy();
                     ps.SetFillColor(Color.Cyan);
-                    ps.OutlineSymbolizer.SetFillColor(Color.DarkCyan);
+                    // CGX
+                    if (ps.OutlineSymbolizer != null)
+                        ps.OutlineSymbolizer.SetFillColor(Color.DarkCyan);
                     polyCat.SelectionSymbolizer = ps;
                 }
 
@@ -720,7 +729,7 @@ namespace DotSpatial.Controls
                         potentialParent = _dragTarget.Item.GetValidContainerFor(_dragItem.Item);
                     }
 
-                    if (potentialParent != null)
+                    if (potentialParent != null /*CGX*/ && potentialParent.ParentMapFrame() != null)
                     {
                         // update the parent, if the user is trying to move the item up the tree
                         var container = BoxFromItem(potentialParent);
@@ -1165,7 +1174,7 @@ namespace DotSpatial.Controls
 
         private void HideEditBox()
         {
-            if (_editBox.Visible && !_ignoreHide)
+            if (_editBox.Visible && !_ignoreHide /*CGX*/&& _previousMouseDown != null)
             {
                 _ignoreHide = true;
                 _previousMouseDown.Item.LegendText = _editBox.Text;

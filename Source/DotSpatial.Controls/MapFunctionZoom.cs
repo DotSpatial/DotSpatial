@@ -3,6 +3,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace DotSpatial.Controls
@@ -181,7 +182,9 @@ namespace DotSpatial.Controls
             if (!(e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0)))
             {
                 e.Map.IsZoomedToMaxExtent = false;
-                Rectangle r = e.Map.MapFrame.View;
+
+                // CGX
+                /*Rectangle r = e.Map.MapFrame.View;
 
                 // For multiple zoom steps before redrawing, we actually
                 // want the x coordinate relative to the screen, not
@@ -213,7 +216,43 @@ namespace DotSpatial.Controls
                 e.Map.MapFrame.View = r;
                 e.Map.Invalidate();
                 _zoomTimer.Start();
-                _mapFrame = e.Map.MapFrame;
+                _mapFrame = e.Map.MapFrame;*/
+
+                int[] array = new int[83]{500000000,400000000,300000000,250000000,200000000,150000000,125000000,100000000,80000000,60000000,40000000,30000000,25000000,20000000,15000000,12500000,10000000,
+                    8000000,6000000,5000000,4000000,3000000,2500000,2000000,1500000,1250000,1000000,800000,700000,600000,500000,400000,300000,250000,200000,150000,125000,100000,80000,70000,60000,50000,
+                    40000,30000,25000,20000,15000,12500,10000,8000,6000,5000,4000,3000,2500,2000,1500,1250,1000,800,600,500,400,300,250,200,150,125,100,80,60,50,40,30,25,20,15,10,5,4,3,2,1};
+                int iTemp = Convert.ToInt32(e.Map.MapFrame.CurrentScale);
+                var closest = array.Aggregate((current, next) => Math.Abs((long)current - iTemp) < Math.Abs((long)next - iTemp) ? current : next);// array.OrderBy(v => Math.Abs((long)v - lTemp)).First();
+                int iTemp2 = Convert.ToInt32(closest);
+
+                if (_direction * e.Delta > 0)
+                {
+                    if (iTemp > 1)
+                    {
+                        while (iTemp2 >= iTemp)
+                        {
+                            array = array.Where(val => val != iTemp2).ToArray();
+                            closest = Convert.ToInt32(array.Aggregate((current, next) => Math.Abs((long)current - iTemp) < Math.Abs((long)next - iTemp) ? current : next));//  array.OrderBy(v => Math.Abs((long)v - lTemp)).First());
+                            iTemp2 = Convert.ToInt32(closest);
+                        }
+                    }
+                }
+                else
+                {
+                    if (iTemp > 1)
+                    {
+                        while (iTemp2 <= iTemp)
+                        {
+                            array = array.Where(val => val != iTemp2).ToArray();
+                            closest = Convert.ToInt32(array.Aggregate((current, next) => Math.Abs((long)current - iTemp) < Math.Abs((long)next - iTemp) ? current : next));//  array.OrderBy(v => Math.Abs((long)v - lTemp)).First());
+                            iTemp2 = Convert.ToInt32(closest);
+                        }
+                    }
+                }
+
+                e.Map.MapFrame.ComputeExtentFromScale(Convert.ToDouble(closest), e.Location);
+
+                // CGX END
                 if (!BusySet)
                 {
                     Map.IsBusy = true;

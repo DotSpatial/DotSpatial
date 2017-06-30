@@ -109,7 +109,12 @@ namespace DotSpatial.Data
         {
             get
             {
-                return _list[index];
+                // CGX
+                if (index > -1 && index < _list.Count)
+                    return _list[index];
+                else
+                    return null;
+                // Fin CGX
             }
 
             set

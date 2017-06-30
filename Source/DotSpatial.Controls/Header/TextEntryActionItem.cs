@@ -15,12 +15,34 @@ namespace DotSpatial.Controls.Header
         private Color _fontColor;
         private string _text;
         private int _width;
+		// CGX
+		private string menuContainerKey;
+        private System.Windows.Forms.HorizontalAlignment textAlignment = System.Windows.Forms.HorizontalAlignment.Left;
 
         #endregion
 
         #region Properties
 
-        /// <summary>
+        public TextEntryActionItem()
+            : base()
+        {
+        }
+
+        public TextEntryActionItem(string rootKey, string caption)
+            : base(caption)
+        {
+            Caption = caption;
+            RootKey = rootKey;
+        }
+
+        public TextEntryActionItem(string rootKey, string menuContainerKey, string caption)
+            : this(rootKey, caption)
+        {
+            MenuContainerKey = menuContainerKey;
+        }
+        // CGX END
+
+		/// <summary>
         /// Gets or sets a value indicating the color of the text in the dropdownbox
         /// </summary>
         public Color FontColor

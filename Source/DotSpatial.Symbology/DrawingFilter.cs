@@ -398,16 +398,22 @@ namespace DotSpatial.Symbology
             {
                 foreach (DataTable dt in tables)
                 {
-                    DataRow[] rows = dt.Select(cat.FilterExpression);
-
-                    foreach (DataRow dr in rows)
+                    // CGX TRY CATCH
+                    try
                     {
-                        int index;
-                        if (allRows.TryGetValue(dr, out index))
+                        DataRow[] rows = dt.Select(cat.FilterExpression);
+
+                        foreach (DataRow dr in rows)
                         {
-                            DrawnStates[FeatureList[index]].SchemeCategory = cat;
+                            int index;
+                            if (allRows.TryGetValue(dr, out index))
+                            {
+                                DrawnStates[FeatureList[index]].SchemeCategory = cat;
+                            }
                         }
                     }
+                    catch (Exception)
+                    { }
                 }
             }
 

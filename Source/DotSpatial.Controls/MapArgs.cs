@@ -4,6 +4,7 @@
 using System;
 using System.Drawing;
 using DotSpatial.Data;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -12,6 +13,9 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapArgs : EventArgs, IProj
     {
+
+        private Coordinate _printlocation = null;
+
         #region  Constructors
 
         /// <summary>
@@ -76,6 +80,14 @@ namespace DotSpatial.Controls
         /// Gets the minimum X value
         /// </summary>
         public double MinX => GeographicExtents.MinX;
+
+        // CGX
+        public Coordinate Printlocation
+        {
+            get { return _printlocation; }
+            set { _printlocation = value; }
+        }
+        // CGX END
 
         #endregion
     }

@@ -1,6 +1,8 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using DotSpatial.Serialization;
+
 namespace DotSpatial.Symbology
 {
     /// <summary>
@@ -48,7 +50,13 @@ namespace DotSpatial.Symbology
         /// Gets or sets a value indicating whether or not this feature should be drawn at all.
         /// This should default to true.
         /// </summary>
+        // CGX
+        [Serialize("Visible")]
         public bool Visible { get; set; }
+
+        // CGX
+        [Serialize("Index")]
+        public int Index;
 
         #endregion
 

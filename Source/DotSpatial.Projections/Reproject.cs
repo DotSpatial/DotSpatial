@@ -211,25 +211,30 @@ namespace DotSpatial.Projections
             }
 
             // break this out because we don't want a chatty call to extension transforms
-            dest.Transform.Forward(xy, startIndex, numPoints);
 
-            if (dstZtoMeter == 1.0)
-            {
-                for (int i = startIndex; i < numPoints; i++)
-                {
-                    xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
-                    xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
-                }
-            }
-            else
-            {
-                for (int i = startIndex; i < numPoints; i++)
-                {
-                    xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
-                    xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
-                    z[i] *= frmZMeter;
-                }
-            }
+			// CGX
+			if (dest.Transform != null)
+			{
+	            dest.Transform.Forward(xy, startIndex, numPoints);
+
+	            if (dstZtoMeter == 1.0)
+	            {
+	                for (int i = startIndex; i < numPoints; i++)
+	                {
+	                    xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
+	                    xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
+	                }
+	            }
+	            else
+	            {
+	                for (int i = startIndex; i < numPoints; i++)
+	                {
+	                    xy[2 * i] = frmMeter * (a * xy[2 * i] + x0);
+	                    xy[2 * i + 1] = frmMeter * (a * xy[2 * i + 1] + y0);
+	                    z[i] *= frmZMeter;
+	                }
+	            }
+			}
         }
 
         private static void DatumTransform(ProjectionInfo source, ProjectionInfo dest, double[] xy, double[] z, int startIndex, int numPoints)

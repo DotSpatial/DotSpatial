@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblSymbolGroups.Text" xml:space="preserve">
+    <value>Categorias:</value>
+  </data>
+  <data name="tabExpression.Text" xml:space="preserve">
+    <value>Expressão</value>
+  </data>
+  <data name="cmbLabelAngleField.ToolTip" xml:space="preserve">
+    <value>Coluna que contém os ângulos individuais.</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="rbIndividualAngle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 17</value>
+  </data>
+  <data name="rbIndividualAngle.Text" xml:space="preserve">
+    <value>Ângulo individual</value>
+  </data>
+  <data name="rbIndividualAngle.ToolTip" xml:space="preserve">
+    <value>Se esta opção estiver marcada, todos os rótulos serão individualmente girados. O ângulo deve ser definido em qualquer coluna da tabela de atributos.</value>
+  </data>
+  <data name="rbCommonAngle.Text" xml:space="preserve">
+    <value>Ângulo comum</value>
+  </data>
+  <data name="rbCommonAngle.ToolTip" xml:space="preserve">
+    <value>Se esta opção estiver marcada, todos as rótulos serão girado no mesmo ângulo.</value>
+  </data>
+  <data name="nudAngle.ToolTip" xml:space="preserve">
+    <value>Valor do ângulo comum.</value>
+  </data>
+  <data name="grbLabelRotation.Text" xml:space="preserve">
+    <value>Rotação do rótulo</value>
+  </data>
+  <data name="chkPrioritizeLow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 17</value>
+  </data>
+  <data name="chkPrioritizeLow.Text" xml:space="preserve">
+    <value>Priorizar valores baixos</value>
+  </data>
+  <data name="chkPrioritizeLow.ToolTip" xml:space="preserve">
+    <value>Se esta opção for marcada, valores baixos serão colocados primeiro com prevenção de colisão, ou no topo caso contrário.</value>
+  </data>
+  <data name="chkPreventCollision.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 17</value>
+  </data>
+  <data name="chkPreventCollision.Text" xml:space="preserve">
+    <value>Evitar colisões</value>
+  </data>
+  <data name="chkPreventCollision.ToolTip" xml:space="preserve">
+    <value>Se esta opção estiver marcada, os rótulos de alta prioridade serão desenhados sobre rótulos de baixa prioridade.  Se estiver marcado, apenas o rótulo de maior prioridade de dois rótulos sobrepostos será colocado.</value>
+  </data>
+  <data name="lblPriorityField.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 13</value>
+  </data>
+  <data name="lblPriorityField.Text" xml:space="preserve">
+    <value>Prioridade</value>
+  </data>
+  <data name="cmbPriorityField.ToolTip" xml:space="preserve">
+    <value>Por padrão, o FID é usado para priorizar os rótulos. Isso permite que os valores de um campo sejam usados</value>
+  </data>
+  <data name="chkBorder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="chkBorder.Text" xml:space="preserve">
+    <value>Contorno:</value>
+  </data>
+  <data name="lblFontColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 13</value>
+  </data>
+  <data name="lblFontColor.Text" xml:space="preserve">
+    <value>Cor da fonte:</value>
+  </data>
+  <data name="lblFamily.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 13</value>
+  </data>
+  <data name="lblFamily.Text" xml:space="preserve">
+    <value>Família:</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Estilo:</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Tamanho:</value>
+  </data>
+  <data name="gpbFont.Text" xml:space="preserve">
+    <value>Fonte:</value>
+  </data>
+  <data name="lblPreview.Text" xml:space="preserve">
+    <value>Pre-visualização Fonte</value>
+  </data>
+  <data name="chkBackgroundColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 17</value>
+  </data>
+  <data name="chkBackgroundColor.Text" xml:space="preserve">
+    <value>Cor de fundo:</value>
+  </data>
+  <data name="tabBasic.Text" xml:space="preserve">
+    <value>Propriedades básicas</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 13</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>&amp; Y:</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>&amp; X:</value>
+  </data>
+  <data name="grpOffset.Text" xml:space="preserve">
+    <value>Deslocamento</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 13</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Orientação do rótulo:</value>
+  </data>
+  <data name="chkHalo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 17</value>
+  </data>
+  <data name="chkHalo.Text" xml:space="preserve">
+    <value>Usar Halo:</value>
+  </data>
+  <data name="chkShadow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 17</value>
+  </data>
+  <data name="chkShadow.Text" xml:space="preserve">
+    <value>Usar rótulo sombra</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 13</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Características multi-parte:</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Método colocação rótulo:
+</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Alinhamento multi linha:</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 13</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>&amp; Y:</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 13</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>&amp; X:</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>240, 16</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 13</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Deslocamento sombra:</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Cor da sombra:</value>
+  </data>
+  <data name="tabAdvanced.Text" xml:space="preserve">
+    <value>Propriedades avançadas</value>
+  </data>
+  <data name="tabMembers.Text" xml:space="preserve">
+    <value>Membros</value>
+  </data>
+  <data name="cmdCancel.Text" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="cmdApply.Text" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>Cada grupo de símbolo pode ter muitos membros. Use a aba membros para adicionar ou remover membros manualmente, ou com base de uma característica de um campo usado.  Se nenhum membro aparece na lista, você deve primeiro remover os rótulos de um grupo existente.</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAAAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAQ53sQ53sQ53sQ53sQ53sQ53MQ3mMY1loYzkohxjEAAAAAAAAAAAAAAAAAAAAA
+        AAAI1nsAAAAQ53sQ53sAAAAQ53sQ53MQ3mMY1loYzkohxjHO27wAAAAAAAAAAAAAAAAA54T///8AAAAA
+        AAD///8AAAAQ53sQ3nMY3mMY1lIhzkIhxjHv7+8AAAAAAAAAAAAA54T///////////////8AAAAI54QQ
+        53MQ3mMY1lIhzkIpxjErvSQAAAAAAAAAAAAA75T///8AAAAI1mv///8AAAAI74wQ53sQ3msY1loYzkoh
+        xjErvSTFwa4AAAAAAAAA96X///8AAAAAAAD///8AAAAA75QQ53sQ3msY1loYzkohxjkrvSQAAAAAAAAA
+        AAAE/6WU987///////8AylYEwU4AtTkA53sQ3msY1loYzkopzjn39/8AAAAAAAAAAAAC/7UA95wA54QI
+        1nsIzmMAxlIAuUIArTEApysY1lohzkJ11okAAAAAAAAAAAAAAAAA95wA54QI1nsIzmMAxlIAuUIArTEA
+        pysApysApysY1loAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAP//
+        AAD//wAAAD8AAAAPAAAABwAAAAcAAAADAAAABwAAAAcAAAAPAAAAHwAA//8AAP//AAD//wAA
+</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Rótulos</value>
+  </data>
+</root>

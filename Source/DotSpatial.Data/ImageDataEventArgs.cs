@@ -26,6 +26,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// An EventArgs specifically tailored to ImageData.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class ImageDataEventArgs : EventArgs
     {
         private IImageData _imageData;

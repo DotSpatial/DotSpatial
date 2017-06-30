@@ -59,33 +59,41 @@ namespace DotSpatial.Controls
         /// <returns>True, if the node was added to the tree.</returns>
         public virtual bool Add(IFeatureLayer layer, Extent bounds)
         {
-            var result = ((FeatureSet)layer.DataSet).Select(bounds);
-            if (result.Count == 0)
-            {
-                return false;
-            }
+            // CGX
+			try
+			{
+				var result = ((FeatureSet)layer.DataSet).Select(bounds);
+	            if (result.Count == 0)
+	            {
+	                return false;
+	            }
 
-            _activeRegion = bounds;
-            treFeatures.SuspendLayout();
+	            _activeRegion = bounds;
+	            treFeatures.SuspendLayout();
 
-            var nodeLayer = treFeatures.Nodes.Add(layer.LegendText);
-            nodeLayer.Tag = layer;
-            nodeLayer.Name = layer.LegendText;
+	            var nodeLayer = treFeatures.Nodes.Add(layer.LegendText);
+	            nodeLayer.Tag = layer;
+	            nodeLayer.Name = layer.LegendText;
 
-            foreach (var feature in result)
-            {
-                var dr = feature.DataRow;
-                var name = feature.Fid.ToString(CultureInfo.InvariantCulture);
-                if (_featureIdFields.ContainsKey(layer.LegendText))
-                {
-                    if (dr != null) name += " - " + dr[_featureIdFields[layer.LegendText]];
-                }
+	            foreach (var feature in result)
+	            {
+	                var dr = feature.DataRow;
+	                var name = feature.Fid.ToString(CultureInfo.InvariantCulture);
+	                if (_featureIdFields.ContainsKey(layer.LegendText))
+	                {
+	                    if (dr != null) name += " - " + dr[_featureIdFields[layer.LegendText]];
+	                }
 
-                var node = nodeLayer.Nodes.Add(name);
-                node.Tag = feature;
-            }
+	                var node = nodeLayer.Nodes.Add(name);
+	                node.Tag = feature;
+	            }
 
-            treFeatures.ResumeLayout();
+	            treFeatures.ResumeLayout();
+			}
+			catch (Exception)
+			{
+				Debug.WriteLine(ex.Message);
+			}
             return true;
         }
 

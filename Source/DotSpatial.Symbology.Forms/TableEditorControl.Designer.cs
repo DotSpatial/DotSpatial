@@ -116,6 +116,9 @@ namespace DotSpatial.Symbology.Forms
             this.saveEditsToolStripMenuItem});
             this.mnuEdit.Name = "mnuEdit";
             resources.ApplyResources(this.mnuEdit, "mnuEdit");
+
+            this.mnuEdit.Visible = false; // CGX
+
             // 
             // addFieldToolStripMenuItem
             // 

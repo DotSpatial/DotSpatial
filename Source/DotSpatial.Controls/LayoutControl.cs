@@ -347,7 +347,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the list of layoutElements currently selected in the project.
         /// </summary>
-        internal List<LayoutElement> SelectedLayoutElements { get; } = new List<LayoutElement>();
+        // CGX internal -> public
+        public List<LayoutElement> SelectedLayoutElements { get; } = new List<LayoutElement>();
 
         /// <summary>
         /// Gets the heigh of the paper in 1/100 of an inch.
@@ -397,6 +398,16 @@ namespace DotSpatial.Controls
             Cursor = Cursors.Cross;
         }
 
+        // CGX
+        public void SetDefaultMouseMode()
+        {
+
+            ClearSelection();
+            _mouseMode = MouseMode.Default;
+            MapPanMode = false;
+        }
+        // Fin CGX
+
         /// <summary>
         /// Adds a layout element to the layout.
         /// </summary>
@@ -416,6 +427,9 @@ namespace DotSpatial.Controls
             LayoutElements.Insert(0, le);
             OnElementsChanged(EventArgs.Empty);
             le.Invalidated += LeInvalidated;
+
+            // CGX
+            le.Unit = LayoutElement.eSizeUnit.Millimeters; // CGX END
             Invalidate(new Region(PaperToScreen(le.Rectangle)));
         }
 
@@ -805,7 +819,10 @@ namespace DotSpatial.Controls
                     layoutText.SetAttribute("TextHint", lt.TextHint.ToString());
                     layoutText.SetAttribute("Color", XmlHelper.ToString(lt.Color));
                     layoutText.SetAttribute("Font", XmlHelper.ToString(lt.Font));
-                    layoutText.SetAttribute("ContentAlignment", lt.ContentAlignment.ToString());
+
+                    // CGX
+                    // layoutText.SetAttribute("ContentAlignment", lt.ContentAlignment.ToString());
+                    // CGX END
                     layoutText.SetAttribute("Text", lt.Text);
                     element.AppendChild(layoutText);
                 }
@@ -1092,7 +1109,10 @@ namespace DotSpatial.Controls
                                 lt.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
                                 lt.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
                                 lt.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
-                                lt.ContentAlignment = XmlHelper.FromString<ContentAlignment>(innerChild.Attributes["ContentAlignment"].Value);
+
+                                // CGX
+                                // lt.ContentAlignment = XmlHelper.FromString<ContentAlignment>(innerChild.Attributes["ContentAlignment"].Value);
+                                // CGX END
                                 lt.Text = innerChild.Attributes["Text"].Value;
                             }
                         }
@@ -1170,7 +1190,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public void MoveSelectionDown()
         {
-            if (SelectedLayoutElements.Count < 1) return;
+            // CGX
+            /*if (SelectedLayoutElements.Count < 1) return;
             var index = 0;
             var indexArray = new int[SelectedLayoutElements.Count];
             for (var i = 0; i < SelectedLayoutElements.Count; i++)
@@ -1191,7 +1212,27 @@ namespace DotSpatial.Controls
             }
 
             OnSelectionChanged(EventArgs.Empty);
-            Invalidate();
+            Invalidate();*/
+
+            if (SelectedLayoutElements.Count > 0)
+            {
+
+                List<LayoutElement> leSelected = SelectedLayoutElements.OrderBy(o => LayoutElements.IndexOf(o)).ToList();
+                leSelected.Reverse();
+                int index = LayoutElements.IndexOf(leSelected[0]);
+                if (index == (LayoutElements.Count - 1)) return;
+
+                foreach (LayoutElement le in leSelected)
+                {
+                    index = LayoutElements.IndexOf(le);
+                    LayoutElements.Remove(le);
+                    LayoutElements.Insert(index + 1, le);
+                }
+
+                OnSelectionChanged(EventArgs.Empty);
+                Invalidate();
+            }// FIN CGX
+
         }
 
         /// <summary>
@@ -1199,7 +1240,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public void MoveSelectionUp()
         {
-            if (SelectedLayoutElements.Count < 1) return;
+            // CGX
+            /*if (SelectedLayoutElements.Count < 1) return;
             var index = LayoutElements.Count - 1;
             foreach (var le in SelectedLayoutElements)
             {
@@ -1217,7 +1259,26 @@ namespace DotSpatial.Controls
             }
 
             OnSelectionChanged(EventArgs.Empty);
-            Invalidate();
+            Invalidate();*/
+            
+            if (SelectedLayoutElements.Count > 0)
+            {
+
+                List<LayoutElement> leSelected = SelectedLayoutElements.OrderBy(o => LayoutElements.IndexOf(o)).ToList();
+                int index = LayoutElements.IndexOf(leSelected[0]);
+                if (index == 0) return;
+
+                foreach (LayoutElement le in leSelected)
+                {
+                    index = LayoutElements.IndexOf(le);
+                    LayoutElements.Remove(le);
+                    LayoutElements.Insert(index - 1, le);
+                }
+
+                OnSelectionChanged(EventArgs.Empty);
+                Invalidate();
+            }// Fin CGX
+
         }
 
         /// <summary>
@@ -1247,8 +1308,12 @@ namespace DotSpatial.Controls
         /// <param name="y">The distance to pan the map on y-axis in screen coord</param>
         public void PanMap(LayoutMap lm, float x, float y)
         {
-            var mapOnScreen = PaperToScreen(lm.Rectangle);
-            lm.PanMap((lm.Envelope.Width / mapOnScreen.Width) * x, (lm.Envelope.Height / mapOnScreen.Height) * -y);
+            // CGX
+            if (lm != null)
+            {
+                var mapOnScreen = PaperToScreen(lm.Rectangle);
+                lm.PanMap((lm.Envelope.Width / mapOnScreen.Width) * x, (lm.Envelope.Height / mapOnScreen.Height) * -y);
+            }
         }
 
         /// <summary>
@@ -1443,10 +1508,22 @@ namespace DotSpatial.Controls
         /// Adds the specified LayoutElement le to the selection.
         /// </summary>
         /// <param name="le">The layout element.</param>
-        internal void AddToSelection(LayoutElement le)
+        // CGX internal -> public
+        public void AddToSelection(List<LayoutElement> le)
         {
-            SelectedLayoutElements.Add(le);
-            Invalidate(new Region(PaperToScreen(le.Rectangle)));
+            SelectedLayoutElements.AddRange(le);
+            Invalidate();
+            OnSelectionChanged(EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Clears the current selection.
+        /// </summary>
+        // CGX internal -> public
+        public void ClearSelection()
+        {
+            SelectedLayoutElements.Clear();
+            Invalidate();
             OnSelectionChanged(EventArgs.Empty);
         }
 
@@ -1454,10 +1531,10 @@ namespace DotSpatial.Controls
         /// Adds the specified LayoutElement le to the selection.
         /// </summary>
         /// <param name="le">The layout element.</param>
-        internal void AddToSelection(List<LayoutElement> le)
+        internal void AddToSelection(LayoutElement le)
         {
-            SelectedLayoutElements.AddRange(le);
-            Invalidate();
+            SelectedLayoutElements.Add(le);
+            Invalidate(new Region(PaperToScreen(le.Rectangle)));
             OnSelectionChanged(EventArgs.Empty);
         }
 
@@ -1471,16 +1548,6 @@ namespace DotSpatial.Controls
             LayoutElements.Clear();
             OnElementsChanged(EventArgs.Empty);
             Invalidate();
-        }
-
-        /// <summary>
-        /// Clears the current selection.
-        /// </summary>
-        internal void ClearSelection()
-        {
-            SelectedLayoutElements.Clear();
-            Invalidate();
-            OnSelectionChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -1612,11 +1679,11 @@ namespace DotSpatial.Controls
             }
 
             // Draws the selection rectangle around each selected item
-            var selectionPen = new Pen(Color.Black, 1F)
-            {
-                DashPattern = new[] { 2.0F, 1.0F },
-                DashCap = DashCap.Round
-            };
+            // var selectionPen = new Pen(Color.Black, 1F);
+            // CGX
+            Pen selectionPen = new Pen(Color.OrangeRed, 2.5F);
+            selectionPen.DashPattern = new[] { 2.0F, 1.0F };
+            selectionPen.DashCap = DashCap.Round;
             foreach (var layoutEl in SelectedLayoutElements)
             {
                 var leRect = PaperToScreen(layoutEl.Rectangle);
@@ -1629,7 +1696,10 @@ namespace DotSpatial.Controls
                 Color boxColor = _mouseMode == MouseMode.CreateSelection ? SystemColors.Highlight : Color.Orange;
                 var outlinePen = new Pen(boxColor);
                 var highlightBrush = new SolidBrush(Color.FromArgb(30, boxColor));
-                graph.FillRectangle(highlightBrush, _mouseBox.X, _mouseBox.Y, _mouseBox.Width - 1, _mouseBox.Height - 1);
+
+                // CGX
+                if (_mouseMode == MouseMode.CreateSelection)
+                    graph.FillRectangle(highlightBrush, _mouseBox.X, _mouseBox.Y, _mouseBox.Width - 1, _mouseBox.Height - 1);
                 graph.DrawRectangle(outlinePen, _mouseBox.X, _mouseBox.Y, _mouseBox.Width - 1, _mouseBox.Height - 1);
 
                 // garbage collection
@@ -1926,6 +1996,9 @@ namespace DotSpatial.Controls
                                 if (!le.IntersectsWith(mousePointPaper)) continue;
                                 _mouseMode = MouseMode.MoveSelection;
                                 Cursor = Cursors.SizeAll;
+
+                                // CGX
+                                // ShowHideLayoutElement("IACProfile", false);
                                 return;
                             }
                         }
@@ -2003,6 +2076,10 @@ namespace DotSpatial.Controls
                         invalRect = PaperToScreen(le.Rectangle);
                         invalRect.Inflate(inflate, inflate);
                         Invalidate(new Region(invalRect));
+
+                        // CGX
+                        if (!le.Visible) continue;
+
                         Update();
                     }
 
@@ -2079,9 +2156,14 @@ namespace DotSpatial.Controls
                     break;
 
                 case MouseMode.PanMap:
-                    _mouseBox.Width = e.X - _mouseStartPoint.X;
-                    _mouseBox.Height = e.Y - _mouseStartPoint.Y;
-                    Invalidate(new Region(PaperToScreen(SelectedLayoutElements[0].Rectangle)));
+                    // CGX
+                    if (SelectedLayoutElements.Count == 1 && SelectedLayoutElements[0] is LayoutMap)
+                    {
+                        _mouseBox.Width = e.X - _mouseStartPoint.X;
+                        _mouseBox.Height = e.Y - _mouseStartPoint.Y;
+                        Invalidate(new Region(PaperToScreen(SelectedLayoutElements[0].Rectangle)));
+                    }
+                    // Fin CGX
                     break;
 
                 case MouseMode.Default:
@@ -2122,6 +2204,22 @@ namespace DotSpatial.Controls
                     break;
             }
         }
+
+        // CGX
+        void ShowHideLayoutElement(string Name, bool Visible)
+        {
+            if (_mouseMode == MouseMode.MoveSelection)
+            {
+                foreach (LayoutElement le in SelectedLayoutElements)
+                {
+                    if (!string.IsNullOrEmpty(le.Group))
+                    {
+                        le.Visible = Visible;
+                    }
+                }
+            }
+        }
+        // CGX END
 
         private void LayoutControlMouseUp(object sender, MouseEventArgs e)
         {
@@ -2176,6 +2274,8 @@ namespace DotSpatial.Controls
 
                     // Stops moving the selection
                     case MouseMode.MoveSelection:
+                        // CGX
+                        // ShowHideLayoutElement("IACProfile", true);
                         _mouseMode = MouseMode.Default;
                         Cursor = Cursors.Default;
                         break;
@@ -2305,8 +2405,19 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         private void OnElementsChanged(EventArgs e)
         {
-            ElementsChanged?.Invoke(this, e);
+            // CGX
+            // ElementsChanged?.Invoke(this, e);
         }
+
+        // CGX
+        /// <summary>
+        /// 
+        /// </summary>
+        private void OnElementsChanged(string sOperation, LayoutElement le)
+        {
+            if (ElementsChanged != null)
+                ElementsChanged(new Tuple<string, LayoutElement>(sOperation, le), EventArgs.Empty);
+        }// CGX END
 
         /// <summary>
         /// Calls this to indicate the fileName has been changed.
@@ -2510,6 +2621,129 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Classes
+
+        // CGX
+        public class StockLayoutElement
+        {
+            public string Name = "";
+            public SizeF Size = new SizeF();
+            public System.Drawing.Point Location = new System.Drawing.Point();
+            public LayoutElement element = null;
+        }
+        public Dictionary<int, List<StockLayoutElement>> DicoUndoRedoElements = new Dictionary<int, List<StockLayoutElement>>();
+
+        public int iCurrentStep = -1;
+
+        public void SaveLayoutElements()
+        {
+            try
+            {
+                List<StockLayoutElement> List = new List<StockLayoutElement>();
+                foreach (LayoutElement le in LayoutElements)
+                {
+                    StockLayoutElement sle = new StockLayoutElement();
+                    sle.Name = le.Name;
+                    sle.Size = le.Size;
+                    sle.Location = le.Location;
+                    sle.element = le;
+                    List.Add(sle);
+                }
+
+                iCurrentStep++;
+
+                //Supression de la pile supperieure 
+                for (int i = DicoUndoRedoElements.Keys.Count - 1; i >= iCurrentStep; i--)
+                {
+                    DicoUndoRedoElements.Remove(i);
+                }
+
+                DicoUndoRedoElements.Add(iCurrentStep, List);
+
+                this.Refresh();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceError(e.Message);
+            }
+        }
+
+        private StockLayoutElement GetStockLayoutElement(List<StockLayoutElement> ListElement, LayoutElement element)
+        {
+            foreach (StockLayoutElement stock in ListElement)
+            {
+                if (stock.Name == element.Name)
+                {
+                    return stock;
+                }
+            }
+            return null;
+        }
+
+        private LayoutElement GetElement(List<LayoutElement> ListElement, LayoutElement element)
+        {
+            foreach (LayoutElement stock in ListElement)
+            {
+                if (stock.Name == element.Name)
+                {
+                    return stock;
+                }
+            }
+            return null;
+        }
+
+        public void UpdateLayoutElements()
+        {
+            if (DicoUndoRedoElements.ContainsKey(iCurrentStep))
+            {
+                List<StockLayoutElement> List = DicoUndoRedoElements[iCurrentStep].ToList();
+
+                if (List != null)
+                {
+
+                    for (int i = 0; i < LayoutElements.Count; i++)
+                    {
+                        LayoutElement le = LayoutElements[i];
+
+                        StockLayoutElement le2 = GetStockLayoutElement(List, le);
+
+                        //Update
+                        if (le2 != null)
+                        {
+                            if (le.Size != le2.Size || le.Location != le2.Location)
+                            {
+                                le.Size = le2.Size;
+                                le.Location = le2.Location;
+                                OnElementsChanged("UPDATE", le);
+                            }
+
+                        }
+                        //Delete
+                        if (le2 == null)
+                        {
+                            RemoveFromLayout(le);
+                            OnElementsChanged("DELETE", le);
+                        }
+                    }
+
+                    //Ajout
+                    for (int i = 0; i < List.Count; i++)
+                    {
+                        LayoutElement le = GetElement(LayoutElements, List[i].element);
+
+                        if (le == null)
+                        {
+                            LayoutElements.Insert(0, List[i].element);
+                            OnElementsChanged("ADD", List[i].element);
+                        }
+                    }
+
+
+                }
+            }
+
+
+            RefreshElements();
+        }// FIN CGX
 
         private static class XmlHelper
         {

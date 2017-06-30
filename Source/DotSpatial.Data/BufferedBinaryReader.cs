@@ -233,54 +233,60 @@ namespace DotSpatial.Data
         /// <param name="count">The number of values to copy into the parameter buffer</param>
         public void Read(byte[] buffer, int index, int count)
         {
-            bool finished = false;
-            int bytesPasted = 0;
-            if (IsBufferLoaded == false) AdvanceBuffer();
-            do
+            // CGX
+            try
             {
-                int bytesInBuffer = BufferSize - ReadOffset;
-
-                if (count - bytesPasted <= bytesInBuffer)
+                bool finished = false;
+                int bytesPasted = 0;
+                if (IsBufferLoaded == false) AdvanceBuffer();
+                do
                 {
-                    // Read the specified bytes and advance
-                    Buffer.BlockCopy(_buffer, ReadOffset, buffer, index, count - bytesPasted);
-                    ReadOffset += count - bytesPasted;
-                    FileOffset += count - bytesPasted;
-                    if (FileOffset >= FileLength)
-                    {
-                        OnFinishedReading(); // We got to the end of the file.
-                    }
+                    int bytesInBuffer = BufferSize - ReadOffset;
 
-                    finished = true;
-                }
-                else
-                {
-                    // Read what we can from the array and then advance the buffer
-                    Buffer.BlockCopy(_buffer, ReadOffset, buffer, index, bytesInBuffer);
-                    index += bytesInBuffer;
-                    bytesPasted += bytesInBuffer;
-                    FileOffset += bytesInBuffer;
-
-                    if (bytesPasted >= count)
+                    if (count - bytesPasted <= bytesInBuffer)
                     {
-                        // Sometimes there might be less than count bytes left in the file.
-                        // In those cases, we actually finish reading down here instead.
+                        // Read the specified bytes and advance
+                        Buffer.BlockCopy(_buffer, ReadOffset, buffer, index, count - bytesPasted);
+                        ReadOffset += count - bytesPasted;
+                        FileOffset += count - bytesPasted;
                         if (FileOffset >= FileLength)
                         {
-                            OnFinishedReading(); // We reached the end of the file
+                            OnFinishedReading(); // We got to the end of the file.
                         }
 
-                        finished = true; // Even if we aren't at the end of the file, we are done with this read session
+                        finished = true;
                     }
                     else
                     {
-                        // We haven't pasted enough bytes, so advance the buffer and continue reading
-                        AdvanceBuffer();
+                        // Read what we can from the array and then advance the buffer
+                        Buffer.BlockCopy(_buffer, ReadOffset, buffer, index, bytesInBuffer);
+                        index += bytesInBuffer;
+                        bytesPasted += bytesInBuffer;
+                        FileOffset += bytesInBuffer;
+
+                        if (bytesPasted >= count)
+                        {
+                            // Sometimes there might be less than count bytes left in the file.
+                            // In those cases, we actually finish reading down here instead.
+                            if (FileOffset >= FileLength)
+                            {
+                                OnFinishedReading(); // We reached the end of the file
+                            }
+
+                            finished = true; // Even if we aren't at the end of the file, we are done with this read session
+                        }
+                        else
+                        {
+                            // We haven't pasted enough bytes, so advance the buffer and continue reading
+                            AdvanceBuffer();
+                        }
                     }
                 }
+                while (finished == false);
+                if (IsFinishedReading == false) ProgressMeter.CurrentValue = FileOffset;
             }
-            while (finished == false);
-            if (IsFinishedReading == false) ProgressMeter.CurrentValue = FileOffset;
+            catch (Exception)
+            { }
         }
 
         /// <summary>

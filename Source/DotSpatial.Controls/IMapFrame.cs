@@ -169,6 +169,13 @@ namespace DotSpatial.Controls
         /// <returns>The resulting rectangle.</returns>
         Rectangle ParentToView(Rectangle clip);
 
+		// CGX
+        /// <summary>
+        /// 
+        /// </summary>
+        void ZoomToLayerEnvelope(IEnvelope layerEnvelope);
+        // CGX END
+
         /// <summary>
         /// Instead of using the usual buffers, this bypasses any buffering and instructs the layers
         /// to draw directly to the specified target rectangle on the graphics object. This is useful
@@ -238,6 +245,53 @@ namespace DotSpatial.Controls
         /// </summary>
         void ZoomToPrevious();
 
+		//CGX
+        double ComputeScaleFromExtent();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void ComputeExtentFromScale(double dScale);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void ComputeExtentFromScale(double dScale, Point mousePosition);
+
+        /// <summary>
+        /// Gets or sets the map reference scale.
+        /// </summary>
+        double ReferenceScale
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the map current scale.
+        /// </summary>
+        double CurrentScale
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// gets or sets the map background color.
+        /// </summary>
+        Color BackgroundColor
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the map bookmarks.
+        /// </summary>
+        List<CBookmarks> Bookmarks
+        {
+            get;
+            set;
+        }
+        //Fin CGX
         #endregion
     }
 }

@@ -794,26 +794,32 @@ namespace DotSpatial.Data
         {
             int[] counts = null;
 
-            if (expressions != null && expressions.Length > 0)
+            // CGX TRY CATCH
+            try
             {
-                counts = new int[expressions.Length];
-                for (int i = 0; i < expressions.Length; i++)
+                if (expressions != null && expressions.Length > 0)
                 {
-                    if (expressions[i] != null)
+                    counts = new int[expressions.Length];
+                    for (int i = 0; i < expressions.Length; i++)
                     {
-                        if (expressions[i].Contains("=[NULL]"))
+                        if (expressions[i] != null)
                         {
-                            expressions[i] = expressions[i].Replace("=[NULL]", " is NULL");
+                            if (expressions[i].Contains("=[NULL]"))
+                            {
+                                expressions[i] = expressions[i].Replace("=[NULL]", " is NULL");
+                            }
+                            else if (expressions[i].Contains("= '[NULL]'"))
+                            {
+                                expressions[i] = expressions[i].Replace("= '[NULL]'", " is NULL");
+                            }
                         }
-                        else if (expressions[i].Contains("= '[NULL]'"))
-                        {
-                            expressions[i] = expressions[i].Replace("= '[NULL]'", " is NULL");
-                        }
-                    }
 
-                    counts[i] = DataTable.Select(expressions[i]).Length;
+                        counts[i] = DataTable.Select(expressions[i]).Length;
+                    }
                 }
             }
+            catch (Exception)
+            { }
 
             return counts;
         }
@@ -1504,8 +1510,21 @@ namespace DotSpatial.Data
                 foreach (IFeature feature in Features)
                 {
                     feature.Geometry.GeometryChanged();
-                    MyExtent.ExpandToInclude(new Extent(feature.Geometry.EnvelopeInternal));
+
+                    // CGX
+                    if (feature.Geometry.EnvelopeInternal != null)
+                    {
+                        MyExtent.ExpandToInclude(new Extent(feature.Geometry.EnvelopeInternal));
+                    } // FIN CGX
                 }
+                // CGX
+                if (_shapeIndices != null)
+                {
+                    foreach (ShapeRange range in _shapeIndices)
+                    {
+                        range.CalculateExtents();
+                    }
+                } // Fin CGX
             }
             else
             {
@@ -1936,6 +1955,11 @@ namespace DotSpatial.Data
             foreach (IFeature f in _features)
             {
                 ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Geometry.EnvelopeInternal), StartIndex = vIndex };
+
+                // CGX
+                if (f.Geometry.EnvelopeInternal != null) { shx.Extent = new Extent(f.Geometry.EnvelopeInternal); }
+                // Fin CGX
+
                 _shapeIndices.Add(shx);
                 f.ShapeIndex = shx;
 

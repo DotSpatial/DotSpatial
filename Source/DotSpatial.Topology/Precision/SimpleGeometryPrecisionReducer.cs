@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Precision
@@ -172,10 +173,10 @@ namespace DotSpatial.Topology.Precision
 
                 // return null or orginal length coordinate array
                 if (noRepeatedCoords.Length < minLength)
-                    return collapsedCoords;
+                    return (collapsedCoords == null) ? null : collapsedCoords.ToList();
 
                 // ok to return shorter coordinate array
-                return noRepeatedCoords;
+                return noRepeatedCoords.ToList();
             }
         }
 

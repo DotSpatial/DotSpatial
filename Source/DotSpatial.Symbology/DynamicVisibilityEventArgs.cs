@@ -26,6 +26,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// An EventArgs specifically tailored to DynamicVisibilityMode.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class DynamicVisibilityEventArgs : EventArgs
     {
         private IDynamicVisibility _item;

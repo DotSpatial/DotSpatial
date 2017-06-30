@@ -121,7 +121,9 @@ namespace DotSpatial.Symbology
         {
             foreach (int index in indices)
             {
-                _layer.DrawnStates[index].Selected = SelectionState;
+                // CGX
+                if (_layer.DrawnStates.Length > index)
+                    _layer.DrawnStates[index].Selected = SelectionState;
             }
 
             OnChanged();
@@ -473,6 +475,9 @@ namespace DotSpatial.Symbology
 
             for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
             {
+                // CGX
+                if (!_layer.DrawnStates[shp].Visible) continue;
+
                 if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
 
                 bool doAction = false;

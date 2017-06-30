@@ -648,7 +648,7 @@ namespace DotSpatial.Controls
         public virtual List<IMapLayer> AddLayers()
         {
             var results = new List<IMapLayer>();
-            foreach (var set in DataManager.DefaultDataManager.OpenFiles())
+            /*foreach (var set in DataManager.DefaultDataManager.OpenFiles())
             {
                 var fs = set as IFeatureSet;
                 if (fs != null)
@@ -669,7 +669,34 @@ namespace DotSpatial.Controls
                 {
                     results.Add(Layers.Add(r));
                 }
-            }
+            }*/
+
+            // CGX
+            var files = DataManager.DefaultDataManager.OpenFiles();
+            if (files != null)
+            {
+                foreach (var set in files)
+                {
+                    var fs = set as IFeatureSet;
+                    if (fs != null)
+                    {
+                        results.Add(Layers.Add(fs));
+                        continue;
+                    }
+                    var id = set as IImageData;
+                    if (id != null)
+                    {
+                        results.Add(Layers.Add(id));
+                        continue;
+                    }
+                    var r = set as IRaster;
+                    if (r != null)
+                    {
+                        results.Add(Layers.Add(r));
+                        continue;
+                    }
+                }
+            } // CGX END
 
             return results;
         }
@@ -1309,13 +1336,20 @@ namespace DotSpatial.Controls
         protected override void OnMouseMove(MouseEventArgs e)
         {
             var args = new GeoMouseArgs(e, this);
+            bool bWasHandled = false; // CGX
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoMouseMove(args);
-                if (args.Handled) break;
+                if (args.Handled)
+                {
+                    bWasHandled = true; // CGX
+                    break;
+                }
             }
 
             GeoMouseMove?.Invoke(this, args);
+
+            if (bWasHandled) Focus(); // CGX
 
             base.OnMouseMove(e);
         }
@@ -1333,6 +1367,10 @@ namespace DotSpatial.Controls
                 if (args.Handled) break;
             }
 
+            // CGX
+            Focus();
+            // Fin CGX
+
             base.OnMouseUp(e);
         }
 
@@ -1349,6 +1387,8 @@ namespace DotSpatial.Controls
                 if (args.Handled) break;
             }
 
+            Focus(); // CGX
+
             base.OnMouseWheel(e);
         }
 
@@ -1358,39 +1398,46 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_geoMapFrame.IsPanning) return;
-
-            var clip = e.ClipRectangle;
-            if (clip.IsEmpty) clip = ClientRectangle;
-
-            // if the area to paint is too small, there's nothing to paint.
-            // Added to fix http://dotspatial.codeplex.com/workitem/320
-            if (clip.Width < 1 || clip.Height < 1) return;
-
-            using (var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb))
-            using (var g = Graphics.FromImage(stencil))
+            try
             {
-                using (var b = new SolidBrush(BackColor))
-                    g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
+                if (_geoMapFrame.IsPanning) return;
 
-                using (var m = new Matrix())
+                var clip = e.ClipRectangle;
+                if (clip.IsEmpty) clip = ClientRectangle;
+
+                // if the area to paint is too small, there's nothing to paint.
+                // Added to fix http://dotspatial.codeplex.com/workitem/320
+                if (clip.Width < 1 || clip.Height < 1) return;
+
+                using (var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb))
+                using (var g = Graphics.FromImage(stencil))
                 {
-                    m.Translate(-clip.X, -clip.Y);
-                    g.Transform = m;
+                    using (var b = new SolidBrush(BackColor))
+                        g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
 
-                    Draw(g, e);
-
-                    var args = new MapDrawArgs(g, clip, _geoMapFrame);
-                    foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+                    using (var m = new Matrix())
                     {
-                        tool.Draw(args);
+                        m.Translate(-clip.X, -clip.Y);
+                        g.Transform = m;
+
+                        Draw(g, e);
+
+                        var args = new MapDrawArgs(g, clip, _geoMapFrame);
+                        foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+                        {
+                            tool.Draw(args);
+                        }
+
+                        var pe = new PaintEventArgs(g, e.ClipRectangle);
+                        base.OnPaint(pe);
                     }
 
-                    var pe = new PaintEventArgs(g, e.ClipRectangle);
-                    base.OnPaint(pe);
+                    e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
                 }
-
-                e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
             }
         }
 

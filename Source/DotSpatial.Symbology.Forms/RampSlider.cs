@@ -444,9 +444,14 @@ namespace DotSpatial.Symbology.Forms
         [Description("Gets or sets the position of the slider relative to the left side of the slider control")]
         public double Value
         {
-            get
+            // CGX
+            /*get
             {
                 return _value;
+            }*/
+            get
+            {
+                return Math.Round(_value, 2);
             }
 
             set

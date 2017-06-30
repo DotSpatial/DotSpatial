@@ -62,7 +62,10 @@ namespace DotSpatial.Symbology
         /// Gets or sets an array of floating point values ranging from 0 to 1 that
         /// indicate the start and end point for where the line should draw.
         /// </summary>
-        [XmlIgnore]
+        // CGX
+        // [XmlIgnore]
+        [Serialize("CompoundArray")]
+        // Fin CGX
         public float[] CompoundArray
         {
             get
@@ -81,6 +84,9 @@ namespace DotSpatial.Symbology
         /// This is only used if DashStyle is set to custom, and only controls the pattern control,
         /// and does not directly affect the drawing pen.
         /// </summary>
+        // CGX
+        [Serialize("CompoundButtons")]
+        // Fin CGX
         public bool[] CompoundButtons
         {
             get
@@ -99,6 +105,9 @@ namespace DotSpatial.Symbology
         /// This is only used if DashStyle is set to custom, and only controls the pattern control,
         /// and does not directly affect the drawing pen.
         /// </summary>
+        // CGX
+        [Serialize("DashButtons")]
+        // Fin CGX
         public bool[] DashButtons
         {
             get
@@ -132,7 +141,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the DashPattern as an array of floating point values from 0 to 1
         /// </summary>
-        [XmlIgnore]
+        // CGX
+        // [XmlIgnore]
+        [Serialize("DashPattern")]
+        // Fin CGX
         public float[] DashPattern
         {
             get
@@ -314,6 +326,22 @@ namespace DotSpatial.Symbology
             Pen myPen = base.ToPen(scaleWidth);
             myPen.EndCap = _endCap;
             myPen.StartCap = _startCap;
+
+            // myPen.EndCap = _endCap;
+            // myPen.StartCap = _startCap;
+            // CGX
+            if (_endCap == LineCap.Custom)
+            {
+                AdjustableArrowCap bigArrow = new AdjustableArrowCap(3.5F, 3.5F);
+                myPen.CustomEndCap = bigArrow;
+            }
+
+            if (_startCap == LineCap.Custom)
+            {
+                AdjustableArrowCap bigArrow = new AdjustableArrowCap(3.5F, 3.5F);
+                myPen.CustomStartCap = bigArrow;
+            } // END CGX
+
             if (_compondArray != null) myPen.CompoundArray = _compondArray;
             if (_offset != 0F)
             {

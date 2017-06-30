@@ -275,8 +275,9 @@ namespace DotSpatial.Controls
 
             g.DrawLine(scalePen, leftStart, fontHeight * 1.6f, leftStart + (breakWidth * _numBreaks), fontHeight * 1.6f);
 
-            g.DrawString("1 : " + string.Format("{0:0, }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
-
+            // g.DrawString("1 : " + string.Format("{0:0, }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
+            // CGX
+            g.DrawString("1 : " + string.Format("{0:0 }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
             for (int i = startBreak; i <= _numBreaks + startBreak; i++)
             {
                 g.DrawLine(scalePen, leftStart, fontHeight * 1.1f, leftStart, fontHeight + (fontHeight * 1.1f));
@@ -318,6 +319,10 @@ namespace DotSpatial.Controls
                     return 0.0393700787;
                 case "yards":
                     return 36;
+                // CGX
+                case "nauticalmiles":
+                    return (72913.3858);
+                // CGX END
                 default:
                     return 0;
             }

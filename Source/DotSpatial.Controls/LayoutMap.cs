@@ -126,9 +126,21 @@ namespace DotSpatial.Controls
                 if (_mapControl.Layers.Count < 1)
                     return;
 
+                // CGX
+                Coordinate EnvelopeCenter = Envelope.Centre;
+                // CGX END
+
                 double xtl = Envelope.MinX;
                 double ytl = Envelope.MaxY;
                 Envelope.Init(xtl, xtl + ((value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D)), ytl - ((value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D)), ytl);
+
+                // CGX
+                ((IEnvelope)Envelope).SetCentre(EnvelopeCenter);
+
+                if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+                    _mapControl.MapFrame.CurrentScale = Scale;
+                // CGX END
+
             }
         }
 
@@ -143,8 +155,13 @@ namespace DotSpatial.Controls
         /// <param name="printing">Boolean, true if the drawing is printing to an actual page</param>
         public override void Draw(Graphics g, bool printing)
         {
-            if (printing == false)
+            // JME A finir print vectoriel
+            // if (printing == false)
             {
+                int iResolution = 300;
+
+                g.FillRectangle(new SolidBrush(Background.GetFillColor()), new RectangleF(this.LocationF.X, this.LocationF.Y, Size.Width, Size.Height));
+
                 if (MapControl.Layers.Count <= 0 || Convert.ToInt32(Size.Width) <= 0 || Convert.ToInt32(Size.Height) <= 0)
                     return;
 
@@ -166,10 +183,12 @@ namespace DotSpatial.Controls
 
                 g.DrawImage(_buffer, Rectangle);
             }
-            else
-            {
-                MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
-            }
+
+            // else
+            // {
+            //     MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+            // }
+            // JME A finir print vectoriel
         }
 
         /// <summary>
@@ -180,6 +199,12 @@ namespace DotSpatial.Controls
         public virtual void PanMap(double x, double y)
         {
             Envelope = new Envelope(Envelope.MinX - x, Envelope.MaxX - x, Envelope.MinY - y, Envelope.MaxY - y);
+
+            // CGX
+            Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+            extent.SetCenter(Envelope.Centre);
+            _mapControl.MapFrame.ViewExtents = extent;
+            //Fin CGX
         }
 
         /// <summary>
@@ -191,6 +216,15 @@ namespace DotSpatial.Controls
             double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
             Envelope envl = new Envelope(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
+
+            // CGX
+            if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+            {
+                _mapControl.MapFrame.CurrentScale = Scale;
+                Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+                extent.SetCenter(Envelope.Centre);
+                _mapControl.MapFrame.ViewExtents = extent;
+            } // CGX END
         }
 
         /// <summary>
@@ -202,6 +236,16 @@ namespace DotSpatial.Controls
             double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
             Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
+
+            // CGX
+            if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+            {
+                _mapControl.MapFrame.CurrentScale = Scale;
+                Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+                extent.SetCenter(Envelope.Centre);
+                _mapControl.MapFrame.ViewExtents = extent;
+            } // CGX END
+
         }
 
         /// <summary>
@@ -212,6 +256,16 @@ namespace DotSpatial.Controls
             Envelope = MapControl.Extent.ToEnvelope();
             OnThumbnailChanged();
             OnInvalidate();
+
+            // CGX
+            if (Scale != Convert.ToInt64(_mapControl.MapFrame.CurrentScale))
+            {
+                _mapControl.MapFrame.CurrentScale = Scale;
+                Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
+                extent.SetCenter(Envelope.Centre);
+                _mapControl.MapFrame.ViewExtents = extent;
+            }
+            // CGX END
         }
 
         /// <summary>
@@ -227,6 +281,10 @@ namespace DotSpatial.Controls
             }
 
             Envelope = viewExtentEnvelope;
+
+            // CGX
+            Scale = Convert.ToInt64(_mapControl.MapFrame.CurrentScale);
+            // CGX END
         }
 
         /// <summary>
@@ -268,12 +326,22 @@ namespace DotSpatial.Controls
 
         private double UnitMeterConversion()
         {
+            // CGX
+            if (_mapControl == null) return 1;
+
             if (_mapControl.Layers.Count == 0) return 1;
             if (_mapControl.Layers[0].DataSet?.Projection == null) return 1;
             if (_mapControl.Layers[0].DataSet.Projection.IsLatLon)
                 return _mapControl.Layers[0].DataSet.Projection.GeographicInfo.Unit.Radians * 6354101.943;
             return _mapControl.Layers[0].DataSet.Projection.Unit.Meters;
         }
+
+        // CGX
+        public void Center()
+        {
+            ((IEnvelope)Envelope).SetCentre(_mapControl.MapFrame.ViewExtents.ToEnvelope().Centre);
+        }
+        // Fin CGX
 
         #endregion
     }

@@ -20,4 +20,7 @@
       <dependency id="DotSpatial.Topology" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-Client\" />
+  </files>
 </package>

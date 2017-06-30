@@ -24,9 +24,9 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Utilities;
-using Iesi.Collections;
 
 namespace DotSpatial.Topology.Operation.Buffer
 {
@@ -194,7 +194,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         // <FIX> MD - use iteration & queue rather than recursion, for speed and robustness
         private static void ComputeDepths(DirectedEdge startEdge)
         {
-            ISet nodesVisited = new HashedSet();
+            var nodesVisited = new HashSet<Node>();
             Queue nodeQueue = new Queue();
             Node startNode = startEdge.Node;
             nodeQueue.Enqueue(startNode);

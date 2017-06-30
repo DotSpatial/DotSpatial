@@ -36,7 +36,10 @@ namespace DotSpatial.Symbology
         {
             _character = 'A';
             _fontFamilyName = "DotSpatialSymbols";
-            _color = Color.Green;
+
+            // CGX
+            // _color = Color.Green;
+            _color = Color.Black; // CGX END
             _style = FontStyle.Regular;
             SymbolType = SymbolType.Character;
         }

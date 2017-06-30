@@ -507,10 +507,10 @@ namespace DotSpatial.Symbology.Forms
             this.opacityNoData.RampTextBehindRamp = true;
             this.opacityNoData.RampTextColor = System.Drawing.Color.Black;
             this.opacityNoData.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.opacityNoData.ShowMaximum = false;
-            this.opacityNoData.ShowMinimum = false;
+            this.opacityNoData.ShowMaximum = true; // CGX false -> true
+            this.opacityNoData.ShowMinimum = true; // CGX false -> true
             this.opacityNoData.ShowTicks = false;
-            this.opacityNoData.ShowValue = false;
+            this.opacityNoData.ShowValue = true; // CGX false -> true
             this.opacityNoData.SliderColor = System.Drawing.Color.Blue;
             this.opacityNoData.SliderRadius = 4F;
             this.opacityNoData.TickColor = System.Drawing.Color.DarkGray;

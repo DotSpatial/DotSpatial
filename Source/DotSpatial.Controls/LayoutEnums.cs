@@ -54,6 +54,13 @@ namespace DotSpatial.Controls
         /// </summary>
         Miles,
 
+        // CGX
+        /// <summary>
+        /// Nautical Miles
+        /// </summary>
+        NauticalMiles,
+        // CGX END
+
         /// <summary>
         /// Yards
         /// </summary>

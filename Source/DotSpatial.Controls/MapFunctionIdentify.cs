@@ -89,7 +89,7 @@ namespace DotSpatial.Controls
                 else
                 {
                     var gfl = lr as IMapFeatureLayer;
-                    if (gfl != null && gfl.IsVisible)
+                    if (gfl != null && gfl.IsVisible /*CGX*/ && gfl.SelectionEnabled)
                     {
                         _frmFeatureIdentifier.Add(gfl, gfl.DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant);
                         continue;

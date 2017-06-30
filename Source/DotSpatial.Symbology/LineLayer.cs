@@ -144,7 +144,7 @@ namespace DotSpatial.Symbology
 
         private void Configure(IFeatureSet inFeatureSet)
         {
-            if (inFeatureSet.FeatureType != FeatureType.Line)
+            if (inFeatureSet.FeatureType != FeatureType.Line /*CGX*/ && inFeatureSet.FeatureType != FeatureType.Unspecified /*CGX END*/)
             {
                 throw new LineFeatureTypeException();
             }

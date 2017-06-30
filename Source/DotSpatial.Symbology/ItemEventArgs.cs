@@ -27,6 +27,7 @@ namespace DotSpatial.Symbology
     /// A generic event argument that also allows sending the strong typed item.
     /// </summary>
     /// <typeparam name="T">The generic item associated with the event.</typeparam>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class ItemEventArgs<T> : EventArgs
     {
         private T _item;

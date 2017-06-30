@@ -145,7 +145,7 @@ namespace DotSpatial.Symbology
 
         private void Configure(IFeatureSet inFeatureSet)
         {
-            if (inFeatureSet.FeatureType != FeatureType.Polygon)
+            if (inFeatureSet.FeatureType != FeatureType.Polygon /*CGX*/&& inFeatureSet.FeatureType != FeatureType.Unspecified/*CGX END*/)
             {
                 throw new PolygonFeatureTypeException();
             }

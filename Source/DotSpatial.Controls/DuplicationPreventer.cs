@@ -53,7 +53,8 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="points">The enumerable that gets cleaned.</param>
         /// <returns>The cleaned enumerable.</returns>
-        public static IEnumerable<Point> Clean(IEnumerable<double[]> points)
+		/// CGX
+        /*public static IEnumerable<Point> Clean(IEnumerable<double[]> points)
         {
             var previous = Point.Empty;
             var isFirst = true;
@@ -72,6 +73,27 @@ namespace DotSpatial.Controls
                     yield return pt;
                 }
             }
+        }*/
+
+		public static List<Point> Clean(List<double[]> points)
+        {
+            List<Point> result = new List<Point>();
+            Point previous = Point.Empty;
+            bool isFirst = true;
+            foreach (double[] point in points)
+            {
+                if (double.IsNaN(point[X]) || double.IsNaN(point[Y])) continue;
+                Point pt = new Point();
+                pt.X = Convert.ToInt32(point[X]);
+                pt.Y = Convert.ToInt32(point[Y]);
+                if (isFirst || pt.X != previous.X || pt.Y != previous.Y)
+                {
+                    isFirst = false;
+                    previous = pt;
+                    result.Add(pt);
+                }
+            }
+            return result;
         }
 
         #endregion

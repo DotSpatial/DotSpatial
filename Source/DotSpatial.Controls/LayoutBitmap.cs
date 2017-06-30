@@ -21,6 +21,7 @@ namespace DotSpatial.Controls
         private int _contrast;
         private string _fileName;
         private bool _preserveAspectRatio;
+        private bool _draft; // CGX
 
         #endregion
 
@@ -151,6 +152,32 @@ namespace DotSpatial.Controls
             }
         }
 
+        // CGX
+        /// <summary>
+        /// Allows for a faster but lower quality bitmap to be rendered to the screen
+        /// and a higher quality bitmap to be printed during actual printing.
+        /// </summary>
+        [Browsable(true), Category("Behavior")]
+        public bool Draft
+        {
+            get { return _draft; }
+            set
+            {
+                _draft = value;
+                if (_draft)
+                {
+                    if (_bitmap != null) _bitmap.Dispose();
+                    _bitmap = null;
+                }
+                else
+                {
+                    if (File.Exists(_fileName))
+                        _bitmap = new Bitmap(_fileName);
+                }
+                OnInvalidate();
+            }
+        }
+        // CGX END
         #endregion
 
         #region Methods

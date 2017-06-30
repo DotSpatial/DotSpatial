@@ -39,11 +39,17 @@ namespace DotSpatial.Symbology.Forms
                 if (ShowDialog(frmExport) != DialogResult.OK) return;
 
                 // Create a FeatureSet of features that the client wants exported
-                FeatureSet fs = null;
+                // CGX
+                // FeatureSet fs = null;
+                IFeatureSet fs = null;
+                // FIN CGX
                 switch (frmExport.FeaturesIndex)
                 {
                     case 0:
-                        fs = (FeatureSet)layer.DataSet;
+                        // CGX
+                        // fs = (FeatureSet)layer.DataSet;
+                        fs = layer.DataSet;
+                        // Fin CGX
                         break;
                     case 1:
                         fs = layer.Selection.ToFeatureSet();
@@ -102,6 +108,16 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        // CGX
+        public void LabelSetup2(ILabelLayer e)
+        {
+            using (var dlg = new LabelSetup2 { Layer = e })
+            {
+                ShowDialog(dlg);
+            }
+        }
+        // CGX END
+
         /// <inheritdoc />
         public void SelectByAttributes(FeatureLayer featureLayer)
         {
@@ -135,7 +151,9 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private static void LoadFeatureSetAsLayer(IFeatureLayer layer, FeatureSet fs, string newLayerName)
+        // CGX
+        // private static void LoadFeatureSetAsLayer(IFeatureLayer layer, FeatureSet fs, string newLayerName)
+        private static void LoadFeatureSetAsLayer(IFeatureLayer layer, IFeatureSet fs, string newLayerName)
         {
             var layerType = layer.GetType();
             var newLayer = (FeatureLayer)Activator.CreateInstance(layerType, fs);

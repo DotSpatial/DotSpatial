@@ -397,7 +397,7 @@ namespace DotSpatial.Controls
             // using only export IStatusControl and we would require each IStatusControl to
             //    [Export(typeof(DotSpatial.Data.IProgressHandler))]
             // To get that working.
-            DataManager.DefaultDataManager.ProgressHandler = ProgressHandler;
+            //DataManager.DefaultDataManager.ProgressHandler = ProgressHandler; // CGX
         }
 
         /// <summary>
@@ -544,7 +544,8 @@ namespace DotSpatial.Controls
 
             try
             {
-                CompositionContainer.ComposeParts(this, DataManager.DefaultDataManager, SerializationManager);
+				if (CompositionContainer != null) // CGX
+                	CompositionContainer.ComposeParts(this, DataManager.DefaultDataManager, SerializationManager);
             }
             catch (CompositionException compositionException)
             {
@@ -564,37 +565,53 @@ namespace DotSpatial.Controls
         /// <returns>The first assembly that was found.</returns>
         private Assembly CurrentDomainAssemblyResolve(object sender, ResolveEventArgs args)
         {
+            // CGX
             var knownExtensions = new[] { "dll", "exe" };
-            string assemblyName = new AssemblyName(args.Name).Name;
-            string packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
+            string assemblyName = args.Name.Split(',').First();
+            var tempAssemblyName = assemblyName;
+            if (assemblyName.Contains("."))
+                tempAssemblyName = assemblyName.Remove(assemblyName.LastIndexOf("."));
 
-            // check the ProgramData directory
-            if (Directory.Exists(packagesFolder))
+            var packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
+            if (!Directory.Exists(packagesFolder))
+                return null;
+
+            var potentialPackage = Directory.EnumerateDirectories(packagesFolder, tempAssemblyName + "*").FirstOrDefault();
+            if (potentialPackage == null)
+                return null;
+
+            var potentialFolder = Path.Combine(potentialPackage, "lib", "net40");
+            if (!Directory.Exists(potentialFolder))
             {
-                foreach (string extension in knownExtensions)
-                {
-                    var potentialFiles = Directory.GetFiles(packagesFolder, assemblyName + "." + extension, SearchOption.AllDirectories);
-                    if (potentialFiles.Length > 0) return Assembly.LoadFrom(potentialFiles[0]);
-                }
-            }
+                // see if the client profile was targeted.
+                potentialFolder = Path.Combine(potentialPackage, "lib", "net40-Client");
 
-            // check the installation directory
-            foreach (string directory in Directories)
-            {
-                string path = Path.Combine(BaseDirectory, directory);
-
-                if (Directory.Exists(path))
+                if (!Directory.Exists(potentialFolder))
                 {
-                    foreach (string extension in knownExtensions)
+                    // see if the net35 framework was targeted.
+                    potentialFolder = Path.Combine(potentialPackage, "lib", "net35");
+
+                    if (!Directory.Exists(potentialFolder))
                     {
-                        var potentialFiles = Directory.GetFiles(path, assemblyName + "." + extension, SearchOption.AllDirectories);
-                        if (potentialFiles.Length > 0) return Assembly.LoadFrom(potentialFiles[0]);
+                        // see if the net20 framework was targeted.
+                        potentialFolder = Path.Combine(potentialPackage, "lib", "net20");
+                        if (!Directory.Exists(potentialFolder))
+                            return null;
                     }
                 }
             }
 
-            // assembly not found
+            foreach (string extension in knownExtensions)
+            {
+                string potentialFile = Path.Combine(potentialFolder, string.Format(CultureInfo.CurrentCulture, "{0}.{1}", assemblyName, extension));
+                if (File.Exists(potentialFile))
+                {
+                    return Assembly.LoadFrom(potentialFile);
+                }
+            }
+
             return null;
+            // CGX FIN
         }
 
         private AggregateCatalog GetCatalog()

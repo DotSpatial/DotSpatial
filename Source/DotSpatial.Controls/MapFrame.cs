@@ -18,6 +18,68 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
+
+    // CGX
+    public class CBookmarks
+    {
+        // ====================================================================
+        #region Properties
+
+        string _sName = "";
+        Coordinate _pCenter = null;
+        double _dScale = 0.0;
+
+        #endregion
+
+        // ====================================================================
+        #region Accesseurs
+
+        [Serialize("bookmark_name")]
+        public string Name
+        {
+            get { return _sName; }
+            set { _sName = value; }
+        }
+
+        [Serialize("bookmark_center")]
+        public Coordinate Center
+        {
+            get { return _pCenter; }
+            set { _pCenter = value; }
+        }
+
+        [Serialize("bookmark_scale")]
+        public double Scale
+        {
+            get { return _dScale; }
+            set { _dScale = value; }
+        }
+
+        #endregion
+
+        // ====================================================================
+        #region Constructeur
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CBookmarks"/> class.
+        /// </summary>
+        public CBookmarks()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CBookmarks"/> class.
+        /// </summary>
+        public CBookmarks(string sName, Coordinate pCenter, double dScale)
+        {
+            _sName = sName;
+            _pCenter = pCenter;
+            _dScale = dScale;
+        }
+
+        #endregion
+    }// Fin CGX
+
     /// <summary>
     /// A MapFrame accomplishes two things. Firstly, it organizes the layers to be drawn, and establishes the geographic
     /// extents. Secondly, it hosts the back-buffer image that can be larger than the component that
@@ -28,6 +90,9 @@ namespace DotSpatial.Controls
     public class MapFrame : LayerFrame, IMapFrame
     {
         #region Fields
+
+        // CGX
+        private static int _extendBufferCoeff = 3;
 
         private readonly LimitedStack<Extent> _previousExtents = new LimitedStack<Extent>();
 
@@ -41,6 +106,12 @@ namespace DotSpatial.Controls
         private int _height;
         private bool _isPanning;
 
+        // CGX
+        private double _referenceScale;
+        private Color _backgroundColor;
+        private List<CBookmarks> _bookMarks;
+
+        // Fin CGX
         private bool _isZoomingNextOrPrevious;
         private Extent _lastExtent;
         private IMapLayerCollection _layers;
@@ -483,6 +554,62 @@ namespace DotSpatial.Controls
             }
         }
 
+        // CGX
+
+        /// <summary>
+        /// gets or sets the map reference scale.
+        /// </summary>
+        [Serialize("ReferenceScale")]
+        public double ReferenceScale
+        {
+            get { return _referenceScale; }
+            set { _referenceScale = value; }
+        }
+
+        /// <summary>
+        /// gets the map current scale.
+        /// </summary>
+        public double CurrentScale
+        {
+            get { return ComputeScaleFromExtent(); }
+            set { ComputeExtentFromScale(value); }
+        }
+        /// <summary>
+        /// gets or sets the map background color.
+        /// </summary>
+        [Serialize("BackgroundColor")]
+        public Color BackgroundColor
+        {
+            get
+            {
+                return _backgroundColor;
+            }
+            set
+            {
+                _backgroundColor = value;
+                if (Parent != null)
+                {
+                    Parent.BackColor = _backgroundColor;
+                    Parent.Refresh();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the map bookmarks.
+        /// </summary>
+        [Serialize("Bookmarks")]
+        public List<CBookmarks> Bookmarks
+        {
+            get
+            {
+                if (_bookMarks == null)
+                    _bookMarks = new List<CBookmarks>();
+                return _bookMarks;
+            }
+            set { _bookMarks = value; }
+        }// Fin CGX
+
         #endregion
 
         #region Indexers
@@ -551,13 +678,22 @@ namespace DotSpatial.Controls
         /// <returns>An Envelope interface</returns>
         public Extent BufferToProj(Rectangle rect)
         {
+            // CGX
+            Point tl;
+            Point br;
+
             if (ExtendBuffer)
             {
-                rect = rect.ExpandBy(rect.Width, rect.Height);
-            }
+                Rectangle bufferRectangle = rect.ExpandBy(rect.Width, rect.Height);
 
-            Point tl = new Point(rect.X, rect.Y);
-            Point br = new Point(rect.Right, rect.Bottom);
+                tl = new Point(bufferRectangle.X, bufferRectangle.Y);
+                br = new Point(bufferRectangle.Right, bufferRectangle.Bottom);
+            }// Fin CGX
+            else
+            {
+                tl = new Point(rect.X, rect.Y);
+                br = new Point(rect.Right, rect.Bottom);
+            }
 
             Coordinate topLeft = BufferToProj(tl);
             Coordinate bottomRight = BufferToProj(br);
@@ -682,63 +818,84 @@ namespace DotSpatial.Controls
         /// <param name="regions">The regions to initialize.</param>
         public virtual void Initialize(List<Extent> regions)
         {
-            bool setView = false;
-            if (_backBuffer == null)
-            {
-                _backBuffer = CreateBuffer();
 
-                // set the view
-                setView = true;
+            // CGX Try catch
+            try
+            {
+                bool setView = false;
+                if (_backBuffer == null)
+                {
+                    _backBuffer = CreateBuffer();
+
+                    // set the view
+                    setView = true;
+                }
+
+                Graphics bufferDevice = Graphics.FromImage(_backBuffer);
+                MapArgs args = new MapArgs(ClientRectangle, ViewExtents, bufferDevice);
+                GraphicsPath gp = new GraphicsPath();
+                foreach (Extent region in regions)
+                {
+                    if (region == null) continue;
+                    Rectangle rect = args.ProjToPixel(region);
+                    gp.StartFigure();
+                    gp.AddRectangle(rect);
+                }
+
+                bufferDevice.Clip = new Region(gp);
+
+                // Draw the background color
+                bufferDevice.Clear(_parent?.BackColor ?? Color.White);
+
+                // CGX
+                if (_parent != null)
+                {
+                    if (!BackgroundColor.IsEmpty)
+                        _parent.BackColor = BackgroundColor;
+                    else
+                        _parent.BackColor = Color.White;
+                } // Fin CGX
+
+                // First draw all the vector content
+                // CGX
+                foreach (IMapLayer layer in GetAllLayers()) // foreach (IMapLayer layer in Layers)
+                {
+                    if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
+                }
+
+                // Then labels
+                MapLabelLayer.ClearAllExistingLabels();
+                foreach (var layer in Layers)
+                {
+                    InitializeLabels(regions, args, layer);
+                }
+
+                // First draw all the vector content
+                foreach (var layer in DrawingLayers.OfType<IMapLayer>())
+                {
+                    if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
+                }
+
+                if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
+                _buffer = _backBuffer;
+                if (setView)
+                    _view = _backView;
+
+                Rectangle rectangle = ImageRectangle;
+                if (ExtendBuffer)
+                    rectangle = new Rectangle(_width / ExtendBufferCoeff, _height / ExtendBufferCoeff, _width / ExtendBufferCoeff, _height / ExtendBufferCoeff);
+
+                bufferDevice.Clip = new Region(rectangle);
+                gp.Dispose();
+                List<Rectangle> rects = args.ProjToPixel(regions);
+                OnBufferChanged(this, new ClipArgs(rects));
+            }
+            catch (Exception)
+            {
+                return;
             }
 
-            Graphics bufferDevice = Graphics.FromImage(_backBuffer);
-            MapArgs args = new MapArgs(ClientRectangle, ViewExtents, bufferDevice);
-            GraphicsPath gp = new GraphicsPath();
-            foreach (Extent region in regions)
-            {
-                if (region == null) continue;
-                Rectangle rect = args.ProjToPixel(region);
-                gp.StartFigure();
-                gp.AddRectangle(rect);
-            }
-
-            bufferDevice.Clip = new Region(gp);
-
-            // Draw the background color
-            bufferDevice.Clear(_parent?.BackColor ?? Color.White);
-
-            // First draw all the vector content
-            foreach (IMapLayer layer in Layers)
-            {
-                if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
-            }
-
-            // Then labels
-            MapLabelLayer.ClearAllExistingLabels();
-            foreach (var layer in Layers)
-            {
-                InitializeLabels(regions, args, layer);
-            }
-
-            // First draw all the vector content
-            foreach (var layer in DrawingLayers.OfType<IMapLayer>())
-            {
-                if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
-            }
-
-            if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
-            _buffer = _backBuffer;
-            if (setView)
-                _view = _backView;
-
-            Rectangle rectangle = ImageRectangle;
-            if (ExtendBuffer)
-                rectangle = new Rectangle(_width / ExtendBufferCoeff, _height / ExtendBufferCoeff, _width / ExtendBufferCoeff, _height / ExtendBufferCoeff);
-
-            bufferDevice.Clip = new Region(rectangle);
-            gp.Dispose();
-            List<Rectangle> rects = args.ProjToPixel(regions);
-            OnBufferChanged(this, new ClipArgs(rects));
+            
         }
 
         /// <summary>
@@ -1459,7 +1616,8 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void ZoomToLayerEnvelope(Envelope layerEnvelope)
+        // CGX Modif Private to Public
+        public void ZoomToLayerEnvelope(Envelope layerEnvelope)
         {
             if (_extendBuffer)
             {
@@ -1482,14 +1640,263 @@ namespace DotSpatial.Controls
             ViewExtents = layerEnvelope.ToExtent();
         }
 
-        #endregion
+        //CGX
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ComputeScaleFromExtent()
+        {
+            double dValue = 0.0;
 
-        #region Classes
+            try
+            {
+                if (null != Projection)
+                {
+                    double dMapWidthInMeters = 0.0;
+                    if (Projection.IsLatLon)
+                    {
+                        double dDegreesPerRadian = 180 / Math.PI;
+                        var dMapWidthInRadians = ViewExtents.Width * Projection.GeographicInfo.Unit.Radians;
+                        var dMapWidthInDegrees = dMapWidthInRadians * dDegreesPerRadian;
+                        var dMapLatInRadians = 0.0;//iMF.ViewExtents.Center.Y * iMF.Projection.GeographicInfo.Unit.Radians;
+                        var dMapLatInDegrees = dMapLatInRadians * dDegreesPerRadian;
+                        dMapWidthInMeters = MetersFromDecimalDegreesPoints(0.0, dMapLatInDegrees, dMapWidthInDegrees, dMapLatInDegrees);
+                    }
+                    else
+                        dMapWidthInMeters = ViewExtents.Width * Projection.Unit.Meters;
+
+                    double dInchesPerMeter = 39.3700787401575;
+                    if (BufferImage != null)
+                    {
+                        double dScreenWidthInMeters = (Convert.ToDouble(BufferImage.Width) / BufferImage.HorizontalResolution) / dInchesPerMeter;
+                        double dMetersPerScreenMeter = dMapWidthInMeters / dScreenWidthInMeters;
+
+                        dValue = dMetersPerScreenMeter;
+                    }
+                }
+            }
+            catch (Exception)
+            { }
+
+            return dValue;
+        }
 
         /// <summary>
-        /// Transforms an IMapLayer enumerator into an ILayer Enumerator
+        /// 
         /// </summary>
-        private class MapLayerEnumerator : IEnumerator<ILayer>
+        public void ComputeExtentFromScale(double dScale)
+        {
+            try
+            {
+                double dWidth = Convert.ToDouble(BufferImage.Width);
+                double dHeight = Convert.ToDouble(BufferImage.Height);
+
+                ComputeDimensionsFromScale(dScale, ref dWidth, ref dHeight);
+
+                GeoAPI.Geometries.Coordinate center = new GeoAPI.Geometries.Coordinate();
+
+                center.X = (ViewExtents.MaxX + ViewExtents.MinX) / 2;
+                center.Y = (ViewExtents.MaxY + ViewExtents.MinY) / 2;
+
+                ViewExtents.SetValues(center.X - dWidth / 2, center.Y - dHeight / 2, center.X + dWidth / 2, center.Y + dHeight / 2);
+                ResetExtents();
+
+            }
+            catch (Exception)
+            { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ComputeExtentFromScale(double dScale, Point mousePosition)
+        {
+            try
+            {
+                /*      Rectangle r = View;
+                      int w = r.Width;
+                      int h = r.Height;
+                      double dWidth = r.Width / (CurrentScale / dScale);
+                      double dHeight = r.Height / (CurrentScale / dScale);
+
+                      r.Inflate(-(Convert.ToInt32(dWidth)), -(Convert.ToInt32(dHeight)));
+                          // The mouse cursor should anchor the geographic location during zoom.
+
+                      double dMouseX = (mousePosition.X / 2) / (CurrentScale / dScale);
+                      double dMouseY = (mousePosition.Y / 2) / (CurrentScale / dScale);
+
+                          r.X += Convert.ToInt32(dMouseX);
+                          r.Y += Convert.ToInt32(dMouseY);
+
+                      View = r;
+                      ResetExtents();*/
+
+                double dWidth = Convert.ToDouble(BufferImage.Width);
+                double dHeight = Convert.ToDouble(BufferImage.Height);
+
+                Rectangle r = View;
+                int w = r.Width;
+                int h = r.Height;
+
+                ComputeDimensionsFromScale(dScale, ref dWidth, ref dHeight);
+                dWidth = Math.Abs(dWidth);
+                dHeight = Math.Abs(dHeight);
+
+                GeoAPI.Geometries.Coordinate center = new GeoAPI.Geometries.Coordinate();
+                /*      if (mousePosition != null)
+                      {
+                          double dX = mousePosition.X;
+                          double dY = mousePosition.Y;
+
+                          ComputeDimensionsFromScale(CurrentScale, ref dX, ref dY);
+
+                          center.X = ViewExtents.MinX + dX;
+                          center.Y = ViewExtents.MaxY - dY;
+                      }
+                      else*/
+                {
+                    center.X = ViewExtents.Center.X;
+                    center.Y = ViewExtents.Center.Y;
+                }
+
+                // ViewExtents.SetCenter(center);
+                ViewExtents.SetValues(center.X - dWidth / 2, center.Y - dHeight / 2, center.X + dWidth / 2, center.Y + dHeight / 2);
+
+                ResetExtents();
+
+            }
+            catch (Exception)
+            { }
+        }
+
+
+
+        private void ComputeDimensionsFromScale(double dScale, ref double dWidth, ref double dHeight)
+        {
+            try
+            {
+
+
+                if (null != Projection)
+                {
+
+                    const double dInchesPerMeter = 39.3700787401575;
+
+                    double dScreenWidthInMeters = (dWidth / BufferImage.HorizontalResolution) / dInchesPerMeter;
+                    double dScreeHeightInMeters = (dHeight / BufferImage.VerticalResolution) / dInchesPerMeter;
+
+
+                    if (Projection.IsLatLon)
+                    {
+                        if (dScale > 80000000.0) dScale = 80000000.0;
+
+                        double dDegreesPerRadian = 180 / Math.PI;
+                        double dMapWidthInMeters = dScale * dScreenWidthInMeters;
+                        double dMapHeightInMeters = dScale * dScreeHeightInMeters;
+
+                        var dMapCenterLatInRadians = 0.0;//iM.MapFrame.ViewExtents.Center.Y * iM.MapFrame.Projection.GeographicInfo.Unit.Radians;
+                        var dMapCenterLatInDegrees = dMapCenterLatInRadians * dDegreesPerRadian;
+
+                        var dMapCenterLongInRadians = 0.0;//iM.MapFrame.ViewExtents.Center.X * iM.MapFrame.Projection.GeographicInfo.Unit.Radians;
+                        var dMapCenterLongInDegrees = dMapCenterLongInRadians * dDegreesPerRadian;
+
+                        double dMapLatInDegrees = 0.0; double dMapLatInDegrees_Temp = 0.0;
+                        double dMapLongInDegrees = 0.0; double dMapLongInDegrees_Temp = 0.0;
+
+                        DecimalDegreesPointsFromMetersAndAngle(dMapHeightInMeters / 1000.0, 0, dMapCenterLongInDegrees, 0, out dMapLongInDegrees_Temp, out dMapLatInDegrees);
+                        DecimalDegreesPointsFromMetersAndAngle(dMapWidthInMeters / 1000.0, 90, 0, dMapCenterLatInDegrees, out dMapLongInDegrees, out dMapLatInDegrees_Temp);
+
+                        double dMapWidthInRadians = Math.Abs(dMapLongInDegrees) / dDegreesPerRadian;
+                        double dMapHeightInRadians = Math.Abs(dMapLatInDegrees) / dDegreesPerRadian;
+
+                        dWidth = dMapWidthInRadians / Projection.GeographicInfo.Unit.Radians;
+                        dHeight = dMapHeightInRadians / Projection.GeographicInfo.Unit.Radians;
+
+                    }
+                    else
+                    {
+
+                        dWidth = (dScale * dScreenWidthInMeters) / Projection.Unit.Meters;
+                        dHeight = (dScale * dScreeHeightInMeters) / Projection.Unit.Meters;
+                    }
+                }
+            }
+            catch (Exception)
+            { }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private double MetersFromDecimalDegreesPoints(double dDegX1, double dDegY1, double dDegX2, double dDegY2)
+        {
+            double dValue = 0.0;
+
+            try
+            {
+                double dRadius = 6378007;  // radius of Earth in meters
+                double dCircumference = dRadius * 2 * Math.PI;
+                double dMetersPerLatDD = 111113.519;
+                double dDeltaXdd = 0.0;
+                double dDeltaYdd = 0.0;
+                double dDeltaXmeters = 0.0;
+                double dDeltaYmeters = 0.0;
+                double dMetersPerLongDD = 0.0;
+                double dCenterY = 0.0;
+
+                dDeltaXdd = Math.Abs(dDegX1 - dDegX2);
+                dDeltaYdd = Math.Abs(dDegY1 - dDegY2);
+                dCenterY = (dDegY1 + dDegY2) / 2.0;
+                dMetersPerLongDD = (Math.Cos(dCenterY * (Math.PI / 180.0)) * dCircumference) / 360.0;
+                dDeltaXmeters = dMetersPerLongDD * dDeltaXdd;
+                dDeltaYmeters = dMetersPerLatDD * dDeltaYdd;
+
+                dValue = Math.Sqrt(Math.Pow(dDeltaXmeters, 2.0) + Math.Pow(dDeltaYmeters, 2.0));
+            }
+            catch (Exception)
+            { }
+
+            return dValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void DecimalDegreesPointsFromMetersAndAngle(double dDistance_km, double dAngle_deg, double dDegX_Start, double dDegY_Start, out double dDegX, out double dDegY)
+        {
+            dDegX = 0.0;
+            dDegY = 0.0;
+
+            try
+            {
+                double dRadius = 6378.007;  // radius of Earth in meters
+                double dAngle_Rad = dAngle_deg * (Math.PI / 180.0);
+                double dRadX_Start = dDegX_Start * (Math.PI / 180.0);
+                double dRadY_Start = dDegY_Start * (Math.PI / 180.0);
+
+                double lat2 = Math.Asin(Math.Sin(dRadY_Start) * Math.Cos(dDistance_km / dRadius) + Math.Cos(dRadY_Start) * Math.Sin(dDistance_km / dRadius) * Math.Cos(dAngle_Rad));
+
+                double lon2 = dRadX_Start + Math.Atan2(Math.Sin(dAngle_Rad) * Math.Sin(dDistance_km / dRadius) * Math.Cos(dRadY_Start), Math.Cos(dDistance_km / dRadius) - Math.Sin(dRadY_Start) * Math.Sin(lat2));
+
+                lon2 = (lon2 + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+
+                dDegX = lon2 * (180.0 / Math.PI);
+                dDegY = lat2 * (180.0 / Math.PI);
+            }
+            catch (Exception)
+            { }
+
+        }// Fin CGX
+
+    #endregion
+
+    #region Classes
+
+    /// <summary>
+    /// Transforms an IMapLayer enumerator into an ILayer Enumerator
+    /// </summary>
+    private class MapLayerEnumerator : IEnumerator<ILayer>
         {
             #region Fields
 

@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Topology")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2011")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -38,5 +38,6 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ed7e26d9-c13a-4a23-85c7-acbf2c3fa51c")]
 
-[assembly: AssemblyVersion("0.11.9.6")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.9")]
+[assembly: AssemblyInformationalVersion("1.9")]
+[assembly: AssemblyFileVersion("1.9")]

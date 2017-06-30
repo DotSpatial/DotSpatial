@@ -13,6 +13,230 @@ using DotSpatial.Symbology.Forms;
 
 namespace DotSpatial.Controls
 {
+
+    // CGX
+    //=========================================================================================
+    #region Converteur
+
+    public class Converter
+    {
+        //=====================================================================================
+        #region Simple Unit Converter
+
+        /// <summary>
+        /// Convertion Centième de pouce vers Millimetre
+        /// </summary>
+        public static double OneHundredthInches2Millimeters(double dOneHundredthInches)
+        {
+            double dRet = -9999;
+
+            try
+            {
+                dRet = Math.Round(dOneHundredthInches * 0.254, 2);
+            }
+            catch (Exception) { }
+
+            return dRet;
+        }
+
+        /// <summary>
+        /// Convertion Millimetre vers Centième de pouce
+        /// </summary>
+        public static double Millimeters2OneHundredthInches(double dMillimeter)
+        {
+            double dRet = -9999;
+
+            try
+            {
+                dRet = Math.Round(dMillimeter / 0.254, 2);
+            }
+            catch (Exception) { }
+
+            return dRet;
+        }
+
+        /// <summary>
+        /// Convertion Centième de pouce vers Centimetre
+        /// </summary>
+        public static double OneHundredthInches2Centimeters(double dOneHundredthInches)
+        {
+            double dRet = -9999;
+
+            try
+            {
+                dRet = Math.Round(dOneHundredthInches * 0.0254, 2);
+            }
+            catch (Exception) { }
+
+            return dRet;
+        }
+
+        /// <summary>
+        /// Convertion Centimetre vers Centième de pouce 
+        /// </summary>
+        public static double Centimeters2OneHundredthInches(double dCentimeter)
+        {
+            double dRet = -9999;
+
+            try
+            {
+                dRet = Math.Round(dCentimeter / 0.0254, 2);
+            }
+            catch (Exception) { }
+
+            return dRet;
+        }
+
+        /// <summary>
+        /// Convertion Millimetre vers Centimetre
+        /// </summary>
+        public static double Millimeters2Centimeters(double dMillimeter)
+        {
+            double dRet = -9999;
+
+            try
+            {
+                dRet = Math.Round(dMillimeter / 10, 2);
+            }
+            catch (Exception) { }
+
+            return dRet;
+        }
+
+        /// <summary>
+        /// Convertion Centimetre vers Millimetre 
+        /// </summary>
+        public static double Centimeters2Millimeters(double dCentimeter)
+        {
+            double dRet = -9999;
+
+            try
+            {
+                dRet = Math.Round(dCentimeter * 10, 2);
+            }
+            catch (Exception) { }
+
+            return dRet;
+        }
+        #endregion
+
+        //=====================================================================================
+        #region Size Converter
+
+        /// <summary>
+        /// Convertion Centième de pouce vers Millimetre
+        /// </summary>
+        public static SizeF OneHundredthInches2Millimeters(SizeF sOneHundredthInches)
+        {
+            SizeF sRet = new SizeF(-9999, -9999);
+
+            try
+            {
+                sRet = new SizeF(
+                    (float)Converter.OneHundredthInches2Millimeters(sOneHundredthInches.Width),
+                    (float)Converter.OneHundredthInches2Millimeters(sOneHundredthInches.Height));
+            }
+            catch (Exception) { }
+
+            return sRet;
+        }
+
+        /// <summary>
+        /// Convertion Millimetre vers Centième de pouce
+        /// </summary>
+        public static SizeF Millimeters2OneHundredthInches(SizeF sMillimeter)
+        {
+            SizeF sRet = new SizeF(-9999, -9999);
+
+            try
+            {
+                sRet = new SizeF(
+                    (float)Converter.Millimeters2OneHundredthInches(sMillimeter.Width),
+                    (float)Converter.Millimeters2OneHundredthInches(sMillimeter.Height));
+            }
+            catch (Exception) { }
+
+            return sRet;
+        }
+
+        /// <summary>
+        /// Convertion Centième de pouce vers Centimetre
+        /// </summary>
+        public static SizeF OneHundredthInches2Centimeters(SizeF sOneHundredthInches)
+        {
+            SizeF sRet = new SizeF(-9999, -9999);
+
+            try
+            {
+                sRet = new SizeF(
+                    (float)Converter.OneHundredthInches2Centimeters(sOneHundredthInches.Width),
+                    (float)Converter.OneHundredthInches2Centimeters(sOneHundredthInches.Height));
+            }
+            catch (Exception) { }
+
+            return sRet;
+        }
+
+        /// <summary>
+        /// Convertion Centimetre vers Centième de pouce 
+        /// </summary>
+        public static SizeF Centimeters2OneHundredthInches(SizeF sCentimeter)
+        {
+            SizeF sRet = new SizeF(-9999, -9999);
+
+            try
+            {
+                sRet = new SizeF(
+                    (float)Converter.Centimeters2OneHundredthInches(sCentimeter.Width),
+                    (float)Converter.Centimeters2OneHundredthInches(sCentimeter.Height));
+            }
+            catch (Exception) { }
+
+            return sRet;
+        }
+
+        /// <summary>
+        /// Convertion Millimetre vers Centimetre
+        /// </summary>
+        public static SizeF Millimeters2Centimeters(SizeF sMillimeter)
+        {
+            SizeF sRet = new SizeF(-9999, -9999);
+
+            try
+            {
+                sRet = new SizeF(
+                    (float)Converter.Millimeters2Centimeters(sMillimeter.Width),
+                    (float)Converter.Millimeters2Centimeters(sMillimeter.Height));
+            }
+            catch (Exception) { }
+
+            return sRet;
+        }
+
+        /// <summary>
+        /// Convertion Centimetre vers Millimetre 
+        /// </summary>
+        public static SizeF Centimeters2Millimeters(SizeF sCentimeter)
+        {
+            SizeF sRet = new SizeF(-9999, -9999);
+
+            try
+            {
+                sRet = new SizeF(
+                    (float)Converter.Centimeters2Millimeters(sCentimeter.Width),
+                    (float)Converter.Centimeters2Millimeters(sCentimeter.Height));
+            }
+            catch (Exception) { }
+
+            return sRet;
+        }
+
+        #endregion
+    }
+
+    #endregion
+    // CGX END
+
     /// <summary>
     /// The interface for all elements that can be added to the layout control
     /// </summary>
@@ -27,6 +251,11 @@ namespace DotSpatial.Controls
         private ResizeStyle _resizeStyle;
         private bool _resizing;
         private SizeF _size;
+        // CGX
+        private SizeF _customSize;
+        private string _sGroup = string.Empty;
+        private eSizeUnit _eSizeUnit = eSizeUnit.OneHundredthInches;
+        // Fin CGX
         private Bitmap _thumbNail;
 
         #endregion
@@ -232,6 +461,17 @@ namespace DotSpatial.Controls
             }
         }
 
+        // CGX
+        [Browsable(true), Category("Layout")]
+        bool _Visible = true;
+        public bool Visible
+        {
+            get { return _Visible; }
+            set { _Visible = value; OnInvalidate(); }
+        }
+        // CGX END
+
+
         /// <summary>
         /// Gets the thumbnail that appears in the LayoutListView.
         /// </summary>
@@ -251,9 +491,128 @@ namespace DotSpatial.Controls
             }
         }
 
+        // CGX
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Group
+        {
+            get { return _sGroup; }
+            set { _sGroup = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Browsable(true), Category("Size on Layout")]
+        public SizeF CustomSize
+        {
+            get { return _customSize; }
+            set
+            {
+                _customSize = value;
+                this.Size = ComputeSize();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Browsable(true)]
+        public enum eSizeUnit
+        {
+            Millimeters,
+            Centimeters,
+            OneHundredthInches,
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="iUnit"></param>
+        public void UnitFromInt(int iUnit)
+        {
+            Unit = (eSizeUnit)iUnit;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Browsable(true), Category("Size on Layout")]
+        public eSizeUnit Unit
+        {
+            get { return _eSizeUnit; }
+            set
+            {
+                eSizeUnit eOLD = _eSizeUnit;
+                _eSizeUnit = value;
+
+                // Recalcul de la taille à afficher
+                switch (eOLD)
+                {
+                    case eSizeUnit.Centimeters:
+                        if (_eSizeUnit == eSizeUnit.Millimeters) CustomSize = Converter.Centimeters2Millimeters(_customSize);
+                        if (_eSizeUnit == eSizeUnit.OneHundredthInches) CustomSize = Converter.Centimeters2OneHundredthInches(_customSize);
+                        break;
+                    case eSizeUnit.Millimeters:
+                        if (_eSizeUnit == eSizeUnit.Centimeters) CustomSize = Converter.Millimeters2Centimeters(_customSize);
+                        if (_eSizeUnit == eSizeUnit.OneHundredthInches) CustomSize = Converter.Millimeters2OneHundredthInches(_customSize);
+                        break;
+                    case eSizeUnit.OneHundredthInches:
+                        if (_eSizeUnit == eSizeUnit.Millimeters) CustomSize = Converter.OneHundredthInches2Millimeters(_customSize);
+                        if (_eSizeUnit == eSizeUnit.Centimeters) CustomSize = Converter.OneHundredthInches2Centimeters(_customSize);
+                        break;
+                }
+            }
+        } // Fin CGX
         #endregion
 
         #region Methods
+
+        // CGX
+        /// <summary>
+        /// 
+        /// </summary>
+        void LayoutElement_SizeChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SizeF pSize = this.Size;
+                switch (_eSizeUnit)
+                {
+                    case eSizeUnit.Centimeters: pSize = Converter.OneHundredthInches2Centimeters(this.Size); break;
+                    case eSizeUnit.Millimeters: pSize = Converter.OneHundredthInches2Millimeters(this.Size); break;
+                }
+                if (CustomSize != pSize)
+                    CustomSize = pSize;
+            }
+            catch (Exception) { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private SizeF ComputeSize()
+        {
+            SizeF rSize = _customSize;
+
+            try
+            {
+                // Calcul de la taille à stocker
+                switch (_eSizeUnit)
+                {
+                    case eSizeUnit.Centimeters: rSize = Converter.Centimeters2OneHundredthInches(_customSize); break;
+                    case eSizeUnit.Millimeters: rSize = Converter.Millimeters2OneHundredthInches(_customSize); break;
+                }
+            }
+            catch (Exception) { }
+
+            return rSize;
+        }
+
+        // Fin CGX
+
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -270,14 +629,15 @@ namespace DotSpatial.Controls
         public void DrawBackground(Graphics g, bool printing)
         {
             if (Background != null)
-            {
-                GraphicsPath gp = new GraphicsPath();
-                gp.AddRectangle(Rectangle);
-                foreach (IPattern myPattern in Background.Patterns)
-                {
-                    myPattern.Bounds = Rectangle;
-                    myPattern.FillPath(g, gp);
-                }
+            {   
+                // CGX
+                //graphicspath gp = new graphicspath();
+                //gp.addrectangle(rectangle);
+                //foreach (ipattern mypattern in background.patterns)
+                //{
+                //    mypattern.bounds = rectangle;
+                //    mypattern.fillpath(g, gp);
+                //}
             }
         }
 
@@ -290,6 +650,7 @@ namespace DotSpatial.Controls
         {
             if (Background.OutlineSymbolizer == null || Background.Patterns.Count < 1) return;
 
+            /* ORIGINAL
             RectangleF tempRect = Rectangle;
             float width = (float)(Background.GetOutlineWidth() / 2.0D);
             tempRect.Inflate(width, width);
@@ -321,7 +682,63 @@ namespace DotSpatial.Controls
                     gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
                     outlineSymbol.Outline.DrawPath(g, gp, 1D);
                 }
-            }
+            }*/
+
+            // CGX
+            RectangleF tempRect = this.Rectangle;
+            //if (!printing)
+            //{
+            //    float width = (float)(this.Background.GetOutlineWidth() / 2.0D);
+            //    tempRect.Inflate(width, width);
+            //}
+
+            //Makes sure the rectangle is big enough to draw
+            if (tempRect.Width > 0 && tempRect.Height > 0)
+            {
+                foreach (IPattern outlineSymbol in this.Background.Patterns)
+                {
+                    if (outlineSymbol.UseOutline == false)
+                        continue;
+
+                    double dWidth2 = outlineSymbol.Outline.GetWidth();
+                    string sName = this.Name;
+
+                    GraphicsPath gp = new GraphicsPath();
+                    gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
+                    //outlineSymbol.Outline.DrawPath(g, gp, dWidth2);
+
+                    //gp = new GraphicsPath();
+                    gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
+                    //outlineSymbol.Outline.DrawPath(g, gp, dWidth2);
+
+                    //gp = new GraphicsPath();
+                    gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
+                    //outlineSymbol.Outline.DrawPath(g, gp, dWidth2);
+
+                    //gp = new GraphicsPath();
+                    gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
+
+                    outlineSymbol.Outline.DrawPath(g, gp, dWidth2);
+                    gp.Dispose();
+
+                    //GraphicsPath gp = new GraphicsPath();
+                    //gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
+                    //outlineSymbol.Outline.DrawPath(g, gp, 1.0D);
+
+                    //gp = new GraphicsPath();
+                    //gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
+                    //outlineSymbol.Outline.DrawPath(g, gp, 1.0D);
+
+                    //gp = new GraphicsPath();
+                    //gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
+                    //outlineSymbol.Outline.DrawPath(g, gp, 1.0D);
+
+                    //gp = new GraphicsPath();
+                    //gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
+                    //outlineSymbol.Outline.DrawPath(g, gp, 1.0D);
+                    //gp.Dispose();
+                }
+            } // FIN CGX
         }
 
         /// <summary>

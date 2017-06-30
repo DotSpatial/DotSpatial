@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
 
@@ -535,6 +536,13 @@ namespace DotSpatial.Controls
                             FastDrawnState state = states[index];
                             if (state.Category == lineCategory && state.Selected == (i == 1) && state.Visible)
                             {
+                                // CGX
+                                if (Visibility != null && Visibility.Length > 0 && index < Visibility.Length)
+                                {
+                                    bool visi = Visibility[index].Visible;
+                                    if (!visi) continue;
+                                } // CGX END
+
                                 drawnFeatures.Add(index);
                             }
                         }
@@ -551,6 +559,14 @@ namespace DotSpatial.Controls
                         {
                             scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                         }
+
+                        // CGX
+                        if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                        {
+                            double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                            double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                            scale = dReferenceScale / dCurrentScale;
+                        } // Fin CGX
 
                         foreach (IStroke stroke in ls.Strokes)
                         {
@@ -585,6 +601,14 @@ namespace DotSpatial.Controls
                 {
                     scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                 }
+
+                // CGX
+                if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                {
+                    double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                    double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                    scale = dReferenceScale / dCurrentScale;
+                } // Fin CGX
 
                 foreach (IStroke stroke in ls.Strokes)
                 {
@@ -633,6 +657,14 @@ namespace DotSpatial.Controls
                         scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                     }
 
+                    // CGX
+                    if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                    {
+                        double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                        double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                        scale = dReferenceScale / dCurrentScale;
+                    } // Fin CGX
+
                     foreach (IStroke stroke in ls.Strokes)
                     {
                         stroke.DrawPath(g, graphPath, scale);
@@ -645,6 +677,61 @@ namespace DotSpatial.Controls
             if (e.Device == null) g.Dispose();
         }
 
+        #endregion
+
+        #region CGX
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="inFeatureSet"></param>
+        public MapLineLayer(IFeatureSet inFeatureSet, FastDrawnState[] inVisibility)
+            : base(inFeatureSet)
+        {
+            Configure();
+            OnFinishedLoading();
+
+            Visibility = inVisibility;
+
+        }
+        FastDrawnState[] _Visibility = null;
+        [Serialize("FastDrawnState", ConstructorArgumentIndex = 1)]
+        public FastDrawnState[] Visibility
+        {
+            get
+            {
+
+
+
+                return _Visibility;
+            }
+
+            set
+            {
+
+                _Visibility = value;
+
+            }
+        }
+        public void StoreVisibility()
+        {
+            Visibility = DrawnStates;
+        }
+
+        public void SetVisibility()
+        {
+            DrawnStatesNeeded = true;
+            if (_Visibility != null && DrawnStates != null
+                && _Visibility.Length == DrawnStates.Length)
+            {
+                for (int i = 0; i < _Visibility.Length; i++)
+                {
+
+                    DrawnStates[i].Visible = _Visibility[i].Visible;
+
+
+                }
+            }
+        }
         #endregion
     }
 }

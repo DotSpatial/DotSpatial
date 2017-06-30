@@ -184,6 +184,10 @@ namespace DotSpatial.Plugins.Measure
         private void OnMeasureModeChanged()
         {
             MeasureModeChanged?.Invoke(this, EventArgs.Empty);
+            // CGX
+            lblPartialValue.Text = (_distance * _distIntoMeters).ToString("#,###");
+            lblTotalValue.Text = (_totalDistance * _distIntoMeters).ToString("#,###");
+            // Fin CGX
         }
 
         private void TsbClearClick(object sender, EventArgs e)

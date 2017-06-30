@@ -383,7 +383,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldOpacityCartographic.ShowMaximum = true;
             this.sldOpacityCartographic.ShowMinimum = true;
             this.sldOpacityCartographic.ShowTicks = true;
-            this.sldOpacityCartographic.ShowValue = false;
+            this.sldOpacityCartographic.ShowValue = true; // CGX false -> true
             this.sldOpacityCartographic.SliderColor = System.Drawing.Color.Blue;
             this.sldOpacityCartographic.SliderRadius = 4F;
             this.sldOpacityCartographic.TickColor = System.Drawing.Color.DarkGray;

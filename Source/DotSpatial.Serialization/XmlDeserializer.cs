@@ -162,8 +162,17 @@ namespace DotSpatial.Serialization
             }
 
             Type[] types = constructorArgs.Select(arg => arg.GetType()).ToArray();
-            var ctor = type.GetConstructor(types);
-            return ctor.Invoke(constructorArgs.ToArray());
+            //var ctor = type.GetConstructor(types);
+            //return ctor.Invoke(constructorArgs.ToArray());
+			//CGX
+            if (types != null)
+            {
+                var ctor = type.GetConstructor(types);
+                if (ctor != null)
+                    return ctor.Invoke(constructorArgs.ToArray());
+            }
+            return null;
+            //Fin CGX
         }
 
         private T DoDeserialize<T>(T existingObject, string xml, bool fill)

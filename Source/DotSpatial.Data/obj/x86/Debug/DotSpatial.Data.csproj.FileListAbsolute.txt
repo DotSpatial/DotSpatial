@@ -1,0 +1,8 @@
+C:\D4F_SRC\D4F\bin\Debug\DotSpatial.Data.dll.config
+C:\D4F_SRC\D4F\bin\Debug\DotSpatial.Data.dll
+C:\D4F_SRC\D4F\bin\Debug\DotSpatial.Data.pdb
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Data\obj\x86\Debug\DotSpatial.Data.csprojResolveAssemblyReference.cache
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Data\obj\x86\Debug\DotSpatial.Data.DataStrings.resources
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Data\obj\x86\Debug\DotSpatial.Data.csproj.GenerateResource.Cache
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Data\obj\x86\Debug\DotSpatial.Data.dll
+C:\D4F_SRC\D4F\DotSpatial\DotSpatial.Data\obj\x86\Debug\DotSpatial.Data.pdb

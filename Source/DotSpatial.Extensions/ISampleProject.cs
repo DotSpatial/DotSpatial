@@ -1,16 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ISampleProject.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace DotSpatial.Extensions
+﻿namespace DotSpatial.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// Used to specify a sample .dspx project that the user can download as a package and open.
     /// </summary>

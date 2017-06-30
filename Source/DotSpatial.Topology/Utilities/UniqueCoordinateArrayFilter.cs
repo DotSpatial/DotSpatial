@@ -23,7 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
-using Iesi.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -34,7 +34,7 @@ namespace DotSpatial.Topology.Utilities
     public class UniqueCoordinateArrayFilter : ICoordinateFilter
     {
         private readonly ArrayList _list = new ArrayList();
-        private readonly ISet _table = new SortedSet();
+        private readonly ISet<Coordinate> _table = new SortedSet<Coordinate>();
 
         /// <summary>
         /// Returns the gathered <c>Coordinate</c>s.

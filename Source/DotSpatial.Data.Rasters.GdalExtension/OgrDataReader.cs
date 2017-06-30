@@ -23,7 +23,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         private const string GeometryFieldName = "Geometry";
         private const int GeometryFieldOrdinal = 0;
         private readonly int _iFieldCount;
-        private readonly DataSource _ogrDataSource;
+        protected readonly DataSource _ogrDataSource; // CGX private -> protected
         private readonly FeatureDefn _ogrFeatureDefinition;
         private readonly Layer _ogrLayer;
 
@@ -368,7 +368,9 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             string sProj4String;
 
-            SpatialReference osrSpatialref = _ogrLayer.GetSpatialRef();
+            //SpatialReference osrSpatialref = _ogrLayer.GetSpatialRef();
+			// CGX
+            OSGeo.OSR.SpatialReference osrSpatialref = _ogrLayer.GetSpatialRef();
             osrSpatialref.ExportToProj4(out sProj4String);
             return ProjectionInfo.FromProj4String(sProj4String);
         }

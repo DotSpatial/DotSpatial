@@ -22,10 +22,8 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// MemberChangedEventArgs
-    /// </summary>
-    public class TextSymbolChangedEventArgs : EventArgs
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
+   public class TextSymbolChangedEventArgs : EventArgs
     {
         #region Private Variables
 

@@ -663,44 +663,52 @@ namespace DotSpatial.Symbology.Forms
 
             try
             {
-                // manage selection using the Selection property
-                IndexSelection sel = _featureLayer.Selection as IndexSelection;
-                if (sel != null)
+                // CGX
+                if (_featureLayer.DataSet != null && _featureLayer.DataSet.AttributesPopulated)
                 {
-                    sel.SuspendChanges();
-
-                    // set the selected state of the corresponding feature
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    // manage selection using the Selection property
+                    IndexSelection sel = _featureLayer.Selection as IndexSelection;
+                    if (sel != null)
                     {
-                        int fid = (int)row.Cells[_fidField].Value;
-                        if (row.Selected)
-                        {
-                            sel.Add(fid);
-                        }
-                        else
-                        {
-                            sel.Remove(fid);
-                        }
-                    }
+                        sel.SuspendChanges();
 
-                    sel.ResumeChanges();
-                }
-                else
-                {
-                    List<int> adds = new List<int>();
-                    List<int> removes = _selectedRows.ToList();
-                    foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                        // set the selected state of the corresponding feature
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            int fid = (int)row.Cells[_fidField].Value;
+                            if (row.Selected)
+                            {
+                                sel.Add(fid);
+                            }
+                            else
+                            {
+                                sel.Remove(fid);
+                            }
+                        }
+
+                        sel.ResumeChanges();
+                    }
+                    else
                     {
-                        if (!_selectedRows.Contains(row.Index))
+                        List<int> adds = new List<int>();
+                        List<int> removes = _selectedRows.ToList();
+                        foreach (DataGridViewRow row in dataGridView1.SelectedRows)
                         {
-                            adds.Add(row.Index);
+                            // CGX
+                            if (row.Cells[_fidField].Value != null && row.Cells[_fidField].Value != DBNull.Value && row.Cells[_fidField].Value as string != string.Empty)
+                            {
+                                if (!_selectedRows.Contains(row.Index))
+                                {
+                                    adds.Add(row.Index);
+                                }
+                            }
+
+                            removes.Remove(row.Index);
                         }
 
-                        removes.Remove(row.Index);
+                        _featureLayer.Select(adds);
+                        _featureLayer.UnSelect(removes);
                     }
-
-                    _featureLayer.Select(adds);
-                    _featureLayer.UnSelect(removes);
                 }
             }
             finally

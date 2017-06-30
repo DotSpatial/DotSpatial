@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
 
@@ -418,63 +419,85 @@ namespace DotSpatial.Controls
             Matrix origTransform = g.Transform;
             FeatureType featureType = DataSet.FeatureType;
 
-            if (!DrawnStatesNeeded)
-            {
-                if (Symbology == null || Symbology.Categories.Count == 0) return;
-                FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
-                IPointCategory pc = state.Category as IPointCategory;
-                IPointSymbolizer ps = pc?.Symbolizer;
-                if (ps == null) return;
-                double[] vertices = DataSet.Vertex;
+            double minX = e.MinX;
+            double maxY = e.MaxY;
+            double dx = e.Dx;
+            double dy = e.Dy;
 
-                foreach (int index in indices)
-                {
-                    if (DrawnStates != null && DrawnStates.Length > index && !DrawnStates[index].Visible) continue;
-                    if (featureType == FeatureType.Point)
-                    {
-                        DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
-                    }
-                    else
-                    {
-                        // multi-point
-                        ShapeRange range = DataSet.ShapeIndices[index];
-                        for (int i = range.StartIndex; i <= range.EndIndex(); i++)
-                        {
-                            DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
-                        }
-                    }
-                }
-            }
-            else
+            // CGX
+            if (dx < 2000000000 && dx > -2000000000 && dy < 2000000000 && dy > -2000000000)
             {
-                FastDrawnState[] states = DrawnStates;
-                double[] vertices = DataSet.Vertex;
-
-                foreach (int index in indices)
+                if (!DrawnStatesNeeded)
                 {
-                    if (index >= states.Length) break;
-                    FastDrawnState state = states[index];
-                    if (!state.Visible || state.Category == null) continue;
+                    if (Symbology == null || Symbology.Categories.Count == 0) return;
+                    FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
                     IPointCategory pc = state.Category as IPointCategory;
-                    if (pc == null) continue;
+                    IPointSymbolizer ps = pc?.Symbolizer;
+                    if (ps == null) return;
+                    double[] vertices = DataSet.Vertex;
 
-                    IPointSymbolizer ps = state.Selected ? pc.SelectionSymbolizer : pc.Symbolizer;
-                    if (ps == null) continue;
-
-                    if (featureType == FeatureType.Point)
+                    foreach (int index in indices)
                     {
-                        DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
-                    }
-                    else
-                    {
-                        ShapeRange range = DataSet.ShapeIndices[index];
-                        for (int i = range.StartIndex; i <= range.EndIndex(); i++)
+                        if (DrawnStates != null && DrawnStates.Length > index)
                         {
-                            DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
+                            // CGX
+                            if (Visibility != null)
+                            {
+                                bool visi = Visibility[index].Visible;
+                                if (!visi) continue;
+                            }
+
+                            if (!DrawnStates[index].Visible) continue;
+                        }
+
+                        if (featureType == FeatureType.Point)
+                        {
+                            DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
+                        }
+                        else
+                        {
+                            // multi-point
+                            ShapeRange range = DataSet.ShapeIndices[index];
+                            for (int i = range.StartIndex; i <= range.EndIndex(); i++)
+                            {
+                                DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    FastDrawnState[] states = DrawnStates;
+                    double[] vertices = DataSet.Vertex;
+
+                    foreach (int index in indices)
+                    {
+                        if (index >= states.Length) break;
+                        FastDrawnState state = states[index];
+                        if (!state.Visible || state.Category == null) continue;
+                        IPointCategory pc = state.Category as IPointCategory;
+                        if (pc == null) continue;
+
+                        IPointSymbolizer ps = state.Selected ? pc.SelectionSymbolizer : pc.Symbolizer;
+                        if (ps == null) continue;
+
+                        if (featureType == FeatureType.Point)
+                        {
+                            DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
+                        }
+                        else
+                        {
+                            ShapeRange range = DataSet.ShapeIndices[index];
+                            for (int i = range.StartIndex; i <= range.EndIndex(); i++)
+                            {
+                                DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
+                            }
                         }
                     }
                 }
             }
+
+                
 
             if (e.Device == null) g.Dispose();
             else g.Transform = origTransform;
@@ -527,12 +550,76 @@ namespace DotSpatial.Controls
                 Y = Convert.ToInt32((e.MaxY - ptY) * e.Dy)
             };
             double scaleSize = ps.ScaleMode == ScaleMode.Geographic ? e.ImageRectangle.Width / e.GeographicExtents.Width : 1;
+
+            // CGX
+            if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+            {
+                double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                scaleSize = dReferenceScale / dCurrentScale;
+            } // Fin CGX
+
             Matrix shift = origTransform.Clone();
             shift.Translate(pt.X, pt.Y);
             g.Transform = shift;
             ps.Draw(g, scaleSize);
         }
 
+        #endregion
+
+        #region CGX
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="inFeatureSet"></param>
+        public MapPointLayer(IFeatureSet inFeatureSet, FastDrawnState[] inVisibility)
+            : base(inFeatureSet)
+        {
+            Configure();
+            OnFinishedLoading();
+
+            Visibility = inVisibility;
+
+        }
+        FastDrawnState[] _Visibility = null;
+        [Serialize("FastDrawnState", ConstructorArgumentIndex = 1)]
+        public FastDrawnState[] Visibility
+        {
+            get
+            {
+
+
+
+                return _Visibility;
+            }
+
+            set
+            {
+
+                _Visibility = value;
+
+            }
+        }
+        public void StoreVisibility()
+        {
+            Visibility = DrawnStates;
+        }
+
+        public void SetVisibility()
+        {
+            DrawnStatesNeeded = true;
+            if (_Visibility != null && DrawnStates != null
+                && _Visibility.Length == DrawnStates.Length)
+            {
+                for (int i = 0; i < _Visibility.Length; i++)
+                {
+
+                    DrawnStates[i].Visible = _Visibility[i].Visible;
+
+
+                }
+            }
+        }
         #endregion
     }
 }

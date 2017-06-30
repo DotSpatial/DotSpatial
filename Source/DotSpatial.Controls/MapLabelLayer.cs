@@ -231,6 +231,19 @@ namespace DotSpatial.Controls
         {
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
+            // CGX
+            ILabelSymbolizer symb2 = symb.Clone() as ILabelSymbolizer;
+            double scaleSize = 1.0;
+            /*      IMapFrame mapf = map
+                   if (MapFrame.ReferenceScale > 1.0)
+                   {
+                       double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                       double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                       scaleSize = dReferenceScale / dCurrentScale;
+                   }*/
+            symb2.FontSize = symb.FontSize * Convert.ToSingle(scaleSize);
+            // Fin CGX
+
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;

@@ -28,22 +28,27 @@ namespace DotSpatial.Controls
             : base(fileName, symbolizer)
         {
             LegendText = Path.GetFileNameWithoutExtension(fileName);
-            if ((long)DataSet.NumRows * DataSet.NumColumns > MaxCellsInMemory)
-            {
-                string pyrFile = Path.ChangeExtension(fileName, ".mwi");
-                BitmapGetter = File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh")) ? new PyramidImage(pyrFile) : CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
-            }
-            else
-            {
-                Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows);
-                symbolizer.Raster = DataSet;
 
-                DataSet.DrawToBitmap(symbolizer, bmp);
-                var id = new InRamImage(bmp)
+            // CGX
+            if (File.Exists(fileName))
+            {
+                if ((long)DataSet.NumRows * DataSet.NumColumns > MaxCellsInMemory)
                 {
-                    Bounds = DataSet.Bounds
-                };
-                BitmapGetter = id;
+                    string pyrFile = Path.ChangeExtension(fileName, ".mwi");
+                    BitmapGetter = File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh")) ? new PyramidImage(pyrFile) : CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
+                }
+                else
+                {
+                    Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows);
+                    symbolizer.Raster = DataSet;
+
+                    DataSet.DrawToBitmap(symbolizer, bmp);
+                    var id = new InRamImage(bmp)
+                    {
+                        Bounds = DataSet.Bounds
+                    };
+                    BitmapGetter = id;
+                }
             }
         }
 
@@ -301,11 +306,15 @@ namespace DotSpatial.Controls
 
             int numBounds = Math.Min(regions.Count, clipRectangles.Count);
 
-            for (int i = 0; i < numBounds; i++)
+            // CGX
+            if (BitmapGetter != null)
             {
-                using (Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]))
+                for (int i = 0; i < numBounds; i++)
                 {
-                    if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
+                    using (Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]))
+                    {
+                        if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
+                    }
                 }
             }
 

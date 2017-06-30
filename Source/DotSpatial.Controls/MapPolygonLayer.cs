@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
 
@@ -291,17 +292,22 @@ namespace DotSpatial.Controls
             {
                 List<int> drawList = new List<int>();
                 List<ShapeRange> shapes = DataSet.ShapeIndices;
-                for (int shp = 0; shp < shapes.Count; shp++)
-                {
-                    foreach (Extent region in regions)
-                    {
-                        if (!shapes[shp].Extent.Intersects(region)) continue;
-                        drawList.Add(shp);
-                        break;
-                    }
-                }
 
-                DrawFeatures(args, drawList, clipRects, true);
+                // CGX
+                if (shapes != null)
+                {
+                    for (int shp = 0; shp < shapes.Count; shp++)
+                    {
+                        foreach (Extent region in regions)
+                        {
+                            if (!shapes[shp].Extent.Intersects(region)) continue;
+                            drawList.Add(shp);
+                            break;
+                        }
+                    }
+
+                    DrawFeatures(args, drawList, clipRects, true);
+                }
             }
         }
 
@@ -414,8 +420,14 @@ namespace DotSpatial.Controls
         private void BuildPaths(MapArgs e, IEnumerable<int> indices, out List<GraphicsPath> paths)
         {
             paths = new List<GraphicsPath>();
-            Extent drawExtents = e.GeographicExtents;
-            Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
+
+            // CGX bug partie gauche des polygones intersectant le bord de la carte
+            // Extent drawExtents = e.GeographicExtents;
+            // Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
+            Rectangle clipRect = ComputeClippingRectangle(e);
+            Extent drawExtents = e.PixelToProj(clipRect);
+
+            // FIN CGX
             SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
 
             List<GraphicsPath> graphPaths = new List<GraphicsPath>();
@@ -479,6 +491,13 @@ namespace DotSpatial.Controls
                         states = DrawnStates;
                     }
 
+                    // CGX
+                    if (Visibility != null && Visibility.Length > shp)
+                    {
+                        bool Visi = Visibility[shp].Visible;
+                        if (!Visi) continue;
+                    } // FIN CGX
+
                     if (states[shp].Visible == false) continue;
                     ShapeRange shape = shapes[shp];
                     if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
@@ -533,7 +552,7 @@ namespace DotSpatial.Controls
         private void Configure()
         {
             ChunkSize = 25000;
-            ProgressReportingEnabled = true;
+            ProgressReportingEnabled = false; // CGX true -> false
         }
 
         // This draws the individual polygon features
@@ -614,6 +633,14 @@ namespace DotSpatial.Controls
                     scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                 }
 
+                // CGX
+                if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                {
+                    double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                    double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                    scale = dReferenceScale / dCurrentScale;
+                } // Fin CGX
+
                 foreach (IPattern pattern in ps.Patterns)
                 {
                     if (pattern.UseOutline)
@@ -669,6 +696,14 @@ namespace DotSpatial.Controls
                             scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
                         }
 
+                        // CGX
+                        if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                        {
+                            double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                            double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                            scale = dReferenceScale / dCurrentScale;
+                        } // Fin CGX
+
                         foreach (IPattern pattern in ps.Patterns)
                         {
                             if (pattern.UseOutline)
@@ -686,5 +721,58 @@ namespace DotSpatial.Controls
         }
 
         #endregion
+
+        #region CGX
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="inFeatureSet"></param>
+        public MapPolygonLayer(IFeatureSet inFeatureSet, FastDrawnState[] inVisibility)
+            : base(inFeatureSet)
+        {
+            Configure();
+            OnFinishedLoading();
+
+            Visibility = inVisibility;
+
+        }
+        FastDrawnState[] _Visibility = null;
+        [Serialize("FastDrawnState", ConstructorArgumentIndex = 1)]
+        public FastDrawnState[] Visibility
+        {
+            get
+            {
+
+
+
+                return _Visibility;
+            }
+
+            set
+            {
+
+                _Visibility = value;
+
+            }
+        }
+        public void StoreVisibility()
+        {
+            Visibility = DrawnStates;
+        }
+
+        public void SetVisibility()
+        {
+            DrawnStatesNeeded = true;
+            if (_Visibility != null && DrawnStates != null
+                && _Visibility.Length == DrawnStates.Length)
+            {
+                for (int i = 0; i < _Visibility.Length; i++)
+                {
+                    DrawnStates[i].Visible = _Visibility[i].Visible;
+                }
+            }
+        }
+        #endregion
+
     }
 }

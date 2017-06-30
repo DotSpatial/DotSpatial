@@ -179,65 +179,76 @@ namespace DotSpatial.Symbology
         /// <param name="scaleWidth">The double scale width for controling markers</param>
         public void Draw(Graphics g, GraphicsPath path, double scaleWidth)
         {
-            if (NumSymbols == 0) return;
-
-            GraphicsPathIterator myIterator = new GraphicsPathIterator(path);
-            myIterator.Rewind();
-            int start, end;
-            bool isClosed;
-            Size2D symbolSize = _symbol.GetSize();
-            Bitmap symbol = new Bitmap((int)symbolSize.Width, (int)symbolSize.Height);
-            Graphics sg = Graphics.FromImage(symbol);
-            _symbol.Draw(sg, new Rectangle(0, 0, (int)symbolSize.Width, (int)symbolSize.Height));
-            sg.Dispose();
-
-            Matrix oldMat = g.Transform;
-            PointF[] points;
-            if (path.PointCount == 0) return;
-
+            // CGX TRY CATCH
             try
             {
-                points = path.PathPoints;
-            }
-            catch
-            {
-                return;
-            }
+                if (NumSymbols == 0) return;
 
-            while (myIterator.NextSubpath(out start, out end, out isClosed) > 0)
-            {
-                if (NumSymbols == 1)
+                GraphicsPathIterator myIterator = new GraphicsPathIterator(path);
+                myIterator.Rewind();
+                int start, end;
+                bool isClosed;
+                Size2D symbolSize = _symbol.GetSize();
+
+                // CGX
+                symbolSize.Height = symbolSize.Height * scaleWidth;
+                symbolSize.Width = symbolSize.Width * scaleWidth; // fin CGX
+
+                Bitmap symbol = new Bitmap((int)symbolSize.Width, (int)symbolSize.Height);
+                Graphics sg = Graphics.FromImage(symbol);
+                _symbol.Draw(sg, new Rectangle(0, 0, (int)symbolSize.Width, (int)symbolSize.Height));
+                sg.Dispose();
+
+                Matrix oldMat = g.Transform;
+                PointF[] points;
+                if (path.PointCount == 0) return;
+
+                try
                 {
-                    // single decoration spot
-                    if (_percentualPosition == 0)
+                    points = path.PathPoints;
+                }
+                catch
+                {
+                    return;
+                }
+
+                while (myIterator.NextSubpath(out start, out end, out isClosed) > 0)
+                {
+                    if (NumSymbols == 1)
                     {
-                        // at start of the line
-                        DrawImage(g, points[start], points[start + 1], points[start], FlipFirst ^ FlipAll, symbol, oldMat);
-                    }
-                    else if (_percentualPosition == 100)
-                    {
-                        // at end of the line
-                        DrawImage(g, points[end - 1], points[end], points[end], FlipFirst ^ FlipAll, symbol, oldMat);
+                        // single decoration spot
+                        if (_percentualPosition == 0)
+                        {
+                            // at start of the line
+                            DrawImage(g, points[start], points[start + 1], points[start], FlipFirst ^ FlipAll, symbol, oldMat);
+                        }
+                        else if (_percentualPosition == 100)
+                        {
+                            // at end of the line
+                            DrawImage(g, points[end - 1], points[end], points[end], FlipFirst ^ FlipAll, symbol, oldMat);
+                        }
+                        else
+                        {
+                            // somewhere in between start and end
+                            double totalLength = GetLength(points, start, end);
+                            double span = totalLength * _percentualPosition / 100;
+                            List<DecorationSpot> spot = GetPosition(points, span, start, end);
+                            if (spot.Count > 1) DrawImage(g, spot[1].Before, spot[1].After, spot[1].Position, FlipFirst ^ FlipAll, symbol, oldMat);
+                        }
                     }
                     else
                     {
-                        // somewhere in between start and end
+                        // more than one decoration spot
                         double totalLength = GetLength(points, start, end);
-                        double span = totalLength * _percentualPosition / 100;
-                        List<DecorationSpot> spot = GetPosition(points, span, start, end);
-                        if (spot.Count > 1) DrawImage(g, spot[1].Before, spot[1].After, spot[1].Position, FlipFirst ^ FlipAll, symbol, oldMat);
+                        double span = Math.Round(totalLength / (NumSymbols - 1), 4);
+                        List<DecorationSpot> spots = GetPosition(points, span, start, end);
+                        spots.Add(new DecorationSpot(points[end - 1], points[end], points[end])); // add the missing end point
+                        for (int i = 0; i < spots.Count; i++) DrawImage(g, spots[i].Before, spots[i].After, spots[i].Position, i == 0 ? (FlipFirst ^ FlipAll) : FlipAll, symbol, oldMat);
                     }
                 }
-                else
-                {
-                    // more than one decoration spot
-                    double totalLength = GetLength(points, start, end);
-                    double span = Math.Round(totalLength / (NumSymbols - 1), 4);
-                    List<DecorationSpot> spots = GetPosition(points, span, start, end);
-                    spots.Add(new DecorationSpot(points[end - 1], points[end], points[end])); // add the missing end point
-                    for (int i = 0; i < spots.Count; i++) DrawImage(g, spots[i].Before, spots[i].After, spots[i].Position, i == 0 ? (FlipFirst ^ FlipAll) : FlipAll, symbol, oldMat);
-                }
             }
+            catch (Exception)
+            { }
         }
 
         /// <summary>
@@ -296,6 +307,19 @@ namespace DotSpatial.Symbology
             }
 
             return (float)(angle * 180.0 / Math.PI);
+
+            // CGX
+            /*double angle_deg = (angle * 180 / Math.PI);
+            if (deltaX < 0.0)
+            {
+                double transform = angle_deg + 180.0;
+                double quotient = Math.Floor(transform / 360.0);
+                double remainder = transform - 360.0 * quotient;
+                angle_deg = remainder;
+
+            }
+            return (float)angle_deg;*/
+            // Fin CGX
         }
 
         /// <summary>

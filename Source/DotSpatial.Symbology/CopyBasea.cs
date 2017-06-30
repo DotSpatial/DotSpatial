@@ -24,9 +24,6 @@ using System.Reflection;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// CopyBase
-    /// </summary>
     public class CopyBase : ICloneable
     {
         #region Private Variables

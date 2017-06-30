@@ -26,6 +26,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// Carries event arguments for the generic IEventList
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class IndividualDictionaryEventArgs<TKey, TValue> : EventArgs
     {
         private TKey _key;

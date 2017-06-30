@@ -87,13 +87,13 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="fid">The feature offest</param>
         /// <param name="attributeValues">The row of new attribute values.</param>
-        void EditAttributes(int fid, DataRow attributeValues);
+        void EditAttributes(int fid, IDataRow attributeValues); // CGX AERO GLZ
 
         /// <summary>
         /// Edits the values of the specified rows in the attribute table.
         /// </summary>
         /// <param name="indexDataRowPairs"></param>
-        void EditAttributes(IEnumerable<KeyValuePair<int, DataRow>> indexDataRowPairs);
+        void EditAttributes(IEnumerable<KeyValuePair<int, IDataRow>> indexDataRowPairs); // CGX AERO GLZ
 
         /// <summary>
         /// Adding and removing shapes may make the bounds for the entire shapefile invalid.

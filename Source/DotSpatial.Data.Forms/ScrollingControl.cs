@@ -312,23 +312,31 @@ namespace DotSpatial.Data.Forms
         /// <param name="e">The paint event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            Rectangle clip = e.ClipRectangle;
-            if (clip.IsEmpty) clip = ClientRectangle;
-            if (IsInitialized == false || Page == null)
-            {
-                Initialize(); // redraw the entire page buffer if necessary
-            }
+			// CGX TRY CATCH
+			try
+			{
+	            Rectangle clip = e.ClipRectangle;
+	            if (clip.IsEmpty) clip = ClientRectangle;
+	            if (IsInitialized == false || Page == null)
+	            {
+	                Initialize(); // redraw the entire page buffer if necessary
+	            }
 
-            using (var buffer = new Bitmap(clip.Width, clip.Height))
-            using (var g = Graphics.FromImage(buffer))
-            using (var mat = new Matrix())
-            {
-                mat.Translate(-clip.X, -clip.Y); // draw in "client" coordinates
-                g.Transform = mat;
+	            using (var buffer = new Bitmap(clip.Width, clip.Height))
+	            using (var g = Graphics.FromImage(buffer))
+	            using (var mat = new Matrix())
+	            {
+	                mat.Translate(-clip.X, -clip.Y); // draw in "client" coordinates
+	                g.Transform = mat;
 
-                OnDraw(new PaintEventArgs(g, clip)); // draw content to the small temporary buffer.
-                e.Graphics.DrawImage(buffer, clip); // draw from our small, temporary buffer to the screen
-            }
+	                OnDraw(new PaintEventArgs(g, clip)); // draw content to the small temporary buffer.
+	                e.Graphics.DrawImage(buffer, clip); // draw from our small, temporary buffer to the screen
+	            }
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex.Message);
+			}
         }
 
         /// <summary>

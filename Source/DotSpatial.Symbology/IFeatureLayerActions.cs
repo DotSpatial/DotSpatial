@@ -35,6 +35,12 @@ namespace DotSpatial.Symbology
         void LabelSetup(ILabelLayer e);
 
         /// <summary>
+        /// CGX Show label setup dialog
+        /// </summary>
+        /// <param name="e">Label layer</param>
+        void LabelSetup2(ILabelLayer e);
+
+        /// <summary>
         /// Show attributes dialog
         /// </summary>
         /// <param name="e">Feature layer</param>

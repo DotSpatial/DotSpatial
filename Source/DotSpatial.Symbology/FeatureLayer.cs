@@ -146,6 +146,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         public event HandledEventHandler ViewAttributes;
 
+        public event HandledEventHandler LabelSetup2; // CGX
+
         #endregion
 
         #region Properties
@@ -567,11 +569,17 @@ namespace DotSpatial.Symbology
                     DataTable expressionTable = DataSet.GetAttributes(page * Size, count, names);
                     foreach (var category in categories)
                     {
-                        DataRow[] res = expressionTable.Select(category.FilterExpression);
-                        foreach (DataRow r in res)
+                        // CGX TRY CATCH
+                        try
                         {
-                            _drawnStates[(int)r["FID"]].Category = category;
+                            DataRow[] res = expressionTable.Select(category.FilterExpression);
+                            foreach (DataRow r in res)
+                            {
+                                _drawnStates[(int)r["FID"]].Category = category;
+                            }
                         }
+                        catch (Exception)
+                        { }
                     }
                 }
             }
@@ -597,11 +605,17 @@ namespace DotSpatial.Symbology
 
                 foreach (var category in categories)
                 {
-                    DataRow[] result = table.Select(category.FilterExpression);
-                    foreach (DataRow row in result)
+                    // CGX TRY CATCH
+                    try
                     {
-                        _drawnStates[table.Rows.IndexOf(row)].Category = category;
+                        DataRow[] result = table.Select(category.FilterExpression);
+                        foreach (DataRow row in result)
+                        {
+                            _drawnStates[table.Rows.IndexOf(row)].Category = category;
+                        }
                     }
+                    catch (Exception)
+                    { }
                 }
 
                 if (containsFid)
@@ -667,6 +681,8 @@ namespace DotSpatial.Symbology
                 affectedArea = area;
                 ResumeChangeEvent();
             }
+
+            OnSelectionChanged(); // CGX
 
             return changed;
         }
@@ -845,6 +861,8 @@ namespace DotSpatial.Symbology
                 ResumeChangeEvent();
             }
 
+            OnSelectionChanged(); // CGX
+
             return changed;
         }
 
@@ -967,6 +985,8 @@ namespace DotSpatial.Symbology
                 ResumeChangeEvent();
             }
 
+            OnSelectionChanged(); // CGX
+
             return changed;
         }
 
@@ -994,6 +1014,8 @@ namespace DotSpatial.Symbology
                 IIndexSelection sel = Selection as IIndexSelection;
                 sel?.AddRange(featureIndices);
             }
+
+            OnSelectionChanged(); // CGX
         }
 
         /// <summary>
@@ -1012,6 +1034,8 @@ namespace DotSpatial.Symbology
                 IIndexSelection sel = Selection as IIndexSelection;
                 sel?.Add(featureIndex);
             }
+
+            OnSelectionChanged(); // CGX
         }
 
         /// <summary>
@@ -1030,6 +1054,8 @@ namespace DotSpatial.Symbology
                 var sel = Selection as IIndexSelection;
                 sel?.Add(feature.Fid);
             }
+
+            OnSelectionChanged(); // CGX
         }
 
         /// <summary>
@@ -1070,6 +1096,8 @@ namespace DotSpatial.Symbology
 
                 ResumeChangeEvent();
             }
+
+            OnSelectionChanged(); // CGX
         }
 
         /// <summary>
@@ -1080,6 +1108,8 @@ namespace DotSpatial.Symbology
         public void SelectByAttribute(string filterExpression)
         {
             SelectByAttribute(filterExpression, ModifySelectionMode.Replace);
+
+            OnSelectionChanged(); // CGX
         }
 
         /// <summary>
@@ -1436,6 +1466,8 @@ namespace DotSpatial.Symbology
                 ResumeChangeEvent();
             }
 
+            OnSelectionChanged(); // CGX
+
             return changed;
         }
 
@@ -1455,6 +1487,8 @@ namespace DotSpatial.Symbology
         public void UnselectByAttribute(string filterExpression)
         {
             SelectByAttribute(filterExpression, ModifySelectionMode.Subtract);
+
+            OnSelectionChanged(); // CGX
         }
 
         /// <summary>
@@ -1462,7 +1496,9 @@ namespace DotSpatial.Symbology
         /// </summary>
         public void ZoomToSelectedFeatures()
         {
-            ZoomToSelectedFeatures(2, 2);
+            // ZoomToSelectedFeatures(2, 2);
+            // CGX
+            ZoomToSelectedFeatures(0, 0);
         }
 
         /// <summary>
@@ -1752,6 +1788,15 @@ namespace DotSpatial.Symbology
             LabelSetup?.Invoke(this, e);
         }
 
+        // CGX
+        protected virtual void OnLabelSetup2(HandledEventArgs e)
+        {
+            if (LabelSetup2 != null)
+            {
+                LabelSetup2(this, e);
+            }
+        } // Fin CGX
+
         /// <summary>
         /// This fires the scheme applied event after the scheme has been altered
         /// </summary>
@@ -1852,7 +1897,9 @@ namespace DotSpatial.Symbology
             LegendText = featureSet.Name;
             Name = featureSet.Name;
             var label = new SymbologyMenuItem(Msg.FeatureLayer_Labeling);
-            label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick));
+            // CGX AERO Nouvelle interface de Label
+            label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick2));
+            // CGX END
             label.MenuItems.Add(new SymbologyMenuItem(Msg.SetDynamicVisibilityScale, SymbologyImages.ZoomScale, LabelExtentsClick));
             ContextMenuItems.Insert(4, label);
             var selection = new SymbologyMenuItem(Msg.FeatureLayer_Selection, SymbologyImages.select, null);
@@ -1936,6 +1983,29 @@ namespace DotSpatial.Symbology
             }
 
             FeatureLayerActions?.LabelSetup(_labelLayer);
+        }
+
+        // CGX AERO
+        private void LabelSetupClick2(object sender, EventArgs e)
+        {
+            var result = new HandledEventArgs(false);
+            OnLabelSetup2(result);
+            if (result.Handled)
+            {
+                return;
+            }
+
+            if (_labelLayer == null)
+            {
+                OnCreateLabels();
+                ShowLabels = true;
+            }
+
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.LabelSetup2(_labelLayer);
+            }
         }
 
         /// <summary>
