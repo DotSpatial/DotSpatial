@@ -597,6 +597,8 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override bool ClearSelection(out Envelope affectedAreas, bool force = false)
         {
+            SuspendEvents();
+
             affectedAreas = new Envelope();
             bool changed = false;
             foreach (ILayer layer in GetAllLayers())
@@ -608,6 +610,8 @@ namespace DotSpatial.Controls
                     affectedAreas.ExpandToInclude(layerArea);
                 }
             }
+
+            ResumeEvents();
 
             return changed;
         }
@@ -645,7 +649,7 @@ namespace DotSpatial.Controls
         }
 
         /// <inheritdoc />
-        public void DrawRegions(MapArgs args, List<Extent> regions)
+        public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
         }
 
@@ -708,9 +712,14 @@ namespace DotSpatial.Controls
             bufferDevice.Clear(_parent?.BackColor ?? Color.White);
 
             // First draw all the vector content
-            foreach (IMapLayer layer in Layers)
+            var layers = Layers.Where(_ => _.VisibleAtExtent(ViewExtents)).ToList();
+            for (int i = 0; i < 2; i++)
             {
-                if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
+                // first draw the normal colors and then the selection colors on top
+                foreach (IMapLayer layer in layers)
+                {
+                    layer.DrawRegions(args, regions, i == 1);
+                }
             }
 
             // Then labels
@@ -721,9 +730,14 @@ namespace DotSpatial.Controls
             }
 
             // First draw all the vector content
-            foreach (var layer in DrawingLayers.OfType<IMapLayer>())
+            var drawingLayers = DrawingLayers.OfType<IMapLayer>().Where(_ => _.VisibleAtExtent(ViewExtents)).ToList();
+            for (int i = 0; i < 2; i++)
             {
-                if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
+                // first draw the normal colors and then the selection colors on top
+                foreach (var layer in drawingLayers)
+                {
+                    layer.DrawRegions(args, regions, i == 1);
+                }
             }
 
             if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
@@ -1100,7 +1114,7 @@ namespace DotSpatial.Controls
             var mfl = layer as IMapFeatureLayer;
             if (mfl != null && mfl.ShowLabels && mfl.LabelLayer != null && mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
             {
-                mfl.LabelLayer.DrawRegions(args, regions);
+                mfl.LabelLayer.DrawRegions(args, regions, false);
             }
         }
 
@@ -1382,10 +1396,10 @@ namespace DotSpatial.Controls
 
             if (!geoLayer.IsVisible) return;
 
-            geoLayer.DrawRegions(args, new List<Extent>
-                                       {
-                                           args.GeographicExtents
-                                       });
+            for (int i = 0; i < 2; i++)
+            {
+                geoLayer.DrawRegions(args, new List<Extent> { args.GeographicExtents }, i == 1);
+            }
 
             IMapFeatureLayer mfl = geoLayer as IMapFeatureLayer;
             if (mfl == null || (mfl.UseDynamicVisibility && ViewExtents.Width > mfl.DynamicVisibilityWidth)) return;
@@ -1397,10 +1411,7 @@ namespace DotSpatial.Controls
                     return;
                 }
 
-                mfl.LabelLayer.DrawRegions(args, new List<Extent>
-                                                 {
-                                                     args.GeographicExtents
-                                                 });
+                mfl.LabelLayer.DrawRegions(args, new List<Extent> { args.GeographicExtents }, false);
             }
         }
 

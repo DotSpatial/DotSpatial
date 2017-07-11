@@ -56,11 +56,12 @@ namespace DotSpatial.Symbology
         /// <param name="self">This ISelectable</param>
         /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed</param>
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
+        /// <param name="clear">Indicates whether prior selected features should be cleared.</param>
         /// <returns>Boolean, true if any items were added to the selection</returns>
-        public static bool Select(this ISelectable self, Envelope tolerant, Envelope strict)
+        public static bool Select(this ISelectable self, Envelope tolerant, Envelope strict, ClearStates clear)
         {
             Envelope ignoreMe;
-            return self.Select(tolerant, strict, SelectionMode.Intersects, out ignoreMe);
+            return self.Select(tolerant, strict, SelectionMode.Intersects, out ignoreMe, clear);
         }
 
         /// <summary>
@@ -71,10 +72,11 @@ namespace DotSpatial.Symbology
         /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed</param>
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
         /// <param name="affectedArea">The geographic envelope of the region impacted by the selection.</param>
+        /// <param name="clear">Indicates whether prior selected features should be cleared.</param>
         /// <returns>True if any members were added to the current selection.</returns>
-        public static bool Select(this IFeatureLayer self, Envelope tolerant, Envelope strict, out Envelope affectedArea)
+        public static bool Select(this IFeatureLayer self, Envelope tolerant, Envelope strict, out Envelope affectedArea, ClearStates clear)
         {
-            return self.Select(tolerant, strict, SelectionMode.Intersects, out affectedArea);
+            return self.Select(tolerant, strict, SelectionMode.Intersects, out affectedArea, clear);
         }
 
         /// <summary>

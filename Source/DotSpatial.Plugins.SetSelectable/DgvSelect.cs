@@ -165,7 +165,11 @@ namespace DotSpatial.Plugins.SetSelectable
             }
             else if (DgvLayer.Columns[e.ColumnIndex].Name == DgvcUnselect.Name)
             {
-                ((LayerSelection)DgvLayer.Rows[e.RowIndex].DataBoundItem).Layer.UnSelectAll();
+                var layer = ((LayerSelection)DgvLayer.Rows[e.RowIndex].DataBoundItem).Layer;
+                var enabled = layer.SelectionEnabled;
+                layer.SelectionEnabled = true;
+                layer.UnSelectAll();
+                layer.SelectionEnabled = enabled;
             }
         }
 

@@ -19,12 +19,6 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer
     {
-        #region Fields
-
-        private const int Selected = 1;
-
-        #endregion
-
         #region  Constructors
 
         /// <summary>
@@ -201,18 +195,18 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// If useChunks is true, then this method
+        /// If EditMode is true, then this method is used for feature drawing.
         /// </summary>
         /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
         /// <param name="features">The features that should be drawn.</param>
-        /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified,
-        ///  this clarifies the changed rectangles.</param>
+        /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks, bool selected)
         {
-            if (useChunks == false)
+            if (!useChunks)
             {
-                DrawFeatures(args, features);
+                DrawFeatures(args, features, selected);
                 return;
             }
 
@@ -223,31 +217,30 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
-                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures), selected);
 
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
                     FinishDrawing();
                     Application.DoEvents();
                     OnBufferChanged(clipRectangles);
-
-                    // this.StartDrawing();
                 }
             }
         }
 
         /// <summary>
-        /// If useChunks is true, then this method
+        /// If EditMode is false, then this method is used for feature drawing.
         /// </summary>
         /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
         /// <param name="indices">The features that should be drawn.</param>
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks, bool selected)
         {
-            if (useChunks == false)
+            if (!useChunks)
             {
-                DrawFeatures(args, indices);
+                DrawFeatures(args, indices, selected);
                 return;
             }
 
@@ -258,15 +251,12 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1) numFeatures = indices.Count - (chunk * ChunkSize);
-                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures));
+                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures), selected);
 
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
-                    // FinishDrawing();
                     Application.DoEvents();
                     OnBufferChanged(clipRectangles);
-
-                    // this.StartDrawing();
                 }
             }
         }
@@ -278,14 +268,15 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
         /// <param name="regions">The geographic regions to draw</param>
-        public virtual void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
             List<Rectangle> clipRects = args.ProjToPixel(regions);
             if (EditMode)
             {
                 List<IFeature> drawList = new List<IFeature>();
                 drawList = regions.Where(region => region != null).Aggregate(drawList, (current, region) => current.Union(DataSet.Select(region)).ToList());
-                DrawFeatures(args, drawList, clipRects, true);
+                DrawFeatures(args, drawList, clipRects, true, selected);
             }
             else
             {
@@ -301,7 +292,7 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                DrawFeatures(args, drawList, clipRects, true);
+                DrawFeatures(args, drawList, clipRects, true, selected);
             }
         }
 
@@ -411,121 +402,97 @@ namespace DotSpatial.Controls
             return clipRect;
         }
 
-        private void BuildPaths(MapArgs e, IEnumerable<int> indices, out List<GraphicsPath> paths)
+        private void BuildPaths(MapArgs e, IEnumerable<int> indices, out Dictionary<FastDrawnState, GraphicsPath> paths, bool selected)
         {
-            paths = new List<GraphicsPath>();
-            Extent drawExtents = e.GeographicExtents;
-            Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
-            SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
-
-            List<GraphicsPath> graphPaths = new List<GraphicsPath>();
-            Dictionary<FastDrawnState, GraphicsPath> borders = new Dictionary<FastDrawnState, GraphicsPath>();
-            for (int selectState = 0; selectState < 2; selectState++)
-            {
-                foreach (IPolygonCategory category in Symbology.Categories)
-                {
-                    FastDrawnState state = new FastDrawnState(selectState == 1, category);
-
-                    GraphicsPath border = new GraphicsPath();
-                    borders.Add(state, border);
-                    graphPaths.Add(border);
-                }
-            }
-
-            paths.AddRange(graphPaths);
-
-            List<ShapeRange> shapes = DataSet.ShapeIndices;
-            double[] vertices = DataSet.Vertex;
+            paths = new Dictionary<FastDrawnState, GraphicsPath>();
 
             var indiceList = indices as IList<int> ?? indices.ToList();
+            FastDrawnState[] states = DrawnStatesNeeded ? DrawnStates : new FastDrawnState[0];
+            if (DrawnStatesNeeded && indiceList.Max() >= states.Length)
+            {
+                AssignFastDrawnStates();
+                states = DrawnStates;
+            }
+
+            if (selected && (!DrawnStatesNeeded || !DrawnStates.Any(_ => _.Selected))) return;
+
             if (ProgressReportingEnabled)
             {
                 ProgressMeter = new ProgressMeter(ProgressHandler, "Building Paths", indiceList.Count);
             }
 
-            if (!DrawnStatesNeeded)
+            FastDrawnState state = new FastDrawnState(selected, Symbology.Categories[0]);
+            Extent drawExtents = e.GeographicExtents;
+            Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
+            SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
+
+            List<ShapeRange> shapes = DataSet.ShapeIndices;
+            double[] vertices = DataSet.Vertex;
+
+            foreach (int shp in indiceList)
             {
-                FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
+                if (ProgressReportingEnabled) ProgressMeter.Next();
+                if (shp >= shapes.Count) return;
+                ShapeRange shape = shapes[shp];
+                if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
 
-                foreach (int shp in indiceList)
+                if (DrawnStatesNeeded)
                 {
-                    if (ProgressReportingEnabled) ProgressMeter.Next();
-                    ShapeRange shape = shapes[shp];
-                    if (!shape.Extent.Intersects(e.GeographicExtents)) return;
-                    if (shp >= shapes.Count) return;
-                    if (!borders.ContainsKey(state)) return;
+                    if (!states[shp].Visible || (selected && !states[shp].Selected)) continue;
 
-                    BuildPolygon(vertices, shapes[shp], borders[state], e, drawExtents.Contains(shape.Extent) ? null : shClip);
-                }
-            }
-            else
-            {
-                FastDrawnState[] states = DrawnStates;
-                foreach (GraphicsPath borderPath in borders.Values)
-                {
-                    if (borderPath != null)
-                    {
-                        borderPath.FillMode = FillMode.Winding;
-                    }
+                    state = new FastDrawnState(selected, states[shp].Category);
                 }
 
-                foreach (int shp in indiceList)
+                if (!paths.ContainsKey(state))
                 {
-                    if (ProgressReportingEnabled) ProgressMeter.Next();
-                    if (shp >= shapes.Count) return;
-                    if (shp >= states.Length)
-                    {
-                        AssignFastDrawnStates();
-                        states = DrawnStates;
-                    }
-
-                    if (states[shp].Visible == false) continue;
-                    ShapeRange shape = shapes[shp];
-                    if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
-                    if (drawExtents.Contains(shape.Extent))
-                    {
-                        FastDrawnState state = states[shp];
-                        if (!borders.ContainsKey(state)) continue;
-                        BuildPolygon(vertices, shapes[shp], borders[state], e, null);
-                    }
-                    else
-                    {
-                        FastDrawnState state = states[shp];
-                        if (!borders.ContainsKey(state)) continue;
-                        BuildPolygon(vertices, shapes[shp], borders[state], e, shClip);
-                    }
+                    paths.Add(state, new GraphicsPath(FillMode.Winding));
                 }
+
+                BuildPolygon(vertices, shapes[shp], paths[state], e, drawExtents.Contains(shape.Extent) ? null : shClip);
             }
 
             if (ProgressReportingEnabled) ProgressMeter.Reset();
         }
 
-        private void BuildPaths(MapArgs e, IEnumerable<IFeature> features, out List<GraphicsPath> borderPaths)
+        private void BuildPaths(MapArgs e, IEnumerable<IFeature> features, out Dictionary<FastDrawnState, GraphicsPath> borderPaths, bool selected)
         {
-            borderPaths = new List<GraphicsPath>();
+            borderPaths = new Dictionary<FastDrawnState, GraphicsPath>();
+
+            if (selected && !DrawingFilter.DrawnStates.Any(_ => _.Value.IsSelected)) return;
+
             Rectangle clipRect = ComputeClippingRectangle(e);
             Extent drawExtents = e.PixelToProj(clipRect);
             SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
 
             var featureList = features as IList<IFeature> ?? features.ToList();
-            for (int selectState = 0; selectState < 2; selectState++)
+            foreach (var category in Symbology.Categories)
             {
-                foreach (IPolygonCategory category in Symbology.Categories)
+                // Determine the subset of the specified features that are visible and match the category
+                IFeatureCategory polygonCategory = category;
+                Func<IDrawnState, bool> isMember;
+
+                if (selected)
                 {
-                    // Determine the subset of the specified features that are visible and match the category
-                    IPolygonCategory polygonCategory = category;
-                    int i = selectState;
-                    Func<IDrawnState, bool> isMember = state => state.SchemeCategory == polygonCategory && state.IsVisible && state.IsSelected == (i == 1);
+                    // get only selected features
+                    isMember = state => state.SchemeCategory == polygonCategory && state.IsVisible && state.IsSelected;
+                }
+                else
+                {
+                    // get all features
+                    isMember = state => state.SchemeCategory == polygonCategory && state.IsVisible;
+                }
 
-                    var drawnFeatures = from feature in featureList where isMember(DrawingFilter[feature]) select feature;
+                var drawnFeatures = (from feature in featureList where isMember(DrawingFilter[feature]) select feature).ToList();
 
+                if (drawnFeatures.Count > 0)
+                {
                     GraphicsPath borderPath = new GraphicsPath();
                     foreach (IFeature f in drawnFeatures)
                     {
                         BuildPolygon(DataSet.Vertex, f.ShapeIndex, borderPath, e, drawExtents.Contains(f.Geometry.EnvelopeInternal) ? null : shClip);
                     }
 
-                    borderPaths.Add(borderPath);
+                    borderPaths.Add(new FastDrawnState(selected, category), borderPath);
                 }
             }
         }
@@ -537,35 +504,35 @@ namespace DotSpatial.Controls
         }
 
         // This draws the individual polygon features
-        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
+        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features, bool selected)
         {
-            List<GraphicsPath> paths;
+            Dictionary<FastDrawnState, GraphicsPath> paths;
 
             // First, use the coordinates to build the drawing paths
-            BuildPaths(e, features, out paths);
+            BuildPaths(e, features, out paths, selected);
 
             // Next draw all the paths using the various category symbols.
-            DrawPaths(e, paths);
+            DrawPaths(e, paths, selected);
 
-            foreach (var path in paths)
+            foreach (var path in paths.Values)
             {
                 path.Dispose();
             }
         }
 
         // This draws the individual line features
-        private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
+        private void DrawFeatures(MapArgs e, IEnumerable<int> indices, bool selected)
         {
             if (DataSet.ShapeIndices == null) return;
-            List<GraphicsPath> paths;
+            Dictionary<FastDrawnState, GraphicsPath> paths;
 
             // First, use the coordinates to build the drawing paths
-            BuildPaths(e, indices, out paths);
+            BuildPaths(e, indices, out paths, selected);
 
             // Next draw all the paths using the various category symbols.
-            DrawPaths(e, paths);
+            DrawPaths(e, paths, selected);
 
-            foreach (var path in paths)
+            foreach (var path in paths.Values)
             {
                 path.Dispose();
             }
@@ -576,17 +543,16 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="e">The map arguments.</param>
         /// <param name="paths">The graphics path.</param>
-        private void DrawPaths(MapArgs e, IList<GraphicsPath> paths)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        private void DrawPaths(MapArgs e, Dictionary<FastDrawnState, GraphicsPath> paths, bool selected)
         {
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
-            int numCategories = Symbology.Categories.Count;
 
-            if (!DrawnStatesNeeded && !EditMode)
+            foreach (var kvp in paths)
             {
-                IPolygonSymbolizer ps = Symbolizer;
+                var category = kvp.Key.Category;
 
-                g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                Extent catBounds = DataSet.Extent;
+                Extent catBounds = (CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category)) ?? Extent;
                 var bounds = new RectangleF
                 {
                     X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
@@ -597,6 +563,11 @@ namespace DotSpatial.Controls
                 float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
                 bounds.Height = b - bounds.Y;
 
+                var ps = (selected && kvp.Key.Selected ? category.SelectionSymbolizer : category.Symbolizer) as PolygonSymbolizer;
+                if (ps == null) continue;
+
+                g.SmoothingMode = ps.GetSmoothingMode();
+
                 foreach (IPattern pattern in ps.Patterns)
                 {
                     IGradientPattern gp = pattern as IGradientPattern;
@@ -605,79 +576,15 @@ namespace DotSpatial.Controls
                         gp.Bounds = bounds;
                     }
 
-                    pattern.FillPath(g, paths[0]);
+                    pattern.FillPath(g, kvp.Value);
                 }
 
-                double scale = 1;
-                if (ps.ScaleMode == ScaleMode.Geographic)
-                {
-                    scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                }
-
+                double scale = ps.GetScale(e);
                 foreach (IPattern pattern in ps.Patterns)
                 {
                     if (pattern.UseOutline)
                     {
-                        pattern.DrawPath(g, paths[0], scale);
-                    }
-                }
-            }
-            else
-            {
-                for (int selectState = 0; selectState < 2; selectState++)
-                {
-                    int iCategory = 0;
-                    foreach (IPolygonCategory category in Symbology.Categories)
-                    {
-                        Extent catBounds = (CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category)) ?? Extent;
-                        var bounds = new RectangleF
-                        {
-                            X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
-                            Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
-                        };
-                        float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
-                        bounds.Width = r - bounds.X;
-                        float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
-                        bounds.Height = b - bounds.Y;
-
-                        int index = (selectState * numCategories) + iCategory;
-
-                        // Define the symbology based on the category and selection state
-                        IPolygonSymbolizer ps = category.Symbolizer;
-                        if (selectState == Selected) ps = category.SelectionSymbolizer;
-
-                        g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-
-                        foreach (IPattern pattern in ps.Patterns)
-                        {
-                            IGradientPattern gp = pattern as IGradientPattern;
-                            if (gp != null)
-                            {
-                                gp.Bounds = bounds;
-                            }
-
-                            if (paths[index] != null)
-                            {
-                                paths[index].FillMode = FillMode.Winding;
-                                pattern.FillPath(g, paths[index]);
-                            }
-                        }
-
-                        double scale = 1;
-                        if (ps.ScaleMode == ScaleMode.Geographic)
-                        {
-                            scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                        }
-
-                        foreach (IPattern pattern in ps.Patterns)
-                        {
-                            if (pattern.UseOutline)
-                            {
-                                pattern.DrawPath(g, paths[index], scale);
-                            }
-                        }
-
-                        iCategory++;
+                        pattern.DrawPath(g, kvp.Value, scale);
                     }
                 }
             }

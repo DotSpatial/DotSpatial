@@ -10,7 +10,6 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
-using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using DotSpatial.Symbology.Forms;
 
@@ -506,46 +505,46 @@ namespace DotSpatial.Controls
                 ILineCategory lc = lb.Item as ILineCategory;
                 if (lc != null)
                 {
-                    DetailedLineSymbolDialog lsDialog = new DetailedLineSymbolDialog(lc.Symbolizer);
-                    lsDialog.ShowDialog();
-                    ILineSymbolizer sel = lc.Symbolizer.Copy();
-                    sel.SetFillColor(Color.Cyan);
-                    lc.SelectionSymbolizer = sel;
+                    using (var lsDialog = new DetailedLineSymbolDialog(lc.Symbolizer))
+                    {
+                        lsDialog.ShowDialog();
+                    }
                 }
 
                 IPointCategory pc = lb.Item as IPointCategory;
                 if (pc != null)
                 {
-                    DetailedPointSymbolDialog dlg = new DetailedPointSymbolDialog(pc.Symbolizer);
-                    dlg.ShowDialog();
-                    IPointSymbolizer ps = pc.Symbolizer.Copy();
-                    ps.SetFillColor(Color.Cyan);
-                    pc.SelectionSymbolizer = ps;
+                    using (var dlg = new DetailedPointSymbolDialog(pc.Symbolizer))
+                    {
+                        dlg.ShowDialog();
+                    }
                 }
 
                 IPolygonCategory polyCat = lb.Item as IPolygonCategory;
                 if (polyCat != null)
                 {
-                    DetailedPolygonSymbolDialog dlg = new DetailedPolygonSymbolDialog(polyCat.Symbolizer);
-                    dlg.ShowDialog();
-                    IPolygonSymbolizer ps = polyCat.Symbolizer.Copy();
-                    ps.SetFillColor(Color.Cyan);
-                    ps.OutlineSymbolizer.SetFillColor(Color.DarkCyan);
-                    polyCat.SelectionSymbolizer = ps;
+                    using (var dlg = new DetailedPolygonSymbolDialog(polyCat.Symbolizer))
+                    {
+                        dlg.ShowDialog();
+                    }
                 }
 
                 IFeatureLayer fl = lb.Item as IFeatureLayer;
                 if (fl != null)
                 {
-                    LayerDialog layDialog = new LayerDialog(fl, new FeatureCategoryControl());
-                    layDialog.ShowDialog();
+                    using (var layDialog = new LayerDialog(fl, new FeatureCategoryControl()))
+                    {
+                        layDialog.ShowDialog();
+                    }
                 }
 
                 IRasterLayer rl = lb.Item as IRasterLayer;
                 if (rl != null)
                 {
-                    LayerDialog dlg = new LayerDialog(rl, new RasterCategoryControl());
-                    dlg.ShowDialog();
+                    using (var dlg = new LayerDialog(rl, new RasterCategoryControl()))
+                    {
+                        dlg.ShowDialog();
+                    }
                 }
 
                 IColorCategory cb = lb.Item as IColorCategory;

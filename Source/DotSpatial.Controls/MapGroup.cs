@@ -212,31 +212,19 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="args">The map args.</param>
         /// <param name="regions">The regions.</param>
-        public void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
             if (Layers == null) return;
             foreach (IMapLayer layer in Layers)
             {
                 if (!layer.IsVisible) continue;
-                if (layer.UseDynamicVisibility)
+                if (layer.UseDynamicVisibility && ((layer.DynamicVisibilityMode == DynamicVisibilityMode.ZoomedIn && MapFrame.ViewExtents.Width > layer.DynamicVisibilityWidth) || MapFrame.ViewExtents.Width < layer.DynamicVisibilityWidth))
                 {
-                    if (layer.DynamicVisibilityMode == DynamicVisibilityMode.ZoomedIn)
-                    {
-                        if (MapFrame.ViewExtents.Width > layer.DynamicVisibilityWidth)
-                        {
-                            continue; // skip the layer if we are zoomed out too far.
-                        }
-                    }
-                    else
-                    {
-                        if (MapFrame.ViewExtents.Width < layer.DynamicVisibilityWidth)
-                        {
-                            continue; // skip the layer if we are zoomed in too far.
-                        }
-                    }
+                    continue; // skip the layer if we are zoomed in or out too far.
                 }
 
-                layer.DrawRegions(args, regions);
+                layer.DrawRegions(args, regions, selected);
             }
         }
 
