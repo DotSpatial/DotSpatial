@@ -118,3 +118,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Legend drag line so it doesn't look as if you can move a layer in between categories (#1008)
 - Legend selection to be able to select features of a category (#1008)
 - Some errors in SetSelectable plugin (#1008)
+- Clear the selection inside FeatureLayer.RemoveSelectedFeatures so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
