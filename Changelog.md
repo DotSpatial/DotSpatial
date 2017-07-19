@@ -119,3 +119,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Legend selection to be able to select features of a category (#1008)
 - Some errors in SetSelectable plugin (#1008)
 - Crash when attempting to use a serial GPS device on Mono
+- Clear the selection inside FeatureLayer.RemoveSelectedFeatures so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
