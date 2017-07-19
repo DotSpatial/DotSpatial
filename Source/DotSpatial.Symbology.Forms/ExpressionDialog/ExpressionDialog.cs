@@ -11,6 +11,7 @@ using DotSpatial.Symbology;
 using System.IO;
 using DotSpatial.Data;
 using System.Reflection;
+using DotSpatial.Python;
 
 
 
@@ -137,7 +138,7 @@ namespace DotSpatial.Symbology.Forms
                    {
                        Expression = TB_Advanced.Text;
                        sResult = Compute(Expression);
-                       sResult = D4F.Core.PythonScript.Program.EvaluateWithDialog(sResult);
+                       sResult = Script.EvaluateWithDialog(sResult);
                    }
                    else
                    {
