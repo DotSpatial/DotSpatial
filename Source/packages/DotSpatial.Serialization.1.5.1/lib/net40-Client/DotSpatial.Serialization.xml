@@ -1,0 +1,815 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotSpatial.Serialization</name>
+    </assembly>
+    <members>
+        <member name="T:DotSpatial.Serialization.AssemblyMissingException">
+            <summary>
+            This exception will occur if an assembly referenced by a saved map layer could not be found.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.AssemblyMissingException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the AssemblyMissingException.
+            </summary>
+            <param name="message">The string message to show as the error.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.AssemblyMissingException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the AssemblyMissingException.
+            </summary>
+            <param name="message">The string message to show as the error.</param>
+            <param name="innerException">The inner exception to send as part of this exception.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.AssemblyMissingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the AssemblyMissingException.
+            </summary>
+            <param name="info">The SerializationInfo that holds the information about the serialized object about the exception being thrown.</param>
+            <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:DotSpatial.Serialization.BaseCollection`1">
+            <summary>
+            BaseCollection
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.BaseCollection`1._innerList">
+            <summary>
+            Private storage for the inner list.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.Add(`0)">
+            <summary>
+            Adds an item to this base collection
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.Contains(`0)">
+            <summary>
+            A boolean that is true if this set contains the specified item
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies the items from this collection to the specified array
+            </summary>
+            <param name="array">The array to copy to</param>
+            <param name="arrayIndex">The zero based integer array index to start copying to</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.Remove(`0)">
+            <summary>
+            Removes the specified item from the collection
+            </summary>
+            <param name="item">The item to remove from the collection</param>
+            <returns>Boolean, true if the remove operation is successful. </returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.GetEnumerator">
+            <summary>
+            Returns a type specific enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.Clear">
+            <summary>
+            Clears the list
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnInnerListSet">
+            <summary>
+            After serialization, the inner list is directly set.  This is uzed by the FeatureLayer, for instance,
+            to apply the new scheme.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnClear">
+            <summary>
+            Clears this collection
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnInsert(System.Int32,System.Object)">
+            <summary>
+            Occurs when items are inserted
+            </summary>
+            <param name="index"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnInsertComplete(System.Int32,System.Object)">
+            <summary>
+            Occurs after a new item has been inserted, and fires IncludeComplete
+            </summary>
+            <param name="index"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnRemoveComplete(System.Int32,System.Object)">
+            <summary>
+            Fires after the remove operation, ensuring that OnExclude gets called
+            </summary>
+            <param name="index"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnSet(System.Int32,System.Object,System.Object)">
+            <summary>
+            Fires before the set operation ensuring the new item is included if necessary
+            </summary>
+            <param name="index"></param>
+            <param name="oldValue"></param>
+            <param name="newValue"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnSetComplete(System.Int32,System.Object,System.Object)">
+            <summary>
+            Fires after the set operation, ensuring that the item is removed
+            </summary>
+            <param name="index"></param>
+            <param name="oldValue"></param>
+            <param name="newValue"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnInclude(`0)">
+            <summary>
+            Occurs any time an item is added or inserted into the collection
+            and did not previously exist in the collection
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnIncludeComplete(`0)">
+            <summary>
+            Occurs after the item has been included either by set, insert, or addition.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.OnExclude(`0)">
+            <summary>
+            Occurs any time an item is removed from the collection and no longer
+            exists anywhere in the collection
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.Include(`0)">
+            <summary>
+            Includes the specified item.  This should be called BEFORE an item
+            is added to the list.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.Exclude(`0)">
+            <summary>
+            Exclude should be called AFTER the item is successfully removed from the list.
+            This allows any handlers that connect to the item to be removed in the event
+            that the item is no longer anywhere in the list.
+            </summary>
+            <param name="item">The item to be removed</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.#ctor">
+            <summary>
+            Creates a new instance of BaseCollection
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.BaseCollection`1.InnerList">
+            <summary>
+            Gets or sets the inner list of T that actually controls the content for this BaseCollection.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.BaseCollection`1.IsReadOnly">
+            <summary>
+            False
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.BaseCollection`1.Count">
+            <summary>
+            Returns the count of the inner list
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Serialization.BaseCollection`1.BaseCollectionEnumerator`1">
+            <summary>
+            Defines a new kind of enumerator designed to make the CollectionBase cooperate with strong type collections
+            </summary>
+            <typeparam name="TE">The enumerator type.</typeparam>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.BaseCollectionEnumerator`1.#ctor(System.Collections.IEnumerator)">
+            <summary>
+            Creates the new enumerator
+            </summary>
+            <param name="innerEnumerator">A non type specific enumerator</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.BaseCollectionEnumerator`1.Dispose">
+            <summary>
+            Does nothing
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.BaseCollectionEnumerator`1.MoveNext">
+            <summary>
+            Moves to the next item in the collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseCollection`1.BaseCollectionEnumerator`1.Reset">
+            <summary>
+            resets the enumerator
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.BaseCollection`1.BaseCollectionEnumerator`1.Current">
+            <summary>
+            The current item
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Serialization.BaseList`1">
+            <summary>
+            BaseList
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseList`1.IndexOf(`0)">
+            <summary>
+            Gets the integer index of the specified item.
+            </summary>
+            <param name="item">The implementation of T to obtain the zero based integer index of.</param>
+            <returns>An integer that is -1 if the item is not found, or the zero based index.</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseList`1.Insert(System.Int32,`0)">
+            <summary>
+            If the read-only property is false, then this inserts the item to the specified index.
+            </summary>
+            <param name="index">The zero based integer index describing the target index for the item.</param>
+            <param name="item">The implementation of T to insert into this index.</param>
+            <exception cref="T:DotSpatial.Serialization.ReadOnlyException">If ReadOnly is true, then this method will cause an exception</exception>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseList`1.OnInsert(System.Int32,`0)">
+            <summary>
+            This happens after an item of type T was added to the list
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseList`1.OnItemSet(System.Int32,`0,`0)">
+            <summary>
+            This happens after a value has been updated in the list.
+            </summary>
+            <param name="index">The index where the replacement took place.</param>
+            <param name="oldItem">The item that was removed from the position.</param>
+            <param name="newItem">The new item that is replacing it in the list.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseList`1.OnRemoveAt(System.Int32,`0)">
+            <summary>
+            The happens after an item was removed from the specified index.
+            </summary>
+            <param name="index">The index the item was removed from.</param>
+            <param name="item">The item that was removed</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.BaseList`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes the item from the specified index
+            </summary>
+            <param name="index">The zero based integer index</param>
+        </member>
+        <member name="P:DotSpatial.Serialization.BaseList`1.Item(System.Int32)">
+            <summary>
+            Gets or sets the value of type T at the specified index
+            </summary>
+            <param name="index">The zero-base integer index marking the position of the item</param>
+            <returns>The item</returns>
+        </member>
+        <member name="T:DotSpatial.CloneableEM">
+            <summary>
+            CloneableEM
+            </summary>
+        </member>
+        <member name="M:DotSpatial.CloneableEM.Copy``1(``0)">
+            <summary>
+            The type parameter T is optional, so the intended use would be like:
+            ObjectType copy = myObject.Copy();
+            </summary>
+            <typeparam name="T">The type of the object</typeparam>
+            <param name="original">The original object</param>
+            <returns>A new object of the same type as the type being copied.</returns>
+        </member>
+        <member name="T:DotSpatial.SerializeExtent">
+            <summary>
+            Extent works like an envelope but is faster acting, has a minimum memory profile, only works in 2D and has no events.
+            </summary>
+        </member>
+        <member name="F:DotSpatial.SerializeExtent.XMax">
+            <summary>
+            Max X
+            </summary>
+        </member>
+        <member name="F:DotSpatial.SerializeExtent.XMin">
+            <summary>
+            Min X
+            </summary>
+        </member>
+        <member name="F:DotSpatial.SerializeExtent.YMax">
+            <summary>
+            Max Y
+            </summary>
+        </member>
+        <member name="F:DotSpatial.SerializeExtent.YMin">
+            <summary>
+            Min Y
+            </summary>
+        </member>
+        <member name="M:DotSpatial.SerializeExtent.#ctor">
+            <summary>
+            Creates a new instance of Extent.  This introduces no error checking and assumes
+            that the user knows what they are doing when working with this.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.SerializeExtent.#ctor(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Creates a new extent from the specified ordinates
+            </summary>
+            <param name="xMin"></param>
+            <param name="yMin"></param>
+            <param name="xMax"></param>
+            <param name="yMax"></param>
+        </member>
+        <member name="M:DotSpatial.SerializeExtent.#ctor(System.Double[],System.Int32)">
+            <summary>
+            Given a long array of doubles, this builds an extent from a small part of that
+            xmin, ymin, xmax, ymax
+            </summary>
+            <param name="values"></param>
+            <param name="offset"></param>
+        </member>
+        <member name="M:DotSpatial.SerializeExtent.#ctor(System.Double[])">
+            <summary>
+            XMin, YMin, XMax, YMax order
+            </summary>
+            <param name="values"></param>
+        </member>
+        <member name="M:DotSpatial.SerializeExtent.Clone">
+            <summary>
+            Produces a clone, rather than using this same object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.SerializeExtent.IsEmpty">
+            <summary>
+            If this is undefined, it will have a min that is larger than the max.
+            </summary>
+            <returns>Boolean, true if the envelope has not had values set for it yet.</returns>
+        </member>
+        <member name="T:DotSpatial.Serialization.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.Properties.Resources.ReadOnly">
+            <summary>
+              Looks up a localized string similar to The collection cannot be altered because it is read only..
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Serialization.QualifiedTypeName">
+            <summary>
+            A class for parsing the components of the assembly qualified type name.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.QualifiedTypeName.#ctor(System.String)">
+            <summary>
+            Reads in the full string, parsing out the separate elements.  These are not always in the specified order,
+            and many times there are several optional elements.  This class helps find the optional elements that are
+            necessary.  This does not support mulitple enclosed types yet, like dictionaries or something.  We needed
+            the single enclosed type for supporting the layer collection however.
+            </summary>
+            <param name="qualifiedName">The string qualified name.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.QualifiedTypeName.ToString">
+            <summary>
+            Returns the full qualified type name as "TypeName, Assembly, Version=x, Culture=x, PublicKeyToken=x".
+            </summary>
+            <returns>The string expression with the full type name.</returns>
+        </member>
+        <member name="P:DotSpatial.Serialization.QualifiedTypeName.EnclosedName">
+            <summary>
+            Gets or sets the name for the enclosed type.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.QualifiedTypeName.TypeName">
+            <summary>
+            Gets or sets the TypeName
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.QualifiedTypeName.Assembly">
+            <summary>
+            Gets or sets the name of the assembly
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.QualifiedTypeName.Version">
+            <summary>
+            Gets or sets a System.Version for getting or setting the version.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.QualifiedTypeName.Culture">
+            <summary>
+            Gets or sets the CultureInfo of the Culture
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.QualifiedTypeName.PublicKeyToken">
+            <summary>
+            Gets or sets the public key token for the strong name of the assembly.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Serialization.ReadOnlyException">
+            <summary>
+            ReadOnlyException
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.ReadOnlyException.#ctor">
+            <summary>
+            Creates a new instance of ReadOnlyException
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.ReadOnlyException.#ctor(System.String)">
+            <summary>
+            Obsolete
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:DotSpatial.Serialization.ReflectionHelper">
+            <summary>
+            A set of utilities to automate some common reflection tasks.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.ReflectionHelper.FindDerivedClasses``1">
+            <summary>
+            Searches the entire folder tree beginning at the entry assembly path for types that derive from the specified type.
+            </summary>
+            <typeparam name="T">The base class/interface type</typeparam>
+            <returns>A list of all types found in the search.</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.ReflectionHelper.FindDerivedClasses(System.Type)">
+            <summary>
+            Searches the entire folder tree beginning at the entry assembly path for types that derive from the specified type.
+            </summary>
+            <param name="baseType">The base class/interface type.</param>
+            <returns>A list of all types found in the search.</returns>
+        </member>
+        <member name="T:DotSpatial.Serialization.SerializationFormatter">
+            <summary>
+            Base class for formatters responsible for converting objects to and from string values.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationFormatter.ToString(System.Object)">
+            <summary>
+            Converts an object to a string value.
+            </summary>
+            <param name="value">The object to convert.</param>
+            <returns>The string representation of the given object.</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationFormatter.FromString(System.String)">
+            <summary>
+            Converts a string representation of an object back into the original object form.
+            </summary>
+            <param name="value">The string representation of an object.</param>
+            <returns>The object represented by the given string.</returns>
+        </member>
+        <member name="T:DotSpatial.Serialization.SerializationMap">
+            <summary>
+            This class stores the reflected data required for serialization.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMap.#cctor">
+            <summary>
+            The static constructor creates a dictionary that maps an object type to a specific SerializationMap instance.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMap.#ctor(System.Type)">
+            <summary>
+            Creates a new instance of the SerializationMap class.
+            </summary>
+            <param name="forType">The type associated with this SerializationMap.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMap.FromType(System.Type)">
+            <summary>
+            This overload is used for objects that are marked with the <see cref="T:DotSpatial.Serialization.SerializeAttribute"/>.
+            </summary>
+            <param name="type">The type to generate a <c>SerializationMap</c> for.</param>
+            <returns>A new serialization map that can be used to serialize the given type.</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMap.Serialize(System.Reflection.MemberInfo,System.String)">
+            <summary>
+            The forward method that will serialize a property or field with the specified name.
+            The name does not have to be the same as the name of the member.
+            </summary>
+            <param name="memberInfo">The property or field information to serialize</param>
+            <param name="name">The name to remove</param>
+            <returns>The Serialization Map Entry created by the serialize method</returns>
+        </member>
+        <member name="P:DotSpatial.Serialization.SerializationMap.ForType">
+            <summary>
+            The type that this serialization map instance is associated with.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.SerializationMap.Members">
+            <summary>
+            The members that participate in serialization.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Serialization.SerializationMapEntry">
+            <summary>
+            Contains the information needed to serialize a single property or field.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMapEntry.#ctor(System.Reflection.MemberInfo,DotSpatial.Serialization.SerializeAttribute)">
+            <summary>
+            Creates a new SerializationMapEntry instance.
+            </summary>
+            <param name="memberInfo">Info about the field or property to serialize.</param>
+            <param name="attribute">Details about how to serialize this member.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMapEntry.AsConstructorArgument(System.Int32)">
+            <summary>
+            Assigns the constructor argument index of this entry's attribute.
+            </summary>
+            <param name="index">The constructor argument index to assign</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMapEntry.WithFormatterType(System.Type)">
+            <summary>
+            Assigns the formatter value of this entry's attribute.
+            </summary>
+            <param name="formatterType">The serialization formatter to use for the associated member.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMapEntry.Equals(System.Object)">
+            <summary>
+            Overrides the normal equality test to take into account serialization
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializationMapEntry.GetHashCode">
+            <summary>
+            Returns a numeric hash code austensibly uniquishly controlled by the member and attribute hash code.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Serialization.SerializationMapEntry.Member">
+            <summary>
+            The <see cref="T:System.Reflection.FieldInfo"/> or <see cref="T:System.Reflection.PropertyInfo"/> instance for the associated member.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.SerializationMapEntry.Attribute">
+            <summary>
+            The attribute that contains more details about how to serialize this member.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Serialization.SerializeAttribute">
+            <summary>
+            This class contains details on how to serialize a field or property.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.SerializeAttribute.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the SerializeAttribute.
+            </summary>
+            <param name="name">The name to use when serializing the associated member.</param>
+        </member>
+        <member name="P:DotSpatial.Serialization.SerializeAttribute.Name">
+            <summary>
+            The name to use when serializing the associated member.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.SerializeAttribute.ConstructorArgumentIndex">
+            <summary>
+            The constructor argument index that the associated member represents.
+            The default value is -1, which indicates that the associated member is
+            not used as a constructor argument.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Serialization.SerializeAttribute.Formatter">
+            <summary>
+            The type of the formatter to use for the associated value.
+            The type must be derived from <see cref="T:DotSpatial.Serialization.SerializationFormatter"/>.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Serialization.TypeNameManager">
+            <summary>
+            In many cases, the explicit type name references a version or public key token that is expired,
+            even though the reference is still perfectly valid in the new instance.  This type allows testing
+            for that eventuality, as well as working directly with the components of a fully qualified name.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.TypeNameManager.#ctor">
+            <summary>
+            Initializes a new instance of the TypeManager class.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.TypeNameManager.UpdateTypename(System.String)">
+            <summary>
+            Since the version, or even possibly the strong name may be dynamic, an older
+            reference may need to be updated with local assembly information.
+            </summary>
+            <param name="invalidTypeName">The invalidated type name, usually because the version is out of date.</param>
+            <returns>A string represnting the same type, but with a modern assmebly.</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.TypeNameManager.UpdateAssembly(System.String)">
+            <summary>
+            This method searches the executable path, as well as sub-folders looking for an instance of
+            the specified assembly.  Since this class is only needed if the fully qualified assembly name
+            is invalid, we have to assume that we are looking for something else.
+            </summary>
+            <param name="assembly">The string assembly name.</param>
+        </member>
+        <member name="T:DotSpatial.Serialization.XmlConstants">
+            <summary>
+            A class that works like an enumeration to define several constants.
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.DICTIONARY">
+            <summary>
+            dictionary
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.DICTIONARY_ENTRY">
+            <summary>
+            entry
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.DICTIONARY_KEY">
+            <summary>
+            key
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.DICTIONARY_VALUE">
+            <summary>
+            value
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.ENUM">
+            <summary>
+            enum
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.LIST">
+            <summary>
+            list
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.OBJECT">
+            <summary>
+            object
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.PRIMITIVE">
+            <summary>
+            primitive
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.STRING">
+            <summary>
+            string
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.ROOT">
+            <summary>
+            root
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.MEMBER">
+            <summary>
+            member
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.ITEM">
+            <summary>
+            item
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.TYPE_CACHE">
+            <summary>
+            types
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.TYPE_ID">
+            <summary>
+            type
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.VALUE">
+            <summary>
+            value
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.ARG">
+            <summary>
+            arg
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.FORMATTER">
+            <summary>
+            formatter
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.NAME">
+            <summary>
+            name
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.KEY">
+            <summary>
+            key
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.ID">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Serialization.XmlConstants.REF">
+            <summary>
+            ref
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlConstants.GetMemberType(System.Reflection.MemberInfo)">
+            <summary>
+            Returns a System.Type that corresponds to the MemberInfo,
+            regardless of whether the member is a field or property.
+            </summary>
+            <param name="memberInfo">The base class that can be either a FieldInfo or PropertyInfo</param>
+            <returns>The System.Type</returns>
+        </member>
+        <member name="T:DotSpatial.Serialization.XmlDeserializer">
+            <summary>
+            Converts serialized XML into an object.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlDeserializer.Deserialize``1(System.String)">
+            <summary>
+            Converts the given XML string into an object.
+            </summary>
+            <typeparam name="T">The type to cast the returned object as.</typeparam>
+            <param name="xml">The serialized XML text.</param>
+            <returns>The object represented by the serialized XML.</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlDeserializer.Deserialize``1(``0,System.String)">
+            <summary>
+            Deserializes the given XML, writing the values into the given object.
+            </summary>
+            <typeparam name="T">The type of the given object.</typeparam>
+            <param name="existingObject">An existing object to fill with data.</param>
+            <param name="xml">The serialized XML text.</param>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlDeserializer.ReadObject(System.Xml.Linq.XElement,System.Object)">
+            <summary>
+            Creates and populates an object from the given XML element.
+            </summary>
+            <param name="element">The element containing the object description</param>
+            <param name="parent">The parent.</param>
+            <returns>
+            A populated object specified by the given XML element.
+            </returns>
+        </member>
+        <member name="T:DotSpatial.Serialization.XmlHelper">
+            <summary>
+            A class that helps with xml project serialization
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlHelper.EscapeInvalidCharacters(System.String)">
+            <summary>
+            Some characters create problems in xml format by being interpreted by xml parsers as
+            content formatting tags.
+            </summary>
+            <param name="text">The string text of the unescaped original characters</param>
+            <returns>The modified string where the characters are replaced</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlHelper.UnEscapeInvalidCharacters(System.String)">
+            <summary>
+            This converts the invalid characters back to the original, unescaped text
+            </summary>
+            <param name="text">The string text of the escaped characters</param>
+            <returns>The unescaped string text</returns>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlHelper.IsValidEscapeSequence(System.String,System.Int32)">
+            <summary>
+            This tests the string in the provided text parameter starting at the specified startIndex.
+            If the combination of characters builds one of the recognized escape sequences, then this
+            returns true.
+            </summary>
+            <param name="text">The string to test.</param>
+            <param name="startIndex">The zero based integer start index.</param>
+            <returns>A boolean that is true if the startIndex begins an escape sequence.</returns>
+        </member>
+        <member name="T:DotSpatial.Serialization.XmlSerializer">
+            <summary>
+            Serializes data to XML.  A valid serialization map must be available for all classes being serialized.
+            The serialization map is generally created at runtime from fields and properties marked with the
+            <see cref="T:DotSpatial.Serialization.SerializeAttribute"/>.  For classes that cannot be directly marked up with attributes a
+            new map class can be created explicitly as needed.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Serialization.XmlSerializer.Serialize(System.Object)">
+            <summary>
+            Converts an object into XML.
+            </summary>
+            <param name="value">The object to serialize.</param>
+            <returns>A string containing the serialization of the given object.</returns>
+        </member>
+    </members>
+</doc>

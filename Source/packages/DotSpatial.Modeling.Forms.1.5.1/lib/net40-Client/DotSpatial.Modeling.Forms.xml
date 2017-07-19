@@ -1,0 +1,2212 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotSpatial.Modeling.Forms</name>
+    </assembly>
+    <members>
+        <member name="T:DotSpatial.Modeling.Forms.ExtentElement">
+            <summary>
+            ProjectionElement
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.DialogElement">
+            <summary>
+            A modular component that can be inherited to retrieve parameters for functions.
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.DialogElement.GroupBox1">
+            <summary>
+            The group box for this element
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DialogElement.#ctor">
+            <summary>
+            Creates a blank dialog element
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DialogElement.ParamValueChanged(DotSpatial.Modeling.Forms.Parameter)">
+            <summary>
+            Fires whenever the
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DialogElement.OnClick(System.EventArgs)">
+            <summary>
+            Called to fire the click event for this element
+            </summary>
+            <param name="e">A mouse event args thingy</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DialogElement.DialogElement_Click(System.Object,System.EventArgs)">
+            <summary>
+            Occurs when the dialong element is clicked
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DialogElement.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.DialogElement.components">
+            <summary>
+            Required designer variable
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DialogElement.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="E:DotSpatial.Modeling.Forms.DialogElement.Clicked">
+            <summary>
+            Fires when the inactive areas around the controls are clicked on the element.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DialogElement.GroupBox">
+            <summary>
+            Gets or sets the group box that surrounds the element contents
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DialogElement.StatusLabel">
+            <summary>
+            Gets or sets the status label
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DialogElement.LightTipText">
+            <summary>
+            Gets or sets the tool tip text to display when the mouse hovers over the light status
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DialogElement.Status">
+            <summary>
+            Gets the current status the input
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DialogElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ExtentElement.#ctor(DotSpatial.Modeling.Forms.ExtentParam)">
+            <summary>
+            Creates a new instance of ProjectionElement
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ExtentElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.DataSetArray">
+            <summary>
+            Used to create arrays of data sets with an associated name to be passed into Tools to populate their dialog boxes
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DataSetArray.#ctor(System.String,DotSpatial.Data.IDataSet)">
+            <summary>
+            Creates an instance of a simple object that holds a name and a dataset
+            </summary>
+            <param name="name"> The name of the DataSet in this object</param>
+            <param name="dataSet">The IDataSet in this object</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DataSetArray.ToString">
+            <summary>
+            Returns the Name
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DataSetArray.Name">
+            <summary>
+            The name of the DataSet in this object
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DataSetArray.DataSet">
+            <summary>
+            The IDataSet in this object
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.Images">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Images.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Images.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ITool">
+            <summary>
+            Defines the way a tool interfaces with the toolbox
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ITool.Initialize">
+            <summary>
+            The parameters array should be populated with default values here
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ITool.ParameterChanged(DotSpatial.Modeling.Forms.Parameter)">
+            <summary>
+            Fires when one of the paramters value has beend changed, usually when a user changes a input or output parameters value, this can be used to populate other parameters default values.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ITool.Execute(DotSpatial.Data.ICancelProgressHandler)">
+            <summary>
+            Once the parameters have been configured the Execute command can be called, it returns true if succesful
+            </summary>
+            <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.Name">
+            <summary>
+            Returns the name of the tool
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.AssemblyQualifiedName">
+            <summary>
+            A UniqueName Identifying this Tool, if another tool with the same UniqueName exists this tool will not be loaded. The is persisted by the model builder in saved files.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.Category">
+            <summary>
+            Returns the category of tool that the ITool should be added to
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.Version">
+            <summary>
+            Returns the Version of the tool
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.Author">
+            <summary>
+            Returns the Author of the tool's name
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.ToolTip">
+            <summary>
+            Returns a brief description displayed when the user hovers over the tool in the toolbox
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.InputParameters">
+            <summary>
+            Gets or Sets the input paramater array
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.OutputParameters">
+            <summary>
+            Gets or Sets the output paramater array
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.Icon">
+            <summary>
+            32x32 Bitmap - The Large icon that will appears in the Tool Dialog Next to the tools name
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.HelpImage">
+            <summary>
+            Image displayed in the help area when no input field is selected
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.Description">
+            <summary>
+            Help text to be displayed when no input field is selected
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ITool.HelpUrl">
+            <summary>
+            Returns the address of the tools help web page in HTTP://... format. Return a empty string to hide the help hyperlink.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ModelingMessageStrings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.DefaultToolProvider_SettingsDialogText">
+            <summary>
+              Looks up a localized string similar to There are no setting for the default Tool Provider. It scans the same folders the ToolManager scans for Tool Providers.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.DefaultToolProvider_SettingsDialogTitle">
+            <summary>
+              Looks up a localized string similar to Default Tool Provider Settings.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.ExtentElement_Press_button">
+            <summary>
+              Looks up a localized string similar to Press the button to specify an Extent.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.FeaturesetMissing">
+            <summary>
+              Looks up a localized string similar to No feature set is specified..
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.FeaturesetValid">
+            <summary>
+              Looks up a localized string similar to The feature set is valid..
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.FeaturesSelected">
+            <summary>
+              Looks up a localized string similar to Selected features.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.FeatureTypeException">
+            <summary>
+              Looks up a localized string similar to The feature set selected was the incorrect type..
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.Input">
+            <summary>
+              Looks up a localized string similar to Input.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.InvalidDouble">
+            <summary>
+              Looks up a localized string similar to The value is invalid, it must be a decimal between %min and %max.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.InvalidInteger">
+            <summary>
+              Looks up a localized string similar to The value is invalid, it must be an integer between %min and %max.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.Output">
+            <summary>
+              Looks up a localized string similar to Output.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.ParameterInvalid">
+            <summary>
+              Looks up a localized string similar to The parameter is invalid.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelingMessageStrings.ParameterValid">
+            <summary>
+              Looks up a localized string similar to The parameter is valid.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.BooleanParam">
+            <summary>
+            Boolean Parameters returned by an ITool allows the tool to specify default value
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.Parameter">
+            <summary>
+            This is the base class for the parameter array to be passed into a ITool
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Parameter.OnValueChanged">
+            <summary>
+            Call this when the parameter's value is changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Parameter.GenerateDefaultOutput(System.String)">
+            <summary>
+            Populates the parameter with default values
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Parameter.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Parameter.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Parameter.Clone">
+            <summary>
+            This returns a duplicate of this object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Parameter.Copy">
+            <summary>
+            Returns a shallow copy of the Parameter class
+            </summary>
+            <returns>A new Parameters class that is a shallow copy of the original parameters class</returns>
+        </member>
+        <member name="E:DotSpatial.Modeling.Forms.Parameter.ValueChanged">
+            <summary>
+            Fires when the parameter's value is changed
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.ParamVisible">
+            <summary>
+            Specify if a graphic should be added to the model to represent the parameter
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.ModelName">
+            <summary>
+            Used to identify this parameter in the modeler, it will be set automatically by the modeler
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.DefaultSpecified">
+            <summary>
+            Gets true if the parameter contains a value and false if none has been specified
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.Value">
+            <summary>
+            Gets or sets the value of the parameter
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.Name">
+            <summary>
+            The name of that parameter that shows up in auto generated forms
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.ParamType">
+            <summary>
+            Gets the type of data used in this parameter
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.HelpImage">
+            <summary>
+            Gets or Sets the help image that will appear beside the parameter element when it is clicked
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Parameter.HelpText">
+            <summary>
+            Gets or Sets the help text that will appear beside the parameter element when it is clicked
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanParam.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new Boolean parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="checkBoxText">The text to appear adjacent to the checkBox</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanParam.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Creates a new Boolean parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="checkBoxText">The text to appear adjacent to the checkBox</param>
+            <param name="value">The default value</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.BooleanParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.BooleanParam.CheckBoxText">
+            <summary>
+            Gets or sets the text that appears beside the check box in a Tool Dialog
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.DateTimeParam">
+            <summary>
+            DateTime Parameters returned by an ITool allows the tool to specify default value
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DateTimeParam.#ctor(System.String)">
+            <summary>
+            Creates a new string parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DateTimeParam.#ctor(System.String,System.DateTime)">
+            <summary>
+            Creates a new string parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="value">The default value</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DateTimeParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DateTimeParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DateTimeParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.DoubleParam">
+            <summary>
+            Double Parameter returned by an ITool allows the tool to specify a range and default value
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleParam.#ctor(System.String)">
+            <summary>
+            Creates a new double parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleParam.#ctor(System.String,System.Double)">
+            <summary>
+            Creates a new double parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="value">The default value</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleParam.#ctor(System.String,System.Double,System.Double,System.Double)">
+            <summary>
+            Creates a new double parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="value">The default value</param>
+            <param name="min">The minimum value</param>
+            <param name="max">The maximum value</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DoubleParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DoubleParam.Min">
+            <summary>
+            The minimum range for the parameter Default: -1.79769313486232e308
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DoubleParam.Max">
+            <summary>
+            The maximum range for the paramater Default: 1.79769313486232e308
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ExtentParam">
+            <summary>
+            ProjectionParam
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ExtentParam.#ctor(System.String)">
+            <summary>
+            Creates a new instance of ProjectionParam with the specified name
+            and a default projection of WGS1984
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ExtentParam.#ctor(System.String,DotSpatial.Data.Extent)">
+            <summary>
+            Creates a new instance of an Extent Param with the specified name
+            and the specified projection as the default projection that will
+            appear if no changes are made.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultExtent"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ExtentParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualize INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ExtentParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualize OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ExtentParam.DefaultToMapExtent">
+            <summary>
+            Gets or sets a value indicating whether the extent should be modified to show the MapExtent
+            before being shown in the tool dialog.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ExtentParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.FeatureSetParam">
+            <summary>
+            Raster parameter allows ITools to specify that they require a Raster data set as input
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetParam.#ctor(System.String)">
+            <summary>
+            Creates a new Feature Set Parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetParam.GenerateDefaultOutput(System.String)">
+            <summary>
+            Generates a default instance of the data type so that tools have something to write too
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.FeatureSetParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.FileParam">
+            <summary>
+            A File access parameter
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FileParam.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new Feature Set Parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="filter">The string dialog filter to use.</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FileParam.#ctor(System.String)">
+            <summary>
+            Creates a new Feature Set Parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FileParam.#ctor(System.String,DotSpatial.Modeling.Forms.TextFile)">
+            <summary>
+            Creates a new Feature Set Parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="value">A TextFile</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FileParam.GenerateDefaultOutput(System.String)">
+            <summary>
+            Generates a default instance of the data type so that tools have something to write too
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FileParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualize INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FileParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualize OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.FileParam.DialogFilter">
+            <summary>
+            Gets or sets the filter expression to limit extensions that can be used for this FileParam.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.FileParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.IndexParam">
+            <summary>
+            Index Parameters returned by an ITool allows the tool to select the index for given Featureset indexs.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IndexParam.#ctor(System.String)">
+            <summary>
+            Creates a new Index parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IndexParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.IndexParam.Fs">
+            <summary>
+            The featureset used to populate the query generator
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.IndexParam.Value">
+            <summary>
+            Specifies the value of the parameter (This will give the result featureset that user want handle.)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.IntParam">
+            <summary>
+            Int Parameters returned by an ITool allows the tool to specify a range and default value
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntParam.#ctor(System.String)">
+            <summary>
+            Creates a new integer parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntParam.#ctor(System.String,System.Int32)">
+            <summary>
+            Creates a new integer parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="value">The default value</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntParam.#ctor(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a new integer parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="value">The default value</param>
+            <param name="min">The minimum value</param>
+            <param name="max">The maximum value</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.IntParam.Min">
+            <summary>
+            The minimum range for the parameter Default: -2, 147, 483, 648
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.IntParam.Max">
+            <summary>
+            The maximum range for the paramater Default: 2, 147, 483, 648
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.IntParam.Value">
+            <summary>
+            Specifies the value to use by default must be between the min and max
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.LineFeatureSetParam">
+            <summary>
+            Line Feature Parameter past back from a ITool to the toolbox manager
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineFeatureSetParam.#ctor(System.String)">
+            <summary>
+            Creates a new Line Feature Set parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineFeatureSetParam.GenerateDefaultOutput(System.String)">
+            <summary>
+            Generates a default instance of the data type so that tools have something to write too
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineFeatureSetParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineFeatureSetParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.LineFeatureSetParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ListParam">
+            <summary>
+            List of strings parameter returned by an ITool allows the tool to specify a list of values and a default
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListParam.#ctor(System.String)">
+            <summary>
+            Creates a new list parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListParam.#ctor(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates a new list parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="valueList">The list of string values to poluate the combo box</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListParam.#ctor(System.String,System.Collections.Generic.List{System.String},System.Int32)">
+            <summary>
+            Creates a new list parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="valueList">The list of string values to poluate the combo box</param>
+            <param name="value">The default item in the list</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ListParam.Value">
+            <summary>
+            Gets or sets the index of the list
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ListParam.ValueList">
+            <summary>
+            Gets or sets the list of items in the valuelist
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.EventHandlerValueChanged">
+            <summary>
+            EventHandler delegate for the tool parameter when a value is changed.
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.PointFeatureSetParam">
+            <summary>
+            Point Feature Set Parameters past back from a ITool to the toolbox manager
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointFeatureSetParam.#ctor(System.String)">
+            <summary>
+            Creates a new Line Feature Set parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointFeatureSetParam.GenerateDefaultOutput(System.String)">
+            <summary>
+            Generates a default instance of the data type so that tools have something to write too
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointFeatureSetParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointFeatureSetParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.PointFeatureSetParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.PolygonFeatureSetParam">
+            <summary>
+            Polygon Feature Set Parameters past back from a ITool to the toolbox manager
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonFeatureSetParam.#ctor(System.String)">
+            <summary>
+            Creates a new Polygon Feature Set parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonFeatureSetParam.GenerateDefaultOutput(System.String)">
+            <summary>
+            Generates a default instance of the data type so that tools have something to write too
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonFeatureSetParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonFeatureSetParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.PolygonFeatureSetParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ProjectionParam">
+            <summary>
+            ProjectionParam
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ProjectionParam.#ctor(System.String)">
+            <summary>
+            Creates a new instance of ProjectionParam with the specified name
+            and a default projection of WGS1984
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ProjectionParam.#ctor(System.String,DotSpatial.Projections.ProjectionInfo)">
+            <summary>
+            Creates a new instance of a Projection Param with the specified name
+            and the specified projection as the default projection that will
+            appear if no changes are made.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultProjection"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ProjectionParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ProjectionParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ProjectionParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.RasterParam">
+            <summary>
+            Raster parameter allows ITools to specify that they require a Raster data set as input
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterParam.#ctor(System.String)">
+            <summary>
+            Creates a new Raster parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterParam.GenerateDefaultOutput(System.String)">
+            <summary>
+            Creates a new blank raster
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.RasterParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ShowParamInModel">
+            <summary>
+            Defines whether or not to add the parameter to the model
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ShowParamInModel.Always">
+            <summary>
+            Always add the parameter to the model
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ShowParamInModel.Yes">
+            <summary>
+            Show the parameter in the model
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ShowParamInModel.No">
+            <summary>
+            Don't show the parameter in the model
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.StringParam">
+            <summary>
+            String Parameters returned by an ITool allows the tool to specify a default value
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.StringParam.#ctor(System.String)">
+            <summary>
+            Creates a new string parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.StringParam.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new string parameter
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="value">The default value</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.StringParam.InputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise INPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.StringParam.OutputDialogElement(System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+            </summary>
+            <param name="dataSets"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.StringParam.Value">
+            <summary>
+            Specifies the value of the parameter (This is also the default value for input)
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ParameterType">
+            <summary>
+            Defines the data types which can be parameters for a ITool
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.IntParam">
+            <summary>
+            Defines a parameter of type Int which takes a max/min and default value
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.DoubleParam">
+            <summary>
+            Defines a parameter of type Double which takes a max/min and default value
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.RasterParam">
+            <summary>
+            Defines a parameter which specifies a raster
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.FeatureSetParam">
+            <summary>
+            Defines a parameter which specifies a Feature Set
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.PointFeatureSetParam">
+            <summary>
+            Defines a parameter which specifies a Point Feature Set
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.LineFeatureSetParam">
+            <summary>
+            Defines a parameter which specifies a Line Feature Set
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.PolygonFeatureSetParam">
+            <summary>
+            Defines a parameter which specifies a Polygon Feature Set
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.StringParam">
+            <summary>
+            Defines a parameter which specifies a string
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.BooleanParam">
+            <summary>
+            Defines a parameter which specifies a boolean value
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ParameterType.ListParam">
+            <summary>
+            Defines a parameter that is presented by a comboBox in the form
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.BooleanElement">
+            <summary>
+            An element for true/false values
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanElement.#ctor(DotSpatial.Modeling.Forms.BooleanParam)">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="param">The parameter this element represents</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanElement.Refresh">
+            <summary>
+            Updates the status lights
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanElement.CheckBox1CheckStateChanged(System.Object,System.EventArgs)">
+            <summary>
+            This changes the color of the light and the tooltip of the light based on the status of the checkbox
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BooleanElement.CheckBox1Click(System.Object,System.EventArgs)">
+            <summary>
+            When the check box it clicked this event fires
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.BooleanElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DateTimeElement.#ctor(DotSpatial.Modeling.Forms.DateTimeParam)">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="param">The parameter this element represents</param>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DateTimeElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.DialogSpacerElement">
+            <summary>
+            An element for DialogSpacing
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DialogSpacerElement.#ctor">
+            <summary>
+            Creates an instance of a dialogspacerelement
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DialogSpacerElement.Text">
+            <summary>
+            Gets or sets the text of the spacer
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DialogSpacerElement.Status">
+            <summary>
+            Gets the current status the input
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.DoubleElement">
+            <summary>
+            An element for doubles
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleElement.#ctor(DotSpatial.Modeling.Forms.DoubleParam)">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="param">The parameter this element represents</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleElement.Refresh">
+            <summary>
+            Refreshes status lights or other content
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleElement.textBox1_TextChanged(System.Object,System.EventArgs)">
+            <summary>
+            This changes the color of the light and the tooltip of the light based on the status of the text in the box
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleElement.IsDecimal(System.String)">
+            <summary>
+            Checks if text contains a value double
+            </summary>
+            <param name="theValue">The text to text</param>
+            <returns>Returns true if it is a valid double</returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DoubleElement.textBox1_Click(System.Object,System.EventArgs)">
+            <summary>
+            When the text box is clicked this event fires
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DoubleElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ToolStatus">
+            <summary>
+            Indicates the allowed values for the status of the element, illustrated by the light
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolStatus.Empty">
+            <summary>
+            Indicates that no value has been set for this yet.
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolStatus.Ok">
+            <summary>
+            Indicates that the element parameter is ok and won't halt.
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolStatus.Error">
+            <summary>
+            Indicates that the element value will cause an error.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.FeatureSetElement">
+            <summary>
+            Feature Set element
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetElement.#ctor(DotSpatial.Modeling.Forms.FeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="inputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetElement.Refresh">
+            <summary>
+            updates the param if something's been changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetElement.comboFeature_SelectedValueChanged(System.Object,System.EventArgs)">
+            <summary>
+            This fires when the selected value in the combo box is changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetElement.btnAddData_Click(System.Object,System.EventArgs)">
+            <summary>
+            Adds a new entry to the drop down list from data provider
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.FeatureSetElementOut">
+            <summary>
+            Feature Set element out
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.FeatureSetElementOut.#ctor(DotSpatial.Modeling.Forms.FeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="outputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.IndexElement">
+            <summary>
+             /// A modular component that can be inherited to retrieve parameters for functions.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IndexElement.#ctor(DotSpatial.Modeling.Forms.IndexParam)">
+            <summary>
+            Create a new instant.
+            </summary>
+            <param name="param"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IndexElement.TextBox1Click(System.Object,System.EventArgs)">
+            <summary>
+            When the text box is clicked this event fires
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.IndexElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.IntElement">
+            <summary>
+            an element for integers
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntElement.#ctor(DotSpatial.Modeling.Forms.IntParam)">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="param">The parameter this element represents</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntElement.Refresh">
+            <summary>
+            Updates the status lights
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntElement.textBox1_TextChanged(System.Object,System.EventArgs)">
+            <summary>
+            This changes the color of the light and the tooltip of the light based on the status of the text in the box
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntElement.IsInteger(System.String)">
+            <summary>
+            Checks if text contains a value integer
+            </summary>
+            <param name="theValue">The text to text</param>
+            <returns>Returns true if it is a valid integer</returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.IntElement.textBox1_Click(System.Object,System.EventArgs)">
+            <summary>
+            When the text box is clicked this event fires
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.IntElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineElement.#ctor(DotSpatial.Modeling.Forms.LineFeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="inputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineElement.Refresh">
+            <summary>
+            updates the param if something's been changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineElement.ComboFeatureSelectedValueChanged(System.Object,System.EventArgs)">
+            <summary>
+            This fires when the selected value in the combo box is changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineElement.BtnAddDataClick(System.Object,System.EventArgs)">
+            <summary>
+            Adds a new entry to the drop down list from data provider
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.LineElementOut.#ctor(DotSpatial.Modeling.Forms.LineFeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="outputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListElement.#ctor(DotSpatial.Modeling.Forms.ListParam)">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="param">The parameter this element represents</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListElement.Refresh">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListElement.ComboBox1SelectedValueChanged(System.Object,System.EventArgs)">
+            <summary>
+            This changes the color of the light and the tooltip of the light based on the status of the text in the box
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ListElement.ComboBox1Click(System.Object,System.EventArgs)">
+            <summary>
+            When the control is clicked this event fires
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ListElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.OpenFileElement">
+            <summary>
+            Open File Element
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.OpenFileElement.#ctor(DotSpatial.Modeling.Forms.FileParam,System.String)">
+            <summary>
+            Create an instance of the dialog
+            </summary>
+            <param name="param"></param>
+            <param name="text"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.OpenFileElement.#ctor(DotSpatial.Modeling.Forms.FileParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="inputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.OpenFileElement.Refresh">
+            <summary>
+            updates the param if something's been changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.OpenFileElement.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointElement.#ctor(DotSpatial.Modeling.Forms.PointFeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="inputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointElement.Refresh">
+            <summary>
+            updates the param if something's been changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointElement.ComboFeatureSelectedValueChanged(System.Object,System.EventArgs)">
+            <summary>
+            This fires when the selected value in the combo box is changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointElement.BtnAddDataClick(System.Object,System.EventArgs)">
+            <summary>
+            Adds a new entry to the drop down list from data provider
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PointElementOut.#ctor(DotSpatial.Modeling.Forms.PointFeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="outputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonElement.#ctor(DotSpatial.Modeling.Forms.PolygonFeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="inputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonElement.Refresh">
+            <summary>
+            updates the param if something's been changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonElement.ComboFeatureSelectedValueChanged(System.Object,System.EventArgs)">
+            <summary>
+            This fires when the selected value in the combo box is changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonElement.BtnAddDataClick(System.Object,System.EventArgs)">
+            <summary>
+            Adds a new entry to the drop down list from data provider
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.PolygonElementOut.#ctor(DotSpatial.Modeling.Forms.PolygonFeatureSetParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="outputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ProjectionElement">
+            <summary>
+            ProjectionElement
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ProjectionElement.#ctor(DotSpatial.Modeling.Forms.ProjectionParam)">
+            <summary>
+            Creates a new instance of ProjectionElement
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ProjectionElement.ParamValueChanged(DotSpatial.Modeling.Forms.Parameter)">
+            <inheritdoc/>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ProjectionElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterElement.#ctor(DotSpatial.Modeling.Forms.RasterParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="inputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterElement.Refresh">
+            <summary>
+            updates the param if something's been changed
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterElement.ComboRasterSelectedValueChanged(System.Object,System.EventArgs)">
+            <summary>
+            This changes the color of the light and the tooltip of the light based on the status of the text in the box
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterElement.BtnAddDataClick(System.Object,System.EventArgs)">
+            <summary>
+            Adds a new entry to the drop down list from data provider
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.RasterElementOut.#ctor(DotSpatial.Modeling.Forms.RasterParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="outputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.SaveFileElement">
+            <summary>
+            Save File Element
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.SaveFileElement.#ctor(DotSpatial.Modeling.Forms.FileParam,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray})">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="outputParam">The parameter this element represents</param>
+            <param name="dataSets">An array of available data</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.SaveFileElement.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.StringElement.#ctor(DotSpatial.Modeling.Forms.StringParam)">
+            <summary>
+            Creates an instance of the dialog
+            </summary>
+            <param name="param">The parameter this element represents</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.StringElement.TextBox1TextChanged(System.Object,System.EventArgs)">
+            <summary>
+            This changes the color of the light and the tooltip of the light based on the status of the text in the box
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.StringElement.TextBox1Click(System.Object,System.EventArgs)">
+            <summary>
+            When the text box is clicked this event fires
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.StringElement.Param">
+            <summary>
+            Gets or sets the Parameter that the element represents
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.Tool">
+            <summary>
+            A class from which Tools may be derived. Implments mundane parts of ITool for Assembly based tools.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Tool.Execute(DotSpatial.Data.ICancelProgressHandler)">
+            <summary>
+            Once the parameters have been configured the Execute command can be called, it returns true if succesful
+            </summary>
+            <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Tool.Initialize">
+            <summary>
+            The parameters array should be populated with default values here
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.Tool.ParameterChanged(DotSpatial.Modeling.Forms.Parameter)">
+            <summary>
+            Fires when one of the paramters value has beend changed, usually when a user changes a input or output parameters value, this can be used to populate other parameters default values.
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.Author">
+            <summary>
+            Author of the plugin.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.Category">
+            <summary>
+            Returns the category of tool that the ITool should be added to
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.Description">
+            <summary>
+            Short description of the plugin.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.HelpImage">
+            <summary>
+            Image displayed in the help area when no input field is selected
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.HelpUrl">
+            <summary>
+            Returns the address of the tools help web page in HTTP://... format. Returns null if no URL has been specified.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.Icon">
+            <summary>
+            32x32 Bitmap - The Large icon that will appears in the Tool Dialog Next to the tools name
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.InputParameters">
+            <summary>
+            Gets or Sets the input paramater array
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.Name">
+            <summary>
+            Name of the plugin.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.OutputParameters">
+            <summary>
+            Gets or Sets the output paramater array
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.Tool.ToolTip">
+            <summary>
+            Returns a brief description displayed when the user hovers over the tool in the toolbox
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ToolDialog">
+            <summary>
+            A generic form that works with the various dialog elements in order to create a fully working process.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.#ctor(DotSpatial.Modeling.Forms.ITool,System.Collections.Generic.List{DotSpatial.Modeling.Forms.DataSetArray},DotSpatial.Data.Extent)">
+            <summary>
+            The constructor for the ToolDialog
+            </summary>
+            <param name="tool">The ITool to create the dialog box for</param>
+            <param name="dataSets">The list of available DataSets available</param>
+            <param name="mapExtent">Creates a new instance of the tool dialog with map extent.</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.#ctor(DotSpatial.Modeling.Forms.ITool,System.Collections.Generic.IEnumerable{DotSpatial.Modeling.Forms.ModelElement})">
+            <summary>
+            The constructor for the ToolDialog
+            </summary>
+            <param name="tool">The ITool to create the dialog box for</param>
+            <param name="modelElements">A list of all model elements</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.AddElement(DotSpatial.Modeling.Forms.DialogElement)">
+            <summary>
+            This adds the Elements to the form incrementally lower down
+            </summary>
+            <param name="element">The element to add</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.ElementClicked(System.Object,System.EventArgs)">
+            <summary>
+            When one of the DialogElements is clicked this event fires to populate the help
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.Initialize(DotSpatial.Modeling.Forms.ITool)">
+            <summary>
+            The constructor for the ToolDialog
+            </summary>
+            <param name="tool">The ITool to create the dialog box for</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.ParamValueChanged(DotSpatial.Modeling.Forms.Parameter)">
+            <summary>
+            Fires when a parameter is changed
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.PopulateHelp(System.String,System.String,System.Drawing.Image)">
+            <summary>
+            This adds a Bitmap to the help section.
+            </summary>
+            <param name="title">The text to appear in the help box.</param>
+            <param name="body">The title to appear in the help box.</param>
+            <param name="image">The bitmap to appear at the bottom of the help box.</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.PopulateInputElements">
+            <summary>
+            Adds Elements to the dialog based on what input Parameter the ITool contains
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.PopulateOutputElements">
+            <summary>
+            Adds Elements to the dialog based on what output Parameter the ITool contains
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.btnCancel_Click(System.Object,System.EventArgs)">
+            <summary>
+            When the user clicks Cancel
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.btnOK_Click(System.Object,System.EventArgs)">
+            <summary>
+            When the user clicks OK
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.helpHyperlink_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <summary>
+            When the hyperlink is clicked this event fires.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.otherElement_Click(System.Object,System.EventArgs)">
+            <summary>
+            If the user clicks out side of one of the tool elements
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.panelHelp_SizeChanged(System.Object,System.EventArgs)">
+            <summary>
+            When the size of the help panel changes this event fires to move stuff around.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolDialog.Dispose(System.Boolean)">
+            <summary>
+            Disposes of the resources (other than memory) used by the <see cref="T:System.Windows.Forms.Form"/>.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolDialog.DataSets">
+            <summary>
+            Returns a list of IDataSet that are available in the ToolDialog excluding any of its own outputs.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolDialog.ToolStatus">
+            <summary>
+            Gets the status of the tool
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ArrowElement">
+            <summary>
+            An arrow
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ModelElement">
+            <summary>
+            Defines the base class for all model components
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.#ctor(System.Collections.Generic.List{DotSpatial.Modeling.Forms.ModelElement})">
+            <summary>
+            Creates an instance of the model Element
+            <param name="modelElements">A list of all the elements in the model</param>
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.Clone">
+            <summary>
+            This returns a duplicate of this object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.Copy">
+            <summary>
+            Returns a shallow copy of the Parameter class
+            </summary>
+            <returns>A new Parameters class that is a shallow copy of the original parameters class</returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.Highlighted(System.Boolean)">
+            <summary>
+            Darkens the component slightly
+            </summary>
+            <param name="highlighted">Darkens if true returns to normal if false</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.Paint(System.Drawing.Graphics)">
+            <summary>
+            Repaints the form with cool background and stuff
+            </summary>
+            <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.DrawStatusLight(System.Drawing.Graphics)">
+            <summary>
+            This does nothing in the base class but child classes may override it
+            </summary>
+            <param name="graph"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.PointInExtents(System.Drawing.Point)">
+            <summary>
+            Returns true if the point is in the extents rectangle of the element
+            </summary>
+            <param name="pt">A point to test, assuming 0, 0 is the top left corner of the shapes drawing rectangle</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.PointInElement(System.Drawing.Point)">
+            <summary>
+            Calculates if a point is within the shape that defines the element
+            </summary>
+            <param name="point">A point to test in the virtual modeling plane</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.ElementInRectangle(System.Drawing.Rectangle)">
+            <summary>
+            Returns true if the element intersect the rectangle from the parent class
+            </summary>
+            <param name="rect">The rectangle to test must be in the virtual modeling coordinant plane</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.PointInRectangle(System.Drawing.Point,System.Drawing.Rectangle)">
+            <summary>
+            Returns true if a point is in a rectangle
+            </summary>
+            <param name="pt"></param>
+            <param name="rect"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.DoubleClick">
+            <summary>
+            When a double click is caught by the parent class call this method
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.GetRoundedRect(System.Drawing.RectangleF,System.Single)">
+            <summary>
+            Creates a rounded corner rectangle from a regular rectangel
+            </summary>
+            <param name="baseRect"></param>
+            <param name="radius"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.IsDownstreamOf(DotSpatial.Modeling.Forms.ModelElement)">
+            <summary>
+            Returns true if this model element is downstram of the potentialUpstream element
+            </summary>
+            <param name="potentialUpstream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.GetParents">
+            <summary>
+            Returns a list of all model elements that are direct parents of this element
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.IsUpstreamOf(DotSpatial.Modeling.Forms.ModelElement)">
+            <summary>
+            Returns true if this model element is downstream of the potentialUpstream element
+            </summary>
+            <param name="potentialDownstream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelElement.GetChildren">
+            <summary>
+            Returns a list of all model elements that are direct children of this element
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.ModelElements">
+            <summary>
+            Gets a list of all elements in the model
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Highlight">
+            <summary>
+            Returns 1 if the object is not highlighted less than 1 if it is highlighted
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Name">
+            <summary>
+            Gets or sets the text that is drawn on the element
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Font">
+            <summary>
+            Gets or sets the font used to draw the text on the element
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Shape">
+            <summary>
+            Gets or Sets the shape of the model component
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Color">
+            <summary>
+            Gets or set the base color of the shapes gradient
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Rectangle">
+            <summary>
+            Gets a rectangle representing the element, top left corner being the location of the parent form of the element
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Width">
+            <summary>
+            Gets or sets the width of the element
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Height">
+            <summary>
+            Gets or sets the shape of the element
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ModelElement.Location">
+            <summary>
+            Gets or sets the location of the element in the parent form
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ArrowElement.#ctor(DotSpatial.Modeling.Forms.ModelElement,DotSpatial.Modeling.Forms.ModelElement,System.Collections.Generic.List{DotSpatial.Modeling.Forms.ModelElement})">
+            <summary>
+            Creates an instance of an ArrowElement
+            </summary>
+            <param name="sourceElement">The element the arrow starts at</param>
+            <param name="destElement">the element the arrow ends at</param>
+            <param name="modelElements">A list of all the elements in the model</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ArrowElement.UpdateDimentions">
+            <summary>
+            Updates the dimentions
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ArrowElement.Paint(System.Drawing.Graphics)">
+            <summary>
+            Repaints the form with cool background and stuff
+            </summary>
+            <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ArrowElement.PointInElement(System.Drawing.Point)">
+            <summary>
+            Calculates if a point is within the shape that defines the element
+            </summary>
+            <param name="point">A point to test in the virtual modeling plane</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ArrowElement.ElementInRectangle(System.Drawing.Rectangle)">
+            <summary>
+            Returns true if the element intersect the rectangle from the parent class
+            </summary>
+            <param name="rect">The rectangle to test must be in the virtual modeling coordinant plane</param>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ArrowElement.StopElement">
+            <summary>
+            Gets or sets the destination Element
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ArrowElement.StartElement">
+            <summary>
+            Gets or sets the source element
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ArrowElement.StartPoint">
+            <summary>
+            the point in the arrows coordinants we draw from
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ArrowElement.StopPoint">
+            <summary>
+            the point in the arrows coordinants we stop drawing from
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.BlankElement">
+            <summary>
+            A default element
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BlankElement.#ctor(System.Collections.Generic.List{DotSpatial.Modeling.Forms.ModelElement})">
+            <summary>
+            Creates an instance of the Data Element
+            <param name="modelElements">A list of all the elements in the model</param>
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.BlankElement.Paint(System.Drawing.Graphics)">
+            <summary>
+            Does nothing
+            </summary>
+            <param name="graph"></param>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.DataElement">
+            <summary>
+            Element for Data
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DataElement.#ctor(DotSpatial.Modeling.Forms.Parameter,System.Collections.Generic.List{DotSpatial.Modeling.Forms.ModelElement})">
+            <summary>
+            Creates an instance of the Data Element
+            <param name="parameter">One of Brian's Parameter classes</param>
+            <param name="modelElements">A list of all the elements in the model</param>
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.DataElement.DoubleClick">
+            <summary>
+            When the user doulbe clicks on a tool call this method
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DataElement.DataType">
+            <summary>
+            Gets the dataType of the DataElement
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.DataElement.Parameter">
+            <summary>
+            Gets or sets the Data set that this element represents
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ModelShape">
+            <summary>
+            Definitions for the shapes that components can have in the modeler
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ModelShape.Rectangle">
+            <summary>
+            Defines the Model Component as a Rectangle
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ModelShape.Triangle">
+            <summary>
+            Defines the Model Component as a Triangle
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ModelShape.Ellipse">
+            <summary>
+            Defines the Model Component as a Ellipse
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ModelShape.Arrow">
+            <summary>
+            Defines an Arrow
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ToolExecuteStatus">
+            <summary>
+            Used internally to decided if a tool has executed, is done, or finished in error
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolExecuteStatus.NotRun">
+            <summary>
+            The tool has not been run yet
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolExecuteStatus.Running">
+            <summary>
+            The tool is currently executing
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolExecuteStatus.Done">
+            <summary>
+            The tool finished running succesfully
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolExecuteStatus.Error">
+            <summary>
+            The tool returned an error when executing
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ModelerMenuStrip">
+            <summary>
+            A Menu strip that is part of Brian's toolbox
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelerMenuStrip.#ctor">
+            <summary>
+            Creates a new instance of hte ModelerMenuStrip
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ModelerMenuStrip.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelerMenuStrip.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ModelerMenuStrip.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ToolElement">
+            <summary>
+            the basic element for tools
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolElement.#ctor(DotSpatial.Modeling.Forms.ITool,System.Collections.Generic.List{DotSpatial.Modeling.Forms.ModelElement})">
+            <summary>
+            Creates an instance of the tool element
+            </summary>
+            <param name="tool">The tool that the tool element represents</param>
+            <param name="modelElements">A list of all the elements in the model</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolElement.UpdateStatus">
+            <summary>
+            Updates the status indicator
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolElement.DrawStatusLight(System.Drawing.Graphics)">
+            <summary>
+            Draws the status light on the background of the DataElement
+            </summary>
+            <param name="graph"></param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolElement.DoubleClick">
+            <summary>
+            When the user doulbe clicks on a tool call this method
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolElement.ExecutionStatus">
+            <summary>
+            Gets or sets the status of the tools execution, used when the modeler runs the model.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolElement.Tool">
+            <summary>
+            Gets the ITool this element represents
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolElement.ElementsInModel">
+            <summary>
+            Gets or sets the list of Elements presently available in the Modeler
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolElement.ToolStatus">
+            <summary>
+            Gets the current status of the tool
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.TextFile">
+            <summary>
+            This class is used to enable linking of tools
+            that work with File parameters
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.TextFile.#ctor">
+            <summary>
+            Text File constructor
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.TextFile.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the TextFile class
+            </summary>
+            <param name="fileName">the associated file name</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.TextFile.ToString">
+            <summary>
+            To string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.TextFile.FileName">
+            <summary>
+            The file name associated with this text file
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Modeling.Forms.ToolProgress">
+            <summary>
+            A form which shows the progress of a tool
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolProgress.#ctor(System.Int32)">
+            <summary>
+            Creates an instance of the Tool Progress forms and hands over an array of tools which will then be executed
+            </summary>
+            <param name="numTools">The number of tools that are going to be executed</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolProgress.Progress(System.String,System.Int32,System.String)">
+            <summary>
+            Handles the progress method necessary to implement IProgress
+            </summary>
+            <param name="key">This a message with no percentage information..this is ignored</param>
+            <param name="percent">The integer percentage from 0 to 100 that is used to control the progress bar</param>
+            <param name="message">The actual complete message to show..this is also ignored</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolProgress.ExecutionComplete">
+            <summary>
+            This method should be called when the process has been completed
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Modeling.Forms.ToolProgress.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolProgress.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotSpatial.Modeling.Forms.ToolProgress.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolProgress.ToolProgressCount">
+            <summary>
+            Gets or sets the number of tools that have been succesfully executed
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Modeling.Forms.ToolProgress.Cancel">
+            <summary>
+            Returns true if the cancel button was pressed
+            </summary>
+        </member>
+    </members>
+</doc>

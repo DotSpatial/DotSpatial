@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotSpatial.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:DotSpatial.Extensions.AssemblyInformation">
+            <summary>
+            Information about the assembly containing the extension
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.ReferenceType">
+            <summary>
+            The type of the referenced class
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.ReferenceAssembly">
+            <summary>
+            Gets the reference assembly.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.ReferenceFile">
+            <summary>
+            Gets the reference file.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.Author">
+            <summary>
+            Author of the plugin.
+            </summary>
+            <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.BuildDate">
+            <summary>
+            Build date.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.Description">
+            <summary>
+            Short description of the plugin.
+            </summary>
+            <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.Name">
+            <summary>
+            Name of the plugin.
+            </summary>
+            <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.Version">
+            <summary>
+            Plugin version.
+            </summary>
+            <remarks>This setter should be overriden by a derived class (if needed).</remarks>
+        </member>
+        <member name="P:DotSpatial.Extensions.AssemblyInformation.AssemblyQualifiedName">
+            <summary>
+            Gets the name of the assembly and class.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Extensions.IExtension">
+            <summary>
+            The IExtension interface represents the shared content between all providers and plugins.  This simply acts like
+            an on-off switch for enabling or disabling the extension.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.IExtension.Activate">
+            <summary>
+            Activates this extension
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.IExtension.Deactivate">
+            <summary>
+            Deactivates this extension
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.IsActive">
+            <summary>
+            Gets or sets a boolean that is true if the extension is active and running.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.DeactivationAllowed">
+            <summary>
+            Gets a value indicating whether [deactivation is allowed].
+            </summary>
+            <value>
+              <c>true</c> if [deactivation is allowed]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.Author">
+            <summary>
+            Gets the author.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.BuildDate">
+            <summary>
+            Gets the build date.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.Description">
+            <summary>
+            Gets the description.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.Name">
+            <summary>
+            Gets the name.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.Version">
+            <summary>
+            Gets the version.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IExtension.AssemblyQualifiedName">
+            <summary>
+            Gets the Assembly Qualified FullName.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Extensions.IExtensionExtensionMethods">
+            <summary>
+            Extension methods for IExtension
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.IExtensionExtensionMethods.TryActivate(DotSpatial.Extensions.IExtension)">
+            <summary>
+            Tries to activate the extension.
+            </summary>
+            <param name="extension">The extension.</param>
+            <returns></returns>
+        </member>
+        <member name="T:DotSpatial.Extensions.IOpenProjectFileProvider">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:DotSpatial.Extensions.IProjectFileProvider">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IProjectFileProvider.FileTypeDescription">
+            <summary>
+            Gets the file type description.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.IProjectFileProvider.Extension">
+            <summary>
+            Gets the extension, which by convention will be lower case.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.IOpenProjectFileProvider.Open(System.String)">
+            <summary>
+            Opens the specified file name.
+            </summary>
+            <param name="fileName">Name of the file.</param>
+            <returns></returns>
+        </member>
+        <member name="T:DotSpatial.Extensions.ISampleProject">
+            <summary>
+            Used to specify a sample .dspx project that the user can download as a package and open.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.ISampleProject.AbsolutePathToProjectFile">
+            <summary>
+            Gets the absolute path to project file. This includes the directory, filename, and extension
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.ISampleProject.Name">
+            <summary>
+            Gets the name to display to the user when they are selecting a project.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.ISampleProject.Description">
+            <summary>
+            Gets the description of the project
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Extensions.ISaveProjectFileProvider">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.ISaveProjectFileProvider.Save(System.String,System.String)">
+            <summary>
+            Saves the specified file.
+            </summary>
+            <param name="fileName">Name of the file.</param>
+            <param name="graph">The control graph.</param>
+        </member>
+        <member name="T:DotSpatial.Extensions.ISatisfyImportsExtension">
+            <summary>
+            Extensions of this type are activiated before other extensions and may be used to help satisfy required imports.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.ISatisfyImportsExtension.Activate">
+            <summary>
+            Activates this extension
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Extensions.ISatisfyImportsExtension.Priority">
+            <summary>
+            Specifies the activation priority order
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Extensions.SplashScreens.ISplashScreenManager">
+            <summary>
+            An interface that allows the creation of a splash screen extension, which will be loaded before other extensions.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.SplashScreens.ISplashScreenManager.Activate">
+            <summary>
+            Show the Splash Screen.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.SplashScreens.ISplashScreenManager.ProcessCommand(System.Enum,System.Object)">
+             <summary>
+            
+             </summary>
+             <param name="cmd">A SplashScreenCommand enum value.</param>
+             <param name="arg">The argument to pass to the command. See SplashScreenCommand for details reguarding each individual command.</param>
+        </member>
+        <member name="M:DotSpatial.Extensions.SplashScreens.ISplashScreenManager.Deactivate">
+            <summary>
+            Deactivates this instance.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Extensions.SplashScreens.SplashScreenCommand">
+            <summary>
+            The type of splash screen command
+            Supported operation is to change the display text.
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Extensions.SplashScreens.SplashScreenCommand.SetDisplayText">
+            <summary>
+            Displays a string on the splash screen.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Extensions.SplashScreens.SplashScreenHelper">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Extensions.SplashScreens.SplashScreenHelper.GetSplashScreenManager">
+            <summary>
+            Searches "Application Extensions" for and activates "*SplashScreen*.dll"
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

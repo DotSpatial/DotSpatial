@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotSpatial.Projections.Forms</name>
+    </assembly>
+    <members>
+        <member name="T:DotSpatial.Projections.Forms.DoubleBox">
+            <summary>
+            A User control for entering double values into text boxes
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.DoubleBox.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.DoubleBox.#ctor">
+            <summary>
+            Creates a new instance of DoubleBox
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.DoubleBox.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.DoubleBox.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.DoubleBox.OnTextChanged">
+            <summary>
+            Fires TextChanged
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.DoubleBox.OnValidChanged">
+            <summary>
+            Fires ValidChanged
+            </summary>
+        </member>
+        <member name="E:DotSpatial.Projections.Forms.DoubleBox.TextChanged">
+            <summary>
+            Occurs when the user changes values in the text box
+            </summary>
+        </member>
+        <member name="E:DotSpatial.Projections.Forms.DoubleBox.ValidChanged">
+            <summary>
+            Occurs either when changing from valid to invalid or when
+            changing from invalid to valid.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.BackColorRegular">
+            <summary>
+            Gets or sets the normal background color
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.BackColorInvalid">
+            <summary>
+            Gets or sets the invalid background color
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.Caption">
+            <summary>
+            Gets or sets the caption
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.NumberFormat">
+            <summary>
+            Gets or sets the string number format
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.InvalidHelp">
+            <summary>
+            Gets or sets teh tool tip text help when this
+            item has an invalid entry.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.IsValid">
+            <summary>
+            Gets or sets a boolean indicating if the text in this box can be parsed
+            into a double precision value.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.RegularHelp">
+            <summary>
+            Gets or sets the tool tip text for regular help
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.Text">
+            <summary>
+            Gets the raw text entered in the textbox
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.DoubleBox.Value">
+            <summary>
+            Gets the currently entered double value.
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Projections.Forms.ProjectionCustomDialog">
+            <summary>
+            ProjectionCustomDialog
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.ProjectionCustomDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionCustomDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionCustomDialog.#ctor">
+            <summary>
+            Creates a new instance of CollectionPropertyGrid
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionCustomDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionCustomDialog.OnApplyChanges">
+            <summary>
+            Fires the ChangesApplied event
+            </summary>
+        </member>
+        <member name="E:DotSpatial.Projections.Forms.ProjectionCustomDialog.ChangesApplied">
+            <summary>
+            Occurs whenever the apply changes button is clicked, or else when the ok button is clicked.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.ProjectionCustomDialog.SelectedProjectionInfo">
+            <summary>
+            gets or sets the selected projection info
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Projections.Forms.ProjectionSelectDialog">
+            <summary>
+            ProjectionSelectDialog
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.ProjectionSelectDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionSelectDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionSelectDialog.#ctor">
+            <summary>
+            Creates a new instance of CollectionPropertyGrid
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionSelectDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.ProjectionSelectDialog.OnApplyChanges">
+            <summary>
+            Fires the ChangesApplied event
+            </summary>
+        </member>
+        <member name="E:DotSpatial.Projections.Forms.ProjectionSelectDialog.ChangesApplied">
+            <summary>
+            Occurs whenever the apply changes button is clicked, or else when the ok button is clicked.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.ProjectionSelectDialog.SelectedCoordinateSystem">
+            <summary>
+            Gets or sets the currently chosen coordinate system
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Projections.Forms.ProjectionStrings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.ProjectionStrings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.ProjectionStrings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.ProjectionStrings.DoubleError">
+            <summary>
+              Looks up a localized string similar to The value entered could not be correctly parsed into a valid double precision floating point value..
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.ProjectionStrings.DoubleHelp">
+            <summary>
+              Looks up a localized string similar to Enter a double precision floating point value..
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Projections.Forms.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.Properties.Resources.Nothing">
+            <summary>
+              Looks up a localized string similar to [Nothing].
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Projections.Forms.UndefinedProjectionAction">
+            <summary>
+            The Undefined Projection Action enumeration
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.UndefinedProjectionAction.Nothing">
+            <summary>
+            No action should be taken.
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.UndefinedProjectionAction.WGS84">
+            <summary>
+            Always assume an undefined projection is Latitude Longitude
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.UndefinedProjectionAction.Map">
+            <summary>
+            Always rely on the existing Map projection
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.UndefinedProjectionAction.Chosen">
+            <summary>
+            Use a projection that was specified from the list
+            </summary>
+        </member>
+        <member name="T:DotSpatial.Projections.Forms.UndefinedProjectionDialog">
+            <summary>
+            A Dialog for choosing how to define a projection.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.UndefinedProjectionDialog.#ctor">
+            <summary>
+            Initializes a new instance of the Undefined Projection Dialog
+            </summary>
+        </member>
+        <member name="F:DotSpatial.Projections.Forms.UndefinedProjectionDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.UndefinedProjectionDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotSpatial.Projections.Forms.UndefinedProjectionDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.UndefinedProjectionDialog.UseProjection">
+            <summary>
+            Gets or sets a value that indicates that the newly selected Projection should be used.  If this
+            is false, then this layer should be drawn unmodified.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.UndefinedProjectionDialog.SelectedCoordinateSystem">
+            <summary>
+            Gets or sets the Projection chosen to be the final defined projection.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.UndefinedProjectionDialog.MapProjection">
+            <summary>
+            Gets or sets the current MapProjection.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.UndefinedProjectionDialog.OriginalString">
+            <summary>
+            Gets or sets the original projection string that could not be identified.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.UndefinedProjectionDialog.AlwaysUse">
+            <summary>
+            Gets or sets whether the option chosen here should be used for the rest of the session.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.UndefinedProjectionDialog.Action">
+            <summary>
+            Gets the action selected from the dialog.
+            </summary>
+        </member>
+        <member name="P:DotSpatial.Projections.Forms.UndefinedProjectionDialog.Result">
+            <summary>
+            Gets the result of the dialog.
+            </summary>
+        </member>
+    </members>
+</doc>
