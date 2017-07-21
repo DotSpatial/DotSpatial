@@ -123,6 +123,15 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        /// <summary>
+        /// This delegate is used for the selection functions.
+        /// </summary>
+        /// <param name="selection">Selection whose function is called.</param>
+        /// <param name="region">The region that is used in the function.</param>
+        /// <param name="affectedRegion">The region that was affected by the function.</param>
+        /// <returns>The return value of the function.</returns>
+        private delegate bool SelectAction(ISelection selection, Envelope region, out Envelope affectedRegion);
+
         #region Events
 
         /// <summary>
@@ -645,6 +654,9 @@ namespace DotSpatial.Symbology
                 return false;
             }
 
+            SuspendChangeEvent();
+            Selection.SuspendChanges();
+
             bool changed = false;
             var cats = _scheme.GetCategories().ToList();
 
@@ -661,7 +673,6 @@ namespace DotSpatial.Symbology
             else
             {
                 // we're clearing only the categories that are selection enabled
-                SuspendChangeEvent();
                 Envelope area = new Envelope();
 
                 foreach (var cat in cats.Where(_ => _.SelectionEnabled))
@@ -679,8 +690,10 @@ namespace DotSpatial.Symbology
                 }
 
                 affectedArea = area;
-                ResumeChangeEvent();
             }
+
+            Selection.ResumeChanges();
+            ResumeChangeEvent();
 
             OnSelectionChanged(); // CGX
 
@@ -807,64 +820,9 @@ namespace DotSpatial.Symbology
         /// <returns>The invert selection.</returns>
         public override bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
-            if (!SelectionEnabled)
-            {
-                affectedArea = new Envelope();
-                return false;
+            SelectAction action = (ISelection selection, Envelope region, out Envelope affectedRegion) => selection.InvertSelection(region, out affectedRegion);
+            return DoSelectAction(tolerant, strict, selectionMode, ClearStates.False, out affectedArea, action);
             }
-
-            if (!_drawnStatesNeeded && !_editMode)
-            {
-                AssignFastDrawnStates();
-            }
-
-            Envelope region = DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant;
-            bool changed = false;
-            Selection.SelectionMode = selectionMode;
-
-            var cats = _scheme.GetCategories().ToList();
-
-            // all categories are selection enabled, so a category independent selection inversion is enough
-            if (cats.All(_ => _.SelectionEnabled))
-            {
-                changed = Selection.InvertSelection(region, out affectedArea);
-            }
-            else
-            {
-                // not all categories are selection enabled, so we're inverting only those that are
-                if (!_drawnStatesNeeded)
-                {
-                    AssignFastDrawnStates();
-                }
-
-                SuspendChangeEvent();
-                Selection.SuspendChanges();
-
-                Envelope area = new Envelope();
-
-                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
-                {
-                    Envelope categoryArea;
-                    Selection.RegionCategory = cat;
-                    if (Selection.InvertSelection(region, out categoryArea))
-                    {
-                        changed = true;
-                        area.ExpandToInclude(categoryArea);
-                    }
-
-                    Selection.RegionCategory = null;
-                }
-
-                affectedArea = area;
-
-                Selection.ResumeChanges();
-                ResumeChangeEvent();
-            }
-
-            OnSelectionChanged(); // CGX
-
-            return changed;
-        }
 
         /// <summary>
         /// This method will remove the in ram features from the underlying dataset.
@@ -928,67 +886,13 @@ namespace DotSpatial.Symbology
         /// <param name="strict">The envelope to use in cases like polygons where the geometry has no tolerance.</param>
         /// <param name="selectionMode">The selection mode that clarifies the rules to use for selection.</param>
         /// <param name="affectedArea">The geographic envelope of the region impacted by the selection.</param>
+        /// <param name="clear">Indicates whether prior selected features should be cleared.</param>
         /// <returns>Boolean, true if items were selected.</returns>
-        public override bool Select(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
+        public override bool Select(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea, ClearStates clear)
         {
-            if (!SelectionEnabled)
-            {
-                affectedArea = new Envelope();
-                return false;
+            SelectAction action = (ISelection selection, Envelope region, out Envelope affectedRegion) => selection.AddRegion(region, out affectedRegion);
+            return DoSelectAction(tolerant, strict, selectionMode, clear, out affectedArea, action);
             }
-
-            if (!_drawnStatesNeeded && !_editMode)
-            {
-                AssignFastDrawnStates();
-            }
-
-            Envelope region = DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant;
-            Selection.SelectionMode = selectionMode;
-
-            bool changed = false;
-            var cats = _scheme.GetCategories().ToList();
-
-            // all categories are selection enabled, so a category independent selection is enough
-            if (cats.All(_ => _.SelectionEnabled))
-            {
-                changed = Selection.AddRegion(region, out affectedArea);
-            }
-            else
-            {
-                // not all categories are selection enabled, so we're selecting only those that are
-                if (!_drawnStatesNeeded)
-                {
-                    AssignFastDrawnStates();
-                }
-
-                SuspendChangeEvent();
-                Selection.ProgressHandler = ProgressHandler;
-                Selection.SuspendChanges();
-                Envelope area = new Envelope();
-
-                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
-                {
-                    Envelope categoryArea;
-                    Selection.RegionCategory = cat;
-                    if (Selection.AddRegion(region, out categoryArea))
-                    {
-                        changed = true;
-                        area.ExpandToInclude(categoryArea);
-                    }
-
-                    Selection.RegionCategory = null;
-                }
-
-                affectedArea = area;
-
-                Selection.ResumeChanges();
-                ResumeChangeEvent();
-            }
-
-            OnSelectionChanged(); // CGX
-
-            return changed;
-        }
 
         /// <summary>
         /// Selects the specified list of features. If the specified feature is already selected,
@@ -1418,58 +1322,9 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if members were removed from the selection.</returns>
         public override bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
-            if (!SelectionEnabled)
-            {
-                affectedArea = new Envelope();
-                return false;
+            SelectAction action = (ISelection selection, Envelope region, out Envelope affectedRegion) => selection.RemoveRegion(region, out affectedRegion);
+            return DoSelectAction(tolerant, strict, selectionMode, ClearStates.False, out affectedArea, action);
             }
-
-            if (!_drawnStatesNeeded && !_editMode)
-            {
-                AssignFastDrawnStates();
-            }
-
-            Envelope region = DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant;
-            Selection.SelectionMode = selectionMode;
-
-            bool changed = false;
-            var cats = _scheme.GetCategories().ToList();
-
-            // all categories are selection enabled, so a category independent unselect is enough
-            if (cats.All(_ => _.SelectionEnabled))
-            {
-                changed = Selection.RemoveRegion(region, out affectedArea);
-            }
-            else
-            {
-                // not all categories are selection enabled, so we're unselecting only those that are
-                SuspendChangeEvent();
-                Selection.SuspendChanges();
-                Envelope area = new Envelope();
-
-                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
-                {
-                    Envelope categoryArea;
-                    Selection.RegionCategory = cat;
-                    if (Selection.RemoveRegion(region, out categoryArea))
-                    {
-                        changed = true;
-                        area.ExpandToInclude(categoryArea);
-                    }
-
-                    Selection.RegionCategory = null;
-                }
-
-                affectedArea = area;
-
-                Selection.ResumeChanges();
-                ResumeChangeEvent();
-            }
-
-            OnSelectionChanged(); // CGX
-
-            return changed;
-        }
 
         /// <summary>
         /// Unselects all the features that are currently selected.
@@ -1948,6 +1803,82 @@ namespace DotSpatial.Symbology
         {
             OnApplyScheme(Symbology);
             Invalidate();
+        }
+
+        /// <summary>
+        /// Executes the given SelectAction with the given parameters.
+        /// </summary>
+        /// <param name="tolerant">The geographic envelope in cases like clicking near points where tolerance is allowed.</param>
+        /// <param name="strict">The geographic region when working with absolutes, without a tolerance.</param>
+        /// <param name="selectionMode">The selection mode that controls how to choose members relative to the region.</param>
+        /// <param name="clear">Indicates whether prior selected features should be cleared.</param>
+        /// <param name="affectedArea">The geographic envelope that will be visibly impacted by the change.</param>
+        /// <param name="action">The action that should be executed.</param>
+        /// <returns>Boolean, true if members were affected by the action.</returns>
+        private bool DoSelectAction(Envelope tolerant, Envelope strict, SelectionMode selectionMode, ClearStates clear, out Envelope affectedArea, SelectAction action)
+        {
+            if (!SelectionEnabled && clear != ClearStates.Force)
+            {
+                affectedArea = new Envelope();
+                return false;
+            }
+
+            if (!_drawnStatesNeeded && !_editMode)
+            {
+                AssignFastDrawnStates();
+            }
+
+            SuspendChangeEvent();
+            Selection.SuspendChanges();
+
+            if (clear != ClearStates.False)
+            {
+                Selection.Clear();
+            }
+
+            Envelope region = DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant;
+            bool changed = false;
+            Selection.SelectionMode = selectionMode;
+
+            var cats = _scheme.GetCategories().ToList();
+
+            // all categories are selection enabled, so a category independent action is enough
+            if (cats.All(_ => _.SelectionEnabled))
+            {
+                changed = action(Selection, region, out affectedArea);
+            }
+            else
+            {
+                // not all categories are selection enabled, so we're acting only on those that are
+                if (!_drawnStatesNeeded)
+                {
+                    AssignFastDrawnStates();
+                }
+
+                Selection.ProgressHandler = ProgressHandler;
+                Envelope area = new Envelope();
+
+                foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
+                {
+                    Envelope categoryArea;
+                    Selection.RegionCategory = cat;
+                    if (action(Selection, region, out categoryArea))
+                    {
+                        changed = true;
+                        area.ExpandToInclude(categoryArea);
+                    }
+
+                    Selection.RegionCategory = null;
+                }
+
+                affectedArea = area;
+            }
+
+            Selection.ResumeChanges();
+            ResumeChangeEvent();
+
+			OnSelectionChanged(); // CGX
+            return changed;
         }
 
         private void JoinExcel(object sender, EventArgs e)

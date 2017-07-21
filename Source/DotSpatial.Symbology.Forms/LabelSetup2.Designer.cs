@@ -111,7 +111,7 @@ namespace DotSpatial.Symbology.Forms
             this.label6 = new System.Windows.Forms.Label();
             this.colorButtonShadow = new DotSpatial.Symbology.Forms.ColorButton();
             this.tabMembers = new System.Windows.Forms.TabPage();
-            this.sqlMembers = new DotSpatial.Symbology.Forms.SQLQueryControl();
+            this.sqlMembers = new DotSpatial.Symbology.Forms.SqlQueryControl();
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdApply = new System.Windows.Forms.Button();
@@ -1067,7 +1067,7 @@ namespace DotSpatial.Symbology.Forms
         private RampSlider sldFontOpacity;
         private RampSlider sliderOpacityShadow;
         private SplitContainer splitContainer1;
-        private SQLQueryControl sqlMembers;
+        private SqlQueryControl sqlMembers;
         private TabPage tabAdvanced;
         private TabPage tabBasic;
         private TabPage tabExpression;

@@ -73,5 +73,29 @@ namespace DotSpatial.Symbology.Forms.Properties {
                 return ResourceManager.GetString("TableEditorControl_FileNameInMemory", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B_Export16
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("B_Export16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B_Import16
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("B_Import16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

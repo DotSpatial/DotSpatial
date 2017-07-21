@@ -68,6 +68,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="BitmapFormatException.cs" />
+    <Compile Include="ClearStates.cs" />
     <Compile Include="JenksBreaksCalcuation.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="ExtentExt.cs" />
@@ -364,6 +365,10 @@
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
       <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Python\DotSpatial.Python.csproj">
+      <Project>{809bf000-c031-4299-9789-fa73c5c71492}</Project>
+      <Name>DotSpatial.Python</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
       <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>

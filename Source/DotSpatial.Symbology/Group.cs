@@ -540,7 +540,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public override bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
+        public override bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea, ClearStates clear)
         {
             affectedArea = new Envelope();
             bool somethingChanged = false;
@@ -549,7 +549,7 @@ namespace DotSpatial.Symbology
             foreach (var s in GetAllLayers().Where(_ => _.SelectionEnabled && _.IsVisible))
             {
                 Envelope layerArea;
-                if (s.Select(tolerant, strict, mode, out layerArea))
+                if (s.Select(tolerant, strict, mode, out layerArea, clear))
                 {
                     somethingChanged = true;
                     affectedArea.ExpandToInclude(layerArea);

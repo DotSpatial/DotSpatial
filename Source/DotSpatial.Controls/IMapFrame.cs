@@ -173,7 +173,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// 
         /// </summary>
-        void ZoomToLayerEnvelope(IEnvelope layerEnvelope);
+        void ZoomToLayerEnvelope(Envelope layerEnvelope);
         // CGX END
 
         /// <summary>

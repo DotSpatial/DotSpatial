@@ -36,7 +36,7 @@ namespace DotSpatial.Symbology
         public PolygonCategory(Color fillColor, Color outlineColor, double outlineWidth)
         {
             Symbolizer = new PolygonSymbolizer(fillColor, outlineColor, outlineWidth);
-            SelectionSymbolizer = new PolygonSymbolizer(Color.Cyan, Color.DarkCyan, outlineWidth);
+            SelectionSymbolizer = new PolygonSymbolizer(Color.Transparent, Color.Cyan, outlineWidth);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DotSpatial.Symbology
         public PolygonCategory(Image picture, WrapMode wrap, double angle)
         {
             Symbolizer = new PolygonSymbolizer(picture, wrap, angle);
-            SelectionSymbolizer = new PolygonSymbolizer(Color.Cyan);
+            SelectionSymbolizer = new PolygonSymbolizer(Color.Transparent, Color.Cyan, 2);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace DotSpatial.Symbology
         public PolygonCategory(Image picture, WrapMode wrap, double angle, Color outlineColor, double outlineWidth)
         {
             Symbolizer = new PolygonSymbolizer(picture, wrap, angle, outlineColor, outlineWidth);
-            SelectionSymbolizer = new PolygonSymbolizer(Color.Cyan, Color.DarkCyan);
+            SelectionSymbolizer = new PolygonSymbolizer(Color.Transparent, Color.Cyan, 2);
         }
 
         /// <summary>

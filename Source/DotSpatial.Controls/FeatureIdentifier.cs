@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using System.Diagnostics;
 
 namespace DotSpatial.Controls
 {
@@ -90,7 +91,7 @@ namespace DotSpatial.Controls
 
 	            treFeatures.ResumeLayout();
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 				Debug.WriteLine(ex.Message);
 			}

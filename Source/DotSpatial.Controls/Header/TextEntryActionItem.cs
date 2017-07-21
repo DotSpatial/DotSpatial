@@ -15,19 +15,32 @@ namespace DotSpatial.Controls.Header
         private Color _fontColor;
         private string _text;
         private int _width;
-		// CGX
-		private string menuContainerKey;
-        private System.Windows.Forms.HorizontalAlignment textAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+
+        // CGX
+        private string _menuContainerKey;
+        private System.Windows.Forms.HorizontalAlignment _textAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+
+        // CGX
+        private string _menuContainerKey;
+        private System.Windows.Forms.HorizontalAlignment _textAlignment = System.Windows.Forms.HorizontalAlignment.Left;
 
         #endregion
 
-        #region Properties
+        #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
+        /// </summary>
         public TextEntryActionItem()
             : base()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
+        /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="caption">The caption.</param>
         public TextEntryActionItem(string rootKey, string caption)
             : base(caption)
         {
@@ -35,14 +48,57 @@ namespace DotSpatial.Controls.Header
             RootKey = rootKey;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
+        /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="caption">The caption.</param>
+        /// <param name="menuContainerKey">The menu container key.</param>
         public TextEntryActionItem(string rootKey, string menuContainerKey, string caption)
             : this(rootKey, caption)
         {
             MenuContainerKey = menuContainerKey;
-        }
-        // CGX END
+        }// CGX END
+        #endregion
 
-		/// <summary>
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
+        /// </summary>
+        public TextEntryActionItem()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
+        /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="caption">The caption.</param>
+        public TextEntryActionItem(string rootKey, string caption)
+            : base(caption)
+        {
+            Caption = caption;
+            RootKey = rootKey;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
+        /// </summary>
+        /// <param name="rootKey">The root key.</param>
+        /// <param name="caption">The caption.</param>
+        /// <param name="menuContainerKey">The menu container key.</param>
+        public TextEntryActionItem(string rootKey, string menuContainerKey, string caption)
+            : this(rootKey, caption)
+        {
+            MenuContainerKey = menuContainerKey;
+        }// CGX END
+        #endregion
+
+        #region Properties
+
+        /// <summary>
         /// Gets or sets a value indicating the color of the text in the dropdownbox
         /// </summary>
         public Color FontColor
@@ -101,6 +157,44 @@ namespace DotSpatial.Controls.Header
                 OnPropertyChanged("Width");
             }
         }
+
+        // CGX
+
+        /// <summary>
+        /// Gets or sets the menu container key.
+        /// </summary>
+        /// <value>The menu container key.</value>
+        public string MenuContainerKey
+        {
+            get
+            {
+                return _menuContainerKey;
+            }
+
+            set
+            {
+                _menuContainerKey = value;
+                OnPropertyChanged("MenuContainerKey");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Text Alignment.
+        /// </summary>
+        /// <value>The menu container key.</value>
+        public System.Windows.Forms.HorizontalAlignment TextAlignment
+        {
+            get
+            {
+                return _textAlignment;
+            }
+
+            set
+            {
+                _textAlignment = value;
+                OnPropertyChanged("TextAlignment");
+            }
+        }// CGX END
 
         #endregion
     }

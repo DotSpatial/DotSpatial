@@ -92,6 +92,14 @@ namespace DotSpatial.Symbology
         /// </summary>
         string FloatingFormat { get; set; }
 
+        // CGX
+        /// <summary>
+        /// Gets or sets a boolean indicating if the text follow the line geometry.
+        /// </summary>
+        [Category("General"), Description("Gets or sets a boolean indicating if the text follow the line geometry.")]
+        bool FollowLineGeometry { get; set; }
+        // FIN CGX
+
         /// <summary>
         /// Gets or sets the color that the font should be drawn in.
         /// </summary>
