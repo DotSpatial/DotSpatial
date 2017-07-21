@@ -816,6 +816,8 @@ namespace DotSpatial.Symbology
         public void RemoveFeaturesAt(IEnumerable<int> indexValues)
         {
             DataSet.RemoveShapesAt(indexValues);
+
+            // Since the indexing has changed, we need to update the drawn states too.
             AssignFastDrawnStates();
         }
 
@@ -837,20 +839,21 @@ namespace DotSpatial.Symbology
                 if (indexSel == null) return;
 
                 // Create a list of index values to remove.
-                List<int> orderedIndex = new List<int>();
-                foreach (int index in indexSel)
-                {
-                    orderedIndex.Add(index);
-                }
+                List<int> orderedIndex = new List<int>(indexSel);
+
+                // Clear the selection so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
+                Selection.Clear();
 
                 RemoveFeaturesAt(orderedIndex);
-
-                // Since the indexing has changed, we need to update the drawn states too.
             }
             else
             {
                 // This case tracks by IFeature, so we don't need to do a lot else.
                 List<IFeature> features = Selection.ToFeatureList();
+
+                // Clear the selection so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
+                Selection.Clear();
+
                 foreach (IFeature feature in features)
                 {
                     DataSet.Features.Remove(feature);

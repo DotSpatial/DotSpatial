@@ -48,6 +48,7 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private StreamReader _reader;
+        private bool onMono = Type.GetType("Mono.Runtime") != null;
 
         #region Constructors
 
@@ -97,7 +98,8 @@ namespace DotSpatial.Positioning
             NewLine = "\r\n";
             WriteBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE;
             ReadBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE;
-            ReceivedBytesThreshold = 65535;  // We don't need this event, so max out the threshold
+            if (!onMono) // ReceivedBytesThreshold is not implemented on mono, thus throwing an exception.
+                ReceivedBytesThreshold = 65535;  // We don't need this event, so max out the threshold
             Encoding = Encoding.ASCII;
         }
 

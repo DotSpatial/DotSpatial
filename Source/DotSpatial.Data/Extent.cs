@@ -253,7 +253,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This reads the string and attempts to derive values from the text.
+        /// This allows parsing the X and Y values from a string version of the extent as: 'X[-180|180], Y[-90|90]'
+        /// Where minimum always precedes maximum. The correct M or MZ version of extent will be returned if the string has those values.
         /// </summary>
         /// <param name="text">Text that contains the extent values.</param>
         /// <param name="result">Extent that was created.</param>
@@ -674,6 +675,7 @@ namespace DotSpatial.Data
             string[] res = numeric.Split('|');
             max = double.NaN;
             if (!double.TryParse(res[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out min)) return false;
+            if (res.Length < 2) return false;
             if (!double.TryParse(res[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out max)) return false;
             return true;
         }
@@ -688,10 +690,7 @@ namespace DotSpatial.Data
         /// <returns>True if this extent contains the specified extent.</returns>
         private bool Contains(double minX, double maxX, double minY, double maxY)
         {
-            if (MinX > minX) return false;
-            if (MaxX < maxX) return false;
-            if (MinY > minY) return false;
-            return MaxY > maxY;
+            return minX >= MinX && maxX <= MaxX && minY >= MinY && maxY <= MaxY;
         }
 
         /// <summary>
@@ -719,10 +718,7 @@ namespace DotSpatial.Data
         /// <returns>True if this extent intersects the specified extent.</returns>
         private bool Intersects(double minX, double maxX, double minY, double maxY)
         {
-            if (maxX < MinX) return false;
-            if (maxY < MinY) return false;
-            if (minX > MaxX) return false;
-            return minY < MaxY;
+            return maxX >= MinX && minX <= MaxX && maxY >= MinY && minY <= MaxY;
         }
 
         /// <summary>
@@ -735,10 +731,7 @@ namespace DotSpatial.Data
         /// <returns>True if this extent is within the specified extent.</returns>
         private bool Within(double minX, double maxX, double minY, double maxY)
         {
-            if (MinX < minX) return false;
-            if (MaxX > maxX) return false;
-            if (MinY < minY) return false;
-            return MaxY < maxY;
+            return MinX >= minX && MaxX <= maxX && MinY >= minY && MaxY <= maxY;
         }
 
         #endregion
