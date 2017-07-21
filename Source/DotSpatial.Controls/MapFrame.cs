@@ -1396,6 +1396,7 @@ namespace DotSpatial.Controls
 
             if (!geoLayer.IsVisible) return;
 
+            // first draw the normal colors and then the selection colors on top
             for (int i = 0; i < 2; i++)
             {
                 geoLayer.DrawRegions(args, new List<Extent> { args.GeographicExtents }, i == 1);
