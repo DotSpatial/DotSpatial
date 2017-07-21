@@ -131,9 +131,11 @@ namespace DotSpatial.Plugins.LiDAR
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
         /// <param name="regions">The geographic regions to draw</param>
-        ///
-        public virtual void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="selected">Indicates whether only the selected elements should be drawn. This does nothing if selected is true, because this layer can't have selected elements.</param>
+        public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
+            if (selected) return;
+
             foreach (Extent boundingBox in regions)
             {
                 Graphics g = args.Device ?? Graphics.FromImage(BackBuffer);

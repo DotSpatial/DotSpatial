@@ -185,8 +185,10 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
         /// <param name="regions">The geographic regions to draw</param>
-        public void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features. Because rasters can't be selected they won't be drawn if selected is true.</param>
+        public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
+            if (selected) return;
             List<Rectangle> clipRects = args.ProjToPixel(regions);
             DrawWindows(args, regions, clipRects);
         }

@@ -58,8 +58,9 @@ namespace DotSpatial.Symbology
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
         /// <param name="mode">The selection mode</param>
         /// <param name="affectedArea">The envelope affected area</param>
+        /// <param name="clear">Indicates whether prior selected features should be cleared.</param>
         /// <returns>Boolean, true if any members were added to the selection</returns>
-        bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea);
+        bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea, ClearStates clear);
 
         /// <summary>
         /// Removes any members found in the specified region from the selection

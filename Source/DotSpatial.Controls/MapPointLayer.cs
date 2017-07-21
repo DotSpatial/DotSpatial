@@ -213,17 +213,18 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// If useChunks is true, then this method
+        /// If EditMode is true, then this method is used for drawing.
         /// </summary>
         /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
         /// <param name="features">The features that should be drawn.</param>
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks, bool selected)
         {
-            if (useChunks == false || features.Count < ChunkSize)
+            if (!useChunks || features.Count < ChunkSize)
             {
-                DrawFeatures(args, features);
+                DrawFeatures(args, features, selected);
                 return;
             }
 
@@ -234,7 +235,7 @@ namespace DotSpatial.Controls
                 int groupSize = ChunkSize;
                 if (chunk == numChunks - 1) groupSize = count - (chunk * ChunkSize);
                 List<IFeature> subset = features.GetRange(chunk * ChunkSize, groupSize);
-                DrawFeatures(args, subset);
+                DrawFeatures(args, subset, selected);
                 if (numChunks <= 0 || chunk >= numChunks - 1) continue;
                 FinishDrawing();
                 OnBufferChanged(clipRectangles);
@@ -243,17 +244,18 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// If useChunks is true, then this method
+        /// If EditMode is false, then this method is used for drawing.
         /// </summary>
         /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
         /// <param name="indices">The features that should be drawn.</param>
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks, bool selected)
         {
             if (!useChunks)
             {
-                DrawFeatures(args, indices);
+                DrawFeatures(args, indices, selected);
                 return;
             }
 
@@ -264,15 +266,12 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1) numFeatures = indices.Count - (chunk * ChunkSize);
-                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures));
+                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures), selected);
 
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
-                    // FinishDrawing();
                     OnBufferChanged(clipRectangles);
                     Application.DoEvents();
-
-                    // this.StartDrawing();
                 }
             }
         }
@@ -284,7 +283,8 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
         /// <param name="regions">The geographic regions to draw</param>
-        public virtual void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
             // First determine the number of features we are talking about based on region.
             List<Rectangle> clipRects = args.ProjToPixel(regions);
@@ -300,7 +300,7 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                DrawFeatures(args, drawList, clipRects, true);
+                DrawFeatures(args, drawList, clipRects, true, selected);
             }
             else
             {
@@ -334,7 +334,7 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                DrawFeatures(args, drawList, clipRects, true);
+                DrawFeatures(args, drawList, clipRects, true, selected);
             }
         }
 
@@ -412,8 +412,10 @@ namespace DotSpatial.Controls
         }
 
         // This draws the individual point features
-        private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
+        private void DrawFeatures(MapArgs e, IEnumerable<int> indices, bool selected)
         {
+            if (selected && (!DrawnStatesNeeded || !DrawnStates.Any(_ => _.Selected))) return; // there are no selected features
+
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
             FeatureType featureType = DataSet.FeatureType;
@@ -422,14 +424,12 @@ namespace DotSpatial.Controls
             {
                 if (Symbology == null || Symbology.Categories.Count == 0) return;
                 FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
-                IPointCategory pc = state.Category as IPointCategory;
-                IPointSymbolizer ps = pc?.Symbolizer;
+                IPointSymbolizer ps = (state.Category as IPointCategory)?.Symbolizer;
                 if (ps == null) return;
                 double[] vertices = DataSet.Vertex;
 
                 foreach (int index in indices)
                 {
-                    if (DrawnStates != null && DrawnStates.Length > index && !DrawnStates[index].Visible) continue;
                     if (featureType == FeatureType.Point)
                     {
                         DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
@@ -448,17 +448,27 @@ namespace DotSpatial.Controls
             else
             {
                 FastDrawnState[] states = DrawnStates;
+
+                var indexList = indices as IList<int> ?? indices.ToList();
+                if (indexList.Max() >= states.Length)
+                {
+                    AssignFastDrawnStates();
+                    states = DrawnStates;
+                }
+
                 double[] vertices = DataSet.Vertex;
 
-                foreach (int index in indices)
+                foreach (int index in indexList)
                 {
                     if (index >= states.Length) break;
                     FastDrawnState state = states[index];
                     if (!state.Visible || state.Category == null) continue;
+                    if (selected && !state.Selected) continue;
+
                     IPointCategory pc = state.Category as IPointCategory;
                     if (pc == null) continue;
 
-                    IPointSymbolizer ps = state.Selected ? pc.SelectionSymbolizer : pc.Symbolizer;
+                    IPointSymbolizer ps = selected ? pc.SelectionSymbolizer : pc.Symbolizer;
                     if (ps == null) continue;
 
                     if (featureType == FeatureType.Point)
@@ -481,23 +491,26 @@ namespace DotSpatial.Controls
         }
 
         // This draws the individual point features
-        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
+        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features, bool selected)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
-            Matrix origTransform = g.Transform;
             IDictionary<IFeature, IDrawnState> states = DrawingFilter.DrawnStates;
             if (states == null) return;
+            if (selected && !states.Any(_ => _.Value.IsSelected)) return;
 
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            Matrix origTransform = g.Transform;
             foreach (IFeature feature in features)
             {
                 if (!states.ContainsKey(feature)) continue;
                 IDrawnState ds = states[feature];
                 if (ds == null || !ds.IsVisible || ds.SchemeCategory == null) continue;
 
+                if (selected && !ds.IsSelected) continue;
+
                 IPointCategory pc = ds.SchemeCategory as IPointCategory;
                 if (pc == null) continue;
 
-                IPointSymbolizer ps = ds.IsSelected ? pc.SelectionSymbolizer : pc.Symbolizer;
+                IPointSymbolizer ps = selected ? pc.SelectionSymbolizer : pc.Symbolizer;
                 if (ps == null) continue;
 
                 foreach (Coordinate c in feature.Geometry.Coordinates)
@@ -526,7 +539,7 @@ namespace DotSpatial.Controls
                 X = Convert.ToInt32((ptX - e.MinX) * e.Dx),
                 Y = Convert.ToInt32((e.MaxY - ptY) * e.Dy)
             };
-            double scaleSize = ps.ScaleMode == ScaleMode.Geographic ? e.ImageRectangle.Width / e.GeographicExtents.Width : 1;
+            double scaleSize = ps.GetScale(e);
             Matrix shift = origTransform.Clone();
             shift.Translate(pt.X, pt.Y);
             g.Transform = shift;

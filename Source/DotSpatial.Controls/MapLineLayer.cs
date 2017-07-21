@@ -19,12 +19,6 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapLineLayer : LineLayer, IMapLineLayer
     {
-        #region Fields
-
-        private const int Selected = 1;
-
-        #endregion
-
         #region  Constructors
 
         /// <summary>
@@ -207,17 +201,18 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// If useChunks is true, then this method
+        /// If EditMode is true, then this method is used for feature drawing.
         /// </summary>
         /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
         /// <param name="features">The features that should be drawn.</param>
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks, bool selected)
         {
-            if (useChunks == false)
+            if (!useChunks)
             {
-                DrawFeatures(args, features);
+                DrawFeatures(args, features, selected);
                 return;
             }
 
@@ -228,7 +223,7 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
-                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures), selected);
 
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
@@ -239,17 +234,18 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// If useChunks is true, then this method
+        /// If EditMode is false, then this method is used for feature drawing.
         /// </summary>
         /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
         /// <param name="indices">The features that should be drawn.</param>
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks, bool selected)
         {
-            if (useChunks == false)
+            if (!useChunks)
             {
-                DrawFeatures(args, indices);
+                DrawFeatures(args, indices, selected);
                 return;
             }
 
@@ -260,15 +256,12 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1) numFeatures = indices.Count - (chunk * ChunkSize);
-                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures));
+                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures), selected);
 
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
-                    // FinishDrawing();
                     OnBufferChanged(clipRectangles);
                     Application.DoEvents();
-
-                    // this.StartDrawing();
                 }
             }
         }
@@ -280,7 +273,8 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
         /// <param name="regions">The geographic regions to draw</param>
-        public virtual void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
             // First determine the number of features we are talking about based on region.
             List<Rectangle> clipRects = args.ProjToPixel(regions);
@@ -296,7 +290,7 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                DrawFeatures(args, drawList, clipRects, true);
+                DrawFeatures(args, drawList, clipRects, true, selected);
             }
             else
             {
@@ -312,7 +306,7 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                DrawFeatures(args, drawList, clipRects, true);
+                DrawFeatures(args, drawList, clipRects, true, selected);
             }
         }
 
@@ -321,31 +315,21 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="path">Graphics path to add the line string to.</param>
         /// <param name="ls">LineString that gets added.</param>
-        /// <param name="minX">The minX used for transformation.</param>
-        /// <param name="maxY">The maxY used for transformation.</param>
-        /// <param name="dx">The dx used for transformation.</param>
-        /// <param name="dy">The dy used for transformation.</param>
-        internal static void BuildLineString(GraphicsPath path, ILineString ls, double minX, double maxY, double dx, double dy)
+        /// <param name="args">The map arguments.</param>
+        /// <param name="clipRect">The clip rectangle.</param>
+        internal static void BuildLineString(GraphicsPath path, ILineString ls, MapArgs args, Rectangle clipRect)
         {
-            IList<Coordinate> cs = ls.Coordinates;
-            List<Point> points = new List<Point>();
-            Point previousPoint = default(Point);
-            for (int iPoint = 0; iPoint < ls.NumPoints; iPoint++)
+            double minX = args.MinX;
+            double maxY = args.MaxY;
+            double dx = args.Dx;
+            double dy = args.Dy;
+
+            var points = new List<double[]>();
+            double[] previousPoint = null;
+            foreach (Coordinate c in ls.Coordinates)
             {
-                Coordinate c = cs[iPoint];
-                Point pt = new Point
-                {
-                    X = Convert.ToInt32((c.X - minX) * dx),
-                    Y = Convert.ToInt32((maxY - c.Y) * dy)
-                };
-                if (previousPoint.IsEmpty == false)
-                {
-                    if (pt.X != previousPoint.X || pt.Y != previousPoint.Y)
-                    {
-                        points.Add(pt);
-                    }
-                }
-                else
+                var pt = new[] { (c.X - minX) * dx, (maxY - c.Y) * dy };
+                if (previousPoint == null || previousPoint.Length < 2 || pt[0] != previousPoint[0] || pt[1] != previousPoint[1])
                 {
                     points.Add(pt);
                 }
@@ -353,10 +337,7 @@ namespace DotSpatial.Controls
                 previousPoint = pt;
             }
 
-            if (points.Count < 2) return;
-            Point[] pointArray = points.ToArray();
-            path.StartFigure();
-            path.AddLines(pointArray);
+            AddLineStringToPath(path, args, ls.EnvelopeInternal.ToExtent(), points, clipRect);
         }
 
         /// <summary>
@@ -386,30 +367,7 @@ namespace DotSpatial.Controls
                     points.Add(pt);
                 }
 
-                List<List<double[]>> multiLinestrings;
-                if (!shpx.Extent.Within(args.GeographicExtents))
-                {
-                    multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top, clipRect.Right, clipRect.Bottom);
-                }
-                else
-                {
-                    multiLinestrings = new List<List<double[]>>
-                                       {
-                                           points
-                                       };
-                }
-
-                foreach (List<double[]> linestring in multiLinestrings)
-                {
-                    var intPoints = DuplicationPreventer.Clean(linestring).ToArray();
-                    if (intPoints.Length < 2)
-                    {
-                        continue;
-                    }
-
-                    path.StartFigure();
-                    path.AddLines(intPoints);
-                }
+                AddLineStringToPath(path, args, shpx.Extent, points, clipRect);
             }
         }
 
@@ -449,6 +407,42 @@ namespace DotSpatial.Controls
         {
         }
 
+        /// <summary>
+        /// Adds the given points to the given path.
+        /// </summary>
+        /// <param name="path">Path the points get added to.</param>
+        /// <param name="args">MapArgs used for clipping.</param>
+        /// <param name="extent">Extent of the feature used for clipping.</param>
+        /// <param name="points">Points that get added to the path.</param>
+        /// <param name="clipRect">The clipping rectangle.</param>
+        private static void AddLineStringToPath(GraphicsPath path, MapArgs args, Extent extent, List<double[]> points, Rectangle clipRect)
+        {
+            List<List<double[]>> multiLinestrings;
+            if (!extent.Within(args.GeographicExtents))
+            {
+                multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top, clipRect.Right, clipRect.Bottom);
+            }
+            else
+            {
+                multiLinestrings = new List<List<double[]>>
+                                   {
+                                       points
+                                   };
+            }
+
+            foreach (List<double[]> linestring in multiLinestrings)
+            {
+                var intPoints = DuplicationPreventer.Clean(linestring).ToArray();
+                if (intPoints.Length < 2)
+                {
+                    continue;
+                }
+
+                path.StartFigure();
+                path.AddLines(intPoints);
+            }
+        }
+
         private static Rectangle ComputeClippingRectangle(MapArgs args, ILineSymbolizer ls)
         {
             // Compute a clipping rectangle that accounts for symbology
@@ -458,36 +452,40 @@ namespace DotSpatial.Controls
             return clipRect;
         }
 
-        private static void FastBuildLine(GraphicsPath graphPath, double[] vertices, ShapeRange shpx, double minX, double maxY, double dx, double dy)
+        /// <summary>
+        /// Gets the indices of the features that get drawn.
+        /// </summary>
+        /// <param name="indices">Indices of all the features that could be drawn.</param>
+        /// <param name="states">FastDrawnStates of the features.</param>
+        /// <param name="category">Category the features must have to get drawn.</param>
+        /// <param name="selected">Indicates whether only the selected features get drawn.</param>
+        /// <returns>List of the indices of the features that get drawn.</returns>
+        private static List<int> GetFeatures(IList<int> indices, FastDrawnState[] states, ILineCategory category, bool selected)
         {
-            for (int prt = 0; prt < shpx.Parts.Count; prt++)
-            {
-                PartRange prtx = shpx.Parts[prt];
-                int start = prtx.StartIndex;
-                int end = prtx.EndIndex;
-                List<Point> partPoints = new List<Point>();
-                Point previousPoint = default(Point);
-                for (int i = start; i <= end; i++)
-                {
-                    if (double.IsNaN(vertices[i * 2]) || double.IsNaN(vertices[(i * 2) + 1])) continue;
-                    var pt = new Point
-                    {
-                        X = Convert.ToInt32((vertices[i * 2] - minX) * dx),
-                        Y = Convert.ToInt32((maxY - vertices[(i * 2) + 1]) * dy)
-                    };
+            List<int> drawnFeatures = new List<int>();
 
-                    if (i == 0 || (pt.X != previousPoint.X || pt.Y != previousPoint.Y))
+            foreach (int index in indices)
+            {
+                if (index >= states.Length) break;
+                FastDrawnState state = states[index];
+
+                if (selected)
+                {
+                    if (state.Category == category && state.Visible && state.Selected)
                     {
-                        // Don't add the same point twice
-                        partPoints.Add(pt);
-                        previousPoint = pt;
+                        drawnFeatures.Add(index);
                     }
                 }
-
-                if (partPoints.Count < 2) continue; // we need two distinct points to make a line
-                graphPath.StartFigure();
-                graphPath.AddLines(partPoints.ToArray());
+                else
+                {
+                    if (state.Category == category && state.Visible)
+                    {
+                        drawnFeatures.Add(index);
+                    }
+                }
             }
+
+            return drawnFeatures;
         }
 
         private void Configure()
@@ -496,150 +494,118 @@ namespace DotSpatial.Controls
             ChunkSize = 50000;
         }
 
-        private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
+        private void DrawFeatures(MapArgs e, IEnumerable<int> indices, bool selected)
         {
+            if (selected && !DrawnStatesNeeded) return;
+
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            var indiceList = indices as IList<int> ?? indices.ToList();
+
+            Action<GraphicsPath, Rectangle, IEnumerable<int>> drawFeature = (graphPath, clipRect, features) =>
+            {
+                foreach (int shp in features)
+                {
+                    ShapeRange shape = DataSet.ShapeIndices[shp];
+                    BuildLineString(graphPath, DataSet.Vertex, shape, e, clipRect);
+                }
+            };
 
             if (DrawnStatesNeeded)
             {
                 FastDrawnState[] states = DrawnStates;
-                var indiceList = indices as IList<int> ?? indices.ToList();
-                int max = indiceList.Max();
-                if (max >= states.Length)
+
+                if (indiceList.Max() >= states.Length)
                 {
                     AssignFastDrawnStates();
                     states = DrawnStates;
                 }
 
-                for (int selectState = 0; selectState < 2; selectState++)
+                if (selected && !states.Any(_ => _.Selected)) return;
+
+                foreach (ILineCategory category in Symbology.Categories)
                 {
-                    foreach (ILineCategory category in Symbology.Categories)
-                    {
-                        // Define the symbology based on the category and selection state
-                        ILineSymbolizer ls = category.Symbolizer;
-                        if (selectState == Selected) ls = category.SelectionSymbolizer;
-                        g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-
-                        // Compute a clipping rectangle that accounts for symbology
-                        Rectangle clipRect = ComputeClippingRectangle(e, ls);
-
-                        // Determine the subset of the specified features that are visible and match the category
-                        ILineCategory lineCategory = category;
-                        int i = selectState;
-
-                        List<int> drawnFeatures = new List<int>();
-
-                        foreach (int index in indiceList)
-                        {
-                            if (index >= states.Length) break;
-                            FastDrawnState state = states[index];
-                            if (state.Category == lineCategory && state.Selected == (i == 1) && state.Visible)
-                            {
-                                drawnFeatures.Add(index);
-                            }
-                        }
-
-                        GraphicsPath graphPath = new GraphicsPath();
-                        foreach (int shp in drawnFeatures)
-                        {
-                            ShapeRange shape = DataSet.ShapeIndices[shp];
-                            BuildLineString(graphPath, DataSet.Vertex, shape, e, clipRect);
-                        }
-
-                        double scale = 1;
-                        if (ls.ScaleMode == ScaleMode.Geographic)
-                        {
-                            scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                        }
-
-                        foreach (IStroke stroke in ls.Strokes)
-                        {
-                            stroke.DrawPath(g, graphPath, scale);
-                        }
-
-                        graphPath.Dispose();
-                    }
+                    // Define the symbology based on the category and selection state
+                    ILineSymbolizer ls = selected ? category.SelectionSymbolizer : category.Symbolizer;
+                    var features = GetFeatures(indiceList, states, category, selected);
+                    DrawPath(g, ls, e, drawFeature, features);
                 }
             }
             else
             {
-                // Selection state is disabled
-                // Category is only the very first category
-                ILineCategory category = Symbology.Categories[0];
-                ILineSymbolizer ls = category.Symbolizer;
-
-                g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-
-                Rectangle clipRect = ComputeClippingRectangle(e, ls);
-
-                // Determine the subset of the specified features that are visible and match the category
-                GraphicsPath graphPath = new GraphicsPath();
-                foreach (int shp in indices)
-                {
-                    ShapeRange shape = DataSet.ShapeIndices[shp];
-                    BuildLineString(graphPath, DataSet.Vertex, shape, e, clipRect);
-                }
-
-                double scale = 1;
-                if (ls.ScaleMode == ScaleMode.Geographic)
-                {
-                    scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                }
-
-                foreach (IStroke stroke in ls.Strokes)
-                {
-                    stroke.DrawPath(g, graphPath, scale);
-                }
-
-                graphPath.Dispose();
+                // Selection state is disabled and there is only one category
+                ILineSymbolizer ls = Symbology.Categories[0].Symbolizer;
+                DrawPath(g, ls, e, drawFeature, indiceList);
             }
 
             if (e.Device == null) g.Dispose();
         }
 
-        // This draws the individual line features
-        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
+        /// <summary>
+        /// Draws the path that results from the given indices.
+        /// </summary>
+        /// <typeparam name="T">Type of the elements in the list.</typeparam>
+        /// <param name="g">Graphics object used for drawing.</param>
+        /// <param name="ls">LineSymbolizer used for drawing.</param>
+        /// <param name="e">MapArgs needed for computation.</param>
+        /// <param name="action">Action that is used to add the elements to the graphics path that gets drawn.</param>
+        /// <param name="list">List that contains the elements that get drawn.</param>
+        private void DrawPath<T>(Graphics g, ILineSymbolizer ls, MapArgs e, Action<GraphicsPath, Rectangle, IEnumerable<T>> action, IEnumerable<T> list)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            g.SmoothingMode = ls.GetSmoothingMode();
 
-            var featureList = features as IList<IFeature> ?? features.ToList();
-            for (int selectState = 0; selectState < 2; selectState++)
+            Rectangle clipRect = ComputeClippingRectangle(e, ls);
+
+            // Determine the subset of the specified features that are visible and match the category
+            using (GraphicsPath graphPath = new GraphicsPath())
             {
-                foreach (ILineCategory category in Symbology.Categories)
+                action(graphPath, clipRect, list);
+
+                double scale = ls.GetScale(e);
+                foreach (IStroke stroke in ls.Strokes)
                 {
-                    // Define the symbology based on the category and selection state
-                    ILineSymbolizer ls = category.Symbolizer;
-                    if (selectState == Selected) ls = category.SelectionSymbolizer;
-                    g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-
-                    Rectangle clipRect = ComputeClippingRectangle(e, ls);
-
-                    // Determine the subset of the specified features that are visible and match the category
-                    ILineCategory lineCategory = category;
-                    int i = selectState;
-                    Func<IDrawnState, bool> isMember = state => state.SchemeCategory == lineCategory && state.IsVisible && state.IsSelected == (i == 1);
-
-                    var drawnFeatures = from feature in featureList where isMember(DrawingFilter[feature]) select feature;
-
-                    GraphicsPath graphPath = new GraphicsPath();
-                    foreach (IFeature f in drawnFeatures)
-                    {
-                        BuildLineString(graphPath, DataSet.Vertex, f.ShapeIndex, e, clipRect);
-                    }
-
-                    double scale = 1;
-                    if (ls.ScaleMode == ScaleMode.Geographic)
-                    {
-                        scale = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                    }
-
-                    foreach (IStroke stroke in ls.Strokes)
-                    {
-                        stroke.DrawPath(g, graphPath, scale);
-                    }
-
-                    graphPath.Dispose();
+                    stroke.DrawPath(g, graphPath, scale);
                 }
+            }
+        }
+
+        // This draws the individual line features
+        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features, bool selected)
+        {
+            if (selected && !DrawingFilter.DrawnStates.Any(_ => _.Value.IsSelected)) return;
+
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            var featureList = features as IList<IFeature> ?? features.ToList();
+
+            Action<GraphicsPath, Rectangle, IEnumerable<IFeature>> drawFeature = (graphPath, clipRect, featList) =>
+            {
+                foreach (IFeature f in featList)
+                {
+                    BuildLineString(graphPath, f.Geometry as ILineString, e, clipRect);
+                }
+            };
+
+            foreach (ILineCategory category in Symbology.Categories)
+            {
+                // Define the symbology based on the category and selection state
+                ILineSymbolizer ls = selected ? category.SelectionSymbolizer : category.Symbolizer;
+
+                // Determine the subset of the specified features that are visible and match the category
+                ILineCategory lineCategory = category;
+                Func<IDrawnState, bool> isMember;
+
+                if (selected)
+                {
+                    // get only selected features
+                    isMember = state => state.SchemeCategory == lineCategory && state.IsVisible && state.IsSelected;
+                }
+                else
+                {
+                    // get all features
+                    isMember = state => state.SchemeCategory == lineCategory && state.IsVisible;
+                }
+
+                var drawnFeatures = from feature in featureList where isMember(DrawingFilter[feature]) select feature;
+                DrawPath(g, ls, e, drawFeature, drawnFeatures);
             }
 
             if (e.Device == null) g.Dispose();

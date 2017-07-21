@@ -404,9 +404,10 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
         /// <param name="regions">The geographic regions to draw</param>
-        public void DrawRegions(MapArgs args, List<Extent> regions)
+        /// <param name="selected">If this is true, nothing is painted, because selected labels get painted together with not selected labels.</param>
+        public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
-            if (FeatureSet == null) return;
+            if (FeatureSet == null || selected) return;
 #if DEBUG
             var sw = new Stopwatch();
             sw.Start();

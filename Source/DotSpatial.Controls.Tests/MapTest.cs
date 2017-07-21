@@ -148,7 +148,7 @@ namespace DotSpatial.Controls.Tests
 
             // select the first area
             Envelope e = new Envelope(-72, -66, 40, 48);
-            Assert.IsTrue(map.Select(e, e));
+            Assert.IsTrue(map.Select(e, e, ClearStates.False));
             Assert.AreEqual(7, fl.Selection.Count, "Error selecting 50mil_us_states");
             Assert.AreEqual(0, fl2.Selection.Count, "Error selecting 50m_admin_0_countries");
 
@@ -162,7 +162,7 @@ namespace DotSpatial.Controls.Tests
             // add another area allowing the second layer to be selected too
             ml2.SelectionEnabled = true;
             Envelope e3 = new Envelope(-89, -77, 24, 33);
-            Assert.IsTrue(map.Select(e3, e3));
+            Assert.IsTrue(map.Select(e3, e3, ClearStates.False));
             Assert.AreEqual(9, fl.Selection.Count, "Error adding to selection 50mil_us_states");
             Assert.AreEqual(2, fl2.Selection.Count, "Error adding to selection 50m_admin_0_countries");
             ml2.SelectionEnabled = false;

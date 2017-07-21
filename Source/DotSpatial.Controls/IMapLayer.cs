@@ -20,7 +20,8 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="args">The map args.</param>
         /// <param name="regions">The regions.</param>
-        void DrawRegions(MapArgs args, List<Extent> regions);
+        /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
+        void DrawRegions(MapArgs args, List<Extent> regions, bool selected);
 
         #endregion
     }

@@ -79,7 +79,7 @@ namespace DotSpatial.Symbology.Tests
             fl.SelectionEnabled = selectionEnabled;
             cat.SelectionEnabled = catSelectionEnabled;
             Envelope e = new Envelope(-72, -66, 40, 48);
-            Assert.AreEqual(selectionEnabled, fl.Select(e, e));
+            Assert.AreEqual(selectionEnabled, fl.Select(e, e, ClearStates.False));
 
             var resultValue = 7;
 
@@ -109,7 +109,7 @@ namespace DotSpatial.Symbology.Tests
             PolygonCategory cat;
             var fl = GetFeatureLayer(out cat);
             Envelope e = new Envelope(-72, -66, 40, 48);
-            Assert.IsTrue(fl.Select(e, e));
+            Assert.IsTrue(fl.Select(e, e, ClearStates.False));
 
             fl.SelectionEnabled = selectionEnabled;
             cat.SelectionEnabled = catSelectionEnabled;
@@ -145,7 +145,7 @@ namespace DotSpatial.Symbology.Tests
             PolygonCategory cat;
             var fl = GetFeatureLayer(out cat);
             Envelope e = new Envelope(-72, -66, 40, 48);
-            Assert.IsTrue(fl.Select(e, e));
+            Assert.IsTrue(fl.Select(e, e, ClearStates.False));
 
             fl.SelectionEnabled = selectionEnabled;
             cat.SelectionEnabled = catSelectionEnabled;

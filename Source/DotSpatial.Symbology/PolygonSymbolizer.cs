@@ -145,8 +145,8 @@ namespace DotSpatial.Symbology
             Patterns = new CopyList<IPattern>();
             if (selected)
             {
-                Patterns.Add(new SimplePattern(Color.Cyan));
-                OutlineSymbolizer = new LineSymbolizer(Color.DarkCyan, 1);
+                Patterns.Add(new SimplePattern(Color.Transparent));
+                OutlineSymbolizer = new LineSymbolizer(Color.Cyan, 2);
             }
             else
             {

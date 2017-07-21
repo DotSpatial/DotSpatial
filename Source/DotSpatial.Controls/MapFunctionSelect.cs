@@ -178,21 +178,6 @@ namespace DotSpatial.Controls
         private void HandleSelection(Envelope tolerant, Envelope strict)
         {
             Keys key = Control.ModifierKeys;
-            if ((key & Keys.Shift) != Keys.Shift && (key & Keys.Control) != Keys.Control)
-            {
-#if DEBUG
-                var sw = new Stopwatch();
-                sw.Start();
-#endif
-
-                // If they are not pressing shift or control, clear the selection before adding new members to it.
-                Map.ClearSelection();
-
-#if DEBUG
-                sw.Stop();
-                Debug.WriteLine("Clear: " + sw.ElapsedMilliseconds);
-#endif
-            }
 
             if (!Map.MapFrame.GetAllLayers().Any(_ => _.SelectionEnabled && _.IsVisible))
             {
@@ -204,7 +189,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                Map.Select(tolerant, strict);
+                Map.Select(tolerant, strict, (key & Keys.Shift) != Keys.Shift ? ClearStates.Force : ClearStates.False);
             }
         }
 

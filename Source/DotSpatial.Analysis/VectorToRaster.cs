@@ -128,7 +128,10 @@ namespace DotSpatial.Analysis
                         PolygonScheme ps = new PolygonScheme();
                         colorTable = ps.GenerateUniqueColors(fs, fieldName);
                         mpl.Symbology = ps;
-                        mpl.DrawRegions(args, new List<Extent> { env });
+
+                        // first draw the normal colors and then the selection colors on top
+                        mpl.DrawRegions(args, new List<Extent> { env }, false);
+                        mpl.DrawRegions(args, new List<Extent> { env }, true);
                     }
 
                     break;
@@ -138,7 +141,10 @@ namespace DotSpatial.Analysis
                         LineScheme ps = new LineScheme();
                         colorTable = ps.GenerateUniqueColors(fs, fieldName);
                         mpl.Symbology = ps;
-                        mpl.DrawRegions(args, new List<Extent> { env });
+
+                        // first draw the normal colors and then the selection colors on top
+                        mpl.DrawRegions(args, new List<Extent> { env }, false);
+                        mpl.DrawRegions(args, new List<Extent> { env }, true);
                     }
 
                     break;
@@ -148,7 +154,10 @@ namespace DotSpatial.Analysis
                         PointScheme ps = new PointScheme();
                         colorTable = ps.GenerateUniqueColors(fs, fieldName);
                         mpl.Symbology = ps;
-                        mpl.DrawRegions(args, new List<Extent> { env });
+
+                        // first draw the normal colors and then the selection colors on top
+                        mpl.DrawRegions(args, new List<Extent> { env }, false);
+                        mpl.DrawRegions(args, new List<Extent> { env }, true);
                     }
 
                     break;

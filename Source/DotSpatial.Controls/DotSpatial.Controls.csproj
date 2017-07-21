@@ -88,6 +88,7 @@
     <Compile Include="Header\ProgressStatusPanel.cs" />
     <Compile Include="Header\ToolstripPosition.cs" />
     <Compile Include="IFeatureLayerExtensions.cs" />
+    <Compile Include="IFeatureSymbolizerExt.cs" />
     <Compile Include="LayoutDocToolStrip.Designer.cs">
       <DependentUpon>LayoutDocToolStrip.cs</DependentUpon>
     </Compile>

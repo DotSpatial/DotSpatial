@@ -1020,11 +1020,12 @@ namespace DotSpatial.Controls
         /// <param name="strict">The tight envelope to use for polygons.</param>
         /// <param name="mode">The selection mode.</param>
         /// <param name="affectedArea">The envelope affected area.</param>
+        /// <param name="clear">Indicates whether prior selected features should be cleared.</param>
         /// <returns>Boolean, true if any members were added to the selection.</returns>
-        public bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
+        public bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea, ClearStates clear)
         {
             affectedArea = new Envelope();
-            return MapFrame != null && MapFrame.Select(tolerant, strict, mode, out affectedArea);
+            return MapFrame != null && MapFrame.Select(tolerant, strict, mode, out affectedArea, clear);
         }
 
         /// <summary>
