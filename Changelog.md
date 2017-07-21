@@ -22,6 +22,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Example for Buffer.AddBuffer method (#1002)
 - Legend.UseLegendForSelection property to be able to decide whether the legend should be used for selection or not. (#1008)
 - Possibility to drag layers out of their group into the parent group (in legend) (#1008)
+- Clear parameter to Select function to speed up drawing (#1024)
 
 
 ### Changed
@@ -42,6 +43,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - LegendText ReadOnly (#750)
 - Made Shapefile class abstract, because we already have FeatureSet for creating unspecified Shapefiles (#890)
 - Moved MapFrame extension methods to Group (#1008)
+- Drawing functions so selected features are drawn on top (#897)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
