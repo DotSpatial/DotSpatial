@@ -453,6 +453,7 @@ namespace DotSpatial.Controls
             return clipRect;
         }
 
+        // CGX, n'est plus static
         /// <summary>
         /// Gets the indices of the features that get drawn.
         /// </summary>
@@ -461,7 +462,7 @@ namespace DotSpatial.Controls
         /// <param name="category">Category the features must have to get drawn.</param>
         /// <param name="selected">Indicates whether only the selected features get drawn.</param>
         /// <returns>List of the indices of the features that get drawn.</returns>
-        private static List<int> GetFeatures(IList<int> indices, FastDrawnState[] states, ILineCategory category, bool selected)
+        private List<int> GetFeatures(IList<int> indices, FastDrawnState[] states, ILineCategory category, bool selected)
         {
             List<int> drawnFeatures = new List<int>();
 
@@ -561,7 +562,7 @@ namespace DotSpatial.Controls
                         {
             g.SmoothingMode = ls.GetSmoothingMode();
 
-                Rectangle clipRect = ComputeClippingRectangle(e, ls);
+            Rectangle clipRect = ComputeClippingRectangle(e, ls);
 
                 // Determine the subset of the specified features that are visible and match the category
             using (GraphicsPath graphPath = new GraphicsPath())
@@ -569,6 +570,7 @@ namespace DotSpatial.Controls
                 action(graphPath, clipRect, list);
 
                 double scale = ls.GetScale(e);
+
                 // CGX
                 if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
                 {
