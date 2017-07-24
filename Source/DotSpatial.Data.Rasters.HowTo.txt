@@ -1,5 +1,0 @@
-1) Set The bitness of DotSpatial.Data.Rasters.GdalExtension to x64 or x86 and then build it.
-2) Build the corresponding GdalExtension64 or GdalExtension32
-3) Build your application with the applicable bitness (you can leave all the supporting libraries as AnyCPU).
-
-By default we have things setup to run as 32bit on 64 bit machines.
