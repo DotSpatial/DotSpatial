@@ -1,0 +1,3 @@
+[submodule "Source/DotSpatial.NetTopologySuite"]
+	path = Source/DotSpatial.NetTopologySuite
+	url = git@gitlab.cgx-group.loc:data4flight/DotSpatial.NetTopologySuite.git

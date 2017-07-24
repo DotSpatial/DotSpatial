@@ -61,10 +61,6 @@
       <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.4\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -186,6 +182,10 @@
       <Project>{9108b04d-a3de-4981-b66f-496078d462fe}</Project>
       <Name>DotSpatial.Extensions</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.NetTopologySuite\NetTopologySuite\NetTopologySuite.csproj">
+      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
+      <Name>NetTopologySuite</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Plugins.Taudem\DotSpatial.Plugins.Taudem.csproj">
       <Project>{8b41651d-47cc-416d-93a1-c74b1b01fdb2}</Project>
