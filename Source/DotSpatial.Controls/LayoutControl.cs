@@ -133,6 +133,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Gets or sets the folder that is shown in the OpenFileDialog that is used to open an existing layout.
+        /// </summary>
+        public string InitialOpenFileDirectory { get; set; }
+
+        /// <summary>
         /// Gets or sets the LayoutDocToolStrip.
         /// </summary>
         public LayoutDocToolStrip LayoutDocToolStrip
@@ -859,6 +864,11 @@ namespace DotSpatial.Controls
                 Multiselect = false
             })
             {
+                if (!string.IsNullOrWhiteSpace(InitialOpenFileDirectory) && Directory.Exists(InitialOpenFileDirectory))
+                {
+                    ofd.InitialDirectory = InitialOpenFileDirectory;
+                }
+
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
                     try
@@ -2070,10 +2080,7 @@ namespace DotSpatial.Controls
                 case MouseMode.StartPanMap:
                     if (SelectedLayoutElements.Count == 1 && SelectedLayoutElements[0] is LayoutMap)
                     {
-                        if (SelectedLayoutElements[0].IntersectsWith(ScreenToPaper(e.X * 1F, e.Y * 1F)))
-                            Cursor = new Cursor(Images.Pan.Handle);
-                        else
-                            Cursor = Cursors.Default;
+                        Cursor = SelectedLayoutElements[0].IntersectsWith(ScreenToPaper(e.X * 1F, e.Y * 1F)) ? new Cursor(Images.Pan.Handle) : Cursors.Default;
                     }
 
                     break;

@@ -23,7 +23,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Legend.UseLegendForSelection property to be able to decide whether the legend should be used for selection or not. (#1008)
 - Possibility to drag layers out of their group into the parent group (in legend) (#1008)
 - Clear parameter to Select function to speed up drawing (#1024)
-
+- LayoutControl.InitialOpenFileDirectory property that allows to set the folder that is shown in the OpenFileDialog that is used to open an existing layout
 
 ### Changed
 - Switched to VS2015 and C#6
