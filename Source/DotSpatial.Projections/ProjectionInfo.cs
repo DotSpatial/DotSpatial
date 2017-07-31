@@ -659,6 +659,16 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Creates a new projection and automatically reads in the proj4 string
         /// </summary>
+        /// <param name="proj4String">The proj4String to read in while defining the projection</param>
+        /// <returns></returns>
+        public static ProjectionInfo FromProj4String(string proj4String)
+        {
+            return FromProj4String(proj4String, null, -1);
+        }
+
+        /// <summary>
+        /// Creates a new projection and automatically reads in the proj4 string
+        /// </summary>
         /// <param name="proj4String">
         /// The proj4String to read in while defining the projection
         /// </param>
