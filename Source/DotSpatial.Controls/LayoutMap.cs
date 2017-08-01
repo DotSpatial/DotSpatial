@@ -17,6 +17,8 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
+        private static bool _printSVG = true;
+
         private Bitmap _buffer;
         private Envelope _envelope;
         private bool _extentChanged = true;
@@ -54,6 +56,22 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether SVG are printed
+        /// </summary>
+        public static bool PrintSVG
+        {
+            get
+            {
+                return _printSVG;
+            }
+
+            set
+            {
+                _printSVG = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the geographic envelope to be shown by the layout.
@@ -158,7 +176,7 @@ namespace DotSpatial.Controls
             // JME A finir print vectoriel
             // if (printing == false)
             {
-                int iResolution = 300;
+                int iResolution = 150;
 
                 g.FillRectangle(new SolidBrush(Background.GetFillColor()), new RectangleF(this.LocationF.X, this.LocationF.Y, Size.Width, Size.Height));
 
