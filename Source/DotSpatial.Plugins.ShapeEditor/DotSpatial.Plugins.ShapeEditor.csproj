@@ -132,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShapeEditorResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SnapLayer.cs" />
     <Compile Include="SnappableMapFunction.cs">
       <SubType>Code</SubType>
     </Compile>

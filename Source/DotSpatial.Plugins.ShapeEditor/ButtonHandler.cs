@@ -352,14 +352,33 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void SnappingButtonClick(object sender, EventArgs e)
         {
-            SnapSettingsDialog dlg = new SnapSettingsDialog
+            using (SnapSettingsDialog dlg = new SnapSettingsDialog(_geoMap)
             {
                 DoSnapping = _doSnapping
-            };
-            dlg.ShowDialog();
-            _doSnapping = dlg.DoSnapping;
-            if (_moveVertexFunction != null) _moveVertexFunction.DoSnapping = _doSnapping; // changed by jany_ (2016-02-24) update the snap settings of the functions without having to stop editing
-            if (_addShapeFunction != null) _addShapeFunction.DoSnapping = _doSnapping;
+            })
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    _doSnapping = dlg.DoSnapping;
+                    if (_moveVertexFunction != null)
+                    {
+                        _moveVertexFunction.DoSnapping = _doSnapping; // changed by jany_ (2016-02-24) update the snap settings of the functions without having to stop editing
+                        if (_doSnapping)
+                        {
+                            SetSnapLayers(_moveVertexFunction);
+                        }
+                    }
+
+                    if (_addShapeFunction != null)
+                    {
+                        _addShapeFunction.DoSnapping = _doSnapping;
+                        if (_doSnapping)
+                        {
+                            SetSnapLayers(_addShapeFunction);
+                        }
+                    }
+                }
+            }
         }
 
         private void UpdateAddShapeFunctionLayer()

@@ -426,6 +426,14 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping.")]
+        [Serialize("Snappable")]
+        public bool Snappable { get; set; }
+
+        /// <summary>
         /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
         /// </summary>
         [Category("Appearance")]
@@ -1709,6 +1717,7 @@ namespace DotSpatial.Symbology
         {
             _categoryExtents = new Dictionary<IFeatureCategory, Extent>();
             DrawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
+            Snappable = true;
             DataSet = featureSet;
             LegendText = featureSet.Name;
             Name = featureSet.Name;

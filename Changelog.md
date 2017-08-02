@@ -24,6 +24,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Possibility to drag layers out of their group into the parent group (in legend) (#1008)
 - Clear parameter to Select function to speed up drawing (#1024)
 - LayoutControl.InitialOpenFileDirectory property that allows to set the folder that is shown in the OpenFileDialog that is used to open an existing layout
+- FeatureLayer.Snappable to indicate whether the layer can be used for snapping
 
 ### Changed
 - Switched to VS2015 and C#6
@@ -44,6 +45,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Made Shapefile class abstract, because we already have FeatureSet for creating unspecified Shapefiles (#890)
 - Moved MapFrame extension methods to Group (#1008)
 - Drawing functions so selected features are drawn on top (#897)
+- ShapeEditors AddFeature and MoveVertex functions, so they snap only to the layers that allow snapping
+- ShapeEditors SnapSettingsDialog to allow the users to select the layers the editor functions may snap to
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
