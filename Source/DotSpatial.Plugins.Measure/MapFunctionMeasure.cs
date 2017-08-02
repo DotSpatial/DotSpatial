@@ -65,6 +65,28 @@ namespace DotSpatial.Plugins.Measure
         #region Properties
 
         /// <summary>
+        /// Gets the Coordinates
+        /// </summary>
+        protected List<Coordinate> Coordinates
+        {
+            get
+            {
+                return _coordinates;
+            }
+        }
+
+        /// <summary>
+        /// Gets the MeasureDialog
+        /// </summary>
+        protected MeasureDialog MeasureDialog
+        {
+            get
+            {
+                return _measureDialog;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the featureset to modify
         /// </summary>
         public IFeatureSet FeatureSet { get; set; }
