@@ -153,7 +153,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void AddRow(DataRow values)
+        public void AddRow(IDataRow values)
         {
             // Don't worry about the index in this case.
             _layer.DataSet.AddRow(values);
@@ -195,24 +195,24 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void Edit(int index, DataRow values)
+        public void Edit(int index, IDataRow values)
         {
             int sourceIndex = GetSourceIndex(index);
             _layer.DataSet.Edit(sourceIndex, values);
         }
 
         /// <inheritdoc />
-        public DataTable GetAttributes(int startIndex, int numRows)
+        public IDataTable GetAttributes(int startIndex, int numRows)
         {
             return GetAttributes(startIndex, numRows, _layer.DataSet.GetColumns().Select(d => d.ColumnName));
         }
 
         /// <inheritdoc />
-        public DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
             var c = new AttributeCache(_layer.DataSet, numRows);
             var fn = new HashSet<string>(fieldNames);
-            var result = new DataTable();
+            var result = new DS_DataTable();
             foreach (DataColumn col in _layer.DataSet.GetColumns())
             {
                 if (fn.Contains(col.ColumnName))
@@ -230,7 +230,7 @@ namespace DotSpatial.Symbology
                     i++;
                     if (i < startIndex) continue;
 
-                    DataRow dr = result.NewRow();
+                    IDataRow dr = result.NewRow();
                     Dictionary<string, object> vals = c.RetrieveElement(fid);
                     foreach (KeyValuePair<string, object> pair in vals)
                     {
@@ -396,7 +396,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void SetAttributes(int startIndex, DataTable values)
+        public void SetAttributes(int startIndex, IDataTable values)
         {
             FastDrawnState[] drawnStates = _layer.DrawnStates;
             int sind = -1;

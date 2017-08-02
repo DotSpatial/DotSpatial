@@ -1,6 +1,7 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using DotSpatial.Data;
 using System;
 using System.Data;
 
@@ -57,14 +58,14 @@ namespace DotSpatial.Symbology
         /// <param name="selected">Indicates whether the feature is selected.</param>
         /// <param name="fid">The FID of the feature, the expression gets calculated for.</param>
         /// <returns>null if there was an error while parsing the expression, else the calculated expression</returns>
-        string CalculateExpression(DataRow row, bool selected, int fid);
+        string CalculateExpression(IDataRow row, bool selected, int fid);
 
         /// <summary>
         /// Updates the Expression-Object with the columns that exist inside the features that belong to this category. The will be used for calculating the expression.
         /// </summary>
         /// <param name="columns">Columns that should be updated.</param>
         /// <returns>False if columns were not set.</returns>
-        bool UpdateExpressionColumns(DataColumnCollection columns);
+        bool UpdateExpressionColumns(IDataColumnCollection columns);
 
         #endregion
     }

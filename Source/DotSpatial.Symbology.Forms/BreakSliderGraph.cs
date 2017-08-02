@@ -36,7 +36,7 @@ namespace DotSpatial.Symbology.Forms
         private Color _selectedBreakColor;
         private BreakSlider _selectedSlider;
         private IAttributeSource _source;
-        private DataTable _table;
+        private IDataTable _table;
         private List<double> _values;
         #endregion
 
@@ -415,7 +415,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DataTable Table
+        public IDataTable Table
         {
             get
             {

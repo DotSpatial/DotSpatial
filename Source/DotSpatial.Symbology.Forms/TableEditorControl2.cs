@@ -32,7 +32,7 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
 using DotSpatial.Symbology.Forms.Properties;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -67,7 +67,7 @@ namespace DotSpatial.Symbology.Forms
 
         #region Private Variables
 
-        private readonly SQLExpressionDialog _queryDialog = new SQLExpressionDialog();
+        private readonly SqlExpressionDialog _queryDialog = new SqlExpressionDialog();
         private IFeatureLayer _featureLayer;
         private string _fidField;
         private bool _ignoreSelectionChanged;
@@ -734,7 +734,7 @@ namespace DotSpatial.Symbology.Forms
             IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv); // CGX AERO GLZ
             LayerFrame frame = _featureLayer.ParentMapFrame() as LayerFrame;
             if (frame == null) return;
-            IEnvelope env = currentFeature.Envelope.Copy();
+            Envelope env = currentFeature.Geometry.EnvelopeInternal.Clone();
 
             if (env.Width == 0 || env.Height == 0)
             {
@@ -1594,8 +1594,8 @@ namespace DotSpatial.Symbology.Forms
                                              SymbologyFormsMessageStrings.
                                              TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF
                                      };
-            FeatureSet fsTemp = new FeatureSet();
-            fsTemp.CopyFeatures(_featureLayer.DataSet, true);
+            IFeatureSet fsTemp = new FeatureSet();
+            fsTemp = _featureLayer.DataSet.CopyFeatures(true);
             if (dlg.ShowDialog() != DialogResult.OK)
             {
                 MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_ImportFieldsFromDbf_Could_not_import_column_fields);
@@ -1623,7 +1623,7 @@ namespace DotSpatial.Symbology.Forms
         //Executes a query
         private void QueryExe()
         {
-            var queryDialog = new SQLExpressionDialog();
+            var queryDialog = new SqlExpressionDialog();
             queryDialog.ChangesApplied += QueryDialog_ChangesApplied;
 
             if (_featureLayer.DataSet.AttributesPopulated)
@@ -1641,7 +1641,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void QueryDialog_ChangesApplied(object sender, EventArgs e)
         {
-            string resultExpresion = ((SQLExpressionDialog)sender).Expression;
+            string resultExpresion = ((SqlExpressionDialog)sender).Expression;
             if (resultExpresion != null)
             {
                 Cursor.Current = Cursors.WaitCursor;

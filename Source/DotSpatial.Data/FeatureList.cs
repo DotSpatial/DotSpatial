@@ -729,7 +729,7 @@ namespace DotSpatial.Data
             item.ParentFeatureSet = Parent;
             if (IncludeAttributes)
             {
-                DataRow row = Parent.DataTable.NewRow();
+                IDataRow row = Parent.DataTable.NewRow();
                 if (item.DataRow != null)
                 {
                     for (int col = 0; col < Parent.DataTable.Columns.Count; col++)

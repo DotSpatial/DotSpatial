@@ -49,7 +49,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the DataTable associated with this specific feature.
         /// </summary>
-        DataTable DataTable { get; set; }
+        IDataTable DataTable { get; set; }
 
         /// <summary>
         /// Gets or sets an optional GeometryFactory that can be set to control how the geometries on features are
@@ -60,7 +60,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the feature lookup Table itself.
         /// </summary>
-        Dictionary<DataRow, IFeature> FeatureLookup { get; }
+        Dictionary<IDataRow, IFeature> FeatureLookup { get; }
 
         /// <summary>
         /// Gets or sets the list of all the features that are included in this layer.
@@ -191,7 +191,7 @@ namespace DotSpatial.Data
         /// from a DatatTable, but doesn't copy any values.
         /// </summary>
         /// <param name="sourceTable">The Table to obtain schema from.</param>
-        void CopyTableSchema(DataTable sourceTable);
+        void CopyTableSchema(IDataTable sourceTable);
 
         /// <summary>
         /// Exports current shapefile as a zip archive in memory
@@ -205,7 +205,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="row">The DataRow for which to obtaind the feature</param>
         /// <returns>The feature to obtain that is associated with the specified data row.</returns>
-        IFeature FeatureFromRow(DataRow row);
+        IFeature FeatureFromRow(IDataRow row);
 
         /// <summary>
         /// Instructs the shapefile to read all the attributes from the file.

@@ -337,7 +337,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="fid">The feature offest</param>
         /// <param name="attributeValues">The row of new attribute values.</param>
-        public void EditAttributes(int fid, DataRow attributeValues)
+        public void EditAttributes(int fid, IDataRow attributeValues)
         {
             AttributeTable at = GetAttributeTable(Filename);
             at.Edit(fid, attributeValues);
@@ -347,7 +347,7 @@ namespace DotSpatial.Data
         /// Edits the values of the specified rows in the attribute table.
         /// </summary>
         /// <param name="indexDataRowPairs">IEnumerable of rows that should be edited and their corresponding indices.</param>
-        public void EditAttributes(IEnumerable<KeyValuePair<int, DataRow>> indexDataRowPairs)
+        public void EditAttributes(IEnumerable<KeyValuePair<int, IDataRow>> indexDataRowPairs)
         {
             AttributeTable at = GetAttributeTable(Filename);
             at.Edit(indexDataRowPairs);
@@ -463,7 +463,7 @@ namespace DotSpatial.Data
             bool schemaDefined = false;
             foreach (var pair in shapes)
             {
-                DataTable td = at.SupplyPageOfData(pair.Key, 1);
+                IDataTable td = at.SupplyPageOfData(pair.Key, 1);
                 if (td.Select(filterExpression).Length > 0)
                 {
                     if (!schemaDefined)

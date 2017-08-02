@@ -575,14 +575,14 @@ namespace DotSpatial.Symbology
                 for (int page = 0; page < numPages; page++)
                 {
                     int count = (page == numPages - 1) ? rowCount - (page * Size) : Size;
-                    DataTable expressionTable = DataSet.GetAttributes(page * Size, count, names);
+                    IDataTable expressionTable = DataSet.GetAttributes(page * Size, count, names);
                     foreach (var category in categories)
                     {
                         // CGX TRY CATCH
                         try
                         {
-                            DataRow[] res = expressionTable.Select(category.FilterExpression);
-                            foreach (DataRow r in res)
+                            IDataRow[] res = expressionTable.Select(category.FilterExpression);
+                            foreach (IDataRow r in res)
                             {
                                 _drawnStates[(int)r["FID"]].Category = category;
                             }
@@ -594,7 +594,7 @@ namespace DotSpatial.Symbology
             }
             else
             {
-                DataTable table = DataSet.DataTable;
+                IDataTable table = DataSet.DataTable;
                 foreach (var category in categories)
                 {
                     if (category.FilterExpression != null && category.FilterExpression.Contains("[FID]"))
@@ -617,8 +617,8 @@ namespace DotSpatial.Symbology
                     // CGX TRY CATCH
                     try
                     {
-                        DataRow[] result = table.Select(category.FilterExpression);
-                        foreach (DataRow row in result)
+                        IDataRow[] result = table.Select(category.FilterExpression);
+                        foreach (IDataRow row in result)
                         {
                             _drawnStates[table.Rows.IndexOf(row)].Category = category;
                         }

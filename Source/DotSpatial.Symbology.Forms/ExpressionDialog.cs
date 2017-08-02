@@ -15,7 +15,7 @@ namespace DotSpatial.Symbology.Forms
         public event EventHandler ExpressionTextChanged;
 
         IFeatureLayer _ActiveLayer = null;
-        DataTable _DataTable = null; // CGX AERO GLZ
+        IDataTable _DataTable = null; // CGX AERO GLZ
         private string _Expression = "";
 
         public bool IsComplexExpression(string Expression)
@@ -289,7 +289,7 @@ namespace DotSpatial.Symbology.Forms
                     {
                         try
                         {
-                            DataTable DT = f.ParentFeatureSet.DataTable; // CGX AERO GLZ
+                            IDataTable DT = f.ParentFeatureSet.DataTable; // CGX AERO GLZ
                             DataColumn Column = DT.Columns[i];
                             if (Column != null)
                             {

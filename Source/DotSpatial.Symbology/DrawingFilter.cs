@@ -361,9 +361,9 @@ namespace DotSpatial.Symbology
                 return;
             }
 
-            var tables = new List<DataTable>(); // just in case there is more than one Table somehow
-            var allRows = new Dictionary<DataRow, int>();
-            var tempList = new List<DataTable>();
+            var tables = new List<IDataTable>(); // just in case there is more than one Table somehow
+            var allRows = new Dictionary<IDataRow, int>();
+            var tempList = new List<IDataTable>();
             var containsFid = fc.Any(category => category.FilterExpression != null && category.FilterExpression.Contains("[FID]"));
 
             var featureIndex = 0;
@@ -376,7 +376,7 @@ namespace DotSpatial.Symbology
 
                 if (f.DataRow != null)
                 {
-                    DataTable t = f.DataRow.Table;
+                    IDataTable t = f.DataRow.Table;
                     if (tables.Contains(t) == false)
                     {
                         tables.Add(t);
@@ -396,14 +396,14 @@ namespace DotSpatial.Symbology
 
             foreach (IFeatureCategory cat in fc)
             {
-                foreach (DataTable dt in tables)
+                foreach (IDataTable dt in tables)
                 {
                     // CGX TRY CATCH
                     try
                     {
-                        DataRow[] rows = dt.Select(cat.FilterExpression);
+                        IDataRow[] rows = dt.Select(cat.FilterExpression);
 
-                        foreach (DataRow dr in rows)
+                        foreach (IDataRow dr in rows)
                         {
                             int index;
                             if (allRows.TryGetValue(dr, out index))
@@ -417,7 +417,7 @@ namespace DotSpatial.Symbology
                 }
             }
 
-            foreach (DataTable table in tempList)
+            foreach (IDataTable table in tempList)
             {
                 table.Columns.Remove("FID");
             }

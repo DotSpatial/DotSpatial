@@ -1,6 +1,7 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using DotSpatial.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -117,7 +118,7 @@ namespace DotSpatial.Symbology
         /// <param name="row">Row the expression gets calculated for.</param>
         /// <param name="fid">FID value that is used to replace the FID field.</param>
         /// <returns>The calculated expression.</returns>
-        public string CalculateRowValue(DataRow row, int fid)
+        public string CalculateRowValue(IDataRow row, int fid)
         {
             if (IsEmpty()) return string.Empty;
 
@@ -164,7 +165,7 @@ namespace DotSpatial.Symbology
         /// <param name="retVal">Example result if operation is valid.</param>
         /// <param name="row">Datarow that should be used to show as example result if the operation is valid.</param>
         /// <returns>True, if operations can be calculated.</returns>
-        public bool IsValidOperation(ref string retVal, DataRow row = null)
+        public bool IsValidOperation(ref string retVal, IDataRow row = null)
         {
             if (IsEmpty()) return false;
 
@@ -328,7 +329,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="columns">Columns that should be added as fields.</param>
         /// <returns>False if columns was null.</returns>
-        public bool UpdateFields(DataColumnCollection columns)
+        public bool UpdateFields(IDataColumnCollection columns)
         {
             ClearFields();
             if (columns == null) return false;
@@ -1324,7 +1325,7 @@ namespace DotSpatial.Symbology
         /// <param name="row">Datarow that contains the data used to replace the fields.</param>
         /// <param name="fid">FID that is used to replace the FID field.</param>
         /// <returns>ExpressionString with replaced Fields.</returns>
-        private string ReplaceFieldsOnly(DataRow row, int fid)
+        private string ReplaceFieldsOnly(IDataRow row, int fid)
         {
             if (_expressionString == null) return string.Empty;
 

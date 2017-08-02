@@ -106,6 +106,12 @@
     <Compile Include="BinaryReaderWriterExtensions.cs" />
     <Compile Include="DbaseLocaleRegistry.cs" />
     <Compile Include="DisposeBase.cs" />
+    <Compile Include="DS_DataColumnCollection.cs" />
+    <Compile Include="DS_DataRow.cs" />
+    <Compile Include="DS_DataRowChangeEventArgs.cs" />
+    <Compile Include="DS_DataRowChangeEventHandler.cs" />
+    <Compile Include="DS_DataRowCollection.cs" />
+    <Compile Include="DS_DataTable.cs" />
     <Compile Include="ExtentArgs.cs" />
     <Compile Include="ExtentM.cs" />
     <Compile Include="ExtentMZ.cs" />
@@ -121,6 +127,11 @@
     <Compile Include="FeatureType.cs" />
     <Compile Include="Fields.cs" />
     <Compile Include="IContainRasterBounds.cs" />
+    <Compile Include="IDataColumnCollection.cs" />
+    <Compile Include="IDataRow.cs" />
+    <Compile Include="IDataRowChangeEventArgs.cs" />
+    <Compile Include="IDataRowCollection.cs" />
+    <Compile Include="IDataTable.cs" />
     <Compile Include="IDisposeLock.cs" />
     <Compile Include="IExtent.cs" />
     <Compile Include="IExtentM.cs" />

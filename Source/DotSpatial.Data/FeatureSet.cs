@@ -27,7 +27,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// The _data table.
         /// </summary>
-        private DataTable _dataTable;
+        private IDataTable _dataTable;
 
         /// <summary>
         /// The _features.
@@ -66,11 +66,11 @@ namespace DotSpatial.Data
         public FeatureSet()
         {
             IndexMode = false; // this is false unless we are loading it from a specific shapefile case.
-            FeatureLookup = new Dictionary<DataRow, IFeature>();
+            FeatureLookup = new Dictionary<IDataRow, IFeature>();
             _features = new FeatureList(this);
             _features.FeatureAdded += FeaturesFeatureAdded;
             _features.FeatureRemoved += FeaturesFeatureRemoved;
-            _dataTable = new DataTable();
+            _dataTable = new DS_DataTable();
         }
 
         /// <summary>
@@ -92,14 +92,14 @@ namespace DotSpatial.Data
         /// <param name="wkbColumnIndex">The wkb column index. Not used.</param>
         /// <param name="indexed">Not used.</param>
         /// <param name="type">The feature type. Not used.</param>
-        public FeatureSet(DataTable wkbTable, int wkbColumnIndex, bool indexed, FeatureType type)
+        public FeatureSet(IDataTable wkbTable, int wkbColumnIndex, bool indexed, FeatureType type)
             : this()
         {
             if (IndexMode)
             {
                 // Assume this DataTable has WKB in column[0] and the rest of the columns are attributes.
                 FeatureSetPack result = new FeatureSetPack();
-                foreach (DataRow row in wkbTable.Rows)
+                foreach (IDataRow row in wkbTable.Rows)
                 {
                     byte[] data = (byte[])row[0];
                     MemoryStream ms = new MemoryStream(data);
@@ -113,10 +113,10 @@ namespace DotSpatial.Data
                 result.Polygons.CopyTableSchema(wkbTable);
 
                 // Assume that all the features happened to be polygons
-                foreach (DataRow row in wkbTable.Rows)
+                foreach (IDataRow row in wkbTable.Rows)
                 {
                     // Create a new row
-                    DataRow dest = result.Polygons.DataTable.NewRow();
+                    IDataRow dest = result.Polygons.DataTable.NewRow();
                     dest.ItemArray = row.ItemArray;
                 }
             }
@@ -212,7 +212,7 @@ namespace DotSpatial.Data
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual DataTable DataTable
+        public virtual IDataTable DataTable
         {
             get
             {
@@ -261,7 +261,7 @@ namespace DotSpatial.Data
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Dictionary<DataRow, IFeature> FeatureLookup { get; }
+        public Dictionary<IDataRow, IFeature> FeatureLookup { get; }
 
         /// <summary>
         /// Gets or sets a list of the features in this layer.
@@ -442,7 +442,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void AddFid()
         {
-            DataTable dt = DataTable;
+            IDataTable dt = DataTable;
             if (dt.Columns.Contains("FID"))
             {
                 return;
@@ -461,7 +461,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public virtual void AddRow(DataRow values)
+        public virtual void AddRow(IDataRow values)
         {
         }
 
@@ -658,7 +658,7 @@ namespace DotSpatial.Data
         public void CopyTableSchema(IFeatureSet source)
         {
             DataTable.Columns.Clear();
-            DataTable dt = source.DataTable;
+            IDataTable dt = source.DataTable;
             foreach (DataColumn dc in dt.Columns)
             {
                 if (dc != null)
@@ -671,7 +671,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public void CopyTableSchema(DataTable sourceTable)
+        public void CopyTableSchema(IDataTable sourceTable)
         {
             DataTable.Columns.Clear();
             foreach (DataColumn dc in sourceTable.Columns)
@@ -691,7 +691,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public virtual void Edit(int index, DataRow values)
+        public virtual void Edit(int index, IDataRow values)
         {
         }
 
@@ -702,7 +702,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public IFeature FeatureFromRow(DataRow row)
+        public IFeature FeatureFromRow(IDataRow row)
         {
             return FeatureLookup[row];
         }
@@ -719,7 +719,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc />
-        public virtual DataTable GetAttributes(int startIndex, int numRows)
+        public virtual IDataTable GetAttributes(int startIndex, int numRows)
         {
             return GetAttributes(startIndex, numRows, GetColumns().Select(d => d.ColumnName));
         }
@@ -739,10 +739,10 @@ namespace DotSpatial.Data
         /// <returns>
         /// A DataTable populated with data rows with only the specified values.
         /// </returns>
-        public virtual DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public virtual IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
             // overridden in subclasses.
-            var result = new DataTable();
+            var result = new DS_DataTable();
             DataColumn[] columns = GetColumns();
 
             // Always add FID in this paging scenario. This is for the in-ram case. A more appropriate
@@ -763,7 +763,7 @@ namespace DotSpatial.Data
 
             for (int row = startIndex, i = 0; i < numRows && row < _dataTable.Rows.Count; row++, i++)
             {
-                DataRow myRow = result.NewRow();
+                IDataRow myRow = result.NewRow();
                 myRow["FID"] = row;
                 foreach (var name in fn.Where(d => d != "FID"))
                 {
@@ -900,7 +900,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    DataTable dt = GetAttributes(index, 1);
+                    IDataTable dt = GetAttributes(index, 1);
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         result.Attributes = dt.Rows[0].ItemArray;
@@ -963,7 +963,7 @@ namespace DotSpatial.Data
                 res.DataTable.Columns.Add(new DataColumn(column.ColumnName, column.DataType, column.Expression, column.ColumnMapping));
             }
 
-            foreach (DataRow row in res.DataTable.Rows)
+            foreach (IDataRow row in res.DataTable.Rows)
             {
                 string query;
                 if (table.Columns[dataTableJoinField].DataType == typeof(string))
@@ -1389,7 +1389,7 @@ namespace DotSpatial.Data
         /// </returns>
         public virtual List<IFeature> SelectByAttribute(string filterExpression)
         {
-            DataTable dt = DataTable;
+            IDataTable dt = DataTable;
             bool isTemp = false;
             if (filterExpression != null)
             {
@@ -1400,7 +1400,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            DataRow[] rows = dt.Select(filterExpression);
+            IDataRow[] rows = dt.Select(filterExpression);
             var result = rows.Select(dr => FeatureLookup[dr]).ToList();
             if (isTemp)
             {
@@ -1465,13 +1465,13 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public virtual void SetAttributes(int startIndex, DataTable pageValues)
+        public virtual void SetAttributes(int startIndex, IDataTable pageValues)
         {
             // overridden in sub-classes, but default implementation is for the in-ram only case.
             int row = startIndex;
             if (_dataTable == null)
             {
-                _dataTable = new DataTable();
+                _dataTable = new DS_DataTable();
             }
 
             List<string> names = new List<string>();
@@ -1481,7 +1481,7 @@ namespace DotSpatial.Data
                 names.Add(c.ColumnName);
             }
 
-            foreach (DataRow dataRow in pageValues.Rows)
+            foreach (IDataRow dataRow in pageValues.Rows)
             {
                 foreach (string name in names)
                 {
@@ -1872,7 +1872,7 @@ namespace DotSpatial.Data
         /// Allows the un-wiring of event handlers related to the dataTable.
         /// </summary>
         /// <param name="dataTable">DataTable that was excluded.</param>
-        protected virtual void OnDataTableExcluded(DataTable dataTable)
+        protected virtual void OnDataTableExcluded(IDataTable dataTable)
         {
             if (dataTable != null)
             {
@@ -1884,7 +1884,7 @@ namespace DotSpatial.Data
         /// Allows the wiring of event handlers related to the data Table.
         /// </summary>
         /// <param name="dataTable">DataTable that was included.</param>
-        protected virtual void OnDataTableIncluded(DataTable dataTable)
+        protected virtual void OnDataTableIncluded(IDataTable dataTable)
         {
             if (dataTable != null)
             {
@@ -2027,7 +2027,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="shape">Shape whose attributes get added.</param>
         /// <returns>A data row, but only if attributes are populated.</returns>
-        private DataRow AddAttributes(Shape shape)
+        private IDataRow AddAttributes(Shape shape)
         {
             // Handle attributes if the array is not null. Assumes compatible schema.
             if (shape.Attributes != null)
@@ -2060,7 +2060,7 @@ namespace DotSpatial.Data
                 if (AttributesPopulated)
                 {
                     // just add a new DataRow
-                    DataRow addedRow = _dataTable.NewRow();
+                    IDataRow addedRow = _dataTable.NewRow();
                     addedRow.ItemArray = fixedContent;
                     return addedRow;
                 }
@@ -2115,7 +2115,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The e.</param>
-        private void DataTableRowDeleted(object sender, DataRowChangeEventArgs e)
+        private void DataTableRowDeleted(object sender, IDataRowChangeEventArgs e)
         {
             Features.Remove(FeatureLookup[e.Row]);
             FeatureLookup.Remove(e.Row);

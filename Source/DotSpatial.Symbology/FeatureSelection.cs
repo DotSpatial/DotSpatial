@@ -353,7 +353,7 @@ namespace DotSpatial.Symbology
         /// in any way, as that row is not associated with a featureset here.
         /// </summary>
         /// <param name="values">Values that get added to the row.</param>
-        public void AddRow(DataRow values)
+        public void AddRow(IDataRow values)
         {
             _featureSet.AddRow(values);
         }
@@ -428,7 +428,7 @@ namespace DotSpatial.Symbology
             {
                 if (count == index)
                 {
-                    DataColumnCollection dc = _featureSet.DataTable.Columns;
+                    IDataColumnCollection dc = _featureSet.DataTable.Columns;
                     foreach (DataColumn column in dc)
                     {
                         feature.DataRow[column] = values[column.ColumnName];
@@ -441,14 +441,14 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void Edit(int index, DataRow values)
+        public void Edit(int index, IDataRow values)
         {
             int count = 0;
             foreach (IFeature feature in Filter)
             {
                 if (count == index)
                 {
-                    DataColumnCollection dc = _featureSet.DataTable.Columns;
+                    IDataColumnCollection dc = _featureSet.DataTable.Columns;
                     foreach (DataColumn column in dc)
                     {
                         feature.DataRow[column] = values[column.ColumnName];
@@ -461,10 +461,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public DataTable GetAttributes(int startIndex, int numRows)
+        public IDataTable GetAttributes(int startIndex, int numRows)
         {
             int count = 0;
-            DataTable dt = new DataTable();
+            IDataTable dt = new DS_DataTable();
             dt.Columns.AddRange(_featureSet.GetColumns());
             foreach (IFeature feature in Filter)
             {
@@ -482,10 +482,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc/>
-        public DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
             int count = 0;
-            DataTable dt = new DataTable();
+            IDataTable dt = new DS_DataTable();
             List<DataColumn> dc = new List<DataColumn>();
             DataColumn[] original = _featureSet.GetColumns();
             var names = fieldNames as IList<string> ?? fieldNames.ToList();
@@ -504,7 +504,7 @@ namespace DotSpatial.Symbology
                 {
                     foreach (string name in names)
                     {
-                        DataRow dr = dt.NewRow();
+                        IDataRow dr = dt.NewRow();
                         dr[name] = feature.DataRow[name];
                         dt.Rows.Add(dr);
                     }
@@ -538,8 +538,8 @@ namespace DotSpatial.Symbology
             {
                 string s = expressions[i];
                 int count = 0;
-                DataRow[] rows = _featureSet.DataTable.Select(s);
-                foreach (DataRow row in rows)
+                IDataRow[] rows = _featureSet.DataTable.Select(s);
+                foreach (IDataRow row in rows)
                 {
                     if (Filter.DrawnStates[_featureSet.FeatureLookup[row]].IsSelected == Selected) count++;
                 }
@@ -794,11 +794,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public void SetAttributes(int startIndex, DataTable values)
+        public void SetAttributes(int startIndex, IDataTable values)
         {
             int index = startIndex;
             List<IFeature> features = Filter.ToList();
-            foreach (DataRow row in values.Rows)
+            foreach (IDataRow row in values.Rows)
             {
                 features[index].DataRow.ItemArray = row.ItemArray;
                 index++;

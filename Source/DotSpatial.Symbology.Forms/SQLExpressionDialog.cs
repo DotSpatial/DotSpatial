@@ -72,7 +72,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the DataTable that the expression dialog uses.
         /// </summary>
-        public DataTable Table
+        public IDataTable Table
         {
             get
             {

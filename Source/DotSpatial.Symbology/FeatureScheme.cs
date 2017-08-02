@@ -140,7 +140,7 @@ namespace DotSpatial.Symbology
         /// If the method is
         /// </summary>
         /// <param name="table">The System.DataTable to that has the data values to use</param>
-        public void CreateCategories(DataTable table)
+        public void CreateCategories(IDataTable table)
         {
             string fieldName = EditorSettings.FieldName;
             if (EditorSettings.ClassificationType == ClassificationType.Custom) return;
@@ -251,11 +251,11 @@ namespace DotSpatial.Symbology
                 for (int ipage = 0; ipage < numPages; ipage++)
                 {
                     int numRows = (ipage == numPages - 1) ? source.NumRows() % pageSize : pageSize;
-                    DataTable table = source.GetAttributes(ipage * pageSize, numRows);
+                    IDataTable table = source.GetAttributes(ipage * pageSize, numRows);
                     if (!string.IsNullOrEmpty(EditorSettings.ExcludeExpression))
                     {
-                        DataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")");
-                        foreach (DataRow row in rows)
+                        IDataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")");
+                        foreach (IDataRow row in rows)
                         {
                             double val;
                             if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
@@ -275,7 +275,7 @@ namespace DotSpatial.Symbology
                     }
                     else
                     {
-                        foreach (DataRow row in table.Rows)
+                        foreach (IDataRow row in table.Rows)
                         {
                             double val;
                             if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
@@ -316,7 +316,7 @@ namespace DotSpatial.Symbology
                         do
                         {
                             index = rnd.Next(ap.StartIndex, ap.StartIndex + pageSize);
-                            DataRow dr = ap.Row(index);
+                            IDataRow dr = ap.Row(index);
                             if (!double.TryParse(dr[fieldName].ToString(), out val)) failed = true;
                             if (normField == null) continue;
 
@@ -353,15 +353,15 @@ namespace DotSpatial.Symbology
         /// to updated the cache of values that govern statistics and break placement.
         /// </summary>
         /// <param name="table">The data Table to use.</param>
-        public void GetValues(DataTable table)
+        public void GetValues(IDataTable table)
         {
             Values = new List<double>();
             string normField = EditorSettings.NormField;
             string fieldName = EditorSettings.FieldName;
             if (!string.IsNullOrEmpty(EditorSettings.ExcludeExpression))
             {
-                DataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")");
-                foreach (DataRow row in rows)
+                IDataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")");
+                foreach (IDataRow row in rows)
                 {
                     if (rows.Length < EditorSettings.MaxSampleCount)
                     {
@@ -727,7 +727,7 @@ namespace DotSpatial.Symbology
         /// <param name="fieldName">Name of the field that gets checked.</param>
         /// <param name="table">Table that contains the field.</param>
         /// <returns>True, if the field is of type string.</returns>
-        private static bool CheckFieldType(string fieldName, DataTable table)
+        private static bool CheckFieldType(string fieldName, IDataTable table)
         {
             return table.Columns[fieldName].DataType == typeof(string);
         }
@@ -749,11 +749,11 @@ namespace DotSpatial.Symbology
         /// <param name="fieldName">Name of the field.</param>
         /// <param name="table">Table that contains the field.</param>
         /// <returns>A list of the unique values of the attribute field.</returns>
-        private static List<Break> GetUniqueValues(string fieldName, DataTable table)
+        private static List<Break> GetUniqueValues(string fieldName, IDataTable table)
         {
             HashSet<object> lst = new HashSet<object>();
             bool containsNull = false;
-            foreach (DataRow dr in table.Rows)
+            foreach (IDataRow dr in table.Rows)
             {
                 object val = dr[fieldName];
                 if (val == null || dr[fieldName] is DBNull || val.ToString() == string.Empty)
@@ -838,7 +838,7 @@ namespace DotSpatial.Symbology
             pm.Reset();
         }
 
-        private void CreateUniqueCategories(string fieldName, DataTable table)
+        private void CreateUniqueCategories(string fieldName, IDataTable table)
         {
             Breaks = GetUniqueValues(fieldName, table);
             List<double> sizeRamp = GetSizeSet(Breaks.Count);

@@ -26,7 +26,7 @@ namespace DotSpatial.Data
         private const int FileDescriptorSize = 32;
 
         private List<Field> _columns;
-        private DataTable _dataTable;
+        private IDataTable _dataTable;
         private string _fileName;
         private bool _hasDeletedRecords;
 
@@ -57,7 +57,7 @@ namespace DotSpatial.Data
             _ldid = DbaseLocaleRegistry.GetLanguageDriverId(Encoding);
             _progressHandler = DataManager.DefaultDataManager.ProgressHandler;
             ProgressMeter = new ProgressMeter(_progressHandler);
-            _dataTable = new DataTable();
+            _dataTable = new DS_DataTable();
             _columns = new List<Field>();
         }
 
@@ -179,7 +179,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the table containing the whole attribute data.
         /// </summary>
-        public DataTable Table
+        public IDataTable Table
         {
             get
             {
@@ -232,19 +232,19 @@ namespace DotSpatial.Data
         /// Saves the new row to the data source and updates the file with new content.
         /// </summary>
         /// <param name="values">The values organized against the dictionary of field names.</param>
-        public virtual void AddRow(DataRow values)
+        public virtual void AddRow(IDataRow values)
         {
             // Test to see if the file exists yet. If not, simply create it with the expectation
             // that there will simply be one row in the data table.
             if (!File.Exists(_fileName))
             {
-                _dataTable = new DataTable();
+                _dataTable = new DS_DataTable();
                 foreach (DataColumn col in values.Table.Columns)
                 {
                     _dataTable.Columns.Add(col.ColumnName, col.DataType, col.Expression);
                 }
 
-                DataRow newRow = _dataTable.NewRow();
+                IDataRow newRow = _dataTable.NewRow();
                 newRow.ItemArray = values.ItemArray;
                 _dataTable.Rows.Add(newRow);
                 SaveAs(_fileName, true);
@@ -289,7 +289,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="index">the integer row (or FID) index</param>
         /// <param name="values">The object array holding the new values to store.</param>
-        public virtual void Edit(int index, DataRow values)
+        public virtual void Edit(int index, IDataRow values)
         {
             NumberConverter[] ncs = BeginEdit();
             try
@@ -306,12 +306,12 @@ namespace DotSpatial.Data
         /// Saves a collection of rows to the data source.
         /// </summary>
         /// <param name="indexDataRowPairs">An IEnumerable that contains the DataRows that should be written along with the indices where the DataRows should be written.</param>
-        public virtual void Edit(IEnumerable<KeyValuePair<int, DataRow>> indexDataRowPairs)
+        public virtual void Edit(IEnumerable<KeyValuePair<int, IDataRow>> indexDataRowPairs)
         {
             NumberConverter[] ncs = BeginEdit();
             try
             {
-                foreach (KeyValuePair<int, DataRow> indexedDataRow in indexDataRowPairs)
+                foreach (KeyValuePair<int, IDataRow> indexedDataRow in indexDataRowPairs)
                 {
                     OverwriteDataRow(indexedDataRow.Key, indexedDataRow.Value, ncs);
                 }
@@ -411,7 +411,7 @@ namespace DotSpatial.Data
 
                 for (int row = 0; row < numRows; row++)
                 {
-                    DataRow dr = _dataTable.NewRow();
+                    IDataRow dr = _dataTable.NewRow();
                     dr["FID"] = row;
                     _dataTable.Rows.Add(dr);
                 }
@@ -434,7 +434,7 @@ namespace DotSpatial.Data
             {
                 for (int row = 0; row < NumRecords; row++)
                 {
-                    DataRow nextRow = null;
+                    IDataRow nextRow = null;
                     try
                     {
                         nextRow = ReadTableRowFromChars(row, myReader);
@@ -467,7 +467,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="rowNumbers">The numbers of the rows that should be returned.</param>
         /// <returns>A dataTable containing the specified attribute rows.</returns>
-        public DataTable GetAttributes(IEnumerable<int> rowNumbers)
+        public IDataTable GetAttributes(IEnumerable<int> rowNumbers)
         {
             double fileLength = GetFileLength();
             if (fileLength == 0) return null; // The file is empty, so we are done here
@@ -477,7 +477,7 @@ namespace DotSpatial.Data
                 // Encoding appears to be ASCII, not Unicode
                 myReader.BaseStream.Seek(HeaderLength + 1, SeekOrigin.Begin);
 
-                DataTable result = new DataTable();
+                IDataTable result = new DS_DataTable();
 
                 foreach (Field field in _columns)
                 {
@@ -536,7 +536,7 @@ namespace DotSpatial.Data
             Contract.Assert(File.Exists(_fileName), "The dbf file for this shapefile was not found.");
 
             AttributesPopulated = false; // we had a file, but have not read the dbf content into memory yet.
-            _dataTable = new DataTable();
+            _dataTable = new DS_DataTable();
 
             using (var myReader = GetBinaryReader())
             {
@@ -662,7 +662,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="startRow">The 0 based integer index of the start row</param>
         /// <param name="dataValues">The DataTable with the 0 row corresponding to the start row. If this exceeds the size of the data table, it will add rows.</param>
-        public void SetAttributes(int startRow, DataTable dataValues)
+        public void SetAttributes(int startRow, IDataTable dataValues)
         {
             for (int row = 0; row < dataValues.Rows.Count; row++)
             {
@@ -689,7 +689,7 @@ namespace DotSpatial.Data
         /// <param name="lowerPageBoundary">starting row</param>
         /// <param name="rowsPerPage">number of rows to return</param>
         /// <returns>A DataTable containing the data that was read.</returns>
-        public DataTable SupplyPageOfData(int lowerPageBoundary, int rowsPerPage)
+        public IDataTable SupplyPageOfData(int lowerPageBoundary, int rowsPerPage)
         {
             double fileLength = GetFileLength();
             if (fileLength == 0) return null; // The file is empty, so we are done here
@@ -708,7 +708,7 @@ namespace DotSpatial.Data
 
                 myReader.BaseStream.Seek(offset, SeekOrigin.Current);
                 byte[] byteContent = myReader.ReadBytes(length);
-                DataTable result = new DataTable();
+                IDataTable result = new DS_DataTable();
                 foreach (Field field in _columns)
                 {
                     result.Columns.Add(new Field(field.ColumnName, field.TypeCharacter, field.Length, field.DecimalCount));
@@ -855,7 +855,7 @@ namespace DotSpatial.Data
         /// <param name="columnIndex">The column index of the field being changed</param>
         /// <param name="table"> The Table to apply this strategy to.</param>
         /// <returns>An integer list showing the index values of the rows where the conversion failed.</returns>
-        public List<int> UpgradeColumn(Field oldDataColumn, Type newDataType, int currentRow, int columnIndex, DataTable table)
+        public List<int> UpgradeColumn(Field oldDataColumn, Type newDataType, int currentRow, int columnIndex, IDataTable table)
         {
             List<int> failureList = new List<int>();
             object[] newValues = new object[table.Rows.Count];
@@ -1267,7 +1267,7 @@ namespace DotSpatial.Data
         {
             // We allow passing in either DataRow values or Dictionary, so figure out which
             Dictionary<string, object> dataDictionary = null;
-            var dataRow = values as DataRow;
+            var dataRow = values as IDataRow;
             if (dataRow == null) dataDictionary = (Dictionary<string, object>)values;
 
             int rawRow = GetFileIndex(index);
@@ -1294,7 +1294,7 @@ namespace DotSpatial.Data
         /// <param name="cBuffer">The character data.</param>
         /// <param name="table">The table.</param>
         /// <returns>The parsed object.</returns>
-        private object ParseCharacterColumn(Field field, int currentRow, char[] cBuffer, DataTable table)
+        private object ParseCharacterColumn(Field field, int currentRow, char[] cBuffer, IDataTable table)
         {
             // If table is null, an exception will be thrown rather than attempting to upgrade the column when a parse error occurs.
             const string ParseErrString = "Cannot parse {0} at row {1:D}, column {2:D} ({3}) in file {4} using field type {5}, and no DataTable to upgrade column";
@@ -1405,7 +1405,7 @@ namespace DotSpatial.Data
         /// <param name="length">The length.</param>
         /// <param name="table">The table.</param>
         /// <returns>The parsed value of the field or <see cref="DBNull.Value"/>.</returns>
-        private object ParseColumn(Field field, int currentRow, byte[] bBuffer, int startIndex, int length, DataTable table)
+        private object ParseColumn(Field field, int currentRow, byte[] bBuffer, int startIndex, int length, IDataTable table)
         {
             Debug.Assert(startIndex >= 0, "startIndex must be >= 0");
             Debug.Assert(length > 0, "length must be > 0");
@@ -1505,7 +1505,7 @@ namespace DotSpatial.Data
         /// <param name="table">The table.</param>
         /// <param name="parseErrString">The parse error string.</param>
         /// <returns>The parsed object.</returns>
-        private object ParseNumericColumn(Field field, int currentRow, char[] cBuffer, DataTable table, string parseErrString)
+        private object ParseNumericColumn(Field field, int currentRow, char[] cBuffer, IDataTable table, string parseErrString)
         {
             // Data records are preceded by one byte, that is, a space (0x20) if the record is not deleted, an asterisk (0x2A)
             // By this reference, some application (e.g. quantum GIS) fill fields like this that are a null value with
@@ -1797,9 +1797,9 @@ namespace DotSpatial.Data
         /// <param name="byteContent">The byte content.</param>
         /// <param name="table">The data table.</param>
         /// <returns>Returns a DataRow with the information of the current row.</returns>
-        private DataRow ReadTableRow(int currentRow, int start, byte[] byteContent, DataTable table)
+        private IDataRow ReadTableRow(int currentRow, int start, byte[] byteContent, IDataTable table)
         {
-            DataRow result = table.NewRow();
+            IDataRow result = table.NewRow();
             for (int col = 0; col < table.Columns.Count; col++)
             {
                 // find the length of the field.
@@ -1832,7 +1832,7 @@ namespace DotSpatial.Data
         /// <param name="currentRow">Index of the row that should be read.</param>
         /// <param name="myReader">Reader used for reading.</param>
         /// <returns>Returns a DataRow with the information of the current row.</returns>
-        private DataRow ReadTableRowFromChars(int currentRow, BinaryReader myReader)
+        private IDataRow ReadTableRowFromChars(int currentRow, BinaryReader myReader)
         {
             var result = _dataTable.NewRow();
 

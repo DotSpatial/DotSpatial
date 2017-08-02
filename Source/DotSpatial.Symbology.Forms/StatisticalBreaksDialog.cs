@@ -1,6 +1,7 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using DotSpatial.Data;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -77,7 +78,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets or sets the Table that has the data row values to use for statistics.
         /// </summary>
-        public DataTable Table
+        public IDataTable Table
         {
             get
             {

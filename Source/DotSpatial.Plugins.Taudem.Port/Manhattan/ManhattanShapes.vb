@@ -339,7 +339,7 @@ Namespace Manhattan
                             Dim addedFEAT As IFeature = PolygonFeatureSet.AddFeature(newPolygon)
                             addedFEAT.DataRow(0) = GridValue
                             addedFEAT.DataRow(1) = addedFEAT.Geometry.Area
-                            addedFEAT.DataRow.AcceptChanges()
+                            'addedFEAT.DataRow.AcceptChanges()
                         End If
                     Next
                 End If

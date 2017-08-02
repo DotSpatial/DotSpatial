@@ -23,7 +23,7 @@ namespace DotSpatial.Data.Tests
         {
             var parent = new FeatureSet(FeatureType.Point);
             var target = parent.Features;
-            DataRow expected = null;
+            IDataRow expected = null;
             target.FeatureAdded += (sender, args) => expected = args.Feature.DataRow;
 
             var addedFeature = parent.AddFeature(Point.Empty);

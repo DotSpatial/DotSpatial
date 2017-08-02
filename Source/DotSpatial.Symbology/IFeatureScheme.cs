@@ -70,7 +70,7 @@ namespace DotSpatial.Symbology
         /// Creates the categories using the specified data table.
         /// </summary>
         /// <param name="table">Data table used for category creation.</param>
-        void CreateCategories(DataTable table);
+        void CreateCategories(IDataTable table);
 
         /// <summary>
         /// Uses the settings on this scheme to create a random category.

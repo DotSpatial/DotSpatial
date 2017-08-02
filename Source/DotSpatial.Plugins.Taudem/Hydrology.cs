@@ -2022,7 +2022,7 @@ namespace DotSpatial.Plugins.Taudem
             }
 
             // The id may represent the row number
-            DataRow theRow = outlets.DataTable.Rows[id - 1];
+            IDataRow theRow = outlets.DataTable.Rows[id - 1];
 
             if (idFieldColumnName != null)
             {

@@ -11,7 +11,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// AttributePager
     /// </summary>
-    public class AttributePager : IEnumerable<DataTable>, IEnumerator<DataTable>
+    public class AttributePager : IEnumerable<IDataTable>, IEnumerator<IDataTable>
     {
         private readonly int _numRows;
         private readonly IAttributeSource _source;
@@ -34,7 +34,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the current table.
         /// </summary>
-        public DataTable Current { get; private set; }
+        public IDataTable Current { get; private set; }
 
         /// <summary>
         /// Gets or sets the pages size as a count of the number of rows each data table page should hold.
@@ -58,7 +58,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="pageIndex">Index of the page that should be returned.</param>
         /// <returns>The data table for the given page index.</returns>
-        public DataTable this[int pageIndex]
+        public IDataTable this[int pageIndex]
         {
             get
             {
@@ -82,7 +82,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc />
-        public IEnumerator<DataTable> GetEnumerator()
+        public IEnumerator<IDataTable> GetEnumerator()
         {
             return this;
         }
@@ -133,7 +133,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="rowIndex">The integer row index</param>
         /// <returns>The DataRow</returns>
-        public DataRow Row(int rowIndex)
+        public IDataRow Row(int rowIndex)
         {
             int page = PageOfRow(rowIndex);
             if (_pageIndex != page || Current == null)

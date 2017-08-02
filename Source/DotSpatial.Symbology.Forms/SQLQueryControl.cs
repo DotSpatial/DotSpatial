@@ -19,7 +19,7 @@ namespace DotSpatial.Symbology.Forms
         #region Fields
 
         private IAttributeSource _attributeSource;
-        private DataTable _table;
+        private IDataTable _table;
 
         #endregion
 
@@ -85,7 +85,7 @@ namespace DotSpatial.Symbology.Forms
         /// Gets or sets the data Table for this control. Setting this will
         /// automatically update the fields shown in the list.
         /// </summary>
-        public DataTable Table
+        public IDataTable Table
         {
             get
             {
@@ -144,7 +144,7 @@ namespace DotSpatial.Symbology.Forms
             return true;
         }
 
-        private static void GetMinMax(IEnumerable<DataRow> rows, string field, ref IComparable min, ref IComparable max)
+        private static void GetMinMax(IEnumerable<IDataRow> rows, string field, ref IComparable min, ref IComparable max)
         {
             foreach (var dr in rows)
             {
@@ -197,8 +197,8 @@ namespace DotSpatial.Symbology.Forms
                 int numPages = (int)Math.Ceiling((double)_attributeSource.NumRows() / 10000);
                 for (int page = 0; page < numPages; page++)
                 {
-                    DataTable table = _attributeSource.GetAttributes(page * 10000, 10000);
-                    foreach (DataRow dr in table.Rows)
+                    IDataTable table = _attributeSource.GetAttributes(page * 10000, 10000);
+                    foreach (IDataRow dr in table.Rows)
                     {
                         if (dr[fieldName] is DBNull) continue;
                         if (lst.Contains(dr[fieldName])) continue;
@@ -343,13 +343,13 @@ namespace DotSpatial.Symbology.Forms
                 for (int page = 0; page < numPages; page++)
                 {
                     var table = _attributeSource.GetAttributes(page * 10000, 10000);
-                    GetMinMax(table.Rows.Cast<DataRow>(), field, ref min, ref max);
+                    GetMinMax(table.Rows.Cast<IDataRow>(), field, ref min, ref max);
                 }
             }
 
             if (_table != null)
             {
-                GetMinMax(_table.Rows.Cast<DataRow>(), field, ref min, ref max);
+                GetMinMax(_table.Rows.Cast<IDataRow>(), field, ref min, ref max);
             }
 
             if (min != null) lblMin.Text = min.ToString();

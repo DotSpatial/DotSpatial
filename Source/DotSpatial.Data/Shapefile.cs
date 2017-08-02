@@ -111,7 +111,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the DataTable. This re-directs the DataTable to work with the attributeTable instead.
         /// </summary>
-        public override DataTable DataTable
+        public override IDataTable DataTable
         {
             get
             {
@@ -358,7 +358,7 @@ namespace DotSpatial.Data
         /// Saves the new row to the data source and updates the file with new content.
         /// </summary>
         /// <param name="values">The values organized against the dictionary of field names.</param>
-        public override void AddRow(DataRow values)
+        public override void AddRow(IDataRow values)
         {
             _attributeTable.AddRow(values);
         }
@@ -378,7 +378,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="index">the integer row (or FID) index</param>
         /// <param name="values">The object array holding the new values to store.</param>
-        public override void Edit(int index, DataRow values)
+        public override void Edit(int index, IDataRow values)
         {
             _attributeTable.Edit(index, values);
         }
@@ -424,7 +424,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc />
-        public override DataTable GetAttributes(int startIndex, int numRows)
+        public override IDataTable GetAttributes(int startIndex, int numRows)
         {
             return _attributeTable.SupplyPageOfData(startIndex, numRows);
         }
@@ -436,10 +436,10 @@ namespace DotSpatial.Data
         /// <param name="numRows">The integer number of attribute rows to return for the page</param>
         /// <param name="fieldNames">The list or array of fieldnames to return.</param>
         /// <returns>A DataTable populated with data rows with only the specified values.</returns>
-        public override DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
+        public override IDataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
             if (AttributesPopulated) return base.GetAttributes(startIndex, numRows, fieldNames);
-            DataTable result = new DataTable();
+            IDataTable result = new DS_DataTable();
             DataColumn[] columns = GetColumns();
 
             // Always add FID in this paging scenario.
@@ -460,7 +460,7 @@ namespace DotSpatial.Data
 
             for (int i = 0; i < numRows; i++)
             {
-                DataRow dr = result.NewRow();
+                IDataRow dr = result.NewRow();
                 dr["FID"] = startIndex + i;
                 result.Rows.Add(dr);
             }
@@ -572,7 +572,7 @@ namespace DotSpatial.Data
             {
                 for (int i = 0; i < expressions.Length; i++)
                 {
-                    DataRow[] dr = ap[page].Select(expressions[i]);
+                    IDataRow[] dr = ap[page].Select(expressions[i]);
                     counts[i] += dr.Length;
                 }
 
@@ -713,7 +713,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table)</param>
         /// <param name="pageValues">The DataTable representing the rows to set. If the row count is larger than the dataset, this will add the rows instead.</param>
-        public new void SetAttributes(int startIndex, DataTable pageValues)
+        public new void SetAttributes(int startIndex, IDataTable pageValues)
         {
             // overridden in sub-classes
             _attributeTable.SetAttributes(startIndex, pageValues);
@@ -888,14 +888,14 @@ namespace DotSpatial.Data
             if (Attributes == null || Attributes.Table?.Columns.Count > 0) return;
 
             // Only add an FID field if there are no attributes at all.
-            DataTable newTable = new DataTable();
+            IDataTable newTable = new DS_DataTable();
             newTable.Columns.Add("FID");
 
             // Added by JamesP@esdm.co.uk - Index mode has no attributes and no features - so Features.count is Null and so was not adding any rows and failing
             int numRows = IndexMode ? ShapeIndices.Count : Features.Count;
             for (int i = 0; i < numRows; i++)
             {
-                DataRow dr = newTable.NewRow();
+                IDataRow dr = newTable.NewRow();
                 dr["FID"] = i;
                 newTable.Rows.Add(dr);
             }

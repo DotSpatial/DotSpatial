@@ -22,7 +22,7 @@ namespace DotSpatial.Data
     {
         #region Fields
 
-        private DataRow _dataRow;
+        private IDataRow _dataRow;
         private FeatureType _featureType;
 
         private IGeometry _geometry;
@@ -208,7 +208,7 @@ namespace DotSpatial.Data
         /// this is meaningless. You should create a new Feature by doing
         /// FeatureLayer.Features.Add(), which will return a new Feature.
         /// </summary>
-        public virtual DataRow DataRow
+        public virtual IDataRow DataRow
         {
             get
             {
@@ -311,7 +311,7 @@ namespace DotSpatial.Data
             clone.Geometry = Geometry.Copy();
             if (ParentFeatureSet?.DataTable != null)
             {
-                DataTable table = ParentFeatureSet.DataTable;
+                IDataTable table = ParentFeatureSet.DataTable;
                 clone._dataRow = table.NewRow();
                 if (DataRow != null)
                 {
@@ -386,7 +386,7 @@ namespace DotSpatial.Data
         /// <returns>An integer that controls the sorting based on the values for the specified field name.</returns>
         int IComparable<IFeature>.CompareTo(IFeature other)
         {
-            DataRow oDr = other.DataRow;
+            IDataRow oDr = other.DataRow;
             if (_dataRow != null && oDr != null)
             {
                 if (_dataRow.Table != null && oDr.Table != null)

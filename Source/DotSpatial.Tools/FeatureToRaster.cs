@@ -140,7 +140,7 @@ namespace DotSpatial.Tools
 
             List<string> fields = new List<string>();
             IFeatureSet fs = _inputParam[0].Value as IFeatureSet;
-            DataTable dt = fs?.DataTable;
+            IDataTable dt = fs?.DataTable;
             if (dt == null)
             {
                 return;

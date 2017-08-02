@@ -130,7 +130,7 @@ namespace DotSpatial.Data
         public void SaveChanges()
         {
             _dataSupply.Edit(EditRowIndex, EditRow);
-            DataRow dr = null;
+            IDataRow dr = null;
             if (IsRowCachedInPage(0, _editRowIndex))
             {
                 dr = Pages[0].Table.Rows[_editRowIndex];
@@ -217,7 +217,7 @@ namespace DotSpatial.Data
             {
                 if (IsRowCachedInPage(i, rowIndex))
                 {
-                    DataRow dr = Pages[i].Table.Rows[rowIndex % rowsPerPage];
+                    IDataRow dr = Pages[i].Table.Rows[rowIndex % rowsPerPage];
                     foreach (DataColumn column in Pages[0].Table.Columns)
                     {
                         string name = column.ColumnName;
@@ -255,7 +255,7 @@ namespace DotSpatial.Data
         private object RetrieveDataCacheItThenReturnElement(int rowIndex, int columnIndex)
         {
             // Retrieve a page worth of data containing the requested value.
-            DataTable table = _dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowIndex), rowsPerPage);
+            IDataTable table = _dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowIndex), rowsPerPage);
 
             // Replace the cached page furthest from the requested cell
             // with a new page containing the newly retrieved data.
@@ -267,7 +267,7 @@ namespace DotSpatial.Data
         private Dictionary<string, object> RetrieveDataCacheItThenReturnElement(int rowIndex)
         {
             // Retrieve a page worth of data containing the requested value.
-            DataTable table = _dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowIndex), rowsPerPage);
+            IDataTable table = _dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowIndex), rowsPerPage);
 
             // Replace the cached page furthest from the requested cell
             // with a new page containing the newly retrieved data.
@@ -288,14 +288,14 @@ namespace DotSpatial.Data
             /// <summary>
             /// The data Table
             /// </summary>
-            public readonly DataTable Table;
+            public readonly IDataTable Table;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DataPage"/> struct representing one page of data-row values.
             /// </summary>
             /// <param name="table">The DataTable that controls the content</param>
             /// <param name="rowIndex">The integer row index</param>
-            public DataPage(DataTable table, int rowIndex)
+            public DataPage(IDataTable table, int rowIndex)
             {
                 Table = table;
 

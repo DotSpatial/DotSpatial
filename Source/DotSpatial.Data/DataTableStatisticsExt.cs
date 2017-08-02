@@ -18,11 +18,11 @@ namespace DotSpatial.Data
         /// <param name="self">DataTable</param>
         /// <param name="fieldName">The field name.</param>
         /// <returns>The BoxStatistics.</returns>
-        public static BoxStatistics GetBoxStatistics(this DataTable self, string fieldName)
+        public static BoxStatistics GetBoxStatistics(this IDataTable self, string fieldName)
         {
             DataColumn dc = self.Columns[fieldName];
             ArrayList lst = new ArrayList();
-            foreach (DataRow row in self.Rows)
+            foreach (IDataRow row in self.Rows)
             {
                 lst.Add(row[fieldName]);
             }

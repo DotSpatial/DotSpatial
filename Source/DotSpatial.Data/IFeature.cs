@@ -20,7 +20,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the datarow containing all the attributes related to this geometry
         /// </summary>
-        DataRow DataRow { get; set; }
+        IDataRow DataRow { get; set; }
 
         /// <summary>
         /// Gets the FeatureType of the feature. This can either be Point, Multipoint, Line, Polygon or Unspecified if the feature has no geometry.

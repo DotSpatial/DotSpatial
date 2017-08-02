@@ -60,9 +60,9 @@ namespace DotSpatial.Data.Tests
             fs.DataTable.Columns.Add(new DataColumn("ID", typeof(int)));
 
             IFeature f = fs.AddFeature(new Point(c));
-            f.DataRow.BeginEdit();
+            //f.DataRow.BeginEdit();
             f.DataRow["ID"] = 1;
-            f.DataRow.EndEdit();
+            //f.DataRow.EndEdit();
 
             fs.SaveAs(outfile, true);
 

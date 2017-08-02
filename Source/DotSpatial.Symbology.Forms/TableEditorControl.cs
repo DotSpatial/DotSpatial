@@ -371,9 +371,9 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public void ZoomToEditedRow()
         {
-            DataRowView drv = dataGridView1.CurrentRow?.DataBoundItem as DataRowView;
+            IDataRow drv = dataGridView1.CurrentRow?.DataBoundItem as IDataRow;
             if (drv == null) return;
-            IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv.Row);
+            IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv);
             LayerFrame frame = _featureLayer.ParentMapFrame() as LayerFrame;
             if (frame == null) return;
             Envelope env = currentFeature.Geometry.EnvelopeInternal.Clone();
@@ -446,7 +446,7 @@ namespace DotSpatial.Symbology.Forms
             IgnoreSelectionChanged = false;
         }
 
-        private void AddFid(DataTable table)
+        private void AddFid(IDataTable table)
         {
             const string Fid = "FID";
             int i = 0;
@@ -556,7 +556,7 @@ namespace DotSpatial.Symbology.Forms
             for (int i = 0; i < _featureLayer.DataSet.DataTable.Rows.Count; i++)
             {
                 // assign the values
-                DataRow r = _featureLayer.DataSet.DataTable.Rows[i];
+                IDataRow r = _featureLayer.DataSet.DataTable.Rows[i];
                 IFeature f = fs.FeatureFromRow(r);
                 _featureLayer.DataSet.DataTable.Rows[i][colIndex] = f.Fid;
             }
@@ -1000,7 +1000,7 @@ namespace DotSpatial.Symbology.Forms
 
             // collect the field
             List<string> field = new List<string>();
-            DataTable dt = _featureLayer.DataSet.DataTable;
+            IDataTable dt = _featureLayer.DataSet.DataTable;
             if (dt == null) return;
             foreach (DataColumn dc in dt.Columns)
                 field.Add(dc.ToString());

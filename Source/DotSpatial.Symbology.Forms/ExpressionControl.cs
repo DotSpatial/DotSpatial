@@ -18,7 +18,7 @@ namespace DotSpatial.Symbology.Forms
 
         private readonly Expression _exp;
         private IAttributeSource _attributeSource;
-        private DataTable _table;
+        private IDataTable _table;
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace DotSpatial.Symbology.Forms
         /// Gets or sets the data Table for this control. Setting this will
         /// automatically update the fields shown in the list.
         /// </summary>
-        public DataTable Table
+        public IDataTable Table
         {
             get
             {
