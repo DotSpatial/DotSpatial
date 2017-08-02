@@ -14,6 +14,7 @@ namespace DotSpatial.Controls.Header
     {
         #region Fields
 
+        private Image _largeImage;
         private bool _allowEditingText;
         private string _displayText;
         private Color _fontColor;
@@ -56,6 +57,24 @@ namespace DotSpatial.Controls.Header
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the large image.
+        /// </summary>
+        /// <value>The large image.</value>
+        public Image LargeImage
+        {
+            get
+            {
+                return _largeImage;
+            }
+
+            set
+            {
+                _largeImage = value;
+                OnPropertyChanged("LargeImage");
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the user may enter their own value into the dropdown.
