@@ -104,6 +104,8 @@ namespace DotSpatial.Projections.Transforms
         /// </summary>
         protected const int I = 1;
 
+        private bool _bRotated = false;
+        private double _angle = 0;
         private string _esriName;
         private string[] _proj4Aliases;
         private string _proj4Name;
@@ -318,6 +320,18 @@ namespace DotSpatial.Projections.Transforms
         #endregion
 
         #region Properties
+
+        public bool Rotated
+        {
+            get { return _bRotated; }
+            set { _bRotated = value; }
+        }
+
+        public double Angle
+        {
+            get { return _angle; }
+            set { _angle = value; }
+        }
 
         /// <summary>
         /// Gets or sets the string name of this projection as it appears in .prj files and
