@@ -433,7 +433,7 @@ namespace DotSpatial.Plugins.Measure
             return area;
         }
 
-        private double GetDist(Coordinate c1)
+        protected virtual double GetDist(Coordinate c1)
         {
             Coordinate c2 = _coordinates[_coordinates.Count - 1];
             double dx = Math.Abs(c2.X - c1.X);
