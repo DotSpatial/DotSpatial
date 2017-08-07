@@ -167,6 +167,18 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
+        /// Destructor
+        /// </summary>
+        public void DisposeBitmaps()
+        {
+            if (_buffer != null)
+            {
+                _buffer.Dispose();
+                _buffer = null;
+            }
+        }
+
+        /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
         /// </summary>
         /// <param name="g">The graphics object to draw to</param>
