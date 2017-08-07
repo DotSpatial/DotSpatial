@@ -1,5 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using System.Collections.Generic;
 
 namespace DotSpatial.Projections.Tests
 {
@@ -157,6 +160,75 @@ namespace DotSpatial.Projections.Tests
 
             Assert.AreEqual(xy[0], -3.5875, 1e-3);
             Assert.AreEqual(xy[1], 40.47136, 1e-3);
+        }
+
+        [Test]
+        public void GeometryReprojectTest()
+        {
+            List<IPoint> lPoints = new List<IPoint>();
+            for (int i = 0; i < 10; ++i)
+                lPoints.Add(new Point(new Random().Next(50), new Random().Next(50)));
+
+            var multip = GeometryFactory.Default.CreateMultiPoint(lPoints.ToArray());
+
+            IList<Coordinate> listCoord = multip.Coordinates;
+            int iSize = listCoord.Count;
+            double[] xy = new double[iSize * 2];
+            int iIndex = 0;
+            for (int i = 0; i < iSize; i++)
+            {
+                xy[iIndex++] = listCoord[i].X;
+                xy[iIndex++] = listCoord[i].Y;
+            }
+
+            var projected = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Projected.World.WebMercator.ToProj4String());
+            var geographic = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Geographic.World.WGS1984.ToProj4String());
+
+            Reproject.ReprojectPoints(xy, null, geographic, projected, 0, multip.Coordinates.Length);
+            var multip2 = Reproject.ReprojectGeometry(multip, geographic, projected);
+
+            listCoord = multip2.Coordinates;
+            iSize = listCoord.Count;
+            double[] xy2 = new double[iSize * 2];
+            iIndex = 0;
+            for (int i = 0; i < iSize; i++)
+            {
+                xy2[iIndex++] = listCoord[i].X;
+                xy2[iIndex++] = listCoord[i].Y;
+            }
+
+            Assert.AreEqual(xy, xy2);
+
+            var lCoords = new List<Coordinate>();
+            for(int i = 0; i < 10; ++i)
+                lCoords.Add(new Coordinate(new Random().Next(50), new Random().Next(50)));
+
+            var polygon = GeometryFactory.Default.CreatePolygon(lCoords.ToArray());
+
+            listCoord = polygon.Coordinates;
+            iSize = listCoord.Count;
+            xy = new double[iSize * 2];
+            iIndex = 0;
+            for (int i = 0; i < iSize; i++)
+            {
+                xy[iIndex++] = listCoord[i].X;
+                xy[iIndex++] = listCoord[i].Y;
+            }
+
+            Reproject.ReprojectPoints(xy, null, geographic, projected, 0, polygon.Coordinates.Length);
+            var polygon2 = Reproject.ReprojectGeometry(polygon, geographic, projected);
+
+            listCoord = polygon2.Coordinates;
+            iSize = listCoord.Count;
+            xy2 = new double[iSize * 2];
+            iIndex = 0;
+            for (int i = 0; i < iSize; i++)
+            {
+                xy2[iIndex++] = listCoord[i].X;
+                xy2[iIndex++] = listCoord[i].Y;
+            }
+
+            Assert.AreEqual(xy, xy2);
         }
     }
 }

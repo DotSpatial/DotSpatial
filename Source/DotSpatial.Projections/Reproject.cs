@@ -13,7 +13,10 @@
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
 // ********************************************************************************************************
 
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using System;
+using System.Collections.Generic;
 
 namespace DotSpatial.Projections
 {
@@ -169,6 +172,69 @@ namespace DotSpatial.Projections
             {
                 ConvertToProjected(dest, xy, z, dstZtoMeter, startIndex, numPoints);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <param name="source"></param>
+        /// <param name="dest"></param>
+        /// <returns></returns>
+        public static IGeometry ReprojectGeometry(IGeometry geom, ProjectionInfo source, ProjectionInfo dest)
+        {
+            if (geom is IGeometryCollection)
+            {
+                IGeometryCollection iGeomColl = geom as IGeometryCollection;
+                List<IGeometry> lGeom = new List<IGeometry>();
+                foreach (IGeometry iGeom in iGeomColl.Geometries)
+                    lGeom.Add(ReprojectGeometry(iGeom, source, dest));
+
+                if (geom is IMultiLineString)
+                    return geom.Factory.CreateMultiLineString(Array.ConvertAll(lGeom.ToArray(), item => (ILineString)item));
+
+                if (geom is IMultiPolygon)
+                    return geom.Factory.CreateMultiPolygon(Array.ConvertAll(lGeom.ToArray(), item => (IPolygon)item));
+                    
+                if (geom is IMultiPoint)
+                    return geom.Factory.CreateMultiPoint(Array.ConvertAll(lGeom.ToArray(), item => (IPoint)item));
+
+                return geom.Factory.CreateGeometryCollection(lGeom.ToArray());
+            }
+
+            Coordinate[] listCoord = geom.Coordinates;
+            int iSize = listCoord.Length;
+            double[] xy = new double[iSize * 2];
+            int iIndex = 0;
+            for (int i = 0; i < iSize; i++)
+            {
+                xy[iIndex++] = listCoord[i].X;
+                xy[iIndex++] = listCoord[i].Y;
+            }
+
+
+            ReprojectPoints(xy, null, source, dest, 0, geom.Coordinates.Length);
+
+            IGeometry newGeom = geom.Clone() as IGeometry;
+            listCoord = newGeom.Coordinates;
+            iIndex = 0;
+            for (int i = 0; i < iSize; i++)
+            {
+                listCoord[i].X = xy[iIndex++];
+                listCoord[i].Y = xy[iIndex++];
+            }
+
+            ICoordinateSequence iCoordSeq = geom.Factory.CoordinateSequenceFactory.Create(listCoord);
+
+            if (geom is IPoint)
+                return geom.Factory.CreatePoint(iCoordSeq);
+            if (geom is ILinearRing)
+                return geom.Factory.CreateLinearRing(iCoordSeq);
+            if (geom is ILineString)
+                return geom.Factory.CreateLineString(iCoordSeq);
+            if (geom is IPolygon)
+                return geom.Factory.CreatePolygon(iCoordSeq);
+            return null;
         }
 
         private static void ConvertToProjected(ProjectionInfo dest, double[] xy, double[] z, double dstZtoMeter, int startIndex, int numPoints)
