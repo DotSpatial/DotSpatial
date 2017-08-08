@@ -548,13 +548,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
             int h;
             int m;
-            int s;
+            float s;
             int flag;
 
             _currentFeature.GetFieldAsDateTime(i - 2, out year, out month, out day, out h, out m, out s, out flag);
             try
             {
-                return new DateTime(year, month, day, h, m, s);
+                return new DateTime(year, month, day, h, m, (int)s);
             }
             catch (ArgumentOutOfRangeException)
             {

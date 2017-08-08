@@ -89,14 +89,7 @@
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotSpatial.Controls.Tests\bin\Debug\DotSpatial.GeoAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\Debug\DotSpatial.NetTopologySuite.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\DotSpatial.NetTopologySuite\NetTopologySuite\NetTopologySuite.csproj"><Project>{5770daa9-84e5-4770-af43-f6b815894368}</Project><Name>NetTopologySuite</Name></ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -362,6 +355,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Reference.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
