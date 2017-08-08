@@ -38,7 +38,8 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>a025a30f</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,21 +76,17 @@
       <HintPath>$(SolutionDir)packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="gdalconst_csharp, Version=1.0.5387.28601, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\GDAL.1.11.1\lib\net40\gdalconst_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="gdalconst_csharp">
+      <HintPath>$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1900\x86\$(ConfigurationName)\gdalconst_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="gdal_csharp, Version=1.0.5387.28601, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\GDAL.1.11.1\lib\net40\gdal_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="gdal_csharp">
+      <HintPath>$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1900\x86\$(ConfigurationName)\gdal_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="ogr_csharp, Version=1.0.5387.28600, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\GDAL.1.11.1\lib\net40\ogr_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ogr_csharp">
+      <HintPath>$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1900\x86\$(ConfigurationName)\ogr_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="osr_csharp, Version=1.0.5387.28600, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\GDAL.1.11.1\lib\net40\osr_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="osr_csharp">
+      <HintPath>$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1900\x86\$(ConfigurationName)\osr_csharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -193,13 +190,4 @@
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets" Condition="Exists('..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets'))" />
-    <Error Condition="!Exists('..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets'))" />
-  </Target>
-  <Import Project="..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets" Condition="Exists('..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets')" />
 </Project>
