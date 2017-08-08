@@ -2477,7 +2477,7 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="paper">Point in paper coordinates.</param>
         /// <returns>Rectangle in screen coordinates.</returns>
-        private PointF PaperToScreen(PointF paper)
+        public PointF PaperToScreen(PointF paper)
         {
             return PaperToScreen(paper.X, paper.Y);
         }
@@ -2488,7 +2488,7 @@ namespace DotSpatial.Controls
         /// <param name="paperX">The paper X coordinate.</param>
         /// <param name="paperY">The paper Y coordinate.</param>
         /// <returns>Point in screen coordinates.</returns>
-        private PointF PaperToScreen(float paperX, float paperY)
+        public PointF PaperToScreen(float paperX, float paperY)
         {
             var screenX = (paperX / 100F * 96F * _zoom) + _paperLocation.X;
             var screenY = (paperY / 100F * 96F * _zoom) + _paperLocation.Y;
@@ -2500,7 +2500,7 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="paper">Rectangle in paper coordinates.</param>
         /// <returns>Rectangle in screen coordinates.</returns>
-        private RectangleF PaperToScreen(RectangleF paper)
+        public RectangleF PaperToScreen(RectangleF paper)
         {
             return PaperToScreen(paper.X, paper.Y, paper.Width, paper.Height);
         }
@@ -2513,7 +2513,7 @@ namespace DotSpatial.Controls
         /// <param name="paperW">The paper width.</param>
         /// <param name="paperH">The paper height.</param>
         /// <returns>Rectangle in screen coordinates.</returns>
-        private RectangleF PaperToScreen(float paperX, float paperY, float paperW, float paperH)
+        public RectangleF PaperToScreen(float paperX, float paperY, float paperW, float paperH)
         {
             var screenTl = PaperToScreen(paperX, paperY);
             var screenBr = PaperToScreen(paperX + paperW, paperY + paperH);
@@ -2535,7 +2535,7 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="screen">Rectangle in screen coordinates to convert.</param>
         /// <returns>Rectangle in paper coordinates.</returns>
-        private PointF ScreenToPaper(PointF screen)
+        public PointF ScreenToPaper(PointF screen)
         {
             return ScreenToPaper(screen.X, screen.Y);
         }
@@ -2546,7 +2546,7 @@ namespace DotSpatial.Controls
         /// <param name="screenX">X value of the point.</param>
         /// <param name="screenY">Y value of the point.</param>
         /// <returns>The converted point in paper coordinates.</returns>
-        private PointF ScreenToPaper(float screenX, float screenY)
+        public PointF ScreenToPaper(float screenX, float screenY)
         {
             var paperX = (screenX - _paperLocation.X) / _zoom / 96F * 100F;
             var paperY = (screenY - _paperLocation.Y) / _zoom / 96F * 100F;
@@ -2558,7 +2558,7 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="screen">Rectangle in screen coordinates to convert.</param>
         /// <returns>Rectangle in paper coordinates.</returns>
-        private RectangleF ScreenToPaper(RectangleF screen)
+        public RectangleF ScreenToPaper(RectangleF screen)
         {
             return ScreenToPaper(screen.X, screen.Y, screen.Width, screen.Height);
         }
@@ -2571,7 +2571,7 @@ namespace DotSpatial.Controls
         /// <param name="screenW">Screen width.</param>
         /// <param name="screenH">Scrren height.</param>
         /// <returns>Rectangle in paper coordinates.</returns>
-        private RectangleF ScreenToPaper(float screenX, float screenY, float screenW, float screenH)
+        public RectangleF ScreenToPaper(float screenX, float screenY, float screenW, float screenH)
         {
             var paperTl = ScreenToPaper(screenX, screenY);
             var paperBr = ScreenToPaper(screenX + screenW, screenY + screenH);

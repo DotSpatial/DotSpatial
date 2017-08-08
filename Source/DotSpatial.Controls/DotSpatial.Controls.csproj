@@ -291,6 +291,9 @@
     <Compile Include="SpatialToolStripPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ViewChangedEventArgs.cs" />
     <Compile Include="YieldStyles.cs" />
     <Compile Include="MapFunctionZoom.cs" />
@@ -468,6 +471,7 @@
     <EmbeddedResource Include="ToolManager.resx">
       <DependentUpon>ToolManager.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TreeView.resx" />
     <EmbeddedResource Include="ZoomToCoordinatesDialog.resx">
       <DependentUpon>ZoomToCoordinatesDialog.cs</DependentUpon>
     </EmbeddedResource>
