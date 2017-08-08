@@ -107,6 +107,7 @@ namespace DotSpatial.Controls
         private bool _isPanning;
 
         // CGX
+        private double _angle;
         private double _referenceScale;
         private Color _backgroundColor;
         private List<CBookmarks> _bookMarks;
@@ -200,6 +201,16 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the clockwise map frame angle used for rotation.
+        /// </summary>
+        [Serialize("Angle")]
+        public double Angle
+        {
+            get { return _angle; }
+            set { _angle = value; }
+        }
 
         /// <summary>
         /// Gets the bottom (or height) of this client rectangle

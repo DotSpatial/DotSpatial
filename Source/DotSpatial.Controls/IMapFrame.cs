@@ -45,6 +45,15 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
+        /// Gets or sets the clockwise map frame angle used for rotation.
+        /// </summary>
+        double Angle
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the buffered image. Mess with this at your own risk.
         /// </summary>
         Image BufferImage { get; set; }
