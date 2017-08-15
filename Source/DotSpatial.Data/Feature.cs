@@ -249,7 +249,7 @@ namespace DotSpatial.Data
                 {
                     return ShapeIndex?.RecordNumber - 1 ?? -2; // -1 because RecordNumber for shapefiles is 1-based.
 
-                    // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
+                    // todo: The better will be remove RecordNumber from public interface to avoid Â±1 issues.
                 }
 
                 return _parentFeatureSet.Features.IndexOf(this);
@@ -451,6 +451,15 @@ namespace DotSpatial.Data
                     break;
                 case OgcGeometryType.MultiPoint:
                     featureType = FeatureType.MultiPoint;
+                    break;
+                case OgcGeometryType.GeometryCollection:
+                    IGeometryCollection geomCollection = geometry as IGeometryCollection;
+                    if (geomCollection != null)
+                    {
+                        if (geomCollection.NumGeometries > 0)
+                            featureType = FeatureTypeFromGeometryType(geomCollection[0]);
+                    }
+
                     break;
             }
 
