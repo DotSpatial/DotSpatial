@@ -456,8 +456,24 @@ namespace DotSpatial.Data
                     IGeometryCollection geomCollection = geometry as IGeometryCollection;
                     if (geomCollection != null)
                     {
-                        if (geomCollection.NumGeometries > 0)
-                            featureType = FeatureTypeFromGeometryType(geomCollection[0]);
+                        // Check to see if every featureType in the GeometryCollection matches
+                        // else leave as FeatureType.Unspecified
+                        FeatureType testFeatureType = FeatureType.Unspecified;
+                        for (int i = 0; i < geomCollection.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                testFeatureType = FeatureTypeFromGeometryType(geomCollection[i]);
+                            }
+                            else
+                            {
+                                FeatureType tempFeatureType = FeatureTypeFromGeometryType(geomCollection[i]);
+                                if (testFeatureType != tempFeatureType)
+                                    return FeatureType.Unspecified; // if feature types do not match, then return Unspecified
+                            }
+                        }
+
+                        featureType = testFeatureType;
                     }
 
                     break;
