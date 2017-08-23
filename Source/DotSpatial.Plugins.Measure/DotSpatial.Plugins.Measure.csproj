@@ -25,23 +25,23 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Plugins\DotSpatial.Plugins.Measure\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Debug\Plugins\DotSpatial.Plugins.Measure\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\bin\Debug\Plugins\DotSpatial.Plugins.Measure\DotSpatial.Plugins.Measure.XML</DocumentationFile>
+    <DocumentationFile>$(SolutionDir)\bin\Debug\Plugins\DotSpatial.Plugins.Measure\DotSpatial.Plugins.Measure.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\Plugins\DotSpatial.Plugins.Measure\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Release\Plugins\DotSpatial.Plugins.Measure\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\bin\Release\Plugins\DotSpatial.Plugins.Measure\DotSpatial.Plugins.Measure.XML</DocumentationFile>
+    <DocumentationFile>$(SolutionDir)\bin\Release\Plugins\DotSpatial.Plugins.Measure\DotSpatial.Plugins.Measure.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>

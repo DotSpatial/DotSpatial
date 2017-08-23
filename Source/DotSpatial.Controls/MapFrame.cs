@@ -862,25 +862,25 @@ namespace DotSpatial.Controls
                 // Draw the background color
                 bufferDevice.Clear(_parent?.BackColor ?? Color.White);
 
-                // CGX
+
                 if (_parent != null)
                 {
                     if (!BackgroundColor.IsEmpty)
                         _parent.BackColor = BackgroundColor;
                     else
                         _parent.BackColor = Color.White;
-                } // Fin CGX
+                }
 
                 // First draw all the vector content
-            var layers = Layers.Where(_ => _.VisibleAtExtent(ViewExtents)).ToList();
-            for (int i = 0; i < 2; i++)
+                var layers = Layers.Where(_ => _.VisibleAtExtent(ViewExtents)).ToList();
+                for (int i = 0; i < 2; i++)
                 {
-                // first draw the normal colors and then the selection colors on top
-                foreach (IMapLayer layer in GetAllLayers()) // foreach (IMapLayer layer in Layers) // CGX
-                {
-                    layer.DrawRegions(args, regions, i == 1);
+                    // first draw the normal colors and then the selection colors on top
+                    foreach (IMapLayer layer in Layers)
+                    {
+                        layer.DrawRegions(args, regions, i == 1);
+                    }
                 }
-            }
 
                 // Then labels
                 MapLabelLayer.ClearAllExistingLabels();
@@ -890,15 +890,15 @@ namespace DotSpatial.Controls
                 }
 
                 // First draw all the vector content
-            var drawingLayers = DrawingLayers.OfType<IMapLayer>().Where(_ => _.VisibleAtExtent(ViewExtents)).ToList();
-            for (int i = 0; i < 2; i++)
+                var drawingLayers = DrawingLayers.OfType<IMapLayer>().Where(_ => _.VisibleAtExtent(ViewExtents)).ToList();
+                for (int i = 0; i < 2; i++)
                 {
-                // first draw the normal colors and then the selection colors on top
-                foreach (var layer in drawingLayers)
-                {
-                    layer.DrawRegions(args, regions, i == 1);
+                    // first draw the normal colors and then the selection colors on top
+                    foreach (var layer in drawingLayers)
+                    {
+                        layer.DrawRegions(args, regions, i == 1);
+                    }
                 }
-            }
 
                 if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
                 _buffer = _backBuffer;
@@ -919,7 +919,7 @@ namespace DotSpatial.Controls
                 return;
             }
 
-            
+
         }
 
         /// <summary>
@@ -1565,7 +1565,7 @@ namespace DotSpatial.Controls
 
             // first draw the normal colors and then the selection colors on top
             for (int i = 0; i < 2; i++)
-                                       {
+            {
                 geoLayer.DrawRegions(args, new List<Extent> { args.GeographicExtents }, i == 1);
             }
 
@@ -1911,14 +1911,14 @@ namespace DotSpatial.Controls
 
         }// Fin CGX
 
-    #endregion
+        #endregion
 
-    #region Classes
+        #region Classes
 
-    /// <summary>
-    /// Transforms an IMapLayer enumerator into an ILayer Enumerator
-    /// </summary>
-    private class MapLayerEnumerator : IEnumerator<ILayer>
+        /// <summary>
+        /// Transforms an IMapLayer enumerator into an ILayer Enumerator
+        /// </summary>
+        private class MapLayerEnumerator : IEnumerator<ILayer>
         {
             #region Fields
 
