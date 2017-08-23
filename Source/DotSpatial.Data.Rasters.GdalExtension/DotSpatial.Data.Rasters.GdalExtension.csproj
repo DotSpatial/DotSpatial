@@ -75,11 +75,7 @@
     <AssemblyOriginatorKeyFile>DotSpatial.Data.Rasters.GdalExtension.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gdalconst_csharp">
+	<Reference Include="gdalconst_csharp">
       <HintPath>$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1900\x86\$(ConfigurationName)\gdalconst_csharp.dll</HintPath>
     </Reference>
     <Reference Include="gdal_csharp">
@@ -90,6 +86,10 @@
     </Reference>
     <Reference Include="osr_csharp">
       <HintPath>$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1900\x86\$(ConfigurationName)\osr_csharp.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

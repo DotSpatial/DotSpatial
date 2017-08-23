@@ -143,10 +143,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <PropertyGroup>
+  <!-- <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"
 xcopy /s /y /i "$(ProjectDir)Data" "$(TargetDir)Data"</PostBuildEvent>
-  </PropertyGroup>
+  </PropertyGroup>-->
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
