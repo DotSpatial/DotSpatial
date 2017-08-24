@@ -17,7 +17,7 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private static bool _printSVG = true;
+        private static bool _printSVG = false;
 
         private Bitmap _buffer;
         private Envelope _envelope;

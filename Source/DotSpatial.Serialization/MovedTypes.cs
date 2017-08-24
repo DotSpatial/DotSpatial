@@ -20,7 +20,7 @@ namespace DotSpatial.Serialization
         {
             Types = new List<TypeMoveDefintion>
                     {
-                        new TypeMoveDefintion("DotSpatial.Topology", "GeoAPI.Geometries", "DotSpatial.Topology", "GeoAPI"),
+                        new TypeMoveDefintion("DotSpatial.Topology", "GeoAPI.Geometries", "DotSpatial.Topology", "DotSpatial.GeoAPI"),
                         new TypeMoveDefintion("DotSpatial.Topology", "NetTopologySuite.Geometries", "DotSpatial.Topology", "NetTopologySuite"),
                         new TypeMoveDefintion("DotSpatial.Topology", "DotSpatial.NTSExtension", "DotSpatial.Topology", "DotSpatial.NTSExtension")
                     };

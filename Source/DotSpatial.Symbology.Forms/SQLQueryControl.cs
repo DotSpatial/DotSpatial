@@ -219,7 +219,7 @@ namespace DotSpatial.Symbology.Forms
             else if (_table != null)
             {
                 isString = _table.Columns[fieldName].DataType == typeof(string);
-                foreach (DataRow dr in _table.Rows)
+                foreach (IDataRow dr in _table.Rows)
                 {
                     if (dr[fieldName] is DBNull) continue;
                     if (lst.Contains(dr[fieldName])) continue;
