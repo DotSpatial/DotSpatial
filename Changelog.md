@@ -126,3 +126,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Crash when attempting to use a serial GPS device on Mono
 - Clear the selection inside FeatureLayer.RemoveSelectedFeatures so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
 - In InRamImageData.Open don't draw the image unscaled because this can cause the image not to be drawn
+- FeatureTypeFromGeometryType Method updated to work with GeometryCollection
