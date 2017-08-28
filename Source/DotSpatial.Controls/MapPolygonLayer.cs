@@ -563,51 +563,54 @@ namespace DotSpatial.Controls
             foreach (var kvp in paths)
             {
                 var category = kvp.Key.Category;
+				
+				if (kvp.Key.Category == null)
+                    continue;
 
-                        Extent catBounds = (CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category)) ?? Extent;
-                        var bounds = new RectangleF
-                        {
-                            X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
-                            Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
-                        };
-                        float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
-                        bounds.Width = r - bounds.X;
-                        float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
-                        bounds.Height = b - bounds.Y;
+				Extent catBounds = (CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category)) ?? Extent;
+				var bounds = new RectangleF
+				{
+					X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
+					Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
+				};
+				float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
+				bounds.Width = r - bounds.X;
+				float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
+				bounds.Height = b - bounds.Y;
 
                 var ps = (selected && kvp.Key.Selected ? category.SelectionSymbolizer : category.Symbolizer) as PolygonSymbolizer;
                 if (ps == null) continue;
 
                 g.SmoothingMode = ps.GetSmoothingMode();
 
-                        foreach (IPattern pattern in ps.Patterns)
-                        {
-                            IGradientPattern gp = pattern as IGradientPattern;
-                            if (gp != null)
-                            {
-                                gp.Bounds = bounds;
-                            }
+				foreach (IPattern pattern in ps.Patterns)
+				{
+					IGradientPattern gp = pattern as IGradientPattern;
+					if (gp != null)
+					{
+						gp.Bounds = bounds;
+					}
 
                     pattern.FillPath(g, kvp.Value);
-                            }
+                }
 
                 double scale = ps.GetScale(e);
-                        // CGX
-                        if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
-                        {
-                            double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
-                            double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
-                            scale = dReferenceScale / dCurrentScale;
-                        } // Fin CGX
+				// CGX
+				if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+				{
+					double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+					double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+					scale = dReferenceScale / dCurrentScale;
+				} // Fin CGX
 
-                        foreach (IPattern pattern in ps.Patterns)
-                        {
-                            if (pattern.UseOutline)
-                            {
-                        pattern.DrawPath(g, kvp.Value, scale);
-                            }
-                        }
-                    }
+				foreach (IPattern pattern in ps.Patterns)
+				{
+					if (pattern.UseOutline)
+					{
+						pattern.DrawPath(g, kvp.Value, scale);
+					}
+				}
+			}
 
             if (e.Device == null) g.Dispose();
         }
