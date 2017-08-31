@@ -61,6 +61,24 @@ namespace DotSpatial.Plugins.SpatiaLite.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find the geometry_columns table..
+        /// </summary>
+        internal static string CouldNotFindTheGeometryColumnsTable {
+            get {
+                return ResourceManager.GetString("CouldNotFindTheGeometryColumnsTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find the SpatiaLite version..
+        /// </summary>
+        internal static string CouldNotFindTheSpatiaLiteVersion {
+            get {
+                return ResourceManager.GetString("CouldNotFindTheSpatiaLiteVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Database: {0}.
         /// </summary>
         internal static string Database0 {
@@ -70,7 +88,7 @@ namespace DotSpatial.Plugins.SpatiaLite.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The database {0} is not a valid SpatiaLite database. Table geometry_columns not found..
+        ///   Looks up a localized string similar to The database {0} is not a valid SpatiaLite database. {1}.
         /// </summary>
         internal static string DatabaseNotValid {
             get {

@@ -118,8 +118,13 @@
     <Compile Include="GdalRaster.cs" />
     <Compile Include="GdalRasterProvider.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="MapSelfLoadGroup.cs" />
+    <Compile Include="MapSelfLoadLineLayer.cs" />
+    <Compile Include="MapSelfLoadPointLayer.cs" />
+    <Compile Include="MapSelfLoadPolygonLayer.cs" />
+    <Compile Include="MultiLayerDataSet.cs" />
     <Compile Include="OgrDataReader.cs" />
-    <Compile Include="OgrVectorProvider.cs" />
+    <Compile Include="OgrDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +168,11 @@
   </Target>
   -->
   <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+      <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
+      <Name>DotSpatial.Controls</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>
@@ -176,6 +186,11 @@
     <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
       <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
       <Name>DotSpatial.Serialization</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+      <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
+      <Name>DotSpatial.Symbology</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

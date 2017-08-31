@@ -84,7 +84,18 @@ namespace DotSpatial.Serialization
             var result = new XElement(elementName, content);
             result.Add(new XAttribute(XmlConstants.TypeId, GetTypeId(type).ToString()));
 
-            if (attribute != null && attribute.ConstructorArgumentIndex >= 0) result.Add(new XAttribute(XmlConstants.Arg, attribute.ConstructorArgumentIndex));
+            if (attribute != null)
+            {
+                if (attribute.ConstructorArgumentIndex > -1)
+                {
+                    result.Add(new XAttribute(XmlConstants.Arg, attribute.ConstructorArgumentIndex));
+                    result.Add(new XAttribute(XmlConstants.UseCase, attribute.UseCase));
+                }
+
+                if (!string.IsNullOrWhiteSpace(attribute.StaticConstructorMethodName)) result.Add(new XAttribute(XmlConstants.StaticConstructorMethod, attribute.StaticConstructorMethodName));
+
+                if (attribute.UseStaticConstructor) result.Add(new XAttribute(XmlConstants.StaticMethodIndicator, attribute.UseStaticConstructor));
+            }
 
             if (!type.IsValueType && !type.Equals(typeof(string))) // Don't cache value types or strings
                 _visitedObjects.Add(value, result);

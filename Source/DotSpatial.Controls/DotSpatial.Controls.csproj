@@ -89,6 +89,8 @@
     <Compile Include="Header\ToolstripPosition.cs" />
     <Compile Include="IFeatureLayerExtensions.cs" />
     <Compile Include="IFeatureSymbolizerExt.cs" />
+    <Compile Include="IMapSelfLoadLayer.cs" />
+    <Compile Include="ISelfLoadSet.cs" />
     <Compile Include="LayoutDocToolStrip.Designer.cs">
       <DependentUpon>LayoutDocToolStrip.cs</DependentUpon>
     </Compile>

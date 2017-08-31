@@ -24,6 +24,8 @@ namespace DotSpatial.Data
     /// </summary>
     public class FeatureSet : DataSet, IFeatureSet
     {
+        #region Fields
+
         /// <summary>
         /// The _data table.
         /// </summary>
@@ -58,6 +60,10 @@ namespace DotSpatial.Data
         /// The _z.
         /// </summary>
         private double[] _z;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureSet"/> class.
@@ -168,6 +174,10 @@ namespace DotSpatial.Data
             }
         }
 
+        #endregion
+
+        #region Events
+
         /// <summary>
         /// Occurs when a new feature is added to the list
         /// </summary>
@@ -182,6 +192,10 @@ namespace DotSpatial.Data
         /// Occurs when the vertices are invalidated, encouraging a re-draw
         /// </summary>
         public event EventHandler VerticesInvalidated;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the attributes have all been loaded into the data table.
@@ -392,6 +406,19 @@ namespace DotSpatial.Data
                 _z = value;
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the serializer should use the static open method or the constructor on deserializing the FeatureSet.
+        /// This should only be true if a FeatureSet was added to the Map. Shapefiles can be loaded via constructor. Do not remove this. This is used to write the relevant informations to the dspx.
+        /// </summary>
+        // ReSharper disable UnusedMember.Local
+        [Serialize("UseStaticOpenMethod", UseStaticConstructor = true, StaticConstructorMethodName = "Open")]
+        public virtual bool UseStaticOpenMethod => GetType() == typeof(FeatureSet);
+
+        // ReSharper restore UnusedMember.Local
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This attempts to open the specified file as a valid IFeatureSet. This will require that
@@ -1021,6 +1048,7 @@ namespace DotSpatial.Data
         public bool RemoveShapeAt(int index)
         {
             if (index < 0 || index >= _shapeIndices.Count) return false;
+
             if (IndexMode == false)
             {
                 Features.RemoveAt(index);
@@ -1132,6 +1160,7 @@ namespace DotSpatial.Data
                 for (int i = remove.Count - 1; i >= 0; i--)
                 {
                     if (remove[i] < 0 || remove[i] >= _shapeIndices.Count) continue;
+
                     Features.RemoveAt(remove[i]);
                 }
 
@@ -1159,6 +1188,7 @@ namespace DotSpatial.Data
             foreach (int index in remaining)
             {
                 if (index < 0 || index >= _shapeIndices.Count) continue;
+
                 ShapeRange sr = _shapeIndices[index];
                 double[] xyShape = new double[sr.NumPoints * 2];
                 Array.Copy(_vertices, sr.StartIndex * 2, xyShape, 0, sr.NumPoints * 2);
@@ -1581,7 +1611,10 @@ namespace DotSpatial.Data
         {
             if (_features == null)
             {
-                _features = new FeatureList(this) { IncludeAttributes = false };
+                _features = new FeatureList(this)
+                {
+                    IncludeAttributes = false
+                };
             }
             else
             {
@@ -1663,7 +1696,11 @@ namespace DotSpatial.Data
                 geom = FeatureGeometryFactory.CreateMultiLineString(new ILineString[] { });
             }
 
-            var f = new Feature(geom) { ParentFeatureSet = this, ShapeIndex = shape };
+            var f = new Feature(geom)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape
+            };
 
             // Attribute reading is only handled in the overridden case.
             return f;
@@ -1705,7 +1742,11 @@ namespace DotSpatial.Data
             }
 
             var mp = FeatureGeometryFactory.CreateMultiPoint(coords.ToArray());
-            var f = new Feature(mp) { ParentFeatureSet = this, ShapeIndex = shape };
+            var f = new Feature(mp)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape
+            };
 
             // Attribute reading is only handled in the overridden case.
             return f;
@@ -1745,7 +1786,11 @@ namespace DotSpatial.Data
                 p = FeatureGeometryFactory.CreatePoint(c);
             }
 
-            var f = new Feature(p) { ParentFeatureSet = this, ShapeIndex = shape };
+            var f = new Feature(p)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape
+            };
 
             // Attributes only retrieved in the overridden case
             return f;
@@ -1843,7 +1888,11 @@ namespace DotSpatial.Data
                 polygons[i] = FeatureGeometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray());
             }
 
-            Feature feature = new Feature(polygons.Length == 1 ? polygons[0] : FeatureGeometryFactory.CreateMultiPolygon(polygons) as IGeometry) { ParentFeatureSet = this, ShapeIndex = shape };
+            Feature feature = new Feature(polygons.Length == 1 ? polygons[0] : FeatureGeometryFactory.CreateMultiPolygon(polygons) as IGeometry)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape
+            };
 
             // Attributes handled in the overridden case
             return feature;
@@ -1935,7 +1984,11 @@ namespace DotSpatial.Data
             int vIndex = 0;
             foreach (IFeature f in _features)
             {
-                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Geometry.EnvelopeInternal), StartIndex = vIndex };
+                ShapeRange shx = new ShapeRange(FeatureType)
+                {
+                    Extent = new Extent(f.Geometry.EnvelopeInternal),
+                    StartIndex = vIndex
+                };
                 _shapeIndices.Add(shx);
                 f.ShapeIndex = shx;
 
@@ -1955,7 +2008,10 @@ namespace DotSpatial.Data
                         // The part range should be adjusted to no longer include the holes
                         foreach (var hole in bp.Holes)
                         {
-                            PartRange holex = new PartRange(_vertices, shapeStart, vIndex - shapeStart, FeatureType) { NumVertices = hole.NumPoints };
+                            PartRange holex = new PartRange(_vertices, shapeStart, vIndex - shapeStart, FeatureType)
+                            {
+                                NumVertices = hole.NumPoints
+                            };
                             shx.Parts.Add(holex);
                             vIndex += hole.NumPoints;
                         }
@@ -2070,7 +2126,10 @@ namespace DotSpatial.Data
                 }
             }
 
-            FeatureSet copy = new FeatureSet(f) { Projection = CloneableEm.Copy(Projection) };
+            FeatureSet copy = new FeatureSet(f)
+            {
+                Projection = CloneableEm.Copy(Projection)
+            };
             copy.InvalidateEnvelope(); // the new set will likely have a different envelope bounds
             return copy;
         }
@@ -2148,5 +2207,7 @@ namespace DotSpatial.Data
                 }
             }
         }
+
+        #endregion
     }
 }

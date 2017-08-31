@@ -1,6 +1,8 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using DotSpatial.Data;
+
 namespace DotSpatial.Plugins.SpatiaLite
 {
     /// <summary>
@@ -22,6 +24,11 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// Gets or sets the geometry type.
         /// </summary>
         public string GeometryType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the FeatureType.
+        /// </summary>
+        public FeatureType FeatureType { get; set; }
 
         /// <summary>
         /// Gets or sets the coordinate dimension.

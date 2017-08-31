@@ -146,9 +146,15 @@
     <value>SpatiaLite database|*.sqlite</value>
   </data>
   <data name="DatabaseNotValid" xml:space="preserve">
-    <value>The database {0} is not a valid SpatiaLite database. Table geometry_columns not found.</value>
+    <value>The database {0} is not a valid SpatiaLite database. {1}</value>
   </data>
   <data name="NoValidQueryResultFound" xml:space="preserve">
     <value>No valid query result found. Please re-run the query.</value>
+  </data>
+  <data name="CouldNotFindTheSpatiaLiteVersion" xml:space="preserve">
+    <value>Could not find the SpatiaLite version.</value>
+  </data>
+  <data name="CouldNotFindTheGeometryColumnsTable" xml:space="preserve">
+    <value>Could not find the geometry_columns table.</value>
   </data>
 </root>

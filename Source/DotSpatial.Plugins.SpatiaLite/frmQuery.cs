@@ -15,32 +15,31 @@ namespace DotSpatial.Plugins.SpatiaLite
     /// </summary>
     public partial class FrmQuery : Form
     {
-        private readonly string _connString;
+        private readonly SpatiaLiteHelper _slh;
         private readonly IMap _mainMap;
         private IFeatureSet _queryResult;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrmQuery"/> class.
         /// </summary>
-        /// <param name="dbConnection">The connectionstring for the SpatiaLite database.</param>
+        /// <param name="slh">The SpatiaLiteHelper that is connected to the database.</param>
         /// <param name="map">The map layers get added to.</param>
-        public FrmQuery(string dbConnection, IMap map)
+        public FrmQuery(SpatiaLiteHelper slh, IMap map)
         {
             InitializeComponent();
 
-            _connString = dbConnection;
+            _slh = slh;
             _mainMap = map;
 
-            SpatiaLiteHelper slh = new SpatiaLiteHelper();
-            List<GeometryColumnInfo> geometryColumnList = slh.GetGeometryColumns(dbConnection);
+            List<GeometryColumnInfo> geometryColumnList = _slh.GetGeometryColumns();
 
             // get names of tables
-            List<string> tableNameList = slh.GetTableNames(_connString);
+            List<string> tableNameList = slh.GetTableNames();
             foreach (string tableName in tableNameList)
             {
                 try
                 {
-                    List<string> colNames = slh.GetColumnNames(_connString, tableName);
+                    List<string> colNames = slh.GetColumnNames(tableName);
                     TreeNode nTableName = treeTables.Nodes.Add(tableName);
                     foreach (string cn in colNames)
                     {
@@ -55,8 +54,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         private void BtnOkClick(object sender, EventArgs e)
         {
             _queryResult = null;
-            SpatiaLiteHelper slh = new SpatiaLiteHelper();
-            _queryResult = slh.ReadFeatureSet(_connString, txtQuery.Text);
+            _queryResult = _slh.ReadFeatureSet(txtQuery.Text);
 
             dgQueryResult.DataSource = _queryResult.DataTable;
         }

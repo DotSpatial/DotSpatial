@@ -99,6 +99,16 @@ namespace DotSpatial.Serialization
         public const string Root = "root";
 
         /// <summary>
+        /// This can be used to save the name of the static method that will be used to create an object.
+        /// </summary>
+        public const string StaticConstructorMethod = "staticConstructorMethod";
+
+        /// <summary>
+        /// This indicates whether the static method should be used to create an object.
+        /// </summary>
+        public const string StaticMethodIndicator = "staticMethodIndicator";
+
+        /// <summary>
         /// string
         /// </summary>
         public const string String = "string";
@@ -112,6 +122,11 @@ namespace DotSpatial.Serialization
         /// type
         /// </summary>
         public const string TypeId = "type";
+
+        /// <summary>
+        /// This can b e used to save the case in which the property should be used.
+        /// </summary>
+        public const string UseCase = "useCase";
 
         /// <summary>
         /// value
