@@ -156,6 +156,7 @@ namespace DotSpatial.Projections
                     Cvs = cvs;
                 }
             }
+            Filled = true;
         }
 
         /// <summary>
