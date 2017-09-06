@@ -156,6 +156,8 @@ namespace DotSpatial.Projections
                             // shift values are given in "arc-seconds" and need to be converted to radians.
                             cvs[row][col].Phi = ReadFloat(br) * (Math.PI / 180) / 3600;
                             cvs[row][col].Lambda = ReadFloat(br) * (Math.PI / 180) / 3600;
+
+                            str.Seek(8, SeekOrigin.Current);
                         }
                     }
                     Cvs = cvs;
