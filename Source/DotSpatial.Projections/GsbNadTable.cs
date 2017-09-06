@@ -27,6 +27,11 @@ namespace DotSpatial.Projections
 
         #endregion
 
+        #region Static Variables
+
+        public static bool InputIsBigEndian = true;
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -170,7 +175,8 @@ namespace DotSpatial.Projections
         {
             byte[] bValue = new byte[8];
             Array.Copy(array, offset, bValue, 0, 8);
-            if (!BitConverter.IsLittleEndian) Array.Reverse(bValue);
+            if (InputIsBigEndian && BitConverter.IsLittleEndian)
+                Array.Reverse(bValue);
             double temp = BitConverter.ToDouble(bValue, 0);
             return temp;
         }
@@ -188,7 +194,7 @@ namespace DotSpatial.Projections
             byte[] temp = new byte[4];
             br.Read(temp, 0, 4);
 
-            if (BitConverter.IsLittleEndian)
+            if (InputIsBigEndian && BitConverter.IsLittleEndian)
             {
                 Array.Reverse(temp);
             }
