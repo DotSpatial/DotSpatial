@@ -149,8 +149,8 @@ namespace DotSpatial.Projections
                         for (int col = numLambdas - 1; col >= 0; col--)
                         {
                             // shift values are given in "arc-seconds" and need to be converted to radians.
-                            cvs[row][col].Phi = ReadDouble(br) * (Math.PI / 180) / 3600;
-                            cvs[row][col].Lambda = ReadDouble(br) * (Math.PI / 180) / 3600;
+                            cvs[row][col].Phi = ReadFloat(br) * (Math.PI / 180) / 3600;
+                            cvs[row][col].Lambda = ReadFloat(br) * (Math.PI / 180) / 3600;
                         }
                     }
                     Cvs = cvs;
@@ -173,6 +173,27 @@ namespace DotSpatial.Projections
             if (!BitConverter.IsLittleEndian) Array.Reverse(bValue);
             double temp = BitConverter.ToDouble(bValue, 0);
             return temp;
+        }
+
+        /// <summary>
+        /// Gets the double value from the specified position in the byte array
+        /// Using BigEndian format. (TODO: This assumption is not true, at least for Beta2007.gsb, which
+        /// is in LittleEndian). Reversing the bytes produces garbage. I'll tackle this in the next commit.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        private static float ReadFloat(BinaryReader br)
+        {
+            byte[] temp = new byte[4];
+            br.Read(temp, 0, 4);
+
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(temp);
+            }
+            float value = BitConverter.ToSingle(temp, 0);
+            return value;
         }
 
         #endregion
