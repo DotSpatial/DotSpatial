@@ -29,7 +29,7 @@ namespace DotSpatial.Projections
 
         #region Static Variables
 
-        public static bool InputIsBigEndian = true;
+        public static bool InputIsBigEndian = false;
         #endregion
 
         #region Constructors
@@ -122,12 +122,12 @@ namespace DotSpatial.Projections
             NumLambdas = (int)(Math.Abs(urLam - ll.Lambda) / cs.Lambda + .5) + 1;
             NumPhis = (int)(Math.Abs(urPhi - ll.Phi) / cs.Phi + .5) + 1;
 
-            ll.Lambda *= DEG_TO_RAD;
-            ll.Phi *= DEG_TO_RAD;
+            ll.Lambda = ll.Lambda / 3600 * DEG_TO_RAD;
+            ll.Phi = ll.Phi / 3600 * DEG_TO_RAD;
             LowerLeft = ll;
 
-            cs.Lambda *= DEG_TO_RAD;
-            cs.Phi *= DEG_TO_RAD;
+            cs.Lambda = cs.Lambda / 3600 * DEG_TO_RAD;
+            cs.Phi = cs.Phi / 3600 * DEG_TO_RAD;
             CellSize = cs;
         }
 
