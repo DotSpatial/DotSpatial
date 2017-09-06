@@ -157,6 +157,7 @@ namespace DotSpatial.Projections
                     Filled = true;
                 }
             }
+            Filled = true;
         }
 
         /// <summary>
