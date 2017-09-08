@@ -19,6 +19,7 @@ namespace DotSpatial.Serialization
         {
             Name = name;
             ConstructorArgumentIndex = -1;
+            UseCase = UseCases.ConstructorOnly;
         }
 
         /// <summary>
@@ -27,19 +28,14 @@ namespace DotSpatial.Serialization
         public enum UseCases
         {
             /// <summary>
-            /// Do not use the constructor property. Set this only if ConstructorArgumentIndex is -1.
+            /// Use the property only as an argument of the constructor.
             /// </summary>
-            None = -1,
+            ConstructorOnly = 0,
 
             /// <summary>
             /// Use the property only as an argument of the static method.
             /// </summary>
-            StaticMethodOnly = 0,
-
-            /// <summary>
-            /// Use the property only as an argument of the constructor.
-            /// </summary>
-            ConstructorOnly = 1,
+            StaticMethodOnly = 1,
 
             /// <summary>
             /// Use the property as an argument for the constructor as well as for the static method.
