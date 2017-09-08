@@ -4,12 +4,13 @@
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// 
+    /// This interface is meant as base for layers that load themselves.
     /// </summary>
     public interface IMapSelfLoadLayer : IMapLayer
     {
-        string Filename { get; set; }
-
+        /// <summary>
+        /// Gets or sets the file path of the layers underlying file.
+        /// </summary>
         string FilePath { get; set; }
     }
 }

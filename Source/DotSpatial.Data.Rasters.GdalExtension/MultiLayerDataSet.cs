@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Projections;
 
@@ -17,6 +18,16 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
         private string _fileName;
 
+        /// <summary>
+        /// The name that should be shown as the LegendText of the MapSelfLoadGroup returned by GetLayer.
+        /// </summary>
+        private string _groupName;
+
+        /// <summary>
+        /// This contains the featuresets and their corresponding style lists that are contained in this MultiLayerDataSet.
+        /// </summary>
+        private IDictionary<IFeatureSet, IList<string>> _dataSets;
+
         #endregion
 
         #region Constructors
@@ -26,13 +37,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         public MultiLayerDataSet()
         {
-            DataSets = new List<IDataSet>();
+            _dataSets = new Dictionary<IFeatureSet, IList<string>>();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiLayerDataSet"/> class that is loaded from the supplied fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
+        /// <param name="fileName">The string fileName of the MultiLayerDataSet to load.</param>
         public MultiLayerDataSet(string fileName)
             : this()
         {
@@ -41,77 +52,86 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets a list of the DataSets that are contained in this MultiLayerDataSet.
-        /// </summary>
-        public IList<IDataSet> DataSets { get; }
-
-        /// <summary>
-        /// Gets or sets the name that should be shown as the LegendText of the MapSelfLoadGroup returned by GetLayer.
-        /// </summary>
-        public string GroupName { get; set; }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc />
         public new void Dispose()
         {
-            foreach (var dataset in DataSets)
+            foreach (var dataset in _dataSets)
             {
-                dataset.Dispose();
+                dataset.Key.Dispose();
             }
 
-            DataSets.Clear();
+            _dataSets.Clear();
             base.Dispose();
         }
 
         /// <summary>
-        /// Gets the MapSelfLoadGroup that contains all the DataSets as Layers and can be added to the map.
+        /// Gets the IMapSelfLoadLayer that contains all the DataSets as Layers and can be added to the map.
         /// </summary>
-        /// <returns>Null, if there a no DataSets otherwise the MapSelfLoadGroup with the DataSets.</returns>
+        /// <returns>Null, if there are no DataSets, a MapSelfLoadLayer if there is only 1 DataSet otherwise a MapSelfLoadGroup with layers for the existing DataSets.</returns>
         public IMapSelfLoadLayer GetLayer()
         {
-            if (DataSets.Count < 1) return null;
+            return GetLayer(null);
+        }
 
-            if (DataSets.Count > 1)
+        /// <summary>
+        /// Gets the IMapSelfLoadLayer that contains all the DataSets as Layers and can be added to the map.
+        /// </summary>
+        /// <param name="layerNames">The names of the layers that should be loaded. If this is null all layers get loaded.</param>
+        /// <returns>Null, if there are no DataSets, a MapSelfLoadLayer if there is only 1 DataSet otherwise a MapSelfLoadGroup with layers for the existing DataSets.</returns>
+        public IMapSelfLoadLayer GetLayer(string[] layerNames)
+        {
+            if (_dataSets.Count < 1) return null;
+
+            if (_dataSets.Count > 1)
             {
                 // return a group with all the layers
                 var gr = new MapSelfLoadGroup
                 {
-                    LegendText = GroupName,
+                    LegendText = _groupName,
                     DataSet = this,
                     FilePath = _fileName
                 };
 
-                foreach (var ds in DataSets)
+                foreach (var ds in _dataSets)
                 {
-                    gr.Layers.Add(ds);
+                    if (layerNames == null || layerNames.Contains(ds.Key.Name))
+                    {
+                        IMapFeatureLayer l = gr.Layers.Add(ds.Key);
+                        OgrDataReader.TranslateStyles(l, ds.Value);
+                        l.IsExpanded = false;
+                    }
                 }
 
                 return gr;
             }
 
-            var fs = DataSets[0] as IFeatureSet;
-            if (fs == null) return null;
+            // return the single existing layer
+            var fs = _dataSets.Keys.FirstOrDefault();
+            if (fs == null || (layerNames != null && !layerNames.Contains(fs.Name))) return null;
+
+            IMapSelfLoadLayer layer;
 
             switch (fs.FeatureType)
             {
                 case FeatureType.MultiPoint:
                 case FeatureType.Point:
-                    return new MapSelfLoadPointLayer(fs);
-
+                    layer = new MapSelfLoadPointLayer(fs);
+                    break;
                 case FeatureType.Line:
-                    return new MapSelfLoadLineLayer(fs);
-
+                    layer = new MapSelfLoadLineLayer(fs);
+                    break;
                 case FeatureType.Polygon:
-                    return new MapSelfLoadPolygonLayer(fs);
+                    layer = new MapSelfLoadPolygonLayer(fs);
+                    break;
                 default:
                     return null;
             }
+
+            OgrDataReader.TranslateStyles((IMapFeatureLayer)layer, _dataSets[fs]);
+            layer.IsExpanded = false;
+            return layer;
         }
 
         /// <summary>
@@ -123,23 +143,20 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             Dispose();
 
             _fileName = fileName;
-            GroupName = Path.GetFileNameWithoutExtension(fileName);
+            _groupName = Path.GetFileNameWithoutExtension(fileName);
 
             using (var reader = new OgrDataReader(fileName))
             {
-                foreach (var layer in reader.GetLayers())
-                {
-                    DataSets.Add(layer);
-                }
+                _dataSets = reader.GetLayers();
             }
         }
 
         /// <inheritdoc />
         public new void Reproject(ProjectionInfo targetProjection)
         {
-            foreach (var ds in DataSets)
+            foreach (var ds in _dataSets)
             {
-                ds.Reproject(targetProjection);
+                ds.Key.Reproject(targetProjection);
             }
         }
 

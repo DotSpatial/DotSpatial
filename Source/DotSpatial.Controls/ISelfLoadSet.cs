@@ -1,7 +1,6 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System.Collections.Generic;
 using DotSpatial.Data;
 
 namespace DotSpatial.Controls
@@ -12,19 +11,16 @@ namespace DotSpatial.Controls
     public interface ISelfLoadSet : IDataSet
     {
         /// <summary>
-        /// Gets a list of the DataSets contained in this ISelfLoadSet.
+        /// Gets the IMapSelfLoadLayer that contains all the data of the underlying file.
         /// </summary>
-        IList<IDataSet> DataSets { get; }
-
-        /// <summary>
-        /// Gets or sets the name that should be shown as the LegendText of the MapSelfLoadGroup returned by GetLayer.
-        /// </summary>
-        string GroupName { get; set; }
-
-        /// <summary>
-        /// Gets the IMapSelfLoadLayer that contains all the data of the datasets.
-        /// </summary>
-        /// <returns>Null, if there a no DataSets otherwise the IMapSelfLoadLayer that contains the data of all the datasets.</returns>
+        /// <returns>Null, if there is no data otherwise the IMapSelfLoadLayer that contains the data underlying file.</returns>
         IMapSelfLoadLayer GetLayer();
+
+        /// <summary>
+        /// Gets the IMapSelfLoadLayer that contains all the data of the underlying file.
+        /// </summary>
+        /// <param name="layerNames">Names of the layers that should be returned. This can be used for files that contain more than one layer but should not return all of them.</param>
+        /// <returns>Null, if there is no data otherwise the IMapSelfLoadLayer that contains the data underlying file.</returns>
+        IMapSelfLoadLayer GetLayer(string[] layerNames);
     }
 }
