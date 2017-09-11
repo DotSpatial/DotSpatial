@@ -124,7 +124,7 @@ namespace DotSpatial.Serialization
         public const string TypeId = "type";
 
         /// <summary>
-        /// This can b e used to save the case in which the property should be used.
+        /// This can be used to save the case in which the property should be used.
         /// </summary>
         public const string UseCase = "useCase";
 

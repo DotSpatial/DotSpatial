@@ -7,6 +7,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -480,7 +481,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             if (!string.IsNullOrWhiteSpace(numberString))
             {
                 var regex = Regex.Match(numberString, "[0-9]+([.,][0-9]+)?").Value;
-                double.TryParse(regex, out number);
+                double.TryParse(regex, NumberStyles.Number, CultureInfo.InvariantCulture, out number);
             }
 
             return number;
@@ -540,7 +541,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             for (int i = 0; i < regex.Count; i++)
             {
                 float val;
-                if (float.TryParse(regex[i].Value, out val) && val > 0)
+                if (float.TryParse(regex[i].Value, NumberStyles.Number, CultureInfo.InvariantCulture, out val) && val > 0)
                 {
                     nums.Add(val);
                 }
