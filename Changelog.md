@@ -25,6 +25,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Clear parameter to Select function to speed up drawing (#1024)
 - LayoutControl.InitialOpenFileDirectory property that allows to set the folder that is shown in the OpenFileDialog that is used to open an existing layout
 - FeatureLayer.Snappable to indicate whether the layer can be used for snapping
+- The possibility to draw linestrings which are inside a geometry collection (#1061)
+- The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
 
 ### Changed
 - Switched to VS2015 and C#6
@@ -47,6 +49,9 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Drawing functions so selected features are drawn on top (#897)
 - ShapeEditors AddFeature and MoveVertex functions, so they snap only to the layers that allow snapping
 - ShapeEditors SnapSettingsDialog to allow the users to select the layers the editor functions may snap to
+- If a dxf file contains points, lines and polygons at the same time, the dxf file gets added to the map as a group that contains one layer for points, one for lines and one for polygons (#1061)
+- If a dxf file contains only a single feature type the dxf file gets added to the map as a single layer with the feature type it contains (#1061)
+- dxf files get loaded with their styles (#1061)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -126,4 +131,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Crash when attempting to use a serial GPS device on Mono
 - Clear the selection inside FeatureLayer.RemoveSelectedFeatures so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
 - In InRamImageData.Open don't draw the image unscaled because this can cause the image not to be drawn
-- FeatureTypeFromGeometryType Method updated to work with GeometryCollection
+- FeatureTypeFromGeometryType Method updated to work with GeometryCollection (#1044)
+- The SpatiaLite plugin to be able to load SpatiaLite databases of version 4 and higher (#1061)

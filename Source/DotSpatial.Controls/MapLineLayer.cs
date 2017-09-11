@@ -580,7 +580,22 @@ namespace DotSpatial.Controls
             {
                 foreach (IFeature f in featList)
                 {
-                    BuildLineString(graphPath, f.Geometry as ILineString, e, clipRect);
+                    var geo = f.Geometry as ILineString;
+                    if (geo != null)
+                    {
+                        BuildLineString(graphPath, geo, e, clipRect);
+                    }
+                    else
+                    {
+                        var col = f.Geometry as IGeometryCollection;
+                        if (col != null)
+                        {
+                            foreach (var c1 in col.Geometries.OfType<ILineString>())
+                            {
+                                BuildLineString(graphPath, c1, e, clipRect);
+                            }
+                        }
+                    }
                 }
             };
 

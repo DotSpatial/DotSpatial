@@ -198,13 +198,29 @@ namespace DotSpatial.Controls
         /// <returns>The IMapLayer to add</returns>
         public virtual IMapLayer Add(IDataSet dataSet)
         {
+            var ss = dataSet as ISelfLoadSet;
+            if (ss != null) return Add(ss);
+
             var fs = dataSet as IFeatureSet;
             if (fs != null) return Add(fs);
+
             var r = dataSet as IRaster;
             if (r != null) return Add(r);
+
             var id = dataSet as IImageData;
-            if (id != null) return Add(id);
-            return null;
+            return id != null ? Add(id) : null;
+        }
+
+        /// <summary>
+        /// Adds the layers of the given ISelfLoadSet to the map.
+        /// </summary>
+        /// <param name="self">The ISelfLoadSet whose layers should be added to the map.</param>
+        /// <returns>The added group.</returns>
+        public IMapLayer Add(ISelfLoadSet self)
+        {
+            IMapLayer ml = self.GetLayer();
+            if (ml != null) Add(ml);
+            return ml;
         }
 
         /// <summary>
