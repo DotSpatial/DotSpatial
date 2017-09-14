@@ -27,6 +27,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - FeatureLayer.Snappable to indicate whether the layer can be used for snapping
 - The possibility to draw linestrings which are inside a geometry collection (#1061)
 - The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
+- Default mouse cursor button in layout insert toolbar
 
 ### Changed
 - Switched to VS2015 and C#6
@@ -52,6 +53,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - If a dxf file contains points, lines and polygons at the same time, the dxf file gets added to the map as a group that contains one layer for points, one for lines and one for polygons (#1061)
 - If a dxf file contains only a single feature type the dxf file gets added to the map as a single layer with the feature type it contains (#1061)
 - dxf files get loaded with their styles (#1061)
+- Show buttons from layout toolbars as checked while their function is active
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)

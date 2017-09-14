@@ -11,6 +11,7 @@ namespace DotSpatial.Controls
         {
             this._btnMap = new ToolStripButton();
             this._btnText = new ToolStripButton();
+            this._btnDefault = new ToolStripButton();
             this._btnRectangle = new ToolStripButton();
             this._btnNorthArrow = new ToolStripButton();
             this._btnBitmap = new ToolStripButton();
@@ -33,6 +34,14 @@ namespace DotSpatial.Controls
             this._btnText.Size = new Size(23, 22);
             this._btnText.Text = MessageStrings.LayoutInsertToolStripText;
             this._btnText.Click += this.BtnTextClick;
+            //
+            // _btnDefault
+            //
+            this._btnDefault.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            this._btnDefault.Image = Images.cursor_arrow_16x16;
+            this._btnDefault.Size = new Size(23, 22);
+            this._btnDefault.Text = MessageStrings.LayoutInsertToolStripDefault;
+            this._btnDefault.Click += this.BtnDefaultClick;
             //
             // _btnRectangle
             //
@@ -81,7 +90,8 @@ namespace DotSpatial.Controls
             this._btnScaleBar,
             this._btnText,
             this._btnRectangle,
-            this._btnBitmap});
+            this._btnBitmap,
+            this._btnDefault});
             this.ResumeLayout(false);
         }
 
@@ -94,5 +104,6 @@ namespace DotSpatial.Controls
         private ToolStripButton _btnRectangle;
         private ToolStripButton _btnScaleBar;
         private ToolStripButton _btnText;
+        private ToolStripButton _btnDefault;
     }
 }

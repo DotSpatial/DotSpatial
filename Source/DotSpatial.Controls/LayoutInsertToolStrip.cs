@@ -9,19 +9,12 @@ using System.Windows.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A Brian Marchioni original toolstrip... preloaded with content.
+    /// This ToolStrip contains buttons that allow the insertion of layout elements.
     /// </summary>
-    // This control will no longer be visible
     [ToolboxItem(false)]
-    public partial class LayoutInsertToolStrip : ToolStrip
+    public partial class LayoutInsertToolStrip : LayoutToolStrip
     {
-        #region Fields
-
-        private LayoutControl _layoutControl;
-
-        #endregion
-
-        #region  Constructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LayoutInsertToolStrip"/> class.
@@ -39,21 +32,26 @@ namespace DotSpatial.Controls
         /// Gets or sets the layout control associated with this toolstrip.
         /// </summary>
         [Browsable(false)]
-        public LayoutControl LayoutControl
+        public override LayoutControl LayoutControl
         {
             get
             {
-                return _layoutControl;
+                return base.LayoutControl;
             }
 
             set
             {
-                if (value == null)
+                if (base.LayoutControl != null)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    base.LayoutControl.MouseModeChanged -= LayoutControlMouseModeChanged;
                 }
 
-                _layoutControl = value;
+                base.LayoutControl = value;
+
+                if (base.LayoutControl != null)
+                {
+                    base.LayoutControl.MouseModeChanged += LayoutControlMouseModeChanged;
+                }
             }
         }
 
@@ -61,7 +59,11 @@ namespace DotSpatial.Controls
 
         #region Methods
 
-        // Fires the open method on the layoutcontrol
+        /// <summary>
+        /// Activates a function that allows the user to add a bitmap to the layout.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
         private void BtnBitmapClick(object sender, EventArgs e)
         {
             using (var ofd = new OpenFileDialog
@@ -78,22 +80,44 @@ namespace DotSpatial.Controls
                         Size = new SizeF(100, 100),
                         Filename = ofd.FileName
                     };
-                    _layoutControl.AddElementWithMouse(newBitmap);
+                    LayoutControl.AddElementWithMouse(newBitmap);
+                    SetChecked(_btnBitmap);
                 }
             }
         }
 
-        private void BtnLegendClick(object sender, EventArgs e)
+        /// <summary>
+        /// Activates the default cursor.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
+        private void BtnDefaultClick(object sender, EventArgs e)
         {
-            _layoutControl.AddElementWithMouse(_layoutControl.CreateLegendElement());
+            LayoutControl.MouseMode = MouseMode.Default;
         }
 
-        // Fires the print method on the layoutcontrol
+        /// <summary>
+        /// Activates a function that allows the user to add a legend to the layout.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
+        private void BtnLegendClick(object sender, EventArgs e)
+        {
+            LayoutControl.AddElementWithMouse(LayoutControl.CreateLegendElement());
+            SetChecked(_btnLegend);
+        }
+
+        /// <summary>
+        /// Activates a function that allows the user to add a map to the layout.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
         private void BtnMapClick(object sender, EventArgs e)
         {
-            if (_layoutControl.MapControl != null)
+            if (LayoutControl.MapControl != null)
             {
-                _layoutControl.AddElementWithMouse(_layoutControl.CreateMapElement());
+                LayoutControl.AddElementWithMouse(LayoutControl.CreateMapElement());
+                SetChecked(_btnMap);
             }
             else
             {
@@ -101,28 +125,69 @@ namespace DotSpatial.Controls
             }
         }
 
-        // Fires the new method on the layoutcontrol
+        /// <summary>
+        /// Activates a function that allows the user to add a north arrow to the layout.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
         private void BtnNorthArrowClick(object sender, EventArgs e)
         {
-            _layoutControl.AddElementWithMouse(new LayoutNorthArrow());
+            LayoutControl.AddElementWithMouse(new LayoutNorthArrow());
+            SetChecked(_btnNorthArrow);
         }
 
-        // Fires the save method on the layoutcontrol
+        /// <summary>
+        /// Activates a function that allows the user to add a rectangle to the layout.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
         private void BtnRectangleClick(object sender, EventArgs e)
         {
-            _layoutControl.AddElementWithMouse(new LayoutRectangle());
+            LayoutControl.AddElementWithMouse(new LayoutRectangle());
+            SetChecked(_btnRectangle);
         }
 
-        // Adds a scale bar element to the layout and if there is already a map on the form we link it to the first one
+        /// <summary>
+        /// Activates a function that allows the user to add a scale bar to the layout.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
         private void BtnScaleBarClick(object sender, EventArgs e)
         {
-            _layoutControl.AddElementWithMouse(_layoutControl.CreateScaleBarElement());
+            LayoutControl.AddElementWithMouse(LayoutControl.CreateScaleBarElement());
+            SetChecked(_btnScaleBar);
         }
 
-        // Fires the saveas method on the layoutcontrol
+        /// <summary>
+        /// Activates a function that allows the user to add some text to the layout.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
         private void BtnTextClick(object sender, EventArgs e)
         {
-            _layoutControl.AddElementWithMouse(new LayoutText());
+            LayoutControl.AddElementWithMouse(new LayoutText());
+            SetChecked(_btnText);
+        }
+
+        /// <summary>
+        /// Check the default button on default mousemode and uncheck all buttons if were not in insert mode.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event args.</param>
+        private void LayoutControlMouseModeChanged(object sender, EventArgs e)
+        {
+            switch (LayoutControl.MouseMode)
+            {
+                case MouseMode.Default:
+                    SetChecked(_btnDefault);
+                    break;
+                case MouseMode.InsertNewElement:
+                case MouseMode.StartInsertNewElement:
+                    break;
+                default:
+                    UncheckAll();
+                    break;
+            }
         }
 
         #endregion

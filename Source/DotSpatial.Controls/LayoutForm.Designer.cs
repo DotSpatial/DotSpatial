@@ -113,7 +113,7 @@ namespace DotSpatial.Controls
             this._layoutControl1.LayoutMenuStrip = this._layoutMenuStrip1;
             this._layoutControl1.LayoutPropertyGrip = this._layoutPropertyGrid1;
             this._layoutControl1.LayoutZoomToolStrip = this._layoutZoomToolStrip1;
-            this._layoutControl1.MapPanMode = false;
+            this._layoutControl1.MouseMode = MouseMode.Default;
             this._layoutControl1.Name = "_layoutControl1";
             this._layoutControl1.ShowMargin = false;
             this._layoutControl1.Zoom = 0.3541667F;

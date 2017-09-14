@@ -210,8 +210,6 @@ namespace DotSpatial.Controls
         public virtual void ZoomToFullExtent()
         {
             Envelope = MapControl.Extent.ToEnvelope();
-            OnThumbnailChanged();
-            OnInvalidate();
         }
 
         /// <summary>
@@ -234,7 +232,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected override void OnSizeChanged()
         {
-            if (Resizing == false)
+            if (!Resizing)
             {
                 // If the size has never been set before we set the maps extent to that of the map
                 if (_oldRectangle.Width == 0 && _oldRectangle.Height == 0)
@@ -246,18 +244,12 @@ namespace DotSpatial.Controls
                     double dx = Envelope.Width / _oldRectangle.Width;
                     double dy = Envelope.Height / _oldRectangle.Height;
 
-                    //// Envelope newEnv = Envelope.Clone();
-                    //// newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
-                    //// newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
-                    //// newEnv.X = Envelope.X;
-                    //// newEnv.Y = Envelope.Y;
-                    //// Envelope = newEnv;
                     double xtl = Envelope.MinX;
                     double ytl = Envelope.MaxY;
                     double width = Envelope.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
                     double height = Envelope.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
 
-                    Envelope.Init(xtl, xtl + width, ytl - height, ytl);
+                    Envelope = new Envelope(xtl, xtl + width, ytl - height, ytl); // set a new envelope so the buffer gets recreated
                 }
 
                 _oldRectangle = new RectangleF(LocationF, Size);

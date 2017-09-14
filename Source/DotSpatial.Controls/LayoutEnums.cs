@@ -125,7 +125,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// An enumeration that defines the Mouses current behavior
     /// </summary>
-    internal enum MouseMode
+    public enum MouseMode
     {
         /// <summary>
         /// The cursor is currently in default mode
