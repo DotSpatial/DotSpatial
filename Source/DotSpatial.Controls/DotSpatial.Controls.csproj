@@ -106,6 +106,9 @@
     <Compile Include="LayoutPropertyGrid.Designer.cs">
       <DependentUpon>LayoutPropertyGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="LayoutToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="LayoutZoomToolStrip.Designer.cs">
       <DependentUpon>LayoutZoomToolStrip.cs</DependentUpon>
     </Compile>
