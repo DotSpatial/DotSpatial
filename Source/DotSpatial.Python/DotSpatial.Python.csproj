@@ -43,23 +43,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IronPython">
-      <HintPath>..\..\Kits\IronPython\IronPython-2.7.4\IronPython.dll</HintPath>
+      <HintPath>..\..\Kits\IronPython\IronPython-2.7.7\Platforms\Net45\IronPython.dll</HintPath>
     </Reference>
     <Reference Include="IronPython.Modules">
-      <HintPath>..\..\Kits\IronPython\IronPython-2.7.4\IronPython.Modules.dll</HintPath>
+      <HintPath>..\..\Kits\IronPython\IronPython-2.7.7\Platforms\Net45\IronPython.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\..\Kits\IronPython\IronPython-2.7.4\Microsoft.Dynamic.dll</HintPath>
+      <HintPath>..\..\Kits\IronPython\IronPython-2.7.7\Platforms\Net45\Microsoft.Dynamic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting">
-      <HintPath>..\..\Kits\IronPython\IronPython-2.7.4\Microsoft.Scripting.dll</HintPath>
+      <HintPath>..\..\Kits\IronPython\IronPython-2.7.7\Platforms\Net45\Microsoft.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting.AspNet">
-      <HintPath>..\..\Kits\IronPython\IronPython-2.7.4\Microsoft.Scripting.AspNet.dll</HintPath>
+      <HintPath>..\..\Kits\IronPython\IronPython-2.7.7\Platforms\Net45\Microsoft.Scripting.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting.Metadata">
-      <HintPath>..\..\Kits\IronPython\IronPython-2.7.4\Microsoft.Scripting.Metadata.dll</HintPath>
+      <HintPath>..\..\Kits\IronPython\IronPython-2.7.7\Platforms\Net45\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,6 +72,25 @@
   <ItemGroup>
     <Compile Include="Script.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Python.snk" />
