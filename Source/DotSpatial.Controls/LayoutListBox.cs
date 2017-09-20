@@ -21,8 +21,8 @@ namespace DotSpatial.Controls
         private bool _suppressSelectionChange;
         
         private IContainer _components;
-        private ImageList _IL;
-        private CodersLab.Windows.Controls.TreeView _TV_Items;
+        private ImageList IL;
+        private CodersLab.Windows.Controls.TreeView TV_Items;
         private bool _bSuspendTVRefresh = false;
         #endregion
 
@@ -47,7 +47,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public TreeView TreeView
         {
-            get { return _TV_Items; }
+            get { return TV_Items; }
         }
 
         /// <summary>
@@ -94,11 +94,11 @@ namespace DotSpatial.Controls
             {
                 if (!_bSuspendTVRefresh)
                 {
-                    _TV_Items.SuspendLayout();
-                    _TV_Items.Nodes.Clear();
+                    TV_Items.SuspendLayout();
+                    TV_Items.Nodes.Clear();
                     foreach (LayoutElement le in _layoutControl.LayoutElements.ToArray())
                         AddTreeNodeToTreeView(le);
-                    _TV_Items.ResumeLayout();
+                    TV_Items.ResumeLayout();
                     RefreshListSelection();
                 }
             }
@@ -115,10 +115,10 @@ namespace DotSpatial.Controls
 
             if (t != null)
             {
-                _TV_Items.SuspendLayout();
+                TV_Items.SuspendLayout();
                 if (t.Item1 == "ADD") AddTreeNodeToTreeView(t.Item2);
                 if (t.Item1 == "DELETE") RemoveTreeNodeFromTreeView(t.Item2);
-                _TV_Items.ResumeLayout();
+                TV_Items.ResumeLayout();
             }
 
             RefreshList();
@@ -231,7 +231,7 @@ namespace DotSpatial.Controls
 
             try
             {
-                TN = _TV_Items.GetNodeAt(p);
+                TN = TV_Items.GetNodeAt(p);
             }
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
@@ -259,7 +259,7 @@ namespace DotSpatial.Controls
                         if (TN.Tag != null)
                         {
                             lLE.Add(TN.Tag as LayoutElement);
-                            _TV_Items.SelectedNodes.Add(TN);
+                            TV_Items.SelectedNodes.Add(TN);
                         }
                     }
                     _layoutControl.AddToSelection(lLE);
@@ -368,7 +368,7 @@ namespace DotSpatial.Controls
                 while (bFind)
                 {
                     sGroup = "Group " + i;
-                    bFind = (_TV_Items.Nodes.Find(sGroup, false).Length != 0);
+                    bFind = (TV_Items.Nodes.Find(sGroup, false).Length != 0);
                     i++;
                 }
 
@@ -458,7 +458,7 @@ namespace DotSpatial.Controls
                 _layoutControl.SuspendLayout();
                 _layoutControl.ClearSelection();
                 List<LayoutElement> lSelected = new List<LayoutElement>();
-                foreach (TreeNode TN in _TV_Items.SelectedNodes)
+                foreach (TreeNode TN in TV_Items.SelectedNodes)
                     if (TN.Tag != null)
                         lSelected.Add(TN.Tag as LayoutElement);
                 _layoutControl.AddToSelection(lSelected);
@@ -499,7 +499,7 @@ namespace DotSpatial.Controls
 
             try
             {
-                foreach (TreeNode TN in _TV_Items.SelectedNodes)
+                foreach (TreeNode TN in TV_Items.SelectedNodes)
                     lSelected.Add(TN);
             }
             catch (Exception ex)
@@ -517,7 +517,7 @@ namespace DotSpatial.Controls
 
             try
             {
-                foreach (TreeNode TN in _TV_Items.SelectedNodes)
+                foreach (TreeNode TN in TV_Items.SelectedNodes)
                     lSelected.Add(TN);
             }
             catch (Exception ex)
@@ -546,15 +546,15 @@ namespace DotSpatial.Controls
                     TreeNode TN_Group = new TreeNode(sGroupName);
                     TN_Group.Name = sGroupName;
                     TN_Group.ImageIndex = 1;
-                    if (_TV_Items.Nodes.Find(sGroupName, false).Length == 0)
-                        _TV_Items.Nodes.Add(TN_Group);
+                    if (TV_Items.Nodes.Find(sGroupName, false).Length == 0)
+                        TV_Items.Nodes.Add(TN_Group);
 
-                    TreeNode[] lTN = _TV_Items.Nodes.Find(sGroupName, false);
-                    int iIndexGroup = _TV_Items.Nodes.IndexOf(lTN[0]);
+                    TreeNode[] lTN = TV_Items.Nodes.Find(sGroupName, false);
+                    int iIndexGroup = TV_Items.Nodes.IndexOf(lTN[0]);
                     lTN[0].Nodes.Add(TN);
                 }
                 else
-                    _TV_Items.Nodes.Add(TN);
+                    TV_Items.Nodes.Add(TN);
             }
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
@@ -603,19 +603,19 @@ namespace DotSpatial.Controls
                 lSelected.Add(le);
 
             //Updates the list of elements
-            _TV_Items.SuspendLayout();
+            TV_Items.SuspendLayout();
 
-            _TV_Items.SelectedNodes.Clear();
+            TV_Items.SelectedNodes.Clear();
             foreach (LayoutElement le in lSelected)
             {
-                TreeNode[] lTN = _TV_Items.Nodes.Find(le.Name, true);
+                TreeNode[] lTN = TV_Items.Nodes.Find(le.Name, true);
                 if (lTN.Length > 0)
                     foreach (TreeNode TN in lTN)
-                        _TV_Items.SelectedNodes.Add(TN);
+                        TV_Items.SelectedNodes.Add(TN);
             }
 
             // Selectionne les groupes dont TOUS les enfants sont sélectionés
-            foreach (TreeNode TN in _TV_Items.Nodes)
+            foreach (TreeNode TN in TV_Items.Nodes)
             {
                 // Cas d'un groupe
                 if (TN.Tag == null)
@@ -623,7 +623,7 @@ namespace DotSpatial.Controls
                     bool bSelected = true;
                     foreach (TreeNode TN_Child in TN.Nodes)
                     {
-                        if (!_TV_Items.SelectedNodes.Contains(TN_Child))
+                        if (!TV_Items.SelectedNodes.Contains(TN_Child))
                         {
                             bSelected = false;
                             break;
@@ -631,11 +631,11 @@ namespace DotSpatial.Controls
                     }
 
                     if (bSelected)
-                        _TV_Items.SelectedNodes.Add(TN);
+                        TV_Items.SelectedNodes.Add(TN);
                 }
             }
 
-            _TV_Items.ResumeLayout();
+            TV_Items.ResumeLayout();
         }
 
         /// <summary>
@@ -645,9 +645,9 @@ namespace DotSpatial.Controls
         {
             try
             {
-                TreeNode[] lTN = _TV_Items.Nodes.Find(le.Name, true);
+                TreeNode[] lTN = TV_Items.Nodes.Find(le.Name, true);
                 if (lTN.Length > 0)
-                    _TV_Items.Nodes.Remove(lTN[0]);
+                    TV_Items.Nodes.Remove(lTN[0]);
             }
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }

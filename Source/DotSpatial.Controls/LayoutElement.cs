@@ -268,6 +268,7 @@ namespace DotSpatial.Controls
         protected LayoutElement()
         {
             _background.ItemChanged += BackgroundItemChanged;
+            SizeChanged += LayoutElement_SizeChanged;
         }
 
         #endregion

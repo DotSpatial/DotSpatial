@@ -430,7 +430,7 @@ namespace DotSpatial.Controls
             le.Name = leName;
 
             LayoutElements.Insert(0, le);
-            OnElementsChanged(EventArgs.Empty);
+            OnElementsChanged("ADD", le);
             le.Invalidated += LeInvalidated;
 
             // CGX

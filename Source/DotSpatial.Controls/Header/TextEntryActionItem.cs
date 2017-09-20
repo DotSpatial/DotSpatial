@@ -20,45 +20,6 @@ namespace DotSpatial.Controls.Header
         private string _menuContainerKey;
         private System.Windows.Forms.HorizontalAlignment _textAlignment = System.Windows.Forms.HorizontalAlignment.Left;
 
-        // CGX
-        private string _menuContainerKey;
-        private System.Windows.Forms.HorizontalAlignment _textAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
-        /// </summary>
-        public TextEntryActionItem()
-            : base()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
-        /// </summary>
-        /// <param name="rootKey">The root key.</param>
-        /// <param name="caption">The caption.</param>
-        public TextEntryActionItem(string rootKey, string caption)
-            : base(caption)
-        {
-            Caption = caption;
-            RootKey = rootKey;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextEntryActionItem"/> class.
-        /// </summary>
-        /// <param name="rootKey">The root key.</param>
-        /// <param name="caption">The caption.</param>
-        /// <param name="menuContainerKey">The menu container key.</param>
-        public TextEntryActionItem(string rootKey, string menuContainerKey, string caption)
-            : this(rootKey, caption)
-        {
-            MenuContainerKey = menuContainerKey;
-        }// CGX END
         #endregion
 
         #region Constructors

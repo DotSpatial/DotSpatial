@@ -40,8 +40,8 @@ namespace DotSpatial.Controls
             this._btnUp = new Button();
             this._btnRemove = new Button();
             this._listPanel = new Panel();
-            this._TV_Items = new CodersLab.Windows.Controls.TreeView();
-            this._IL = new System.Windows.Forms.ImageList(this.components);
+            this.TV_Items = new CodersLab.Windows.Controls.TreeView();
+            this.IL = new System.Windows.Forms.ImageList(this.components);
             this._btnPanel.SuspendLayout();
             this._listPanel.SuspendLayout();
             this.SuspendLayout();
@@ -85,44 +85,44 @@ namespace DotSpatial.Controls
             // _listPanel
             resources.ApplyResources(this._listPanel, "_listPanel");
             this._listPanel.BackColor = Color.White;
-            this._listPanel.Controls.Add(this._TV_Items);
+            this._listPanel.Controls.Add(this.TV_Items);
             this._listPanel.Name = "_listPanel";
 
             
             // 
             // TV_Items
             // 
-            resources.ApplyResources(this._TV_Items, "TV_Items");
-            this._TV_Items.FullRowSelect = true;
-            this._TV_Items.HideSelection = false;
-            this._TV_Items.ImageList = this._IL;
-            this._TV_Items.LabelEdit = true;
-            this._TV_Items.Name = "TV_Items";
-            this._TV_Items.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            this._TV_Items.SelectionMode = CodersLab.Windows.Controls.TreeViewSelectionMode.MultiSelect;
-            this._TV_Items.SelectionsChanged += new System.EventHandler(this.TV_Items_SelectionsChanged);
-            this._TV_Items.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TV_Items_AfterLabelEdit);
-            this._TV_Items.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TV_Items_AfterSelect);
-            this._TV_Items.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TV_Items_NodeMouseClick);
-            this._TV_Items.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TV_Items_KeyUp);
+            resources.ApplyResources(this.TV_Items, "TV_Items");
+            this.TV_Items.FullRowSelect = true;
+            this.TV_Items.HideSelection = false;
+            this.TV_Items.ImageList = this.IL;
+            this.TV_Items.LabelEdit = true;
+            this.TV_Items.Name = "TV_Items";
+            this.TV_Items.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            this.TV_Items.SelectionMode = CodersLab.Windows.Controls.TreeViewSelectionMode.MultiSelect;
+            this.TV_Items.SelectionsChanged += new System.EventHandler(this.TV_Items_SelectionsChanged);
+            this.TV_Items.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TV_Items_AfterLabelEdit);
+            this.TV_Items.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TV_Items_AfterSelect);
+            this.TV_Items.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TV_Items_NodeMouseClick);
+            this.TV_Items.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TV_Items_KeyUp);
 
             // IL
             // 
-            this._IL.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("_IL.ImageStream")));
-            this._IL.TransparentColor = System.Drawing.Color.Transparent;
-            this._IL.Images.SetKeyName(0, "16Objects.png");
-            this._IL.Images.SetKeyName(1, "FolderOpen.png");
-            this._IL.Images.SetKeyName(2, "16Circle.png");
-            this._IL.Images.SetKeyName(3, "16Line.png");
-            this._IL.Images.SetKeyName(4, "16Rectangle.png");
-            this._IL.Images.SetKeyName(5, "16Image.png");
-            this._IL.Images.SetKeyName(6, "16Text.png");
-            this._IL.Images.SetKeyName(7, "map.png");
-            this._IL.Images.SetKeyName(8, "Legend.png");
-            this._IL.Images.SetKeyName(9, "ScaleBar.png");
-            this._IL.Images.SetKeyName(10, "16Compas.png");
-            this._IL.Images.SetKeyName(11, "16DynamicText.png");
-            this._IL.Images.SetKeyName(12, "16Graticule.png");
+            this.IL.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("IL.ImageStream")));
+            this.IL.TransparentColor = System.Drawing.Color.Transparent;
+            this.IL.Images.SetKeyName(0, "16Objects.png");
+            this.IL.Images.SetKeyName(1, "FolderOpen.png");
+            this.IL.Images.SetKeyName(2, "16Circle.png");
+            this.IL.Images.SetKeyName(3, "16Line.png");
+            this.IL.Images.SetKeyName(4, "16Rectangle.png");
+            this.IL.Images.SetKeyName(5, "16Image.png");
+            this.IL.Images.SetKeyName(6, "16Text.png");
+            this.IL.Images.SetKeyName(7, "map.png");
+            this.IL.Images.SetKeyName(8, "Legend.png");
+            this.IL.Images.SetKeyName(9, "ScaleBar.png");
+            this.IL.Images.SetKeyName(10, "16Compas.png");
+            this.IL.Images.SetKeyName(11, "16DynamicText.png");
+            this.IL.Images.SetKeyName(12, "16Graticule.png");
 
             // LayoutListBox
             resources.ApplyResources(this, "$this");
