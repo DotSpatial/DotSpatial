@@ -345,4 +345,10 @@ eg. Abs(-222.34 )
 or  3 * pow(Area, 2 )  this is equal to 3*pow(Area, 2)
 </value>
   </data>
+  <data name="RasterCategoryControl_SignificantFigures" xml:space="preserve">
+    <value>Significant Figures:</value>
+  </data>
+  <data name="RasterCategoryControl_RoundingDigits" xml:space="preserve">
+    <value>Rounding Digits:</value>
+  </data>
 </root>

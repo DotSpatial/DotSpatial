@@ -326,9 +326,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IconMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="SpatialProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>

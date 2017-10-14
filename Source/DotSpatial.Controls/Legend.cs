@@ -23,7 +23,7 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private readonly ContextMenu _contextMenu;
+        private readonly ContextMenuStrip _contextMenu;
         private readonly TextBox _editBox;
         private readonly Icon _icoChecked;
         private readonly Icon _icoUnchecked;
@@ -56,7 +56,7 @@ namespace DotSpatial.Controls
             RootNodes = new List<ILegendItem>();
             _icoChecked = Images.Checked;
             _icoUnchecked = Images.Unchecked;
-            _contextMenu = new ContextMenu();
+            _contextMenu = new ContextMenuStrip();
             _selection = new HashSet<ILegendItem>();
             _editBox = new TextBox
             {
@@ -798,26 +798,13 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="parent">The parent</param>
         /// <param name="mi">The menu item.</param>
-        private static void AddMenuItem(Menu.MenuItemCollection parent, SymbologyMenuItem mi)
+        private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi)
         {
-            MenuItem m;
-            if (mi.Icon != null)
-            {
-                m = new IconMenuItem(mi.Name, mi.Icon, mi.ClickHandler);
-            }
-            else if (mi.Image != null)
-            {
-                m = new IconMenuItem(mi.Name, mi.Image, mi.ClickHandler);
-            }
-            else
-            {
-                m = new IconMenuItem(mi.Name, mi.ClickHandler);
-            }
-
+            ToolStripMenuItem m = new ToolStripMenuItem(mi.Name, mi.Image, mi.ClickHandler);
             parent.Add(m);
             foreach (SymbologyMenuItem child in mi.MenuItems)
             {
-                AddMenuItem(m.MenuItems, child);
+                AddMenuItem(m.DropDownItems, child);
             }
         }
 
@@ -1053,14 +1040,13 @@ namespace DotSpatial.Controls
                 // right click shows the context menu
                 if (e.ItemBox.Item.ContextMenuItems == null) return;
 
-                _contextMenu.MenuItems.Clear();
+                _contextMenu.Items.Clear();
                 foreach (SymbologyMenuItem mi in e.ItemBox.Item.ContextMenuItems)
                 {
-                    AddMenuItem(_contextMenu.MenuItems, mi);
+                    AddMenuItem(_contextMenu.Items, mi);
                 }
 
                 _contextMenu.Show(this, e.Location);
-                _contextMenu.MenuItems.Clear();
             }
         }
 
