@@ -40,7 +40,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             };
 
             var request = new WmsRequest(
-                new Uri(info.WmsCapabilities.Capability.Request.GetCapabilities.DCPType[0].Http.Get.OnlineResource.Href),
+                new Uri(info.WmsCapabilities.Capability.Request.GetMap.DCPType[0].Http.Get.OnlineResource.Href),
                 schema,
                 new List<string> { info.Layer.Name },
                 info.Style == null ? null : new List<string> { info.Style },

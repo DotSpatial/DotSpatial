@@ -135,3 +135,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - In InRamImageData.Open don't draw the image unscaled because this can cause the image not to be drawn
 - FeatureTypeFromGeometryType Method updated to work with GeometryCollection (#1044)
 - The SpatiaLite plugin to be able to load SpatiaLite databases of version 4 and higher (#1061)
+- WebMap-Plugin fails fetching tiles for specific WMS (#1074)
