@@ -261,6 +261,7 @@
     <Compile Include="Transforms\ObliqueMercator.cs" />
     <Compile Include="Transforms\ObliqueStereographicAlternative.cs" />
     <Compile Include="Transforms\Orthographic.cs" />
+    <Compile Include="Transforms\PlateCarree.cs" />
     <Compile Include="Transforms\Polyconic.cs" />
     <Compile Include="Transforms\Proj.cs" />
     <Compile Include="Transforms\PutinsP1.cs" />
