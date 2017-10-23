@@ -14,7 +14,7 @@ namespace DotSpatial.Projections.Tests.Projected
         [TestFixtureSetUp]
         public void Initialize()
         {
-            
+
         }
 
         [Test]
@@ -213,6 +213,12 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        [Test]
+        public void PlateCarreFromEsriString()
+        {
+            ProjectionInfo pStart = ProjectionInfo.FromEsriString("PROJCS[\"WGS_1984_Plate_Carree\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Plate_Carree\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]");
+            Tester.TestProjection(pStart);
+        }
 
         [Test]
         public void Polyconicworld()
