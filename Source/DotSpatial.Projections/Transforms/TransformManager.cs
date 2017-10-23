@@ -84,8 +84,8 @@ namespace DotSpatial.Projections.Transforms
             _transforms.Add(new ObliqueStereographicAlternative());
             _transforms.Add(new ObliqueCylindricalEqualArea());
             _transforms.Add(new ObliqueMercator());
-			_transforms.Add(new Orthographic());
-			_transforms.Add(new PlateCarree());
+            _transforms.Add(new Orthographic());
+            _transforms.Add(new PlateCarree());
             _transforms.Add(new Polyconic());
             _transforms.Add(new PutinsP1());
             _transforms.Add(new QuarticAuthalic());

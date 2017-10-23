@@ -7,23 +7,22 @@
 
 namespace DotSpatial.Projections.Transforms
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class PlateCarree : EquidistantCylindrical
-	{
-		#region Constructors
+    /// <summary>
+    /// PlateCarree
+    /// </summary>
+    public class PlateCarree : EquidistantCylindrical
+    {
+        #region Constructors
 
-		/// <summary>
-		/// Creates a new instance of PlateCarree as an alias of EquidistantCylindrical
-		/// </summary>
-		public PlateCarree()
-		{
-			Proj4Name = "eqc";
-			Name = "Plate_Carree";
-		}
+        /// <summary>
+        /// Creates a new instance of PlateCarree as an alias of EquidistantCylindrical
+        /// </summary>
+        public PlateCarree()
+        {
+            Proj4Name = "eqc";
+            Name = "Plate_Carree";
+        }
 
-		#endregion
-
-	}
+        #endregion
+    }
 }
