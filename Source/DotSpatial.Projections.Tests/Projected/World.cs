@@ -207,7 +207,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void PlateCarreeworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.PlateCarreeworld;
