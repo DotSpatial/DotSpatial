@@ -136,3 +136,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - FeatureTypeFromGeometryType Method updated to work with GeometryCollection (#1044)
 - The SpatiaLite plugin to be able to load SpatiaLite databases of version 4 and higher (#1061)
 - WebMap-Plugin fails fetching tiles for specific WMS (#1074)
+- Plugins/WFSClient: Feature fetching fails on systems w NumberFormatInfo.NumberDecimalSeparator != '.' (#1081)

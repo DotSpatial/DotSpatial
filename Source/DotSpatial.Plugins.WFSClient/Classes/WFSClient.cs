@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -294,7 +295,11 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             List<Coordinate> lstCoor = new List<Coordinate>();
 
             for (int i = 0; i < listpoints.Length; i = i + 2)
-                lstCoor.Add(new Coordinate(Convert.ToDouble(listpoints[i]), Convert.ToDouble(listpoints[i + 1])));
+            {
+                lstCoor.Add(new Coordinate(
+                    Convert.ToDouble(listpoints[i], CultureInfo.InvariantCulture), 
+                    Convert.ToDouble(listpoints[i + 1], CultureInfo.InvariantCulture)));
+            }
 
             return lstCoor.ToArray();
         }
@@ -451,7 +456,9 @@ namespace DotSpatial.Plugins.WFSClient.Classes
 
                 string point = Convert.ToString(geoData);
                 var pointValue = point.Split(' ');
-                geo = new Point(Convert.ToDouble(pointValue[0]), Convert.ToDouble(pointValue[1]));
+                geo = new Point(
+                    Convert.ToDouble(pointValue[0], CultureInfo.InvariantCulture),
+                    Convert.ToDouble(pointValue[1], CultureInfo.InvariantCulture));
             }
 
             if (_typeGeometry == FeatureType.Polygon)
