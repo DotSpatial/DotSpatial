@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotSpatial.Plugins.WebMap</RootNamespace>
     <AssemblyName>DotSpatial.Plugins.WebMap</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -77,6 +78,8 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="AuxTileSources\GoogleRequest.cs" />
+    <Compile Include="AuxTileSources\GoogleTileSource.cs" />
     <Compile Include="BrutileServiceProvider.cs" />
     <Compile Include="Configuration\ServiceProviderElement.cs" />
     <Compile Include="Configuration\ServiceProviderElementCollection.cs" />
@@ -92,7 +95,7 @@
     <Compile Include="Tiling\TileCalculator.cs" />
     <Compile Include="Tiling\TileManager.cs" />
     <Compile Include="Tiling\Tiles.cs" />
-    <Compile Include="WMS\RequestHelper.cs" />
+    <Compile Include="Helper\RequestHelper.cs" />
     <Compile Include="WMS\WmsRequest.cs" />
     <Compile Include="WMS\WmsServiceProvider.cs" />
     <Compile Include="WebMapPlugin.cs" />
