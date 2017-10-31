@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotSpatial.Data.Rasters.GdalExtension</RootNamespace>
     <AssemblyName>DotSpatial.Data.Rasters.GdalExtension</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -75,7 +75,7 @@
     <AssemblyOriginatorKeyFile>DotSpatial.Data.Rasters.GdalExtension.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-	<Reference Include="gdalconst_csharp">
+    <Reference Include="gdalconst_csharp">
       <HintPath>$(SolutionDir)..\Kits\gdal\gdal-2.0.0\dist\MSVC1900\x86\$(ConfigurationName)\gdalconst_csharp.dll</HintPath>
     </Reference>
     <Reference Include="gdal_csharp">

@@ -19,7 +19,7 @@ namespace DotSpatial.Symbology.Forms.Properties {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -66,30 +66,6 @@ namespace DotSpatial.Symbology.Forms.Properties {
         internal static string TableEditorControl_FileNameInMemory {
             get {
                 return ResourceManager.GetString("TableEditorControl_FileNameInMemory", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap B_Export16
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("B_Export16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap B_Import16
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("B_Import16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
