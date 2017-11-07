@@ -84,6 +84,8 @@ namespace DotSpatial.Data
             return result;
         }
 
+        private const double k_dMaxInt = (double)int.MaxValue;
+
         /// <summary>
         /// Converts a single geographic location into the equivalent point on the screen relative to the top left corner of the map.
         /// </summary>
@@ -92,20 +94,40 @@ namespace DotSpatial.Data
         /// <returns>A Point with the new location.</returns>
         public static Point ProjToPixel(this IProj self, Coordinate location)
         {
-            if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0) return Point.Empty;
-            try
-            {
-                int x = Convert.ToInt32(self.ImageRectangle.X + (location.X - self.GeographicExtents.MinX) *
-                                    (self.ImageRectangle.Width / self.GeographicExtents.Width));
-                int y = Convert.ToInt32(self.ImageRectangle.Y + (self.GeographicExtents.MaxY - location.Y) *
-                                        (self.ImageRectangle.Height / self.GeographicExtents.Height));
+            if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0 || location == null) return Point.Empty;
 
-                return new Point(x, y);
-            }
-            catch (OverflowException)
+            double X = self.ImageRectangle.X + (location.X - self.GeographicExtents.MinX) *
+                            (self.ImageRectangle.Width / self.GeographicExtents.Width);
+            double Y = self.ImageRectangle.Y + (self.GeographicExtents.MaxY - location.Y) *
+                                (self.ImageRectangle.Height / self.GeographicExtents.Height);
+
+            // Custom handling of overflows : try to preserve ratio from screen coords (0;0),
+            //    so that a line starting from within screen and ending on that point would be displayed very close to
+            //    a line projected to "infinity", keeping correct orientation (since maxint is still above 2 billions, and result is in "pixels")
+            if (X < -k_dMaxInt || X > k_dMaxInt || Y < -k_dMaxInt || Y > k_dMaxInt)
             {
-                return Point.Empty;
+                if (Math.Abs(X) > Math.Abs(Y))
+                {
+                    double dRatio = Y / X;
+                    if (X > 0) X = k_dMaxInt;
+                    else X = -k_dMaxInt;
+                    Y = Math.Round(X * dRatio);
+                }
+                else
+                {
+                    double dRatio = X / Y;
+                    if (Y > 0) Y = k_dMaxInt;
+                    else Y = -k_dMaxInt;
+                    X = Math.Round(Y * dRatio);
+                }
             }
+            else
+            {
+                X = Math.Round(X);
+                Y = Math.Round(Y);
+            }
+
+            return new Point((int)X, (int)Y);
         }
 
         /// <summary>

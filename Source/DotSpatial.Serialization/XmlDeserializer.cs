@@ -161,7 +161,7 @@ namespace DotSpatial.Serialization
                 constructorArgs = GetConstructorArgs(element);
             }
 
-            Type[] types = constructorArgs.Select(arg => arg.GetType()).ToArray();
+            Type[] types = constructorArgs.Select(arg => arg?.GetType()).ToArray();
             //var ctor = type.GetConstructor(types);
             //return ctor.Invoke(constructorArgs.ToArray());
 			//CGX
