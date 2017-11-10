@@ -128,7 +128,8 @@ namespace DotSpatial.Controls.Header
                 menu = new ToolStripButton(item.Caption)
                 {
                     DisplayStyle = ToolStripItemDisplayStyle.Image,
-                    Image = item.SmallImage
+                    Image = item.LargeImage != null ? item.LargeImage : item.SmallImage,
+                    CheckOnClick = false
                 };
 
                 // we're grouping all Toggle buttons together into the same group.
@@ -182,6 +183,64 @@ namespace DotSpatial.Controls.Header
 
             item.PropertyChanged += SimpleActionItemPropertyChanged;
             return menu;
+        }
+
+        public override void Add(DropDownImageActionItem item)
+        {
+            ToolStripDropDownButton menu;
+
+            menu = new ToolStripDropDownButton(item.Caption)
+            {
+                DisplayStyle = ToolStripItemDisplayStyle.Image,
+                Image = item.SelectedItem
+            };
+
+            menu.Name = item.Key;
+            menu.Enabled = item.Enabled;
+            menu.Visible = item.Visible;
+
+            System.Drawing.Image[] subImages = item.Items;
+            string[] subHints = item.Hints;
+            int iSubItemsCount = subImages.Length;
+            for (int iIndex = 0; iIndex < iSubItemsCount; iIndex++)
+            {
+                System.Drawing.Image imageThere = subImages[iIndex];
+                if (imageThere != item.SelectedItem)
+                {
+                    ToolStripItem subItem = menu.DropDownItems.Add(subImages[iIndex]);
+                    subItem.ToolTipText = subHints[iIndex];
+                    subItem.Click += (s, a) => item.SelectedItem = subItem.Image;
+                }
+                else menu.ToolTipText = subHints[iIndex];
+            }
+
+            EnsureNonNullRoot(item);
+            var root = _menuStrip.Items[item.RootKey] as ToolStripDropDownButton;
+            if (root == null)
+            {
+                // Temporarily create the root.
+                root = CreateToolStripDropDownButton(new RootItem(item.RootKey, "AddRootItemWithKey " + item.RootKey));
+            }
+
+            if (item.MenuContainerKey == null)
+            {
+                var strip = GetOrCreateStrip(item.GroupCaption);
+                if (strip != null)
+                {
+                    strip.Items.Add(menu);
+                }
+                menu.ToolTipText = String.IsNullOrWhiteSpace(item.ToolTipText) == false ? item.ToolTipText : item.Caption;
+            }
+            else
+            {
+                var subMenu = root.DropDownItems[item.MenuContainerKey] as ToolStripMenuItem;
+                if (subMenu != null)
+                {
+                    subMenu.DropDownItems.Add(menu);
+                }
+            }
+
+            item.PropertyChanged += DropDownImageActionItemPropertyChanged;
         }
 
         /// <summary>
@@ -331,6 +390,7 @@ namespace DotSpatial.Controls.Header
                     headerItem.PropertyChanged -= SimpleActionItemPropertyChanged;
                     headerItem.PropertyChanged -= DropDownActionItemPropertyChanged;
                     headerItem.PropertyChanged -= TextEntryActionItemPropertyChanged;
+                    headerItem.PropertyChanged -= DropDownImageActionItemPropertyChanged;
                 }
             }
 
@@ -646,6 +706,64 @@ namespace DotSpatial.Controls.Header
 
                 case "LargeImage":
                     guiItem.Image = item.LargeImage;
+                    break;
+
+                case "MenuContainerKey":
+                    break;
+                case "ToggleGroupKey":
+                    break;
+
+                default:
+                    ActionItemPropertyChanged(item, e);
+                    break;
+            }
+        }
+
+        private void DropDownImageActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var item = (DropDownImageActionItem)sender;
+            var guiItem = GetItem(item.Key);
+
+            switch (e.PropertyName)
+            {
+                case "SelectedItem":
+                    guiItem.Image = item.SelectedItem;
+                    {
+                        ((ToolStripDropDownButton)guiItem).DropDownItems.Clear();
+                        System.Drawing.Image[] subImages = item.Items;
+                        string[] subHints = item.Hints;
+                        int iSubItemsCount = subImages.Length;
+                        for (int iIndex = 0; iIndex < iSubItemsCount; iIndex++)
+                        {
+                            System.Drawing.Image imageThere = subImages[iIndex];
+                            if (imageThere != item.SelectedItem)
+                            {
+                                ToolStripItem subItem = ((ToolStripDropDownButton)guiItem).DropDownItems.Add(subImages[iIndex]);
+                                subItem.ToolTipText = subHints[iIndex];
+                                subItem.Click += (s, a) => item.SelectedItem = subItem.Image;
+                            }
+                            else guiItem.ToolTipText = subHints[iIndex];
+                        }
+                    }
+                    break;
+
+                case "Items":
+                    {
+                        ((ToolStripDropDownButton)guiItem).DropDownItems.Clear();
+                        System.Drawing.Image[] subImages = item.Items;
+                        string[] subHints = item.Hints;
+                        int iSubItemsCount = subImages.Length;
+                        for (int iIndex = 0; iIndex < iSubItemsCount; iIndex++)
+                        {
+                            System.Drawing.Image imageThere = subImages[iIndex];
+                            if (imageThere != item.SelectedItem)
+                            {
+                                ToolStripItem subItem = ((ToolStripDropDownButton)guiItem).DropDownItems.Add(subImages[iIndex]);
+                                subItem.ToolTipText = subHints[iIndex];
+                                subItem.Click += (s, a) => item.SelectedItem = subItem.Image;
+                            }
+                        }
+                    }
                     break;
 
                 case "MenuContainerKey":

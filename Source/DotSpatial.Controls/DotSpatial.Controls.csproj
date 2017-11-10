@@ -84,6 +84,7 @@
     <Compile Include="FeatureIdentifier.Designer.cs">
       <DependentUpon>FeatureIdentifier.cs</DependentUpon>
     </Compile>
+    <Compile Include="Header\DropDownImageActionItem.cs" />
     <Compile Include="Header\ProgressStatusPanel.cs" />
     <Compile Include="Header\ToolstripPosition.cs" />
     <Compile Include="IFeatureLayerExtensions.cs" />

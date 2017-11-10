@@ -92,6 +92,12 @@ namespace DotSpatial.Controls.Header
         public abstract object Add(SimpleActionItem item);
 
         /// <summary>
+        /// Adds the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public abstract void Add(DropDownImageActionItem item);
+
+        /// <summary>
         /// Adds the menu container item.
         /// </summary>
         /// <param name="item">The item.</param>
