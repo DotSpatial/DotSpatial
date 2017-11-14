@@ -54,7 +54,7 @@ namespace DotSpatial.Controls
                 _layoutControl = value;
 
                 // Sets the Margin tool to checked depending on the property of the layoutcontrol
-                if (_layoutControl.LayoutZoomToolStrip != null)
+                if (_layoutControl != null)
                 {
                     _showMargin.Checked = _layoutControl.ShowMargin;
                 }
