@@ -31,6 +31,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 
 ### Changed
 - Switched to VS2015 and C#6
+- Switched to .Net Framework 4.5.2 (#1083)
 - GdalExtension: Updated to GDAL 1.1.11
 - Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)
