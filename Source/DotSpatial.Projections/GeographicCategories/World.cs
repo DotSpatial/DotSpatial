@@ -88,7 +88,7 @@ namespace DotSpatial.Projections.GeographicCategories
 
             ITRF1997 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
             ITRF1997.GeographicInfo.Name = "GCS_ITRF_1997";
-            ITRF1997.GeographicInfo.Name = "D_ITRF_1997";
+            ITRF1997.GeographicInfo.Datum.Name = "D_ITRF_1997";
 
             ITRF2000 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
             ITRF2000.GeographicInfo.Name = "GCS_ITRF_2000";
