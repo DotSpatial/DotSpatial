@@ -160,15 +160,6 @@ namespace DotSpatial.Plugins.WebMap.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Google Labels.
-        /// </summary>
-        internal static string GoogleLabels {
-            get {
-                return ResourceManager.GetString("GoogleLabels", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Google Map.
         /// </summary>
         internal static string GoogleMap {

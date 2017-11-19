@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using BruTile;
 using BruTile.Web;
-using BruTile.Tms;
-using DotSpatial.Plugins.WebMap.Helper;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {

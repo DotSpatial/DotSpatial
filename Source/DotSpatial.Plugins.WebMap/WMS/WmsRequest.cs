@@ -27,8 +27,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
         /// Initializes a new instance of the <see cref="WmsRequest"/> class.
         /// </summary>
         /// <param name="baseUrl">The base url.</param>
-        /// <param name="tileFormat">The requested reponse format from the tile service.</param>
-        /// <param name="srs">The SRS.</param>
+        /// <param name="schema">The tile schema.</param>
         /// <param name="tileWidth">The width of the requested tiles.</param>
         /// <param name="tileHeight">The height of the requested tiles.</param>
         /// <param name="layers">The layers.</param>

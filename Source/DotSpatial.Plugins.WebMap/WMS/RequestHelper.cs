@@ -7,7 +7,7 @@ using System.Net;
 using BruTile;
 using BruTile.Extensions;
 
-namespace DotSpatial.Plugins.WebMap.Helper
+namespace DotSpatial.Plugins.WebMap.WMS
 {
     /// <summary>
     /// Helper class for fetching images.
@@ -27,11 +27,6 @@ namespace DotSpatial.Plugins.WebMap.Helper
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
             webRequest.Credentials = credentials;
 
-            return FetchImage(webRequest);
-        }
-
-        public static byte[] FetchImage(HttpWebRequest webRequest)
-        {
             using (var webResponse = webRequest.GetSyncResponse(10000))
             {
                 if (webResponse == null)

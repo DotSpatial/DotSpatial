@@ -67,6 +67,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,8 +79,6 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="AuxTileSources\GoogleRequest.cs" />
-    <Compile Include="AuxTileSources\GoogleTileSource.cs" />
     <Compile Include="BrutileServiceProvider.cs" />
     <Compile Include="Configuration\ServiceProviderElement.cs" />
     <Compile Include="Configuration\ServiceProviderElementCollection.cs" />
@@ -95,7 +94,7 @@
     <Compile Include="Tiling\TileCalculator.cs" />
     <Compile Include="Tiling\TileManager.cs" />
     <Compile Include="Tiling\Tiles.cs" />
-    <Compile Include="Helper\RequestHelper.cs" />
+    <Compile Include="WMS\RequestHelper.cs" />
     <Compile Include="WMS\WmsRequest.cs" />
     <Compile Include="WMS\WmsServiceProvider.cs" />
     <Compile Include="WebMapPlugin.cs" />
