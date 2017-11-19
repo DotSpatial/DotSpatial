@@ -5,7 +5,7 @@ Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
 Imports DotSpatial.Controls
 Imports DotSpatial.Controls.Header
-
+Imports DotSpatial.Plugins.ScriptRunner.My.Resources
 
 Public Class ScriptRunnerPlugin
     Inherits Extension

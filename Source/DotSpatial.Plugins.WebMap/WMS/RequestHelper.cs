@@ -2,7 +2,10 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.IO;
 using System.Net;
+using BruTile;
+using BruTile.Extensions;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {
@@ -23,7 +26,19 @@ namespace DotSpatial.Plugins.WebMap.WMS
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
             webRequest.Credentials = credentials;
-            return BruTile.Web.RequestHelper.FetchImage(webRequest);
+
+            using (var webResponse = webRequest.GetSyncResponse(10000))
+            {
+                if (webResponse == null)
+                {
+                    throw new WebException("An error occurred while fetching tile", null);
+                }
+
+                using (Stream responseStream = webResponse.GetResponseStream())
+                {
+                    return Utilities.ReadFully(responseStream);
+                }
+            }
         }
 
         #endregion

@@ -86,7 +86,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
                     double[] viewExtentZ = { 0.0, 0.0 };
                     Reproject.ReprojectPoints(mapVertices, viewExtentZ, Wgs84Proj, _data.CrsProjectionInfo, 0, mapVertices.Length / 2);
                     var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
-                    bytes = ts.Provider.GetTile(new TileInfo
+                    bytes = ts.GetTile(new TileInfo
                                                     {
                                                         Extent = ToBrutileExtent(geogEnv),
                                                         Index = index

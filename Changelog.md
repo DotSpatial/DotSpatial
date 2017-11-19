@@ -31,6 +31,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 
 ### Changed
 - Switched to VS2015 and C#6
+- Switched to .Net Framework 4.5.2 (#1083)
 - GdalExtension: Updated to GDAL 1.1.11
 - Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)
@@ -140,3 +141,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - showMargin can be checked as soon as layoutControl is not null (#1091) 
 - don't assign the 'EndRow' property to itself in BinaryRaster.OpenWindow (#1089)
 - assign "D_ITRF_1997" to ITRF1997.GeographicInfo.Datum.Name instead of ITRF1997.GeographicInfo.Name because this is the name of the datum and not the GeographicInfo (#1090)
+- Update Brutile version in Webmap? (#800)

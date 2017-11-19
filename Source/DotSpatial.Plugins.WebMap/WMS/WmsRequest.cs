@@ -28,11 +28,13 @@ namespace DotSpatial.Plugins.WebMap.WMS
         /// </summary>
         /// <param name="baseUrl">The base url.</param>
         /// <param name="schema">The tile schema.</param>
+        /// <param name="tileWidth">The width of the requested tiles.</param>
+        /// <param name="tileHeight">The height of the requested tiles.</param>
         /// <param name="layers">The layers.</param>
         /// <param name="styles">The styles.</param>
         /// <param name="customParameters">The custom parameters.</param>
         /// <param name="version">The version.</param>
-        public WmsRequest(Uri baseUrl, TileSchema schema, IEnumerable<string> layers, IEnumerable<string> styles, IDictionary<string, string> customParameters, string version)
+        public WmsRequest(Uri baseUrl, TileSchema schema, int tileWidth, int tileHeight, IEnumerable<string> layers, IEnumerable<string> styles, IDictionary<string, string> customParameters, string version)
         {
             // Prepare url string
             var au = baseUrl.AbsoluteUri;
@@ -50,8 +52,8 @@ namespace DotSpatial.Plugins.WebMap.WMS
             url.AppendFormat(crsFormat, schema.Srs);
             url.AppendFormat("&LAYERS={0}", ToCommaSeparatedValues(layers));
             url.AppendFormat("&STYLES={0}", ToCommaSeparatedValues(styles));
-            url.AppendFormat("&WIDTH={0}", schema.Width);
-            url.AppendFormat("&HEIGHT={0}", schema.Height);
+            url.AppendFormat("&WIDTH={0}", tileWidth);
+            url.AppendFormat("&HEIGHT={0}", tileHeight);
             if (customParameters != null)
             {
                 foreach (var name in customParameters.Keys)
