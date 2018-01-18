@@ -210,7 +210,7 @@ namespace DotSpatial.Controls
         /// If false, the selectable state of the layers gets either determined by a plugin like SetSelectable or developers handle the selectable state by code.
         /// By default legend is used, but if the SetSelectable plugin gets loaded this is used instead of the legend.
         /// </summary>
-        public bool UseLegendForSelection { get; set; } = true;
+        public bool UseLegendForSelection { get; set; } = false;
 
         /// <summary>
         /// Gets the bottom box in the legend.

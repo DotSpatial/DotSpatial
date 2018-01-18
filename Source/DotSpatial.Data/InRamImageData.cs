@@ -281,7 +281,7 @@ namespace DotSpatial.Data
                 Width = temp.Width;
                 Height = temp.Height;
                 using (var g = Graphics.FromImage(_myImage))
-                    g.DrawImageUnscaled(temp, 0, 0);
+                    g.DrawImage(temp, 0, 0, temp.Width, temp.Height); // don't draw unscaled because then nothing is shown
             }
 
             WorldFile = new WorldFile(Filename);

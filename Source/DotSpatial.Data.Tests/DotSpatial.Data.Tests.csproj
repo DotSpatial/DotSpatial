@@ -82,6 +82,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -99,6 +100,7 @@
     <Compile Include="ExtentTests.cs" />
     <Compile Include="FeatureListTests.cs" />
     <Compile Include="GeometryTests.cs" />
+    <Compile Include="InRamImageDataTests.cs" />
     <Compile Include="LineShapefileTests.cs" />
     <Compile Include="PointShapefileTests.cs" />
     <Compile Include="PolygonShapefileTests.cs" />

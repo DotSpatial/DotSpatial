@@ -91,6 +91,13 @@ namespace DotSpatial.Symbology
         bool ShowLabels { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping.")]
+        bool Snappable { get; set; }
+
+        /// <summary>
         /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
         /// </summary>
         IFeatureSymbolizer Symbolizer { get; set; }

@@ -23,7 +23,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Legend.UseLegendForSelection property to be able to decide whether the legend should be used for selection or not. (#1008)
 - Possibility to drag layers out of their group into the parent group (in legend) (#1008)
 - Clear parameter to Select function to speed up drawing (#1024)
-
+- LayoutControl.InitialOpenFileDirectory property that allows to set the folder that is shown in the OpenFileDialog that is used to open an existing layout
+- FeatureLayer.Snappable to indicate whether the layer can be used for snapping
 
 ### Changed
 - Switched to VS2015 and C#6
@@ -44,6 +45,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Made Shapefile class abstract, because we already have FeatureSet for creating unspecified Shapefiles (#890)
 - Moved MapFrame extension methods to Group (#1008)
 - Drawing functions so selected features are drawn on top (#897)
+- ShapeEditors AddFeature and MoveVertex functions, so they snap only to the layers that allow snapping
+- ShapeEditors SnapSettingsDialog to allow the users to select the layers the editor functions may snap to
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -122,3 +125,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Some errors in SetSelectable plugin (#1008)
 - Crash when attempting to use a serial GPS device on Mono
 - Clear the selection inside FeatureLayer.RemoveSelectedFeatures so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
+- In InRamImageData.Open don't draw the image unscaled because this can cause the image not to be drawn
+- FeatureTypeFromGeometryType Method updated to work with GeometryCollection

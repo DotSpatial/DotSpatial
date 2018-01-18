@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -97,7 +98,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             Envelope env = pix.ToEnvelope();
 
-            foreach (IFeatureLayer layer in SnapLayers)
+            foreach (IFeatureLayer layer in SnapLayers.Where(_ => _.Snappable && _.IsVisible))
             {
                 foreach (IFeature feat in layer.DataSet.Features)
                 {

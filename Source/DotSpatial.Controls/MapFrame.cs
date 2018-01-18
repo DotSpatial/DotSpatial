@@ -876,7 +876,7 @@ namespace DotSpatial.Controls
                 for (int i = 0; i < 2; i++)
                 {
                     // first draw the normal colors and then the selection colors on top
-                    foreach (IMapLayer layer in Layers)
+                    foreach (IMapLayer layer in layers)
                     {
                         layer.DrawRegions(args, regions, i == 1);
                     }
@@ -1735,24 +1735,6 @@ namespace DotSpatial.Controls
         {
             try
             {
-                /*      Rectangle r = View;
-                      int w = r.Width;
-                      int h = r.Height;
-                      double dWidth = r.Width / (CurrentScale / dScale);
-                      double dHeight = r.Height / (CurrentScale / dScale);
-
-                      r.Inflate(-(Convert.ToInt32(dWidth)), -(Convert.ToInt32(dHeight)));
-                          // The mouse cursor should anchor the geographic location during zoom.
-
-                      double dMouseX = (mousePosition.X / 2) / (CurrentScale / dScale);
-                      double dMouseY = (mousePosition.Y / 2) / (CurrentScale / dScale);
-
-                          r.X += Convert.ToInt32(dMouseX);
-                          r.Y += Convert.ToInt32(dMouseY);
-
-                      View = r;
-                      ResetExtents();*/
-
                 double dWidth = Convert.ToDouble(BufferImage.Width);
                 double dHeight = Convert.ToDouble(BufferImage.Height);
 
@@ -1764,25 +1746,26 @@ namespace DotSpatial.Controls
                 dWidth = Math.Abs(dWidth);
                 dHeight = Math.Abs(dHeight);
 
-                GeoAPI.Geometries.Coordinate center = new GeoAPI.Geometries.Coordinate();
-                /*      if (mousePosition != null)
-                      {
-                          double dX = mousePosition.X;
-                          double dY = mousePosition.Y;
-
-                          ComputeDimensionsFromScale(CurrentScale, ref dX, ref dY);
-
-                          center.X = ViewExtents.MinX + dX;
-                          center.Y = ViewExtents.MaxY - dY;
-                      }
-                      else*/
+                Coordinate mouseCoords = null;
+                if (mousePosition != null && mousePosition.X >= 0 && mousePosition.X < w && mousePosition.Y >= 0 && mousePosition.Y < h)
                 {
-                    center.X = ViewExtents.Center.X;
-                    center.Y = ViewExtents.Center.Y;
+                    mouseCoords = this.PixelToProj(mousePosition);
                 }
 
-                // ViewExtents.SetCenter(center);
-                ViewExtents.SetValues(center.X - dWidth / 2, center.Y - dHeight / 2, center.X + dWidth / 2, center.Y + dHeight / 2);
+                double dCenterX = ViewExtents.Center.X;
+                double dCenterY = ViewExtents.Center.Y;
+                ViewExtents.SetValues(dCenterX - dWidth / 2, dCenterY - dHeight / 2, dCenterX + dWidth / 2, dCenterY + dHeight / 2);
+
+                if (mouseCoords != null)
+                {
+                    // if the mouse is valid and inside view rect, make it so that the coordinates under the mouse are kept invariant after rescale.
+                    Coordinate mouseCoordsNow = this.PixelToProj(mousePosition);
+                    double dX = mouseCoords.X - mouseCoordsNow.X;
+                    double dY = mouseCoords.Y - mouseCoordsNow.Y;
+                    dCenterX += dX;
+                    dCenterY += dY;
+                    ViewExtents.SetValues(dCenterX - dWidth / 2, dCenterY - dHeight / 2, dCenterX + dWidth / 2, dCenterY + dHeight / 2);
+                }
 
                 ResetExtents();
 
@@ -1790,8 +1773,6 @@ namespace DotSpatial.Controls
             catch (Exception)
             { }
         }
-
-
 
         private void ComputeDimensionsFromScale(double dScale, ref double dWidth, ref double dHeight)
         {
