@@ -55,6 +55,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - If a dxf file contains only a single feature type the dxf file gets added to the map as a single layer with the feature type it contains (#1061)
 - dxf files get loaded with their styles (#1061)
 - Show buttons from layout toolbars as checked while their function is active
+- replaced ContextMenu by ContextMenuStrip inside Legend, so we don't have to draw the images shown in the ContextMenu ourselves (#1069)
+- changed the background color of the LayerDialog and TabControlDialog tabs to Control so they have the same background color as the user controls they contain (#1069)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
