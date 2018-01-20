@@ -466,6 +466,24 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rounding Digits:.
+        /// </summary>
+        internal static string RasterCategoryControl_RoundingDigits {
+            get {
+                return ResourceManager.GetString("RasterCategoryControl_RoundingDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Significant Figures:.
+        /// </summary>
+        internal static string RasterCategoryControl_SignificantFigures {
+            get {
+                return ResourceManager.GetString("RasterCategoryControl_SignificantFigures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There was an error attempting to apply this expression..
         /// </summary>
         internal static string SelectByAttributes_ErrorWhileAttemptingToApplyExpression {

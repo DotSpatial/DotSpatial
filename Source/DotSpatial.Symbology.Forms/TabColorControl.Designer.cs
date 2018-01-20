@@ -30,7 +30,6 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabColorRange = new System.Windows.Forms.TabControl();
             this.tabHSL = new System.Windows.Forms.TabPage();
@@ -71,7 +70,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabColorRange
             // 
-            this.tabColorRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.tabColorRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabColorRange.Controls.Add(this.tabHSL);
             this.tabColorRange.Controls.Add(this.tabRGB);
@@ -83,6 +82,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabHSL
             // 
+            this.tabHSL.BackColor = System.Drawing.SystemColors.Control;
             this.tabHSL.Controls.Add(this.btnReverseLight);
             this.tabHSL.Controls.Add(this.btnReverseSat);
             this.tabHSL.Controls.Add(this.btnReverseHue);
@@ -93,13 +93,12 @@ namespace DotSpatial.Symbology.Forms
             this.tabHSL.Controls.Add(this.lblHueRange);
             this.tabHSL.Controls.Add(this.lblSaturationRange);
             this.tabHSL.Controls.Add(this.lblLightnessRange);
-            this.tabHSL.Location = new System.Drawing.Point(4, 25);
+            this.tabHSL.Location = new System.Drawing.Point(4, 22);
             this.tabHSL.Name = "tabHSL";
             this.tabHSL.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHSL.Size = new System.Drawing.Size(209, 160);
+            this.tabHSL.Size = new System.Drawing.Size(209, 163);
             this.tabHSL.TabIndex = 0;
             this.tabHSL.Text = "HSL";
-            this.tabHSL.UseVisualStyleBackColor = true;
             // 
             // btnReverseLight
             // 
@@ -230,7 +229,7 @@ namespace DotSpatial.Symbology.Forms
             this.lblHueRange.AutoSize = true;
             this.lblHueRange.Location = new System.Drawing.Point(9, 13);
             this.lblHueRange.Name = "lblHueRange";
-            this.lblHueRange.Size = new System.Drawing.Size(84, 17);
+            this.lblHueRange.Size = new System.Drawing.Size(65, 13);
             this.lblHueRange.TabIndex = 0;
             this.lblHueRange.Text = "Hue Range:";
             // 
@@ -239,7 +238,7 @@ namespace DotSpatial.Symbology.Forms
             this.lblSaturationRange.AutoSize = true;
             this.lblSaturationRange.Location = new System.Drawing.Point(9, 62);
             this.lblSaturationRange.Name = "lblSaturationRange";
-            this.lblSaturationRange.Size = new System.Drawing.Size(123, 17);
+            this.lblSaturationRange.Size = new System.Drawing.Size(93, 13);
             this.lblSaturationRange.TabIndex = 4;
             this.lblSaturationRange.Text = "Saturation Range:";
             // 
@@ -248,25 +247,25 @@ namespace DotSpatial.Symbology.Forms
             this.lblLightnessRange.AutoSize = true;
             this.lblLightnessRange.Location = new System.Drawing.Point(9, 111);
             this.lblLightnessRange.Name = "lblLightnessRange";
-            this.lblLightnessRange.Size = new System.Drawing.Size(119, 17);
+            this.lblLightnessRange.Size = new System.Drawing.Size(90, 13);
             this.lblLightnessRange.TabIndex = 7;
             this.lblLightnessRange.Text = "Lightness Range:";
             // 
             // tabRGB
             // 
+            this.tabRGB.BackColor = System.Drawing.SystemColors.Control;
             this.tabRGB.Controls.Add(this.rampSlider2);
             this.tabRGB.Controls.Add(this.rampSlider1);
             this.tabRGB.Controls.Add(this.lblEndColor);
             this.tabRGB.Controls.Add(this.lblStartColor);
             this.tabRGB.Controls.Add(this.cbEndColor);
             this.tabRGB.Controls.Add(this.cbStartColor);
-            this.tabRGB.Location = new System.Drawing.Point(4, 25);
+            this.tabRGB.Location = new System.Drawing.Point(4, 22);
             this.tabRGB.Name = "tabRGB";
             this.tabRGB.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRGB.Size = new System.Drawing.Size(209, 160);
+            this.tabRGB.Size = new System.Drawing.Size(209, 163);
             this.tabRGB.TabIndex = 1;
             this.tabRGB.Text = "RGB";
-            this.tabRGB.UseVisualStyleBackColor = true;
             // 
             // rampSlider2
             // 
@@ -365,7 +364,7 @@ namespace DotSpatial.Symbology.Forms
             this.lblEndColor.AutoSize = true;
             this.lblEndColor.Location = new System.Drawing.Point(8, 80);
             this.lblEndColor.Name = "lblEndColor";
-            this.lblEndColor.Size = new System.Drawing.Size(70, 17);
+            this.lblEndColor.Size = new System.Drawing.Size(53, 13);
             this.lblEndColor.TabIndex = 3;
             this.lblEndColor.Text = "&End Color";
             // 
@@ -374,7 +373,7 @@ namespace DotSpatial.Symbology.Forms
             this.lblStartColor.AutoSize = true;
             this.lblStartColor.Location = new System.Drawing.Point(8, 12);
             this.lblStartColor.Name = "lblStartColor";
-            this.lblStartColor.Size = new System.Drawing.Size(75, 17);
+            this.lblStartColor.Size = new System.Drawing.Size(56, 13);
             this.lblStartColor.TabIndex = 1;
             this.lblStartColor.Text = "&Start Color";
             // 
@@ -385,7 +384,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkUseColorRange.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseColorRange.Location = new System.Drawing.Point(6, 0);
             this.chkUseColorRange.Name = "chkUseColorRange";
-            this.chkUseColorRange.Size = new System.Drawing.Size(138, 21);
+            this.chkUseColorRange.Size = new System.Drawing.Size(107, 17);
             this.chkUseColorRange.TabIndex = 11;
             this.chkUseColorRange.Text = "Use Color &Range";
             this.chkUseColorRange.UseVisualStyleBackColor = true;
@@ -404,6 +403,7 @@ namespace DotSpatial.Symbology.Forms
             this.tabRGB.ResumeLayout(false);
             this.tabRGB.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

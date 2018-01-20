@@ -1000,4 +1000,7 @@ Load the layout with the printer's current paper settings?</value>
   <data name="LayoutInsertToolStrip_MissingMapControl" xml:space="preserve">
     <value>Missing MapControl</value>
   </data>
+  <data name="LayoutInsertToolStripDefault" xml:space="preserve">
+    <value>Default mouse cursor</value>
+  </data>
 </root>

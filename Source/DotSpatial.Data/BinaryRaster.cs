@@ -421,7 +421,7 @@ namespace DotSpatial.Data
             StartColumn = startColumn;
             StartRow = startRow;
             EndColumn = endColumn;
-            EndRow = EndRow;
+            EndRow = endRow;
 
             // Reposition the "raster" so that it matches the window, not the whole raster
             Bounds.AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);

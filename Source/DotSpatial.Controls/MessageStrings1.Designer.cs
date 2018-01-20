@@ -1243,6 +1243,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default mouse cursor.
+        /// </summary>
+        internal static string LayoutInsertToolStripDefault {
+            get {
+                return ResourceManager.GetString("LayoutInsertToolStripDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert map.
         /// </summary>
         internal static string LayoutInsertToolStripMap {

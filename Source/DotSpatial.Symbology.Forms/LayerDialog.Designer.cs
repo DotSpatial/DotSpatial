@@ -30,7 +30,6 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LayerDialog));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabSymbology = new System.Windows.Forms.TabPage();
@@ -55,26 +54,28 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabSymbology
             // 
+            this.tabSymbology.BackColor = System.Drawing.SystemColors.Control;
             this.tabSymbology.Controls.Add(this.pnlContent);
             resources.ApplyResources(this.tabSymbology, "tabSymbology");
             this.tabSymbology.Name = "tabSymbology";
-            this.tabSymbology.UseVisualStyleBackColor = true;
             // 
             // pnlContent
             // 
             resources.ApplyResources(this.pnlContent, "pnlContent");
+            this.pnlContent.BackColor = System.Drawing.SystemColors.Control;
             this.pnlContent.Name = "pnlContent";
             // 
             // tabDetails
             // 
+            this.tabDetails.BackColor = System.Drawing.SystemColors.Control;
             this.tabDetails.Controls.Add(this.propertyGrid1);
             resources.ApplyResources(this.tabDetails, "tabDetails");
             this.tabDetails.Name = "tabDetails";
-            this.tabDetails.UseVisualStyleBackColor = true;
             // 
             // propertyGrid1
             // 
             resources.ApplyResources(this.propertyGrid1, "propertyGrid1");
+            this.propertyGrid1.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid1.Name = "propertyGrid1";
             // 
             // panel1
@@ -87,9 +88,9 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.dialogButtons1, "dialogButtons1");
             this.dialogButtons1.Name = "dialogButtons1";
-            this.dialogButtons1.OkClicked += new System.EventHandler(this.DialogButtons1OkClicked);
             this.dialogButtons1.ApplyClicked += new System.EventHandler(this.DialogButtons1ApplyClicked);
             this.dialogButtons1.CancelClicked += new System.EventHandler(this.DialogButtons1CancelClicked);
+            this.dialogButtons1.OkClicked += new System.EventHandler(this.DialogButtons1OkClicked);
             // 
             // LayerDialog
             // 
@@ -106,6 +107,7 @@ namespace DotSpatial.Symbology.Forms
             this.tabDetails.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion

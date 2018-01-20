@@ -1287,7 +1287,7 @@ Public Class TaudemPlugin
         If g_AutoForm Is Nothing Or g_AutoForm.IsDisposed Then
             g_AutoForm = New frmAutomatic_v3
         End If
-        g_AutoForm.WindowState = Windows.Forms.FormWindowState.Normal
+        g_AutoForm.WindowState = System.Windows.Forms.FormWindowState.Normal
         g_AutoForm.Initialize(Me)
         g_AutoForm.Show()
     End Sub

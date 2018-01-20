@@ -38,7 +38,7 @@ Public Class frmLoadOutputs
 
         'Default filename:
         fdgOpen.FileName = GetDefaultFilename(append)
-        If fdgOpen.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If fdgOpen.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Return fdgOpen.FileName
         End If
 

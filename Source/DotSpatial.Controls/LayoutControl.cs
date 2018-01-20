@@ -28,6 +28,8 @@ namespace DotSpatial.Controls
     public partial class LayoutControl : UserControl
     {
         #region Fields
+        private readonly List<ToolStrip> _otherToolStrips;
+
         private LayoutElement _elementToAddWithMouse;
         private string _fileName;
         private PointF _lastMousePoint;
@@ -45,7 +47,6 @@ namespace DotSpatial.Controls
         private bool _suppressLEinvalidate;
 
         private float _zoom; // The zoom of the paper
-
         #endregion
 
         #region  Constructors
@@ -56,6 +57,7 @@ namespace DotSpatial.Controls
         public LayoutControl()
         {
             InitializeComponent();
+            _otherToolStrips = new List<ToolStrip>();
             _printerSettings = new PrinterSettings();
             _fileName = string.Empty;
             _suppressLEinvalidate = false;
@@ -82,6 +84,11 @@ namespace DotSpatial.Controls
         #region Events
 
         /// <summary>
+        /// This fires after a toolstrip has indicated that one of its buttons was checked.
+        /// </summary>
+        public event EventHandler ButtonChecked;
+
+        /// <summary>
         /// This fires after a element was added or removed.
         /// </summary>
         public event EventHandler ElementsChanged;
@@ -97,6 +104,11 @@ namespace DotSpatial.Controls
         public event EventHandler LayoutLoaded;
 
         /// <summary>
+        /// This fires after the mouse mode has changed.
+        /// </summary>
+        public event EventHandler MouseModeChanged;
+
+        /// <summary>
         /// This fires after the selection has changed.
         /// </summary>
         public event EventHandler SelectionChanged;
@@ -105,6 +117,31 @@ namespace DotSpatial.Controls
         /// This fires when the zoom of the layout changes.
         /// </summary>
         public event EventHandler ZoomChanged;
+
+        #endregion
+
+        #region Enums
+
+        /// <summary>
+        /// Arten von MouseEvents, die an LayoutMap weitergeleitet werden können.
+        /// </summary>
+        public enum MouseEvent
+        {
+            /// <summary>
+            /// Mouse is down.
+            /// </summary>
+            Down = 1,
+
+            /// <summary>
+            /// Mouse is moving.
+            /// </summary>
+            Move = 2,
+
+            /// <summary>
+            /// Mouse is up.
+            /// </summary>
+            Up = 3
+        }
 
         #endregion
 
@@ -173,8 +210,15 @@ namespace DotSpatial.Controls
             set
             {
                 if (value == null) return;
+
+                if (_layoutInsertToolStrip != null)
+                {
+                    _layoutInsertToolStrip.ButtonChecked -= OnButtonChecked;
+                }
+
                 _layoutInsertToolStrip = value;
                 _layoutInsertToolStrip.LayoutControl = this;
+                _layoutInsertToolStrip.ButtonChecked += OnButtonChecked;
             }
         }
 
@@ -269,28 +313,30 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the Map control to use
+        /// Gets or sets the Map control to use.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Map MapControl { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the map is in pan mode.
+        /// Gets or sets the MouseMode.
         /// </summary>
         [Browsable(false)]
-        public bool MapPanMode
+        public MouseMode MouseMode
         {
             get
             {
-                if (_mouseMode == MouseMode.PanMap || _mouseMode == MouseMode.StartPanMap)
-                    return true;
-                return false;
+                return _mouseMode;
             }
 
             set
             {
-                _mouseMode = value ? MouseMode.StartPanMap : MouseMode.Default;
+                if (_mouseMode != value)
+                {
+                    _mouseMode = value;
+                    OnMouseModeChanged(EventArgs.Empty);
+                }
             }
         }
 
@@ -398,7 +444,7 @@ namespace DotSpatial.Controls
         {
             _elementToAddWithMouse = le;
             ClearSelection();
-            _mouseMode = MouseMode.StartInsertNewElement;
+            MouseMode = MouseMode.StartInsertNewElement;
             Cursor = Cursors.Cross;
         }
 
@@ -422,6 +468,26 @@ namespace DotSpatial.Controls
             OnElementsChanged(EventArgs.Empty);
             le.Invalidated += LeInvalidated;
             Invalidate(new Region(PaperToScreen(le.Rectangle)));
+        }
+
+        /// <summary>
+        /// Assigns the given toolstrip to one of the ToolStrip propertys if it is of a corresponding type, otherwise it gets added to the list of tool strips that get checked for button changes.
+        /// </summary>
+        /// <param name="ts">The tool strip that should be added.</param>
+        public void AddToolStrip(LayoutToolStrip ts)
+        {
+            if (ts == null) return;
+            if (TrySet(ts, LayoutInsertToolStrip)) return;
+            if (TrySet(ts, LayoutZoomToolStrip)) return;
+            if (TrySet(ts, LayoutDocToolStrip)) return;
+            if (TrySet(ts, LayoutMapToolStrip)) return;
+
+            if (!_otherToolStrips.Contains(ts))
+            {
+                ts.LayoutControl = this;
+                ts.ButtonChecked += OnButtonChecked;
+                _otherToolStrips.Add(ts);
+            }
         }
 
         /// <summary>
@@ -552,6 +618,16 @@ namespace DotSpatial.Controls
 
                     break;
             }
+        }
+
+        /// <summary>
+        /// Clears the current selection.
+        /// </summary>
+        public void ClearSelection()
+        {
+            SelectedLayoutElements.Clear();
+            Invalidate();
+            OnSelectionChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -1287,6 +1363,19 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Removes the given tool strip from the list of tool strips that get checked for button changes. This does not remove tool strips that were assigned to a ToolStrip property.
+        /// </summary>
+        /// <param name="ts">The toolstrip that should be removed.</param>
+        public void RemoveToolStrip(LayoutToolStrip ts)
+        {
+            if (_otherToolStrips.Contains(ts))
+            {
+                ts.ButtonChecked -= OnButtonChecked;
+                _otherToolStrips.Remove(ts);
+            }
+        }
+
+        /// <summary>
         /// Shows a save dialog box and prompts the user to save a layout file.
         /// </summary>
         /// <param name="promptSaveAs">Show prompt dialog or not. Note that dialog will be always shown when Filename is null or empty.</param>
@@ -1484,16 +1573,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Clears the current selection.
-        /// </summary>
-        internal void ClearSelection()
-        {
-            SelectedLayoutElements.Clear();
-            Invalidate();
-            OnSelectionChanged(EventArgs.Empty);
-        }
-
-        /// <summary>
         /// Removes the specified layoutElement from the layout.
         /// </summary>
         /// <param name="le">The layout element.</param>
@@ -1569,7 +1648,7 @@ namespace DotSpatial.Controls
                 var le = LayoutElements[i];
 
                 // This code deals with drawins a map when its panning
-                if (_mouseMode == MouseMode.PanMap && SelectedLayoutElements.Contains(le) && le is LayoutMap && SelectedLayoutElements.Count == 1)
+                if (MouseMode == MouseMode.PanMap && SelectedLayoutElements.Contains(le) && le is LayoutMap && SelectedLayoutElements.Count == 1)
                 {
                     graph.TranslateTransform(_paperLocation.X + _mouseBox.Width, _paperLocation.Y + _mouseBox.Height);
                     graph.ScaleTransform(96F / 100F * _zoom, 96F / 100F * _zoom);
@@ -1634,9 +1713,9 @@ namespace DotSpatial.Controls
             }
 
             // If the users is dragging a select box or an insert box we draw it here
-            if (_mouseMode == MouseMode.CreateSelection || _mouseMode == MouseMode.InsertNewElement)
+            if (MouseMode == MouseMode.CreateSelection || MouseMode == MouseMode.InsertNewElement)
             {
-                Color boxColor = _mouseMode == MouseMode.CreateSelection ? SystemColors.Highlight : Color.Orange;
+                Color boxColor = MouseMode == MouseMode.CreateSelection ? SystemColors.Highlight : Color.Orange;
                 var outlinePen = new Pen(boxColor);
                 var highlightBrush = new SolidBrush(Color.FromArgb(30, boxColor));
                 graph.FillRectangle(highlightBrush, _mouseBox.X, _mouseBox.Y, _mouseBox.Width - 1, _mouseBox.Height - 1);
@@ -1904,14 +1983,14 @@ namespace DotSpatial.Controls
             // Deals with left buttons clicks
             if (e.Button == MouseButtons.Left)
             {
-                switch (_mouseMode)
+                switch (MouseMode)
                 {
                     case MouseMode.Default:
 
                         // Handles resizing stuff
                         if (_resizeSelectedEdge != Edge.None)
                         {
-                            _mouseMode = MouseMode.ResizeSelected;
+                            MouseMode = MouseMode.ResizeSelected;
                             SelectedLayoutElements[0].Resizing = true;
                             if (SelectedLayoutElements[0].ResizeStyle != ResizeStyle.HandledInternally)
                             {
@@ -1934,26 +2013,26 @@ namespace DotSpatial.Controls
                             foreach (var le in SelectedLayoutElements)
                             {
                                 if (!le.IntersectsWith(mousePointPaper)) continue;
-                                _mouseMode = MouseMode.MoveSelection;
+                                MouseMode = MouseMode.MoveSelection;
                                 Cursor = Cursors.SizeAll;
                                 return;
                             }
                         }
 
                         // Starts the selection code.
-                        _mouseMode = MouseMode.CreateSelection;
+                        MouseMode = MouseMode.CreateSelection;
                         _mouseBox = new RectangleF(e.X, e.Y, 0F, 0F);
                         break;
 
                     // Start drag rectangle insert new element
                     case MouseMode.StartInsertNewElement:
-                        _mouseMode = MouseMode.InsertNewElement;
+                        MouseMode = MouseMode.InsertNewElement;
                         _mouseBox = new RectangleF(e.X, e.Y, 0F, 0F);
                         break;
 
                     // Starts the pan mode for the map
                     case MouseMode.StartPanMap:
-                        _mouseMode = MouseMode.PanMap;
+                        MouseMode = MouseMode.PanMap;
                         _mouseBox = new RectangleF(e.X, e.Y, 0F, 0F);
                         break;
                 }
@@ -1962,11 +2041,11 @@ namespace DotSpatial.Controls
             // Deals with right button clicks
             if (e.Button == MouseButtons.Right)
             {
-                switch (_mouseMode)
+                switch (MouseMode)
                 {
                     // If the user was in insert mode we cancel it
                     case MouseMode.StartInsertNewElement:
-                        _mouseMode = MouseMode.Default;
+                        MouseMode = MouseMode.Default;
                         _elementToAddWithMouse = null;
                         Cursor = Cursors.Default;
                         break;
@@ -1983,7 +2062,7 @@ namespace DotSpatial.Controls
             var inflate = 5F;
 
             // Handles various different mouse modes
-            switch (_mouseMode)
+            switch (MouseMode)
             {
                 // Deals with inserting new elements
                 case MouseMode.InsertNewElement:
@@ -2135,7 +2214,7 @@ namespace DotSpatial.Controls
             if (e.Button == MouseButtons.Left)
             {
                 // Handles various different mouse modes
-                switch (_mouseMode)
+                switch (MouseMode)
                 {
                     // If we are dealing with a selection we look here
                     case MouseMode.CreateSelection:
@@ -2177,13 +2256,13 @@ namespace DotSpatial.Controls
                         }
 
                         OnSelectionChanged(EventArgs.Empty);
-                        _mouseMode = MouseMode.Default;
+                        MouseMode = MouseMode.Default;
                         Invalidate();
                         break;
 
                     // Stops moving the selection
                     case MouseMode.MoveSelection:
-                        _mouseMode = MouseMode.Default;
+                        MouseMode = MouseMode.Default;
                         Cursor = Cursors.Default;
                         break;
 
@@ -2191,7 +2270,7 @@ namespace DotSpatial.Controls
                     case MouseMode.ResizeSelected:
                         _resizeTempBitmap?.Dispose();
                         _resizeTempBitmap = null;
-                        _mouseMode = MouseMode.Default;
+                        MouseMode = MouseMode.Default;
                         Cursor = Cursors.Default;
                         SelectedLayoutElements[0].Resizing = false;
                         SelectedLayoutElements[0].Size = SelectedLayoutElements[0].Size;
@@ -2219,7 +2298,7 @@ namespace DotSpatial.Controls
                         AddToLayout(_elementToAddWithMouse);
                         AddToSelection(_elementToAddWithMouse);
                         _elementToAddWithMouse = null;
-                        _mouseMode = MouseMode.Default;
+                        MouseMode = MouseMode.Default;
                         _mouseBox.Inflate(5, 5);
                         Invalidate(new Region(_mouseBox));
                         break;
@@ -2227,7 +2306,7 @@ namespace DotSpatial.Controls
                     case MouseMode.PanMap:
                         if (_mouseBox.Width != 0 || _mouseBox.Height != 0)
                             PanMap(SelectedLayoutElements[0] as LayoutMap, _mouseBox.Width, _mouseBox.Height);
-                        _mouseMode = MouseMode.StartPanMap;
+                        MouseMode = MouseMode.StartPanMap;
                         break;
 
                     case MouseMode.Default:
@@ -2236,7 +2315,7 @@ namespace DotSpatial.Controls
             }
             else if (e.Button == MouseButtons.Right)
             {
-                switch (_mouseMode)
+                switch (MouseMode)
                 {
                     case MouseMode.Default:
                         if (SelectedLayoutElements.Count < 1)
@@ -2307,6 +2386,16 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Call this to indicated that a toolstrip has indicated that one of its buttons was checked.
+        /// </summary>
+        /// <param name="sender">The toolstrip whose button was checked.</param>
+        /// <param name="e">The event args.</param>
+        private void OnButtonChecked(object sender, EventArgs e)
+        {
+            ButtonChecked?.Invoke(sender, e);
+        }
+
+        /// <summary>
         /// Call this to indicate elements were added or removed.
         /// </summary>
         /// <param name="e">The event args.</param>
@@ -2316,7 +2405,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Calls this to indicate the fileName has been changed.
+        /// Call this to indicate the fileName has been changed.
         /// </summary>
         /// <param name="e">The event args.</param>
         private void OnFilenameChanged(EventArgs e)
@@ -2334,6 +2423,15 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Call this to indicated that the mouse mode has changed.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void OnMouseModeChanged(EventArgs e)
+        {
+            MouseModeChanged?.Invoke(this, e);
+        }
+
+        /// <summary>
         /// Call this to indicate the selection has changed.
         /// </summary>
         /// <param name="e">The event args.</param>
@@ -2348,13 +2446,13 @@ namespace DotSpatial.Controls
                 else
                 {
                     _layoutMapToolStrip.Enabled = false;
-                    if (_mouseMode == MouseMode.StartPanMap || _mouseMode == MouseMode.PanMap)
-                        _mouseMode = MouseMode.Default;
+                    if (MouseMode == MouseMode.StartPanMap || MouseMode == MouseMode.PanMap)
+                        MouseMode = MouseMode.Default;
                 }
             }
 
-            if (SelectedLayoutElements.Count == 0 && (_mouseMode == MouseMode.ResizeSelected || _mouseMode == MouseMode.MoveSelection))
-                _mouseMode = MouseMode.Default;
+            if (SelectedLayoutElements.Count == 0 && (MouseMode == MouseMode.ResizeSelected || MouseMode == MouseMode.MoveSelection))
+                MouseMode = MouseMode.Default;
 
             SelectionChanged?.Invoke(this, e);
         }
@@ -2472,6 +2570,27 @@ namespace DotSpatial.Controls
             var paperTl = ScreenToPaper(screenX, screenY);
             var paperBr = ScreenToPaper(screenX + screenW, screenY + screenH);
             return new RectangleF(paperTl.X, paperTl.Y, paperBr.X - paperTl.X, paperBr.Y - paperTl.Y);
+        }
+
+        /// <summary>
+        /// Trys to assign the given tool strip to the given property.
+        /// </summary>
+        /// <typeparam name="T">Type of the property. This is used to check whether ts has the same type.</typeparam>
+        /// <param name="ts">The tool strip that should be assigned to the given property.</param>
+        /// <param name="property">The property the tool strip should be assigned to.</param>
+        /// <returns>True, if the tool strip could be assigned otherwise false.</returns>
+        // ReSharper disable once RedundantAssignment
+        // ReSharper disable once UnusedParameter.Local
+        private bool TrySet<T>(ToolStrip ts, T property)
+            where T : class
+        {
+            var t = ts as T;
+
+            if (t == null) return false;
+
+            // ReSharper disable once RedundantAssignment
+            property = t;
+            return true;
         }
 
         /// <summary>

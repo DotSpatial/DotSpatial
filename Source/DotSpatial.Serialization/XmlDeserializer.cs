@@ -147,6 +147,8 @@ namespace DotSpatial.Serialization
 
         private object ConstructObject(Type type, XElement element)
         {
+            string constructorMethod = string.Empty;
+
             List<object> constructorArgs;
             if (type.IsArray)
             {
@@ -158,12 +160,23 @@ namespace DotSpatial.Serialization
             }
             else
             {
-                constructorArgs = GetConstructorArgs(element);
+                constructorArgs = GetConstructorArgs(element, out constructorMethod);
             }
 
             Type[] types = constructorArgs.Select(arg => arg.GetType()).ToArray();
-            var ctor = type.GetConstructor(types);
-            return ctor.Invoke(constructorArgs.ToArray());
+
+            // create the instance via static method, if an argument contained a name of a static method that should be used for the instance construction
+            // this is used for classes that can't initialize themselves correctly in the constructor but can be created correctly via static method
+            if (string.IsNullOrWhiteSpace(constructorMethod))
+            {
+                var ctor = type.GetConstructor(types);
+                return ctor?.Invoke(constructorArgs.ToArray());
+            }
+            else
+            {
+                var ctor = type.GetMethod(constructorMethod, types);
+                return ctor.Invoke(null, constructorArgs.ToArray());
+            }
         }
 
         private T DoDeserialize<T>(T existingObject, string xml, bool fill)
@@ -247,12 +260,60 @@ namespace DotSpatial.Serialization
             }
         }
 
-        private List<object> GetConstructorArgs(XElement element)
+        /// <summary>
+        /// Gets the constructor arguments of the element.
+        /// </summary>
+        /// <param name="element">The element whose constructor arguments should be returned.</param>
+        /// <param name="constructorMethod">If a constructor argument contained a name of a static method that should be used for instance construction this will be returned here.</param>
+        /// <returns>A list of the constructor arguments that were found.</returns>
+        private List<object> GetConstructorArgs(XElement element, out string constructorMethod)
         {
+            constructorMethod = string.Empty;
+
             List<object> constructorArgs = new List<object>();
             int constructorArgSanityCheck = 0;
 
-            var constructorArgElements = from m in element.Elements(XmlConstants.Member) let arg = m.Attribute(XmlConstants.Arg) where arg != null orderby arg.Value ascending select m;
+            var staticMethodIndicators = (from m in element.Elements(XmlConstants.Member) where m.Attribute(XmlConstants.StaticMethodIndicator) != null select m).ToList();
+
+            bool useStaticMethod = false;
+
+            if (staticMethodIndicators.Count > 1) throw new XmlException($"There may only be one static method indicator but there were {staticMethodIndicators.Count}.");
+
+            if (staticMethodIndicators.Count == 1)
+            {
+                // there is one property telling us whether the static method should be used for initialization
+                var attr = staticMethodIndicators[0].Attribute(XmlConstants.Value);
+                if (attr != null)
+                {
+                    useStaticMethod = bool.Parse(attr.Value);
+                }
+            }
+
+            if (useStaticMethod)
+            {
+                // we want to use the static method, so we have to find its name
+                var constructorMethodIndicators = (from m in element.Elements(XmlConstants.Member) where m.Attribute(XmlConstants.StaticConstructorMethod) != null select m).ToList();
+
+                if (constructorMethodIndicators.Count != 1) throw new XmlException("Could not find the static constructor method.");
+
+                var attr = constructorMethodIndicators[0].Attribute(XmlConstants.StaticConstructorMethod);
+                if (attr != null)
+                {
+                    constructorMethod = attr.Value;
+                }
+            }
+
+            // get all the constructor arguments
+            // if the static method should be used only arguments with the UseCase StaticMethodOnly or Both should be returned
+            // if the constructor should be used all arguments without UseCase or with the UseCases ConstructorOnly and Both should be returned
+            var constructorArgElements = element.Elements(XmlConstants.Member)
+            .Where(_ =>
+            {
+                var useCase = _.Attribute(XmlConstants.UseCase);
+                return _.Attribute(XmlConstants.Arg) != null && (useStaticMethod ? useCase != null && (useCase.Value == "StaticMethodOnly" || useCase.Value == "Both") : useCase == null || (useCase.Value == "ConstructorOnly" || useCase.Value == "Both"));
+            })
+            .OrderBy(_ => _.Attribute(XmlConstants.Arg)?.Value)
+            .Select(_ => _);
 
             foreach (var argElement in constructorArgElements)
             {
@@ -263,7 +324,6 @@ namespace DotSpatial.Serialization
                 if (arg != constructorArgSanityCheck) throw new XmlException("Missing constructor argument " + constructorArgSanityCheck);
 
                 constructorArgSanityCheck++;
-
                 constructorArgs.Add(ReadObject(argElement, null));
             }
 

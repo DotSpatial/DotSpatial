@@ -1881,7 +1881,7 @@ Public Class frmAutomatic_v3
     ' 05/30/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Private Sub runFormInit()
-        Cursor = Windows.Forms.Cursors.WaitCursor
+        Cursor = System.Windows.Forms.Cursors.WaitCursor
         btnRunAll.Enabled = False
         btnCancel.Enabled = False
         btnAdvanced.Enabled = False
@@ -1911,7 +1911,7 @@ Public Class frmAutomatic_v3
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Private Sub runFormCleanup()
         App.ProgressHandler.Progress("Status", 0, "")
-        Cursor = Windows.Forms.Cursors.Default
+        Cursor = System.Windows.Forms.Cursors.Default
         btnRunAll.Enabled = True
         btnCancel.Enabled = True
         btnAdvanced.Enabled = True
@@ -1945,8 +1945,8 @@ Public Class frmAutomatic_v3
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Private Sub txtbxThreshold_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtbxThreshold.KeyDown
-        If e.KeyCode = Windows.Forms.Keys.Return Then
-            Windows.Forms.SendKeys.Send("{TAB}")
+        If e.KeyCode = System.Windows.Forms.Keys.Return Then
+            System.Windows.Forms.SendKeys.Send("{TAB}")
         End If
     End Sub
 
@@ -2009,8 +2009,8 @@ Public Class frmAutomatic_v3
     ' 05/28/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Private Sub txtbxThreshConv_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtbxThreshConv.KeyDown
-        If e.KeyCode = Windows.Forms.Keys.Return Then
-            Windows.Forms.SendKeys.Send("{TAB}")
+        If e.KeyCode = System.Windows.Forms.Keys.Return Then
+            System.Windows.Forms.SendKeys.Send("{TAB}")
         End If
     End Sub
 
@@ -2095,8 +2095,8 @@ Public Class frmAutomatic_v3
     ' 06/01/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Private Sub txtbxSnapThresh_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtbxSnapThresh.KeyDown
-        If e.KeyCode = Windows.Forms.Keys.Return Then
-            Windows.Forms.SendKeys.Send("{TAB}")
+        If e.KeyCode = System.Windows.Forms.Keys.Return Then
+            System.Windows.Forms.SendKeys.Send("{TAB}")
         End If
     End Sub
 
@@ -3718,7 +3718,7 @@ Public Class frmAutomatic_v3
             strToFill = runBurn(tdbFileList.dem)
             If strToFill = "" Then
                 App.ProgressHandler.Progress("Status", 0, "")
-                Cursor = Windows.Forms.Cursors.Default
+                Cursor = System.Windows.Forms.Cursors.Default
                 Return False
             End If
         End If
@@ -3729,7 +3729,7 @@ Public Class frmAutomatic_v3
         Catch ex As Exception
             MsgBox("An error occured while filling the grid: " + ex.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
             App.ProgressHandler.Progress("Status", 0, "")
-            Cursor = Windows.Forms.Cursors.Default
+            Cursor = System.Windows.Forms.Cursors.Default
             Return False
         End Try
 
@@ -3737,7 +3737,7 @@ Public Class frmAutomatic_v3
             tdbFileList.fel = runBurn(tdbFileList.fel)
             If tdbFileList.fel = "" Then
                 App.ProgressHandler.Progress("Status", 0, "")
-                Cursor = Windows.Forms.Cursors.Default
+                Cursor = System.Windows.Forms.Cursors.Default
                 Return False
             End If
         End If

@@ -25,9 +25,13 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Clear parameter to Select function to speed up drawing (#1024)
 - LayoutControl.InitialOpenFileDirectory property that allows to set the folder that is shown in the OpenFileDialog that is used to open an existing layout
 - FeatureLayer.Snappable to indicate whether the layer can be used for snapping
+- The possibility to draw linestrings which are inside a geometry collection (#1061)
+- The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
+- Default mouse cursor button in layout insert toolbar
 
 ### Changed
 - Switched to VS2015 and C#6
+- Switched to .Net Framework 4.5.2 (#1083)
 - GdalExtension: Updated to GDAL 1.1.11
 - Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)
@@ -47,6 +51,12 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Drawing functions so selected features are drawn on top (#897)
 - ShapeEditors AddFeature and MoveVertex functions, so they snap only to the layers that allow snapping
 - ShapeEditors SnapSettingsDialog to allow the users to select the layers the editor functions may snap to
+- If a dxf file contains points, lines and polygons at the same time, the dxf file gets added to the map as a group that contains one layer for points, one for lines and one for polygons (#1061)
+- If a dxf file contains only a single feature type the dxf file gets added to the map as a single layer with the feature type it contains (#1061)
+- dxf files get loaded with their styles (#1061)
+- Show buttons from layout toolbars as checked while their function is active
+- replaced ContextMenu by ContextMenuStrip inside Legend, so we don't have to draw the images shown in the ContextMenu ourselves (#1069)
+- changed the background color of the LayerDialog and TabControlDialog tabs to Control so they have the same background color as the user controls they contain (#1069)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -126,3 +136,11 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Crash when attempting to use a serial GPS device on Mono
 - Clear the selection inside FeatureLayer.RemoveSelectedFeatures so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
 - In InRamImageData.Open don't draw the image unscaled because this can cause the image not to be drawn
+- FeatureTypeFromGeometryType Method updated to work with GeometryCollection (#1044)
+- The SpatiaLite plugin to be able to load SpatiaLite databases of version 4 and higher (#1061)
+- WebMap-Plugin fails fetching tiles for specific WMS (#1074)
+- Plugins/WFSClient: Feature fetching fails on systems w NumberFormatInfo.NumberDecimalSeparator != '.' (#1081)
+- showMargin can be checked as soon as layoutControl is not null (#1091) 
+- don't assign the 'EndRow' property to itself in BinaryRaster.OpenWindow (#1089)
+- assign "D_ITRF_1997" to ITRF1997.GeographicInfo.Datum.Name instead of ITRF1997.GeographicInfo.Name because this is the name of the datum and not the GeographicInfo (#1090)
+- Update Brutile version in Webmap? (#800)

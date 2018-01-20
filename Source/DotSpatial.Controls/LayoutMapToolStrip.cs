@@ -3,7 +3,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace DotSpatial.Controls
 {
@@ -12,7 +11,7 @@ namespace DotSpatial.Controls
     /// </summary>
     // This control will no longer be visible
     [ToolboxItem(false)]
-    public partial class LayoutMapToolStrip : ToolStrip
+    public partial class LayoutMapToolStrip : LayoutToolStrip
     {
         #region  Constructors
 
@@ -26,22 +25,13 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the layout control associated with this toolstrip.
-        /// </summary>
-        [Browsable(false)]
-        public LayoutControl LayoutControl { get; set; }
-
-        #endregion
-
         #region Methods
 
-        // Fires when the user clicks the pan button
+        // Fires when the user clicks the pan button.
         private void BtnPanClick(object sender, EventArgs e)
         {
-            LayoutControl.MapPanMode = _btnPan.Checked;
+            LayoutControl.MouseMode = MouseMode.StartPanMap;
+            SetChecked(_btnPan);
         }
 
         // Fires when the user clicks the zoom to full extent button
