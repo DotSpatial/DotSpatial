@@ -425,6 +425,7 @@ namespace DotSpatial.Symbology.Forms
             this.dgvCategories.Name = "dgvCategories";
             this.dgvCategories.RowHeadersVisible = false;
             this.dgvCategories.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCategories.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCategoriesCellContentClick);
             // 
             // colSymbol
             // 

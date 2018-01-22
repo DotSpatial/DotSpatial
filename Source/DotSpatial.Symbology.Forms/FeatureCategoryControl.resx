@@ -400,7 +400,7 @@
     <value>6</value>
   </data>
   <data name="btnDelete.ToolTip" xml:space="preserve">
-    <value>Removes the selected category from the set.</value>
+    <value>Removes the selected cateogry from the set.</value>
   </data>
   <data name="&gt;&gt;btnDelete.Name" xml:space="preserve">
     <value>btnDelete</value>
@@ -565,7 +565,7 @@
     <value>12</value>
   </data>
   <data name="dgvStatistics.ToolTip" xml:space="preserve">
-    <value>Describes the summary statistics for the values in the field. This may only be a representative sample.</value>
+    <value>Describes the summary statistics for the values in the field.  This may only be a representative sample.</value>
   </data>
   <data name="&gt;&gt;dgvStatistics.Name" xml:space="preserve">
     <value>dgvStatistics</value>
@@ -698,6 +698,15 @@
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>8</value>
+  </data>
+  <data name="cmbInterval.Items" xml:space="preserve">
+    <value>EqualInterval</value>
+  </data>
+  <data name="cmbInterval.Items1" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="cmbInterval.Items2" xml:space="preserve">
+    <value>Quantile</value>
   </data>
   <data name="cmbInterval.Location" type="System.Drawing.Point, System.Drawing">
     <value>171, 40</value>
@@ -967,7 +976,7 @@
     <value>breakSliderGraph1</value>
   </data>
   <data name="&gt;&gt;breakSliderGraph1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.BreakSliderGraph, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.BreakSliderGraph, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;breakSliderGraph1.Parent" xml:space="preserve">
     <value>tabGraph</value>
@@ -1144,7 +1153,7 @@
     <value>angGradientAngle</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1165,7 +1174,7 @@
     <value>featureSizeRangeControl1</value>
   </data>
   <data name="&gt;&gt;featureSizeRangeControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.FeatureSizeRangeControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.FeatureSizeRangeControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;featureSizeRangeControl1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1186,7 +1195,7 @@
     <value>tccColorRange</value>
   </data>
   <data name="&gt;&gt;tccColorRange.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.TabColorControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.TabColorControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;tccColorRange.Parent" xml:space="preserve">
     <value>$this</value>

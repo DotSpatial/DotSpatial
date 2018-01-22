@@ -327,20 +327,19 @@ namespace DotSpatial.Symbology
             myPen.EndCap = _endCap;
             myPen.StartCap = _startCap;
 
-            // myPen.EndCap = _endCap;
-            // myPen.StartCap = _startCap;
-            // CGX
             if (_endCap == LineCap.Custom)
             {
-                AdjustableArrowCap bigArrow = new AdjustableArrowCap(3.5F, 3.5F);
+                AdjustableArrowCap bigArrow = new AdjustableArrowCap(0F, 0F);
                 myPen.CustomEndCap = bigArrow;
+                myPen.LineJoin = LineJoin.MiterClipped;
             }
 
             if (_startCap == LineCap.Custom)
             {
-                AdjustableArrowCap bigArrow = new AdjustableArrowCap(3.5F, 3.5F);
+                AdjustableArrowCap bigArrow = new AdjustableArrowCap(0F, 0F);
                 myPen.CustomStartCap = bigArrow;
-            } // END CGX
+                myPen.LineJoin = LineJoin.MiterClipped;
+            }
 
             if (_compondArray != null) myPen.CompoundArray = _compondArray;
             if (_offset != 0F)

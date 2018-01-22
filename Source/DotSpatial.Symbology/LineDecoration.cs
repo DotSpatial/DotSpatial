@@ -19,7 +19,12 @@ namespace DotSpatial.Symbology
 
         private bool _flipAll;
         private bool _flipFirst;
+        private bool _flip1on2;
+        private bool _flipped;
+        private bool _useSpacing;
         private int _numSymbols;
+        private int _spacing;
+        private string _spacingUnit;
         private double _offset;
 
         private int _percentualPosition;
@@ -78,6 +83,16 @@ namespace DotSpatial.Symbology
             {
                 _flipFirst = value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a boolean that, if true, reverse one symbols on 2
+        /// </summary>
+        [Serialize("Flip1on2")]
+        public bool Flip1on2
+        {
+            get { return _flip1on2; }
+            set { _flip1on2 = value; }
         }
 
         /// <summary>
@@ -150,6 +165,26 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets or sets the spacing between each line decoration.
+        /// </summary>
+        [Serialize("Spacing")]
+        public int Spacing
+        {
+            get { return _spacing; }
+            set { _spacing = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the unit used by the spacing (mm or inch).
+        /// </summary>
+        [Serialize("SpacingUnit")]
+        public string SpacingUnit
+        {
+            get { return _spacingUnit; }
+            set { _spacingUnit = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the decorative symbol.
         /// </summary>
         [Serialize("Symbol")]
@@ -164,6 +199,17 @@ namespace DotSpatial.Symbology
             {
                 _symbol = value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a boolean that, if true, will cause the symbol to 
+        /// be spaced according to the spacing value.
+        /// </summary>
+        [Serialize("UseSpacing")]
+        public bool UseSpacing
+        {
+            get { return _useSpacing; }
+            set { _useSpacing = value; }
         }
 
         #endregion
@@ -186,7 +232,6 @@ namespace DotSpatial.Symbology
 
                 GraphicsPathIterator myIterator = new GraphicsPathIterator(path);
                 myIterator.Rewind();
-                int start, end;
                 bool isClosed;
                 Size2D symbolSize = _symbol.GetSize();
 
@@ -200,32 +245,27 @@ namespace DotSpatial.Symbology
                 sg.Dispose();
 
                 Matrix oldMat = g.Transform;
-                PointF[] points;
-                if (path.PointCount == 0) return;
 
-                try
+                GraphicsPath gp = new GraphicsPath();
+                GraphicsPath pastGP = new GraphicsPath();
+                while (myIterator.NextSubpath(gp, out isClosed) > 0)
                 {
-                    points = path.PathPoints;
-                }
-                catch
-                {
-                    return;
-                }
+                    PointF[] points = gp.PathPoints;
 
-                while (myIterator.NextSubpath(out start, out end, out isClosed) > 0)
-                {
+                    int start = 0, end = points.Length - 1;
+
                     if (NumSymbols == 1)
                     {
                         // single decoration spot
                         if (_percentualPosition == 0)
                         {
                             // at start of the line
-                            DrawImage(g, points[start], points[start + 1], points[start], FlipFirst ^ FlipAll, symbol, oldMat);
+                            DrawImage(g, points[start], points[start + 1], points[start], FlipFirst ^ FlipAll, symbol, oldMat, scaleWidth);
                         }
                         else if (_percentualPosition == 100)
                         {
                             // at end of the line
-                            DrawImage(g, points[end - 1], points[end], points[end], FlipFirst ^ FlipAll, symbol, oldMat);
+                            DrawImage(g, points[end - 1], points[end], points[end], FlipFirst ^ FlipAll, symbol, oldMat, scaleWidth);
                         }
                         else
                         {
@@ -233,22 +273,54 @@ namespace DotSpatial.Symbology
                             double totalLength = GetLength(points, start, end);
                             double span = totalLength * _percentualPosition / 100;
                             List<DecorationSpot> spot = GetPosition(points, span, start, end);
-                            if (spot.Count > 1) DrawImage(g, spot[1].Before, spot[1].After, spot[1].Position, FlipFirst ^ FlipAll, symbol, oldMat);
+                            if (spot.Count > 1) DrawImage(g, spot[1].Before, spot[1].After, spot[1].Position, FlipFirst ^ FlipAll, symbol, oldMat, scaleWidth);
                         }
                     }
                     else
                     {
                         // more than one decoration spot
                         double totalLength = GetLength(points, start, end);
-                        double span = Math.Round(totalLength / (NumSymbols - 1), 4);
-                        List<DecorationSpot> spots = GetPosition(points, span, start, end);
-                        spots.Add(new DecorationSpot(points[end - 1], points[end], points[end])); // add the missing end point
-                        for (int i = 0; i < spots.Count; i++) DrawImage(g, spots[i].Before, spots[i].After, spots[i].Position, i == 0 ? (FlipFirst ^ FlipAll) : FlipAll, symbol, oldMat);
+                        List<DecorationSpot> spots = new List<DecorationSpot>();
+                        double span = 0.0;
+                        if (_useSpacing)
+                        {
+                            var dpi = g.DpiX;
+                            var mm = GetSpacingValue_mm();
+                            span = ((mm * dpi) / 25.4) * scaleWidth;
+                        }
+                        else
+                        {
+                            span = Math.Round(totalLength / (NumSymbols - 1), 4);
+                        }
+                        spots = GetPosition(points, span, start, end);
+
+                        for (int i = 0; i < spots.Count; i++)
+                        {
+                            using (var pen = new Pen(Color.Black, 2))
+                            {
+                                if (!pastGP.IsOutlineVisible(spots[i].Position, pen))
+                                {
+                                    DrawImage(g, spots[i].Before, spots[i].After, spots[i].Position, i == 0 ? (FlipFirst ^ FlipAll) : FlipAll, symbol, oldMat, scaleWidth);
+                                }
+                            }
+                        }
                     }
+
+                    pastGP.AddPath(gp, false);
                 }
             }
             catch (Exception)
             { }
+        }
+
+        private double GetSpacingValue_mm()
+        {
+            double dSpan = 0.0;
+
+            if (SpacingUnit == "mm") { dSpan = Spacing; };
+            if (SpacingUnit == "in") { dSpan = Spacing * 25.4; };
+
+            return dSpan;
         }
 
         /// <summary>
@@ -472,10 +544,10 @@ namespace DotSpatial.Symbology
         /// <param name="flip">Indicates whether the symbol should be flipped.</param>
         /// <param name="symbol">Image that gets drawn.</param>
         /// <param name="oldMat">Matrix used for rotation.</param>
-        private void DrawImage(Graphics g, PointF startPoint, PointF stopPoint, PointF locationPoint, bool flip, Bitmap symbol, Matrix oldMat)
+        private void DrawImage(Graphics g, PointF startPoint, PointF stopPoint, PointF locationPoint, bool flip, Bitmap symbol, Matrix oldMat, double scaleWidth)
         {
             // Move the point to the position including the offset
-            PointF offset = stopPoint == locationPoint ? GetOffset(startPoint, locationPoint) : GetOffset(locationPoint, stopPoint);
+            PointF offset = stopPoint == locationPoint ? GetOffset(startPoint, locationPoint, scaleWidth) : GetOffset(locationPoint, stopPoint, scaleWidth);
 
             var point = new PointF(locationPoint.X + offset.X, locationPoint.Y + offset.Y);
 
@@ -499,31 +571,39 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="point">Startpoint of the line the decoration spot belongs to.</param>
         /// <param name="nextPoint">Endpoint of the line the decoration spot belongs to.</param>
+        /// <param name="dScaleWidth">Reference scale.</param>
         /// <returns>Offset that must be added to the decoration spots locationPoint for it to be drawn with the given _offset.</returns>
-        private PointF GetOffset(PointF point, PointF nextPoint)
+        private PointF GetOffset(PointF point, PointF nextPoint, double dScaleWidth)
         {
             var dX = nextPoint.X - point.X;
             var dY = nextPoint.Y - point.Y;
             var alpha = Math.Atan(-dX / dY);
             double x, y;
 
+            double dOffset = _offset * dScaleWidth;
+            if (Flip1on2)
+            {
+                if (_flipped) { dOffset = -(dOffset + 2); }
+                _flipped = !_flipped;
+            }
+
             if (dX == 0 && point.Y > nextPoint.Y)
             {
                 // line is parallel to y-axis and goes bottom up
-                x = Math.Cos(alpha) * -_offset;
-                y = Math.Sin(alpha) * _offset;
+                x = Math.Cos(alpha) * -dOffset;
+                y = Math.Sin(alpha) * dOffset;
             }
             else if (dY != 0 && point.Y > nextPoint.Y)
             {
                 // line goes bottom up
-                x = Math.Cos(alpha) * -_offset;
-                y = Math.Sin(alpha) * -_offset;
+                x = Math.Cos(alpha) * -dOffset;
+                y = Math.Sin(alpha) * -dOffset;
             }
             else
             {
                 // line is parallel to x-axis or goes top down
-                x = Math.Cos(alpha) * _offset;
-                y = Math.Sin(alpha) * _offset;
+                x = Math.Cos(alpha) * dOffset;
+                y = Math.Sin(alpha) * dOffset;
             }
 
             return new PointF((float)x, (float)y);

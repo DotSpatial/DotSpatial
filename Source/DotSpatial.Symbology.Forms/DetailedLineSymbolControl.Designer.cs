@@ -66,18 +66,23 @@ namespace DotSpatial.Symbology.Forms
             this.tabDash = new System.Windows.Forms.TabPage();
             this.dashControl1 = new DotSpatial.Symbology.Forms.DashControl();
             this.tabDecoration = new System.Windows.Forms.TabPage();
+            this.grpPosition = new System.Windows.Forms.GroupBox();
+            this.cmbSpacingUnit = new System.Windows.Forms.ComboBox();
+            this.radNumberOfPositions = new System.Windows.Forms.RadioButton();
+            this.radSpacing = new System.Windows.Forms.RadioButton();
+            this.nudSpacing = new System.Windows.Forms.NumericUpDown();
+            this.nudDecorationCount = new System.Windows.Forms.NumericUpDown();
             this.lblPercentualPosition = new System.Windows.Forms.Label();
             this.nudPercentualPosition = new System.Windows.Forms.NumericUpDown();
             this.btnEdit = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.lblDecorationPreview = new System.Windows.Forms.Label();
-            this.lblNumberOfPositions = new System.Windows.Forms.Label();
-            this.nudDecorationCount = new System.Windows.Forms.NumericUpDown();
             this.grpRotation = new System.Windows.Forms.GroupBox();
             this.radRotationFixed = new System.Windows.Forms.RadioButton();
             this.radRotationWithLine = new System.Windows.Forms.RadioButton();
             this.grpFlip = new System.Windows.Forms.GroupBox();
             this.chkFlipFirst = new System.Windows.Forms.CheckBox();
+            this.chkFlip1_2 = new System.Windows.Forms.CheckBox();
             this.chkFlipAll = new System.Windows.Forms.CheckBox();
             this.dblOffset = new DotSpatial.Symbology.Forms.DoubleBox();
             this.ccDecorations = new DotSpatial.Symbology.Forms.DecorationCollectionControl();
@@ -90,20 +95,22 @@ namespace DotSpatial.Symbology.Forms
             this.grpCaps.SuspendLayout();
             this.tabDash.SuspendLayout();
             this.tabDecoration.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPercentualPosition)).BeginInit();
+            this.grpPosition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSpacing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDecorationCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPercentualPosition)).BeginInit();
             this.grpRotation.SuspendLayout();
             this.grpFlip.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbStrokeType
             // 
-            resources.ApplyResources(this.cmbStrokeType, "cmbStrokeType");
             this.cmbStrokeType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStrokeType.FormattingEnabled = true;
             this.cmbStrokeType.Items.AddRange(new object[] {
             resources.GetString("cmbStrokeType.Items"),
             resources.GetString("cmbStrokeType.Items1")});
+            resources.ApplyResources(this.cmbStrokeType, "cmbStrokeType");
             this.cmbStrokeType.Name = "cmbStrokeType";
             this.ttHelp.SetToolTip(this.cmbStrokeType, resources.GetString("cmbStrokeType.ToolTip"));
             this.cmbStrokeType.SelectedIndexChanged += new System.EventHandler(this.CmbStrokeTypeSelectedIndexChanged);
@@ -126,13 +133,11 @@ namespace DotSpatial.Symbology.Forms
             this.groupBox1.Controls.Add(this.chkSmoothing);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
-            this.ttHelp.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.ttHelp.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // lblPreview
             // 
@@ -140,23 +145,21 @@ namespace DotSpatial.Symbology.Forms
             this.lblPreview.BackColor = System.Drawing.Color.White;
             this.lblPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblPreview.Name = "lblPreview";
-            this.ttHelp.SetToolTip(this.lblPreview, resources.GetString("lblPreview.ToolTip"));
             // 
             // lblScaleMode
             // 
             resources.ApplyResources(this.lblScaleMode, "lblScaleMode");
             this.lblScaleMode.Name = "lblScaleMode";
-            this.ttHelp.SetToolTip(this.lblScaleMode, resources.GetString("lblScaleMode.ToolTip"));
             // 
             // cmbScaleMode
             // 
-            resources.ApplyResources(this.cmbScaleMode, "cmbScaleMode");
             this.cmbScaleMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbScaleMode.FormattingEnabled = true;
             this.cmbScaleMode.Items.AddRange(new object[] {
             resources.GetString("cmbScaleMode.Items"),
             resources.GetString("cmbScaleMode.Items1"),
             resources.GetString("cmbScaleMode.Items2")});
+            resources.ApplyResources(this.cmbScaleMode, "cmbScaleMode");
             this.cmbScaleMode.Name = "cmbScaleMode";
             this.ttHelp.SetToolTip(this.cmbScaleMode, resources.GetString("cmbScaleMode.ToolTip"));
             this.cmbScaleMode.SelectedIndexChanged += new System.EventHandler(this.CmbScaleModeSelectedIndexChanged);
@@ -165,7 +168,6 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.ttHelp.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // tabStrokeProperties
             // 
@@ -176,7 +178,6 @@ namespace DotSpatial.Symbology.Forms
             this.tabStrokeProperties.Controls.Add(this.tabDecoration);
             this.tabStrokeProperties.Name = "tabStrokeProperties";
             this.tabStrokeProperties.SelectedIndex = 0;
-            this.ttHelp.SetToolTip(this.tabStrokeProperties, resources.GetString("tabStrokeProperties.ToolTip"));
             // 
             // tabSimple
             // 
@@ -189,39 +190,37 @@ namespace DotSpatial.Symbology.Forms
             this.tabSimple.Controls.Add(this.cmbStrokeStyle);
             this.tabSimple.Controls.Add(this.label2);
             this.tabSimple.Controls.Add(this.dblWidth);
+            resources.ApplyResources(this.tabSimple, "tabSimple");
             this.tabSimple.Name = "tabSimple";
-            this.ttHelp.SetToolTip(this.tabSimple, resources.GetString("tabSimple.ToolTip"));
             this.tabSimple.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            this.ttHelp.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
             // 
             // label9
             // 
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
-            this.ttHelp.SetToolTip(this.label9, resources.GetString("label9.ToolTip"));
             // 
             // cbColorSimple
             // 
-            resources.ApplyResources(this.cbColorSimple, "cbColorSimple");
             this.cbColorSimple.BevelRadius = 6;
             this.cbColorSimple.Color = System.Drawing.Color.Blue;
             this.cbColorSimple.LaunchDialogOnClick = true;
+            resources.ApplyResources(this.cbColorSimple, "cbColorSimple");
             this.cbColorSimple.Name = "cbColorSimple";
             this.cbColorSimple.RoundingRadius = 15;
             this.ttHelp.SetToolTip(this.cbColorSimple, resources.GetString("cbColorSimple.ToolTip"));
             // 
             // sldOpacitySimple
             // 
-            resources.ApplyResources(this.sldOpacitySimple, "sldOpacitySimple");
             this.sldOpacitySimple.ColorButton = null;
             this.sldOpacitySimple.FlipRamp = false;
             this.sldOpacitySimple.FlipText = false;
             this.sldOpacitySimple.InvertRamp = false;
+            resources.ApplyResources(this.sldOpacitySimple, "sldOpacitySimple");
             this.sldOpacitySimple.Maximum = 1D;
             this.sldOpacitySimple.MaximumColor = System.Drawing.Color.CornflowerBlue;
             this.sldOpacitySimple.Minimum = 0D;
@@ -248,7 +247,6 @@ namespace DotSpatial.Symbology.Forms
             // 
             // cmbStrokeStyle
             // 
-            resources.ApplyResources(this.cmbStrokeStyle, "cmbStrokeStyle");
             this.cmbStrokeStyle.FormattingEnabled = true;
             this.cmbStrokeStyle.Items.AddRange(new object[] {
             resources.GetString("cmbStrokeStyle.Items"),
@@ -257,6 +255,7 @@ namespace DotSpatial.Symbology.Forms
             resources.GetString("cmbStrokeStyle.Items3"),
             resources.GetString("cmbStrokeStyle.Items4"),
             resources.GetString("cmbStrokeStyle.Items5")});
+            resources.ApplyResources(this.cmbStrokeStyle, "cmbStrokeStyle");
             this.cmbStrokeStyle.Name = "cmbStrokeStyle";
             this.ttHelp.SetToolTip(this.cmbStrokeStyle, resources.GetString("cmbStrokeStyle.ToolTip"));
             this.cmbStrokeStyle.SelectedIndexChanged += new System.EventHandler(this.ComboBox1SelectedIndexChanged);
@@ -265,13 +264,12 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            this.ttHelp.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // dblWidth
             // 
-            resources.ApplyResources(this.dblWidth, "dblWidth");
             this.dblWidth.BackColorInvalid = System.Drawing.Color.Salmon;
             this.dblWidth.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dblWidth, "dblWidth");
             this.dblWidth.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
     "ating point value.";
             this.dblWidth.IsValid = true;
@@ -284,7 +282,6 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabCartographic
             // 
-            resources.ApplyResources(this.tabCartographic, "tabCartographic");
             this.tabCartographic.Controls.Add(this.lblColorCartographic);
             this.tabCartographic.Controls.Add(this.lblOpacityCartographic);
             this.tabCartographic.Controls.Add(this.grpCaps);
@@ -293,29 +290,27 @@ namespace DotSpatial.Symbology.Forms
             this.tabCartographic.Controls.Add(this.dblStrokeOffset);
             this.tabCartographic.Controls.Add(this.radLineJoin);
             this.tabCartographic.Controls.Add(this.dblWidthCartographic);
+            resources.ApplyResources(this.tabCartographic, "tabCartographic");
             this.tabCartographic.Name = "tabCartographic";
-            this.ttHelp.SetToolTip(this.tabCartographic, resources.GetString("tabCartographic.ToolTip"));
             this.tabCartographic.UseVisualStyleBackColor = true;
             // 
             // lblColorCartographic
             // 
             resources.ApplyResources(this.lblColorCartographic, "lblColorCartographic");
             this.lblColorCartographic.Name = "lblColorCartographic";
-            this.ttHelp.SetToolTip(this.lblColorCartographic, resources.GetString("lblColorCartographic.ToolTip"));
             // 
             // lblOpacityCartographic
             // 
             resources.ApplyResources(this.lblOpacityCartographic, "lblOpacityCartographic");
             this.lblOpacityCartographic.Name = "lblOpacityCartographic";
-            this.ttHelp.SetToolTip(this.lblOpacityCartographic, resources.GetString("lblOpacityCartographic.ToolTip"));
             // 
             // grpCaps
             // 
-            resources.ApplyResources(this.grpCaps, "grpCaps");
             this.grpCaps.Controls.Add(this.lblStartCap);
             this.grpCaps.Controls.Add(this.cmbEndCap);
             this.grpCaps.Controls.Add(this.label4);
             this.grpCaps.Controls.Add(this.cmbStartCap);
+            resources.ApplyResources(this.grpCaps, "grpCaps");
             this.grpCaps.Name = "grpCaps";
             this.grpCaps.TabStop = false;
             this.ttHelp.SetToolTip(this.grpCaps, resources.GetString("grpCaps.ToolTip"));
@@ -324,13 +319,12 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.lblStartCap, "lblStartCap");
             this.lblStartCap.Name = "lblStartCap";
-            this.ttHelp.SetToolTip(this.lblStartCap, resources.GetString("lblStartCap.ToolTip"));
             // 
             // cmbEndCap
             // 
-            resources.ApplyResources(this.cmbEndCap, "cmbEndCap");
             this.cmbEndCap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEndCap.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbEndCap, "cmbEndCap");
             this.cmbEndCap.Name = "cmbEndCap";
             this.ttHelp.SetToolTip(this.cmbEndCap, resources.GetString("cmbEndCap.ToolTip"));
             this.cmbEndCap.SelectedIndexChanged += new System.EventHandler(this.CmbEndCapSelectedIndexChanged);
@@ -339,34 +333,33 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            this.ttHelp.SetToolTip(this.label4, resources.GetString("label4.ToolTip"));
             // 
             // cmbStartCap
             // 
-            resources.ApplyResources(this.cmbStartCap, "cmbStartCap");
             this.cmbStartCap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStartCap.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbStartCap, "cmbStartCap");
             this.cmbStartCap.Name = "cmbStartCap";
             this.ttHelp.SetToolTip(this.cmbStartCap, resources.GetString("cmbStartCap.ToolTip"));
             this.cmbStartCap.SelectedIndexChanged += new System.EventHandler(this.CmbStartCapSelectedIndexChanged);
             // 
             // cbColorCartographic
             // 
-            resources.ApplyResources(this.cbColorCartographic, "cbColorCartographic");
             this.cbColorCartographic.BevelRadius = 6;
             this.cbColorCartographic.Color = System.Drawing.Color.Blue;
             this.cbColorCartographic.LaunchDialogOnClick = true;
+            resources.ApplyResources(this.cbColorCartographic, "cbColorCartographic");
             this.cbColorCartographic.Name = "cbColorCartographic";
             this.cbColorCartographic.RoundingRadius = 15;
             this.ttHelp.SetToolTip(this.cbColorCartographic, resources.GetString("cbColorCartographic.ToolTip"));
             // 
             // sldOpacityCartographic
             // 
-            resources.ApplyResources(this.sldOpacityCartographic, "sldOpacityCartographic");
             this.sldOpacityCartographic.ColorButton = null;
             this.sldOpacityCartographic.FlipRamp = false;
             this.sldOpacityCartographic.FlipText = false;
             this.sldOpacityCartographic.InvertRamp = false;
+            resources.ApplyResources(this.sldOpacityCartographic, "sldOpacityCartographic");
             this.sldOpacityCartographic.Maximum = 1D;
             this.sldOpacityCartographic.MaximumColor = System.Drawing.Color.CornflowerBlue;
             this.sldOpacityCartographic.Minimum = 0D;
@@ -383,7 +376,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldOpacityCartographic.ShowMaximum = true;
             this.sldOpacityCartographic.ShowMinimum = true;
             this.sldOpacityCartographic.ShowTicks = true;
-            this.sldOpacityCartographic.ShowValue = true; // CGX false -> true
+            this.sldOpacityCartographic.ShowValue = true;
             this.sldOpacityCartographic.SliderColor = System.Drawing.Color.Blue;
             this.sldOpacityCartographic.SliderRadius = 4F;
             this.sldOpacityCartographic.TickColor = System.Drawing.Color.DarkGray;
@@ -393,16 +386,15 @@ namespace DotSpatial.Symbology.Forms
             // 
             // dblStrokeOffset
             // 
-            resources.ApplyResources(this.dblStrokeOffset, "dblStrokeOffset");
             this.dblStrokeOffset.BackColorInvalid = System.Drawing.Color.Salmon;
             this.dblStrokeOffset.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dblStrokeOffset, "dblStrokeOffset");
             this.dblStrokeOffset.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
     "ating point value.";
             this.dblStrokeOffset.IsValid = true;
             this.dblStrokeOffset.Name = "dblStrokeOffset";
             this.dblStrokeOffset.NumberFormat = null;
             this.dblStrokeOffset.RegularHelp = "Enter a double precision floating point value.";
-            this.ttHelp.SetToolTip(this.dblStrokeOffset, resources.GetString("dblStrokeOffset.ToolTip"));
             this.dblStrokeOffset.Value = 0D;
             // 
             // radLineJoin
@@ -415,9 +407,9 @@ namespace DotSpatial.Symbology.Forms
             // 
             // dblWidthCartographic
             // 
-            resources.ApplyResources(this.dblWidthCartographic, "dblWidthCartographic");
             this.dblWidthCartographic.BackColorInvalid = System.Drawing.Color.Salmon;
             this.dblWidthCartographic.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dblWidthCartographic, "dblWidthCartographic");
             this.dblWidthCartographic.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
     "ating point value.";
             this.dblWidthCartographic.IsValid = true;
@@ -430,20 +422,19 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabDash
             // 
-            resources.ApplyResources(this.tabDash, "tabDash");
             this.tabDash.Controls.Add(this.dashControl1);
+            resources.ApplyResources(this.tabDash, "tabDash");
             this.tabDash.Name = "tabDash";
-            this.ttHelp.SetToolTip(this.tabDash, resources.GetString("tabDash.ToolTip"));
             this.tabDash.UseVisualStyleBackColor = true;
             // 
             // dashControl1
             // 
-            resources.ApplyResources(this.dashControl1, "dashControl1");
             this.dashControl1.BlockSize = new System.Drawing.SizeF(10F, 10F);
             this.dashControl1.ButtonDownDarkColor = System.Drawing.SystemColors.ControlDark;
             this.dashControl1.ButtonDownLitColor = System.Drawing.SystemColors.ActiveCaption;
             this.dashControl1.ButtonUpDarkColor = System.Drawing.SystemColors.Control;
             this.dashControl1.ButtonUpLitColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            resources.ApplyResources(this.dashControl1, "dashControl1");
             this.dashControl1.HorizontalSlider.Color = System.Drawing.Color.Blue;
             this.dashControl1.HorizontalSlider.Image = null;
             this.dashControl1.HorizontalSlider.Position = ((System.Drawing.PointF)(resources.GetObject("resource.Position")));
@@ -461,62 +452,71 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabDecoration
             // 
-            resources.ApplyResources(this.tabDecoration, "tabDecoration");
+            this.tabDecoration.Controls.Add(this.grpPosition);
             this.tabDecoration.Controls.Add(this.lblPercentualPosition);
             this.tabDecoration.Controls.Add(this.nudPercentualPosition);
             this.tabDecoration.Controls.Add(this.btnEdit);
             this.tabDecoration.Controls.Add(this.label6);
             this.tabDecoration.Controls.Add(this.lblDecorationPreview);
-            this.tabDecoration.Controls.Add(this.lblNumberOfPositions);
-            this.tabDecoration.Controls.Add(this.nudDecorationCount);
             this.tabDecoration.Controls.Add(this.grpRotation);
             this.tabDecoration.Controls.Add(this.grpFlip);
             this.tabDecoration.Controls.Add(this.dblOffset);
             this.tabDecoration.Controls.Add(this.ccDecorations);
+            resources.ApplyResources(this.tabDecoration, "tabDecoration");
             this.tabDecoration.Name = "tabDecoration";
-            this.ttHelp.SetToolTip(this.tabDecoration, resources.GetString("tabDecoration.ToolTip"));
             this.tabDecoration.UseVisualStyleBackColor = true;
             // 
-            // lblPercentualPosition
+            // grpPosition
             // 
-            resources.ApplyResources(this.lblPercentualPosition, "lblPercentualPosition");
-            this.lblPercentualPosition.Name = "lblPercentualPosition";
-            this.ttHelp.SetToolTip(this.lblPercentualPosition, resources.GetString("lblPercentualPosition.ToolTip"));
+            this.grpPosition.Controls.Add(this.cmbSpacingUnit);
+            this.grpPosition.Controls.Add(this.radNumberOfPositions);
+            this.grpPosition.Controls.Add(this.radSpacing);
+            this.grpPosition.Controls.Add(this.nudSpacing);
+            this.grpPosition.Controls.Add(this.nudDecorationCount);
+            resources.ApplyResources(this.grpPosition, "grpPosition");
+            this.grpPosition.Name = "grpPosition";
+            this.grpPosition.TabStop = false;
             // 
-            // nudPercentualPosition
+            // cmbSpacingUnit
             // 
-            resources.ApplyResources(this.nudPercentualPosition, "nudPercentualPosition");
-            this.nudPercentualPosition.Name = "nudPercentualPosition";
-            this.ttHelp.SetToolTip(this.nudPercentualPosition, resources.GetString("nudPercentualPosition.ToolTip"));
-            this.nudPercentualPosition.ValueChanged += new System.EventHandler(this.NudPercentualPositionValueChanged);
+            this.cmbSpacingUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSpacingUnit.FormattingEnabled = true;
+            this.cmbSpacingUnit.Items.AddRange(new object[] {
+            resources.GetString("cmbSpacingUnit.Items"),
+            resources.GetString("cmbSpacingUnit.Items1")});
+            resources.ApplyResources(this.cmbSpacingUnit, "cmbSpacingUnit");
+            this.cmbSpacingUnit.Name = "cmbSpacingUnit";
+            this.cmbSpacingUnit.SelectedIndexChanged += new System.EventHandler(this.CmbSpacingUnitSelectedIndexChanged);
             // 
-            // btnEdit
+            // radNumberOfPositions
             // 
-            resources.ApplyResources(this.btnEdit, "btnEdit");
-            this.btnEdit.Name = "btnEdit";
-            this.ttHelp.SetToolTip(this.btnEdit, resources.GetString("btnEdit.ToolTip"));
-            this.btnEdit.UseVisualStyleBackColor = true;
-            this.btnEdit.Click += new System.EventHandler(this.BtnEditClick);
+            resources.ApplyResources(this.radNumberOfPositions, "radNumberOfPositions");
+            this.radNumberOfPositions.Checked = true;
+            this.radNumberOfPositions.Name = "radNumberOfPositions";
+            this.radNumberOfPositions.TabStop = true;
+            this.ttHelp.SetToolTip(this.radNumberOfPositions, resources.GetString("radNumberOfPositions.ToolTip"));
+            this.radNumberOfPositions.UseVisualStyleBackColor = true;
+            this.radNumberOfPositions.CheckedChanged += new System.EventHandler(this.RadPositionCheckedChanged);
             // 
-            // label6
+            // radSpacing
             // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            this.ttHelp.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
+            resources.ApplyResources(this.radSpacing, "radSpacing");
+            this.radSpacing.Name = "radSpacing";
+            this.ttHelp.SetToolTip(this.radSpacing, resources.GetString("radSpacing.ToolTip"));
+            this.radSpacing.UseVisualStyleBackColor = true;
+            this.radSpacing.CheckedChanged += new System.EventHandler(this.RadPositionCheckedChanged);
             // 
-            // lblDecorationPreview
+            // nudSpacing
             // 
-            resources.ApplyResources(this.lblDecorationPreview, "lblDecorationPreview");
-            this.lblDecorationPreview.BackColor = System.Drawing.Color.White;
-            this.lblDecorationPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblDecorationPreview.Name = "lblDecorationPreview";
-            this.ttHelp.SetToolTip(this.lblDecorationPreview, resources.GetString("lblDecorationPreview.ToolTip"));
-            // 
-            // lblNumberOfPositions
-            // 
-            resources.ApplyResources(this.lblNumberOfPositions, "lblNumberOfPositions");
-            this.lblNumberOfPositions.Name = "lblNumberOfPositions";
-            this.ttHelp.SetToolTip(this.lblNumberOfPositions, resources.GetString("lblNumberOfPositions.ToolTip"));
+            resources.ApplyResources(this.nudSpacing, "nudSpacing");
+            this.nudSpacing.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudSpacing.Name = "nudSpacing";
+            this.ttHelp.SetToolTip(this.nudSpacing, resources.GetString("nudSpacing.ToolTip"));
+            this.nudSpacing.ValueChanged += new System.EventHandler(this.NudSpacingValueChanged);
             // 
             // nudDecorationCount
             // 
@@ -530,14 +530,45 @@ namespace DotSpatial.Symbology.Forms
             this.ttHelp.SetToolTip(this.nudDecorationCount, resources.GetString("nudDecorationCount.ToolTip"));
             this.nudDecorationCount.ValueChanged += new System.EventHandler(this.NudDecorationCountValueChanged);
             // 
+            // lblPercentualPosition
+            // 
+            resources.ApplyResources(this.lblPercentualPosition, "lblPercentualPosition");
+            this.lblPercentualPosition.Name = "lblPercentualPosition";
+            // 
+            // nudPercentualPosition
+            // 
+            resources.ApplyResources(this.nudPercentualPosition, "nudPercentualPosition");
+            this.nudPercentualPosition.Name = "nudPercentualPosition";
+            this.ttHelp.SetToolTip(this.nudPercentualPosition, resources.GetString("nudPercentualPosition.ToolTip"));
+            this.nudPercentualPosition.ValueChanged += new System.EventHandler(this.NudPercentualPositionValueChanged);
+            // 
+            // btnEdit
+            // 
+            resources.ApplyResources(this.btnEdit, "btnEdit");
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.BtnEditClick);
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // lblDecorationPreview
+            // 
+            this.lblDecorationPreview.BackColor = System.Drawing.Color.White;
+            this.lblDecorationPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            resources.ApplyResources(this.lblDecorationPreview, "lblDecorationPreview");
+            this.lblDecorationPreview.Name = "lblDecorationPreview";
+            this.ttHelp.SetToolTip(this.lblDecorationPreview, resources.GetString("lblDecorationPreview.ToolTip"));
+            // 
             // grpRotation
             // 
-            resources.ApplyResources(this.grpRotation, "grpRotation");
             this.grpRotation.Controls.Add(this.radRotationFixed);
             this.grpRotation.Controls.Add(this.radRotationWithLine);
+            resources.ApplyResources(this.grpRotation, "grpRotation");
             this.grpRotation.Name = "grpRotation";
             this.grpRotation.TabStop = false;
-            this.ttHelp.SetToolTip(this.grpRotation, resources.GetString("grpRotation.ToolTip"));
             // 
             // radRotationFixed
             // 
@@ -558,9 +589,10 @@ namespace DotSpatial.Symbology.Forms
             // 
             // grpFlip
             // 
-            resources.ApplyResources(this.grpFlip, "grpFlip");
             this.grpFlip.Controls.Add(this.chkFlipFirst);
+            this.grpFlip.Controls.Add(this.chkFlip1_2);
             this.grpFlip.Controls.Add(this.chkFlipAll);
+            resources.ApplyResources(this.grpFlip, "grpFlip");
             this.grpFlip.Name = "grpFlip";
             this.grpFlip.TabStop = false;
             this.ttHelp.SetToolTip(this.grpFlip, resources.GetString("grpFlip.ToolTip"));
@@ -569,30 +601,34 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.chkFlipFirst, "chkFlipFirst");
             this.chkFlipFirst.Name = "chkFlipFirst";
-            this.ttHelp.SetToolTip(this.chkFlipFirst, resources.GetString("chkFlipFirst.ToolTip"));
             this.chkFlipFirst.UseVisualStyleBackColor = true;
             this.chkFlipFirst.CheckedChanged += new System.EventHandler(this.ChkFlipFirstCheckedChanged);
+            // 
+            // chkFlip1_2
+            // 
+            resources.ApplyResources(this.chkFlip1_2, "chkFlip1_2");
+            this.chkFlip1_2.Name = "chkFlip1_2";
+            this.chkFlip1_2.UseVisualStyleBackColor = true;
+            this.chkFlip1_2.CheckedChanged += new System.EventHandler(this.ChkFlip1_2CheckedChanged);
             // 
             // chkFlipAll
             // 
             resources.ApplyResources(this.chkFlipAll, "chkFlipAll");
             this.chkFlipAll.Name = "chkFlipAll";
-            this.ttHelp.SetToolTip(this.chkFlipAll, resources.GetString("chkFlipAll.ToolTip"));
             this.chkFlipAll.UseVisualStyleBackColor = true;
             this.chkFlipAll.CheckedChanged += new System.EventHandler(this.ChkFlipAllCheckedChanged);
             // 
             // dblOffset
             // 
-            resources.ApplyResources(this.dblOffset, "dblOffset");
             this.dblOffset.BackColorInvalid = System.Drawing.Color.Salmon;
             this.dblOffset.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dblOffset, "dblOffset");
             this.dblOffset.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
     "ating point value.";
             this.dblOffset.IsValid = true;
             this.dblOffset.Name = "dblOffset";
             this.dblOffset.NumberFormat = null;
             this.dblOffset.RegularHelp = "Enter a double precision floating point value.";
-            this.ttHelp.SetToolTip(this.dblOffset, resources.GetString("dblOffset.ToolTip"));
             this.dblOffset.Value = 0D;
             // 
             // ccDecorations
@@ -609,14 +645,13 @@ namespace DotSpatial.Symbology.Forms
             // 
             // DetailedLineSymbolControl
             // 
-            resources.ApplyResources(this, "$this");
             this.Controls.Add(this.ccStrokes);
             this.Controls.Add(this.tabStrokeProperties);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmbStrokeType);
             this.Name = "DetailedLineSymbolControl";
-            this.ttHelp.SetToolTip(this, resources.GetString("$this.ToolTip"));
+            resources.ApplyResources(this, "$this");
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabStrokeProperties.ResumeLayout(false);
@@ -629,8 +664,11 @@ namespace DotSpatial.Symbology.Forms
             this.tabDash.ResumeLayout(false);
             this.tabDecoration.ResumeLayout(false);
             this.tabDecoration.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPercentualPosition)).EndInit();
+            this.grpPosition.ResumeLayout(false);
+            this.grpPosition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSpacing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDecorationCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPercentualPosition)).EndInit();
             this.grpRotation.ResumeLayout(false);
             this.grpRotation.PerformLayout();
             this.grpFlip.ResumeLayout(false);
@@ -660,7 +698,6 @@ namespace DotSpatial.Symbology.Forms
         private Label label9;
         private Label lblColorCartographic;
         private Label lblDecorationPreview;
-        private Label lblNumberOfPositions;
         private Label lblOpacityCartographic;
         private Label lblPreview;
         private Label lblScaleMode;
@@ -692,5 +729,11 @@ namespace DotSpatial.Symbology.Forms
         private ComboBox cmbStrokeType;
         private Label lblPercentualPosition;
         private NumericUpDown nudPercentualPosition;
+        private GroupBox grpPosition;
+        private NumericUpDown nudSpacing;
+        private RadioButton radNumberOfPositions;
+        private RadioButton radSpacing;
+        private ComboBox cmbSpacingUnit;
+        private CheckBox chkFlip1_2;
     }
 }

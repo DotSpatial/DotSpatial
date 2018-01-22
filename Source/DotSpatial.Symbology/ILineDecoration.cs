@@ -25,6 +25,11 @@ namespace DotSpatial.Symbology
         bool FlipFirst { get; set; }
 
         /// <summary>
+        /// Gets or sets a boolean that, if true, reverse one symbols on 2
+        /// </summary>
+        bool Flip1on2 { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of symbols that should be drawn on each line. (not each segment).
         /// </summary>
         int NumSymbols { get; set; }
@@ -46,9 +51,26 @@ namespace DotSpatial.Symbology
         bool RotateWithLine { get; set; }
 
         /// <summary>
+        /// Gets or sets the spacing between each line decoration.
+        /// </summary>
+        int Spacing
+        { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unit used by the spacing (mm or inch).
+        /// </summary>
+        string SpacingUnit { get; set; }
+
+        /// <summary>
         /// Gets or sets the decorative symbol.
         /// </summary>
         IPointSymbolizer Symbol { get; set; }
+
+        /// <summary>
+        /// Gets or sets a boolean that, if true, will cause the symbol to 
+        /// be spaced according to the spacing value.
+        /// </summary>
+        bool UseSpacing { get; set; }
 
         #endregion
 

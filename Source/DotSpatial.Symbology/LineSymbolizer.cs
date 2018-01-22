@@ -218,7 +218,16 @@ namespace DotSpatial.Symbology
         {
             foreach (var stroke in _strokes)
             {
-                using (var p = stroke.ToPen(scaleWidth)) g.DrawPath(p, gp);
+                var cs = stroke as ICartographicStroke;
+                if (cs != null)
+                {
+                    cs.DrawPath(g, gp, scaleWidth);
+                }
+                else
+                {
+                    using (var p = stroke.ToPen(scaleWidth))
+                        g.DrawPath(p, gp);
+                }
             }
         }
 
