@@ -144,3 +144,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - don't assign the 'EndRow' property to itself in BinaryRaster.OpenWindow (#1089)
 - assign "D_ITRF_1997" to ITRF1997.GeographicInfo.Datum.Name instead of ITRF1997.GeographicInfo.Name because this is the name of the datum and not the GeographicInfo (#1090)
 - Update Brutile version in Webmap? (#800)
+- SetSelectable Plugin Not Included in Release Build (#1106)
