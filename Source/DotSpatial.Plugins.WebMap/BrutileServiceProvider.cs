@@ -69,7 +69,7 @@ namespace DotSpatial.Plugins.WebMap
             Bitmap bitMap = null;
             var zoomS = zoom.ToString(CultureInfo.InvariantCulture);
             var extent = ToBrutileExtent(envelope);
-            var tileInfo = ts.Schema.GetTilesInView(extent, zoomS).FirstOrDefault();
+            var tileInfo = ts.Schema.GetTileInfos(extent, zoomS).FirstOrDefault();
 
             try
             {
@@ -84,7 +84,7 @@ namespace DotSpatial.Plugins.WebMap
                     }
 
                     tileInfo.Index = index;
-                    bytes = ts.Provider.GetTile(tileInfo);
+                    bytes = ts.GetTile(tileInfo);
                     bitMap = new Bitmap(new MemoryStream(bytes));
                     tc?.Add(index, bytes);
 

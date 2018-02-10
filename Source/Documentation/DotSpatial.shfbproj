@@ -84,21 +84,21 @@
     <ComponentConfigurations />
     <PlugInConfigurations>
     </PlugInConfigurations>
-    <FooterText>based on commit 4c9e850c28ecbe0e8fbe48e00027ef2a0cec8d04 from 2017/05/18</FooterText>
+    <FooterText>based on commit 91df60adc90c6bcbc5f2a12080b1eec38858e6c5 from 2017/09/14</FooterText>
     <CopyrightText>Copyright &amp;#169%3b DotSpatial Team 2012-2017</CopyrightText>
     <CopyrightHref>https://github.com/DotSpatial/DotSpatial</CopyrightHref>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="" xmlns="" />
-      <Argument Key="logoHeight" Value="" xmlns="" />
-      <Argument Key="logoWidth" Value="" xmlns="" />
-      <Argument Key="logoAltText" Value="" xmlns="" />
-      <Argument Key="logoPlacement" Value="left" xmlns="" />
-      <Argument Key="logoAlignment" Value="left" xmlns="" />
-      <Argument Key="maxVersionParts" Value="" xmlns="" />
-      <Argument Key="defaultLanguage" Value="cs" xmlns="" />
-      <Argument Key="includeEnumValues" Value="true" xmlns="" />
-      <Argument Key="baseSourceCodeUrl" Value="https://github.com/DotSpatial/DotSpatial/tree/master/Source" xmlns="" />
-      <Argument Key="requestExampleUrl" Value="https://github.com/DotSpatial/DotSpatial/issues/new" xmlns="" />
+      <Argument Key="logoFile" Value="" />
+      <Argument Key="logoHeight" Value="" />
+      <Argument Key="logoWidth" Value="" />
+      <Argument Key="logoAltText" Value="" />
+      <Argument Key="logoPlacement" Value="left" />
+      <Argument Key="logoAlignment" Value="left" />
+      <Argument Key="maxVersionParts" Value="" />
+      <Argument Key="defaultLanguage" Value="cs" />
+      <Argument Key="includeEnumValues" Value="true" />
+      <Argument Key="baseSourceCodeUrl" Value="https://github.com/DotSpatial/DotSpatial/tree/master/Source/" />
+      <Argument Key="requestExampleUrl" Value="" />
     </TransformComponentArguments>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
   </PropertyGroup>

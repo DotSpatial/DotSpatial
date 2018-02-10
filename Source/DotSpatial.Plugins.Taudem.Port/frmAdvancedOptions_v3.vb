@@ -78,7 +78,7 @@ Public Class frmAdvancedOptions_v3
 
         myOpenFolder.SelectedPath = tdbFileList.getAbsolutePath(txtbxOut.Text, tdbFileList.dem)
 
-        If myOpenFolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If myOpenFolder.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             txtbxOut.Text = myOpenFolder.SelectedPath
             txtbxOut.Text = tdbFileList.GetRelativePath(txtbxOut.Text, tdbFileList.dem)
         End If

@@ -558,7 +558,7 @@ Public Class frmScript
                 End If
 
             Case "tbbopen", "open"
-                Dim cdOpen As New Windows.Forms.OpenFileDialog
+                Dim cdOpen As New System.Windows.Forms.OpenFileDialog
                 Try
                     cdOpen.InitialDirectory = GetSetting("MapWindow", "Defaults", "ScriptPath", cdOpen.InitialDirectory)
                 Catch
@@ -573,7 +573,7 @@ Public Class frmScript
                 End If
 
                 cdOpen.FileName = pFileName
-                If cdOpen.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If cdOpen.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     pFileName = cdOpen.FileName
                     Try
                         SaveSetting("MapWindow", "Defaults", "ScriptPath", System.IO.Path.GetDirectoryName(pFileName))
@@ -590,7 +590,7 @@ Public Class frmScript
                 End If
 
             Case "tbbsave", "save"
-                Dim cdSave As New Windows.Forms.SaveFileDialog
+                Dim cdSave As New System.Windows.Forms.SaveFileDialog
                 If rdVBNet.Checked Then
                     cdSave.Filter = pFilterVB
                 Else
@@ -601,7 +601,7 @@ Public Class frmScript
                 Catch
                 End Try
                 cdSave.FileName = pFileName
-                If cdSave.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If cdSave.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     pFileName = cdSave.FileName
                     Try
                         SaveSetting("MapWindow", "Defaults", "ScriptPath", System.IO.Path.GetDirectoryName(pFileName))
@@ -667,7 +667,7 @@ Public Class frmScript
 
     Private Sub Compile()
 
-        Dim cdSave As New Windows.Forms.SaveFileDialog
+        Dim cdSave As New System.Windows.Forms.SaveFileDialog
         Dim errors As String = ""
         Dim outPath As String = ""
         Dim assy As System.Reflection.Assembly
@@ -676,7 +676,7 @@ Public Class frmScript
         cdSave.OverwritePrompt = True
         Dim MustRename As Boolean = False
 
-        If cdSave.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If cdSave.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             outPath = cdSave.FileName
             If System.IO.File.Exists(outPath) Then
                 'Get the key, so we can turn it off and unload it:
@@ -717,8 +717,8 @@ Public Class frmScript
                 '    Next z
                 'End If
             End If
-            assy = MapWinUtility.Scripting.Compile(Language, txtScript.Text, _
-                                                   errors, _
+            assy = MapWinUtility.Scripting.Compile(Language, txtScript.Text,
+                                                   errors,
                                                    outPath)
             If errors.Length = 0 Then
                 'frmMain.Plugins.AddFromFile(outPath)
@@ -802,10 +802,10 @@ Public Class frmScript
             'Dim b As MsgBoxResult = mapwinutility.logger.msg("Do you wish to save your current script first?", MsgBoxStyle.YesNo, "Save first?")
             Dim b As MsgBoxResult = MapWinUtility.Logger.Msg(resources.GetString("msgSaveCurrentScript.Text"), MsgBoxStyle.YesNo)
             If b = MsgBoxResult.Yes Then
-                Dim cdSave As New Windows.Forms.SaveFileDialog
+                Dim cdSave As New System.Windows.Forms.SaveFileDialog
                 cdSave.Filter = pFilter
                 cdSave.FileName = pFileName
-                If cdSave.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If cdSave.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     pFileName = cdSave.FileName
                     MapWinUtility.Strings.SaveFileString(pFileName, txtScript.Text)
                 End If

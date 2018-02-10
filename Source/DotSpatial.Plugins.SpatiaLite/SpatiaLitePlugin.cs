@@ -74,16 +74,17 @@ namespace DotSpatial.Plugins.SpatiaLite
                 if (fd.ShowDialog() == DialogResult.OK)
                 {
                     string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
-                    bool isValidSchema = SpatiaLiteHelper.CheckSpatiaLiteSchema(cs);
-                    if (!isValidSchema)
+                    string error;
+                    var slh = SpatiaLiteHelper.Open(cs, out error);
+                    if (slh == null)
                     {
-                        MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName));
+                        MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
                         return;
                     }
 
-                    using (FrmAddLayer frm = new FrmAddLayer(cs, App.Map))
+                    using (FrmAddLayer frm = new FrmAddLayer(slh, App.Map))
                     {
-                        frm.Show();
+                        frm.ShowDialog();
                     }
                 }
             }
@@ -110,8 +111,18 @@ namespace DotSpatial.Plugins.SpatiaLite
                 if (fd.ShowDialog() == DialogResult.OK)
                 {
                     string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
-                    var frm = new FrmQuery(cs, App.Map);
-                    frm.Show();
+                    string error;
+                    var slh = SpatiaLiteHelper.Open(cs, out error);
+                    if (slh == null)
+                    {
+                        MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
+                        return;
+                    }
+
+                    using (var frm = new FrmQuery(slh, App.Map))
+                    {
+                        frm.ShowDialog();
+                    }
                 }
             }
         }

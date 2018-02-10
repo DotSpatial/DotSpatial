@@ -126,9 +126,6 @@
   <data name="WMSMap" xml:space="preserve">
     <value>WMS</value>
   </data>
-  <data name="GoogleLabels" xml:space="preserve">
-    <value>Google Labels</value>
-  </data>
   <data name="GoogleTerrain" xml:space="preserve">
     <value>Google Terrain</value>
   </data>

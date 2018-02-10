@@ -18,9 +18,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item</param>
-        /// <param name="image">The icon to draw for this menu item</param>
-        /// <param name="clickHandler">The click event handler</param>
+        /// <param name="name">The name or text to appear for this item.</param>
+        /// <param name="image">The icon to draw for this menu item.</param>
+        /// <param name="clickHandler">The click event handler.</param>
         public SymbologyMenuItem(string name, Image image, EventHandler clickHandler)
         {
             MenuItems = new List<SymbologyMenuItem>();
@@ -32,22 +32,22 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item</param>
-        /// <param name="icon">The icon to draw for this menu item</param>
-        /// <param name="clickHandler">The click event handler</param>
+        /// <param name="name">The name or text to appear for this item.</param>
+        /// <param name="icon">The icon to draw for this menu item.</param>
+        /// <param name="clickHandler">The click event handler.</param>
         public SymbologyMenuItem(string name, Icon icon, EventHandler clickHandler)
         {
             MenuItems = new List<SymbologyMenuItem>();
             Name = name;
             ClickHandler = clickHandler;
-            Icon = icon;
+            if (icon != null) Image = icon.ToBitmap();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item</param>
-        /// <param name="clickHandler">The click event handler</param>
+        /// <param name="name">The name or text to appear for this item.</param>
+        /// <param name="clickHandler">The click event handler.</param>
         public SymbologyMenuItem(string name, EventHandler clickHandler)
         {
             MenuItems = new List<SymbologyMenuItem>();
@@ -58,7 +58,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item</param>
+        /// <param name="name">The name or text to appear for this item.</param>
         public SymbologyMenuItem(string name)
         {
             MenuItems = new List<SymbologyMenuItem>();
@@ -75,12 +75,7 @@ namespace DotSpatial.Symbology
         public EventHandler ClickHandler { get; set; }
 
         /// <summary>
-        /// Gets or sets the icon for this menu item
-        /// </summary>
-        public Icon Icon { get; set; }
-
-        /// <summary>
-        /// Gets or sets the image for this menu item
+        /// Gets or sets the image for this menu item.
         /// </summary>
         public Image Image { get; set; }
 
@@ -90,7 +85,7 @@ namespace DotSpatial.Symbology
         public List<SymbologyMenuItem> MenuItems { get; set; }
 
         /// <summary>
-        /// Gets or sets the name for this menu item
+        /// Gets or sets the name or text to appear for this item.
         /// </summary>
         public string Name { get; set; }
 

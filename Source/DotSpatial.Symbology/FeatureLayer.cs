@@ -157,7 +157,7 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Properties
+       #region Properties
 
         /// <summary>
         /// Gets the dictionary of extents that is calculated from the categories. This is calculated one time,
@@ -171,7 +171,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet
         /// </summary>
-        [Serialize("DataSet", ConstructorArgumentIndex = 0)]
+        [Serialize("DataSet", ConstructorArgumentIndex = 0, UseCase = SerializeAttribute.UseCases.Both)]
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new IFeatureSet DataSet

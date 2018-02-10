@@ -551,6 +551,7 @@ namespace DotSpatial.Controls
             foreach (var kvp in paths)
             {
                 var category = kvp.Key.Category;
+                if (category == null) continue;
 
                 Extent catBounds = (CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category)) ?? Extent;
                 var bounds = new RectangleF

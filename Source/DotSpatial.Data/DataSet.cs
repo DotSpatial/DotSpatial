@@ -90,7 +90,7 @@ namespace DotSpatial.Data
         /// For data sets coming from a database or a web service, the FilePath property is NULL.
         /// This property is used when saving source file information to a DSPX project.
         /// </summary>
-        [Serialize("FilePath", ConstructorArgumentIndex = 0)]
+        [Serialize("FilePath", ConstructorArgumentIndex = 0, UseCase = SerializeAttribute.UseCases.Both)]
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual string FilePath

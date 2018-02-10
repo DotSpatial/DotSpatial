@@ -49,9 +49,17 @@ namespace DotSpatial.Plugins.SpatiaLite
             // 
             // dgGeometryColumns
             // 
+            this.dgGeometryColumns.AllowUserToAddRows = false;
+            this.dgGeometryColumns.AllowUserToDeleteRows = false;
+            this.dgGeometryColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgGeometryColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgGeometryColumns.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgGeometryColumns.Location = new System.Drawing.Point(12, 63);
             this.dgGeometryColumns.Name = "dgGeometryColumns";
+            this.dgGeometryColumns.ReadOnly = true;
+            this.dgGeometryColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgGeometryColumns.Size = new System.Drawing.Size(384, 168);
             this.dgGeometryColumns.TabIndex = 3;
             // 
@@ -76,7 +84,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             this.label2.TabIndex = 5;
             this.label2.Text = "Database: e:\\Jiri\\Projects\\World.sqlite";
             // 
-            // frmAddLayer
+            // FrmAddLayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
