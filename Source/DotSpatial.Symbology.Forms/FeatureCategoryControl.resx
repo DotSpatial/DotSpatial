@@ -976,7 +976,7 @@
     <value>breakSliderGraph1</value>
   </data>
   <data name="&gt;&gt;breakSliderGraph1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.BreakSliderGraph, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.BreakSliderGraph, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;breakSliderGraph1.Parent" xml:space="preserve">
     <value>tabGraph</value>
@@ -1153,7 +1153,7 @@
     <value>angGradientAngle</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1174,7 +1174,7 @@
     <value>featureSizeRangeControl1</value>
   </data>
   <data name="&gt;&gt;featureSizeRangeControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.FeatureSizeRangeControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.FeatureSizeRangeControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;featureSizeRangeControl1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1195,7 +1195,7 @@
     <value>tccColorRange</value>
   </data>
   <data name="&gt;&gt;tccColorRange.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.TabColorControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.TabColorControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;tccColorRange.Parent" xml:space="preserve">
     <value>$this</value>

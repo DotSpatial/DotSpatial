@@ -445,7 +445,7 @@
     <value>cbColorSimple</value>
   </data>
   <data name="&gt;&gt;cbColorSimple.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbColorSimple.Parent" xml:space="preserve">
     <value>tabSimple</value>
@@ -472,7 +472,7 @@
     <value>sldOpacitySimple</value>
   </data>
   <data name="&gt;&gt;sldOpacitySimple.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldOpacitySimple.Parent" xml:space="preserve">
     <value>tabSimple</value>
@@ -571,7 +571,7 @@
     <value>dblWidth</value>
   </data>
   <data name="&gt;&gt;dblWidth.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dblWidth.Parent" xml:space="preserve">
     <value>tabSimple</value>
@@ -820,7 +820,7 @@
     <value>cbColorCartographic</value>
   </data>
   <data name="&gt;&gt;cbColorCartographic.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbColorCartographic.Parent" xml:space="preserve">
     <value>tabCartographic</value>
@@ -847,7 +847,7 @@
     <value>sldOpacityCartographic</value>
   </data>
   <data name="&gt;&gt;sldOpacityCartographic.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldOpacityCartographic.Parent" xml:space="preserve">
     <value>tabCartographic</value>
@@ -871,7 +871,7 @@
     <value>dblStrokeOffset</value>
   </data>
   <data name="&gt;&gt;dblStrokeOffset.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dblStrokeOffset.Parent" xml:space="preserve">
     <value>tabCartographic</value>
@@ -895,7 +895,7 @@
     <value>radLineJoin</value>
   </data>
   <data name="&gt;&gt;radLineJoin.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.LineJoinControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.LineJoinControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;radLineJoin.Parent" xml:space="preserve">
     <value>tabCartographic</value>
@@ -922,7 +922,7 @@
     <value>dblWidthCartographic</value>
   </data>
   <data name="&gt;&gt;dblWidthCartographic.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dblWidthCartographic.Parent" xml:space="preserve">
     <value>tabCartographic</value>
@@ -993,7 +993,7 @@
     <value>dashControl1</value>
   </data>
   <data name="&gt;&gt;dashControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DashControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DashControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dashControl1.Parent" xml:space="preserve">
     <value>tabDash</value>
@@ -1562,7 +1562,7 @@ If only one decoration is added its position can be set percentually.</value>
     <value>dblOffset</value>
   </data>
   <data name="&gt;&gt;dblOffset.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dblOffset.Parent" xml:space="preserve">
     <value>tabDecoration</value>
@@ -1586,7 +1586,7 @@ If only one decoration is added its position can be set percentually.</value>
     <value>ccDecorations</value>
   </data>
   <data name="&gt;&gt;ccDecorations.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DecorationCollectionControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DecorationCollectionControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ccDecorations.Parent" xml:space="preserve">
     <value>tabDecoration</value>
@@ -1661,7 +1661,7 @@ If only one decoration is added its position can be set percentually.</value>
     <value>ccStrokes</value>
   </data>
   <data name="&gt;&gt;ccStrokes.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.StrokeCollectionControl, DotSpatial.Symbology.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.StrokeCollectionControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ccStrokes.Parent" xml:space="preserve">
     <value>$this</value>
