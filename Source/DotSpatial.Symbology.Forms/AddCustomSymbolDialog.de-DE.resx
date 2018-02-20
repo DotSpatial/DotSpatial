@@ -335,7 +335,7 @@
     <value>Simple Line</value>
   </data>
   <data name="&gt;&gt;cbColorSimple.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="dblWidthCartographic.Caption" xml:space="preserve">
     <value>Width:</value>
@@ -368,7 +368,7 @@
     <value>Color:</value>
   </data>
   <data name="&gt;&gt;sldOpacitySimple.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="radLineJoin.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 97</value>
@@ -444,7 +444,7 @@
     <value>2</value>
   </data>
   <data name="&gt;&gt;dblWidth.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="cbColorCartographic.Text" xml:space="preserve">
     <value>colorButton1</value>
@@ -459,7 +459,7 @@
     <value>Controls how the joints are drawn connecting two segments.</value>
   </data>
   <data name="&gt;&gt;dblWidthCartographic.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="grpRotation.Location" type="System.Drawing.Point, System.Drawing">
     <value>117, 188</value>
@@ -501,7 +501,7 @@
     <value>tabCartographic</value>
   </data>
   <data name="&gt;&gt;cbColorCartographic.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
@@ -651,7 +651,7 @@
     <value>lblStartCap</value>
   </data>
   <data name="&gt;&gt;sldOpacityCartographic.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -720,7 +720,7 @@
     <value>Flip</value>
   </data>
   <data name="&gt;&gt;ccDecorations.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DecorationCollectionControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DecorationCollectionControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="ccStrokes.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -795,7 +795,7 @@
     <value>114, 9</value>
   </data>
   <data name="&gt;&gt;dblStrokeOffset.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldOpacityCartographic.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -855,7 +855,7 @@
     <value>btnEdit</value>
   </data>
   <data name="&gt;&gt;ccStrokes.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.StrokeCollectionControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.StrokeCollectionControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="cbColorCartographic.Size" type="System.Drawing.Size, System.Drawing">
     <value>82, 52</value>
@@ -969,7 +969,7 @@
     <value>Design the combination of dash and contour patterns for custom shapes.</value>
   </data>
   <data name="&gt;&gt;dashControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DashControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DashControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;grpFlip.Name" xml:space="preserve">
     <value>grpFlip</value>
@@ -1113,7 +1113,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="&gt;&gt;radLineJoin.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.LineJoinControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.LineJoinControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="sldOpacitySimple.ToolTip" xml:space="preserve">
     <value>Use the slider to adjust the opacity, with 0 being fully transparent and 1 being fully opaque</value>
@@ -1365,7 +1365,7 @@
     <value>chkSmoothing</value>
   </data>
   <data name="&gt;&gt;dblOffset.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="tabStrokeProperties.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 131</value>

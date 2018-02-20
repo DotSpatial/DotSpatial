@@ -274,7 +274,7 @@
     <value>predefinedLineSymbolControl1</value>
   </data>
   <data name="&gt;&gt;predefinedLineSymbolControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.PredefinedLineSymbolControl, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.PredefinedLineSymbolControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;predefinedLineSymbolControl1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -298,7 +298,7 @@
     <value>symbolPreview1</value>
   </data>
   <data name="&gt;&gt;symbolPreview1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SymbolPreview, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.SymbolPreview, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;symbolPreview1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -322,7 +322,7 @@
     <value>dialogButtons1</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Parent" xml:space="preserve">
     <value>$this</value>

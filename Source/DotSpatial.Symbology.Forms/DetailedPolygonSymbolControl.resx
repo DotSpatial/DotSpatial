@@ -523,7 +523,7 @@
     <value>cbColorSimple</value>
   </data>
   <data name="&gt;&gt;cbColorSimple.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbColorSimple.Parent" xml:space="preserve">
     <value>tabSimple</value>
@@ -550,7 +550,7 @@
     <value>sldOpacitySimple</value>
   </data>
   <data name="&gt;&gt;sldOpacitySimple.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldOpacitySimple.Parent" xml:space="preserve">
     <value>tabSimple</value>
@@ -607,7 +607,7 @@
     <value>dbxScaleY</value>
   </data>
   <data name="&gt;&gt;dbxScaleY.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dbxScaleY.Parent" xml:space="preserve">
     <value>tabPicture</value>
@@ -634,7 +634,7 @@
     <value>dbxScaleX</value>
   </data>
   <data name="&gt;&gt;dbxScaleX.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dbxScaleX.Parent" xml:space="preserve">
     <value>tabPicture</value>
@@ -661,7 +661,7 @@
     <value>angTileAngle</value>
   </data>
   <data name="&gt;&gt;angTileAngle.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;angTileAngle.Parent" xml:space="preserve">
     <value>tabPicture</value>
@@ -865,7 +865,7 @@
     <value>sliderGradient</value>
   </data>
   <data name="&gt;&gt;sliderGradient.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.GradientControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.GradientControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sliderGradient.Parent" xml:space="preserve">
     <value>tabGradient</value>
@@ -985,7 +985,7 @@
     <value>angGradientAngle</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Parent" xml:space="preserve">
     <value>tabGradient</value>
@@ -1123,7 +1123,7 @@
     <value>hatchBackOpacity</value>
   </data>
   <data name="&gt;&gt;hatchBackOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;hatchBackOpacity.Parent" xml:space="preserve">
     <value>tabHatch</value>
@@ -1150,7 +1150,7 @@
     <value>hatchBackColor</value>
   </data>
   <data name="&gt;&gt;hatchBackColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;hatchBackColor.Parent" xml:space="preserve">
     <value>tabHatch</value>
@@ -1207,7 +1207,7 @@
     <value>hatchForeOpacity</value>
   </data>
   <data name="&gt;&gt;hatchForeOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;hatchForeOpacity.Parent" xml:space="preserve">
     <value>tabHatch</value>
@@ -1231,7 +1231,7 @@
     <value>hatchForeColor</value>
   </data>
   <data name="&gt;&gt;hatchForeColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;hatchForeColor.Parent" xml:space="preserve">
     <value>tabHatch</value>
@@ -1309,7 +1309,7 @@
     <value>ocOutline</value>
   </data>
   <data name="&gt;&gt;ocOutline.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.OutlineControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.OutlineControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ocOutline.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1336,7 +1336,7 @@
     <value>ccPatterns</value>
   </data>
   <data name="&gt;&gt;ccPatterns.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.PatternCollectionControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.PatternCollectionControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ccPatterns.Parent" xml:space="preserve">
     <value>$this</value>

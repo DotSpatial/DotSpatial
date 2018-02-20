@@ -231,7 +231,7 @@
     <value>lsvStart</value>
   </data>
   <data name="&gt;&gt;lsvStart.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.LineSymbolView, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.LineSymbolView, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;lsvStart.Parent" xml:space="preserve">
     <value>grpSizeRange</value>
@@ -255,7 +255,7 @@
     <value>psvStart</value>
   </data>
   <data name="&gt;&gt;psvStart.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.PointSymbolView, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.PointSymbolView, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;psvStart.Parent" xml:space="preserve">
     <value>grpSizeRange</value>
@@ -279,7 +279,7 @@
     <value>lsvEnd</value>
   </data>
   <data name="&gt;&gt;lsvEnd.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.LineSymbolView, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.LineSymbolView, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;lsvEnd.Parent" xml:space="preserve">
     <value>grpSizeRange</value>
@@ -415,7 +415,7 @@
     <value>psvEnd</value>
   </data>
   <data name="&gt;&gt;psvEnd.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.PointSymbolView, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.PointSymbolView, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;psvEnd.Parent" xml:space="preserve">
     <value>grpSizeRange</value>

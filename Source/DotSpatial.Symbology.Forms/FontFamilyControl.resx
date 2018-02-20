@@ -136,7 +136,7 @@
     <value>ffdNames</value>
   </data>
   <data name="&gt;&gt;ffdNames.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.FontFamilyDropDown, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.FontFamilyDropDown, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ffdNames.Parent" xml:space="preserve">
     <value>$this</value>

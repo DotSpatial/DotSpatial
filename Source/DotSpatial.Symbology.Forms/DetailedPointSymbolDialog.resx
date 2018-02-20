@@ -142,7 +142,7 @@
     <value>dialogButtons1</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.0.0.30540, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -193,7 +193,7 @@
     <value>detailedPointSymbolControl1</value>
   </data>
   <data name="&gt;&gt;detailedPointSymbolControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DetailedPointSymbolControl, DotSpatial.Symbology.Forms, Version=1.0.0.30540, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DetailedPointSymbolControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;detailedPointSymbolControl1.Parent" xml:space="preserve">
     <value>$this</value>

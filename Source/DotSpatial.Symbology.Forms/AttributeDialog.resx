@@ -166,7 +166,7 @@
     <value>tableEditorControl1</value>
   </data>
   <data name="&gt;&gt;tableEditorControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.TableEditorControl, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.TableEditorControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;tableEditorControl1.Parent" xml:space="preserve">
     <value>$this</value>

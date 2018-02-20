@@ -241,7 +241,7 @@
     <value>projectionSelectControl1</value>
   </data>
   <data name="&gt;&gt;projectionSelectControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Projections.Forms.ProjectionSelectControl, DotSpatial.Projections.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=52099474f11b7ff0</value>
+    <value>DotSpatial.Projections.Forms.ProjectionSelectControl, DotSpatial.Projections.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=52099474f11b7ff0</value>
   </data>
   <data name="&gt;&gt;projectionSelectControl1.Parent" xml:space="preserve">
     <value>$this</value>

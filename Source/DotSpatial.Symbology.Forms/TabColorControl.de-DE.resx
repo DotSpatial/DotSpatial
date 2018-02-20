@@ -198,7 +198,7 @@
     <value>sldLightness</value>
   </data>
 	<data name="&gt;&gt;sldLightness.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.TwoColorSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.TwoColorSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
 	<data name="&gt;&gt;sldLightness.Parent" xml:space="preserve">
     <value>tabHSL</value>
@@ -222,7 +222,7 @@
     <value>sldSaturation</value>
   </data>
 	<data name="&gt;&gt;sldSaturation.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.TwoColorSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.TwoColorSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
 	<data name="&gt;&gt;sldSaturation.Parent" xml:space="preserve">
     <value>tabHSL</value>
@@ -271,7 +271,7 @@
     <value>sldHue</value>
   </data>
 	<data name="&gt;&gt;sldHue.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.HueSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.HueSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
 	<data name="&gt;&gt;sldHue.Parent" xml:space="preserve">
     <value>tabHSL</value>
@@ -403,7 +403,7 @@
     <value>cbEndColor</value>
   </data>
 	<data name="&gt;&gt;cbEndColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
 	<data name="&gt;&gt;cbEndColor.Parent" xml:space="preserve">
     <value>tabRGB</value>
@@ -427,7 +427,7 @@
     <value>rampSlider2</value>
   </data>
 	<data name="&gt;&gt;rampSlider2.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
 	<data name="&gt;&gt;rampSlider2.Parent" xml:space="preserve">
     <value>tabRGB</value>
@@ -451,7 +451,7 @@
     <value>cbStartColor</value>
   </data>
 	<data name="&gt;&gt;cbStartColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
 	<data name="&gt;&gt;cbStartColor.Parent" xml:space="preserve">
     <value>tabRGB</value>
@@ -475,7 +475,7 @@
     <value>rampSlider1</value>
   </data>
 	<data name="&gt;&gt;rampSlider1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
 	<data name="&gt;&gt;rampSlider1.Parent" xml:space="preserve">
     <value>tabRGB</value>

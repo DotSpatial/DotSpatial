@@ -214,7 +214,7 @@
     <value>dialogButtons1</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.0.0.35623, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -250,7 +250,7 @@
     <value>grdSlider</value>
   </data>
   <data name="&gt;&gt;grdSlider.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.GradientControl, DotSpatial.Symbology.Forms, Version=1.0.0.35623, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.GradientControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;grdSlider.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -286,7 +286,7 @@
     <value>_spatialStatusStrip1</value>
   </data>
   <data name="&gt;&gt;_spatialStatusStrip1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SymbologyStatusStrip, DotSpatial.Symbology.Forms, Version=1.0.0.35623, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.SymbologyStatusStrip, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_spatialStatusStrip1.Parent" xml:space="preserve">
     <value>$this</value>

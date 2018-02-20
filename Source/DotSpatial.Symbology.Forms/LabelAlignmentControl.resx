@@ -197,7 +197,7 @@
     <value>labelAlignmentPicker1</value>
   </data>
   <data name="&gt;&gt;labelAlignmentPicker1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.LabelAlignmentPicker, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.LabelAlignmentPicker, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;labelAlignmentPicker1.Parent" xml:space="preserve">
     <value>$this</value>

@@ -2116,7 +2116,7 @@
     <value>sqlMembers</value>
   </data>
   <data name="&gt;&gt;sqlMembers.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.SqlQueryControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sqlMembers.Parent" xml:space="preserve">
     <value>tabMembers</value>
@@ -2384,7 +2384,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Feature Labeler</value>
+    <value> </value>
   </data>
   <data name="&gt;&gt;ttLabelSetup.Name" xml:space="preserve">
     <value>ttLabelSetup</value>

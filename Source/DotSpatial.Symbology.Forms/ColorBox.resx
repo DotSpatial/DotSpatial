@@ -2209,7 +2209,7 @@
     <value>Gray</value>
   </data>
   <data name="&gt;&gt;cddColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorDropDown, DotSpatial.Symbology.Forms, Version=1.0.0.40674, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorDropDown, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="cddColor.Items253" type="System.Drawing.KnownColor, System.Drawing">
     <value>GreenYellow</value>

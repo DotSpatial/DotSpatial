@@ -136,7 +136,7 @@
     <value>_dialogButtons1</value>
   </data>
   <data name="&gt;&gt;_dialogButtons1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.0.0.31822, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_dialogButtons1.Parent" xml:space="preserve">
     <value>_panel1</value>
@@ -184,7 +184,7 @@
     <value>_detailedPolygonSymbolControl1</value>
   </data>
   <data name="&gt;&gt;_detailedPolygonSymbolControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DetailedPolygonSymbolControl, DotSpatial.Symbology.Forms, Version=1.0.0.31822, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DetailedPolygonSymbolControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_detailedPolygonSymbolControl1.Parent" xml:space="preserve">
     <value>$this</value>
