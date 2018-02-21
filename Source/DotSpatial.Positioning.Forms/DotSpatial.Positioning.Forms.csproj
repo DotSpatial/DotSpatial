@@ -46,7 +46,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;DEBUG;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -59,7 +59,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

@@ -46,12 +46,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)\bin\Debug\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>$(SolutionDir)\bin\Debug\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.XML</DocumentationFile>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>$(SolutionDir)\bin\x64\Debug\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.XML</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -59,12 +58,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)\bin\Release\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>$(SolutionDir)\bin\Release\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.XML</DocumentationFile>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>$(SolutionDir)\bin\x64\Release\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.XML</DocumentationFile>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>

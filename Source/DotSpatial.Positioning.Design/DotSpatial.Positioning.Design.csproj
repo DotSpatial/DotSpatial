@@ -48,7 +48,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;DEBUG;Framework20;Framework30;DesignTime;Framework40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,7 +60,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
     <DefineConstants>Framework20;Framework30;DesignTime</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
