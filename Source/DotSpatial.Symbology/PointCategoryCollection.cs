@@ -103,12 +103,12 @@ namespace DotSpatial.Symbology
         /// <param name="item">The newly added legend item.</param>
         protected override void OnInclude(IPointCategory item)
         {
-            if (_scheme == null) return;
+            base.OnInclude(item);
 
             item.SelectFeatures += OnSelectFeatures;
             item.DeselectFeatures += OnDeselectFeatures;
+            if (_scheme == null) return;
             item.SetParentItem(_scheme.AppearsInLegend ? _scheme : _scheme.GetParentItem());
-            base.OnInclude(item);
         }
 
         /// <summary>
