@@ -186,7 +186,7 @@ namespace DotSpatial.Controls
         public override void Draw(Graphics g, bool printing)
         {
             // JME A finir print vectoriel
-            // if (printing == false)
+            if (printing == false || _printSVG == false)
             {
                 int iResolution = 150;
 
@@ -213,11 +213,11 @@ namespace DotSpatial.Controls
 
                 g.DrawImage(_buffer, Rectangle);
             }
+            else
+            {
+                 MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+            }
 
-            // else
-            // {
-            //     MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
-            // }
             // JME A finir print vectoriel
         }
 
