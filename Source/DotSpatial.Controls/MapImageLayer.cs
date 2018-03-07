@@ -215,12 +215,12 @@ namespace DotSpatial.Controls
                     using (var attributes = new ImageAttributes())
                     {
                         attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                        g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
+                        g.DrawImage(bmp, new Rectangle(0, 0, r.Width, r.Height), 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
                     }
                 }
                 else
                 {
-                    g.DrawImage(bmp, r);
+                    g.DrawImage(bmp, new Rectangle(0, 0, r.Width, r.Height));
                 }
 
                 bmp.Dispose();
