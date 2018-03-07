@@ -307,17 +307,24 @@ namespace DotSpatial.Controls
                 List<int> drawList = new List<int>();
                 double[] verts = DataSet.Vertex;
 
+                int featIdx = 0;
                 if (DataSet.FeatureType == FeatureType.Point)
                 {
-                    for (int shp = 0; shp < verts.Length / 2; shp++)
+                    foreach (var feature in DataSet.Features)
                     {
-                        foreach (Extent extent in regions)
+                        int vertIdx = feature.ShapeIndex.StartIndex;
+                        if (feature.ShapeType() != ShapeType.NullShape)
                         {
-                            if (extent.Intersects(verts[shp * 2], verts[(shp * 2) + 1]))
+                            foreach (Extent extent in regions)
                             {
-                                drawList.Add(shp);
+                                if (extent.Intersects(verts[vertIdx * 2], verts[(vertIdx * 2) + 1]))
+                                {
+                                    drawList.Add(featIdx);
+                                }
                             }
                         }
+
+                        featIdx++;
                     }
                 }
                 else
@@ -430,18 +437,11 @@ namespace DotSpatial.Controls
 
                 foreach (int index in indices)
                 {
-                    if (featureType == FeatureType.Point)
+                    // Special case for FeatureType.Point was not neccessary, since Point is a shape with range length = 1
+                    ShapeRange range = DataSet.ShapeIndices[index];
+                    for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                     {
-                        DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
-                    }
-                    else
-                    {
-                        // multi-point
-                        ShapeRange range = DataSet.ShapeIndices[index];
-                        for (int i = range.StartIndex; i <= range.EndIndex(); i++)
-                        {
-                            DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
-                        }
+                        DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
                     }
                 }
             }
@@ -471,18 +471,13 @@ namespace DotSpatial.Controls
                     IPointSymbolizer ps = selected ? pc.SelectionSymbolizer : pc.Symbolizer;
                     if (ps == null) continue;
 
-                    if (featureType == FeatureType.Point)
+                    // Special case for FeatureType.Point was not neccessary, since Point is a shape with range length = 1
+                    ShapeRange range = DataSet.ShapeIndices[index];
+                    for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                     {
-                        DrawPoint(vertices[index * 2], vertices[(index * 2) + 1], e, ps, g, origTransform);
+                        DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
                     }
-                    else
-                    {
-                        ShapeRange range = DataSet.ShapeIndices[index];
-                        for (int i = range.StartIndex; i <= range.EndIndex(); i++)
-                        {
-                            DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
-                        }
-                    }
+
                 }
             }
 

@@ -145,4 +145,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - assign "D_ITRF_1997" to ITRF1997.GeographicInfo.Datum.Name instead of ITRF1997.GeographicInfo.Name because this is the name of the datum and not the GeographicInfo (#1090)
 - Update Brutile version in Webmap? (#800)
 - SetSelectable Plugin Not Included in Release Build (#1106)
-MapImageLayer not drawn correctly on print (#1137)
+- MapImageLayer not drawn correctly on print (#1137)
+- Selecting features of this particular shapefile results in different features being highlighted than the ones expected (#1134)
