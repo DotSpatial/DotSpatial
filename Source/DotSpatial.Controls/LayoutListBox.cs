@@ -317,40 +317,47 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Action de groupage des elements
+        /// Grouping Elements Method
         /// </summary>
-        public void OnGroupItems(object sender, EventArgs e)
+        /// <param name="groupName"></param>
+        /// <param name="l_ElemSelect"></param>
+        public void groupItems(string groupName, List<LayoutElement> l_ElemSelect)
         {
             try
             {
-                // Creation du nom du groupe
-                string sNewGroup = GetGroupName();
-
                 // Stockage de la valeur max de l'index
                 int iIndexMin = int.MaxValue;
 
                 // Parcours des noeuds selectionnés
-                List<LayoutElement> leSelected = _layoutControl.SelectedLayoutElements.OrderBy(o => _layoutControl.LayoutElements.IndexOf(o)).ToList();
-                foreach (LayoutElement le in leSelected)
+                foreach (LayoutElement le in l_ElemSelect)
                 {
                     int iIndexElement = _layoutControl.LayoutElements.IndexOf(le);
                     if (iIndexMin > iIndexElement)
                         iIndexMin = iIndexElement;
-                    le.Group = sNewGroup;
+                    le.Group = groupName;
                 }
 
                 // On regroupe les items à partir de l'index le plus bas
-                foreach (LayoutElement le in leSelected)
+                foreach (LayoutElement le in l_ElemSelect)
                 {
                     _layoutControl.LayoutElements.Remove(le);
                     _layoutControl.LayoutElements.Insert(iIndexMin, le);
                     iIndexMin++;
                 }
-
+                
                 RefreshList();
             }
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
+        }
+        
+        /// <summary>
+        /// Appel Methode de groupement de elements
+        /// </summary>
+        public void OnGroupItems(object sender, EventArgs e)
+        {
+            List<LayoutElement> leSelected = _layoutControl.SelectedLayoutElements.OrderBy(o => _layoutControl.LayoutElements.IndexOf(o)).ToList();
+            this.groupItems(GetGroupName(), leSelected);
         }
 
         /// <summary>
