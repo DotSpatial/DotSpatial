@@ -310,10 +310,10 @@ namespace DotSpatial.Controls
                 int featIdx = 0;
                 if (DataSet.FeatureType == FeatureType.Point)
                 {
-                    foreach (var feature in DataSet.Features)
+                    foreach(var shIdx in DataSet.ShapeIndices)
                     {
-                        int vertIdx = feature.ShapeIndex.StartIndex;
-                        if (feature.ShapeType() != ShapeType.NullShape)
+                        int vertIdx = shIdx.StartIndex;
+                        if (shIdx.ShapeType != ShapeType.NullShape)
                         {
                             foreach (Extent extent in regions)
                             {
@@ -477,7 +477,6 @@ namespace DotSpatial.Controls
                     {
                         DrawPoint(vertices[i * 2], vertices[(i * 2) + 1], e, ps, g, origTransform);
                     }
-
                 }
             }
 
