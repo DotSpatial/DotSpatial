@@ -1423,6 +1423,7 @@
   <ItemGroup>
     <Content Include="Resources\B_Export16.png" />
     <Content Include="Resources\B_Import16.png" />
+    <None Include="Resources\help_16x16.png" />
     <None Include="Resources\zoom_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

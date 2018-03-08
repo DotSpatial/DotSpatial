@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionDialog));
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.listViewFields = new System.Windows.Forms.ListView();
@@ -43,6 +45,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.richTextBoxViewer = new System.Windows.Forms.RichTextBox();
             this.PanelPreview = new System.Windows.Forms.Panel();
+            this.TT_Help = new System.Windows.Forms.ToolTip(this.components);
+            this.B_Help = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.TabSimple.SuspendLayout();
             this.TabAdvanced.SuspendLayout();
@@ -58,7 +62,7 @@
             this.label6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(258, 6);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(485, 22);
+            this.label6.Size = new System.Drawing.Size(456, 22);
             this.label6.TabIndex = 22;
             this.label6.Text = "Expression";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -158,7 +162,7 @@
             this.TabAdvanced.Location = new System.Drawing.Point(4, 22);
             this.TabAdvanced.Name = "TabAdvanced";
             this.TabAdvanced.Padding = new System.Windows.Forms.Padding(3);
-            this.TabAdvanced.Size = new System.Drawing.Size(231, 223);
+            this.TabAdvanced.Size = new System.Drawing.Size(477, 503);
             this.TabAdvanced.TabIndex = 1;
             this.TabAdvanced.Text = "Advanced ";
             // 
@@ -232,10 +236,30 @@
             this.PanelPreview.TabIndex = 29;
             this.PanelPreview.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelPreview_Paint);
             // 
+            // TT_Help
+            // 
+            this.TT_Help.AutoPopDelay = 50000;
+            this.TT_Help.InitialDelay = 500;
+            this.TT_Help.ReshowDelay = 100;
+            this.TT_Help.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.TT_Help.ToolTipTitle = "Help";
+            // 
+            // B_Help
+            // 
+            this.B_Help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.B_Help.Image = global::DotSpatial.Symbology.Forms.Properties.Resources.help_16x16;
+            this.B_Help.Location = new System.Drawing.Point(717, 5);
+            this.B_Help.Name = "B_Help";
+            this.B_Help.Size = new System.Drawing.Size(26, 24);
+            this.B_Help.TabIndex = 2;
+            this.TT_Help.SetToolTip(this.B_Help, resources.GetString("B_Help.ToolTip"));
+            this.B_Help.UseVisualStyleBackColor = true;
+            // 
             // ExpressionDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.B_Help);
             this.Controls.Add(this.PanelPreview);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
@@ -270,5 +294,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RichTextBox richTextBoxViewer;
         private System.Windows.Forms.Panel PanelPreview;
+        private System.Windows.Forms.ToolTip TT_Help;
+        private System.Windows.Forms.Button B_Help;
     }
 }
