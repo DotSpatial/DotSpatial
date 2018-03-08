@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="splitContainer1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>5, 7</value>
   </data>
   <data name="lbCategories.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -132,7 +132,7 @@
     <value>0, 31</value>
   </data>
   <data name="lbCategories.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 403</value>
+    <value>187, 412</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lbCategories.TabIndex" type="System.Int32, mscorlib">
@@ -250,10 +250,10 @@
     <value>Bottom</value>
   </data>
   <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 434</value>
+    <value>0, 443</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 31</value>
+    <value>187, 31</value>
   </data>
   <data name="panel3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -310,7 +310,7 @@
     <value>0, 0</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 31</value>
+    <value>187, 31</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -339,11 +339,14 @@
   <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="expressionDialog1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="expressionDialog1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>3, 3</value>
   </data>
   <data name="expressionDialog1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 399</value>
+    <value>489, 442</value>
   </data>
   <data name="expressionDialog1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -367,7 +370,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 439</value>
+    <value>495, 448</value>
   </data>
   <data name="tabExpression.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -394,7 +397,7 @@
     <value>128, 417</value>
   </data>
   <data name="tbFloatingFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 20</value>
+    <value>361, 20</value>
   </data>
   <data name="tbFloatingFormat.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -413,6 +416,9 @@
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 420</value>
@@ -482,6 +488,9 @@
   </data>
   <data name="rbLineBasedAngle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="rbLineBasedAngle.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="rbLineBasedAngle.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 70</value>
@@ -646,7 +655,7 @@
     <value>6, 291</value>
   </data>
   <data name="grbLabelRotation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 120</value>
+    <value>478, 120</value>
   </data>
   <data name="grbLabelRotation.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -955,7 +964,7 @@
     <value>264, 46</value>
   </data>
   <data name="sldFontOpacity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 48</value>
+    <value>214, 48</value>
   </data>
   <data name="sldFontOpacity.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1192,7 +1201,7 @@
     <value>6, 51</value>
   </data>
   <data name="gpbFont.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 101</value>
+    <value>486, 101</value>
   </data>
   <data name="gpbFont.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1351,7 +1360,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabBasic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 439</value>
+    <value>495, 448</value>
   </data>
   <data name="tabBasic.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1501,7 +1510,7 @@
     <value>183, 169</value>
   </data>
   <data name="grpOffset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 73</value>
+    <value>304, 73</value>
   </data>
   <data name="grpOffset.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1717,7 +1726,7 @@
     <value>9, 277</value>
   </data>
   <data name="cmbAlignment.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 21</value>
+    <value>330, 21</value>
   </data>
   <data name="cmbAlignment.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1741,7 +1750,7 @@
     <value>9, 324</value>
   </data>
   <data name="cmbLabelingMethod.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 21</value>
+    <value>330, 21</value>
   </data>
   <data name="cmbLabelingMethod.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1765,7 +1774,7 @@
     <value>9, 371</value>
   </data>
   <data name="cmbLabelParts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 21</value>
+    <value>330, 21</value>
   </data>
   <data name="cmbLabelParts.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1795,7 +1804,7 @@
     <value>6, 19</value>
   </data>
   <data name="clrHalo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>312, 21</value>
+    <value>438, 21</value>
   </data>
   <data name="clrHalo.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1816,7 +1825,7 @@
     <value>3, 106</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 53</value>
+    <value>486, 53</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2053,7 +2062,7 @@
     <value>3, 3</value>
   </data>
   <data name="gpbUseLabelShadow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 97</value>
+    <value>486, 97</value>
   </data>
   <data name="gpbUseLabelShadow.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2077,7 +2086,7 @@
     <value>4, 22</value>
   </data>
   <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 439</value>
+    <value>495, 448</value>
   </data>
   <data name="tabAdvanced.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2107,7 +2116,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="sqlMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 433</value>
+    <value>489, 442</value>
   </data>
   <data name="sqlMembers.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2131,7 +2140,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 439</value>
+    <value>495, 448</value>
   </data>
   <data name="tabMembers.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2158,7 +2167,7 @@
     <value>0, 0</value>
   </data>
   <data name="tabs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>377, 465</value>
+    <value>503, 474</value>
   </data>
   <data name="tabs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2188,10 +2197,10 @@
     <value>1</value>
   </data>
   <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>523, 465</value>
+    <value>694, 474</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
-    <value>142</value>
+    <value>187</value>
   </data>
   <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2215,7 +2224,7 @@
     <value>NoControl</value>
   </data>
   <data name="cmdOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 51</value>
+    <value>457, 51</value>
   </data>
   <data name="cmdOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -2245,7 +2254,7 @@
     <value>NoControl</value>
   </data>
   <data name="cmdCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>355, 51</value>
+    <value>538, 51</value>
   </data>
   <data name="cmdCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -2275,7 +2284,7 @@
     <value>NoControl</value>
   </data>
   <data name="cmdApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 51</value>
+    <value>619, 51</value>
   </data>
   <data name="cmdApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -2332,10 +2341,10 @@
     <value>Bottom</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 465</value>
+    <value>0, 486</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>523, 92</value>
+    <value>706, 92</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2356,7 +2365,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>523, 557</value>
+    <value>706, 578</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
