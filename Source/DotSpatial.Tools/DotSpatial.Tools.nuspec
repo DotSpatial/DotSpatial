@@ -24,6 +24,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-Client\" />
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net461\" />
   </files>
 </package>

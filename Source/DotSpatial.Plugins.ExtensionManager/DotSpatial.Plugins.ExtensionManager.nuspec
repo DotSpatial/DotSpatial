@@ -19,6 +19,6 @@
     </dependencies>-->
   </metadata>
   <files>
-    <file src="SupportFiles\Nuget.Core.dll" target="lib\net40-Client" />
+    <file src="SupportFiles\Nuget.Core.dll" target="lib\net461" />
   </files>
 </package>

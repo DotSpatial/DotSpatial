@@ -79,11 +79,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Analysis\DotSpatial.Analysis.csproj">
-      <Project>{f124e7c5-33cc-4b17-8c45-01e7d2e47dab}</Project>
-      <Name>DotSpatial.Analysis</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>

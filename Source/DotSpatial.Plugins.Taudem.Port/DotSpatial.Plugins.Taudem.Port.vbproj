@@ -187,10 +187,6 @@
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Plugins.Taudem\DotSpatial.Plugins.Taudem.csproj">
-      <Project>{8b41651d-47cc-416d-93a1-c74b1b01fdb2}</Project>
-      <Name>DotSpatial.Plugins.Taudem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
       <Name>DotSpatial.Projections</Name>

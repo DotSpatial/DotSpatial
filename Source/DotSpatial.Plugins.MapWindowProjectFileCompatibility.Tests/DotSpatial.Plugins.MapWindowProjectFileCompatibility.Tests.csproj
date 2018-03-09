@@ -68,10 +68,6 @@
       <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
       <Name>DotSpatial.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Plugins.MapWindowProjectFileCompatibility\DotSpatial.Plugins.MapWindowProjectFileCompatibility.csproj">
-      <Project>{46a259e2-40c3-48d5-a23d-22104056cedf}</Project>
-      <Name>DotSpatial.Plugins.MapWindowProjectFileCompatibility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
       <Name>DotSpatial.Symbology</Name>

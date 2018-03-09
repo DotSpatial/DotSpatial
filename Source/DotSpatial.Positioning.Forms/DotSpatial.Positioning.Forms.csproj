@@ -46,7 +46,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;DEBUG;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -59,7 +59,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)bin\x64\$(Configuration)\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;Framework20;Framework30;Framework40;Licensing;GpsDotNet;WinXP;V2</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -132,13 +132,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Positioning\DotSpatial.Positioning.csproj">
-      <Project>{26E18588-B04D-4987-BF36-8206A7E36FF9}</Project>
-      <Name>DotSpatial.Positioning</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Positioning.Forms.snk" />

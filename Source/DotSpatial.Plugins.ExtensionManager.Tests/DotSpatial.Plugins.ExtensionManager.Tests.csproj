@@ -71,10 +71,6 @@
       <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
       <Name>DotSpatial.Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Plugins.ExtensionManager\DotSpatial.Plugins.ExtensionManager.csproj">
-      <Project>{d58e5921-9c7b-4276-abf1-f444eb050680}</Project>
-      <Name>DotSpatial.Plugins.ExtensionManager</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json">

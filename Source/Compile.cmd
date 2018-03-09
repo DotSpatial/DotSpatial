@@ -1,2 +1,2 @@
-"%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe" DotSpatial.sln /target:Clean /property:Configuration=Release
-"%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe" DotSpatial.sln /target:ReBuild /property:Configuration=Release
+"%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\MSBuild.exe" DotSpatial.sln /target:Clean /property:Configuration=Release /nologo /clp:ErrorsOnly
+"%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\MSBuild.exe" DotSpatial.sln /target:ReBuild /property:Configuration=Release /nologo /clp:ErrorsOnly

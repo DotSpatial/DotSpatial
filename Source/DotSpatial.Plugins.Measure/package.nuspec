@@ -14,4 +14,7 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
   </metadata>
+  <files>
+    <file src="build\native\*" target="build\native\" />
+  </files>
 </package>

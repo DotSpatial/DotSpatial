@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
@@ -13,8 +13,15 @@
     <summary />
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
+    <dependencies>
+      <dependency id="DotSpatial.Data" version="$PackageVersion$"/>
+      <dependency id="DotSpatial.Projections" version="$PackageVersion$" />
+      <dependency id="DotSpatial.Serialization"  version="$PackageVersion$"/>
+      <dependency id="DotSpatial.GeoAPI" />
+      <dependency id="gdal_MSVC1910" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="..\Release\bin\Plugins\GDAL\**\*.*" target="lib\net40-Client" />
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net461\" />
   </files>
 </package>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>Léo Calvis</authors>
+    <owners />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Python</description>
+    <summary />
+    <language>en-US</language>
+    <tags>Spatial GIS DotSpatial Python</tags>
+    <dependencies>
+      <dependency id="IronPython" version="2.7.8"/>
+      <dependency id="DynamicLanguageRuntime" version="1.2.1" />
+    </dependencies>
+  </metadata>
+</package>

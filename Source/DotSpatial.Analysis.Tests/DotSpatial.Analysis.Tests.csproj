@@ -89,10 +89,6 @@
     <Compile Include="SlopeTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Analysis\DotSpatial.Analysis.csproj">
-      <Project>{f124e7c5-33cc-4b17-8c45-01e7d2e47dab}</Project>
-      <Name>DotSpatial.Analysis</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
       <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
       <Name>DotSpatial.Controls</Name>
@@ -124,10 +120,6 @@
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
       <Name>DotSpatial.Symbology</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Tools\DotSpatial.Tools.csproj">
-      <Project>{878a9c2c-21ac-4e63-9819-715b66b63cf5}</Project>
-      <Name>DotSpatial.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

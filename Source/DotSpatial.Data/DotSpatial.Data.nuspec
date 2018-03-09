@@ -20,4 +20,7 @@
       <dependency id="DotSpatial.Projections" version="$PackageVersion$" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="build\native\*" target="build\native\" />
+  </files>
 </package>

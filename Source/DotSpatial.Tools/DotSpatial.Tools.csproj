@@ -194,11 +194,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Analysis\DotSpatial.Analysis.csproj">
-      <Project>{F124E7C5-33CC-4B17-8C45-01E7D2E47DAB}</Project>
-      <Name>DotSpatial.Analysis</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
       <Name>DotSpatial.Data</Name>
