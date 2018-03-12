@@ -1390,6 +1390,10 @@
     <None Include="Resources\up.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\D4F.Core.PythonScript\D4F.Core.PythonScript.csproj">
+      <Project>{9e69bf6c-1229-4a44-b5c7-29d21486a82f}</Project>
+      <Name>D4F.Core.PythonScript</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
       <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
       <Name>DotSpatial.Data.Forms</Name>
@@ -1424,7 +1428,6 @@
     <Content Include="Resources\B_Export16.png" />
     <Content Include="Resources\B_Import16.png" />
     <None Include="Resources\help_16x16.png" />
-    <None Include="Resources\zoom_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

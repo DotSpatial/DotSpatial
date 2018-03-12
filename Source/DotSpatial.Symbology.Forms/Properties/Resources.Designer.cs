@@ -63,6 +63,26 @@ namespace DotSpatial.Symbology.Forms.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B_Export16 {
+            get {
+                object obj = ResourceManager.GetObject("B_Export16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B_Import16 {
+            get {
+                object obj = ResourceManager.GetObject("B_Import16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap help_16x16 {
             get {
                 object obj = ResourceManager.GetObject("help_16x16", resourceCulture);
@@ -78,39 +98,13 @@ namespace DotSpatial.Symbology.Forms.Properties {
                 return ResourceManager.GetString("TableEditorControl_FileNameInMemory", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap B_Export16
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("B_Export16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap B_Import16
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("B_Import16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
+        
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap zoom_16x16
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("zoom_16x16", resourceCulture);
+        internal static System.Drawing.Bitmap zoom {
+            get {
+                object obj = ResourceManager.GetObject("zoom", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionDialog));
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.listViewFields = new System.Windows.Forms.ListView();
@@ -116,7 +115,7 @@
             // B_Preview
             // 
             this.B_Preview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.B_Preview.Image = global::DotSpatial.Symbology.Forms.Properties.Resources.zoom_16x16;
+            this.B_Preview.Image = global::DotSpatial.Symbology.Forms.Properties.Resources.zoom;
             this.B_Preview.Location = new System.Drawing.Point(6, 411);
             this.B_Preview.Name = "B_Preview";
             this.B_Preview.Size = new System.Drawing.Size(82, 24);
@@ -168,7 +167,7 @@
             // 
             // B_Export
             // 
-            this.B_Export.Image = Properties.Resources.B_Export16;
+            this.B_Export.Image = global::DotSpatial.Symbology.Forms.Properties.Resources.B_Export16;
             this.B_Export.Location = new System.Drawing.Point(1, 26);
             this.B_Export.Name = "B_Export";
             this.B_Export.Size = new System.Drawing.Size(28, 25);
@@ -178,7 +177,7 @@
             // 
             // B_Import
             // 
-            this.B_Import.Image = Properties.Resources.B_Import16;
+            this.B_Import.Image = global::DotSpatial.Symbology.Forms.Properties.Resources.B_Import16;
             this.B_Import.Location = new System.Drawing.Point(1, 1);
             this.B_Import.Name = "B_Import";
             this.B_Import.Size = new System.Drawing.Size(28, 25);

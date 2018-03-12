@@ -316,6 +316,10 @@ namespace DotSpatial.Symbology
             return size;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Creates a pen for drawing the non-decorative portion of the line.
         /// </summary>
@@ -324,11 +328,13 @@ namespace DotSpatial.Symbology
         public override Pen ToPen(double scaleWidth)
         {
             Pen myPen = base.ToPen(scaleWidth);
-            myPen.EndCap = _endCap;
-            myPen.StartCap = _startCap;
-
+            
+            //myPen.EndCap = _endCap;
+            //myPen.StartCap = _startCap;
+            //CGX
             if (_endCap == LineCap.Custom)
             {
+                //AdjustableArrowCap bigArrow = new AdjustableArrowCap(3.5F, 3.5F);
                 AdjustableArrowCap bigArrow = new AdjustableArrowCap(0F, 0F);
                 myPen.CustomEndCap = bigArrow;
                 myPen.LineJoin = LineJoin.MiterClipped;
@@ -336,10 +342,12 @@ namespace DotSpatial.Symbology
 
             if (_startCap == LineCap.Custom)
             {
+                //AdjustableArrowCap bigArrow = new AdjustableArrowCap(3.5F, 3.5F);
                 AdjustableArrowCap bigArrow = new AdjustableArrowCap(0F, 0F);
                 myPen.CustomStartCap = bigArrow;
                 myPen.LineJoin = LineJoin.MiterClipped;
             }
+            // END CGX
 
             if (_compondArray != null) myPen.CompoundArray = _compondArray;
             if (_offset != 0F)
@@ -402,6 +410,9 @@ namespace DotSpatial.Symbology
             return myPen;
         }
 
+        #endregion
+		
+        #region Protected Methods		  
         /// <summary>
         /// Handles the randomization of the cartographic properties of this stroke.
         /// </summary>

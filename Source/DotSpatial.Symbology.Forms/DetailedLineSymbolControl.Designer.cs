@@ -181,7 +181,6 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabSimple
             // 
-            resources.ApplyResources(this.tabSimple, "tabSimple");
             this.tabSimple.AllowDrop = true;
             this.tabSimple.Controls.Add(this.label5);
             this.tabSimple.Controls.Add(this.label9);
@@ -516,6 +515,11 @@ namespace DotSpatial.Symbology.Forms
             0});
             this.nudSpacing.Name = "nudSpacing";
             this.ttHelp.SetToolTip(this.nudSpacing, resources.GetString("nudSpacing.ToolTip"));
+            this.nudSpacing.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudSpacing.ValueChanged += new System.EventHandler(this.NudSpacingValueChanged);
             // 
             // nudDecorationCount

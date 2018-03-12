@@ -188,6 +188,7 @@ namespace DotSpatial.Controls
             // JME A finir print vectoriel
             if (printing == false || _printSVG == false)
             {
+                //CGX
                 int iResolution = 150;
 
                 g.FillRectangle(new SolidBrush(Background.GetFillColor()), new RectangleF(this.LocationF.X, this.LocationF.Y, Size.Width, Size.Height));
@@ -195,7 +196,7 @@ namespace DotSpatial.Controls
                 if (MapControl.Layers.Count <= 0 || Convert.ToInt32(Size.Width) <= 0 || Convert.ToInt32(Size.Height) <= 0)
                     return;
 
-                if (_buffer != null && ((_buffer.Width != Convert.ToInt32(Size.Width * 96 / 100) || _buffer.Height != Convert.ToInt32(Size.Height * 96 / 100)) || _extentChanged))
+                if (_buffer != null && ((_buffer.Width != Convert.ToInt32(Size.Width * iResolution / 100) || _buffer.Height != Convert.ToInt32(Size.Height * iResolution / 100)) || _extentChanged))
                 {
                     _extentChanged = false;
                     _buffer.Dispose();
@@ -204,20 +205,19 @@ namespace DotSpatial.Controls
 
                 if (_buffer == null)
                 {
-                    _buffer = new Bitmap(Convert.ToInt32(Size.Width * 96 / 100), Convert.ToInt32(Size.Height * 96 / 100), PixelFormat.Format32bppArgb);
-                    _buffer.SetResolution(96, 96);
+                    _buffer = new Bitmap(Convert.ToInt32(Size.Width * iResolution / 100), Convert.ToInt32(Size.Height * iResolution / 100), PixelFormat.Format32bppArgb);
+                    _buffer.SetResolution(iResolution, iResolution);
                     Graphics graph = Graphics.FromImage(_buffer);
                     MapControl.Print(graph, new Rectangle(0, 0, _buffer.Width, _buffer.Height), _envelope.ToExtent());
                     graph.Dispose();
                 }
-
                 g.DrawImage(_buffer, Rectangle);
             }
             else
             {
-                 MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+                //MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+                MapControl.Print(g, new Rectangle(0, 0, Convert.ToInt32(Size.Width) + 10, Convert.ToInt32(Size.Height) + 10), _envelope.ToExtent());
             }
-
             // JME A finir print vectoriel
         }
 
@@ -274,8 +274,8 @@ namespace DotSpatial.Controls
                 Extent extent = new Extent(_mapControl.MapFrame.ViewExtents.ToEnvelope());
                 extent.SetCenter(Envelope.Centre);
                 _mapControl.MapFrame.ViewExtents = extent;
-            } // CGX END
-
+        }
+			// CGX END
         }
 
         /// <summary>
@@ -309,7 +309,6 @@ namespace DotSpatial.Controls
                 // if ExtendBuffer, Envelope must be three times smaller
                 viewExtentEnvelope.ExpandBy(-viewExtentEnvelope.Width / _mapControl.MapFrame.ExtendBufferCoeff, -viewExtentEnvelope.Height / _mapControl.MapFrame.ExtendBufferCoeff);
             }
-
             Envelope = viewExtentEnvelope;
 
             // CGX
@@ -358,7 +357,6 @@ namespace DotSpatial.Controls
         {
             // CGX
             if (_mapControl == null) return 1;
-
             if (_mapControl.Layers.Count == 0) return 1;
             if (_mapControl.Layers[0].DataSet?.Projection == null) return 1;
             if (_mapControl.Layers[0].DataSet.Projection.IsLatLon)

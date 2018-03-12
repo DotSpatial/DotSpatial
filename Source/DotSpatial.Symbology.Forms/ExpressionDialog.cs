@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -7,7 +8,11 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DotSpatial.Data;
-using DotSpatial.Python;
+using System.Reflection;
+
+
+
+
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -19,7 +24,7 @@ namespace DotSpatial.Symbology.Forms
 
         IFeatureLayer _ActiveLayer = null;
         IDataTable _DataTable = null; // CGX AERO GLZ
-        private string _Expression = "";
+        private string _Expression = string.Empty;
 
         public bool IsComplexExpression(string Expression)
         {
@@ -35,11 +40,12 @@ namespace DotSpatial.Symbology.Forms
                     return true;
                 }
                 else
+                {
                     return false;
+            }
             }
             return false;
         }
-
         public void FillExpression(string value)
         {
             if (IsComplexExpression(value))
@@ -115,6 +121,7 @@ namespace DotSpatial.Symbology.Forms
                 _Expression = TB_Advanced.Text;
 
         }
+
         private void Preview()
         {
             try
@@ -122,7 +129,7 @@ namespace DotSpatial.Symbology.Forms
                 if ((_ActiveLayer as FeatureLayer).DataSet.Features.Count > 0)
                 {
 
-                    string sResult = "";
+                    string sResult = string.Empty;
 
 
                     if (IsComplexExpression(Expression))
@@ -142,7 +149,9 @@ namespace DotSpatial.Symbology.Forms
                     richTextBoxViewer.Text = sResult;
                 }
                 else
+                {
                     richTextBoxViewer.Text = "Unabled to verify the script, no feature found";
+            }
             }
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
@@ -240,7 +249,9 @@ namespace DotSpatial.Symbology.Forms
                     iIndex = end + 1;
                 }
                 else
+                {
                     iIndex++;
+            }
             }
 
             return ListFields;
@@ -248,7 +259,7 @@ namespace DotSpatial.Symbology.Forms
 
         private string Compute(string sExpresion)
         {
-            string TextTmp = "";
+            string TextTmp = string.Empty;
             try
             {
 
@@ -347,7 +358,7 @@ namespace DotSpatial.Symbology.Forms
 
         private string GetFormattedField(FeatureLayer fl, string sFieldName, object oValue)
         {
-            string sResult = "";
+            string sResult = string.Empty;
 
             try
             {
@@ -393,7 +404,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void PanelPreview_Paint(object sender, PaintEventArgs e)
         {
-            string sResult = "";
+            string sResult = string.Empty;
             if (IsComplexExpression(Expression))
             {
                 Expression = TB_Advanced.Text;
@@ -543,6 +554,7 @@ namespace DotSpatial.Symbology.Forms
                     pos.Y += stringfSize.Height;
                 }
             }
+
             newLabelBounds.Size = new SizeF(fWidth + 3, fHeight);
 
             return newLabelBounds;
@@ -555,8 +567,8 @@ namespace DotSpatial.Symbology.Forms
 
             if (sToDraw.Contains("<b>") && sToDraw.Contains("</b>")) { fontStyle |= FontStyle.Bold; }
             if (sToDraw.Contains("<i>") && sToDraw.Contains("</i>")) { fontStyle |= FontStyle.Italic; }
-            //if (sToDraw.Contains("<u>") && sToDraw.Contains("</u>")) { fontStyle |= FontStyle.Underline; }
 
+            // if (sToDraw.Contains("<u>") && sToDraw.Contains("</u>")) { fontStyle |= FontStyle.Underline; }
             return fontStyle;
         }
 
@@ -595,20 +607,20 @@ namespace DotSpatial.Symbology.Forms
         private string GetTextWithoutTag(string sTextWithTag)
         {
             string sTextWithoutTag = sTextWithTag;
-            sTextWithoutTag = sTextWithoutTag.Replace("<b>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("</b>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("<i>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("</i>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("<title>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("</title>", "");
+            sTextWithoutTag = sTextWithoutTag.Replace("<b>", string.Empty);
+            sTextWithoutTag = sTextWithoutTag.Replace("</b>", string.Empty);
+            sTextWithoutTag = sTextWithoutTag.Replace("<i>", string.Empty);
+            sTextWithoutTag = sTextWithoutTag.Replace("</i>", string.Empty);
+            sTextWithoutTag = sTextWithoutTag.Replace("<title>", string.Empty);
+            sTextWithoutTag = sTextWithoutTag.Replace("</title>", string.Empty);
 
             if (sTextWithTag.Contains("<size="))
             {
                 Regex regex = new Regex("<size=(.*?)>");
                 var v = regex.Match(sTextWithTag);
                 string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<size=" + s + ">", "");
-                sTextWithoutTag = sTextWithoutTag.Replace("</size>", "");
+                sTextWithoutTag = sTextWithoutTag.Replace("<size=" + s + ">", string.Empty);
+                sTextWithoutTag = sTextWithoutTag.Replace("</size>", string.Empty);
             }
 
             if (sTextWithTag.Contains("<color="))
@@ -616,29 +628,31 @@ namespace DotSpatial.Symbology.Forms
                 Regex regex = new Regex("<color=(.*?)>");
                 var v = regex.Match(sTextWithTag);
                 string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<color=" + s + ">", "");
-                sTextWithoutTag = sTextWithoutTag.Replace("</color>", "");
+                sTextWithoutTag = sTextWithoutTag.Replace("<color=" + s + ">", string.Empty);
+                sTextWithoutTag = sTextWithoutTag.Replace("</color>", string.Empty);
             }
 
-            sTextWithoutTag = sTextWithoutTag.Replace("<u>", "");
+            sTextWithoutTag = sTextWithoutTag.Replace("<u>", string.Empty);
             if (sTextWithTag.Contains("<u="))
             {
                 Regex regex = new Regex("<u=(.*?)>");
                 var v = regex.Match(sTextWithTag);
                 string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<u=" + s + ">", "");
+                sTextWithoutTag = sTextWithoutTag.Replace("<u=" + s + ">", string.Empty);
             }
-            sTextWithoutTag = sTextWithoutTag.Replace("</u>", "");
 
-            sTextWithoutTag = sTextWithoutTag.Replace("<U>", "");
+            sTextWithoutTag = sTextWithoutTag.Replace("</u>", string.Empty);
+
+            sTextWithoutTag = sTextWithoutTag.Replace("<U>", string.Empty);
             if (sTextWithTag.Contains("<U="))
             {
                 Regex regex = new Regex("<U=(.*?)>");
                 var v = regex.Match(sTextWithTag);
                 string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<U=" + s + ">", "");
+                sTextWithoutTag = sTextWithoutTag.Replace("<U=" + s + ">", string.Empty);
             }
-            sTextWithoutTag = sTextWithoutTag.Replace("</U>", "");
+
+            sTextWithoutTag = sTextWithoutTag.Replace("</U>", string.Empty);
 
             return sTextWithoutTag;
         }
@@ -678,5 +692,6 @@ namespace DotSpatial.Symbology.Forms
         }
 
         #endregion
+
     }
 }

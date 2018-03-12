@@ -1891,6 +1891,7 @@ namespace DotSpatial.Controls
             for (var i = LayoutElements.Count - 1; i >= 0; i--)
             {
                 var le = LayoutElements[i];
+                // CGX
                 var lt = le as LayoutText;
                 if (lt != null)
                 {
@@ -1905,9 +1906,14 @@ namespace DotSpatial.Controls
                     g.Clip = new Region(le.Rectangle);
                 }
 
-                le.DrawBackground(g, true);
-                le.Draw(g, true);
-                le.DrawOutline(g, true);
+                if (le != null)
+                {
+                    g.Clip = new Region(le.Rectangle);
+
+                    le.DrawBackground(g, true);
+                    le.Draw(g, true);
+                    le.DrawOutline(g, true);
+                }
             }
         }
 

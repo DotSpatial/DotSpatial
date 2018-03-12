@@ -117,4 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="TT_Help.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="B_Help.ToolTip" xml:space="preserve">
+    <value>Use tags to format the text :
+&lt;title&gt;&lt;/title&gt; -&gt; Use only on first line, center the text and lower the border if exists
+&lt;b&gt;&lt;/b&gt; -&gt; All texts on line are bold
+&lt;i&gt;&lt;/i&gt; -&gt; All texts on line are italic
+&lt;u&gt;&lt;/u&gt; -&gt; Draw a line below
+&lt;U&gt;&lt;/U&gt; -&gt; Draw a line above
+&lt;size=X&gt;&lt;/size&gt; -&gt; Set the whole line font size to X (where X is a positive integer)
+&lt;color=X&gt;&lt;/color&gt; -&gt; Set the whole line color to X (where X is a color name)</value>
+  </data>
 </root>
