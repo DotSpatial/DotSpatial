@@ -302,7 +302,7 @@ namespace DotSpatial.Projections
                     _equatorialRadius = 6375738.7;
                     InverseFlattening = 334.29;
                     break;
-                case Proj4Ellipsoid.Custom: 
+                case Proj4Ellipsoid.Custom:
                     // Nothing for Custom
                     break;
                 case Proj4Ellipsoid.Delambre_1810:
@@ -627,22 +627,27 @@ namespace DotSpatial.Projections
         {
             if (!esriString.Contains("SPHEROID"))
                 return;
-                
+
             int iStart = esriString.IndexOf("SPHEROID", StringComparison.Ordinal) + 9;
-            int iEnd = iStart;
-            int numLeftBrackets = 0, numRightBrackets = 0;
+            int iEnd = 0;
+            int numLeftBrackets = 0;
+            int numRightBrackets = 0;
+
             for (int i = iStart; i < esriString.Length; i++)
             {
                 char c = esriString[i];
                 if (c == '[')
+                {
                     numLeftBrackets++;
+                }
                 else if (c == ']')
                 {
                     numRightBrackets++;
-                    if (numRightBrackets <= numLeftBrackets) continue;
-
-                    iEnd = i;
-                    break;
+                    if (numRightBrackets > numLeftBrackets)
+                    {
+                        iEnd = i;
+                        break;
+                    }
                 }
             }
 
