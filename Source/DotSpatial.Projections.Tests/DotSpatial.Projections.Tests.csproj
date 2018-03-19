@@ -168,6 +168,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ReprojectTests.cs" />
+    <Compile Include="SpheroidTests.cs" />
     <Compile Include="Tester.cs" />
   </ItemGroup>
   <ItemGroup>
