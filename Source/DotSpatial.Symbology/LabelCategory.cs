@@ -17,6 +17,27 @@ namespace DotSpatial.Symbology
 
         private readonly Expression _exp;
 
+        // CGX
+        [Serialize("UseMask")]
+        private bool _useMask;
+
+        [Serialize("MaskedLayers")]
+        private string[] _maskedLayers;
+
+        [Serialize("MaskMargin_Top")]
+        private double _maskMargin_Top;
+
+        [Serialize("MaskMargin_Bottom")]
+        private double _maskMargin_Bottom;
+
+        [Serialize("MaskMargin_Left")]
+        private double _maskMargin_Left;
+
+        [Serialize("MaskMargin_Right")]
+        private double _maskMargin_Right;
+
+        // Fin CGX
+
         [Serialize("Expression")]
         private string _expression;
 
@@ -47,11 +68,70 @@ namespace DotSpatial.Symbology
                 FontColor = Color.Cyan
             };
             _exp = new Expression();
+            _maskedLayers = new string[] { };
         }
 
         #endregion
 
         #region Properties
+
+        // CGX
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool UseMask
+        {
+            get { return _useMask; }
+            set { _useMask = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] MaskedLayers
+        {
+            get { return _maskedLayers; }
+            set { _maskedLayers = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double MaskMargin_Top
+        {
+            get { return _maskMargin_Top; }
+            set { _maskMargin_Top = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double MaskMargin_Bottom
+        {
+            get { return _maskMargin_Bottom; }
+            set { _maskMargin_Bottom = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double MaskMargin_Left
+        {
+            get { return _maskMargin_Left; }
+            set { _maskMargin_Left = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double MaskMargin_Right
+        {
+            get { return _maskMargin_Right; }
+            set { _maskMargin_Right = value; }
+        }
+
+        // Fin CGX
 
         /// <summary>
         /// Gets or sets the string expression that controls the integration of field values into the label text.

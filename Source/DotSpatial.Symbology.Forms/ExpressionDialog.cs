@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Python;
 using System.Reflection;
 
 

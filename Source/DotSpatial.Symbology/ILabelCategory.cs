@@ -13,6 +13,64 @@ namespace DotSpatial.Symbology
     public interface ILabelCategory : ICloneable
     {
         #region Properties
+        
+        // CGX
+
+        /// <summary>
+        /// 
+        /// </summary>
+        bool UseMask
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string[] MaskedLayers
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        double MaskMargin_Top
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        double MaskMargin_Bottom
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        double MaskMargin_Left
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        double MaskMargin_Right
+        {
+            get;
+            set;
+        }
+
+        // Fin CGX
 
         /// <summary>
         /// Gets or sets the string expression that controls the integration of field values into the label text.

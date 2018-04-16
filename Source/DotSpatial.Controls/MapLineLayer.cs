@@ -536,7 +536,41 @@ namespace DotSpatial.Controls
                         // Define the symbology based on the category and selection state
                     ILineSymbolizer ls = selected ? category.SelectionSymbolizer : category.Symbolizer;
                     var features = GetFeatures(indiceList, states, category, selected);
+                    
+                    DotSpatial.Controls.Core.CGX_Mask cgxMask = DotSpatial.Controls.Core.CGX_Mask_List.GetMasks(this.Name);
+                    if (cgxMask != null)
+                    {
+                        foreach (DotSpatial.Controls.Core.CGX_MaskBounds mask in cgxMask.Masks)
+                        {
+                            if (!mask.Bounds.IsEmpty)
+                            {
+                                float cx = mask.Bounds.X;
+                                float cy = mask.Bounds.Y;
+
+                                System.Drawing.Drawing2D.Matrix oldTrans = g.Transform;
+                                g.ResetTransform();
+                                g.TranslateTransform(-cx, -cy, MatrixOrder.Append);
+                                g.RotateTransform((float)mask.Rotation, MatrixOrder.Append);
+                                g.TranslateTransform(cx, cy, MatrixOrder.Append);
+
+                                RectangleF rectWithMargin = new RectangleF(
+                                    (float)((mask.Bounds.Location.X - cgxMask.OffsetLeft)),
+                                    (float)((mask.Bounds.Location.Y - cgxMask.OffsetTop)),
+                                    (float)((mask.Bounds.Width + cgxMask.OffsetLeft + cgxMask.OffsetRight)),
+                                    (float)((mask.Bounds.Height + cgxMask.OffsetTop + cgxMask.OffsetBottom)));
+                                //g.DrawRectangle(new Pen(Color.Pink, 3), Rectangle.Round(rectWithMargin));
+                                g.ExcludeClip(new Region(rectWithMargin));
+                                g.Transform = oldTrans;
+                            }
+                        }
+
+                        cgxMask.ResetBounds();
+                    }
+                    
                     DrawPath(g, ls, e, drawFeature, features);
+                    
+                    // TEST MASK
+                    g.ResetClip();
                             }
                         }
             else

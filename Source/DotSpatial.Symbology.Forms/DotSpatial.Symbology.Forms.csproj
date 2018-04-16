@@ -277,6 +277,12 @@
       <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="FunClass.cs" />
+    <Compile Include="MaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MaskControl.Designer.cs">
+      <DependentUpon>MaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayerDialog.Designer.cs">
       <DependentUpon>LayerDialog.cs</DependentUpon>
     </Compile>
@@ -1390,10 +1396,6 @@
     <None Include="Resources\up.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\D4F.Core.PythonScript\D4F.Core.PythonScript.csproj">
-      <Project>{9e69bf6c-1229-4a44-b5c7-29d21486a82f}</Project>
-      <Name>D4F.Core.PythonScript</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
       <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
       <Name>DotSpatial.Data.Forms</Name>
