@@ -436,7 +436,13 @@ namespace DotSpatial.Symbology.Forms
                 {
                     float size = GetSizeFromTag(sSplit, textFont.SizeInPoints);
                     FontStyle fontStyle = GetFontFromTag(sSplit);
-                    Font newFont = new Font(textFont.FontFamily, size, fontStyle);
+                    FontFamily fontFamily = textFont.FontFamily;
+                    FontFamily customFontFamily = null;
+                    if (GetFontFamilyFromTag(sSplit, out customFontFamily))
+                    {
+                        fontFamily = customFontFamily;
+                    }
+                    Font newFont = new Font(fontFamily, size, fontStyle);
                     Color textColor = GetColorFromTag(sSplit);
                     string sText = GetTextWithoutTag(sSplit);
 
