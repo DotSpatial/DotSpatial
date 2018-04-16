@@ -194,7 +194,7 @@
             this.TB_Advanced.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TB_Advanced.Location = new System.Drawing.Point(29, 3);
             this.TB_Advanced.Name = "TB_Advanced";
-            this.TB_Advanced.Size = new System.Drawing.Size(216, 214);
+            this.TB_Advanced.Size = new System.Drawing.Size(442, 494);
             this.TB_Advanced.TabIndex = 2;
             this.TB_Advanced.Text = "def Main():\n   \n \n  return \"no value\"";
             this.TB_Advanced.TextChanged += new System.EventHandler(this.TB_Advanced_TextChanged);
