@@ -91,20 +91,9 @@
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Extensions, Version=1.7.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Modeling.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\$(Platform)\$(Configuration)\DotSpatial.Modeling.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Projections.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=52099474f11b7ff0, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\$(Platform)\$(Configuration)\DotSpatial.Projections.Forms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -1403,6 +1392,14 @@
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
+      <Project>{9108b04d-a3de-4981-b66f-496078d462fe}</Project>
+      <Name>DotSpatial.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
+      <Project>{1da244ce-5862-4dfb-8943-244a80b7e3ee}</Project>
+      <Name>DotSpatial.Projections.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
