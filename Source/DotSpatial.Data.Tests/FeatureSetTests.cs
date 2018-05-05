@@ -457,6 +457,80 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
+        /// Tests whether or not the field mapper is saving the TypeCharacter correctly to shape files
+        /// Note that the TypeCharacter is derived from a field's DataType
+        /// When a shape file is read from disk, DataType is derived from the typeCode stored in the file.
+        /// So when read from disk the translation goes as follows [file typeCode]->[DataType]->TypeCharacter
+        /// So there could be something lost in this translation
+        /// </summary>
+        /// <param name="customFieldMapper">Whether or not to run the test with the Custom Field Mapper defined at the bottom of this document.</param>
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SaveShapeFileCustomFieldMappings(bool customFieldMapper)
+        {
+            if (customFieldMapper)
+                FieldTypeCharacterMapperManager.Mapper = new CustomTestFieldMapper();
+
+            var featureType = FeatureType.Line;
+            var coordinateType = CoordinateType.Regular;
+            var fileName = FileTools.GetTempFileName(".shp");
+
+            try
+            {
+                var coords = new List<Coordinate>
+                                          {
+                                              new Coordinate(1, 2),
+                                              new Coordinate(3, 4),
+                                              new Coordinate(5, 6),
+                                              new Coordinate(7, 8),
+                                              new Coordinate(1, 2)
+                                          };
+
+                var fs = new FeatureSet(featureType)
+                {
+                    Projection = KnownCoordinateSystems.Geographic.World.WGS1984,
+                    CoordinateType = coordinateType
+                };
+
+                fs.DataTable.Columns.Add(new DataColumn("doublefield", typeof(double)));
+                fs.DataTable.Columns.Add(new DataColumn("decimalfield", typeof(decimal)));
+                fs.DataTable.Columns.Add(new DataColumn("floatfield", typeof(float)));
+                fs.DataTable.Columns.Add(new DataColumn("stringfield", typeof(string)));
+
+                var feature = fs.AddFeature(new LineString(coords.ToArray()));
+                feature.DataRow.BeginEdit();
+                feature.DataRow["doublefield"] = 0.05d;
+                feature.DataRow["decimalfield"] = 0.05m;
+                feature.DataRow["floatfield"] = 0.05f;
+                feature.DataRow["stringfield"] = "hello world";
+                feature.DataRow.EndEdit();
+
+                Assert.DoesNotThrow(() => fs.SaveAs(fileName, true));
+
+                var loaded = FeatureSet.Open(fileName);
+                if (customFieldMapper)
+                {
+                    Assert.True(new Field(loaded.DataTable.Columns[0]).TypeCharacter == FieldTypeCharacters.Double);
+                    Assert.True(new Field(loaded.DataTable.Columns[1]).TypeCharacter == FieldTypeCharacters.Double);
+                    Assert.True(new Field(loaded.DataTable.Columns[2]).TypeCharacter == FieldTypeCharacters.Double);
+                }
+                else
+                {
+                    Assert.True(new Field(loaded.DataTable.Columns[0]).TypeCharacter == FieldTypeCharacters.Number);
+                    Assert.True(new Field(loaded.DataTable.Columns[1]).TypeCharacter == FieldTypeCharacters.Number);
+                    Assert.True(new Field(loaded.DataTable.Columns[2]).TypeCharacter == FieldTypeCharacters.Number);
+                }
+
+                Assert.True(((Field)loaded.DataTable.Columns[3]).TypeCharacter == FieldTypeCharacters.Text);
+            }
+            finally
+            {
+                FileTools.DeleteShapeFile(fileName);
+                FieldTypeCharacterMapperManager.Mapper = new FieldTypeCharacterMapper();
+            }
+        }
+
+        /// <summary>
         /// Checks that FeatureSet.UnionShapes is not null and contains features.
         /// </summary>
         [Test]

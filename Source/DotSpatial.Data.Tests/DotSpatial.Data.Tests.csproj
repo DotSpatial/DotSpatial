@@ -99,6 +99,7 @@
     <Compile Include="AffineCoefficientsTests.cs" />
     <Compile Include="AttributeTableTests.cs" />
     <Compile Include="BinaryRasterProviderTests.cs" />
+    <Compile Include="CustomTestFieldMapper.cs" />
     <Compile Include="DataManagerTests.cs" />
     <Compile Include="DoubleRasterTest.cs" />
     <Compile Include="ExtentTests.cs" />
