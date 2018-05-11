@@ -282,12 +282,6 @@ namespace DotSpatial.Controls
                 IMapLayer mapLayerClone = (IMapLayer)mapLayer.Clone();
                 DrawLegendItem(g, mapLayerClone, itemSize, ref col, ref row, ref maxCol, ref maxRow);
                 DrawLegendList(g, mapLayerClone.LegendItems, itemSize, ref col, ref row, ref maxCol, ref maxRow);
-                /*
-                                if (mapLayer.LegendItems == null)
-                                    DrawLegendItem(g, mapLayer, itemSize, ref col, ref row, ref maxCol, ref maxRow);
-                                else
-                                    DrawLegendList(g, mapLayer.LegendItems, itemSize, ref col, ref row, ref maxCol, ref maxRow);
-                  */
             }
 
             // Restored the old graphics settings
