@@ -426,275 +426,71 @@ namespace DotSpatial.Symbology.Forms
             Font textFont = new System.Drawing.Font("Arial", 10);
             RectangleF currentView = new RectangleF(PanelPreview.DisplayRectangle.X + 10, PanelPreview.DisplayRectangle.Y + 10, PanelPreview.DisplayRectangle.Width, PanelPreview.DisplayRectangle.Height);
 
-            RectangleF labelBounds = GetComputedLabelBounds(g, sResult, textFont, format, currentView);
+            RectangleF labelBounds = TextExpression.GetComputedLabelBounds(g, sResult, textFont, format, currentView);
 
+            RectangleF fTitleClip = new RectangleF();
             string[] sSplitted = sResult.Split('\n');
             PointF pos = new PointF(labelBounds.X, labelBounds.Y);
             foreach (string sSplit in sSplitted)
             {
                 using (var gp2 = new GraphicsPath())
                 {
-                    float size = GetSizeFromTag(sSplit, textFont.SizeInPoints);
-                    FontStyle fontStyle = GetFontFromTag(sSplit);
+                    FontStyle fontStyle = TextExpression.GetFontFromTag(sSplit);
                     FontFamily fontFamily = textFont.FontFamily;
                     FontFamily customFontFamily = null;
-                    if (GetFontFamilyFromTag(sSplit, out customFontFamily))
+                    if (TextExpression.GetFontFamilyFromTag(sSplit, out customFontFamily))
                     {
                         fontFamily = customFontFamily;
-                    }
-                    Font newFont = new Font(fontFamily, size, fontStyle);
-                    Color textColor = GetColorFromTag(sSplit);
-                    string sText = GetTextWithoutTag(sSplit);
-
-                    SizeF stringfSize = g.MeasureString(sText, newFont);
-
-                    if (sSplit.Contains("<title>") && sSplit.Contains("</title>"))
+                    Font newFont = new Font(fontFamily, TextExpression.GetSizeFromTag(sSplit, textFont.SizeInPoints));
+                    Color textColor = Color.Black;
+Color tempColor = Color.Black;
+                    if (TextExpression.GetColorFromTag(sSplit, out tempColor))
                     {
-                        PointF centerPos = new PointF((pos.X + labelBounds.Width / 2) - (stringfSize.Width / 2), pos.Y);
-                        labelBounds = new RectangleF(labelBounds.X, labelBounds.Y + (stringfSize.Height / 2), labelBounds.Width, labelBounds.Height - (stringfSize.Height / 2));
-                        //e.Graphics.FillRectangle(new SolidBrush(PanelPreview.BackColor), new Rectangle((int)centerPos.X, (int)centerPos.Y, (int)stringfSize.Width, (int)stringfSize.Height));
-                        e.Graphics.DrawString(sText, newFont, new SolidBrush(textColor), centerPos, format);
-                        e.Graphics.SetClip(new Rectangle((int)centerPos.X, (int)centerPos.Y, (int)stringfSize.Width, (int)stringfSize.Height), CombineMode.Exclude);
+                        textColor = tempColor;
+                    }
+
+                    string sTextWithoutTag = TextExpression.GetTextWithoutTag(sSplit);
+                    SizeF stringfSize = g.MeasureString(sTextWithoutTag, newFont);
+
+                    if (!TextExpression.IsMorse(sSplit))
+                    {
+                        PointF textPosition = new PointF(pos.X, pos.Y);
+
+                        if (TextExpression.IsTitle(sSplit))
+                        {
+                            textPosition = new PointF((labelBounds.X + labelBounds.Width / 2) - (stringfSize.Width / 2), labelBounds.Y);
+
+                            fTitleClip = new RectangleF(textPosition, stringfSize);
+                            //gp2.AddString(sTextWithoutTag, newFont.FontFamily, (int)fontStyle, newFont.Size * g.DpiY / 72F, textPosition, format);
+                            e.Graphics.DrawString(sTextWithoutTag, newFont, new SolidBrush(textColor), textPosition, format);
+                        
+                            labelBounds = new RectangleF(labelBounds.X, labelBounds.Y + (stringfSize.Height / 2), labelBounds.Width, labelBounds.Height - (stringfSize.Height / 2));
+                        }
+                        else
+                        {
+                            //gp2.AddString(sTextWithoutTag, newFont.FontFamily, (int)fontStyle, newFont.Size * g.DpiY / 72F, textPosition, format);
+                            e.Graphics.DrawString(sTextWithoutTag, newFont, new SolidBrush(textColor), textPosition, format);
+                        }
 
                         // Draw a limit above the text if needed
-                        DrawUpperScore(g, sSplit, centerPos, newFont);
-                        DrawUnderScore(g, sSplit, centerPos, newFont);
+                        TextExpression.DrawUpperScore(g, sSplit, textPosition, textColor, newFont, 1.0F);
+                        TextExpression.DrawUnderScore(g, sSplit, textPosition, textColor, newFont, 1.0F);
+
+                        pos.Y += stringfSize.Height;
                     }
                     else
                     {
-                        e.Graphics.DrawString(sText, newFont, new SolidBrush(textColor), pos, format);
-
-                        // Draw a limit above the text if needed
-                        DrawUpperScore(g, sSplit, pos, newFont);
-                        DrawUnderScore(g, sSplit, pos, newFont);
+                        TextExpression.DrawMorseText(g, gp2, ref pos, sSplit, newFont, fontStyle, StringAlignment.Near, labelBounds);
                     }
 
-                    pos.Y += stringfSize.Height;
-
+                    // Draw a label
+                    //g.FillPath(new SolidBrush(textColor), gp2);
                     gp2.Dispose();
                 }
             }
             e.Graphics.DrawRectangle(new Pen(Color.Black), (int)labelBounds.X, (int)labelBounds.Y, (int)labelBounds.Width, (int)labelBounds.Height);
 
         }
-
-        #region Draw
-
-        /// <summary>
-        /// Draw a upper score on label
-        /// </summary>
-        private void DrawUpperScore(Graphics g, string labelText, PointF pos, Font newFont)
-        {
-            SizeF stringfSize = g.MeasureString(GetTextWithoutTag(labelText), newFont);
-            float fPenSize = -9999F;
-
-            if (labelText.Contains("<U>") && labelText.Contains("</U>"))
-            {
-                fPenSize = 1.0F;
-            }
-
-            if (labelText.Contains("<U=") && labelText.Contains("</U>"))
-            {
-                Regex regex = new Regex("<U=(.*?)>");
-                var v = regex.Match(labelText);
-                string s = v.Groups[1].ToString();
-                if (!float.TryParse(s, out fPenSize))
-                    fPenSize = 1.0F;
-            }
-
-            if (fPenSize != -9999F)
-            {
-                g.DrawLine(new Pen(Color.Black, fPenSize), new PointF(pos.X + 2, pos.Y), new PointF(pos.X + (stringfSize.Width - 2), pos.Y));
-            }
-        }
-
-        /// <summary>
-        /// Draw a upper score on label
-        /// </summary>
-        private void DrawUnderScore(Graphics g, string labelText, PointF pos, Font newFont)
-        {
-            SizeF stringfSize = g.MeasureString(GetTextWithoutTag(labelText), newFont);
-            float fPenSize = -9999F;
-
-            if (labelText.Contains("<u>") && labelText.Contains("</u>"))
-            {
-                fPenSize = 1.0F;
-            }
-
-            if (labelText.Contains("<u=") && labelText.Contains("</u>"))
-            {
-                Regex regex = new Regex("<u=(.*?)>");
-                var v = regex.Match(labelText);
-                string s = v.Groups[1].ToString();
-                if (!float.TryParse(s, out fPenSize))
-                    fPenSize = 1.0F;
-            }
-
-            if (fPenSize != -9999F)
-            {
-                g.DrawLine(new Pen(Color.Black, fPenSize), new PointF(pos.X + 2, pos.Y + (stringfSize.Height - 2)), new PointF(pos.X + (stringfSize.Width - 2), pos.Y + (stringfSize.Height - 2)));
-            }
-        }
-
-        private RectangleF GetComputedLabelBounds(Graphics g, string labelText, Font textFont, StringFormat format, RectangleF labelBounds)
-        {
-            RectangleF newLabelBounds = new RectangleF(labelBounds.Location, labelBounds.Size);
-            float fWidth = 0.0F;
-            float fHeight = 0.0F;
-            PointF pos = new PointF(labelBounds.X, labelBounds.Y);
-
-            string[] sSplitted = labelText.Split('\n');
-            foreach (string sSplit in sSplitted)
-            {
-                using (var gp2 = new GraphicsPath())
-                {
-                    float size = GetSizeFromTag(sSplit, textFont.SizeInPoints);
-                    Font newFont = new Font(textFont.FontFamily, size);
-                    string sText = GetTextWithoutTag(sSplit);
-
-                    SizeF stringfSize = g.MeasureString(sText, newFont);
-
-                    if (fWidth < stringfSize.Width) { fWidth = stringfSize.Width; }
-                    fHeight += stringfSize.Height;
-
-                    pos.Y += stringfSize.Height;
-                }
-            }
-            newLabelBounds.Size = new SizeF(fWidth + 3, fHeight);
-
-            return newLabelBounds;
-        }
-
-        private FontStyle GetFontFromTag(string sText)
-        {
-            FontStyle fontStyle = FontStyle.Regular;
-            string sToDraw = sText;
-
-            if (sToDraw.Contains("<b>") && sToDraw.Contains("</b>")) { fontStyle |= FontStyle.Bold; }
-            if (sToDraw.Contains("<i>") && sToDraw.Contains("</i>")) { fontStyle |= FontStyle.Italic; }
-            //if (sToDraw.Contains("<u>") && sToDraw.Contains("</u>")) { fontStyle |= FontStyle.Underline; }
-
-            return fontStyle;
-        }
-
-        private float GetSizeFromTag(string sText, float fOldSize)
-        {
-            float fNewSize = fOldSize;
-            string sToDraw = sText;
-
-            if (sToDraw.Contains("<size=") && sToDraw.Contains("</size>"))
-            {
-                Regex regex = new Regex("<size=(.*?)>");
-                var v = regex.Match(sText);
-                string s = v.Groups[1].ToString();
-                if (!float.TryParse(s, out fNewSize))
-                    fNewSize = fOldSize;
-            }
-
-            return fNewSize;
-        }
-
-        private Color GetColorFromTag(string sText)
-        {
-            string sToDraw = sText;
-            string sColor = "black";
-
-            if (sToDraw.Contains("<color=") && sToDraw.Contains("</color>"))
-            {
-                Regex regex = new Regex("<color=(.*?)>");
-                var v = regex.Match(sText);
-                sColor = v.Groups[1].ToString();
-            }
-
-            return Color.FromName(sColor);
-        }
-
-        private string GetTextWithoutTag(string sTextWithTag)
-        {
-            string sTextWithoutTag = sTextWithTag;
-            sTextWithoutTag = sTextWithoutTag.Replace("<b>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("</b>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("<i>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("</i>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("<title>", "");
-            sTextWithoutTag = sTextWithoutTag.Replace("</title>", "");
-
-            if (sTextWithTag.Contains("<size="))
-            {
-                Regex regex = new Regex("<size=(.*?)>");
-                var v = regex.Match(sTextWithTag);
-                string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<size=" + s + ">", "");
-                sTextWithoutTag = sTextWithoutTag.Replace("</size>", "");
-            }
-
-            if (sTextWithTag.Contains("<color="))
-            {
-                Regex regex = new Regex("<color=(.*?)>");
-                var v = regex.Match(sTextWithTag);
-                string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<color=" + s + ">", "");
-                sTextWithoutTag = sTextWithoutTag.Replace("</color>", "");
-            }
-
-            sTextWithoutTag = sTextWithoutTag.Replace("<u>", "");
-            if (sTextWithTag.Contains("<u="))
-            {
-                Regex regex = new Regex("<u=(.*?)>");
-                var v = regex.Match(sTextWithTag);
-                string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<u=" + s + ">", "");
-            }
-            sTextWithoutTag = sTextWithoutTag.Replace("</u>", "");
-
-            sTextWithoutTag = sTextWithoutTag.Replace("<U>", "");
-            if (sTextWithTag.Contains("<U="))
-            {
-                Regex regex = new Regex("<U=(.*?)>");
-                var v = regex.Match(sTextWithTag);
-                string s = v.Groups[1].ToString();
-                sTextWithoutTag = sTextWithoutTag.Replace("<U=" + s + ">", "");
-            }
-            sTextWithoutTag = sTextWithoutTag.Replace("</U>", "");
-
-            return sTextWithoutTag;
-        }
-
-        /// <summary>
-        /// Draw shadows under texts
-        /// </summary>
-        private void DrawShadow(Graphics g, GraphicsPath gp, ILabelSymbolizer symb)
-        {
-            // Draws the drop shadow
-            if (symb.DropShadowEnabled && symb.DropShadowColor != Color.Transparent)
-            {
-                var shadowBrush = new SolidBrush(symb.DropShadowColor);
-                var gpTrans = new Matrix();
-                gpTrans.Translate(symb.DropShadowPixelOffset.X, symb.DropShadowPixelOffset.Y);
-                gp.Transform(gpTrans);
-                g.FillPath(shadowBrush, gp);
-                gpTrans = new Matrix();
-                gpTrans.Translate(-symb.DropShadowPixelOffset.X, -symb.DropShadowPixelOffset.Y);
-                gp.Transform(gpTrans);
-                gpTrans.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Draw halo surrounding the texts
-        /// </summary>
-        private void DrawHalo(Graphics g, GraphicsPath gp, ILabelSymbolizer symb)
-        {
-            if (symb.HaloEnabled && symb.HaloColor != Color.Transparent)
-            {
-                using (var haloPen = new Pen(symb.HaloColor) { Width = 2, Alignment = PenAlignment.Outset })
-                {
-                    g.DrawPath(haloPen, gp);
-                }
-            }
-        }
-
-        #endregion
 
     }
 }

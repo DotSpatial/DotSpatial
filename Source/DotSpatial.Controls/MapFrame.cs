@@ -1435,7 +1435,19 @@ namespace DotSpatial.Controls
                 _height = _height * ExtendBufferCoeff;
             }
 
-            return new Bitmap(_width, _height);
+            Bitmap bitmapReturn = null;
+            try
+            {
+                bitmapReturn = new Bitmap(_width, _height);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            return bitmapReturn;
+
         }
 
         /// <summary>

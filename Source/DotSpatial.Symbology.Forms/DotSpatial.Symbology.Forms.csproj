@@ -163,6 +163,7 @@
       <DependentUpon>ColorBox.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorCategoryActions.cs" />
+    <Compile Include="ExpressionDialog\TextExpression.cs" />
     <Compile Include="ColorPicker.Designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
