@@ -235,9 +235,8 @@ namespace DotSpatial.Symbology
                 bool isClosed;
                 Size2D symbolSize = _symbol.GetSize();
 
-                // CGX
-                symbolSize.Height = symbolSize.Height * scaleWidth;
-                symbolSize.Width = symbolSize.Width * scaleWidth; // fin CGX
+                symbolSize.Height = Math.Ceiling(symbolSize.Height * scaleWidth);
+                symbolSize.Width = Math.Ceiling(symbolSize.Width * scaleWidth);
 
                 Bitmap symbol = new Bitmap((int)symbolSize.Width, (int)symbolSize.Height);
                 Graphics sg = Graphics.FromImage(symbol);
