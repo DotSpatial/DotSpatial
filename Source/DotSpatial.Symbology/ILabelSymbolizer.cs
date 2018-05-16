@@ -240,6 +240,30 @@ namespace DotSpatial.Symbology
         [Description("Gets or sets a boolean indicating whether or not LineOrientation should be used.")]
         bool UseLineOrientation { get; set; }
 
+        /// <summary>
+        /// Gets or sets top margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets top margin of the border")]
+        double Margin_Top { get; set; }
+
+        /// <summary>
+        /// Gets or sets botoom margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets bottom margin of the border")]
+        double Margin_Bottom { get; set; }
+
+        /// <summary>
+        /// Gets or sets left margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets left margin of the border")]
+        double Margin_Left { get; set; }
+
+        /// <summary>
+        /// Gets or sets right margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets right margin of the border")]
+        double Margin_Right { get; set; }
+
         #endregion
 
         #region Methods

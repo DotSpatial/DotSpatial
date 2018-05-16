@@ -44,6 +44,10 @@ namespace DotSpatial.Symbology
             PreventCollisions = true;
             PriorityField = "FID";
             Orientation = ContentAlignment.MiddleCenter;
+            Margin_Top = 0;
+            Margin_Left = 0;
+            Margin_Right = 0;
+            Margin_Bottom = 0;
         }
 
         #endregion
@@ -264,6 +268,34 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Serialize("UseLineOrientation")]
         public bool UseLineOrientation { get; set; }
+
+        /// <summary>
+        /// Gets or sets top margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets top margin of the border")]
+        [Serialize("Margin_Top")]
+        public double Margin_Top { get; set; }
+
+        /// <summary>
+        /// Gets or sets botoom margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets bottom margin of the border")]
+        [Serialize("Margin_Bottom")]
+        public double Margin_Bottom { get; set; }
+
+        /// <summary>
+        /// Gets or sets left margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets left margin of the border")]
+        [Serialize("Margin_Left")]
+        public double Margin_Left { get; set; }
+
+        /// <summary>
+        /// Gets or sets right margin of the border
+        /// </summary>
+        [Category("Margin"), Description("Gets or sets right margin of the border")]
+        [Serialize("Margin_Right")]
+        public double Margin_Right { get; set; }
 
         #endregion
 
