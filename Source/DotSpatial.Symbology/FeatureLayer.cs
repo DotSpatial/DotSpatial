@@ -12,6 +12,7 @@ using DotSpatial.Data;
 using DotSpatial.Serialization;
 using GeoAPI.Geometries;
 using Msg = DotSpatial.Symbology.SymbologyMessageStrings;
+using System.Text.RegularExpressions;
 
 namespace DotSpatial.Symbology
 {
@@ -1684,6 +1685,7 @@ namespace DotSpatial.Symbology
             }
 
             bool isField = false; // I don't think nesting is possible
+            bool isGoodName = false; // field name is assumed to be invalid by default
             List<char> currentName = new List<char>();
             foreach (char current in expression)
             {
@@ -1692,7 +1694,8 @@ namespace DotSpatial.Symbology
                     if (current == ']')
                     {
                         isField = false;
-                        allNames.Add(new string(currentName.ToArray()));
+                        isGoodName = IsValidFieldName(new string(currentName.ToArray()));   // added call to check field name
+                        if (isGoodName) allNames.Add(new string(currentName.ToArray()));    // only add field if name is valid
                         currentName = new List<char>();
                         continue;
                     }
@@ -1707,6 +1710,44 @@ namespace DotSpatial.Symbology
             }
 
             return allNames.Distinct();
+        }
+
+        /// <summary>
+        /// this routine will determine if a string is a valid field name.
+        /// Based on https://support.esri.com/en/technical-article/000005588
+        /// </summary>
+        /// <param name="fldName">the field name</param>
+        /// <returns>true if valid field name, false otherwise</returns>
+        private static bool IsValidFieldName(string fldName)
+        {
+            // a null or empty field name is invalid
+            if (string.IsNullOrEmpty(fldName))
+            {
+                return false;
+            }
+
+            // setup a regex to match invalid characters
+            Regex rgexInv = new Regex("[^a-zA-Z0-9_]", RegexOptions.CultureInvariant);
+
+            // True if the input string has any invalid character
+            bool hasInvalidChars = rgexInv.IsMatch(fldName);
+
+            // if the string has any invalid characters then return False otherwise do more tests
+            if (hasInvalidChars)
+            {
+                return false;
+            }
+            else
+            {
+                // setup a regex to match invalid characters
+                Regex rgexInvStart = new Regex("^([0-9]|_|\\s)", RegexOptions.CultureInvariant);
+
+                // True if the input string starts with an invalid character
+                bool isStartInvalidChar = rgexInvStart.IsMatch(fldName);
+
+                // if starts with an invalid character then not a valid field name
+                return !isStartInvalidChar;
+            }
         }
 
         /// <summary>
