@@ -28,6 +28,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - The possibility to draw linestrings which are inside a geometry collection (#1061)
 - The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
 - Default mouse cursor button in layout insert toolbar
+- Map.Snapshot can now include screen referenced labels via standard .NET controls
 
 ### Changed
 - Switched to VS2015 and C#6
