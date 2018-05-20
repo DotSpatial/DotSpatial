@@ -149,3 +149,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Error on OpenFile with special SPHEROID string (#1142)
 - Shape File Saves with Wrong DataTypes (#1005)
 - Error when using wildcards in Symbology FilterExpression (#1164)
+- Geographic projections now have a Name property
