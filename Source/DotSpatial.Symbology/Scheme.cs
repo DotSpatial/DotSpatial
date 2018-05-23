@@ -385,24 +385,26 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="count">Count of breaks.</param>
         /// <returns>List with breaks.</returns>
+        /// <remarks>
+        /// Originally this function used an algorithm based on MapWinGIS code that was too buggy.
+        /// Updated by dpa May 2018 to use a well known algorithm documented in NaturalBreaks.cs.
+        /// </remarks>
         protected List<Break> GetNaturalBreaks(int count)
         {
-            var breaks = new JenksBreaksCalcuation(Values, count);
-            breaks.Optimize();
-            var results = breaks.GetResults();
+            var theOutput = new List<Break>(count);
+            var natBreaks = new NaturalBreaks(Values, count);
+            List<double> theBreakValues = natBreaks.GetResults();
 
-            var output = new List<Break>(count);
-            output.AddRange(
-                results.Select(
-                    result => new Break
-                    {
-                        Maximum = Values[result]
-                    }));
+            // remove the first break value since it is the lowest value
+            theBreakValues.RemoveAt(0);
+            foreach (double oneBreakValue in theBreakValues)
+            {
+                Break b = new Break();
+                b.Maximum = oneBreakValue;
+                theOutput.Add(b);
+            }
 
-            // Set latest Maximum to null
-            output.Last().Maximum = null;
-
-            return output;
+            return theOutput;
         }
 
         /// <summary>

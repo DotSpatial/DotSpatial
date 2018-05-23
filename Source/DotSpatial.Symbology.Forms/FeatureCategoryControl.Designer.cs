@@ -301,6 +301,11 @@ namespace DotSpatial.Symbology.Forms
             // nudCategoryCount
             // 
             resources.ApplyResources(this.nudCategoryCount, "nudCategoryCount");
+            this.nudCategoryCount.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.nudCategoryCount.Name = "nudCategoryCount";
             this.nudCategoryCount.Value = new decimal(new int[] {
             5,

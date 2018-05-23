@@ -72,7 +72,6 @@
     </Compile>
     <Compile Include="BitmapFormatException.cs" />
     <Compile Include="ClearStates.cs" />
-    <Compile Include="JenksBreaksCalcuation.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="ExtentExt.cs" />
     <Compile Include="IColorCategoryActions.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="IRasterLayerActions.cs" />
     <Compile Include="LayerCollectionExensions.cs" />
     <Compile Include="LayerMovedEventArgs.cs" />
+    <Compile Include="NaturalBreaks.cs" />
     <Compile Include="Position2DConverter.cs" />
     <Compile Include="Size2DConverter.cs" />
     <Compile Include="DesktopRasterExt.cs" />
