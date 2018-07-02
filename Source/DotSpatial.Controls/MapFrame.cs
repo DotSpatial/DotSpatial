@@ -1438,7 +1438,7 @@ namespace DotSpatial.Controls
             Bitmap bitmapReturn = null;
             try
             {
-                bitmapReturn = new Bitmap(_width, _height, System.Drawing.Imaging.PixelFormat.Format16bppRgb555);
+                bitmapReturn = new Bitmap(_width, _height);
             }
             catch (Exception ex)
             {
