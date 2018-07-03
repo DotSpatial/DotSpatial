@@ -1425,8 +1425,8 @@
     <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\B_Export16.png" />
-    <Content Include="Resources\B_Import16.png" />
+    <None Include="Resources\B_Export16.png" />
+    <None Include="Resources\B_Import16.png" />
     <None Include="Resources\help_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

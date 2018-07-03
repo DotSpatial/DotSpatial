@@ -195,9 +195,9 @@
     <None Include="Resources\Line.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Readme.txt">
+    <None Include="Readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

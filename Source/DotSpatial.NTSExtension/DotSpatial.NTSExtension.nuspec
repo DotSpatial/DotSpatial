@@ -14,8 +14,8 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.NetTopologySuite" />
-      <dependency id="DotSpatial.GeoAPI" />
+      <dependency id="DotSpatial.NetTopologySuite-cli" version="1.14.4"/>
+      <dependency id="DotSpatial.GeoAPI-cli" version="1.7.4.3"/>
     </dependencies>
   </metadata>
   <files>

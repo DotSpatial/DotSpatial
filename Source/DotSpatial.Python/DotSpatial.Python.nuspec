@@ -3,7 +3,7 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <authors>Léo Calvis</authors>
+    <authors>$author$</authors>
     <owners />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Python</description>
