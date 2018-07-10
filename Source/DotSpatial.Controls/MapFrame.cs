@@ -435,7 +435,6 @@ namespace DotSpatial.Controls
             set
             {
                 _parent = value;
-                _backBuffer?.Dispose();
                 _backBuffer = CreateBuffer();
             }
         }
@@ -902,7 +901,7 @@ namespace DotSpatial.Controls
                 }
 
                 if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
-                _buffer = _backBuffer;
+                _buffer = _backBuffer.Clone() as Image;
                 if (setView)
                     _view = _backView;
 
