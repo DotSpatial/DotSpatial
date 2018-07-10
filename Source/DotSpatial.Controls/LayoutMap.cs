@@ -17,7 +17,7 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private static bool _printSVG = false;
+        private static bool _printSVG = true;
 
         private Bitmap _buffer;
         private Envelope _envelope;
@@ -188,8 +188,10 @@ namespace DotSpatial.Controls
             // JME A finir print vectoriel
             if (printing == false || _printSVG == false)
             {
+                DotSpatial.Symbology.Core.Constants.IsPrinting = false;
+
                 //CGX
-                int iResolution = 100;
+                int iResolution = 96;
 
                 g.FillRectangle(new SolidBrush(Background.GetFillColor()), new RectangleF(this.LocationF.X, this.LocationF.Y, Size.Width, Size.Height));
 
@@ -206,8 +208,8 @@ namespace DotSpatial.Controls
                 if (_buffer == null)
                 {
                     //_buffer = new Bitmap(Convert.ToInt32(Size.Width * (iResolution / 100)), Convert.ToInt32(Size.Height * (iResolution / 100)), PixelFormat.Format32bppArgb);
-                    int iWidth = (int)(Size.Width * (iResolution / 100));
-                    int iHeight = (int)(Size.Height * (iResolution / 100));
+                    int iWidth = (int)(Size.Width * iResolution / 100F);
+                    int iHeight = (int)(Size.Height * iResolution / 100F);
                     _buffer = new Bitmap(iWidth, iHeight);
                     _buffer.SetResolution(iResolution, iResolution);
                     Graphics graph = Graphics.FromImage(_buffer);
@@ -218,8 +220,9 @@ namespace DotSpatial.Controls
             }
             else
             {
-                //MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
-                MapControl.Print(g, new Rectangle(0, 0, Convert.ToInt32(Size.Width) + 10, Convert.ToInt32(Size.Height) + 10), _envelope.ToExtent());
+                DotSpatial.Symbology.Core.Constants.IsPrinting = true;
+                MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+                DotSpatial.Symbology.Core.Constants.IsPrinting = false;
             }
             // JME A finir print vectoriel
         }

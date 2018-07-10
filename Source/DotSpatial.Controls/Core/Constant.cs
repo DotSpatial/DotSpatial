@@ -6,6 +6,7 @@
 
 namespace DotSpatial.Controls.Core
 {
+    using GeoAPI.Geometries;
     using System;
     using System.Collections.Generic;
     using System.Drawing;
@@ -19,6 +20,7 @@ namespace DotSpatial.Controls.Core
         #region Properties / Attributes
 
         private RectangleF _bounds;
+        private IGeometry _boundsShape;
         private double _rotation;
 
         #endregion
@@ -34,6 +36,19 @@ namespace DotSpatial.Controls.Core
         public CGX_MaskBounds(RectangleF bounds, double rotation)
         {
             _bounds = bounds;
+            _boundsShape = null;
+            _rotation = rotation;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bounds"></param>
+        /// <param name="rotation"></param>
+        public CGX_MaskBounds(IGeometry boundsShape, double rotation)
+        {
+            _bounds = RectangleF.Empty;
+            _boundsShape = (IGeometry)boundsShape.Clone();
             _rotation = rotation;
         }
 
@@ -45,6 +60,11 @@ namespace DotSpatial.Controls.Core
         public RectangleF Bounds
         {
             get { return _bounds; }
+        }
+
+        public IGeometry BoundsShape
+        {
+            get { return _boundsShape; }
         }
 
         public double Rotation
@@ -203,6 +223,37 @@ namespace DotSpatial.Controls.Core
                     }
 
                     mask.Masks.Add(new CGX_MaskBounds(bounds, angle));
+                }
+            }
+            catch (Exception ex)
+            { Console.WriteLine(ex.Message); }
+        }
+
+        public static void AddMask(string[] layersName, Tuple<string, string> parentName, IGeometry boundsShape, double angle, Tuple<double, double, double, double> margins)
+        {
+            try
+            {
+                if (Masks == null)
+                {
+                    Masks = new List<CGX_Mask>();
+                }
+
+                foreach (string slayer in layersName)
+                {
+                    CGX_Mask mask = GetOrCreateMask(slayer);
+                    mask.OffsetTop = margins.Item1;
+                    mask.OffsetRight = margins.Item2;
+                    mask.OffsetLeft = margins.Item3;
+                    mask.OffsetBottom = margins.Item4;
+                    Tuple<string, string> sGet = mask.Parents.FindLast(
+                            delegate (Tuple<string, string> maskParent)
+                            { return ((maskParent.Item1 == parentName.Item1) && (maskParent.Item2 == parentName.Item2)); });
+                    if (sGet == null)
+                    {
+                        mask.Parents.Add(parentName);
+                    }
+
+                    mask.Masks.Add(new CGX_MaskBounds(boundsShape, angle));
                 }
             }
             catch (Exception ex)

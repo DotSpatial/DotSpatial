@@ -620,19 +620,21 @@ namespace DotSpatial.Symbology
                     }
                 }
 
-                foreach (var category in categories)
+                if (_drawnStates.Count<FastDrawnState>() > 0)
                 {
-                    // CGX TRY CATCH
-                    try
+                    foreach (var category in categories)
                     {
-                        IDataRow[] result = table.Select(category.FilterExpression);
-                        foreach (IDataRow row in result)
+                        try
                         {
-                            _drawnStates[table.Rows.IndexOf(row)].Category = category;
+                            IDataRow[] result = table.Select(category.FilterExpression);
+                            foreach (IDataRow row in result)
+                            {
+                                _drawnStates[table.Rows.IndexOf(row)].Category = category;
+                            }
                         }
+                        catch (Exception)
+                        { }
                     }
-                    catch (Exception)
-                    { }
                 }
 
                 if (containsFid)

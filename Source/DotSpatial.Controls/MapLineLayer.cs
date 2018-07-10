@@ -332,8 +332,8 @@ namespace DotSpatial.Controls
                 var pt = new[] { (c.X - minX) * dx, (maxY - c.Y) * dy };
                 if (previousPoint == null || previousPoint.Length < 2 || pt[0] != previousPoint[0] || pt[1] != previousPoint[1])
                 {
-                        points.Add(pt);
-                    }
+                    points.Add(pt);
+                }
 
                 previousPoint = pt;
             }
@@ -369,8 +369,8 @@ namespace DotSpatial.Controls
                 }
 
                 AddLineStringToPath(path, args, shpx.Extent, points, clipRect);
-                }
-                }
+            }
+        }
 
         /// <summary>
         /// Fires the OnBufferChanged event
@@ -475,7 +475,7 @@ namespace DotSpatial.Controls
                 {
                     if (state.Category == category && state.Visible && state.Selected)
                     {
-						// CGX
+                        // CGX
                         if (Visibility != null && Visibility.Length > 0 && index < Visibility.Length)
                         {
                             bool visi = Visibility[index].Visible;
@@ -486,7 +486,7 @@ namespace DotSpatial.Controls
                     }
                 }
                 else
-                    {
+                {
                     if (state.Category == category && state.Visible)
                     {
                         drawnFeatures.Add(index);
@@ -495,7 +495,7 @@ namespace DotSpatial.Controls
             }
 
             return drawnFeatures;
-            }
+        }
 
         private void Configure()
         {
@@ -529,59 +529,80 @@ namespace DotSpatial.Controls
                     states = DrawnStates;
                 }
 
+                Rectangle rTest = Rectangle.Empty;
+                DotSpatial.Controls.Core.CGX_Mask cgxMask = DotSpatial.Controls.Core.CGX_Mask_List.GetMasks(this.Name);
+                if (cgxMask != null)
+                {
+                    foreach (DotSpatial.Controls.Core.CGX_MaskBounds mask in cgxMask.Masks)
+                    {
+                        RectangleF rectBounds = mask.Bounds;
+                        if (rectBounds.IsEmpty)
+                        {
+                            if (mask.BoundsShape != null)
+                            {
+                                GraphicsPath test = new GraphicsPath();
+                                IPolygon iBPolygon = (IPolygon)mask.BoundsShape;
+                                ILineString iBS = iBPolygon.Shell;
+                                BuildLineString(test, iBS, e, e.ImageRectangle);
+                                rectBounds = test.GetBounds();
+                            }
+                        }
+
+                        if (!rectBounds.IsEmpty)
+                        {
+                            float cx = rectBounds.X;
+                            float cy = rectBounds.Y;
+
+                            System.Drawing.Drawing2D.Matrix oldTrans = g.Transform.Clone();
+                            g.ResetTransform();
+                            g.TranslateTransform(-cx, -cy, MatrixOrder.Append);
+                            g.RotateTransform((float)mask.Rotation, MatrixOrder.Append);
+                            g.TranslateTransform(cx, cy, MatrixOrder.Append);
+
+                            RectangleF rectWithMargin = new RectangleF(
+                                (float)((rectBounds.Location.X - cgxMask.OffsetLeft + 1)),
+                                (float)((rectBounds.Location.Y - cgxMask.OffsetTop + 1)),
+                                (float)((rectBounds.Width + cgxMask.OffsetLeft + cgxMask.OffsetRight)),
+                                (float)((rectBounds.Height + cgxMask.OffsetTop + cgxMask.OffsetBottom)));
+                            //g.FillRectangle(new SolidBrush(Color.FromArgb(125, Color.Red)), Rectangle.Round(rectWithMargin));
+                            g.DrawRectangle(new Pen(Color.Red, 2), Rectangle.Round(rectWithMargin));
+                            g.ExcludeClip(Rectangle.Round(rectWithMargin));
+
+                            g.Transform = oldTrans;
+
+
+                            rTest = Rectangle.Round(rectWithMargin);
+                            //bUseClip = true;
+                            //g.SetClip(Rectangle.Round(rectWithMargin), CombineMode.Exclude);
+                        }
+                    }
+
+                    cgxMask.ResetBounds();
+                }
+
                 if (selected && !states.Any(_ => _.Selected)) return;
 
-                    foreach (ILineCategory category in Symbology.Categories)
-                    {
-                        // Define the symbology based on the category and selection state
+                foreach (ILineCategory category in Symbology.Categories)
+                {
+                    // Define the symbology based on the category and selection state
                     ILineSymbolizer ls = selected ? category.SelectionSymbolizer : category.Symbolizer;
                     var features = GetFeatures(indiceList, states, category, selected);
-                    
-                    DotSpatial.Controls.Core.CGX_Mask cgxMask = DotSpatial.Controls.Core.CGX_Mask_List.GetMasks(this.Name);
-                    if (cgxMask != null)
-                    {
-                        foreach (DotSpatial.Controls.Core.CGX_MaskBounds mask in cgxMask.Masks)
-                        {
-                            if (!mask.Bounds.IsEmpty)
-                            {
-                                float cx = mask.Bounds.X;
-                                float cy = mask.Bounds.Y;
 
-                                System.Drawing.Drawing2D.Matrix oldTrans = g.Transform;
-                                g.ResetTransform();
-                                g.TranslateTransform(-cx, -cy, MatrixOrder.Append);
-                                g.RotateTransform((float)mask.Rotation, MatrixOrder.Append);
-                                g.TranslateTransform(cx, cy, MatrixOrder.Append);
-
-                                RectangleF rectWithMargin = new RectangleF(
-                                    (float)((mask.Bounds.Location.X - cgxMask.OffsetLeft)),
-                                    (float)((mask.Bounds.Location.Y - cgxMask.OffsetTop)),
-                                    (float)((mask.Bounds.Width + cgxMask.OffsetLeft + cgxMask.OffsetRight)),
-                                    (float)((mask.Bounds.Height + cgxMask.OffsetTop + cgxMask.OffsetBottom)));
-                                //g.DrawRectangle(new Pen(Color.Pink, 3), Rectangle.Round(rectWithMargin));
-                                g.ExcludeClip(new Region(rectWithMargin));
-                                g.Transform = oldTrans;
-                            }
-                        }
-
-                        cgxMask.ResetBounds();
-                    }
-                    
                     DrawPath(g, ls, e, drawFeature, features);
-                    
-                    // TEST MASK
-                    g.ResetClip();
-                            }
-                        }
+                }
+
+                g.ResetClip();
+
+            }
             else
-                        {
+            {
                 // Selection state is disabled and there is only one category
                 ILineSymbolizer ls = Symbology.Categories[0].Symbolizer;
                 DrawPath(g, ls, e, drawFeature, indiceList);
-                        }
+            }
 
             if (e.Device == null) g.Dispose();
-                        }
+        }
 
         /// <summary>
         /// Draws the path that results from the given indices.
@@ -593,14 +614,14 @@ namespace DotSpatial.Controls
         /// <param name="action">Action that is used to add the elements to the graphics path that gets drawn.</param>
         /// <param name="list">List that contains the elements that get drawn.</param>
         private void DrawPath<T>(Graphics g, ILineSymbolizer ls, MapArgs e, Action<GraphicsPath, Rectangle, IEnumerable<T>> action, IEnumerable<T> list)
-                        {
+        {
             g.SmoothingMode = ls.GetSmoothingMode();
 
             Rectangle clipRect = ComputeClippingRectangle(e, ls);
 
-                // Determine the subset of the specified features that are visible and match the category
+            // Determine the subset of the specified features that are visible and match the category
             using (GraphicsPath graphPath = new GraphicsPath())
-                {
+            {
                 action(graphPath, clipRect, list);
 
                 double scale = ls.GetScale(e);
@@ -636,29 +657,29 @@ namespace DotSpatial.Controls
                 }
             };
 
-                foreach (ILineCategory category in Symbology.Categories)
-                {
-                    // Define the symbology based on the category and selection state
+            foreach (ILineCategory category in Symbology.Categories)
+            {
+                // Define the symbology based on the category and selection state
                 ILineSymbolizer ls = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
-                    // Determine the subset of the specified features that are visible and match the category
-                    ILineCategory lineCategory = category;
+                // Determine the subset of the specified features that are visible and match the category
+                ILineCategory lineCategory = category;
                 Func<IDrawnState, bool> isMember;
 
                 if (selected)
-                    {
+                {
                     // get only selected features
                     isMember = state => state.SchemeCategory == lineCategory && state.IsVisible && state.IsSelected;
-                    }
+                }
                 else
-                    {
+                {
                     // get all features
                     isMember = state => state.SchemeCategory == lineCategory && state.IsVisible;
-                    }
+                }
 
                 var drawnFeatures = from feature in featureList where isMember(DrawingFilter[feature]) select feature;
                 DrawPath(g, ls, e, drawFeature, drawnFeatures);
-                    }
+            }
 
             if (e.Device == null) g.Dispose();
         }

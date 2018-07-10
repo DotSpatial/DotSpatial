@@ -435,6 +435,7 @@ namespace DotSpatial.Controls
             set
             {
                 _parent = value;
+                _backBuffer?.Dispose();
                 _backBuffer = CreateBuffer();
             }
         }
@@ -1140,6 +1141,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ResetBuffer()
         {
+            _backBuffer?.Dispose();
+
             _backBuffer = null;
 
             // reset the view rectangle to represent the same region
