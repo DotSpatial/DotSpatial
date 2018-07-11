@@ -62,8 +62,16 @@ namespace DotSpatial.Symbology.Forms
             this.lblSymbolGroups = new System.Windows.Forms.Label();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabExpression = new System.Windows.Forms.TabPage();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.expressionDialog1 = new DotSpatial.Symbology.Forms.ExpressionDialog();
             this.tabMask = new System.Windows.Forms.TabPage();
+            this.maskControl1 = new DotSpatial.Symbology.Forms.MaskControl();
             this.tabBasic = new System.Windows.Forms.TabPage();
+            this.gbMargin = new System.Windows.Forms.GroupBox();
+            this.doubleBox_BottomMargin = new DotSpatial.Projections.Forms.DoubleBox();
+            this.doubleBox_RightMargin = new DotSpatial.Projections.Forms.DoubleBox();
+            this.doubleBox_LeftMargin = new DotSpatial.Projections.Forms.DoubleBox();
+            this.doubleBox_TopMargin = new DotSpatial.Projections.Forms.DoubleBox();
             this.tbFloatingFormat = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.grbLabelRotation = new System.Windows.Forms.GroupBox();
@@ -72,17 +80,25 @@ namespace DotSpatial.Symbology.Forms
             this.lblPriorityField = new System.Windows.Forms.Label();
             this.gpbBorderColor = new System.Windows.Forms.GroupBox();
             this.chkBorder = new System.Windows.Forms.CheckBox();
+            this.sldBorderOpacity = new DotSpatial.Symbology.Forms.RampSlider();
+            this.cbBorderColor = new DotSpatial.Symbology.Forms.ColorButton();
             this.gpbFont = new System.Windows.Forms.GroupBox();
             this.lblFontColor = new System.Windows.Forms.Label();
+            this.sldFontOpacity = new DotSpatial.Symbology.Forms.RampSlider();
+            this.cbFontColor = new DotSpatial.Symbology.Forms.ColorButton();
             this.cmbStyle = new System.Windows.Forms.ComboBox();
             this.lblFamily = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbSize = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.ffcFamilyName = new DotSpatial.Symbology.Forms.FontFamilyControl();
             this.lblPreview = new System.Windows.Forms.Label();
             this.gpbBackgroundColor = new System.Windows.Forms.GroupBox();
+            this.sldBackgroundOpacity = new DotSpatial.Symbology.Forms.RampSlider();
+            this.cbBackgroundColor = new DotSpatial.Symbology.Forms.ColorButton();
             this.chkBackgroundColor = new System.Windows.Forms.CheckBox();
             this.tabAdvanced = new System.Windows.Forms.TabPage();
+            this.labelAlignmentControl1 = new DotSpatial.Symbology.Forms.LabelAlignmentControl();
             this.grpOffset = new System.Windows.Forms.GroupBox();
             this.nudYOffset = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
@@ -98,32 +114,17 @@ namespace DotSpatial.Symbology.Forms
             this.cmbLabelingMethod = new System.Windows.Forms.ComboBox();
             this.cmbLabelParts = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.clrHalo = new DotSpatial.Symbology.Forms.ColorBox();
             this.gpbUseLabelShadow = new System.Windows.Forms.GroupBox();
             this.nudShadowOffsetY = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.nudShadowOffsetX = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tabMembers = new System.Windows.Forms.TabPage();
-            this.gbMargin = new System.Windows.Forms.GroupBox();
-            this.doubleBox_TopMargin = new DotSpatial.Projections.Forms.DoubleBox();
-            this.doubleBox_LeftMargin = new DotSpatial.Projections.Forms.DoubleBox();
-            this.doubleBox_RightMargin = new DotSpatial.Projections.Forms.DoubleBox();
-            this.doubleBox_BottomMargin = new DotSpatial.Projections.Forms.DoubleBox();
-            this.expressionDialog1 = new DotSpatial.Symbology.Forms.ExpressionDialog();
-            this.maskControl1 = new DotSpatial.Symbology.Forms.MaskControl();
-            this.sldBorderOpacity = new DotSpatial.Symbology.Forms.RampSlider();
-            this.cbBorderColor = new DotSpatial.Symbology.Forms.ColorButton();
-            this.sldFontOpacity = new DotSpatial.Symbology.Forms.RampSlider();
-            this.cbFontColor = new DotSpatial.Symbology.Forms.ColorButton();
-            this.ffcFamilyName = new DotSpatial.Symbology.Forms.FontFamilyControl();
-            this.sldBackgroundOpacity = new DotSpatial.Symbology.Forms.RampSlider();
-            this.cbBackgroundColor = new DotSpatial.Symbology.Forms.ColorButton();
-            this.labelAlignmentControl1 = new DotSpatial.Symbology.Forms.LabelAlignmentControl();
-            this.clrHalo = new DotSpatial.Symbology.Forms.ColorBox();
             this.sliderOpacityShadow = new DotSpatial.Symbology.Forms.RampSlider();
+            this.label6 = new System.Windows.Forms.Label();
             this.colorButtonShadow = new DotSpatial.Symbology.Forms.ColorButton();
+            this.tabMembers = new System.Windows.Forms.TabPage();
             this.sqlMembers = new DotSpatial.Symbology.Forms.SqlQueryControl();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAngle)).BeginInit();
@@ -137,6 +138,7 @@ namespace DotSpatial.Symbology.Forms
             this.tabExpression.SuspendLayout();
             this.tabMask.SuspendLayout();
             this.tabBasic.SuspendLayout();
+            this.gbMargin.SuspendLayout();
             this.grbLabelRotation.SuspendLayout();
             this.gpbBorderColor.SuspendLayout();
             this.gpbFont.SuspendLayout();
@@ -150,7 +152,6 @@ namespace DotSpatial.Symbology.Forms
             ((System.ComponentModel.ISupportInitialize)(this.nudShadowOffsetY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudShadowOffsetX)).BeginInit();
             this.tabMembers.SuspendLayout();
-            this.gbMargin.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdOK
@@ -355,10 +356,23 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabExpression
             // 
+            this.tabExpression.Controls.Add(this.linkLabel1);
             this.tabExpression.Controls.Add(this.expressionDialog1);
             resources.ApplyResources(this.tabExpression, "tabExpression");
             this.tabExpression.Name = "tabExpression";
             this.tabExpression.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            resources.ApplyResources(this.linkLabel1, "linkLabel1");
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.TabStop = true;
+            // 
+            // expressionDialog1
+            // 
+            resources.ApplyResources(this.expressionDialog1, "expressionDialog1");
+            this.expressionDialog1.Expression = "def Main():\n   \n \n  return \"no value\"";
+            this.expressionDialog1.Name = "expressionDialog1";
             // 
             // tabMask
             // 
@@ -366,6 +380,11 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.tabMask, "tabMask");
             this.tabMask.Name = "tabMask";
             this.tabMask.UseVisualStyleBackColor = true;
+            // 
+            // maskControl1
+            // 
+            resources.ApplyResources(this.maskControl1, "maskControl1");
+            this.maskControl1.Name = "maskControl1";
             // 
             // tabBasic
             // 
@@ -384,6 +403,72 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.tabBasic, "tabBasic");
             this.tabBasic.Name = "tabBasic";
             this.tabBasic.UseVisualStyleBackColor = true;
+            // 
+            // gbMargin
+            // 
+            this.gbMargin.Controls.Add(this.doubleBox_BottomMargin);
+            this.gbMargin.Controls.Add(this.doubleBox_RightMargin);
+            this.gbMargin.Controls.Add(this.doubleBox_LeftMargin);
+            this.gbMargin.Controls.Add(this.doubleBox_TopMargin);
+            resources.ApplyResources(this.gbMargin, "gbMargin");
+            this.gbMargin.Name = "gbMargin";
+            this.gbMargin.TabStop = false;
+            // 
+            // doubleBox_BottomMargin
+            // 
+            this.doubleBox_BottomMargin.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.doubleBox_BottomMargin.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.doubleBox_BottomMargin, "doubleBox_BottomMargin");
+            this.doubleBox_BottomMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
+    "ating point value.";
+            this.doubleBox_BottomMargin.IsValid = true;
+            this.doubleBox_BottomMargin.Name = "doubleBox_BottomMargin";
+            this.doubleBox_BottomMargin.NumberFormat = null;
+            this.doubleBox_BottomMargin.RegularHelp = "Enter a double precision floating point value.";
+            this.doubleBox_BottomMargin.Value = 0D;
+            this.doubleBox_BottomMargin.Validated += new System.EventHandler(this.doubleBox_BottomMargin_Validated);
+            // 
+            // doubleBox_RightMargin
+            // 
+            this.doubleBox_RightMargin.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.doubleBox_RightMargin.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.doubleBox_RightMargin, "doubleBox_RightMargin");
+            this.doubleBox_RightMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
+    "ating point value.";
+            this.doubleBox_RightMargin.IsValid = true;
+            this.doubleBox_RightMargin.Name = "doubleBox_RightMargin";
+            this.doubleBox_RightMargin.NumberFormat = null;
+            this.doubleBox_RightMargin.RegularHelp = "Enter a double precision floating point value.";
+            this.doubleBox_RightMargin.Value = 0D;
+            this.doubleBox_RightMargin.Validated += new System.EventHandler(this.doubleBox_RightMargin_Validated);
+            // 
+            // doubleBox_LeftMargin
+            // 
+            this.doubleBox_LeftMargin.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.doubleBox_LeftMargin.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.doubleBox_LeftMargin, "doubleBox_LeftMargin");
+            this.doubleBox_LeftMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
+    "ating point value.";
+            this.doubleBox_LeftMargin.IsValid = true;
+            this.doubleBox_LeftMargin.Name = "doubleBox_LeftMargin";
+            this.doubleBox_LeftMargin.NumberFormat = null;
+            this.doubleBox_LeftMargin.RegularHelp = "Enter a double precision floating point value.";
+            this.doubleBox_LeftMargin.Value = 0D;
+            this.doubleBox_LeftMargin.Validated += new System.EventHandler(this.doubleBox_LeftMargin_Validated);
+            // 
+            // doubleBox_TopMargin
+            // 
+            this.doubleBox_TopMargin.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.doubleBox_TopMargin.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.doubleBox_TopMargin, "doubleBox_TopMargin");
+            this.doubleBox_TopMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
+    "ating point value.";
+            this.doubleBox_TopMargin.IsValid = true;
+            this.doubleBox_TopMargin.Name = "doubleBox_TopMargin";
+            this.doubleBox_TopMargin.NumberFormat = null;
+            this.doubleBox_TopMargin.RegularHelp = "Enter a double precision floating point value.";
+            this.doubleBox_TopMargin.Value = 0D;
+            this.doubleBox_TopMargin.Validated += new System.EventHandler(this.doubleBox_TopMargin_Validated);
             // 
             // tbFloatingFormat
             // 
@@ -448,6 +533,46 @@ namespace DotSpatial.Symbology.Forms
             this.chkBorder.UseVisualStyleBackColor = true;
             this.chkBorder.CheckedChanged += new System.EventHandler(this.chkBorder_CheckedChanged);
             // 
+            // sldBorderOpacity
+            // 
+            this.sldBorderOpacity.ColorButton = this.cbBorderColor;
+            this.sldBorderOpacity.FlipRamp = false;
+            this.sldBorderOpacity.FlipText = false;
+            this.sldBorderOpacity.InvertRamp = false;
+            resources.ApplyResources(this.sldBorderOpacity, "sldBorderOpacity");
+            this.sldBorderOpacity.Maximum = 1D;
+            this.sldBorderOpacity.MaximumColor = System.Drawing.Color.Green;
+            this.sldBorderOpacity.Minimum = 0D;
+            this.sldBorderOpacity.MinimumColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.sldBorderOpacity.Name = "sldBorderOpacity";
+            this.sldBorderOpacity.NumberFormat = null;
+            this.sldBorderOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sldBorderOpacity.RampRadius = 10F;
+            this.sldBorderOpacity.RampText = "Opacity";
+            this.sldBorderOpacity.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.sldBorderOpacity.RampTextBehindRamp = true;
+            this.sldBorderOpacity.RampTextColor = System.Drawing.Color.Black;
+            this.sldBorderOpacity.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sldBorderOpacity.ShowMaximum = true;
+            this.sldBorderOpacity.ShowMinimum = true;
+            this.sldBorderOpacity.ShowTicks = false;
+            this.sldBorderOpacity.ShowValue = false;
+            this.sldBorderOpacity.SliderColor = System.Drawing.Color.Blue;
+            this.sldBorderOpacity.SliderRadius = 4F;
+            this.sldBorderOpacity.TickColor = System.Drawing.Color.DarkGray;
+            this.sldBorderOpacity.TickSpacing = 5F;
+            this.sldBorderOpacity.Value = 1D;
+            // 
+            // cbBorderColor
+            // 
+            this.cbBorderColor.BevelRadius = 2;
+            this.cbBorderColor.Color = System.Drawing.Color.Blue;
+            this.cbBorderColor.LaunchDialogOnClick = true;
+            resources.ApplyResources(this.cbBorderColor, "cbBorderColor");
+            this.cbBorderColor.Name = "cbBorderColor";
+            this.cbBorderColor.RoundingRadius = 4;
+            this.cbBorderColor.ColorChanged += new System.EventHandler(this.cbBorderColor_ColorChanged);
+            // 
             // gpbFont
             // 
             resources.ApplyResources(this.gpbFont, "gpbFont");
@@ -467,6 +592,46 @@ namespace DotSpatial.Symbology.Forms
             // 
             resources.ApplyResources(this.lblFontColor, "lblFontColor");
             this.lblFontColor.Name = "lblFontColor";
+            // 
+            // sldFontOpacity
+            // 
+            resources.ApplyResources(this.sldFontOpacity, "sldFontOpacity");
+            this.sldFontOpacity.ColorButton = this.cbFontColor;
+            this.sldFontOpacity.FlipRamp = false;
+            this.sldFontOpacity.FlipText = false;
+            this.sldFontOpacity.InvertRamp = false;
+            this.sldFontOpacity.Maximum = 1D;
+            this.sldFontOpacity.MaximumColor = System.Drawing.Color.Green;
+            this.sldFontOpacity.Minimum = 0D;
+            this.sldFontOpacity.MinimumColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.sldFontOpacity.Name = "sldFontOpacity";
+            this.sldFontOpacity.NumberFormat = null;
+            this.sldFontOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sldFontOpacity.RampRadius = 10F;
+            this.sldFontOpacity.RampText = "Opacity";
+            this.sldFontOpacity.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.sldFontOpacity.RampTextBehindRamp = true;
+            this.sldFontOpacity.RampTextColor = System.Drawing.Color.Black;
+            this.sldFontOpacity.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sldFontOpacity.ShowMaximum = true;
+            this.sldFontOpacity.ShowMinimum = true;
+            this.sldFontOpacity.ShowTicks = false;
+            this.sldFontOpacity.ShowValue = false;
+            this.sldFontOpacity.SliderColor = System.Drawing.Color.Blue;
+            this.sldFontOpacity.SliderRadius = 4F;
+            this.sldFontOpacity.TickColor = System.Drawing.Color.DarkGray;
+            this.sldFontOpacity.TickSpacing = 5F;
+            this.sldFontOpacity.Value = 1D;
+            // 
+            // cbFontColor
+            // 
+            this.cbFontColor.BevelRadius = 2;
+            this.cbFontColor.Color = System.Drawing.Color.Blue;
+            this.cbFontColor.LaunchDialogOnClick = true;
+            resources.ApplyResources(this.cbFontColor, "cbFontColor");
+            this.cbFontColor.Name = "cbFontColor";
+            this.cbFontColor.RoundingRadius = 4;
+            this.cbFontColor.ColorChanged += new System.EventHandler(this.cbFontColor_ColorChanged);
             // 
             // cmbStyle
             // 
@@ -518,6 +683,12 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // ffcFamilyName
+            // 
+            resources.ApplyResources(this.ffcFamilyName, "ffcFamilyName");
+            this.ffcFamilyName.Name = "ffcFamilyName";
+            this.ffcFamilyName.SelectedItemChanged += new System.EventHandler(this.fontFamilyControl1_SelectedItemChanged);
+            // 
             // lblPreview
             // 
             this.lblPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -532,6 +703,46 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.gpbBackgroundColor, "gpbBackgroundColor");
             this.gpbBackgroundColor.Name = "gpbBackgroundColor";
             this.gpbBackgroundColor.TabStop = false;
+            // 
+            // sldBackgroundOpacity
+            // 
+            this.sldBackgroundOpacity.ColorButton = this.cbBackgroundColor;
+            this.sldBackgroundOpacity.FlipRamp = false;
+            this.sldBackgroundOpacity.FlipText = false;
+            this.sldBackgroundOpacity.InvertRamp = false;
+            resources.ApplyResources(this.sldBackgroundOpacity, "sldBackgroundOpacity");
+            this.sldBackgroundOpacity.Maximum = 1D;
+            this.sldBackgroundOpacity.MaximumColor = System.Drawing.Color.Green;
+            this.sldBackgroundOpacity.Minimum = 0D;
+            this.sldBackgroundOpacity.MinimumColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.sldBackgroundOpacity.Name = "sldBackgroundOpacity";
+            this.sldBackgroundOpacity.NumberFormat = null;
+            this.sldBackgroundOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sldBackgroundOpacity.RampRadius = 10F;
+            this.sldBackgroundOpacity.RampText = "Opacity";
+            this.sldBackgroundOpacity.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.sldBackgroundOpacity.RampTextBehindRamp = true;
+            this.sldBackgroundOpacity.RampTextColor = System.Drawing.Color.Black;
+            this.sldBackgroundOpacity.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sldBackgroundOpacity.ShowMaximum = true;
+            this.sldBackgroundOpacity.ShowMinimum = true;
+            this.sldBackgroundOpacity.ShowTicks = false;
+            this.sldBackgroundOpacity.ShowValue = false;
+            this.sldBackgroundOpacity.SliderColor = System.Drawing.Color.Blue;
+            this.sldBackgroundOpacity.SliderRadius = 4F;
+            this.sldBackgroundOpacity.TickColor = System.Drawing.Color.DarkGray;
+            this.sldBackgroundOpacity.TickSpacing = 5F;
+            this.sldBackgroundOpacity.Value = 1D;
+            // 
+            // cbBackgroundColor
+            // 
+            this.cbBackgroundColor.BevelRadius = 2;
+            this.cbBackgroundColor.Color = System.Drawing.Color.Blue;
+            this.cbBackgroundColor.LaunchDialogOnClick = true;
+            resources.ApplyResources(this.cbBackgroundColor, "cbBackgroundColor");
+            this.cbBackgroundColor.Name = "cbBackgroundColor";
+            this.cbBackgroundColor.RoundingRadius = 4;
+            this.cbBackgroundColor.ColorChanged += new System.EventHandler(this.cbBackgroundColor_ColorChanged);
             // 
             // chkBackgroundColor
             // 
@@ -560,6 +771,14 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.tabAdvanced, "tabAdvanced");
             this.tabAdvanced.Name = "tabAdvanced";
             this.tabAdvanced.UseVisualStyleBackColor = true;
+            // 
+            // labelAlignmentControl1
+            // 
+            this.labelAlignmentControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.labelAlignmentControl1, "labelAlignmentControl1");
+            this.labelAlignmentControl1.Name = "labelAlignmentControl1";
+            this.labelAlignmentControl1.Value = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAlignmentControl1.ValueChanged += new System.EventHandler(this.labelAlignmentControl1_ValueChanged);
             // 
             // grpOffset
             // 
@@ -688,6 +907,14 @@ namespace DotSpatial.Symbology.Forms
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // clrHalo
+            // 
+            resources.ApplyResources(this.clrHalo, "clrHalo");
+            this.clrHalo.LabelText = "Halo Color:";
+            this.clrHalo.Name = "clrHalo";
+            this.clrHalo.Value = System.Drawing.Color.Empty;
+            this.clrHalo.SelectedItemChanged += new System.EventHandler(this.clrHalo_SelectedItemChanged);
+            // 
             // gpbUseLabelShadow
             // 
             resources.ApplyResources(this.gpbUseLabelShadow, "gpbUseLabelShadow");
@@ -761,237 +988,6 @@ namespace DotSpatial.Symbology.Forms
             this.nudShadowOffsetX.Name = "nudShadowOffsetX";
             this.nudShadowOffsetX.ValueChanged += new System.EventHandler(this.UpDownShadowOffsetX_ValueChanged);
             // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // tabMembers
-            // 
-            this.tabMembers.Controls.Add(this.sqlMembers);
-            resources.ApplyResources(this.tabMembers, "tabMembers");
-            this.tabMembers.Name = "tabMembers";
-            this.tabMembers.UseVisualStyleBackColor = true;
-            // 
-            // gbMargin
-            // 
-            this.gbMargin.Controls.Add(this.doubleBox_BottomMargin);
-            this.gbMargin.Controls.Add(this.doubleBox_RightMargin);
-            this.gbMargin.Controls.Add(this.doubleBox_LeftMargin);
-            this.gbMargin.Controls.Add(this.doubleBox_TopMargin);
-            resources.ApplyResources(this.gbMargin, "gbMargin");
-            this.gbMargin.Name = "gbMargin";
-            this.gbMargin.TabStop = false;
-            // 
-            // doubleBox_TopMargin
-            // 
-            this.doubleBox_TopMargin.BackColorInvalid = System.Drawing.Color.Salmon;
-            this.doubleBox_TopMargin.BackColorRegular = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.doubleBox_TopMargin, "doubleBox_TopMargin");
-            this.doubleBox_TopMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
-    "ating point value.";
-            this.doubleBox_TopMargin.IsValid = true;
-            this.doubleBox_TopMargin.Name = "doubleBox_TopMargin";
-            this.doubleBox_TopMargin.NumberFormat = null;
-            this.doubleBox_TopMargin.RegularHelp = "Enter a double precision floating point value.";
-            this.doubleBox_TopMargin.Value = 0D;
-            this.doubleBox_TopMargin.Validated += new System.EventHandler(this.doubleBox_TopMargin_Validated);
-            // 
-            // doubleBox_LeftMargin
-            // 
-            this.doubleBox_LeftMargin.BackColorInvalid = System.Drawing.Color.Salmon;
-            this.doubleBox_LeftMargin.BackColorRegular = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.doubleBox_LeftMargin, "doubleBox_LeftMargin");
-            this.doubleBox_LeftMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
-    "ating point value.";
-            this.doubleBox_LeftMargin.IsValid = true;
-            this.doubleBox_LeftMargin.Name = "doubleBox_LeftMargin";
-            this.doubleBox_LeftMargin.NumberFormat = null;
-            this.doubleBox_LeftMargin.RegularHelp = "Enter a double precision floating point value.";
-            this.doubleBox_LeftMargin.Value = 0D;
-            this.doubleBox_LeftMargin.Validated += new System.EventHandler(this.doubleBox_LeftMargin_Validated);
-            // 
-            // doubleBox_RightMargin
-            // 
-            this.doubleBox_RightMargin.BackColorInvalid = System.Drawing.Color.Salmon;
-            this.doubleBox_RightMargin.BackColorRegular = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.doubleBox_RightMargin, "doubleBox_RightMargin");
-            this.doubleBox_RightMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
-    "ating point value.";
-            this.doubleBox_RightMargin.IsValid = true;
-            this.doubleBox_RightMargin.Name = "doubleBox_RightMargin";
-            this.doubleBox_RightMargin.NumberFormat = null;
-            this.doubleBox_RightMargin.RegularHelp = "Enter a double precision floating point value.";
-            this.doubleBox_RightMargin.Value = 0D;
-            this.doubleBox_RightMargin.Validated += new System.EventHandler(this.doubleBox_RightMargin_Validated);
-            // 
-            // doubleBox_BottomMargin
-            // 
-            this.doubleBox_BottomMargin.BackColorInvalid = System.Drawing.Color.Salmon;
-            this.doubleBox_BottomMargin.BackColorRegular = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.doubleBox_BottomMargin, "doubleBox_BottomMargin");
-            this.doubleBox_BottomMargin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
-    "ating point value.";
-            this.doubleBox_BottomMargin.IsValid = true;
-            this.doubleBox_BottomMargin.Name = "doubleBox_BottomMargin";
-            this.doubleBox_BottomMargin.NumberFormat = null;
-            this.doubleBox_BottomMargin.RegularHelp = "Enter a double precision floating point value.";
-            this.doubleBox_BottomMargin.Value = 0D;
-            this.doubleBox_BottomMargin.Validated += new System.EventHandler(this.doubleBox_BottomMargin_Validated);
-            // 
-            // expressionDialog1
-            // 
-            resources.ApplyResources(this.expressionDialog1, "expressionDialog1");
-            this.expressionDialog1.Expression = "def Main():\n   \n \n  return \"no value\"";
-            this.expressionDialog1.Name = "expressionDialog1";
-            // 
-            // maskControl1
-            // 
-            resources.ApplyResources(this.maskControl1, "maskControl1");
-            this.maskControl1.Name = "maskControl1";
-            // 
-            // sldBorderOpacity
-            // 
-            this.sldBorderOpacity.ColorButton = this.cbBorderColor;
-            this.sldBorderOpacity.FlipRamp = false;
-            this.sldBorderOpacity.FlipText = false;
-            this.sldBorderOpacity.InvertRamp = false;
-            resources.ApplyResources(this.sldBorderOpacity, "sldBorderOpacity");
-            this.sldBorderOpacity.Maximum = 1D;
-            this.sldBorderOpacity.MaximumColor = System.Drawing.Color.Green;
-            this.sldBorderOpacity.Minimum = 0D;
-            this.sldBorderOpacity.MinimumColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.sldBorderOpacity.Name = "sldBorderOpacity";
-            this.sldBorderOpacity.NumberFormat = null;
-            this.sldBorderOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sldBorderOpacity.RampRadius = 10F;
-            this.sldBorderOpacity.RampText = "Opacity";
-            this.sldBorderOpacity.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.sldBorderOpacity.RampTextBehindRamp = true;
-            this.sldBorderOpacity.RampTextColor = System.Drawing.Color.Black;
-            this.sldBorderOpacity.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sldBorderOpacity.ShowMaximum = true;
-            this.sldBorderOpacity.ShowMinimum = true;
-            this.sldBorderOpacity.ShowTicks = false;
-            this.sldBorderOpacity.ShowValue = false;
-            this.sldBorderOpacity.SliderColor = System.Drawing.Color.Blue;
-            this.sldBorderOpacity.SliderRadius = 4F;
-            this.sldBorderOpacity.TickColor = System.Drawing.Color.DarkGray;
-            this.sldBorderOpacity.TickSpacing = 5F;
-            this.sldBorderOpacity.Value = 1D;
-            // 
-            // cbBorderColor
-            // 
-            this.cbBorderColor.BevelRadius = 2;
-            this.cbBorderColor.Color = System.Drawing.Color.Blue;
-            this.cbBorderColor.LaunchDialogOnClick = true;
-            resources.ApplyResources(this.cbBorderColor, "cbBorderColor");
-            this.cbBorderColor.Name = "cbBorderColor";
-            this.cbBorderColor.RoundingRadius = 4;
-            this.cbBorderColor.ColorChanged += new System.EventHandler(this.cbBorderColor_ColorChanged);
-            // 
-            // sldFontOpacity
-            // 
-            resources.ApplyResources(this.sldFontOpacity, "sldFontOpacity");
-            this.sldFontOpacity.ColorButton = this.cbFontColor;
-            this.sldFontOpacity.FlipRamp = false;
-            this.sldFontOpacity.FlipText = false;
-            this.sldFontOpacity.InvertRamp = false;
-            this.sldFontOpacity.Maximum = 1D;
-            this.sldFontOpacity.MaximumColor = System.Drawing.Color.Green;
-            this.sldFontOpacity.Minimum = 0D;
-            this.sldFontOpacity.MinimumColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.sldFontOpacity.Name = "sldFontOpacity";
-            this.sldFontOpacity.NumberFormat = null;
-            this.sldFontOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sldFontOpacity.RampRadius = 10F;
-            this.sldFontOpacity.RampText = "Opacity";
-            this.sldFontOpacity.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.sldFontOpacity.RampTextBehindRamp = true;
-            this.sldFontOpacity.RampTextColor = System.Drawing.Color.Black;
-            this.sldFontOpacity.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sldFontOpacity.ShowMaximum = true;
-            this.sldFontOpacity.ShowMinimum = true;
-            this.sldFontOpacity.ShowTicks = false;
-            this.sldFontOpacity.ShowValue = false;
-            this.sldFontOpacity.SliderColor = System.Drawing.Color.Blue;
-            this.sldFontOpacity.SliderRadius = 4F;
-            this.sldFontOpacity.TickColor = System.Drawing.Color.DarkGray;
-            this.sldFontOpacity.TickSpacing = 5F;
-            this.sldFontOpacity.Value = 1D;
-            // 
-            // cbFontColor
-            // 
-            this.cbFontColor.BevelRadius = 2;
-            this.cbFontColor.Color = System.Drawing.Color.Blue;
-            this.cbFontColor.LaunchDialogOnClick = true;
-            resources.ApplyResources(this.cbFontColor, "cbFontColor");
-            this.cbFontColor.Name = "cbFontColor";
-            this.cbFontColor.RoundingRadius = 4;
-            this.cbFontColor.ColorChanged += new System.EventHandler(this.cbFontColor_ColorChanged);
-            // 
-            // ffcFamilyName
-            // 
-            resources.ApplyResources(this.ffcFamilyName, "ffcFamilyName");
-            this.ffcFamilyName.Name = "ffcFamilyName";
-            this.ffcFamilyName.SelectedItemChanged += new System.EventHandler(this.fontFamilyControl1_SelectedItemChanged);
-            // 
-            // sldBackgroundOpacity
-            // 
-            this.sldBackgroundOpacity.ColorButton = this.cbBackgroundColor;
-            this.sldBackgroundOpacity.FlipRamp = false;
-            this.sldBackgroundOpacity.FlipText = false;
-            this.sldBackgroundOpacity.InvertRamp = false;
-            resources.ApplyResources(this.sldBackgroundOpacity, "sldBackgroundOpacity");
-            this.sldBackgroundOpacity.Maximum = 1D;
-            this.sldBackgroundOpacity.MaximumColor = System.Drawing.Color.Green;
-            this.sldBackgroundOpacity.Minimum = 0D;
-            this.sldBackgroundOpacity.MinimumColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.sldBackgroundOpacity.Name = "sldBackgroundOpacity";
-            this.sldBackgroundOpacity.NumberFormat = null;
-            this.sldBackgroundOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sldBackgroundOpacity.RampRadius = 10F;
-            this.sldBackgroundOpacity.RampText = "Opacity";
-            this.sldBackgroundOpacity.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.sldBackgroundOpacity.RampTextBehindRamp = true;
-            this.sldBackgroundOpacity.RampTextColor = System.Drawing.Color.Black;
-            this.sldBackgroundOpacity.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sldBackgroundOpacity.ShowMaximum = true;
-            this.sldBackgroundOpacity.ShowMinimum = true;
-            this.sldBackgroundOpacity.ShowTicks = false;
-            this.sldBackgroundOpacity.ShowValue = false;
-            this.sldBackgroundOpacity.SliderColor = System.Drawing.Color.Blue;
-            this.sldBackgroundOpacity.SliderRadius = 4F;
-            this.sldBackgroundOpacity.TickColor = System.Drawing.Color.DarkGray;
-            this.sldBackgroundOpacity.TickSpacing = 5F;
-            this.sldBackgroundOpacity.Value = 1D;
-            // 
-            // cbBackgroundColor
-            // 
-            this.cbBackgroundColor.BevelRadius = 2;
-            this.cbBackgroundColor.Color = System.Drawing.Color.Blue;
-            this.cbBackgroundColor.LaunchDialogOnClick = true;
-            resources.ApplyResources(this.cbBackgroundColor, "cbBackgroundColor");
-            this.cbBackgroundColor.Name = "cbBackgroundColor";
-            this.cbBackgroundColor.RoundingRadius = 4;
-            this.cbBackgroundColor.ColorChanged += new System.EventHandler(this.cbBackgroundColor_ColorChanged);
-            // 
-            // labelAlignmentControl1
-            // 
-            this.labelAlignmentControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.labelAlignmentControl1, "labelAlignmentControl1");
-            this.labelAlignmentControl1.Name = "labelAlignmentControl1";
-            this.labelAlignmentControl1.Value = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelAlignmentControl1.ValueChanged += new System.EventHandler(this.labelAlignmentControl1_ValueChanged);
-            // 
-            // clrHalo
-            // 
-            resources.ApplyResources(this.clrHalo, "clrHalo");
-            this.clrHalo.LabelText = "Halo Color:";
-            this.clrHalo.Name = "clrHalo";
-            this.clrHalo.Value = System.Drawing.Color.Empty;
-            this.clrHalo.SelectedItemChanged += new System.EventHandler(this.clrHalo_SelectedItemChanged);
-            // 
             // sliderOpacityShadow
             // 
             this.sliderOpacityShadow.ColorButton = null;
@@ -1023,6 +1019,11 @@ namespace DotSpatial.Symbology.Forms
             this.sliderOpacityShadow.Value = 0D;
             this.sliderOpacityShadow.ValueChanged += new System.EventHandler(this.sliderOpacityShadow_ValueChanged);
             // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
             // colorButtonShadow
             // 
             this.colorButtonShadow.BevelRadius = 4;
@@ -1032,6 +1033,13 @@ namespace DotSpatial.Symbology.Forms
             this.colorButtonShadow.Name = "colorButtonShadow";
             this.colorButtonShadow.RoundingRadius = 10;
             this.colorButtonShadow.ColorChanged += new System.EventHandler(this.colorButtonShadow_ColorChanged);
+            // 
+            // tabMembers
+            // 
+            this.tabMembers.Controls.Add(this.sqlMembers);
+            resources.ApplyResources(this.tabMembers, "tabMembers");
+            this.tabMembers.Name = "tabMembers";
+            this.tabMembers.UseVisualStyleBackColor = true;
             // 
             // sqlMembers
             // 
@@ -1064,9 +1072,11 @@ namespace DotSpatial.Symbology.Forms
             this.panel2.PerformLayout();
             this.tabs.ResumeLayout(false);
             this.tabExpression.ResumeLayout(false);
+            this.tabExpression.PerformLayout();
             this.tabMask.ResumeLayout(false);
             this.tabBasic.ResumeLayout(false);
             this.tabBasic.PerformLayout();
+            this.gbMargin.ResumeLayout(false);
             this.grbLabelRotation.ResumeLayout(false);
             this.grbLabelRotation.PerformLayout();
             this.gpbBorderColor.ResumeLayout(false);
@@ -1087,7 +1097,6 @@ namespace DotSpatial.Symbology.Forms
             ((System.ComponentModel.ISupportInitialize)(this.nudShadowOffsetY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudShadowOffsetX)).EndInit();
             this.tabMembers.ResumeLayout(false);
-            this.gbMargin.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1184,5 +1193,6 @@ namespace DotSpatial.Symbology.Forms
         private Projections.Forms.DoubleBox doubleBox_BottomMargin;
         private Projections.Forms.DoubleBox doubleBox_RightMargin;
         private Projections.Forms.DoubleBox doubleBox_LeftMargin;
+        private LinkLabel linkLabel1;
     }
 }

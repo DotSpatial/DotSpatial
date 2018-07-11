@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace DotSpatial.Symbology.Forms
 {
+    public class Bullet
+    {
+        public enum style { None, Left, Right, Both };
+    }
+
     public class TextExpression
     {
         /// <summary>
@@ -90,6 +95,31 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
+        /// Get color from tag (<color=red> return Color.Red)
+        /// </summary>
+        static public bool GetBulletStyle(string sText, out Bullet.style bulletStyle)
+        {
+            bulletStyle = Bullet.style.None;
+            string sToDraw = sText;
+
+            if (sToDraw.Contains("<bullet=") && sToDraw.Contains("</bullet>"))
+            {
+                Regex regex = new Regex("<bullet=(.*?)>");
+                var v = regex.Match(sText);
+                string sValue = v.Groups[1].ToString();
+
+                if (sValue == Bullet.style.None.ToString()) bulletStyle = Bullet.style.None;
+                if (sValue == Bullet.style.Left.ToString()) bulletStyle = Bullet.style.Left;
+                if (sValue == Bullet.style.Right.ToString()) bulletStyle = Bullet.style.Right;
+                if (sValue == Bullet.style.Both.ToString()) bulletStyle = Bullet.style.Both;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Remove all tags (<b>, <u>, ...) from input text
         /// </summary>
         static public string GetTextWithoutTag(string sTextWithTag)
@@ -150,6 +180,15 @@ namespace DotSpatial.Symbology.Forms
                 sTextWithoutTag = sTextWithoutTag.Replace("<U=" + s + ">", "");
             }
             sTextWithoutTag = sTextWithoutTag.Replace("</U>", "");
+
+            if (sTextWithTag.Contains("<bullet="))
+            {
+                Regex regex = new Regex("<bullet=(.*?)>");
+                var v = regex.Match(sTextWithTag);
+                string s = v.Groups[1].ToString();
+                sTextWithoutTag = sTextWithoutTag.Replace("<bullet=" + s + ">", "");
+            }
+            sTextWithoutTag = sTextWithoutTag.Replace("</bullet>", "");
 
             return sTextWithoutTag;
         }
@@ -515,8 +554,29 @@ namespace DotSpatial.Symbology.Forms
 
             //gp2.AddString(sText + " ", newFont.FontFamily, (int)fontStyle, newFont.Size * g.DpiY / 72F, posText, format);
             g.DrawString(sText + " ", newFont, new SolidBrush(Color.Black), posText, format);
-                        
+
             pos.Y += fLargerHighOffset;
+        }
+
+        public static void DrawBullet(Graphics g, Color color, Bullet.style bulletStyle, SizeF stringfSize, PointF textPosition)
+        {
+            RectangleF rectF = new RectangleF(textPosition, stringfSize);
+            if (bulletStyle == Bullet.style.None) return;
+
+            PointF[] bullet = new PointF[7];
+            bullet[0] = new PointF(rectF.X, rectF.Y);
+            bullet[1] = new PointF(rectF.X + rectF.Width, rectF.Y);
+            bullet[2] = new PointF(rectF.X + rectF.Width + (rectF.Height / 2), rectF.Y + (rectF.Height / 2));
+            bullet[3] = new PointF(rectF.X + rectF.Width, rectF.Y + rectF.Height);
+            bullet[4] = new PointF(rectF.X, rectF.Y + rectF.Height);
+            bullet[5] = new PointF(rectF.X - (rectF.Height / 2), rectF.Y + (rectF.Height / 2));
+            bullet[6] = new PointF(rectF.X, rectF.Y);
+
+            if (bulletStyle == Bullet.style.Left) bullet[2] = bullet[1];
+            if (bulletStyle == Bullet.style.Right) bullet[5] = bullet[4];
+
+            //g.FillPolygon(new SolidBrush(Color.White), bullet);
+            g.DrawLines(new Pen(color), bullet);
         }
     }
 }

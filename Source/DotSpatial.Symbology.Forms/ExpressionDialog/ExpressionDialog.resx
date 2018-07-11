@@ -128,6 +128,9 @@
 &lt;u&gt;&lt;/u&gt; -&gt; Draw a line below
 &lt;U&gt;&lt;/U&gt; -&gt; Draw a line above
 &lt;size=X&gt;&lt;/size&gt; -&gt; Set the whole line font size to X (where X is a positive integer)
-&lt;color=X&gt;&lt;/color&gt; -&gt; Set the whole line color to X (where X is a color name)</value>
+&lt;color=X&gt;&lt;/color&gt; -&gt; Set the whole line color to X (where X is a color name)
+&lt;bullet=X&gt;&lt;/bullet&gt; -&gt; Draw a bullet around the text (where X is None, Left, Right or Both)
+&lt;font=X&gt;&lt;/font&gt; -&gt; Change font of the line (where X is the font family)
+&lt;morse&gt;&lt;/morse&gt; -&gt; Draw morse code of the text</value>
   </data>
 </root>
