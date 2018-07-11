@@ -450,7 +450,7 @@ namespace DotSpatial.Symbology.Forms
                         textColor = tempColor;
                     }
                     Bullet.style bulletStyle = Bullet.style.None;
-                    TextExpression.GetBulletStyle(sSplit, out bulletStyle);
+                    bool bDrawBullet = TextExpression.GetBulletStyle(sSplit, out bulletStyle);
 
                     string sTextWithoutTag = TextExpression.GetTextWithoutTag(sSplit);
                     SizeF stringfSize = g.MeasureString(sTextWithoutTag, newFont);
@@ -480,7 +480,7 @@ namespace DotSpatial.Symbology.Forms
                         // Draw a limit above the text if needed
                         TextExpression.DrawUpperScore(g, sSplit, textPosition, textColor, newFont, 1.0F);
                         TextExpression.DrawUnderScore(g, sSplit, textPosition, textColor, newFont, 1.0F);
-                        TextExpression.DrawBullet(g, textColor, bulletStyle, stringfSize, textPosition);
+                        if (bDrawBullet) TextExpression.DrawBullet(g, textColor, bulletStyle, stringfSize, textPosition);
 
                         pos.Y += stringfSize.Height;
                     }

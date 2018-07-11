@@ -561,7 +561,6 @@ namespace DotSpatial.Symbology.Forms
         public static void DrawBullet(Graphics g, Color color, Bullet.style bulletStyle, SizeF stringfSize, PointF textPosition)
         {
             RectangleF rectF = new RectangleF(textPosition, stringfSize);
-            if (bulletStyle == Bullet.style.None) return;
 
             PointF[] bullet = new PointF[7];
             bullet[0] = new PointF(rectF.X, rectF.Y);
@@ -572,8 +571,8 @@ namespace DotSpatial.Symbology.Forms
             bullet[5] = new PointF(rectF.X - (rectF.Height / 2), rectF.Y + (rectF.Height / 2));
             bullet[6] = new PointF(rectF.X, rectF.Y);
 
-            if (bulletStyle == Bullet.style.Left) bullet[2] = bullet[1];
-            if (bulletStyle == Bullet.style.Right) bullet[5] = bullet[4];
+            if ((bulletStyle == Bullet.style.Left) || (bulletStyle == Bullet.style.None)) bullet[2] = bullet[1];
+            if ((bulletStyle == Bullet.style.Right) || (bulletStyle == Bullet.style.None)) bullet[5] = bullet[4];
 
             //g.FillPolygon(new SolidBrush(Color.White), bullet);
             g.DrawLines(new Pen(color), bullet);
