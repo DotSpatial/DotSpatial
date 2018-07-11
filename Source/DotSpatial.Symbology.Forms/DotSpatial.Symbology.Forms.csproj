@@ -209,10 +209,10 @@
     <Compile Include="ExpressionControl.Designer.cs">
       <DependentUpon>ExpressionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExpressionDialog.cs">
+    <Compile Include="ExpressionDialog\ExpressionDialog.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ExpressionDialog.designer.cs">
+    <Compile Include="ExpressionDialog\ExpressionDialog.designer.cs">
       <DependentUpon>ExpressionDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="FeatureCategoryControl.Designer.cs">
@@ -814,7 +814,7 @@
     <EmbeddedResource Include="ExpressionControl.resx">
       <DependentUpon>ExpressionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExpressionDialog.resx">
+    <EmbeddedResource Include="ExpressionDialog\ExpressionDialog.resx">
       <DependentUpon>ExpressionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureCategoryControl.de-DE.resx">
@@ -1428,6 +1428,9 @@
     <None Include="Resources\B_Export16.png" />
     <None Include="Resources\B_Import16.png" />
     <None Include="Resources\help_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\zoom_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
