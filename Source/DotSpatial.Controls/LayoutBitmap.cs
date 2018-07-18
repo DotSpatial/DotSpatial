@@ -1,6 +1,7 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
@@ -21,7 +22,8 @@ namespace DotSpatial.Controls
         private int _contrast;
         private string _fileName;
         private bool _preserveAspectRatio;
-        private bool _draft; // CGX
+        private bool _draft;
+        private string _imageBase64;
 
         #endregion
 
@@ -127,7 +129,57 @@ namespace DotSpatial.Controls
                 if (_fileName == value) return;
                 _fileName = value;
                 Bitmap = File.Exists(_fileName) ? new Bitmap(_fileName) : null;
+                _imageBase64 = ImageToBase64(_bitmap);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the string fileName of the bitmap to use
+        /// </summary>
+        [Browsable(true), Category("Symbol")]
+        [Editor("System.Windows.Forms.Design.FileNameEditor, System.Design", typeof(UITypeEditor))]
+        public string ImageBase64
+        {
+            get { return _imageBase64; }
+            set
+            {
+                if (_imageBase64 == value) return;
+                _imageBase64 = value;
+
+                Bitmap = ImageBase64ToImage(_imageBase64) as Bitmap;
+            }
+        }
+
+        /// <summary>
+        /// Convert an Image to a base64 string string
+        /// </summary>
+        /// <param name="image">Inputed image</param>
+        /// <returns>base64 string</returns>
+        public string ImageToBase64(Image image)
+        {
+            string sImageBase64 = "";
+            using (var ms = new MemoryStream())
+            {
+                image.Save(ms, image.RawFormat);
+                byte[] imageRaw = ms.ToArray();
+
+                sImageBase64 = Convert.ToBase64String(imageRaw);
+            }
+            return sImageBase64;
+        }
+
+        /// <summary>
+        /// Convert a base64 string to an image
+        /// </summary>
+        /// <param name="sImageBase64">Based 64 string</param>
+        /// <returns>Image converted from base64 string</returns>
+        public Image ImageBase64ToImage(string sImageBase64)
+        {
+            byte[] imageRaw = Convert.FromBase64String(sImageBase64);
+
+            MemoryStream ms = new MemoryStream(imageRaw);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
         }
 
         /// <summary>

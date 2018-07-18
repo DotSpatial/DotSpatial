@@ -508,6 +508,7 @@ namespace DotSpatial.Controls
             if (selected && !DrawnStatesNeeded) return;
 
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            g.SetClip(new Rectangle(0, 0, e.ImageRectangle.Width, e.ImageRectangle.Height));
             var indiceList = indices as IList<int> ?? indices.ToList();
 
             Action<GraphicsPath, Rectangle, IEnumerable<int>> drawFeature = (graphPath, clipRect, features) =>
@@ -538,20 +539,19 @@ namespace DotSpatial.Controls
                         RectangleF rectBounds = mask.Bounds;
                         if (rectBounds.IsEmpty)
                         {
-                            if (mask.BoundsShape != null)
+                            if (mask.Center != null)
                             {
-                                GraphicsPath test = new GraphicsPath();
-                                IPolygon iBPolygon = (IPolygon)mask.BoundsShape;
-                                ILineString iBS = iBPolygon.Shell;
-                                BuildLineString(test, iBS, e, e.ImageRectangle);
-                                rectBounds = test.GetBounds();
+                                Point pTest1 = e.ProjToPixel(mask.Center);
+                                pTest1.X -= (int)(mask.Width / 2);
+                                pTest1.Y -= (int)(mask.Height / 2);
+                                rectBounds = new RectangleF(pTest1, new SizeF((float)mask.Width, (float)mask.Height));
                             }
                         }
 
                         if (!rectBounds.IsEmpty)
                         {
-                            float cx = rectBounds.X;
-                            float cy = rectBounds.Y;
+                            float cx = rectBounds.X + (int)(mask.Width / 2);
+                            float cy = rectBounds.Y + +(int)(mask.Height / 2);
 
                             System.Drawing.Drawing2D.Matrix oldTrans = g.Transform.Clone();
                             g.ResetTransform();
@@ -564,16 +564,9 @@ namespace DotSpatial.Controls
                                 (float)((rectBounds.Location.Y - cgxMask.OffsetTop + 1)),
                                 (float)((rectBounds.Width + cgxMask.OffsetLeft + cgxMask.OffsetRight)),
                                 (float)((rectBounds.Height + cgxMask.OffsetTop + cgxMask.OffsetBottom)));
-                            //g.FillRectangle(new SolidBrush(Color.FromArgb(125, Color.Red)), Rectangle.Round(rectWithMargin));
-                            g.DrawRectangle(new Pen(Color.Red, 2), Rectangle.Round(rectWithMargin));
                             g.ExcludeClip(Rectangle.Round(rectWithMargin));
 
                             g.Transform = oldTrans;
-
-
-                            rTest = Rectangle.Round(rectWithMargin);
-                            //bUseClip = true;
-                            //g.SetClip(Rectangle.Round(rectWithMargin), CombineMode.Exclude);
                         }
                     }
 

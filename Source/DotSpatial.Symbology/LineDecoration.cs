@@ -288,7 +288,8 @@ namespace DotSpatial.Symbology
                             span = ((mm * dpi) / 25.4) * scaleWidth;
                             if (DotSpatial.Symbology.Core.Constants.IsPrinting)
                             {
-                                span = span * 97.0F / 300.0F;
+                                float fRes = (float)g.DpiX;
+                                span = span * 97.0F / fRes;
                             }
                         }
                         else
