@@ -121,7 +121,7 @@
             this.B_Preview.Name = "B_Preview";
             this.B_Preview.Size = new System.Drawing.Size(82, 24);
             this.B_Preview.TabIndex = 20;
-            this.B_Preview.Text = "Preview";
+            this.B_Preview.Text = "Show";
             this.B_Preview.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.B_Preview.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.B_Preview.UseVisualStyleBackColor = true;

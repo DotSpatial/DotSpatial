@@ -297,7 +297,7 @@ namespace DotSpatial.Controls
                         }
                     }
 
-                DrawFeatures(args, drawList, clipRects, true, selected);
+                    DrawFeatures(args, drawList, clipRects, true, selected);
                 }
             }
         }
@@ -418,7 +418,7 @@ namespace DotSpatial.Controls
             {
                 AssignFastDrawnStates();
                 states = DrawnStates;
-                }
+            }
 
             if (selected && (!DrawnStatesNeeded || !DrawnStates.Any(_ => _.Selected))) return;
 
@@ -429,27 +429,27 @@ namespace DotSpatial.Controls
 
             FastDrawnState state = new FastDrawnState(selected, Symbology.Categories[0]);
             Extent drawExtents = e.GeographicExtents;
-            Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
+            Rectangle clipRect = new Rectangle(0, 0, e.ImageRectangle.Width, e.ImageRectangle.Height);
             SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
 
             List<ShapeRange> shapes = DataSet.ShapeIndices;
             double[] vertices = DataSet.Vertex;
 
-                foreach (int shp in indiceList)
-                {
-                    if (ProgressReportingEnabled) ProgressMeter.Next();
+            foreach (int shp in indiceList)
+            {
+                if (ProgressReportingEnabled) ProgressMeter.Next();
                 if (shp >= shapes.Count) return;
-                    ShapeRange shape = shapes[shp];
+                ShapeRange shape = shapes[shp];
                 if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
 
                 if (DrawnStatesNeeded)
-            {
+                {
                     if (!states[shp].Visible || (selected && !states[shp].Selected)) continue;
 
                     state = new FastDrawnState(selected, states[shp].Category);
-                    }
+                }
 
-				// CGX
+                // CGX
                 if (Visibility != null && Visibility.Length > shp)
                 {
                     bool Visi = Visibility[shp].Visible;
@@ -458,10 +458,10 @@ namespace DotSpatial.Controls
                 if (!paths.ContainsKey(state))
                 {
                     paths.Add(state, new GraphicsPath(FillMode.Winding));
-                    }
+                }
 
                 BuildPolygon(vertices, shapes[shp], paths[state], e, drawExtents.Contains(shape.Extent) ? null : shClip);
-                    }
+            }
 
             if (ProgressReportingEnabled) ProgressMeter.Reset();
         }
@@ -479,7 +479,7 @@ namespace DotSpatial.Controls
             var featureList = features as IList<IFeature> ?? features.ToList();
             foreach (var category in Symbology.Categories)
             {
-                    // Determine the subset of the specified features that are visible and match the category
+                // Determine the subset of the specified features that are visible and match the category
                 IFeatureCategory polygonCategory = category;
                 Func<IDrawnState, bool> isMember;
 
@@ -563,54 +563,54 @@ namespace DotSpatial.Controls
             foreach (var kvp in paths)
             {
                 var category = kvp.Key.Category;
-				
-				if (kvp.Key.Category == null)
+
+                if (kvp.Key.Category == null)
                     continue;
 
-				Extent catBounds = (CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category)) ?? Extent;
-				var bounds = new RectangleF
-				{
-					X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
-					Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
-				};
-				float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
-				bounds.Width = r - bounds.X;
-				float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
-				bounds.Height = b - bounds.Y;
+                Extent catBounds = (CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category)) ?? Extent;
+                var bounds = new RectangleF
+                {
+                    X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
+                    Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
+                };
+                float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
+                bounds.Width = r - bounds.X;
+                float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
+                bounds.Height = b - bounds.Y;
 
                 var ps = (selected && kvp.Key.Selected ? category.SelectionSymbolizer : category.Symbolizer) as PolygonSymbolizer;
                 if (ps == null) continue;
 
                 g.SmoothingMode = ps.GetSmoothingMode();
 
-				foreach (IPattern pattern in ps.Patterns)
-				{
-					IGradientPattern gp = pattern as IGradientPattern;
-					if (gp != null)
-					{
-						gp.Bounds = bounds;
-					}
+                foreach (IPattern pattern in ps.Patterns)
+                {
+                    IGradientPattern gp = pattern as IGradientPattern;
+                    if (gp != null)
+                    {
+                        gp.Bounds = bounds;
+                    }
 
                     pattern.FillPath(g, kvp.Value);
                 }
 
                 double scale = ps.GetScale(e);
-				// CGX
-				if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
-				{
-					double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
-					double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
-					scale = dReferenceScale / dCurrentScale;
-				} // Fin CGX
+                // CGX
+                if (MapFrame != null && (MapFrame as IMapFrame).ReferenceScale > 1.0 && (MapFrame as IMapFrame).CurrentScale > 0.0)
+                {
+                    double dReferenceScale = (MapFrame as IMapFrame).ReferenceScale;
+                    double dCurrentScale = (MapFrame as IMapFrame).CurrentScale;
+                    scale = dReferenceScale / dCurrentScale;
+                } // Fin CGX
 
-				foreach (IPattern pattern in ps.Patterns)
-				{
-					if (pattern.UseOutline)
-					{
-						pattern.DrawPath(g, kvp.Value, scale);
-					}
-				}
-			}
+                foreach (IPattern pattern in ps.Patterns)
+                {
+                    if (pattern.UseOutline)
+                    {
+                        pattern.DrawPath(g, kvp.Value, scale);
+                    }
+                }
+            }
 
             if (e.Device == null) g.Dispose();
         }

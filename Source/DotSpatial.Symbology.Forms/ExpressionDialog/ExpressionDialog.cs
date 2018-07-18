@@ -38,7 +38,7 @@ namespace DotSpatial.Symbology.Forms
                 {
                     return false;
                 }*/
-                
+
                 if (Expression.StartsWith("def Main():"))
                 {
                     return true;
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology.Forms
                 else
                     return false;
 
-               
+
             }
             return false;
         }
@@ -54,7 +54,7 @@ namespace DotSpatial.Symbology.Forms
         {
             if (IsComplexExpression(value))
             {
-               // TB_Simple.Text = "";
+                // TB_Simple.Text = "";
                 TB_Advanced.Text = value;
                 TabControl.SelectedTab = TabAdvanced;
             }
@@ -84,13 +84,13 @@ namespace DotSpatial.Symbology.Forms
         {
             InitializeComponent();
 
-            
+
         }
 
         public IFeatureLayer ActiveLayer
         {
-            set 
-            { 
+            set
+            {
                 _ActiveLayer = value;
                 _DataTable = _ActiveLayer.DataSet.DataTable;
                 FillListFields();
@@ -139,7 +139,7 @@ namespace DotSpatial.Symbology.Forms
                     {
                         Expression = TB_Advanced.Text;
                         sResult = Compute(Expression);
-                        sResult = D4F.Core.PythonScript.Program.EvaluateWithDialog(sResult);
+                        sResult = Python.Script.EvaluateWithDialog(sResult);
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace DotSpatial.Symbology.Forms
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
         }
 
-     
+
         private void listViewFields_DoubleClick(object sender, EventArgs e)
         {
             try
@@ -191,7 +191,7 @@ namespace DotSpatial.Symbology.Forms
                     TB_Advanced.Text = SR.ReadToEnd();
                     SR.Close();
 
-                    this.B_Preview_Click(sender, e);
+                    //this.B_Preview_Click(sender, e);
                 }
             }
             catch (Exception ex)
@@ -230,7 +230,7 @@ namespace DotSpatial.Symbology.Forms
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
         }
 
-     
+
 
         private List<String> GetFields(string sExpression)
         {
@@ -262,27 +262,27 @@ namespace DotSpatial.Symbology.Forms
             string TextTmp = "";
             try
             {
-               
+
                 List<String> ListFields = GetFields(sExpresion);
 
-                    
+
                 if (_ActiveLayer is FeatureLayer)
                 {
                     FeatureLayer fl = _ActiveLayer as FeatureLayer;
- 
-                    if( fl.DataSet.Features.Count >0)
+
+                    if (fl.DataSet.Features.Count > 0)
                     {
                         IFeature f = fl.DataSet.Features[0];
                         // Récupération pour de la chaîne de remplacement
                         string sCompute = ReplaceFieldsByValue(GetFields(sExpresion), GetLayersFields(f), fl);
-                                              
+
                         TextTmp += sCompute + Environment.NewLine;
-                    
+
                     }
-                    
+
                 }
-                    
-                
+
+
             }
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
@@ -324,8 +324,8 @@ namespace DotSpatial.Symbology.Forms
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
 
-     
-                         
+
+
             return featureFields;
         }
 
@@ -366,7 +366,7 @@ namespace DotSpatial.Symbology.Forms
                 DataColumn Column = fl.DataSet.DataTable.Columns[sFieldName];
                 if (Column.DataType == typeof(string))
                     sResult = "\"" + oValue.ToString() + "\"";
-               
+
             }
             catch (Exception ex)
             { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
@@ -376,9 +376,9 @@ namespace DotSpatial.Symbology.Forms
 
         private void TB_Simple_TextChanged(object sender, EventArgs e)
         {
-        
+
             if (ExpressionTextChanged != null) ExpressionTextChanged(this, new EventArgs());
-        
+
 
         }
 
@@ -388,7 +388,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         private void TB_Simple_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-       {
+        {
             e.IsInputKey = e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter;
         }
 
@@ -409,7 +409,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 Expression = TB_Advanced.Text;
                 sResult = Compute(Expression);
-                sResult = D4F.Core.PythonScript.Program.EvaluateWithDialog(sResult);
+                sResult = Python.Script.Evaluate(sResult);
             }
             else
             {
@@ -426,7 +426,7 @@ namespace DotSpatial.Symbology.Forms
             Font textFont = new System.Drawing.Font("Arial", 10);
             RectangleF currentView = new RectangleF(PanelPreview.DisplayRectangle.X + 10, PanelPreview.DisplayRectangle.Y + 10, PanelPreview.DisplayRectangle.Width, PanelPreview.DisplayRectangle.Height);
 
-            RectangleF labelBounds = TextExpression.GetComputedLabelBounds(g, sResult, textFont, format, currentView);
+            RectangleF labelBounds = TextExpression.GetComputedLabelBounds(g, sResult, textFont, format, currentView, 1.0F);
 
             RectangleF fTitleClip = new RectangleF();
             string[] sSplitted = sResult.Split('\n');
@@ -441,13 +441,16 @@ namespace DotSpatial.Symbology.Forms
                     if (TextExpression.GetFontFamilyFromTag(sSplit, out customFontFamily))
                     {
                         fontFamily = customFontFamily;
+                    }
                     Font newFont = new Font(fontFamily, TextExpression.GetSizeFromTag(sSplit, textFont.SizeInPoints));
                     Color textColor = Color.Black;
-Color tempColor = Color.Black;
+                    Color tempColor = Color.Black;
                     if (TextExpression.GetColorFromTag(sSplit, out tempColor))
                     {
                         textColor = tempColor;
                     }
+                    Bullet.style bulletStyle = Bullet.style.None;
+                    bool bDrawBullet = TextExpression.GetBulletStyle(sSplit, out bulletStyle);
 
                     string sTextWithoutTag = TextExpression.GetTextWithoutTag(sSplit);
                     SizeF stringfSize = g.MeasureString(sTextWithoutTag, newFont);
@@ -463,18 +466,21 @@ Color tempColor = Color.Black;
                             fTitleClip = new RectangleF(textPosition, stringfSize);
                             //gp2.AddString(sTextWithoutTag, newFont.FontFamily, (int)fontStyle, newFont.Size * g.DpiY / 72F, textPosition, format);
                             e.Graphics.DrawString(sTextWithoutTag, newFont, new SolidBrush(textColor), textPosition, format);
-                        
+
                             labelBounds = new RectangleF(labelBounds.X, labelBounds.Y + (stringfSize.Height / 2), labelBounds.Width, labelBounds.Height - (stringfSize.Height / 2));
                         }
                         else
                         {
                             //gp2.AddString(sTextWithoutTag, newFont.FontFamily, (int)fontStyle, newFont.Size * g.DpiY / 72F, textPosition, format);
+                            if (bulletStyle == Bullet.style.Left || bulletStyle == Bullet.style.Both)
+                                textPosition.X += (stringfSize.Height / 2);
                             e.Graphics.DrawString(sTextWithoutTag, newFont, new SolidBrush(textColor), textPosition, format);
                         }
 
                         // Draw a limit above the text if needed
                         TextExpression.DrawUpperScore(g, sSplit, textPosition, textColor, newFont, 1.0F);
                         TextExpression.DrawUnderScore(g, sSplit, textPosition, textColor, newFont, 1.0F);
+                        if (bDrawBullet) TextExpression.DrawBullet(g, textColor, bulletStyle, stringfSize, textPosition);
 
                         pos.Y += stringfSize.Height;
                     }
@@ -489,8 +495,6 @@ Color tempColor = Color.Black;
                 }
             }
             e.Graphics.DrawRectangle(new Pen(Color.Black), (int)labelBounds.X, (int)labelBounds.Y, (int)labelBounds.Width, (int)labelBounds.Height);
-
         }
-
     }
 }

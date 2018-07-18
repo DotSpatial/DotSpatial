@@ -111,6 +111,7 @@
     </Compile>
     <Compile Include="BitmapFormatException.cs" />
     <Compile Include="ClearStates.cs" />
+    <Compile Include="Core\Constant.cs" />
     <Compile Include="JenksBreaksCalcuation.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="ExtentExt.cs" />

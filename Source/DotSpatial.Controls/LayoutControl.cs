@@ -1908,8 +1908,6 @@ namespace DotSpatial.Controls
 
                 if (le != null)
                 {
-                    g.Clip = new Region(le.Rectangle);
-
                     le.DrawBackground(g, true);
                     le.Draw(g, true);
                     le.DrawOutline(g, true);

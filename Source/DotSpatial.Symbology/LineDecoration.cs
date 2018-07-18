@@ -286,6 +286,11 @@ namespace DotSpatial.Symbology
                             var dpi = g.DpiX;
                             var mm = GetSpacingValue_mm();
                             span = ((mm * dpi) / 25.4) * scaleWidth;
+                            if (DotSpatial.Symbology.Core.Constants.IsPrinting)
+                            {
+                                float fRes = (float)g.DpiX;
+                                span = span * 97.0F / fRes;
+                            }
                         }
                         else
                         {
@@ -299,7 +304,7 @@ namespace DotSpatial.Symbology
                             {
                                 if (!pastGP.IsOutlineVisible(spots[i].Position, pen))
                                 {
-                                    DrawImage(g, spots[i].Before, spots[i].After, spots[i].Position, i == 0 ? (FlipFirst ^ FlipAll) : FlipAll, symbol, oldMat, scaleWidth);
+                                    DrawImage(g, spots[i].Before, spots[i].After, spots[i].Position, i == 0 ? (FlipFirst ^ FlipAll) : FlipAll, oldMat, scaleWidth);
                                 }
                             }
                         }
@@ -531,6 +536,46 @@ namespace DotSpatial.Symbology
             }
 
             return liste;
+        }
+
+        /// <summary>
+        /// Draws the given symbol at the position calculated from locationPoint and _offset.
+        /// </summary>
+        /// <param name="g">Graphics-object needed for drawing.</param>
+        /// <param name="startPoint">StartPoint of the line locationPoint belongs to. Needed for caluclating the angle and the offset of the symbol.</param>
+        /// <param name="stopPoint">StopPoint of the line locationPoint belongs to. Needed for caluclating the angle and the offset of the symbol.</param>
+        /// <param name="locationPoint">Position where the center of the image should be drawn.</param>
+        /// <param name="Flip">Indicates whether the symbol should be flipped.</param>
+        /// <param name="oldMat">Matrix used for rotation.</param>
+        private void DrawImage(Graphics g, PointF startPoint, PointF stopPoint, PointF locationPoint, bool Flip, Matrix oldMat, double scaleWidth)
+        {
+            // Move the point to the position including the offset
+            PointF offset;
+            if (stopPoint == locationPoint)
+                offset = GetOffset(startPoint, locationPoint, scaleWidth);
+            else
+                offset = GetOffset(locationPoint, stopPoint, scaleWidth);
+
+            var point = new PointF((float)(locationPoint.X + offset.X), (float)(locationPoint.Y + offset.Y));
+
+            // rotate it by the given angle
+            float angle = 0F;
+            if (_rotateWithLine) angle = GetAngle(startPoint, stopPoint);
+            if (Flip) FlipAngle(ref angle);
+            Matrix rotated = g.Transform;
+            rotated.RotateAt(angle, point);
+            g.Transform = rotated;
+
+            // correct the position so that the symbol is drawn centered
+            var size2D = _symbol.GetSize();
+            var dWidth = size2D.Width * scaleWidth;
+            var dHeight = size2D.Height * scaleWidth;
+            point.X -= (float)(dWidth / 2);
+            point.Y -= (float)(dHeight / 2);
+            Rectangle rSymbol = new Rectangle(Point.Round(point), new Size((int)(dWidth), (int)(dHeight)));
+            _symbol.Draw(g, rSymbol);
+            g.Transform = oldMat;
+
         }
 
         /// <summary>

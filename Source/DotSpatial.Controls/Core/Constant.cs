@@ -6,6 +6,7 @@
 
 namespace DotSpatial.Controls.Core
 {
+    using GeoAPI.Geometries;
     using System;
     using System.Collections.Generic;
     using System.Drawing;
@@ -19,7 +20,10 @@ namespace DotSpatial.Controls.Core
         #region Properties / Attributes
 
         private RectangleF _bounds;
+        private Coordinate _center;
         private double _rotation;
+        private double _width;
+        private double _height;
 
         #endregion
 
@@ -34,6 +38,23 @@ namespace DotSpatial.Controls.Core
         public CGX_MaskBounds(RectangleF bounds, double rotation)
         {
             _bounds = bounds;
+            _center = null;
+            _width = -1;
+            _height = -1;
+            _rotation = rotation;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bounds"></param>
+        /// <param name="rotation"></param>
+        public CGX_MaskBounds(Coordinate center, double rotation, double dWidth, double dHeight)
+        {
+            _bounds = RectangleF.Empty;
+            _center = center;
+            _width = dWidth;
+            _height = dHeight;
             _rotation = rotation;
         }
 
@@ -45,6 +66,21 @@ namespace DotSpatial.Controls.Core
         public RectangleF Bounds
         {
             get { return _bounds; }
+        }
+
+        public Coordinate Center
+        {
+            get { return _center; }
+        }
+
+        public double Width
+        {
+            get { return _width; }
+        }
+
+        public double Height
+        {
+            get { return _height; }
         }
 
         public double Rotation
@@ -67,7 +103,7 @@ namespace DotSpatial.Controls.Core
         private double _offsetBottom;
         private double _offsetLeft;
         private double _offsetRight;
-        
+
         #endregion
 
         //========================================================
@@ -177,7 +213,7 @@ namespace DotSpatial.Controls.Core
 
         //========================================================
         #region Methods
-        
+
         public static void AddMask(string[] layersName, Tuple<string, string> parentName, RectangleF bounds, double angle, Tuple<double, double, double, double> margins)
         {
             try
@@ -195,7 +231,7 @@ namespace DotSpatial.Controls.Core
                     mask.OffsetLeft = margins.Item3;
                     mask.OffsetBottom = margins.Item4;
                     Tuple<string, string> sGet = mask.Parents.FindLast(
-                            delegate(Tuple<string, string> maskParent)
+                            delegate (Tuple<string, string> maskParent)
                             { return ((maskParent.Item1 == parentName.Item1) && (maskParent.Item2 == parentName.Item2)); });
                     if (sGet == null)
                     {
@@ -203,6 +239,37 @@ namespace DotSpatial.Controls.Core
                     }
 
                     mask.Masks.Add(new CGX_MaskBounds(bounds, angle));
+                }
+            }
+            catch (Exception ex)
+            { Console.WriteLine(ex.Message); }
+        }
+
+        public static void AddMask(string[] layersName, Tuple<string, string> parentName, Coordinate center, double dWidth, double dHeight, double angle, Tuple<double, double, double, double> margins)
+        {
+            try
+            {
+                if (Masks == null)
+                {
+                    Masks = new List<CGX_Mask>();
+                }
+
+                foreach (string slayer in layersName)
+                {
+                    CGX_Mask mask = GetOrCreateMask(slayer);
+                    mask.OffsetTop = margins.Item1;
+                    mask.OffsetRight = margins.Item2;
+                    mask.OffsetLeft = margins.Item3;
+                    mask.OffsetBottom = margins.Item4;
+                    Tuple<string, string> sGet = mask.Parents.FindLast(
+                            delegate (Tuple<string, string> maskParent)
+                            { return ((maskParent.Item1 == parentName.Item1) && (maskParent.Item2 == parentName.Item2)); });
+                    if (sGet == null)
+                    {
+                        mask.Parents.Add(parentName);
+                    }
+
+                    mask.Masks.Add(new CGX_MaskBounds(center, angle, dWidth, dHeight));
                 }
             }
             catch (Exception ex)
@@ -219,7 +286,7 @@ namespace DotSpatial.Controls.Core
                 }
 
                 return Masks.FindLast(
-                        delegate(CGX_Mask bk)
+                        delegate (CGX_Mask bk)
                         { return bk.LayerName == slayername; });
             }
             catch (Exception ex)
@@ -227,7 +294,7 @@ namespace DotSpatial.Controls.Core
 
             return null;
         }
-        
+
         public static List<CGX_Mask> GetMasks()
         {
             if (Masks == null)
@@ -245,7 +312,7 @@ namespace DotSpatial.Controls.Core
             {
                 Masks = new List<CGX_Mask>();
             }
-            
+
             Masks.Clear();
         }
 
@@ -269,7 +336,7 @@ namespace DotSpatial.Controls.Core
                 if (Masks != null)
                 {
                     CGX_Mask foundMask = Masks.FindLast(
-                        delegate(CGX_Mask bk)
+                        delegate (CGX_Mask bk)
                         {
                             return bk.LayerName == sLayerName;
                         });
@@ -277,7 +344,7 @@ namespace DotSpatial.Controls.Core
                     if (foundMask != null)
                     {
                         Tuple<string, string> sGet = foundMask.Parents.FindLast(
-                                delegate(Tuple<string, string> maskParent)
+                                delegate (Tuple<string, string> maskParent)
                                 { return ((maskParent.Item1 == sParent.Item1) && (maskParent.Item2 == sParent.Item2)); });
                         if (sGet != null)
                         {
@@ -317,7 +384,7 @@ namespace DotSpatial.Controls.Core
         }
 
         private static CGX_Mask GetOrCreateMask(string sLayerName)
-        {            
+        {
             CGX_Mask newMask = null;
 
             try
@@ -325,7 +392,7 @@ namespace DotSpatial.Controls.Core
                 if (Masks != null)
                 {
                     newMask = Masks.FindLast(
-                        delegate(CGX_Mask bk)
+                        delegate (CGX_Mask bk)
                         {
                             return bk.LayerName == sLayerName;
                         });

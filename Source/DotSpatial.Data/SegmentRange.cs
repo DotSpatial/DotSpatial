@@ -120,32 +120,32 @@ namespace DotSpatial.Data
             /// <returns>True if a member is found, false if there are no more members</returns>
             public bool MoveNext()
             {
-                _index++;
-                if (_index == 0)
+                if (_verts.Length > 0)
                 {
-                    Vertex p1 = new Vertex(_verts[_start * 2], _verts[(_start * 2) + 1]);
-                    Vertex p2 = new Vertex(_verts[(_start * 2) + 2], _verts[(_start * 2) + 3]);
-                    Current = new Segment(p1, p2);
-                    return true;
-                }
-
-                if (_index == _numVertices - 1)
-                {
-                    // We have reached the last vertex, but if it is a polygon we wrap this around
-                    if (_range.FeatureType != FeatureType.Polygon) return false;
-
-                    Vertex p1 = Current.P2;
-                    Vertex p2 = new Vertex(_verts[_start * 2], _verts[(_start * 2) + 1]);
-                    Current = new Segment(p1, p2);
-                    return true;
-                }
-
-                if (_index > 0 && _index < _numVertices - 1)
-                {
-                    Vertex p1 = Current.P2;
-                    Vertex p2 = new Vertex(_verts[2 * (_start + _index + 1)], _verts[(2 * (_start + _index + 1)) + 1]);
-                    Current = new Segment(p1, p2);
-                    return true;
+                    _index++;
+                    if (_index == 0)
+                    {
+                        Vertex p1 = new Vertex(_verts[_start * 2], _verts[_start * 2 + 1]);
+                        Vertex p2 = new Vertex(_verts[_start * 2 + 2], _verts[_start * 2 + 3]);
+                        Current = new Segment(p1, p2);
+                        return true;
+                    }
+                    if (_index == _numVertices - 1)
+                    {
+                        // We have reached the last vertex, but if it is a polygon we wrap this around
+                        if (_range.FeatureType != FeatureType.Polygon) return false;
+                        Vertex p1 = Current.P2;
+                        Vertex p2 = new Vertex(_verts[_start * 2], _verts[_start * 2 + 1]);
+                        Current = new Segment(p1, p2);
+                        return true;
+                    }
+                    if (_index > 0 && _index < _numVertices - 1)
+                    {
+                        Vertex p1 = Current.P2;
+                        Vertex p2 = new Vertex(_verts[2 * (_start + _index + 1)], _verts[2 * (_start + _index + 1) + 1]);
+                        Current = new Segment(p1, p2);
+                        return true;
+                    }
                 }
 
                 return false;

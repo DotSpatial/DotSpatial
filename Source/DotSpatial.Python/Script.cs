@@ -1,30 +1,52 @@
-﻿using IronPython.Hosting;
-using Microsoft.Scripting;
+﻿using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DotSpatial.Python
 {
     public class Script
     {
+        private static ScriptEngine _engine = IronPython.Hosting.Python.CreateEngine();
+        private static ScriptScope _scope = CreateScope();
+        private static string _pythonFunctionsPath = "";
+
+        public static void SetPythonFunctionsPath(string sPath)
+        {
+            _pythonFunctionsPath = sPath;
+            _scope = CreateScope();
+        }
+
+        private static ScriptScope CreateScope()
+        {
+            ScriptScope ScriptScope = null;
+            try
+            {
+
+                ScriptRuntime sr = IronPython.Hosting.Python.CreateRuntime();
+
+                if (System.IO.File.Exists(_pythonFunctionsPath))
+                    ScriptScope = sr.UseFile(_pythonFunctionsPath);
+                else if (_engine != null)
+                    ScriptScope = _engine.CreateScope();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+
+            }
+            return ScriptScope;
+        }
+
         public static string Evaluate(string code)
         {
 
             try
             {
+                ScriptSource source = _engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
 
-                ScriptEngine engine = IronPython.Hosting.Python.CreateEngine();
-                ScriptScope scope = engine.CreateScope();
-                ScriptSource source = engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
-                scope = engine.CreateScope();
-
-                var actual = source.Execute(scope);
-                Func<object> func = scope.GetVariable<Func<object>>("Main");
+                var actual = source.Execute(_scope);
+                Func<object> func = _scope.GetVariable<Func<object>>("Main");
                 return func().ToString();
 
 
@@ -40,14 +62,10 @@ namespace DotSpatial.Python
 
             try
             {
+                ScriptSource source = _engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
 
-                ScriptEngine engine = IronPython.Hosting.Python.CreateEngine();
-                ScriptScope scope = engine.CreateScope();
-                ScriptSource source = engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
-                scope = engine.CreateScope();
-
-                var actual = source.Execute(scope);
-                Func<object> func = scope.GetVariable<Func<object>>("Main");
+                var actual = source.Execute(_scope);
+                Func<object> func = _scope.GetVariable<Func<object>>("Main");
                 return func().ToString();
 
 

@@ -241,6 +241,11 @@ namespace DotSpatial.Controls
         /// <param name="printing">Boolean, true if printing to an actual print document</param>
         public override void Draw(Graphics g, bool printing)
         {
+            GraphicsPath GP = new GraphicsPath();
+            StringFormat format = new StringFormat();
+            format.LineAlignment = StringAlignment.Near;
+            format.Alignment = StringAlignment.Near;
+
             if (_layoutMap == null || _layoutMap.Scale == 0) return;
 
             // Sets up the pens and brushes
@@ -275,19 +280,26 @@ namespace DotSpatial.Controls
 
             g.DrawLine(scalePen, leftStart, fontHeight * 1.6f, leftStart + (breakWidth * _numBreaks), fontHeight * 1.6f);
 
-            // g.DrawString("1 : " + string.Format("{0:0, }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
-            // CGX
-            g.DrawString("1 : " + string.Format("{0:0 }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
+            //g.DrawString("1 : " + String.Format("{0:0, }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
+            //CGX
+            PointF pointScale = new PointF(leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
+            GP.AddString("1 : " + String.Format("{0:0 }", Map.Scale), _font.FontFamily, (int)_font.Style, _font.SizeInPoints * 96F / 72F, pointScale, format);
+
             for (int i = startBreak; i <= _numBreaks + startBreak; i++)
             {
+                PointF pUp = new PointF(leftStart, fontHeight + (fontHeight * 1.1f));
+                PointF pDown = new PointF(leftStart, fontHeight * 1.1f);
+
                 g.DrawLine(scalePen, leftStart, fontHeight * 1.1f, leftStart, fontHeight + (fontHeight * 1.1f));
-                g.DrawString(Math.Abs(geoBreakWidth * i).ToString(CultureInfo.InvariantCulture), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * i).ToString(), _font).Width / 2), 0);
+                GP.AddString(Math.Abs(geoBreakWidth * i).ToString(CultureInfo.InvariantCulture), _font.FontFamily, (int)_font.Style, _font.SizeInPoints * 96F / 72F, new PointF(leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * i).ToString(), _font).Width / 2), 0), format);
                 leftStart = leftStart + breakWidth;
             }
+            GP.AddString(_unitText, _font.FontFamily, (int)_font.Style, _font.SizeInPoints * 96F / 72F, new PointF(leftStart - breakWidth + (fontHeight / 2), fontHeight * 1.1f), format);
 
-            g.DrawString(_unitText, _font, scaleBrush, leftStart - breakWidth + (fontHeight / 2), fontHeight * 1.1f);
+            g.FillPath(new SolidBrush(_color), GP);
+            GP.Dispose();
 
-            // Restore the old transform
+            //Restore the old transform
             g.Transform = oldTransform;
             g.TextRenderingHint = oldHint;
         }

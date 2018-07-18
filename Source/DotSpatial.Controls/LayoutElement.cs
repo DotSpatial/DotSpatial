@@ -397,6 +397,8 @@ namespace DotSpatial.Controls
                         value.Y = _location.Y + _size.Height - 10;
                 }
 
+                //Updates the invalidation rectangle to be a bit bigger to deal with overlaps
+                Rectangle.Inflate(5, 5);
                 _location = value.Location;
                 _size = value.Size;
 
@@ -630,15 +632,15 @@ namespace DotSpatial.Controls
         public void DrawBackground(Graphics g, bool printing)
         {
             if (Background != null)
-            {   
+            {
                 // CGX
-                //graphicspath gp = new graphicspath();
-                //gp.addrectangle(rectangle);
-                //foreach (ipattern mypattern in background.patterns)
-                //{
-                //    mypattern.bounds = rectangle;
-                //    mypattern.fillpath(g, gp);
-                //}
+                GraphicsPath gp = new GraphicsPath();
+                gp.AddRectangle(Rectangle);
+                foreach (IPattern myPattern in Background.Patterns)
+                {
+                    myPattern.Bounds = Rectangle;
+                    myPattern.FillPath(g, gp);
+                }
             }
         }
 

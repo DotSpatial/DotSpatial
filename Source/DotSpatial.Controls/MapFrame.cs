@@ -901,7 +901,7 @@ namespace DotSpatial.Controls
                 }
 
                 if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
-                _buffer = _backBuffer;
+                _buffer = _backBuffer.Clone() as Image;
                 if (setView)
                     _view = _backView;
 
@@ -1140,6 +1140,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ResetBuffer()
         {
+            _backBuffer?.Dispose();
+
             _backBuffer = null;
 
             // reset the view rectangle to represent the same region
