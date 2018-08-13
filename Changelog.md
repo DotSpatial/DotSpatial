@@ -65,6 +65,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Removed unnecessary methods in LayoutControl
 
 ### Fixed
+- Fix to ProjectionInfo to support projections with VERTCS UNIT that occurs in a block after the main projection.
 - Satellite's missing properties (#958)
 - Parameters for the Austrian Bundesmeldenetz in DotSpatial.Projections.ProjectedCategories.NationalGrids are incorrect (#855)
 - Raster extent shifts from correct extent (#725)
