@@ -221,7 +221,6 @@ namespace DotSpatial.Projections
         /// </summary>
         public int? Zone { get; set; }
 
-
         // ReSharper disable InconsistentNaming
         /// <summary>
         ///   Gets or sets the alpha/ azimuth.
@@ -1308,10 +1307,10 @@ namespace DotSpatial.Projections
                     double b = GeographicInfo.Datum.Spheroid.PolarRadius;
                     double r =
                         Math.Sqrt(
-                            (a * a
+                            ((a * a)
                              +
-                             a * b * b
-                             / (Math.Sqrt(a * a - b * b) * Math.Log((a + Math.Sqrt(a * a - b * b)) / b, Math.E)))
+                             (a * b * b)
+                             / (Math.Sqrt((a * a) - (b * b)) * Math.Log((a + Math.Sqrt((a * a) - (b * b))) / b, Math.E)))
                             / 2);
                     GeographicInfo.Datum.Spheroid = new Spheroid(r);
                 }
@@ -1344,6 +1343,5 @@ namespace DotSpatial.Projections
         }
 
         #endregion
-        
     }
 }
