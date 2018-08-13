@@ -1263,6 +1263,14 @@ namespace DotSpatial.Projections
             _longitudeOf2nd = GetParameter("Longitude_Of_2nd", esriString);
             LatitudeOfOrigin = GetParameter(new[] { "Latitude_Of_Origin", "Latitude_Of_Center", "Central_Parallel" }, ref _latitudeOfOriginAlias, esriString);
             iStart = esriString.LastIndexOf("UNIT", StringComparison.Ordinal);
+            if (esriString.Contains("VERTCS"))
+            {
+                String woVert = esriString.Substring(iStart);
+                if (woVert.Contains("UNIT"))
+                {
+                    iStart = woVert.LastIndexOf("UNIT", StringComparison.Ordinal);
+                }
+            }
             string unit = esriString.Substring(iStart, esriString.Length - iStart);
             Unit.ParseEsriString(unit);
 
