@@ -1309,8 +1309,8 @@ namespace DotSpatial.Projections
                         Math.Sqrt(
                             ((a * a)
                              +
-                             (a * b * b)
-                             / (Math.Sqrt((a * a) - (b * b)) * Math.Log((a + Math.Sqrt((a * a) - (b * b))) / b, Math.E)))
+                             ((a * b * b)
+                             / (Math.Sqrt((a * a) - (b * b)) * Math.Log((a + Math.Sqrt((a * a) - (b * b))) / b, Math.E))))
                             / 2);
                     GeographicInfo.Datum.Spheroid = new Spheroid(r);
                 }
