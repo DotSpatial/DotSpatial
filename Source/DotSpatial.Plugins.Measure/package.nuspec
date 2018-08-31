@@ -20,5 +20,6 @@
   </metadata>
   <files>
     <file src="build\native\*" target="build\native\" />
+    <file src="$solutiondir$bin\$configuration$\**\$id$.pdb" target="lib\net461\" />
   </files>
 </package>

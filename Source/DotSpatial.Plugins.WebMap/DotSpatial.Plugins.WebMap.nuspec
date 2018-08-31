@@ -24,6 +24,7 @@
     </references>
   </metadata>
   <files>
+    <file src="$solutiondir$bin\$configuration$\**\$id$.pdb" target="lib\net461\" />
     <file src="Lib\Brutile.dll" target="lib\net461"/>
     <file src="Lib\Brutile.Desktop.dll" target="lib\net461"/>
     <file src="app.config" target="lib\net461\DotSpatial.Plugins.WebMap.dll.config" />

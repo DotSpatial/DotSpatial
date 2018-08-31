@@ -18,6 +18,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="$solutiondir$bin\$configuration$\**\$id$.pdb" target="lib\net461\" />
     <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net461\" />
     <file src="build\native\*" target="build\native\" />
   </files>

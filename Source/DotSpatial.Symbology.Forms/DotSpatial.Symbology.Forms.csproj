@@ -1430,7 +1430,7 @@
     <None Include="Resources\help_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\zoom_16x16.png" />
+    <None Include="Resources\zoom_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
