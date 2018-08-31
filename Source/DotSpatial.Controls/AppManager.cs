@@ -401,6 +401,51 @@ namespace DotSpatial.Controls
             //DataManager.DefaultDataManager.ProgressHandler = ProgressHandler; // CGX
         }
 
+        /// Loads Extensions using MEF and then activates them.
+        /// Should only be called once on startup.
+        /// </summary>
+        public virtual void LoadExtensionsExclusively(string[] names)
+        {
+            if (DesignMode) return;
+
+            if (Extensions.Any())
+            {
+                throw new InvalidOperationException("LoadExtensions() should only be called once. Subsequent calls should be made to RefreshExtensions(). ");
+            }
+
+            PackageManager.RemovePendingPackagesAndExtensions();
+            _splashScreen = SplashScreenHelper.GetSplashScreenManager();
+
+            Thread updateThread = new Thread(AppLoadExtensions);
+            updateThread.Start();
+
+            // Update splash screen's progress bar while thread is active.
+            while (updateThread.IsAlive)
+            {
+                UpdateSplashScreen(_message);
+            }
+
+            updateThread.Join();
+
+            ActivateExtensionsExclusively(names);
+            OnExtensionsActivated(EventArgs.Empty);
+
+            if (_splashScreen != null)
+            {
+                _splashScreen.Deactivate();
+                _splashScreen = null;
+            }
+
+            // Set the DefaultDataManager progress handler.
+            // It doesn’t seem like the solution is as simple as adding the
+            //        [Import(typeof(IProgressHandler), AllowDefault = true)]
+            // Attribute to the ProgressHandler property on DataManager, because the ProgressHandler we are typically
+            // using only export IStatusControl and we would require each IStatusControl to
+            //    [Export(typeof(DotSpatial.Data.IProgressHandler))]
+            // To get that working.
+            DataManager.DefaultDataManager.ProgressHandler = ProgressHandler;
+        }
+
         /// <summary>
         /// Triggers the ExtensionsActivated event.
         /// </summary>

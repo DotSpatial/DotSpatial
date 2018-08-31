@@ -15,4 +15,7 @@
       <dependency id="DynamicLanguageRuntime" version="1.2.1" />
     </dependencies>
   </metadata>
+  <files>  
+    <file src="$solutiondir$bin\$configuration$\**\$id$.pdb" target="lib\net461\" />
+  </files>
 </package>
