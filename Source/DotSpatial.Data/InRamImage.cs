@@ -89,8 +89,8 @@ namespace DotSpatial.Data
             float m22 = Convert.ToSingle(a[5] * -dy);
             float m21 = Convert.ToSingle(a[2] * dx);
             float m12 = Convert.ToSingle(a[4] * -dy);
-            float l = (float)(a[0] - (.5 * (a[1] + a[2]))); // Left of top left pixel
-            float t = (float)(a[3] - (.5 * (a[4] + a[5]))); // top of top left pixel
+            double l = a[0] - .5 * (a[1] + a[2]); // Left of top left pixel
+            double t = a[3] - .5 * (a[4] + a[5]); // top of top left pixel
             float xShift = (float)((l - envelope.MinX) * dx);
             float yShift = (float)((envelope.MaxY - t) * dy);
 
