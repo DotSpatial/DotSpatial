@@ -35,6 +35,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         private Coordinate _activeVertex;
         private Coordinate _closedCircleCoord;
         private Coordinate _dragCoord;
+        private Coordinate _dragCoord_Old;
         private bool _dragging;
         private IFeatureSet _featureSet;
         private Rectangle _imageRect;
@@ -205,6 +206,9 @@ namespace DotSpatial.Plugins.ShapeEditor
                     if (e.Button == MouseButtons.Right)
                     {
                         _dragging = false;
+                        _dragCoord.X = _dragCoord_Old.X;
+                        _dragCoord.Y = _dragCoord_Old.Y;
+
                         Map.Invalidate();
                         Map.IsBusy = false;
                     }
@@ -270,6 +274,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                             _dragging = true;
                             Map.IsBusy = true;
                             _dragCoord = _activeFeature.Geometry.Coordinates[0];
+                            _dragCoord_Old = _dragCoord.Copy();
                             MapPointLayer mpl = _layer as MapPointLayer;
                             mpl?.SetVisible(_activeFeature, false);
 
@@ -435,6 +440,8 @@ namespace DotSpatial.Plugins.ShapeEditor
                                     _closedCircleCoord = null;
                                 }
 
+                                _dragCoord_Old = _dragCoord.Copy();
+
                                 Map.Invalidate();
                                 return true;
                             }
@@ -470,6 +477,8 @@ namespace DotSpatial.Plugins.ShapeEditor
                                     _previousPoint = coords[ic - 1];
                                     _nextPoint = coords[ic + 1];
                                 }
+
+                                _dragCoord_Old = _dragCoord.Copy();
 
                                 Map.Invalidate();
                                 return true;
@@ -513,75 +522,78 @@ namespace DotSpatial.Plugins.ShapeEditor
             bool requiresInvalidate = false;
             foreach (IFeature feature in _featureSet.Features)
             {
-                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
+                if (Map.ViewExtents.Intersects(feature.Geometry.EnvelopeInternal))
                 {
-                    MapPointLayer mpl = _layer as MapPointLayer;
-                    if (mpl != null)
+                    if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
                     {
-                        int w = 3;
-                        int h = 3;
-                        PointCategory pc = mpl.GetCategory(feature) as PointCategory;
-                        if (pc != null)
+                        MapPointLayer mpl = _layer as MapPointLayer;
+                        if (mpl != null)
                         {
-                            if (pc.Symbolizer.ScaleMode != ScaleMode.Geographic)
+                            int w = 3;
+                            int h = 3;
+                            PointCategory pc = mpl.GetCategory(feature) as PointCategory;
+                            if (pc != null)
                             {
-                                Size2D size = pc.Symbolizer.GetSize();
-                                w = (int)size.Width;
-                                h = (int)size.Height;
+                                if (pc.Symbolizer.ScaleMode != ScaleMode.Geographic)
+                                {
+                                    Size2D size = pc.Symbolizer.GetSize();
+                                    w = (int)size.Width;
+                                    h = (int)size.Height;
+                                }
+                            }
+
+                            _imageRect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w, h);
+                            if (_imageRect.Contains(Map.ProjToPixel(feature.Geometry.Coordinates[0])))
+                            {
+                                _activeFeature = feature;
+                                _oldCategory = mpl.GetCategory(feature);
+                                if (_selectedCategory == null)
+                                {
+                                    _selectedCategory = _oldCategory.Copy();
+                                    _selectedCategory.SetColor(Color.Red);
+                                    _selectedCategory.LegendItemVisible = false;
+                                }
+
+                                mpl.SetCategory(_activeFeature, _selectedCategory);
                             }
                         }
 
-                        _imageRect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w, h);
-                        if (_imageRect.Contains(Map.ProjToPixel(feature.Geometry.Coordinates[0])))
+                        requiresInvalidate = true;
+                    }
+                    else
+                    {
+                        if (feature.Geometry.Intersects(env))
                         {
                             _activeFeature = feature;
-                            _oldCategory = mpl.GetCategory(feature);
-                            if (_selectedCategory == null)
+                            _oldCategory = _layer.GetCategory(_activeFeature);
+
+                            if (_featureSet.FeatureType == FeatureType.Polygon)
                             {
-                                _selectedCategory = _oldCategory.Copy();
-                                _selectedCategory.SetColor(Color.Red);
-                                _selectedCategory.LegendItemVisible = false;
-                            }
-
-                            mpl.SetCategory(_activeFeature, _selectedCategory);
-                        }
-                    }
-
-                    requiresInvalidate = true;
-                }
-                else
-                {
-                    if (feature.Geometry.Intersects(env))
-                    {
-                        _activeFeature = feature;
-                        _oldCategory = _layer.GetCategory(_activeFeature);
-
-                        if (_featureSet.FeatureType == FeatureType.Polygon)
-                        {
-                            IPolygonCategory pc = _activeCategory as IPolygonCategory;
-                            if (pc == null)
-                            {
-                                _activeCategory = new PolygonCategory(Color.FromArgb(55, 255, 0, 0), Color.Red, 1)
+                                IPolygonCategory pc = _activeCategory as IPolygonCategory;
+                                if (pc == null)
                                 {
-                                    LegendItemVisible = false
-                                };
+                                    _activeCategory = new PolygonCategory(Color.FromArgb(55, 255, 0, 0), Color.Red, 1)
+                                    {
+                                        LegendItemVisible = false
+                                    };
+                                }
                             }
-                        }
 
-                        if (_featureSet.FeatureType == FeatureType.Line)
-                        {
-                            ILineCategory pc = _activeCategory as ILineCategory;
-                            if (pc == null)
+                            if (_featureSet.FeatureType == FeatureType.Line)
                             {
-                                _activeCategory = new LineCategory(Color.Red, 3)
+                                ILineCategory pc = _activeCategory as ILineCategory;
+                                if (pc == null)
                                 {
-                                    LegendItemVisible = false
-                                };
+                                    _activeCategory = new LineCategory(Color.Red, 3)
+                                    {
+                                        LegendItemVisible = false
+                                    };
+                                }
                             }
-                        }
 
-                        _layer.SetCategory(_activeFeature, _activeCategory);
-                        requiresInvalidate = true;
+                            _layer.SetCategory(_activeFeature, _activeCategory);
+                            requiresInvalidate = true;
+                        }
                     }
                 }
             }

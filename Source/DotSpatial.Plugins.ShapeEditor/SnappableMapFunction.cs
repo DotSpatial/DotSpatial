@@ -8,6 +8,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -62,6 +63,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         protected int SnapTol { get; set; } = 9;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the current snapped coordinate is a vertex or an edge.
+        /// </summary>
+        protected string SnappingType { get; set; }
+
         #endregion
 
         #region Methods
@@ -97,19 +103,69 @@ namespace DotSpatial.Plugins.ShapeEditor
                 return false;
 
             Envelope env = pix.ToEnvelope();
+            NetTopologySuite.Geometries.Point mouse_onMap = new NetTopologySuite.Geometries.Point(Map.PixelToProj(e.Location));
 
             foreach (IFeatureLayer layer in SnapLayers.Where(_ => _.Snappable && _.IsVisible))
             {
                 foreach (IFeature feat in layer.DataSet.Features)
                 {
-                    foreach (Coordinate c in feat.Geometry.Coordinates)
+                    IGeometry featGeom = feat.Geometry;
+
+                    // If the feature is partially or totaly visible in the view.
+                    if (Map.ViewExtents.Intersects(featGeom.EnvelopeInternal))
                     {
-                        // If the mouse envelope contains the current coordinate, we found a snap location.
-                        if (env.Contains(c))
+                        // System.Console.WriteLine(feat.Fid);
+                        int coordCounter = 0;
+                        foreach (Coordinate c in feat.Geometry.Coordinates)
                         {
-                            snappedCoord = c;
-                            SnappedFeature = feat;
-                            return true;
+                            // If the mouse envelope contains the current coordinate, we found a snap location.
+                            if (env.Contains(c))
+                            {
+                                snappedCoord = c;
+                                SnappedFeature = feat;
+                                SnappingType = "v";
+                                return true;
+                            }
+                            else
+                            {
+                                if (feat.FeatureType != FeatureType.Point && feat.FeatureType != FeatureType.MultiPoint)
+                                {
+                                    if (coordCounter > 0)
+                                    {
+                                        double edge_Distance = 0;
+                                        if (layer.DataSet.CoordinateType.Equals(CoordinateType.Z))
+                                        {
+                                            edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance3D(c);
+                                        }
+                                        else
+                                        {
+                                            edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance(c);
+                                        }
+
+                                        if (edge_Distance > 0)
+                                        {
+                                            List<Coordinate> edgeCoords = new List<Coordinate>();
+                                            edgeCoords.Add(feat.Geometry.Coordinates[coordCounter - 1]);
+                                            edgeCoords.Add(c);
+
+                                            LineString edge = new LineString(edgeCoords.ToArray());
+
+                                            if (mouse_onMap.Distance(edge) < (env.Width / 2))
+                                            {
+                                                NetTopologySuite.LinearReferencing.LengthIndexedLine indexedEedge = new NetTopologySuite.LinearReferencing.LengthIndexedLine(edge);
+                                                double proj_tIndex = indexedEedge.Project(mouse_onMap.Coordinate);
+
+                                                snappedCoord = indexedEedge.ExtractPoint(proj_tIndex);
+                                                SnappedFeature = feat;
+                                                SnappingType = "e";
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            coordCounter++;
                         }
                     }
                 }
@@ -124,7 +180,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         /// <param name="prevWasSnapped">Indicates whether the mouse was snapped to a point before.</param>
         /// <param name="pos">Current position.</param>
-        protected void DoMouseMoveForSnapDrawing(bool prevWasSnapped, Point pos)
+        protected void DoMouseMoveForSnapDrawing(bool prevWasSnapped, System.Drawing.Point pos)
         {
             // Invalidate the region around the mouse so that the previous snap colors are erased.
             if ((prevWasSnapped || IsSnapped) && DoSnapping)
@@ -139,11 +195,19 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         /// <param name="graphics">graphics to draw on</param>
         /// <param name="pos">point where the circles center will be</param>
-        protected void DoSnapDrawing(Graphics graphics, Point pos)
+        protected void DoSnapDrawing(Graphics graphics, System.Drawing.Point pos)
         {
             if (IsSnapped)
             {
-                graphics.DrawEllipse(SnapPen, pos.X - 5, pos.Y - 5, 10, 10);
+                switch (SnappingType)
+                {
+                    case "v":
+                        graphics.DrawEllipse(SnapPen, pos.X - 5, pos.Y - 5, 10, 10);
+                        break;
+                    case "e":
+                        graphics.DrawEllipse(SnapPen, pos.X - 2, pos.Y - 2, 4, 4);
+                        break;
+                }
             }
         }
 

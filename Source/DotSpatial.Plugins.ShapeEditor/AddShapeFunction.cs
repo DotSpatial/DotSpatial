@@ -119,6 +119,12 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e">An empty EventArgs class.</param>
         public void FinishPart(object sender, EventArgs e)
         {
+            if (_coordinates == null) return;
+            if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
+            {
+                if (_coordinates.Count < 2) return;
+            }
+
             if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[_coordinates.Count - 1])) _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
 
             _parts.Add(_coordinates);
@@ -143,11 +149,15 @@ namespace DotSpatial.Plugins.ShapeEditor
 
                 if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
                 {
+                    // if (_coordinates == null || _coordinates.Count < 2) return;
                     FinishPart(sender, e);
+
+                    if (_parts == null || _parts.Count <= 0) return;
                     Shape shp = new Shape(_featureSet.FeatureType);
                     foreach (List<Coordinate> part in _parts)
                     {
-                        if (part.Count >= 2)
+                        // In order to avoid exceptions
+                        if (part != null && part.Count >= 2)
                         {
                             shp.AddPart(part, _featureSet.CoordinateType);
                         }
