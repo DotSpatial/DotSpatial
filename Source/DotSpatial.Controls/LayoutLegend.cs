@@ -300,10 +300,11 @@ namespace DotSpatial.Controls
             }
 
             g.TranslateTransform(LocationF.X + (col * itemSize.Width), LocationF.Y + (row * itemSize.Height));
-            if (item.LegendText is null)
+            if (item.LegendText == null)
             {
-                item.LegendText = String.Empty;
+                item.LegendText = string.Empty;
             }
+
             item.PrintLegendItem(g, _font, _color, itemSize);
             g.TranslateTransform(-(LocationF.X + (col * itemSize.Width)), -(LocationF.Y + (row * itemSize.Height)));
             row++;

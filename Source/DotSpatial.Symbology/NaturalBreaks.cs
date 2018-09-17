@@ -183,7 +183,7 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         public List<double> GetResults()
         {
-            return(_resultClasses);
+            return _resultClasses;
         }
         #endregion
     }
