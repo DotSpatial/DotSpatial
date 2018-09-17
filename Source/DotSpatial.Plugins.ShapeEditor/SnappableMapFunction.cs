@@ -39,6 +39,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         public bool DoSnapping { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether snapping is performed or not.
+        /// </summary>
+        public bool DoEdgeSnapping { get; set; }
+
+        /// <summary>
         /// Gets the feature the computed snappedCoord belongs to.
         /// </summary>
         public IFeature SnappedFeature { get; private set; }
@@ -128,37 +133,40 @@ namespace DotSpatial.Plugins.ShapeEditor
                             }
                             else
                             {
-                                if (feat.FeatureType != FeatureType.Point && feat.FeatureType != FeatureType.MultiPoint)
+                                if (DoEdgeSnapping)
                                 {
-                                    if (coordCounter > 0)
+                                    if (feat.FeatureType != FeatureType.Point && feat.FeatureType != FeatureType.MultiPoint)
                                     {
-                                        double edge_Distance = 0;
-                                        if (layer.DataSet.CoordinateType.Equals(CoordinateType.Z))
+                                        if (coordCounter > 0)
                                         {
-                                            edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance3D(c);
-                                        }
-                                        else
-                                        {
-                                            edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance(c);
-                                        }
-
-                                        if (edge_Distance > 0)
-                                        {
-                                            List<Coordinate> edgeCoords = new List<Coordinate>();
-                                            edgeCoords.Add(feat.Geometry.Coordinates[coordCounter - 1]);
-                                            edgeCoords.Add(c);
-
-                                            LineString edge = new LineString(edgeCoords.ToArray());
-
-                                            if (mouse_onMap.Distance(edge) < (env.Width / 2))
+                                            double edge_Distance = 0;
+                                            if (layer.DataSet.CoordinateType.Equals(CoordinateType.Z))
                                             {
-                                                NetTopologySuite.LinearReferencing.LengthIndexedLine indexedEedge = new NetTopologySuite.LinearReferencing.LengthIndexedLine(edge);
-                                                double proj_tIndex = indexedEedge.Project(mouse_onMap.Coordinate);
+                                                edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance3D(c);
+                                            }
+                                            else
+                                            {
+                                                edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance(c);
+                                            }
 
-                                                snappedCoord = indexedEedge.ExtractPoint(proj_tIndex);
-                                                SnappedFeature = feat;
-                                                SnappingType = "e";
-                                                return true;
+                                            if (edge_Distance > 0)
+                                            {
+                                                List<Coordinate> edgeCoords = new List<Coordinate>();
+                                                edgeCoords.Add(feat.Geometry.Coordinates[coordCounter - 1]);
+                                                edgeCoords.Add(c);
+
+                                                LineString edge = new LineString(edgeCoords.ToArray());
+
+                                                if (mouse_onMap.Distance(edge) < (env.Width / 2))
+                                                {
+                                                    NetTopologySuite.LinearReferencing.LengthIndexedLine indexedEedge = new NetTopologySuite.LinearReferencing.LengthIndexedLine(edge);
+                                                    double proj_tIndex = indexedEedge.Project(mouse_onMap.Coordinate);
+
+                                                    snappedCoord = indexedEedge.ExtractPoint(proj_tIndex);
+                                                    SnappedFeature = feat;
+                                                    SnappingType = "e";
+                                                    return true;
+                                                }
                                             }
                                         }
                                     }
