@@ -20,10 +20,12 @@ namespace DotSpatial.Plugins.ShapeEditor
         private readonly IHeaderControl _header;
         private IFeatureLayer _activeLayer;
         private SimpleActionItem _addShape;
+        private SimpleActionItem _edgeSnapping;
         private AddShapeFunction _addShapeFunction;
         private bool _disposed;
 
         private bool _doSnapping = true;
+        private bool _doEdgeSnapping = true;
 
         private IMap _geoMap;
         private MoveVertexFunction _moveVertexFunction;
@@ -161,6 +163,15 @@ namespace DotSpatial.Plugins.ShapeEditor
                 SmallImage = ShapeEditorResources.move,
                 RootKey = HeaderControl.HomeRootItemKey
             });
+
+            _edgeSnapping = new SimpleActionItem("Snap Edges", EdgeSnappingButtonClick)
+            {
+                GroupCaption = "Shape Editor",
+                SmallImage = System.Drawing.SystemIcons.Exclamation.ToBitmap()
+             };
+
+            _header.Add(_edgeSnapping);
+
             _header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButtonClick)
             {
                 GroupCaption = "Shape Editor",
@@ -350,6 +361,35 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
+        private void EdgeSnappingButtonClick(object sender, EventArgs e)
+        {
+            _doEdgeSnapping = !_doEdgeSnapping;
+
+            switch (_doEdgeSnapping)
+            {
+                case true:
+                    _edgeSnapping.Caption = "Active Edge's Snapping";
+                    _edgeSnapping.ToolTipText = "Active Edge's Snapping";
+                    _edgeSnapping.SmallImage = System.Drawing.SystemIcons.Exclamation.ToBitmap();
+                    break;
+                case false:
+                    _edgeSnapping.Caption = "Inactive Edge's Snapping";
+                    _edgeSnapping.ToolTipText = "Inactive Edge's Snapping";
+                    _edgeSnapping.SmallImage = System.Drawing.SystemIcons.Application.ToBitmap();
+                    break;
+            }
+
+            if (_moveVertexFunction != null)
+            {
+                _moveVertexFunction.DoEdgeSnapping = _doEdgeSnapping;
+            }
+
+            if (_addShapeFunction != null)
+            {
+                _addShapeFunction.DoEdgeSnapping = _doEdgeSnapping;
+            }
+        }
+
         private void SnappingButtonClick(object sender, EventArgs e)
         {
             using (SnapSettingsDialog dlg = new SnapSettingsDialog(_geoMap)
@@ -383,12 +423,14 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void UpdateAddShapeFunctionLayer()
         {
+            _addShapeFunction.DoEdgeSnapping = _doEdgeSnapping;
             _addShapeFunction.Layer = _activeLayer;
             SetSnapLayers(_addShapeFunction);
         }
 
         private void UpdateMoveVertexFunctionLayer()
         {
+            _moveVertexFunction.DoEdgeSnapping = _doEdgeSnapping;
             _moveVertexFunction.ClearSelection(); // changed by jany_ (2016-02-24) make sure highlighted features are reset too to prevent exception
             _moveVertexFunction.Layer = _activeLayer;
             SetSnapLayers(_moveVertexFunction);
