@@ -1,6 +1,7 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -73,6 +74,16 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         protected string SnappingType { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating the snapped coordinate.
+        /// </summary>
+        protected Coordinate SnappedCoordKeeped { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the snapped coordinate Index.
+        /// </summary>
+        protected int SnappedCoordIndex { get; set; }
+
         #endregion
 
         #region Methods
@@ -98,6 +109,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <returns>true if snap found</returns>
         protected bool ComputeSnappedLocation(GeoMouseArgs e, ref Coordinate snappedCoord)
         {
+            SnappingType = string.Empty;
             if (SnapLayers == null || e == null || Map == null)
                 return false;
 
@@ -127,6 +139,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                             if (env.Contains(c))
                             {
                                 snappedCoord = c;
+                                SnappedCoordIndex = coordCounter;
                                 SnappedFeature = feat;
                                 SnappingType = "v";
                                 return true;
@@ -163,6 +176,8 @@ namespace DotSpatial.Plugins.ShapeEditor
                                                     double proj_tIndex = indexedEedge.Project(mouse_onMap.Coordinate);
 
                                                     snappedCoord = indexedEedge.ExtractPoint(proj_tIndex);
+                                                    SnappedCoordKeeped = snappedCoord; /* c.Clone() as Coordinate;*/
+                                                    SnappedCoordIndex = coordCounter;
                                                     SnappedFeature = feat;
                                                     SnappingType = "e";
                                                     return true;

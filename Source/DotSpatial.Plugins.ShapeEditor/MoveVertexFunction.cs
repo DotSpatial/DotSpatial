@@ -12,6 +12,7 @@ using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -40,12 +41,16 @@ namespace DotSpatial.Plugins.ShapeEditor
         private IFeatureSet _featureSet;
         private Rectangle _imageRect;
         private IFeatureLayer _layer;
-        private Point _mousePosition;
+        private System.Drawing.Point _mousePosition;
         private Coordinate _nextPoint;
         private IFeatureCategory _oldCategory;
         private Coordinate _previousPoint;
         private IFeatureCategory _selectedCategory;
         private IFeature _selectedFeature;
+        private ContextMenu _insertContext;
+        private ContextMenu _deleteContext;
+        private MenuItem _insertVertex;
+        private MenuItem _deleteVertex;
 
         #endregion
 
@@ -107,6 +112,95 @@ namespace DotSpatial.Plugins.ShapeEditor
         }
 
         /// <summary>
+        /// Delete the snapped vertex.
+        /// </summary>
+        /// <param name="sender">The object sender.</param>
+        /// <param name="e">An empty EventArgs class.</param>
+        public void Vertex_Delete(object sender, EventArgs e)
+        {
+            if (SnappingType != "v") return;
+            if (_selectedFeature == null) return;
+            if (SnappedFeature != _selectedFeature) return;
+            Feature selFeature = _selectedFeature as Feature;
+
+            // Coordinate[] coords = _selectedFeature.Geometry.Coordinates;
+            IList<Coordinate> coords = _selectedFeature.Geometry.Coordinates;
+            List<Coordinate> newCoords = coords.CloneList();
+            int numCoords = coords.Count;
+            if (SnappedCoordIndex >= numCoords) return;
+
+            switch (_selectedFeature.FeatureType)
+            {
+                case FeatureType.Line:
+                    if (numCoords < 3) return;
+                    newCoords.RemoveAt(SnappedCoordIndex);
+                    LineString newLine = new LineString(newCoords.ToArray());
+                    _selectedFeature.Geometry = newLine;
+
+                    break;
+
+                case FeatureType.Polygon:
+
+                    if (numCoords < 4) return;
+
+                    if (SnappedCoordIndex == 0) newCoords[numCoords - 1] = newCoords[1];
+                    if (SnappedCoordIndex == numCoords) newCoords[0] = newCoords[numCoords - 2];
+                    newCoords.RemoveAt(SnappedCoordIndex);
+
+                    LinearRing newLinearRing= new LinearRing(newCoords.ToArray());
+
+                    _selectedFeature.Geometry = new Polygon(newLinearRing);
+
+                    break;
+            }
+
+            _featureSet.InitializeVertices();
+            _selectedFeature.UpdateEnvelope();
+            Map.Refresh();
+        }
+
+        /// <summary>
+        /// Insert a vertex at the snapped coordinate.
+        /// </summary>
+        /// <param name="sender">The object sender.</param>
+        /// <param name="e">An empty EventArgs class.</param>
+        public void Vertex_Insert(object sender, EventArgs e)
+        {
+            if (SnappingType != "e") return;
+            if (_selectedFeature == null) return;
+            if (SnappedFeature != _selectedFeature) return;
+            Feature selFeature = _selectedFeature as Feature;
+
+            // Coordinate[] coords = _selectedFeature.Geometry.Coordinates;
+            IList<Coordinate> coords = _selectedFeature.Geometry.Coordinates;
+            List<Coordinate> newCoords = coords.CloneList();
+            int numCoords = coords.Count;
+            if (SnappedCoordIndex <= 0 || SnappedCoordIndex >= numCoords) return;
+
+            newCoords.Insert(SnappedCoordIndex, SnappedCoordKeeped);
+            switch (_selectedFeature.FeatureType)
+            {
+                case FeatureType.Line:
+
+                    LineString newLine = new LineString(newCoords.ToArray());
+                    _selectedFeature.Geometry = newLine;
+
+                    break;
+
+                case FeatureType.Polygon:
+
+                    LinearRing newLinearRing = new LinearRing(newCoords.ToArray());
+                    _selectedFeature.Geometry = new Polygon(newLinearRing);
+
+                    break;
+            }
+
+            _featureSet.InitializeVertices();
+            _selectedFeature.UpdateEnvelope();
+            Map.Refresh();
+        }
+
+        /// <summary>
         /// This should be called if for some reason the layer gets un-selected or whatever so that the selection
         /// should clear.
         /// </summary>
@@ -150,7 +244,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
                 {
-                    Point pt = e.GeoGraphics.ProjToPixel(c);
+                    System.Drawing.Point pt = e.GeoGraphics.ProjToPixel(c);
                     if (e.GeoGraphics.ImageRectangle.Contains(pt))
                     {
                         e.Graphics.FillRectangle(Brushes.Blue, pt.X - 2, pt.Y - 2, 4, 4);
@@ -173,20 +267,20 @@ namespace DotSpatial.Plugins.ShapeEditor
                 else
                 {
                     e.Graphics.FillRectangle(Brushes.Red, _mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
-                    Point b = _mousePosition;
+                    System.Drawing.Point b = _mousePosition;
                     Pen p = new Pen(Color.Blue)
                     {
                         DashStyle = DashStyle.Dash
                     };
                     if (_previousPoint != null)
                     {
-                        Point a = e.GeoGraphics.ProjToPixel(_previousPoint);
+                        System.Drawing.Point a = e.GeoGraphics.ProjToPixel(_previousPoint);
                         e.Graphics.DrawLine(p, a, b);
                     }
 
                     if (_nextPoint != null)
                     {
-                        Point c = e.GeoGraphics.ProjToPixel(_nextPoint);
+                        System.Drawing.Point c = e.GeoGraphics.ProjToPixel(_nextPoint);
                         e.Graphics.DrawLine(p, b, c);
                     }
 
@@ -302,6 +396,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <inheritdoc />
         protected override void OnMouseMove(GeoMouseArgs e)
         {
+            // SnappingType = string.Empty;
             _mousePosition = e.Location;
             if (_dragging)
             {
@@ -358,6 +453,29 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <inheritdoc />
         protected override void OnMouseUp(GeoMouseArgs e)
         {
+            if (e.Button == MouseButtons.Right)
+            {
+                Coordinate snappedCoord = e.GeographicLocation;
+                ComputeSnappedLocation(e, ref snappedCoord);
+
+                if (_featureSet.FeatureType != FeatureType.Point && _featureSet.FeatureType != FeatureType.MultiPoint)
+                {
+                    if (_selectedFeature != null)
+                    {
+                        // Console.WriteLine("Mouse Up" + SnappingType);
+                        if (SnappingType == "v")
+                        {
+                            _deleteContext.Show((Control)Map, e.Location);
+                        }
+
+                        if (SnappingType == "e" && SnappedCoordIndex > 0)
+                        {
+                            _insertContext.Show((Control)Map, e.Location);
+                        }
+                    }
+                }
+            }
+
             if (e.Button == MouseButtons.Left && _dragging)
             {
                 _dragging = false;
@@ -494,6 +612,37 @@ namespace DotSpatial.Plugins.ShapeEditor
         private void Configure()
         {
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
+
+            if (_deleteVertex == null)
+            {
+                _deleteVertex = new MenuItem("Delete vertex", Vertex_Delete);
+            }
+
+            if (_deleteContext == null)
+            {
+                _deleteContext = new ContextMenu();
+            }
+
+            if (!_deleteContext.MenuItems.Contains(_deleteVertex))
+            {
+                _deleteContext.MenuItems.Add(_deleteVertex);
+            }
+
+            // _
+            if (_insertVertex == null)
+            {
+                _insertVertex = new MenuItem("Insert vertex", Vertex_Insert);
+            }
+
+            if (_insertContext == null)
+            {
+                _insertContext = new ContextMenu();
+            }
+
+            if (!_insertContext.MenuItems.Contains(_insertVertex))
+            {
+                _insertContext.MenuItems.Add(_insertVertex);
+            }
         }
 
         /// <summary>
@@ -666,7 +815,11 @@ namespace DotSpatial.Plugins.ShapeEditor
                 _closedCircleCoord.Y = loc.Y;
             }
 
-            Map.Invalidate();
+            _featureSet.InitializeVertices();
+            if (_featureSet.FeatureType != FeatureType.Point && _featureSet.FeatureType != FeatureType.MultiPoint)
+            { _selectedFeature.UpdateEnvelope(); }
+
+            Map.Refresh();
         }
 
         private void VertexHighlight()
@@ -674,12 +827,18 @@ namespace DotSpatial.Plugins.ShapeEditor
             // The feature is selected so color vertex that can be moved but don't highlight other shapes.
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
+            Envelope env = ext.ToEnvelope();
+
+            NetTopologySuite.Geometries.Point mouse_onMap = new NetTopologySuite.Geometries.Point(Map.PixelToProj(_mousePosition));
+            IGeometry featGeom = _selectedFeature.Geometry;
+
             if (_activeVertex != null && !ext.Contains(_activeVertex))
             {
                 _activeVertex = null;
                 Map.Invalidate();
             }
 
+            int coordCounter = 0;
             foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
             {
                 if (ext.Contains(c))
@@ -687,6 +846,49 @@ namespace DotSpatial.Plugins.ShapeEditor
                     _activeVertex = c;
                     Map.Invalidate();
                 }
+                else
+                {
+                    if (DoEdgeSnapping)
+                    {
+                        if (_selectedFeature.FeatureType != FeatureType.Point && _selectedFeature.FeatureType != FeatureType.MultiPoint)
+                        {
+                            if (coordCounter > 0)
+                            {
+                                double edge_Distance = 0;
+                                if (Layer.DataSet.CoordinateType.Equals(CoordinateType.Z))
+                                {
+                                    edge_Distance = _selectedFeature.Geometry.Coordinates[coordCounter - 1].Distance3D(c);
+                                }
+                                else
+                                {
+                                    edge_Distance = _selectedFeature.Geometry.Coordinates[coordCounter - 1].Distance(c);
+                                }
+
+                                if (edge_Distance > 0)
+                                {
+                                    List<Coordinate> edgeCoords = new List<Coordinate>();
+                                    edgeCoords.Add(_selectedFeature.Geometry.Coordinates[coordCounter - 1]);
+                                    edgeCoords.Add(c);
+
+                                    LineString edge = new LineString(edgeCoords.ToArray());
+
+                                    if (mouse_onMap.Distance(edge) < (env.Width / 2))
+                                    {
+                                        NetTopologySuite.LinearReferencing.LengthIndexedLine indexedEedge = new NetTopologySuite.LinearReferencing.LengthIndexedLine(edge);
+                                        double proj_tIndex = indexedEedge.Project(mouse_onMap.Coordinate);
+
+                                        _activeVertex = indexedEedge.ExtractPoint(proj_tIndex);
+                                        _mousePosition = Map.ProjToPixel(_activeVertex);
+                                        SnappingType = "e";
+                                        DoMouseMoveForSnapDrawing(false, _mousePosition);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                coordCounter++;
             }
         }
 
