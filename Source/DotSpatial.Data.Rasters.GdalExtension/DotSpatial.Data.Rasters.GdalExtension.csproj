@@ -125,18 +125,6 @@
     <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\DotSpatial.NetTopologySuite.1.14.4\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
     </Reference>
-    <Reference Include="gdalconst_csharp, Version=1.0.6816.30708, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\gdal_MSVC1910.2.2.3.57\lib\net40\gdalconst_csharp.dll</HintPath>
-    </Reference>
-    <Reference Include="gdal_csharp, Version=1.0.6816.30706, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\gdal_MSVC1910.2.2.3.57\lib\net40\gdal_csharp.dll</HintPath>
-    </Reference>
-    <Reference Include="ogr_csharp, Version=1.0.6816.30703, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\gdal_MSVC1910.2.2.3.57\lib\net40\ogr_csharp.dll</HintPath>
-    </Reference>
-    <Reference Include="osr_csharp, Version=1.0.6816.30700, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\gdal_MSVC1910.2.2.3.57\lib\net40\osr_csharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
