@@ -19,7 +19,7 @@
       <dependency id="DotSpatial.Serialization"  version="$PackageVersion$"/>
       <dependency id="DotSpatial.NetTopologySuite-cli" version="1.14.4"/>
       <dependency id="DotSpatial.GeoAPI-cli" version="1.7.4.3"/>
-      <dependency id="gdal_MSVC1910" />
+      <dependency id="gdal_MSVC1910" version="2.2.3.72"/>
     </dependencies>
   </metadata>
   <files>
