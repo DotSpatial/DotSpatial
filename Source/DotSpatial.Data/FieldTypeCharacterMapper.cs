@@ -14,7 +14,7 @@ namespace DotSpatial.Data
         /// Maps a Type to a FieldTypeCharacter
         /// </summary>
         /// <param name="type">A Type to convert to the char FieldTypeCharacter</param>
-        /// <returns></returns>
+        /// <returns> _</returns>
         public char Map(Type type)
         {
             if (type == typeof(bool)) return FieldTypeCharacters.Logic;

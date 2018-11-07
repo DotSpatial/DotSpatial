@@ -106,6 +106,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TopologyText.fr-FR.resx" />
     <EmbeddedResource Include="TopologyText.resx" />
   </ItemGroup>
   <ItemGroup>

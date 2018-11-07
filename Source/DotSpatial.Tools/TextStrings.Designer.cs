@@ -70,11 +70,20 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Feature.
+        ///   Looks up a localized string similar to Add Features.
         /// </summary>
         internal static string AddFeature {
             get {
                 return ResourceManager.GetString("AddFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Features.
+        /// </summary>
+        internal static string AddFeature_Label {
+            get {
+                return ResourceManager.GetString("AddFeature_Label", resourceCulture);
             }
         }
         
@@ -106,6 +115,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Raster Layers.
+        /// </summary>
+        internal static string AddRasterLayers_Label {
+            get {
+                return ResourceManager.GetString("AddRasterLayers_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will Add Two Raster  Layer cell by cell.
         /// </summary>
         internal static string AddTwoRasteLayer {
@@ -133,11 +151,20 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aggregate.
+        /// </summary>
+        internal static string Aggregate_Label {
+            get {
+                return ResourceManager.GetString("Aggregate_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aggregate features combines all the features in the featureset to form a single feature..
         /// </summary>
-        internal static string AggregateToollip {
+        internal static string Aggregate_ToolTip {
             get {
-                return ResourceManager.GetString("AggregateToollip", resourceCulture);
+                return ResourceManager.GetString("Aggregate_ToolTip", resourceCulture);
             }
         }
         
@@ -151,6 +178,24 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analysis.
+        /// </summary>
+        internal static string Analysis_Label {
+            get {
+                return ResourceManager.GetString("Analysis_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Analysis.
+        /// </summary>
+        internal static string Analysis_ToolTip {
+            get {
+                return ResourceManager.GetString("Analysis_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Area.
         /// </summary>
         internal static string Area {
@@ -160,20 +205,20 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates the area of polygons.
+        /// </summary>
+        internal static string Area_ToolTip {
+            get {
+                return ResourceManager.GetString("Area_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This tool calculates the area of each polygon in a polygon feature set and appends the results to the Output feature sets attribute table..
         /// </summary>
         internal static string AreaDescription {
             get {
                 return ResourceManager.GetString("AreaDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Calculates the area of polygons.
-        /// </summary>
-        internal static string AreaToolTip {
-            get {
-                return ResourceManager.GetString("AreaToolTip", resourceCulture);
             }
         }
         
@@ -232,6 +277,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buffer.
+        /// </summary>
+        internal static string Buffer_Label {
+            get {
+                return ResourceManager.GetString("Buffer_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will add the buffer Polygon FeatureSet with Specified Distance.
         /// </summary>
         internal static string BufferDescription {
@@ -264,6 +318,15 @@ namespace DotSpatial.Tools {
         internal static string CalculateAreas {
             get {
                 return ResourceManager.GetString("CalculateAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculate Areas.
+        /// </summary>
+        internal static string CalculateAreas_Label {
+            get {
+                return ResourceManager.GetString("CalculateAreas_Label", resourceCulture);
             }
         }
         
@@ -313,6 +376,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Cell Size.
+        /// </summary>
+        internal static string ChangeCellSize_Label {
+            get {
+                return ResourceManager.GetString("ChangeCellSize_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Child Feature Set.
         /// </summary>
         internal static string ChildFeatureSet {
@@ -336,6 +408,15 @@ namespace DotSpatial.Tools {
         internal static string ClipFeatureSetWithPolygon {
             get {
                 return ResourceManager.GetString("ClipFeatureSetWithPolygon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clip FeatureSet With Polygon.
+        /// </summary>
+        internal static string ClipFeatureSetWithPolygon_Label {
+            get {
+                return ResourceManager.GetString("ClipFeatureSetWithPolygon_Label", resourceCulture);
             }
         }
         
@@ -367,11 +448,29 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clip Polygon with Line.
+        /// </summary>
+        internal static string ClipPolygonwithLine_Label {
+            get {
+                return ResourceManager.GetString("ClipPolygonwithLine_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clip Raster Layer.
         /// </summary>
         internal static string ClipRasterLayer {
             get {
                 return ResourceManager.GetString("ClipRasterLayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clip Raster Layer.
+        /// </summary>
+        internal static string ClipRasterLayer_Label {
+            get {
+                return ResourceManager.GetString("ClipRasterLayer_Label", resourceCulture);
             }
         }
         
@@ -412,6 +511,24 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conversion.
+        /// </summary>
+        internal static string Conversion_Label {
+            get {
+                return ResourceManager.GetString("Conversion_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conversion.
+        /// </summary>
+        internal static string Conversion_ToolTip {
+            get {
+                return ResourceManager.GetString("Conversion_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converted feature set.
         /// </summary>
         internal static string Convertedfeatureset {
@@ -444,6 +561,15 @@ namespace DotSpatial.Tools {
         internal static string DeleteFeatures {
             get {
                 return ResourceManager.GetString("DeleteFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Features.
+        /// </summary>
+        internal static string DeleteFeatures_Label {
+            get {
+                return ResourceManager.GetString("DeleteFeatures_Label", resourceCulture);
             }
         }
         
@@ -556,11 +682,29 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Erase.
+        /// </summary>
+        internal static string Erase_Label {
+            get {
+                return ResourceManager.GetString("Erase_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erase 2nd input from 1st input.
         /// </summary>
         internal static string Erase2ndinput {
             get {
                 return ResourceManager.GetString("Erase2ndinput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will eliminate Second featureset from first featureset.
+        /// </summary>
+        internal static string EraseDescription {
+            get {
+                return ResourceManager.GetString("EraseDescription", resourceCulture);
             }
         }
         
@@ -628,6 +772,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feature To Raster.
+        /// </summary>
+        internal static string FeatureToRaster_Label {
+            get {
+                return ResourceManager.GetString("FeatureToRaster_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will generate a new raster from given Polygon..
         /// </summary>
         internal static string FeatureToRasterDescription {
@@ -664,6 +817,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find Average Slope.
+        /// </summary>
+        internal static string FindAverageSlope_Label {
+            get {
+                return ResourceManager.GetString("FindAverageSlope_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will Generate the average slope in the given polygons..
         /// </summary>
         internal static string FindAverageSlopeDescription {
@@ -687,6 +849,15 @@ namespace DotSpatial.Tools {
         internal static string FindAvrageSlopeExtented {
             get {
                 return ResourceManager.GetString("FindAvrageSlopeExtented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Average Slope Extented...
+        /// </summary>
+        internal static string FindAvrageSlopeExtented_Label {
+            get {
+                return ResourceManager.GetString("FindAvrageSlopeExtented_Label", resourceCulture);
             }
         }
         
@@ -727,6 +898,24 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generalization.
+        /// </summary>
+        internal static string Generalization_Label {
+            get {
+                return ResourceManager.GetString("Generalization_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generalization.
+        /// </summary>
+        internal static string Generalization_ToolTip {
+            get {
+                return ResourceManager.GetString("Generalization_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will Generate the average slope in the given polygons with more user preferences..
         /// </summary>
         internal static string Generateaverageslopewithpreferences {
@@ -741,6 +930,15 @@ namespace DotSpatial.Tools {
         internal static string GenerateCentroid {
             get {
                 return ResourceManager.GetString("GenerateCentroid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate Centroid.
+        /// </summary>
+        internal static string GenerateCentroid_Label {
+            get {
+                return ResourceManager.GetString("GenerateCentroid_Label", resourceCulture);
             }
         }
         
@@ -813,6 +1011,15 @@ namespace DotSpatial.Tools {
         internal static string HelpLASTool {
             get {
                 return ResourceManager.GetString("HelpLASTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IDW.
+        /// </summary>
+        internal static string IDW_Label {
+            get {
+                return ResourceManager.GetString("IDW_Label", resourceCulture);
             }
         }
         
@@ -1213,6 +1420,24 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interpolation.
+        /// </summary>
+        internal static string Interpolation_Label {
+            get {
+                return ResourceManager.GetString("Interpolation_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interpolation.
+        /// </summary>
+        internal static string Interpolation_ToolTip {
+            get {
+                return ResourceManager.GetString("Interpolation_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverse Distance Weighting.
         /// </summary>
         internal static string InverseDistanceWeighting {
@@ -1582,6 +1807,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Merge Raster Layers.
+        /// </summary>
+        internal static string MergeRasterLayers_Label {
+            get {
+                return ResourceManager.GetString("MergeRasterLayers_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Merge two Raster Layers.
         /// </summary>
         internal static string MergetwoRasterLayers {
@@ -1605,6 +1839,15 @@ namespace DotSpatial.Tools {
         internal static string MinMaxnumberofpoints {
             get {
                 return ResourceManager.GetString("MinMaxnumberofpoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiply Raster Layers.
+        /// </summary>
+        internal static string MultiplyRasterLayer_sLabel {
+            get {
+                return ResourceManager.GetString("MultiplyRasterLayer_sLabel", resourceCulture);
             }
         }
         
@@ -1668,6 +1911,15 @@ namespace DotSpatial.Tools {
         internal static string NoDataValueChange {
             get {
                 return ResourceManager.GetString("NoDataValueChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Data Value Change .
+        /// </summary>
+        internal static string NoDataValueChange_Label {
+            get {
+                return ResourceManager.GetString("NoDataValueChange_Label", resourceCulture);
             }
         }
         
@@ -1843,6 +2095,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OverWrite Feature.
+        /// </summary>
+        internal static string OverWriteFeature_Label {
+            get {
+                return ResourceManager.GetString("OverWriteFeature_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will OverWrite Feature in the FeatureSet reference by index.
         /// </summary>
         internal static string OverWriteFeaturebyindex {
@@ -1942,6 +2203,24 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Random Points.
+        /// </summary>
+        internal static string RandomGeometry_Label {
+            get {
+                return ResourceManager.GetString("RandomGeometry_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an area from the map and specify the number of points to generate inside of it..
+        /// </summary>
+        internal static string RandomGeometry_ToolTip {
+            get {
+                return ResourceManager.GetString("RandomGeometry_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generate any number of randomly placed points within a specified area of the map..
         /// </summary>
         internal static string RandomGeometryDescription {
@@ -1956,15 +2235,6 @@ namespace DotSpatial.Tools {
         internal static string RandomGeometryNumPoint {
             get {
                 return ResourceManager.GetString("RandomGeometryNumPoint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select an area from the map and specify the number of points to generate inside of it..
-        /// </summary>
-        internal static string RandomGeometryToolTip {
-            get {
-                return ResourceManager.GetString("RandomGeometryToolTip", resourceCulture);
             }
         }
         
@@ -2016,6 +2286,15 @@ namespace DotSpatial.Tools {
         /// <summary>
         ///   Looks up a localized string similar to Raster Bin.
         /// </summary>
+        internal static string RasterBinTool_Label {
+            get {
+                return ResourceManager.GetString("RasterBinTool_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raster Bin.
+        /// </summary>
         internal static string RasterBinTool_Name {
             get {
                 return ResourceManager.GetString("RasterBinTool_Name", resourceCulture);
@@ -2025,9 +2304,9 @@ namespace DotSpatial.Tools {
         /// <summary>
         ///   Looks up a localized string similar to Bins the continuous values into histogram like categories..
         /// </summary>
-        internal static string RasterBinTool_Tooltip {
+        internal static string RasterBinTool_ToolTip {
             get {
-                return ResourceManager.GetString("RasterBinTool_Tooltip", resourceCulture);
+                return ResourceManager.GetString("RasterBinTool_ToolTip", resourceCulture);
             }
         }
         
@@ -2046,6 +2325,15 @@ namespace DotSpatial.Tools {
         internal static string RasterDistanceproximity {
             get {
                 return ResourceManager.GetString("RasterDistanceproximity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raster Distance (proximity).
+        /// </summary>
+        internal static string RasterDistanceproximity_Label {
+            get {
+                return ResourceManager.GetString("RasterDistanceproximity_Label", resourceCulture);
             }
         }
         
@@ -2086,6 +2374,24 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Raster Overlay.
+        /// </summary>
+        internal static string RasterOverlay_Label {
+            get {
+                return ResourceManager.GetString("RasterOverlay_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raster Overlay.
+        /// </summary>
+        internal static string RasterOverlay_ToolTip {
+            get {
+                return ResourceManager.GetString("RasterOverlay_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will Generate slope raster from given altitude raster..
         /// </summary>
         internal static string RasterSlopeDescription {
@@ -2113,6 +2419,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Raster To Polygon.
+        /// </summary>
+        internal static string RasterToPolygon_Label {
+            get {
+                return ResourceManager.GetString("RasterToPolygon_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will generate a polygon featureset from a raster.
         /// </summary>
         internal static string RasterToPolygonDescription {
@@ -2136,6 +2451,15 @@ namespace DotSpatial.Tools {
         internal static string ReprojectFeatures {
             get {
                 return ResourceManager.GetString("ReprojectFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reproject Features.
+        /// </summary>
+        internal static string ReprojectFeatures_Label {
+            get {
+                return ResourceManager.GetString("ReprojectFeatures_Label", resourceCulture);
             }
         }
         
@@ -2190,15 +2514,6 @@ namespace DotSpatial.Tools {
         internal static string ResultShapefile {
             get {
                 return ResourceManager.GetString("ResultShapefile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This will eliminate Second featureset from first featureset.
-        /// </summary>
-        internal static string RraseDescription {
-            get {
-                return ResourceManager.GetString("RraseDescription", resourceCulture);
             }
         }
         
@@ -2284,6 +2599,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simplify Lines.
+        /// </summary>
+        internal static string SimplifyLines_Label {
+            get {
+                return ResourceManager.GetString("SimplifyLines_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slope grid file is null..
         /// </summary>
         internal static string Slopegridfileisnull {
@@ -2320,6 +2644,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Slope Raster Layer.
+        /// </summary>
+        internal static string SlopeRasterLayer_Label {
+            get {
+                return ResourceManager.GetString("SlopeRasterLayer_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source Projection.
         /// </summary>
         internal static string SourceProjection {
@@ -2347,11 +2680,47 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spatial Reference.
+        /// </summary>
+        internal static string SpatialReference_Label {
+            get {
+                return ResourceManager.GetString("SpatialReference_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spatial Reference.
+        /// </summary>
+        internal static string SpatialReference_ToolTip {
+            get {
+                return ResourceManager.GetString("SpatialReference_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistics.
         /// </summary>
         internal static string Statistics {
             get {
                 return ResourceManager.GetString("Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        internal static string Statistics_Label {
+            get {
+                return ResourceManager.GetString("Statistics_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        internal static string Statistics_ToolTip {
+            get {
+                return ResourceManager.GetString("Statistics_ToolTip", resourceCulture);
             }
         }
         
@@ -2374,11 +2743,38 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subtract Raster Layer.
+        /// </summary>
+        internal static string SubtractRasterLayer_Label {
+            get {
+                return ResourceManager.GetString("SubtractRasterLayer_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Terrain Analysis.
         /// </summary>
         internal static string TerrainAnalysis {
             get {
                 return ResourceManager.GetString("TerrainAnalysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terrain Analysis.
+        /// </summary>
+        internal static string TerrainAnalysis_Label {
+            get {
+                return ResourceManager.GetString("TerrainAnalysis_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terrain Analysis.
+        /// </summary>
+        internal static string TerrainAnalysis_ToolTip {
+            get {
+                return ResourceManager.GetString("TerrainAnalysis_ToolTip", resourceCulture);
             }
         }
         
@@ -2437,6 +2833,15 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thiessen Polygons.
+        /// </summary>
+        internal static string ThiessenPolygons_Label {
+            get {
+                return ResourceManager.GetString("ThiessenPolygons_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tolerance.
         /// </summary>
         internal static string Tolerance {
@@ -2478,6 +2883,15 @@ namespace DotSpatial.Tools {
         internal static string Union {
             get {
                 return ResourceManager.GetString("Union", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Union.
+        /// </summary>
+        internal static string Union_Label {
+            get {
+                return ResourceManager.GetString("Union_Label", resourceCulture);
             }
         }
         
@@ -2541,6 +2955,24 @@ namespace DotSpatial.Tools {
         internal static string VectorOverlay {
             get {
                 return ResourceManager.GetString("VectorOverlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vector Overlay.
+        /// </summary>
+        internal static string VectorOverlay_Label {
+            get {
+                return ResourceManager.GetString("VectorOverlay_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vector Overlay.
+        /// </summary>
+        internal static string VectorOverlay_ToolTip {
+            get {
+                return ResourceManager.GetString("VectorOverlay_ToolTip", resourceCulture);
             }
         }
         

@@ -32,8 +32,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.FeatureToRaster;
             Category = TextStrings.Conversion;
-            Description = TextStrings.FeatureToRasterDescription;
-            ToolTip = TextStrings.newrasteronspecifiedfeatureset;
+            UpdateToolResources();
         }
 
         #endregion
@@ -160,6 +159,18 @@ namespace DotSpatial.Tools
 
             lp.ValueList = fields;
             lp.Value = 0;
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.FeatureToRaster_Label;
+            CategoryLabel = TextStrings.Conversion_Label;
+            CategoryToolTip = TextStrings.Conversion_ToolTip;
+            Description = TextStrings.FeatureToRasterDescription;
+            ToolTip = TextStrings.newrasteronspecifiedfeatureset;
         }
 
         #endregion

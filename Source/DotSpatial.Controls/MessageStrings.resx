@@ -1003,4 +1003,19 @@ Load the layout with the printer's current paper settings?</value>
   <data name="LayoutInsertToolStripDefault" xml:space="preserve">
     <value>Default mouse cursor</value>
   </data>
+  <data name="LayerFrame_CreateGroup" xml:space="preserve">
+    <value>Create Group</value>
+  </data>
+  <data name="LayerFrame_Map_Layers" xml:space="preserve">
+    <value>Map Layers</value>
+  </data>
+  <data name="LayerFrame_RemoveMapFrame" xml:space="preserve">
+    <value>Remove Map Frame</value>
+  </data>
+  <data name="LayerFrame_ZoomToMapFrame" xml:space="preserve">
+    <value>Zoom to Map Frame</value>
+  </data>
+  <data name="Legend_Settings" xml:space="preserve">
+    <value>Legend Settings...</value>
+  </data>
 </root>

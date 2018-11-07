@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ExportFeature_FeaturesAll" xml:space="preserve">
+    <value>Toutes les entités</value>
+  </data>
+  <data name="ExportFeature_FeaturesExtent" xml:space="preserve">
+    <value>Toutes les entités visibles à l'écran</value>
+  </data>
+  <data name="ExportFeature_FeaturesSelected" xml:space="preserve">
+    <value>Entités selectionnées</value>
+  </data>
+  <data name="DoubleBox_DoubleError" xml:space="preserve">
+    <value>La valeur saisie ne peut pas être corretement traitée comme un réel.</value>
+  </data>
+  <data name="DoubleBox_DoubleHelp" xml:space="preserve">
+    <value>Entrer une valeur réelle.</value>
+  </data>
+  <data name="AttributeCalculator_ParameterInvalid" xml:space="preserve">
+    <value>Le paramètre est invalide</value>
+  </data>
+  <data name="AttributeCalculator_IncompatibleDestinationField" xml:space="preserve">
+    <value>Le type du champ de destination incompatible (réel ou chaîne ou entier)</value>
+  </data>
+  <data name="AttributeCalculator_FactGreaterThanZero" xml:space="preserve">
+    <value>Le facteur doit être toujours supérieur à 0</value>
+  </data>
+  <data name="AttributeCalculator_NonStandardFunction" xml:space="preserve">
+    <value>La fonction n'est pas reconnue.</value>
+  </data>
+  <data name="AttributeCalculator_RootNthRootIncorrect" xml:space="preserve">
+    <value>La n-ème racine est incorrecte</value>
+  </data>
+  <data name="AttributeCalculator_TooManyClosingBrackets" xml:space="preserve">
+    <value>Trop d'accolades dans l'expression.</value>
+  </data>
+  <data name="TableEditorControl_RemoveFields" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir enlever le champ?</value>
+  </data>
+  <data name="TableEditorControl_Confirm" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="TableEditorControl_CouldNotExecuteQuery" xml:space="preserve">
+    <value>Impossible d'exécuter la requête.</value>
+  </data>
+  <data name="TableEditorControl_CouldNotFindReplace" xml:space="preserve">
+    <value>Aucune occurrence trouvée.</value>
+  </data>
+  <data name="TableEditorControl_EnterFindString" xml:space="preserve">
+    <value>Entrer les critères de recherche</value>
+  </data>
+  <data name="TableEditorControl_FieldImportFailed" xml:space="preserve">
+    <value>Impossible d'importer les colonnes</value>
+  </data>
+  <data name="TableEditorControl_Find" xml:space="preserve">
+    <value>Recherche</value>
+  </data>
+  <data name="TableEditorControl_NoMatch" xml:space="preserve">
+    <value>Aucune ligne ne contient la valeur spécifiée.</value>
+  </data>
+  <data name="FeatureCategoryControl_CustomOnly" xml:space="preserve">
+    <value>Pour spécifier un filtre, le mode custom doit être selectionné.</value>
+  </data>
+  <data name="LargeEditsNotSupported" xml:space="preserve">
+    <value>Fonctionnalité non encore supportée pour les tables ayant plus de 50 000 lignes.</value>
+  </data>
+  <data name="TableEditorControl_NewFieldFail" xml:space="preserve">
+    <value>Impossible de créer un nouveau champ</value>
+  </data>
+  <data name="TableEditorControl_CopyFid_Could_not_copy_FID" xml:space="preserve">
+    <value>Impossible de copier FID</value>
+  </data>
+  <data name="TableEditorControl_CopyFid_Couldnt_find_field" xml:space="preserve">
+    <value>Colonne non présente dans la table attributaire</value>
+  </data>
+  <data name="TableEditorControl_DisplaySelectedRowNumberLable__of_" xml:space="preserve">
+    <value> sur </value>
+  </data>
+  <data name="TableEditorControl_DisplaySelectedRowNumberLable__Selected" xml:space="preserve">
+    <value>Sélectionnés</value>
+  </data>
+  <data name="TableEditorControl_ImportFieldsFromDbf_Could_not_import_column_fields" xml:space="preserve">
+    <value>Impossible d'importer les colonnes</value>
+  </data>
+  <data name="TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF" xml:space="preserve">
+    <value>Fichiers DBase (*.dbf)|*.dbf</value>
+  </data>
+  <data name="TableEditorControl_SaveEdits_Unable_to_save_edits__" xml:space="preserve">
+    <value>Impossible de sauver les modifications.</value>
+  </data>
+  <data name="TableEditorControl_removeFieldToolStripMenuItem_Click_Column_edits_are_not_yet_supported_for_datasets_with_more_than_50_000_attributes" xml:space="preserve">
+    <value>Edition de données avec plus de 50 000 attributs non encore supportée</value>
+  </data>
+  <data name="TableEditorControl_renameFieldToolStripMenuItem_Click_This_feature_is_not_yet_supported_for_datasets_with_larger_than_50_000_rows_" xml:space="preserve">
+    <value>Fonctionnalité non encore supportée sur les données ayant plus de 50 000 lignes.</value>
+  </data>
+  <data name="TableEditorControl_exportSelectedFeaturesToolStripMenuItem_Click_Shapefiles____shp_____SHP" xml:space="preserve">
+    <value>Shapefiles (*.shp) |*.shp</value>
+  </data>
+  <data name="TableEditorControl_ReplaceString_Unfamilar_data_type_to_replace" xml:space="preserve">
+    <value>Unfamilar data type to replace</value>
+  </data>
+  <data name="TableEditorControl_SelectedRowCountStringFormat" xml:space="preserve">
+    <value>{0} sur {1} sélectionné(s).</value>
+  </data>
+  <data name="TableEditorControl_SelectedRowCountPluralization" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="TableEditorControl_Row" xml:space="preserve">
+    <value>ligne</value>
+  </data>
+  <data name="TableEditorControl_RowPlural" xml:space="preserve">
+    <value>lignes</value>
+  </data>
+  <data name="LabelSetup_Help1" xml:space="preserve">
+    <value>Chaque groupe de symbols peut indiquer une expression contenant les valeurs des attributs. Double-cliquer les champs pour les ajouter à l'expression.</value>
+  </data>
+  <data name="LabelSetup_Help2" xml:space="preserve">
+    <value>Utiliser l'onglet Membres pour composer les filtres des entités auqelles sont affectée l'étiquette.</value>
+  </data>
+  <data name="LabelSetup_Help3" xml:space="preserve">
+    <value>Utiliser l'onglet Expression pour former le texte de l'étiquette. Les champs inclus entre [] seront substituer par leurs réels valeurs.</value>
+  </data>
+  <data name="LabelSetup_Help4" xml:space="preserve">
+    <value>Chaque groupe peut préciser ses propriétés standards</value>
+  </data>
+  <data name="LabelSetup_Help5" xml:space="preserve">
+    <value>Chaque groupe peut préciser ses propriétés avancées</value>
+  </data>
+  <data name="FeatureLayerActions_FeaturesExported" xml:space="preserve">
+    <value>La couche a été exportée .</value>
+  </data>
+  <data name="FeatureLayerActions_LoadFeatures" xml:space="preserve">
+    <value>Charger le shapefile ?</value>
+  </data>
+  <data name="ExpressionControl_EmptyExpression" xml:space="preserve">
+    <value>Le filtre est vide.</value>
+  </data>
+  <data name="LabelSetup_OneCategoryNeededErr" xml:space="preserve">
+    <value>Aumoins une catégorie</value>
+  </data>
+  <data name="LabelSetup_OneCategoryNeededErrCaption" xml:space="preserve">
+    <value>Impossible de supprimer la categorie</value>
+  </data>
+  <data name="SQLQueryControl_MoreThan10000UniqueValues" xml:space="preserve">
+    <value>Il y'a plus de 10 000 valeurs uniques. Voulez-vous les affichers toutes?</value>
+  </data>
+  <data name="SQLQueryControl_LargeNumberOfUniqueValues" xml:space="preserve">
+    <value>Beaucoup de valeurs uniques</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Aperçu</value>
+  </data>
+  <data name="LabelSetup_ThisShowsAPreviewOfTheFont" xml:space="preserve">
+    <value>Aperçu de la police.</value>
+  </data>
+  <data name="Unsupported" xml:space="preserve">
+    <value>Non Supporté !</value>
+  </data>
+  <data name="LabelSetup_TheSpecifiedCombinationOfFontFamilyStyleOrSizeIsUnsupported" xml:space="preserve">
+    <value>Combinaison de police, style, ou taille non supportée.</value>
+  </data>
+  <data name="SQLQueryControl_ExpressionIsValid" xml:space="preserve">
+    <value>Expression valide.</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_ChangeScaleMode" xml:space="preserve">
+    <value>Changer Scale Mode?</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_SwitchToGeographicScaleMode" xml:space="preserve">
+    <value>Chosir cette option va forcer le tracé à utiliser le mode Geographic scale. Continuer ?</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_SwitchToSymbolicScaleMode" xml:space="preserve">
+    <value>Chosir cette option va forcer le tracé à utiliser le mode Symbolic scale. Continuer ?</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_StartColor" xml:space="preserve">
+    <value>Couleur début</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_EndColor" xml:space="preserve">
+    <value>Couleur Fin</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_SurroundColor" xml:space="preserve">
+    <value>Couleur contour</value>
+  </data>
+  <data name="DetailedPolygonSymbolControl_CenterColor" xml:space="preserve">
+    <value>Couleur de milieu</value>
+  </data>
+  <data name="ExportFeature_ExtensionNotSupported" xml:space="preserve">
+    <value>Le chemin saisi ne comporte pas l'extension d'une format valide.SVP vérifier que le fichier a une eextension comme .shp et réessayer.</value>
+  </data>
+  <data name="ExportFeature_InvalidFileFormat" xml:space="preserve">
+    <value>Format invalid</value>
+  </data>
+  <data name="SelectByAttributes_ErrorWhileAttemptingToApplyExpression" xml:space="preserve">
+    <value>Erreur dans la mise en oeuvre de l'expression.</value>
+  </data>
+  <data name="ChangeScaleMode" xml:space="preserve">
+    <value>Changer Scale Mode?</value>
+  </data>
+  <data name="ForceDrawingToUseGeographicScaleMode" xml:space="preserve">
+    <value>Chosir cette option va forcer le tracé à utiliser le mode Geographic scale. Continuer ?</value>
+  </data>
+  <data name="ForceDrawingToUseSymbolicScaleMode" xml:space="preserve">
+    <value>Chosir cette option va forcer le tracé à utiliser le mode Symbolic scale. Continuer ?</value>
+  </data>
+  <data name="JoinDialog_SelectExcelFile" xml:space="preserve">
+    <value>Choisir un fichier excel.</value>
+  </data>
+  <data name="JoinDialog_SelectLocalField" xml:space="preserve">
+    <value>Choisir d'abord une colonne locale pour la jointure.</value>
+  </data>
+  <data name="JoinDialog_SelectForeignField" xml:space="preserve">
+    <value>Choisir d'abord une colonne étrangère pour la jointure.</value>
+  </data>
+  <data name="JoinDialog_SelectOutputFile" xml:space="preserve">
+    <value>Choisir d'abord un fichier de sortie.</value>
+  </data>
+  <data name="LayerDialog_InvalidExpressionProvided" xml:space="preserve">
+    <value>L'expression fournie pour l'une des lignes n'est pas pas valide. Essayer la forme '[Champ] &gt;= Valeur'</value>
+  </data>
+  <data name="CalculatorUserGuide_RichTextboxText" xml:space="preserve">
+    <value>
+1) Toujours se servir d'un double-clique sur les champs ou les fonctions ou les opérations pour les ajouter à l'expression, un espace est automatique ajouté avant et après.
+
+2) Se servir d'espace pour utiliser une constante ou un nombre ex. _3_  or  (_3_*_4_)_-_2  
+
+3) S'assurer que les paranthèses sont fermées quand on utilise des fonctions.
+
+eg. Abs(-222.34 )
+ou  3 * pow(Area, 2 )  équivaut à 3*pow(Area, 2)
+</value>
+  </data>
+  <data name="RasterCategoryControl_SignificantFigures" xml:space="preserve">
+    <value>Chiffres Significatifs:</value>
+  </data>
+  <data name="RasterCategoryControl_RoundingDigits" xml:space="preserve">
+    <value>Décimales:</value>
+  </data>
+</root>

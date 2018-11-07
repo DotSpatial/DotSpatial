@@ -89,6 +89,7 @@
       <DependentUpon>FeatureIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Header\ProgressStatusPanel.cs" />
+    <Compile Include="Header\CheckBoxActionItem.cs" />
     <Compile Include="Header\ToolstripPosition.cs" />
     <Compile Include="IFeatureLayerExtensions.cs" />
     <Compile Include="IFeatureSymbolizerExt.cs" />
@@ -284,6 +285,12 @@
     <Compile Include="MapLineLayer.cs" />
     <Compile Include="MapPointLayer.cs" />
     <Compile Include="MapPolygonLayer.cs" />
+    <Compile Include="LegendSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LegendSettingsDialog.Designer.cs">
+      <DependentUpon>LegendSettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="SoutherlandHodgman.cs" />
     <Compile Include="MapFunctionClickZoom.cs" />
     <Compile Include="FunctionMode.cs" />
@@ -358,13 +365,25 @@
     <EmbeddedResource Include="FeatureIdentifier.de-DE.resx">
       <DependentUpon>FeatureIdentifier.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FeatureIdentifier.fr-FR.resx">
+      <DependentUpon>FeatureIdentifier.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LayoutForm.de-DE.resx">
+      <DependentUpon>LayoutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm.fr-FR.resx">
       <DependentUpon>LayoutForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListBoxDialog.de-DE.resx">
       <DependentUpon>ListBoxDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ListBoxDialog.fr-FR.resx">
+      <DependentUpon>ListBoxDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MapFrameProjectionDialog.de-DE.resx">
+      <DependentUpon>MapFrameProjectionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapFrameProjectionDialog.fr-FR.resx">
       <DependentUpon>MapFrameProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MapFrameProjectionDialog.resx">
@@ -422,6 +441,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageStrings.de-DE.resx">
       <DependentUpon>MessageStrings.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageStrings.fr-FR.resx">
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageStrings.it-IT.resx">
       <DependentUpon>MessageStrings.resx</DependentUpon>
@@ -446,6 +469,9 @@
     <EmbeddedResource Include="Modeler.resx">
       <DependentUpon>Modeler.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ModelerForm.fr-FR.resx">
+      <DependentUpon>ModelerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ModelerForm.resx">
       <DependentUpon>ModelerForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -454,7 +480,16 @@
       <DependentUpon>ModelerForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm.af.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.de-DE.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm.fr-FR.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm.fr.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
@@ -464,6 +499,9 @@
       <DependentUpon>PageSetupForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="PageSetupForm.fr-FR.resx">
+      <DependentUpon>PageSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PageSetupForm.resx">
       <DependentUpon>PageSetupForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -471,6 +509,12 @@
     <EmbeddedResource Include="PageSetupForm.zh-CN.resx">
       <DependentUpon>PageSetupForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LegendSettingsDialog.fr-FR.resx">
+      <DependentUpon>LegendSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LegendSettingsDialog.resx">
+      <DependentUpon>LegendSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpatialDockManager.resx">
       <DependentUpon>SpatialDockManager.cs</DependentUpon>
@@ -480,6 +524,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ToolManager.resx">
       <DependentUpon>ToolManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ZoomToCoordinatesDialog.fr-FR.resx">
+      <DependentUpon>ZoomToCoordinatesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ZoomToCoordinatesDialog.resx">
       <DependentUpon>ZoomToCoordinatesDialog.cs</DependentUpon>

@@ -32,8 +32,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.FindAverageSlope;
             Category = TextStrings.TerrainAnalysis;
-            Description = TextStrings.FindAverageSlopeExtentedDescription;
-            ToolTip = TextStrings.FindAvrageSlopeExtented;
+            UpdateToolResources();
         }
 
         #endregion
@@ -214,6 +213,18 @@ namespace DotSpatial.Tools
                 HelpText = TextStrings.SelecttheResultofOutput
             };
             _outputParam[2] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.FindAvrageSlopeExtented_Label;
+            CategoryLabel = TextStrings.TerrainAnalysis_Label;
+            CategoryToolTip = TextStrings.TerrainAnalysis_ToolTip;
+            Description = TextStrings.FindAverageSlopeExtentedDescription;
+            ToolTip = TextStrings.FindAvrageSlopeExtented;
         }
 
         /// <summary>

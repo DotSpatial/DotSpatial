@@ -105,7 +105,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldOutlineOpacity.NumberFormat = null;
             this.sldOutlineOpacity.Orientation = Orientation.Horizontal;
             this.sldOutlineOpacity.RampRadius = 8F;
-            this.sldOutlineOpacity.RampText = "Opacity";
+            /*this.sldOutlineOpacity.RampText = "Opacity";*/
             this.sldOutlineOpacity.RampTextAlignment = ContentAlignment.BottomCenter;
             this.sldOutlineOpacity.RampTextBehindRamp = true;
             this.sldOutlineOpacity.RampTextColor = Color.Black;
@@ -137,7 +137,7 @@ namespace DotSpatial.Symbology.Forms
             this.dbxOutlineWidth.BackColorInvalid = Color.Salmon;
             this.dbxOutlineWidth.BackColorRegular = Color.Empty;
             this.dbxOutlineWidth.BackgroundImage = null;
-            this.dbxOutlineWidth.Caption = "Width:";
+            /*this.dbxOutlineWidth.Caption = "Width:";*/
             this.dbxOutlineWidth.Font = null;
             this.dbxOutlineWidth.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
                                                "ating point value.";

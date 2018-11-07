@@ -8,6 +8,7 @@ namespace DotSpatial.Symbology.Forms
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.ComponentResourceManager resources;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -30,7 +31,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LayerDialog));
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(LayerDialog));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabSymbology = new System.Windows.Forms.TabPage();
             this.pnlContent = new System.Windows.Forms.Panel();
@@ -86,6 +87,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             // dialogButtons1
             // 
+            this.dialogButtons1.ButtonsCulture = new System.Globalization.CultureInfo("");
             resources.ApplyResources(this.dialogButtons1, "dialogButtons1");
             this.dialogButtons1.Name = "dialogButtons1";
             this.dialogButtons1.ApplyClicked += new System.EventHandler(this.DialogButtons1ApplyClicked);

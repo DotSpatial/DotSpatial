@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms.Elements;
@@ -23,6 +25,8 @@ namespace DotSpatial.Modeling.Forms
         private readonly List<DialogElement> _listOfDialogElements = new List<DialogElement>();
         private int _elementHeight = 3;
         private ITool _tool;
+        private CultureInfo _toolDialogCulture;
+
         #endregion
 
         #region  Constructors
@@ -33,8 +37,13 @@ namespace DotSpatial.Modeling.Forms
         /// <param name="tool">The ITool to create the dialog box for</param>
         /// <param name="dataSets">The list of available DataSets available</param>
         /// <param name="mapExtent">Creates a new instance of the tool dialog with map extent.</param>
-        public ToolDialog(ITool tool, List<DataSetArray> dataSets, Extent mapExtent)
+        /// <param name="culture"> Culture</param>
+        public ToolDialog(ITool tool, List<DataSetArray> dataSets, Extent mapExtent, CultureInfo culture = default(CultureInfo))
         {
+            if (culture != null) ToolDialogCulture = culture;
+            else ToolDialogCulture = new CultureInfo(string.Empty);
+            Console.WriteLine(_toolDialogCulture.Name);
+
             // Required by the designer
             InitializeComponent();
             DataSets = dataSets;
@@ -47,8 +56,12 @@ namespace DotSpatial.Modeling.Forms
         /// </summary>
         /// <param name="tool">The ITool to create the dialog box for</param>
         /// <param name="modelElements">A list of all model elements</param>
-        public ToolDialog(ITool tool, IEnumerable<ModelElement> modelElements)
+        /// <param name="culture"> Culture</param>
+        public ToolDialog(ITool tool, IEnumerable<ModelElement> modelElements, CultureInfo culture = default(CultureInfo))
         {
+            if (culture != null) ToolDialogCulture = culture;
+            else ToolDialogCulture = new CultureInfo(string.Empty);
+
             // Required by the designer
             InitializeComponent();
 
@@ -100,6 +113,26 @@ namespace DotSpatial.Modeling.Forms
             }
         }
 
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo ToolDialogCulture
+        {
+            set
+            {
+                if (_toolDialogCulture == value) return;
+
+                _toolDialogCulture = value;
+
+                if (_toolDialogCulture == null) _toolDialogCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _toolDialogCulture;
+                Thread.CurrentThread.CurrentUICulture = _toolDialogCulture;
+                UpdateResources();
+                Refresh();
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -148,15 +181,15 @@ namespace DotSpatial.Modeling.Forms
             DialogElement element = sender as DialogElement;
             if (element == null)
             {
-                PopulateHelp(_tool.Name, _tool.Description, _tool.HelpImage);
+                PopulateHelp(_tool.NameLabel, _tool.Description, _tool.HelpImage);
             }
             else if (element.Param == null)
             {
-                PopulateHelp(_tool.Name, _tool.Description, _tool.HelpImage);
+                PopulateHelp(_tool.NameLabel, _tool.Description, _tool.HelpImage);
             }
             else if (element.Param.HelpText == string.Empty)
             {
-                PopulateHelp(_tool.Name, _tool.Description, _tool.HelpImage);
+                PopulateHelp(_tool.NameLabel, _tool.Description, _tool.HelpImage);
             }
             else
             {
@@ -191,7 +224,7 @@ namespace DotSpatial.Modeling.Forms
 
             // Generates the form based on what inputs the ITool has
             _tool = tool;
-            Text = tool.Name;
+            Text = tool.NameLabel;
 
             // Sets up the help link
             if (string.IsNullOrEmpty(tool.HelpUrl))
@@ -227,7 +260,7 @@ namespace DotSpatial.Modeling.Forms
             PopulateOutputElements();
 
             // Populate the help text
-            PopulateHelp(_tool.Name, _tool.Description, _tool.HelpImage);
+            PopulateHelp(_tool.NameLabel, _tool.Description, _tool.HelpImage);
 
             ResumeLayout();
         }
@@ -357,6 +390,10 @@ namespace DotSpatial.Modeling.Forms
                 // Retrieve the dialog element from the parameter and add it to the dialog
                 AddElement(param.OutputDialogElement(DataSets));
             }
+        }
+
+        private void UpdateResources()
+        {
         }
 
         #endregion

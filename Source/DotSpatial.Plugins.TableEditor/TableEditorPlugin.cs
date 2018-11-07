@@ -3,7 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Plugins.TableEditor.Properties;
@@ -16,20 +18,24 @@ namespace DotSpatial.Plugins.TableEditor
     /// </summary>
     public class TableEditorPlugin : Extension
     {
+        private SimpleActionItem _viewAttributeTable;
+
         #region Methods
 
         /// <inheritdoc />
         public override void Activate()
         {
-            App.HeaderControl.Add(
-                new SimpleActionItem(HeaderControl.HomeRootItemKey, Resources.ViewAttributeTable, AttributeTableClick)
-                {
-                    GroupCaption = "Map Tool",
-                    SmallImage = Resources.table_16x16,
-                    LargeImage = Resources.table_32x32
-                });
+            _viewAttributeTable = new SimpleActionItem(HeaderControl.HomeRootItemKey, Resources.ViewAttributeTable, AttributeTableClick)
+            {
+                GroupCaption = "Map Tool",
+                SmallImage = Resources.table_16x16,
+                LargeImage = Resources.table_32x32
+            };
+
+            App.HeaderControl.Add(_viewAttributeTable);
             App.Map.LayerAdded += MapLayerAdded;
             App.SerializationManager.Deserializing += SerializationManagerDeserializing;
+            App.AppCultureChanged += OnAppCultureChanged;
 
             base.Activate();
             foreach (IMapLayer l in App.Map.Layers)
@@ -41,9 +47,11 @@ namespace DotSpatial.Plugins.TableEditor
         /// <inheritdoc />
         public override void Deactivate()
         {
+
             App.HeaderControl.RemoveAll();
 
             // detach events
+            App.AppCultureChanged -= OnAppCultureChanged;
             DetachLayerAddedEvents();
             App.SerializationManager.Deserializing -= SerializationManagerDeserializing;
 
@@ -67,14 +75,14 @@ namespace DotSpatial.Plugins.TableEditor
                 grp.LayerAdded += MapLayerAdded;
             }
 
-            if (addedLayer.ContextMenuItems.Exists(item => item.Name == Resources.AttributeTableEditor))
+            if (addedLayer.ContextMenuItems.Exists(item => item.Name == "AttributeTableEditor"))
             {
                 // assume menu item already exists. Do nothing.
                 return;
             }
 
             // add context menu item.
-            var menuItem = new SymbologyMenuItem(Resources.AttributeTableEditor, (sender, args) => ShowAttributes(addedLayer as IFeatureLayer))
+            var menuItem = new SymbologyMenuItem("AttributeTableEditor", (sender, args) => ShowAttributes(addedLayer as IFeatureLayer))
             {
                 Image = Resources.table_16x16
             };
@@ -129,9 +137,9 @@ namespace DotSpatial.Plugins.TableEditor
         {
             foreach (ILayer lay in App.Map.MapFrame.GetAllLayers())
             {
-                if (lay.ContextMenuItems.Exists(item => item.Name == Resources.AttributeTableEditor))
+                if (lay.ContextMenuItems.Exists(item => item.Name == "AttributeTableEditor"))
                 {
-                    lay.ContextMenuItems.Remove(lay.ContextMenuItems.First(item => item.Name == Resources.AttributeTableEditor));
+                    lay.ContextMenuItems.Remove(lay.ContextMenuItems.First(item => item.Name == "AttributeTableEditor"));
                     return;
                 }
             }
@@ -163,6 +171,17 @@ namespace DotSpatial.Plugins.TableEditor
             {
                 grp.LayerAdded += MapLayerAdded;
             }
+        }
+
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            ExtensionCulture = appCulture;
+            UpdateEditorItems();
+        }
+
+        private void UpdateEditorItems()
+        {
+            _viewAttributeTable.ToolTipText = Resources.ViewAttributeTable;
         }
 
         #endregion

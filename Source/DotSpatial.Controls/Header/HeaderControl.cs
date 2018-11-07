@@ -128,6 +128,13 @@ namespace DotSpatial.Controls.Header
         public abstract object Add(TextEntryActionItem item);
 
         /// <summary>
+        /// Adds the specified checkbox item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The added item.</returns>
+        public abstract object Add(CheckBoxActionItem item);
+
+        /// <summary>
         /// Remove item from the standard toolbar or ribbon control. Also removes groups or parents when all
         /// items have been removed from them.
         /// </summary>

@@ -3,6 +3,8 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
@@ -14,6 +16,8 @@ namespace DotSpatial.Symbology.Forms
     [ToolboxItem(true)]
     public partial class DialogButtons : UserControl
     {
+        private CultureInfo _buttonsCulture;
+
         #region Constructors
 
         /// <summary>
@@ -21,6 +25,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public DialogButtons()
         {
+            _buttonsCulture = new CultureInfo(string.Empty);
             InitializeComponent();
         }
 
@@ -42,6 +47,34 @@ namespace DotSpatial.Symbology.Forms
         /// The OK button was clicked
         /// </summary>
         public event EventHandler OkClicked;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo ButtonsCulture
+        {
+            get
+            {
+                return _buttonsCulture;
+            }
+
+            set
+            {
+                if (_buttonsCulture == value) return;
+
+                _buttonsCulture = value;
+                if (_buttonsCulture == null) _buttonsCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _buttonsCulture;
+                Thread.CurrentThread.CurrentUICulture = _buttonsCulture;
+
+                UpdateButtonsResources();
+            }
+        }
 
         #endregion
 
@@ -84,6 +117,15 @@ namespace DotSpatial.Symbology.Forms
         private void BtnOkClick(object sender, EventArgs e)
         {
             OnOkClicked();
+        }
+
+        private void UpdateButtonsResources()
+        {
+            resources.ApplyResources(btnOK, "btnOK");
+            resources.ApplyResources(btnCancel, "btnCancel");
+            resources.ApplyResources(btnApply, "btnApply");
+            resources.ApplyResources(helpProvider1, "helpProvider1");
+            resources.ApplyResources(this, "$this");
         }
 
         #endregion

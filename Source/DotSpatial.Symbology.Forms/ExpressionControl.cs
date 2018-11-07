@@ -140,6 +140,40 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
+        /// U
+        /// </summary>
+        public void UpdateExpressionControlResources()
+        {
+            resources.ApplyResources(lblFields, "lblFields");
+            resources.ApplyResources(lblSelectPrecursor, "lblSelectPrecursor");
+            resources.ApplyResources(rtbExpression, "rtbExpression");
+            resources.ApplyResources(groupBox1, "groupBox1");
+            resources.ApplyResources(tableLayoutPanel1, "tableLayoutPanel1");
+            resources.ApplyResources(label5, "label5");
+            resources.ApplyResources(label6, "label6");
+            resources.ApplyResources(label7, "label7");
+            resources.ApplyResources(label8, "label8");
+            resources.ApplyResources(label9, "label9");
+            resources.ApplyResources(label4, "label4");
+            resources.ApplyResources(label3, "label3");
+            resources.ApplyResources(label10, "label10");
+            resources.ApplyResources(label2, "label2");
+            resources.ApplyResources(label11, "label11");
+            resources.ApplyResources(label12, "label12");
+            resources.ApplyResources(label13, "label13");
+            resources.ApplyResources(groupBox2, "groupBox2");
+            resources.ApplyResources(label1, "label1");
+            resources.ApplyResources(btValidate, "btValidate");
+            resources.ApplyResources(btNewLine, "btNewLine");
+            resources.ApplyResources(lblResult, "lblResult");
+            resources.ApplyResources(label14, "label14");
+            resources.ApplyResources(dgvFields, "dgvFields");
+            resources.ApplyResources(dgvcName, "dgvcName");
+            resources.ApplyResources(dgvcType, "dgvcType");
+            resources.ApplyResources(this, "$this");
+        }
+
+        /// <summary>
         /// Adds a new line.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>

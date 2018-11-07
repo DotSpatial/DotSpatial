@@ -136,10 +136,55 @@
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="Snapping" xml:space="preserve">
-    <value>Snapping</value>
+  <data name="Snapping_Settings" xml:space="preserve">
+    <value>Snapping Settings</value>
   </data>
   <data name="SnappingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\SnappingIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Add_Ctx_DeleteShape" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Add_Ctx_FinishPart" xml:space="preserve">
+    <value>Finish Part</value>
+  </data>
+  <data name="Add_Ctx_FinishShape" xml:space="preserve">
+    <value>Finish Shape</value>
+  </data>
+  <data name="Move_Ctx_ContinueEnd" xml:space="preserve">
+    <value>Continue from Endpoint</value>
+  </data>
+  <data name="Move_Ctx_ContinueStart" xml:space="preserve">
+    <value>Continue from Start point</value>
+  </data>
+  <data name="Move_Ctx_DeteleVertex" xml:space="preserve">
+    <value>Delete vertex</value>
+  </data>
+  <data name="Move_Ctx_InsertVertex" xml:space="preserve">
+    <value>Insert vertex</value>
+  </data>
+  <data name="ShapeDragging_Active" xml:space="preserve">
+    <value>Shape dragging Active</value>
+  </data>
+  <data name="ShapeDragging_InActive" xml:space="preserve">
+    <value>Shape dragging Inactive</value>
+  </data>
+  <data name="Snapping_Active" xml:space="preserve">
+    <value>Feature Snapping Active</value>
+  </data>
+  <data name="Snapping_InActive" xml:space="preserve">
+    <value>Feature Snapping Inactive</value>
+  </data>
+  <data name="ShowVerticesIndex_Active" xml:space="preserve">
+    <value>Vertices index on selected feature are showned</value>
+  </data>
+  <data name="ShowVerticesIndex_InActive" xml:space="preserve">
+    <value>Vertices index on selected feature are hided</value>
+  </data>
+  <data name="ShowVerticesIndex_Label" xml:space="preserve">
+    <value>Vertices</value>
+  </data>
+  <data name="Snapping_Label" xml:space="preserve">
+    <value>Snapping</value>
   </data>
 </root>

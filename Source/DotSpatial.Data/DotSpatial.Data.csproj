@@ -352,6 +352,7 @@
     <Compile Include="MockICancelProgressHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DataStrings.fr-FR.resx" />
     <EmbeddedResource Include="DataStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DataStrings.Designer.cs</LastGenOutput>

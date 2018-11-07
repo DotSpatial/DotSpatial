@@ -21,6 +21,7 @@ namespace DotSpatial.Modeling.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToolDialog));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panelElementContainer = new System.Windows.Forms.Panel();
             this.panelOkCancel = new System.Windows.Forms.Panel();
@@ -28,10 +29,10 @@ namespace DotSpatial.Modeling.Forms
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.panelHelp = new System.Windows.Forms.Panel();
+            this.panelPadding = new System.Windows.Forms.Panel();
             this.panelToolIcon = new System.Windows.Forms.Panel();
             this.pnlHelpImage = new System.Windows.Forms.Panel();
             this.rtbHelp = new System.Windows.Forms.RichTextBox();
-            this.panelPadding = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -43,153 +44,102 @@ namespace DotSpatial.Modeling.Forms
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.splitContainer1, "splitContainer1");
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.panelElementContainer);
             this.splitContainer1.Panel1.Controls.Add(this.panelOkCancel);
-            this.splitContainer1.Panel1MinSize = 450;
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.AutoScroll = true;
-            this.splitContainer1.Panel2.AutoScrollMinSize = new System.Drawing.Size(85, 0);
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
             this.splitContainer1.Panel2.Controls.Add(this.panelHelp);
-            this.splitContainer1.Size = new System.Drawing.Size(792, 476);
-            this.splitContainer1.SplitterDistance = 527;
-            this.splitContainer1.TabIndex = 2;
             // 
             // panelElementContainer
             // 
-            this.panelElementContainer.AutoScroll = true;
-            this.panelElementContainer.AutoScrollMinSize = new System.Drawing.Size(250, 0);
-            this.panelElementContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelElementContainer.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.panelElementContainer, "panelElementContainer");
             this.panelElementContainer.Name = "panelElementContainer";
-            this.panelElementContainer.Size = new System.Drawing.Size(527, 442);
-            this.panelElementContainer.TabIndex = 2;
             this.panelElementContainer.Click += new System.EventHandler(this.OtherElementClick);
             // 
             // panelOkCancel
             // 
-            this.panelOkCancel.AutoSize = true;
+            resources.ApplyResources(this.panelOkCancel, "panelOkCancel");
             this.panelOkCancel.Controls.Add(this.helpHyperlink);
             this.panelOkCancel.Controls.Add(this.btnCancel);
             this.panelOkCancel.Controls.Add(this.btnOK);
-            this.panelOkCancel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelOkCancel.Location = new System.Drawing.Point(0, 442);
             this.panelOkCancel.Name = "panelOkCancel";
-            this.panelOkCancel.Size = new System.Drawing.Size(527, 34);
-            this.panelOkCancel.TabIndex = 1;
             this.panelOkCancel.Click += new System.EventHandler(this.OtherElementClick);
             // 
             // helpHyperlink
             // 
-            this.helpHyperlink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.helpHyperlink.AutoSize = true;
-            this.helpHyperlink.Location = new System.Drawing.Point(459, 13);
+            resources.ApplyResources(this.helpHyperlink, "helpHyperlink");
             this.helpHyperlink.Name = "helpHyperlink";
-            this.helpHyperlink.Size = new System.Drawing.Size(53, 13);
-            this.helpHyperlink.TabIndex = 2;
-            // this.helpHyperlink.TabStop = true;
-            this.helpHyperlink.Text = "Tool Help";
+            this.helpHyperlink.TabStop = true;
             this.helpHyperlink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.HelpHyperlinkLinkClicked);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(83, 8);
+            resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.BtnCancelClick);
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(7, 8);
+            resources.ApplyResources(this.btnOK, "btnOK");
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(70, 23);
-            this.btnOK.TabIndex = 0;
-            this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.BtnOkClick);
             // 
             // panelHelp
             // 
-            this.panelHelp.AutoScroll = true;
+            resources.ApplyResources(this.panelHelp, "panelHelp");
             this.panelHelp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelHelp.Controls.Add(this.panelPadding);
-            this.panelHelp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelHelp.Location = new System.Drawing.Point(0, 0);
             this.panelHelp.Name = "panelHelp";
-            this.panelHelp.Size = new System.Drawing.Size(261, 476);
-            this.panelHelp.TabIndex = 0;
             this.panelHelp.SizeChanged += new System.EventHandler(this.PanelHelpSizeChanged);
-            // 
-            // panelToolIcon
-            // 
-            this.panelToolIcon.BackgroundImage = global::DotSpatial.Modeling.Forms.Images.Hammer;
-            this.panelToolIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panelToolIcon.Location = new System.Drawing.Point(217, 3);
-            this.panelToolIcon.Name = "panelToolIcon";
-            this.panelToolIcon.Size = new System.Drawing.Size(32, 32);
-            this.panelToolIcon.TabIndex = 2;
-            this.panelToolIcon.Click += new System.EventHandler(this.OtherElementClick);
-            // 
-            // pnlHelpImage
-            // 
-            this.pnlHelpImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlHelpImage.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHelpImage.Location = new System.Drawing.Point(10, 260);
-            this.pnlHelpImage.Name = "pnlHelpImage";
-            this.pnlHelpImage.Size = new System.Drawing.Size(239, 161);
-            this.pnlHelpImage.TabIndex = 1;
-            // 
-            // rtbHelp
-            // 
-            this.rtbHelp.BackColor = System.Drawing.SystemColors.Window;
-            this.rtbHelp.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbHelp.Dock = System.Windows.Forms.DockStyle.Top;
-            this.rtbHelp.Location = new System.Drawing.Point(10, 10);
-            this.rtbHelp.Margin = new System.Windows.Forms.Padding(5);
-            this.rtbHelp.Name = "rtbHelp";
-            this.rtbHelp.ReadOnly = true;
-            this.rtbHelp.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.rtbHelp.Size = new System.Drawing.Size(239, 250);
-            this.rtbHelp.TabIndex = 0;
-            this.rtbHelp.Text = "";
             // 
             // panelPadding
             // 
             this.panelPadding.Controls.Add(this.panelToolIcon);
             this.panelPadding.Controls.Add(this.pnlHelpImage);
             this.panelPadding.Controls.Add(this.rtbHelp);
-            this.panelPadding.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelPadding.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.panelPadding, "panelPadding");
             this.panelPadding.Name = "panelPadding";
-            this.panelPadding.Padding = new System.Windows.Forms.Padding(10);
-            this.panelPadding.Size = new System.Drawing.Size(259, 441);
-            this.panelPadding.TabIndex = 3;
+            // 
+            // panelToolIcon
+            // 
+            this.panelToolIcon.BackgroundImage = global::DotSpatial.Modeling.Forms.Images.Hammer;
+            resources.ApplyResources(this.panelToolIcon, "panelToolIcon");
+            this.panelToolIcon.Name = "panelToolIcon";
+            this.panelToolIcon.Click += new System.EventHandler(this.OtherElementClick);
+            // 
+            // pnlHelpImage
+            // 
+            resources.ApplyResources(this.pnlHelpImage, "pnlHelpImage");
+            this.pnlHelpImage.Name = "pnlHelpImage";
+            // 
+            // rtbHelp
+            // 
+            this.rtbHelp.BackColor = System.Drawing.SystemColors.Window;
+            this.rtbHelp.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            resources.ApplyResources(this.rtbHelp, "rtbHelp");
+            this.rtbHelp.Name = "rtbHelp";
+            this.rtbHelp.ReadOnly = true;
             // 
             // ToolDialog
             // 
             this.AcceptButton = this.btnOK;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(792, 476);
+            resources.ApplyResources(this, "$this");
             this.Controls.Add(this.splitContainer1);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "ToolDialog";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ToolDialog";
             this.Click += new System.EventHandler(this.OtherElementClick);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();

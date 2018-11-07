@@ -3,6 +3,8 @@
 
 using System;
 using System.Data;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Data;
 
@@ -13,6 +15,8 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public partial class SqlExpressionDialog : Form
     {
+        private CultureInfo _extensionCulture;
+
         #region Constructors
 
         /// <summary>
@@ -21,6 +25,7 @@ namespace DotSpatial.Symbology.Forms
         public SqlExpressionDialog()
         {
             InitializeComponent();
+            DialogCulture = new CultureInfo(string.Empty);
         }
 
         #endregion
@@ -85,6 +90,23 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo DialogCulture
+        {
+           set
+            {
+                if (_extensionCulture == value) return;
+                _extensionCulture = value;
+                if (_extensionCulture == null) _extensionCulture = new CultureInfo(string.Empty);
+                Thread.CurrentThread.CurrentCulture = _extensionCulture;
+                Thread.CurrentThread.CurrentUICulture = _extensionCulture;
+
+                UpdateDialogItems();
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -118,6 +140,11 @@ namespace DotSpatial.Symbology.Forms
 
             OnApplyChanges();
             Close();
+        }
+
+        private void UpdateDialogItems()
+        {
+            Refresh();
         }
 
         #endregion

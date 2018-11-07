@@ -17,6 +17,7 @@ namespace DotSpatial.Modeling.Forms
         private string _author;
         private string _description;
         private string _name;
+        private string _nameLabel;
 
         #endregion
 
@@ -42,6 +43,16 @@ namespace DotSpatial.Modeling.Forms
         /// Gets or sets the category of tool that the ITool should be added to.
         /// </summary>
         public virtual string Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets the category ToolTip of tool that the ITool should be added to.
+        /// </summary>
+        public virtual string CategoryToolTip { get; set; }
+
+        /// <summary>
+        /// Gets or sets the category Label of tool that the ITool should be added to.
+        /// </summary>
+        public virtual string CategoryLabel { get; set; }
 
         /// <summary>
         /// Gets or sets a short description of the plugin.
@@ -96,6 +107,22 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
+        /// Gets or sets the name Label of the plugin.
+        /// </summary>
+        public string NameLabel
+        {
+            get
+            {
+                return _nameLabel;
+            }
+
+            set
+            {
+                _nameLabel = value;
+            }
+        }
+
+        /// <summary>
         /// Gets the output paramater array.
         /// </summary>
         public abstract Parameter[] OutputParameters { get; }
@@ -126,6 +153,13 @@ namespace DotSpatial.Modeling.Forms
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         public virtual void ParameterChanged(Parameter sender)
+        {
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public virtual void UpdateToolResources()
         {
         }
 

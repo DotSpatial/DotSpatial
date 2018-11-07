@@ -61,6 +61,33 @@ namespace DotSpatial.Plugins.ShapeEditor {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Add_Ctx_DeleteShape {
+            get {
+                return ResourceManager.GetString("Add_Ctx_DeleteShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finish Part.
+        /// </summary>
+        internal static string Add_Ctx_FinishPart {
+            get {
+                return ResourceManager.GetString("Add_Ctx_FinishPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finish Shape.
+        /// </summary>
+        internal static string Add_Ctx_FinishShape {
+            get {
+                return ResourceManager.GetString("Add_Ctx_FinishShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Shape.
         /// </summary>
         internal static string Add_Shape {
@@ -76,6 +103,42 @@ namespace DotSpatial.Plugins.ShapeEditor {
             get {
                 object obj = ResourceManager.GetObject("move", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue from Endpoint.
+        /// </summary>
+        internal static string Move_Ctx_ContinueEnd {
+            get {
+                return ResourceManager.GetString("Move_Ctx_ContinueEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue from Start point.
+        /// </summary>
+        internal static string Move_Ctx_ContinueStart {
+            get {
+                return ResourceManager.GetString("Move_Ctx_ContinueStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete vertex.
+        /// </summary>
+        internal static string Move_Ctx_DeteleVertex {
+            get {
+                return ResourceManager.GetString("Move_Ctx_DeteleVertex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert vertex.
+        /// </summary>
+        internal static string Move_Ctx_InsertVertex {
+            get {
+                return ResourceManager.GetString("Move_Ctx_InsertVertex", resourceCulture);
             }
         }
         
@@ -118,11 +181,83 @@ namespace DotSpatial.Plugins.ShapeEditor {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shape dragging Active.
+        /// </summary>
+        internal static string ShapeDragging_Active {
+            get {
+                return ResourceManager.GetString("ShapeDragging_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shape dragging Inactive.
+        /// </summary>
+        internal static string ShapeDragging_InActive {
+            get {
+                return ResourceManager.GetString("ShapeDragging_InActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertices index on selected feature are showned.
+        /// </summary>
+        internal static string ShowVerticesIndex_Active {
+            get {
+                return ResourceManager.GetString("ShowVerticesIndex_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertices index on selected feature are hided.
+        /// </summary>
+        internal static string ShowVerticesIndex_InActive {
+            get {
+                return ResourceManager.GetString("ShowVerticesIndex_InActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertices.
+        /// </summary>
+        internal static string ShowVerticesIndex_Label {
+            get {
+                return ResourceManager.GetString("ShowVerticesIndex_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feature Snapping Active.
+        /// </summary>
+        internal static string Snapping_Active {
+            get {
+                return ResourceManager.GetString("Snapping_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feature Snapping Inactive.
+        /// </summary>
+        internal static string Snapping_InActive {
+            get {
+                return ResourceManager.GetString("Snapping_InActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Snapping.
         /// </summary>
-        internal static string Snapping {
+        internal static string Snapping_Label {
             get {
-                return ResourceManager.GetString("Snapping", resourceCulture);
+                return ResourceManager.GetString("Snapping_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snapping Settings.
+        /// </summary>
+        internal static string Snapping_Settings {
+            get {
+                return ResourceManager.GetString("Snapping_Settings", resourceCulture);
             }
         }
         

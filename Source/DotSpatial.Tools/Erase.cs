@@ -30,8 +30,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.Erase;
             Category = TextStrings.Analysis;
-            Description = TextStrings.RraseDescription;
-            ToolTip = TextStrings.EliminateSecondFeatureset;
+            UpdateToolResources();
         }
 
         #endregion
@@ -92,6 +91,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.ErasedResultFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.Erase_Label;
+            CategoryLabel = TextStrings.Analysis_Label;
+            CategoryToolTip = TextStrings.Analysis_ToolTip;
+            Description = TextStrings.EraseDescription;
+            ToolTip = TextStrings.EliminateSecondFeatureset;
         }
 
         #endregion

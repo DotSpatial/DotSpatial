@@ -6,7 +6,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
@@ -23,11 +27,15 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
+        private static readonly ResourceManager ResourcesControls = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
+        private static readonly ResourceManager ResourcesSymbology = new ResourceManager("DotSpatial.Symbology.SymbologyMessageStrings", Assembly.Load("DotSpatial.Symbology"));
+
         private readonly ContextMenuStrip _contextMenu;
         private readonly TextBox _editBox;
         private readonly Icon _icoChecked;
         private readonly Icon _icoUnchecked;
         private readonly HashSet<ILegendItem> _selection;
+
         private LegendBox _dragItem;
         private LegendBox _dragTarget;
         private IColorCategory _editCategory;
@@ -43,6 +51,7 @@ namespace DotSpatial.Controls
         private Color _selectionHighlight;
         private TabColorDialog _tabColorDialog;
         private bool _wasDoubleClick;
+        private CultureInfo _legendCulture;
 
         #endregion
 
@@ -77,6 +86,8 @@ namespace DotSpatial.Controls
             {
                 Owner = FindForm()
             };
+
+            LegendCulture = new CultureInfo(string.Empty);
         }
 
         #endregion
@@ -213,6 +224,37 @@ namespace DotSpatial.Controls
         public bool UseLegendForSelection { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the legend will show ContextMenu.
+        /// </summary>
+        public bool ShowContextMenu { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the legendItemBoxes can be edited or mooved.
+        /// </summary>
+        public bool EditLegendItemBoxes { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo LegendCulture
+        {
+            get
+            {
+                return _legendCulture;
+            }
+
+            set
+            {
+                if (_legendCulture == value) return;
+                _legendCulture = value;
+
+                if (_legendCulture == null) _legendCulture = new CultureInfo(string.Empty);
+
+                UpdateLegendResources();
+            }
+        }
+
+        /// <summary>
         /// Gets the bottom box in the legend.
         /// </summary>
         private LegendBox BottomBox => _legendBoxes[_legendBoxes.Count - 1];
@@ -245,9 +287,13 @@ namespace DotSpatial.Controls
         {
             var list = _selection.ToList();
             IFrame parentMap = null;
+            MapFrame mapFrame = null;
+
             if (list.Count > 0)
             {
                 parentMap = list[0].ParentMapFrame();
+                mapFrame = list[0].ParentMapFrame() as MapFrame;
+
                 parentMap?.SuspendEvents();
             }
 
@@ -258,6 +304,12 @@ namespace DotSpatial.Controls
 
             _selection.Clear();
             parentMap?.ResumeEvents();
+
+            if (mapFrame != null && mapFrame.Layers.SelectedLayer != null)
+            {
+                mapFrame.Layers.SelectedLayer = null; // Avoiding to delete the last selected layer before the selection of the mapFrame.
+            }
+
             RefreshNodes();
         }
 
@@ -503,35 +555,39 @@ namespace DotSpatial.Controls
             {
                 if (!lb.Bounds.Contains(loc) || lb.CheckBox.Contains(loc)) continue;
                 ILineCategory lc = lb.Item as ILineCategory;
-                if (lc != null)
+                if (lc != null && ShowContextMenu)
                 {
                     using (var lsDialog = new DetailedLineSymbolDialog(lc.Symbolizer))
                     {
+                        lsDialog.DLSDialogCulture = _legendCulture;
                         lsDialog.ShowDialog();
                     }
                 }
 
                 IPointCategory pc = lb.Item as IPointCategory;
-                if (pc != null)
+                if (pc != null && ShowContextMenu)
                 {
                     using (var dlg = new DetailedPointSymbolDialog(pc.Symbolizer))
                     {
+                        dlg.DPSDialogCulture = _legendCulture;
                         dlg.ShowDialog();
                     }
                 }
 
                 IPolygonCategory polyCat = lb.Item as IPolygonCategory;
-                if (polyCat != null)
+                if (polyCat != null && ShowContextMenu)
                 {
                     using (var dlg = new DetailedPolygonSymbolDialog(polyCat.Symbolizer))
                     {
+                        dlg.DPSDialogCulture = _legendCulture;
                         dlg.ShowDialog();
                     }
                 }
 
                 IFeatureLayer fl = lb.Item as IFeatureLayer;
-                if (fl != null)
+                if (fl != null && ShowContextMenu)
                 {
+                    fl.LayerCulture = _legendCulture;
                     using (var layDialog = new LayerDialog(fl, new FeatureCategoryControl()))
                     {
                         layDialog.ShowDialog();
@@ -539,8 +595,9 @@ namespace DotSpatial.Controls
                 }
 
                 IRasterLayer rl = lb.Item as IRasterLayer;
-                if (rl != null)
+                if (rl != null && ShowContextMenu)
                 {
+                    rl.LayerCulture = _legendCulture;
                     using (var dlg = new LayerDialog(rl, new RasterCategoryControl()))
                     {
                         dlg.ShowDialog();
@@ -548,13 +605,15 @@ namespace DotSpatial.Controls
                 }
 
                 IColorCategory cb = lb.Item as IColorCategory;
-                if (cb != null)
+                if (cb != null && ShowContextMenu)
                 {
                     _tabColorDialog = new TabColorDialog();
                     _tabColorDialog.ChangesApplied += TabColorDialogChangesApplied;
                     _tabColorDialog.StartColor = cb.LowColor;
                     _tabColorDialog.EndColor = cb.HighColor;
                     _editCategory = cb;
+
+                    // _tabColorDialog.cu = LegendCulture.Name;
                     _tabColorDialog.ShowDialog(this);
                 }
             }
@@ -798,13 +857,38 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="parent">The parent</param>
         /// <param name="mi">The menu item.</param>
-        private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi)
+        /// <param name="itemType"> The LegendType of the item that the contexMenu is being build</param>
+        // private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi, CultureInfo itemCulture)
+        // private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi, CultureInfo culture, LegendType itemType)
+        private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi, LegendType itemType)
         {
-            ToolStripMenuItem m = new ToolStripMenuItem(mi.Name, mi.Image, mi.ClickHandler);
-            parent.Add(m);
-            foreach (SymbologyMenuItem child in mi.MenuItems)
+            // ToolStripMenuItem m = new ToolStripMenuItem(Resources.GetString(mi.Name, itemCulture), mi.Image, mi.ClickHandler);
+            ToolStripMenuItem m;
+
+            switch (itemType.ToString())
             {
-                AddMenuItem(m.DropDownItems, child);
+                case "Group":
+                    m = new ToolStripMenuItem(ResourcesControls.GetString(mi.Name), mi.Image, mi.ClickHandler);
+                    parent.Add(m);
+
+                    foreach (SymbologyMenuItem child in mi.MenuItems)
+                    {
+                        AddMenuItem(m.DropDownItems, child, itemType);
+                    }
+
+                    break;
+
+                case "Layer":
+                case "Symbol":
+                    m = new ToolStripMenuItem(ResourcesSymbology.GetString(mi.Name), mi.Image, mi.ClickHandler);
+                    parent.Add(m);
+
+                    foreach (SymbologyMenuItem child in mi.MenuItems)
+                    {
+                        AddMenuItem(m.DropDownItems, child, itemType);
+                    }
+
+                    break;
             }
         }
 
@@ -961,7 +1045,7 @@ namespace DotSpatial.Controls
                     else
                     {
                         // this is a layer, it may be moved and renamed
-                        _dragItem = BoxFromItem(lyr);
+                        if (EditLegendItemBoxes) _dragItem = BoxFromItem(lyr);
                     }
                 }
             }
@@ -982,6 +1066,9 @@ namespace DotSpatial.Controls
                         UpdateSelectionEnabled(RootNodes.OfType<IMapFrame>().AsEnumerable());
                     }
                 }
+
+                FeatureCategory featCat = new FeatureCategory();
+                FeatureCategoryCollection feats = new FeatureCategoryCollection();
             }
         }
 
@@ -1026,7 +1113,7 @@ namespace DotSpatial.Controls
                             _editBox.Height = e.ItemBox.Bounds.Height;
                             _editBox.SelectedText = e.ItemBox.Item.LegendText;
                             _editBox.Font = Font;
-                            _editBox.Visible = true;
+                            if (EditLegendItemBoxes) _editBox.Visible = true;
                         }
                     }
                     else if (ModifierKeys == Keys.Control)
@@ -1040,13 +1127,21 @@ namespace DotSpatial.Controls
                 // right click shows the context menu
                 if (e.ItemBox.Item.ContextMenuItems == null) return;
 
+                if (e.ItemBox.Item.LegendType == LegendType.Layer)
+                {
+                    Layer currentLayer = e.ItemBox.Item as Layer;
+
+                    if (currentLayer != null) currentLayer.LayerCulture = _legendCulture;
+                }
+
                 _contextMenu.Items.Clear();
                 foreach (SymbologyMenuItem mi in e.ItemBox.Item.ContextMenuItems)
                 {
-                    AddMenuItem(_contextMenu.Items, mi);
+                    // AddMenuItem(_contextMenu.Items, mi, LegendCulture, e.ItemBox.Item.LegendType);
+                    AddMenuItem(_contextMenu.Items, mi, e.ItemBox.Item.LegendType);
                 }
 
-                _contextMenu.Show(this, e.Location);
+                if (ShowContextMenu) _contextMenu.Show(this, e.Location);
             }
         }
 
@@ -1150,11 +1245,15 @@ namespace DotSpatial.Controls
 
         private void HideEditBox()
         {
-            if (_editBox.Visible && !_ignoreHide)
+            if (_editBox != null && _editBox.Visible && !_ignoreHide)
             {
                 _ignoreHide = true;
-                _previousMouseDown.Item.LegendText = _editBox.Text;
-                _previousMouseDown = null;
+                if (_previousMouseDown != null)
+                {
+                    _previousMouseDown.Item.LegendText = _editBox.Text;
+                    _previousMouseDown = null;
+                }
+
                 _editBox.Visible = false;
                 _editBox.Text = string.Empty;
                 _ignoreHide = false;
@@ -1199,6 +1298,7 @@ namespace DotSpatial.Controls
 
         private void MapFrameOnLayerRemoved(object sender, LayerEventArgs e)
         {
+            HideEditBox();
             _selection.Remove(e.Layer);
         }
 
@@ -1299,6 +1399,13 @@ namespace DotSpatial.Controls
             {
                 rl.RasterLayerActions = manager?.RasterLayerActions;
             }
+        }
+
+        private void UpdateLegendResources()
+        {
+            Thread.CurrentThread.CurrentCulture = _legendCulture;
+            Thread.CurrentThread.CurrentUICulture = _legendCulture;
+            Refresh();
         }
 
         #endregion

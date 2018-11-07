@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -112,29 +112,29 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="grpPreview.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="grpPreview.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="grpPreview.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
-  <metadata name="lblPreview.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="lblPreview.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lblPreview.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 26</value>
   </data>
-  <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>174, 17</value>
   </metadata>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblPreview.ShowHelp" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -148,7 +148,7 @@
     <value>lblPreview</value>
   </data>
   <data name="&gt;&gt;lblPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblPreview.Parent" xml:space="preserve">
     <value>grpPreview</value>
@@ -169,7 +169,7 @@
     <value>True</value>
   </data>
   <data name="grpPreview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 78</value>
+    <value>185, 14</value>
   </data>
   <data name="grpPreview.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -181,7 +181,7 @@
     <value>grpPreview</value>
   </data>
   <data name="&gt;&gt;grpPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;grpPreview.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -189,7 +189,7 @@
   <data name="&gt;&gt;grpPreview.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <metadata name="dialogButtons1.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="dialogButtons1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="dialogButtons1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -199,13 +199,13 @@
     <value>True</value>
   </data>
   <data name="dialogButtons1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 196</value>
+    <value>8, 122</value>
   </data>
   <data name="dialogButtons1.ShowHelp" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="dialogButtons1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 33</value>
+    <value>244, 28</value>
   </data>
   <data name="dialogButtons1.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -214,7 +214,7 @@
     <value>dialogButtons1</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.0.0.35623, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -222,7 +222,7 @@
   <data name="&gt;&gt;dialogButtons1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="grdSlider.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="grdSlider.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="grdSlider.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -235,13 +235,13 @@
     <value>Specify the starting and ending colors of the gradient by sliding the two bars left and right</value>
   </data>
   <data name="grdSlider.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 87</value>
+    <value>28, 23</value>
   </data>
   <data name="grdSlider.ShowHelp" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="grdSlider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 103</value>
+    <value>203, 14</value>
   </data>
   <data name="grdSlider.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -250,7 +250,7 @@
     <value>grdSlider</value>
   </data>
   <data name="&gt;&gt;grdSlider.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.GradientControl, DotSpatial.Symbology.Forms, Version=1.0.0.35623, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.GradientControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;grdSlider.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -258,7 +258,7 @@
   <data name="&gt;&gt;grdSlider.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="_spatialStatusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="_spatialStatusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <data name="statusText.Size" type="System.Drawing.Size, System.Drawing">
@@ -286,7 +286,7 @@
     <value>_spatialStatusStrip1</value>
   </data>
   <data name="&gt;&gt;_spatialStatusStrip1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SymbologyStatusStrip, DotSpatial.Symbology.Forms, Version=1.0.0.35623, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.SymbologyStatusStrip, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_spatialStatusStrip1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -294,7 +294,7 @@
   <data name="&gt;&gt;_spatialStatusStrip1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="tableLayoutPanel1.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="tableLayoutPanel1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
@@ -322,7 +322,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -331,12 +331,12 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="dialogButtons1" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="grdSlider" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="grpPreview" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent, 100" /&gt;&lt;Rows Styles="" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="dialogButtons1" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="grdSlider" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="grpPreview" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
@@ -380,24 +380,24 @@
     <value>statusText</value>
   </data>
   <data name="&gt;&gt;statusText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;statusProgress.Name" xml:space="preserve">
     <value>statusProgress</value>
   </data>
   <data name="&gt;&gt;statusProgress.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;helpProvider1.Name" xml:space="preserve">
     <value>helpProvider1</value>
   </data>
   <data name="&gt;&gt;helpProvider1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.HelpProvider, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.HelpProvider, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ColorPicker</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

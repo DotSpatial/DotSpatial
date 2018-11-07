@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Threading;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using GeoAPI.Geometries;
@@ -432,6 +433,38 @@ namespace DotSpatial.Symbology
         [Description("Gets or sets a value indicating whether this layer can be used for snapping.")]
         [Serialize("Snappable")]
         public bool Snappable { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping StartPoint of the features.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping StartPoint of the features.")]
+        [Serialize("SnapVertices")]
+        public bool SnapVertices { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping StartPoint of the features.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping StartPoint of the features.")]
+        [Serialize("SnapStartPoint")]
+        public bool SnapStartPoint { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping EndPoint of the features.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping EndPoint.")]
+        [Serialize("SnapEndPoint")]
+        public bool SnapEndPoint { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping Edges of the features.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping Edges of the features.")]
+        [Serialize("SnapEdges")]
+        public bool SnapEdges { get; set; }
 
         /// <summary>
         /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
@@ -1557,6 +1590,7 @@ namespace DotSpatial.Symbology
             // In this case the feature layer won't be edited, but rather,
             // it needs to be passed so the process can work with the selection
             // and possibly add the finished content back into the map.
+            UpdateCurrentCulture();
             FeatureLayerActions?.ExportData(this);
         }
 
@@ -1718,22 +1752,26 @@ namespace DotSpatial.Symbology
             _categoryExtents = new Dictionary<IFeatureCategory, Extent>();
             DrawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
             Snappable = true;
+            SnapVertices = true;
+            SnapStartPoint = true;
+            SnapEndPoint = true;
+            SnapEdges = true;
             DataSet = featureSet;
             LegendText = featureSet.Name;
             Name = featureSet.Name;
-            var label = new SymbologyMenuItem(Msg.FeatureLayer_Labeling);
-            label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick));
-            label.MenuItems.Add(new SymbologyMenuItem(Msg.SetDynamicVisibilityScale, SymbologyImages.ZoomScale, LabelExtentsClick));
+            var label = new SymbologyMenuItem("FeatureLayer_Labeling");
+            label.MenuItems.Add(new SymbologyMenuItem("FeatureLayer_Label_Setup", SymbologyImages.Label, LabelSetupClick));
+            label.MenuItems.Add(new SymbologyMenuItem("SetDynamicVisibilityScale", SymbologyImages.ZoomScale, LabelExtentsClick));
             ContextMenuItems.Insert(4, label);
-            var selection = new SymbologyMenuItem(Msg.FeatureLayer_Selection, SymbologyImages.select, null);
+            var selection = new SymbologyMenuItem("FeatureLayer_Selection", SymbologyImages.select, null);
             ContextMenuItems.Insert(5, selection);
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Zoom_To_Selected, SymbologyImages.ZoomInMap, SelectionZoomClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Create_Layer_From_Selected_Features, SymbologyImages.Copy, SelectionToLayerClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectByAttributes, SelectByAtributesClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectAll, SymbologyImages.select_all, SelectAllClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_UnselectAll, SymbologyImages.deselect_16x16, UnselectAllClick));
+            selection.MenuItems.Add(new SymbologyMenuItem("FeatureLayer_Zoom_To_Selected", SymbologyImages.ZoomInMap, SelectionZoomClick));
+            selection.MenuItems.Add(new SymbologyMenuItem("FeatureLayer_Create_Layer_From_Selected_Features", SymbologyImages.Copy, SelectionToLayerClick));
+            selection.MenuItems.Add(new SymbologyMenuItem("FeatureLayer_SelectByAttributes", SelectByAtributesClick));
+            selection.MenuItems.Add(new SymbologyMenuItem("FeatureLayer_SelectAll", SymbologyImages.select_all, SelectAllClick));
+            selection.MenuItems.Add(new SymbologyMenuItem("FeatureLayer_UnselectAll", SymbologyImages.deselect_16x16, UnselectAllClick));
 
-            ContextMenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Join_Excel_File, SymbologyImages.redbluearrows, JoinExcel));
+            ContextMenuItems.Add(new SymbologyMenuItem("FeatureLayer_Join_Excel_File", SymbologyImages.redbluearrows, JoinExcel));
             if (!featureSet.IndexMode)
             {
                 _editMode = true;
@@ -1850,6 +1888,7 @@ namespace DotSpatial.Symbology
 
         private void JoinExcel(object sender, EventArgs e)
         {
+            UpdateCurrentCulture();
             FeatureLayerActions?.ExcelJoin(DataSet);
         }
 
@@ -1973,6 +2012,12 @@ namespace DotSpatial.Symbology
         private void UnselectAllClick(object sender, EventArgs e)
         {
             UnSelectAll();
+        }
+
+        private void UpdateCurrentCulture()
+        {
+            Thread.CurrentThread.CurrentCulture = LayerCulture;
+            Thread.CurrentThread.CurrentUICulture = LayerCulture;
         }
 
         #endregion

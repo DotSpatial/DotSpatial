@@ -30,8 +30,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.ChangeCellSize;
             Category = TextStrings.RasterOverlay;
-            Description = TextStrings.ReSampleGridDescription;
-            ToolTip = TextStrings.ChangeCellSize;
+            UpdateToolResources();
         }
 
         #endregion
@@ -201,6 +200,18 @@ namespace DotSpatial.Tools
             {
                 inParam2.Value = inputTemp.CellWidth;
             }
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.ChangeCellSize_Label;
+            CategoryLabel = TextStrings.RasterOverlay_Label;
+            CategoryToolTip = TextStrings.RasterOverlay_ToolTip;
+            Description = TextStrings.ReSampleGridDescription;
+            ToolTip = TextStrings.ChangeCellSize;
         }
 
         #endregion

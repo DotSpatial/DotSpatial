@@ -6,6 +6,9 @@ namespace DotSpatial.Symbology.Forms
 {
     partial class ExpressionControl
     {
+
+        System.ComponentModel.ComponentResourceManager resources;
+
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>
@@ -32,37 +35,37 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(ExpressionControl));
-            this.lblFields = new Label();
-            this.lblSelectPrecursor = new Label();
-            this.rtbExpression = new RichTextBox();
-            this.groupBox1 = new GroupBox();
-            this.tableLayoutPanel1 = new TableLayoutPanel();
-            this.label5 = new Label();
-            this.label6 = new Label();
-            this.label7 = new Label();
-            this.label8 = new Label();
-            this.label9 = new Label();
-            this.label4 = new Label();
-            this.label3 = new Label();
-            this.label10 = new Label();
-            this.label2 = new Label();
-            this.label11 = new Label();
-            this.label12 = new Label();
-            this.label13 = new Label();
-            this.groupBox2 = new GroupBox();
-            this.label1 = new Label();
-            this.btValidate = new Button();
-            this.btNewLine = new Button();
-            this.lblResult = new Label();
-            this.label14 = new Label();
-            this.dgvFields = new DataGridView();
-            this.dgvcName = new DataGridViewTextBoxColumn();
-            this.dgvcType = new DataGridViewTextBoxColumn();
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionControl));
+            this.lblFields = new System.Windows.Forms.Label();
+            this.lblSelectPrecursor = new System.Windows.Forms.Label();
+            this.rtbExpression = new System.Windows.Forms.RichTextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btValidate = new System.Windows.Forms.Button();
+            this.btNewLine = new System.Windows.Forms.Button();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.dgvFields = new System.Windows.Forms.DataGridView();
+            this.dgvcName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((ISupportInitialize)(this.dgvFields)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFields)).BeginInit();
             this.SuspendLayout();
             // 
             // lblFields
@@ -80,7 +83,7 @@ namespace DotSpatial.Symbology.Forms
             this.rtbExpression.AcceptsTab = true;
             resources.ApplyResources(this.rtbExpression, "rtbExpression");
             this.rtbExpression.Name = "rtbExpression";
-            this.rtbExpression.KeyDown += new KeyEventHandler(this.RtbExpressionKeyDown);
+            this.rtbExpression.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RtbExpressionKeyDown);
             // 
             // groupBox1
             // 
@@ -183,14 +186,14 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.btValidate, "btValidate");
             this.btValidate.Name = "btValidate";
             this.btValidate.UseVisualStyleBackColor = true;
-            this.btValidate.Click += new EventHandler(this.BtValidateClick);
+            this.btValidate.Click += new System.EventHandler(this.BtValidateClick);
             // 
             // btNewLine
             // 
             resources.ApplyResources(this.btNewLine, "btNewLine");
             this.btNewLine.Name = "btNewLine";
             this.btNewLine.UseVisualStyleBackColor = true;
-            this.btNewLine.Click += new EventHandler(this.BtNewLineClick);
+            this.btNewLine.Click += new System.EventHandler(this.BtNewLineClick);
             // 
             // lblResult
             // 
@@ -204,34 +207,34 @@ namespace DotSpatial.Symbology.Forms
             // 
             // dgvFields
             // 
+            resources.ApplyResources(this.dgvFields, "dgvFields");
             this.dgvFields.AllowUserToAddRows = false;
             this.dgvFields.AllowUserToDeleteRows = false;
             this.dgvFields.AllowUserToResizeColumns = false;
             this.dgvFields.AllowUserToResizeRows = false;
-            resources.ApplyResources(this.dgvFields, "dgvFields");
-            this.dgvFields.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFields.Columns.AddRange(new DataGridViewColumn[] {
+            this.dgvFields.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvFields.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFields.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvcName,
             this.dgvcType});
-            this.dgvFields.EditMode = DataGridViewEditMode.EditProgrammatically;
+            this.dgvFields.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvFields.MultiSelect = false;
             this.dgvFields.Name = "dgvFields";
             this.dgvFields.ReadOnly = true;
             this.dgvFields.RowHeadersVisible = false;
             this.dgvFields.ShowEditingIcon = false;
-            this.dgvFields.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(this.DgvFieldsCellMouseDoubleClick);
+            this.dgvFields.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvFieldsCellMouseDoubleClick);
             // 
             // dgvcName
             // 
-            this.dgvcName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvcName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             resources.ApplyResources(this.dgvcName, "dgvcName");
             this.dgvcName.Name = "dgvcName";
             this.dgvcName.ReadOnly = true;
             // 
             // dgvcType
             // 
-            this.dgvcType.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgvcType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             resources.ApplyResources(this.dgvcType, "dgvcType");
             this.dgvcType.Name = "dgvcType";
             this.dgvcType.ReadOnly = true;
@@ -239,7 +242,7 @@ namespace DotSpatial.Symbology.Forms
             // ExpressionControl
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dgvFields);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.lblResult);
@@ -257,7 +260,7 @@ namespace DotSpatial.Symbology.Forms
             this.tableLayoutPanel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((ISupportInitialize)(this.dgvFields)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFields)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

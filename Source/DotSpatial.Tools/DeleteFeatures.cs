@@ -31,8 +31,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.DeleteFeatures;
             Category = TextStrings.VectorOverlay;
-            Description = TextStrings.DeleteFeaturesDescription;
-            ToolTip = TextStrings.DeleteFeaturesfromFeatureSet;
+            UpdateToolResources();
         }
 
         #endregion
@@ -174,6 +173,18 @@ namespace DotSpatial.Tools
             {
                 ip.Fs = fsp.Value as FeatureSet;
             }
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.DeleteFeatures_Label;
+            CategoryLabel = TextStrings.VectorOverlay_Label;
+            CategoryToolTip = TextStrings.VectorOverlay_ToolTip;
+            Description = TextStrings.DeleteFeaturesDescription;
+            ToolTip = TextStrings.DeleteFeaturesfromFeatureSet;
         }
 
         #endregion

@@ -8,6 +8,7 @@ namespace DotSpatial.Symbology.Forms
     partial class FeatureCategoryControl
     {
         private IContainer components = null;
+        private System.ComponentModel.ComponentResourceManager resources;
 
         /// <summary>
         /// Handles disposing unmanaged memory
@@ -31,7 +32,7 @@ namespace DotSpatial.Symbology.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FeatureCategoryControl));
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(FeatureCategoryControl));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this._cmbField = new System.Windows.Forms.ComboBox();
@@ -70,15 +71,16 @@ namespace DotSpatial.Symbology.Forms
             this.breakSliderGraph1 = new DotSpatial.Symbology.Forms.BreakSliderGraph();
             this.chkUseGradients = new System.Windows.Forms.CheckBox();
             this.dgvCategories = new System.Windows.Forms.DataGridView();
-            this.colSymbol = new System.Windows.Forms.DataGridViewImageColumn();
-            this.colValues = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLegendText = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.radCustom = new System.Windows.Forms.RadioButton();
             this.angGradientAngle = new DotSpatial.Symbology.Forms.AngleControl();
             this.featureSizeRangeControl1 = new DotSpatial.Symbology.Forms.FeatureSizeRangeControl();
             this.tccColorRange = new DotSpatial.Symbology.Forms.TabColorControl();
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.colSymbol = new System.Windows.Forms.DataGridViewImageColumn();
+            this.colValues = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLegendText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcShowInLegend = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.nudSigFig)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStatistics)).BeginInit();
             this.tabScheme.SuspendLayout();
@@ -424,40 +426,13 @@ namespace DotSpatial.Symbology.Forms
             this.colSymbol,
             this.colValues,
             this.colLegendText,
-            this.colCount});
+            this.colCount,
+            this.dgvcShowInLegend});
             resources.ApplyResources(this.dgvCategories, "dgvCategories");
             this.dgvCategories.MultiSelect = false;
             this.dgvCategories.Name = "dgvCategories";
             this.dgvCategories.RowHeadersVisible = false;
             this.dgvCategories.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            // 
-            // colSymbol
-            // 
-            this.colSymbol.FillWeight = 49.97129F;
-            resources.ApplyResources(this.colSymbol, "colSymbol");
-            this.colSymbol.Name = "colSymbol";
-            this.colSymbol.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // colValues
-            // 
-            this.colValues.FillWeight = 142.132F;
-            resources.ApplyResources(this.colValues, "colValues");
-            this.colValues.Name = "colValues";
-            this.colValues.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // colLegendText
-            // 
-            this.colLegendText.FillWeight = 157.008F;
-            resources.ApplyResources(this.colLegendText, "colLegendText");
-            this.colLegendText.Name = "colLegendText";
-            // 
-            // colCount
-            // 
-            this.colCount.FillWeight = 50.88878F;
-            resources.ApplyResources(this.colCount, "colCount");
-            this.colCount.Name = "colCount";
-            this.colCount.ReadOnly = true;
-            this.colCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // radCustom
             // 
@@ -503,6 +478,42 @@ namespace DotSpatial.Symbology.Forms
             this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
             this.dataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewImageColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // colSymbol
+            // 
+            this.colSymbol.FillWeight = 59.29334F;
+            resources.ApplyResources(this.colSymbol, "colSymbol");
+            this.colSymbol.Name = "colSymbol";
+            this.colSymbol.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // colValues
+            // 
+            this.colValues.FillWeight = 168.6465F;
+            resources.ApplyResources(this.colValues, "colValues");
+            this.colValues.Name = "colValues";
+            this.colValues.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // colLegendText
+            // 
+            this.colLegendText.FillWeight = 186.2975F;
+            resources.ApplyResources(this.colLegendText, "colLegendText");
+            this.colLegendText.Name = "colLegendText";
+            // 
+            // colCount
+            // 
+            this.colCount.FillWeight = 60.38199F;
+            resources.ApplyResources(this.colCount, "colCount");
+            this.colCount.Name = "colCount";
+            this.colCount.ReadOnly = true;
+            this.colCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dgvcShowInLegend
+            // 
+            this.dgvcShowInLegend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dgvcShowInLegend.DataPropertyName = "ShowInLegend";
+            this.dgvcShowInLegend.FillWeight = 25.38071F;
+            resources.ApplyResources(this.dgvcShowInLegend, "dgvcShowInLegend");
+            this.dgvcShowInLegend.Name = "dgvcShowInLegend";
             // 
             // FeatureCategoryControl
             // 
@@ -558,10 +569,6 @@ namespace DotSpatial.Symbology.Forms
         private ComboBox cmbIntervalSnapping;
         private ComboBox cmbNormField;
         private Button cmdRefresh;
-        private DataGridViewTextBoxColumn colCount;
-        private DataGridViewTextBoxColumn colLegendText;
-        private DataGridViewImageColumn colSymbol;
-        private DataGridViewTextBoxColumn colValues;
         private DataGridViewImageColumn dataGridViewImageColumn1;
         private DataGridView dgvCategories;
         private DataGridView dgvStatistics;
@@ -589,5 +596,10 @@ namespace DotSpatial.Symbology.Forms
         private ComboBox _cmbField;
         private DataGridViewTextBoxColumn Stat;
         private DataGridViewTextBoxColumn Value;
+        private DataGridViewImageColumn colSymbol;
+        private DataGridViewTextBoxColumn colValues;
+        private DataGridViewTextBoxColumn colLegendText;
+        private DataGridViewTextBoxColumn colCount;
+        private DataGridViewCheckBoxColumn dgvcShowInLegend;
     }
 }

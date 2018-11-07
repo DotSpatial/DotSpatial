@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
@@ -22,8 +24,9 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private readonly ToolTip _toolTipTree;
+        private readonly ToolTip _treeToolTip;
         private ITool _toolToExecute;
+        private CultureInfo _toolManagerCulture;
 
         #endregion
 
@@ -35,13 +38,15 @@ namespace DotSpatial.Controls
         public ToolManager()
         {
             // Sets up some initial variables
-            _toolTipTree = new ToolTip();
+            _treeToolTip = new ToolTip();
+
             Tools = new List<ITool>();
 
             ImageList = new ImageList();
             ImageList.Images.Add("Hammer", Images.HammerSmall);
 
             NodeMouseDoubleClick += ToolManagerNodeMouseDoubleClick;
+            ToolManagerCulture = new CultureInfo(string.Empty);
         }
 
         #endregion
@@ -89,6 +94,26 @@ namespace DotSpatial.Controls
         [ImportMany(AllowRecomposition = true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IEnumerable<ITool> Tools { get; protected set; }
+
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo ToolManagerCulture
+        {
+            set
+            {
+                if (_toolManagerCulture == value) return;
+
+                _toolManagerCulture = value;
+
+                if (_toolManagerCulture == null) _toolManagerCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _toolManagerCulture;
+                Thread.CurrentThread.CurrentUICulture = _toolManagerCulture;
+                UpdateToolResources();
+                RefreshTree();
+            }
+        }
 
         #endregion
 
@@ -139,7 +164,7 @@ namespace DotSpatial.Controls
                         continue;
                     }
 
-                    if (foundSelected && Nodes[i].Nodes[j].Text.ToLower().Contains(toolName.ToLower()))
+                    if (foundSelected && Nodes[i].Nodes[j].Name.ToLower().Contains(toolName.ToLower()))
                     {
                         Nodes[i].Nodes[j].Expand();
                         SelectedNode = Nodes[i].Nodes[j];
@@ -163,9 +188,16 @@ namespace DotSpatial.Controls
 
             for (int i = 0; i < Nodes.Count; i++)
             {
+                if (Nodes[i].Name.ToLower().Contains(toolName.ToLower()))
+                {
+                    Nodes[i].Expand();
+                    SelectedNode = Nodes[i];
+                    return;
+                }
+
                 for (int j = 0; j < Nodes[i].Nodes.Count; j++)
                 {
-                    if (Nodes[i].Nodes[j].Text.ToLower().Contains(toolName.ToLower()))
+                    if (Nodes[i].Nodes[j].Name.ToLower().Contains(toolName.ToLower()))
                     {
                         Nodes[i].Nodes[j].Expand();
                         SelectedNode = Nodes[i].Nodes[j];
@@ -193,23 +225,38 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void RefreshTree()
         {
+            var oldTreeNeone = SelectedNode;
+
             // We clear the list of tools and providers
             Nodes.Clear();
 
             // Re-populate the tool treeview
             foreach (ITool tool in Tools)
             {
+                tool.UpdateToolResources();
+
                 // If the tool's category doesn't exist we add it
                 string category = tool.Category ?? "Default Category";
 
                 if (Nodes[category] == null)
-                    Nodes.Add(category, category);
+                {
+                    var treeCategAdded = Nodes.Add(category, category); // tool.CategoryLabel);
+                    treeCategAdded.Text = tool.CategoryLabel;
+                    treeCategAdded.ToolTipText = tool.CategoryToolTip;
+                }
 
                 // we add the tool with the default icon
-                Nodes[category].Nodes.Add(tool.AssemblyQualifiedName, tool.Name, "Hammer", "Hammer");
+                var treeNodeAdded = Nodes[category].Nodes.Add(tool.AssemblyQualifiedName, tool.Name, "Hammer", "Hammer");
+                treeNodeAdded.Text = tool.NameLabel;
             }
 
             Refresh();
+
+            if (oldTreeNeone != null)
+            {
+                Console.WriteLine("*******  " + oldTreeNeone.Name);
+                HighlightTool(oldTreeNeone.Name);
+            }
         }
 
         /// <summary>
@@ -243,25 +290,36 @@ namespace DotSpatial.Controls
             // Set a ToolTip only if the mouse pointer is actually paused on a node.
             if (theNode != null)
             {
-                // Verify that the tag property is not "null".
-                var tool = Tools.FirstOrDefault(t => t.Name == theNode.Name);
-                if (tool != null)
+                if (theNode.Parent == null)
                 {
                     // Change the ToolTip only if the pointer moved to a new node.
-                    if (tool.ToolTip != _toolTipTree.GetToolTip(this))
+                    if (theNode.ToolTipText != _treeToolTip.GetToolTip(this))
                     {
-                        _toolTipTree.SetToolTip(this, tool.ToolTip);
+                        _treeToolTip.SetToolTip(this, theNode.ToolTipText);
                     }
                 }
                 else
                 {
-                    _toolTipTree.SetToolTip(this, string.Empty);
+                    // Verify that the tag property is not "null".
+                    var tool = Tools.FirstOrDefault(t => t.AssemblyQualifiedName == theNode.Name);
+                    if (tool != null)
+                    {
+                        // Change the ToolTip only if the pointer moved to a new node.
+                        if (tool.ToolTip != _treeToolTip.GetToolTip(this))
+                        {
+                            _treeToolTip.SetToolTip(this, tool.ToolTip);
+                        }
+                    }
+                    else
+                    {
+                        _treeToolTip.SetToolTip(this, string.Empty);
+                    }
                 }
             }
             else
             {
                 // Pointer is not over a node so clear the ToolTip.
-                _toolTipTree.SetToolTip(this, string.Empty);
+                _treeToolTip.SetToolTip(this, string.Empty);
             }
         }
 
@@ -284,6 +342,9 @@ namespace DotSpatial.Controls
 
             if (progForm == null) return;
             if (toolToExecute == null) return;
+            Thread.CurrentThread.CurrentCulture = progForm.ToolProgressCulture;
+            Thread.CurrentThread.CurrentUICulture = progForm.ToolProgressCulture;
+
             progForm.Progress(string.Empty, 0, "==================");
             progForm.Progress(string.Empty, 0, string.Format(MessageStrings.ToolManager_ExecutingTool, toolToExecute.Name));
             progForm.Progress(string.Empty, 0, "==================");
@@ -322,7 +383,8 @@ namespace DotSpatial.Controls
                 IMapFrame mf = Legend?.RootNodes[0] as IMapFrame;
                 if (mf != null) ex = mf.ViewExtents;
 
-                ToolDialog td = new ToolDialog(_toolToExecute, DataSets, ex);
+                ToolDialog td = new ToolDialog(_toolToExecute, DataSets, ex, _toolManagerCulture);
+
                 DialogResult tdResult = td.ShowDialog(this);
                 while (tdResult == DialogResult.OK && td.ToolStatus != ToolStatus.Ok)
                 {
@@ -335,6 +397,7 @@ namespace DotSpatial.Controls
                     // This fires when the user clicks the "OK" button on a tool dialog
                     // First we create the progress form
                     ToolProgress progForm = new ToolProgress(1);
+                    progForm.ToolProgressCulture = _toolManagerCulture;
 
                     // We create a background worker thread to execute the tool
                     BackgroundWorker bw = new BackgroundWorker();
@@ -410,6 +473,13 @@ namespace DotSpatial.Controls
             }
 
             return dataSets;
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        private void UpdateToolResources()
+        {
         }
 
         #endregion

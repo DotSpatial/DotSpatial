@@ -30,8 +30,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.ClipFeatureSetWithPolygon;
             Category = TextStrings.VectorOverlay;
-            Description = TextStrings.tooltakesafeatureset;
-            ToolTip = TextStrings.Clipslayerwithlayer;
+            UpdateToolResources();
         }
 
         #endregion
@@ -130,6 +129,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.Clippedfeatureset);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.ClipFeatureSetWithPolygon_Label;
+            CategoryLabel = TextStrings.VectorOverlay_Label;
+            CategoryToolTip = TextStrings.VectorOverlay_ToolTip;
+            Description = TextStrings.tooltakesafeatureset;
+            ToolTip = TextStrings.Clipslayerwithlayer;
         }
 
         #endregion

@@ -156,9 +156,9 @@ namespace DotSpatial.Symbology
         public void CreateContextMenuItems()
         {
             ContextMenuItems = new List<SymbologyMenuItem>();
-            _mnuRemoveMe = new SymbologyMenuItem("Remove Category", RemoveCategoryClicked);
-            _mnuSelectFeatures = new SymbologyMenuItem("Select Features", SelectFeaturesClicked);
-            _mnuDeselectFeatures = new SymbologyMenuItem("Deselect Features", DeselectFeaturesClicked);
+            _mnuRemoveMe = new SymbologyMenuItem("Categ_Remove", RemoveCategoryClicked);
+            _mnuSelectFeatures = new SymbologyMenuItem("Categ_Select", SelectFeaturesClicked);
+            _mnuDeselectFeatures = new SymbologyMenuItem("Categ_Deselect", DeselectFeaturesClicked);
             ContextMenuItems.Add(_mnuRemoveMe);
             ContextMenuItems.Add(_mnuSelectFeatures);
             ContextMenuItems.Add(_mnuDeselectFeatures);

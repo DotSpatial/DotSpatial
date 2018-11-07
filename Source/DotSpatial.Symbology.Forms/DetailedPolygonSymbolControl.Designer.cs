@@ -242,7 +242,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldOpacitySimple.NumberFormat = null;
             this.sldOpacitySimple.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sldOpacitySimple.RampRadius = 8F;
-            this.sldOpacitySimple.RampText = "Opacity";
+            /*this.sldOpacitySimple.RampText = "Opacity";*/
             this.sldOpacitySimple.RampTextAlignment = System.Drawing.ContentAlignment.BottomCenter;
             this.sldOpacitySimple.RampTextBehindRamp = true;
             this.sldOpacitySimple.RampTextColor = System.Drawing.Color.Black;
@@ -469,7 +469,7 @@ namespace DotSpatial.Symbology.Forms
             this.hatchBackOpacity.NumberFormat = null;
             this.hatchBackOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.hatchBackOpacity.RampRadius = 8F;
-            this.hatchBackOpacity.RampText = "Opacity";
+            /*this.hatchBackOpacity.RampText = "Opacity";*/
             this.hatchBackOpacity.RampTextAlignment = System.Drawing.ContentAlignment.BottomCenter;
             this.hatchBackOpacity.RampTextBehindRamp = true;
             this.hatchBackOpacity.RampTextColor = System.Drawing.Color.Black;
@@ -518,7 +518,7 @@ namespace DotSpatial.Symbology.Forms
             this.hatchForeOpacity.NumberFormat = null;
             this.hatchForeOpacity.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.hatchForeOpacity.RampRadius = 8F;
-            this.hatchForeOpacity.RampText = "Opacity";
+            /*this.hatchForeOpacity.RampText = "Opacity";*/
             this.hatchForeOpacity.RampTextAlignment = System.Drawing.ContentAlignment.BottomCenter;
             this.hatchForeOpacity.RampTextBehindRamp = true;
             this.hatchForeOpacity.RampTextColor = System.Drawing.Color.Black;

@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -46,10 +47,14 @@ namespace DotSpatial.Controls
         private IHeaderControl _headerControl;
 
         private IMap _map;
+        private ILegend _legend;
 
         private string _message = string.Empty;
 
         private ISplashScreenManager _splashScreen;
+
+        private string _appCultureString;
+        private CultureInfo _appCulture;
 
         #endregion
 
@@ -73,6 +78,7 @@ namespace DotSpatial.Controls
                           };
             SerializationManager = new SerializationManager(this);
             Extensions = new List<IExtension>();
+            CultureString = string.Empty;
         }
 
         #endregion
@@ -106,6 +112,11 @@ namespace DotSpatial.Controls
         /// the DockManager, ProgressHandler or HeaderControl before other extensions are activated.
         /// </summary>
         public event EventHandler SatisfyImportsExtensionsActivated;
+
+        /// <summary>
+        /// Occurs after the AppCulture has changed.
+        /// </summary>
+        public event EventHandler<CultureInfo> AppCultureChanged;
 
         #endregion
 
@@ -208,7 +219,21 @@ namespace DotSpatial.Controls
         /// Gets or sets the Legend (Table of Contents) associated with the plugin manager.
         /// </summary>
         [Description("Gets or sets the Legend (Table of Contents) associated with the plugin manager.")]
-        public ILegend Legend { get; set; }
+        public ILegend Legend
+        {
+            get
+            {
+                return _legend;
+            }
+
+            set
+            {
+                if (_legend == value) return;
+
+                _legend = value;
+                if (_legend != null) _legend.LegendCulture = _appCulture;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the Map associated with the plugin manager.
@@ -251,6 +276,51 @@ namespace DotSpatial.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Description("Gets or sets the method for enabling extension Apps.")]
         public ShowExtensionsDialogMode ShowExtensionsDialogMode { get; set; }
+
+        /// <summary>
+        /// sets a value indicating the culture name to use for resources.
+        /// </summary>
+        public string CultureString
+        {
+            set
+            {
+                if (_appCultureString == value) return;
+
+                _appCultureString = value;
+
+                if (!string.IsNullOrWhiteSpace(_appCultureString))
+                {
+                    try
+                    {
+                        _appCulture = new CultureInfo(_appCultureString);
+                    }
+                    catch
+                    {
+                        _appCulture = new CultureInfo(string.Empty);
+                    }
+                }
+                else
+                {
+                    _appCulture = new CultureInfo(string.Empty);
+                }
+
+                Thread.CurrentThread.CurrentCulture = _appCulture;
+                Thread.CurrentThread.CurrentUICulture = _appCulture;
+
+                UpdateAppResources();
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating the culture of the App.
+        /// </summary>
+        public CultureInfo AppCulture
+        {
+            get
+            {
+                return _appCulture;
+            }
+        }
 
         [Browsable(false)]
         [ImportMany]
@@ -719,6 +789,12 @@ namespace DotSpatial.Controls
         private void RefreshExtensions(AggregateCatalog catalog)
         {
             LocateExtensions(catalog);
+        }
+
+        private void UpdateAppResources()
+        {
+            if (Legend != null) Legend.LegendCulture = _appCulture;
+            AppCultureChanged?.Invoke(this, _appCulture);
         }
 
         #endregion

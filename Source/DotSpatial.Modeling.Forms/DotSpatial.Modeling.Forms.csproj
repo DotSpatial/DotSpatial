@@ -318,6 +318,7 @@
     <EmbeddedResource Include="Elements\ListElement.resx">
       <DependentUpon>ListElement.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ModelingMessageStrings.fr-FR.resx" />
     <EmbeddedResource Include="ModelingMessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ModelingMessageStrings.Designer.cs</LastGenOutput>
@@ -352,11 +353,17 @@
     <EmbeddedResource Include="Elements\StringElement.resx">
       <DependentUpon>StringElement.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ToolDialog.fr-FR.resx">
+      <DependentUpon>ToolDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ToolDialog.resx">
       <DependentUpon>ToolDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ModelElement.resx">
       <DependentUpon>ModelElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToolProgress.fr-FR.resx">
+      <DependentUpon>ToolProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ToolProgress.resx">
       <DependentUpon>ToolProgress.cs</DependentUpon>

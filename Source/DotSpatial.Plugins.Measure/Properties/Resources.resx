@@ -142,4 +142,7 @@
   <data name="MeasureDistance" xml:space="preserve">
     <value>Measure Distance</value>
   </data>
+  <data name="MeasureButton" xml:space="preserve">
+    <value>Measure</value>
+  </data>
 </root>

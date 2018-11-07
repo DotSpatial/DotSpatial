@@ -61,6 +61,60 @@ namespace DotSpatial.Symbology {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attribute Table Editor.
+        /// </summary>
+        internal static string AttributeTableEditor {
+            get {
+                return ResourceManager.GetString("AttributeTableEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Break.
+        /// </summary>
+        internal static string Break_EditBreak {
+            get {
+                return ResourceManager.GetString("Break_EditBreak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Break.
+        /// </summary>
+        internal static string Break_RemoveBreak {
+            get {
+                return ResourceManager.GetString("Break_RemoveBreak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deselect Features.
+        /// </summary>
+        internal static string Categ_Deselect {
+            get {
+                return ResourceManager.GetString("Categ_Deselect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Category.
+        /// </summary>
+        internal static string Categ_Remove {
+            get {
+                return ResourceManager.GetString("Categ_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Features.
+        /// </summary>
+        internal static string Categ_Select {
+            get {
+                return ResourceManager.GetString("Categ_Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data.
         /// </summary>
         internal static string Data {
@@ -336,6 +390,33 @@ namespace DotSpatial.Symbology {
         internal static string FileCantBeDeletedException_S {
             get {
                 return ResourceManager.GetString("FileCantBeDeletedException_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new Group.
+        /// </summary>
+        internal static string Group_Create {
+            get {
+                return ResourceManager.GetString("Group_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Group.
+        /// </summary>
+        internal static string Group_Remove {
+            get {
+                return ResourceManager.GetString("Group_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom to Group.
+        /// </summary>
+        internal static string Group_Zoom {
+            get {
+                return ResourceManager.GetString("Group_Zoom", resourceCulture);
             }
         }
         

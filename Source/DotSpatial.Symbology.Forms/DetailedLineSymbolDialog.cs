@@ -3,6 +3,8 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
@@ -12,6 +14,8 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public partial class DetailedLineSymbolDialog : Form
     {
+        private CultureInfo _lsDialogCultrure;
+
         #region Constructors
 
         /// <summary>
@@ -68,6 +72,26 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo DLSDialogCulture
+        {
+            get
+            {
+                return _lsDialogCultrure;
+            }
+
+            set
+            {
+                _lsDialogCultrure = value;
+
+                Thread.CurrentThread.CurrentCulture = _lsDialogCultrure;
+                Thread.CurrentThread.CurrentUICulture = _lsDialogCultrure;
+                UpdateLineSymbolResources();
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -102,6 +126,18 @@ namespace DotSpatial.Symbology.Forms
             dialogButtons1.OkClicked += BtnOkClick;
             dialogButtons1.CancelClicked += BtnCancelClick;
             dialogButtons1.ApplyClicked += BtnApplyClick;
+
+            DLSDialogCulture = new CultureInfo(string.Empty);
+        }
+
+        private void UpdateLineSymbolResources()
+        {
+            resources.ApplyResources(dialogButtons1, "dialogButtons1");
+            resources.ApplyResources(detailedLineSymbolControl, "detailedLineSymbolControl");
+            resources.ApplyResources(this, "$this");
+
+            dialogButtons1.ButtonsCulture = _lsDialogCultrure;
+            detailedLineSymbolControl.DLSDialogCulture = _lsDialogCultrure;
         }
 
         #endregion

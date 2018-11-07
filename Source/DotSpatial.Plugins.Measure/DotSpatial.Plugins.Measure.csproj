@@ -114,6 +114,9 @@
     <EmbeddedResource Include="MeasureDialog.de-DE.resx">
       <DependentUpon>MeasureDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MeasureDialog.fr-FR.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MeasureDialog.it-IT.resx">
       <DependentUpon>MeasureDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -128,6 +131,7 @@
       <DependentUpon>MeasureDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.fr-FR.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

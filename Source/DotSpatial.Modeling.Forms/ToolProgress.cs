@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Data;
 
@@ -15,6 +17,7 @@ namespace DotSpatial.Modeling.Forms
         #region Fields
 
         private bool _executionComplete;
+        private CultureInfo _toolProgressCulture;
 
         #endregion
 
@@ -27,6 +30,7 @@ namespace DotSpatial.Modeling.Forms
         public ToolProgress(int numTools)
         {
             InitializeComponent();
+            ToolProgressCulture = new CultureInfo(string.Empty);
             _progressBarTool.Maximum = 100;
             _progressBarTool.Minimum = 0;
             _executionComplete = false;
@@ -49,6 +53,31 @@ namespace DotSpatial.Modeling.Forms
         /// Gets or sets the number of tools that have been successfully executed.
         /// </summary>
         public int ToolProgressCount { get; set; }
+
+        /// <summary>
+        /// gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo ToolProgressCulture
+        {
+            get
+            {
+                return _toolProgressCulture;
+            }
+
+            set
+            {
+                if (_toolProgressCulture == value) return;
+
+                _toolProgressCulture = value;
+
+                if (_toolProgressCulture == null) _toolProgressCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _toolProgressCulture;
+                Thread.CurrentThread.CurrentUICulture = _toolProgressCulture;
+                UpdateResources();
+                Refresh();
+            }
+        }
 
         #endregion
 
@@ -116,6 +145,15 @@ namespace DotSpatial.Modeling.Forms
             {
                 _txtBoxStatus.AppendText("\r\n" + DateTime.Now + ": " + message);
             }
+        }
+
+        private void UpdateResources()
+        {
+            resources.ApplyResources(_progressBarTool, "_progressBarTool");
+            resources.ApplyResources(_lblTool, "_lblTool");
+            resources.ApplyResources(_txtBoxStatus, "_txtBoxStatus");
+            resources.ApplyResources(_btnCancel, "_btnCancel");
+            resources.ApplyResources(this, "$this");
         }
 
         #endregion

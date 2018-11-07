@@ -18,11 +18,14 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item.</param>
+        /// <param name="name">The name or text for localizing this item.</param>
         /// <param name="image">The icon to draw for this menu item.</param>
         /// <param name="clickHandler">The click event handler.</param>
         public SymbologyMenuItem(string name, Image image, EventHandler clickHandler)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            { throw new ArgumentNullException(); }
+
             MenuItems = new List<SymbologyMenuItem>();
             Name = name;
             ClickHandler = clickHandler;
@@ -32,11 +35,14 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item.</param>
+        /// <param name="name">The name or text for localizing this item.</param>
         /// <param name="icon">The icon to draw for this menu item.</param>
         /// <param name="clickHandler">The click event handler.</param>
         public SymbologyMenuItem(string name, Icon icon, EventHandler clickHandler)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            { throw new ArgumentNullException(); }
+
             MenuItems = new List<SymbologyMenuItem>();
             Name = name;
             ClickHandler = clickHandler;
@@ -46,10 +52,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item.</param>
+        /// <param name="name">The name or text for localizing this item.</param>
         /// <param name="clickHandler">The click event handler.</param>
         public SymbologyMenuItem(string name, EventHandler clickHandler)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            { throw new ArgumentNullException(); }
+
             MenuItems = new List<SymbologyMenuItem>();
             Name = name;
             ClickHandler = clickHandler;
@@ -58,9 +67,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbologyMenuItem"/> class.
         /// </summary>
-        /// <param name="name">The name or text to appear for this item.</param>
+        /// <param name="name">The name or text for localizing this item.</param>
         public SymbologyMenuItem(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            { throw new ArgumentNullException(); }
+
             MenuItems = new List<SymbologyMenuItem>();
             Name = name;
         }

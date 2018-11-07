@@ -34,8 +34,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.RasterToPolygon;
             Category = TextStrings.Conversion;
-            Description = TextStrings.RasterToPolygonDescription;
-            ToolTip = TextStrings.RasterToPolygonDescription;
+            UpdateToolResources();
         }
 
         #endregion
@@ -590,6 +589,18 @@ namespace DotSpatial.Tools
                                       HelpText = TextStrings.featuresetcreated
                                   };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.RasterToPolygon_Label;
+            CategoryLabel = TextStrings.Conversion_Label;
+            CategoryToolTip = TextStrings.Conversion_ToolTip;
+            Description = TextStrings.RasterToPolygonDescription;
+            ToolTip = TextStrings.RasterToPolygonDescription;
         }
 
         #endregion

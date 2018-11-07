@@ -119,6 +119,15 @@ namespace DotSpatial.Plugins.Measure.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Measure.
+        /// </summary>
+        internal static string MeasureButton {
+            get {
+                return ResourceManager.GetString("MeasureButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Measure Distance.
         /// </summary>
         internal static string MeasureDistance {

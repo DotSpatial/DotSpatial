@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
@@ -17,6 +18,7 @@ namespace DotSpatial.Plugins.SetSelectable
         #region Fields
 
         private DgvSelect _dgvSelection;
+        private DockablePanel _selectPanel;
 
         #endregion
 
@@ -35,16 +37,21 @@ namespace DotSpatial.Plugins.SetSelectable
         public override void Activate()
         {
             _dgvSelection = new DgvSelect();
-            App.DockManager.Add(new DockablePanel("kSetSelectable", LocalizationStrings.PanelHeader, _dgvSelection, DockStyle.Left));
+
+            _selectPanel = new DockablePanel("kSetSelectable", LocalizationStrings.PanelHeader, _dgvSelection, DockStyle.Left);
+            App.DockManager.Add(_selectPanel);
             App.SerializationManager.Deserializing += SerializationManagerDeserializing;
             AttachLayerAddedEvents();
             App.Legend.UseLegendForSelection = false;
+            App.AppCultureChanged += OnAppCultureChanged;
             base.Activate();
         }
 
         /// <inheritdoc />
         public override void Deactivate()
         {
+            App.AppCultureChanged -= OnAppCultureChanged;
+
             // detach events
             if (App.Legend != null)
             {
@@ -164,6 +171,17 @@ namespace DotSpatial.Plugins.SetSelectable
             AttachLayerAddedEvents();
         }
 
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            ExtensionCulture = appCulture;
+            UpdatePlugInItems();
+        }
+
+        private void UpdatePlugInItems()
+        {
+            _selectPanel.Caption = LocalizationStrings.PanelHeader;
+            if (_dgvSelection != null) _dgvSelection.UpdatesSelectResources();
+        }
         #endregion
     }
 }

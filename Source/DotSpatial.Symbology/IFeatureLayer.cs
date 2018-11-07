@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
@@ -96,6 +97,34 @@ namespace DotSpatial.Symbology
         [Category("Behavior")]
         [Description("Gets or sets a value indicating whether this layer can be used for snapping.")]
         bool Snappable { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping Vertices of Lines and Polygons.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping Vertices of Lines & Polygons.")]
+        bool SnapVertices { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping startpoint of Lines and Polygons.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping startpoint of Lines & Polygons.")]
+        bool SnapStartPoint { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping EndPoint.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping EndPoint of Lines & Polygons.")]
+        bool SnapEndPoint { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this layer can be used for snapping Edges of Lines and Polygons.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets a value indicating whether this layer can be used for snapping Edges of Lines & Polygons.")]
+        bool SnapEdges { get; set; }
 
         /// <summary>
         /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features

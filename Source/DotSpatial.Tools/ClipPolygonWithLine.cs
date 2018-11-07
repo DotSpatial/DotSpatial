@@ -35,8 +35,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.ClipPolygonwithLine;
             Category = TextStrings.VectorOverlay;
-            Description = TextStrings.ClipPolygonwithLine;
-            ToolTip = TextStrings.ClipPolygonwithLine;
+            UpdateToolResources();
         }
 
         #endregion
@@ -741,6 +740,18 @@ namespace DotSpatial.Tools
                 HelpText = TextStrings.SelectResultShapefileDirectory
             };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.ClipPolygonwithLine_Label;
+            CategoryLabel = TextStrings.VectorOverlay_Label;
+            CategoryToolTip = TextStrings.VectorOverlay_ToolTip;
+            Description = TextStrings.ClipPolygonwithLine;
+            ToolTip = TextStrings.ClipPolygonwithLine;
         }
 
         /// <summary>

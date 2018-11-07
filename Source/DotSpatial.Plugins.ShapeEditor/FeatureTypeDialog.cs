@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Data;
 
@@ -12,6 +14,12 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// </summary>
     public partial class FeatureTypeDialog : Form
     {
+        #region Fields
+
+        private CultureInfo _featureTypeCulture;
+
+        #endregion;
+
         #region  Constructors
 
         /// <summary>
@@ -75,6 +83,26 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// Gets the filename which should be used to save the layer to file.
         /// </summary>
         public string Filename => _tbFilename.Text.Trim();
+
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo FeatureTypeCulture
+        {
+            set
+            {
+                if (_featureTypeCulture == value) return;
+
+                _featureTypeCulture = value;
+
+                if (_featureTypeCulture == null) _featureTypeCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _featureTypeCulture;
+                Thread.CurrentThread.CurrentUICulture = _featureTypeCulture;
+
+                Refresh();
+            }
+        }
 
         #endregion
 

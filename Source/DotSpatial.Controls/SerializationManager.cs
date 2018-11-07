@@ -322,7 +322,7 @@ namespace DotSpatial.Controls
         /// <param name="value">The value.</param>
         public void SetCustomSetting(string uniqueName, object value)
         {
-            // We avoid throwing an exception is the value is already set to allow settings to be persisted and available
+            // We avoid throwing an exception if the value is already set to allow settings to be persisted and available
             // even when the originating plugin is not running.
             _customSettings[uniqueName] = value;
         }

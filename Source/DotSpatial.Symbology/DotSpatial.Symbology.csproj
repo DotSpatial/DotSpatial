@@ -331,6 +331,7 @@
     <EmbeddedResource Include="SymbologyMessageStrings.de-DE.resx">
       <DependentUpon>SymbologyMessageStrings.resx</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyMessageStrings.fr-FR.resx" />
     <EmbeddedResource Include="SymbologyMessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SymbologyMessageStrings.Designer.cs</LastGenOutput>

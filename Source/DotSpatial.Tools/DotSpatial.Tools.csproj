@@ -164,6 +164,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>BitmapResources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="TextStrings.fr-FR.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="TextStrings.zh-CN.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TextStrings.zh-CN.Designer.cs</LastGenOutput>

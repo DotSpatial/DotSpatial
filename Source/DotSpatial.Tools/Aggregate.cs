@@ -26,10 +26,9 @@ namespace DotSpatial.Tools
         /// </summary>
         public Aggregate()
         {
-            Category = TextStrings.VectorOverlay;
-            Description = TextStrings.Givenafeatureset;
             Name = TextStrings.Aggregate;
-            ToolTip = TextStrings.AggregateToollip;
+            Category = TextStrings.VectorOverlay;
+            UpdateToolResources();
         }
 
         #endregion
@@ -103,6 +102,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.UnionFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.Aggregate_Label;
+            CategoryLabel = TextStrings.VectorOverlay_Label;
+            CategoryToolTip = TextStrings.VectorOverlay_ToolTip;
+            Description = TextStrings.Givenafeatureset;
+            ToolTip = TextStrings.Aggregate_ToolTip;
         }
 
         #endregion

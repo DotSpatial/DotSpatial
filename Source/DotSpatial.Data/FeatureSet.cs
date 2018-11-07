@@ -826,7 +826,8 @@ namespace DotSpatial.Data
                 counts = new int[expressions.Length];
                 for (int i = 0; i < expressions.Length; i++)
                 {
-                    if (expressions[i] != null)
+                    // if (expressions[i] != null)
+                    if (!string.IsNullOrEmpty(expressions[i]))
                     {
                         if (expressions[i].Contains("=[NULL]"))
                         {

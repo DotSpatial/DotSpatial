@@ -61,6 +61,15 @@ namespace DotSpatial.Plugins.About.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string btnAbout {
+            get {
+                return ResourceManager.GetString("btnAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap information {

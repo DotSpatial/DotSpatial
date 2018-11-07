@@ -266,4 +266,31 @@
   <data name="FeatureLayer_SelectByAttributes" xml:space="preserve">
     <value>Select By Attributes</value>
   </data>
+  <data name="AttributeTableEditor" xml:space="preserve">
+    <value>Attribute Table Editor</value>
+  </data>
+  <data name="Break_EditBreak" xml:space="preserve">
+    <value>Edit Break</value>
+  </data>
+  <data name="Break_RemoveBreak" xml:space="preserve">
+    <value>Remove Break</value>
+  </data>
+  <data name="Categ_Deselect" xml:space="preserve">
+    <value>Deselect Features</value>
+  </data>
+  <data name="Categ_Remove" xml:space="preserve">
+    <value>Remove Category</value>
+  </data>
+  <data name="Categ_Select" xml:space="preserve">
+    <value>Select Features</value>
+  </data>
+  <data name="Group_Create" xml:space="preserve">
+    <value>Create new Group</value>
+  </data>
+  <data name="Group_Remove" xml:space="preserve">
+    <value>Remove Group</value>
+  </data>
+  <data name="Group_Zoom" xml:space="preserve">
+    <value>Zoom to Group</value>
+  </data>
 </root>

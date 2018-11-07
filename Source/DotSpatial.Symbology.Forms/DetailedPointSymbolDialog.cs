@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
@@ -11,6 +13,8 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public partial class DetailedPointSymbolDialog : Form
     {
+        private CultureInfo _dlgCultrure;
+
         #region Constructors
 
         /// <summary>
@@ -64,6 +68,29 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo DPSDialogCulture
+        {
+            get
+            {
+                return _dlgCultrure;
+            }
+
+            set
+            {
+                if (_dlgCultrure == value) return;
+                _dlgCultrure = value;
+
+                if (_dlgCultrure == null) _dlgCultrure = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _dlgCultrure;
+                Thread.CurrentThread.CurrentUICulture = _dlgCultrure;
+                Refresh();
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -95,11 +122,25 @@ namespace DotSpatial.Symbology.Forms
 
         private void Configure()
         {
+            DPSDialogCulture = new CultureInfo(string.Empty);
+
             dialogButtons1.OkClicked += BtnOkClick;
             dialogButtons1.CancelClicked += BtnCancelClick;
             dialogButtons1.ApplyClicked += BtnApplyClick;
         }
 
+        private void UpdatePointSymbolResources()
+        {
+            resources.ApplyResources(panel1, "panel1");
+            resources.ApplyResources(dialogButtons1, "dialogButtons1");
+            resources.ApplyResources(detailedPointSymbolControl1, "detailedPointSymbolControl1");
+            resources.ApplyResources(this, "$this");
+
+            detailedPointSymbolControl1.DPSControlCulture = _dlgCultrure;
+            dialogButtons1.ButtonsCulture = _dlgCultrure;
+        }
+
         #endregion
+
     }
 }

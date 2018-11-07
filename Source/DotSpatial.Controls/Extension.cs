@@ -3,6 +3,8 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Globalization;
+using System.Threading;
 using DotSpatial.Extensions;
 
 namespace DotSpatial.Controls
@@ -17,6 +19,7 @@ namespace DotSpatial.Controls
         #region Fields
 
         private bool _deactivationAllowed = true;
+        private CultureInfo _extensionCulture;
 
         #endregion
 
@@ -54,6 +57,26 @@ namespace DotSpatial.Controls
         /// Gets or sets a value indicating whether the extension is active and running.
         /// </summary>
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo ExtensionCulture
+        {
+            get
+            {
+                return _extensionCulture;
+            }
+
+            set
+            {
+                if (_extensionCulture == value) return;
+                _extensionCulture = value;
+                if (_extensionCulture == null) _extensionCulture = new CultureInfo(string.Empty);
+                Thread.CurrentThread.CurrentCulture = _extensionCulture;
+                Thread.CurrentThread.CurrentUICulture = _extensionCulture;
+            }
+        }
 
         /// <summary>
         /// Gets the activation priority order.

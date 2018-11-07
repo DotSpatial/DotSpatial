@@ -1015,6 +1015,42 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Group.
+        /// </summary>
+        internal static string LayerFrame_CreateGroup {
+            get {
+                return ResourceManager.GetString("LayerFrame_CreateGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map Layers.
+        /// </summary>
+        internal static string LayerFrame_Map_Layers {
+            get {
+                return ResourceManager.GetString("LayerFrame_Map_Layers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Map Frame.
+        /// </summary>
+        internal static string LayerFrame_RemoveMapFrame {
+            get {
+                return ResourceManager.GetString("LayerFrame_RemoveMapFrame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom to Map Frame.
+        /// </summary>
+        internal static string LayerFrame_ZoomToMapFrame {
+            get {
+                return ResourceManager.GetString("LayerFrame_ZoomToMapFrame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Layers.
         /// </summary>
         internal static string Layers_Group {
@@ -1671,6 +1707,15 @@ namespace DotSpatial.Controls {
         internal static string Legend {
             get {
                 return ResourceManager.GetString("Legend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legend Settings....
+        /// </summary>
+        internal static string Legend_Settings {
+            get {
+                return ResourceManager.GetString("Legend_Settings", resourceCulture);
             }
         }
         

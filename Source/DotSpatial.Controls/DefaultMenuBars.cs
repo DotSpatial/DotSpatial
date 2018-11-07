@@ -3,7 +3,9 @@
 
 using System;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Controls.Header;
@@ -24,9 +26,37 @@ namespace DotSpatial.Controls
         private const string FileMenuKey = HeaderControl.ApplicationMenuKey;
         private const string HomeMenuKey = HeaderControl.HomeRootItemKey;
 
+        private RootItem _fileMenuKey;
+        private RootItem _homeMenuKey;
+        private SimpleActionItem _file_New;
+        private SimpleActionItem _file_Open;
+        private SimpleActionItem _file_Save;
+        private SimpleActionItem _file_SaveAs;
+        private SimpleActionItem _file_Options;
+        private SimpleActionItem _file_Print;
+        private SimpleActionItem _file_Reset_Layout;
+        private SimpleActionItem _file_Exit;
+
+        private SimpleActionItem _add_Layer;
+        private SimpleActionItem _remove_Layer;
+        private SimpleActionItem _legend_Settings;
+
+        private SimpleActionItem _pan;
+        private SimpleActionItem _zoom_In;
+        private SimpleActionItem _zoom_Out;
+        private SimpleActionItem _zoom_To_Extents;
+
         private SimpleActionItem _zoomNext;
         private SimpleActionItem _zoomPrevious;
         private SimpleActionItem _zoomToLayer;
+        private SimpleActionItem _zoom_To_Coordinates;
+
+        private SimpleActionItem _select;
+        private SimpleActionItem _deselect;
+        private SimpleActionItem _identify;
+
+        private HeaderControl _header;
+        private CultureInfo _defaultMenuBarCulture;
 
         #endregion
 
@@ -42,11 +72,32 @@ namespace DotSpatial.Controls
             App = app;
 
             App.MapChanged += (sender, args) => OnAppMapChanged(args);
+            App.AppCultureChanged += OnAppCultureChanged;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo DefaultMenuBarCulture
+        {
+            set
+            {
+                if (_defaultMenuBarCulture == value) return;
+
+                _defaultMenuBarCulture = value;
+
+                if (_defaultMenuBarCulture == null) _defaultMenuBarCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _defaultMenuBarCulture;
+                Thread.CurrentThread.CurrentUICulture = _defaultMenuBarCulture;
+
+                UpdateDefaultMenuItems();
+            }
+        }
 
         private AppManager App { get; set; }
 
@@ -62,8 +113,11 @@ namespace DotSpatial.Controls
         {
             if (header == null) throw new ArgumentNullException(nameof(header));
 
+            _header = header as HeaderControl;
             AddItems(header);
             OnAppMapChanged(new MapChangedEventArgs(null, App.Map));
+
+            DefaultMenuBarCulture = new CultureInfo(string.Empty);
         }
 
         private static void ShowSaveAsError(string fileName)
@@ -74,98 +128,125 @@ namespace DotSpatial.Controls
         private void AddItems(IHeaderControl header)
         {
             // Root items
-            header.Add(new RootItem(FileMenuKey, MessageStrings.File)
+            _fileMenuKey = new RootItem(FileMenuKey, MessageStrings.File)
             {
                 SortOrder = -20
-            });
-            header.Add(new RootItem(HomeMenuKey, MessageStrings.Home)
+            };
+            header.Add(_fileMenuKey);
+
+            _homeMenuKey = new RootItem(HomeMenuKey, MessageStrings.Home)
             {
                 SortOrder = -10
-            });
+            };
+            header.Add(_homeMenuKey);
 
             // Menu items
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_New, NewProjectClick)
+            _file_New = new SimpleActionItem(FileMenuKey, Msg.File_New, NewProjectClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 5,
                 SmallImage = Images.document_empty_16x16,
                 LargeImage = Images.document_empty_32x32,
                 ToolTipText = Msg.FileNewToolTip
-            });
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Open, OpenProjectClick)
+            };
+            header.Add(_file_New);
+
+            _file_Open = new SimpleActionItem(FileMenuKey, Msg.File_Open, OpenProjectClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 10,
                 SmallImage = Images.folder_16x16,
                 LargeImage = Images.folder_32x32,
                 ToolTipText = Msg.FileOpenToolTip
-            });
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Save, SaveProjectClick)
+            };
+            header.Add(_file_Open);
+
+            _file_Save = new SimpleActionItem(FileMenuKey, Msg.File_Save, SaveProjectClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 15,
                 SmallImage = Images.disk_16x16,
                 LargeImage = Images.disk_32x32,
-            });
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_SaveAs, SaveProjectAsClick)
+            };
+            header.Add(_file_Save);
+
+            _file_SaveAs = new SimpleActionItem(FileMenuKey, Msg.File_SaveAs, SaveProjectAsClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 20,
                 SmallImage = Images.save_as_16x16,
                 LargeImage = Images.save_as_32x32,
                 ToolTipText = Msg.FileSaveAsToolTip
-            });
+            };
+            header.Add(_file_SaveAs);
 
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Options, OptionsClick)
+            _file_Options = new SimpleActionItem(FileMenuKey, Msg.File_Options, OptionsClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 25
-            });
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Print, PrintLayoutClick)
+            };
+            header.Add(_file_Options);
+
+            _file_Print = new SimpleActionItem(FileMenuKey, Msg.File_Print, PrintLayoutClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 40,
                 SmallImage = Images.printer_16x16,
                 LargeImage = Images.printer_32x32
-            });
+            };
+            header.Add(_file_Print);
 
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Reset_Layout, ResetLayoutClick)
+            _file_Reset_Layout = new SimpleActionItem(FileMenuKey, Msg.File_Reset_Layout, ResetLayoutClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 200,
                 SmallImage = Images.layout_delete_16x16,
                 LargeImage = Images.layout_delete_32x32
-            });
+            };
+            header.Add(_file_Reset_Layout);
 
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Exit, ExitClick)
+            _file_Exit = new SimpleActionItem(FileMenuKey, Msg.File_Exit, ExitClick)
             {
                 GroupCaption = HeaderControl.ApplicationMenuKey,
                 SortOrder = 5000,
-            });
+            };
+            header.Add(_file_Exit);
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Add_Layer, AddLayerClick)
+            _add_Layer = new SimpleActionItem(HomeMenuKey, Msg.Add_Layer, AddLayerClick)
             {
                 GroupCaption = Msg.Layers_Group,
                 SmallImage = Images.layer_add_16x16,
                 LargeImage = Images.layer_add_32x32
-            });
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Remove_Layer, RemoveLayerClick)
+            };
+            header.Add(_add_Layer);
+
+            _remove_Layer = new SimpleActionItem(HomeMenuKey, Msg.Remove_Layer, RemoveLayerClick)
             {
                 GroupCaption = Msg.Layers_Group,
                 SmallImage = Images.layer_remove_16x16,
                 LargeImage = Images.layer_remove_32x32
-            });
+            };
+            header.Add(_remove_Layer);
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pan, PanToolClick)
+            _legend_Settings = new SimpleActionItem(HomeMenuKey, Msg.Legend_Settings, LegendSettingsClick)
+            {
+                GroupCaption = Msg.Layers_Group,
+                SmallImage = Images.Legend,
+                LargeImage = Images.Legend
+            };
+            header.Add(_legend_Settings);
+
+            _pan = new SimpleActionItem(HomeMenuKey, Msg.Pan, PanToolClick)
             {
                 Key = Msg.Pan,
                 GroupCaption = Msg.View_Group,
                 SmallImage = Images.hand_16x16,
                 LargeImage = Images.hand_32x32,
                 ToggleGroupKey = Msg.Map_Tools_Group
-            });
+            };
+            header.Add(_pan);
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_In, ZoomInClick)
+            _zoom_In = new SimpleActionItem(HomeMenuKey, Msg.Zoom_In, ZoomInClick)
             {
                 Key = Msg.Zoom_In,
                 GroupCaption = Msg.Zoom_Group,
@@ -173,8 +254,10 @@ namespace DotSpatial.Controls
                 SmallImage = Images.zoom_in_16x16,
                 LargeImage = Images.zoom_in_32x32,
                 ToggleGroupKey = Msg.Map_Tools_Group
-            });
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_Out, ZoomOutClick)
+            };
+            header.Add(_zoom_In);
+
+            _zoom_Out = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Out, ZoomOutClick)
             {
                 Key = Msg.Zoom_Out,
                 GroupCaption = Msg.Zoom_Group,
@@ -182,14 +265,18 @@ namespace DotSpatial.Controls
                 SmallImage = Images.zoom_out_16x16,
                 LargeImage = Images.zoom_out_32x32,
                 ToggleGroupKey = Msg.Map_Tools_Group
-            });
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Extents, ZoomToMaxExtentsClick)
+            };
+            header.Add(_zoom_Out);
+
+            _zoom_To_Extents = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Extents, ZoomToMaxExtentsClick)
             {
                 GroupCaption = Msg.Zoom_Group,
                 ToolTipText = Msg.Zoom_To_Extents_Tooltip,
                 SmallImage = Images.zoom_extend_16x16,
                 LargeImage = Images.zoom_extend_32x32
-            });
+            };
+            header.Add(_zoom_To_Extents);
+
             _zoomPrevious = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Previous, ZoomPreviousClick)
             {
                 GroupCaption = Msg.Zoom_Group,
@@ -216,37 +303,41 @@ namespace DotSpatial.Controls
             };
             header.Add(_zoomToLayer);
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Coordinates, CoordinatesClick)
+            _zoom_To_Coordinates = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Coordinates, CoordinatesClick)
             {
                 GroupCaption = Msg.Zoom_Group,
                 SmallImage = Images.zoom_coordinate_16x16,
                 LargeImage = Images.zoom_coordinate_32x32
-            });
+            };
+            header.Add(_zoom_To_Coordinates);
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Select, SelectionToolClick)
+            _select = new SimpleActionItem(HomeMenuKey, Msg.Select, SelectionToolClick)
             {
                 Key = Msg.Select,
                 GroupCaption = Msg.Map_Tools_Group,
                 SmallImage = Images.select_16x16,
                 LargeImage = Images.select_32x32,
                 ToggleGroupKey = Msg.Map_Tools_Group
-            });
+            };
+            header.Add(_select);
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Deselect, DeselectAllClick)
+            _deselect = new SimpleActionItem(HomeMenuKey, Msg.Deselect, DeselectAllClick)
             {
                 Key = Msg.Deselect,
                 GroupCaption = Msg.Map_Tools_Group,
                 SmallImage = Images.deselect_16x16,
                 LargeImage = Images.deselect_32x32
-            });
+            };
+            header.Add(_deselect);
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Identify, IdentifierToolClick)
+            _identify = new SimpleActionItem(HomeMenuKey, Msg.Identify, IdentifierToolClick)
             {
                 GroupCaption = Msg.Map_Tools_Group,
                 SmallImage = Images.info_rhombus_16x16,
                 LargeImage = Images.info_rhombus_32x32,
                 ToggleGroupKey = Msg.Map_Tools_Group
-            });
+            };
+            header.Add(_identify);
         }
 
         /// <summary>
@@ -394,7 +485,7 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         private void OptionsClick(object sender, EventArgs e)
         {
-            using (var form = new OptionsForm(App.Map))
+            using (var form = new OptionsForm(App))
             {
                 form.ShowDialog();
             }
@@ -449,6 +540,17 @@ namespace DotSpatial.Controls
             catch
             {
             }
+        }
+
+        /// <summary>
+        /// Settings currently used Legend control from the Map
+        /// </summary>
+        /// <param name="sender">Sender that raised the event.</param>
+        /// <param name="e">The event args.</param>
+        private void LegendSettingsClick(object sender, EventArgs e)
+        {
+            var legendSettings = new LegendSettingsDialog(App.Map);
+            legendSettings.ShowDialog();
         }
 
         private void ResetLayoutClick(object sender, EventArgs e)
@@ -612,6 +714,61 @@ namespace DotSpatial.Controls
         private void ZoomToMaxExtentsClick(object sender, EventArgs e)
         {
             App.Map.ZoomToMaxExtent();
+        }
+
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            DefaultMenuBarCulture = appCulture;
+        }
+
+        private void UpdateDefaultMenuItems()
+        {
+            _fileMenuKey.Caption = MessageStrings.File;
+            _homeMenuKey.Caption = MessageStrings.Home;
+
+            _file_New.Caption = MessageStrings.File_New;
+            _file_Open.Caption = MessageStrings.File_Open;
+            _file_Save.Caption = MessageStrings.File_Save;
+            _file_SaveAs.Caption = MessageStrings.File_SaveAs;
+            _file_Options.Caption = MessageStrings.File_Options;
+            _file_Print.Caption = MessageStrings.File_Print;
+            _file_Reset_Layout.Caption = MessageStrings.File_Reset_Layout;
+            _file_Exit.Caption = MessageStrings.File_Exit;
+
+            _add_Layer.Caption = MessageStrings.Add_Layer;
+            _remove_Layer.Caption = MessageStrings.Remove_Layer;
+
+            _pan.Caption = MessageStrings.Pan;
+            _zoom_In.Caption = MessageStrings.Zoom_In;
+            _zoom_Out.Caption = MessageStrings.Zoom_Out;
+            _zoom_To_Extents.Caption = MessageStrings.Zoom_To_Extents;
+
+            _zoomNext.Caption = MessageStrings.Zoom_Next;
+            _zoomPrevious.Caption = MessageStrings.Zoom_Previous;
+            /*_zoomToLayer.Caption = MessageStrings.la;*/
+            _zoom_To_Coordinates.Caption = MessageStrings.Zoom_To_Coordinates;
+
+            _select.Caption = MessageStrings.Select;
+            _deselect.Caption = MessageStrings.Deselect;
+            _identify.Caption = MessageStrings.Identify;
+
+            // TooltipText
+            _add_Layer.ToolTipText = MessageStrings.Add_Layer;
+            _remove_Layer.ToolTipText = MessageStrings.Remove_Layer;
+
+            _pan.ToolTipText = MessageStrings.Pan;
+            _zoom_In.ToolTipText = MessageStrings.Zoom_In_Tooltip;
+            _zoom_Out.ToolTipText = MessageStrings.Zoom_Out_Tooltip;
+            _zoom_To_Extents.ToolTipText = MessageStrings.Zoom_To_Extents_Tooltip;
+
+            _zoomNext.ToolTipText = MessageStrings.Zoom_Next;
+            _zoomPrevious.ToolTipText = MessageStrings.Zoom_Previous;
+            /*_zoomToLayer.Caption = MessageStrings.la;*/
+            _zoom_To_Coordinates.ToolTipText = MessageStrings.Zoom_To_Coordinates;
+
+            _select.ToolTipText = MessageStrings.Select;
+            _deselect.ToolTipText = MessageStrings.Deselect;
+            _identify.ToolTipText = MessageStrings.Identify;
         }
 
         #endregion

@@ -31,6 +31,16 @@ namespace DotSpatial.Modeling.Forms
         string Category { get; }
 
         /// <summary>
+        /// Gets Or Sets the category Label of tool that the ITool should be added to.
+        /// </summary>
+        string CategoryLabel { get; set; }
+
+        /// <summary>
+        /// Gets Or Sets the category ToolTip of tool that the ITool should be added to.
+        /// </summary>
+        string CategoryToolTip { get; set; }
+
+        /// <summary>
         /// Gets the help text to be displayed when no input field is selected.
         /// </summary>
         string Description { get; }
@@ -59,6 +69,11 @@ namespace DotSpatial.Modeling.Forms
         /// Gets the name of the tool.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets the label of the tool.
+        /// </summary>
+        string NameLabel { get; }
 
         /// <summary>
         /// Gets the output paramater array.
@@ -96,6 +111,11 @@ namespace DotSpatial.Modeling.Forms
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         void ParameterChanged(Parameter sender);
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        void UpdateToolResources();
 
         #endregion
     }

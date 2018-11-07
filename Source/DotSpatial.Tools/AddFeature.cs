@@ -30,8 +30,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.AddFeature;
             Category = TextStrings.VectorOverlay;
-            Description = TextStrings.AddFeatureDescription;
-            ToolTip = TextStrings.AddFeatureintheFeatureSet;
+            UpdateToolResources();
         }
 
         #endregion
@@ -148,6 +147,17 @@ namespace DotSpatial.Tools
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.AddFeature_Label;
+            CategoryLabel = TextStrings.VectorOverlay_Label;
+            CategoryToolTip = TextStrings.VectorOverlay_Label;
+            Description = TextStrings.AddFeatureDescription;
+            ToolTip = TextStrings.AddFeatureintheFeatureSet;
+        }
         #endregion
     }
 }

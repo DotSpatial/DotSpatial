@@ -117,10 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="dgvcSnappable.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="dgvcSnappable.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="dgvcLayerName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="dgvcLayerName.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
+  <data name="dgvcSnapVertices.UserAddedColumn" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="dgvcSnapStartPoint.UserAddedColumn" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="dgvcSnapEndPoint.UserAddedColumn" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="cbPerformSnap.Text" xml:space="preserve">
+    <value>Perform Snapping</value>
+  </data>
+  <data name="dgvcLayerName.HeaderText" xml:space="preserve">
+    <value>Layer</value>
+  </data>
+  <data name="dgvcSnapEdges.HeaderText" xml:space="preserve">
+    <value>Edges</value>
+  </data>
+  <data name="dgvcSnapEdges.ToolTipText" xml:space="preserve">
+    <value>Edges of the feature</value>
+  </data>
+  <data name="dgvcSnapEndPoint.HeaderText" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="dgvcSnapEndPoint.ToolTipText" xml:space="preserve">
+    <value>EndPoint of the feature</value>
+  </data>
+  <data name="dgvcSnappable.HeaderText" xml:space="preserve">
+    <value>Snappable</value>
+  </data>
+  <data name="dgvcSnappable.ToolTipText" xml:space="preserve">
+    <value>Indicates whether the coordinates of the layers features can be snapped to.</value>
+  </data>
+  <data name="dgvcSnapStartPoint.HeaderText" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="dgvcSnapStartPoint.ToolTipText" xml:space="preserve">
+    <value>StartPoint of the feature</value>
+  </data>
+  <data name="dgvcSnapVertices.HeaderText" xml:space="preserve">
+    <value>Vertices</value>
+  </data>
+  <data name="dgvcSnapVertices.ToolTipText" xml:space="preserve">
+    <value>Vertices of the feature</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Snap to the following layers:</value>
+  </data>
+  <data name="SettingsText" xml:space="preserve">
+    <value>Snap Settings</value>
+  </data>
 </root>

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Projections;
@@ -375,7 +376,7 @@ namespace DotSpatial.Symbology
                 _propertyDialogProvider = value;
                 if (_propertyDialogProvider != null)
                 {
-                    ContextMenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.Layer_Properties, ShowPropertiesClick));
+                    ContextMenuItems.Add(new SymbologyMenuItem("Layer_Properties", ShowPropertiesClick));
                     _propertyDialogProvider.ChangesApplied += PropertyDialogProviderChangesApplied;
                 }
             }
@@ -396,6 +397,11 @@ namespace DotSpatial.Symbology
         [Category("Behavior")]
         [Description("Gets or sets a boolean indicating whether to allow the dynamic visibility envelope to control visibility.")]
         public bool UseDynamicVisibility { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Culture retrieve from the App
+        /// </summary>
+        public CultureInfo LayerCulture { get; set; }
 
         /// <summary>
         /// Gets or sets the progress meter being used internally by layer classes.
@@ -800,14 +806,14 @@ namespace DotSpatial.Symbology
             SelectionEnabled = true;
             ContextMenuItems = new List<SymbologyMenuItem>
                                {
-                                   new SymbologyMenuItem(SymbologyMessageStrings.RemoveLayer, SymbologyImages.mnuLayerClear, RemoveLayerClick),
-                                   new SymbologyMenuItem(SymbologyMessageStrings.ZoomToLayer, SymbologyImages.ZoomInMap, ZoomToLayerClick),
-                                   new SymbologyMenuItem(SymbologyMessageStrings.SetDynamicVisibilityScale, SymbologyImages.ZoomScale, SetDynamicVisibility)
+                                   new SymbologyMenuItem("RemoveLayer", SymbologyImages.mnuLayerClear, RemoveLayerClick),
+                                   new SymbologyMenuItem("ZoomToLayer", SymbologyImages.ZoomInMap, ZoomToLayerClick),
+                                   new SymbologyMenuItem("SetDynamicVisibilityScale", SymbologyImages.ZoomScale, SetDynamicVisibility)
                                };
-            SymbologyMenuItem mnuData = new SymbologyMenuItem(SymbologyMessageStrings.Data);
-            mnuData.MenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.ExportData, SymbologyImages.save, ExportDataClick));
+            SymbologyMenuItem mnuData = new SymbologyMenuItem("Data");
+            mnuData.MenuItems.Add(new SymbologyMenuItem("ExportData", SymbologyImages.save, ExportDataClick));
             ContextMenuItems.Add(mnuData);
-            ContextMenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.Properties, SymbologyImages.color_scheme, ShowPropertiesClick));
+            ContextMenuItems.Add(new SymbologyMenuItem("Properties", SymbologyImages.color_scheme, ShowPropertiesClick));
             LegendSymbolMode = SymbolMode.Checkbox;
             LegendType = LegendType.Layer;
             IsExpanded = true;

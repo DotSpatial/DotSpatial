@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -29,11 +31,15 @@ namespace DotSpatial.Plugins.ShapeEditor
         private List<Coordinate> _coordinates;
         private IFeatureSet _featureSet;
         private MenuItem _finishPart;
+        private MenuItem _finishShape;
+        private MenuItem _deleteShape;
         private IFeatureLayer _layer;
         private Point _mousePosition;
         private List<List<Coordinate>> _parts;
         private bool _standBy;
         private IMapLineLayer _tempLayer;
+        private ButtonHandler _myHandler;
+        private CultureInfo _addShapeCulture;
 
         #endregion
 
@@ -43,9 +49,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// Initializes a new instance of the <see cref="AddShapeFunction"/> class. This specifies the Map that this function should be applied to.
         /// </summary>
         /// <param name="map">The map control that implements the IMap interface that this function uses.</param>
-        public AddShapeFunction(IMap map)
+        /// <param name="handler"> The handle</param>
+        public AddShapeFunction(IMap map, ButtonHandler handler)
             : base(map)
         {
+            _myHandler = handler;
             Configure();
         }
 
@@ -84,6 +92,31 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo AddShapeCulture
+        {
+            set
+            {
+                if (_addShapeCulture == value) return;
+
+                _addShapeCulture = value;
+
+                if (_addShapeCulture == null) _addShapeCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _addShapeCulture;
+                Thread.CurrentThread.CurrentUICulture = _addShapeCulture;
+
+                if (_coordinateDialog != null)
+                {
+                    _coordinateDialog.CoordCulture = _addShapeCulture;
+                    _coordinateDialog.Refresh();
+                }
+
+                UpdateAddResources();
+            }
+        }
         #endregion
 
         #region Methods
@@ -119,6 +152,12 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e">An empty EventArgs class.</param>
         public void FinishPart(object sender, EventArgs e)
         {
+            if (_coordinates == null) return;
+            if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
+            {
+                if (_coordinates.Count < 2) return;
+            }
+
             if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[_coordinates.Count - 1])) _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
 
             _parts.Add(_coordinates);
@@ -143,11 +182,15 @@ namespace DotSpatial.Plugins.ShapeEditor
 
                 if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
                 {
+                    // if (_coordinates == null || _coordinates.Count < 2) return;
                     FinishPart(sender, e);
+
+                    if (_parts == null || _parts.Count <= 0) return;
                     Shape shp = new Shape(_featureSet.FeatureType);
                     foreach (List<Coordinate> part in _parts)
                     {
-                        if (part.Count >= 2)
+                        // In order to avoid exceptions
+                        if (part != null && part.Count >= 2)
                         {
                             shp.AddPart(part, _featureSet.CoordinateType);
                         }
@@ -214,6 +257,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             if (_coordinateDialog == null) _coordinateDialog = new CoordinateDialog();
 
+            _coordinateDialog.CoordCulture = _addShapeCulture;
             _coordinateDialog.ShowZValues = _featureSet.CoordinateType == CoordinateType.Z;
             _coordinateDialog.ShowMValues = _featureSet.CoordinateType == CoordinateType.M || _featureSet.CoordinateType == CoordinateType.Z;
 
@@ -285,7 +329,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e">The drawing args for the draw method.</param>
         protected override void OnDraw(MapDrawArgs e)
         {
-            if (_standBy)
+            if (_standBy || _featureSet == null)
             {
                 return;
             }
@@ -470,6 +514,54 @@ namespace DotSpatial.Plugins.ShapeEditor
         }
 
         /// <summary>
+        /// Handles the Key-Up situation.
+        /// </summary>
+        /// <param name="e">The KeyEventArgs class describes the key condition.</param>
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            switch (e.KeyValue)
+            {
+                /*case 8:
+                    if (_coordinates.Count > 0)
+                    {
+                        _coordinates.RemoveAt(_coordinates.Count - 1);
+                        Map.Refresh();
+                    }
+
+                    break;*/
+
+                case 13:
+                    if (_coordinates.Count > 0)
+                    {
+                        FinishPart(null, null);
+                        return;
+                    }
+
+                    if (_parts.Count > 0)
+                    {
+                        // FinishShape(null, null);
+                    }
+
+                    break;
+
+                case 27:
+                    if (_coordinates != null && _coordinates.Count > 0)
+                    {
+                        _coordinates.Clear();
+                        Map.Refresh();
+                        return;
+                    }
+
+                    /*if (_parts.Count > 0)
+                    {
+                        DeleteShape(null, null);
+                    }*/
+
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Occurs when this function is removed.
         /// </summary>
         protected override void OnUnload()
@@ -495,11 +587,29 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
             _context = new ContextMenu();
-            _context.MenuItems.Add("Delete", DeleteShape);
-            _finishPart = new MenuItem("Finish Part", FinishPart);
+
+            _deleteShape = new MenuItem(string.Empty, DeleteShape);
+            _context.MenuItems.Add(_deleteShape);
+
+            _finishPart = new MenuItem(string.Empty, FinishPart);
             _context.MenuItems.Add(_finishPart);
-            _context.MenuItems.Add("Finish Shape", FinishShape);
+
+            _finishShape = new MenuItem(string.Empty, FinishShape);
+            _context.MenuItems.Add(_finishShape);
             _parts = new List<List<Coordinate>>();
+
+            AddShapeCulture = new CultureInfo(string.Empty);
+        }
+
+        /// <summary>
+        /// updates the objects by using the appropriate values according to a sepecific language.
+        /// </summary>
+        private void UpdateAddResources()
+        {
+            if (_finishPart != null) _finishPart.Text = ShapeEditorResources.Add_Ctx_FinishPart;
+            if (_finishShape != null) _finishShape.Text = ShapeEditorResources.Add_Ctx_FinishShape;
+
+            if (_deleteShape != null) _deleteShape.Text = ShapeEditorResources.Add_Ctx_DeleteShape;
         }
 
         private void CoordinateDialogFormClosing(object sender, FormClosingEventArgs e)

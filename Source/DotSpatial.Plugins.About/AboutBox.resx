@@ -117,4 +117,616 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;TabPageApplication.Name" xml:space="preserve">
+    <value>TabPageApplication</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AppVersionLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="OKButton.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ImagePictureBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 32</value>
+  </data>
+  <data name="AppCopyrightLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblyDetails.Name" xml:space="preserve">
+    <value>TabPageAssemblyDetails</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MoreRichTextBox.Name" xml:space="preserve">
+    <value>MoreRichTextBox</value>
+  </data>
+  <data name="&gt;&gt;ColumnHeader1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MoreRichTextBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="AppVersionLabel.Text" xml:space="preserve">
+    <value>Version %version%</value>
+  </data>
+  <data name="TabPanelDetails.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="&gt;&gt;DetailsButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;AppCopyrightLabel.Name" xml:space="preserve">
+    <value>AppCopyrightLabel</value>
+  </data>
+  <data name="DetailsButton.Text" xml:space="preserve">
+    <value>&amp;Details &gt;&gt;</value>
+  </data>
+  <data name="&gt;&gt;colValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblies.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ColumnHeader2.Name" xml:space="preserve">
+    <value>ColumnHeader2</value>
+  </data>
+  <data name="&gt;&gt;AppTitleLabel.Name" xml:space="preserve">
+    <value>AppTitleLabel</value>
+  </data>
+  <data name="SysInfoButton.Text" xml:space="preserve">
+    <value>&amp;System Info...</value>
+  </data>
+  <data name="AppCopyrightLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 99</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoListView.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="SysInfoButton.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="colAssemblyName.Width" type="System.Int32, mscorlib">
+    <value>123</value>
+  </data>
+  <data name="&gt;&gt;SysInfoButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="colAssemblyCodeBase.Width" type="System.Int32, mscorlib">
+    <value>750</value>
+  </data>
+  <data name="MoreRichTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 114</value>
+  </data>
+  <data name="AssemblyInfoListView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 88</value>
+  </data>
+  <data name="&gt;&gt;AssemblyNamesComboBox.Name" xml:space="preserve">
+    <value>AssemblyNamesComboBox</value>
+  </data>
+  <data name="AppCopyrightLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 16</value>
+  </data>
+  <data name="&gt;&gt;AppInfoListView.Parent" xml:space="preserve">
+    <value>TabPageApplication</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AppCopyrightLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="AppDateLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 16</value>
+  </data>
+  <data name="&gt;&gt;TabPageApplication.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="AssemblyNamesComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 21</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyName.Name" xml:space="preserve">
+    <value>colAssemblyName</value>
+  </data>
+  <data name="OKButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 23</value>
+  </data>
+  <data name="&gt;&gt;TabPanelDetails.Name" xml:space="preserve">
+    <value>TabPanelDetails</value>
+  </data>
+  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;AppTitleLabel.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;AppDateLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="MoreRichTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="GroupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="AppInfoListView.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;AssemblyDetailsListView.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;AssemblyNamesComboBox.Parent" xml:space="preserve">
+    <value>TabPageAssemblyDetails</value>
+  </data>
+  <data name="TabPageAssemblies.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyCodeBase.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TabPanelDetails.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="DetailsButton.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;OKButton.Name" xml:space="preserve">
+    <value>OKButton</value>
+  </data>
+  <data name="SysInfoButton.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="DetailsButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="&gt;&gt;TabPanelDetails.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="DetailsButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 23</value>
+  </data>
+  <data name="colAssemblyVersion.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="&gt;&gt;AppDescriptionLabel.Name" xml:space="preserve">
+    <value>AppDescriptionLabel</value>
+  </data>
+  <data name="&gt;&gt;AppDescriptionLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="TabPanelDetails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;AppVersionLabel.Name" xml:space="preserve">
+    <value>AppVersionLabel</value>
+  </data>
+  <data name="AppDateLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;SysInfoButton.Name" xml:space="preserve">
+    <value>SysInfoButton</value>
+  </data>
+  <data name="colAssemblyBuilt.Text" xml:space="preserve">
+    <value>Built</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TabPageAssemblyDetails.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="AssemblyDetailsListView.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="AppDateLabel.Text" xml:space="preserve">
+    <value>Built on %builddate%</value>
+  </data>
+  <data name="AppTitleLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;SysInfoButton.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;AssemblyNamesComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TabPageAssemblyDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 88</value>
+  </data>
+  <data name="MoreRichTextBox.Text" xml:space="preserve">
+    <value>%product% is %copyright%, %trademark%</value>
+  </data>
+  <data name="AppInfoListView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 88</value>
+  </data>
+  <data name="&gt;&gt;MoreRichTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AppDateLabel.Name" xml:space="preserve">
+    <value>AppDateLabel</value>
+  </data>
+  <data name="ColumnHeader2.Width" type="System.Int32, mscorlib">
+    <value>700</value>
+  </data>
+  <data name="&gt;&gt;OKButton.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="AssemblyNamesComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;DetailsButton.Name" xml:space="preserve">
+    <value>DetailsButton</value>
+  </data>
+  <data name="SysInfoButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="&gt;&gt;AssemblyDetailsListView.Parent" xml:space="preserve">
+    <value>TabPageAssemblyDetails</value>
+  </data>
+  <data name="TabPageApplication.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 88</value>
+  </data>
+  <data name="MoreRichTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="AssemblyDetailsListView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 21</value>
+  </data>
+  <data name="MoreRichTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 123</value>
+  </data>
+  <data name="ColumnHeader2.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="&gt;&gt;AppCopyrightLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyVersion.Name" xml:space="preserve">
+    <value>colAssemblyVersion</value>
+  </data>
+  <data name="&gt;&gt;AssemblyDetailsListView.Name" xml:space="preserve">
+    <value>AssemblyDetailsListView</value>
+  </data>
+  <data name="OKButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="&gt;&gt;OKButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="AppTitleLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="TabPageApplication.Text" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
+  </data>
+  <data name="colAssemblyCodeBase.Text" xml:space="preserve">
+    <value>CodeBase</value>
+  </data>
+  <data name="MoreRichTextBox.ScrollBars" type="System.Windows.Forms.RichTextBoxScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="&gt;&gt;ImagePictureBox.Name" xml:space="preserve">
+    <value>ImagePictureBox</value>
+  </data>
+  <data name="AssemblyDetailsListView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 67</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblies.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="colAssemblyName.Text" xml:space="preserve">
+    <value>Assembly</value>
+  </data>
+  <data name="&gt;&gt;OKButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="AppDateLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="SysInfoButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 23</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyCodeBase.Name" xml:space="preserve">
+    <value>colAssemblyCodeBase</value>
+  </data>
+  <data name="AppCopyrightLabel.Text" xml:space="preserve">
+    <value>Copyright © %year%, %company%</value>
+  </data>
+  <data name="AppDateLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 79</value>
+  </data>
+  <data name="AppTitleLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>58, 7</value>
+  </data>
+  <data name="colKey.Text" xml:space="preserve">
+    <value>Application Key</value>
+  </data>
+  <data name="AssemblyDetailsListView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="AppVersionLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 59</value>
+  </data>
+  <data name="AppDescriptionLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;AppVersionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>About %title%</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblyDetails.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;AppTitleLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AppInfoListView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AssemblyInfoListView.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;DetailsButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;TabPageApplication.Parent" xml:space="preserve">
+    <value>TabPanelDetails</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblies.Parent" xml:space="preserve">
+    <value>TabPanelDetails</value>
+  </data>
+  <data name="&gt;&gt;AppVersionLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="AppDescriptionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="TabPageApplication.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="AppDescriptionLabel.Text" xml:space="preserve">
+    <value>%description%</value>
+  </data>
+  <data name="SysInfoButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>212, 245</value>
+  </data>
+  <data name="&gt;&gt;AppDescriptionLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyBuilt.Name" xml:space="preserve">
+    <value>colAssemblyBuilt</value>
+  </data>
+  <data name="DetailsButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>228, 245</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>394, 275</value>
+  </data>
+  <data name="&gt;&gt;ColumnHeader1.Name" xml:space="preserve">
+    <value>ColumnHeader1</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>AboutBox</value>
+  </data>
+  <data name="AppVersionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="TabPageApplication.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="colKey.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="&gt;&gt;ImagePictureBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MoreRichTextBox.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;AppDateLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ImagePictureBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 7</value>
+  </data>
+  <data name="AssemblyNamesComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TabPanelDetails.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 123</value>
+  </data>
+  <data name="AppDescriptionLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>58, 27</value>
+  </data>
+  <data name="&gt;&gt;DetailsButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 47</value>
+  </data>
+  <data name="&gt;&gt;SysInfoButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyBuilt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;colAssemblyName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TabPanelDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>378, 114</value>
+  </data>
+  <data name="&gt;&gt;AppTitleLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;colValue.Name" xml:space="preserve">
+    <value>colValue</value>
+  </data>
+  <data name="TabPageAssemblyDetails.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblyDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblyDetails.Parent" xml:space="preserve">
+    <value>TabPanelDetails</value>
+  </data>
+  <data name="TabPageAssemblyDetails.Text" xml:space="preserve">
+    <value>Assembly Details</value>
+  </data>
+  <data name="&gt;&gt;AppInfoListView.Name" xml:space="preserve">
+    <value>AppInfoListView</value>
+  </data>
+  <data name="ColumnHeader1.Text" xml:space="preserve">
+    <value>Assembly Key</value>
+  </data>
+  <data name="colValue.Width" type="System.Int32, mscorlib">
+    <value>700</value>
+  </data>
+  <data name="colValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="AppTitleLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>328, 16</value>
+  </data>
+  <data name="&gt;&gt;AppInfoListView.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ImagePictureBox.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;TabPageApplication.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoListView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoListView.Parent" xml:space="preserve">
+    <value>TabPageAssemblies</value>
+  </data>
+  <data name="TabPageAssemblies.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="AppTitleLabel.Text" xml:space="preserve">
+    <value>%title%</value>
+  </data>
+  <data name="AssemblyInfoListView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;colKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TabPageAssemblies.Text" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="OKButton.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="ColumnHeader1.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="&gt;&gt;AppDateLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;AppCopyrightLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="AppVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 16</value>
+  </data>
+  <data name="AppInfoListView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;AssemblyNamesComboBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;AppVersionLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ColumnHeader2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AssemblyNamesComboBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 2</value>
+  </data>
+  <data name="&gt;&gt;AppDescriptionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TabPageAssemblies.Name" xml:space="preserve">
+    <value>TabPageAssemblies</value>
+  </data>
+  <data name="&gt;&gt;TabPanelDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AssemblyDetailsListView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AppCopyrightLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AppDescriptionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>328, 16</value>
+  </data>
+  <data name="&gt;&gt;ImagePictureBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="colAssemblyBuilt.Width" type="System.Int32, mscorlib">
+    <value>130</value>
+  </data>
+  <data name="AppInfoListView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="colAssemblyVersion.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="&gt;&gt;ImagePictureBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="TabPanelDetails.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="OKButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>312, 245</value>
+  </data>
+  <data name="GroupBox1.Text" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;colKey.Name" xml:space="preserve">
+    <value>colKey</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoListView.Name" xml:space="preserve">
+    <value>AssemblyInfoListView</value>
+  </data>
+  <data name="AssemblyInfoListView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="TabPageAssemblies.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 88</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>

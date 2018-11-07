@@ -297,7 +297,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             for (int i = 0; i < listpoints.Length; i = i + 2)
             {
                 lstCoor.Add(new Coordinate(
-                    Convert.ToDouble(listpoints[i], CultureInfo.InvariantCulture), 
+                    Convert.ToDouble(listpoints[i], CultureInfo.InvariantCulture),
                     Convert.ToDouble(listpoints[i + 1], CultureInfo.InvariantCulture)));
             }
 

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
+using System.Globalization;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -8,6 +9,15 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public interface ICategoryControl
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        CultureInfo FeatCategControlCulture { get; set; }
+
+        #endregion
+
         /// <summary>
         /// Initializes the specified layer.
         /// </summary>

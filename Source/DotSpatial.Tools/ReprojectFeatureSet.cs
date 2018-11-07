@@ -30,8 +30,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.ReprojectFeatures;
             Category = TextStrings.SpatialReference;
-            Description = TextStrings.ReprojectFeatureSetDescription;
-            ToolTip = TextStrings.Reprojectsallcoordinates;
+            UpdateToolResources();
         }
 
         #endregion
@@ -140,6 +139,18 @@ namespace DotSpatial.Tools
             if (fsp?.Value == null) return;
 
             _inputParam[1].Value = fsp.Value.Projection;
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.ReprojectFeatures_Label;
+            CategoryLabel = TextStrings.SpatialReference_Label;
+            CategoryToolTip = TextStrings.SpatialReference_ToolTip;
+            Description = TextStrings.ReprojectFeatureSetDescription;
+            ToolTip = TextStrings.Reprojectsallcoordinates;
         }
 
         #endregion
