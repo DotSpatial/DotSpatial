@@ -29,6 +29,7 @@ namespace DotSpatial.Symbology
         /// <param name="item">Item that gets included.</param>
         protected override void OnInclude(IFeatureCategory item)
         {
+            if (Scheme == null) return;
             item.SetParentItem(Scheme.AppearsInLegend ? Scheme : Scheme.GetParentItem());
             base.OnInclude(item);
         }

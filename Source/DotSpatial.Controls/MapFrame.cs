@@ -74,7 +74,7 @@ namespace DotSpatial.Controls
             IsSelected = true; // by default allow the map frame to be selected
 
             // add properties context menu item
-            ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, ProjectionClick));
+            ContextMenuItems.Add(new SymbologyMenuItem("MapFrame_Projection", ProjectionClick));
         }
 
         /// <summary>

@@ -4,6 +4,8 @@ namespace DotSpatial.Symbology.Forms
 {
     public partial class FeatureSizeRangeControl
     {
+        private System.ComponentModel.ComponentResourceManager resources;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -31,7 +33,7 @@ namespace DotSpatial.Symbology.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FeatureSizeRangeControl));
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(FeatureSizeRangeControl));
             this.nudStart = new System.Windows.Forms.NumericUpDown();
             this.nudEnd = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();

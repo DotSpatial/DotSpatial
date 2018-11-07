@@ -31,9 +31,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.Union;
             Category = TextStrings.VectorOverlay;
-            Description = TextStrings.UnionDescription;
-            ToolTip = TextStrings.Unionofinputs;
-            HelpImage = BitmapResources.Union;
+            UpdateToolResources();
         }
 
         #endregion
@@ -206,6 +204,19 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.UnionFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.Union_Label;
+            CategoryLabel = TextStrings.VectorOverlay_Label;
+            CategoryToolTip = TextStrings.VectorOverlay_ToolTip;
+            Description = TextStrings.UnionDescription;
+            ToolTip = TextStrings.Unionofinputs;
+            HelpImage = BitmapResources.Union;
         }
 
         #endregion

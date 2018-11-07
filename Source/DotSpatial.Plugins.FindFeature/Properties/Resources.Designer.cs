@@ -61,6 +61,15 @@ namespace DotSpatial.Plugins.FindFeature.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find.
+        /// </summary>
+        internal static string FindButton {
+            get {
+                return ResourceManager.GetString("FindButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The syntax of that query isn&apos;t quite right: {0}.
         /// </summary>
         internal static string IncorrectSyntax {

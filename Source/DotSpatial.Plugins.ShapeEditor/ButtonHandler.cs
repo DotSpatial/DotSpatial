@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -19,16 +21,24 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private readonly IHeaderControl _header;
         private IFeatureLayer _activeLayer;
+        private SimpleActionItem _newShapeFile;
         private SimpleActionItem _addShape;
+        private SimpleActionItem _moveVertex;
         private AddShapeFunction _addShapeFunction;
+        private SimpleActionItem _snapping;
         private bool _disposed;
 
         private bool _doSnapping = true;
-        private bool _doEdgeSnapping = true;
+        private bool _doShapeDragging = false;
+        private bool _doShowVerticesIndex = true;
 
         private IMap _geoMap;
-        private SimpleActionItem _edgeSnappingButton;
+        private CheckBoxActionItem _snappingActivCheck;
         private MoveVertexFunction _moveVertexFunction;
+        private SimpleActionItem _shapeDraggingActivButton;
+        private CheckBoxActionItem _showVerticesCheck;
+        private AppManager _manager;
+        private CultureInfo _handlerCulture;
 
         #endregion
 
@@ -40,9 +50,10 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="manager">The app manager.</param>
         public ButtonHandler(AppManager manager)
         {
-            if (manager.HeaderControl == null)
+            if (manager == null || manager.HeaderControl == null)
                 throw new ArgumentNullException(nameof(manager), MessageStrings.HeaderControlMustBeAvailable);
 
+            _manager = manager;
             _header = manager.HeaderControl;
             AddButtons();
         }
@@ -91,6 +102,29 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo HandlerCulture
+        {
+            set
+            {
+                if (_handlerCulture == value) return;
+
+                _handlerCulture = value;
+
+                if (_handlerCulture == null) _handlerCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _handlerCulture;
+                Thread.CurrentThread.CurrentUICulture = _handlerCulture;
+
+                if (_addShapeFunction != null) _addShapeFunction.AddShapeCulture = _handlerCulture;
+                if (_moveVertexFunction != null) _moveVertexFunction.MoveVertexCulture = _handlerCulture;
+
+                UpdateHandlerItems();
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -105,6 +139,62 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             // This exists to prevent FX Cop from complaining.
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Act to activate a button on the hanlder.
+        /// </summary>
+        /// <param name="button_name"> Button to activate.</param>
+        public void Buttons_Activate(string button_name)
+        {
+            switch (button_name)
+            {
+                case "Shape_Dragging":
+                    _doShapeDragging = true;
+                    UpdateShapeDraggingActivButton();
+                    break;
+
+                case "Feature_Snapping":
+                    _doSnapping = false;
+                    UpdateSnappingActivCheck();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Act to deactivate a button on the hanlder.
+        /// </summary>
+        /// <param name="button_name"> Button to dactivate.</param>
+        public void Buttons_Deactivate(string button_name)
+        {
+            switch (button_name)
+            {
+                case "Shape_Dragging":
+                    _doShapeDragging = false;
+                    UpdateShapeDraggingActivButton();
+                    break;
+
+                case "Feature_Snapping":
+                    _doSnapping = false;
+                    UpdateSnappingActivCheck();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Act to disable a button on the hanlder.
+        /// </summary>
+        /// <param name="button_name"> Button to dactivate.</param>
+        public void Buttons_Disable(string button_name)
+        {
+            switch (button_name)
+            {
+                case "Shape_Dragging":
+                    _doShapeDragging = false;
+                    _shapeDraggingActivButton.Enabled = false;
+                    UpdateShapeDraggingActivButton();
+                    break;
+            }
         }
 
         /// <summary>
@@ -143,13 +233,18 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             const string ShapeEditorMenuKey = "kShapeEditor";
 
-            // _Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
-            _header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.New, NewButtonClick)
+            SeparatorItem separatorMove = new SeparatorItem(ShapeEditorMenuKey, "Shape Editor");
+            SeparatorItem separatorSnap = new SeparatorItem(ShapeEditorMenuKey, "Shape Editor");
+
+            _header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
+            _newShapeFile = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.New, NewButtonClick)
             {
                 GroupCaption = "Shape Editor",
                 SmallImage = ShapeEditorResources.NewShapefile.ToBitmap(),
                 RootKey = HeaderControl.HomeRootItemKey
-            });
+            };
+            _header.Add(_newShapeFile);
+
             _addShape = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButtonClick)
             {
                 GroupCaption = "Shape Editor",
@@ -157,27 +252,55 @@ namespace DotSpatial.Plugins.ShapeEditor
                 RootKey = HeaderControl.HomeRootItemKey
             };
             _header.Add(_addShape);
-            _header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButtonClick)
+
+            _header.Add(separatorMove);
+            _moveVertex = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButtonClick)
             {
                 GroupCaption = "Shape Editor",
                 SmallImage = ShapeEditorResources.move,
                 RootKey = HeaderControl.HomeRootItemKey
-            });
+            };
+            _header.Add(_moveVertex);
 
-            _edgeSnappingButton = new SimpleActionItem("Snap Edges", EdgeSnappingButtonClick)
+            _shapeDraggingActivButton = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.ShapeDragging_InActive, ShapeDraggingActivButtonClick)
             {
                 GroupCaption = "Shape Editor",
-                SmallImage = System.Drawing.SystemIcons.Exclamation.ToBitmap()
-             };
+                Enabled = false,
+                SmallImage = System.Drawing.SystemIcons.Asterisk.ToBitmap()
+            };
+            _header.Add(_shapeDraggingActivButton);
 
-            _header.Add(_edgeSnappingButton);
+            _showVerticesCheck = new CheckBoxActionItem(ShapeEditorMenuKey, ShapeEditorResources.ShowVerticesIndex_Label, ShowVerticesActivCheckChanged)
+            {
+                GroupCaption = "Shape Editor",
+                Caption = ShapeEditorResources.ShowVerticesIndex_Label,
+                Checked = false,
+                ToolTipText = ShapeEditorResources.ShowVerticesIndex_InActive,
+                RootKey = HeaderControl.HomeRootItemKey
+            };
+            _showVerticesCheck.CheckedChanged += ShowVerticesActivCheckChanged;
 
-            _header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButtonClick)
+            _header.Add(_showVerticesCheck);
+
+            _header.Add(separatorSnap);
+            _snapping = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping_Settings, SnappingButtonClick)
             {
                 GroupCaption = "Shape Editor",
                 SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap(),
                 RootKey = HeaderControl.HomeRootItemKey
-            });
+            };
+            _header.Add(_snapping);
+
+            _snappingActivCheck = new CheckBoxActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping_Label, SnappingActivCheckChanged)
+            {
+                GroupCaption = "Shape Editor",
+                Caption = ShapeEditorResources.Snapping_Label,
+                Checked = true,
+                ToolTipText = ShapeEditorResources.Snapping_Active,
+                RootKey = HeaderControl.HomeRootItemKey
+            };
+            _snappingActivCheck.CheckedChanged += SnappingActivCheckChanged;
+            _header.Add(_snappingActivCheck);
         }
 
         private void AddShapeButtonClick(object sender, EventArgs e)
@@ -199,10 +322,11 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             if (_addShapeFunction == null)
             {
-                _addShapeFunction = new AddShapeFunction(_geoMap)
+                _addShapeFunction = new AddShapeFunction(_geoMap, this)
                 {
                     Name = "AddShape"
                 };
+                _addShapeFunction.AddShapeCulture = _handlerCulture;
             }
 
             if (_geoMap.MapFunctions.Contains(_addShapeFunction) == false)
@@ -234,6 +358,12 @@ namespace DotSpatial.Plugins.ShapeEditor
             _activeLayer = e.Layer as IFeatureLayer;
             if (_activeLayer == null)
             {
+                if (_moveVertexFunction != null)
+                    _moveVertexFunction.Deactivate();
+                if (_addShapeFunction != null)
+                    _addShapeFunction.Deactivate();
+                _geoMap.FunctionMode = FunctionMode.Pan;
+                _geoMap.Cursor = Cursors.Hand;
                 return;
             }
 
@@ -245,7 +375,12 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void MapFrameOnLayerRemoved(object sender, LayerEventArgs e)
         {
-            if (e.Layer == _activeLayer) _activeLayer = null;
+            if (e.Layer == _activeLayer)
+            {
+                // _activeLayer = null;
+                SetActiveLayer(null);
+                RemoveSnapLayer(e.Layer);
+            }
         }
 
         private void MoveVertexButtonClick(object sender, EventArgs e)
@@ -262,10 +397,11 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             if (_moveVertexFunction == null)
             {
-                _moveVertexFunction = new MoveVertexFunction(_geoMap)
+                _moveVertexFunction = new MoveVertexFunction(_geoMap, this)
                 {
                     Name = "MoveVertex"
                 };
+                _moveVertexFunction.MoveVertexCulture = _handlerCulture;
             }
 
             if (_geoMap.MapFunctions.Contains(_moveVertexFunction) == false)
@@ -275,9 +411,11 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             _geoMap.FunctionMode = FunctionMode.None;
             _geoMap.Cursor = Cursors.Cross;
+            _shapeDraggingActivButton.Enabled = true;
             _moveVertexFunction.Layer = _activeLayer;
             UpdateMoveVertexFunctionLayer();
             _moveVertexFunction.Activate();
+            UpdateShowVerticesActivCheck();
         }
 
         private void NewButtonClick(object sender, EventArgs e)
@@ -340,7 +478,19 @@ namespace DotSpatial.Plugins.ShapeEditor
             IFeatureLayer fl = layer as IFeatureLayer;
             if (fl == null)
             {
+                _activeLayer = null;
                 _addShape.Enabled = false;
+                if (_moveVertexFunction != null)
+                {
+                    _moveVertexFunction.ClearSelection(); // To prevent nullReference Exception when occrus MouseMove.
+                    UpdateMoveVertexFunctionLayer();
+                }
+
+                if (_addShapeFunction != null)
+                {
+                    _addShapeFunction.DeleteShape(null, null); // To clean the map while there is pending shape editing.
+                    UpdateAddShapeFunctionLayer();
+                }
             }
             else
             {
@@ -361,32 +511,96 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
-        private void EdgeSnappingButtonClick(object sender, EventArgs e)
+        private void RemoveSnapLayer(ILayer fl)
         {
-            _doEdgeSnapping = !_doEdgeSnapping;
+            IFeatureLayer flRemoved = fl as IFeatureLayer;
+            if (flRemoved == null) return;
 
-            switch (_doEdgeSnapping)
+            if (_addShapeFunction != null) _addShapeFunction.RemoveLayerFromSnap(flRemoved);
+            if (_moveVertexFunction != null) _moveVertexFunction.RemoveLayerFromSnap(flRemoved);
+        }
+
+        private void ShowVerticesActivCheckChanged(object sender, EventArgs e)
+        {
+            _doShowVerticesIndex = _showVerticesCheck.Checked;
+
+            UpdateShowVerticesActivCheck();
+        }
+
+        private void UpdateShowVerticesActivCheck()
+        {
+            _showVerticesCheck.Caption = ShapeEditorResources.ShowVerticesIndex_Label;
+
+            switch (_doShowVerticesIndex)
             {
                 case true:
-                    _edgeSnappingButton.Caption = "Active Edge's Snapping";
-                    _edgeSnappingButton.ToolTipText = "Active Edge's Snapping";
-                    _edgeSnappingButton.SmallImage = System.Drawing.SystemIcons.Exclamation.ToBitmap();
+                    _showVerticesCheck.ToolTipText = ShapeEditorResources.ShowVerticesIndex_Active;
                     break;
                 case false:
-                    _edgeSnappingButton.Caption = "Inactive Edge's Snapping";
-                    _edgeSnappingButton.ToolTipText = "Inactive Edge's Snapping";
-                    _edgeSnappingButton.SmallImage = System.Drawing.SystemIcons.Application.ToBitmap();
+                    _showVerticesCheck.ToolTipText = ShapeEditorResources.ShowVerticesIndex_InActive;
                     break;
             }
 
             if (_moveVertexFunction != null)
             {
-                _moveVertexFunction.DoEdgeSnapping = _doEdgeSnapping;
+                _moveVertexFunction.DoShowVerticesIndex = _doShowVerticesIndex;
+                _moveVertexFunction.Map.Invalidate();
+            }
+        }
+
+        private void SnappingActivCheckChanged(object sender, EventArgs e)
+        {
+            _doSnapping = _snappingActivCheck.Checked;
+
+            UpdateSnappingActivCheck();
+        }
+
+        private void UpdateSnappingActivCheck()
+        {
+            _snappingActivCheck.Caption = ShapeEditorResources.Snapping_Label;
+
+            switch (_doSnapping)
+            {
+                case true:
+                    _snappingActivCheck.ToolTipText = ShapeEditorResources.Snapping_Active;
+                    break;
+                case false:
+                    _snappingActivCheck.ToolTipText = ShapeEditorResources.Snapping_InActive;
+                    break;
             }
 
-            if (_addShapeFunction != null)
+            if (_moveVertexFunction != null)
             {
-                _addShapeFunction.DoEdgeSnapping = _doEdgeSnapping;
+                _moveVertexFunction.DoSnapping = _doSnapping; // changed by jany_ (2016-02-24) update the snap settings of the functions without having to stop editing
+            }
+        }
+
+        private void ShapeDraggingActivButtonClick(object sender, EventArgs e)
+        {
+            if (_moveVertexFunction == null || !_moveVertexFunction.Enabled) return;
+
+            _doShapeDragging = !_doShapeDragging;
+            _moveVertexFunction.DoShapeDragging = _doShapeDragging;
+
+            UpdateShapeDraggingActivButton();
+        }
+
+        private void UpdateShapeDraggingActivButton()
+        {
+            switch (_doShapeDragging)
+            {
+                case true:
+                    _shapeDraggingActivButton.Caption = ShapeEditorResources.ShapeDragging_Active;
+                    _shapeDraggingActivButton.ToolTipText = ShapeEditorResources.ShapeDragging_Active;
+                    _shapeDraggingActivButton.SmallImage = System.Drawing.SystemIcons.Hand.ToBitmap();
+                    Map.Cursor = Cursors.UpArrow;
+                    break;
+                case false:
+                    _shapeDraggingActivButton.Caption = ShapeEditorResources.ShapeDragging_InActive;
+                    _shapeDraggingActivButton.ToolTipText = ShapeEditorResources.ShapeDragging_InActive;
+                    _shapeDraggingActivButton.SmallImage = System.Drawing.SystemIcons.Asterisk.ToBitmap();
+                    if (_moveVertexFunction != null && _moveVertexFunction.Enabled) Map.Cursor = Cursors.Cross;
+                    break;
             }
         }
 
@@ -394,46 +608,55 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             using (SnapSettingsDialog dlg = new SnapSettingsDialog(_geoMap)
             {
-                DoSnapping = _doSnapping
+                DoSnapping = _doSnapping,
+                SnappCulture = _handlerCulture
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     _doSnapping = dlg.DoSnapping;
-                    if (_moveVertexFunction != null)
-                    {
-                        _moveVertexFunction.DoSnapping = _doSnapping; // changed by jany_ (2016-02-24) update the snap settings of the functions without having to stop editing
-                        if (_doSnapping)
-                        {
-                            SetSnapLayers(_moveVertexFunction);
-                        }
-                    }
-
-                    if (_addShapeFunction != null)
-                    {
-                        _addShapeFunction.DoSnapping = _doSnapping;
-                        if (_doSnapping)
-                        {
-                            SetSnapLayers(_addShapeFunction);
-                        }
-                    }
+                    _snappingActivCheck.Checked = _doSnapping;
+                    UpdateSnappingActivCheck();
                 }
             }
         }
 
         private void UpdateAddShapeFunctionLayer()
         {
-            _addShapeFunction.DoEdgeSnapping = _doEdgeSnapping;
+            // _addShapeFunction.DoEdgeSnapping = _doEdgeSnapping;
             _addShapeFunction.Layer = _activeLayer;
             SetSnapLayers(_addShapeFunction);
         }
 
         private void UpdateMoveVertexFunctionLayer()
         {
-            _moveVertexFunction.DoEdgeSnapping = _doEdgeSnapping;
+            if (_moveVertexFunction != null && !_moveVertexFunction.Enabled) _doShapeDragging = false;
+
+            if (_moveVertexFunction.Enabled) _geoMap.Cursor = Cursors.Cross;
+            _moveVertexFunction.DoShapeDragging = _doShapeDragging;
+            UpdateShapeDraggingActivButton();
             _moveVertexFunction.ClearSelection(); // changed by jany_ (2016-02-24) make sure highlighted features are reset too to prevent exception
             _moveVertexFunction.Layer = _activeLayer;
             SetSnapLayers(_moveVertexFunction);
+        }
+
+        private void UpdateHandlerItems()
+        {
+            _newShapeFile.Caption = ShapeEditorResources.New;
+            _newShapeFile.ToolTipText = ShapeEditorResources.New;
+
+            _addShape.Caption = ShapeEditorResources.Add_Shape;
+            _addShape.ToolTipText = ShapeEditorResources.Add_Shape;
+
+            _moveVertex.Caption = ShapeEditorResources.Move_Vertex;
+            _moveVertex.ToolTipText = ShapeEditorResources.Move_Vertex;
+
+            _snapping.Caption = ShapeEditorResources.Snapping_Settings;
+            _snapping.ToolTipText = ShapeEditorResources.Snapping_Settings;
+
+            UpdateSnappingActivCheck();
+            UpdateShapeDraggingActivButton();
+            UpdateShowVerticesActivCheck();
         }
 
         #endregion

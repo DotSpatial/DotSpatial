@@ -1,0 +1,582 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lbCategories.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnCategoryDown.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnCategoryUp.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnSubtract.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnAdd.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="panel3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblSymbolGroups.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainer1.Panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sqlExpression.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabExpression.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tbFloatingFormat.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 13</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>Format décimal:</value>
+  </data>
+  <data name="label13.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="rbLineBasedAngle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 17</value>
+  </data>
+  <data name="rbLineBasedAngle.Text" xml:space="preserve">
+    <value>Basée sur la ligne</value>
+  </data>
+  <data name="rbLineBasedAngle.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbLineAngle.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbLabelAngleField.ToolTip" xml:space="preserve">
+    <value>Colonne des angles.</value>
+  </data>
+  <data name="rbIndividualAngle.Text" xml:space="preserve">
+    <value>Angle individuel</value>
+  </data>
+  <data name="rbIndividualAngle.ToolTip" xml:space="preserve">
+    <value>Si cette option est activée, les étiquttes vont subir individuellement. Angle doit être défini dans n'importe quelle colonne de la table attributaire .</value>
+  </data>
+  <data name="rbCommonAngle.Text" xml:space="preserve">
+    <value>Angle commun</value>
+  </data>
+  <data name="rbCommonAngle.ToolTip" xml:space="preserve">
+    <value>Si cette option est activée, toutes les étiquettes vont subir une rotation avec le même angle.</value>
+  </data>
+  <data name="nudAngle.ToolTip" xml:space="preserve">
+    <value>Angle commun.</value>
+  </data>
+  <data name="grbLabelRotation.Text" xml:space="preserve">
+    <value>Rotation de l'étiquette</value>
+  </data>
+  <data name="grbLabelRotation.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="chkPrioritizeLow.Text" xml:space="preserve">
+    <value>Prioriser les petites Valeurs</value>
+  </data>
+  <data name="chkPrioritizeLow.ToolTip" xml:space="preserve">
+    <value>Si cette option est activée, les petites valeurs seront déssinées en premier lieu avec une prévention de collision, ou bien autrement au dessus.</value>
+  </data>
+  <data name="chkPreventCollision.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 17</value>
+  </data>
+  <data name="chkPreventCollision.Text" xml:space="preserve">
+    <value>Prévenir Collisions</value>
+  </data>
+  <data name="chkPreventCollision.ToolTip" xml:space="preserve">
+    <value>Si cette option n'est pas activée, des étiquettes seront déssinées sur d'autres. Si cette option est activée seules les etiquettes de haute priorité seront déssinés.</value>
+  </data>
+  <data name="lblPriorityField.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 13</value>
+  </data>
+  <data name="lblPriorityField.Text" xml:space="preserve">
+    <value>Colonne priorité</value>
+  </data>
+  <data name="lblPriorityField.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbPriorityField.ToolTip" xml:space="preserve">
+    <value>Par défaut, FID est utilisé pour prioriser les étiquettes. Ceci permet d'utiliser des valeurs d'une autre colonne.</value>
+  </data>
+  <data name="chkBorder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 17</value>
+  </data>
+  <data name="chkBorder.Text" xml:space="preserve">
+    <value>B&amp;ordure:</value>
+  </data>
+  <data name="chkBorder.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cbBorderColor.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sldBorderOpacity.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gpbBorderColor.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblFontColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="lblFontColor.Text" xml:space="preserve">
+    <value>Couleur police:</value>
+  </data>
+  <data name="lblFontColor.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cbFontColor.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sldFontOpacity.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbStyle.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblFamily.Text" xml:space="preserve">
+    <value>Police:</value>
+  </data>
+  <data name="lblFamily.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbSize.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Taille:</value>
+  </data>
+  <data name="label1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ffcFamilyName.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gpbFont.Text" xml:space="preserve">
+    <value>Police:</value>
+  </data>
+  <data name="gpbFont.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblPreview.Text" xml:space="preserve">
+    <value>Apperçu</value>
+  </data>
+  <data name="lblPreview.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cbBackgroundColor.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sldBackgroundOpacity.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="chkBackgroundColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 17</value>
+  </data>
+  <data name="chkBackgroundColor.Text" xml:space="preserve">
+    <value>&amp;Couleur de fond:</value>
+  </data>
+  <data name="chkBackgroundColor.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gpbBackgroundColor.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabBasic.Text" xml:space="preserve">
+    <value>Propriértés standard</value>
+  </data>
+  <data name="tabBasic.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="labelAlignmentControl1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="nudYOffset.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label11.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label12.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="nudXOffset.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="grpOffset.Text" xml:space="preserve">
+    <value>Décalage</value>
+  </data>
+  <data name="grpOffset.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Orientation:</value>
+  </data>
+  <data name="label10.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="chkHalo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 17</value>
+  </data>
+  <data name="chkHalo.Text" xml:space="preserve">
+    <value>&amp;Halo:</value>
+  </data>
+  <data name="chkHalo.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="chkShadow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 17</value>
+  </data>
+  <data name="chkShadow.Text" xml:space="preserve">
+    <value>Ombre:</value>
+  </data>
+  <data name="chkShadow.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 13</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Entité à parties multiples:</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>&amp;Methode de Placement:</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Texte Multi-Ligne &amp; Alignement:</value>
+  </data>
+  <data name="label3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbAlignment.Items" xml:space="preserve">
+    <value>Gauche</value>
+  </data>
+  <data name="cmbAlignment.Items1" xml:space="preserve">
+    <value>Centré</value>
+  </data>
+  <data name="cmbAlignment.Items2" xml:space="preserve">
+    <value>Droite</value>
+  </data>
+  <data name="cmbAlignment.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbLabelingMethod.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbLabelParts.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="clrHalo.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="nudShadowOffsetY.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label9.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 13</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Couleur décalage:</value>
+  </data>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="nudShadowOffsetX.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sliderOpacityShadow.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Coleur ombre:</value>
+  </data>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="colorButtonShadow.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gpbUseLabelShadow.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabAdvanced.Text" xml:space="preserve">
+    <value>Propriértés avancées</value>
+  </data>
+  <data name="tabAdvanced.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sqlMembers.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabMembers.Text" xml:space="preserve">
+    <value>Membres</value>
+  </data>
+  <data name="tabMembers.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabs.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainer1.Panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainer1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdOK.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdCancel.Text" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="cmdCancel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdApply.Text" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="cmdApply.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblHelp.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 6.75pt</value>
+  </data>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>Chaque groupe de symbole peut avoir plusieurs membres. Utiliser l'onglet membres pour ajouter ou supprimer de façon manuelle des membres, ou basés sur une colonne caractéristiques. Si aucun membre napparait dans un SansGroupe, il faut d'abord supprimer les étiquettes des groupes existants.</value>
+  </data>
+  <data name="lblHelp.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAAAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAQ53sQ53sQ53sQ53sQ53sQ53MQ3mMY1loYzkohxjEAAAAAAAAAAAAAAAAAAAAA
+        AAAI1nsAAAAQ53sQ53sAAAAQ53sQ53MQ3mMY1loYzkohxjHO27wAAAAAAAAAAAAAAAAA54T///8AAAAA
+        AAD///8AAAAQ53sQ3nMY3mMY1lIhzkIhxjHv7+8AAAAAAAAAAAAA54T///////////////8AAAAI54QQ
+        53MQ3mMY1lIhzkIpxjErvSQAAAAAAAAAAAAA75T///8AAAAI1mv///8AAAAI74wQ53sQ3msY1loYzkoh
+        xjErvSTFwa4AAAAAAAAA96X///8AAAAAAAD///8AAAAA75QQ53sQ3msY1loYzkohxjkrvSQAAAAAAAAA
+        AAAE/6WU987///////8AylYEwU4AtTkA53sQ3msY1loYzkopzjn39/8AAAAAAAAAAAAC/7UA95wA54QI
+        1nsIzmMAxlIAuUIArTEApysY1lohzkJ11okAAAAAAAAAAAAAAAAA95wA54QI1nsIzmMAxlIAuUIArTEA
+        pysApysApysY1loAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAP//
+        AAD//wAAAD8AAAAPAAAABwAAAAcAAAADAAAABwAAAAcAAAAPAAAAHwAA//8AAP//AAD//wAA
+</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Etiquette</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sldBackgroundOpacity.RampText" xml:space="preserve">
+    <value>Opacité</value>
+  </data>
+  <data name="sldBorderOpacity.RampText" xml:space="preserve">
+    <value>Opacité</value>
+  </data>
+  <data name="sldFontOpacity.RampText" xml:space="preserve">
+    <value>Opacité</value>
+  </data>
+  <data name="sliderOpacityShadow.RampText" xml:space="preserve">
+    <value>Opacité</value>
+  </data>
+  <data name="cmbLabelingLineMethod.Items" xml:space="preserve">
+    <value>Plus long Segment</value>
+  </data>
+  <data name="cmbLabelingLineMethod.Items1" xml:space="preserve">
+    <value>1er Segment</value>
+  </data>
+  <data name="cmbLabelingLineMethod.Items2" xml:space="preserve">
+    <value>Segment Milieu</value>
+  </data>
+  <data name="cmbLabelingLineMethod.Items3" xml:space="preserve">
+    <value>Dernier Segment</value>
+  </data>
+  <data name="cmbLabelingPolygMethod.Items" xml:space="preserve">
+    <value>Centroïde</value>
+  </data>
+  <data name="cmbLabelingPolygMethod.Items1" xml:space="preserve">
+    <value>Centre</value>
+  </data>
+  <data name="cmbLabelingPolygMethod.Items2" xml:space="preserve">
+    <value>Point Intérieur</value>
+  </data>
+  <data name="cmbLabelParts.Items" xml:space="preserve">
+    <value>Toutes les parties</value>
+  </data>
+  <data name="cmbLabelParts.Items1" xml:space="preserve">
+    <value>Plus grandes parties</value>
+  </data>
+</root>

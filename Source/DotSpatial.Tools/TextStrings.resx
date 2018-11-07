@@ -325,7 +325,7 @@
     <value>This will add all features of input with attributes.</value>
   </data>
   <data name="AddFeature" xml:space="preserve">
-    <value>Add Feature</value>
+    <value>Add Features</value>
   </data>
   <data name="AddFeatureDescription" xml:space="preserve">
     <value>This will add Feature in the Feature Set.</value>
@@ -345,7 +345,7 @@
   <data name="Aggregate" xml:space="preserve">
     <value>Aggregate</value>
   </data>
-  <data name="AggregateToollip" xml:space="preserve">
+  <data name="Aggregate_ToolTip" xml:space="preserve">
     <value>Aggregate features combines all the features in the featureset to form a single feature.</value>
   </data>
   <data name="Area" xml:space="preserve">
@@ -369,7 +369,7 @@
   <data name="FindAverageSlopeExtentedDescription" xml:space="preserve">
     <value>Calculate Average Slope for given polygons with more user preference</value>
   </data>
-  <data name="AreaToolTip" xml:space="preserve">
+  <data name="Area_ToolTip" xml:space="preserve">
     <value>Calculates the area of polygons</value>
   </data>
   <data name="CellSize" xml:space="preserve">
@@ -852,7 +852,7 @@
   <data name="MapWindowVoronoi" xml:space="preserve">
     <value>Voronoi</value>
   </data>
-  <data name="RraseDescription" xml:space="preserve">
+  <data name="EraseDescription" xml:space="preserve">
     <value>This will eliminate Second featureset from first featureset</value>
   </data>
   <data name="RasterMultiplyDescription" xml:space="preserve">
@@ -924,7 +924,7 @@
   <data name="RandomGeometryNumPoint" xml:space="preserve">
     <value>The number of points to generate.</value>
   </data>
-  <data name="RandomGeometryToolTip" xml:space="preserve">
+  <data name="RandomGeometry_ToolTip" xml:space="preserve">
     <value>Select an area from the map and specify the number of points to generate inside of it.</value>
   </data>
   <data name="OutputParameter_AddToMap" xml:space="preserve">
@@ -945,10 +945,171 @@
   <data name="RasterBinTool_Description" xml:space="preserve">
     <value>This bins the values of a raster so that there will be large regions of equal values. This will replace the raster value with the middle value of the bin range that it falls with. The baseValue represents the starting point of the first boundary, while the bin size represents the total distance between raster values.  So for instance, an interval of every 20, starting at 10 would have a bin size of 20, and a base value of 10. The cells ranging from 10 to 30 would all get the half value of 20.</value>
   </data>
-  <data name="RasterBinTool_Tooltip" xml:space="preserve">
-    <value>Bins the continuous values into histogram like categories.</value>
-  </data>
   <data name="RasterBinTool_Name" xml:space="preserve">
     <value>Raster Bin</value>
+  </data>
+  <data name="Analysis_Label" xml:space="preserve">
+    <value>Analysis</value>
+  </data>
+  <data name="Buffer_Label" xml:space="preserve">
+    <value>Buffer</value>
+  </data>
+  <data name="AddFeature_Label" xml:space="preserve">
+    <value>Add Features</value>
+  </data>
+  <data name="AddRasterLayers_Label" xml:space="preserve">
+    <value>Add Raster Layers</value>
+  </data>
+  <data name="Aggregate_Label" xml:space="preserve">
+    <value>Aggregate</value>
+    <comment>p</comment>
+  </data>
+  <data name="Analysis_ToolTip" xml:space="preserve">
+    <value>Analysis</value>
+    <comment>T</comment>
+  </data>
+  <data name="CalculateAreas_Label" xml:space="preserve">
+    <value>Calculate Areas</value>
+  </data>
+  <data name="ChangeCellSize_Label" xml:space="preserve">
+    <value>Change Cell Size</value>
+  </data>
+  <data name="ClipFeatureSetWithPolygon_Label" xml:space="preserve">
+    <value>Clip FeatureSet With Polygon</value>
+  </data>
+  <data name="ClipPolygonwithLine_Label" xml:space="preserve">
+    <value>Clip Polygon with Line</value>
+  </data>
+  <data name="ClipRasterLayer_Label" xml:space="preserve">
+    <value>Clip Raster Layer</value>
+  </data>
+  <data name="Conversion_Label" xml:space="preserve">
+    <value>Conversion</value>
+    <comment>p</comment>
+  </data>
+  <data name="Conversion_ToolTip" xml:space="preserve">
+    <value>Conversion</value>
+    <comment>T</comment>
+  </data>
+  <data name="DeleteFeatures_Label" xml:space="preserve">
+    <value>Delete Features</value>
+  </data>
+  <data name="Erase_Label" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="FeatureToRaster_Label" xml:space="preserve">
+    <value>Feature To Raster</value>
+  </data>
+  <data name="FindAverageSlope_Label" xml:space="preserve">
+    <value>Find Average Slope</value>
+  </data>
+  <data name="FindAvrageSlopeExtented_Label" xml:space="preserve">
+    <value>Find Average Slope Extented..</value>
+  </data>
+  <data name="Generalization_Label" xml:space="preserve">
+    <value>Generalization</value>
+    <comment>p</comment>
+  </data>
+  <data name="Generalization_ToolTip" xml:space="preserve">
+    <value>Generalization</value>
+    <comment>T</comment>
+  </data>
+  <data name="GenerateCentroid_Label" xml:space="preserve">
+    <value>Generate Centroid</value>
+  </data>
+  <data name="IDW_Label" xml:space="preserve">
+    <value>IDW</value>
+  </data>
+  <data name="Interpolation_Label" xml:space="preserve">
+    <value>Interpolation</value>
+    <comment>p</comment>
+  </data>
+  <data name="Interpolation_ToolTip" xml:space="preserve">
+    <value>Interpolation</value>
+    <comment>T</comment>
+  </data>
+  <data name="MergeRasterLayers_Label" xml:space="preserve">
+    <value>Merge Raster Layers</value>
+  </data>
+  <data name="MultiplyRasterLayer_sLabel" xml:space="preserve">
+    <value>Multiply Raster Layers</value>
+  </data>
+  <data name="NoDataValueChange_Label" xml:space="preserve">
+    <value>No Data Value Change </value>
+  </data>
+  <data name="OverWriteFeature_Label" xml:space="preserve">
+    <value>OverWrite Feature</value>
+  </data>
+  <data name="RandomGeometry_Label" xml:space="preserve">
+    <value>Random Points</value>
+  </data>
+  <data name="RasterBinTool_Label" xml:space="preserve">
+    <value>Raster Bin</value>
+  </data>
+  <data name="RasterBinTool_ToolTip" xml:space="preserve">
+    <value>Bins the continuous values into histogram like categories.</value>
+  </data>
+  <data name="RasterDistanceproximity_Label" xml:space="preserve">
+    <value>Raster Distance (proximity)</value>
+  </data>
+  <data name="RasterOverlay_Label" xml:space="preserve">
+    <value>Raster Overlay</value>
+    <comment>p</comment>
+  </data>
+  <data name="RasterOverlay_ToolTip" xml:space="preserve">
+    <value>Raster Overlay</value>
+    <comment>T</comment>
+  </data>
+  <data name="RasterToPolygon_Label" xml:space="preserve">
+    <value>Raster To Polygon</value>
+  </data>
+  <data name="ReprojectFeatures_Label" xml:space="preserve">
+    <value>Reproject Features</value>
+  </data>
+  <data name="SimplifyLines_Label" xml:space="preserve">
+    <value>Simplify Lines</value>
+  </data>
+  <data name="SlopeRasterLayer_Label" xml:space="preserve">
+    <value>Slope Raster Layer</value>
+  </data>
+  <data name="SpatialReference_Label" xml:space="preserve">
+    <value>Spatial Reference</value>
+    <comment>p</comment>
+  </data>
+  <data name="SpatialReference_ToolTip" xml:space="preserve">
+    <value>Spatial Reference</value>
+    <comment>T</comment>
+  </data>
+  <data name="Statistics_Label" xml:space="preserve">
+    <value>Statistics</value>
+    <comment>p</comment>
+  </data>
+  <data name="Statistics_ToolTip" xml:space="preserve">
+    <value>Statistics</value>
+    <comment>T</comment>
+  </data>
+  <data name="SubtractRasterLayer_Label" xml:space="preserve">
+    <value>Subtract Raster Layer</value>
+  </data>
+  <data name="TerrainAnalysis_Label" xml:space="preserve">
+    <value>Terrain Analysis</value>
+  </data>
+  <data name="TerrainAnalysis_ToolTip" xml:space="preserve">
+    <value>Terrain Analysis</value>
+    <comment>T</comment>
+  </data>
+  <data name="ThiessenPolygons_Label" xml:space="preserve">
+    <value>Thiessen Polygons</value>
+  </data>
+  <data name="Union_Label" xml:space="preserve">
+    <value>Union</value>
+  </data>
+  <data name="VectorOverlay_Label" xml:space="preserve">
+    <value>Vector Overlay</value>
+    <comment>p</comment>
+  </data>
+  <data name="VectorOverlay_ToolTip" xml:space="preserve">
+    <value>Vector Overlay</value>
+    <comment>T</comment>
   </data>
 </root>

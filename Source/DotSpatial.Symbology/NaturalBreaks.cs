@@ -20,12 +20,12 @@ namespace DotSpatial.Symbology
     {
         #region Fields
 
-        int[,] _lowerClassLimits = null;
-        double[,] _varianceCombinations = null;
-        double[] _values = null;
-        int _numClasses;
-        int _numValues;
-        List<double> _resultClasses = null;
+        private int[,] _lowerClassLimits = null;
+        private double[,] _varianceCombinations = null;
+        private double[] _values = null;
+        private int _numClasses;
+        private int _numValues;
+        private List<double> _resultClasses = null;
 
         #endregion
 
@@ -36,13 +36,12 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="values">data values used for calculation.</param>
         /// <param name="numClasses">Number of breaks that should be calculated.</param>
-        public NaturalBreaks (List<double> values, int numClasses)
+        public NaturalBreaks(List<double> values, int numClasses)
         {
-
             _numClasses = numClasses;
             _numValues = values.Count;
 
-            _values = values.ToArray(); 
+            _values = values.ToArray();
 
             // the number of classes must be greater than one and less than the number of data elements.
             if (_numClasses > _values.Length) return;
@@ -63,7 +62,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Compute the matrices required for Jenks breaks. These matrices 
+        /// Compute the matrices required for Jenks breaks. These matrices
         /// can be used for any classing of data with `classes <= n_classes`
         /// </summary>
         private void GetMatrices()
@@ -74,17 +73,19 @@ namespace DotSpatial.Symbology
             // * variance_combinations (OP): optimal variance combinations for all classes - declared at class level now
             // loop counters
             int i, j;
+
             // the variance, as computed at each step in the calculation
             double variance = 0;
 
             // Initialize and fill each matrix with zeroes
-            _lowerClassLimits = new int[_values.Length +1, _numClasses+1];
-            _varianceCombinations = new double[_values.Length +1, _numClasses+1];
+            _lowerClassLimits = new int[_values.Length + 1, _numClasses + 1];
+            _varianceCombinations = new double[_values.Length + 1, _numClasses + 1];
 
             for (i = 1; i < _numClasses + 1; i++)
             {
                 _lowerClassLimits[1, i] = 1;
                 _varianceCombinations[1, i] = 0;
+
                 // in the original implementation, 9999999 is used but
                 // since Javascript has `Infinity`, we use that.
                 for (j = 2; j < _values.Length + 1; j++)
@@ -97,10 +98,13 @@ namespace DotSpatial.Symbology
             {
                 // `SZ` originally. this is the sum of the values seen thus far when calculating variance.
                 double sum = 0;
+
                 // `ZSQ` originally. the sum of squares of values seen thus far
                 double sum_squares = 0;
+
                 // `WT` originally. This is the number of
                 int w = 0;
+
                 // `IV` originally
                 int i4 = 0;
 
@@ -157,7 +161,7 @@ namespace DotSpatial.Symbology
         private void GetBreaks()
         {
             int k = _values.Length - 1;
-            double [] kclass = new double[_numClasses+1];
+            double[] kclass = new double[_numClasses + 1];
             int countNum = _numClasses;
 
             // the calculation of classes will never include the upper and
@@ -180,7 +184,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Convert the _resultClasses which is a list of doubles into a list of integer IDs of the corresponding range values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> _</returns>
         public List<double> GetResults()
         {
             return _resultClasses;

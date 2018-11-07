@@ -3,7 +3,9 @@
 
 using System;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -17,17 +19,25 @@ namespace DotSpatial.Plugins.FindFeature
     /// </summary>
     public class FindFeaturePlugin : Extension
     {
+        private SimpleActionItem _findButton;
+        private SqlExpressionDialog _qd;
+        private string _qdExpression;
+        private string _oldFeaturelayer;
+
         #region Methods
 
         /// <inheritdoc />
         public override void Activate()
         {
-            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Find", FindToolClick)
+            _findButton = new SimpleActionItem(HeaderControl.HomeRootItemKey, Resources.FindButton, FindToolClick)
             {
                 GroupCaption = "Map Tool",
                 SmallImage = Resources.page_white_find_16x16,
                 LargeImage = Resources.page_white_find,
-            });
+            };
+            App.HeaderControl.Add(_findButton);
+
+            App.AppCultureChanged += OnAppCultureChanged;
 
             base.Activate();
         }
@@ -35,6 +45,8 @@ namespace DotSpatial.Plugins.FindFeature
         /// <inheritdoc />
         public override void Deactivate()
         {
+            App.AppCultureChanged -= OnAppCultureChanged;
+
             App.HeaderControl.RemoveAll();
             base.Deactivate();
         }
@@ -53,22 +65,38 @@ namespace DotSpatial.Plugins.FindFeature
                 return;
             }
 
-            using (SqlExpressionDialog qd = new SqlExpressionDialog())
+            if (fl.DataSet.Name != _oldFeaturelayer)
             {
+                _qdExpression = string.Empty;
+                _oldFeaturelayer = fl.DataSet.Name;
+            }
+
+            using (_qd = new SqlExpressionDialog())
+            {
+                _qd.DialogCulture = ExtensionCulture;
+
+                fl.DataSet.FillAttributes();
                 if (fl.DataSet.AttributesPopulated)
-                    qd.Table = fl.DataSet.DataTable;
+                    _qd.Table = fl.DataSet.DataTable;
                 else
-                    qd.AttributeSource = fl.DataSet;
+                    _qd.AttributeSource = fl.DataSet;
+
+                _qd.Expression = _qdExpression;
 
                 // Note: User must click ok button to see anything.
-                if (qd.ShowDialog() == DialogResult.Cancel)
+                if (_qd.ShowDialog() == DialogResult.Cancel)
+                {
+                    _qdExpression = _qd.Expression;
                     return;
+                }
 
-                if (!string.IsNullOrWhiteSpace(qd.Expression))
+                _qdExpression = _qd.Expression;
+
+                if (!string.IsNullOrWhiteSpace(_qd.Expression))
                 {
                     try
                     {
-                        fl.SelectByAttribute(qd.Expression);
+                        fl.SelectByAttribute(_qd.Expression);
                     }
                     catch (SyntaxErrorException ex)
                     {
@@ -76,6 +104,18 @@ namespace DotSpatial.Plugins.FindFeature
                     }
                 }
             }
+        }
+
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            ExtensionCulture = appCulture;
+            UpdatePlugInItems();
+        }
+
+        private void UpdatePlugInItems()
+        {
+            _findButton.Caption = Resources.FindButton;
+            _findButton.ToolTipText = Resources.FindButton;
         }
 
         #endregion

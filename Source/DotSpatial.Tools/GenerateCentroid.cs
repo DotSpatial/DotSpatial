@@ -27,8 +27,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.GenerateCentroid;
             Category = TextStrings.VectorOverlay;
-            Description = TextStrings.GenerateCentroidDescription;
-            ToolTip = TextStrings.GenerateCentroidfrominputFeatureSet;
+            UpdateToolResources();
         }
 
         #endregion
@@ -140,6 +139,18 @@ namespace DotSpatial.Tools
                 HelpText = TextStrings.SelectResultFeatureSetDirectory
             };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.GenerateCentroid_Label;
+            CategoryLabel = TextStrings.VectorOverlay_Label;
+            CategoryToolTip = TextStrings.VectorOverlay_ToolTip;
+            Description = TextStrings.GenerateCentroidDescription;
+            ToolTip = TextStrings.GenerateCentroidfrominputFeatureSet;
         }
 
         #endregion

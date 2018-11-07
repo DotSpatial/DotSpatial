@@ -148,7 +148,7 @@
     <value>NoControl</value>
   </data>
   <data name="_lblFieldName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>351, 10</value>
+    <value>321, 10</value>
   </data>
   <data name="_lblFieldName.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 13</value>
@@ -301,7 +301,7 @@
     <value>NoControl</value>
   </data>
   <data name="radUniqueValues.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 8</value>
+    <value>125, 8</value>
   </data>
   <data name="radUniqueValues.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 17</value>
@@ -334,7 +334,7 @@
     <value>NoControl</value>
   </data>
   <data name="radQuantities.Location" type="System.Drawing.Point, System.Drawing">
-    <value>246, 8</value>
+    <value>238, 8</value>
   </data>
   <data name="radQuantities.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 17</value>
@@ -1074,6 +1074,15 @@
   <data name="colCount.HeaderText" xml:space="preserve">
     <value>Count</value>
   </data>
+  <metadata name="dgvcShowInLegend.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="dgvcShowInLegend.HeaderText" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="dgvcShowInLegend.Width" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
   <data name="dgvCategories.Location" type="System.Drawing.Point, System.Drawing">
     <value>260, 49</value>
   </data>
@@ -1224,6 +1233,12 @@
   <data name="&gt;&gt;Value.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;dataGridViewImageColumn1.Name" xml:space="preserve">
+    <value>dataGridViewImageColumn1</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewImageColumn1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewImageColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;colSymbol.Name" xml:space="preserve">
     <value>colSymbol</value>
   </data>
@@ -1248,11 +1263,11 @@
   <data name="&gt;&gt;colCount.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;dataGridViewImageColumn1.Name" xml:space="preserve">
-    <value>dataGridViewImageColumn1</value>
+  <data name="&gt;&gt;dgvcShowInLegend.Name" xml:space="preserve">
+    <value>dgvcShowInLegend</value>
   </data>
-  <data name="&gt;&gt;dataGridViewImageColumn1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewImageColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;dgvcShowInLegend.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FeatureCategoryControl</value>

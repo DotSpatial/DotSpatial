@@ -4,6 +4,8 @@ namespace DotSpatial.Symbology.Forms
 {
     public partial class DetailedLineSymbolDialog
     {
+        private System.ComponentModel.ComponentResourceManager resources;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -30,32 +32,32 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedLineSymbolDialog));
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedLineSymbolDialog));
             this.panel1 = new System.Windows.Forms.Panel();
             this.dialogButtons1 = new DotSpatial.Symbology.Forms.DialogButtons();
             this.detailedLineSymbolControl = new DotSpatial.Symbology.Forms.DetailedLineSymbolControl();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // panel1
-            //
-            resources.ApplyResources(this.panel1, "panel1");
+            // 
             this.panel1.Controls.Add(this.dialogButtons1);
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            //
+            // 
             // dialogButtons1
-            //
+            // 
+            this.dialogButtons1.ButtonsCulture = new System.Globalization.CultureInfo("");
             resources.ApplyResources(this.dialogButtons1, "dialogButtons1");
             this.dialogButtons1.Name = "dialogButtons1";
-            //
+            // 
             // detailedLineSymbolControl
-            //
+            // 
             resources.ApplyResources(this.detailedLineSymbolControl, "detailedLineSymbolControl");
             this.detailedLineSymbolControl.Name = "detailedLineSymbolControl";
-            //
+            // 
             // DetailedLineSymbolDialog
-            //
+            // 
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.detailedLineSymbolControl);
             this.Controls.Add(this.panel1);
@@ -68,6 +70,7 @@ namespace DotSpatial.Symbology.Forms
             this.ShowInTaskbar = false;
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion

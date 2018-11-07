@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Serialization;
 
@@ -18,6 +20,7 @@ namespace DotSpatial.Symbology.Forms
         private IImageLayer _newLayer;
         private IImageLayer _originalLayer;
         private IImageSymbolizer _symbolizer;
+        private CultureInfo _imageCategCulture;
 
         #endregion
 
@@ -52,6 +55,29 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public virtual CultureInfo FeatCategControlCulture
+        {
+            get
+            {
+                return _imageCategCulture;
+            }
+
+            set
+            {
+                _imageCategCulture = value;
+
+                Thread.CurrentThread.CurrentCulture = _imageCategCulture;
+                Thread.CurrentThread.CurrentUICulture = _imageCategCulture;
+                Refresh();
+            }
+        }
+
+        #endregion
         #region Methods
 
         /// <summary>

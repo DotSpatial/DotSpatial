@@ -31,7 +31,6 @@ namespace DotSpatial.Symbology.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectByAttributes));
             this.lblLayer = new System.Windows.Forms.Label();
             this.cmbLayers = new System.Windows.Forms.ComboBox();

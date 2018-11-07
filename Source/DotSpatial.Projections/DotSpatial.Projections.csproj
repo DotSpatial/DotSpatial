@@ -303,11 +303,13 @@
     <None Include="DotSpatial.Projections.nuspec" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ProjectionMessages.fr-FR.resx" />
     <EmbeddedResource Include="ProjectionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectionMessages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionNames.fr-FR.resx" />
     <EmbeddedResource Include="ProjectionNames.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectionNames.Designer.cs</LastGenOutput>

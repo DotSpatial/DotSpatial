@@ -32,8 +32,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.Buffer;
             Category = TextStrings.Analysis;
-            Description = TextStrings.BufferDescription;
-            ToolTip = TextStrings.Bufferwithdistance;
+            UpdateToolResources();
         }
 
         #endregion
@@ -96,6 +95,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.OutputPolygonFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.Buffer_Label;
+            CategoryLabel = TextStrings.Analysis_Label;
+            CategoryToolTip = TextStrings.Analysis_ToolTip;
+            Description = TextStrings.BufferDescription;
+            ToolTip = TextStrings.Bufferwithdistance;
         }
 
         #endregion

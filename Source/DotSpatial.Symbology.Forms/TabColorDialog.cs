@@ -3,6 +3,8 @@
 
 using System;
 using System.Drawing;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
@@ -12,6 +14,10 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public partial class TabColorDialog : Form
     {
+        #region Fields
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -66,6 +72,42 @@ namespace DotSpatial.Symbology.Forms
                 tabColorControl1.StartColor = value;
             }
         }
+
+        /*/// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public string CultureString
+        {
+            get
+            {
+                return _cultureString;
+            }
+
+            set
+            {
+                _cultureString = value;
+
+                if (!string.IsNullOrEmpty(_cultureString))
+                {
+                    try
+                    {
+                        _dlgCultrure = new CultureInfo(_cultureString);
+                    }
+                    catch
+                    {
+                        _dlgCultrure = new CultureInfo(string.Empty);
+                    }
+                }
+                else
+                {
+                    _dlgCultrure = new CultureInfo(string.Empty);
+                }
+
+                Thread.CurrentThread.CurrentCulture = _dlgCultrure;
+                Thread.CurrentThread.CurrentUICulture = _dlgCultrure;
+                Refresh();
+            }
+        }*/
 
         #endregion
 

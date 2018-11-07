@@ -374,6 +374,8 @@ namespace DotSpatial.Symbology
                             double norm;
                             if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
 
+                            if (val.ToString().Contains(",")) val = double.Parse(val.ToString());
+
                             Values.Add(val / norm);
                             continue;
                         }
@@ -828,6 +830,18 @@ namespace DotSpatial.Symbology
                     if (isStringField) cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
                     else cat.FilterExpression = fieldExpression + "=" + brk.Name;
 
+                    if (cat.FilterExpression != null)
+                    {
+                        if (cat.FilterExpression.Contains("=[NULL]"))
+                        {
+                            cat.FilterExpression = cat.FilterExpression.Replace("=[NULL]", " is NULL");
+                        }
+                        else if (cat.FilterExpression.Contains("= '[NULL]'"))
+                        {
+                            cat.FilterExpression = cat.FilterExpression.Replace("= '[NULL]'", " is NULL");
+                        }
+                    }
+
                     AddCategory(cat);
                 }
 
@@ -863,6 +877,7 @@ namespace DotSpatial.Symbology
 
                     if (isStringField) cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
                     else cat.FilterExpression = fieldExpression + "=" + brk.Name;
+
                     if (cat.FilterExpression != null)
                     {
                         if (cat.FilterExpression.Contains("=[NULL]"))

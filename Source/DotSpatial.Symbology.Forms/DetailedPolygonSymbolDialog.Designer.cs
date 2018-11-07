@@ -4,6 +4,9 @@ namespace DotSpatial.Symbology.Forms
 {
     public partial class DetailedPolygonSymbolDialog
     {
+        private System.ComponentModel.ComponentResourceManager resources;
+
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -31,7 +34,7 @@ namespace DotSpatial.Symbology.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedPolygonSymbolDialog));
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedPolygonSymbolDialog));
             this._panel1 = new System.Windows.Forms.Panel();
             this._dialogButtons1 = new DotSpatial.Symbology.Forms.DialogButtons();
             this._detailedPolygonSymbolControl1 = new DotSpatial.Symbology.Forms.DetailedPolygonSymbolControl();

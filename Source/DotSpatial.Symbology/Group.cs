@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using DotSpatial.Data;
 using GeoAPI.Geometries;
@@ -764,9 +765,9 @@ namespace DotSpatial.Symbology
             IsExpanded = true;
             ContextMenuItems = new List<SymbologyMenuItem>
                                {
-                                   new SymbologyMenuItem("Remove Group", RemoveClick),
-                                   new SymbologyMenuItem("Zoom to Group", (sender, args) => ZoomToGroup()),
-                                   new SymbologyMenuItem("Create new Group", CreateGroupClick)
+                                   new SymbologyMenuItem("Group_Remove", RemoveClick),
+                                   new SymbologyMenuItem("Group_Zoom", (sender, args) => ZoomToGroup()),
+                                   new SymbologyMenuItem("Group_Create", CreateGroupClick)
                                };
         }
 

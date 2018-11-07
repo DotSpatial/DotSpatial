@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
@@ -37,6 +38,21 @@ namespace DotSpatial.Controls
         /// By default legend is used, but if the SetSelectable plugin gets loaded this is used instead of the legend.
         /// </summary>
         bool UseLegendForSelection { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the legend will show ContextMenu.
+        /// </summary>
+        bool ShowContextMenu { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the legendItemBoxes can be edited or mooved.
+        /// </summary>
+        bool EditLegendItemBoxes { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        CultureInfo LegendCulture { get; set; }
 
         #endregion
 

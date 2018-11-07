@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -20,6 +21,8 @@ namespace DotSpatial.Plugins.ToolManager
     public class ToolManagerPlugin : Extension, IPartImportsSatisfiedNotification
     {
         private Controls.ToolManager _toolManager;
+        private SimpleActionItem _toolsButton;
+        private DockablePanel _toolsPanel;
 
         [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
@@ -56,14 +59,17 @@ namespace DotSpatial.Plugins.ToolManager
         /// <inheritdoc />
         public override void Activate()
         {
-            App.HeaderControl.Add(new SimpleActionItem("Show Tools", ButtonClick));
+            _toolsButton = new SimpleActionItem(Resources.ToolsButtonText, ButtonClick);
+            App.HeaderControl.Add(_toolsButton);
             ShowToolsPanel();
             base.Activate();
+            OnAppCultureChanged(App, App.AppCulture);
         }
 
         /// <inheritdoc />
         public override void Deactivate()
         {
+            App.AppCultureChanged -= OnAppCultureChanged;
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove("kTools");
             _toolManager = null;
@@ -97,13 +103,32 @@ namespace DotSpatial.Plugins.ToolManager
 
                 App.CompositionContainer.ComposeParts(_toolManager);
                 Shell.Controls.Add(_toolManager);
-                App.DockManager.Add(new DockablePanel("kTools", "Tools", _toolManager, DockStyle.Left) { SmallImage = _toolManager.ImageList.Images["Hammer"] });
+
+                _toolsPanel = new DockablePanel("kTools", Resources.ToolsTabText, _toolManager, DockStyle.Left)
+                { SmallImage = _toolManager.ImageList.Images["Hammer"] };
+                App.DockManager.Add(_toolsPanel);
+                App.AppCultureChanged += OnAppCultureChanged;
             }
             else
             {
                 _toolManager = null;
                 App.DockManager.Remove("kTools");
             }
+        }
+
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            ExtensionCulture = appCulture;
+            _toolManager.ToolManagerCulture = ExtensionCulture;
+            UpdatePlugInItems();
+        }
+
+        private void UpdatePlugInItems()
+        {
+            _toolsPanel.Caption = Resources.ToolsTabText;
+            _toolsButton.Caption = Resources.ToolsButtonText;
+
+            // _toolManager.RefreshTree();
         }
     }
 }

@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -32,8 +34,10 @@ namespace DotSpatial.Plugins.Measure
         private bool _firstPartIsCounterClockwise;
         private MeasureDialog _measureDialog;
         private Point _mousePosition;
+        private Point _oldMousePosition;
         private double _previousDistance;
         private List<List<Coordinate>> _previousParts;
+        private CultureInfo _measureFuncCulture;
 
         private bool _standBy;
 
@@ -69,6 +73,28 @@ namespace DotSpatial.Plugins.Measure
         /// </summary>
         public IFeatureSet FeatureSet { get; set; }
 
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo MeasureFuncCulture
+        {
+            set
+            {
+                if (_measureFuncCulture == value) return;
+
+                _measureFuncCulture = value;
+
+                if (_measureFuncCulture == null) _measureFuncCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _measureFuncCulture;
+                Thread.CurrentThread.CurrentUICulture = _measureFuncCulture;
+
+                if (_measureDialog != null) _measureDialog.MeasureDialogCulture = _measureFuncCulture;
+
+                OnMouseMove(new GeoMouseArgs(new MouseEventArgs(MouseButtons.Left, 1, _oldMousePosition.X, _oldMousePosition.Y, 0), Map));
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -81,6 +107,7 @@ namespace DotSpatial.Plugins.Measure
             if (_measureDialog == null || _measureDialog.IsDisposed)
             {
                 _measureDialog = new MeasureDialog();
+                _measureDialog.MeasureDialogCulture = _measureFuncCulture;
                 HandleMeasureDialogEvents();
             }
 
@@ -108,6 +135,7 @@ namespace DotSpatial.Plugins.Measure
             // Don't completely deactivate, but rather go into standby mode
             // where we draw only the content that we have actually locked in.
             _standBy = true;
+            _measureDialog.Close();
             Map.Invalidate();
         }
 
@@ -247,6 +275,8 @@ namespace DotSpatial.Plugins.Measure
                 return;
             }
 
+            _oldMousePosition = e.Location;
+
             Coordinate c1 = e.GeographicLocation;
             if (_measureDialog.MeasureMode == MeasureMode.Distance)
             {
@@ -385,9 +415,12 @@ namespace DotSpatial.Plugins.Measure
 
         private void Configure()
         {
+            MeasureFuncCulture = new CultureInfo(string.Empty);
+
             _previousParts = new List<List<Coordinate>>();
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
             _measureDialog = new MeasureDialog();
+            _measureDialog.MeasureDialogCulture = _measureFuncCulture;
             HandleMeasureDialogEvents();
 
             Control map = Map as Control;

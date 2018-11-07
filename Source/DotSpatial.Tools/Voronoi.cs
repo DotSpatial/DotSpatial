@@ -28,8 +28,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.ThiessenPolygons;
             Category = TextStrings.Analysis;
-            Description = TextStrings.VoronoiDescription;
-            ToolTip = TextStrings.CreateVoronoiPolygons;
+            UpdateToolResources();
         }
 
         #endregion
@@ -80,6 +79,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.PolygonFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.ThiessenPolygons_Label;
+            CategoryLabel = TextStrings.Analysis_Label;
+            CategoryToolTip = TextStrings.Analysis_ToolTip;
+            Description = TextStrings.VoronoiDescription;
+            ToolTip = TextStrings.CreateVoronoiPolygons;
         }
 
         #endregion

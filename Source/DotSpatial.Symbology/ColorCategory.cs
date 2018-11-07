@@ -35,8 +35,8 @@ namespace DotSpatial.Symbology
         {
             _contextMenuItems = new List<SymbologyMenuItem>
                                 {
-                                    new SymbologyMenuItem("Remove Break", RemoveBreak),
-                                    new SymbologyMenuItem("Edit Break", EditBreak)
+                                    new SymbologyMenuItem("Break_RemoveBreak", RemoveBreak),
+                                    new SymbologyMenuItem("Break_RemoveBreak", EditBreak)
                                 };
         }
 

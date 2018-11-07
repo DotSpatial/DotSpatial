@@ -4,6 +4,8 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
@@ -27,6 +29,7 @@ namespace DotSpatial.Symbology.Forms
         private int _startHue;
         private float _startLight;
         private float _startSat;
+        private CultureInfo _colorControlCulture;
 
         #endregion
 
@@ -38,6 +41,7 @@ namespace DotSpatial.Symbology.Forms
         public TabColorControl()
         {
             InitializeComponent();
+            ColorControlCulture = new CultureInfo(string.Empty);
             Configure();
         }
 
@@ -119,6 +123,30 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public virtual CultureInfo ColorControlCulture
+        {
+            get
+            {
+                return _colorControlCulture;
+            }
+
+            set
+            {
+                if (_colorControlCulture == value) return;
+                _colorControlCulture = value;
+                if (_colorControlCulture == null) _colorControlCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _colorControlCulture;
+                Thread.CurrentThread.CurrentUICulture = _colorControlCulture;
+                Refresh();
+
+                UpdateColorRangeResources();
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -192,7 +220,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void Configure()
         {
-            tmrHueShift = new Timer
+            tmrHueShift = new System.Windows.Forms.Timer
             {
                 Interval = 100
             };
@@ -321,6 +349,13 @@ namespace DotSpatial.Symbology.Forms
             tabColorRange.SelectedTab = _hsl ? tabHSL : tabRGB;
             _ignoreUpdates = false;
             OnColorChanged();
+        }
+
+        private void UpdateColorRangeResources()
+        {
+            resources.ApplyResources(rampSlider1, "rampSlider1");
+            resources.ApplyResources(rampSlider2, "rampSlider2");
+            resources.ApplyResources(chkUseColorRange, "chkUseColorRange");
         }
 
         #endregion

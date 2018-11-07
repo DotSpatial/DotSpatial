@@ -130,4 +130,7 @@
   <data name="IncorrectSyntax" xml:space="preserve">
     <value>The syntax of that query isn't quite right: {0}</value>
   </data>
+  <data name="FindButton" xml:space="preserve">
+    <value>Find</value>
+  </data>
 </root>

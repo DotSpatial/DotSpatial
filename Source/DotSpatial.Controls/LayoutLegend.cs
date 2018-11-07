@@ -175,7 +175,7 @@ namespace DotSpatial.Controls
                     _layers.Clear();
                     if (Map.MapControl != null)
                     {
-                        //find all the layers in the map - not including "mapgroup" type layers
+                        // find all the layers in the map - not including "mapgroup" type layers
                         foreach (IMapLayer lyr in Map.MapControl.GetAllLayers())
                         {
                             if (lyr.Checked)
@@ -183,10 +183,10 @@ namespace DotSpatial.Controls
                                 _layers.Add(lyr);
                             }
                         }
-                        //reverse the list so that they draw in the correct order
+
+                        // reverse the list so that they draw in the correct order
                         _layers.Reverse();
-                        
-/*                                               
+/*
                         for (int i = Map.MapControl.Layers.Count - 1; i >= 0; i--)
                         {
                             if (Map.MapControl.Layers[i].Checked)
@@ -194,7 +194,7 @@ namespace DotSpatial.Controls
                                 _layers.Add(Map.MapControl.Layers[i]);
                             }
                         }
-  */                      
+  */
                     }
 
                     UpdateThumbnail();

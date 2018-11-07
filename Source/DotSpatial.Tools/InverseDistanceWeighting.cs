@@ -46,8 +46,7 @@ namespace DotSpatial.Tools
         {
             Name = "IDW";
             Category = TextStrings.Interpolation;
-            Description = TextStrings.IDWDescription;
-            ToolTip = TextStrings.InverseDistanceWeighting;
+            UpdateToolResources();
         }
 
         #endregion
@@ -287,6 +286,18 @@ namespace DotSpatial.Tools
                     lp.Value = -1;
                 }
             }
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.IDW_Label;
+            CategoryLabel = TextStrings.Interpolation_Label;
+            CategoryToolTip = TextStrings.Interpolation_ToolTip;
+            Description = TextStrings.IDWDescription;
+            ToolTip = TextStrings.InverseDistanceWeighting;
         }
 
         #endregion

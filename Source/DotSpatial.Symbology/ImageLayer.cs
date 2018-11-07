@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
@@ -160,6 +161,11 @@ namespace DotSpatial.Symbology
                 OnItemChanged();
             }
         }
+
+        /// <summary>
+        /// Gets or sets the Culture retrieve from the App
+        /// </summary>
+        public CultureInfo LayerCulture { get; set; }
 
         #endregion
 

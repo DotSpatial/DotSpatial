@@ -30,8 +30,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.SlopeRasterLayer;
             Category = TextStrings.TerrainAnalysis;
-            Description = TextStrings.RasterSlopeDescription;
-            ToolTip = TextStrings.GenerateslopeRasterLayer;
+            UpdateToolResources();
         }
 
         #endregion
@@ -190,6 +189,18 @@ namespace DotSpatial.Tools
                                       HelpText = TextStrings.Resultofaverageslope
                                   };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.SlopeRasterLayer_Label;
+            CategoryLabel = TextStrings.TerrainAnalysis_Label;
+            CategoryToolTip = TextStrings.TerrainAnalysis_ToolTip;
+            Description = TextStrings.RasterSlopeDescription;
+            ToolTip = TextStrings.GenerateslopeRasterLayer;
         }
 
         #endregion

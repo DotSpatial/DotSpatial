@@ -3,6 +3,8 @@
 
 using System;
 using System.Drawing;
+using System.Globalization;
+using System.Threading;
 using System.Reflection;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -15,10 +17,18 @@ namespace DotSpatial.Plugins.About
     /// </summary>
     public class AboutPlugin : Extension
     {
+        private CultureInfo _measurePluginCulture;
+        private SimpleActionItem _aboutButton;
+
         /// <inheritdoc/>
         public override void Activate()
         {
-            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.ApplicationMenuKey, "About", ButtonClick) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 500, SmallImage = Resources.information_16x16, LargeImage = Resources.information });
+            _aboutButton = new SimpleActionItem(HeaderControl.ApplicationMenuKey, Resources.btnAbout, ButtonClick)
+            {
+                GroupCaption = HeaderControl.ApplicationMenuKey,
+                SortOrder = 500, SmallImage = Resources.information_16x16,
+                LargeImage = Resources.information };
+            App.HeaderControl.Add(_aboutButton);
             base.Activate();
         }
 

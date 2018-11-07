@@ -280,8 +280,8 @@ namespace DotSpatial.Symbology
             LegendText = SymbologyMessageStrings.LayerFrame_Map_Layers;
             ContextMenuItems = new List<SymbologyMenuItem>
                                {
-                                   new SymbologyMenuItem(SymbologyMessageStrings.LayerFrame_ZoomToMapFrame, ZoomToMapFrameClick),
-                                   new SymbologyMenuItem(SymbologyMessageStrings.LayerFrame_CreateGroup, CreateGroupClick)
+                                   new SymbologyMenuItem("LayerFrame_ZoomToMapFrame", ZoomToMapFrameClick),
+                                   new SymbologyMenuItem("LayerFrame_CreateGroup", CreateGroupClick)
                                };
 
             LegendSymbolMode = SymbolMode.GroupSymbol;

@@ -3,6 +3,7 @@
 
 using System;
 using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -151,6 +152,7 @@ namespace DotSpatial.Plugins.ScaleBar
         private void AddHandler()
         {
             RemoveHandler();
+            App.AppCultureChanged += OnAppCultureChanged;
             App.Map.MapFrame.ViewExtentsChanged += MapFrameExtentsChanged;
             App.Map.LayerAdded += LayerAdded;
         }
@@ -260,6 +262,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         private void RemoveHandler()
         {
+            App.AppCultureChanged -= OnAppCultureChanged;
             App.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
             App.Map.LayerAdded -= LayerAdded;
         }
@@ -314,6 +317,17 @@ namespace DotSpatial.Plugins.ScaleBar
         {
             AddHandler();
             ComputeMapScale();
+        }
+
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            ExtensionCulture = appCulture;
+            UpdateScaleBarItems();
+        }
+
+        private void UpdateScaleBarItems()
+        {
+            _scaleDropDown.ToolTipText = Resources.ScaleBar_Box_ToolTip;
         }
 
         #endregion

@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_lblFieldName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>347, 10</value>
+  </data>
+  <data name="_lblFieldName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 13</value>
+  </data>
+  <data name="_lblFieldName.Text" xml:space="preserve">
+    <value>Colonne:</value>
+  </data>
+  <data name="btnRamp.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADIAAAAgCAYAAABQISshAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr2AAAK9gHCr3ADAAACeklE
+        QVRYR+3ZLbOrMBAG4P6VyspKLBKJjI2MjIxFIpGxSGQkFomMxEYike/dTT9uOsTdmUs7g9ieOdlDuk+6
+        ME3OZdu2n4l1XWG0hhYCqqrgnAOPcS57wdHBxb0iHSuLEtuyIBDAty06wjCM87tJjo4QAowxMNJA1wrD
+        MEQQjzEihUxSQlyvMZ+d7KjggqqywhY2rGOAtzOs6GjVCUXtlIP0ZRmR2Qn/R/BKxwIp+FPgMf599dRO
+        CWTWI+RNfCdEU1+7YcTkAvrWQwodW0hRK+Ugru6PhXBxmt4kXXUeY0RYtjekkRPqUn4npO97uHHCSIXZ
+        0UMoAx5TUkfEDlI0x0J4pb33MV5jXPBAiLBub4juZ1RCxTbKQWRJyKMg8zzDtA1010I0Gra3WOiNpNLw
+        Yd1BStUdC+HiuGiOdEzQRMu2wgWP1jvUPbUH3ci1VFlI3bjjINM0oe0aNJZu2k7B2i6uujY6IlKInCxu
+        svo+yKNNJMIWMIURg7fQAz1dtIKgyEHK3hwLsdbSAH0howJfNy4/75fVf0DaWaPQ9++ESCng5xErFetn
+        i8YIaiFLj8w6C5Gu/j4IF8yIjYp9QeaRipXlb0GUEvTtkVvpE2K7n4PUWYjrqdgTckJOyAk5ISfkhJyQ
+        E/JPEH7JQaS44XK5ZCF3eYsX5yBX8Zg4B7lVMuZykPtVxFwOwgd0nMtB3kem8XC4LD4gtn1O+sylEGX/
+        5gpajRRSdbQdTnIpRBjeuD3nLCiXQGT1OBZ95VKIFe3HdSlkd4jNf/TYHdI2Vn0e1/NP3p9LLVBncya2
+        WUXbgVyOT1S41XY5KpzbrK72uXiUKjVUNpf7t8J2+QNkUb2gr9LIlAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btnRamp.ToolTip" xml:space="preserve">
+    <value>Construire une gamme successive de couleurs aulieu de couleurs aléatoires</value>
+  </data>
+  <data name="cmdRefresh.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACQAAAAbCAYAAAAULC3gAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr2AAAK9gHCr3ADAAAC7klE
+        QVRYR8XUoVIcURCF4X2EvAIyMpJX4BGwkZGRsUgkEotEIrHISGQsEomc1DfMX7lMdsMkVZBTdWt27u0+
+        53T3nd29FW5vfkynJ1fT5cX36f7+cVq2/w/Ovt1On0+vp4eHx+n66n76+uVmOjm+nOy/qzkGdIUJHfp4
+        dD4v72CPKTFvbq4REUmcmaMPZ/PYdMm559PT0xx3fn43d9Ke+IVqG1SPuOqQ2vdEaBEhIIbYiONPF7M5
+        6+7uYY4Xy0ijlTeLHQKBWoygC1o3EHvaZwxxXfEURxSHM/HiiGdOvr0KWaR/YTThiRQYikQyARdVJ+TU
+        JWKEQVw54pz1lCMOD6049prwvoZ9xFqPMOhOq+oZYdbeaDBzFg3x4hhhbDZEKBO6UcsJH4J4cY2FoN/2
+        AwGGCI7mdEgOPTne6XmK2ekKZwIkVIH9Q8i0hZy4/Ea5hjNmFWmJodXCk4cdZypkwGHw2956P6iGiHNP
+        IngazyEUQ5y5eBQz3x+HNptn4mMXGkWVNnfd6QuxthiCOHDTwzHfH+gFMpVB5DqIQDVEIwj2Ms7wFkO6
+        Kk/RePFbsyHIECCVAIIzuO9ugFhmxMEWQ4woCqfcCl3svDQUGp0zScazD+IQZvg1Q00hyLXsL3Z2Ox1A
+        5KkroAomGofRbcFoCJ+8ccTOMwFi6CxWnmFM/Q8Ql2QUdccaR5b5fRgNlet+BHldaEYZW2y8hINmipTB
+        1igydm3cD6NRnMUG5uz3kdBcLLxEwgQFeY6VhVGkrnnKV7Fn8K7T6ztDh3Gxi/zvqH2BSF/bCCTMJCyv
+        /yx7+z6QEWnglrvI74eujBWOlR2CauuYqo2CmO7WwVAnLXmL7J+hwohUowpAsBYAHwQzzDuXg8c+Lu/9
+        hYD9YjYhUqgS1RLtL2ENOWJ0huBCNUNB/VdZGV+Ot0Hrja/L10jWI0xIJ9ZG9oGRV+/NIagWgS51afsC
+        7THC0D8L/C1UbAwELZ3Sia3deBN0L96vG7vdT/gHW7flZXdbAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="cmdRefresh.ToolTip" xml:space="preserve">
+    <value>Regenerer les couleurs de façon aléatoire, tout en concervant les catégories d'origine.</value>
+  </data>
+  <data name="btnExclude.Text" xml:space="preserve">
+    <value>Membres à exclure</value>
+  </data>
+  <data name="btnExclude.ToolTip" xml:space="preserve">
+    <value>Composer un filtre dont les entités  résultatantes seront exclues de l'opération.</value>
+  </data>
+  <data name="radUniqueValues.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 8</value>
+  </data>
+  <data name="radUniqueValues.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 17</value>
+  </data>
+  <data name="radUniqueValues.Text" xml:space="preserve">
+    <value>&amp;Valeurs uniques</value>
+  </data>
+  <data name="radUniqueValues.ToolTip" xml:space="preserve">
+    <value>Cette option crée une valeur séparée pour chaque membre de la colonne spécifiée.</value>
+  </data>
+  <data name="radQuantities.Location" type="System.Drawing.Point, System.Drawing">
+    <value>246, 8</value>
+  </data>
+  <data name="radQuantities.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 17</value>
+  </data>
+  <data name="radQuantities.Text" xml:space="preserve">
+    <value>&amp;Quantités</value>
+  </data>
+  <data name="radQuantities.ToolTip" xml:space="preserve">
+    <value>Cette option utilise des critères mathématiques pour grouper créer les catégories suivant les valeurs se trouvant dans la colonne spécifiée.</value>
+  </data>
+  <data name="btnAdd.ToolTip" xml:space="preserve">
+    <value>Ajouter une nouvelle Catégorie.</value>
+  </data>
+  <data name="btnDelete.ToolTip" xml:space="preserve">
+    <value>Supprimer la Catégorie sélectionnée</value>
+  </data>
+  <data name="btnUp.ToolTip" xml:space="preserve">
+    <value>Monter la Catégorie sélectionnée.</value>
+  </data>
+  <data name="btnDown.ToolTip" xml:space="preserve">
+    <value>Descendre la Catégorie sélectionnée.</value>
+  </data>
+  <data name="cmbNormField.ToolTip" xml:space="preserve">
+    <value>Aulieu de baser le regroupement sur la valeur actuelle de la colonne, ceci permet de fournir un diviseur ainsi le ratio utilisé en lieu et place.</value>
+  </data>
+  <data name="nudSigFig.ToolTip" xml:space="preserve">
+    <value>Détermine le nombre de décimales à afficher</value>
+  </data>
+  <data name="cmbIntervalSnapping.ToolTip" xml:space="preserve">
+    <value>Décide si des nombres précis avec beaucoup de chiffres seront utilisés, ou bien des nombres avec peu de chiffres et donc fqciles 0 lire.</value>
+  </data>
+  <data name="Stat.HeaderText" xml:space="preserve">
+    <value>Statistique</value>
+  </data>
+  <data name="Value.HeaderText" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="dgvStatistics.ToolTip" xml:space="preserve">
+    <value>Décrit de façon sommaire les statistiques des valeurs de la colonne. Ceci n'est qu'une représentation somaire.</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Colonne Normalisation:</value>
+  </data>
+  <data name="lblSigFig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 13</value>
+  </data>
+  <data name="lblSigFig.Text" xml:space="preserve">
+    <value>Décimales:</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Ajustage d'Intervalle</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Méthode d'intervalle:</value>
+  </data>
+  <data name="lblBreaks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>103, 13</value>
+  </data>
+  <data name="lblBreaks.Text" xml:space="preserve">
+    <value>Nombre de ruptures:</value>
+  </data>
+  <data name="tabStatistics.Text" xml:space="preserve">
+    <value>Statistiques</value>
+  </data>
+  <data name="lblColumns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 13</value>
+  </data>
+  <data name="lblColumns.Text" xml:space="preserve">
+    <value>Colonnes:</value>
+  </data>
+  <data name="chkLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 17</value>
+  </data>
+  <data name="chkLog.Text" xml:space="preserve">
+    <value>Echelle</value>
+  </data>
+  <data name="chkShowStd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 17</value>
+  </data>
+  <data name="chkShowStd.Text" xml:space="preserve">
+    <value>Déviation standard</value>
+  </data>
+  <data name="chkShowMean.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 17</value>
+  </data>
+  <data name="chkShowMean.Text" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+  <data name="chkUseGradients.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 17</value>
+  </data>
+  <data name="chkUseGradients.Text" xml:space="preserve">
+    <value>Motif dégradé</value>
+  </data>
+  <data name="colSymbol.HeaderText" xml:space="preserve">
+    <value>Symbole</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="colSymbol.Width" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="colValues.HeaderText" xml:space="preserve">
+    <value>Valeurs</value>
+  </data>
+  <data name="colLegendText.HeaderText" xml:space="preserve">
+    <value>Libellé</value>
+  </data>
+  <data name="colCount.HeaderText" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="ShowInLegend.HeaderText" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="radCustom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 17</value>
+  </data>
+  <data name="radCustom.Text" xml:space="preserve">
+    <value>Personnalisé</value>
+  </data>
+  <data name="dataGridViewImageColumn1.HeaderText" xml:space="preserve">
+    <value>Symbole</value>
+  </data>
+  <data name="dgvcShowInLegend.HeaderText" xml:space="preserve">
+    <value>Afficher</value>
+  </data>
+</root>

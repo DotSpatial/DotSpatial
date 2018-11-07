@@ -29,9 +29,8 @@ namespace DotSpatial.Tools
         public RasterBinTool()
         {
             Name = TextStrings.RasterBinTool_Name;
-            Category = TextStrings.TerrainAnalysis;
-            Description = TextStrings.RasterBinTool_Description;
-            ToolTip = TextStrings.RasterBinTool_Tooltip;
+            Category = TextStrings.RasterOverlay;
+            UpdateToolResources();
             Author = "Ted Dunsford?";
         }
 
@@ -129,6 +128,17 @@ namespace DotSpatial.Tools
         /// <param name="sender">Sender that raised the event.</param>
         public override void ParameterChanged(Parameter sender)
         {
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.RasterBinTool_Label;
+            CategoryLabel = TextStrings.RasterOverlay_Label;
+            CategoryToolTip = TextStrings.RasterOverlay_ToolTip;
+            ToolTip = TextStrings.RasterBinTool_ToolTip;
         }
 
         #endregion

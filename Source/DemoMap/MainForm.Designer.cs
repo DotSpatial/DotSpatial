@@ -7,6 +7,8 @@
 // ********************************************************************************************************
 
 using System.ComponentModel;
+using System.Globalization;
+using System.Threading;
 using DotSpatial.Controls;
 
 namespace DemoMap
@@ -55,15 +57,13 @@ namespace DemoMap
             this.appManager.Map = null;
             this.appManager.ProgressHandler = null;
             this.appManager.ShowExtensionsDialogMode = DotSpatial.Controls.ShowExtensionsDialogMode.Default;
+            this.appManager.AppCultureChanged += OnAppCultureChanged;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(857, 506);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "DemoMap";
             this.ResumeLayout(false);
 
         }
@@ -71,5 +71,12 @@ namespace DemoMap
         #endregion
 
         private AppManager appManager;
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            Thread.CurrentThread.CurrentCulture = appCulture;
+            Thread.CurrentThread.CurrentUICulture = appCulture;
+            Refresh();
+        }
+
     }
 }

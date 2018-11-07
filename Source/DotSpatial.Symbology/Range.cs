@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
 using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
@@ -212,10 +213,11 @@ namespace DotSpatial.Symbology
         {
             if (Minimum == null && Maximum == null) return string.Empty;
 
-            string maxExp = MaxIsInclusive ? field + " <= " + Maximum : field + " < " + Maximum;
-            string minExp = MinIsInclusive ? field + " >= " + Minimum : field + " > " + Minimum;
-            if (Minimum == null) return maxExp;
-            if (Maximum == null) return minExp;
+            if (Minimum == null) return MaxIsInclusive ? field + " <= " + Maximum.Value.ToString(CultureInfo.InvariantCulture) : field + " < " + Maximum.Value.ToString(CultureInfo.InvariantCulture);
+            string minExp = MinIsInclusive ? field + " >= " + Minimum.Value.ToString(CultureInfo.InvariantCulture) : field + " > " + Minimum.Value.ToString(CultureInfo.InvariantCulture);
+
+            if (Maximum == null) return MinIsInclusive ? field + " >= " + Minimum.Value.ToString(CultureInfo.InvariantCulture) : field + " > " + Minimum.Value.ToString(CultureInfo.InvariantCulture);
+            string maxExp = MaxIsInclusive ? field + " <= " + Maximum.Value.ToString(CultureInfo.InvariantCulture) : field + " < " + Maximum.Value.ToString(CultureInfo.InvariantCulture);
 
             return minExp + " AND " + maxExp;
         }

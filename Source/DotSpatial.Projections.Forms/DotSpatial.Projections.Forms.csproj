@@ -117,7 +117,11 @@
     <EmbeddedResource Include="DoubleBox.resx">
       <DependentUpon>DoubleBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DoubleBoxfr-FR.resx" />
     <EmbeddedResource Include="ProjectionCustomDialog.de-DE.resx">
+      <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionCustomDialog.fr-FR.resx">
       <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectionCustomDialog.it-IT.resx">
@@ -132,8 +136,14 @@
     <EmbeddedResource Include="ProjectionCustomDialog.zh-CN.resx">
       <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionSelectControl.fr-FR.resx">
+      <DependentUpon>ProjectionSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectionSelectControl.resx">
       <DependentUpon>ProjectionSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionSelectDialog.fr-FR.resx">
+      <DependentUpon>ProjectionSelectDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectionSelectDialog.resx">
       <DependentUpon>ProjectionSelectDialog.cs</DependentUpon>
@@ -141,6 +151,7 @@
     <EmbeddedResource Include="ProjectionSelectDialog.zh-CN.resx">
       <DependentUpon>ProjectionSelectDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionStrings.fr-FR.resx" />
     <EmbeddedResource Include="ProjectionStrings.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -160,6 +171,9 @@
       <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UndefinedProjectionDialog.el.resx">
+      <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UndefinedProjectionDialog.fr-FR.resx">
       <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UndefinedProjectionDialog.it-IT.resx">

@@ -30,8 +30,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.RasterDistanceproximity;
             Category = TextStrings.RasterOverlay;
-            Description = TextStrings.Calculateseuclideandistance;
-            ToolTip = TextStrings.RasterDistanceproximity;
+            UpdateToolResources();
         }
 
         #endregion
@@ -334,6 +333,18 @@ namespace DotSpatial.Tools
                                       HelpText = TextStrings.SelectresultrasterfileName
                                   };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.RasterDistanceproximity_Label;
+            CategoryLabel = TextStrings.RasterOverlay_Label;
+            CategoryToolTip = TextStrings.RasterOverlay_ToolTip;
+            Description = TextStrings.Calculateseuclideandistance;
+            ToolTip = TextStrings.RasterDistanceproximity;
         }
 
         /// <summary>

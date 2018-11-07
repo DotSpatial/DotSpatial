@@ -4,6 +4,8 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Serialization;
 
@@ -22,6 +24,7 @@ namespace DotSpatial.Symbology.Forms
         private bool _ignore;
         private IFeatureScheme _scheme;
         private FeatureSizeRange _sizeRange;
+        private CultureInfo _featSizeCulture;
 
         #endregion
 
@@ -33,6 +36,8 @@ namespace DotSpatial.Symbology.Forms
         public FeatureSizeRangeControl()
         {
             InitializeComponent();
+            _featSizeCulture = new CultureInfo(string.Empty);
+
             _pointDialog = new DetailedPointSymbolDialog();
             _pointDialog.ChangesApplied += PointDialogChangesApplied;
             _lineDialog = new DetailedLineSymbolDialog();
@@ -97,6 +102,30 @@ namespace DotSpatial.Symbology.Forms
             {
                 _sizeRange = value;
                 UpdateControls();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the culture to use for resources.
+        /// </summary>
+        public virtual CultureInfo FeatSizeCulture
+        {
+            get
+            {
+                return _featSizeCulture;
+            }
+
+            set
+            {
+                if (_featSizeCulture == value) return;
+                _featSizeCulture = value;
+                if (_featSizeCulture == null) _featSizeCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _featSizeCulture;
+                Thread.CurrentThread.CurrentUICulture = _featSizeCulture;
+                Refresh();
+
+                UpdateFeatSizeResources();
             }
         }
 
@@ -316,6 +345,14 @@ namespace DotSpatial.Symbology.Forms
 
             _sizeRange.Start = trkStart.Value;
             UpdateControls();
+        }
+
+        private void UpdateFeatSizeResources()
+        {
+            resources.ApplyResources(chkSizeRange, "chkSizeRange");
+            resources.ApplyResources(btnEdit, "btnEdit");
+            resources.ApplyResources(label1, "label1");
+            resources.ApplyResources(label2, "label2");
         }
 
         #endregion

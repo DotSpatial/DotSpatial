@@ -29,8 +29,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.AddRasterLayers;
             Category = TextStrings.RasterOverlay;
-            Description = TextStrings.AddTwoRasteLayer;
-            ToolTip = TextStrings.AddTwoRasteLayer;
+            UpdateToolResources();
         }
 
         #endregion
@@ -101,6 +100,18 @@ namespace DotSpatial.Tools
                 HelpText = TextStrings.ResultRasterDirectory
             };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.AddRasterLayers_Label;
+            CategoryLabel = TextStrings.RasterOverlay_Label;
+            CategoryToolTip = TextStrings.RasterOverlay_ToolTip;
+            Description = TextStrings.AddTwoRasteLayer;
+            ToolTip = TextStrings.AddTwoRasteLayer;
         }
 
         private static double Operation(double val1, double val2)

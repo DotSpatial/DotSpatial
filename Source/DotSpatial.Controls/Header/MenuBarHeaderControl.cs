@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DotSpatial.Controls.Header
@@ -28,6 +30,7 @@ namespace DotSpatial.Controls.Header
         private List<ToolStrip> _strips;
         private bool _toolstripsLoaded; // indicates whether toolstrips were loaded after programstart
         private ToolStripPanel _tsPanel;
+        private CultureInfo _menuBarCulture;
 
         #endregion
 
@@ -38,6 +41,26 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         /// <remarks>Enables the user to ignore Toolstrippositionsaving (e.g. in DesignMode)</remarks>
         public bool IgnoreToolstripPositionSaving { get; set; }
+
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo MenuBarCulture
+        {
+            set
+            {
+                if (_menuBarCulture == value) return;
+
+                _menuBarCulture = value;
+
+                if (_menuBarCulture == null) _menuBarCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _menuBarCulture;
+                Thread.CurrentThread.CurrentUICulture = _menuBarCulture;
+
+                UpdateMenuItems();
+            }
+        }
 
         #endregion
 
@@ -104,6 +127,7 @@ namespace DotSpatial.Controls.Header
 
             RefreshRootItemOrder();
 
+            item.PropertyChanged += RootItemPropertyChanged;
             return root;
         }
 
@@ -243,6 +267,47 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
+        /// Adds a combo box style item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The added ComboBox.</returns>
+        public override object Add(CheckBoxActionItem item)
+        {
+            var strip = GetOrCreateStrip(item.GroupCaption);
+
+            var checkbx = new CheckBox();
+            checkbx.Checked = item.Checked;
+            checkbx.Text = item.Caption;
+
+            /*checkbx.CheckedChanged += (sender, args) =>
+            {
+                item.PropertyChanged -= CheckBoxItemPropertyChanged;
+                item.Checked = checkbx.Checked;
+                item.PropertyChanged += CheckBoxItemPropertyChanged;
+            };*/
+
+            var snapCheckContHost = new ToolStripControlHost(checkbx);
+            snapCheckContHost.ToolTipText = item.ToolTipText;
+            snapCheckContHost.ImageKey = item.Key;
+
+            CheckBox checkbxHosted = (CheckBox)snapCheckContHost.Control;
+
+            checkbxHosted.CheckedChanged += (sender, args) =>
+            {
+                item.PropertyChanged -= CheckBoxItemPropertyChanged;
+                item.Checked = checkbx.Checked;
+                snapCheckContHost.ToolTipText = item.ToolTipText;
+                item.PropertyChanged += CheckBoxItemPropertyChanged;
+            };
+
+            strip?.Items.Add(snapCheckContHost);
+
+            // strip?.Items.Add((checkbx);
+            item.PropertyChanged += CheckBoxItemPropertyChanged;
+            return checkbx;
+        }
+
+        /// <summary>
         /// Initializes the specified container.
         /// </summary>
         /// <param name="toolStripPanel">The tool strip panel.</param>
@@ -328,9 +393,11 @@ namespace DotSpatial.Controls.Header
                 var headerItem = GetHeaderItemByKey(key);
                 if (headerItem != null)
                 {
+                    headerItem.PropertyChanged -= RootItemPropertyChanged;
                     headerItem.PropertyChanged -= SimpleActionItemPropertyChanged;
                     headerItem.PropertyChanged -= DropDownActionItemPropertyChanged;
                     headerItem.PropertyChanged -= TextEntryActionItemPropertyChanged;
+                    headerItem.PropertyChanged -= CheckBoxItemPropertyChanged;
                 }
             }
 
@@ -408,6 +475,32 @@ namespace DotSpatial.Controls.Header
             }
         }
 
+        private void HeadrItemPropertyChanged(RootItem item, PropertyChangedEventArgs e)
+        {
+            var guiItem = GetItem(item.Key);
+
+            switch (e.PropertyName)
+            {
+                case "Caption":
+                    guiItem.Text = item.Caption;
+                    break;
+
+                case "Visible":
+                    guiItem.Visible = item.Visible;
+                    break;
+
+                case "GroupCaption":
+                    break;
+
+                case "RootKey":
+                    // note, this case will also be selected in the case that we set the Root key in our code.
+                    break;
+
+                default:
+                    throw new NotSupportedException("This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
+            }
+        }
+
         /// <summary>
         /// Adds a toolstrip with the given name to the _strips-List. If the toolbars were already loaded it is added to the _tsPanel as well.
         /// </summary>
@@ -443,6 +536,32 @@ namespace DotSpatial.Controls.Header
             if (button.Checked)
             {
                 UncheckButtonsExcept(button);
+            }
+        }
+
+        private void CheckBoxItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var item = (CheckBoxActionItem)sender;
+            var guiItem = GetControlHost(item.Key);
+            var guiHost = (ToolStripControlHost)guiItem;
+            var chkbx = (CheckBox)guiHost.Control;
+
+            switch (e.PropertyName)
+            {
+                case "ToggleGroupKey":
+                    break;
+
+                case "Caption":
+                    chkbx.Text = item.Caption;
+                    break;
+
+                case "Checked":
+                    chkbx.Checked = item.Checked;
+                    break;
+
+                case "ToolTipText":
+                    guiHost.ToolTipText = item.ToolTipText;
+                    break;
             }
         }
 
@@ -527,6 +646,22 @@ namespace DotSpatial.Controls.Header
                 if (item != null)
                 {
                     return item;
+                }
+            }
+
+            return null;
+        }
+
+        private ToolStripItem GetControlHost(string key)
+        {
+            foreach (var strip in _strips)
+            {
+                foreach (ToolStripItem item in strip.Items)
+                {
+                    if (item.ImageKey == key)
+                    {
+                        return item;
+                    }
                 }
             }
 
@@ -633,6 +768,24 @@ namespace DotSpatial.Controls.Header
             }
         }
 
+        private void RootItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var item = (RootItem)sender;
+            var guiItem = GetItem(item.Key);
+
+            switch (e.PropertyName)
+            {
+                case "MenuContainerKey":
+                    break;
+                case "ToggleGroupKey":
+                    break;
+
+                default:
+                    HeadrItemPropertyChanged(item, e);
+                    break;
+            }
+        }
+
         private void SimpleActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var item = (SimpleActionItem)sender;
@@ -707,6 +860,10 @@ namespace DotSpatial.Controls.Header
                     }
                 }
             }
+        }
+
+        private void UpdateMenuItems()
+        {
         }
 
         #endregion

@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing">
+    <value>17, 17</value>
+  </data>
   <data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -172,22 +172,22 @@
   </data>
   <data name="tsbClear.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        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
+        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
 </value>
   </data>
   <data name="tsbClear.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -202,9 +202,9 @@
   <data name="tsbClear.ToolTipText" xml:space="preserve">
     <value>Clears the existing measurements</value>
   </data>
-  <metadata name="ttHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="ttHelp.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>122, 17</value>
-  </metadata>
+  </data>
   <data name="lblPartialValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>62, 49</value>
   </data>
@@ -449,12 +449,12 @@
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
     <value>54</value>
-  </metadata>
+  </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>451, 144</value>
   </data>
@@ -490,5 +490,62 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cmbUnitsArea.Items" xml:space="preserve">
+    <value>Square Kilometers</value>
+  </data>
+  <data name="cmbUnitsArea.Items1" xml:space="preserve">
+    <value>Hectares</value>
+  </data>
+  <data name="cmbUnitsArea.Items2" xml:space="preserve">
+    <value>Square Meters</value>
+  </data>
+  <data name="cmbUnitsArea.Items3" xml:space="preserve">
+    <value>Ares</value>
+  </data>
+  <data name="cmbUnitsArea.Items4" xml:space="preserve">
+    <value>Square Miles</value>
+  </data>
+  <data name="cmbUnitsArea.Items5" xml:space="preserve">
+    <value>Acres</value>
+  </data>
+  <data name="cmbUnitsArea.Items6" xml:space="preserve">
+    <value>Square Feet</value>
+  </data>
+  <data name="cmbUnitsArea.Items7" xml:space="preserve">
+    <value>Square Yards</value>
+  </data>
+  <data name="cmbUnitsDist.Items" xml:space="preserve">
+    <value>Kilometers</value>
+  </data>
+  <data name="cmbUnitsDist.Items1" xml:space="preserve">
+    <value>Meters</value>
+  </data>
+  <data name="cmbUnitsDist.Items10" xml:space="preserve">
+    <value>DecimalDegrees</value>
+  </data>
+  <data name="cmbUnitsDist.Items2" xml:space="preserve">
+    <value>Decimeters</value>
+  </data>
+  <data name="cmbUnitsDist.Items3" xml:space="preserve">
+    <value>Centimeters</value>
+  </data>
+  <data name="cmbUnitsDist.Items4" xml:space="preserve">
+    <value>Millimeters</value>
+  </data>
+  <data name="cmbUnitsDist.Items5" xml:space="preserve">
+    <value>Miles</value>
+  </data>
+  <data name="cmbUnitsDist.Items6" xml:space="preserve">
+    <value>NauticalMiles</value>
+  </data>
+  <data name="cmbUnitsDist.Items7" xml:space="preserve">
+    <value>Yards</value>
+  </data>
+  <data name="cmbUnitsDist.Items8" xml:space="preserve">
+    <value>Feet</value>
+  </data>
+  <data name="cmbUnitsDist.Items9" xml:space="preserve">
+    <value>Inches</value>
   </data>
 </root>

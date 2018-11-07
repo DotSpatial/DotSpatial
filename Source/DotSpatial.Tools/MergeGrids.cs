@@ -31,7 +31,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.MergeRasterLayers;
             Category = TextStrings.Analysis;
-            Description = TextStrings.MergeGridsDescription;
+            UpdateToolResources();
         }
 
         #endregion
@@ -194,6 +194,17 @@ namespace DotSpatial.Tools
                                       HelpText = TextStrings.ResultRasterDirectory
                                   };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.MergeRasterLayers_Label;
+            CategoryLabel = TextStrings.Analysis_Label;
+            CategoryToolTip = TextStrings.Analysis_ToolTip;
+            Description = TextStrings.MergeGridsDescription;
         }
 
         /// <summary>

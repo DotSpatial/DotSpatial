@@ -29,10 +29,9 @@ namespace DotSpatial.Tools
         /// </summary>
         public Area()
         {
-            Category = TextStrings.Statistics;
-            ToolTip = TextStrings.AreaDescription;
-            Description = TextStrings.AreaDescription;
             Name = TextStrings.CalculateAreas;
+            Category = TextStrings.Statistics;
+            UpdateToolResources();
         }
 
         #endregion
@@ -142,6 +141,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.PolygonFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.CalculateAreas_Label;
+            CategoryLabel = TextStrings.Statistics_Label;
+            CategoryToolTip = TextStrings.Statistics_ToolTip;
+            ToolTip = TextStrings.AreaDescription;
+            Description = TextStrings.AreaDescription;
         }
 
         #endregion

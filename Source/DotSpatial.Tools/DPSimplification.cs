@@ -35,8 +35,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.SimplifyLines;
             Category = TextStrings.Generalization;
-            Description = TextStrings.DouglasPeuckerlinesimplification;
-            ToolTip = TextStrings.DPlinesimplification;
+            UpdateToolResources();
         }
 
         #endregion
@@ -211,6 +210,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new LineFeatureSetParam(TextStrings.LineFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.SimplifyLines_Label;
+            CategoryLabel = TextStrings.Generalization_Label;
+            CategoryToolTip = TextStrings.Generalization_ToolTip;
+            Description = TextStrings.DouglasPeuckerlinesimplification;
+            ToolTip = TextStrings.DPlinesimplification;
         }
 
         #endregion

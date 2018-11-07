@@ -31,6 +31,7 @@ namespace DotSpatial.Projections.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectionSelectControl));
             this.grpType = new System.Windows.Forms.GroupBox();
             this.radGeographic = new System.Windows.Forms.RadioButton();
             this.radProjected = new System.Windows.Forms.RadioButton();
@@ -53,176 +54,113 @@ namespace DotSpatial.Projections.Forms
             // 
             // grpType
             // 
-            this.grpType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.grpType, "grpType");
             this.grpType.Controls.Add(this.radGeographic);
             this.grpType.Controls.Add(this.radProjected);
-            this.grpType.Location = new System.Drawing.Point(6, 19);
             this.grpType.Name = "grpType";
-            this.grpType.Size = new System.Drawing.Size(281, 48);
-            this.grpType.TabIndex = 4;
             this.grpType.TabStop = false;
-            this.grpType.Text = "Projection Type";
             // 
             // radGeographic
             // 
-            this.radGeographic.AutoSize = true;
-            this.radGeographic.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.radGeographic.Location = new System.Drawing.Point(100, 21);
+            resources.ApplyResources(this.radGeographic, "radGeographic");
             this.radGeographic.Name = "radGeographic";
-            this.radGeographic.Size = new System.Drawing.Size(80, 17);
-            this.radGeographic.TabIndex = 1;
-            this.radGeographic.Text = "&Geographic";
             this.radGeographic.UseVisualStyleBackColor = true;
             // 
             // radProjected
             // 
-            this.radProjected.AutoSize = true;
-            this.radProjected.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.radProjected.Location = new System.Drawing.Point(24, 21);
+            resources.ApplyResources(this.radProjected, "radProjected");
             this.radProjected.Name = "radProjected";
-            this.radProjected.Size = new System.Drawing.Size(70, 17);
-            this.radProjected.TabIndex = 0;
-            this.radProjected.Text = "&Projected";
             this.radProjected.UseVisualStyleBackColor = true;
             this.radProjected.CheckedChanged += new System.EventHandler(this.RadProjectedCheckedChanged);
             // 
             // cmbMinorCategory
             // 
-            this.cmbMinorCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.cmbMinorCategory, "cmbMinorCategory");
             this.cmbMinorCategory.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbMinorCategory.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbMinorCategory.FormattingEnabled = true;
-            this.cmbMinorCategory.Location = new System.Drawing.Point(6, 100);
             this.cmbMinorCategory.Name = "cmbMinorCategory";
-            this.cmbMinorCategory.Size = new System.Drawing.Size(282, 21);
-            this.cmbMinorCategory.TabIndex = 6;
             this.cmbMinorCategory.SelectedIndexChanged += new System.EventHandler(this.CmbMinorCategorySelectedIndexChanged);
             // 
             // cmbMajorCategory
             // 
-            this.cmbMajorCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.cmbMajorCategory, "cmbMajorCategory");
             this.cmbMajorCategory.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbMajorCategory.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbMajorCategory.FormattingEnabled = true;
-            this.cmbMajorCategory.Location = new System.Drawing.Point(6, 73);
             this.cmbMajorCategory.Name = "cmbMajorCategory";
-            this.cmbMajorCategory.Size = new System.Drawing.Size(281, 21);
-            this.cmbMajorCategory.TabIndex = 5;
             this.cmbMajorCategory.SelectedIndexChanged += new System.EventHandler(this.CmbMajorCategorySelectedIndexChanged);
             // 
             // nudEpsgCode
             // 
-            this.nudEpsgCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudEpsgCode.Location = new System.Drawing.Point(9, 19);
+            resources.ApplyResources(this.nudEpsgCode, "nudEpsgCode");
             this.nudEpsgCode.Maximum = new decimal(new int[] {
             1000000,
             0,
             0,
             0});
             this.nudEpsgCode.Name = "nudEpsgCode";
-            this.nudEpsgCode.Size = new System.Drawing.Size(200, 20);
-            this.nudEpsgCode.TabIndex = 3;
             // 
             // btnFromEpsgCode
             // 
-            this.btnFromEpsgCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFromEpsgCode.Location = new System.Drawing.Point(215, 19);
+            resources.ApplyResources(this.btnFromEpsgCode, "btnFromEpsgCode");
             this.btnFromEpsgCode.Name = "btnFromEpsgCode";
-            this.btnFromEpsgCode.Size = new System.Drawing.Size(72, 23);
-            this.btnFromEpsgCode.TabIndex = 8;
-            this.btnFromEpsgCode.Text = "Find";
             this.btnFromEpsgCode.UseVisualStyleBackColor = true;
             this.btnFromEpsgCode.Click += new System.EventHandler(this.BtnFromEpsgCodeClick);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.cmbMinorCategory);
             this.groupBox1.Controls.Add(this.cmbMajorCategory);
             this.groupBox1.Controls.Add(this.grpType);
-            this.groupBox1.Location = new System.Drawing.Point(9, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(293, 133);
-            this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Predefined";
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.btnFromEpsgCode);
             this.groupBox2.Controls.Add(this.nudEpsgCode);
-            this.groupBox2.Location = new System.Drawing.Point(9, 154);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(293, 55);
-            this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "From EPGS code";
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Controls.Add(this.chbEsri);
             this.groupBox3.Controls.Add(this.tbEsriProj4);
             this.groupBox3.Controls.Add(this.btnUseESRI);
-            this.groupBox3.Location = new System.Drawing.Point(9, 215);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(293, 146);
-            this.groupBox3.TabIndex = 11;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "From ESRI or Proj4 string";
             // 
             // chbEsri
             // 
-            this.chbEsri.AutoSize = true;
-            this.chbEsri.Location = new System.Drawing.Point(9, 20);
+            resources.ApplyResources(this.chbEsri, "chbEsri");
             this.chbEsri.Name = "chbEsri";
-            this.chbEsri.Size = new System.Drawing.Size(132, 17);
-            this.chbEsri.TabIndex = 10;
-            this.chbEsri.Text = "ESRI (otherwise Proj4)";
             this.chbEsri.UseVisualStyleBackColor = true;
             this.chbEsri.CheckedChanged += new System.EventHandler(this.ChbEsriCheckedChanged);
             // 
             // tbEsriProj4
             // 
-            this.tbEsriProj4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbEsriProj4.Location = new System.Drawing.Point(6, 50);
-            this.tbEsriProj4.Multiline = true;
+            resources.ApplyResources(this.tbEsriProj4, "tbEsriProj4");
             this.tbEsriProj4.Name = "tbEsriProj4";
-            this.tbEsriProj4.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbEsriProj4.Size = new System.Drawing.Size(281, 90);
-            this.tbEsriProj4.TabIndex = 9;
             // 
             // btnUseESRI
             // 
-            this.btnUseESRI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUseESRI.Location = new System.Drawing.Point(215, 16);
+            resources.ApplyResources(this.btnUseESRI, "btnUseESRI");
             this.btnUseESRI.Name = "btnUseESRI";
-            this.btnUseESRI.Size = new System.Drawing.Size(72, 23);
-            this.btnUseESRI.TabIndex = 8;
-            this.btnUseESRI.Text = "Parse";
             this.btnUseESRI.UseVisualStyleBackColor = true;
             this.btnUseESRI.Click += new System.EventHandler(this.BtnUseEsriClick);
             // 
             // ProjectionSelectControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ProjectionSelectControl";
-            this.Size = new System.Drawing.Size(309, 364);
             this.grpType.ResumeLayout(false);
             this.grpType.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEpsgCode)).EndInit();

@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>131, 139</value>
+    <value>121, 139</value>
   </data>
   <data name="_btnOk.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 28</value>
@@ -157,10 +157,10 @@
     <value>Bottom, Right</value>
   </data>
   <data name="_btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 139</value>
+    <value>166, 139</value>
   </data>
   <data name="_btnClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 28</value>
+    <value>54, 28</value>
   </data>
   <data name="_btnClose.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -202,7 +202,7 @@
     <value>_dbxM</value>
   </data>
   <data name="&gt;&gt;_dbxM.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_dbxM.Parent" xml:space="preserve">
     <value>$this</value>
@@ -229,7 +229,7 @@
     <value>_dbxZ</value>
   </data>
   <data name="&gt;&gt;_dbxZ.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_dbxZ.Parent" xml:space="preserve">
     <value>$this</value>
@@ -256,7 +256,7 @@
     <value>_dbxY</value>
   </data>
   <data name="&gt;&gt;_dbxY.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_dbxY.Parent" xml:space="preserve">
     <value>$this</value>
@@ -283,7 +283,7 @@
     <value>_dbxX</value>
   </data>
   <data name="&gt;&gt;_dbxX.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;_dbxX.Parent" xml:space="preserve">
     <value>$this</value>

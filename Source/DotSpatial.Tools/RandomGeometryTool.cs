@@ -33,8 +33,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.RandomGeometry;
             Category = TextStrings.Analysis;
-            Description = TextStrings.RandomGeometryDescription;
-            ToolTip = TextStrings.RandomGeometryToolTip;
+            UpdateToolResources();
         }
 
         #endregion
@@ -101,6 +100,18 @@ namespace DotSpatial.Tools
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.RandomGeometry_Label;
+            CategoryLabel = TextStrings.Analysis_Label;
+            CategoryToolTip = TextStrings.Analysis_ToolTip;
+            Description = TextStrings.RandomGeometryDescription;
+            ToolTip = TextStrings.RandomGeometry_ToolTip;
         }
 
         #endregion

@@ -40,7 +40,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         public string LayerName => _layer.LegendText;
 
         /// <summary>
-        /// Gets or sets a value indicating whether snapping to the coordinates of the layers features is allowed.
+        /// Gets or sets a value indicating whether snapping to the coordinates of the layer's features is allowed.
         /// </summary>
         public bool Snappable
         {
@@ -52,6 +52,70 @@ namespace DotSpatial.Plugins.ShapeEditor
             set
             {
                 _layer.Snappable = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether snapping to the startpoins of the layer's features is allowed.
+        /// </summary>
+        public bool SnapVertices
+        {
+            get
+            {
+                return _layer.SnapVertices;
+            }
+
+            set
+            {
+                _layer.SnapVertices = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether snapping to the startpoins of the layer's features is allowed.
+        /// </summary>
+        public bool SnapStartPoint
+        {
+            get
+            {
+                return _layer.SnapStartPoint;
+            }
+
+            set
+            {
+                _layer.SnapStartPoint = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether snapping to the endpoints of the layer's features is allowed.
+        /// </summary>
+        public bool SnapEndPoint
+        {
+            get
+            {
+                return _layer.SnapEndPoint;
+            }
+
+            set
+            {
+                _layer.SnapEndPoint = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether snapping to the edges of the layer's features is allowed.
+        /// </summary>
+        public bool SnapEdges
+        {
+            get
+            {
+                return _layer.SnapEdges;
+            }
+
+            set
+            {
+                _layer.SnapEdges = value;
             }
         }
 

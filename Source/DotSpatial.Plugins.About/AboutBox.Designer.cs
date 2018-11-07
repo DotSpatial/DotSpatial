@@ -31,8 +31,8 @@ namespace DotSpatial.Plugins.About
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutBox));
             this.DetailsButton = new System.Windows.Forms.Button();
-            this.ImagePictureBox = new System.Windows.Forms.PictureBox();
             this.AppDateLabel = new System.Windows.Forms.Label();
             this.SysInfoButton = new System.Windows.Forms.Button();
             this.AppCopyrightLabel = new System.Windows.Forms.Label();
@@ -58,203 +58,126 @@ namespace DotSpatial.Plugins.About
             this.ColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.AssemblyNamesComboBox = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.ImagePictureBox)).BeginInit();
+            this.ImagePictureBox = new System.Windows.Forms.PictureBox();
             this.TabPanelDetails.SuspendLayout();
             this.TabPageApplication.SuspendLayout();
             this.TabPageAssemblies.SuspendLayout();
             this.TabPageAssemblyDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ImagePictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // DetailsButton
             // 
-            this.DetailsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DetailsButton.Location = new System.Drawing.Point(228, 245);
+            resources.ApplyResources(this.DetailsButton, "DetailsButton");
             this.DetailsButton.Name = "DetailsButton";
-            this.DetailsButton.Size = new System.Drawing.Size(76, 23);
-            this.DetailsButton.TabIndex = 25;
-            this.DetailsButton.Text = "&Details >>";
             this.DetailsButton.Click += new System.EventHandler(this.DetailsButtonClick);
-            // 
-            // ImagePictureBox
-            // 
-            this.ImagePictureBox.Location = new System.Drawing.Point(14, 7);
-            this.ImagePictureBox.Name = "ImagePictureBox";
-            this.ImagePictureBox.Size = new System.Drawing.Size(32, 32);
-            this.ImagePictureBox.TabIndex = 24;
-            this.ImagePictureBox.TabStop = false;
             // 
             // AppDateLabel
             // 
-            this.AppDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AppDateLabel.Location = new System.Drawing.Point(6, 79);
+            resources.ApplyResources(this.AppDateLabel, "AppDateLabel");
             this.AppDateLabel.Name = "AppDateLabel";
-            this.AppDateLabel.Size = new System.Drawing.Size(380, 16);
-            this.AppDateLabel.TabIndex = 23;
-            this.AppDateLabel.Text = "Built on %builddate%";
             // 
             // SysInfoButton
             // 
-            this.SysInfoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SysInfoButton.Location = new System.Drawing.Point(212, 245);
+            resources.ApplyResources(this.SysInfoButton, "SysInfoButton");
             this.SysInfoButton.Name = "SysInfoButton";
-            this.SysInfoButton.Size = new System.Drawing.Size(92, 23);
-            this.SysInfoButton.TabIndex = 22;
-            this.SysInfoButton.Text = "&System Info...";
-            this.SysInfoButton.Visible = false;
             this.SysInfoButton.Click += new System.EventHandler(this.SysInfoButtonClick);
             // 
             // AppCopyrightLabel
             // 
-            this.AppCopyrightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AppCopyrightLabel.Location = new System.Drawing.Point(6, 99);
+            resources.ApplyResources(this.AppCopyrightLabel, "AppCopyrightLabel");
             this.AppCopyrightLabel.Name = "AppCopyrightLabel";
-            this.AppCopyrightLabel.Size = new System.Drawing.Size(380, 16);
-            this.AppCopyrightLabel.TabIndex = 21;
-            this.AppCopyrightLabel.Text = "Copyright © %year%, %company%";
             // 
             // AppVersionLabel
             // 
-            this.AppVersionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AppVersionLabel.Location = new System.Drawing.Point(6, 59);
+            resources.ApplyResources(this.AppVersionLabel, "AppVersionLabel");
             this.AppVersionLabel.Name = "AppVersionLabel";
-            this.AppVersionLabel.Size = new System.Drawing.Size(380, 16);
-            this.AppVersionLabel.TabIndex = 20;
-            this.AppVersionLabel.Text = "Version %version%";
             // 
             // AppDescriptionLabel
             // 
-            this.AppDescriptionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AppDescriptionLabel.Location = new System.Drawing.Point(58, 27);
+            resources.ApplyResources(this.AppDescriptionLabel, "AppDescriptionLabel");
             this.AppDescriptionLabel.Name = "AppDescriptionLabel";
-            this.AppDescriptionLabel.Size = new System.Drawing.Size(328, 16);
-            this.AppDescriptionLabel.TabIndex = 19;
-            this.AppDescriptionLabel.Text = "%description%";
             // 
             // GroupBox1
             // 
-            this.GroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox1.Location = new System.Drawing.Point(6, 47);
+            resources.ApplyResources(this.GroupBox1, "GroupBox1");
             this.GroupBox1.Name = "GroupBox1";
-            this.GroupBox1.Size = new System.Drawing.Size(380, 2);
-            this.GroupBox1.TabIndex = 18;
             this.GroupBox1.TabStop = false;
-            this.GroupBox1.Text = "GroupBox1";
             // 
             // AppTitleLabel
             // 
-            this.AppTitleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AppTitleLabel.Location = new System.Drawing.Point(58, 7);
+            resources.ApplyResources(this.AppTitleLabel, "AppTitleLabel");
             this.AppTitleLabel.Name = "AppTitleLabel";
-            this.AppTitleLabel.Size = new System.Drawing.Size(328, 16);
-            this.AppTitleLabel.TabIndex = 17;
-            this.AppTitleLabel.Text = "%title%";
             // 
             // OKButton
             // 
-            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.OKButton, "OKButton");
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.OKButton.Location = new System.Drawing.Point(312, 245);
             this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(76, 23);
-            this.OKButton.TabIndex = 16;
-            this.OKButton.Text = "OK";
             this.OKButton.Click += new System.EventHandler(this.OkButtonClick);
             // 
             // MoreRichTextBox
             // 
-            this.MoreRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.MoreRichTextBox, "MoreRichTextBox");
             this.MoreRichTextBox.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.MoreRichTextBox.Location = new System.Drawing.Point(6, 123);
             this.MoreRichTextBox.Name = "MoreRichTextBox";
             this.MoreRichTextBox.ReadOnly = true;
-            this.MoreRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.MoreRichTextBox.Size = new System.Drawing.Size(380, 114);
-            this.MoreRichTextBox.TabIndex = 26;
-            this.MoreRichTextBox.Text = "%product% is %copyright%, %trademark%";
             this.MoreRichTextBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.MoreRichTextBoxLinkClicked);
             // 
             // TabPanelDetails
             // 
-            this.TabPanelDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.TabPanelDetails, "TabPanelDetails");
             this.TabPanelDetails.Controls.Add(this.TabPageApplication);
             this.TabPanelDetails.Controls.Add(this.TabPageAssemblies);
             this.TabPanelDetails.Controls.Add(this.TabPageAssemblyDetails);
-            this.TabPanelDetails.Location = new System.Drawing.Point(6, 123);
             this.TabPanelDetails.Name = "TabPanelDetails";
             this.TabPanelDetails.SelectedIndex = 0;
-            this.TabPanelDetails.Size = new System.Drawing.Size(378, 114);
-            this.TabPanelDetails.TabIndex = 27;
-            this.TabPanelDetails.Visible = false;
             this.TabPanelDetails.SelectedIndexChanged += new System.EventHandler(this.TabPanelDetailsSelectedIndexChanged);
             // 
             // TabPageApplication
             // 
+            resources.ApplyResources(this.TabPageApplication, "TabPageApplication");
             this.TabPageApplication.Controls.Add(this.AppInfoListView);
-            this.TabPageApplication.Location = new System.Drawing.Point(4, 22);
             this.TabPageApplication.Name = "TabPageApplication";
-            this.TabPageApplication.Size = new System.Drawing.Size(370, 88);
-            this.TabPageApplication.TabIndex = 0;
-            this.TabPageApplication.Text = "Application";
             // 
             // AppInfoListView
             // 
+            resources.ApplyResources(this.AppInfoListView, "AppInfoListView");
             this.AppInfoListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colKey,
             this.colValue});
-            this.AppInfoListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AppInfoListView.FullRowSelect = true;
             this.AppInfoListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.AppInfoListView.Location = new System.Drawing.Point(0, 0);
             this.AppInfoListView.Name = "AppInfoListView";
-            this.AppInfoListView.Size = new System.Drawing.Size(370, 88);
-            this.AppInfoListView.TabIndex = 16;
             this.AppInfoListView.UseCompatibleStateImageBehavior = false;
             this.AppInfoListView.View = System.Windows.Forms.View.Details;
             // 
             // colKey
             // 
-            this.colKey.Text = "Application Key";
-            this.colKey.Width = 120;
+            resources.ApplyResources(this.colKey, "colKey");
             // 
             // colValue
             // 
-            this.colValue.Text = "Value";
-            this.colValue.Width = 700;
+            resources.ApplyResources(this.colValue, "colValue");
             // 
             // TabPageAssemblies
             // 
+            resources.ApplyResources(this.TabPageAssemblies, "TabPageAssemblies");
             this.TabPageAssemblies.Controls.Add(this.AssemblyInfoListView);
-            this.TabPageAssemblies.Location = new System.Drawing.Point(4, 22);
             this.TabPageAssemblies.Name = "TabPageAssemblies";
-            this.TabPageAssemblies.Size = new System.Drawing.Size(370, 88);
-            this.TabPageAssemblies.TabIndex = 1;
-            this.TabPageAssemblies.Text = "Assemblies";
             // 
             // AssemblyInfoListView
             // 
+            resources.ApplyResources(this.AssemblyInfoListView, "AssemblyInfoListView");
             this.AssemblyInfoListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colAssemblyName,
             this.colAssemblyVersion,
             this.colAssemblyBuilt,
             this.colAssemblyCodeBase});
-            this.AssemblyInfoListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AssemblyInfoListView.FullRowSelect = true;
-            this.AssemblyInfoListView.Location = new System.Drawing.Point(0, 0);
             this.AssemblyInfoListView.MultiSelect = false;
             this.AssemblyInfoListView.Name = "AssemblyInfoListView";
-            this.AssemblyInfoListView.Size = new System.Drawing.Size(370, 88);
             this.AssemblyInfoListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.AssemblyInfoListView.TabIndex = 13;
             this.AssemblyInfoListView.UseCompatibleStateImageBehavior = false;
             this.AssemblyInfoListView.View = System.Windows.Forms.View.Details;
             this.AssemblyInfoListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.AssemblyInfoListViewColumnClick);
@@ -262,77 +185,67 @@ namespace DotSpatial.Plugins.About
             // 
             // colAssemblyName
             // 
-            this.colAssemblyName.Text = "Assembly";
-            this.colAssemblyName.Width = 123;
+            resources.ApplyResources(this.colAssemblyName, "colAssemblyName");
             // 
             // colAssemblyVersion
             // 
-            this.colAssemblyVersion.Text = "Version";
-            this.colAssemblyVersion.Width = 100;
+            resources.ApplyResources(this.colAssemblyVersion, "colAssemblyVersion");
             // 
             // colAssemblyBuilt
             // 
-            this.colAssemblyBuilt.Text = "Built";
-            this.colAssemblyBuilt.Width = 130;
+            resources.ApplyResources(this.colAssemblyBuilt, "colAssemblyBuilt");
             // 
             // colAssemblyCodeBase
             // 
-            this.colAssemblyCodeBase.Text = "CodeBase";
-            this.colAssemblyCodeBase.Width = 750;
+            resources.ApplyResources(this.colAssemblyCodeBase, "colAssemblyCodeBase");
             // 
             // TabPageAssemblyDetails
             // 
+            resources.ApplyResources(this.TabPageAssemblyDetails, "TabPageAssemblyDetails");
             this.TabPageAssemblyDetails.Controls.Add(this.AssemblyDetailsListView);
             this.TabPageAssemblyDetails.Controls.Add(this.AssemblyNamesComboBox);
-            this.TabPageAssemblyDetails.Location = new System.Drawing.Point(4, 22);
             this.TabPageAssemblyDetails.Name = "TabPageAssemblyDetails";
-            this.TabPageAssemblyDetails.Size = new System.Drawing.Size(370, 88);
-            this.TabPageAssemblyDetails.TabIndex = 2;
-            this.TabPageAssemblyDetails.Text = "Assembly Details";
             // 
             // AssemblyDetailsListView
             // 
+            resources.ApplyResources(this.AssemblyDetailsListView, "AssemblyDetailsListView");
             this.AssemblyDetailsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ColumnHeader1,
             this.ColumnHeader2});
-            this.AssemblyDetailsListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AssemblyDetailsListView.FullRowSelect = true;
             this.AssemblyDetailsListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.AssemblyDetailsListView.Location = new System.Drawing.Point(0, 21);
             this.AssemblyDetailsListView.Name = "AssemblyDetailsListView";
-            this.AssemblyDetailsListView.Size = new System.Drawing.Size(370, 67);
             this.AssemblyDetailsListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.AssemblyDetailsListView.TabIndex = 19;
             this.AssemblyDetailsListView.UseCompatibleStateImageBehavior = false;
             this.AssemblyDetailsListView.View = System.Windows.Forms.View.Details;
             // 
             // ColumnHeader1
             // 
-            this.ColumnHeader1.Text = "Assembly Key";
-            this.ColumnHeader1.Width = 120;
+            resources.ApplyResources(this.ColumnHeader1, "ColumnHeader1");
             // 
             // ColumnHeader2
             // 
-            this.ColumnHeader2.Text = "Value";
-            this.ColumnHeader2.Width = 700;
+            resources.ApplyResources(this.ColumnHeader2, "ColumnHeader2");
             // 
             // AssemblyNamesComboBox
             // 
-            this.AssemblyNamesComboBox.Dock = System.Windows.Forms.DockStyle.Top;
+            resources.ApplyResources(this.AssemblyNamesComboBox, "AssemblyNamesComboBox");
             this.AssemblyNamesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AssemblyNamesComboBox.Location = new System.Drawing.Point(0, 0);
             this.AssemblyNamesComboBox.Name = "AssemblyNamesComboBox";
-            this.AssemblyNamesComboBox.Size = new System.Drawing.Size(370, 21);
             this.AssemblyNamesComboBox.Sorted = true;
-            this.AssemblyNamesComboBox.TabIndex = 18;
             this.AssemblyNamesComboBox.SelectedIndexChanged += new System.EventHandler(this.AssemblyNamesComboBoxSelectedIndexChanged);
+            // 
+            // ImagePictureBox
+            // 
+            resources.ApplyResources(this.ImagePictureBox, "ImagePictureBox");
+            this.ImagePictureBox.Name = "ImagePictureBox";
+            this.ImagePictureBox.TabStop = false;
             // 
             // AboutBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.OKButton;
-            this.ClientSize = new System.Drawing.Size(394, 275);
             this.Controls.Add(this.DetailsButton);
             this.Controls.Add(this.ImagePictureBox);
             this.Controls.Add(this.AppDateLabel);
@@ -350,15 +263,13 @@ namespace DotSpatial.Plugins.About
             this.MinimizeBox = false;
             this.Name = "AboutBox";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About %title%";
             this.Load += new System.EventHandler(this.AboutBoxLoad);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.AboutBoxPaint);
-            ((System.ComponentModel.ISupportInitialize)(this.ImagePictureBox)).EndInit();
             this.TabPanelDetails.ResumeLayout(false);
             this.TabPageApplication.ResumeLayout(false);
             this.TabPageAssemblies.ResumeLayout(false);
             this.TabPageAssemblyDetails.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ImagePictureBox)).EndInit();
             this.ResumeLayout(false);
 
 		}

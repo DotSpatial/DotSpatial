@@ -149,15 +149,21 @@
     <Compile Include="VertexMovedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CoordinateDialog.fr-FR.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CoordinateDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CoordinateDialog.resx">
       <DependentUpon>CoordinateDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CoordinateDialog.zh-CN.resx">
-      <DependentUpon>CoordinateDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+      <DependentUpon>CoordinateDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureTypeDialog.de-DE.resx">
+      <DependentUpon>FeatureTypeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureTypeDialog.fr-FR.resx">
       <DependentUpon>FeatureTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureTypeDialog.resx">
@@ -168,15 +174,20 @@
       <DependentUpon>FeatureTypeDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="MessageStrings.fr-FR.resx" />
     <EmbeddedResource Include="MessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ShapeEditorResources.fr-FR.resx" />
     <EmbeddedResource Include="ShapeEditorResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ShapeEditorResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SnapSettingsDialog.fr-FR.resx">
+      <DependentUpon>SnapSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SnapSettingsDialog.resx">
       <DependentUpon>SnapSettingsDialog.cs</DependentUpon>

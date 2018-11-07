@@ -17,6 +17,32 @@ namespace DotSpatial.Plugins.SetSelectable
         internal ToolStripButton TsbSelectAll;
         internal ToolStripButton TsbSelectNone;
 
+        private System.ComponentModel.ComponentResourceManager resources;
+
+        /// <summary> 
+        /// Verwendete Ressourcen bereinigen.
+        /// </summary>
+        public void UpdatesSelectResources()
+        {
+            resources.ApplyResources(this.ToolStripContainer1, "ToolStripContainer1");
+            resources.ApplyResources(this.ToolStripContainer1.BottomToolStripPanel, "ToolStripContainer1.BottomToolStripPanel");
+            resources.ApplyResources(this.ToolStripContainer1.ContentPanel, "ToolStripContainer1.ContentPanel");
+            resources.ApplyResources(this.ToolStripContainer1.LeftToolStripPanel, "ToolStripContainer1.LeftToolStripPanel");
+            resources.ApplyResources(this.ToolStripContainer1.RightToolStripPanel, "ToolStripContainer1.RightToolStripPanel");
+            resources.ApplyResources(this.ToolStripContainer1.TopToolStripPanel, "ToolStripContainer1.TopToolStripPanel");
+            resources.ApplyResources(this.DgvLayer, "DgvLayer");
+            resources.ApplyResources(this.ToolStrip1, "ToolStrip1");
+            resources.ApplyResources(this.TsbCheckAll, "TsbCheckAll");
+            resources.ApplyResources(this.TsbCheckNone, "TsbCheckNone");
+            resources.ApplyResources(this.TsbSelectAll, "TsbSelectAll");
+            resources.ApplyResources(this.TsbSelectNone, "TsbSelectNone");
+            resources.ApplyResources(this.DgvcSelectable, "DgvcSelectable");
+            resources.ApplyResources(this.DgvcLayerName, "DgvcLayerName");
+            resources.ApplyResources(this.DgvcUnselect, "DgvcUnselect");
+            resources.ApplyResources(this.DgvcCount, "DgvcCount");
+            resources.ApplyResources(this, "$this");
+        }
+
         /// <summary> 
         /// Verwendete Ressourcen bereinigen.
         /// </summary>
@@ -38,7 +64,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DgvSelect));
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(DgvSelect));
             this.ToolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.DgvLayer = new System.Windows.Forms.DataGridView();
             this.ToolStrip1 = new System.Windows.Forms.ToolStrip();

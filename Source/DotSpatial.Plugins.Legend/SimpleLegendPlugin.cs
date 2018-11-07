@@ -1,6 +1,7 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
@@ -13,16 +14,20 @@ namespace DotSpatial.Plugins.SimpleLegend
     /// </summary>
     public class SimpleLegendPlugin : Extension
     {
+        private DockablePanel _legendPanel;
+
         /// <inheritdoc />
         public override void Activate()
         {
             ShowLegend();
+            App.AppCultureChanged += OnAppCultureChanged;
             base.Activate();
         }
 
         /// <inheritdoc />
         public override void Deactivate()
         {
+            App.AppCultureChanged -= OnAppCultureChanged;
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove("kLegend");
             base.Deactivate();
@@ -37,7 +42,19 @@ namespace DotSpatial.Plugins.SimpleLegend
             }
 
             App.Legend = legend1;
-            App.DockManager.Add(new DockablePanel("kLegend", Resources.Legend, legend1, DockStyle.Left) { SmallImage = Resources.legend_16x16 });
+            _legendPanel = new DockablePanel("kLegend", Resources.Legend, legend1, DockStyle.Left) { SmallImage = Resources.legend_16x16 };
+            App.DockManager.Add(_legendPanel);
+        }
+
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            ExtensionCulture = appCulture;
+            UpdatePlugInItems();
+        }
+
+        private void UpdatePlugInItems()
+        {
+            _legendPanel.Caption = Resources.Legend;
         }
     }
 }

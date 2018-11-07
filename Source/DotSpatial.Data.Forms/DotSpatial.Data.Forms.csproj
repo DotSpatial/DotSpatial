@@ -121,6 +121,7 @@
     <Compile Include="TryXMLDocumentException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DataFormsMessageStrings.fr-FR.resx" />
     <EmbeddedResource Include="DataFormsMessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DataFormsMessageStrings.Designer.cs</LastGenOutput>
@@ -135,9 +136,15 @@
       <DependentUpon>DirectoryView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ExtentDialog.fr-FR.resx">
+      <DependentUpon>ExtentDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExtentDialog.resx">
       <DependentUpon>ExtentDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputBox.fr-FR.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
@@ -146,6 +153,9 @@
     <EmbeddedResource Include="InputBox.zh-CN.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenDataDialog.fr-FR.resx">
+      <DependentUpon>OpenDataDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OpenDataDialog.resx">
       <DependentUpon>OpenDataDialog.cs</DependentUpon>

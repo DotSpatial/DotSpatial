@@ -4,6 +4,8 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Resources;
+using System.Threading;
 using System.Windows.Forms;
 using GeoAPI.Geometries;
 
@@ -18,6 +20,8 @@ namespace DotSpatial.Plugins.ShapeEditor
         private bool _showM;
         private bool _showZ;
         private ToolTip _ttHelp;
+        private CultureInfo _corrdCulture;
+
         #endregion
 
         #region  Constructors
@@ -30,6 +34,8 @@ namespace DotSpatial.Plugins.ShapeEditor
             InitializeComponent();
             _showM = true;
             _showZ = true;
+
+            CoordCulture = new CultureInfo(string.Empty);
         }
 
         #endregion
@@ -185,6 +191,26 @@ namespace DotSpatial.Plugins.ShapeEditor
             set
             {
                 _dbxZ.Text = value.ToString(CultureInfo.CurrentCulture);
+            }
+        }
+
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo CoordCulture
+        {
+            set
+            {
+                if (_corrdCulture == value) return;
+
+                _corrdCulture = value;
+
+                if (_corrdCulture == null) _corrdCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _corrdCulture;
+                Thread.CurrentThread.CurrentUICulture = _corrdCulture;
+                UpdateResources(_corrdCulture);
+                Refresh();
             }
         }
 

@@ -18,6 +18,19 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// </summary>
     public abstract class SnappableMapFunction : MapFunctionZoom
     {
+        #region Constants
+
+        /// <summary>
+        /// Indicates the vertex's snapping type
+        /// </summary>
+        protected const string SnappingTypeVertex = "v";
+
+        /// <summary>
+        /// Indicates the edge's snapping type
+        /// </summary>
+        protected const string SnappingTypeEdge = "e";
+        #endregion
+
         #region  Constructors
 
         /// <summary>
@@ -38,11 +51,6 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// Gets or sets a value indicating whether snapping is performed or not.
         /// </summary>
         public bool DoSnapping { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether snapping is performed or not.
-        /// </summary>
-        public bool DoEdgeSnapping { get; set; }
 
         /// <summary>
         /// Gets the feature the computed snappedCoord belongs to.
@@ -67,7 +75,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <summary>
         /// Gets or sets the snap tolerance. +/- N pixels around the mouse point.
         /// </summary>
-        protected int SnapTol { get; set; } = 9;
+        protected int SnapTol { get; set; } = 3;
 
         /// <summary>
         /// Gets or sets a value indicating whether the current snapped coordinate is a vertex or an edge.
@@ -96,7 +104,22 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             if (SnapLayers == null)
                 InitializeSnapLayers();
-            SnapLayers.Add(layer);
+            if (!SnapLayers.Contains(layer)) SnapLayers.Add(layer);
+        }
+
+        /// <summary>
+        /// Remove the given layer from the snap list. This list determines which layers the current layer will be snapped to.
+        /// </summary>
+        /// <param name="layer">The layer that gets removed from the list of layers that can be used for snapping.</param>
+        public void RemoveLayerFromSnap(IFeatureLayer layer)
+        {
+            if (SnapLayers == null)
+            {
+                InitializeSnapLayers();
+                return;
+            }
+
+            if (SnapLayers.Contains(layer)) SnapLayers.Remove(layer);
         }
 
         /// <summary>
@@ -110,8 +133,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         protected bool ComputeSnappedLocation(GeoMouseArgs e, ref Coordinate snappedCoord)
         {
             SnappingType = string.Empty;
-            if (SnapLayers == null || e == null || Map == null)
-                return false;
+            SnappedCoordIndex = 0;
+
+            if (SnapLayers == null || e == null || Map == null) return false;
+
+            if (!DoSnapping) return false;
 
             Rectangle mouseRect = new Rectangle(e.X - SnapTol, e.Y - SnapTol, SnapTol * 2, SnapTol * 2);
 
@@ -119,8 +145,9 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (pix == null)
                 return false;
 
-            Envelope env = pix.ToEnvelope();
-            NetTopologySuite.Geometries.Point mouse_onMap = new NetTopologySuite.Geometries.Point(Map.PixelToProj(e.Location));
+            Envelope mouseEnv = pix.ToEnvelope();
+
+            NetTopologySuite.Geometries.Point mouse_onEarth = new NetTopologySuite.Geometries.Point(snappedCoord);
 
             foreach (IFeatureLayer layer in SnapLayers.Where(_ => _.Snappable && _.IsVisible))
             {
@@ -131,58 +158,66 @@ namespace DotSpatial.Plugins.ShapeEditor
                     // If the feature is partially or totaly visible in the view.
                     if (Map.ViewExtents.Intersects(featGeom.EnvelopeInternal))
                     {
+                        bool doCoord_Snap;
+
                         // System.Console.WriteLine(feat.Fid);
                         int coordCounter = 0;
                         foreach (Coordinate c in feat.Geometry.Coordinates)
                         {
-                            // If the mouse envelope contains the current coordinate, we found a snap location.
-                            if (env.Contains(c))
+                            doCoord_Snap = true;
+
+                            if (layer.SnapVertices)
                             {
-                                snappedCoord = c;
-                                SnappedCoordIndex = coordCounter;
-                                SnappedFeature = feat;
-                                SnappingType = "v";
-                                return true;
-                            }
-                            else
-                            {
-                                if (DoEdgeSnapping)
+                                if (coordCounter == 0 && !layer.SnapStartPoint) doCoord_Snap = false;
+                                if (coordCounter == (feat.Geometry.Coordinates.Length - 1) && !layer.SnapEndPoint) doCoord_Snap = false;
+
+                                if (doCoord_Snap)
                                 {
-                                    if (feat.FeatureType != FeatureType.Point && feat.FeatureType != FeatureType.MultiPoint)
+                                    // If the mouse envelope contains the current coordinate, we found a snap location.
+                                    if (mouseEnv.Contains(c))
                                     {
-                                        if (coordCounter > 0)
+                                        snappedCoord = c;
+                                        SnappedCoordIndex = coordCounter;
+                                        SnappedFeature = feat;
+                                        SnappingType = SnappingTypeVertex;
+                                        return true;
+                                    }
+                                }
+                            }
+
+                            if (coordCounter > 0 && layer.SnapEdges && feat.FeatureType != FeatureType.Point && feat.FeatureType != FeatureType.MultiPoint)
+                            {
+                                double edge_Distance = 0;
+                                if (layer.DataSet.CoordinateType.Equals(CoordinateType.Z))
+                                {
+                                    edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance3D(c);
+                                }
+                                else
+                                {
+                                    edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance(c);
+                                }
+
+                                if (edge_Distance > 0)
+                                {
+                                    List<Coordinate> edgeCoords = new List<Coordinate>();
+                                    edgeCoords.Add(feat.Geometry.Coordinates[coordCounter - 1]);
+                                    edgeCoords.Add(c);
+
+                                    LineString edge = new LineString(edgeCoords.ToArray());
+
+                                    if (mouse_onEarth.Distance(edge) <= (mouseEnv.Width / 2))
+                                    {
+                                        NetTopologySuite.LinearReferencing.LengthIndexedLine indexedEedge = new NetTopologySuite.LinearReferencing.LengthIndexedLine(edge);
+                                        double proj_Index = indexedEedge.Project(mouse_onEarth.Coordinate);
+
+                                        if (proj_Index > (mouseEnv.Width / 2) && proj_Index < (edge.Length - (mouseEnv.Width / 2)))
                                         {
-                                            double edge_Distance = 0;
-                                            if (layer.DataSet.CoordinateType.Equals(CoordinateType.Z))
-                                            {
-                                                edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance3D(c);
-                                            }
-                                            else
-                                            {
-                                                edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance(c);
-                                            }
-
-                                            if (edge_Distance > 0)
-                                            {
-                                                List<Coordinate> edgeCoords = new List<Coordinate>();
-                                                edgeCoords.Add(feat.Geometry.Coordinates[coordCounter - 1]);
-                                                edgeCoords.Add(c);
-
-                                                LineString edge = new LineString(edgeCoords.ToArray());
-
-                                                if (mouse_onMap.Distance(edge) < (env.Width / 2))
-                                                {
-                                                    NetTopologySuite.LinearReferencing.LengthIndexedLine indexedEedge = new NetTopologySuite.LinearReferencing.LengthIndexedLine(edge);
-                                                    double proj_tIndex = indexedEedge.Project(mouse_onMap.Coordinate);
-
-                                                    snappedCoord = indexedEedge.ExtractPoint(proj_tIndex);
-                                                    SnappedCoordKeeped = snappedCoord; /* c.Clone() as Coordinate;*/
-                                                    SnappedCoordIndex = coordCounter;
-                                                    SnappedFeature = feat;
-                                                    SnappingType = "e";
-                                                    return true;
-                                                }
-                                            }
+                                            snappedCoord = indexedEedge.ExtractPoint(proj_Index);
+                                            SnappedCoordKeeped = snappedCoord;
+                                            SnappedCoordIndex = coordCounter;
+                                            SnappedFeature = feat;
+                                            SnappingType = SnappingTypeEdge;
+                                            return true;
                                         }
                                     }
                                 }
@@ -196,6 +231,131 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             SnappedFeature = null;
             return false;
+        }
+
+        /// <summary>
+        /// Computes a snapped coordinate.  If the mouse is near the selected feature, the output
+        /// location of the mouse will be the coordinates on the feature rather than the actual
+        /// mouse coords.
+        /// </summary>
+        /// <param name="mouseRect">The event args.</param>
+        /// <param name="feat">set if a coordinate is found</param>
+        /// <param name="layer">the feature's layer</param>
+        /// <param name="snappedCoord">the coordinate of the mouse</param>
+        /// <returns>true if snap found</returns>
+        protected bool ComputeSnappedLocation_ForSelectedFeature(Rectangle mouseRect, ref IFeature feat, IFeatureLayer layer, ref Coordinate snappedCoord)
+        {
+            SnappingType = string.Empty;
+            SnappedCoordIndex = 0;
+
+            if (!DoSnapping) return false;
+            if (mouseRect == null || feat == null || layer == null || snappedCoord == null) return false;
+
+            Extent pix = Map.PixelToProj(mouseRect);
+            if (pix == null)
+                return false;
+
+            Envelope mouseEnv = pix.ToEnvelope();
+
+            NetTopologySuite.Geometries.Point mouse_onEarth = new NetTopologySuite.Geometries.Point(snappedCoord);
+            IGeometry featGeom = feat.Geometry;
+
+            // If the feature is partially or totaly visible in the view.
+            if (Map.ViewExtents.Intersects(featGeom.EnvelopeInternal))
+            {
+                bool doCoord_Snap;
+
+                // System.Console.WriteLine(feat.Fid);
+                int coordCounter = 0;
+                foreach (Coordinate c in feat.Geometry.Coordinates)
+                {
+                    doCoord_Snap = true;
+
+                    if (layer.SnapVertices)
+                    {
+                        if (coordCounter == 0 && !layer.SnapStartPoint) doCoord_Snap = false;
+                        if (coordCounter == (feat.Geometry.Coordinates.Length - 1) && !layer.SnapEndPoint) doCoord_Snap = false;
+
+                        if (doCoord_Snap)
+                        {
+                            // If the mouse envelope contains the current coordinate, we found a snap location.
+                            if (mouseEnv.Contains(c))
+                            {
+                                snappedCoord = c;
+                                SnappedCoordIndex = coordCounter;
+                                SnappedFeature = feat;
+                                SnappingType = SnappingTypeVertex;
+                                return true;
+                            }
+                        }
+                    }
+
+                    if (coordCounter > 0 && layer.SnapEdges && feat.FeatureType != FeatureType.Point && feat.FeatureType != FeatureType.MultiPoint)
+                    {
+                        double edge_Distance = 0;
+                        if (layer.DataSet.CoordinateType.Equals(CoordinateType.Z))
+                        {
+                            edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance3D(c);
+                        }
+                        else
+                        {
+                            edge_Distance = feat.Geometry.Coordinates[coordCounter - 1].Distance(c);
+                        }
+
+                        if (edge_Distance > 0)
+                        {
+                            List<Coordinate> edgeCoords = new List<Coordinate>();
+                            edgeCoords.Add(feat.Geometry.Coordinates[coordCounter - 1]);
+                            edgeCoords.Add(c);
+
+                            LineString edge = new LineString(edgeCoords.ToArray());
+
+                            if (mouse_onEarth.Distance(edge) <= (mouseEnv.Width / 2))
+                            {
+                                NetTopologySuite.LinearReferencing.LengthIndexedLine indexedEedge = new NetTopologySuite.LinearReferencing.LengthIndexedLine(edge);
+                                double proj_Index = indexedEedge.Project(mouse_onEarth.Coordinate);
+
+                                if (proj_Index > (mouseEnv.Width / 2) && proj_Index < (edge.Length - (mouseEnv.Width / 2)))
+                                {
+                                    snappedCoord = indexedEedge.ExtractPoint(proj_Index);
+                                    SnappedCoordKeeped = snappedCoord; /* c.Clone() as Coordinate;*/
+                                    SnappedCoordIndex = coordCounter;
+                                    SnappedFeature = feat;
+                                    SnappingType = SnappingTypeEdge;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    coordCounter++;
+                }
+            }
+
+            SnappedFeature = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the snapped coordinate intersect the _selectedFeature, as snapped feautre
+        /// can be different from the selected one.
+        /// </summary>
+        /// <param name="selectedFeature">The event args.</param>
+        /// <param name="mousePosition">set if a mouse is pointing the selected feature</param>
+        protected void CheckSnappedCoord_On_SelectedFeature(ref IFeature selectedFeature, System.Drawing.Point mousePosition)
+        {
+            if (selectedFeature == null || mousePosition == null) return;
+
+            // Console.WriteLine("Testing  Snapped sur Selected");
+            Rectangle rect = new Rectangle(mousePosition.X - SnapTol, mousePosition.Y - SnapTol, 2 * SnapTol, 2 * SnapTol);
+            Extent ext = Map.PixelToProj(rect);
+            Envelope env = ext.ToEnvelope();
+
+            if (selectedFeature.Intersects(env))
+            {
+                // Console.WriteLine("Snapped sur Selected");
+                SnappedFeature = selectedFeature;
+            }
         }
 
         /// <summary>
@@ -224,10 +384,10 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 switch (SnappingType)
                 {
-                    case "v":
+                    case SnappingTypeVertex:
                         graphics.DrawEllipse(SnapPen, pos.X - 5, pos.Y - 5, 10, 10);
                         break;
-                    case "e":
+                    case SnappingTypeEdge:
                         graphics.DrawEllipse(SnapPen, pos.X - 2, pos.Y - 2, 4, 4);
                         break;
                 }

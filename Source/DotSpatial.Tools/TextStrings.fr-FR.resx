@@ -1,0 +1,1006 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="progresscompleted" xml:space="preserve">
+    <value>% progress completed</value>
+  </data>
+  <data name="BufferDistance" xml:space="preserve">
+    <value>Distance du Buffer</value>
+  </data>
+  <data name="Calculatesproximitydistance" xml:space="preserve">
+    <value>Calculates the distance (proximity) from each cell to the nearest target cell. By default, all</value>
+  </data>
+  <data name="Calculateseuclideandistance" xml:space="preserve">
+    <value>Calcule la distance euclidiene de chaque pixel par rapport au pixel le plus proche</value>
+  </data>
+  <data name="ClipRasterLayer_Label" xml:space="preserve">
+    <value>Rogner une couche Raster</value>
+  </data>
+  <data name="ClipRasterLayerwithPolygon" xml:space="preserve">
+    <value>Rogner une couche Raster avec un Polygone</value>
+  </data>
+  <data name="Conversion_Label" xml:space="preserve">
+    <value>Conversion</value>
+    <comment>p</comment>
+  </data>
+  <data name="InputFirstRaster" xml:space="preserve">
+    <value>1er Raster en entrée</value>
+  </data>
+  <data name="InputPolygonforclipingtoRaster" xml:space="preserve">
+    <value>Input Polygon for clipping to Raster</value>
+  </data>
+  <data name="inputRaster" xml:space="preserve">
+    <value>Raster en entrée</value>
+  </data>
+  <data name="InputRastercontainingtargetcells" xml:space="preserve">
+    <value>Raster en entrée contenant les pixel cibles</value>
+  </data>
+  <data name="input1Raster" xml:space="preserve">
+    <value>Raster</value>
+  </data>
+  <data name="input2PolygonforCliping" xml:space="preserve">
+    <value>Polygone de rognage</value>
+  </data>
+  <data name="InputFeatureSet" xml:space="preserve">
+    <value>Jeu de données en entrée</value>
+  </data>
+  <data name="Interpolation_Label" xml:space="preserve">
+    <value>Interpolation</value>
+    <comment>p</comment>
+  </data>
+  <data name="MapWindowBuffer" xml:space="preserve">
+    <value>MapWindow Buffer</value>
+  </data>
+  <data name="MapWindowRasterClip" xml:space="preserve">
+    <value>MapWindow Raster Clip</value>
+  </data>
+  <data name="OutputPolygonFeatureSet" xml:space="preserve">
+    <value>FeatureSet Polygone en Sortie</value>
+  </data>
+  <data name="Pass1" xml:space="preserve">
+    <value>Pass 1:</value>
+  </data>
+  <data name="Pass2" xml:space="preserve">
+    <value>Pass 2:</value>
+  </data>
+  <data name="RasterOverlay_Label" xml:space="preserve">
+    <value>Raster Overlay</value>
+    <comment>p</comment>
+  </data>
+  <data name="ResultRasterDirectory" xml:space="preserve">
+    <value>Select the Result Raster Directory and Name</value>
+  </data>
+  <data name="SpatialReference_Label" xml:space="preserve">
+    <value>Référence Spatiale</value>
+    <comment>p</comment>
+  </data>
+  <data name="TerrainAnalysis_Label" xml:space="preserve">
+    <value>Analyses Terrain</value>
+  </data>
+  <data name="ReSampleGridDescription" xml:space="preserve">
+    <value>This will Change the cell size</value>
+  </data>
+  <data name="ClipGridswithPolygon" xml:space="preserve">
+    <value>This will Clip Grids with Polygon Shape File</value>
+  </data>
+  <data name="RasterSubractDescription" xml:space="preserve">
+    <value>This will Subtract second raster from first raster cell by cell</value>
+  </data>
+  <data name="BufferDescription" xml:space="preserve">
+    <value>Ajoute le jeu de données des polygones tampon avec une distance précise</value>
+  </data>
+  <data name="Bufferwithdistance" xml:space="preserve">
+    <value>Buffer avec une distance autour de la source.</value>
+  </data>
+  <data name="newrasteronspecifiedfeatureset" xml:space="preserve">
+    <value>Creates a new raster based on the specified featureset using the specified field to determine distinct polygons and assign the raster values</value>
+  </data>
+  <data name="DesiredCellSize" xml:space="preserve">
+    <value>Taille désirée pour les pixel ou 0 pour la calculer automatiquement</value>
+  </data>
+  <data name="InputPolygontochange" xml:space="preserve">
+    <value>Polygone en entrée pour conversion en Raster featureset</value>
+  </data>
+  <data name="input1polygontoRaster" xml:space="preserve">
+    <value>input1 polygon to Raster.</value>
+  </data>
+  <data name="ISU" xml:space="preserve">
+    <value>ISU</value>
+  </data>
+  <data name="MapWindowFeatureToRaster" xml:space="preserve">
+    <value>MapWindow FeatureToRaster</value>
+  </data>
+  <data name="DotSpatialDevelopmentTeam" xml:space="preserve">
+    <value>DotSpatial Development Team</value>
+  </data>
+  <data name="MapWindow.Tools" xml:space="preserve">
+    <value>MapWindow.Tools</value>
+  </data>
+  <data name="OutputRaster" xml:space="preserve">
+    <value>Raster en Sortie.</value>
+  </data>
+  <data name="Resultofaverageslope" xml:space="preserve">
+    <value>Select the Result of Output feature set with average slope in the attribute.</value>
+  </data>
+  <data name="Themaximumnumber" xml:space="preserve">
+    <value>The maximum number of rows/columns is 8000, so a cell size that is too small will be adjusted.  A zero value calculates the values so that the shorter dimension between width and height will measure 256 cells.</value>
+  </data>
+  <data name="stringnameoffield" xml:space="preserve">
+    <value>The string name of the field to use in the data table</value>
+  </data>
+  <data name="Thevalueofeachcell" xml:space="preserve">
+    <value>The value of each cell will either be assigned the value from this field or will attept to parse the string field member as a number</value>
+  </data>
+  <data name="InputRasterforCliping" xml:space="preserve">
+    <value>Raster en entrée pour rognage</value>
+  </data>
+  <data name="BaseFeatureSet" xml:space="preserve">
+    <value>FeatureSet de Base</value>
+  </data>
+  <data name="VoronoiDescription" xml:space="preserve">
+    <value>This tool computes voronoi polygons around each of the points, defining the regions that are closer to that point than any other points.</value>
+  </data>
+  <data name="computethevoronoidiagram" xml:space="preserve">
+    <value>Ceci utillise l'algorithme Fortune pour produire diagramme  de voronoi à partir de jeu de points. Dans ce diagramme, chaque polygone représente la région où chaque point dans le polygone est plus proche du point de départ qu'il ne l'est d'un autre point.</value>
+  </data>
+  <data name="CreateVoronoiPolygons" xml:space="preserve">
+    <value>Créer des Polygones Voronoi</value>
+  </data>
+  <data name="EliminateSecondFeatureset" xml:space="preserve">
+    <value>Ceci éffacera le second jeu de données du 1er</value>
+  </data>
+  <data name="Erase2ndinput" xml:space="preserve">
+    <value>Efface la 2nde Entrée de la 1ère</value>
+  </data>
+  <data name="ErasedResultFeatureSet" xml:space="preserve">
+    <value>Jeu de données Nettoyé</value>
+  </data>
+  <data name="input2Raster" xml:space="preserve">
+    <value>2nd Raster</value>
+  </data>
+  <data name="InputSecondRasterforMerging" xml:space="preserve">
+    <value>Entrer un Second Raster pour Merging</value>
+  </data>
+  <data name="MapWindowErase" xml:space="preserve">
+    <value>MapWindow Erase</value>
+  </data>
+  <data name="MapWindowRasterMerge" xml:space="preserve">
+    <value>MapWindow Raster Merge</value>
+  </data>
+  <data name="MapWindowTheissenPolygons" xml:space="preserve">
+    <value>MapWindow Theissen Polygons</value>
+  </data>
+  <data name="MergeRasterLayers_Label" xml:space="preserve">
+    <value>Fusionner des Couches Raster</value>
+  </data>
+  <data name="MergeGridsDescription" xml:space="preserve">
+    <value>This will Merge Two Raster  Layer cell by cell</value>
+  </data>
+  <data name="MergetwoRasterLayers" xml:space="preserve">
+    <value>Merge two Raster Layers</value>
+  </data>
+  <data name="PointFeatureSet" xml:space="preserve">
+    <value>Point Feature Set</value>
+  </data>
+  <data name="PolygonFeatureSet" xml:space="preserve">
+    <value>Polygon Feature Set</value>
+  </data>
+  <data name="RemoveFeatureSet" xml:space="preserve">
+    <value>FeatureSet à Effacer</value>
+  </data>
+  <data name="ThiessenPolygons" xml:space="preserve">
+    <value>Thiessen Polygons</value>
+  </data>
+  <data name="addallfeatures" xml:space="preserve">
+    <value>Toutes les entités de la source seront ajoutées avec les attributs.</value>
+  </data>
+  <data name="AddFeature_Label" xml:space="preserve">
+    <value>Ajouter une entité</value>
+  </data>
+  <data name="AddFeatureDescription" xml:space="preserve">
+    <value>L'entité sera ajoutée au jeu de données.</value>
+  </data>
+  <data name="AddFeatureintheFeatureSet" xml:space="preserve">
+    <value>Ajouter une entité au jeu de données</value>
+  </data>
+  <data name="AddRasterLayers_Label" xml:space="preserve">
+    <value>Additonner des couches Raster</value>
+  </data>
+  <data name="AddTwoRasteLayer" xml:space="preserve">
+    <value>2 couches Raster seront additionnées pixel par pixelcell</value>
+  </data>
+  <data name="AddtwoRasterLayers" xml:space="preserve">
+    <value>Additonner 2 couches Raster</value>
+  </data>
+  <data name="Aggregate_Toollip" xml:space="preserve">
+    <value>Aggréger les entités du jeu de données en une seule entité.</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Aire</value>
+  </data>
+  <data name="averageslopeinarribute" xml:space="preserve">
+    <value>The average slope will calculate and add in every polygon in its arribute</value>
+  </data>
+  <data name="AveSlope" xml:space="preserve">
+    <value>Ave_Slope</value>
+  </data>
+  <data name="boxSlopeInPercentage" xml:space="preserve">
+    <value>box Slope In Percentage</value>
+  </data>
+  <data name="CalculateAreas_Label" xml:space="preserve">
+    <value>Calculer les Aires</value>
+  </data>
+  <data name="CalculateSlopegivenpolygons" xml:space="preserve">
+    <value>Calculate Average Slope for given polygons.</value>
+  </data>
+  <data name="FindAverageSlopeExtentedDescription" xml:space="preserve">
+    <value>Calcule Average Slope pour les polygones avec plus de préférences utilisateur</value>
+  </data>
+  <data name="Area_ToolTip" xml:space="preserve">
+    <value>Calcule l'aire des polygones</value>
+  </data>
+  <data name="CellSize" xml:space="preserve">
+    <value>Cel lSize</value>
+  </data>
+  <data name="ChangeCellSize_Label" xml:space="preserve">
+    <value>Change Cell Size</value>
+  </data>
+  <data name="NoDataValueChangeDescription" xml:space="preserve">
+    <value>This will Change the No Data Values</value>
+  </data>
+  <data name="ChildFeatureSet" xml:space="preserve">
+    <value>Child Feature Set</value>
+  </data>
+  <data name="Clipbounds" xml:space="preserve">
+    <value>Zone de Clip</value>
+  </data>
+  <data name="ClipFeatureSetWithPolygon_Label" xml:space="preserve">
+    <value>Rogner un jeu de données avec un Polygone</value>
+  </data>
+  <data name="Clippedfeatureset" xml:space="preserve">
+    <value>Jeu de données rogné</value>
+  </data>
+  <data name="ClipPolygonwithLine_Label" xml:space="preserve">
+    <value>Sectionner Polygone avec une Ligne</value>
+  </data>
+  <data name="Clipslayerwithlayer" xml:space="preserve">
+    <value>Rogner une couche avec une autre</value>
+  </data>
+  <data name="Convertedfeatureset" xml:space="preserve">
+    <value>Jeu de données Converti</value>
+  </data>
+  <data name="DeleteFeatures_Label" xml:space="preserve">
+    <value>Supprimer des entités</value>
+  </data>
+  <data name="DeleteFeaturesfromFeatureSet" xml:space="preserve">
+    <value>Supprimer des entités du jeu de données</value>
+  </data>
+  <data name="deleteuserselectedFeatures" xml:space="preserve">
+    <value>Ceci va supprimer du jeu de données les entités sélectionnées</value>
+  </data>
+  <data name="DesiredOutputProjection" xml:space="preserve">
+    <value>Projection souhaitée pour le résultat</value>
+  </data>
+  <data name="DisplayingistheOldCellHight" xml:space="preserve">
+    <value>L'affichage est l'ancienne hauteur du pixel. Entrer une nouvelle valeur pour 'changer' ou la garder pour 'ne rien changer'</value>
+  </data>
+  <data name="DouglasPeuckerlinesimplification" xml:space="preserve">
+    <value>Ceci réduit le nombre de points sur les polylignes en utilisant l'algorithm de simplification de ligne de Douglas-Peucker </value>
+  </data>
+  <data name="DPlinesimplification" xml:space="preserve">
+    <value>Simplification DP de ligne</value>
+  </data>
+  <data name="Exceptioninclipin" xml:space="preserve">
+    <value>Exception dans le clipping de polygon avec une ligne</value>
+  </data>
+  <data name="ExpressionSelectFeatures" xml:space="preserve">
+    <value>Expression pour sélectionner les entités du jeu de données</value>
+  </data>
+  <data name="featuresetcontainareainterest" xml:space="preserve">
+    <value>Ce jeu de données contient l'aire d'intérêt où l'on voudrait calculer le slope moyen</value>
+  </data>
+  <data name="featuresetcreated" xml:space="preserve">
+    <value>Jeu de données produite à partie d'un raster</value>
+  </data>
+  <data name="Featuresettoclip" xml:space="preserve">
+    <value>Jeu de données à rogner</value>
+  </data>
+  <data name="FeatureToRaster_Label" xml:space="preserve">
+    <value>Entités vers Raster</value>
+  </data>
+  <data name="Fieldnamecolomavrageslope" xml:space="preserve">
+    <value>Nom de colonne pour le slope moyen qui va s'ajouter à la table attributaire</value>
+  </data>
+  <data name="Fieldnameforavrageslope" xml:space="preserve">
+    <value>Nom de colonne pour le slope moyen</value>
+  </data>
+  <data name="FindAverageSlope_Label" xml:space="preserve">
+    <value>Rechercher un Average Slope</value>
+  </data>
+  <data name="FindAvrageSlopeExtented_Label" xml:space="preserve">
+    <value>Rechercher un Average Slope Etendu..</value>
+  </data>
+  <data name="FixedCount" xml:space="preserve">
+    <value>Nombre fixe</value>
+  </data>
+  <data name="FixedDistance" xml:space="preserve">
+    <value>Distance fixe</value>
+  </data>
+  <data name="FixedDistanceHelpText" xml:space="preserve">
+    <value>Distance Fixe : Quand on utilise une distance fixe si un nombre minimum de points n'a pas été trouvé dans le rayon de recherche, il est augmenté jusqu'à ce qu'un minimum de points soit trouvé. Entrer 0 pour no minimum count. \n\nNombre Fixe: Quand on utilise nombre fixe le nombre maximum de points sera utilisé tant qu'ils sont dans le rayon maximum de recherche.</value>
+  </data>
+  <data name="FindAverageSlopeDescription" xml:space="preserve">
+    <value>Ceci va générer un average slope dans les polygones.</value>
+  </data>
+  <data name="GenerateCentroid_Label" xml:space="preserve">
+    <value>Générer des Centroides</value>
+  </data>
+  <data name="generatecentroidFeatureSet" xml:space="preserve">
+    <value>Jeu de données produites</value>
+  </data>
+  <data name="GenerateCentroidfrominputFeatureSet" xml:space="preserve">
+    <value>Générer un Centroide à partir d'un jeu de données</value>
+  </data>
+  <data name="FeatureToRasterDescription" xml:space="preserve">
+    <value>Produire un raster à partir d'un Polygon.</value>
+  </data>
+  <data name="RasterToPolygonDescription" xml:space="preserve">
+    <value>This will generate a polygon featureset from a raster</value>
+  </data>
+  <data name="RasterSlopeDescription" xml:space="preserve">
+    <value>This will Generate slope raster from given altitude raster.</value>
+  </data>
+  <data name="GenerateslopeRasterLayer" xml:space="preserve">
+    <value>Generate slope Raster Layer</value>
+  </data>
+  <data name="Givenafeatureset" xml:space="preserve">
+    <value>Jeu de données dont les entités seront fusionnées en une seule.  Les Polygones qui se touchent vont perdre limites de séparation.</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Indexer</value>
+  </data>
+  <data name="IndexNotoOverwrite" xml:space="preserve">
+    <value>Indexer sans écraser l'entitée</value>
+  </data>
+  <data name="Indexofareaofinterestfeature" xml:space="preserve">
+    <value>Indexer une zone d'intérêt d'entités</value>
+  </data>
+  <data name="indexspecificarea" xml:space="preserve">
+    <value>C'est l'index qui donne la zone d'intérêt des entités</value>
+  </data>
+  <data name="input1altitudeRaster" xml:space="preserve">
+    <value>input1 altitude Raster</value>
+  </data>
+  <data name="input1FeatureSet" xml:space="preserve">
+    <value>input1 Feature Set</value>
+  </data>
+  <data name="input1polygonfeatureset" xml:space="preserve">
+    <value>input1 polygon feature set</value>
+  </data>
+  <data name="input1PolygonShapefile" xml:space="preserve">
+    <value>input1 Polygon Shape file.</value>
+  </data>
+  <data name="input2FeatureSettoAdd" xml:space="preserve">
+    <value>Feature Set to Add</value>
+  </data>
+  <data name="input2FeatureSettoOverwrite" xml:space="preserve">
+    <value>Feature Set to Overwrite</value>
+  </data>
+  <data name="input2LineforCliping" xml:space="preserve">
+    <value>Ligne de section</value>
+  </data>
+  <data name="InputFeatureSetaddnewfeatures" xml:space="preserve">
+    <value>Jeu de données avec les entités à ajouter</value>
+  </data>
+  <data name="InputFeatureSettobeoverwrite" xml:space="preserve">
+    <value>Jeu de données avec les entités à écraser</value>
+  </data>
+  <data name="InputFeatureSettodelete" xml:space="preserve">
+    <value>Jeu de données avec les entités à éffacer</value>
+  </data>
+  <data name="InputFeatureSettogenerate" xml:space="preserve">
+    <value>Jeu de données avec les entités dont il faut générer le Centroid</value>
+  </data>
+  <data name="InputFeatureSettoreproject" xml:space="preserve">
+    <value>Jeu de données à reprojeter</value>
+  </data>
+  <data name="Inputlineforcliping" xml:space="preserve">
+    <value>Ligne en entrée pour le sectionnement</value>
+  </data>
+  <data name="InputnewcellHight" xml:space="preserve">
+    <value>Nouvelle hauteur de pixel</value>
+  </data>
+  <data name="InputnewcellWidth" xml:space="preserve">
+    <value>Nouvelle largeur de pixel</value>
+  </data>
+  <data name="InputPolygonforCliping" xml:space="preserve">
+    <value>Polygone en entrée pour le rognange</value>
+  </data>
+  <data name="InputRasterforaverageslopecalculation" xml:space="preserve">
+    <value>Raster en entrée pour calculer  average slope</value>
+  </data>
+  <data name="InputRasternoValue" xml:space="preserve">
+    <value>Entrer un Raster pour No Data Value Change</value>
+  </data>
+  <data name="inputrastetoconvert" xml:space="preserve">
+    <value>Le raster en entrée pour conversion en un jeu de données de type polygone</value>
+  </data>
+  <data name="InputSecondRasterforAdding" xml:space="preserve">
+    <value>Entrer un Second Raster pour Addition</value>
+  </data>
+  <data name="InputSecondRasterforMultiply" xml:space="preserve">
+    <value>Entrer un Second Raster pour Multiplication</value>
+  </data>
+  <data name="InputSecondRasterforSubtract" xml:space="preserve">
+    <value>Entrer un Second Raster pour Soustraction</value>
+  </data>
+  <data name="inputtheareaofinterest" xml:space="preserve">
+    <value>Entrer la zone d'intérêt</value>
+  </data>
+  <data name="InputtheRasterforCellsizeChange" xml:space="preserve">
+    <value>Entrer un Raster pour Cell size Change</value>
+  </data>
+  <data name="inputZfactor" xml:space="preserve">
+    <value>Entrer Z factor</value>
+  </data>
+  <data name="InputZfactorforslopedisplay" xml:space="preserve">
+    <value>Entrer  Z factor pour slope display</value>
+  </data>
+  <data name="InverseDistanceWeighting" xml:space="preserve">
+    <value>Inverse Distance Weighting</value>
+  </data>
+  <data name="layercontainsvalues" xml:space="preserve">
+    <value>La colonne dans le jeu de données de la couche de points qui contient les valeurs à interpoler.</value>
+  </data>
+  <data name="LineFeatureSet" xml:space="preserve">
+    <value>Jeu de données Ligne</value>
+  </data>
+  <data name="MainFeatureset" xml:space="preserve">
+    <value>Jeu de données Principal</value>
+  </data>
+  <data name="MapWindowAddFeature" xml:space="preserve">
+    <value>MapWindow Add Feature</value>
+  </data>
+  <data name="MapWindowAggregate" xml:space="preserve">
+    <value>MapWindow Aggregate</value>
+  </data>
+  <data name="MapWindowCalculateAreas" xml:space="preserve">
+    <value>MapWindow Calculate Areas</value>
+  </data>
+  <data name="MapWindowChangeCellSize" xml:space="preserve">
+    <value>MapWindow Change Cell Size</value>
+  </data>
+  <data name="MapWindowChangeNoDataValues" xml:space="preserve">
+    <value>MapWindow Change No Data Values</value>
+  </data>
+  <data name="MapWindowClip" xml:space="preserve">
+    <value>MapWindow Clip</value>
+  </data>
+  <data name="MapWindowDeleteFeatures" xml:space="preserve">
+    <value>MapWindow Delete Features</value>
+  </data>
+  <data name="MapWindowFindAverageSlope" xml:space="preserve">
+    <value>MapWindow FindAverageSlope</value>
+  </data>
+  <data name="MapWindowFindAverageSlopeExtented" xml:space="preserve">
+    <value>MapWindow FindAverageSlope Extented..</value>
+  </data>
+  <data name="MapWindowGenerateCentroid" xml:space="preserve">
+    <value>MapWindow Generate Centroid</value>
+  </data>
+  <data name="MapWindowInverseDistance" xml:space="preserve">
+    <value>MapWindow Inverse Distance Weighting</value>
+  </data>
+  <data name="MapWindowLineSimplification" xml:space="preserve">
+    <value>MapWindow Line Simplification</value>
+  </data>
+  <data name="MapWindowOverWriteFeature" xml:space="preserve">
+    <value>MapWindow OverWrite Feature</value>
+  </data>
+  <data name="MapWindowPolygonClipWithLine" xml:space="preserve">
+    <value>MapWindow Polygon Clip With Line</value>
+  </data>
+  <data name="MapWindowRasterAdd" xml:space="preserve">
+    <value>MapWindow Raster Add</value>
+  </data>
+  <data name="MapWindowRasterEuclideanDistance" xml:space="preserve">
+    <value>MapWindow Raster Euclidean Distance</value>
+  </data>
+  <data name="MapWindowRasterMultiply" xml:space="preserve">
+    <value>MapWindow Raster Multiply</value>
+  </data>
+  <data name="MapWindowRasterSlope" xml:space="preserve">
+    <value>MapWindow Raster Slope</value>
+  </data>
+  <data name="MapWindowRasterSubtraction" xml:space="preserve">
+    <value>MapWindow Raster Subtraction</value>
+  </data>
+  <data name="MapWindowReprojectFeatures" xml:space="preserve">
+    <value>MapWindow Reproject Features</value>
+  </data>
+  <data name="MapWindowSimpeRasterToPolygon" xml:space="preserve">
+    <value>MapWindow SimpeRasterToPolygon</value>
+  </data>
+  <data name="MapWindowUnion" xml:space="preserve">
+    <value>MapWindow Union</value>
+  </data>
+  <data name="Maximumdistance" xml:space="preserve">
+    <value>Maximum distance</value>
+  </data>
+  <data name="Maximumdistancetobecalculated" xml:space="preserve">
+    <value>Maximum distance to be calculated. Cells with a distance to nearest target greater than 'Maximum distance' will be assigned a 'no data' value.";</value>
+  </data>
+  <data name="MinMaxdistance" xml:space="preserve">
+    <value>Min / Max distance</value>
+  </data>
+  <data name="MinMaxnumberofpoints" xml:space="preserve">
+    <value>Min / Max number of points</value>
+  </data>
+  <data name="MultiplyRasterLayers_Label" xml:space="preserve">
+    <value>Multiplier des couches Raster</value>
+  </data>
+  <data name="NeighborhoodType" xml:space="preserve">
+    <value>Neighborhood Type</value>
+  </data>
+  <data name="Newnumberofpoints" xml:space="preserve">
+    <value>New number of points:</value>
+  </data>
+  <data name="newrastername" xml:space="preserve">
+    <value>The new raster will put on the Output raster name</value>
+  </data>
+  <data name="Oneparameterinnull" xml:space="preserve">
+    <value>One of the parameter layers in null</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Optional - leave default for NoDataValue or input Exsisting Value</value>
+  </data>
+  <data name="Optionaltochange" xml:space="preserve">
+    <value>This is Optional where User want to change the Value to other Value. Defalt will be No Data Value change</value>
+  </data>
+  <data name="Originalnumberofpoints" xml:space="preserve">
+    <value>Original number of points:</value>
+  </data>
+  <data name="OutputFeatureSet" xml:space="preserve">
+    <value>Output FeatureSet</value>
+  </data>
+  <data name="Outputfeaturesetwithaverageslope" xml:space="preserve">
+    <value>Output feature set with average slope.</value>
+  </data>
+  <data name="OutputShapefile" xml:space="preserve">
+    <value>Shapefile en Sortie.</value>
+  </data>
+  <data name="OutputslopeRaster" xml:space="preserve">
+    <value>Slope Raster en Sortie.</value>
+  </data>
+  <data name="Outputwithaverageslope" xml:space="preserve">
+    <value>featureSet en Sortie avec Average Slope.</value>
+  </data>
+  <data name="OverWriteFeature_Label" xml:space="preserve">
+    <value>Remplacer des Entités</value>
+  </data>
+  <data name="OverWriteFeaturebyindex" xml:space="preserve">
+    <value>This will OverWrite Feature in the FeatureSet reference by index</value>
+  </data>
+  <data name="OverWriteFeatureDescription" xml:space="preserve">
+    <value>This will OverWrite Feature in the FeatureSet.</value>
+  </data>
+  <data name="OverWriteFeatureintheFeatureSet" xml:space="preserve">
+    <value>OverWrite Feature in the FeatureSet</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Power</value>
+  </data>
+  <data name="Raster" xml:space="preserve">
+    <value>Raster</value>
+  </data>
+  <data name="RasterDistance" xml:space="preserve">
+    <value>Raster Distance</value>
+  </data>
+  <data name="RasterDistanceproximity_Label" xml:space="preserve">
+    <value>Distance Raster (proximité)</value>
+  </data>
+  <data name="IDWDescription" xml:space="preserve">
+    <value>Ceci crée un raster à partir d'un jeu de points en utilisant la Distance inversée.</value>
+  </data>
+  <data name="RasterToPolygon_Label" xml:space="preserve">
+    <value>Raster Vers Polygones</value>
+  </data>
+  <data name="ReprojectFeatures_Label" xml:space="preserve">
+    <value>Reprojection des entités</value>
+  </data>
+  <data name="Reprojectsallcoordinates" xml:space="preserve">
+    <value>Reprojects all the coordinates in the featureset to the specified coordinate system</value>
+  </data>
+  <data name="ReprojectFeatureSetDescription" xml:space="preserve">
+    <value>This will reproject the specified featureset to a new coordinate system</value>
+  </data>
+  <data name="ResultShapefile" xml:space="preserve">
+    <value>Result Shapefile</value>
+  </data>
+  <data name="SecondFeatureset" xml:space="preserve">
+    <value>Second Feature set</value>
+  </data>
+  <data name="secondinputlayer" xml:space="preserve">
+    <value>The second input layer must be a polygon feature set</value>
+  </data>
+  <data name="SelectFeaturestoDelete" xml:space="preserve">
+    <value>Select Features to Delete</value>
+  </data>
+  <data name="SelectResultFeatureSetDirectory" xml:space="preserve">
+    <value>Select the Result FeatureSet Directory and Name</value>
+  </data>
+  <data name="SelectresultrasterfileName" xml:space="preserve">
+    <value>Select the result raster file name</value>
+  </data>
+  <data name="SelectResultShapefileDirectory" xml:space="preserve">
+    <value>Select the Result Shapefile Directory and Name</value>
+  </data>
+  <data name="SelecttheResultofOutput" xml:space="preserve">
+    <value>Select the Result of Output feature set with average slope in the attribute.</value>
+  </data>
+  <data name="Selectthetypeofneighborhood" xml:space="preserve">
+    <value>Select the type of neighborhood to use when searching for point. \n\nFixed Distance: Searches a set distance from a cell for points and uses all of the points that are found to compute a cells value. If there are less points collected then the minimum specified the search radius is expanded until there are suffcient points found. \n\nFixed Count: Searches for the closest points to the cell until the max number of points specified is reached or the maximum distance is reached.</value>
+  </data>
+  <data name="SimplifyLines_Label" xml:space="preserve">
+    <value>Simplifier Lignes</value>
+  </data>
+  <data name="Slopegridfileisnull" xml:space="preserve">
+    <value>Slope grid file is null.</value>
+  </data>
+  <data name="slopeinpercentage" xml:space="preserve">
+    <value>slope in percentage</value>
+  </data>
+  <data name="slopeinpercentageindegree" xml:space="preserve">
+    <value>slope in percentage true otherwise it will be in Degree</value>
+  </data>
+  <data name="SlopeRasterLayer_Label" xml:space="preserve">
+    <value>Slope Raster Layer</value>
+  </data>
+  <data name="SourceProjection" xml:space="preserve">
+    <value>Source Projection</value>
+  </data>
+  <data name="sourceprojectiondifferent" xml:space="preserve">
+    <value>If the source projection should be different from what is already on the feature set</value>
+  </data>
+  <data name="SubtractRasterLayer_Label" xml:space="preserve">
+    <value>Subtract Raster Layer</value>
+  </data>
+  <data name="Thecellsizeingeographicunits" xml:space="preserve">
+    <value>The cellsize in the geographic units of the input layer. If 0 the width is calculate as the extent of the input layer divided by 255</value>
+  </data>
+  <data name="Thedestinationprojection" xml:space="preserve">
+    <value>The destination projection.</value>
+  </data>
+  <data name="Theinfluenceofdistance" xml:space="preserve">
+    <value>The influence of distance points. A higher power reduces the influences of distant points, a lower value increases it.</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolerance</value>
+  </data>
+  <data name="AreaDescription" xml:space="preserve">
+    <value>Calcule l'aire de chaque polygone du jeu de données ajoute le résultat à la table attributaire du jeu de données résultante.</value>
+  </data>
+  <data name="toolcombinespolygons" xml:space="preserve">
+    <value>This tool combines many different polygons into a single, all encompassing shape, though the shape may have mutliple parts.</value>
+  </data>
+  <data name="tooltakesafeatureset" xml:space="preserve">
+    <value>This tool takes a feature set and a polygon feature set and clips the first feature set to the are defined by the polygon feature set.</value>
+  </data>
+  <data name="UnionFeatureSet" xml:space="preserve">
+    <value>Union Feature Set</value>
+  </data>
+  <data name="UnioningShapes" xml:space="preserve">
+    <value>Unioning Shapes</value>
+  </data>
+  <data name="Unionofinputs" xml:space="preserve">
+    <value>Union of inputs</value>
+  </data>
+  <data name="UserinputNewValue" xml:space="preserve">
+    <value>User Can input New Value to replace Old Value</value>
+  </data>
+  <data name="UserNewValues" xml:space="preserve">
+    <value>User New Values</value>
+  </data>
+  <data name="Zvalue" xml:space="preserve">
+    <value>Z-value</value>
+  </data>
+  <data name="Generateaverageslopewithpreferences" xml:space="preserve">
+    <value>Ceci va générer un average slope dans les polygones avec plus de préférences utilisateur.</value>
+  </data>
+  <data name="GenerateRasterfromPolygon" xml:space="preserve">
+    <value>Générer un Raster à partir d'un Polygone.</value>
+  </data>
+  <data name="Multiplytworasters" xml:space="preserve">
+    <value>This will Multiply two rasters values cell by cell</value>
+  </data>
+  <data name="MapWindowVoronoi" xml:space="preserve">
+    <value>Voronoi</value>
+  </data>
+  <data name="EraseDescription" xml:space="preserve">
+    <value>Ceci éffacera le second jeu de données du 1er</value>
+  </data>
+  <data name="RasterMultiplyDescription" xml:space="preserve">
+    <value>This will Multiply two rasters values cell by cell</value>
+  </data>
+  <data name="DeleteFeaturesDescription" xml:space="preserve">
+    <value>Ceci va supprimer des entités du jeu de données.</value>
+  </data>
+  <data name="GenerateCentroidDescription" xml:space="preserve">
+    <value>Ceci va générer un jeu de données de centroides à partir du jeu de données en entrée.</value>
+  </data>
+  <data name="UnionDescription" xml:space="preserve">
+    <value>This will add all features of input with attributes.</value>
+  </data>
+  <data name="BinToolDescription" xml:space="preserve">
+    <value>Généralise les valeurs du raster afin d'avoir de grandes  régions avec la même valeur.</value>
+  </data>
+  <data name="ConvertingLAS" xml:space="preserve">
+    <value>Convertir des points LAS à partir de</value>
+  </data>
+  <data name="DotSpatialRasterFromLAS" xml:space="preserve">
+    <value>DotSpatial RasterFromLAS</value>
+  </data>
+  <data name="GeographicExtent" xml:space="preserve">
+    <value>Vue géographique du raster produit.</value>
+  </data>
+  <data name="HelpLASTool" xml:space="preserve">
+    <value>Convertit les élévations d'un fichier LAS en un Raster.</value>
+  </data>
+  <data name="lasFilename" xml:space="preserve">
+    <value>lasFilename</value>
+  </data>
+  <data name="LasFullpath" xml:space="preserve">
+    <value>Entrer le chemin complet du fichier LAS</value>
+  </data>
+  <data name="NoDataValueChange_Label" xml:space="preserve">
+    <value>Modification des "No Data"</value>
+  </data>
+  <data name="numberofcolums" xml:space="preserve">
+    <value>The number of columns to create in the output raster.</value>
+  </data>
+  <data name="numberofrows" xml:space="preserve">
+    <value>The number of rows to create in the output image.</value>
+  </data>
+  <data name="NumColumns" xml:space="preserve">
+    <value>NumColumns</value>
+  </data>
+  <data name="NumRows" xml:space="preserve">
+    <value>NumRows</value>
+  </data>
+  <data name="Progresstoraster" xml:space="preserve">
+    <value>toraster</value>
+  </data>
+  <data name="RasterExtent" xml:space="preserve">
+    <value>Raster Extent</value>
+  </data>
+  <data name="RasterFromLAS" xml:space="preserve">
+    <value>Raster From LAS</value>
+  </data>
+  <data name="ToolFromLasToRaster" xml:space="preserve">
+    <value>This tool will read in LAS point files and produce raster representations for an area</value>
+  </data>
+  <data name="RandomGeometry_Label" xml:space="preserve">
+    <value>Points aléatoires</value>
+  </data>
+  <data name="RandomGeometryDescription" xml:space="preserve">
+    <value>Generate any number of randomly placed points within a specified area of the map.</value>
+  </data>
+  <data name="RandomGeometryNumPoint" xml:space="preserve">
+    <value>The number of points to generate.</value>
+  </data>
+  <data name="RandomGeometry_ToolTip" xml:space="preserve">
+    <value>Select an area from the map and specify the number of points to generate inside of it.</value>
+  </data>
+  <data name="OutputParameter_AddToMap" xml:space="preserve">
+    <value>Ajouter à la Carte</value>
+  </data>
+  <data name="OutputParameter_AddToMap_CheckboxText" xml:space="preserve">
+    <value>Ajoute la Couche résultante à la Carte</value>
+  </data>
+  <data name="RasterBinTool_Execute_FailedToCompleteSuccessfully" xml:space="preserve">
+    <value>The RasterBin tool failed to complete successfully.</value>
+  </data>
+  <data name="RasterBinTool_Initialize_BaseValueHelText" xml:space="preserve">
+    <value>The starting point for bin calculations. A base value of 10 with a bin size of 20 would give all values from 10 to 30 a value of 20.</value>
+  </data>
+  <data name="RasterBinTool_Initialize_BinSizeHelpText" xml:space="preserve">
+    <value>The size of the bins. A base value of 10 with a bin size of 20 would give all the values from 10 to 30 a value of 20.</value>
+  </data>
+  <data name="RasterBinTool_Description" xml:space="preserve">
+    <value>This bins the values of a raster so that there will be large regions of equal values. This will replace the raster value with the middle value of the bin range that it falls with. The baseValue represents the starting point of the first boundary, while the bin size represents the total distance between raster values.  So for instance, an interval of every 20, starting at 10 would have a bin size of 20, and a base value of 10. The cells ranging from 10 to 30 would all get the half value of 20.</value>
+  </data>
+  <data name="RasterBinTool_Tooltip" xml:space="preserve">
+    <value>Bins the continuous values into histogram like categories.</value>
+  </data>
+  <data name="RasterBinTool_Label" xml:space="preserve">
+    <value>Raster Bin</value>
+  </data>
+  <data name="Aggregate_Label" xml:space="preserve">
+    <value>Aggrégation</value>
+    <comment>p</comment>
+  </data>
+  <data name="Analysis_Label" xml:space="preserve">
+    <value>Analyses</value>
+    <comment>p</comment>
+  </data>
+  <data name="Analysis_ToolTip" xml:space="preserve">
+    <value>Regroupe les otuils d'analyse</value>
+    <comment>T</comment>
+  </data>
+  <data name="Buffer_Label" xml:space="preserve">
+    <value>Zone Tampon</value>
+    <comment>p</comment>
+  </data>
+  <data name="Conversion_ToolTip" xml:space="preserve">
+    <value>Outils de Conversion</value>
+    <comment>T</comment>
+  </data>
+  <data name="Erase_Label" xml:space="preserve">
+    <value>Effacer</value>
+  </data>
+  <data name="Generalization_Label" xml:space="preserve">
+    <value>Généralisation</value>
+    <comment>p</comment>
+  </data>
+  <data name="Generalization_ToolTip" xml:space="preserve">
+    <value>Généralisation</value>
+    <comment>T</comment>
+  </data>
+  <data name="IDW_LAbel" xml:space="preserve">
+    <value>Distances Inverses</value>
+  </data>
+  <data name="Interpolation_ToolTip" xml:space="preserve">
+    <value>Outils d'Interpolation</value>
+    <comment>T</comment>
+  </data>
+  <data name="RasterOverlay_ToolTip" xml:space="preserve">
+    <value>Raster Overlay</value>
+    <comment>T</comment>
+  </data>
+  <data name="SpatialReference_ToolTip" xml:space="preserve">
+    <value>Spatial Reference</value>
+    <comment>T</comment>
+  </data>
+  <data name="Statistics_Label" xml:space="preserve">
+    <value>Statistiques</value>
+    <comment>p</comment>
+  </data>
+  <data name="Statistics_ToolTip" xml:space="preserve">
+    <value>Regroupe les otuils de Statistiques</value>
+    <comment>T</comment>
+  </data>
+  <data name="TerrainAnalysis_ToolTip" xml:space="preserve">
+    <value>Outils d'Analyse de Terrain</value>
+    <comment>T</comment>
+  </data>
+  <data name="ThiessenPolygons_Label" xml:space="preserve">
+    <value>Polygones de Thiessen (Voronoi)</value>
+  </data>
+  <data name="Union_Label" xml:space="preserve">
+    <value>Union</value>
+  </data>
+  <data name="VectorOverlay_Label" xml:space="preserve">
+    <value>Couverture Vectorielle</value>
+    <comment>p</comment>
+  </data>
+  <data name="VectorOverlay_ToolTip" xml:space="preserve">
+    <value>Outils de Couverture Vectorielle</value>
+    <comment>T</comment>
+  </data>
+</root>

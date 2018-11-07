@@ -4,6 +4,8 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls.Header;
 
@@ -18,10 +20,12 @@ namespace DotSpatial.Controls
         #region Fields
 
         private readonly MenuBarHeaderControl _menuBar;
+        private DefaultMenuBars _defaultMenuBar;
         private AppManager _applicationManager;
         private bool _isInitializing;
         private MenuStrip _menuStrip;
         private ToolStripPanel _toolbarsContainer;
+        private CultureInfo _spatialHeaderCulture;
 
         #endregion
 
@@ -68,6 +72,7 @@ namespace DotSpatial.Controls
                 {
                     _applicationManager.HeaderControlChanged -= ApplicationManagerOnHeaderControlChanged;
                     _applicationManager.ExtensionsActivated -= ApplicationManagerOnExtensionsActivated;
+                    _applicationManager.AppCultureChanged -= OnAppCultureChanged;
                 }
 
                 _applicationManager = value;
@@ -76,6 +81,7 @@ namespace DotSpatial.Controls
                 {
                     _applicationManager.HeaderControlChanged += ApplicationManagerOnHeaderControlChanged;
                     _applicationManager.ExtensionsActivated += ApplicationManagerOnExtensionsActivated;
+                    _applicationManager.AppCultureChanged += OnAppCultureChanged;
                 }
 
                 InitHeaderControl();
@@ -121,6 +127,26 @@ namespace DotSpatial.Controls
         }
 
         #endregion
+
+        /// <summary>
+        /// sets a value indicating the culture to use for resources.
+        /// </summary>
+        public CultureInfo SpatialHeaderCulture
+        {
+            set
+            {
+                if (_spatialHeaderCulture == value) return;
+
+                _spatialHeaderCulture = value;
+
+                if (_spatialHeaderCulture == null) _spatialHeaderCulture = new CultureInfo(string.Empty);
+
+                Thread.CurrentThread.CurrentCulture = _spatialHeaderCulture;
+                Thread.CurrentThread.CurrentUICulture = _spatialHeaderCulture;
+
+                UpdateSpatialHeaderItems();
+            }
+        }
 
         #region Methods
 
@@ -181,7 +207,9 @@ namespace DotSpatial.Controls
             {
                 _menuBar.IgnoreToolstripPositionSaving = DesignMode;
                 _menuBar.Initialize(ToolbarsContainer, MenuStrip);
-                new DefaultMenuBars(ApplicationManager).Initialize(ApplicationManager.HeaderControl);
+
+                _defaultMenuBar = new DefaultMenuBars(ApplicationManager);
+                _defaultMenuBar.Initialize(ApplicationManager.HeaderControl);
 
                 // load here in DesignMode, because _applicationManager.ExtensionsActivated doesn't get raised
                 if (DesignMode)
@@ -189,6 +217,15 @@ namespace DotSpatial.Controls
                     _menuBar.LoadToolstrips();
                 }
             }
+        }
+
+        private void OnAppCultureChanged(object sender, CultureInfo appCulture)
+        {
+            SpatialHeaderCulture = appCulture;
+        }
+
+        private void UpdateSpatialHeaderItems()
+        {
         }
 
         #endregion

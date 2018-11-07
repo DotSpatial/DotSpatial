@@ -27,9 +27,7 @@ namespace DotSpatial.Tools
         {
             Name = TextStrings.NoDataValueChange;
             Category = TextStrings.RasterOverlay;
-            Description = TextStrings.NoDataValueChangeDescription;
-
-            // this.ToolTip = TextStrings.NoDataValueChange;
+            UpdateToolResources();
         }
 
         #endregion
@@ -180,6 +178,17 @@ namespace DotSpatial.Tools
             {
                 string1.Value = inputTemp.NoDataValue.ToString();
             }
+        }
+
+        /// <summary>
+        /// Attempt to update the tool's resources.
+        /// </summary>
+        public override void UpdateToolResources()
+        {
+            NameLabel = TextStrings.NoDataValueChange_Label;
+            CategoryLabel = TextStrings.RasterOverlay_Label;
+            CategoryToolTip = TextStrings.RasterOverlay_ToolTip;
+            Description = TextStrings.NoDataValueChangeDescription;
         }
 
         #endregion

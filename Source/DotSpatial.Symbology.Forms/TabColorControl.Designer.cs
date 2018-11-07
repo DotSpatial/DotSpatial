@@ -8,6 +8,7 @@ namespace DotSpatial.Symbology.Forms
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        System.ComponentModel.ComponentResourceManager resources;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -30,6 +31,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            resources = new System.ComponentModel.ComponentResourceManager(typeof(TabColorControl));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabColorRange = new System.Windows.Forms.TabControl();
             this.tabHSL = new System.Windows.Forms.TabPage();
@@ -61,24 +63,17 @@ namespace DotSpatial.Symbology.Forms
             // 
             this.groupBox1.Controls.Add(this.tabColorRange);
             this.groupBox1.Controls.Add(this.chkUseColorRange);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(227, 219);
-            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
             // tabColorRange
             // 
-            this.tabColorRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.tabColorRange, "tabColorRange");
             this.tabColorRange.Controls.Add(this.tabHSL);
             this.tabColorRange.Controls.Add(this.tabRGB);
-            this.tabColorRange.Location = new System.Drawing.Point(6, 23);
             this.tabColorRange.Name = "tabColorRange";
             this.tabColorRange.SelectedIndex = 0;
-            this.tabColorRange.Size = new System.Drawing.Size(217, 189);
-            this.tabColorRange.TabIndex = 12;
             // 
             // tabHSL
             // 
@@ -93,30 +88,22 @@ namespace DotSpatial.Symbology.Forms
             this.tabHSL.Controls.Add(this.lblHueRange);
             this.tabHSL.Controls.Add(this.lblSaturationRange);
             this.tabHSL.Controls.Add(this.lblLightnessRange);
-            this.tabHSL.Location = new System.Drawing.Point(4, 22);
+            resources.ApplyResources(this.tabHSL, "tabHSL");
             this.tabHSL.Name = "tabHSL";
-            this.tabHSL.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHSL.Size = new System.Drawing.Size(209, 163);
-            this.tabHSL.TabIndex = 0;
-            this.tabHSL.Text = "HSL";
             // 
             // btnReverseLight
             // 
             this.btnReverseLight.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.redbluearrows;
-            this.btnReverseLight.Location = new System.Drawing.Point(144, 127);
+            resources.ApplyResources(this.btnReverseLight, "btnReverseLight");
             this.btnReverseLight.Name = "btnReverseLight";
-            this.btnReverseLight.Size = new System.Drawing.Size(28, 23);
-            this.btnReverseLight.TabIndex = 9;
             this.btnReverseLight.UseVisualStyleBackColor = true;
             this.btnReverseLight.Click += new System.EventHandler(this.BtnReverseLightClick);
             // 
             // btnReverseSat
             // 
             this.btnReverseSat.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.redbluearrows;
-            this.btnReverseSat.Location = new System.Drawing.Point(144, 78);
+            resources.ApplyResources(this.btnReverseSat, "btnReverseSat");
             this.btnReverseSat.Name = "btnReverseSat";
-            this.btnReverseSat.Size = new System.Drawing.Size(28, 23);
-            this.btnReverseSat.TabIndex = 6;
             this.btnReverseSat.UseVisualStyleBackColor = true;
             this.btnReverseSat.Click += new System.EventHandler(this.BtnReverseSatClick);
             // 
@@ -124,10 +111,8 @@ namespace DotSpatial.Symbology.Forms
             // 
             this.btnReverseHue.BackColor = System.Drawing.Color.Transparent;
             this.btnReverseHue.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.redbluearrows;
-            this.btnReverseHue.Location = new System.Drawing.Point(144, 29);
+            resources.ApplyResources(this.btnReverseHue, "btnReverseHue");
             this.btnReverseHue.Name = "btnReverseHue";
-            this.btnReverseHue.Size = new System.Drawing.Size(28, 23);
-            this.btnReverseHue.TabIndex = 2;
             this.btnReverseHue.UseVisualStyleBackColor = false;
             this.btnReverseHue.Click += new System.EventHandler(this.BtnReverseHueClick);
             // 
@@ -141,7 +126,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldLightness.LeftHandle.Visible = true;
             this.sldLightness.LeftHandle.Width = 5;
             this.sldLightness.LeftValue = 0.0406504F;
-            this.sldLightness.Location = new System.Drawing.Point(15, 127);
+            resources.ApplyResources(this.sldLightness, "sldLightness");
             this.sldLightness.Maximum = 1F;
             this.sldLightness.MaximumColor = System.Drawing.Color.White;
             this.sldLightness.Minimum = 0F;
@@ -154,9 +139,6 @@ namespace DotSpatial.Symbology.Forms
             this.sldLightness.RightHandle.Visible = true;
             this.sldLightness.RightHandle.Width = 5;
             this.sldLightness.RightValue = 0.8F;
-            this.sldLightness.Size = new System.Drawing.Size(123, 23);
-            this.sldLightness.TabIndex = 8;
-            this.sldLightness.Text = "twoColorSlider2";
             this.sldLightness.PositionChanging += new System.EventHandler(this.SldLightnessPositionChanging);
             // 
             // sldSaturation
@@ -169,7 +151,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldSaturation.LeftHandle.Visible = true;
             this.sldSaturation.LeftHandle.Width = 5;
             this.sldSaturation.LeftValue = 0.04098361F;
-            this.sldSaturation.Location = new System.Drawing.Point(15, 78);
+            resources.ApplyResources(this.sldSaturation, "sldSaturation");
             this.sldSaturation.Maximum = 1F;
             this.sldSaturation.MaximumColor = System.Drawing.Color.Blue;
             this.sldSaturation.Minimum = 0F;
@@ -182,19 +164,13 @@ namespace DotSpatial.Symbology.Forms
             this.sldSaturation.RightHandle.Visible = true;
             this.sldSaturation.RightHandle.Width = 5;
             this.sldSaturation.RightValue = 0.8F;
-            this.sldSaturation.Size = new System.Drawing.Size(122, 23);
-            this.sldSaturation.TabIndex = 5;
-            this.sldSaturation.Text = "twoColorSlider1";
             this.sldSaturation.PositionChanging += new System.EventHandler(this.SldSaturationPositionChanging);
             // 
             // btnHueShift
             // 
             this.btnHueShift.Image = global::DotSpatial.Symbology.Forms.SymbologyFormsImages.RunModel;
-            this.btnHueShift.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnHueShift.Location = new System.Drawing.Point(178, 29);
+            resources.ApplyResources(this.btnHueShift, "btnHueShift");
             this.btnHueShift.Name = "btnHueShift";
-            this.btnHueShift.Size = new System.Drawing.Size(21, 23);
-            this.btnHueShift.TabIndex = 3;
             this.btnHueShift.UseVisualStyleBackColor = true;
             // 
             // sldHue
@@ -208,7 +184,7 @@ namespace DotSpatial.Symbology.Forms
             this.sldHue.LeftHandle.Visible = true;
             this.sldHue.LeftHandle.Width = 5;
             this.sldHue.LeftValue = 14.7541F;
-            this.sldHue.Location = new System.Drawing.Point(16, 29);
+            resources.ApplyResources(this.sldHue, "sldHue");
             this.sldHue.Maximum = 360;
             this.sldHue.Minimum = 0;
             this.sldHue.Name = "sldHue";
@@ -219,37 +195,22 @@ namespace DotSpatial.Symbology.Forms
             this.sldHue.RightHandle.Visible = true;
             this.sldHue.RightHandle.Width = 5;
             this.sldHue.RightValue = 288F;
-            this.sldHue.Size = new System.Drawing.Size(122, 23);
-            this.sldHue.TabIndex = 1;
-            this.sldHue.Text = "hueSlider1";
             this.sldHue.PositionChanging += new System.EventHandler(this.SldHuePositionChanging);
             // 
             // lblHueRange
             // 
-            this.lblHueRange.AutoSize = true;
-            this.lblHueRange.Location = new System.Drawing.Point(9, 13);
+            resources.ApplyResources(this.lblHueRange, "lblHueRange");
             this.lblHueRange.Name = "lblHueRange";
-            this.lblHueRange.Size = new System.Drawing.Size(65, 13);
-            this.lblHueRange.TabIndex = 0;
-            this.lblHueRange.Text = "Hue Range:";
             // 
             // lblSaturationRange
             // 
-            this.lblSaturationRange.AutoSize = true;
-            this.lblSaturationRange.Location = new System.Drawing.Point(9, 62);
+            resources.ApplyResources(this.lblSaturationRange, "lblSaturationRange");
             this.lblSaturationRange.Name = "lblSaturationRange";
-            this.lblSaturationRange.Size = new System.Drawing.Size(93, 13);
-            this.lblSaturationRange.TabIndex = 4;
-            this.lblSaturationRange.Text = "Saturation Range:";
             // 
             // lblLightnessRange
             // 
-            this.lblLightnessRange.AutoSize = true;
-            this.lblLightnessRange.Location = new System.Drawing.Point(9, 111);
+            resources.ApplyResources(this.lblLightnessRange, "lblLightnessRange");
             this.lblLightnessRange.Name = "lblLightnessRange";
-            this.lblLightnessRange.Size = new System.Drawing.Size(90, 13);
-            this.lblLightnessRange.TabIndex = 7;
-            this.lblLightnessRange.Text = "Lightness Range:";
             // 
             // tabRGB
             // 
@@ -260,12 +221,8 @@ namespace DotSpatial.Symbology.Forms
             this.tabRGB.Controls.Add(this.lblStartColor);
             this.tabRGB.Controls.Add(this.cbEndColor);
             this.tabRGB.Controls.Add(this.cbStartColor);
-            this.tabRGB.Location = new System.Drawing.Point(4, 22);
+            resources.ApplyResources(this.tabRGB, "tabRGB");
             this.tabRGB.Name = "tabRGB";
-            this.tabRGB.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRGB.Size = new System.Drawing.Size(209, 163);
-            this.tabRGB.TabIndex = 1;
-            this.tabRGB.Text = "RGB";
             // 
             // rampSlider2
             // 
@@ -273,7 +230,7 @@ namespace DotSpatial.Symbology.Forms
             this.rampSlider2.FlipRamp = false;
             this.rampSlider2.FlipText = false;
             this.rampSlider2.InvertRamp = false;
-            this.rampSlider2.Location = new System.Drawing.Point(93, 106);
+            resources.ApplyResources(this.rampSlider2, "rampSlider2");
             this.rampSlider2.Maximum = 1D;
             this.rampSlider2.MaximumColor = System.Drawing.Color.Blue;
             this.rampSlider2.Minimum = 0D;
@@ -283,7 +240,7 @@ namespace DotSpatial.Symbology.Forms
             this.rampSlider2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.rampSlider2.RampRadius = 10F;
             this.rampSlider2.RampText = "Opacity";
-            this.rampSlider2.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rampSlider2.RampTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.rampSlider2.RampTextBehindRamp = true;
             this.rampSlider2.RampTextColor = System.Drawing.Color.Black;
             this.rampSlider2.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -291,11 +248,8 @@ namespace DotSpatial.Symbology.Forms
             this.rampSlider2.ShowMinimum = false;
             this.rampSlider2.ShowTicks = false;
             this.rampSlider2.ShowValue = false;
-            this.rampSlider2.Size = new System.Drawing.Size(97, 25);
             this.rampSlider2.SliderColor = System.Drawing.Color.Blue;
             this.rampSlider2.SliderRadius = 4F;
-            this.rampSlider2.TabIndex = 5;
-            this.rampSlider2.Text = "rampSlider2";
             this.rampSlider2.TickColor = System.Drawing.Color.DarkGray;
             this.rampSlider2.TickSpacing = 5F;
             this.rampSlider2.Value = 1D;
@@ -305,12 +259,9 @@ namespace DotSpatial.Symbology.Forms
             this.cbEndColor.BevelRadius = 2;
             this.cbEndColor.Color = System.Drawing.Color.Navy;
             this.cbEndColor.LaunchDialogOnClick = true;
-            this.cbEndColor.Location = new System.Drawing.Point(33, 106);
+            resources.ApplyResources(this.cbEndColor, "cbEndColor");
             this.cbEndColor.Name = "cbEndColor";
             this.cbEndColor.RoundingRadius = 4;
-            this.cbEndColor.Size = new System.Drawing.Size(40, 25);
-            this.cbEndColor.TabIndex = 2;
-            this.cbEndColor.Text = "colorButton2";
             this.cbEndColor.ColorChanged += new System.EventHandler(this.CbEndColorColorChanged);
             // 
             // rampSlider1
@@ -319,7 +270,7 @@ namespace DotSpatial.Symbology.Forms
             this.rampSlider1.FlipRamp = false;
             this.rampSlider1.FlipText = false;
             this.rampSlider1.InvertRamp = false;
-            this.rampSlider1.Location = new System.Drawing.Point(93, 38);
+            resources.ApplyResources(this.rampSlider1, "rampSlider1");
             this.rampSlider1.Maximum = 1D;
             this.rampSlider1.MaximumColor = System.Drawing.Color.Blue;
             this.rampSlider1.Minimum = 0D;
@@ -329,7 +280,7 @@ namespace DotSpatial.Symbology.Forms
             this.rampSlider1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.rampSlider1.RampRadius = 10F;
             this.rampSlider1.RampText = "Opacity";
-            this.rampSlider1.RampTextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rampSlider1.RampTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.rampSlider1.RampTextBehindRamp = true;
             this.rampSlider1.RampTextColor = System.Drawing.Color.Black;
             this.rampSlider1.RampTextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -337,11 +288,8 @@ namespace DotSpatial.Symbology.Forms
             this.rampSlider1.ShowMinimum = false;
             this.rampSlider1.ShowTicks = false;
             this.rampSlider1.ShowValue = false;
-            this.rampSlider1.Size = new System.Drawing.Size(97, 25);
             this.rampSlider1.SliderColor = System.Drawing.Color.Blue;
             this.rampSlider1.SliderRadius = 4F;
-            this.rampSlider1.TabIndex = 4;
-            this.rampSlider1.Text = "rampSlider1";
             this.rampSlider1.TickColor = System.Drawing.Color.DarkGray;
             this.rampSlider1.TickSpacing = 5F;
             this.rampSlider1.Value = 1D;
@@ -351,42 +299,27 @@ namespace DotSpatial.Symbology.Forms
             this.cbStartColor.BevelRadius = 2;
             this.cbStartColor.Color = System.Drawing.Color.LightBlue;
             this.cbStartColor.LaunchDialogOnClick = true;
-            this.cbStartColor.Location = new System.Drawing.Point(33, 38);
+            resources.ApplyResources(this.cbStartColor, "cbStartColor");
             this.cbStartColor.Name = "cbStartColor";
             this.cbStartColor.RoundingRadius = 4;
-            this.cbStartColor.Size = new System.Drawing.Size(40, 25);
-            this.cbStartColor.TabIndex = 0;
-            this.cbStartColor.Text = "colorButton1";
             this.cbStartColor.ColorChanged += new System.EventHandler(this.CbStartColorColorChanged);
             // 
             // lblEndColor
             // 
-            this.lblEndColor.AutoSize = true;
-            this.lblEndColor.Location = new System.Drawing.Point(8, 80);
+            resources.ApplyResources(this.lblEndColor, "lblEndColor");
             this.lblEndColor.Name = "lblEndColor";
-            this.lblEndColor.Size = new System.Drawing.Size(53, 13);
-            this.lblEndColor.TabIndex = 3;
-            this.lblEndColor.Text = "&End Color";
             // 
             // lblStartColor
             // 
-            this.lblStartColor.AutoSize = true;
-            this.lblStartColor.Location = new System.Drawing.Point(8, 12);
+            resources.ApplyResources(this.lblStartColor, "lblStartColor");
             this.lblStartColor.Name = "lblStartColor";
-            this.lblStartColor.Size = new System.Drawing.Size(56, 13);
-            this.lblStartColor.TabIndex = 1;
-            this.lblStartColor.Text = "&Start Color";
             // 
             // chkUseColorRange
             // 
-            this.chkUseColorRange.AutoSize = true;
+            resources.ApplyResources(this.chkUseColorRange, "chkUseColorRange");
             this.chkUseColorRange.Checked = true;
             this.chkUseColorRange.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseColorRange.Location = new System.Drawing.Point(6, 0);
             this.chkUseColorRange.Name = "chkUseColorRange";
-            this.chkUseColorRange.Size = new System.Drawing.Size(107, 17);
-            this.chkUseColorRange.TabIndex = 11;
-            this.chkUseColorRange.Text = "Use Color &Range";
             this.chkUseColorRange.UseVisualStyleBackColor = true;
             this.chkUseColorRange.CheckedChanged += new System.EventHandler(this.ChkUseColorRangeCheckedChanged);
             // 
@@ -394,7 +327,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             this.Controls.Add(this.groupBox1);
             this.Name = "TabColorControl";
-            this.Size = new System.Drawing.Size(227, 219);
+            resources.ApplyResources(this, "$this");
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabColorRange.ResumeLayout(false);

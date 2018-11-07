@@ -3,6 +3,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
@@ -59,6 +60,11 @@ namespace DotSpatial.Symbology
         /// Gets or sets the progress handler
         /// </summary>
         IProgressHandler ProgressHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Culture retrieve from the App
+        /// </summary>
+        CultureInfo LayerCulture { get; set; }
 
         #endregion
 

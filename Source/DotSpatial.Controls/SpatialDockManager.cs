@@ -114,6 +114,7 @@ namespace DotSpatial.Controls
             tabPage.VisibleChanged += TabPageOnVisibleChanged;
 
             panel.InnerControl.Dock = DockStyle.Fill;
+            panel.PropertyChanged += TabPageOnPropertyChanged;
             tabPage.Controls.Add(panel.InnerControl);
 
             _allTabs.Add(panel.Key, tabPage);
@@ -268,6 +269,19 @@ namespace DotSpatial.Controls
             if (!tabPage.Visible)
             {
                 OnPanelHidden(new DockablePanelEventArgs(tabPage.Name));
+            }
+        }
+
+        private void TabPageOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var item = (DockablePanel)sender;
+            var guiItem = GetByKey(item.Key);
+
+            switch (e.PropertyName)
+            {
+                case "Caption":
+                    guiItem.Text = item.Caption;
+                    break;
             }
         }
 
