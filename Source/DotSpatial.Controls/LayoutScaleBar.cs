@@ -277,6 +277,10 @@ namespace DotSpatial.Controls
             int startBreak = 0;
             if (_breakBeforeZero)
                 startBreak = -1;
+			
+            // CGX
+            g.SetClip(Rectangle, CombineMode.Union);
+            // fin CGX
 
             g.DrawLine(scalePen, leftStart, fontHeight * 1.6f, leftStart + (breakWidth * _numBreaks), fontHeight * 1.6f);
 
