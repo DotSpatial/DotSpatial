@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 
 namespace DotSpatial.Data
 {
@@ -11,7 +14,7 @@ namespace DotSpatial.Data
         /// Maps a Type to a FieldTypeCharacter
         /// </summary>
         /// <param name="type">A Type to convert to the char FieldTypeCharacter</param>
-        /// <returns></returns>
+        /// <returns>The FieldTypeCharacter assosiated with the given type.</returns>
         char Map(Type type);
     }
 }

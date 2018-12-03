@@ -1,9 +1,16 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 
 namespace DotSpatial.Data.Tests
 {
-    class CustomTestFieldMapper : IFieldTypeCharacterMapper
+    /// <summary>
+    /// A custom test field mapper used for the SaveShapeFileCustomFieldMappings test case.
+    /// </summary>
+    internal class CustomTestFieldMapper : IFieldTypeCharacterMapper
     {
+        /// <inheritdoc/>
         public char Map(Type type)
         {
             if (type == typeof(bool)) return FieldTypeCharacters.Logic;

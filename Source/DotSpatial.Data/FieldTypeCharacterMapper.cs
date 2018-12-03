@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 
 namespace DotSpatial.Data
 {
@@ -11,10 +11,10 @@ namespace DotSpatial.Data
     public class FieldTypeCharacterMapper : IFieldTypeCharacterMapper
     {
         /// <summary>
-        /// Maps a Type to a FieldTypeCharacter
+        /// Maps a Type to a FieldTypeCharacter.
         /// </summary>
-        /// <param name="type">A Type to convert to the char FieldTypeCharacter</param>
-        /// <returns></returns>
+        /// <param name="type">A Type to convert to the char FieldTypeCharacter.</param>
+        /// <returns>The FieldTypeCharacter assosiated with the given type.</returns>
         public char Map(Type type)
         {
             if (type == typeof(bool)) return FieldTypeCharacters.Logic;
@@ -28,10 +28,9 @@ namespace DotSpatial.Data
             if (type == typeof(byte)) return FieldTypeCharacters.Number;
             if (type == typeof(short)) return FieldTypeCharacters.Number;
             if (type == typeof(int)) return FieldTypeCharacters.Number;
-            if (type == typeof(long)) return FieldTypeCharacters.Number;
+            return type == typeof(long) ? FieldTypeCharacters.Number : FieldTypeCharacters.Text;
 
             // The default is to store it as a string type
-            return FieldTypeCharacters.Text;
         }
     }
 }
