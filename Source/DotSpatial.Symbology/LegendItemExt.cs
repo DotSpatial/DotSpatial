@@ -21,7 +21,7 @@ namespace DotSpatial.Symbology
         /// <returns>The found member.</returns>
         public static ILegendItem BottomMember(this ILegendItem self)
         {
-            if (self.LegendItems != null && self.LegendItems.Any())
+            if (self?.LegendItems != null && self.LegendItems.Any())
             {
                 var items = self.LegendItems.ToList();
 

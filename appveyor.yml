@@ -1,4 +1,5 @@
 version: 2.0.{build}
+image: Visual Studio 2017
 configuration: Release
 
 environment:
@@ -9,7 +10,7 @@ cache:
 
 build:
   project: source\DotSpatial.sln  
-  verbosity: minimal
+  verbosity: normal
   
 init:
 - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"

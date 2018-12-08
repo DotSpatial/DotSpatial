@@ -175,26 +175,17 @@ namespace DotSpatial.Controls
                     _layers.Clear();
                     if (Map.MapControl != null)
                     {
-                        //find all the layers in the map - not including "mapgroup" type layers
-                        foreach (IMapLayer lyr in Map.MapControl.GetAllLayers())
+                        // find all the layers in the map - not including "mapgroup" type layers
+                        foreach (var layer in Map.MapControl.GetAllLayers())
                         {
-                            if (lyr.Checked)
+                            if (layer is IMapLayer lyr && lyr.Checked)
                             {
                                 _layers.Add(lyr);
                             }
                         }
-                        //reverse the list so that they draw in the correct order
+
+                        // reverse the list so that they draw in the correct order
                         _layers.Reverse();
-                        
-/*                                               
-                        for (int i = Map.MapControl.Layers.Count - 1; i >= 0; i--)
-                        {
-                            if (Map.MapControl.Layers[i].Checked)
-                            {
-                                _layers.Add(Map.MapControl.Layers[i]);
-                            }
-                        }
-  */                      
                     }
 
                     UpdateThumbnail();
@@ -302,8 +293,9 @@ namespace DotSpatial.Controls
             g.TranslateTransform(LocationF.X + (col * itemSize.Width), LocationF.Y + (row * itemSize.Height));
             if (item.LegendText is null)
             {
-                item.LegendText = String.Empty;
+                item.LegendText = string.Empty;
             }
+
             item.PrintLegendItem(g, _font, _color, itemSize);
             g.TranslateTransform(-(LocationF.X + (col * itemSize.Width)), -(LocationF.Y + (row * itemSize.Height)));
             row++;

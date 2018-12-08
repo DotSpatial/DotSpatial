@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,13 +22,11 @@ namespace DotSpatial.Symbology
     internal class NaturalBreaks
     {
         #region Fields
-
-        int[,] _lowerClassLimits = null;
-        double[,] _varianceCombinations = null;
-        double[] _values = null;
-        int _numClasses;
-        int _numValues;
-        List<double> _resultClasses = null;
+        private readonly double[] _values;
+        private readonly int _numClasses;
+        private int[,] _lowerClassLimits;
+        private double[,] _varianceCombinations;
+        private List<double> _resultClasses;
 
         #endregion
 
@@ -36,13 +37,10 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="values">data values used for calculation.</param>
         /// <param name="numClasses">Number of breaks that should be calculated.</param>
-        public NaturalBreaks (List<double> values, int numClasses)
+        public NaturalBreaks(List<double> values, int numClasses)
         {
-
             _numClasses = numClasses;
-            _numValues = values.Count;
-
-            _values = values.ToArray(); 
+            _values = values.ToArray();
 
             // the number of classes must be greater than one and less than the number of data elements.
             if (_numClasses > _values.Length) return;
@@ -63,30 +61,37 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Compute the matrices required for Jenks breaks. These matrices 
-        /// can be used for any classing of data with `classes <= n_classes`
+        /// Returns the list of the results.
+        /// </summary>
+        /// <returns>The list of results.</returns>
+        public List<double> GetResults()
+        {
+            return _resultClasses;
+        }
+
+        /// <summary>
+        /// Compute the matrices required for Jenks breaks. These matrices can be used for any classing of data with `classes smaller or equal to n_classes`.
         /// </summary>
         private void GetMatrices()
         {
             // in the original implementation, these matrices are referred to as `LC` and `OP`
-            //
             // * lower_class_limits (LC): optimal lower class limits
-            // * variance_combinations (OP): optimal variance combinations for all classes - declared at class level now
-            // loop counters
+            // * variance_combinations (OP): optimal variance combinations for all classes - declared at class level now loop counters
             int i, j;
+
             // the variance, as computed at each step in the calculation
             double variance = 0;
 
             // Initialize and fill each matrix with zeroes
-            _lowerClassLimits = new int[_values.Length +1, _numClasses+1];
-            _varianceCombinations = new double[_values.Length +1, _numClasses+1];
+            _lowerClassLimits = new int[_values.Length + 1, _numClasses + 1];
+            _varianceCombinations = new double[_values.Length + 1, _numClasses + 1];
 
             for (i = 1; i < _numClasses + 1; i++)
             {
                 _lowerClassLimits[1, i] = 1;
                 _varianceCombinations[1, i] = 0;
-                // in the original implementation, 9999999 is used but
-                // since Javascript has `Infinity`, we use that.
+
+                // in the original implementation, 9999999 is used but since Javascript has `Infinity`, we use that.
                 for (j = 2; j < _values.Length + 1; j++)
                 {
                     _varianceCombinations[j, i] = double.PositiveInfinity;
@@ -97,51 +102,41 @@ namespace DotSpatial.Symbology
             {
                 // `SZ` originally. this is the sum of the values seen thus far when calculating variance.
                 double sum = 0;
+
                 // `ZSQ` originally. the sum of squares of values seen thus far
-                double sum_squares = 0;
+                double sumSquares = 0;
+
                 // `WT` originally. This is the number of
                 int w = 0;
-                // `IV` originally
-                int i4 = 0;
 
                 // in several instances, you could say `Math.pow(x, 2)` instead of `x * x`, but this is slower in some browsers introduces an unnecessary concept.
                 for (var m = 1; m < l + 1; m++)
                 {
                     // `III` originally
-                    var lower_class_limit = l - m + 1;
-                    var val = _values[lower_class_limit - 1];
+                    var lowerClassLimit = l - m + 1;
+                    var val = _values[lowerClassLimit - 1];
 
-                    // here we're estimating variance for each potential classing
-                    // of the data, for each potential number of classes. `w`
-                    // is the number of data points considered so far.
+                    // here we're estimating variance for each potential classing of the data, for each potential number of classes. `w` is the number of data points considered so far.
                     w++;
 
                     // increase the current sum and sum-of-squares
                     sum += val;
-                    sum_squares += val * val;
+                    sumSquares += val * val;
 
-                    // the variance at this point in the sequence is the difference
-                    // between the sum of squares and the total x 2, over the number
-                    // of samples.
-                    variance = sum_squares - (sum * sum) / w;
+                    // the variance at this point in the sequence is the difference between the sum of squares and the total x 2, over the number of samples.
+                    variance = sumSquares - ((sum * sum) / w);
 
-                    i4 = lower_class_limit - 1;
+                    // `IV` originally
+                    var i4 = lowerClassLimit - 1;
+                    if (i4 == 0) continue;
 
-                    if (i4 != 0)
+                    for (j = 2; j < _numClasses + 1; j++)
                     {
-                        for (j = 2; j < _numClasses + 1; j++)
+                        // if adding this element to an existing class will increase its variance beyond the limit, break the class at this point, setting the lower_class_limit at this point.
+                        if (_varianceCombinations[l, j] >= (variance + _varianceCombinations[i4, j - 1]))
                         {
-                            // if adding this element to an existing class
-                            // will increase its variance beyond the limit, break
-                            // the class at this point, setting the lower_class_limit
-                            // at this point.
-                            if (_varianceCombinations[l, j] >=
-                                (variance + _varianceCombinations[i4, j - 1]))
-                            {
-                                _lowerClassLimits[l, j] = lower_class_limit;
-                                _varianceCombinations[l, j] = variance +
-                                    _varianceCombinations[i4, j - 1];
-                            }
+                            _lowerClassLimits[l, j] = lowerClassLimit;
+                            _varianceCombinations[l, j] = variance + _varianceCombinations[i4, j - 1];
                         }
                     }
                 }
@@ -157,11 +152,10 @@ namespace DotSpatial.Symbology
         private void GetBreaks()
         {
             int k = _values.Length - 1;
-            double [] kclass = new double[_numClasses+1];
+            double[] kclass = new double[_numClasses + 1];
             int countNum = _numClasses;
 
-            // the calculation of classes will never include the upper and
-            // lower bounds, so we need to explicitly set them
+            // the calculation of classes will never include the upper and lower bounds, so we need to explicitly set them
             kclass[_numClasses] = _values[_values.Length - 1];
             kclass[0] = _values[0];
 
@@ -177,14 +171,6 @@ namespace DotSpatial.Symbology
             _resultClasses = kclass.ToList();
         }
 
-        /// <summary>
-        /// Convert the _resultClasses which is a list of doubles into a list of integer IDs of the corresponding range values.
-        /// </summary>
-        /// <returns></returns>
-        public List<double> GetResults()
-        {
-            return(_resultClasses);
-        }
-        #endregion
+       #endregion
     }
 }

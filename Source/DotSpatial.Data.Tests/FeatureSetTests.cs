@@ -457,11 +457,11 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// Tests whether or not the field mapper is saving the TypeCharacter correctly to shape files
-        /// Note that the TypeCharacter is derived from a field's DataType
+        /// Tests whether or not the field mapper is saving the TypeCharacter correctly to shape files.
+        /// Note that the TypeCharacter is derived from a field's DataType.
         /// When a shape file is read from disk, DataType is derived from the typeCode stored in the file.
-        /// So when read from disk the translation goes as follows [file typeCode]->[DataType]->TypeCharacter
-        /// So there could be something lost in this translation
+        /// So when read from disk the translation goes as follows [file typeCode]->[DataType]->TypeCharacter.
+        /// So there could be something lost in this translation.
         /// </summary>
         /// <param name="customFieldMapper">Whether or not to run the test with the Custom Field Mapper defined at the bottom of this document.</param>
         [TestCase(true)]
@@ -471,8 +471,6 @@ namespace DotSpatial.Data.Tests
             if (customFieldMapper)
                 FieldTypeCharacterMapperManager.Mapper = new CustomTestFieldMapper();
 
-            var featureType = FeatureType.Line;
-            var coordinateType = CoordinateType.Regular;
             var fileName = FileTools.GetTempFileName(".shp");
 
             try
@@ -486,10 +484,10 @@ namespace DotSpatial.Data.Tests
                                               new Coordinate(1, 2)
                                           };
 
-                var fs = new FeatureSet(featureType)
+                var fs = new FeatureSet(FeatureType.Line)
                 {
                     Projection = KnownCoordinateSystems.Geographic.World.WGS1984,
-                    CoordinateType = coordinateType
+                    CoordinateType = CoordinateType.Regular
                 };
 
                 fs.DataTable.Columns.Add(new DataColumn("doublefield", typeof(double)));
