@@ -30,7 +30,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Default mouse cursor button in layout insert toolbar
 
 ### Changed
-- Switched to VS2015 and C#6
+- Switched to VS2017 and C#7
 - Switched to .Net Framework 4.5.2 (#1083)
 - GdalExtension: Updated to GDAL 1.1.11
 - Demo and Apps projects should have build files (#120)
@@ -147,4 +147,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - SetSelectable Plugin Not Included in Release Build (#1106)
 - Error on OpenFile with special SPHEROID string (#1142)
 - Shape File Saves with Wrong DataTypes (#1005)
-- Calculation of translation param in InRamImageData.GetBitmap is defective #1203
+- Calculation of translation param in InRamImageData.GetBitmap is defective (#1203)
+- MapImageLayer not drawn correctly on print (#1137)
