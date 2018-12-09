@@ -147,3 +147,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - SetSelectable Plugin Not Included in Release Build (#1106)
 - Error on OpenFile with special SPHEROID string (#1142)
 - Shape File Saves with Wrong DataTypes (#1005)
+- Calculation of translation param in InRamImageData.GetBitmap is defective #1203
