@@ -91,7 +91,7 @@ namespace DotSpatial.Symbology
                 _lowerClassLimits[1, i] = 1;
                 _varianceCombinations[1, i] = 0;
 
-                // in the original implementation, 9999999 is used but since Javascript has `Infinity`, we use that.
+                // in the original implementation, 9999999 is used but since C# has `PositiveInfinity`, we use that.
                 for (j = 2; j < _values.Length + 1; j++)
                 {
                     _varianceCombinations[j, i] = double.PositiveInfinity;
