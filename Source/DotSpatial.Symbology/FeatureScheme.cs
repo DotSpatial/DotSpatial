@@ -301,7 +301,8 @@ namespace DotSpatial.Symbology
                 pageSize = 10000;
                 int count = EditorSettings.MaxSampleCount;
 
-                Random rnd = new Random();
+                // Specified seed is required for consistently recreating the break values
+                Random rnd = new Random(9999);
                 AttributePager ap = new AttributePager(source, pageSize);
                 int countPerPage = count / ap.NumPages();
                 ProgressMeter pm = new ProgressMeter(progressHandler, "Sampling " + count + " random values", count);
@@ -385,7 +386,10 @@ namespace DotSpatial.Symbology
                         Dictionary<int, double> randomValues = new Dictionary<int, double>();
                         int count = EditorSettings.MaxSampleCount;
                         int max = rows.Length;
-                        Random rnd = new Random();
+
+                        // Specified seed is required for consistently recreating the break values
+                        Random rnd = new Random(9999);
+
                         for (int i = 0; i < count; i++)
                         {
                             double val;
@@ -448,7 +452,9 @@ namespace DotSpatial.Symbology
                 Dictionary<int, double> randomValues = new Dictionary<int, double>();
                 int count = EditorSettings.MaxSampleCount;
                 int max = table.Rows.Count;
-                Random rnd = new Random();
+
+                // Specified seed is required for consistently recreating the break values
+                Random rnd = new Random(9999);
                 for (int i = 0; i < count; i++)
                 {
                     double val;
