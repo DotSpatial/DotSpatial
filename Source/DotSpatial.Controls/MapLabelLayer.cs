@@ -387,7 +387,28 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
-                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+                // we need to check vertices for NaN as this will cause some issues with certain map projections like
+                // Mercator and Orthographic. the logic is to test to see if any of the vertices have a NaN value and if
+                // so then we will remove that feature index from the list. it is essentially a filter so the labeler has
+                // a complete set of vertices to place a label. we first cache the indexes with invalid vertices and then
+                // after that we will remove them from the master list. I suppose there might already be a feature property
+                // that contains the vertice validity but dont know the codebase well enough to make that determination.
+                // it would save computation if it were available before this routine was reached.
+                var featsValid = features.GetRange(chunk * ChunkSize, numFeatures);
+                var invalidList = new List<int>();
+                foreach (int fid in featsValid)
+                {
+                    var isValidVtcs = GetFeatureVerticesAreValid(FeatureSet.ShapeIndices[fid].Parts);
+                    if (!isValidVtcs) invalidList.Add(fid);
+                }
+
+                foreach (int invfid in invalidList)
+                {
+                    featsValid.Remove(invfid);
+                }
+
+                DrawFeatures(args, featsValid);
 
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
@@ -678,6 +699,28 @@ namespace DotSpatial.Controls
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Determines if the part range has any invalid vertices fir labeling. An invalid vertex is one
+        /// with either an x or y value of NaN.
+        /// </summary>
+        /// <param name="prts">part range</param>
+        /// <returns>True if none of the vertices have an x or value of NaN, False if at least one vertex has an x or y value of NaN.</returns>
+        private static bool GetFeatureVerticesAreValid(List<PartRange> prts)
+        {
+            // cycle through all parts
+            foreach (PartRange prt in prts)
+            {
+                // we only need to find the first vertex that has a NaN value in x or y. if we find it then
+                // the result is that the part range is not valid.
+                var idxInvalid = prt.ToList().FindIndex(v => double.IsNaN(v.X) || double.IsNaN(v.Y));
+                if (idxInvalid != -1)
+                    return false;
+            }
+
+            // if we get to this line then all vertices are valid so the part range is valid
+            return true;
         }
 
         /// <summary>
