@@ -817,7 +817,6 @@ namespace DotSpatial.Symbology
             return DoSelectAction(tolerant, strict, selectionMode, ClearStates.False, out affectedArea, action);
         }
 
-
         /// <summary>
         /// this routine will determine if a string is a valid field name.
         /// Based on https://support.esri.com/en/technical-article/000005588
@@ -855,11 +854,6 @@ namespace DotSpatial.Symbology
                 return !isStartInvalidChar;
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// This method will remove the in ram features from the underlying dataset.
