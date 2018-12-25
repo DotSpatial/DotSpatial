@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using DotSpatial.NTSExtension;
+using DotSpatial.Projections;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
@@ -237,6 +238,37 @@ namespace DotSpatial.Data
         public static bool Intersects(this IFeature self, Envelope env)
         {
             return self.Geometry.EnvelopeInternal.Intersects(env) && self.Geometry.Intersects(env.ToPolygon());
+        }
+
+        /// <summary>
+        /// This routine takes a DotSpatial Featureset and makes a clone and then reprojects it to the requested Projection.
+        /// It returns a clone of the input so the input is not altered in any way.
+        /// </summary>
+        /// <param name="self">This featureSet</param>
+        /// <param name="targetPrj">The projection of the target clone FeatureSet</param>
+        /// <returns>A reprojected clone of the surce FeatureSet</returns>
+        public static IFeatureSet ReprojectedClone(this IFeatureSet self, ProjectionInfo targetPrj)
+        {
+            try
+            {
+                // input check
+                if (self == null || targetPrj == null)
+                {
+                    return null;
+                }
+
+                self.FillAttributes();
+                IFeatureSet fsClone = self.CopyFeatures(true);
+                fsClone.IndexMode = false;
+                fsClone.Reproject(targetPrj);
+
+                // success so return the reprojected clone FeatureSet
+                return fsClone;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
