@@ -31,7 +31,15 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the drawing layers. Drawing layers are tracked separately, and do not appear in the legend.
+        /// Gets or sets a value indicating whether or not the visibility of the children of a group are
+        /// triggered by the checked status of the group. If this is false (the default) then this will force
+        /// all the layers in this group to become visible. if this set to true then the visbility of each
+        /// layer is dependent on the status of every one of its parent group.
+        /// </summary>
+        bool AutoDisplayChildren { get; set; }
+
+        /// <summary>
+        /// Gets or sets the drawing layers. Drawing layers are tracked separately, and. do not appear in the legend.
         /// </summary>
         List<ILayer> DrawingLayers { get; set; }
 

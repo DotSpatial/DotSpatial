@@ -69,6 +69,10 @@ namespace DotSpatial.Symbology
 
         #region Properties
 
+        /// <inheritdoc />
+        [Serialize("AutoDisplayChildren")]
+        public bool AutoDisplayChildren { get; set; } = true;
+
         /// <summary>
         /// Gets or sets the drawing layers. Drawing layers are tracked separately, and do not appear in the legend.
         /// </summary>
