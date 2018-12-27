@@ -146,7 +146,6 @@ namespace DotSpatial.Symbology
         {
             get
             {
-
                 if (MapFrame.AutoDisplayChildren)
                 {
                     // classic way of processing group children's visibility. Setting this will force all the
