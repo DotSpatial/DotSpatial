@@ -146,7 +146,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (MapFrame.AutoDisplayChildren)
+                if (MapFrame.AutoDisplayGroupChildren)
                 {
                     // classic way of processing group children's visibility. Setting this will force all the
                     // layers in this group to become visible.
@@ -154,7 +154,7 @@ namespace DotSpatial.Symbology
                 }
                 else
                 {
-                    // alternative way of processing grouup children's visibility. Setting this will have the effect
+                    // alternative way of processing group children's visibility. Setting this will have the effect
                     // of de-coupling the group visibility with its children's visibility. they should be independent
                     // and a child layer's visibility should be True if every one of its parent groups is ON. This is
                     // consistent with other GIS/layering apps that support nested groups.
@@ -166,7 +166,7 @@ namespace DotSpatial.Symbology
             {
                 // group children should not be set on/off when the parent group is set on/off. this is
                 // consistent with other GIS/layering apps that support nested groups.
-                if (MapFrame.AutoDisplayChildren)
+                if (MapFrame.AutoDisplayGroupChildren)
                 {
                     // classic way of processing group children's visibility. Setting this will force all the
                     // layers in this group to become visible.

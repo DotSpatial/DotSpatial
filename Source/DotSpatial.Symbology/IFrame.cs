@@ -32,11 +32,13 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the visibility of the children of a group are
-        /// triggered by the checked status of the group. If this is false (the default) then this will force
-        /// all the layers in this group to become visible. if this set to true then the visbility of each
-        /// layer is dependent on the status of every one of its parent group.
+        /// triggered by the checked status of the group. If this is true then this will force all the layers
+        /// in this group to become visible. In other words, checking a group to ON will programatically check
+        /// all the children layers to ON as well. if this set to false then the visibility of each layer is
+        /// dependent on the status of every one of its parent group. In other words if a child layer is checked
+        /// to ON it will be displayed only if every parent group it is a part of is also checked to ON.
         /// </summary>
-        bool AutoDisplayChildren { get; set; }
+        bool AutoDisplayGroupChildren { get; set; }
 
         /// <summary>
         /// Gets or sets the drawing layers. Drawing layers are tracked separately, and. do not appear in the legend.
