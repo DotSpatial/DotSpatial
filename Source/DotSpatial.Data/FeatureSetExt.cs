@@ -249,8 +249,6 @@ namespace DotSpatial.Data
         /// <returns>A reprojected clone of the surce FeatureSet</returns>
         public static IFeatureSet ReprojectedClone(this IFeatureSet self, ProjectionInfo targetPrj)
         {
-            try
-            {
                 // input check
                 if (self == null || targetPrj == null)
                 {
@@ -264,11 +262,6 @@ namespace DotSpatial.Data
 
                 // success so return the reprojected clone FeatureSet
                 return fsClone;
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         /// <summary>
