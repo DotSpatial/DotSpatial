@@ -48,6 +48,7 @@ namespace DotSpatial.Data
         /// The _vertices.
         /// </summary>
         private double[] _vertices;
+        private double[] _verticesWGS84;
 
         /// <summary>
         /// The _vertices are valid.
@@ -344,6 +345,33 @@ namespace DotSpatial.Data
             }
         }
 
+        /// <summary>
+        /// Gets or sets an array of Vertex structures with X and Y coordinates in WGS84 projection.
+        /// </summary>
+        private double[] VertexWGS84
+        {
+            get
+            {
+                if (_verticesWGS84 == null)
+                {
+                    var vertexTmp = new double[Vertex.Length];
+
+                    Vertex.CopyTo(vertexTmp, 0);
+
+                    Projections.Reproject.ReprojectPoints(vertexTmp, Z, Projection, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, 0, vertexTmp.Length / 2);
+
+                    _verticesWGS84 = vertexTmp;
+                }
+
+                return _verticesWGS84;
+            }
+
+            set
+            {
+                _verticesWGS84 = value;
+            }
+        }
+
         /// <inheritdoc/>
         public double[] Vertex
         {
@@ -475,15 +503,24 @@ namespace DotSpatial.Data
             int start = shape.Range.StartIndex;
             int num = shape.Range.NumPoints;
 
+            double[] vertexShpWGS84 = new double[shape.Vertices.Length];
+
+            shape.Vertices.CopyTo(vertexShpWGS84, 0);
+
+            Projections.Reproject.ReprojectPoints(vertexShpWGS84, Z, Projection, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, 0, vertexShpWGS84.Length / 2);
+
             double[] vertices = new double[totalCount * 2];
+            double[] verticesWGS84 = new double[totalCount * 2];
             if (_vertices != null)
             {
                 Array.Copy(_vertices, 0, vertices, 0, _vertices.Length);
+                Array.Copy(VertexWGS84, 0, verticesWGS84, 0, VertexWGS84.Length);
             }
 
             if (shape.Vertices != null)
             {
                 Array.Copy(shape.Vertices, start * 2, vertices, count * 2, num * 2);
+                Array.Copy(vertexShpWGS84, start * 2, VertexWGS84, count * 2, num * 2);
                 if (_m != null || shape.M != null)
                 {
                     double[] m = new double[totalCount];
@@ -583,9 +620,12 @@ namespace DotSpatial.Data
             }
 
             double[] vertices = new double[numPoints * 2];
+            double[] verticesShpsWGS84 = new double[numPoints * 2];
+
             if (vertsExist)
             {
                 Array.Copy(_vertices, 0, vertices, 0, _vertices.Length);
+                Array.Copy(VertexWGS84, 0, verticesShpsWGS84, 0, VertexWGS84.Length);
             }
 
             if (hasM)
@@ -618,6 +658,13 @@ namespace DotSpatial.Data
                 if (shape.Vertices?.Length - start >= num)
                 {
                     Array.Copy(shape.Vertices, start * 2, vertices, offset * 2, num * 2);
+                    double[] vertexShpWGS84 = new double[shape.Vertices.Length];
+
+                    shape.Vertices.CopyTo(vertexShpWGS84, 0);
+
+                    Projections.Reproject.ReprojectPoints(vertexShpWGS84, Z, Projection, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, 0, vertexShpWGS84.Length / 2);
+
+                    Array.Copy(vertexShpWGS84, start * 2, verticesShpsWGS84, offset * 2, num * 2);
                 }
 
                 if (shape.M != null && _m != null && (shape.M.Length - start) >= num)
@@ -637,6 +684,7 @@ namespace DotSpatial.Data
             }
 
             Vertex = vertices;
+            VertexWGS84 = verticesShpsWGS84;
             UpdateExtent();
         }
 
@@ -1038,18 +1086,22 @@ namespace DotSpatial.Data
 
             // remove the x,y vertices
             double[] xyResult = new double[_vertices.Length - (sr.NumPoints * 2)];
+            double[] xyResultWGS84 = new double[_vertices.Length - (sr.NumPoints * 2)];
             if (sr.StartIndex > 0)
             {
                 Array.Copy(_vertices, 0, xyResult, 0, sr.StartIndex * 2);
+                Array.Copy(VertexWGS84, 0, xyResultWGS84, 0, sr.StartIndex * 2);
             }
 
             int end = (sr.StartIndex * 2) + (sr.NumPoints * 2);
             if (index < _shapeIndices.Count - 1)
             {
                 Array.Copy(_vertices, end, xyResult, sr.StartIndex * 2, _vertices.Length - end);
+                Array.Copy(VertexWGS84, end, xyResultWGS84, sr.StartIndex * 2, _vertices.Length - end);
             }
 
             _vertices = xyResult;
+            VertexWGS84 = xyResultWGS84;
 
             // remove the m values if necessary
             if (CoordinateType == CoordinateType.M)
@@ -1158,6 +1210,7 @@ namespace DotSpatial.Data
             }
 
             List<double> vertex = new List<double>();
+            List<double> vertexWGS84 = new List<double>();
             List<double> z = new List<double>();
             List<double> m = new List<double>();
             int pointTotal = 0;
@@ -1167,8 +1220,12 @@ namespace DotSpatial.Data
                 if (index < 0 || index >= _shapeIndices.Count) continue;
                 ShapeRange sr = _shapeIndices[index];
                 double[] xyShape = new double[sr.NumPoints * 2];
+                double[] xyShapeWGS84 = new double[sr.NumPoints * 2];
                 Array.Copy(_vertices, sr.StartIndex * 2, xyShape, 0, sr.NumPoints * 2);
+                Array.Copy(VertexWGS84, sr.StartIndex * 2, xyShapeWGS84, 0, sr.NumPoints * 2);
+
                 vertex.AddRange(xyShape);
+                vertexWGS84.AddRange(xyShapeWGS84);
 
                 /////////////////////////////////////////////////////////////////
                 // fix to address issue http://dotspatial.codeplex.com/workitem/174
@@ -1206,6 +1263,7 @@ namespace DotSpatial.Data
             ProgressMeter.Reset();
 
             _vertices = vertex.ToArray();
+            VertexWGS84 = vertexWGS84.ToArray();
             _m = m.ToArray();
             _z = z.ToArray();
             remove = enumerable.ToList();
@@ -1270,7 +1328,9 @@ namespace DotSpatial.Data
         /// </param>
         public override void Reproject(ProjectionInfo targetProjection)
         {
-            Projections.Reproject.ReprojectPoints(Vertex, Z, Projection, targetProjection, 0, Vertex.Length / 2);
+            VertexWGS84.CopyTo(Vertex, 0);
+            Projections.Reproject.ReprojectPoints(Vertex, Z, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, targetProjection, 0, Vertex.Length / 2);
+
             if (!IndexMode) UpdateCoordinates();
 
             foreach (ShapeRange shape in ShapeIndices)
@@ -1956,10 +2016,6 @@ namespace DotSpatial.Data
             {
                 ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Geometry.EnvelopeInternal), StartIndex = vIndex };
 
-                // CGX
-                if (f.Geometry.EnvelopeInternal != null) { shx.Extent = new Extent(f.Geometry.EnvelopeInternal); }
-                // Fin CGX
-
                 _shapeIndices.Add(shx);
                 f.ShapeIndex = shx;
 
@@ -2001,6 +2057,17 @@ namespace DotSpatial.Data
             }
 
             _verticesAreValid = true;
+
+            if (Projection != null)
+            {
+                var vertexTmp = new double[_vertices.Length];
+
+                _vertices.CopyTo(vertexTmp, 0);
+
+                Projections.Reproject.ReprojectPoints(vertexTmp, Z, Projection, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, 0, vertexTmp.Length / 2);
+
+                _verticesWGS84 = vertexTmp;
+            }
         }
 
         /// <summary>
