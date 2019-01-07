@@ -753,10 +753,16 @@ namespace DotSpatial.Symbology
         {
             HashSet<object> lst = new HashSet<object>();
             bool containsNull = false;
-            foreach (DataRow dr in table.Rows)
+            foreach (object row in table.Rows)
             {
-                object val = dr[fieldName];
-                if (val == null || dr[fieldName] is DBNull || val.ToString() == string.Empty)
+                object val = null;
+
+                if (row is IDataRow idr)
+                    val = idr[fieldName];
+                else if (row is DataRow dr)
+                    val = dr[fieldName];
+
+                if (val == null || val is DBNull || val.ToString() == string.Empty)
                 {
                     containsNull = true;
                 }
