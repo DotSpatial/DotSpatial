@@ -392,6 +392,8 @@ namespace DotSpatial.Data
                     }
                 }
 
+                _verticesWGS84 = null;
+
                 _verticesAreValid = true;
             }
         }
@@ -1328,8 +1330,11 @@ namespace DotSpatial.Data
         /// </param>
         public override void Reproject(ProjectionInfo targetProjection)
         {
-            VertexWGS84.CopyTo(Vertex, 0);
-            Projections.Reproject.ReprojectPoints(Vertex, Z, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, targetProjection, 0, Vertex.Length / 2);
+            if (Vertex.Length > 0)
+            {
+                VertexWGS84.CopyTo(Vertex, 0);
+                Projections.Reproject.ReprojectPoints(Vertex, Z, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, targetProjection, 0, Vertex.Length / 2);
+            }
 
             if (!IndexMode) UpdateCoordinates();
 
@@ -2056,18 +2061,10 @@ namespace DotSpatial.Data
                 shx.NumPoints = vIndex - shx.StartIndex; // Changed by jany_: has to be initialized to correctly paint multipoints
             }
 
+            _verticesWGS84 = null;
+
             _verticesAreValid = true;
 
-            if (Projection != null)
-            {
-                var vertexTmp = new double[_vertices.Length];
-
-                _vertices.CopyTo(vertexTmp, 0);
-
-                Projections.Reproject.ReprojectPoints(vertexTmp, Z, Projection, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984, 0, vertexTmp.Length / 2);
-
-                _verticesWGS84 = vertexTmp;
-            }
         }
 
         /// <summary>
