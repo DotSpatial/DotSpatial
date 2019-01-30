@@ -118,7 +118,7 @@ namespace DotSpatial.Data
         public static bool operator ==(DS_DataRow dr1, DS_DataRow dr2)
         {
             return dr1.dataRow == dr2.dataRow;
-            /*bool ret = true;
+         /*   bool ret = true;
             if (dr1.ItemArray.Length != dr2.ItemArray.Length)
                 return false;
             for (int i = 0; i < dr1.ItemArray.Length; i++)
@@ -131,18 +131,13 @@ namespace DotSpatial.Data
 
         public static bool operator !=(DS_DataRow dr1, DS_DataRow dr2)
         {
-            return dr1.dataRow != dr2.dataRow;
-            /*bool ret = false;
-            if (dr1.ItemArray.Length != dr2.ItemArray.Length)
-                return true;
-            for (int i = 0; i < dr1.ItemArray.Length; i++)
-            {
-                if (!dr1.ItemArray[i].Equals(dr2.ItemArray[i]))
-                    return true;
-            }
-            return ret;*/
+            return !(dr1 == dr2);
         }
 
+        public int GetHashCode()
+        {
+            return dataRow.GetHashCode();
+        }
         // FIN CGX
     }
 }

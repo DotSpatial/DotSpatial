@@ -11,8 +11,8 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial Python</tags>
     <dependencies>
-      <dependency id="IronPython" version="2.7.8"/>
-      <dependency id="DynamicLanguageRuntime" version="1.2.1" />
+      <dependency id="IronPython" version="[2.7.9]"/>
+      <dependency id="DynamicLanguageRuntime" version="[1.2.2]" />
     </dependencies>
   </metadata>
   <files>  

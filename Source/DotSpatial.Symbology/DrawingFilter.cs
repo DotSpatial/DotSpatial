@@ -405,11 +405,17 @@ namespace DotSpatial.Symbology
 
                         foreach (IDataRow dr in rows)
                         {
-                            int index;
+                          
+                            foreach (var key in allRows.Keys)
+                            {
+                                if (key.Equals(dr))
+                                    DrawnStates[FeatureList[allRows[key]]].SchemeCategory = cat;
+                            } 
+                            /*int index;
                             if (allRows.TryGetValue(dr, out index))
                             {
                                 DrawnStates[FeatureList[index]].SchemeCategory = cat;
-                            }
+                            }*/
                         }
                     }
                     catch (Exception)

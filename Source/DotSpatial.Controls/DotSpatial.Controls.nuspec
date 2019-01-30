@@ -14,17 +14,17 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.Data" version="$PackageVersion$"/>
-      <dependency id="DotSpatial.Data.Forms" version="$PackageVersion$" />
-      <dependency id="DotSpatial.Extensions" version="$PackageVersion$" />
-      <dependency id="DotSpatial.Modeling.Forms" version="$PackageVersion$" />
-      <dependency id="DotSpatial.Projections" version="$PackageVersion$" />
-      <dependency id="DotSpatial.Projections.Forms" version="$PackageVersion$"/>
-      <dependency id="DotSpatial.Serialization"  version="$PackageVersion$"/>
-      <dependency id="DotSpatial.Symbology" version="$PackageVersion$" />
-      <dependency id="DotSpatial.Symbology.Forms" version="$PackageVersion$"/>
-      <dependency id="DotSpatial.NetTopologySuite-cli" version="1.14.4"/>
-      <dependency id="DotSpatial.GeoAPI-cli" version="1.7.4.3"/>
+      <dependency id="DotSpatial.Data" version="[$PackageVersion$]"/>
+      <dependency id="DotSpatial.Data.Forms" version="[$PackageVersion$]" />
+      <dependency id="DotSpatial.Extensions" version="[$PackageVersion$]" />
+      <dependency id="DotSpatial.Modeling.Forms" version="[$PackageVersion$]" />
+      <dependency id="DotSpatial.Projections" version="[$PackageVersion$]" />
+      <dependency id="DotSpatial.Projections.Forms" version="[$PackageVersion$]"/>
+      <dependency id="DotSpatial.Serialization"  version="[$PackageVersion$]"/>
+      <dependency id="DotSpatial.Symbology" version="[$PackageVersion$]" />
+      <dependency id="DotSpatial.Symbology.Forms" version="[$PackageVersion$]"/>
+      <dependency id="DotSpatial.NetTopologySuite-cli" version="[1.14.4]"/>
+      <dependency id="DotSpatial.GeoAPI-cli" version="[1.7.4.3]"/>
     </dependencies>
   </metadata>
   <files>
