@@ -168,7 +168,14 @@ namespace DotSpatial.Data
         /// <returns>An IEnumerator for this collection.</returns>
         public IEnumerator GetEnumerator()
         {
-            return _dataRowCollection.GetEnumerator();
+            List<DS_DataRow> list = new List<DS_DataRow>();
+
+            foreach (var dr in _dataRowCollection)
+            {
+                list.Add(new DS_DataRow((DataRow)dr));
+            }
+
+            return list.GetEnumerator();
         }
 
         /// <summary>
