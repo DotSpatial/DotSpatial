@@ -57,6 +57,7 @@ namespace DotSpatial.Projections.GeographicCategories
         public readonly ProjectionInfo IndonesianDatum1974;
         public readonly ProjectionInfo Israel;
         public readonly ProjectionInfo JGD2000;
+        public readonly ProjectionInfo JGD2011;
         public readonly ProjectionInfo Jordan;
         public readonly ProjectionInfo Kalianpur1880;
         public readonly ProjectionInfo Kalianpur1937;
@@ -135,6 +136,7 @@ namespace DotSpatial.Projections.GeographicCategories
             IndonesianDatum1974 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378160 +b=6356774.50408554 +no_defs ");
             Israel = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
             JGD2000 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
+            JGD2011 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
             Jordan = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             Kalianpur1880 = ProjectionInfo.FromProj4String("+proj=longlat +a=6377299.36 +b=6356098.35162804 +no_defs ");
             Kalianpur1937 = ProjectionInfo.FromProj4String("+proj=longlat +a=6377276.345 +b=6356075.41314024 +no_defs ");
@@ -237,6 +239,8 @@ namespace DotSpatial.Projections.GeographicCategories
             Israel.GeographicInfo.Name = "GCS_Israel";
             JGD2000.Name = "GCS_JGD_2000";
             JGD2000.GeographicInfo.Name = "GCS_JGD_2000";
+            JGD2011.Name = "GCS_JGD_2011";
+            JGD2011.GeographicInfo.Name = "GCS_JGD_2011";
             Jordan.Name = "GCS_Jordan";
             Jordan.GeographicInfo.Name = "GCS_Jordan";
             Kalianpur1880.Name = "GCS_Kalianpur_1880";
