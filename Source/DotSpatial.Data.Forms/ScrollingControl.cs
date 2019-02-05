@@ -226,6 +226,8 @@ namespace DotSpatial.Data.Forms
             _scrVertical.Maximum = dh;
             if (dw <= cw)
             {
+                _controlRectangle.Y = 0;
+                _scrHorizontal.Value = _scrHorizontal.Minimum;
                 _scrHorizontal.Visible = false;
             }
             else
@@ -235,6 +237,8 @@ namespace DotSpatial.Data.Forms
 
             if (dh <= ch)
             {
+                _controlRectangle.X = 0;
+                _scrVertical.Value = _scrVertical.Minimum;
                 _scrVertical.Visible = false;
             }
             else
