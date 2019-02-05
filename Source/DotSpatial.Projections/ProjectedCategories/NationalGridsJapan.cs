@@ -150,7 +150,6 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2011JapanZone8 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=138.5 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
             JGD2011JapanZone9 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=139.8333333333333 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
 
-
             JapanZone1.Name = "Japan_Zone_1";
             JapanZone10.Name = "Japan_Zone_10";
             JapanZone11.Name = "Japan_Zone_11";
@@ -209,8 +208,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2011JapanZone7.Name = "JGD_2011_Japan_Zone_7";
             JGD2011JapanZone8.Name = "JGD_2011_Japan_Zone_8";
             JGD2011JapanZone9.Name = "JGD_2011_Japan_Zone_9";
-
-
+            
             JapanZone1.GeographicInfo.Name = "GCS_Tokyo";
             JapanZone10.GeographicInfo.Name = "GCS_Tokyo";
             JapanZone11.GeographicInfo.Name = "GCS_Tokyo";
@@ -270,7 +268,6 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2011JapanZone8.GeographicInfo.Name = "GCS_JGD_2011";
             JGD2011JapanZone9.GeographicInfo.Name = "GCS_JGD_2011";
 
-
             JapanZone1.GeographicInfo.Datum.Name = "D_Tokyo";
             JapanZone10.GeographicInfo.Datum.Name = "D_Tokyo";
             JapanZone11.GeographicInfo.Datum.Name = "D_Tokyo";
@@ -329,9 +326,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2011JapanZone7.GeographicInfo.Datum.Name = "D_JGD_2011";
             JGD2011JapanZone8.GeographicInfo.Datum.Name = "D_JGD_2011";
             JGD2011JapanZone9.GeographicInfo.Datum.Name = "D_JGD_2011";
-
         }
-
         #endregion
     }
 }
