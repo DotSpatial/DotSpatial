@@ -87,6 +87,24 @@ namespace DotSpatial.Projections
         {
             double toMeter = source.Unit.Meters;
 
+            if (source.Transform.Rotated && source.Transform.Angle != 0)
+            {
+                double cosAngle = Math.Cos(Math.PI * source.Transform.Angle / 180.0);
+                double sinAngle = Math.Sin(Math.PI * source.Transform.Angle / 180.0);
+
+                for (int i = startIndex; i < startIndex + numPoints; i++)
+                {
+                    int x = i * 2;
+                    int y = i * 2 + 1;
+
+                    double x1 = cosAngle * xy[x] - sinAngle * xy[y];
+                    double y1 = sinAngle * xy[x] + cosAngle * xy[y];
+
+                    xy[x] = x1;
+                    xy[y] = y1;
+                }
+            }
+
             // Geocentric coordinates are centered at the core of the earth.  Z is up toward the north pole.
             // The X axis goes from the center of the earth through Greenwich.
             // The Y axis passes through 90E.
@@ -171,6 +189,24 @@ namespace DotSpatial.Projections
             else
             {
                 ConvertToProjected(dest, xy, z, dstZtoMeter, startIndex, numPoints);
+
+                if (dest.Transform.Rotated && dest.Transform.Angle != 0)
+                {
+                    double cosAngle = Math.Cos(-Math.PI * dest.Transform.Angle / 180.0);
+                    double sinAngle = Math.Sin(-Math.PI * dest.Transform.Angle / 180.0);
+
+                    for (int i = startIndex; i < startIndex + numPoints; i++)
+                    {
+                        int x = i * 2;
+                        int y = i * 2 + 1;
+
+                        double x1 = cosAngle * xy[x] - sinAngle * xy[y];
+                        double y1 = sinAngle * xy[x] + cosAngle * xy[y];
+
+                        xy[x] = x1;
+                        xy[y] = y1;
+                    }
+                }
             }
         }
 

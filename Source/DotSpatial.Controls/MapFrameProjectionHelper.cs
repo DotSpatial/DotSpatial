@@ -42,6 +42,18 @@ namespace DotSpatial.Controls
             if (mapFrame == null) throw new ArgumentNullException("mapFrame");
             if (newProjection == null) throw new ArgumentNullException("newProjection");
 
+            // assign rotation to projection transform depending on mapframe angle
+            if (mapFrame.Angle != 0)
+            {
+                newProjection.Transform.Rotated = true;
+                newProjection.Transform.Angle = mapFrame.Angle;
+            }
+            else
+            {
+                newProjection.Transform.Rotated = false;
+                newProjection.Transform.Angle = 0;
+            }
+
             foreach (var layer in mapFrame.GetAllLayers())
             {
                 if (layer.CanReproject)
@@ -50,7 +62,7 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
-                    if (onCantReproject != null) onCantReproject(layer);
+                    onCantReproject?.Invoke(layer);
                 }
             }
 
