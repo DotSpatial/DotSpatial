@@ -329,7 +329,7 @@ namespace DotSpatial.Controls
             double[] previousPoint = null;
             foreach (Coordinate c in ls.Coordinates)
             {
-                var pt = new[] { (c.X - minX) * dx, (maxY - c.Y) * dy };
+                var pt = new[] { (c.X - minX) * dx, (maxY - c.Y) * dy};
                 if (previousPoint == null || previousPoint.Length < 2 || pt[0] != previousPoint[0] || pt[1] != previousPoint[1])
                 {
                     points.Add(pt);
@@ -419,7 +419,7 @@ namespace DotSpatial.Controls
         private static void AddLineStringToPath(GraphicsPath path, MapArgs args, Extent extent, List<double[]> points, Rectangle clipRect)
         {
             List<List<double[]>> multiLinestrings;
-            if (!extent.Within(args.GeographicExtents))
+            if (!DotSpatial.Symbology.Core.Constants.IsPrinting && !extent.Within(args.GeographicExtents))
             {
                 multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top, clipRect.Right, clipRect.Bottom);
             }
