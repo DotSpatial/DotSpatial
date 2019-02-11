@@ -109,10 +109,21 @@ namespace DotSpatial.Data
         }
 
         // CGX SLM
-        public override bool Equals(object Obj)
+        public override bool Equals(object obj)
         {
-            DS_DataRow other = (DS_DataRow)Obj;
-            return this == other;
+            if ((obj == null) || !(obj is DS_DataRow || obj is DataRow))
+                return false;
+
+            if(obj is DS_DataRow)
+            {
+                DS_DataRow other = (DS_DataRow)obj;
+                return this == other;
+            }
+            else
+            {
+                DataRow other = (DataRow)obj;
+                return this == other;
+            }
         }
 
         public static bool operator ==(DS_DataRow dr1, DS_DataRow dr2)
@@ -128,13 +139,22 @@ namespace DotSpatial.Data
             }
             return ret;*/
         }
+        
+        public static bool operator ==(DS_DataRow dr1, DataRow dr2){
+            return dr1.dataRow == dr2;
+        }
 
         public static bool operator !=(DS_DataRow dr1, DS_DataRow dr2)
         {
             return !(dr1 == dr2);
         }
 
-        public int GetHashCode()
+        public static bool operator !=(DS_DataRow dr1, DataRow dr2)
+        {
+            return dr1.dataRow != dr2;
+        }
+
+        public override int GetHashCode()
         {
             return dataRow.GetHashCode();
         }
