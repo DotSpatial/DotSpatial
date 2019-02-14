@@ -684,6 +684,8 @@ namespace DotSpatial.Controls
                 RemoveFromLayout(le);
             Invalidate();
             OnSelectionChanged(EventArgs.Empty);
+
+            SaveLayoutElements();
         }
 
         /// <summary>
@@ -2289,6 +2291,7 @@ namespace DotSpatial.Controls
                         // ShowHideLayoutElement("IACProfile", true);
                         _mouseMode = MouseMode.Default;
                         Cursor = Cursors.Default;
+                        SaveLayoutElements();
                         break;
 
                     // Turns of resize
@@ -2300,6 +2303,7 @@ namespace DotSpatial.Controls
                         SelectedLayoutElements[0].Resizing = false;
                         SelectedLayoutElements[0].Size = SelectedLayoutElements[0].Size;
                         Invalidate(new Region(PaperToScreen(SelectedLayoutElements[0].Rectangle)));
+                        SaveLayoutElements();
                         break;
 
                     case MouseMode.InsertNewElement:
@@ -2326,6 +2330,7 @@ namespace DotSpatial.Controls
                         _mouseMode = MouseMode.Default;
                         _mouseBox.Inflate(5, 5);
                         Invalidate(new Region(_mouseBox));
+                        SaveLayoutElements();
                         break;
 
                     case MouseMode.PanMap:
