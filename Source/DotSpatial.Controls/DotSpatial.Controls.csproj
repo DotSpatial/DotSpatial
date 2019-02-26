@@ -111,6 +111,7 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="CoordinateFormatter.cs" />
     <Compile Include="Core\Constant.cs" />
     <Compile Include="DatelineCrossingExtentExtension.cs" />
     <Compile Include="DatelineCrossingMap.cs">

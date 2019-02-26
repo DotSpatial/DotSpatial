@@ -41,7 +41,7 @@ namespace DotSpatial.Controls
             set { _sName = value; }
         }
 
-        [Serialize("bookmark_center")]
+        [Serialize("bookmark_center", Formatter = typeof(CoordinateFormatter))]
         public Coordinate Center
         {
             get { return _pCenter; }
