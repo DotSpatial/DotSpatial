@@ -262,47 +262,6 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Activates the extensions passed in and deactivates the rest.
-        /// If null is passed in, all extensions are deactivated.
-        /// Only affects extensions where DeactivationAllowed is true.
-        /// </summary>
-        /// <param name="names">The names.</param>
-        public void ActivateExtensionsExclusively(string[] names)
-        {
-            // Consider only extensions that can be deactivated.
-            var extensions = Extensions.Where(t => t.DeactivationAllowed).ToList();
-
-            var extensionCount = extensions.Count;
-            int progress = 0;
-
-            foreach (var extension in extensions.OrderBy(_ => _.Priority))
-            {
-                // report progress
-                if (ProgressHandler != null)
-                {
-                    int percent = (progress * 100) / extensionCount;
-                    var msg = string.Format(MessageStrings.LoadingPluginsPercentComplete, extension.Name, percent);
-                    ProgressHandler.Progress(MessageStrings.LoadingPlugins, percent, msg);
-                    progress++;
-                }
-
-                if (names != null && names.Contains(extension.Name))
-                {
-                    // activate
-                    if (extension.IsActive == false) extension.TryActivate();
-                }
-                else
-                {
-                    // deactivate
-                    if (extension.IsActive) extension.Deactivate();
-                }
-            }
-
-            // report progress
-            ProgressHandler?.Progress(MessageStrings.LoadingPlugins, 0, string.Empty);
-        }
-
-        /// <summary>
         /// Ensures the required imports are available for IExtension implementors. We guarantee DockManager, HeaderControl and ProgressHandler
         /// are available when an IExtension loads, so that the developer of an IExtension doesn't need to check to see whether they are null.
         /// We make sure these are available before activating an IExtension.
@@ -359,7 +318,8 @@ namespace DotSpatial.Controls
         /// Loads Extensions using MEF and then activates them.
         /// Should only be called once on startup.
         /// </summary>
-        public virtual void LoadExtensions()
+        /// <param name="names">List of extension to activate.</param>
+        public virtual void LoadExtensions(string[] names = null)
         {
             if (DesignMode) return;
 
@@ -382,7 +342,8 @@ namespace DotSpatial.Controls
 
             updateThread.Join();
 
-            ActivateAllExtensions();
+            ActivateAllExtensions(names);
+
             OnExtensionsActivated(EventArgs.Empty);
 
             if (_splashScreen != null)
@@ -398,52 +359,6 @@ namespace DotSpatial.Controls
             // using only export IStatusControl and we would require each IStatusControl to
             //    [Export(typeof(DotSpatial.Data.IProgressHandler))]
             // To get that working.
-            //DataManager.DefaultDataManager.ProgressHandler = ProgressHandler; // CGX
-        }
-
-        /// Loads Extensions using MEF and then activates them.
-        /// Should only be called once on startup.
-        /// </summary>
-        public virtual void LoadExtensionsExclusively(string[] names)
-        {
-            if (DesignMode) return;
-
-            if (Extensions.Any())
-            {
-                throw new InvalidOperationException("LoadExtensions() should only be called once. Subsequent calls should be made to RefreshExtensions(). ");
-            }
-
-            PackageManager.RemovePendingPackagesAndExtensions();
-            _splashScreen = SplashScreenHelper.GetSplashScreenManager();
-
-            Thread updateThread = new Thread(AppLoadExtensions);
-            updateThread.Start();
-
-            // Update splash screen's progress bar while thread is active.
-            while (updateThread.IsAlive)
-            {
-                UpdateSplashScreen(_message);
-            }
-
-            updateThread.Join();
-
-            ActivateExtensionsExclusively(names);
-            OnExtensionsActivated(EventArgs.Empty);
-
-            if (_splashScreen != null)
-            {
-                _splashScreen.Deactivate();
-                _splashScreen = null;
-            }
-
-            // Set the DefaultDataManager progress handler.
-            // It doesn’t seem like the solution is as simple as adding the
-            //        [Import(typeof(IProgressHandler), AllowDefault = true)]
-            // Attribute to the ProgressHandler property on DataManager, because the ProgressHandler we are typically
-            // using only export IStatusControl and we would require each IStatusControl to
-            //    [Export(typeof(DotSpatial.Data.IProgressHandler))]
-            // To get that working.
-            DataManager.DefaultDataManager.ProgressHandler = ProgressHandler;
         }
 
         /// <summary>
@@ -553,7 +468,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void ActivateAllExtensions()
+        private void ActivateAllExtensions(string[] names = null)
         {
             foreach (var extension in SatisfyImportsExtensions.OrderBy(_ => _.Priority))
             {
@@ -573,7 +488,14 @@ namespace DotSpatial.Controls
             // Activate remaining extensions
             foreach (var extension in Extensions.Where(_ => _.DeactivationAllowed).OrderBy(_ => _.Priority))
             {
-                Activate(extension);
+                if (names == null || names.Contains(extension.Name))
+                {
+                     extension.Activate();
+                }
+                else
+                {
+                    extension.Deactivate();
+                }
             }
         }
 
@@ -590,8 +512,8 @@ namespace DotSpatial.Controls
 
             try
             {
-				if (CompositionContainer != null) // CGX
-                	CompositionContainer.ComposeParts(this, DataManager.DefaultDataManager, SerializationManager);
+                if (CompositionContainer != null) // CGX
+                    CompositionContainer.ComposeParts(this, DataManager.DefaultDataManager, SerializationManager);
             }
             catch (CompositionException compositionException)
             {
