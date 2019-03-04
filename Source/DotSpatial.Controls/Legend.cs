@@ -751,12 +751,19 @@ namespace DotSpatial.Controls
                             {
                                 potentialParent.ParentMapFrame().SuspendEvents();
                                 lyr.LockDispose();
+                                grp1?.SuspendEvents();
+                                grp.SuspendEvents();
+
                                 grp1?.Remove(lyr);
 
                                 var index = potentialParent.InsertIndex(_dragTarget.Item);
 
                                 if (index == -1) index = 0;
+
                                 grp.Insert(index, lyr);
+
+                                grp.ResumeEvents();
+                                grp1?.ResumeEvents();
 
                                 // when the target is a group, assign the parent item.
                                 lyr.SetParentItem(grp);
