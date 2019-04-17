@@ -1078,6 +1078,92 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Captures an image of whatever the contents of the back buffer would be at the size of the screen.
+        /// Since the DotSpatial framework currently does not provide a mechanism for screen referenced labels
+        /// the best we can do in the meantime is to allow the developer to pass in Label objects that are controls
+        /// placed on top of the map.
+        /// </summary>
+        /// <param name="labelList">a list of Label controls</param>
+        /// <returns>A bitmap with the snap shot plus embedded string text.</returns>
+        public Bitmap SnapShot(List<Label> labelList)
+        {
+            Bitmap bmp = SnapShot();
+
+            // inject the labels into the bitmap
+            if (labelList != null && labelList.Count > 0)
+            {
+                using (Graphics gr = Graphics.FromImage(bmp))
+                {
+                    gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                    // cycle through each label in the list
+                    foreach (Label lbl in labelList)
+                    {
+                        // the label has to be visible and it must contain text
+                        if (lbl != null && lbl.Visible && !string.IsNullOrWhiteSpace(lbl.Text))
+                        {
+                            // convert top left of label to screen coords
+                            Point ptScr = lbl.PointToScreen(new Point(0, 0));
+
+                            // take the screen point and determine where that point is on the map control
+                            Point ptMap = PointToClient(ptScr);
+
+                            // get the label rectangle
+                            Rectangle rct = lbl.ClientRectangle;
+
+                            // setup the background rectangle
+                            if (lbl.BackColor != Color.Transparent)
+                            {
+                                // get the label backcolor
+                                Brush brshBak = new SolidBrush(lbl.BackColor);
+
+                                // to create the back area in graphics we can use the rectangle dimensions but we
+                                // need to use proper location
+                                gr.FillRectangle(brshBak, ptMap.X, ptMap.Y, rct.Width, rct.Height);
+                            }
+
+                            // setup the background border
+                            if (lbl.BorderStyle != BorderStyle.None)
+                            {
+                                // get the label border color (assumed to be black)
+                                Pen penBdr = new Pen(Color.Black, 1);
+
+                                // to create the back border in graphics we can use the rectangle dimensions but we
+                                // need to use proper location
+                                gr.DrawRectangle(penBdr, ptMap.X, ptMap.Y, rct.Width, rct.Height);
+                            }
+
+                            // set up the text part
+                            string txt = lbl.Text;
+                            Font fnt = lbl.Font;
+                            SolidBrush brsh = new SolidBrush(lbl.ForeColor);
+
+                            // draw the text string directly on the bitmap
+                            gr.DrawString(txt, fnt, brsh, ptMap);
+                        }
+                    }
+                }
+            }
+
+            // return the modified bitmap
+            return bmp;
+        }
+
+        /// <summary>
+        /// Captures an image of whatever the contents of the back buffer would be at the size of the screen.
+        /// Since the DotSpatial framework currently does not provide a mechanism for screen referenced labels
+        /// the best we can do in the meantime is to allow the developer to pass in Label objects that are controls
+        /// placed on top of the map.
+        /// </summary>
+        /// <param name="lbl">a Label control</param>
+        /// <returns>A bitmap with the snap shot plus embedded string text.</returns>
+        public Bitmap SnapShot(Label lbl)
+        {
+            List<Label> labelList = new List<Label>() { lbl };
+            return SnapShot(labelList);
+        }
+
+        /// <summary>
         /// Adds any members found in the specified region to the selected state as long as SelectionEnabled is set to true.
         /// </summary>
         /// <param name="tolerant">The geographic region where selection occurs that is tolerant for point or linestrings.</param>
