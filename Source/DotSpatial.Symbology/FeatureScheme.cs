@@ -424,10 +424,24 @@ namespace DotSpatial.Symbology
             if (table.Rows.Count < EditorSettings.MaxSampleCount)
             {
                 // Simply grab all the values
-                foreach (DataRow row in table.Rows)
+                foreach (var row in table.Rows)
                 {
+                    string sName, sNorm = string.Empty;
+                    if (row is IDataRow)
+                    {
+                        sName = ((IDataRow)row)[fieldName].ToString();
+                        if (normField != null)
+                            sNorm = ((IDataRow)row)[normField].ToString();
+                    }
+                    else
+                    {
+                        sName = ((DataRow)row)[fieldName].ToString();
+                        if (normField != null)
+                            sNorm = ((DataRow)row)[normField].ToString();
+                    }
+
                     double val;
-                    if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
+                    if (!double.TryParse(sName, out val)) continue;
                     if (double.IsNaN(val)) continue;
 
                     if (normField == null)
@@ -437,7 +451,7 @@ namespace DotSpatial.Symbology
                     }
 
                     double norm;
-                    if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
+                    if (!double.TryParse(sNorm, out norm) || double.IsNaN(val)) continue;
 
                     Values.Add(val / norm);
                 }
