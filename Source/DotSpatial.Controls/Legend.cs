@@ -670,7 +670,7 @@ namespace DotSpatial.Controls
                     {
                         // draw the line on the position the layer would be moved to
                         _dragTarget = boxOverLine;
-                        _previousLine = new Rectangle(left, boxOverLine.Bounds.Bottom, Width - left, 4);
+                        _previousLine = new Rectangle(left - ControlRectangle.X, boxOverLine.Bounds.Bottom - ControlRectangle.Y, Width - left, 4);
                         Cursor = Cursors.Hand;
                         cursorHandled = true;
                         Invalidate(_previousLine);
