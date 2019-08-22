@@ -223,22 +223,11 @@
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\packages\cUrl_Native_MSVC1910.7.58.0\build\net40\cUrl_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\cUrl_Native_MSVC1910.7.58.0\build\net40\cUrl_Native_MSVC1910.targets')" />
+  
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\packages\cUrl_Native_MSVC1910.7.58.0\build\net40\cUrl_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\cUrl_Native_MSVC1910.7.58.0\build\net40\cUrl_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\expat_Native_MSVC1910.2.2.5\build\net40\expat_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\expat_Native_MSVC1910.2.2.5\build\net40\expat_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\geos_c_Native_MSVC1910.3.6.2.1\build\net40\geos_c_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\geos_c_Native_MSVC1910.3.6.2.1\build\net40\geos_c_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\iconv_Native_MSVC1910.1.15.0.1\build\net40\iconv_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\iconv_Native_MSVC1910.1.15.0.1\build\net40\iconv_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\freexl_Native_MSVC1910.1.0.4\build\net40\freexl_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\freexl_Native_MSVC1910.1.0.4\build\net40\freexl_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\libpq_Native_MSVC1910.9.5.11\build\net40\libpq_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\libpq_Native_MSVC1910.9.5.11\build\net40\libpq_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\libxml2_Native_MSVC1910.2.9.7\build\net40\libxml2_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\libxml2_Native_MSVC1910.2.9.7\build\net40\libxml2_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\proj4_Native_MSVC1910.4.9.3\build\net40\proj4_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\proj4_Native_MSVC1910.4.9.3\build\net40\proj4_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\sqlite_Native_MSVC1910.3.22.0\build\net40\sqlite_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\sqlite_Native_MSVC1910.3.22.0\build\net40\sqlite_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\ZLib_Native_MSVC1910.1.2.11\build\net40\ZLib_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\ZLib_Native_MSVC1910.1.2.11\build\net40\ZLib_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)\packages\spatialite_Native_MSVC1910.4.3.0\build\net40\spatialite_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\spatialite_Native_MSVC1910.4.3.0\build\net40\spatialite_Native_MSVC1910.targets'))" />
+    </PropertyGroup>   
     <Error Condition="!Exists('..\packages\cUrl_Native_MSVC1910.7.58.0.4\build\net20\cUrl_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cUrl_Native_MSVC1910.7.58.0.4\build\net20\cUrl_Native_MSVC1910.targets'))" />
     <Error Condition="!Exists('..\packages\expat_Native_MSVC1910.2.2.5.4\build\net20\expat_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\expat_Native_MSVC1910.2.2.5.4\build\net20\expat_Native_MSVC1910.targets'))" />
     <Error Condition="!Exists('..\packages\gdal_MSVC1910_wrap.2.2.4.10\build\net40\gdal_MSVC1910_wrap.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gdal_MSVC1910_wrap.2.2.4.10\build\net40\gdal_MSVC1910_wrap.targets'))" />
@@ -253,17 +242,7 @@
     <Error Condition="!Exists('..\packages\spatialite_Native_MSVC1910.4.3.0.8\build\net20\spatialite_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\spatialite_Native_MSVC1910.4.3.0.8\build\net20\spatialite_Native_MSVC1910.targets'))" />
     <Error Condition="!Exists('..\packages\gdal_Native_MSVC1910.2.2.4.10\build\net20\gdal_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gdal_Native_MSVC1910.2.2.4.10\build\net20\gdal_Native_MSVC1910.targets'))" />
     <Error Condition="!Exists('..\packages\gdal_MSVC1910.2.2.4.7\build\net40\gdal_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gdal_MSVC1910.2.2.4.7\build\net40\gdal_MSVC1910.targets'))" />
-  </Target>
-  <Import Project="$(SolutionDir)\packages\expat_Native_MSVC1910.2.2.5\build\net40\expat_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\expat_Native_MSVC1910.2.2.5\build\net40\expat_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\geos_c_Native_MSVC1910.3.6.2.1\build\net40\geos_c_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\geos_c_Native_MSVC1910.3.6.2.1\build\net40\geos_c_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\iconv_Native_MSVC1910.1.15.0.1\build\net40\iconv_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\iconv_Native_MSVC1910.1.15.0.1\build\net40\iconv_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\freexl_Native_MSVC1910.1.0.4\build\net40\freexl_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\freexl_Native_MSVC1910.1.0.4\build\net40\freexl_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\libpq_Native_MSVC1910.9.5.11\build\net40\libpq_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\libpq_Native_MSVC1910.9.5.11\build\net40\libpq_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\libxml2_Native_MSVC1910.2.9.7\build\net40\libxml2_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\libxml2_Native_MSVC1910.2.9.7\build\net40\libxml2_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\proj4_Native_MSVC1910.4.9.3\build\net40\proj4_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\proj4_Native_MSVC1910.4.9.3\build\net40\proj4_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\sqlite_Native_MSVC1910.3.22.0\build\net40\sqlite_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\sqlite_Native_MSVC1910.3.22.0\build\net40\sqlite_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\ZLib_Native_MSVC1910.1.2.11\build\net40\ZLib_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\ZLib_Native_MSVC1910.1.2.11\build\net40\ZLib_Native_MSVC1910.targets')" />
-  <Import Project="$(SolutionDir)\packages\spatialite_Native_MSVC1910.4.3.0\build\net40\spatialite_Native_MSVC1910.targets" Condition="Exists('$(SolutionDir)\packages\spatialite_Native_MSVC1910.4.3.0\build\net40\spatialite_Native_MSVC1910.targets')" />
+  </Target>  
   <Import Project="..\packages\cUrl_Native_MSVC1910.7.58.0.4\build\net20\cUrl_Native_MSVC1910.targets" Condition="Exists('..\packages\cUrl_Native_MSVC1910.7.58.0.4\build\net20\cUrl_Native_MSVC1910.targets')" />
   <Import Project="..\packages\expat_Native_MSVC1910.2.2.5.4\build\net20\expat_Native_MSVC1910.targets" Condition="Exists('..\packages\expat_Native_MSVC1910.2.2.5.4\build\net20\expat_Native_MSVC1910.targets')" />
   <Import Project="..\packages\gdal_MSVC1910_wrap.2.2.4.10\build\net40\gdal_MSVC1910_wrap.targets" Condition="Exists('..\packages\gdal_MSVC1910_wrap.2.2.4.10\build\net40\gdal_MSVC1910_wrap.targets')" />
