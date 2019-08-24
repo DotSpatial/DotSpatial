@@ -218,13 +218,12 @@ namespace DotSpatial.Controls
             if (Layers == null) return;
             foreach (IMapLayer layer in Layers)
             {
-                if (!layer.IsVisible) continue;
-                if (layer.UseDynamicVisibility && ((layer.DynamicVisibilityMode == DynamicVisibilityMode.ZoomedIn && MapFrame.ViewExtents.Width > layer.DynamicVisibilityWidth) || MapFrame.ViewExtents.Width < layer.DynamicVisibilityWidth))
+                if (layer.IsVisible && layer.VisibleAtExtent(MapFrame.ViewExtents))
                 {
-                    continue; // skip the layer if we are zoomed in or out too far.
+                    // draw the layer if it is visible and also visible at the current map extents.
+                    // the function VisibleAtExtent includes DynamicVisibility logic.
+                    layer.DrawRegions(args, regions, selected);
                 }
-
-                layer.DrawRegions(args, regions, selected);
             }
         }
 
