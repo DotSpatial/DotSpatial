@@ -33,7 +33,7 @@ namespace DotSpatial.Projections.Transforms
     /// TransverseMercator is a class allowing the transverse mercator transform as transcribed
     /// from the 4.6 version of the Proj4 library (pj_tmerc.c)
     /// </summary>
-    public class Transform : ITransform
+    public class Transform : ProjDescriptor, ITransform
     {
         #region Private Variables
 
