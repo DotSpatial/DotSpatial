@@ -67,10 +67,10 @@ namespace DotSpatial.Symbology.Forms
             this.dashControl1 = new DotSpatial.Symbology.Forms.DashControl();
             this.tabDecoration = new System.Windows.Forms.TabPage();
             this.grpPosition = new System.Windows.Forms.GroupBox();
+            this.dbSpacing = new DotSpatial.Projections.Forms.DoubleBox();
             this.cmbSpacingUnit = new System.Windows.Forms.ComboBox();
             this.radNumberOfPositions = new System.Windows.Forms.RadioButton();
             this.radSpacing = new System.Windows.Forms.RadioButton();
-            this.nudSpacing = new System.Windows.Forms.NumericUpDown();
             this.nudDecorationCount = new System.Windows.Forms.NumericUpDown();
             this.lblPercentualPosition = new System.Windows.Forms.Label();
             this.nudPercentualPosition = new System.Windows.Forms.NumericUpDown();
@@ -96,7 +96,6 @@ namespace DotSpatial.Symbology.Forms
             this.tabDash.SuspendLayout();
             this.tabDecoration.SuspendLayout();
             this.grpPosition.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSpacing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDecorationCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPercentualPosition)).BeginInit();
             this.grpRotation.SuspendLayout();
@@ -467,14 +466,28 @@ namespace DotSpatial.Symbology.Forms
             // 
             // grpPosition
             // 
+            this.grpPosition.Controls.Add(this.dbSpacing);
             this.grpPosition.Controls.Add(this.cmbSpacingUnit);
             this.grpPosition.Controls.Add(this.radNumberOfPositions);
             this.grpPosition.Controls.Add(this.radSpacing);
-            this.grpPosition.Controls.Add(this.nudSpacing);
             this.grpPosition.Controls.Add(this.nudDecorationCount);
             resources.ApplyResources(this.grpPosition, "grpPosition");
             this.grpPosition.Name = "grpPosition";
             this.grpPosition.TabStop = false;
+            // 
+            // dbSpacing
+            // 
+            this.dbSpacing.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.dbSpacing.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dbSpacing, "dbSpacing");
+            this.dbSpacing.InvalidHelp = "The value entered could not be correctly parsed into a valid positif double preci" +
+    "sion floating point value.";
+            this.dbSpacing.IsValid = true;
+            this.dbSpacing.Name = "dbSpacing";
+            this.dbSpacing.NumberFormat = null;
+            this.dbSpacing.RegularHelp = "Enter a double positif precision floating point value.";
+            this.dbSpacing.Value = 0D;
+            this.dbSpacing.TextChanged += new System.EventHandler(this.DbSpacing_TextChanged);
             // 
             // cmbSpacingUnit
             // 
@@ -504,23 +517,6 @@ namespace DotSpatial.Symbology.Forms
             this.ttHelp.SetToolTip(this.radSpacing, resources.GetString("radSpacing.ToolTip"));
             this.radSpacing.UseVisualStyleBackColor = true;
             this.radSpacing.CheckedChanged += new System.EventHandler(this.RadPositionCheckedChanged);
-            // 
-            // nudSpacing
-            // 
-            resources.ApplyResources(this.nudSpacing, "nudSpacing");
-            this.nudSpacing.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nudSpacing.Name = "nudSpacing";
-            this.ttHelp.SetToolTip(this.nudSpacing, resources.GetString("nudSpacing.ToolTip"));
-            this.nudSpacing.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nudSpacing.ValueChanged += new System.EventHandler(this.NudSpacingValueChanged);
             // 
             // nudDecorationCount
             // 
@@ -670,7 +666,6 @@ namespace DotSpatial.Symbology.Forms
             this.tabDecoration.PerformLayout();
             this.grpPosition.ResumeLayout(false);
             this.grpPosition.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSpacing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDecorationCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPercentualPosition)).EndInit();
             this.grpRotation.ResumeLayout(false);
@@ -734,10 +729,10 @@ namespace DotSpatial.Symbology.Forms
         private Label lblPercentualPosition;
         private NumericUpDown nudPercentualPosition;
         private GroupBox grpPosition;
-        private NumericUpDown nudSpacing;
         private RadioButton radNumberOfPositions;
         private RadioButton radSpacing;
         private ComboBox cmbSpacingUnit;
         private CheckBox chkFlip1_2;
+        private Projections.Forms.DoubleBox dbSpacing;
     }
 }

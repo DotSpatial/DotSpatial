@@ -1028,6 +1028,30 @@
   <data name="&gt;&gt;tabDash.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="dbSpacing.Caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="dbSpacing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 41</value>
+  </data>
+  <data name="dbSpacing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 27</value>
+  </data>
+  <data name="dbSpacing.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;dbSpacing.Name" xml:space="preserve">
+    <value>dbSpacing</value>
+  </data>
+  <data name="&gt;&gt;dbSpacing.Type" xml:space="preserve">
+    <value>DotSpatial.Projections.Forms.DoubleBox, DotSpatial.Projections.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=52099474f11b7ff0</value>
+  </data>
+  <data name="&gt;&gt;dbSpacing.Parent" xml:space="preserve">
+    <value>grpPosition</value>
+  </data>
+  <data name="&gt;&gt;dbSpacing.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="cmbSpacingUnit.Items" xml:space="preserve">
     <value>mm</value>
   </data>
@@ -1053,7 +1077,7 @@
     <value>grpPosition</value>
   </data>
   <data name="&gt;&gt;cmbSpacingUnit.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="radNumberOfPositions.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1086,7 +1110,7 @@
     <value>grpPosition</value>
   </data>
   <data name="&gt;&gt;radNumberOfPositions.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="radSpacing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1119,31 +1143,6 @@
     <value>grpPosition</value>
   </data>
   <data name="&gt;&gt;radSpacing.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="nudSpacing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 44</value>
-  </data>
-  <data name="nudSpacing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
-  </data>
-  <data name="nudSpacing.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="nudSpacing.ToolTip" xml:space="preserve">
-    <value>The first two are drawn on the start and end locations.  After that, the line is divided evenly.
-If only one decoration is added its position can be set percentually.</value>
-  </data>
-  <data name="&gt;&gt;nudSpacing.Name" xml:space="preserve">
-    <value>nudSpacing</value>
-  </data>
-  <data name="&gt;&gt;nudSpacing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nudSpacing.Parent" xml:space="preserve">
-    <value>grpPosition</value>
-  </data>
-  <data name="&gt;&gt;nudSpacing.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="nudDecorationCount.Location" type="System.Drawing.Point, System.Drawing">

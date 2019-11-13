@@ -131,7 +131,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the spacing between each line decoration.
         /// </summary>
-        int Spacing
+        float Spacing
         {
             get;
             set;

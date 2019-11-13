@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
         private bool _flipped;
         private bool _useSpacing;
         private int _numSymbols;
-        private int _spacing;
+        private float _spacing;
         private string _spacingUnit;
         private double _offset;
 
@@ -168,7 +168,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the spacing between each line decoration.
         /// </summary>
         [Serialize("Spacing")]
-        public int Spacing
+        public float Spacing
         {
             get { return _spacing; }
             set { _spacing = value; }
@@ -296,7 +296,9 @@ namespace DotSpatial.Symbology
                         {
                             span = Math.Round(totalLength / (NumSymbols - 1), 4);
                         }
-                        spots = GetPosition(points, span, start, end);
+
+                        if (span > 0)
+                            spots = GetPosition(points, span, start, end);
 
                         for (int i = 0; i < spots.Count; i++)
                         {
