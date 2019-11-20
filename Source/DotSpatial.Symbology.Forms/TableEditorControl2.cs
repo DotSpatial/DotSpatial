@@ -1042,7 +1042,11 @@ namespace DotSpatial.Symbology.Forms
                         foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
                             //CGX
-                            if (row.Cells[_fidField].Value != null && row.Cells[_fidField].Value != DBNull.Value)
+                            if (row.Cells != null 
+                                && row.Cells.Count == _featureLayer.DataSet.DataTable.Columns.Count 
+                                && row.Cells[_fidField] != null 
+                                && row.Cells[_fidField].Value != null 
+                                && row.Cells[_fidField].Value != DBNull.Value)
                             {
                                 int fid = Convert.ToInt32(row.Cells[_fidField].Value);
                                 if (row.Selected)
