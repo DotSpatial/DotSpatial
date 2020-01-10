@@ -152,3 +152,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - MapRasterLayer not drawn correctly on print
 - Create Categories for symbology is inconsistent with large datasets (#1242)
 - Geographic projections now have a Name property
+- JGD2011, EPSG from 6669 to 6687 are added (#1262)
