@@ -584,6 +584,10 @@
       <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
       <Name>DotSpatial.Modeling.Forms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Positioning\DotSpatial.Positioning.csproj">
+      <Project>{26E18588-B04D-4987-BF36-8206A7E36FF9}</Project>
+      <Name>DotSpatial.Positioning</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
       <Project>{1da244ce-5862-4dfb-8943-244a80b7e3ee}</Project>
       <Name>DotSpatial.Projections.Forms</Name>

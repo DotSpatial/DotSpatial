@@ -11,6 +11,7 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Positioning;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
@@ -269,13 +270,21 @@ namespace DotSpatial.Controls
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;
-            var angle = GetAngleToRotate(symb, f);
+
             Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
 
             IGeometry geo = f.Geometry;
 
             if (geo.NumGeometries == 1)
             {
+                ILineString ls = null;
+                if (symb.LabelPlacementMethod == LabelPlacementMethod.Perimeter)
+                {
+                    IPolygon pg = geo.GetGeometryN(0) as IPolygon;
+                    ls = pg.ExteriorRing as ILineString;
+                }
+
+                var angle = GetAngleToRotate(symb, f, ls);
                 RectangleF labelBounds = PlacePolygonLabel(f.Geometry, e, labelSize, symb, angle);
                 CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
             }
@@ -285,6 +294,14 @@ namespace DotSpatial.Controls
                 {
                     for (int n = 0; n < geo.NumGeometries; n++)
                     {
+                        ILineString ls = null;
+                        if (symb.LabelPlacementMethod == LabelPlacementMethod.Perimeter)
+                        {
+                            IPolygon pg = geo.GetGeometryN(n) as IPolygon;
+                            ls = pg.ExteriorRing as ILineString;
+                        }
+
+                        var angle = GetAngleToRotate(symb, f, ls);
                         RectangleF labelBounds = PlacePolygonLabel(geo.GetGeometryN(n), e, labelSize, symb, angle);
                         CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
                     }
@@ -305,6 +322,13 @@ namespace DotSpatial.Controls
                         }
                     }
 
+                    ILineString ls = null;
+                    if (symb.LabelPlacementMethod == LabelPlacementMethod.Perimeter)
+                    {
+                        ls = largest.ExteriorRing as ILineString;
+                    }
+
+                    var angle = GetAngleToRotate(symb, f, ls);
                     RectangleF labelBounds = PlacePolygonLabel(largest, e, labelSize, symb, angle);
                     CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
                 }
@@ -686,6 +710,12 @@ namespace DotSpatial.Controls
         /// <param name="lineString">LineString to get the segment from.</param>
         /// <param name="symb">Symbolizer to get the LineLabelPlacement from.</param>
         /// <returns>Null on unnown LineLabelPlacementMethod else the calculated segment. </returns>
+        /// <remarks>
+        /// Todo: this method is called several times and should be only called once to get the proper
+        /// segment. As an example if a feature has 10,000 segments and the LineLabelPlacementMethod
+        /// is LongestSegment that means the process has to needlessly cycle through all segments more
+        /// than once.
+        /// </remarks>
         private static LineString GetSegment(LineString lineString, ILabelSymbolizer symb)
         {
             if (lineString.Coordinates.Length <= 2) return lineString;
@@ -727,12 +757,23 @@ namespace DotSpatial.Controls
         /// <param name="labelSize">Function that calculates the labelSize.</param>
         /// <param name="symb">ILabelSymbolizer to calculate the orientation based adjustment.</param>
         /// <param name="angle">Angle in degree used to rotate the label.</param>
+        /// <param name="theta">The angle used for drawing (includes direction).</param>
         /// <returns>Empty Rectangle if Coordinate is outside of the drawn extent, otherwise Rectangle needed to draw the label.</returns>
-        private static RectangleF PlaceLabel(Coordinate c, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, double angle)
+        private static RectangleF PlaceLabel(Coordinate c, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, double angle, double theta)
         {
             if (!e.GeographicExtents.Intersects(c)) return RectangleF.Empty;
             var lz = labelSize();
-            PointF adjustment = Position(symb, lz);
+
+            PointF adjustment = PointF.Empty;
+            if (symb.LabelPlacementMethod == LabelPlacementMethod.Perimeter)
+            {
+                adjustment = Position(symb, lz, theta);
+            }
+            else
+            {
+                adjustment = Position(symb, lz);
+            }
+
             RotatePoint(ref adjustment, angle); // rotates the adjustment according to the given angle
             float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + e.ImageRectangle.X + adjustment.X;
             float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + e.ImageRectangle.Y + adjustment.Y;
@@ -756,13 +797,13 @@ namespace DotSpatial.Controls
             ls = GetSegment(ls, symb);
             if (ls == null) return Rectangle.Empty;
 
-            return PlaceLabel(ls.Centroid.Coordinate, e, labelSize, symb, angle);
+            return PlaceLabel(ls.Centroid.Coordinate, e, labelSize, symb, angle, double.NaN);
         }
 
         private static RectangleF PlacePointLabel(IGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
         {
             Coordinate c = f.GetGeometryN(1).Coordinates[0];
-            return PlaceLabel(c, e, labelSize, symb, angle);
+            return PlaceLabel(c, e, labelSize, symb, angle, double.NaN);
         }
 
         /// <summary>
@@ -779,6 +820,7 @@ namespace DotSpatial.Controls
             IPolygon pg = geom as IPolygon;
             if (pg == null) return RectangleF.Empty;
             Coordinate c;
+            double theta = double.NaN;
             switch (symb.LabelPlacementMethod)
             {
                 case LabelPlacementMethod.Centroid:
@@ -787,12 +829,24 @@ namespace DotSpatial.Controls
                 case LabelPlacementMethod.InteriorPoint:
                     c = pg.InteriorPoint.Coordinate;
                     break;
+                case LabelPlacementMethod.Perimeter:
+                    LineString ls = pg.ExteriorRing as LineString;
+
+                    ls = GetSegment(ls, symb);
+                    if (ls == null) return Rectangle.Empty;
+
+                    var rise = ls.EndPoint.Y - ls.StartPoint.Y;
+                    var run = ls.EndPoint.X - ls.StartPoint.X;
+                    theta = -Math.Atan2(rise, run) * (180 / Math.PI);
+
+                    c = ls.Centroid.Coordinate;
+                    break;
                 default:
                     c = geom.EnvelopeInternal.Centre;
                     break;
             }
 
-            return PlaceLabel(c, e, labelSize, symb, angle);
+            return PlaceLabel(c, e, labelSize, symb, angle, theta);
         }
 
         /// <summary>
@@ -826,6 +880,78 @@ namespace DotSpatial.Controls
                     return new PointF((-size.Width / 2) + x, 0 + y);
                 case ContentAlignment.BottomRight:
                     return new PointF(0 + x, 0 + y);
+            }
+
+            return new PointF(0, 0);
+        }
+
+        /// <summary>
+        /// Calculates the adjustment of the the label's position based on the symbolizers orientation.
+        /// This overload is meant to target polygon labeling with LabelPlacementMethod.Perimeter.
+        /// </summary>
+        /// <param name="symb">ILabelSymbolizer whose orientation should be considered.</param>
+        /// <param name="size">Size of the label.</param>
+        /// <param name="theta">The angle used for drawing (includes direction).</param>
+        /// <returns>New label-position based on label-size and symbolizer-orientation.</returns>
+        private static PointF Position(ILabelSymbolizer symb, SizeF size, double theta)
+        {
+            ContentAlignment orientation = symb.Orientation;
+            float x = symb.OffsetX;
+            float y = -symb.OffsetY;
+
+            Angle normAng = new Angle(theta);
+            normAng = normAng.Normalize();
+
+            // for normalized angles 270 to 360 and 0 to 90 leave as before (right hemishpere)
+            // for normmalized angles 90 to 270 invert the logic for BottomLCR and TopLCR  (left hemishpere)
+            bool leftHemi = normAng.DecimalDegrees >= 90 && normAng.DecimalDegrees <= 270;
+            if (!leftHemi)
+            {
+                switch (orientation)
+                {
+                    case ContentAlignment.TopLeft:
+                        return new PointF(-size.Width + x, -size.Height + y);
+                    case ContentAlignment.TopCenter:
+                        return new PointF((-size.Width / 2) + x, -size.Height + y);
+                    case ContentAlignment.TopRight:
+                        return new PointF(0 + x, -size.Height + y);
+                    case ContentAlignment.MiddleLeft:
+                        return new PointF(-size.Width + x, (-size.Height / 2) + y);
+                    case ContentAlignment.MiddleCenter:
+                        return new PointF((-size.Width / 2) + x, (-size.Height / 2) + y);
+                    case ContentAlignment.MiddleRight:
+                        return new PointF(0 + x, (-size.Height / 2) + y);
+                    case ContentAlignment.BottomLeft:
+                        return new PointF(-size.Width + x, 0 + y);
+                    case ContentAlignment.BottomCenter:
+                        return new PointF((-size.Width / 2) + x, 0 + y);
+                    case ContentAlignment.BottomRight:
+                        return new PointF(0 + x, 0 + y);
+                }
+            }
+            else
+            {
+                switch (orientation)
+                {
+                    case ContentAlignment.TopLeft:
+                        return new PointF(-size.Width + x, 0 + y);
+                    case ContentAlignment.TopCenter:
+                        return new PointF((-size.Width / 2) + x, 0 + y);
+                    case ContentAlignment.TopRight:
+                        return new PointF(0 + x, 0 + y);
+                    case ContentAlignment.MiddleLeft:
+                        return new PointF(-size.Width + x, (-size.Height / 2) + y);
+                    case ContentAlignment.MiddleCenter:
+                        return new PointF((-size.Width / 2) + x, (-size.Height / 2) + y);
+                    case ContentAlignment.MiddleRight:
+                        return new PointF(0 + x, (-size.Height / 2) + y);
+                    case ContentAlignment.BottomLeft:
+                        return new PointF(-size.Width + x, -size.Height + y);
+                    case ContentAlignment.BottomCenter:
+                        return new PointF((-size.Width / 2) + x, -size.Height + y);
+                    case ContentAlignment.BottomRight:
+                        return new PointF(0 + x, -size.Height + y);
+                }
             }
 
             return new PointF(0, 0);

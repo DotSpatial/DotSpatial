@@ -21,7 +21,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Use the closest point to the centroid that is in the feature.
         /// </summary>
-        InteriorPoint
+        InteriorPoint,
+
+        /// <summary>
+        /// Use the perimeter of the outer ring of the feature.
+        /// </summary>
+        Perimeter
     }
 
     /// <summary>
