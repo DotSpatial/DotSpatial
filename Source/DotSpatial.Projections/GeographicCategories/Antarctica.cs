@@ -44,11 +44,16 @@ namespace DotSpatial.Projections.GeographicCategories
             DeceptionIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
             Petrels1972 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             PointeGeologiePerroud1950 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-            
+
+            AustralianAntarctic1998.Name = "GCS_Australian_Antarctic_1998";
             AustralianAntarctic1998.GeographicInfo.Name = "GCS_Australian_Antarctic_1998";
+            CampAreaAstro.Name = "GCS_Camp_Area";
             CampAreaAstro.GeographicInfo.Name = "GCS_Camp_Area";
+            DeceptionIsland.Name = "GCS_Deception_Island";
             DeceptionIsland.GeographicInfo.Name = "GCS_Deception_Island";
+            Petrels1972.Name = "GCS_Petrels_1972";
             Petrels1972.GeographicInfo.Name = "GCS_Petrels_1972";
+            PointeGeologiePerroud1950.Name = "GCS_Pointe_Geologie_Perroud_1950";
             PointeGeologiePerroud1950.GeographicInfo.Name = "GCS_Pointe_Geologie_Perroud_1950";
 
             AustralianAntarctic1998.GeographicInfo.Datum.Name = "D_Australian_Antarctic_1998";

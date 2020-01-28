@@ -149,5 +149,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Shape File Saves with Wrong DataTypes (#1005)
 - Calculation of translation param in InRamImageData.GetBitmap is defective (#1203)
 - MapImageLayer not drawn correctly on print (#1137)
+- MapRasterLayer not drawn correctly on print
 - Create Categories for symbology is inconsistent with large datasets (#1242)
-- Drawing order of labels is given precedence from top to bottom layer
+- Geographic projections now have a Name property
+- Drawing order of labels is given precedence from top to bottom layer (#1226)
