@@ -267,7 +267,7 @@ namespace DotSpatial.Controls
         public void RefreshNodes()
         {
             // do any code that needs to happen if content changes
-            _previousMouseDown = null; // to avoid memory leaks, because LegendBox contains reference to Layer
+            HideEditBox(false); // Hide the EditBox to avoid memory leaks, because _previousMouseDown contains reference to Layer. Do not simply set _previousMouseDown to null, because this would detach the EditBox from _previousMouseDown.
             IsInitialized = false;
             Invalidate();
         }
@@ -322,7 +322,7 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         protected override void OnHorizontalScroll(object sender, ScrollEventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
             base.OnHorizontalScroll(sender, e);
         }
 
@@ -568,7 +568,7 @@ namespace DotSpatial.Controls
         /// <param name="e">A MouseEventArgs</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
             if (_legendBoxes == null || _legendBoxes.Count == 0) return;
             Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             foreach (LegendBox box in _legendBoxes)
@@ -789,7 +789,7 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         protected override void OnVerticalScroll(object sender, ScrollEventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
             base.OnVerticalScroll(sender, e);
         }
 
@@ -1145,10 +1145,14 @@ namespace DotSpatial.Controls
 
         private void EditBoxLostFocus(object sender, EventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
         }
 
-        private void HideEditBox()
+        /// <summary>
+        /// Hides the edit box if it is visible.
+        /// </summary>
+        /// <param name="refreshNodes">Indicates whether RefreshNodes should be cold. This should be false, if the method is used inside RefreshNodes.</param>
+        private void HideEditBox(bool refreshNodes)
         {
             if (_editBox.Visible && !_ignoreHide)
             {
@@ -1158,7 +1162,7 @@ namespace DotSpatial.Controls
                 _editBox.Visible = false;
                 _editBox.Text = string.Empty;
                 _ignoreHide = false;
-                RefreshNodes();
+                if (refreshNodes) RefreshNodes();
             }
         }
 
