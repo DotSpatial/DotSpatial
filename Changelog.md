@@ -154,3 +154,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Create Categories for symbology is inconsistent with large datasets (#1242)
 - Geographic projections now have a Name property
 - Drawing order of labels is given precedence from top to bottom layer (#1226)
+- DotSpatial Projection with GridShift is Extremely Slow for NAD27 (#1333)
