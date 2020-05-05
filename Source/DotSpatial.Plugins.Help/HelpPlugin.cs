@@ -14,7 +14,7 @@ namespace DotSpatial.Plugins.Help
     /// </summary>
     public class HelpPlugin : Extension
     {
-        private const string Url = "http://dotspatial.codeplex.com/documentation";
+        private const string Url = "https://github.com/DotSpatial/DotSpatial/wiki";
         private const string HelpMenu = HeaderControl.HeaderHelpItemKey;
 
         /// <inheritdoc />
