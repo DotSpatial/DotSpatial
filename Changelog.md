@@ -58,6 +58,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Show buttons from layout toolbars as checked while their function is active
 - replaced ContextMenu by ContextMenuStrip inside Legend, so we don't have to draw the images shown in the ContextMenu ourselves (#1069)
 - changed the background color of the LayerDialog and TabControlDialog tabs to Control so they have the same background color as the user controls they contain (#1069)
+- Link of the `Help Plugin` changed to https://github.com/DotSpatial/DotSpatial/wiki (#1339)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
