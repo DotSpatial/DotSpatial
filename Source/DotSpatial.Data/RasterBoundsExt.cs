@@ -374,6 +374,12 @@ namespace DotSpatial.Data
 
             return pc;
         }
+ 
+        public static RcIndex ProjToCellWithOverflow(this IRasterBounds bounds, Coordinate location)
+        {
+            var pc = new AffineTransform(bounds.AffineCoefficients).ProjToCell(location);
+            return pc;
+        }
 
         /// <summary>
         /// The affine transform can make figuring out what rows and columns are needed from the original image
@@ -408,7 +414,7 @@ namespace DotSpatial.Data
             int maxY = 0;
             foreach (var c in coords)
             {
-                var rowCol = self.ProjToCell(c);
+                var rowCol = self.ProjToCellWithOverflow(c);
                 if (rowCol.Row < minY) minY = rowCol.Row;
                 if (rowCol.Column < minX) minX = rowCol.Column;
                 if (rowCol.Row > maxY) maxY = rowCol.Row;
