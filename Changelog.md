@@ -157,3 +157,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - DotSpatial Projection with GridShift is Extremely Slow for NAD27 (#1333)
 - Potential Bug in RasterBoundsExt class CellsContainingExtent(...) method (#1332)
 - Potential bug in EnvelopeExt (and ExtentExt) class Reproportion(...) method (#1326)
+- Bug in AzimuthalEquidistant class (#1342)
