@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NtsPoint = NetTopologySuite.Geometries.Point;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
@@ -130,7 +130,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <param name="latitude">Latitude of the point, in degrees.</param>
         /// <param name="longitude">Longitude of the point, in degrees.</param>
         /// <param name="levelOfDetail">Level of detail, from 1 (lowest detail) to 23 (highest detail).</param>
-        /// <returns>Pixel XY coordinate</returns>
+        /// <returns>Pixel XY coordinate.</returns>
         public static NtsPoint LatLongToPixelXy(double latitude, double longitude, int levelOfDetail)
         {
             latitude = Clip(latitude, MinLatitude, MaxLatitude);
@@ -160,9 +160,9 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <summary>
         /// Converts a WGS-84 Lat/Long coordinate to the tile XY of the tile containing that point at the given levelOfDetail.
         /// </summary>
-        /// <param name="coord">WGS-84 Lat/Long</param>
+        /// <param name="coord">WGS-84 Lat/Long.</param>
         /// <param name="levelOfDetail">Level of detail, from 1 (lowest detail) to 23 (highest detail).</param>
-        /// <returns>Tile XY Point</returns>
+        /// <returns>Tile XY Point.</returns>
         public static NtsPoint LatLongToTileXy(Coordinate coord, int levelOfDetail)
         {
             NtsPoint pixelXy = LatLongToPixelXy(coord.Y, coord.X, levelOfDetail);
@@ -227,7 +227,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// Converts pixel XY coordinates into tile XY coordinates of the tile containing the specified pixel.
         /// </summary>
         /// <param name="point">Pixel X,Y point.</param>
-        /// <returns>Tile XY coordinate</returns>
+        /// <returns>Tile XY coordinate.</returns>
         public static NtsPoint PixelXyToTileXy(NtsPoint point)
         {
             return PixelXyToTileXy((int)point.X, (int)point.Y);
@@ -236,9 +236,9 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <summary>
         /// Takes a 2-dimensional array of tiles and stitches it into a single Bitmap for display on the Map.
         /// </summary>
-        /// <param name="tiles">2-dimensional array of tiles, [x by y]</param>
-        /// <param name="opacity">Opacity of final image</param>
-        /// <returns>Bitmap of the tiles stitched together</returns>
+        /// <param name="tiles">2-dimensional array of tiles, [x by y].</param>
+        /// <param name="opacity">Opacity of final image.</param>
+        /// <returns>Bitmap of the tiles stitched together.</returns>
         public static Bitmap StitchTiles(Bitmap[,] tiles, short opacity)
         {
             var width = tiles.GetLength(0) * 256;

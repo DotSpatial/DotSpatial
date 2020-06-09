@@ -103,7 +103,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the text symbolizer to use for this category
+        /// Gets or sets the text symbolizer to use for this category.
         /// </summary>
         public ILabelSymbolizer SelectionSymbolizer
         {
@@ -119,7 +119,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the text symbolizer to use for this category
+        /// Gets or sets the text symbolizer to use for this category.
         /// </summary>
         public ILabelSymbolizer Symbolizer
         {
@@ -144,7 +144,7 @@ namespace DotSpatial.Symbology
         /// <param name="row">Datarow the expression gets calculated for.</param>
         /// <param name="selected">Indicates whether the feature is selected.</param>
         /// <param name="fid">The FID of the feature, the expression gets calculated for.</param>
-        /// <returns>null if there was an error while parsing the expression, else the calculated expression</returns>
+        /// <returns>null if there was an error while parsing the expression, else the calculated expression.</returns>
         public string CalculateExpression(DataRow row, bool selected, int fid)
         {
             string ff = (selected ? _selectionSymbolizer : _symbolizer).FloatingFormat;

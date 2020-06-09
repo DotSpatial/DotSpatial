@@ -41,7 +41,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for GetNoDataCellCount
+        /// A test for GetNoDataCellCount.
         /// </summary>
         [TestMethod]
         public void GetNoDataCellCountTest()
@@ -88,7 +88,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for SaveAs
+        /// A test for SaveAs.
         /// </summary>
         [TestMethod]
         public void SaveAsTest()

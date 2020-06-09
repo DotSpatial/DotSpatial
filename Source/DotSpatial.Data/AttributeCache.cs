@@ -20,8 +20,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeCache"/> class that can create data tables by using a DataPageRetriever.
         /// </summary>
-        /// <param name="dataSupplier">Any structure that implements IDataPageRetriever</param>
-        /// <param name="rowsPerPage">The rows per page</param>
+        /// <param name="dataSupplier">Any structure that implements IDataPageRetriever.</param>
+        /// <param name="rowsPerPage">The rows per page.</param>
         public AttributeCache(IAttributeSource dataSupplier, int rowsPerPage)
         {
             _dataSupply = dataSupplier;
@@ -125,7 +125,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves the changes in the edit row to the tabular cache as well as the underlying database
+        /// Saves the changes in the edit row to the tabular cache as well as the underlying database.
         /// </summary>
         public void SaveChanges()
         {
@@ -286,15 +286,15 @@ namespace DotSpatial.Data
         public struct DataPage
         {
             /// <summary>
-            /// The data Table
+            /// The data Table.
             /// </summary>
             public readonly DataTable Table;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DataPage"/> struct representing one page of data-row values.
             /// </summary>
-            /// <param name="table">The DataTable that controls the content</param>
-            /// <param name="rowIndex">The integer row index</param>
+            /// <param name="table">The DataTable that controls the content.</param>
+            /// <param name="rowIndex">The integer row index.</param>
             public DataPage(DataTable table, int rowIndex)
             {
                 Table = table;
@@ -316,7 +316,7 @@ namespace DotSpatial.Data
             public int HighestIndex { get; }
 
             /// <summary>
-            /// Given an arbitrary row index, this calculates what the lower boundary would be for the page containing the index
+            /// Given an arbitrary row index, this calculates what the lower boundary would be for the page containing the index.
             /// </summary>
             /// <param name="rowIndex">Row index used for calculation.</param>
             /// <returns>The lowest index of the page containing the given index.</returns>

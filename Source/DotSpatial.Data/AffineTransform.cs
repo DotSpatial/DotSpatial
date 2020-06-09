@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -40,9 +40,9 @@ namespace DotSpatial.Data
         /// Given any input row or column, this returns the appropriate geographic location for the
         /// position of the center of the cell.
         /// </summary>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the center of the specified cell</returns>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the center of the specified cell.</returns>
         public Coordinate CellCenterToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * column + Coefficients[2] * row;
@@ -51,11 +51,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the top left corner of the cell
+        /// Given the row and column, this returns the geographic position of the top left corner of the cell.
         /// </summary>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the top left corner of the specified cell</returns>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the top left corner of the specified cell.</returns>
         public Coordinate CellTopLeftToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column - 0.5) + Coefficients[2] * (row - 0.5);
@@ -64,11 +64,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the top right corner of the cell
+        /// Given the row and column, this returns the geographic position of the top right corner of the cell.
         /// </summary>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the top right corner of the specified cell</returns>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the top right corner of the specified cell.</returns>
         public Coordinate CellTopRightToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column + 0.5) + Coefficients[2] * (row - 0.5);
@@ -77,11 +77,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the bottom left corner of the cell
+        /// Given the row and column, this returns the geographic position of the bottom left corner of the cell.
         /// </summary>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the bottom left corner of the specified cell</returns>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the bottom left corner of the specified cell.</returns>
         public Coordinate CellBottomLeftToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column - 0.5) + Coefficients[2] * (row + 0.5);
@@ -90,11 +90,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Given the row and column, this returns the geographic position of the bottom right corner of the cell
+        /// Given the row and column, this returns the geographic position of the bottom right corner of the cell.
         /// </summary>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the bottom right corner of the specified cell</returns>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the bottom right corner of the specified cell.</returns>
         public Coordinate CellBottomRightToProj(int row, int column)
         {
             double x = Coefficients[0] + Coefficients[1] * (column + 0.5) + Coefficients[2] * (row + 0.5);
@@ -103,11 +103,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        ///  Given the row and column, this returns new affine coefficients transformed to that cell
+        ///  Given the row and column, this returns new affine coefficients transformed to that cell.
         /// </summary>
-        /// <param name="startColumn">The column index from 0 to numColumns - 1</param>
-        /// <param name="startRow">The row index from 0 to numRows - 1</param>
-        /// <returns>Transformed affine coefficients</returns>
+        /// <param name="startColumn">The column index from 0 to numColumns - 1.</param>
+        /// <param name="startRow">The row index from 0 to numRows - 1.</param>
+        /// <returns>Transformed affine coefficients.</returns>
         public double[] TransfromToCorner(double startColumn, double startRow)
         {
             // X = [0] + [1] * column + [2] * row;
@@ -125,7 +125,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns the row and column index.
         /// </summary>
-        /// <param name="location">Gets or sets the ICoordinate</param>
+        /// <param name="location">Gets or sets the ICoordinate.</param>
         /// <returns>An RcIndex that shows the best row or column index for the specified coordinate.</returns>
         public RcIndex ProjToCell(Coordinate location)
         {

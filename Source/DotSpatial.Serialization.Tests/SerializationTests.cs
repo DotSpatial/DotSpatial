@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace DotSpatial.Serialization.Tests
 {
     /// <summary>
-    /// TestEnum
+    /// TestEnum.
     /// </summary>
     public enum TestEnum
     {
@@ -51,7 +51,7 @@ namespace DotSpatial.Serialization.Tests
         /// <summary>
         /// Deletes the temporary files.
         /// </summary>
-        [TestFixtureTearDown]
+        [TearDown]
         public void Clear()
         {
             foreach (var tempFile in _filesToRemove)
@@ -175,7 +175,7 @@ namespace DotSpatial.Serialization.Tests
         }
 
         /// <summary>
-        /// Test for DotSpatial Issue #254
+        /// Test for DotSpatial Issue #254.
         /// </summary>
         [Test]
         public void TestMapFrameIsNotNull()
@@ -206,7 +206,7 @@ namespace DotSpatial.Serialization.Tests
         }
 
         /// <summary>
-        /// Test for DotSpatial Issue #254
+        /// Test for DotSpatial Issue #254.
         /// </summary>
         [Test]
         public void TestMapFrameIsNotNullGroup()

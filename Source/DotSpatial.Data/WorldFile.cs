@@ -44,7 +44,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the coordinates in the Affine order:
         /// X' = [0] + [1] X + [2] Y
-        /// Y' = [3] + [4] X + [5] Y
+        /// Y' = [3] + [4] X + [5] Y.
         /// </summary>
         public double[] Affine { get; set; }
 
@@ -113,7 +113,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets longitude or X position corresponding to the center of the cell in the top left corner of the image
+        /// Gets or sets longitude or X position corresponding to the center of the cell in the top left corner of the image.
         /// </summary>
         public double TopLeftX
         {
@@ -129,7 +129,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the latitude or Y position corresponding to the center of the cell in the top left corner of the image
+        /// Gets or sets the latitude or Y position corresponding to the center of the cell in the top left corner of the image.
         /// </summary>
         public double TopLeftY
         {
@@ -168,8 +168,8 @@ namespace DotSpatial.Data
         /// Given the fileName of an image, this creates a new fileName with the appropriate extension.
         /// This will also set the fileName of this world file to that extension.
         /// </summary>
-        /// <param name="imageFilename">The fileName of the image</param>
-        /// <returns>the fileName of the world file</returns>
+        /// <param name="imageFilename">The fileName of the image.</param>
+        /// <returns>the fileName of the world file.</returns>
         public static string GenerateFilename(string imageFilename)
         {
             string result = ".wld";
@@ -214,8 +214,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns the string extensions that accompanies one of the dot net image formats.
         /// </summary>
-        /// <param name="format">The Imaging.ImageFormat for the image itself</param>
-        /// <returns>The string extension</returns>
+        /// <param name="format">The Imaging.ImageFormat for the image itself.</param>
+        /// <returns>The string extension.</returns>
         public string GetExtension(ImageFormat format)
         {
             if (format == ImageFormat.Bmp) return ".bpw";
@@ -232,7 +232,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens the worldfile specified by the Filename property and loads the values
+        /// Opens the worldfile specified by the Filename property and loads the values.
         /// </summary>
         public void Open()
         {
@@ -262,7 +262,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves the current affine coordinates to the current fileName
+        /// Saves the current affine coordinates to the current fileName.
         /// </summary>
         public void Save()
         {
@@ -278,9 +278,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves the current coordinates to a file
+        /// Saves the current coordinates to a file.
         /// </summary>
-        /// <param name="fileName">Gets or sets the fileName to use for an image</param>
+        /// <param name="fileName">Gets or sets the fileName to use for an image.</param>
         public void SaveAs(string fileName)
         {
             Filename = fileName;
@@ -288,9 +288,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a Matrix that is in float coordinates that represents this world file
+        /// Creates a Matrix that is in float coordinates that represents this world file.
         /// </summary>
-        /// <returns>A Matrix that transforms an image to the geographic coordinates</returns>
+        /// <returns>A Matrix that transforms an image to the geographic coordinates.</returns>
         public Matrix ToMatrix()
         {
             float m11 = Convert.ToSingle(Affine[1]);

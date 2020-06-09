@@ -39,7 +39,7 @@ using ICSharpCode.TextEditor.Gui.CompletionWindow;
 namespace CSharpEditor
 {
     /// <summary>
-    /// CodeCompletionProvider
+    /// CodeCompletionProvider.
     /// </summary>
     internal class CodeCompletionProvider : ICompletionDataProvider
     {
@@ -86,7 +86,7 @@ namespace CSharpEditor
         /// <summary>
         /// Generators completion data.
         /// </summary>
-        /// <param name="fileName">not used</param>
+        /// <param name="fileName">not used.</param>
         /// <param name="textArea">The text area.</param>
         /// <param name="charTyped">The character type.</param>
         /// <returns>The completion data.</returns>

@@ -15,7 +15,7 @@ using System.Windows.Forms;
 using DotSpatial.Analysis;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.Taudem
 {
@@ -26,7 +26,7 @@ namespace DotSpatial.Plugins.Taudem
     public class Hydrology
     {
         /// <summary>
-        /// DsNode
+        /// DsNode.
         /// </summary>
         public enum DsNode
         {
@@ -52,7 +52,7 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Enum for elevation units used in DEMs
+        /// Enum for elevation units used in DEMs.
         /// </summary>
         public enum ElevationUnits
         {
@@ -146,9 +146,9 @@ namespace DotSpatial.Plugins.Taudem
         /// <summary>
         /// A function that updates the mean width, mean height, length, and slope in the given shape file.
         /// </summary>
-        /// <param name="networkShapePath">The path to the streams network shapefile</param>
-        /// <param name="basinShapePath">The path to the unjoined watershed shapefile</param>
-        /// <param name="joinBasinShapePath">The path to the Joined Basins shapefile</param>
+        /// <param name="networkShapePath">The path to the streams network shapefile.</param>
+        /// <param name="basinShapePath">The path to the unjoined watershed shapefile.</param>
+        /// <param name="joinBasinShapePath">The path to the Joined Basins shapefile.</param>
         /// <param name="callback">The progress handler.</param>
         /// <returns>True, if run successfully.</returns>
         public static bool ApplyJoinBasinStreamAttributes(string networkShapePath, string basinShapePath, string joinBasinShapePath, IProgressHandler callback)
@@ -324,9 +324,7 @@ namespace DotSpatial.Plugins.Taudem
 
                 int originalStreamId = Convert.ToInt32(streamShape.GetCellValue(IdField, sindx));
 
-                double elevlow;
-                double elevhigh;
-                GetStreamElevationPoints(sindx, streamShape, demGrid, out elevlow, out elevhigh);
+                GetStreamElevationPoints(sindx, streamShape, demGrid, out double elevlow, out double elevhigh);
 
                 switch (elevUnits)
                 {
@@ -414,7 +412,7 @@ namespace DotSpatial.Plugins.Taudem
                         switch (elevUnits)
                         {
                             case ElevationUnits.Meters:
-                                tmpSlope = tmpSlope * 100;
+                                tmpSlope *= 100;
                                 break;
                             case ElevationUnits.Centimeters:
                                 break;
@@ -489,11 +487,11 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// A function to apply area attributes to a watershed polygon shapefile
+        /// A function to apply area attributes to a watershed polygon shapefile.
         /// </summary>
-        /// <param name="subBasinShapePath">Subbasin shapefile</param>
-        /// <param name="callback">Callback object</param>
-        /// <returns>True on success</returns>
+        /// <param name="subBasinShapePath">Subbasin shapefile.</param>
+        /// <param name="callback">Callback object.</param>
+        /// <returns>True on success.</returns>
         public static bool ApplyWatershedAreaAttributes(string subBasinShapePath, IProgressHandler callback)
         {
             callback?.Progress("Status", 0, "Calculating WS Area Parameters");
@@ -555,9 +553,9 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Hydrology function used to add to the subbasin shapefile average elevation attribute
+        /// Hydrology function used to add to the subbasin shapefile average elevation attribute.
         /// </summary>
-        /// <param name="subBasinShapePath">Subbasin shapefile</param>
+        /// <param name="subBasinShapePath">Subbasin shapefile.</param>
         /// <param name="elevGridPath">Path of the raster.</param>
         /// <param name="callback">The progress handler.</param>
         /// <returns>True, if run successfully.</returns>
@@ -657,10 +655,10 @@ namespace DotSpatial.Plugins.Taudem
         /// Hydrology function used to add to the subbasin shapefile average elevation attribute.
         /// </summary>
         /// <param name="subBasinGridPath">Path of the sub basin grid file.</param>
-        /// <param name="subBasinShapePath">Subbasin shapefile</param>
+        /// <param name="subBasinShapePath">Subbasin shapefile.</param>
         /// <param name="elevGridPath">Path of the elevation grid file.</param>
         /// <param name="callback">The progress handler.</param>
-        /// <returns>True on success</returns>
+        /// <returns>True on success.</returns>
         public static bool ApplyWatershedElevationAttribute(string subBasinGridPath, string subBasinShapePath, string elevGridPath, IProgressHandler callback)
         {
             callback?.Progress("Status", 0, "Calculating WS Elevation Parameters");
@@ -798,10 +796,10 @@ namespace DotSpatial.Plugins.Taudem
         /// <summary>
         /// Hydrology function to apply the watershed link attributes copied or interpreted from the stream network.
         /// </summary>
-        /// <param name="subBasinShapePath">Subbasin shapefile</param>
+        /// <param name="subBasinShapePath">Subbasin shapefile.</param>
         /// <param name="streamNetworkShapePath">Path of the stream network shapefile.</param>
-        /// <param name="callback">The progress handler</param>
-        /// <returns>0 on success</returns>
+        /// <param name="callback">The progress handler.</param>
+        /// <returns>0 on success.</returns>
         public static int ApplyWatershedLinkAttributes(string subBasinShapePath, string streamNetworkShapePath, IProgressHandler callback)
         {
             int shedIndex;
@@ -896,7 +894,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <param name="subBasinShapePath">Path of the sub basin shapefile.</param>
         /// <param name="slopeGridPath">Path of the slope grid.</param>
         /// <param name="elevUnits">The elevation units.</param>
-        /// <param name="callback">The progress handler</param>
+        /// <param name="callback">The progress handler.</param>
         /// <returns>True, if run successfully.</returns>
         public static bool ApplyWatershedSlopeAttribute(string subBasinShapePath, string slopeGridPath, ElevationUnits elevUnits, IProgressHandler callback)
         {
@@ -1222,12 +1220,12 @@ namespace DotSpatial.Plugins.Taudem
         /// </summary>
         /// <param name="d8Path">Path to a D8 grid to be converted into an area D8 grid.</param>
         /// <param name="outletsPath">Optional path to a point shape file which is used to designate outlet points on a grid. If this path is given, the resulting area D8 grid will only include values for those areas of the grid which flow into the outlet points given. All other portions of the grid will be set to 0.</param>
-        /// <param name="areaD8ResultPath">Path to an area D8 output grid, </param>
-        /// <param name="useOutlets">Boolean true for using outlets in delineation d8 areas</param>
-        /// <param name="useEdgeContamCheck">Boolean true to ignore off-grid contributing area</param>
-        /// <param name="numProcesses">Number of threads to be used by Taudem</param>
-        /// <param name="showTaudemOutput">Show Taudem output if true</param>
-        /// <param name="callback"> A callback object for internal status messages</param>
+        /// <param name="areaD8ResultPath">Path to an area D8 output grid,. </param>
+        /// <param name="useOutlets">Boolean true for using outlets in delineation d8 areas.</param>
+        /// <param name="useEdgeContamCheck">Boolean true to ignore off-grid contributing area.</param>
+        /// <param name="numProcesses">Number of threads to be used by Taudem.</param>
+        /// <param name="showTaudemOutput">Show Taudem output if true.</param>
+        /// <param name="callback"> A callback object for internal status messages.</param>
         /// <returns>Integer representing successful creation on 0 or some error state otherwise.</returns>
         public static int AreaD8(string d8Path, string outletsPath, string areaD8ResultPath, bool useOutlets, bool useEdgeContamCheck, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
@@ -1264,7 +1262,7 @@ namespace DotSpatial.Plugins.Taudem
         /// </summary>
         /// <param name="subBasinShapePath">Path of the sub basin shapefile.</param>
         /// <param name="joinBasinShapeResultPath">Path of the resulting shapefile.</param>
-        /// <param name="callback">The progress handler</param>
+        /// <param name="callback">The progress handler.</param>
         /// <returns>True, if run successfully.</returns>
         public static bool BuildJoinedBasins(string subBasinShapePath, string joinBasinShapeResultPath, IProgressHandler callback)
         {
@@ -1476,9 +1474,9 @@ namespace DotSpatial.Plugins.Taudem
         /// <param name="pitFillPath">Path of a pit-filled DEM.</param>
         /// <param name="d8ResultPath">Output result file of a D8 directional grid.</param>
         /// <param name="d8SlopeResultPath">Path to an output grid containing the slope from the cell to the lowest elevation surrounding cell.</param>
-        /// <param name="numProcesses">Number of threads to be used by Taudem</param>
-        /// <param name="showTaudemOutput">Show Taudem output if true</param>
-        /// <param name="callback"> A callback object for internal status messages</param>
+        /// <param name="numProcesses">Number of threads to be used by Taudem.</param>
+        /// <param name="showTaudemOutput">Show Taudem output if true.</param>
+        /// <param name="callback"> A callback object for internal status messages.</param>
         /// <returns>Integer representing successful creation on 0 or some error state otherwise.</returns>
         public static bool D8(string pitFillPath, string d8ResultPath, string d8SlopeResultPath, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
@@ -1519,12 +1517,12 @@ namespace DotSpatial.Plugins.Taudem
         /// <param name="streamShapeResultPath">Path of the resulting stream shape file.</param>
         /// <param name="watershedGridResultPath">Path of the resulting watershed file.</param>
         /// <param name="threshold">The threshold.</param>
-        /// <param name="useOutlets">Use outlets</param>
+        /// <param name="useOutlets">Use outlets.</param>
         /// <param name="useEdgeContamCheck">Use edge contam check.</param>
-        /// <param name="numProcesses">Number of threads to be used by Taudem</param>
-        /// <param name="showTaudemOutput">Show Taudem output if true</param>
+        /// <param name="numProcesses">Number of threads to be used by Taudem.</param>
+        /// <param name="showTaudemOutput">Show Taudem output if true.</param>
         /// <param name="callback">The progress handler.</param>
-        /// <returns>Return code from Taudem executable</returns>
+        /// <returns>Return code from Taudem executable.</returns>
         public static int DelinStreamGrids(string demGridPath, string pitFillPath, string d8Path, string d8SlopePath, string areaD8Path, string outletsPath, string strahlOrdResultPath, string longestUpslopeResultPath, string totalUpslopeResultPath, string streamGridResultPath, string streamOrdResultPath, string treeDatResultPath, string coordDatResultPath, string streamShapeResultPath, string watershedGridResultPath, int threshold, bool useOutlets, bool useEdgeContamCheck, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             return RunDelinStreamGrids(demGridPath, pitFillPath, d8Path, d8SlopePath, areaD8Path, string.Empty, outletsPath, strahlOrdResultPath, longestUpslopeResultPath, totalUpslopeResultPath, streamGridResultPath, streamOrdResultPath, treeDatResultPath, coordDatResultPath, streamShapeResultPath, watershedGridResultPath, threshold, useOutlets, useEdgeContamCheck, false, numProcesses, showTaudemOutput, callback);
@@ -1550,26 +1548,26 @@ namespace DotSpatial.Plugins.Taudem
         /// <param name="streamShapeResultPath">Path of the resulting stream shape file.</param>
         /// <param name="watershedGridResultPath">Path of the resulting watershed file.</param>
         /// <param name="threshold">The threshold.</param>
-        /// <param name="useOutlets">Use outlets</param>
+        /// <param name="useOutlets">Use outlets.</param>
         /// <param name="useEdgeContamCheck">Use edge contam check.</param>
         /// <param name="useDinf">Use DInf.</param>
-        /// <param name="numProcesses">Number of threads to be used by Taudem</param>
-        /// <param name="showTaudemOutput">Show Taudem output if true</param>
+        /// <param name="numProcesses">Number of threads to be used by Taudem.</param>
+        /// <param name="showTaudemOutput">Show Taudem output if true.</param>
         /// <param name="callback">The progress handler.</param>
-        /// <returns>Return code from Taudem executable</returns>
+        /// <returns>Return code from Taudem executable.</returns>
         public static int DelinStreamGrids(string demGridPath, string pitFillPath, string d8Path, string d8SlopePath, string areaD8Path, string areaDInfPath, string outletsPath, string strahlOrdResultPath, string longestUpslopeResultPath, string totalUpslopeResultPath, string streamGridResultPath, string streamOrdResultPath, string treeDatResultPath, string coordDatResultPath, string streamShapeResultPath, string watershedGridResultPath, int threshold, bool useOutlets, bool useEdgeContamCheck, bool useDinf, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             return RunDelinStreamGrids(demGridPath, pitFillPath, d8Path, d8SlopePath, areaD8Path, areaDInfPath, outletsPath, strahlOrdResultPath, longestUpslopeResultPath, totalUpslopeResultPath, streamGridResultPath, streamOrdResultPath, treeDatResultPath, coordDatResultPath, streamShapeResultPath, watershedGridResultPath, threshold, useOutlets, useEdgeContamCheck, useDinf, numProcesses, showTaudemOutput, callback);
         }
 
-        /// <summary>A function to call the Taudem d-infinity calculations</summary>
+        /// <summary>A function to call the Taudem d-infinity calculations.</summary>
         /// <param name="pitFillPath">Path of the pit fill file.</param>
         /// <param name="dInfResultPath">Path of the resulting dInf File.</param>
         /// <param name="dInfSlopeResultPath">Path of the resulting dInf slope file.</param>
-        /// <param name="numProcesses">Number of threads to be used by Taudem</param>
-        /// <param name="showTaudemOutput">Show Taudem output if true</param>
+        /// <param name="numProcesses">Number of threads to be used by Taudem.</param>
+        /// <param name="showTaudemOutput">Show Taudem output if true.</param>
         /// <param name="callback">The progress handler.</param>
-        /// <returns>Return code from Taudem executable</returns>
+        /// <returns>Return code from Taudem executable.</returns>
         public static int DInf(string pitFillPath, string dInfResultPath, string dInfSlopeResultPath, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             Trace.WriteLine("Dinf(pitFillPath: " + pitFillPath + ",\n" + "       DInfResultPath: " + dInfResultPath + ",\n" + "       DInfSlopeResultPath: " + dInfSlopeResultPath + ",\n" + "       NumProcesses: " + numProcesses.ToString() + "\n" + "       ShowTaudemOutput: " + showTaudemOutput.ToString() + "\n" + "       callback)");
@@ -1595,10 +1593,10 @@ namespace DotSpatial.Plugins.Taudem
         /// Fills depressions in an image
         /// - Files specified by parameters
         /// - Progress and status messages will be sent back via IProgressHandler
-        /// - Frames will be sized to default values
+        /// - Frames will be sized to default values.
         /// </summary>
-        /// <param name="sourceFile">String filename of unfilled DEM</param>
-        /// <param name="destFile">String filename of output file</param>
+        /// <param name="sourceFile">String filename of unfilled DEM.</param>
+        /// <param name="destFile">String filename of output file.</param>
         /// <param name="progress">The progress.</param>
         /// <remarks>
         /// Images too large to process all at once are broken down into a framework.
@@ -1611,15 +1609,15 @@ namespace DotSpatial.Plugins.Taudem
             FileFill(sourceFile, destFile, true, false, 10000, 2000, progress);
         }
 
-        /// <summary>Runs threshold.exe</summary>
-        /// <param name="areaD8Path">Input file</param>
-        /// <param name="streamGridResultPath">Output file</param>
-        /// <param name="threshold">The threshold</param>
-        /// <param name="numProcesses">Number of processes</param>
-        /// <param name="showTaudemOutput">Show taudem output</param>
-        /// <param name="callback">Callback objet</param>
-        /// <returns>Taudem return number, 0 means OK</returns>
-        /// <remarks>Created by Paul Meems, 23 Aug 2011</remarks>
+        /// <summary>Runs threshold.exe.</summary>
+        /// <param name="areaD8Path">Input file.</param>
+        /// <param name="streamGridResultPath">Output file.</param>
+        /// <param name="threshold">The threshold.</param>
+        /// <param name="numProcesses">Number of processes.</param>
+        /// <param name="showTaudemOutput">Show taudem output.</param>
+        /// <param name="callback">Callback objet.</param>
+        /// <returns>Taudem return number, 0 means OK.</returns>
+        /// <remarks>Created by Paul Meems, 23 Aug 2011.</remarks>
         public static int RunAllStreamDelineation(string areaD8Path, string streamGridResultPath, int threshold, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             Trace.WriteLine("All Stream Delineation");
@@ -1638,20 +1636,20 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Runs GridNet.exe
+        /// Runs GridNet.exe.
         /// </summary>
-        /// <param name="demGridPath">Input file</param>
+        /// <param name="demGridPath">Input file.</param>
         /// <param name="d8Path">Path of the D8 file.</param>
-        /// <param name="longestUpslopeResultPath">Output file</param>
+        /// <param name="longestUpslopeResultPath">Output file.</param>
         /// <param name="totalUpslopeResultPath">Path of the resulting total upslope file.</param>
         /// <param name="strahlOrdResultPath">Path of the resulting strahl order file.</param>
         /// <param name="outletsPath">Path of the outlets file.</param>
-        /// <param name="useOutlets">Use outlets</param>
-        /// <param name="numProcesses">Number of processes</param>
-        /// <param name="showTaudemOutput">Show taudem output</param>
-        /// <param name="callback">Callback objet</param>
+        /// <param name="useOutlets">Use outlets.</param>
+        /// <param name="numProcesses">Number of processes.</param>
+        /// <param name="showTaudemOutput">Show taudem output.</param>
+        /// <param name="callback">Callback objet.</param>
         /// <returns>
-        /// Taudem return number, 0 means OK
+        /// Taudem return number, 0 means OK.
         /// </returns>
         public static int RunGridNetwork(string demGridPath, string d8Path, string longestUpslopeResultPath, string totalUpslopeResultPath, string strahlOrdResultPath, string outletsPath, bool useOutlets, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
@@ -1677,25 +1675,25 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Call StreamNet.exe
+        /// Call StreamNet.exe.
         /// </summary>
-        /// <param name="demGridPath">Input file</param>
+        /// <param name="demGridPath">Input file.</param>
         /// <param name="pitFillPath">Path of the pit fill file.</param>
         /// <param name="d8Path">Path of the D8 file.</param>
         /// <param name="areaD8Path">Path of the area D8 file.</param>
         /// <param name="outletsPath">Path of the outlets file.</param>
-        /// <param name="streamGridResultPath">Output file</param>
+        /// <param name="streamGridResultPath">Output file.</param>
         /// <param name="streamOrdResultPath">Path of the resulting stream ord file.</param>
         /// <param name="streamShapeResultPath">Path of the resulting stream shape file.</param>
         /// <param name="watershedGridResultPath">Path of the resulting watershed grid file.</param>
         /// <param name="coordDatResultPath">Path of the resulting coordinate data file.</param>
         /// <param name="treeDatResultPath">Path of the resulting tree data file.</param>
-        /// <param name="useOutlets">Use outlets</param>
-        /// <param name="numProcesses">Number of processes</param>
-        /// <param name="showTaudemOutput">Show taudem output</param>
-        /// <param name="callback">Callback objet</param>
+        /// <param name="useOutlets">Use outlets.</param>
+        /// <param name="numProcesses">Number of processes.</param>
+        /// <param name="showTaudemOutput">Show taudem output.</param>
+        /// <param name="callback">Callback objet.</param>
         /// <returns>
-        /// Taudem return number, 0 means OK
+        /// Taudem return number, 0 means OK.
         /// </returns>
         public static int RunStreamOrderGridRaster(string demGridPath, string pitFillPath, string d8Path, string areaD8Path, string outletsPath, string streamGridResultPath, string streamOrdResultPath, string streamShapeResultPath, string watershedGridResultPath, string coordDatResultPath, string treeDatResultPath, bool useOutlets, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
@@ -1736,14 +1734,14 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Run a Taudem V5 executable
+        /// Run a Taudem V5 executable.
         /// </summary>
-        /// <param name="command">Taudem executable file name</param>
+        /// <param name="command">Taudem executable file name.</param>
         /// <param name="parameters">Parameters for Taudem executable.  Parameters containing spaces must be quoted.</param>
-        /// <param name="numProc">Maximum number of threads (ignored if MPICH2 not running)</param>
+        /// <param name="numProc">Maximum number of threads (ignored if MPICH2 not running).</param>
         /// <param name="showOutput">Standard output and standard error from Taudem executable are shown iff this flag is true or there is an error in the Taudem run.</param>
         /// <returns>
-        /// Return code from Taudem executable
+        /// Return code from Taudem executable.
         /// </returns>
         public static int RunTaudem(string command, string parameters, int numProc, bool showOutput)
         {
@@ -1817,14 +1815,14 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Adds a field to the shapefile
+        /// Adds a field to the shapefile.
         /// </summary>
-        /// <param name="sf">The shapefile</param>
-        /// <param name="fieldname">The fieldname</param>
-        /// <param name="fieldType">The field type</param>
+        /// <param name="sf">The shapefile.</param>
+        /// <param name="fieldname">The fieldname.</param>
+        /// <param name="fieldType">The field type.</param>
         /// <param name="width">The width.</param>
-        /// <param name="precision">The precision</param>
-        /// <returns>The index of the inserted field</returns>
+        /// <param name="precision">The precision.</param>
+        /// <returns>The index of the inserted field.</returns>
         private static int AddField(IFeatureSet sf, string fieldname, Type fieldType, int width, int precision)
         {
             sf.DataTable.Columns.Add(fieldname, fieldType);
@@ -1832,9 +1830,9 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Overloaded method to add a field to the shapefile
+        /// Overloaded method to add a field to the shapefile.
         /// </summary>
-        /// <param name="sf">The shapefile</param>
+        /// <param name="sf">The shapefile.</param>
         /// <param name="fieldname">The fieldname.</param>
         /// <param name="fieldType">The field type.</param>
         /// <returns>The index of the inserted field.</returns>
@@ -1878,7 +1876,7 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Performs a Pitfill. Returns true unless the operation was canceled by the dialog
+        /// Performs a Pitfill. Returns true unless the operation was canceled by the dialog.
         /// </summary>
         /// <param name="sourceGrid">The source Grid.</param>
         /// <param name="destGrid">The dest Grid.</param>
@@ -1892,7 +1890,7 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Internal File handling
+        /// Internal File handling.
         /// </summary>
         /// <param name="sourceFile">The Source File. </param>
         /// <param name="destFile">The Dest File. </param>
@@ -1932,12 +1930,12 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Build drainage tree recursively upstream from outlet or reservoir, stopping at inlet, outlet, or reservoir (ignoring point sources)
+        /// Build drainage tree recursively upstream from outlet or reservoir, stopping at inlet, outlet, or reservoir (ignoring point sources).
         /// </summary>
-        /// <param name="shed">Watershed featureset</param>
+        /// <param name="shed">Watershed featureset.</param>
         /// <param name="outlets">Featureset with the outlets.</param>
-        /// <param name="haveOutletsShapefile">if this is false any dsnode not -1 stops the tree </param>
-        /// <param name="isRoot">Flag to avoid stopping on root node, which is an outlet or reservoir</param>
+        /// <param name="haveOutletsShapefile">if this is false any dsnode not -1 stops the tree. </param>
+        /// <param name="isRoot">Flag to avoid stopping on root node, which is an outlet or reservoir.</param>
         /// <param name="sindx">Row index.</param>
         /// <param name="dsNodeFieldNum">Column of the node.</param>
         /// <param name="us1FieldNum">Column of the left.</param>
@@ -1990,7 +1988,7 @@ namespace DotSpatial.Plugins.Taudem
         /// </summary>
         /// <param name="outlets">Featureset with the outlets.</param>
         /// <param name="id">Id of the outlet whose type should be returned.</param>
-        /// <returns>0 for outlet, 1 for inlet, 2 for reservoir, 3 for point source</returns>
+        /// <returns>0 for outlet, 1 for inlet, 2 for reservoir, 3 for point source.</returns>
         private static DsNode GetDsNodeType(IFeatureSet outlets, int id)
         {
             string idFieldColumnName = null;
@@ -2225,15 +2223,15 @@ namespace DotSpatial.Plugins.Taudem
         /// <param name="shed">Shapefile whose elements should be merged.</param>
         /// <param name="drainage">Tree used for merging.</param>
         /// <returns>The resulting geometry.</returns>
-        private static IGeometry MergeBasinsByDrainageI(Shapefile shed, BinTree drainage)
+        private static Geometry MergeBasinsByDrainageI(Shapefile shed, BinTree drainage)
         {
             if (drainage == null) return null;
-            IGeometry left = MergeBasinsByDrainageI(shed, drainage.Left);
-            IGeometry right = MergeBasinsByDrainageI(shed, drainage.Right);
+            Geometry left = MergeBasinsByDrainageI(shed, drainage.Left);
+            Geometry right = MergeBasinsByDrainageI(shed, drainage.Right);
             IFeature outlet = shed.GetShape(drainage.Val);
 
             // will this work?
-            IGeometry outg = outlet.Geometry;
+            Geometry outg = outlet.Geometry;
             if (left == null)
             {
                 if (right == null)
@@ -2297,7 +2295,7 @@ namespace DotSpatial.Plugins.Taudem
         #region Classes
 
         /// <summary>
-        /// Binary (integer) trees
+        /// Binary (integer) trees.
         /// </summary>
         public class BinTree
         {
@@ -2305,11 +2303,11 @@ namespace DotSpatial.Plugins.Taudem
 
             /// <summary>
             /// Initializes a new instance of the <see cref="BinTree"/> class.
-            /// Constructor
+            /// Constructor.
             /// </summary>
-            /// <param name="v">node value</param>
-            /// <param name="l">left subtree</param>
-            /// <param name="r">right subtree</param>
+            /// <param name="v">node value.</param>
+            /// <param name="l">left subtree.</param>
+            /// <param name="r">right subtree.</param>
             public BinTree(int v, BinTree l, BinTree r)
             {
                 Val = v;

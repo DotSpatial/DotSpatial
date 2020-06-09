@@ -7,7 +7,7 @@ using System.Drawing;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// A default element
+    /// A default element.
     /// </summary>
     public class BlankElement : ModelElement
     {
@@ -16,7 +16,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="BlankElement"/> class.
         /// </summary>
-        /// <param name="modelElements">A list of all the elements in the model</param>
+        /// <param name="modelElements">A list of all the elements in the model.</param>
         public BlankElement(List<ModelElement> modelElements)
             : base(modelElements)
         {
@@ -29,7 +29,7 @@ namespace DotSpatial.Modeling.Forms
         #region Methods
 
         /// <summary>
-        /// Does nothing
+        /// Does nothing.
         /// </summary>
         /// <param name="graph">Graphics object used for drawing.</param>
         public override void Paint(Graphics graph)

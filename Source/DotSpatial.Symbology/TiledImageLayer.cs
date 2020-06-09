@@ -6,7 +6,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// TiledImageLayer
+    /// TiledImageLayer.
     /// </summary>
     public class TiledImageLayer : Layer
     {

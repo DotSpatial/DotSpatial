@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -159,7 +159,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the number of parts. If this is set, then it will cache an integer count that is independant from Parts.Count.
-        /// If this is not set, (or set to a negative value) then getting this will return Parts.Count
+        /// If this is not set, (or set to a negative value) then getting this will return Parts.Count.
         /// </summary>
         public int NumParts
         {
@@ -209,7 +209,7 @@ namespace DotSpatial.Data
         public List<PartRange> Parts { get; private set; }
 
         /// <summary>
-        /// Gets or sets the record number (for .shp files usually 1-based)
+        /// Gets or sets the record number (for .shp files usually 1-based).
         /// </summary>
         public int RecordNumber { get; set; }
 

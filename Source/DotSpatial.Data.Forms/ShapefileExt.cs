@@ -6,14 +6,14 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// Extension method for <see cref="Shapefile"/>
+    /// Extension method for <see cref="Shapefile"/>.
     /// </summary>
     public static class ShapefileExt
     {
         /// <summary>
         /// This will use this object to open a shapefile, but launches an open file dialog for the user to select the file to open.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>A new Shapefile created from the file chosen by the open file dialog.</returns>
         public static Shapefile OpenFile(this Shapefile self)
         {

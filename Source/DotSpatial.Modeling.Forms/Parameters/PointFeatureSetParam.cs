@@ -9,7 +9,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// Point Feature Set Parameters past back from a ITool to the toolbox manager
+    /// Point Feature Set Parameters past back from a ITool to the toolbox manager.
     /// </summary>
     public class PointFeatureSetParam : Parameter
     {
@@ -18,7 +18,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="PointFeatureSetParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public PointFeatureSetParam(string name)
         {
             Name = name;
@@ -31,7 +31,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Properties
 
         /// <summary>
-        /// Gets or sets the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new IFeatureSet Value
         {

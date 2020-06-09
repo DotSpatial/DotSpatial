@@ -5,7 +5,6 @@ using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
@@ -41,12 +40,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -55,7 +54,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -74,9 +73,9 @@ namespace DotSpatial.Tools
         /// Finds the average slope in the given polygons.
         /// </summary>
         /// <param name="ras">The dem Raster(Grid file).</param>
-        /// <param name="zFactor">The scaler factor</param>
+        /// <param name="zFactor">The scaler factor.</param>
         /// <param name="poly">The flow poly shapefile path.</param>
-        /// <param name="output">The resulting DEM of slopes</param>
+        /// <param name="output">The resulting DEM of slopes.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
         public bool Execute(IRaster ras, double zFactor, IFeatureSet poly, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
@@ -192,7 +191,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

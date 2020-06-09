@@ -13,17 +13,17 @@ namespace DotSpatial.Compatibility
         #region Properties
 
         /// <summary>
-        /// Gets or sets the cursor
+        /// Gets or sets the cursor.
         /// </summary>
         Cursor Cursor { get; set; }
 
         /// <summary>
-        /// Gets or sets the description for the control (used when the user customizes the Toolbar)
+        /// Gets or sets the description for the control (used when the user customizes the Toolbar).
         /// </summary>
         string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the style of the combo box
+        /// Gets or sets the style of the combo box.
         /// </summary>
         ComboBoxStyle DropDownStyle { get; set; }
 
@@ -33,47 +33,47 @@ namespace DotSpatial.Compatibility
         bool Enabled { get; set; }
 
         /// <summary>
-        /// Gets the name of the ComboBoxItem object
+        /// Gets the name of the ComboBoxItem object.
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// Gets or sets the zero based index of the selected item
+        /// Gets or sets the zero based index of the selected item.
         /// </summary>
         int SelectedIndex { get; set; }
 
         /// <summary>
-        /// Gets or sets the selected object
+        /// Gets or sets the selected object.
         /// </summary>
         object SelectedItem { get; set; }
 
         /// <summary>
-        /// Gets or sets the selected item text
+        /// Gets or sets the selected item text.
         /// </summary>
         string SelectedText { get; set; }
 
         /// <summary>
-        /// Gets or sets the length of the highlighted text
+        /// Gets or sets the length of the highlighted text.
         /// </summary>
         int SelectionLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the start index of the highlighted text
+        /// Gets or sets the start index of the highlighted text.
         /// </summary>
         int SelectionStart { get; set; }
 
         /// <summary>
-        /// Gets or sets the text for this object
+        /// Gets or sets the text for this object.
         /// </summary>
         string Text { get; set; }
 
         /// <summary>
-        /// Gets or sets the tooltip text for the control
+        /// Gets or sets the tooltip text for the control.
         /// </summary>
         string Tooltip { get; set; }
 
         /// <summary>
-        /// Gets or sets the width of the control
+        /// Gets or sets the width of the control.
         /// </summary>
         int Width { get; set; }
 
@@ -82,9 +82,9 @@ namespace DotSpatial.Compatibility
         #region Methods
 
         /// <summary>
-        /// Returns a collection of items
+        /// Returns a collection of items.
         /// </summary>
-        /// <returns>a collection of items</returns>
+        /// <returns>a collection of items.</returns>
         ComboBox.ObjectCollection Items();
 
         #endregion

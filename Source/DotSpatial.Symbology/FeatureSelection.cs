@@ -8,13 +8,12 @@ using System.Diagnostics;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// FeatureSelection
+    /// FeatureSelection.
     /// </summary>
     public class FeatureSelection : Changeable, IFeatureSelection
     {
@@ -187,10 +186,10 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Adding a feature state sets the drawing state of the item to be
+        /// Adding a feature state sets the drawing state of the item to be.
         /// </summary>
-        /// <param name="item">The item to add to this category</param>
-        /// <exception cref="Serialization.ReadOnlyException">Occurs if this list is set to read-only in the constructor</exception>
+        /// <param name="item">The item to add to this category.</param>
+        /// <exception cref="Serialization.ReadOnlyException">Occurs if this list is set to read-only in the constructor.</exception>
         public void Add(IFeature item)
         {
             if (IsReadOnly) throw new ReadOnlyException();
@@ -216,8 +215,8 @@ namespace DotSpatial.Symbology
         /// acting on the feature, so Contains, for instance, would work with points.
         /// </summary>
         /// <param name="region">The region that contains the features that get added.</param>
-        /// <param name="affectedArea">The affected area of this addition</param>
-        /// <returns>True if any item was actually added to the collection</returns>
+        /// <param name="affectedArea">The affected area of this addition.</param>
+        /// <returns>True if any item was actually added to the collection.</returns>
         public bool AddRegion(Envelope region, out Envelope affectedArea)
         {
             bool added = false;
@@ -250,7 +249,7 @@ namespace DotSpatial.Symbology
                     }
                 }
 
-                IGeometry reg;
+                Geometry reg;
                 if (region.Width == 0 && region.Height == 0)
                 {
                     reg = new Point(region.MinX, region.MaxY);
@@ -267,7 +266,7 @@ namespace DotSpatial.Symbology
                     reg = region.ToPolygon();
                 }
 
-                IGeometry geom = f.Geometry;
+                Geometry geom = f.Geometry;
                 switch (SelectionMode)
                 {
                     case SelectionMode.Contains:
@@ -363,7 +362,7 @@ namespace DotSpatial.Symbology
         /// back to the default setting. In other words, if the active type is selection, then this
         /// will unselect all the features, but won't adjust any of the other categories.
         /// </summary>
-        /// <exception cref="ReadOnlyException">Occurs if this list is set to read-only in the constructor</exception>
+        /// <exception cref="ReadOnlyException">Occurs if this list is set to read-only in the constructor.</exception>
         public void Clear()
         {
             SetFilter(); // ensure the filter state matches this collection
@@ -561,10 +560,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Inverts the selection based on the current SelectionMode
+        /// Inverts the selection based on the current SelectionMode.
         /// </summary>
-        /// <param name="region">The geographic region to reverse the selected state</param>
-        /// <param name="affectedArea">The affected area to invert</param>
+        /// <param name="region">The geographic region to reverse the selected state.</param>
+        /// <param name="affectedArea">The affected area to invert.</param>
         /// <returns>True, if the selection was changed.</returns>
         public bool InvertSelection(Envelope region, out Envelope affectedArea)
         {
@@ -594,8 +593,8 @@ namespace DotSpatial.Symbology
                     }
                 }
 
-                IPolygon reg = region.ToPolygon();
-                IGeometry geom = f.Geometry;
+                Polygon reg = region.ToPolygon();
+                Geometry geom = f.Geometry;
                 switch (SelectionMode)
                 {
                     case SelectionMode.Contains:
@@ -658,9 +657,9 @@ namespace DotSpatial.Symbology
         /// Visible -> !Visible
         /// Chunk -> -1  or basically a chunk index that is never drawn.
         /// </summary>
-        /// <param name="item">The item to change the drawing state of</param>
-        /// <returns>Boolean, false if the item does not match the current grouping</returns>
-        /// <exception cref="ReadOnlyException">Occurs if this list is set to read-only in the constructor</exception>
+        /// <param name="item">The item to change the drawing state of.</param>
+        /// <returns>Boolean, false if the item does not match the current grouping.</returns>
+        /// <exception cref="ReadOnlyException">Occurs if this list is set to read-only in the constructor.</exception>
         public bool Remove(IFeature item)
         {
             if (IsReadOnly) throw new ReadOnlyException();
@@ -704,9 +703,9 @@ namespace DotSpatial.Symbology
         /// the SelectionMode. If it passes, it will remove the feature from
         /// the selection.
         /// </summary>
-        /// <param name="region">The geographic region to remove</param>
+        /// <param name="region">The geographic region to remove.</param>
         /// <param name="affectedArea">A geographic area that was affected by this change.</param>
-        /// <returns>Boolean, true if the collection was changed</returns>
+        /// <returns>Boolean, true if the collection was changed.</returns>
         public bool RemoveRegion(Envelope region, out Envelope affectedArea)
         {
             SuspendChanges();
@@ -741,8 +740,8 @@ namespace DotSpatial.Symbology
                     }
                 }
 
-                IPolygon reg = region.ToPolygon();
-                IGeometry geom = f.Geometry;
+                Polygon reg = region.ToPolygon();
+                Geometry geom = f.Geometry;
                 switch (SelectionMode)
                 {
                     case SelectionMode.Contains:
@@ -808,7 +807,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Exports the members of this collection as a list of IFeature.
         /// </summary>
-        /// <returns>A List of IFeature</returns>
+        /// <returns>A List of IFeature.</returns>
         public List<IFeature> ToFeatureList()
         {
             List<IFeature> features = new List<IFeature>();

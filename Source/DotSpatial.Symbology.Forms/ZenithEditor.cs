@@ -10,7 +10,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ZenithEditor
+    /// ZenithEditor.
     /// </summary>
     public class ZenithEditor : UITypeEditor
     {
@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Sets the behavior to drop-down
+        /// Sets the behavior to drop-down.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <returns>The UITypeEditorEditStyle.</returns>

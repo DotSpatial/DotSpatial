@@ -3,7 +3,7 @@
 
 using System;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -43,7 +43,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
+        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon.
         /// </summary>
         public static double Epsilon
         {
@@ -76,10 +76,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Calculates the shortest distance to this line segment from the specified MapWinGIS.Point
+        /// Calculates the shortest distance to this line segment from the specified MapWinGIS.Point.
         /// </summary>
-        /// <param name="point">A MapWinGIS.Point specifing the location to find the distance to the line</param>
-        /// <returns>A double value that is the shortest distance from the given Point to this line segment</returns>
+        /// <param name="point">A MapWinGIS.Point specifing the location to find the distance to the line.</param>
+        /// <returns>A double value that is the shortest distance from the given Point to this line segment.</returns>
         public double DistanceTo(Coordinate point)
         {
             Vertex p = new Vertex(point.X, point.Y);
@@ -89,10 +89,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Returns a vertex representing the closest point on this line segment from a given vertex
+        /// Returns a vertex representing the closest point on this line segment from a given vertex.
         /// </summary>
-        /// <param name="point">The point we want to be close to</param>
-        /// <returns>The point on this segment that is closest to the given point</returns>
+        /// <param name="point">The point we want to be close to.</param>
+        /// <returns>The point on this segment that is closest to the given point.</returns>
         public Vertex ClosestPointTo(Vertex point)
         {
             EndPointInteraction endPointFlag;
@@ -100,12 +100,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Returns a vertex representing the closest point on this line segment from a given vertex
+        /// Returns a vertex representing the closest point on this line segment from a given vertex.
         /// </summary>
-        /// <param name="point">The point we want to be close to</param>
-        /// <param name="isInfiniteLine">If true treat the line as infinitly long</param>
-        /// <param name="endPointFlag">Outputs 0 if the vertex is on the line segment, 1 if beyond P0, 2 if beyong P1 and -1 if P1=P2</param>
-        /// <returns>The point on this segment or infinite line that is closest to the given point</returns>
+        /// <param name="point">The point we want to be close to.</param>
+        /// <param name="isInfiniteLine">If true treat the line as infinitly long.</param>
+        /// <param name="endPointFlag">Outputs 0 if the vertex is on the line segment, 1 if beyond P0, 2 if beyong P1 and -1 if P1=P2.</param>
+        /// <returns>The point on this segment or infinite line that is closest to the given point.</returns>
         public Vertex ClosestPointTo(Vertex point, bool isInfiniteLine, out EndPointInteraction endPointFlag)
         {
             // If the points defining this segment are the same, we treat the segment as a point
@@ -162,10 +162,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Determines the shortest distance between two segments
+        /// Determines the shortest distance between two segments.
         /// </summary>
-        /// <param name="lineSegment">Segment, The line segment to test against this segment</param>
-        /// <returns>Double, the shortest distance between two segments</returns>
+        /// <param name="lineSegment">Segment, The line segment to test against this segment.</param>
+        /// <returns>Double, the shortest distance between two segments.</returns>
         public double DistanceTo(Segment lineSegment)
         {
             // http://www.geometryalgorithms.com/Archive/algorithm_0106/algorithm_0106.htm
@@ -285,7 +285,7 @@ namespace DotSpatial.Data
         /// and 2 if the segments are colinear and overlap.
         /// </summary>
         /// <param name="other">The segment to check against.</param>
-        /// <returns>0 = no intersection, 1 = intersection point found, 2 = segments are collinear or overlap</returns>
+        /// <returns>0 = no intersection, 1 = intersection point found, 2 = segments are collinear or overlap.</returns>
         public int IntersectionCount(Segment other)
         {
             double x1 = P1.X;

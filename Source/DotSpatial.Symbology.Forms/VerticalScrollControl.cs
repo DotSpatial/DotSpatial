@@ -207,7 +207,7 @@ namespace DotSpatial.Symbology.Forms
 
         /// <summary>
         /// Disposes the unmanaged memory objects and optionally disposes
-        /// the managed memory objects
+        /// the managed memory objects.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -237,7 +237,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Occurs during custom drawing when erasing things
+        /// Occurs during custom drawing when erasing things.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnDrawBackground(PaintEventArgs e)
@@ -245,7 +245,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the Initialized event
+        /// Fires the Initialized event.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnInitialize(PaintEventArgs e)
@@ -281,7 +281,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Prevent flicker by preventing this
+        /// Prevent flicker by preventing this.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

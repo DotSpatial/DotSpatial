@@ -6,50 +6,50 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This interface provides ability to use in FeatureLayer any custom actions (including GUI-dependent dialogs)
+    /// This interface provides ability to use in FeatureLayer any custom actions (including GUI-dependent dialogs).
     /// </summary>
     public interface IFeatureLayerActions
     {
         /// <summary>
-        /// Show properties
+        /// Show properties.
         /// </summary>
-        /// <param name="e">Feature layer</param>
+        /// <param name="e">Feature layer.</param>
         void ShowProperties(IFeatureLayer e);
 
         /// <summary>
-        /// Show Join Excel
+        /// Show Join Excel.
         /// </summary>
-        /// <param name="e">Feature set</param>
+        /// <param name="e">Feature set.</param>
         void ExcelJoin(IFeatureSet e);
 
         /// <summary>
-        /// Show dynamic visibility dialog
+        /// Show dynamic visibility dialog.
         /// </summary>
-        /// <param name="e">Dynamic visibility</param>
+        /// <param name="e">Dynamic visibility.</param>
         void LabelExtents(IDynamicVisibility e);
 
         /// <summary>
-        /// Show label setup dialog
+        /// Show label setup dialog.
         /// </summary>
-        /// <param name="e">Label layer</param>
+        /// <param name="e">Label layer.</param>
         void LabelSetup(ILabelLayer e);
 
         /// <summary>
-        /// Show attributes dialog
+        /// Show attributes dialog.
         /// </summary>
-        /// <param name="e">Feature layer</param>
+        /// <param name="e">Feature layer.</param>
         void ShowAttributes(IFeatureLayer e);
 
         /// <summary>
-        /// Show export dialog
+        /// Show export dialog.
         /// </summary>
-        /// <param name="e">Feature layer</param>
+        /// <param name="e">Feature layer.</param>
         void ExportData(IFeatureLayer e);
 
         /// <summary>
-        /// Shows select by attributes dialog
+        /// Shows select by attributes dialog.
         /// </summary>
-        /// <param name="featureLayer">Feature layer</param>
+        /// <param name="featureLayer">Feature layer.</param>
         void SelectByAttributes(FeatureLayer featureLayer);
     }
 }

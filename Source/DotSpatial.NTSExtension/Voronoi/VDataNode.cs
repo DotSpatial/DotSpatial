@@ -4,7 +4,7 @@
 namespace DotSpatial.NTSExtension.Voronoi
 {
     /// <summary>
-    /// VDataNode
+    /// VDataNode.
     /// </summary>
     internal class VDataNode : VNode
     {

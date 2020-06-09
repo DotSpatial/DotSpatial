@@ -9,7 +9,7 @@ namespace DotSpatial.Controls.Tests
 {
     /// <summary>
     /// This is a test class for AppManagerTest and is intended
-    /// to contain all AppManagerTest Unit Tests
+    /// to contain all AppManagerTest Unit Tests.
     /// </summary>
     [TestFixture]
     public class AppManagerTest
@@ -17,7 +17,7 @@ namespace DotSpatial.Controls.Tests
         #region Methods
 
         /// <summary>
-        /// A test for GetCustomSettingDefault
+        /// A test for GetCustomSettingDefault.
         /// </summary>
         [Test]
         public void GetCustomSettingDefaultTest()
@@ -37,7 +37,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// A test for GetCustomSettingFromFile
+        /// A test for GetCustomSettingFromFile.
         /// </summary>
         [Test]
         public void GetCustomSettingFromFileTest()
@@ -67,7 +67,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// A test for GetCustomSettingFromMemory
+        /// A test for GetCustomSettingFromMemory.
         /// </summary>
         [Test]
         public void GetCustomSettingFromMemoryTest()

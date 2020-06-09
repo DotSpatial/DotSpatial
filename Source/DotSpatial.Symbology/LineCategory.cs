@@ -6,12 +6,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LineCategory
+    /// LineCategory.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     [Serializable]
@@ -34,11 +34,11 @@ namespace DotSpatial.Symbology
         /// The selection symbolizer will be dark cyan bordering light cyan, but use the same dash and cap
         /// patterns.
         /// </summary>
-        /// <param name="fillColor">The fill color for the line</param>
-        /// <param name="borderColor">The border color of the line</param>
-        /// <param name="width">The width of the entire line</param>
-        /// <param name="dash">The dash pattern to use</param>
-        /// <param name="caps">The style of the start and end caps</param>
+        /// <param name="fillColor">The fill color for the line.</param>
+        /// <param name="borderColor">The border color of the line.</param>
+        /// <param name="width">The width of the entire line.</param>
+        /// <param name="dash">The dash pattern to use.</param>
+        /// <param name="caps">The style of the start and end caps.</param>
         public LineCategory(Color fillColor, Color borderColor, double width, DashStyle dash, LineCap caps)
         {
             Symbolizer = new LineSymbolizer(fillColor, borderColor, width, dash, caps);
@@ -48,7 +48,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="LineCategory"/> class with the specified color and width.
         /// </summary>
-        /// <param name="color">The color of the unselected line</param>
+        /// <param name="color">The color of the unselected line.</param>
         /// <param name="width">The width of both the selected and unselected lines.</param>
         public LineCategory(Color color, double width)
         {
@@ -71,7 +71,7 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="LineCategory"/> class based on a symbolizer.
         /// This uses the same symbolizer, but with a fill and border color of light cyan for the selection symbolizer.
         /// </summary>
-        /// <param name="lineSymbolizer">The symbolizer to use in order to create a category</param>
+        /// <param name="lineSymbolizer">The symbolizer to use in order to create a category.</param>
         public LineCategory(ILineSymbolizer lineSymbolizer)
         {
             Symbolizer = lineSymbolizer;
@@ -105,7 +105,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the symbolizer for this category
+        /// Gets or sets the symbolizer for this category.
         /// </summary>
         public new ILineSymbolizer Symbolizer
         {
@@ -159,7 +159,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Sets the specified color as the color for the top most stroke.
         /// </summary>
-        /// <param name="color">The color to apply</param>
+        /// <param name="color">The color to apply.</param>
         public override void SetColor(Color color)
         {
             if (Symbolizer?.Strokes == null || Symbolizer.Strokes.Count == 0) return;

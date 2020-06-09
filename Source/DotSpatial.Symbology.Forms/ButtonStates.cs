@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ButtonState
+    /// ButtonState.
     /// </summary>
     [Flags]
     public enum ButtonStates

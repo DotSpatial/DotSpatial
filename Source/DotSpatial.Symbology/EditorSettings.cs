@@ -8,7 +8,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// EditorSettings
+    /// EditorSettings.
     /// </summary>
     [Serializable]
     public class EditorSettings : Descriptor

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -43,7 +43,7 @@ namespace DotSpatial.Data.Tests
 
                 for (int i = 0; i < feature.Geometry.NumGeometries; i++)
                 {
-                    var polygon = (IPolygon)feature.Geometry.GetGeometryN(i);
+                    var polygon = (Polygon)feature.Geometry.GetGeometryN(i);
                     Assert.AreEqual(polygon.NumInteriorRings, 1, "Expect each polygon part to have 1 hole.");
                 }
             }

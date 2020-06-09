@@ -3,8 +3,7 @@
 
 using System;
 using System.IO;
-using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -56,7 +55,7 @@ namespace DotSpatial.Data
         public int FileCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the integer file length in bytes
+        /// Gets or sets the integer file length in bytes.
         /// </summary>
         public int FileLength { get; set; }
 
@@ -181,9 +180,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Parses the first 100 bytes of a shapefile into the important values
+        /// Parses the first 100 bytes of a shapefile into the important values.
         /// </summary>
-        /// <param name="inFilename">The fileName to read</param>
+        /// <param name="inFilename">The fileName to read.</param>
         public void Open(string inFilename)
         {
             Filename = inFilename;
@@ -317,13 +316,10 @@ namespace DotSpatial.Data
         /// <summary>
         /// Generates a new envelope based on the extents of this shapefile.
         /// </summary>
-        /// <returns>An Envelope</returns>
+        /// <returns>An Envelope.</returns>
         public Envelope ToEnvelope()
         {
-            Envelope env = new Envelope(Xmin, Xmax, Ymin, Ymax);
-            env.InitM(Mmin, Mmax);
-            env.InitZ(Zmin, Zmax);
-            return env;
+            return new Envelope(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, Mmin, Mmax);
         }
 
         /// <summary>
@@ -331,7 +327,7 @@ namespace DotSpatial.Data
         /// or Extent class is the best implementation. Casting is required to access the higher
         /// values from the Extent return type.
         /// </summary>
-        /// <returns>Extent, which can be Extent, ExtentM, or ExtentMZ</returns>
+        /// <returns>Extent, which can be Extent, ExtentM, or ExtentMZ.</returns>
         public Extent ToExtent()
         {
             if (ShapeType == ShapeType.MultiPointZ || ShapeType == ShapeType.PointZ || ShapeType == ShapeType.PolygonZ || ShapeType == ShapeType.PolyLineZ)

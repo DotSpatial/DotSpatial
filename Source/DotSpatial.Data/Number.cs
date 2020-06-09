@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Number
+    /// Number.
     /// </summary>
     public struct Number : IComparable, IComparable<Number>, IComparable<double>
     {
@@ -19,10 +19,10 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Number"/> struct.
-        /// Creates a value from an object
+        /// Creates a value from an object.
         /// </summary>
         /// <param name="value">A numeric value that is, or can be parsed to a numeric value.</param>
-        /// <exception cref="NonNumericException">Not Numeric</exception>
+        /// <exception cref="NonNumericException">Not Numeric.</exception>
         public Number(object value)
         {
             if (Global.IsShort(value))
@@ -72,7 +72,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified double value.
         /// </summary>
-        /// <param name="value">A double</param>
+        /// <param name="value">A double.</param>
         public Number(double value)
         {
             // doubles can have 16 digits, so in scientific notation
@@ -86,7 +86,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified int value.
         /// </summary>
-        /// <param name="value">An integer</param>
+        /// <param name="value">An integer.</param>
         public Number(int value)
         {
             _value = value;
@@ -99,7 +99,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified float value.
         /// </summary>
-        /// <param name="value">The value to work with</param>
+        /// <param name="value">The value to work with.</param>
         public Number(float value)
         {
             _value = value;
@@ -112,7 +112,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Number"/> struct to fit the specified short value.
         /// </summary>
-        /// <param name="value">A short</param>
+        /// <param name="value">A short.</param>
         public Number(short value)
         {
             _value = value;
@@ -123,7 +123,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the alphabetical letter code for ToString(-Code-)
+        /// Gets the alphabetical letter code for ToString(-Code-).
         /// </summary>
         public string Code
         {
@@ -169,7 +169,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets this number as a double.
         /// </summary>
-        /// <returns>a double</returns>
+        /// <returns>a double.</returns>
         public double Value
         {
             get
@@ -284,9 +284,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets this number as an int 32
+        /// Gets this number as an int 32.
         /// </summary>
-        /// <returns>An integer</returns>
+        /// <returns>An integer.</returns>
         public int ToInt32()
         {
             if (_value > int.MaxValue) return int.MaxValue;
@@ -296,9 +296,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets this number as a short, or a short.MaxValue/short.MinValue
+        /// Gets this number as a short, or a short.MaxValue/short.MinValue.
         /// </summary>
-        /// <returns>A short</returns>
+        /// <returns>A short.</returns>
         public short ToInt16()
         {
             if (_value > short.MaxValue) return short.MaxValue;
@@ -308,9 +308,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets this number as a float
+        /// Gets this number as a float.
         /// </summary>
-        /// <returns>A float </returns>
+        /// <returns>A float. </returns>
         public float ToFloat()
         {
             if (_value > float.MaxValue) return float.MaxValue;

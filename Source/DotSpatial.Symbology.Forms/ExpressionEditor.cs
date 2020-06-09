@@ -10,7 +10,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ExpressionEditor
+    /// ExpressionEditor.
     /// </summary>
     public class ExpressionEditor : UITypeEditor
     {
@@ -68,10 +68,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// This tells the editor that it should open a dialog form when editing the value from a ... button
+        /// This tells the editor that it should open a dialog form when editing the value from a ... button.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;

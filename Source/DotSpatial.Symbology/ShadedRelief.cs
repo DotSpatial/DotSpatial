@@ -9,7 +9,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    ///  ShadedRelief
+    ///  ShadedRelief.
     /// </summary>
     public class ShadedRelief : Descriptor, IShadedRelief
     {
@@ -125,7 +125,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the elevation factor. This is kept separate from extrusion to reduce confusion. This is a conversion factor that will
         /// convert the units of elevation into the same units that the latitude and longitude are stored in.
-        /// To convert feet to decimal degrees is around a factor of .00000274
+        /// To convert feet to decimal degrees is around a factor of .00000274.
         /// </summary>
         [Category("Shaded Relief")]
         [Description("This is kept separate from extrusion to reduce confusion. This is a conversion factor that will convert the units of elevation into the same units that the latitude and longitude are stored in. To convert feet to decimal degrees is around a factor of .00000274")]

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// IFeatureList
+    /// IFeatureList.
     /// </summary>
     public interface IFeatureList : IList<IFeature>
     {
@@ -48,12 +48,12 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Resumes events
+        /// Resumes events.
         /// </summary>
         void ResumeEvents();
 
         /// <summary>
-        /// Temporarilly disables events
+        /// Temporarilly disables events.
         /// </summary>
         void SuspendEvents();
 

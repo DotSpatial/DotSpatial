@@ -47,7 +47,7 @@ namespace DotSpatial.Plugins.ClickOnceUpdater
             // Why use the ThreadPool instead of CheckForUpdateAsync?
             // Some network conditions, e.g. Hotel or Guest Wi-Fi, can make ClickOnce throw internally in such a way the exception
             // is tricky to catch. Instead, use CheckForUpdates (sync) and handle the exception directly.
-            ThreadPool.QueueUserWorkItem(delegate
+            ThreadPool.QueueUserWorkItem(state =>
                                              {
                                                  try
                                                  {

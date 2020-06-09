@@ -7,7 +7,7 @@ using System.Drawing;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ColorRangeEventArgs
+    /// ColorRangeEventArgs.
     /// </summary>
     public class ColorRangeEventArgs : EventArgs
     {

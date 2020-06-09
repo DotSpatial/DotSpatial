@@ -38,14 +38,14 @@ namespace DotSpatial.Data.Forms
         /// action to register its entrance into a function as well as logging the parameter names
         /// and a type specific indicator of their value.
         /// </summary>
-        /// <param name="methodName">The string name of the method</param>
-        /// <param name="parameters">The list of calling parameters</param>
+        /// <param name="methodName">The string name of the method.</param>
+        /// <param name="parameters">The list of calling parameters.</param>
         void PublicMethodEntered(string methodName, IEnumerable<string> parameters);
 
         /// <summary>
-        /// This event will allow the registering of the exit from each public method
+        /// This event will allow the registering of the exit from each public method.
         /// </summary>
-        /// <param name="methodName">The Method name of the method being left</param>
+        /// <param name="methodName">The Method name of the method being left.</param>
         void PublicMethodLeft(string methodName);
 
         /// <summary>
@@ -61,15 +61,15 @@ namespace DotSpatial.Data.Forms
         /// their choice on those message boxes.
         /// </summary>
         /// <param name="messageText">A MessageBox after it has resolved.</param>
-        /// <param name="result">A DialogResult from showing a message</param>
+        /// <param name="result">A DialogResult from showing a message.</param>
         void MessageBoxShown(string messageText, DialogResult result);
 
         /// <summary>
         /// This method allows the logger to recieve information about input boxes that were shown
         /// as well as the values enterred into them and the result.
         /// </summary>
-        /// <param name="messageText">The string message that appeared on the InputBox</param>
-        /// <param name="result">The ystem.Windows.Forms.DialogResult describing if the value was cancelled </param>
+        /// <param name="messageText">The string message that appeared on the InputBox.</param>
+        /// <param name="result">The ystem.Windows.Forms.DialogResult describing if the value was cancelled. </param>
         /// <param name="value">The string containing the value entered.</param>
         void InputBoxShown(string messageText, DialogResult result, string value);
     }

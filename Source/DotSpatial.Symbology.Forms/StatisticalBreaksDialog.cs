@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// StatisticalBreaksDialog
+    /// StatisticalBreaksDialog.
     /// </summary>
     public partial class StatisticalBreaksDialog : Form
     {
@@ -27,7 +27,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the string field name to apply statistics to
+        /// Gets or sets the string field name to apply statistics to.
         /// </summary>
         public string FieldName
         {
@@ -59,7 +59,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the feature scheme to use for coloring and existing break positions
+        /// Gets or sets the feature scheme to use for coloring and existing break positions.
         /// </summary>
         public IFeatureScheme Scheme
         {
@@ -91,7 +91,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the title for the graph
+        /// Gets or sets the title for the graph.
         /// </summary>
         public string Title
         {

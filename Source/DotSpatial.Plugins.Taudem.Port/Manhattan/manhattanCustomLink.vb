@@ -43,7 +43,7 @@ Namespace Manhattan
         ''' <summary>
         ''' MyLink.Direction of link
         ''' </summary>
-        Public dir As manhattanCustomLink.manhattanDirection
+        Public dir As manhattanDirection
 
         ''' 
         ''' <summary>
@@ -52,7 +52,7 @@ Namespace Manhattan
         ''' <param name="x"></param>
         ''' <param name="y"></param>
         ''' <param name="dir"></param>
-        Public Sub New(ByVal x As Double, ByVal y As Double, ByVal dir As manhattanCustomLink.manhattanDirection)
+        Public Sub New(ByVal x As Double, ByVal y As Double, ByVal dir As manhattanDirection)
             Me.x = x
             Me.y = y
             Me.dir = dir
@@ -63,7 +63,7 @@ Namespace Manhattan
         ''' </summary>
         ''' <param name="dir"></param>
         ''' <returns></returns>
-        Public Shared Function reverse(ByVal dir As manhattanCustomLink.manhattanDirection) As manhattanCustomLink.manhattanDirection
+        Public Shared Function reverse(ByVal dir As manhattanDirection) As manhattanDirection
             Select Case dir
                 Case manhattanCustomLink.manhattanDirection.up
                     Return manhattanCustomLink.manhattanDirection.down
@@ -120,7 +120,7 @@ Namespace Manhattan
         ''' </summary>
         ''' <param name="x"></param>
         ''' <param name="y"></param>
-        Public Sub finish(<System.Runtime.InteropServices.Out()> ByRef x As Double, <System.Runtime.InteropServices.Out()> ByRef y As Double)
+        Public Sub finish(<Runtime.InteropServices.Out()> ByRef x As Double, <Runtime.InteropServices.Out()> ByRef y As Double)
             Select Case Me.dir
                 Case manhattanCustomLink.manhattanDirection.up
                     x = Me.x

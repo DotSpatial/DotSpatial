@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// Default implementation of IColorCategoryActions
+    /// Default implementation of IColorCategoryActions.
     /// </summary>
     public class ColorCategoryActions : LegendItemActionsBase, IColorCategoryActions
     {

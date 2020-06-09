@@ -9,7 +9,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Clip Polygon with Polygon
+    /// Clip Polygon with Polygon.
     /// </summary>
     public class ClipPolygonWithPolygon : Tool
     {
@@ -39,12 +39,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -53,9 +53,9 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
-        /// <param name="cancelProgressHandler">The progress handler for progress message updates</param>
+        /// <param name="cancelProgressHandler">The progress handler for progress message updates.</param>
         /// <returns>True if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
@@ -71,12 +71,12 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the ClipPolygonWithPolygon tool with programatic input
+        /// Executes the ClipPolygonWithPolygon tool with programatic input.
         /// </summary>
-        /// <param name="input">The input feature set to clip</param>
-        /// <param name="input2">The input polygon feature set to clip with</param>
-        /// <param name="output">The output feature set</param>
-        /// <param name="cancelProgressHandler">The progress handler for progress message updates</param>
+        /// <param name="input">The input feature set to clip.</param>
+        /// <param name="input2">The input polygon feature set to clip with.</param>
+        /// <param name="output">The output feature set.</param>
+        /// <param name="cancelProgressHandler">The progress handler for progress message updates.</param>
         /// <returns>True if executed successfully.</returns>
         public bool Execute(IFeatureSet input, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
@@ -119,7 +119,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

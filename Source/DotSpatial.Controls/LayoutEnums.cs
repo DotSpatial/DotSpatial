@@ -4,7 +4,7 @@
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Enumarates the different ways that a a LayoutElement can handle resize events
+    /// Enumarates the different ways that a a LayoutElement can handle resize events.
     /// </summary>
     public enum ResizeStyle
     {
@@ -25,7 +25,7 @@ namespace DotSpatial.Controls
     }
 
     /// <summary>
-    /// An enumeration of the possible scale bar units
+    /// An enumeration of the possible scale bar units.
     /// </summary>
     public enum ScaleBarUnit
     {
@@ -71,7 +71,7 @@ namespace DotSpatial.Controls
     }
 
     /// <summary>
-    /// An enumeration of alignments used for aligning selected layout elements
+    /// An enumeration of alignments used for aligning selected layout elements.
     /// </summary>
     public enum Alignment
     {
@@ -107,7 +107,7 @@ namespace DotSpatial.Controls
     }
 
     /// <summary>
-    /// An enumeration of resizing options used for aligning selected layout elements
+    /// An enumeration of resizing options used for aligning selected layout elements.
     /// </summary>
     public enum Fit
     {
@@ -123,7 +123,7 @@ namespace DotSpatial.Controls
     }
 
     /// <summary>
-    /// An enumeration that defines the Mouses current behavior
+    /// An enumeration that defines the Mouses current behavior.
     /// </summary>
     public enum MouseMode
     {

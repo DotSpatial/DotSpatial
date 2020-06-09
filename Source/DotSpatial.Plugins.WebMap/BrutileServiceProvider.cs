@@ -11,7 +11,7 @@ using System.Net;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap
 {

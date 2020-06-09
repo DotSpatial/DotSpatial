@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PolygonFeatureTypeException
+    /// PolygonFeatureTypeException.
     /// </summary>
     public class PolygonFeatureTypeException : ArgumentException
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonFeatureTypeException"/> class.
         /// </summary>
-        /// <param name="message">The custom error message to use for this exception</param>
+        /// <param name="message">The custom error message to use for this exception.</param>
         public PolygonFeatureTypeException(string message)
             : base(message)
         {

@@ -1,14 +1,14 @@
 ﻿Option Strict On
 Option Explicit On
 
-Imports GeoAPI.Geometries
+Imports NetTopologySuite.Geometries
 
 Namespace Manhattan
 
-    Public Class manhattanPolygonParts
+    Public Class ManhattanPolygonParts
 
-        Public partindex As Integer
-        Public points As New Dictionary(Of Integer, Coordinate)
+        Public PartIndex As Integer
+        Public Points As New Dictionary(Of Integer, Coordinate)
 
     End Class
 End NameSpace

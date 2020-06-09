@@ -101,10 +101,10 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// The default, indexed value of type IFeature
+        /// The default, indexed value of type IFeature.
         /// </summary>
-        /// <param name="index">The numeric index</param>
-        /// <returns>An object of type IFeature corresponding to the index value specified</returns>
+        /// <param name="index">The numeric index.</param>
+        /// <returns>An object of type IFeature corresponding to the index value specified.</returns>
         public virtual IFeature this[int index]
         {
             get
@@ -132,7 +132,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;.
         /// </summary>
         /// <param name="collection">collection: The collection whose elements should be added to the end of the
         /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
@@ -184,7 +184,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Converts the elements in the current EventList&lt;IFeature&gt; to another type, and returns a list containing the converted elements.
         /// </summary>
-        /// <typeparam name="TOutput">The output type to convert to</typeparam>
+        /// <typeparam name="TOutput">The output type to convert to.</typeparam>
         /// <param name="converter">A System.Converter&lt;TInput, TOutput&gt; delegate that converts each element from one type to another type.</param>
         /// <returns>A List&lt;T&gt; of the target type containing the converted elements from the current EventList&lt;T&gt;.</returns>
         /// <exception cref="System.ArgumentNullException">converter is null.</exception>
@@ -199,8 +199,8 @@ namespace DotSpatial.Data
         /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.Generic.List&lt;IFeature&gt;. The System.Array must have zero-based indexing.</param>
         /// <param name="arrayIndex"> The zero-based index in array at which copying begins.</param>
         /// <exception cref="System.ArgumentException">System.ArgumentException: arrayIndex is equal to or greater than the length of array.-or-The number of elements in the source System.Collections.Generic.List&lt;T&gt; is greater than the available space from arrayIndex to the end of the destination array. </exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">arrayIndex is less than 0</exception>
-        /// <exception cref="System.ArgumentNullException">array is null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">arrayIndex is less than 0.</exception>
+        /// <exception cref="System.ArgumentNullException">array is null.</exception>
         public virtual void CopyTo(IFeature[] array, int arrayIndex)
         {
             _list.CopyTo(array, arrayIndex);
@@ -209,7 +209,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Copies a range of elements from the EventList&lt;IFeature&gt; to a compatible one-dimensional array, starting at the specified index of the target array.
         /// </summary>
-        /// <param name="index">The zero-based index in the source EventList&lt;T&gt; at which copying begins</param>
+        /// <param name="index">The zero-based index in the source EventList&lt;T&gt; at which copying begins.</param>
         /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from EventList&lt;IFeature&gt;. The System.Array must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         /// <param name="count">The number of elements to copy.</param>
@@ -244,10 +244,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Retrieves all the elements that match the conditions described by the specified predicate
+        /// Retrieves all the elements that match the conditions described by the specified predicate.
         /// </summary>
-        /// <param name="match">The System.Predicate that defines the conditions to search for</param>
-        /// <returns>A List of matches</returns>
+        /// <param name="match">The System.Predicate that defines the conditions to search for.</param>
+        /// <returns>A List of matches.</returns>
         public virtual List<IFeature> FindAll(Predicate<IFeature> match)
         {
             return _list.FindAll(match);
@@ -259,9 +259,9 @@ namespace DotSpatial.Data
         /// <param name="startIndex">The zero-based starting index of the search.</param>
         /// <param name="count">The number of elements in the section to search.</param>
         /// <param name="match"> The System.Predicate&lt;IFeature&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1</returns>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the EventList&lt;IFeature&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the EventList&lt;IFeature&gt;.</exception>
-        /// <exception cref="System.ArgumentNullException">match is null</exception>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
         public virtual int FindIndex(int startIndex, int count, Predicate<IFeature> match)
         {
             return _list.FindIndex(startIndex, count, match);
@@ -296,7 +296,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="match">The System.Predicate&lt;IFeature&gt; delegate that defines the conditions of the element to search for.</param>
         /// <returns>The last element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type IFeature.</returns>
-        /// <exception cref= "System.ArgumentNullException">match is null."</exception>
+        /// <exception cref= "System.ArgumentNullException">match is null.".</exception>
         public virtual IFeature FindLast(Predicate<IFeature> match)
         {
             return _list.FindLast(match);
@@ -485,7 +485,7 @@ namespace DotSpatial.Data
         /// Removes the all the elements that match the conditions defined by the specified predicate.
         /// </summary>
         /// <param name="match">The System.Predicate&lt;IFeature&gt; delegate that defines the conditions of the elements to remove.</param>
-        /// <returns>The number of elements removed from the EventList&lt;IFeature&gt;</returns>
+        /// <returns>The number of elements removed from the EventList&lt;IFeature&gt;.</returns>
         /// <exception cref="System.ArgumentNullException">match is null.</exception>
         /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
         public virtual int RemoveAll(Predicate<IFeature> match)
@@ -540,7 +540,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Resumes events
+        /// Resumes events.
         /// </summary>
         public void ResumeEvents()
         {
@@ -621,7 +621,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Temporarilly disables events
+        /// Temporarilly disables events.
         /// </summary>
         public void SuspendEvents()
         {
@@ -689,7 +689,7 @@ namespace DotSpatial.Data
         /// Occurs each time a feature is removed from the list. This should only be
         /// called if suspend events is false.
         /// </summary>
-        /// <param name="feature">he feature that was removed</param>
+        /// <param name="feature">he feature that was removed.</param>
         protected virtual void OnFeatureRemoved(IFeature feature)
         {
             if (!EventsSuspended) FeatureRemoved?.Invoke(this, new FeatureEventArgs(feature));
@@ -717,7 +717,7 @@ namespace DotSpatial.Data
         /// Includes the Feature in the parents DataTable at the given index and raises the FeatureAdded event.
         /// </summary>
         /// <param name="item">Feature that gets included.</param>
-        /// <param name="index">Index, where the feature gets included. (-1 = add at the end)</param>
+        /// <param name="index">Index, where the feature gets included. (-1 = add at the end).</param>
         private void IncludeFeature(IFeature item, int index = -1)
         {
             if (_list.Count == 1) Parent.FeatureType = item.FeatureType;

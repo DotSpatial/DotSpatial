@@ -67,12 +67,12 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Gets a rectangle in control coordinates showing the size of this control
+        /// Gets a rectangle in control coordinates showing the size of this control.
         /// </summary>
         public Rectangle ClientRectangle => new Rectangle(0, 0, Width, Height);
 
         /// <summary>
-        /// Gets or sets the custom icon that is used if the ItemType is set to custom
+        /// Gets or sets the custom icon that is used if the ItemType is set to custom.
         /// </summary>
         public Image CustomImage { get; set; }
 

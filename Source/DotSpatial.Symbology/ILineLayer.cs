@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// A layer with drawing characteristics for LineStrings
+    /// A layer with drawing characteristics for LineStrings.
     /// </summary>
     public interface ILineLayer : IFeatureLayer
     {
@@ -17,7 +17,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the drawing characteristics to use for this layer.
         /// </summary>
-        /// <exception cref="System.InvalidOperationException">Unable to assign a non-point symbolizer to a PointLayer</exception>
+        /// <exception cref="System.InvalidOperationException">Unable to assign a non-point symbolizer to a PointLayer.</exception>
         new ILineSymbolizer Symbolizer { get; set; }
 
         /// <summary>

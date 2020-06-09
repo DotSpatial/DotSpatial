@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// InterlaceMethod
+    /// InterlaceMethod.
     /// </summary>
     public enum InterlaceMethod : byte
     {

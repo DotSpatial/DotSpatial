@@ -18,8 +18,8 @@ namespace DotSpatial.Symbology
         /// value type members are different, or if any of the properties
         /// are IMatchable and do not match, then this returns false.
         /// </summary>
-        /// <param name="other">The other IMatcheable object of the same type</param>
-        /// <param name="mismatchedProperties">The list of property names that do not match</param>
+        /// <param name="other">The other IMatcheable object of the same type.</param>
+        /// <param name="mismatchedProperties">The list of property names that do not match.</param>
         /// <returns>Boolean, true if the properties are comparably equal.</returns>
         bool Matches(IMatchable other, out List<string> mismatchedProperties);
     }

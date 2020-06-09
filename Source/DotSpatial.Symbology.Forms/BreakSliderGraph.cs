@@ -14,7 +14,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// BreakSliderGraph
+    /// BreakSliderGraph.
     /// </summary>
     [DefaultEvent("SliderMoved")]
     public class BreakSliderGraph : Control
@@ -138,7 +138,7 @@ namespace DotSpatial.Symbology.Forms
         public List<BreakSlider> Breaks { get; }
 
         /// <summary>
-        /// Gets or sets the color to use when a break is selected
+        /// Gets or sets the color to use when a break is selected.
         /// </summary>
         public Color BreakSelectedColor
         {
@@ -262,7 +262,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the string normalization field
+        /// Gets or sets the string normalization field.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -411,7 +411,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the data Table for which the statistics should be applied
+        /// Gets or sets the data Table for which the statistics should be applied.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -466,7 +466,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the font to use for the graph title
+        /// Gets or sets the font to use for the graph title.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the font to use for the graph title.")]

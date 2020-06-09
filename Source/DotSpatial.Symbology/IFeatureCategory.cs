@@ -70,7 +70,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This applies the color to the top symbol stroke or pattern.
         /// </summary>
-        /// <param name="color">The Color to apply</param>
+        /// <param name="color">The Color to apply.</param>
         void SetColor(Color color);
 
         #endregion

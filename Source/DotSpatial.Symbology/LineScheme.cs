@@ -6,14 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LineScheme
+    /// LineScheme.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     [Serializable]
@@ -45,7 +44,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the symbolic categories as a valid LineCategoryCollection.
         /// </summary>
         /// <remarks>
-        /// [TypeConverter(typeof(CategoryCollectionConverter))]
+        /// [TypeConverter(typeof(CategoryCollectionConverter))].
         /// </remarks>
         [Description("Gets the list of categories.")]
         [Serialize("Categories")]
@@ -80,7 +79,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds a new scheme, assuming that the new scheme is the correct type.
         /// </summary>
-        /// <param name="category">The category to add</param>
+        /// <param name="category">The category to add.</param>
         public override void AddCategory(ICategory category)
         {
             ILineCategory lc = category as ILineCategory;
@@ -98,9 +97,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates the category using a random fill color.
         /// </summary>
-        /// <param name="fillColor">The base color to use for creating the category</param>
-        /// <param name="size">Creates the size</param>
-        /// <returns>A new polygon category</returns>
+        /// <param name="fillColor">The base color to use for creating the category.</param>
+        /// <param name="size">Creates the size.</param>
+        /// <returns>A new polygon category.</returns>
         public override ICategory CreateNewCategory(Color fillColor, double size)
         {
             ILineSymbolizer ls = EditorSettings.TemplateSymbolizer.Copy() as ILineSymbolizer;
@@ -121,7 +120,7 @@ namespace DotSpatial.Symbology
         /// Uses the settings on this scheme to create a random category.
         /// </summary>
         /// <param name="filterExpression">Used as filterExpression and LegendText in the resulting category.</param>
-        /// <returns>A new IFeatureCategory</returns>
+        /// <returns>A new IFeatureCategory.</returns>
         public override IFeatureCategory CreateRandomCategory(string filterExpression)
         {
             LineCategory result = new LineCategory();
@@ -137,7 +136,7 @@ namespace DotSpatial.Symbology
         /// exchaning it with the category before it. If there is no
         /// category before it, then this does nothing.
         /// </summary>
-        /// <param name="category">The category to decrease the index of</param>
+        /// <param name="category">The category to decrease the index of.</param>
         /// <returns>True, if the index was decreased.</returns>
         public override bool DecreaseCategoryIndex(ICategory category)
         {
@@ -150,18 +149,18 @@ namespace DotSpatial.Symbology
         /// surface in the specified bounding rectangle.
         /// </summary>
         /// <param name="index">The integer index of the feature to draw.</param>
-        /// <param name="g">The Graphics object to draw to</param>
-        /// <param name="bounds">The rectangular bounds to draw in</param>
+        /// <param name="g">The Graphics object to draw to.</param>
+        /// <param name="bounds">The rectangular bounds to draw in.</param>
         public override void DrawCategory(int index, Graphics g, Rectangle bounds)
         {
             Categories[index].Symbolizer.Draw(g, bounds);
         }
 
         /// <summary>
-        /// Calculates the unique colors as a scheme
+        /// Calculates the unique colors as a scheme.
         /// </summary>
-        /// <param name="fs">The featureset with the data Table definition</param>
-        /// <param name="uniqueField">The unique field</param>
+        /// <param name="fs">The featureset with the data Table definition.</param>
+        /// <param name="uniqueField">The unique field.</param>
         /// <returns>A hashtable with the generated unique colors.</returns>
         public Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField)
         {
@@ -182,7 +181,7 @@ namespace DotSpatial.Symbology
         /// Re-orders the specified member by attempting to exchange it with the next higher
         /// index category. If there is no higher index, this does nothing.
         /// </summary>
-        /// <param name="category">The category to increase the index of</param>
+        /// <param name="category">The category to increase the index of.</param>
         /// <returns>True, if the index was increased.</returns>
         public override bool IncreaseCategoryIndex(ICategory category)
         {
@@ -191,10 +190,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Inserts the category at the specified index
+        /// Inserts the category at the specified index.
         /// </summary>
-        /// <param name="index">The integer index where the category should be inserted</param>
-        /// <param name="category">The category to insert</param>
+        /// <param name="index">The integer index where the category should be inserted.</param>
+        /// <param name="category">The category to insert.</param>
         public override void InsertCategory(int index, ICategory category)
         {
             ILineCategory lc = category as ILineCategory;
@@ -202,9 +201,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Removes the specified category
+        /// Removes the specified category.
         /// </summary>
-        /// <param name="category">The category to insert</param>
+        /// <param name="category">The category to insert.</param>
         public override void RemoveCategory(ICategory category)
         {
             ILineCategory lc = category as ILineCategory;
@@ -212,7 +211,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Resumes the category events
+        /// Resumes the category events.
         /// </summary>
         public override void ResumeEvents()
         {
@@ -220,7 +219,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Suspends the category events
+        /// Suspends the category events.
         /// </summary>
         public override void SuspendEvents()
         {
@@ -232,7 +231,7 @@ namespace DotSpatial.Symbology
         /// settings for creating "unbounded" colors.
         /// </summary>
         /// <param name="count">The integer count.</param>
-        /// <returns>The List of colors</returns>
+        /// <returns>The List of colors.</returns>
         protected override List<Color> GetDefaultColors(int count)
         {
             ILineSymbolizer ls = EditorSettings?.TemplateSymbolizer as ILineSymbolizer;
@@ -252,7 +251,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Handle the event un-wiring and scheme update for the old categories
+        /// Handle the event un-wiring and scheme update for the old categories.
         /// </summary>
         /// <param name="categories">The category collection to update.</param>
         protected virtual void OnExcludeCategories(LineCategoryCollection categories)
@@ -268,7 +267,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Handle the event wiring and scheme update for the new categories.
         /// </summary>
-        /// <param name="categories">The category collection to update</param>
+        /// <param name="categories">The category collection to update.</param>
         protected virtual void OnIncludeCategories(LineCategoryCollection categories)
         {
             if (categories == null) return;

@@ -8,7 +8,7 @@ using OSGeo.GDAL;
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
-    /// GdalRasterProvider
+    /// GdalRasterProvider.
     /// </summary>
     public class GdalRasterProvider : IRasterProvider
     {
@@ -83,7 +83,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <param name="numBands">The number of bands to create in the raster.</param>
         /// <param name="dataType">The data type to use for the raster.</param>
         /// <param name="options">The options to be used.</param>
-        /// <returns>An IRaster</returns>
+        /// <returns>An IRaster.</returns>
         public IRaster Create(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
             if (File.Exists(name)) File.Delete(name);

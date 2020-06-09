@@ -11,7 +11,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// StrokesEditor
+    /// StrokesEditor.
     /// </summary>
     public class StrokesEditor : UITypeEditor
     {
@@ -44,10 +44,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Specifies that a form will be used for editing (a Modal form behaves like a dialog)
+        /// Specifies that a form will be used for editing (a Modal form behaves like a dialog).
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;

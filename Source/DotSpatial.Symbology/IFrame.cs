@@ -66,7 +66,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This will create a new layer from the featureset and add it.
         /// </summary>
-        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics</param>
+        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics.</param>
         void Add(IFeatureSet featureSet);
 
         #endregion

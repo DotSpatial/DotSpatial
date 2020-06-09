@@ -70,7 +70,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the pattern for this control
+        /// Gets or sets the pattern for this control.
         /// </summary>
         public IPattern Pattern
         {

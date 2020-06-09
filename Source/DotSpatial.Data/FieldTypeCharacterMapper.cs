@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Default FieldTypeCharacterMapper that is responsible for mapping a Type to a FieldTypeCharacter
+    /// Default FieldTypeCharacterMapper that is responsible for mapping a Type to a FieldTypeCharacter.
     /// </summary>
     public class FieldTypeCharacterMapper : IFieldTypeCharacterMapper
     {

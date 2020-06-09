@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// DataProviderEventArgs
+    /// DataProviderEventArgs.
     /// </summary>
     public class DataProviderEventArgs : EventArgs
     {
@@ -16,7 +16,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataProviderEventArgs"/> class.
         /// </summary>
-        /// <param name="providers">Specifies a list of IDataProviders</param>
+        /// <param name="providers">Specifies a list of IDataProviders.</param>
         public DataProviderEventArgs(IEnumerable<IDataProvider> providers)
         {
             Providers = providers;

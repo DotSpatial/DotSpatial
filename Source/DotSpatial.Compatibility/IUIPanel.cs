@@ -12,7 +12,7 @@ namespace DotSpatial.Compatibility
     public delegate void OnPanelClose(string caption);
 
     /// <summary>
-    /// UiPanel
+    /// UiPanel.
     /// </summary>
     // ReSharper disable once InconsistentNaming
     public interface IUIPanel

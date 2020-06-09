@@ -7,7 +7,7 @@ using NuGet;
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
     /// <summary>
-    /// Packages
+    /// Packages.
     /// </summary>
     public class Packages
     {

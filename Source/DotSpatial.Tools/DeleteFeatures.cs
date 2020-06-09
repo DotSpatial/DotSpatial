@@ -40,12 +40,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -54,7 +54,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -63,9 +63,8 @@ namespace DotSpatial.Tools
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;
             input1?.FillAttributes();
 
-            IndexParam ip = _inputParam[1] as IndexParam;
             string input2 = string.Empty;
-            if (ip != null)
+            if (_inputParam[1] is IndexParam ip)
             {
                 input2 = ip.Value;
             }
@@ -77,7 +76,7 @@ namespace DotSpatial.Tools
 
         /// <summary>
         /// Executes the Erase Opaeration tool programmatically.
-        /// Ping deleted static for external testing 01/2010
+        /// Ping deleted static for external testing 01/2010.
         /// </summary>
         /// <param name="input1">The input FeatureSet.</param>
         /// <param name="input2">The input Expression string to select features to Delete.</param>
@@ -133,7 +132,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
@@ -169,8 +168,7 @@ namespace DotSpatial.Tools
             }
 
             FeatureSetParam fsp = _inputParam[0] as FeatureSetParam;
-            IndexParam ip = _inputParam[1] as IndexParam;
-            if (fsp?.Value != null && ip != null)
+            if (fsp?.Value != null && _inputParam[1] is IndexParam ip)
             {
                 ip.Fs = fsp.Value as FeatureSet;
             }

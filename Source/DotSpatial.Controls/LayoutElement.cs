@@ -14,7 +14,7 @@ using DotSpatial.Symbology.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// The interface for all elements that can be added to the layout control
+    /// The interface for all elements that can be added to the layout control.
     /// </summary>
     [Serializable]
     public abstract class LayoutElement
@@ -65,7 +65,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the line symbolizer that draws the outline
+        /// Gets or sets the line symbolizer that draws the outline.
         /// </summary>
         [TypeConverter(typeof(GeneralTypeConverter))]
         [Browsable(true)]
@@ -85,7 +85,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants
+        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants.
         /// </summary>
         [Browsable(true)]
         [Category("Layout")]
@@ -104,7 +104,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants
+        /// Gets or sets the location of the top left corner of the control in 1/100 of an inch paper coordinants.
         /// </summary>
         [Browsable(false)]
         public PointF LocationF
@@ -122,7 +122,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the name of the element
+        /// Gets or sets the name of the element.
         /// </summary>
         [Browsable(true)]
         [Category("Layout")]
@@ -141,7 +141,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the rectangle of the element in 1/100th of an inch paper coordinants
+        /// Gets or sets the rectangle of the element in 1/100th of an inch paper coordinants.
         /// </summary>
         [Browsable(false)]
         public RectangleF Rectangle
@@ -256,17 +256,17 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
+        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible.</param>
         public abstract void Draw(Graphics g, bool printing);
 
         /// <summary>
         /// Draws the elements background behind everything else.
         /// </summary>
         /// <param name="g">Graphics object used for painting.</param>
-        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible</param>
+        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible.</param>
         public void DrawBackground(Graphics g, bool printing)
         {
             if (Background != null)
@@ -285,7 +285,7 @@ namespace DotSpatial.Controls
         /// Draws the elements outline on top of everything else.
         /// </summary>
         /// <param name="g">Graphics object used for painting.</param>
-        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible</param>
+        /// <param name="printing">If true then we a actually printing not previewing so we should make it as high quality as possible.</param>
         public void DrawOutline(Graphics g, bool printing)
         {
             if (Background.OutlineSymbolizer == null || Background.Patterns.Count < 1) return;
@@ -345,7 +345,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Causes the element to be refreshed
+        /// Causes the element to be refreshed.
         /// </summary>
         public virtual void RefreshElement()
         {
@@ -364,7 +364,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Call this when it needs to updated
+        /// Call this when it needs to updated.
         /// </summary>
         protected virtual void OnInvalidate()
         {
@@ -372,7 +372,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires when the size of the element changes
+        /// Fires when the size of the element changes.
         /// </summary>
         protected virtual void OnSizeChanged()
         {
@@ -380,7 +380,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires when the thumbnail gets modified
+        /// Fires when the thumbnail gets modified.
         /// </summary>
         protected virtual void OnThumbnailChanged()
         {
@@ -417,7 +417,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires when the background is modified
+        /// Fires when the background is modified.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

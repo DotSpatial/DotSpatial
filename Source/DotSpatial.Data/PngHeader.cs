@@ -15,13 +15,13 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// At this time, the only compression method recognized is 0 - deflate/inflate with a
-        /// sliding window of at most 32768 bytes
+        /// sliding window of at most 32768 bytes.
         /// </summary>
         public const byte CompressionMethod = 0;
 
         /// <summary>
         /// At this time, only filter method 0 is outlined in the international standards.
-        /// (adaptive filtering with 5 basic filter types)
+        /// (adaptive filtering with 5 basic filter types).
         /// </summary>
         public const byte FilterMethod = 0;
 
@@ -53,7 +53,7 @@ namespace DotSpatial.Data
         /// Truecolor - 8, 16
         /// Indexed - 1, 2, 4, 8
         /// Greyscale/alpha - 8, 16
-        /// TrueColor/alpha - 8, 16
+        /// TrueColor/alpha - 8, 16.
         /// </summary>
         public BitDepth BitDepth { get; set; }
 
@@ -63,7 +63,7 @@ namespace DotSpatial.Data
         public ColorType ColorType { get; set; }
 
         /// <summary>
-        /// Gets or sets the height
+        /// Gets or sets the height.
         /// </summary>
         public int Height { get; set; }
 
@@ -73,7 +73,7 @@ namespace DotSpatial.Data
         public InterlaceMethod InterlaceMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets the width
+        /// Gets or sets the width.
         /// </summary>
         public int Width { get; set; }
 

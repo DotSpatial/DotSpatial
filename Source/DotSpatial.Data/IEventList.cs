@@ -220,7 +220,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;.
         /// </summary>
         /// <param name="collection">collection: The collection whose elements should be added to the end of the System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null, if type T is a reference type.</param>
         void AddRange(IEnumerable<T> collection);
@@ -255,7 +255,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Converts the elements in the current DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to another type, and returns a list containing the converted elements.
         /// </summary>
-        /// <typeparam name="TOutput">The output type to convert to</typeparam>
+        /// <typeparam name="TOutput">The output type to convert to.</typeparam>
         /// <param name="converter">A System.Converter&lt;TInput, TOutput&gt; delegate that converts each element from one type to another type.</param>
         /// <returns>A DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; of the target type containing the converted elements from the current DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</returns>
         /// <exception cref="System.ArgumentNullException">converter is null.</exception>
@@ -264,7 +264,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Copies a range of elements from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; to a compatible one-dimensional array, starting at the specified index of the target array.
         /// </summary>
-        /// <param name="index">The zero-based index in the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; at which copying begins</param>
+        /// <param name="index">The zero-based index in the source DotSpatial.Interfaces.Framework.IEventList&lt;T&gt; at which copying begins.</param>
         /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;. The System.Array must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         /// <param name="count">The number of elements to copy.</param>
@@ -295,9 +295,9 @@ namespace DotSpatial.Data
         /// <param name="startIndex">The zero-based starting index of the search.</param>
         /// <param name="count">The number of elements in the section to search.</param>
         /// <param name="match"> The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1</returns>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</exception>
-        /// <exception cref="System.ArgumentNullException">match is null</exception>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
         int FindIndex(int startIndex, int count, Predicate<T> match);
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
         /// <returns>The last element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type T.</returns>
-        /// <exception cref= "System.ArgumentNullException">match is null."</exception>
+        /// <exception cref= "System.ArgumentNullException">match is null.".</exception>
         T FindLast(Predicate<T> match);
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace DotSpatial.Data
         /// Removes the all the elements that match the conditions defined by the specified predicate.
         /// </summary>
         /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the elements to remove.</param>
-        /// <returns>The number of elements removed from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;</returns>
+        /// <returns>The number of elements removed from the DotSpatial.Interfaces.Framework.IEventList&lt;T&gt;.</returns>
         /// <exception cref="System.ArgumentNullException">match is null.</exception>
         int RemoveAll(Predicate<T> match);
 

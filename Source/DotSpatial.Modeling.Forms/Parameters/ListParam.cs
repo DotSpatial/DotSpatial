@@ -7,7 +7,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// List of strings parameter returned by an ITool allows the tool to specify a list of values and a default
+    /// List of strings parameter returned by an ITool allows the tool to specify a list of values and a default.
     /// </summary>
     public class ListParam : Parameter
     {
@@ -16,7 +16,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="ListParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public ListParam(string name)
         {
             Name = name;
@@ -29,8 +29,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="ListParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="valueList">The list of string values to poluate the combo box</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="valueList">The list of string values to poluate the combo box.</param>
         public ListParam(string name, List<string> valueList)
         {
             Name = name;
@@ -43,9 +43,9 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="ListParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="valueList">The list of string values to poluate the combo box</param>
-        /// <param name="value">The default item in the list</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="valueList">The list of string values to poluate the combo box.</param>
+        /// <param name="value">The default item in the list.</param>
         public ListParam(string name, List<string> valueList, int value)
         {
             Name = name;
@@ -61,7 +61,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Properties
 
         /// <summary>
-        /// Gets or sets the index of the list
+        /// Gets or sets the index of the list.
         /// </summary>
         public new int Value
         {
@@ -77,7 +77,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         }
 
         /// <summary>
-        /// Gets or sets the list of items in the valuelist
+        /// Gets or sets the list of items in the valuelist.
         /// </summary>
         public List<string> ValueList { get; set; }
 

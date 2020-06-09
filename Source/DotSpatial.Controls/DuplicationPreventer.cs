@@ -49,7 +49,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Cleans the enumerable of points by removing duplicates
+        /// Cleans the enumerable of points by removing duplicates.
         /// </summary>
         /// <param name="points">The enumerable that gets cleaned.</param>
         /// <returns>The cleaned enumerable.</returns>

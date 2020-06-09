@@ -180,7 +180,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Erases over any current content in the values, and copies the byte values of the specified color in its place.
         /// </summary>
-        /// <param name="fillColor">The color to fill the image with</param>
+        /// <param name="fillColor">The color to fill the image with.</param>
         public void Fill(Color fillColor)
         {
             byte a = fillColor.A;
@@ -252,9 +252,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets a color structure for the specified row and column.
         /// </summary>
-        /// <param name="row">The zero based integer row index to get the color from</param>
-        /// <param name="col">The zero based integer column index to get the color from</param>
-        /// <returns>A System.Color structure created from the byte values in the values array</returns>
+        /// <param name="row">The zero based integer row index to get the color from.</param>
+        /// <param name="col">The zero based integer column index to get the color from.</param>
+        /// <returns>A System.Color structure created from the byte values in the values array.</returns>
         public Color GetColor(int row, int col)
         {
             if (Values == null || Stride == 0) return Color.Empty;
@@ -269,7 +269,7 @@ namespace DotSpatial.Data
         /// Compares the bytes of this grid to the bytes of another grid. If the measurements
         /// of the other grid don't match this, then this returns false.
         /// </summary>
-        /// <param name="otherGrid">The other BitmapGrid to test against</param>
+        /// <param name="otherGrid">The other BitmapGrid to test against.</param>
         /// <returns>Boolean, true if the bytes are the same in each case.</returns>
         public bool Matches(BitmapGrid otherGrid)
         {
@@ -297,9 +297,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Sets the color structure by copying the byte ARGB values into the values array.
         /// </summary>
-        /// <param name="row">The integer row index to copy values to</param>
-        /// <param name="col">The integer column index to copy values to</param>
-        /// <param name="color">The color structure to turn into bytes</param>
+        /// <param name="row">The integer row index to copy values to.</param>
+        /// <param name="col">The integer column index to copy values to.</param>
+        /// <param name="color">The color structure to turn into bytes.</param>
         public void SetColor(int row, int col, Color color)
         {
             if (Stride == 0 || Values == null) return;
@@ -422,7 +422,7 @@ namespace DotSpatial.Data
             /// Initializes a new instance of the <see cref="BitmapGridEnumerator"/> class based on the specified parentGrid.
             /// This automatically ignores any bytes in the range past the "width".
             /// </summary>
-            /// <param name="parentGrid">The parent grid to cycle through the values of</param>
+            /// <param name="parentGrid">The parent grid to cycle through the values of.</param>
             public BitmapGridEnumerator(BitmapGrid parentGrid)
             {
                 _values = parentGrid.Values;
@@ -434,14 +434,14 @@ namespace DotSpatial.Data
             #region IEnumerator<Color> Members
 
             /// <summary>
-            /// Gets the current color value from this grid
+            /// Gets the current color value from this grid.
             /// </summary>
             public Color Current { get; private set; }
 
             object IEnumerator.Current => Current;
 
             /// <summary>
-            /// This does nothing
+            /// This does nothing.
             /// </summary>
             public void Dispose()
             {
@@ -449,9 +449,9 @@ namespace DotSpatial.Data
             }
 
             /// <summary>
-            /// Advances the color to the next position
+            /// Advances the color to the next position.
             /// </summary>
-            /// <returns>Boolean, false if there were no more cells in the image</returns>
+            /// <returns>Boolean, false if there were no more cells in the image.</returns>
             public bool MoveNext()
             {
                 _column += 4;

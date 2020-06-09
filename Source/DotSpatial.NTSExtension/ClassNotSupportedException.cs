@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// A ClassNotSupportedException Class
+    /// A ClassNotSupportedException Class.
     /// </summary>
     public class ClassNotSupportedException : Exception
     {

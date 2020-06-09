@@ -11,12 +11,12 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the bounds for this image
+        /// Gets or sets the bounds for this image.
         /// </summary>
         IRasterBounds Bounds { get; set; }
 
         /// <summary>
-        /// Gets the integer height in pixels for the combined image at its maximum resolution
+        /// Gets the integer height in pixels for the combined image at its maximum resolution.
         /// </summary>
         int Height { get; }
 
@@ -26,12 +26,12 @@ namespace DotSpatial.Data
         int Stride { get; set; }
 
         /// <summary>
-        /// Gets the tile width
+        /// Gets the tile width.
         /// </summary>
         int TileWidth { get; }
 
         /// <summary>
-        /// Gets the tile height
+        /// Gets the tile height.
         /// </summary>
         int TileHeight { get; }
 

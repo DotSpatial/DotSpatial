@@ -17,7 +17,7 @@ namespace DotSpatial.Data.Tests
         /// Specifically this is used to verify that moving from one page to the next works without skipping any data sets.
         /// </summary>
         /// <remarks>
-        /// Issue: https://dotspatial.codeplex.com/workitem/63623
+        /// Issue: https://dotspatial.codeplex.com/workitem/63623.
         /// </remarks>
         [Test]
         public void ShapeReaderSkippingTest()

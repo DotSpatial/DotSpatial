@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// A menu strip designed to work along with the modeler
+    /// A menu strip designed to work along with the modeler.
     /// </summary>
     [ToolboxItem(false)]
     public partial class ModelerMenuStrip : MenuStrip

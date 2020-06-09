@@ -4,7 +4,7 @@
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// DefaultTools
+    /// DefaultTools.
     /// </summary>
     public enum FunctionMode
     {

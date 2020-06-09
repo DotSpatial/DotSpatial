@@ -1,34 +1,34 @@
 ﻿Option Strict On
 Option Explicit On
 
-Imports GeoAPI.Geometries
+Imports NetTopologySuite.Geometries
 
 Namespace Manhattan
 
     ''' <summary>
     ''' Stores the values from a grid header used to convert link positions to grid points
     ''' </summary>
-    Public Class manhattanCustomOffSet
+    Public Class ManhattanCustomOffSet
 
         ''' <summary>
         ''' Point at top left edge of grid
         ''' </summary>
-        Private origin As Coordinate
+        Private ReadOnly origin As Coordinate
 
         ''' <summary>
         ''' E-W distance between grid points
         ''' </summary>
-        Private dX As Double
+        Private ReadOnly dX As Double
 
         ''' <summary>
         ''' N-S distance between grid points
         ''' </summary>
-        Private dY As Double
+        Private ReadOnly dY As Double
 
         ''' <summary>
         ''' Area of cell
         ''' </summary>
-        Private unitArea As Double
+        Private ReadOnly unitArea As Double
 
         ''' <summary>
         ''' Constructor
@@ -48,7 +48,7 @@ Namespace Manhattan
         ''' </summary>
         ''' <param name="l">link</param>
         ''' <returns>point</returns>
-        Private Function linkToPoint(ByVal l As manhattanCustomLink) As Coordinate
+        Private Function LinkToPoint(ByVal l As manhattanCustomLink) As Coordinate
             Dim p As New Coordinate()
             Dim x, y As Double
             l.start(x, y)
@@ -62,7 +62,7 @@ Namespace Manhattan
         ''' </summary>
         ''' <param name="c"></param>
         ''' <returns>area</returns>
-        Public Function area(ByVal c As Integer) As Double
+        Public Function Area(ByVal c As Integer) As Double
             Return c * unitArea
         End Function
 
@@ -74,28 +74,27 @@ Namespace Manhattan
         ''' <param name="partindex"></param>
         ''' <param name="pointindex"></param>
         ''' <returns>true iff no eror</returns>
-        Private Function addChainToShape(ByVal l As List(Of manhattanCustomLink), ByVal simplePolygon As Dictionary(Of Integer, manhattanPolygonParts), ByRef partindex As Integer, ByRef pointindex As Integer) As Boolean
-            'If (Not Shape.InsertPart(pointindex, partindex)) Then
-            '    Return False
-            'End If
+        Private Function AddChainToShape(ByVal l As List(Of manhattanCustomLink), ByVal simplePolygon As Dictionary(Of Integer, ManhattanPolygonParts), ByRef partindex As Integer, ByRef pointindex As Integer) As Boolean
             If simplePolygon.ContainsKey(partindex) Then
                 If simplePolygon(partindex).points.ContainsKey(pointindex) Then
                     Return False
                 End If
             Else
-                Dim lmpc As New manhattanPolygonParts()
-                lmpc.partindex = partindex
+                Dim lmpc As New ManhattanPolygonParts With {
+                    .partindex = partindex
+                }
                 simplePolygon.Add(partindex, lmpc)
             End If
             partindex += 1
             manhattanPolygon.rotate(l)
             Dim l0 As manhattanCustomLink = l(0)
-            Dim p0 As Coordinate = linkToPoint(l0)
+            Dim p0 As Coordinate = LinkToPoint(l0)
 
             If Not simplePolygon.ContainsKey(partindex) Then
                 Dim c2 As New Coordinate(p0.X, p0.Y)
-                Dim lmpc As New manhattanPolygonParts()
-                lmpc.partindex = partindex
+                Dim lmpc As New ManhattanPolygonParts With {
+                    .partindex = partindex
+                }
                 simplePolygon.Add(partindex, lmpc)
                 simplePolygon(partindex).points.Add(pointindex, c2)
             Else
@@ -103,9 +102,7 @@ Namespace Manhattan
                     Return False
                 End If
             End If
-            'If (Not Shape.InsertPoint(p0, pointindex)) Then
-            '    Return False
-            'End If
+
             pointindex += 1
             Dim lastDir As manhattanCustomLink.manhattanDirection = l0.dir
             For i As Integer = 1 To l.Count - 1
@@ -116,7 +113,7 @@ Namespace Manhattan
                     '    Return False
                     'End If
                     If Not simplePolygon(partindex).points.ContainsKey(pointindex) Then
-                        Dim c4 As New Coordinate(linkToPoint(nextLink).X, linkToPoint(nextLink).Y)
+                        Dim c4 As New Coordinate(LinkToPoint(nextLink).X, LinkToPoint(nextLink).Y)
                         simplePolygon(partindex).points.Add(pointindex, c4)
                     Else
                         If simplePolygon(partindex).points.ContainsKey(pointindex) Then
@@ -148,13 +145,13 @@ Namespace Manhattan
         ''' </summary>
         ''' <param name="polygons"></param>
         ''' <returns>null if error, else shape</returns>
-        Public Function makeShape(ByVal polygons As List(Of manhattanPolygon)) As Dictionary(Of Integer, manhattanPolygonParts)
-            Dim simplePolygon As New Dictionary(Of Integer, manhattanPolygonParts)
+        Public Function MakeShape(ByVal polygons As List(Of manhattanPolygon)) As Dictionary(Of Integer, ManhattanPolygonParts)
+            Dim simplePolygon As New Dictionary(Of Integer, ManhattanPolygonParts)
 
             Dim pointindex As Integer = 0
             Dim partindex As Integer = 0
             For i As Integer = 0 To polygons.Count - 1
-                If (Not addChainToShape(polygons(i).perimeter, simplePolygon, partindex, pointindex)) Then
+                If (Not AddChainToShape(polygons(i).perimeter, simplePolygon, partindex, pointindex)) Then
                     Return Nothing
                 End If
             Next i

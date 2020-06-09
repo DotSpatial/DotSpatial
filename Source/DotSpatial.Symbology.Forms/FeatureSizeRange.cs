@@ -8,7 +8,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// FeatureSizeRange
+    /// FeatureSizeRange.
     /// </summary>
     public class FeatureSizeRange
     {
@@ -69,8 +69,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Given a size, this will return the native symbolizer that has been adjusted to the specified size.
         /// </summary>
-        /// <param name="size">The size of the symbol</param>
-        /// <param name="color">The color of the symbol</param>
+        /// <param name="size">The size of the symbol.</param>
+        /// <param name="color">The color of the symbol.</param>
         /// <returns>The adjusted symbolizer.</returns>
         public IFeatureSymbolizer GetSymbolizer(double size, Color color)
         {

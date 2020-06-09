@@ -3,7 +3,7 @@
 
 using System;
 using DotSpatial.Data.Rasters.GdalExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;

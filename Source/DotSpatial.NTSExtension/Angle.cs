@@ -14,7 +14,7 @@ namespace DotSpatial.NTSExtension
         #region Variables
 
         /// <summary>
-        /// The value of 3.14159 or whatever from Math.PI
+        /// The value of 3.14159 or whatever from Math.PI.
         /// </summary>
         // ReSharper disable once InconsistentNaming
         public const double PI = Math.PI;
@@ -28,7 +28,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="Angle"/> struct with the radians specified.
         /// </summary>
-        /// <param name="radians">The angle in radians</param>
+        /// <param name="radians">The angle in radians.</param>
         public Angle(double radians)
         {
             if (radians > 2 * Math.PI || radians < -2 * Math.PI)
@@ -45,7 +45,7 @@ namespace DotSpatial.NTSExtension
         #region Properties
 
         /// <summary>
-        /// Gets or sets the angle in degrees, ranging from -360 to 360
+        /// Gets or sets the angle in degrees, ranging from -360 to 360.
         /// </summary>
         public double Degrees
         {
@@ -67,7 +67,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Gets or sets the angle in degrees ranging from 0 to 360
+        /// Gets or sets the angle in degrees ranging from 0 to 360.
         /// </summary>
         public double DegreesPos
         {
@@ -88,7 +88,7 @@ namespace DotSpatial.NTSExtension
 
                 if (value > 360 || value < -360)
                 {
-                    dg = dg % 360;
+                    dg %= 360;
                 }
 
                 if (dg < 360)
@@ -125,20 +125,20 @@ namespace DotSpatial.NTSExtension
         #endregion
 
         /// <summary>
-        /// Returns a new angle object with an angle of Value in radians
+        /// Returns a new angle object with an angle of Value in radians.
         /// </summary>
-        /// <param name="value">The double value indicating the angle</param>
-        /// <returns>An Angle structure with the specified value</returns>
+        /// <param name="value">The double value indicating the angle.</param>
+        /// <returns>An Angle structure with the specified value.</returns>
         public static explicit operator Angle(double value)
         {
             return new Angle(value);
         }
 
         /// <summary>
-        /// Returns a double specifying the radian value of the angle
+        /// Returns a double specifying the radian value of the angle.
         /// </summary>
-        /// <param name="value">The angle structure to determine the angle of</param>
-        /// <returns>A Double with the angle in radians</returns>
+        /// <param name="value">The angle structure to determine the angle of.</param>
+        /// <returns>A Double with the angle in radians.</returns>
         public static explicit operator double(Angle value)
         {
             return value.Radians;
@@ -147,7 +147,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns true if the two angles are equal to each other.
         /// </summary>
-        /// <param name="a">An angle to compare</param>
+        /// <param name="a">An angle to compare.</param>
         /// <param name="b">A second angle.</param>
         /// <returns>Boolean, true if they are equal.</returns>
         public static bool operator ==(Angle a, Angle b)
@@ -158,7 +158,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns true if the two angles are equal to each other.
         /// </summary>
-        /// <param name="a">An angle to compare</param>
+        /// <param name="a">An angle to compare.</param>
         /// <param name="b">A second angle.</param>
         /// <returns>Boolean, true if they are equal.</returns>
         public static bool operator !=(Angle a, Angle b)
@@ -169,9 +169,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns the sum of the two angles, cycling if greater than 2 pi.
         /// </summary>
-        /// <param name="a">An angle to add</param>
-        /// <param name="b">A second angle to add</param>
-        /// <returns>A new Angle structure equal to the sum of the two angles</returns>
+        /// <param name="a">An angle to add.</param>
+        /// <param name="b">A second angle to add.</param>
+        /// <returns>A new Angle structure equal to the sum of the two angles.</returns>
         public static Angle operator +(Angle a, Angle b)
         {
             return new Angle(a.Radians + b.Radians);
@@ -180,20 +180,20 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns the difference of two angles.
         /// </summary>
-        /// <param name="a">An angle to subtract from</param>
-        /// <param name="b">The angle to subtract</param>
-        /// <returns>A new angle structure with a sum equal to the two angles</returns>
+        /// <param name="a">An angle to subtract from.</param>
+        /// <param name="b">The angle to subtract.</param>
+        /// <returns>A new angle structure with a sum equal to the two angles.</returns>
         public static Angle operator -(Angle a, Angle b)
         {
             return new Angle(a.Radians - b.Radians);
         }
 
         /// <summary>
-        /// Divides angle A by angle B
+        /// Divides angle A by angle B.
         /// </summary>
-        /// <param name="a">An angle to divide</param>
-        /// <param name="b">An angle to divide into A</param>
-        /// <returns>A new angle with the quotient of the division</returns>
+        /// <param name="a">An angle to divide.</param>
+        /// <param name="b">An angle to divide into A.</param>
+        /// <returns>A new angle with the quotient of the division.</returns>
         public static Angle operator /(Angle a, Angle b)
         {
             return new Angle(a.Radians / b.Radians);
@@ -202,7 +202,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Multiplies angle A by Angle B.
         /// </summary>
-        /// <param name="a">An angle to multiply</param>
+        /// <param name="a">An angle to multiply.</param>
         /// <param name="b">A second angle to multiply.</param>
         /// <returns>A new angle with the product of the two angles.</returns>
         public static Angle operator *(Angle a, Angle b)
@@ -211,60 +211,60 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the mathematical Cos of the angle specified
+        /// Returns the mathematical Cos of the angle specified.
         /// </summary>
-        /// <param name="value">The Angle to find the cosign of</param>
-        /// <returns>Double, the cosign of the angle specified</returns>
+        /// <param name="value">The Angle to find the cosign of.</param>
+        /// <returns>Double, the cosign of the angle specified.</returns>
         public static double Cos(Angle value)
         {
             return Math.Cos(value.Radians);
         }
 
         /// <summary>
-        /// Returns the mathematical Sin of the angle specified
+        /// Returns the mathematical Sin of the angle specified.
         /// </summary>
-        /// <param name="value">The Angle to find the Sin of</param>
-        /// <returns>Double, the Sin of the Angle</returns>
+        /// <param name="value">The Angle to find the Sin of.</param>
+        /// <returns>Double, the Sin of the Angle.</returns>
         public static double Sin(Angle value)
         {
             return Math.Sin(value.Radians);
         }
 
         /// <summary>
-        /// Returns the mathematical Tan of the angle specified
+        /// Returns the mathematical Tan of the angle specified.
         /// </summary>
-        /// <param name="value">The Angle to find the Tan of</param>
-        /// <returns>Double, the Tan of the Angle</returns>
+        /// <param name="value">The Angle to find the Tan of.</param>
+        /// <returns>Double, the Tan of the Angle.</returns>
         public static double Tan(Angle value)
         {
             return Math.Tan(value.Radians);
         }
 
         /// <summary>
-        /// Returns the mathematical ATan of the value specified
+        /// Returns the mathematical ATan of the value specified.
         /// </summary>
-        /// <param name="value">The Double to find the ATan of</param>
-        /// <returns>Angle, the ATan of the Value specified</returns>
+        /// <param name="value">The Double to find the ATan of.</param>
+        /// <returns>Angle, the ATan of the Value specified.</returns>
         public static Angle ATan(double value)
         {
             return new Angle(Math.Atan(value));
         }
 
         /// <summary>
-        /// Returns the mathematical ACos of the value specified
+        /// Returns the mathematical ACos of the value specified.
         /// </summary>
-        /// <param name="value">The Double to find the ACos of</param>
-        /// <returns>Angle, the ACos of the Value specified</returns>
+        /// <param name="value">The Double to find the ACos of.</param>
+        /// <returns>Angle, the ACos of the Value specified.</returns>
         public static Angle ACos(double value)
         {
             return new Angle(Math.Acos(value));
         }
 
         /// <summary>
-        /// Returns the mathematical ASin of the value specified
+        /// Returns the mathematical ASin of the value specified.
         /// </summary>
-        /// <param name="value">The Double to find the ASin of</param>
-        /// <returns>Angle, the ASin of the Value specified</returns>
+        /// <param name="value">The Double to find the ASin of.</param>
+        /// <returns>Angle, the ASin of the Value specified.</returns>
         public static Angle ASin(double value)
         {
             return new Angle(Math.Asin(value));
@@ -275,7 +275,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns a new instance of the Angle class with the same angle as this object.
         /// </summary>
-        /// <returns>Angle which has the same values</returns>
+        /// <returns>Angle which has the same values.</returns>
         public Angle Copy()
         {
             Angle newAngle = new Angle(_rad);
@@ -298,9 +298,9 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Gets a hash code
+        /// Gets a hash code.
         /// </summary>
-        /// <returns>Int hash code</returns>
+        /// <returns>Int hash code.</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();

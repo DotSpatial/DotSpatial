@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// BinaryLayerProvider
+    /// BinaryLayerProvider.
     /// </summary>
     public class BinaryLayerProvider : IRasterLayerProvider
     {
@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Creates a new BinaryRasterLayer
+        /// Creates a new BinaryRasterLayer.
         /// </summary>
         /// <param name="name">The string fileName for the new instance.</param>
         /// <param name="driverCode">The string short name of the driver for creating the raster.</param>
@@ -61,13 +61,13 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Opens an existing raster and returns a layer containing it
+        /// Opens an existing raster and returns a layer containing it.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
-        /// <param name="inRam">Opens in ram</param>
-        /// <param name="container">A container to automatically add this layer to</param>
-        /// <param name="progressHandler">Returns progress</param>
-        /// <returns>An ILayer</returns>
+        /// <param name="fileName">The string fileName to open.</param>
+        /// <param name="inRam">Opens in ram.</param>
+        /// <param name="container">A container to automatically add this layer to.</param>
+        /// <param name="progressHandler">Returns progress.</param>
+        /// <returns>An ILayer.</returns>
         public ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             IRaster raster = Raster.OpenFile(fileName, inRam, progressHandler);

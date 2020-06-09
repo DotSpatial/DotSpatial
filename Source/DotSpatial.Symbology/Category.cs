@@ -9,7 +9,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Category
+    /// Category.
     /// </summary>
     public class Category : LegendItem
     {
@@ -25,8 +25,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Category"/> class and tailors the range to the specifeid values.
         /// </summary>
-        /// <param name="startValue">The start value</param>
-        /// <param name="endValue">The end value</param>
+        /// <param name="startValue">The start value.</param>
+        /// <param name="endValue">The end value.</param>
         public Category(double? startValue, double? endValue)
         {
             Range = new Range(startValue, endValue);
@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Category"/> class that has the same value for both minimum and maximum.
         /// </summary>
-        /// <param name="value">The value to use</param>
+        /// <param name="value">The value to use.</param>
         public Category(double value)
         {
             Range = new Range(value);
@@ -186,10 +186,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Tests to see if the specified value falls in the range specified by this ColorCategory
+        /// Tests to see if the specified value falls in the range specified by this ColorCategory.
         /// </summary>
-        /// <param name="value">The value of type int to test</param>
-        /// <returns>Boolean, true if the value was found in the range</returns>
+        /// <param name="value">The value of type int to test.</param>
+        /// <returns>Boolean, true if the value was found in the range.</returns>
         public bool Contains(double value)
         {
             return Range == null || Range.Contains(value);

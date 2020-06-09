@@ -66,7 +66,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaDictionary
+    /// HfaDictionary.
     /// </summary>
     public class HfaDictionary : Dictionary<string, HfaType>
     {
@@ -163,9 +163,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Adds the type using the TypeName as the key
+        /// Adds the type using the TypeName as the key.
         /// </summary>
-        /// <param name="type">The type to add</param>
+        /// <param name="type">The type to add.</param>
         public void AddType(HfaType type)
         {
             Add(type.TypeName, type);

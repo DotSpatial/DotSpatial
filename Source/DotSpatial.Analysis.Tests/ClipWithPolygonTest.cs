@@ -14,7 +14,7 @@ namespace DotSpatial.Analysis.Tests
     public class ClipWithPolygonTest
     {
         /// <summary>
-        /// A test for ClipRasterWithPolygon
+        /// A test for ClipRasterWithPolygon.
         /// </summary>
         [Test]
         public void ClipRasterWithPolygonTest()

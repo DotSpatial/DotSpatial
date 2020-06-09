@@ -28,7 +28,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Handles the Mouse Up situation
+        /// Handles the Mouse Up situation.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)

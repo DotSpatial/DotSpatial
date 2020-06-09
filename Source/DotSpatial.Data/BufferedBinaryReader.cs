@@ -228,9 +228,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// copies count bytes from the internal buffer to the specified buffer index as the starting point in the specified buffer.
         /// </summary>
-        /// <param name="buffer">A previously dimensioned array of byte values to fill with data</param>
-        /// <param name="index">The index in the argument array to start pasting values to</param>
-        /// <param name="count">The number of values to copy into the parameter buffer</param>
+        /// <param name="buffer">A previously dimensioned array of byte values to fill with data.</param>
+        /// <param name="index">The index in the argument array to start pasting values to.</param>
+        /// <param name="count">The number of values to copy into the parameter buffer.</param>
         public void Read(byte[] buffer, int index, int count)
         {
             bool finished = false;
@@ -298,7 +298,7 @@ namespace DotSpatial.Data
         /// if a number of bytes is specified that exeeds the file length.
         /// </summary>
         /// <param name="byteCount">The integer count of the bytes.</param>
-        /// <returns>An array of bytes</returns>
+        /// <returns>An array of bytes.</returns>
         public byte[] ReadBytes(int byteCount)
         {
             byte[] result = new byte[byteCount];
@@ -357,8 +357,8 @@ namespace DotSpatial.Data
         /// Reads the specified number of doubles into an array.
         /// This uses Buffer.CopyBlock, and seems to work ok for little-endian in windows.
         /// </summary>
-        /// <param name="count">The count of doubles</param>
-        /// <returns>An array of doubles</returns>
+        /// <param name="count">The count of doubles.</param>
+        /// <returns>An array of doubles.</returns>
         public double[] ReadDoubles(int count)
         {
             byte[] rawBytes = new byte[count * 8];
@@ -369,9 +369,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads a short, sixteen bit integer as bytes in little-endian order
+        /// Reads a short, sixteen bit integer as bytes in little-endian order.
         /// </summary>
-        /// <returns>A short value</returns>
+        /// <returns>A short value.</returns>
         public short ReadInt16()
         {
             byte[] data = ReadBytes(2);
@@ -409,10 +409,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads the specified number of integers into an array
+        /// Reads the specified number of integers into an array.
         /// </summary>
-        /// <param name="count">The integer count of integers to read</param>
-        /// <returns>An array of the specified integers and length equal to count</returns>
+        /// <param name="count">The integer count of integers to read.</param>
+        /// <returns>An array of the specified integers and length equal to count.</returns>
         public int[] ReadIntegers(int count)
         {
             byte[] rawBytes = new byte[count * 4];
@@ -426,7 +426,7 @@ namespace DotSpatial.Data
         /// Reads a single-precision floading point from 4 bytes in the buffer, automatically loading the next buffer if necessary.
         /// This assumes the value should be little endian.
         /// </summary>
-        /// <returns>A single-precision floating point converted from four bytes</returns>
+        /// <returns>A single-precision floating point converted from four bytes.</returns>
         public float ReadSingle()
         {
             return ReadSingle(true);
@@ -436,7 +436,7 @@ namespace DotSpatial.Data
         /// Reads a single-precision floading point from 4 bytes in the buffer, automatically loading the next buffer if necessary.
         /// </summary>
         /// <param name="isLittleEndian">Boolean, true if the value should be returned with little endian byte ordering.</param>
-        /// <returns>A single-precision floating point converted from four bytes</returns>
+        /// <returns>A single-precision floating point converted from four bytes.</returns>
         public float ReadSingle(bool isLittleEndian)
         {
             // Integers are 4 Bytes long.

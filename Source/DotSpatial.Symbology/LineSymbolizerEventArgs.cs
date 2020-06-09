@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LineSymbolizerEventArgs
+    /// LineSymbolizerEventArgs.
     /// </summary>
     public class LineSymbolizerEventArgs : FeatureSymbolizerEventArgs
     {

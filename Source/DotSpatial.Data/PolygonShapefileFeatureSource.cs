@@ -5,8 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -73,7 +72,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        protected override void AppendGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
+        protected override void AppendGeometry(ShapefileHeader header, Geometry feature, int numFeatures)
         {
             FileInfo fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
@@ -88,23 +87,23 @@ namespace DotSpatial.Data
             for (int iPart = 0; iPart < feature.NumGeometries; iPart++)
             {
                 parts.Add(points.Count);
-                IPolygon pg = feature.GetGeometryN(iPart) as IPolygon;
+                Polygon pg = feature.GetGeometryN(iPart) as Polygon;
                 if (pg == null) continue;
                 var bl = pg.Shell;
                 IEnumerable<Coordinate> coords = bl.Coordinates;
 
-                if (CGAlgorithms.IsCCW(bl.Coordinates))
+                if (bl.IsCCW)
                 {
                     // Exterior rings need to be clockwise
                     coords = coords.Reverse();
                 }
 
                 points.AddRange(coords);
-                foreach (ILineString hole in pg.Holes)
+                foreach (LinearRing hole in pg.Holes)
                 {
                     parts.Add(points.Count);
                     IEnumerable<Coordinate> holeCoords = hole.Coordinates;
-                    if (!CGAlgorithms.IsCCW(hole.Coordinates))
+                    if (!hole.IsCCW)
                     {
                         // Interior rings need to be counter-clockwise
                         holeCoords = holeCoords.Reverse();
@@ -173,8 +172,8 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PolygonZ)
             {
-                shpStream.WriteLe(feature.EnvelopeInternal.Minimum.Z);
-                shpStream.WriteLe(feature.EnvelopeInternal.Maximum.Z);
+                shpStream.WriteLe(feature.EnvelopeInternal.MinZ);
+                shpStream.WriteLe(feature.EnvelopeInternal.MaxZ);
                 double[] zVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; ipoint++)
                 {
@@ -193,8 +192,8 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    shpStream.WriteLe(feature.EnvelopeInternal.Minimum.M);
-                    shpStream.WriteLe(feature.EnvelopeInternal.Maximum.M);
+                    shpStream.WriteLe(feature.EnvelopeInternal.MinM);
+                    shpStream.WriteLe(feature.EnvelopeInternal.MaxM);
                 }
 
                 double[] mVals = new double[points.Count];

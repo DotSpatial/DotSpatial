@@ -140,7 +140,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the progress handler for any progress messages like re-drawing images for rasters
+        /// Gets or sets the progress handler for any progress messages like re-drawing images for rasters.
         /// </summary>
         [Category("Controls")]
         [Description("Gets or sets the progress handler for any progress messages like re-drawing images for rasters")]
@@ -154,7 +154,7 @@ namespace DotSpatial.Controls
         public List<ILegendItem> RootNodes { get; set; }
 
         /// <summary>
-        /// Gets or sets the selection font color
+        /// Gets or sets the selection font color.
         /// </summary>
         [Category("Appearance")]
         [Description("Specifies the color of the font in selected legend items.")]
@@ -288,7 +288,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Overrides the drawing method to account for drawing lines when an item is being dragged to a new position.
         /// </summary>
-        /// <param name="e">A PaintEventArgs</param>
+        /// <param name="e">A PaintEventArgs.</param>
         protected override void OnDraw(PaintEventArgs e)
         {
             base.OnDraw(e);
@@ -316,7 +316,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Also hides the edit box so that it doesn't seem displaced from the item
+        /// Also hides the edit box so that it doesn't seem displaced from the item.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -470,7 +470,7 @@ namespace DotSpatial.Controls
         /// The coordinates are in legend coordinates, but a LegendBox is provided to define the
         /// coordinates of the specified object.
         /// </summary>
-        /// <param name="e">An ItemMouseEventArgs</param>
+        /// <param name="e">An ItemMouseEventArgs.</param>
         protected virtual void OnItemMouseDown(ItemMouseEventArgs e)
         {
             ItemMouseDown?.Invoke(this, e);
@@ -479,7 +479,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the ItemMouseMove Event, which handles the mouse moving over one of the legend items.
         /// </summary>
-        /// <param name="e">An ItemMouseEventArgs</param>
+        /// <param name="e">An ItemMouseEventArgs.</param>
         protected virtual void OnItemMouseMove(ItemMouseEventArgs e)
         {
             ItemMouseMove?.Invoke(this, e);
@@ -565,7 +565,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles the case where the mouse down occurs.
         /// </summary>
-        /// <param name="e">A MouseEventArgs</param>
+        /// <param name="e">A MouseEventArgs.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
             HideEditBox(true);
@@ -587,7 +587,7 @@ namespace DotSpatial.Controls
         /// Performs the default handling for mouse movememnt, and decides
         /// whether or not to fire an ItemMouseMove event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs</param>
+        /// <param name="e">A MouseEventArgs.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (_legendBoxes == null) return;
@@ -796,7 +796,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Recursive add method to handle nesting of menu items.
         /// </summary>
-        /// <param name="parent">The parent</param>
+        /// <param name="parent">The parent.</param>
         /// <param name="mi">The menu item.</param>
         private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi)
         {

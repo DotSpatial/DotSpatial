@@ -142,7 +142,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Disposes stuff
+        /// Disposes stuff.
         /// </summary>
         /// <param name="disposing">Indicats whether managed resources should be disposed.</param>
         protected override void Dispose(bool disposing)
@@ -155,9 +155,9 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Actually handles the drawing of a single item
+        /// Actually handles the drawing of a single item.
         /// </summary>
-        /// <param name="e">DrawItemEventArgs</param>
+        /// <param name="e">DrawItemEventArgs.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             if (IsDisposed) return;
@@ -215,7 +215,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Prevents flicker .. or possibly does nothing.. I'm not sure.
         /// </summary>
-        /// <param name="pevent">PaintEventArgs</param>
+        /// <param name="pevent">PaintEventArgs.</param>
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
             // base.OnPaintBackground(pevent);

@@ -9,7 +9,7 @@ using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -45,7 +45,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Layer"/> class.
         /// </summary>
-        /// <param name="container">The container this layer should be a member of</param>
+        /// <param name="container">The container this layer should be a member of.</param>
         protected Layer(ICollection<ILayer> container)
         {
             container?.Add(this);
@@ -65,8 +65,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Layer"/> class.
         /// </summary>
-        /// <param name="container">The container this layer should be a member of</param>
-        /// <param name="progressHandler">A progress handler for handling progress messages</param>
+        /// <param name="container">The container this layer should be a member of.</param>
+        /// <param name="progressHandler">A progress handler for handling progress messages.</param>
         protected Layer(ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             _progressHandler = progressHandler;
@@ -163,7 +163,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets whether the layer is visible when zoomed in closer than the dynamic
-        /// visibility width or only when further away from the dynamic visibility width
+        /// visibility width or only when further away from the dynamic visibility width.
         /// </summary>
         [Serialize("DynamicVisibilityMode")]
         [Category("Behavior")]
@@ -422,8 +422,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Opens a fileName using the default layer provider and returns a new layer. The layer will not automatically have a container or be added to a map.
         /// </summary>
-        /// <param name="fileName">The string fileName of the layer to open</param>
-        /// <returns>An ILayer interface</returns>
+        /// <param name="fileName">The string fileName of the layer to open.</param>
+        /// <returns>An ILayer interface.</returns>
         public static ILayer OpenFile(string fileName)
         {
             if (File.Exists(fileName) == false) return null;
@@ -434,8 +434,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Opens a fileName using the default layer provider and returns a new layer. The layer will not automatically have a container or be added to a map.
         /// </summary>
-        /// <param name="fileName">The string fileName of the layer to open</param>
-        /// <param name="progressHandler">An IProgresshandler that overrides the Default Layer Manager's progress handler</param>
+        /// <param name="fileName">The string fileName of the layer to open.</param>
+        /// <param name="progressHandler">An IProgresshandler that overrides the Default Layer Manager's progress handler.</param>
         /// <returns>An ILayer interface with the new layer.</returns>
         public static ILayer OpenFile(string fileName, IProgressHandler progressHandler)
         {
@@ -446,8 +446,8 @@ namespace DotSpatial.Symbology
         /// Opens a new layer and automatically adds it to the specified container.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="container">The container (usually a LayerCollection) to add to</param>
-        /// <returns>The layer after it has been created and added to the container</returns>
+        /// <param name="container">The container (usually a LayerCollection) to add to.</param>
+        /// <returns>The layer after it has been created and added to the container.</returns>
         public static ILayer OpenFile(string fileName, ICollection<ILayer> container)
         {
             if (!File.Exists(fileName)) return null;
@@ -462,7 +462,7 @@ namespace DotSpatial.Symbology
         /// also return false. The idea is that layers can have sub-nodes move around, but not transport from
         /// place to place.
         /// </summary>
-        /// <param name="item">the legend item to test</param>
+        /// <param name="item">the legend item to test.</param>
         /// <returns>Boolean that if true means that it is ok to insert the specified item into this layer.</returns>
         public override bool CanReceiveItem(ILegendItem item)
         {
@@ -525,13 +525,13 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This is overriden in sub-classes
+        /// This is overriden in sub-classes.
         /// </summary>
-        /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed</param>
-        /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
+        /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed.</param>
+        /// <param name="strict">The geographic region when working with absolutes, without a tolerance.</param>
         /// <param name="mode">The selection mode.</param>
         /// <param name="affectedArea">The affected area.</param>
-        /// <returns>False</returns>
+        /// <returns>False.</returns>
         public virtual bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = null;
@@ -552,9 +552,9 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
         /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory. This value overrides the property on this LayerManager.</param>
-        /// <param name="container">A container to open this layer in</param>
+        /// <param name="container">A container to open this layer in.</param>
         /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this LayerManager.</param>
-        /// <returns>An ILayer</returns>
+        /// <returns>An ILayer.</returns>
         public virtual ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             if (File.Exists(fileName) == false) return null;
@@ -578,10 +578,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This is overriden in sub-classes
+        /// This is overriden in sub-classes.
         /// </summary>
-        /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed</param>
-        /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
+        /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed.</param>
+        /// <param name="strict">The geographic region when working with absolutes, without a tolerance.</param>
         /// <param name="mode">The selection mode.</param>
         /// <param name="affectedArea">The affected area.</param>
         /// <param name="clear">Indicates whether prior selected features should be cleared.</param>
@@ -601,10 +601,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This is overriden in sub-classes
+        /// This is overriden in sub-classes.
         /// </summary>
-        /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed</param>
-        /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
+        /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed.</param>
+        /// <param name="strict">The geographic region when working with absolutes, without a tolerance.</param>
         /// <param name="mode">The selection mode.</param>
         /// <param name="affectedArea">The affected area.</param>
         /// <returns>False.</returns>
@@ -664,7 +664,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// special treatment for event handlers during a copy event
+        /// special treatment for event handlers during a copy event.
         /// </summary>
         /// <param name="copy">The copy.</param>
         protected override void OnCopy(Descriptor copy)
@@ -717,9 +717,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This should be overridden to copy the symbolizer properties from editCopy
+        /// This should be overridden to copy the symbolizer properties from editCopy.
         /// </summary>
-        /// <param name="editCopy">The version that went into the property dialog</param>
+        /// <param name="editCopy">The version that went into the property dialog.</param>
         protected override void OnCopyProperties(object editCopy)
         {
             ILayer layer = editCopy as ILayer;
@@ -789,7 +789,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Fires the zoom to layer event, but specifies the extent.
         /// </summary>
-        /// <param name="env">Envelope env</param>
+        /// <param name="env">Envelope env.</param>
         protected virtual void OnZoomToLayer(Envelope env)
         {
             ZoomToLayer?.Invoke(this, new EnvelopeArgs(env));

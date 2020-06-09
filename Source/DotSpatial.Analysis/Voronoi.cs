@@ -8,8 +8,6 @@ using DotSpatial.Data;
 using DotSpatial.NTSExtension;
 using DotSpatial.NTSExtension.Voronoi;
 
-using GeoAPI.Geometries;
-
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis
@@ -98,7 +96,7 @@ namespace DotSpatial.Analysis
             Extent ext = points.Extent;
             ext.ExpandBy(ext.Width / 100, ext.Height / 100);
             Envelope env = ext.ToEnvelope();
-            IPolygon bounds = env.ToPolygon();
+            Polygon bounds = env.ToPolygon();
 
             // Convert undefined coordinates to a defined coordinate.
             HandleBoundaries(gp, env);
@@ -206,8 +204,8 @@ namespace DotSpatial.Analysis
                 {
                     try
                     {
-                        IGeometry g = pg.Intersection(bounds);
-                        IPolygon p = g as IPolygon;
+                        Geometry g = pg.Intersection(bounds);
+                        Polygon p = g as Polygon;
                         if (p != null)
                         {
                             Feature f = new Feature(p, result);
@@ -238,7 +236,7 @@ namespace DotSpatial.Analysis
         /// <param name="bounds">The polygon bounding the datapoints.</param>
         private static void HandleBoundaries(VoronoiGraph graph, Envelope bounds)
         {
-            List<ILineString> boundSegments = new List<ILineString>();
+            List<LineString> boundSegments = new List<LineString>();
             List<VoronoiEdge> unboundEdges = new List<VoronoiEdge>();
 
             // Identify bound edges for intersection testing

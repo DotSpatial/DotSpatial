@@ -4,12 +4,12 @@
 using System;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DynamicVisibilityControl
+    /// DynamicVisibilityControl.
     /// </summary>
     public partial class DynamicVisibilityControl : UserControl
     {
@@ -35,8 +35,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicVisibilityControl"/> class.
         /// </summary>
-        /// <param name="dialogProvider">Service that may have launched this control</param>
-        /// <param name="layer">the layer that this property is being adjusted on</param>
+        /// <param name="dialogProvider">Service that may have launched this control.</param>
+        /// <param name="layer">the layer that this property is being adjusted on.</param>
         public DynamicVisibilityControl(IWindowsFormsEditorService dialogProvider, ILayer layer)
         {
             _dialogProvider = dialogProvider;

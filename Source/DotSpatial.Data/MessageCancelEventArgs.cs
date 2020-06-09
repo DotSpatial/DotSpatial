@@ -51,7 +51,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the message allowing someone to decide whether or not the process should be canceled. For instance,
-        /// when writing a new file, a message might show "The file C:\bob.txt already exists, overwrite it?"
+        /// when writing a new file, a message might show "The file C:\bob.txt already exists, overwrite it?".
         /// </summary>
         public virtual string Message
         {

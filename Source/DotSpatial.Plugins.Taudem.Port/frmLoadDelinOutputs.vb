@@ -22,7 +22,7 @@ Public Class frmLoadDelinOutputs
     Public wPath As String
     Public selectedDem As String
 
-    Private Sub frmLoadDelinOutputs_VisibleChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.VisibleChanged
+    Private Sub frmLoadDelinOutputs_VisibleChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.VisibleChanged
         If Me.Visible = True Then
             'ad8Path = ""
             'scaPath = ""
@@ -46,7 +46,7 @@ Public Class frmLoadDelinOutputs
         End If
     End Sub
 
-    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnOK.Click
 
         ' Paul Meems, 23-Aug-2011, Added:
         ad8Path = ""
@@ -167,47 +167,47 @@ Public Class frmLoadDelinOutputs
 
     End Function
 
-    Private Sub btnBrowseAd8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseAd8.Click
+    Private Sub btnBrowseAd8_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseAd8.Click
         txtbxAd8.Text = GetFilenameFromUser("ad8")
     End Sub
 
-    Private Sub btnBrowseSca_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseSca.Click
+    Private Sub btnBrowseSca_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseSca.Click
         txtbxSca.Text = GetFilenameFromUser("sca")
     End Sub
 
-    Private Sub btnBrowseGord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseGord.Click
+    Private Sub btnBrowseGord_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseGord.Click
         txtbxGord.Text = GetFilenameFromUser("gord")
     End Sub
 
-    Private Sub btnBrowsePlen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowsePlen.Click
+    Private Sub btnBrowsePlen_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowsePlen.Click
         txtbxPlen.Text = GetFilenameFromUser("plen")
     End Sub
 
-    Private Sub btnBrowseTlen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseTlen.Click
+    Private Sub btnBrowseTlen_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseTlen.Click
         txtbxTlen.Text = GetFilenameFromUser("tlen")
     End Sub
 
-    Private Sub btnBrowseSrc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseSrc.Click
+    Private Sub btnBrowseSrc_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseSrc.Click
         txtbxSrc.Text = GetFilenameFromUser("src")
     End Sub
 
-    Private Sub btnBrowseOrd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseOrd.Click
+    Private Sub btnBrowseOrd_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseOrd.Click
         txtbxOrd.Text = GetFilenameFromUser("ord")
     End Sub
 
-    Private Sub btnBrowseCoord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseCoord.Click
+    Private Sub btnBrowseCoord_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseCoord.Click
         txtbxCoord.Text = GetFilenameFromUser("coord", "Data File|*.dat", ".dat")
     End Sub
 
-    Private Sub btnBrowseTree_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseTree.Click
+    Private Sub btnBrowseTree_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseTree.Click
         txtbxTree.Text = GetFilenameFromUser("tree", "Data File|*.dat", ".dat")
     End Sub
 
-    Private Sub btnBrowseNet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseNet.Click
+    Private Sub btnBrowseNet_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseNet.Click
         txtbxNet.Text = GetFilenameFromUser("net", "Shape File|*.shp", ".shp")
     End Sub
 
-    Private Sub btnBrowseW_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseW.Click
+    Private Sub btnBrowseW_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseW.Click
         txtbxW.Text = GetFilenameFromUser("w")
     End Sub
 End Class

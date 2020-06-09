@@ -22,7 +22,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="TextFile"/> class.
         /// </summary>
-        /// <param name="fileName">the associated file name</param>
+        /// <param name="fileName">the associated file name.</param>
         public TextFile(string fileName)
         {
             Filename = fileName;
@@ -35,7 +35,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Returns the file name.
         /// </summary>
-        /// <returns>The file name</returns>
+        /// <returns>The file name.</returns>
         public override string ToString()
         {
             return Filename;

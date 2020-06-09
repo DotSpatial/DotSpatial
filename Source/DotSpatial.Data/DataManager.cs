@@ -467,7 +467,7 @@ namespace DotSpatial.Data
         /// Creates a new class of vector that matches the given fileName.
         /// </summary>
         /// <param name="fileName">The string fileName from which to create a vector.</param>
-        /// <param name="featureType">Specifies the type of feature for this vector file</param>
+        /// <param name="featureType">Specifies the type of feature for this vector file.</param>
         /// <returns>An IFeatureSet that allows working with the dataset.</returns>
         public IFeatureSet CreateVector(string fileName, FeatureType featureType)
         {
@@ -478,8 +478,8 @@ namespace DotSpatial.Data
         /// Creates a new class of vector that matches the given fileName.
         /// </summary>
         /// <param name="fileName">The string fileName from which to create a vector.</param>
-        /// <param name="featureType">Specifies the type of feature for this vector file</param>
-        /// <param name="progHandler">Overrides the default progress handler with the specified progress handler</param>
+        /// <param name="featureType">Specifies the type of feature for this vector file.</param>
+        /// <param name="progHandler">Overrides the default progress handler with the specified progress handler.</param>
         /// <returns>An IFeatureSet that allows working with the dataset.</returns>
         /// <exception cref="ArgumentNullException">Raised when fileName is null.</exception>
         /// <exception cref="IOException">Raised when suitable DataProvider not found.</exception>
@@ -519,8 +519,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Checks a dialog filter and returns a list of just the extensions.
         /// </summary>
-        /// <param name="dialogFilter">The Dialog Filter to read extensions from</param>
-        /// <returns>A list of extensions</returns>
+        /// <param name="dialogFilter">The Dialog Filter to read extensions from.</param>
+        /// <returns>A list of extensions.</returns>
         public virtual List<string> GetSupportedExtensions(string dialogFilter)
         {
             List<string> extensions = new List<string>();
@@ -599,7 +599,7 @@ namespace DotSpatial.Data
         /// Opens the specified fileName, returning an IRaster. This will return null if a manager
         /// either returns the wrong data format.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
+        /// <param name="fileName">The string fileName to open.</param>
         /// <returns>An IRaster loaded from the specified file.</returns>
         public virtual IRaster OpenRaster(string fileName)
         {
@@ -610,22 +610,22 @@ namespace DotSpatial.Data
         /// Opens the specified fileName, returning an IRaster. This will return null if a manager
         /// either returns the wrong data format.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
-        /// <param name="inRam">boolean, true if this should be loaded into ram</param>
-        /// <param name="prog">a progress interface</param>
-        /// <returns>An IRaster loaded from the specified file</returns>
+        /// <param name="fileName">The string fileName to open.</param>
+        /// <param name="inRam">boolean, true if this should be loaded into ram.</param>
+        /// <param name="prog">a progress interface.</param>
+        /// <returns>An IRaster loaded from the specified file.</returns>
         public virtual IRaster OpenRaster(string fileName, bool inRam, IProgressHandler prog)
         {
             return OpenFileAsIRaster(fileName, inRam, prog);
         }
 
         /// <summary>
-        /// Opens a specified file as an IFeatureSet
+        /// Opens a specified file as an IFeatureSet.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
-        /// <param name="inRam">boolean, true if this should be loaded into ram</param>
-        /// <param name="prog">a progress interface</param>
-        /// <returns>An IFeatureSet loaded from the specified file</returns>
+        /// <param name="fileName">The string fileName to open.</param>
+        /// <param name="inRam">boolean, true if this should be loaded into ram.</param>
+        /// <param name="prog">a progress interface.</param>
+        /// <returns>An IFeatureSet loaded from the specified file.</returns>
         public virtual IFeatureSet OpenVector(string fileName, bool inRam, IProgressHandler prog)
         {
             return OpenFile(fileName, inRam, prog) as IFeatureSet;
@@ -634,19 +634,19 @@ namespace DotSpatial.Data
         /// <summary>
         /// Opens the file as an Image and returns an IImageData object for interacting with the file.
         /// </summary>
-        /// <param name="fileName">The string fileName</param>
-        /// <returns>An IImageData object</returns>
+        /// <param name="fileName">The string fileName.</param>
+        /// <returns>An IImageData object.</returns>
         public virtual IImageData OpenImage(string fileName)
         {
             return OpenFile(fileName, LoadInRam, ProgressHandler) as IImageData;
         }
 
         /// <summary>
-        /// Opens the file as an Image and returns an IImageData object
+        /// Opens the file as an Image and returns an IImageData object.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
-        /// <param name="progressHandler">The progressHandler to receive progress updates</param>
-        /// <returns>An IImageData</returns>
+        /// <param name="fileName">The string fileName to open.</param>
+        /// <param name="progressHandler">The progressHandler to receive progress updates.</param>
+        /// <returns>An IImageData.</returns>
         public virtual IImageData OpenImage(string fileName, IProgressHandler progressHandler)
         {
             return OpenFile(fileName, LoadInRam, progressHandler) as IImageData;
@@ -741,42 +741,42 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new image using an appropriate data provider
+        /// Creates a new image using an appropriate data provider.
         /// </summary>
-        /// <param name="fileName">The string fileName to open an image for</param>
-        /// <param name="width">The integer width in pixels</param>
-        /// <param name="height">The integer height in pixels</param>
-        /// <param name="bandType">The band color type</param>
-        /// <returns>An IImageData interface allowing access to image data</returns>
+        /// <param name="fileName">The string fileName to open an image for.</param>
+        /// <param name="width">The integer width in pixels.</param>
+        /// <param name="height">The integer height in pixels.</param>
+        /// <param name="bandType">The band color type.</param>
+        /// <returns>An IImageData interface allowing access to image data.</returns>
         public virtual IImageData CreateImage(string fileName, int width, int height, ImageBandType bandType)
         {
             return CreateImage(fileName, width, height, LoadInRam, ProgressHandler, bandType);
         }
 
         /// <summary>
-        /// Creates a new image using an appropriate data provider
+        /// Creates a new image using an appropriate data provider.
         /// </summary>
-        /// <param name="fileName">The string fileName to open an image for</param>
-        /// <param name="width">The integer width in pixels</param>
-        /// <param name="height">The integer height in pixels</param>
-        /// <param name="inRam">Boolean, true if the entire file should be created in memory</param>
-        /// <param name="bandType">The band color type</param>
-        /// <returns>An IImageData interface allowing access to image data</returns>
+        /// <param name="fileName">The string fileName to open an image for.</param>
+        /// <param name="width">The integer width in pixels.</param>
+        /// <param name="height">The integer height in pixels.</param>
+        /// <param name="inRam">Boolean, true if the entire file should be created in memory.</param>
+        /// <param name="bandType">The band color type.</param>
+        /// <returns>An IImageData interface allowing access to image data.</returns>
         public virtual IImageData CreateImage(string fileName, int width, int height, bool inRam, ImageBandType bandType)
         {
             return CreateImage(fileName, width, height, inRam, ProgressHandler, bandType);
         }
 
         /// <summary>
-        /// Creates a new image using an appropriate data provider
+        /// Creates a new image using an appropriate data provider.
         /// </summary>
-        /// <param name="fileName">The string fileName to open an image for</param>
-        /// <param name="width">The integer width in pixels</param>
-        /// <param name="height">The integer height in pixels</param>
-        /// <param name="inRam">Boolean, true if the entire file should be created in memory</param>
-        /// <param name="progHandler">A Progress handler</param>
-        /// <param name="bandType">The band color type</param>
-        /// <returns>An IImageData interface allowing access to image data</returns>
+        /// <param name="fileName">The string fileName to open an image for.</param>
+        /// <param name="width">The integer width in pixels.</param>
+        /// <param name="height">The integer height in pixels.</param>
+        /// <param name="inRam">Boolean, true if the entire file should be created in memory.</param>
+        /// <param name="progHandler">A Progress handler.</param>
+        /// <param name="bandType">The band color type.</param>
+        /// <returns>An IImageData interface allowing access to image data.</returns>
         public virtual IImageData CreateImage(string fileName, int width, int height, bool inRam, IProgressHandler progHandler, ImageBandType bandType)
         {
             // First check for the extension in the preferred plugins list
@@ -824,11 +824,11 @@ namespace DotSpatial.Data
         /// <param name="name">The fileName of the new file to create.</param>
         /// <param name="driverCode">The string code identifying the driver to use to create the raster. If no code is specified
         /// the manager will attempt to match the extension with a code specified in the Dialog write filter. </param>
-        /// <param name="xSize">The number of columns in the raster</param>
-        /// <param name="ySize">The number of rows in the raster</param>
-        /// <param name="numBands">The number of bands in the raster</param>
-        /// <param name="dataType">The data type for the raster</param>
-        /// <param name="options">Any additional, driver specific options for creation</param>
+        /// <param name="xSize">The number of columns in the raster.</param>
+        /// <param name="ySize">The number of rows in the raster.</param>
+        /// <param name="numBands">The number of bands in the raster.</param>
+        /// <param name="dataType">The data type for the raster.</param>
+        /// <param name="options">Any additional, driver specific options for creation.</param>
         /// <returns>An IRaster representing the created raster.</returns>
         public virtual IRaster CreateRaster(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {

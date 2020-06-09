@@ -4,8 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -41,9 +40,8 @@ namespace DotSpatial.Symbology
         /// <param name="z1">The first z-value.</param>
         /// <param name="z2">The second z-value.</param>
         public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2)
-            : base(x1, x2, y1, y2)
+            : base(x1, x2, y1, y2, z1, z2)
         {
-            this.InitZ(z1, z2);
             _geographicView = new Envelope(x1, x2, y1, y2);
         }
 
@@ -55,7 +53,7 @@ namespace DotSpatial.Symbology
         public DrawWindow(Envelope env)
             : base(env)
         {
-            _geographicView = env.Clone();
+            _geographicView = env.Copy();
         }
 
         #endregion
@@ -88,21 +86,12 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Replaces the inherited clone in order to make a copy of the DrawWindow.
-        /// </summary>
-        /// <returns>A copy of the DrawWindow.</returns>
-        public new object Clone()
-        {
-            return Copy();
-        }
-
-        /// <summary>
         /// Replaces the inherited Envelope copy in order to create a copy of the DrawWindow instead.
         /// </summary>
         /// <returns>A copy of the DrawWindow.</returns>
-        public DrawWindow Copy()
+        public new DrawWindow Copy()
         {
-            Envelope env = base.Clone();
+            Envelope env = base.Copy();
             return new DrawWindow(env)
             {
                 GeographicView = _geographicView
@@ -174,7 +163,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="inX">The x value.</param>
         /// <param name="inY">The y value.</param>
-        /// <returns>A PointF</returns>
+        /// <returns>A PointF.</returns>
         public PointF ProjToDrawWindow(double inX, double inY)
         {
             double x = inX - MinX;
@@ -187,8 +176,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Converts two dimensions of the specified coordinate into a two dimensional PointF.
         /// </summary>
-        /// <param name="inCoord">Any valid ICoordinate</param>
-        /// <returns>A PointF</returns>
+        /// <param name="inCoord">Any valid ICoordinate.</param>
+        /// <returns>A PointF.</returns>
         public PointF ProjToDrawWindow(Coordinate inCoord)
         {
             double x = inCoord.X - MinX;

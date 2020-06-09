@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// EPT ERDAS DATA TYPES
+    /// EPT ERDAS DATA TYPES.
     /// </summary>
     public enum HfaEpt
     {

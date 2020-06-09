@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 
 namespace DotSpatial.Data
@@ -20,7 +20,7 @@ namespace DotSpatial.Data
         private string _filename;
 
         /// <summary>
-        /// Cached contents of shape index file
+        /// Cached contents of shape index file.
         /// </summary>
         private ShapefileIndexFile _shx;
 

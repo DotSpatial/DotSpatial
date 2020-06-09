@@ -76,7 +76,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Forces activation
+        /// Forces activation.
         /// </summary>
         void Activate();
 
@@ -98,33 +98,33 @@ namespace DotSpatial.Controls
         void DoKeyUp(KeyEventArgs e);
 
         /// <summary>
-        /// Forces this tool to execute whatever behavior should occur during a double click even on the panel
+        /// Forces this tool to execute whatever behavior should occur during a double click even on the panel.
         /// </summary>
         /// <param name="e">The event args.</param>
         void DoMouseDoubleClick(GeoMouseArgs e);
 
         /// <summary>
-        /// Instructs this tool to perform any actions that should occur on the MouseDown event
+        /// Instructs this tool to perform any actions that should occur on the MouseDown event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         void DoMouseDown(GeoMouseArgs e);
 
         /// <summary>
-        /// Instructs this tool to perform any actions that should occur on the MouseMove event
+        /// Instructs this tool to perform any actions that should occur on the MouseMove event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         void DoMouseMove(GeoMouseArgs e);
 
         /// <summary>
-        /// Instructs this tool to perform any actions that should occur on the MouseUp event
+        /// Instructs this tool to perform any actions that should occur on the MouseUp event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         void DoMouseUp(GeoMouseArgs e);
 
         /// <summary>
-        /// Instructs this tool to perform any actions that should occur on the MouseWheel event
+        /// Instructs this tool to perform any actions that should occur on the MouseWheel event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         void DoMouseWheel(GeoMouseArgs e);
 
         /// <summary>

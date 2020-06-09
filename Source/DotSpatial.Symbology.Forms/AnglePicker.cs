@@ -245,7 +245,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the angle changed event
+        /// Fires the angle changed event.
         /// </summary>
         protected virtual void OnAngleChanged()
         {
@@ -253,7 +253,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the AngleChosen event
+        /// Fires the AngleChosen event.
         /// </summary>
         protected virtual void OnAngleChosen()
         {
@@ -297,7 +297,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Handles the Mouse Up event
+        /// Handles the Mouse Up event.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseUp(MouseEventArgs e)
@@ -312,7 +312,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Paints the current state of the control
+        /// Paints the current state of the control.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)

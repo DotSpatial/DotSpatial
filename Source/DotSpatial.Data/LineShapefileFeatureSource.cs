@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -70,7 +70,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        protected override void AppendGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
+        protected override void AppendGeometry(ShapefileHeader header, Geometry feature, int numFeatures)
         {
             FileInfo fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
@@ -85,7 +85,7 @@ namespace DotSpatial.Data
             for (int iPart = 0; iPart < feature.NumGeometries; iPart++)
             {
                 parts.Add(points.Count);
-                ILineString pg = feature.GetGeometryN(iPart) as ILineString;
+                LineString pg = feature.GetGeometryN(iPart) as LineString;
                 if (pg == null) continue;
                 points.AddRange(pg.Coordinates);
             }
@@ -152,8 +152,8 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PolyLineZ)
             {
-                shpStream.WriteLe(feature.EnvelopeInternal.Minimum.Z);
-                shpStream.WriteLe(feature.EnvelopeInternal.Maximum.Z);
+                shpStream.WriteLe(feature.EnvelopeInternal.MinZ);
+                shpStream.WriteLe(feature.EnvelopeInternal.MaxZ);
                 double[] zVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; ipoint++)
                 {
@@ -172,8 +172,8 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    shpStream.WriteLe(feature.EnvelopeInternal.Minimum.M);
-                    shpStream.WriteLe(feature.EnvelopeInternal.Maximum.M);
+                    shpStream.WriteLe(feature.EnvelopeInternal.MinM);
+                    shpStream.WriteLe(feature.EnvelopeInternal.MaxM);
                 }
 
                 double[] mVals = new double[points.Count];

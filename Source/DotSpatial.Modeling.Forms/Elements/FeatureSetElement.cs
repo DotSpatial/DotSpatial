@@ -11,7 +11,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// Feature Set element
+    /// Feature Set element.
     /// </summary>
     public partial class FeatureSetElement : DialogElement
     {
@@ -26,8 +26,8 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureSetElement"/> class.
         /// </summary>
-        /// <param name="inputParam">The parameter this element represents</param>
-        /// <param name="dataSets">An array of available data</param>
+        /// <param name="inputParam">The parameter this element represents.</param>
+        /// <param name="dataSets">An array of available data.</param>
         public FeatureSetElement(FeatureSetParam inputParam, List<DataSetArray> dataSets)
         {
             // Needed by the designer
@@ -49,7 +49,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Methods
 
         /// <summary>
-        /// updates the param if something's been changed
+        /// updates the param if something's been changed.
         /// </summary>
         public override void Refresh()
         {
@@ -57,7 +57,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// Adds a new entry to the drop down list from data provider
+        /// Adds a new entry to the drop down list from data provider.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -77,7 +77,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// This fires when the selected value in the combo box is changed
+        /// This fires when the selected value in the combo box is changed.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

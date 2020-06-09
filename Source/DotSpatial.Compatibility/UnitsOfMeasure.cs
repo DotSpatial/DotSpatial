@@ -4,7 +4,7 @@
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// UnitOfMeasure
+    /// UnitOfMeasure.
     /// </summary>
     public enum UnitsOfMeasure
     {

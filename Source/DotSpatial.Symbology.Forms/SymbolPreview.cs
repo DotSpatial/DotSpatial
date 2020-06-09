@@ -59,7 +59,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Updates the preview display using the specified symbolizer.
         /// </summary>
-        /// <param name="symbolizer">The symbolizer displayed in the preview</param>
+        /// <param name="symbolizer">The symbolizer displayed in the preview.</param>
         public void UpdatePreview(IFeatureSymbolizer symbolizer)
         {
             if (symbolizer == null) return;

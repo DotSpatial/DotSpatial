@@ -27,7 +27,7 @@ namespace DotSpatial.Tools
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RandomGeometryTool"/> class.
-        /// Create a new instance of the RandomGeometry tool
+        /// Create a new instance of the RandomGeometry tool.
         /// </summary>
         public RandomGeometryTool()
         {
@@ -67,10 +67,9 @@ namespace DotSpatial.Tools
             // Get the needed input and output parameters
             IFeatureSet inputFeatures = _inputParam[0].Value as IFeatureSet;
             IFeatureSet outputFeatures = _outputParam[0].Value as IFeatureSet;
-            IntParam intInput = _inputParam[1] as IntParam;
 
             int numPoints = 1;
-            if (intInput != null)
+            if (_inputParam[1] is IntParam intInput)
             {
                 numPoints = intInput.Value;
             }

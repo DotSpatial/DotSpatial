@@ -13,7 +13,7 @@ using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.Tiling;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -69,7 +69,7 @@ namespace DotSpatial.Plugins.WebMap
         #region Methods
 
         /// <summary>
-        /// Initialize the DotSpatial plugin
+        /// Initialize the DotSpatial plugin.
         /// </summary>
         public override void Activate()
         {
@@ -121,7 +121,7 @@ namespace DotSpatial.Plugins.WebMap
         }
 
         /// <summary>
-        /// Fires when the plugin should become inactive
+        /// Fires when the plugin should become inactive.
         /// </summary>
         public override void Deactivate()
         {

@@ -48,12 +48,12 @@ namespace DotSpatial.Controls
         /// An instance of the dataset should be created and then returned. By this time, the fileName
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
-        /// <param name="fileName">The string fileName for the new instance</param>
-        /// <param name="featureType">Point, Line, Polygon etc. Sometimes this will be specified, sometimes it will be "Unspecified"</param>
-        /// <param name="inRam">Boolean, true if the dataset should attempt to store data entirely in ram</param>
+        /// <param name="fileName">The string fileName for the new instance.</param>
+        /// <param name="featureType">Point, Line, Polygon etc. Sometimes this will be specified, sometimes it will be "Unspecified".</param>
+        /// <param name="inRam">Boolean, true if the dataset should attempt to store data entirely in ram.</param>
         /// <param name="container">The container for this layer. This can be null.</param>
         /// <param name="progressHandler">An IProgressHandler for status messages.</param>
-        /// <returns>An IRaster</returns>
+        /// <returns>An IRaster.</returns>
         public IFeatureLayer CreateNew(string fileName, FeatureType featureType, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             ShapefileDataProvider dp = new ShapefileDataProvider();
@@ -79,13 +79,13 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Opens a shapefile, but returns it as a FeatureLayer
+        /// Opens a shapefile, but returns it as a FeatureLayer.
         /// </summary>
-        /// <param name="fileName">The string fileName</param>
+        /// <param name="fileName">The string fileName.</param>
         /// <param name="inRam">Boolean, if this is true it will attempt to open the entire layer in memory.</param>
         /// <param name="container">A container to hold this layer.</param>
-        /// <param name="progressHandler">The progress handler that should receive status messages</param>
-        /// <returns>An IFeatureLayer</returns>
+        /// <param name="progressHandler">The progress handler that should receive status messages.</param>
+        /// <returns>An IFeatureLayer.</returns>
         public ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             ShapefileDataProvider dp = new ShapefileDataProvider();

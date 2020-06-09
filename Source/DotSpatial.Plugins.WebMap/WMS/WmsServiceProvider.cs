@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using BruTile;
 using BruTile.Cache;
 using DotSpatial.Projections;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {

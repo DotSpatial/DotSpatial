@@ -11,7 +11,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// Raster Element for use in the tool dialog
+    /// Raster Element for use in the tool dialog.
     /// </summary>
     internal partial class RasterElementOut : DialogElement
     {
@@ -20,8 +20,8 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterElementOut"/> class.
         /// </summary>
-        /// <param name="outputParam">The parameter this element represents</param>
-        /// <param name="dataSets">An array of available data</param>
+        /// <param name="outputParam">The parameter this element represents.</param>
+        /// <param name="dataSets">An array of available data.</param>
         public RasterElementOut(RasterParam outputParam, List<DataSetArray> dataSets)
         {
             // Needed by the designer

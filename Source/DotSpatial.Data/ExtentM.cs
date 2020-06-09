@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -62,7 +62,7 @@ namespace DotSpatial.Data
         /// <param name="env">The envelope with extent values to read.</param>
         public ExtentM(Envelope env)
         {
-            SetValues(env.MinX, env.MinY, env.Minimum.M, env.MaxX, env.MaxY, env.Maximum.M);
+            SetValues(env.MinX, env.MinY, env.MinM, env.MaxX, env.MaxY, env.MaxM);
         }
 
         #endregion
@@ -110,7 +110,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Tests if this envelope is contained by the specified envelope
+        /// Tests if this envelope is contained by the specified envelope.
         /// </summary>
         /// <param name="c">The coordinate to test.</param>
         /// <returns>Boolean.</returns>
@@ -139,8 +139,7 @@ namespace DotSpatial.Data
         /// <returns>True, if the extent is contained by this.</returns>
         public override bool Contains(IExtent ext)
         {
-            IExtentM mExt = ext as IExtentM;
-            if (mExt != null && ext.HasM && HasM)
+            if (ext is IExtentM mExt && ext.HasM && HasM)
             {
                 if (mExt.MaxM < MinM || mExt.MinM > MaxM) return false;
             }
@@ -158,7 +157,7 @@ namespace DotSpatial.Data
         {
             if (env.HasM() && HasM)
             {
-                if (env.Maximum.M < MinM || env.Minimum.M > MaxM)
+                if (env.MaxM < MinM || env.MinM > MaxM)
                 {
                     return false;
                 }
@@ -175,8 +174,7 @@ namespace DotSpatial.Data
         public override void CopyFrom(IExtent extent)
         {
             base.CopyFrom(extent);
-            IExtentM mvals = extent as IExtentM;
-            if (mvals == null || (double.IsNaN(mvals.MinM) || double.IsNaN(mvals.MaxM)))
+            if (!(extent is IExtentM mvals) || (double.IsNaN(mvals.MinM) || double.IsNaN(mvals.MaxM)))
             {
                 MinM = double.MaxValue;
                 MaxM = double.MinValue;
@@ -190,13 +188,10 @@ namespace DotSpatial.Data
         /// <returns>True, if both are equal.</returns>
         public override bool Equals(object obj)
         {
-            IExtent other = obj as IExtent;
-            if (other == null) return false;
-
-            IExtentM mother = other as IExtentM;
+            if (!(obj is IExtent other)) return false;
 
             // If either party claims it has no M values, then w can ignore that part of the equality check.
-            if (!HasM || !other.HasM || mother == null) return base.Equals(obj);
+            if (!HasM || !other.HasM || !(other is IExtentM mother)) return base.Equals(obj);
             if (MinM != mother.MinM) return false;
             if (MaxM != mother.MaxM) return false;
 
@@ -226,8 +221,7 @@ namespace DotSpatial.Data
         /// <param name="ext">The extent to expand to include.</param>
         public override void ExpandToInclude(IExtent ext)
         {
-            IExtentM mExt = ext as IExtentM;
-            if (mExt != null && ext.HasM && HasM)
+            if (ext is IExtentM mExt && ext.HasM && HasM)
             {
                 if (mExt.MinM < MinM)
                 {
@@ -244,7 +238,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Expands this extent to include the domain of the specified point
+        /// Expands this extent to include the domain of the specified point.
         /// </summary>
         /// <param name="x">The x ordinate to expand to.</param>
         /// <param name="y">The y ordinate to expand to.</param>
@@ -271,7 +265,7 @@ namespace DotSpatial.Data
         /// Spreads the values for the basic X, Y extents across the whole range of int.
         /// Repetition will occur, but it should be rare.
         /// </summary>
-        /// <returns>Integer</returns>
+        /// <returns>Integer.</returns>
         public override int GetHashCode()
         {
             if (!HasM) return base.GetHashCode();
@@ -295,9 +289,8 @@ namespace DotSpatial.Data
         /// <returns>The intersection.</returns>
         public override Extent Intersection(Extent other)
         {
-            IExtentM mOther = other as IExtentM;
             Extent result;
-            if (HasM && mOther != null && other.HasM)
+            if (HasM && other is IExtentM mOther && other.HasM)
             {
                 ExtentM mResult = new ExtentM
                 {
@@ -326,7 +319,7 @@ namespace DotSpatial.Data
         /// M range.
         /// </summary>
         /// <param name="c">The Coordinate to test.</param>
-        /// <returns>Boolean</returns>
+        /// <returns>Boolean.</returns>
         public override bool Intersects(Coordinate c)
         {
             if ((HasM && !double.IsNaN(c.M)) && (c.M < MinM || c.M > MaxM))
@@ -341,10 +334,10 @@ namespace DotSpatial.Data
         /// Tests for intersection with the specified coordinate. If the m is double.NaN
         /// then it degenerates to only testing X and Y, even if this envelope has an M range.
         /// </summary>
-        /// <param name="x">The double ordinate to test intersection with in the X direction</param>
-        /// <param name="y">The double ordinate to test intersection with in the Y direction</param>
+        /// <param name="x">The double ordinate to test intersection with in the X direction.</param>
+        /// <param name="y">The double ordinate to test intersection with in the Y direction.</param>
         /// <param name="m">The optional double measure parameter to test.</param>
-        /// <returns>Boolean</returns>
+        /// <returns>Boolean.</returns>
         public bool Intersects(double x, double y, double m)
         {
             // Both parties must opt into an M comparison.
@@ -366,8 +359,7 @@ namespace DotSpatial.Data
         /// <returns>Boolean, true if they overlap anywhere, or even touch.</returns>
         public override bool Intersects(IExtent ext)
         {
-            IExtentM mExt = ext as IExtentM;
-            if (mExt != null && ext.HasM && HasM)
+            if (ext is IExtentM mExt && ext.HasM && HasM)
             {
                 if (mExt.MaxM < MinM)
                 {
@@ -391,14 +383,14 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Intersects(Envelope env)
         {
-            if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
+            if (!double.IsNaN(env.MinM) && !double.IsNaN(env.MaxM) && HasM)
             {
-                if (env.Maximum.M < MinM)
+                if (env.MaxM < MinM)
                 {
                     return false;
                 }
 
-                if (env.Minimum.M > MaxM)
+                if (env.MinM > MaxM)
                 {
                     return false;
                 }
@@ -450,8 +442,7 @@ namespace DotSpatial.Data
         /// <returns>True, if this envelope is contained by the specified extent.</returns>
         public override bool Within(IExtent ext)
         {
-            IExtentM mExt = ext as IExtentM;
-            if (mExt != null && ext.HasM && HasM)
+            if (ext is IExtentM mExt && ext.HasM && HasM)
             {
                 if (mExt.MaxM < MaxM)
                 {
@@ -475,14 +466,14 @@ namespace DotSpatial.Data
         /// <returns>True, if this envelope is contained by the specified envelope.</returns>
         public override bool Within(Envelope env)
         {
-            if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
+            if (!double.IsNaN(env.MinM) && !double.IsNaN(env.MaxM) && HasM)
             {
-                if (env.Maximum.M > MinM)
+                if (env.MaxM > MinM)
                 {
                     return false;
                 }
 
-                if (env.Minimum.M < MaxM)
+                if (env.MinM < MaxM)
                 {
                     return false;
                 }

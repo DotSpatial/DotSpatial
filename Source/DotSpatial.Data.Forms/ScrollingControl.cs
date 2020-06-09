@@ -60,7 +60,7 @@ namespace DotSpatial.Data.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the background color to use for this control
+        /// Gets or sets the background color to use for this control.
         /// </summary>
         public override Color BackColor
         {
@@ -133,7 +133,7 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not horizontal scrolling is enabled
+        /// Gets or sets a value indicating whether or not horizontal scrolling is enabled.
         /// </summary>
         public bool HorizontalScrollEnabled
         {

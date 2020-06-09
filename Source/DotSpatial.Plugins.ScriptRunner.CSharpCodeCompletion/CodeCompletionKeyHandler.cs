@@ -33,7 +33,7 @@ using ICSharpCode.TextEditor.Gui.CompletionWindow;
 namespace CSharpEditor
 {
     /// <summary>
-    /// CodeCompletionKeyHandler
+    /// CodeCompletionKeyHandler.
     /// </summary>
     internal class CodeCompletionKeyHandler
     {

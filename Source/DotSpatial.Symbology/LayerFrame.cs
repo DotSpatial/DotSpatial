@@ -163,14 +163,14 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This will create a new layer from the featureset and add it.
         /// </summary>
-        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics</param>
+        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics.</param>
         public virtual void Add(IFeatureSet featureSet)
         {
             // this should be overridden in subclasses
         }
 
         /// <summary>
-        /// Draws the layers icon to the legend
+        /// Draws the layers icon to the legend.
         /// </summary>
         /// <param name="g">Graphics object used for drawing.</param>
         /// <param name="box">Rectangle used for drawing.</param>
@@ -233,7 +233,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the ExtentsChanged event
+        /// Fires the ExtentsChanged event.
         /// </summary>
         /// <param name="ext">The new extent.</param>
         protected virtual void OnExtentsChanged(Extent ext)
@@ -243,7 +243,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the ExtentsChanged event
+        /// Fires the ExtentsChanged event.
         /// </summary>
         protected virtual void OnUpdateMap()
         {

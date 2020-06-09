@@ -17,7 +17,7 @@ namespace DotSpatial.Symbology
     /// [2](https://github.com/vvoovv/djeo-jenks/blob/master/main.js) (buggy),
     /// [3](https://github.com/simogeo/geostats/blob/master/lib/geostats.js#L407) (works)
     /// Adapted by Dan Ames from "literate" version created by Tom MacWright
-    /// presented here: https://macwright.org/2013/02/18/literate-jenks.html and here https://gist.github.com/tmcw/4977508
+    /// presented here: https://macwright.org/2013/02/18/literate-jenks.html and here https://gist.github.com/tmcw/4977508.
     /// </remarks>
     internal class NaturalBreaks
     {

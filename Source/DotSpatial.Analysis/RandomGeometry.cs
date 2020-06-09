@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis

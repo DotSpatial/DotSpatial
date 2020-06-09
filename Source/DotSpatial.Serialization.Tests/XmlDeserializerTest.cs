@@ -12,7 +12,7 @@ namespace DotSpatial.Serialization.Tests
 {
     /// <summary>
     /// This is a test class for XmlDeserializerTest and is intended
-    /// to contain all XmlDeserializerTest Unit Tests
+    /// to contain all XmlDeserializerTest Unit Tests.
     /// </summary>
     [TestClass]
     public class XmlDeserializerTest

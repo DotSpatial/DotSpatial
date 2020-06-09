@@ -36,12 +36,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -50,7 +50,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -66,7 +66,7 @@ namespace DotSpatial.Tools
 
         /// <summary>
         /// Executes the generate centroid FeatureSet Opaeration tool programmatically.
-        /// Ping deleted static for external testing 01/2010
+        /// Ping deleted static for external testing 01/2010.
         /// </summary>
         /// <param name="input1">The input FeatureSet.</param>
         /// <param name="output">The output FeatureSet.</param>
@@ -77,16 +77,16 @@ namespace DotSpatial.Tools
             // Validates the input and output data
             if (input1 == null || output == null) return false;
 
-            bool multiPoint = false;
+            bool multPoint = false;
             foreach (IFeature f1 in input1.Features)
             {
                 if (f1.Geometry.NumGeometries > 1)
                 {
-                    multiPoint = true;
+                    multPoint = true;
                 }
             }
 
-            output.FeatureType = multiPoint == false ? FeatureType.Point : FeatureType.MultiPoint;
+            output.FeatureType = multPoint == false ? FeatureType.Point : FeatureType.MultiPoint;
 
             int previous = 0;
             int i = 0;
@@ -124,7 +124,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

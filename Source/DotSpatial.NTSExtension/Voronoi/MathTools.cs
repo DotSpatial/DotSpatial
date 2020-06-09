@@ -25,8 +25,8 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <param name="p1Y">Second y value.</param>
         /// <param name="p2X">Third x value.</param>
         /// <param name="p2Y">Third y value.</param>
-        /// <param name="plusOneOnZeroDegrees">Indicates whether to add 0 to the result if the result is 0</param>
-        /// <returns>+1 for counter-clockwise, -1 for clockwise, 0 for collinear</returns>
+        /// <param name="plusOneOnZeroDegrees">Indicates whether to add 0 to the result if the result is 0.</param>
+        /// <returns>+1 for counter-clockwise, -1 for clockwise, 0 for collinear.</returns>
         public static int Ccw(double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, bool plusOneOnZeroDegrees)
         {
             double dx1 = p1X - p0X;

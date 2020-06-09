@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// frmInputBox
+    /// frmInputBox.
     /// </summary>
     public class InputBox : Form
     {

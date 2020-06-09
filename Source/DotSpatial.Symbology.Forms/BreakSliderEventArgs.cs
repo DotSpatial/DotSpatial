@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// BreakSliderEventArgs
+    /// BreakSliderEventArgs.
     /// </summary>
     public class BreakSliderEventArgs : EventArgs
     {
@@ -26,7 +26,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the protected break slider
+        /// Gets or sets the protected break slider.
         /// </summary>
         public BreakSlider Slider { get; protected set; }
 

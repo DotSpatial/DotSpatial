@@ -8,7 +8,7 @@ using DotSpatial.Plugins.Measure.Properties;
 namespace DotSpatial.Plugins.Measure
 {
     /// <summary>
-    /// MeasureDialog
+    /// MeasureDialog.
     /// </summary>
     public partial class MeasureDialog : Form
     {

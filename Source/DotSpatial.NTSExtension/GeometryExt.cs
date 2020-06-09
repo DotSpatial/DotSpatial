@@ -2,12 +2,12 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// Contains extension methods for GeoAPI.Geometries.IGeometry.
+    /// Contains extension methods for NetTopologySuite.Geometries.Geometry.
     /// </summary>
     public static class GeometryExt
     {
@@ -16,32 +16,34 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Rotates the geometry by the given radian angle around the origin.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <param name="origin">Coordinate the geometry gets rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        public static void Rotate(this IGeometry self, Coordinate origin, double radAngle)
+        public static void Rotate(this Geometry self, Coordinate origin, double radAngle)
         {
             switch (self.OgcGeometryType)
             {
                 case OgcGeometryType.Point:
-                    IPoint pnt = self as IPoint;
+                    Point pnt = self as Point;
                     if (pnt != null)
                     {
-                        RotateCoordinateRad(origin, ref pnt.Coordinate.X, ref pnt.Coordinate.Y, radAngle);
+                        pnt.Coordinate.RotateCoordinateRad(origin, radAngle);
                     }
 
                     break;
                 case OgcGeometryType.LineString:
-                    ILineString l = self as ILineString;
+                    LineString l = self as LineString;
                     if (l != null)
                     {
                         foreach (Coordinate c in l.Coordinates)
-                            RotateCoordinateRad(origin, ref c.X, ref c.Y, radAngle);
+                        {
+                            c.RotateCoordinateRad(origin, radAngle);
+                        }
                     }
 
                     break;
                 case OgcGeometryType.Polygon:
-                    IPolygon p = self as IPolygon;
+                    Polygon p = self as Polygon;
                     if (p != null)
                     {
                         p.Shell.Rotate(origin, radAngle);
@@ -50,31 +52,34 @@ namespace DotSpatial.NTSExtension
                     }
 
                     break;
+                case OgcGeometryType.MultiPoint:
+                case OgcGeometryType.MultiLineString:
+                case OgcGeometryType.MultiPolygon:
                 case OgcGeometryType.GeometryCollection:
-                    IGeometryCollection geocol = self as IGeometryCollection;
+                    GeometryCollection geocol = self as GeometryCollection;
                     if (geocol != null)
                     {
-                        foreach (IGeometry geo in geocol.Geometries)
+                        foreach (Geometry geo in geocol.Geometries)
                             geo.Rotate(origin, radAngle);
                     }
 
                     break;
+                default: throw new NotSupportedException("Can't handle OgcGeometryType " + self.OgcGeometryType);
             }
         }
 
         /// <summary>
         /// Rotates the given coordinate by the given radian angle around the origin.
         /// </summary>
+        /// <param name="coord">The coordinate that gets rotated.</param>
         /// <param name="origin">Coordinate the geometry gets rotated around.</param>
-        /// <param name="coordX">X-value of the coordinate that gets rotated.</param>
-        /// <param name="coordY">Y-value of the coordinate that gets rotated.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        private static void RotateCoordinateRad(Coordinate origin, ref double coordX, ref double coordY, double radAngle)
+        private static void RotateCoordinateRad(this Coordinate coord, Coordinate origin, double radAngle)
         {
-            double x = origin.X + ((Math.Cos(radAngle) * (coordX - origin.X)) - (Math.Sin(radAngle) * (coordY - origin.Y)));
-            double y = origin.Y + ((Math.Sin(radAngle) * (coordX - origin.X)) + (Math.Cos(radAngle) * (coordY - origin.Y)));
-            coordX = x;
-            coordY = y;
+            double x = origin.X + ((Math.Cos(radAngle) * (coord.X - origin.X)) - (Math.Sin(radAngle) * (coord.Y - origin.Y)));
+            double y = origin.Y + ((Math.Sin(radAngle) * (coord.X - origin.X)) + (Math.Cos(radAngle) * (coord.Y - origin.Y)));
+            coord.X = Math.Round(x, 2);
+            coord.Y = Math.Round(y, 2);
         }
 
         #endregion

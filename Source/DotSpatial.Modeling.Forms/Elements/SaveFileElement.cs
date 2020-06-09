@@ -10,7 +10,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// Save File Element
+    /// Save File Element.
     /// </summary>
     public partial class SaveFileElement : DialogElement
     {
@@ -19,8 +19,8 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="SaveFileElement"/> class.
         /// </summary>
-        /// <param name="outputParam">The parameter this element represents</param>
-        /// <param name="dataSets">An array of available data</param>
+        /// <param name="outputParam">The parameter this element represents.</param>
+        /// <param name="dataSets">An array of available data.</param>
         public SaveFileElement(FileParam outputParam, List<DataSetArray> dataSets)
         {
             // Needed by the designer

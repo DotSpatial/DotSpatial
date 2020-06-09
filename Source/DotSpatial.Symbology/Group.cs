@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using DotSpatial.Data;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -36,7 +36,7 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="Group"/> class that sits in a layer list and uses the specified progress handler.
         /// </summary>
         /// <param name="frame">The map frame the group belongs to.</param>
-        /// <param name="progressHandler">the progress handler</param>
+        /// <param name="progressHandler">the progress handler.</param>
         public Group(IFrame frame, IProgressHandler progressHandler)
             : base(progressHandler)
         {
@@ -47,9 +47,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class that sits in a layer list and uses the specified progress handler.
         /// </summary>
-        /// <param name="container">the layer list</param>
+        /// <param name="container">the layer list.</param>
         /// <param name="frame">The map frame the group belongs to.</param>
-        /// <param name="progressHandler">the progress handler</param>
+        /// <param name="progressHandler">the progress handler.</param>
         public Group(ICollection<ILayer> container, IFrame frame, IProgressHandler progressHandler)
             : base(container, progressHandler)
         {
@@ -361,7 +361,7 @@ namespace DotSpatial.Symbology
         /// Gets all feature layers of this group including feature layers which are nested
         /// within child groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the feature layers</returns>
+        /// <returns>The list of the feature layers.</returns>
         public List<IFeatureLayer> GetAllFeatureLayers()
         {
             return GetAllTypeLayers<IFeatureLayer>();
@@ -370,7 +370,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets all map groups in this group including the nested groups.
         /// </summary>
-        /// <returns>the list of the groups</returns>
+        /// <returns>the list of the groups.</returns>
         public List<IGroup> GetAllGroups()
         {
             var groupList = new List<IGroup>();
@@ -382,7 +382,7 @@ namespace DotSpatial.Symbology
         /// Gets all image layers of this group including image layers which are nested
         /// within child groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the image layers</returns>
+        /// <returns>The list of the image layers.</returns>
         public List<IImageLayer> GetAllImageLayers()
         {
             return GetAllTypeLayers<IImageLayer>();
@@ -393,7 +393,7 @@ namespace DotSpatial.Symbology
         /// within child groups. The group objects themselves are not included in this list,
         /// but all FeatureLayers, RasterLayers, ImageLayers and other layers are included.
         /// </summary>
-        /// <returns>The list of the layers</returns>
+        /// <returns>The list of the layers.</returns>
         public List<ILayer> GetAllLayers()
         {
             return GetAllTypeLayers<ILayer>();
@@ -403,7 +403,7 @@ namespace DotSpatial.Symbology
         /// Gets all line layers of this group including line layers which are nested
         /// within child groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the line layers</returns>
+        /// <returns>The list of the line layers.</returns>
         public List<ILineLayer> GetAllLineLayers()
         {
             return GetAllTypeLayers<ILineLayer>();
@@ -413,7 +413,7 @@ namespace DotSpatial.Symbology
         /// Gets all point layers of this group including point layers which are nested
         /// within child groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the point layers</returns>
+        /// <returns>The list of the point layers.</returns>
         public List<IPointLayer> GetAllPointLayers()
         {
             return GetAllTypeLayers<IPointLayer>();
@@ -423,7 +423,7 @@ namespace DotSpatial.Symbology
         /// Gets all polygon layers of this group including polygon layers which are nested
         /// within child groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the polygon layers</returns>
+        /// <returns>The list of the polygon layers.</returns>
         public List<IPolygonLayer> GetAllPolygonLayers()
         {
             return GetAllTypeLayers<IPolygonLayer>();
@@ -433,7 +433,7 @@ namespace DotSpatial.Symbology
         /// Gets all raster layers of this group including raster layers which are nested
         /// within child groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the raster layers</returns>
+        /// <returns>The list of the raster layers.</returns>
         public List<IRasterLayer> GetAllRasterLayers()
         {
             return GetAllTypeLayers<IRasterLayer>();
@@ -504,10 +504,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the layer handle of the specified layer
+        /// Gets the layer handle of the specified layer.
         /// </summary>
-        /// <param name="positionInGroup">0 based index into list of layers</param>
-        /// <returns>Layer's handle on success, -1 on failure</returns>
+        /// <param name="positionInGroup">0 based index into list of layers.</param>
+        /// <returns>Layer's handle on success, -1 on failure.</returns>
         public int LayerHandle(int positionInGroup)
         {
             throw new NotSupportedException();
@@ -596,7 +596,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Zoom to group
+        /// Zoom to group.
         /// </summary>
         internal void ZoomToGroup()
         {
@@ -661,7 +661,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a virtual method when sub-groups are being created
+        /// Creates a virtual method when sub-groups are being created.
         /// </summary>
         protected virtual void OnCreateGroup()
         {

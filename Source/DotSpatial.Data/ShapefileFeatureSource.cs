@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 
 namespace DotSpatial.Data
@@ -56,7 +56,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the AttributeTable  for this feature source including DeletedRows
+        /// Gets the AttributeTable  for this feature source including DeletedRows.
         /// </summary>
         public AttributeTable AttributeTable => GetAttributeTable(Filename);
 
@@ -75,7 +75,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the feature type supported by this feature source
+        /// Gets the feature type supported by this feature source.
         /// </summary>
         public abstract FeatureType FeatureType { get; }
 
@@ -101,22 +101,22 @@ namespace DotSpatial.Data
         public int PageSize { get; set; }
 
         /// <summary>
-        /// Gets the shape type (without M or Z) supported by this feature source
+        /// Gets the shape type (without M or Z) supported by this feature source.
         /// </summary>
         public abstract ShapeType ShapeType { get; }
 
         /// <summary>
-        /// Gets the shape type (with M, and no Z) supported by this feature source
+        /// Gets the shape type (with M, and no Z) supported by this feature source.
         /// </summary>
         public abstract ShapeType ShapeTypeM { get; }
 
         /// <summary>
-        /// Gets the shape type (with M and Z) supported by this feature source
+        /// Gets the shape type (with M and Z) supported by this feature source.
         /// </summary>
         public abstract ShapeType ShapeTypeZ { get; }
 
         /// <summary>
-        /// Gets the spatial index if any
+        /// Gets the spatial index if any.
         /// </summary>
         public ISpatialIndex<int> SpatialIndex => Quadtree;
 
@@ -140,7 +140,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Create a ShapefileFeatureSource of the appropriate type spatial indexing
+        /// Create a ShapefileFeatureSource of the appropriate type spatial indexing.
         /// </summary>
         /// <param name="filename">Name of the file that gets opened.</param>
         /// <param name="useSpatialIndexing">Indicates whether a spatial index should be used.</param>
@@ -212,13 +212,13 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        header.Zmin = feature.Geometry.EnvelopeInternal.Minimum.Z;
-                        header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
+                        header.Zmin = feature.Geometry.EnvelopeInternal.MinZ;
+                        header.Zmax = feature.Geometry.EnvelopeInternal.MaxZ;
                         header.ShapeType = ShapeTypeZ;
                     }
 
-                    header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
-                    header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
+                    header.Mmin = feature.Geometry.EnvelopeInternal.MinM;
+                    header.Mmax = feature.Geometry.EnvelopeInternal.MaxM;
                 }
 
                 header.ShxLength = 4 + 50;
@@ -233,7 +233,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Adds the given features to the file.
         /// </summary>
-        /// <param name="features">The set of features to add</param>
+        /// <param name="features">The set of features to add.</param>
         public void AddRange(IEnumerable<IFeature> features)
         {
             // Make sure the Output Directory exists
@@ -288,13 +288,13 @@ namespace DotSpatial.Data
                         }
                         else
                         {
-                            header.Zmin = feature.Geometry.EnvelopeInternal.Minimum.Z;
-                            header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
+                            header.Zmin = feature.Geometry.EnvelopeInternal.MinZ;
+                            header.Zmax = feature.Geometry.EnvelopeInternal.MaxZ;
                             header.ShapeType = ShapeTypeZ;
                         }
 
-                        header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
-                        header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
+                        header.Mmin = feature.Geometry.EnvelopeInternal.MinM;
+                        header.Mmax = feature.Geometry.EnvelopeInternal.MaxM;
                     }
 
                     header.ShxLength = 4 + 50;
@@ -335,7 +335,7 @@ namespace DotSpatial.Data
         /// Edits the values of the specified row in the attribute table. Since not all data formats
         /// can handle the dynamic change of attributes, updating vectors can be done with Remove and Add.
         /// </summary>
-        /// <param name="fid">The feature offest</param>
+        /// <param name="fid">The feature offest.</param>
         /// <param name="attributeValues">The row of new attribute values.</param>
         public void EditAttributes(int fid, DataRow attributeValues)
         {
@@ -356,7 +356,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Removes the feature with the specified index.
         /// </summary>
-        /// <param name="index">Removes the feature from the specified index location</param>
+        /// <param name="index">Removes the feature from the specified index location.</param>
         public void RemoveAt(int index)
         {
             // Get shape range so we can update header smartly
@@ -391,16 +391,16 @@ namespace DotSpatial.Data
         /// Conditionally modify attributes as searched in a single pass via client supplied callback.
         /// </summary>
         /// <param name="envelope">The envelope for vector filtering.</param>
-        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
-        /// <param name="rowCallback">Callback on each feature</param>
+        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk.</param>
+        /// <param name="rowCallback">Callback on each feature.</param>
         public abstract void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
 
         /// <summary>
         /// Select function passed with a filter expression.
         /// </summary>
-        /// <param name="filterExpression">The string filter expression based on attributes</param>
+        /// <param name="filterExpression">The string filter expression based on attributes.</param>
         /// <param name="envelope">The envelope for vector filtering.</param>
-        /// <param name="startIndex">The integer start index where values should be checked. This will be updated to the </param>
+        /// <param name="startIndex">The integer start index where values should be checked. This will be updated to the. </param>
         /// last index that was checked before the return, so that paging the query can begin with that index in the next cycle.
         /// Be sure to add one before the next call.
         /// <param name="maxCount">The integer maximum number of IFeature values that should be returned.</param>
@@ -419,15 +419,15 @@ namespace DotSpatial.Data
         /// <param name="header">ShapefileHeader of this file.</param>
         /// <param name="geometry">Geometry that gets appended.</param>
         /// <param name="numFeatures">Number of the features in the shapefile including the one getting appended.</param>
-        protected abstract void AppendGeometry(ShapefileHeader header, IGeometry geometry, int numFeatures);
+        protected abstract void AppendGeometry(ShapefileHeader header, Geometry geometry, int numFeatures);
 
         /// <summary>
         /// Conditionally modify attributes as searched in a single pass via client supplied callback.
         /// </summary>
-        /// <param name="sr">ShapeSource for this feature source</param>
+        /// <param name="sr">ShapeSource for this feature source.</param>
         /// <param name="envelope">The envelope for vector filtering.</param>
-        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
-        /// <param name="featureEditCallback">Callback on each feature</param>
+        /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk.</param>
+        /// <param name="featureEditCallback">Callback on each feature.</param>
         protected void SearchAndModifyAttributes(IShapeSource sr, Envelope envelope, int chunkSize, FeatureSourceRowEditEvent featureEditCallback)
         {
             var samp = new ShapefileFeatureSourceSearchAndModifyAttributeParameters(featureEditCallback);
@@ -522,7 +522,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="header">Header that gets updated.</param>
         /// <param name="feature">Feature, whose extent gets include into the header extent. </param>
-        protected void UpdateHeader(ShapefileHeader header, IGeometry feature)
+        protected void UpdateHeader(ShapefileHeader header, Geometry feature)
         {
             UpdateHeader(header, feature, true);
         }
@@ -533,7 +533,7 @@ namespace DotSpatial.Data
         /// <param name="header">Header that gets updated.</param>
         /// <param name="feature">Feature, whose extent gets include into the header extent. </param>
         /// <param name="writeHeaderFiles">Indicates whether the headers should be written to file.</param>
-        protected void UpdateHeader(ShapefileHeader header, IGeometry feature, bool writeHeaderFiles)
+        protected void UpdateHeader(ShapefileHeader header, Geometry feature, bool writeHeaderFiles)
         {
             // Update the envelope
             Envelope newExt;
@@ -547,20 +547,18 @@ namespace DotSpatial.Data
             else
             {
                 // Other features, so include new feature
-                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax);
-                newExt.InitM(header.Mmin, header.Mmax);
-                newExt.InitZ(header.Zmin, header.Zmax);
+                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax, header.Zmin, header.Zmax, header.Mmin, header.Mmax);
                 newExt.ExpandToInclude(feature.EnvelopeInternal);
             }
 
-            header.Xmin = newExt.Minimum.X;
-            header.Ymin = newExt.Minimum.Y;
-            header.Zmin = newExt.Minimum.Z;
-            header.Xmax = newExt.Maximum.X;
-            header.Ymax = newExt.Maximum.Y;
-            header.Zmax = newExt.Maximum.Z;
-            header.Mmin = newExt.Minimum.M; // TODO added by jany_ on nts integration ... is this correct?
-            header.Mmax = newExt.Maximum.M;
+            header.Xmin = newExt.MinX;
+            header.Ymin = newExt.MinY;
+            header.Zmin = newExt.MinZ;
+            header.Xmax = newExt.MaxX;
+            header.Ymax = newExt.MaxY;
+            header.Zmax = newExt.MaxZ;
+            header.Mmin = newExt.MinM; // TODO added by jany_ on nts integration ... is this correct?
+            header.Mmax = newExt.MaxM;
             header.ShxLength = header.ShxLength + 4;
             if (writeHeaderFiles)
             {

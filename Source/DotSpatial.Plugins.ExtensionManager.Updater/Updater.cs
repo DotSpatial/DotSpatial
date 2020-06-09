@@ -17,7 +17,7 @@ using NuGet;
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
     /// <summary>
-    /// Updater
+    /// Updater.
     /// </summary>
     public partial class Updater : Form
     {

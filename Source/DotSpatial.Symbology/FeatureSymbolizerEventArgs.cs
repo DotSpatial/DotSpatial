@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// FeatureSymbolizerEventArgs
+    /// FeatureSymbolizerEventArgs.
     /// </summary>
     public class FeatureSymbolizerEventArgs : EventArgs
     {

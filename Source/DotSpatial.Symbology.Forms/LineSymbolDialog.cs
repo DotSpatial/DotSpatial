@@ -62,7 +62,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the ChangesApplied event
+        /// Fires the ChangesApplied event.
         /// </summary>
         protected void OnApplyChanges()
         {
@@ -179,7 +179,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Shows the 'Symbol Details' dialog
+        /// Shows the 'Symbol Details' dialog.
         /// </summary>
         private void ShowDetailsDialog()
         {

@@ -2,14 +2,13 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
     /// Contains a magnitude and direction
-    /// Supports more fundamental calculations than LineSegment, rather than topological functions
+    /// Supports more fundamental calculations than LineSegment, rather than topological functions.
     /// </summary>
     public class Vector : Coordinate
     {
@@ -25,7 +24,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector"/> class where the X, Y and Z terms are the same as the specified coordinate.
         /// </summary>
-        /// <param name="coord">The ICoordinate to use</param>
+        /// <param name="coord">The ICoordinate to use.</param>
         public Vector(Coordinate coord)
         {
             X = coord.X;
@@ -37,7 +36,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector"/> class from a line segment, assuming that the direction is from the start point to the end point.
         /// </summary>
-        /// <param name="inLineSegment">A Topology.LineSegment object to turn into a vector</param>
+        /// <param name="inLineSegment">A Topology.LineSegment object to turn into a vector.</param>
         public Vector(LineSegment inLineSegment)
         {
             X = inLineSegment.P1.X - inLineSegment.P0.X;
@@ -49,8 +48,8 @@ namespace DotSpatial.NTSExtension
         /// Initializes a new instance of the <see cref="Vector"/> class that points from the start coordinate to the end coordinate and
         /// uses the distance between the two coordinates to form its length.
         /// </summary>
-        /// <param name="startCoord">The start coordinate</param>
-        /// <param name="endCoord">The end coordinate for the vector</param>
+        /// <param name="startCoord">The start coordinate.</param>
+        /// <param name="endCoord">The end coordinate for the vector.</param>
         public Vector(Coordinate startCoord, Coordinate endCoord)
         {
             X = endCoord.X - startCoord.X;
@@ -61,12 +60,12 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector"/> class from X1, Y1 to X2, Y2.
         /// </summary>
-        /// <param name="x1">Double, The X coordinate of the start point for the vector</param>
-        /// <param name="y1">Double, The Y coordinate of the start point for the vector </param>
-        /// <param name="z1">Double, the Z coordinate of the start point for the vector</param>
-        /// <param name="x2">Double, The X coordinate of the end point for the vector</param>
-        /// <param name="y2">Double, The Y coordinate of the end point for the vector</param>
-        /// <param name="z2">Double, the Z coordinate of the end point for the vector</param>
+        /// <param name="x1">Double, The X coordinate of the start point for the vector.</param>
+        /// <param name="y1">Double, The Y coordinate of the start point for the vector. </param>
+        /// <param name="z1">Double, the Z coordinate of the start point for the vector.</param>
+        /// <param name="x2">Double, The X coordinate of the end point for the vector.</param>
+        /// <param name="y2">Double, The Y coordinate of the end point for the vector.</param>
+        /// <param name="z2">Double, the Z coordinate of the end point for the vector.</param>
         public Vector(double x1, double y1, double z1, double x2, double y2, double z2)
         {
             X = x2 - x1;
@@ -77,9 +76,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector"/> class from the origin to the x, y, z coordinates.
         /// </summary>
-        /// <param name="x">Double, the X coordinate from the origin</param>
-        /// <param name="y">Double, the Y coordinate from the origin</param>
-        /// <param name="z">Double, the Z coordinate from the origin</param>
+        /// <param name="x">Double, the X coordinate from the origin.</param>
+        /// <param name="y">Double, the Y coordinate from the origin.</param>
+        /// <param name="z">Double, the Z coordinate from the origin.</param>
         public Vector(double x, double y, double z)
         {
             X = x;
@@ -90,9 +89,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector"/> class from the origin with the new magnitude and directions specified.
         /// </summary>
-        /// <param name="newMagnitude">Double, the length of the vector</param>
-        /// <param name="theta">The angle in the x-y plane</param>
-        /// <param name="phi">The angle in the z direction</param>
+        /// <param name="newMagnitude">Double, the length of the vector.</param>
+        /// <param name="theta">The angle in the x-y plane.</param>
+        /// <param name="phi">The angle in the z direction.</param>
         public Vector(double newMagnitude, Angle theta, Angle phi)
         {
             X = newMagnitude * Angle.Cos(theta) * Angle.Cos(phi);
@@ -103,8 +102,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector"/> class in the X-Y plane with angle Theta.
         /// </summary>
-        /// <param name="newMagnitude">Double, The magnitude of the vector</param>
-        /// <param name="theta">Angle, The direction measured counterclockwise from Positive X Axis </param>
+        /// <param name="newMagnitude">Double, The magnitude of the vector.</param>
+        /// <param name="theta">Angle, The direction measured counterclockwise from Positive X Axis. </param>
         public Vector(double newMagnitude, Angle theta)
         {
             X = newMagnitude * Angle.Cos(theta);
@@ -128,7 +127,7 @@ namespace DotSpatial.NTSExtension
         /// Initializes a new instance of the <see cref="Vector"/> class based on the first three values on the first row of the
         /// matrix. This is useful for working with the result of a transformation matrix.
         /// </summary>
-        /// <param name="mat">An IMatrixD that should represent the vector</param>
+        /// <param name="mat">An IMatrixD that should represent the vector.</param>
         public Vector(IMatrixD mat)
         {
             X = mat.Values[0, 0];
@@ -163,15 +162,15 @@ namespace DotSpatial.NTSExtension
                 }
 
                 double ratio = value / mag;
-                X = X * ratio;
-                Y = Y * ratio;
-                Z = Z * ratio;
+                X *= ratio;
+                Y *= ratio;
+                Z *= ratio;
             }
         }
 
         /// <summary>
         /// Gets or sets the magnitude of the projection of the vector onto the base.X-Y plane
-        /// Setting this magnitude will not affect Z, which should be adjusted separately
+        /// Setting this magnitude will not affect Z, which should be adjusted separately.
         /// </summary>
         public double Length2D
         {
@@ -192,8 +191,8 @@ namespace DotSpatial.NTSExtension
                 }
 
                 double ratio = value / mag;
-                X = X * ratio;
-                Y = Y * ratio;
+                X *= ratio;
+                Y *= ratio;
             }
         }
 
@@ -271,11 +270,11 @@ namespace DotSpatial.NTSExtension
         #region Operators
 
         /// <summary>
-        /// Adds the vectors U and V using vector addition, which adds the corresponding components
+        /// Adds the vectors U and V using vector addition, which adds the corresponding components.
         /// </summary>
-        /// <param name="u">One vector to be added</param>
-        /// <param name="v">A second vector to be added</param>
-        /// <returns>The sum of the vectors</returns>
+        /// <param name="u">One vector to be added.</param>
+        /// <param name="v">A second vector to be added.</param>
+        /// <returns>The sum of the vectors.</returns>
         public static Vector operator +(Vector u, Vector v)
         {
             return new Vector(u.X + v.X, u.Y + v.Y, u.Z + v.Z);
@@ -296,11 +295,11 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the Cross Product of two vectors U and V
+        /// Returns the Cross Product of two vectors U and V.
         /// </summary>
-        /// <param name="u">Vector, the first input vector</param>
-        /// <param name="v">Vector, the second input vector</param>
-        /// <returns>A Vector containing the cross product of U and V</returns>
+        /// <param name="u">Vector, the first input vector.</param>
+        /// <param name="v">Vector, the second input vector.</param>
+        /// <returns>A Vector containing the cross product of U and V.</returns>
         public static Vector operator ^(Vector u, Vector v)
         {
             return new Vector { X = (u.Y * v.Z) - (u.Z * v.Y), Y = (u.Z * v.X) - (u.X * v.Z), Z = (u.X * v.Y) - (u.Y * v.X) };
@@ -310,8 +309,8 @@ namespace DotSpatial.NTSExtension
         /// Tests inequality of the X, Y and Z members.
         /// </summary>
         /// <param name="u">The left hand side vector to test inequality for.</param>
-        /// <param name="v">The right hand side vector to test inequality for</param>
-        /// <returns>Returns true if X, Y and Z are equal</returns>
+        /// <param name="v">The right hand side vector to test inequality for.</param>
+        /// <returns>Returns true if X, Y and Z are equal.</returns>
         public static bool operator !=(Vector u, Vector v)
         {
             if (u == null & v == null) return true;
@@ -321,11 +320,11 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the Inner Product also known as the dot product of two vectors, U and V
+        /// Returns the Inner Product also known as the dot product of two vectors, U and V.
         /// </summary>
-        /// <param name="u">The input vector</param>
-        /// <param name="v">The vector to take the inner product against U</param>
-        /// <returns>a Double containing the dot product of U and V</returns>
+        /// <param name="u">The input vector.</param>
+        /// <param name="v">The vector to take the inner product against U.</param>
+        /// <returns>a Double containing the dot product of U and V.</returns>
         public static double operator *(Vector u, Vector v)
         {
             return (u.X * v.X) + (u.Y * v.Y) + (u.Z * v.Z);
@@ -333,33 +332,33 @@ namespace DotSpatial.NTSExtension
 
         /// <summary>
         /// Multiplies the vectors U and V using vector multiplication,
-        /// which adds the corresponding components
+        /// which adds the corresponding components.
         /// </summary>
-        /// <param name="scalar">A scalar to multpy to the vector</param>
-        /// <param name="v">A vector to be multiplied</param>
-        /// <returns>The scalar product for the vectors</returns>
+        /// <param name="scalar">A scalar to multpy to the vector.</param>
+        /// <param name="v">A vector to be multiplied.</param>
+        /// <returns>The scalar product for the vectors.</returns>
         public static Vector operator *(double scalar, Vector v)
         {
             return new Vector(v.X * scalar, v.Y * scalar, v.Z * scalar);
         }
 
         /// <summary>
-        /// Multiplies each component of vector U by the Scalar value
+        /// Multiplies each component of vector U by the Scalar value.
         /// </summary>
-        /// <param name="u">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
+        /// <param name="u">A vector representing the vector to be multiplied.</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by.</param>
+        /// <returns>A Vector representing the vector product of vector U and the Scalar.</returns>
         public static Vector operator *(Vector u, double scalar)
         {
             return new Vector(u.X * scalar, u.Y * scalar, u.Z * scalar);
         }
 
         /// <summary>
-        /// Subtracts Vector V from Vector U
+        /// Subtracts Vector V from Vector U.
         /// </summary>
-        /// <param name="u">A Vector to subtract from</param>
-        /// <param name="v">A Vector to subtract</param>
-        /// <returns>The Vector difference U - V</returns>
+        /// <param name="u">A Vector to subtract from.</param>
+        /// <param name="v">A Vector to subtract.</param>
+        /// <returns>The Vector difference U - V.</returns>
         public static Vector operator -(Vector u, Vector v)
         {
             return new Vector(u.X - v.X, u.Y - v.Y, u.Z - v.Z);
@@ -372,8 +371,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Adds the vectors U and V using vector addition, which adds the corresponding components.
         /// </summary>
-        /// <param name="u">One vector to be added</param>
-        /// <param name="v">A second vector to be added</param>
+        /// <param name="u">One vector to be added.</param>
+        /// <param name="v">A second vector to be added.</param>
         /// <returns>The resulting vector.</returns>
         public static Vector Add(Vector u, Vector v)
         {
@@ -381,22 +380,22 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the Cross Product of two vectors U and V
+        /// Returns the Cross Product of two vectors U and V.
         /// </summary>
-        /// <param name="u">Vector, the first input vector</param>
-        /// <param name="v">Vector, the second input vector</param>
-        /// <returns>A Vector containing the cross product of U and V</returns>
+        /// <param name="u">Vector, the first input vector.</param>
+        /// <param name="v">Vector, the second input vector.</param>
+        /// <returns>A Vector containing the cross product of U and V.</returns>
         public static Vector CrossProduct(Vector u, Vector v)
         {
             return new Vector { X = (u.Y * v.Z) - (u.Z * v.Y), Y = (u.Z * v.X) - (u.X * v.Z), Z = (u.X * v.Y) - (u.Y * v.X) };
         }
 
         /// <summary>
-        /// Multiplies each component of vector U by the Scalar value
+        /// Multiplies each component of vector U by the Scalar value.
         /// </summary>
-        /// <param name="u">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
+        /// <param name="u">A vector representing the vector to be multiplied.</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by.</param>
+        /// <returns>A Vector representing the vector product of vector U and the Scalar.</returns>
         public static Vector Divide(Vector u, double scalar)
         {
             if (scalar == 0) throw new ArgumentException("Divisor cannot be 0.");
@@ -404,32 +403,32 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the Inner Product also known as the dot product of two vectors, U and V
+        /// Returns the Inner Product also known as the dot product of two vectors, U and V.
         /// </summary>
-        /// <param name="u">The input vector</param>
-        /// <param name="v">The vector to take the inner product against U</param>
-        /// <returns>a Double containing the dot product of U and V</returns>
+        /// <param name="u">The input vector.</param>
+        /// <param name="v">The vector to take the inner product against U.</param>
+        /// <returns>a Double containing the dot product of U and V.</returns>
         public static double DotProduct(Vector u, Vector v)
         {
             return (u.X * v.X) + (u.Y * v.Y) + (u.Z * v.Z);
         }
 
         /// <summary>
-        /// Multiplies each component of vector U by the Scalar value
+        /// Multiplies each component of vector U by the Scalar value.
         /// </summary>
-        /// <param name="u">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
+        /// <param name="u">A vector representing the vector to be multiplied.</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by.</param>
+        /// <returns>A Vector representing the vector product of vector U and the Scalar.</returns>
         public static Vector Multiply(Vector u, double scalar)
         {
             return new Vector(u.X * scalar, u.Y * scalar, u.Z * scalar);
         }
 
         /// <summary>
-        /// Non-static version of taking the square distance for a vector
+        /// Non-static version of taking the square distance for a vector.
         /// </summary>
-        /// <param name="u">The vector to find the square of the distance of</param>
-        /// <returns>Double, the square of the distance</returns>
+        /// <param name="u">The vector to find the square of the distance of.</param>
+        /// <returns>Double, the square of the distance.</returns>
         public static double Norm2(Vector u)
         {
             double n2 = (u.X * u.X) + (u.Y * u.Y) + (u.Z * u.Z);
@@ -437,79 +436,54 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Subtracts Vector V from Vector U
+        /// Subtracts Vector V from Vector U.
         /// </summary>
-        /// <param name="u">A Vector to subtract from</param>
-        /// <param name="v">A Vector to subtract</param>
-        /// <returns>The Vector difference U - V</returns>
+        /// <param name="u">A Vector to subtract from.</param>
+        /// <param name="v">A Vector to subtract.</param>
+        /// <returns>The Vector difference U - V.</returns>
         public static Vector Subtract(Vector u, Vector v)
         {
             return new Vector(u.X - v.X, u.Y - v.Y, u.Z - v.Z);
         }
 
         /// <summary>
-        /// Adds each of the elements of V to the elements of this vector
+        /// Adds each of the elements of V to the elements of this vector.
         /// </summary>
-        /// <param name="v">Vector, the vector to add to this vector</param>
-        /// <returns>A vector result from the addition</returns>
+        /// <param name="v">Vector, the vector to add to this vector.</param>
+        /// <returns>A vector result from the addition.</returns>
         public Vector Add(Vector v)
         {
             return new Vector(X + v.X, Y + v.Y, Z + v.Z);
         }
 
         /// <summary>
-        /// Returns the cross product of this vector with the specified vector V
+        /// Returns the cross product of this vector with the specified vector V.
         /// </summary>
-        /// <param name="v">The vector to perform a cross product against</param>
-        /// <returns>A vector result from the inner product</returns>
+        /// <param name="v">The vector to perform a cross product against.</param>
+        /// <returns>A vector result from the inner product.</returns>
         public Vector Cross(Vector v)
         {
             return new Vector { X = (Y * v.Z) - (Z * v.Y), Y = (Z * v.X) - (X * v.Z), Z = (X * v.Y) - (Y * v.X) };
         }
 
         /// <summary>
-        /// Returns the dot product of this vector with V2
+        /// Returns the dot product of this vector with V2.
         /// </summary>
-        /// <param name="v">The vector to perform an inner product against</param>
-        /// <returns>A Double result from the inner product</returns>
+        /// <param name="v">The vector to perform an inner product against.</param>
+        /// <returns>A Double result from the inner product.</returns>
         public double Dot(Vector v)
         {
             return (X * v.X) + (Y * v.Y) + (Z * v.Z);
         }
 
         /// <summary>
-        /// Override  for definition of equality for vectors
+        /// Override  for definition of equality for vectors.
         /// </summary>
-        /// <param name="v">A vector to compare with</param>
-        /// <returns>true if the X, Y, and Z coordinates are all equal</returns>
+        /// <param name="v">A vector to compare with.</param>
+        /// <returns>true if the X, Y, and Z coordinates are all equal.</returns>
         public bool Equals(Vector v)
         {
             return (X == v.X) && (Y == v.Y) && (Z == v.Z);
-        }
-
-        /// <summary>
-        /// Checks first to make sure that both objects are vectors. If they are,
-        /// then it checks to determine whether or not the X, Y and Z values are equal.
-        /// </summary>
-        /// <param name="vect">The object to test against</param>
-        /// <returns>True if the </returns>
-        public override bool Equals(object vect)
-        {
-            if (vect == null) return false;
-
-            Vector v = vect as Vector;
-            if (v == null) return false;
-
-            return (X == v.X) && (Y == v.Y) && (Z == v.Z);
-        }
-
-        /// <summary>
-        /// Returns the hash code.. or something
-        /// </summary>
-        /// <returns>A hash code I guess</returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
 
         /// <summary>
@@ -523,10 +497,10 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the scalar product of this vector against a scalar
+        /// Returns the scalar product of this vector against a scalar.
         /// </summary>
-        /// <param name="scalar">Double, a value to multiply against all the members of this vector</param>
-        /// <returns>A vector multiplied by the scalar</returns>
+        /// <param name="scalar">Double, a value to multiply against all the members of this vector.</param>
+        /// <returns>A vector multiplied by the scalar.</returns>
         public Vector Multiply(double scalar)
         {
             return new Vector(X * scalar, Y * scalar, Z * scalar);
@@ -534,9 +508,9 @@ namespace DotSpatial.NTSExtension
 
         /// <summary>
         /// Returns the square of the distance of the vector without taking the square root
-        /// This is the same as doting the vector with itself
+        /// This is the same as doting the vector with itself.
         /// </summary>
-        /// <returns>Double, the square of the distance between the vectors</returns>
+        /// <returns>Double, the square of the distance between the vectors.</returns>
         public double Norm2()
         {
             return (X * X) + (Y * Y) + (Z * Z);
@@ -551,16 +525,16 @@ namespace DotSpatial.NTSExtension
             double length = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
             if (length <= 0) return;
 
-            X = X / length;
-            Y = Y / length;
-            Z = Z / length;
+            X /= length;
+            Y /= length;
+            Z /= length;
         }
 
         /// <summary>
-        /// Rotates the vector about the X axis as though the tail of the vector were at the origin
+        /// Rotates the vector about the X axis as though the tail of the vector were at the origin.
         /// </summary>
         /// <param name="degrees">The angle in degrees to rotate counter-clockwise when looking at the origin from the positive axis.</param>
-        /// <returns>A new Vector that has been rotated</returns>
+        /// <returns>A new Vector that has been rotated.</returns>
         public virtual Vector RotateX(double degrees)
         {
             IMatrixD m = ToMatrix();
@@ -569,10 +543,10 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Rotates the vector about the Y axis as though the tail of the vector were at the origin
+        /// Rotates the vector about the Y axis as though the tail of the vector were at the origin.
         /// </summary>
         /// <param name="degrees">The angle in degrees to rotate counter-clockwise when looking at the origin from the positive axis.</param>
-        /// <returns>A new Vector that has been rotated</returns>
+        /// <returns>A new Vector that has been rotated.</returns>
         public virtual Vector RotateY(double degrees)
         {
             IMatrixD m = ToMatrix();
@@ -581,10 +555,10 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Rotates the vector about the Z axis as though the tail of the vector were at the origin
+        /// Rotates the vector about the Z axis as though the tail of the vector were at the origin.
         /// </summary>
         /// <param name="degrees">The angle in degrees to rotate counter-clockwise when looking at the origin from the positive axis.</param>
-        /// <returns>A new Vector that has been rotated</returns>
+        /// <returns>A new Vector that has been rotated.</returns>
         public virtual Vector RotateZ(double degrees)
         {
             IMatrixD m = ToMatrix();
@@ -593,19 +567,19 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Subtracts each element of V from each element of this vector
+        /// Subtracts each element of V from each element of this vector.
         /// </summary>
-        /// <param name="v">Vector, the vector to subtract from this vector</param>
-        /// <returns>A vector result from the subtraction</returns>
+        /// <param name="v">Vector, the vector to subtract from this vector.</param>
+        /// <returns>A vector result from the subtraction.</returns>
         public Vector Subtract(Vector v)
         {
             return new Vector(X - v.X, Y - v.Y, Z - v.Z);
         }
 
         /// <summary>
-        /// Returns an ICoordinate from this vector, where the X, Y and Z value match the values in this vector
+        /// Returns an ICoordinate from this vector, where the X, Y and Z value match the values in this vector.
         /// </summary>
-        /// <returns>an ICoordinate, where the X, Y and Z value match the values in this vector</returns>
+        /// <returns>an ICoordinate, where the X, Y and Z value match the values in this vector.</returns>
         public Coordinate ToCoordinate()
         {
             return new Coordinate(X, Y, Z);
@@ -624,7 +598,7 @@ namespace DotSpatial.NTSExtension
         /// Rotations and transformations work by applying matrix mathematics, so this creates a 1 x 4 version of this vector.
         /// The 4th value is always 1, and allows for the translation terms to work.
         /// </summary>
-        /// <returns>A 1 x 4 version of this vector</returns>
+        /// <returns>A 1 x 4 version of this vector.</returns>
         public IMatrixD ToMatrix()
         {
             IMatrixD mat = new MatrixD(1, 4);
@@ -641,7 +615,7 @@ namespace DotSpatial.NTSExtension
         /// a Point representing the tip of the vector.
         /// </summary>
         /// <returns>A Point representing the tip of the vector.</returns>
-        public IPoint ToPoint()
+        public Point ToPoint()
         {
             return new Point(X, Y, Z);
         }

@@ -14,7 +14,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Draws a legend for the layout
+    /// Draws a legend for the layout.
     /// </summary>
     public class LayoutLegend : LayoutElement
     {
@@ -30,7 +30,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region  Constructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LayoutLegend"/> class.
@@ -51,7 +51,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color of the text
+        /// Gets or sets the color of the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -71,7 +71,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw this text
+        /// Gets or sets the font used to draw this text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -91,7 +91,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the layers to include in the legend
+        /// Gets or sets the layers to include in the legend.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -129,7 +129,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a layout control
+        /// Gets or sets a layout control.
         /// </summary>
         [Browsable(false)]
         public virtual LayoutControl LayoutControl
@@ -155,7 +155,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the layoutmap to use to base the legend on
+        /// Gets or sets the layoutmap to use to base the legend on.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -199,7 +199,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the number of columns to use when rendering the legend
+        /// Gets or sets the number of columns to use when rendering the legend.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -219,7 +219,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the hinting used to draw the text
+        /// Gets or sets the hinting used to draw the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -245,8 +245,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">A boolean value indicating if the Draw code is being called to print</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">A boolean value indicating if the Draw code is being called to print.</param>
         public override void Draw(Graphics g, bool printing)
         {
             // Make sure we don't get any null reference exceptions

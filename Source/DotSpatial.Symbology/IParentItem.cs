@@ -4,9 +4,9 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Any item which can be contained by a parent item
+    /// Any item which can be contained by a parent item.
     /// </summary>
-    /// <typeparam name="T">The type class of the potential parent</typeparam>
+    /// <typeparam name="T">The type class of the potential parent.</typeparam>
     public interface IParentItem<T>
     {
         #region Properties

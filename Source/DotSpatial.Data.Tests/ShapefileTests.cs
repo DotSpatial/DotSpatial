@@ -26,7 +26,7 @@ namespace DotSpatial.Data.Tests
         /// are loaded as double instead of as string.
         /// </summary>
         /// <remarks>
-        /// Issue: https://github.com/DotSpatial/DotSpatial/issues/893
+        /// Issue: https://github.com/DotSpatial/DotSpatial/issues/893.
         /// </remarks>
         [Test]
         public void NumericColumnAsDoubleTest()

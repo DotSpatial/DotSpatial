@@ -110,7 +110,7 @@ namespace DotSpatial.Controls
         public string OpenDialogFilterFormat => "{0} |*.map.xml;*.dspx|{1} (*.dspx)|*.dspx" + AggregateProviderExtensions(OpenProjectFileProviders);
 
         /// <summary>
-        /// Gets the filter text for an open project file dialog
+        /// Gets the filter text for an open project file dialog.
         /// </summary>
         public string OpenDialogFilterText => string.Format(OpenDialogFilterFormat, Resources.GetString("SupportedFiles"), Resources.GetString("ProjectFile"));
 
@@ -328,7 +328,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Starts tracking changes in the current project
+        /// Starts tracking changes in the current project.
         /// </summary>
         public void StartTrackingChanges()
         {

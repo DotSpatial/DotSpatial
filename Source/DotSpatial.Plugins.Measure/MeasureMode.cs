@@ -4,7 +4,7 @@
 namespace DotSpatial.Plugins.Measure
 {
     /// <summary>
-    /// MeasureModes
+    /// MeasureModes.
     /// </summary>
     public enum MeasureMode
     {

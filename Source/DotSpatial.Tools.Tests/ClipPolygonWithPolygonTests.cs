@@ -22,7 +22,7 @@ namespace DotSpatial.Tools.Tests
         /// when using the ToolDialog for ClipPolygonWithPolygon.
         /// </summary>
         /// <remarks>
-        /// Issue: https://github.com/DotSpatial/DotSpatial/issues/892
+        /// Issue: https://github.com/DotSpatial/DotSpatial/issues/892.
         /// </remarks>
         [Test]
         public void CopyAttributesToClipped()
@@ -53,7 +53,12 @@ namespace DotSpatial.Tools.Tests
                 Assert.That(outputFile.DataTable.Columns[0].Caption.Equals("ID"));
                 Assert.That(outputFile.DataTable.Columns[1].Caption.Equals("Name"));
 
-                string[,] dataValues = { { "BE", "Belgium" }, { "DE", "Germany" }, { "LU", "Luxembourg" } };
+                string[,] dataValues =
+                {
+                    { "BE", "Belgium" },
+                    { "DE", "Germany" },
+                    { "LU", "Luxembourg" }
+                };
 
                 var mpCount = 0;
                 foreach (var feature in outputFile.Features)

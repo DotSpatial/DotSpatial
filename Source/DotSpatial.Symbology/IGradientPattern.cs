@@ -24,7 +24,7 @@ namespace DotSpatial.Symbology
         Color[] Colors { get; set; }
 
         /// <summary>
-        /// Gets or sets the gradient type
+        /// Gets or sets the gradient type.
         /// </summary>
         GradientType GradientType { get; set; }
 

@@ -24,17 +24,17 @@ namespace DotSpatial.Symbology
         IRasterBounds Bounds { get; set; }
 
         /// <summary>
-        /// Gets the geographic height of the cells for this raster (North-South)
+        /// Gets the geographic height of the cells for this raster (North-South).
         /// </summary>
         double CellHeight { get; }
 
         /// <summary>
-        /// Gets the geographic width of the cells for this raster (East-West)
+        /// Gets the geographic width of the cells for this raster (East-West).
         /// </summary>
         double CellWidth { get; }
 
         /// <summary>
-        /// Gets or sets the underlying dataset raster for this object
+        /// Gets or sets the underlying dataset raster for this object.
         /// </summary>
         new IRaster DataSet { get; set; }
 
@@ -124,7 +124,7 @@ namespace DotSpatial.Symbology
         ///  Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
         ///  This also generates a bpw world file for the texture.
         /// </summary>
-        /// <param name="fileName">The string fileName to write to</param>
+        /// <param name="fileName">The string fileName to write to.</param>
         /// <param name="bandType">The image band type.</param>
         void ExportBitmap(string fileName, ImageBandType bandType);
 
@@ -132,7 +132,7 @@ namespace DotSpatial.Symbology
         /// Creates a bmp texture and saves it to the specified fileName. The fileName should end in bmp.
         /// This also generates a bpw world file for the texture.
         /// </summary>
-        /// <param name="fileName">The string fileName to write to</param>
+        /// <param name="fileName">The string fileName to write to.</param>
         /// <param name="progressHandler">The progress handler for creating a new bitmap.</param>
         /// <param name="bandType">The image band type.</param>
         void ExportBitmap(string fileName, IProgressHandler progressHandler, ImageBandType bandType);
@@ -147,7 +147,7 @@ namespace DotSpatial.Symbology
         /// Creates a bmp texture and saves it to the same fileName as the raster but with a bmp ending.
         /// This also generates a bpw world file for the texture.
         /// </summary>
-        /// <param name="progressHandler">An implementation of IProgressHandler to recieve status messages</param>
+        /// <param name="progressHandler">An implementation of IProgressHandler to recieve status messages.</param>
         void WriteBitmap(IProgressHandler progressHandler);
 
         #endregion

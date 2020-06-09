@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaAccess
+    /// HfaAccess.
     /// </summary>
     public enum HfaAccess
     {

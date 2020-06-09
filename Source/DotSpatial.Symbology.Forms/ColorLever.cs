@@ -76,17 +76,17 @@ namespace DotSpatial.Symbology.Forms
         public double Angle { get; set; }
 
         /// <summary>
-        /// Gets or sets the bar length
+        /// Gets or sets the bar length.
         /// </summary>
         public int BarLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the width of the bar connecting the knob
+        /// Gets or sets the width of the bar connecting the knob.
         /// </summary>
         public int BarWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets the border width
+        /// Gets or sets the border width.
         /// </summary>
         public int BorderWidth { get; set; }
 
@@ -317,7 +317,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the OpacityChanging event when the opacity is being changed
+        /// Fires the OpacityChanging event when the opacity is being changed.
         /// </summary>
         protected virtual void OnOpacityChanging()
         {
@@ -325,7 +325,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draw the clipped portion
+        /// Draw the clipped portion.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
@@ -345,7 +345,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Prevent flicker
+        /// Prevent flicker.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

@@ -42,7 +42,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the custom actions for ColorCategory
+        /// Gets or sets the custom actions for ColorCategory.
         /// </summary>
         public ColorCategoryActions ColorCategoryActions
         {
@@ -59,7 +59,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the custom actions for FeatureLayer
+        /// Gets or sets the custom actions for FeatureLayer.
         /// </summary>
         public FeatureLayerActions FeatureLayerActions
         {
@@ -76,7 +76,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the actions for ImageLayers
+        /// Gets or sets the actions for ImageLayers.
         /// </summary>
         public ImageLayerActions ImageLayerActions
         {
@@ -93,7 +93,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the custom actions for Layer
+        /// Gets or sets the custom actions for Layer.
         /// </summary>
         public LayerActions LayerActions
         {
@@ -131,7 +131,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the custom actions for RasterLayer
+        /// Gets or sets the custom actions for RasterLayer.
         /// </summary>
         public RasterLayerActions RasterLayerActions
         {

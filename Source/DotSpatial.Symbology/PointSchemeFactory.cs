@@ -9,7 +9,7 @@ using System.Drawing;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PointSchemeFactory
+    /// PointSchemeFactory.
     /// </summary>
     public class PointSchemeFactory
     {
@@ -47,7 +47,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets the data Table that provides necessary information about the attributes for unique values to
-        /// be calculated
+        /// be calculated.
         /// </summary>
         public DataTable Table { get; set; }
 
@@ -62,7 +62,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// This causes the creation of a PointScheme
+        /// This causes the creation of a PointScheme.
         /// </summary>
         /// <param name="startColor">The start color.</param>
         /// <param name="endColor">The end color.</param>

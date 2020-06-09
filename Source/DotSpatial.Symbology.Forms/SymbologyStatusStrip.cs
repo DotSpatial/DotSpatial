@@ -47,9 +47,9 @@ namespace DotSpatial.Symbology.Forms
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
         /// by updating the progress indicator from a different thread.
         /// </summary>
-        /// <param name="key">A string message with just a description of what is happening, but no percent completion information</param>
-        /// <param name="percent">The integer percent from 0 to 100</param>
-        /// <param name="message">A message</param>
+        /// <param name="key">A string message with just a description of what is happening, but no percent completion information.</param>
+        /// <param name="percent">The integer percent from 0 to 100.</param>
+        /// <param name="message">A message.</param>
         public void Progress(string key, int percent, string message)
         {
             if (InvokeRequired)

@@ -37,12 +37,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -60,9 +60,7 @@ namespace DotSpatial.Tools
             IFeatureSet input = _inputParam[0].Value as IFeatureSet;
             input?.FillAttributes();
 
-            IFeatureSet output = _outputParam[0].Value as IFeatureSet;
-
-            if (output == null) return false;
+            if (!(_outputParam[0].Value is IFeatureSet output)) return false;
 
             Analysis.Voronoi.VoronoiPolygons(input, output, true);
             output.Save();
@@ -70,7 +68,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

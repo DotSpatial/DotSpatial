@@ -18,12 +18,12 @@ namespace DotSpatial.Symbology
         double Angle { get; set; }
 
         /// <summary>
-        /// Gets or sets the 2D offset for this particular symbol
+        /// Gets or sets the 2D offset for this particular symbol.
         /// </summary>
         Position2D Offset { get; set; }
 
         /// <summary>
-        /// Gets or sets the size
+        /// Gets or sets the size.
         /// </summary>
         Size2D Size { get; set; }
 
@@ -79,9 +79,9 @@ namespace DotSpatial.Symbology
         void Select();
 
         /// <summary>
-        /// Sets the primary color of this symbol to the specified color if possible
+        /// Sets the primary color of this symbol to the specified color if possible.
         /// </summary>
-        /// <param name="color">The Color to assign</param>
+        /// <param name="color">The Color to assign.</param>
         void SetColor(Color color);
 
         #endregion

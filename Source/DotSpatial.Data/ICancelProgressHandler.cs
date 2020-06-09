@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// IProgressHandler that carries a boolean property allowing the process using the handler to know if you should cancelled
+    /// IProgressHandler that carries a boolean property allowing the process using the handler to know if you should cancelled.
     /// </summary>
     public interface ICancelProgressHandler : IProgressHandler
     {

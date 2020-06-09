@@ -15,7 +15,6 @@ using System.Xml.Serialization;
 using System.Xml.XPath;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using Renci.Data.Interop.OpenGIS.Gml;
 using Renci.Data.Interop.OpenGIS.Wfs;
@@ -23,7 +22,7 @@ using Renci.Data.Interop.OpenGIS.Wfs;
 namespace DotSpatial.Plugins.WFSClient.Classes
 {
     /// <summary>
-    /// WfsClient
+    /// WfsClient.
     /// </summary>
     internal class WfsClient
     {
@@ -155,7 +154,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         /// Checks whether the geographic field is valid.
         /// </summary>
         /// <param name="geographicField">The geographic field to check.</param>
-        /// <returns>True, if geographicField is gml:PointPropertyType or gml:MultiSurfacePropertyType or gml:MultiLineStringPropertyType</returns>
+        /// <returns>True, if geographicField is gml:PointPropertyType or gml:MultiSurfacePropertyType or gml:MultiLineStringPropertyType.</returns>
         public static bool IsGeographicFieldValid(string geographicField)
         {
             return geographicField == "gml:PointPropertyType" || geographicField == "gml:MultiSurfacePropertyType" || geographicField == "gml:MultiLineStringPropertyType";
@@ -294,7 +293,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             string[] listpoints = rings.Text.Split(' ');
             List<Coordinate> lstCoor = new List<Coordinate>();
 
-            for (int i = 0; i < listpoints.Length; i = i + 2)
+            for (int i = 0; i < listpoints.Length; i += 2)
             {
                 lstCoor.Add(new Coordinate(Convert.ToDouble(listpoints[i], CultureInfo.InvariantCulture), Convert.ToDouble(listpoints[i + 1], CultureInfo.InvariantCulture)));
             }
@@ -302,15 +301,13 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             return lstCoor.ToArray();
         }
 
-        private static void ExtractInteriorPolygon(ILinearRing[] holes, PolygonType sur)
+        private static void ExtractInteriorPolygon(LinearRing[] holes, PolygonType sur)
         {
             Collection<AbstractRingPropertyType> lin = sur.Interior;
             int i = 0;
             foreach (AbstractRingPropertyType ringis in lin)
             {
-                LinearRingType lii = ringis.Ring as LinearRingType;
-
-                if (lii != null)
+                if (ringis.Ring is LinearRingType lii)
                 {
                     foreach (DirectPositionListType rings in lii.Items)
                     {
@@ -323,11 +320,10 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             }
         }
 
-        private static PolygonType ExtractShellPolygon(ref ILinearRing shell, SurfacePropertyType member)
+        private static PolygonType ExtractShellPolygon(ref LinearRing shell, SurfacePropertyType member)
         {
             PolygonType sur = member.Surface as PolygonType;
-            LinearRingType li = sur?.Exterior.Ring as LinearRingType;
-            if (li != null)
+            if (sur?.Exterior.Ring is LinearRingType li)
             {
                 foreach (DirectPositionListType rings in li.Items)
                 {
@@ -441,7 +437,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         private IFeature ExtractGeographicData(XmlNode c)
         {
             string geoData = string.Empty;
-            IGeometry geo = null;
+            Geometry geo = null;
             if (_typeGeometry == FeatureType.Point)
             {
                 foreach (XmlNode e in c)
@@ -535,14 +531,14 @@ namespace DotSpatial.Plugins.WFSClient.Classes
                 _typeGeometry = FeatureType.Line;
         }
 
-        private IGeometry GetPolygon(MultiSurfaceType multi)
+        private Geometry GetPolygon(MultiSurfaceType multi)
         {
-            var p = new IPolygon[multi.SurfaceMemberItems.Count];
+            var p = new Polygon[multi.SurfaceMemberItems.Count];
 
             int npoly = 0;
             foreach (SurfacePropertyType member in multi.SurfaceMemberItems)
             {
-                ILinearRing shell = null;
+                LinearRing shell = null;
                 PolygonType sur = ExtractShellPolygon(ref shell, member);
 
                 if (sur.Interior.Count == 0 && shell != null)
@@ -551,7 +547,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
                 }
                 else
                 {
-                    var holes = new ILinearRing[sur.Interior.Count];
+                    var holes = new LinearRing[sur.Interior.Count];
                     ExtractInteriorPolygon(holes, sur);
                     p[npoly] = new Polygon(shell, holes);
                 }
@@ -562,9 +558,9 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             return new MultiPolygon(p);
         }
 
-        private IGeometry GetPolyline(MultiLineStringType multi)
+        private Geometry GetPolyline(MultiLineStringType multi)
         {
-            var lines = new ILineString[multi.LineStringMembers.Count];
+            var lines = new LineString[multi.LineStringMembers.Count];
             int nLin = 0;
             foreach (LineStringPropertyType member in multi.LineStringMembers)
             {

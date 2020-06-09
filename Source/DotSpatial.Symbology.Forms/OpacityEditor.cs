@@ -10,7 +10,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// OpacityEditor
+    /// OpacityEditor.
     /// </summary>
     public class OpacityEditor : UITypeEditor
     {
@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology.Forms
         /// Sets the behavior to drop-down.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;

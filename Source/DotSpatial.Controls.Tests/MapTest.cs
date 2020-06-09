@@ -7,7 +7,7 @@ using System.IO;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
@@ -19,7 +19,7 @@ namespace DotSpatial.Controls.Tests
     public class MapTest
     {
         /// <summary>
-        /// A test for ZoomToMaxExtent
+        /// A test for ZoomToMaxExtent.
         /// </summary>
         [Test]
         public void ZoomToMaxExtentTest()
@@ -63,7 +63,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
+        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups.
         /// </summary>
         [Test]
         public void GetAllLayersTest()
@@ -87,7 +87,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// Test if the new GetAllGroups() method returns the correct number of layers if the map has groups
+        /// Test if the new GetAllGroups() method returns the correct number of layers if the map has groups.
         /// </summary>
         [Test]
         public void GetAllGroupsTest()

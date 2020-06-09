@@ -8,7 +8,6 @@ using System.IO;
 using DotSpatial.NTSExtension;
 using DotSpatial.Projections;
 using DotSpatial.Tests.Common;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -148,7 +147,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232.
         /// </summary>
         [Test]
         public void FilePathTest1()
@@ -166,7 +165,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232.
         /// </summary>
         [Test]
         public void FilePathTest2()
@@ -184,7 +183,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232.
         /// </summary>
         [Test]
         public void FilePathTestWithSpaces()
@@ -311,30 +310,30 @@ namespace DotSpatial.Data.Tests
                 {
                     // regular coordinates don't have m values
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MinM);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MaxM);
                 }
                 else
                 {
                     // m or z coordinates have m values
                     Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(10, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.MinM);
+                    Assert.AreEqual(10, loaded.Features[0].Geometry.EnvelopeInternal.MaxM);
                 }
 
                 if (c == CoordinateType.Z)
                 {
                     // z coordinates have z values
                     Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(3, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(9, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    Assert.AreEqual(3, loaded.Features[0].Geometry.EnvelopeInternal.MinZ);
+                    Assert.AreEqual(9, loaded.Features[0].Geometry.EnvelopeInternal.MaxZ);
                 }
                 else
                 {
                     // regular and m coordinates don't have z values
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MinZ);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MaxZ);
                 }
             }
             finally
@@ -424,30 +423,30 @@ namespace DotSpatial.Data.Tests
                 {
                     // regular coordinates don't have m values
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MinM);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MaxM);
                 }
                 else
                 {
                     // m or z coordinates have m values
                     Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.MinM);
+                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.MaxM);
                 }
 
                 if (c == CoordinateType.Z)
                 {
                     // z coordinates have z values
                     Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.MinZ);
+                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.MaxZ);
                 }
                 else
                 {
                     // regular and m coordinates don't have z values
                     Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MinZ);
+                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.MaxZ);
                 }
             }
             finally
@@ -542,7 +541,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// Checks whether the WGS84 coordinatese that were projected and saved to a WGS1984UTMZone33N are still the same after they are read from the shapefile and projected back to WGS84.
+        /// Checks whether the WGS84 coordinates that were projected and saved to a WGS1984UTMZone33N are still the same after they are read from the shapefile and projected back to WGS84.
         /// </summary>
         [Test(Description = @"https://dotspatial.codeplex.com/workitem/25169")]
         public void UtmProjectionSamePointsAfterSaveLoadShapeFile()

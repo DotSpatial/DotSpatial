@@ -10,7 +10,7 @@ using TestMethod = NUnit.Framework.TestAttribute;
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
-    /// This is a test class for MapTest and is intended to contain all MapTest Unit Tests
+    /// This is a test class for MapTest and is intended to contain all MapTest Unit Tests.
     /// </summary>
     [TestClass]
     public class MapLayerCollectionTest
@@ -18,7 +18,7 @@ namespace DotSpatial.Controls.Tests
         #region Methods
 
         /// <summary>
-        /// A test for MapFrame property is the mapFrame null when adding a group?
+        /// A test for MapFrame property is the mapFrame null when adding a group?.
         /// </summary>
         [TestMethod]
         public void MapFrameIsNotNullGroup()
@@ -38,7 +38,7 @@ namespace DotSpatial.Controls.Tests
 
         /// <summary>
         /// A test for SelectedLayer.
-        /// After the selected layer is removed, Layers.SelectedLayer should be null
+        /// After the selected layer is removed, Layers.SelectedLayer should be null.
         /// </summary>
         [TestMethod]
         public void SelectedLayerNullIfLayerRemoved()

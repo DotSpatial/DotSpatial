@@ -646,8 +646,11 @@ namespace DotSpatial.Projections
             if (esriString.Contains("Krovak"))
                 return KnownCoordinateSystems.Projected.NationalGrids.SJTSKKrovakEastNorth;
 
-            var info = new ProjectionInfo();
-            info.NoDefs = true;
+            var info = new ProjectionInfo
+            {
+                NoDefs = true
+            };
+
             if (!info.TryParseEsriString(esriString))
             {
                 throw new InvalidEsriFormatException(esriString);
@@ -1311,12 +1314,12 @@ namespace DotSpatial.Projections
 
             if (FalseEasting != null)
             {
-                FalseEasting = FalseEasting * Unit.Meters;
+                FalseEasting *= Unit.Meters;
             }
 
             if (FalseNorthing != null)
             {
-                FalseNorthing = FalseNorthing * Unit.Meters;
+                FalseNorthing *= Unit.Meters;
             }
 
             return true;

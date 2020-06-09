@@ -128,8 +128,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws an ellipse on the specified graphics surface.
         /// </summary>
-        /// <param name="gp">The GraphicsPath to add this shape to</param>
-        /// <param name="scaledSize">The size to fit the ellipse into (the ellipse will be centered at 0, 0)</param>
+        /// <param name="gp">The GraphicsPath to add this shape to.</param>
+        /// <param name="scaledSize">The size to fit the ellipse into (the ellipse will be centered at 0, 0).</param>
         public static void AddEllipse(GraphicsPath gp, SizeF scaledSize)
         {
             PointF upperLeft = new PointF(-scaledSize.Width / 2, -scaledSize.Height / 2);
@@ -140,9 +140,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws a regular polygon with equal sides. The first point will be located all the way to the right on the X axis.
         /// </summary>
-        /// <param name="gp">Specifies the GraphicsPath surface to draw on</param>
-        /// <param name="scaledSize">Specifies the SizeF to fit the polygon into</param>
-        /// <param name="numSides">Specifies the integer number of sides that the polygon should have</param>
+        /// <param name="gp">Specifies the GraphicsPath surface to draw on.</param>
+        /// <param name="scaledSize">Specifies the SizeF to fit the polygon into.</param>
+        /// <param name="numSides">Specifies the integer number of sides that the polygon should have.</param>
         public static void AddRegularPoly(GraphicsPath gp, SizeF scaledSize, int numSides)
         {
             PointF[] polyPoints = new PointF[numSides + 1];
@@ -162,8 +162,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws a 5 pointed star with the points having twice the radius as the bends.
         /// </summary>
-        /// <param name="gp">The GraphicsPath to add the start to</param>
-        /// <param name="scaledSize">The SizeF size to fit the Start to</param>
+        /// <param name="gp">The GraphicsPath to add the start to.</param>
+        /// <param name="scaledSize">The SizeF size to fit the Start to.</param>
         public static void AddStar(GraphicsPath gp, SizeF scaledSize)
         {
             PointF[] polyPoints = new PointF[11];
@@ -174,10 +174,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws an ellipse on the specified graphics surface.
         /// </summary>
-        /// <param name="g">The graphics surface to draw on</param>
-        /// <param name="scaledBorderPen">The Pen to use for the border, or null if no border should be drawn</param>
-        /// <param name="fillBrush">The Brush to use for the fill, or null if no fill should be drawn</param>
-        /// <param name="scaledSize">The size to fit the ellipse into (the ellipse will be centered at 0, 0)</param>
+        /// <param name="g">The graphics surface to draw on.</param>
+        /// <param name="scaledBorderPen">The Pen to use for the border, or null if no border should be drawn.</param>
+        /// <param name="fillBrush">The Brush to use for the fill, or null if no fill should be drawn.</param>
+        /// <param name="scaledSize">The size to fit the ellipse into (the ellipse will be centered at 0, 0).</param>
         public static void DrawEllipse(Graphics g, Pen scaledBorderPen, Brush fillBrush, SizeF scaledSize)
         {
             PointF upperLeft = new PointF(-scaledSize.Width / 2, -scaledSize.Height / 2);
@@ -196,11 +196,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws a regular polygon with equal sides. The first point will be located all the way to the right on the X axis.
         /// </summary>
-        /// <param name="g">Specifies the Graphics surface to draw on</param>
-        /// <param name="scaledBorderPen">Specifies the Pen to use for the border</param>
-        /// <param name="fillBrush">Specifies the Brush to use for to fill the shape</param>
-        /// <param name="scaledSize">Specifies the SizeF to fit the polygon into</param>
-        /// <param name="numSides">Specifies the integer number of sides that the polygon should have</param>
+        /// <param name="g">Specifies the Graphics surface to draw on.</param>
+        /// <param name="scaledBorderPen">Specifies the Pen to use for the border.</param>
+        /// <param name="fillBrush">Specifies the Brush to use for to fill the shape.</param>
+        /// <param name="scaledSize">Specifies the SizeF to fit the polygon into.</param>
+        /// <param name="numSides">Specifies the integer number of sides that the polygon should have.</param>
         public static void DrawRegularPoly(Graphics g, Pen scaledBorderPen, Brush fillBrush, SizeF scaledSize, int numSides)
         {
             PointF[] polyPoints = new PointF[numSides + 1];
@@ -228,10 +228,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws a 5 pointed star with the points having twice the radius as the bends.
         /// </summary>
-        /// <param name="g">The Graphics surface to draw on</param>
-        /// <param name="scaledBorderPen">The Pen to draw the border with</param>
-        /// <param name="fillBrush">The Brush to use to fill the Star</param>
-        /// <param name="scaledSize">The SizeF size to fit the Start to</param>
+        /// <param name="g">The Graphics surface to draw on.</param>
+        /// <param name="scaledBorderPen">The Pen to draw the border with.</param>
+        /// <param name="fillBrush">The Brush to use to fill the Star.</param>
+        /// <param name="scaledSize">The SizeF size to fit the Start to.</param>
         public static void DrawStar(Graphics g, Pen scaledBorderPen, Brush fillBrush, SizeF scaledSize)
         {
             PointF[] polyPoints = new PointF[11];
@@ -248,9 +248,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the font color of this symbol to represent the color of this symbol
+        /// Gets the font color of this symbol to represent the color of this symbol.
         /// </summary>
-        /// <returns>The color of this symbol as a font</returns>
+        /// <returns>The color of this symbol as a font.</returns>
         public override Color GetColor()
         {
             return Color;

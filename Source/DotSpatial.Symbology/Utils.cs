@@ -17,7 +17,7 @@ namespace DotSpatial.Symbology
         /// Bytes the range.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>Value in bytes</returns>
+        /// <returns>Value in bytes.</returns>
         public static int ByteRange(double value)
         {
             int rounded = (int)Math.Round(value);
@@ -32,7 +32,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="value">The value to search.</param>
         /// <param name="values">The values to search in.</param>
-        /// <returns>Nearest value</returns>
+        /// <returns>Nearest value.</returns>
         public static double GetNearestValue(double value, List<double> values)
         {
             if (values == null || values.Count == 0) return 0;
@@ -67,7 +67,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Returns value with specified significant digits.
         /// </summary>
-        /// <param name="value">Value</param>
+        /// <param name="value">Value.</param>
         /// <param name="numFigures">Number of significant digits.</param>
         /// <returns>Value with with specified significant digits.</returns>
         public static double SigFig(double value, int numFigures)

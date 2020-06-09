@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// StatisticalEventArgs
+    /// StatisticalEventArgs.
     /// </summary>
     public class StatisticalEventArgs : EventArgs
     {

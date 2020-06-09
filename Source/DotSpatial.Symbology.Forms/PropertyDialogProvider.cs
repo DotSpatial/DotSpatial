@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// PropertyDialogProvider
+    /// PropertyDialogProvider.
     /// </summary>
     public class PropertyDialogProvider : IPropertyDialogProvider
     {
