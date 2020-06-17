@@ -491,8 +491,7 @@ namespace DotSpatial.Data
 
             // First check for the extension in the preferred plugins list
             var ext = Path.GetExtension(fileName);
-            IDataProvider pdp;
-            if (PreferredProviders.TryGetValue(ext, out pdp))
+            if (PreferredProviders.TryGetValue(ext, out IDataProvider pdp))
             {
                 var vp = pdp as IVectorProvider;
                 var result = vp?.CreateNew(fileName, featureType, true, progHandler);
@@ -554,14 +553,11 @@ namespace DotSpatial.Data
             {
                 if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
                 {
-                    IVectorProvider vp = dp as IVectorProvider;
-                    if (vp != null)
+                    if (dp is IVectorProvider)
                         return DataFormat.Vector;
-                    IRasterProvider rp = dp as IRasterProvider;
-                    if (rp != null)
+                    if (dp is IRasterProvider)
                         return DataFormat.Raster;
-                    IImageDataProvider ip = dp as IImageDataProvider;
-                    if (ip != null)
+                    if (dp is IImageDataProvider)
                         return DataFormat.Image;
                     return DataFormat.Custom;
                 }
@@ -585,8 +581,7 @@ namespace DotSpatial.Data
             {
                 if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
                 {
-                    IVectorProvider vp = dp as IVectorProvider;
-                    if (vp == null)
+                    if (!(dp is IVectorProvider vp))
                         continue;
                     return vp.GetFeatureType(fileName);
                 }
@@ -786,8 +781,7 @@ namespace DotSpatial.Data
                 IImageData result;
                 if (PreferredProviders.ContainsKey(ext))
                 {
-                    IImageDataProvider rp = PreferredProviders[ext] as IImageDataProvider;
-                    if (rp != null)
+                    if (PreferredProviders[ext] is IImageDataProvider rp)
                     {
                         result = rp.Create(fileName, width, height, inRam, progHandler, bandType);
                         if (result != null)
@@ -802,8 +796,7 @@ namespace DotSpatial.Data
                 {
                     if (GetSupportedExtensions(dp.DialogWriteFilter).Contains(ext))
                     {
-                        IImageDataProvider rp = dp as IImageDataProvider;
-                        if (rp != null)
+                        if (dp is IImageDataProvider rp)
                         {
                             // attempt to open with the fileName.
                             result = rp.Create(fileName, width, height, inRam, progHandler, bandType);
@@ -839,8 +832,7 @@ namespace DotSpatial.Data
                 IRaster result;
                 if (PreferredProviders.ContainsKey(ext))
                 {
-                    IRasterProvider rp = PreferredProviders[ext] as IRasterProvider;
-                    if (rp != null)
+                    if (PreferredProviders[ext] is IRasterProvider rp)
                     {
                         result = rp.Create(name, driverCode, xSize, ySize, numBands, dataType, options);
                         if (result != null)
@@ -855,8 +847,7 @@ namespace DotSpatial.Data
                 {
                     if (GetSupportedExtensions(dp.DialogWriteFilter).Contains(ext))
                     {
-                        IRasterProvider rp = dp as IRasterProvider;
-                        if (rp != null)
+                        if (dp is IRasterProvider rp)
                         {
                             // attempt to open with the fileName.
                             result = rp.Create(name, driverCode, xSize, ySize, numBands, dataType, options);
