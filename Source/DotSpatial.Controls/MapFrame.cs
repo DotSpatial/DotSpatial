@@ -812,7 +812,7 @@ namespace DotSpatial.Controls
         public void InvalidateLayers()
         {
             if (Layers == null) return;
-            foreach (ILayer layer in base.Layers)
+            foreach (ILayer layer in Layers)
             {
                 layer.Invalidate();
             }
