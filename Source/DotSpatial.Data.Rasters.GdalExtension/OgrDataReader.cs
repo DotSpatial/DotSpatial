@@ -30,7 +30,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
     {
         #region Fields
 
-        private static bool hasTextField;
+        private static bool _hasTextField;
 
         private readonly string _fileName;
 
@@ -50,9 +50,24 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         /// <param name="sDataSource">The path of the data source file.</param>
         public OgrDataReader(string sDataSource)
+            : this(sDataSource, new AsIsFileNameExtractor())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OgrDataReader"/> class.
+        /// </summary>
+        /// <param name="sDataSource">The Ogr connection strign of the data.</param>
+        /// <param name="extractor">The Implementation of <see cref="IOgrDataReaderFileNameExtractor"/> used to extract the filename
+        public OgrDataReader(string sDataSource, IOgrDataReaderFileNameExtractor extractor)
+            : this(sDataSource, extractor.ExtractFileName(sDataSource))
+        {
+        }
+
+        private OgrDataReader(string sDataSource, string fileName)
         {
             _ogrDataSource = Ogr.Open(sDataSource, 0);
-            _fileName = sDataSource;
+            _fileName = fileName;
         }
 
         #endregion
@@ -233,7 +248,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     uniqueNumber++;
                 }
 
-                if (uniqueName.ToLower() == "text") hasTextField = true;
+                if (uniqueName.ToLower() == "text") _hasTextField = true;
 
                 fs.DataTable.Columns.Add(new DataColumn(uniqueName, column.Type));
             }
@@ -702,13 +717,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
                         int h;
                         int m;
-                        int s;
+                        float s;
                         int flag;
 
                         feature.GetFieldAsDateTime(i, out year, out month, out day, out h, out m, out s, out flag);
                         try
                         {
-                            return new DateTime(year, month, day, h, m, s);
+                            return new DateTime(year, month, day, h, m, Convert.ToInt32(Math.Min(s, (float)int.MaxValue)));
                         }
                         catch (ArgumentOutOfRangeException)
                         {
@@ -885,6 +900,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 case FieldType.OFTDateTime:
                     return typeof(DateTime);
 
+                case FieldType.OFTRealList:
+                    return typeof(double[]);
                 default:
                     throw new NotSupportedException("Type not supported: " + ogrType);
             }
@@ -954,7 +971,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                         scheme.AddCategory(cat);
 
                         // create the label category only if the text column exists, otherwise we don't know where to take the text from
-                        if (hasTextField)
+                        if (_hasTextField)
                         {
                             var lcat = new LabelCategory
                             {
@@ -1113,7 +1130,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// Gets the layers of the given file.
         /// </summary>
         /// <returns>The list of featuresets contained in this file.</returns>
-        private IDictionary<IFeatureSet, IList<string>> GetOtherLayers()
+        public IDictionary<IFeatureSet, IList<string>> GetOtherLayers()
         {
             using (var layer = _ogrDataSource.GetLayerByIndex(0)) // dxf files contain only one layer called entities, the layers seen in programs are defined by the Layer column
             using (var ogrFeatureDefinition = layer.GetLayerDefn())

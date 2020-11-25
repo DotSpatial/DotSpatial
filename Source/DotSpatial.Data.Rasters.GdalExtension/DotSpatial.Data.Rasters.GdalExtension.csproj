@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotSpatial.Data.Rasters.GdalExtension</RootNamespace>
     <AssemblyName>DotSpatial.Data.Rasters.GdalExtension</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -39,17 +39,18 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>a025a30f</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Debug\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\DotSpatial.Data.Rasters.GdalExtension.XML</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
@@ -58,11 +59,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\Windows Extensions\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\DotSpatial.Data.Rasters.GdalExtension..xml</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\DotSpatial.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -76,27 +77,21 @@
   <ItemGroup>
     <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.4\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
-      <Private>False</Private>
     </Reference>
-    <Reference Include="gdalconst_csharp, Version=1.0.5387.28601, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\GDAL.1.11.1\lib\net40\gdalconst_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="gdalconst_csharp, Version=1.0.7372.36899, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\GDAL.2.4.4\lib\net40\gdalconst_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="gdal_csharp, Version=1.0.5387.28601, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\GDAL.1.11.1\lib\net40\gdal_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="gdal_csharp, Version=1.0.7372.36899, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\GDAL.2.4.4\lib\net40\gdal_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="ogr_csharp, Version=1.0.5387.28600, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\GDAL.1.11.1\lib\net40\ogr_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ogr_csharp, Version=1.0.7372.36898, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\GDAL.2.4.4\lib\net40\ogr_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="osr_csharp, Version=1.0.5387.28600, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
-      <HintPath>..\packages\GDAL.1.11.1\lib\net40\osr_csharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="osr_csharp, Version=1.0.7372.36898, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\GDAL.2.4.4\lib\net40\osr_csharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -112,6 +107,7 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="AsIsFileNameExtractor.cs" />
     <Compile Include="GdalConfiguration.cs" />
     <Compile Include="GdalImageSource.cs" />
     <Compile Include="GdalTiledImage.cs" />
@@ -120,7 +116,9 @@
     <Compile Include="GdalImageProvider.cs" />
     <Compile Include="GdalRaster.cs" />
     <Compile Include="GdalRasterProvider.cs" />
+    <Compile Include="GpxBabelFileNameExtractor.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="IOgrDataReaderFileNameExtractor.cs" />
     <Compile Include="MapSelfLoadGroup.cs" />
     <Compile Include="MapSelfLoadLineLayer.cs" />
     <Compile Include="MapSelfLoadPointLayer.cs" />
@@ -198,26 +196,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GdalConfiguration.vb" />
     <Content Include="Readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets" Condition="Exists('..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets')" />
+  <Import Project="..\packages\GDAL.Native.2.4.4\build\net40\GDAL.Native.targets" Condition="Exists('..\packages\GDAL.Native.2.4.4\build\net40\GDAL.Native.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GDAL.Native.1.11.1\build\net40\GDAL.Native.targets'))" />
-    <Error Condition="!Exists('..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets'))" />
+    <Error Condition="!Exists('..\packages\GDAL.Native.2.4.4\build\net40\GDAL.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GDAL.Native.2.4.4\build\net40\GDAL.Native.targets'))" />
+    <Error Condition="!Exists('..\packages\GDAL.Plugins.2.4.4\build\net40\GDAL.Plugins.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GDAL.Plugins.2.4.4\build\net40\GDAL.Plugins.targets'))" />
   </Target>
-  <Import Project="..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets" Condition="Exists('..\packages\GDAL.Plugins.1.11.1\build\net40\GDAL.Plugins.targets')" />
+  <Import Project="..\packages\GDAL.Plugins.2.4.4\build\net40\GDAL.Plugins.targets" Condition="Exists('..\packages\GDAL.Plugins.2.4.4\build\net40\GDAL.Plugins.targets')" />
 </Project>

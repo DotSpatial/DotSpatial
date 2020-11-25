@@ -15,6 +15,6 @@
     <tags>Spatial GIS DotSpatial</tags>
   </metadata>
   <files>
-    <file src="..\Release\bin\Plugins\GDAL\**\*.*" target="lib\net40-Client" />
+    <file src="bin\Release\gdal\**\*.*" target="lib\net40-Client" />
   </files>
 </package>
