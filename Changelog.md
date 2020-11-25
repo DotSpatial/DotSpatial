@@ -29,11 +29,13 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
 - Default mouse cursor button in layout insert toolbar
 - A function to get a reprojected clone of a featureset
+- Tests for the OgrDataReader.
+- Tests for GpsBabel parser via the OgrDataReader if GpsBabel.exe is installed and in the windows path. Ignored otherwise.
 
 ### Changed
 - Switched to VS2017 and C#7
-- Switched to .Net Framework 4.5.2 (#1083)
-- GdalExtension: Updated to GDAL 1.1.11
+- Switched to .Net Framework 4.8
+- GdalExtension: Updated to GDAL 2.4.4
 - Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)
 - Moved localizeable strings to resource files
