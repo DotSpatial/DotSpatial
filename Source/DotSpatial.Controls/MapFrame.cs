@@ -722,11 +722,12 @@ namespace DotSpatial.Controls
                 }
             }
 
-            // Then labels
+            // Then labels. Layers higher in the draw hierarchy should be drawn on top, and so should their labels.
+            // In other words the drawing order of labels is given precedence from top layer to bottom layer.
             MapLabelLayer.ClearAllExistingLabels();
-            foreach (var layer in Layers)
+            for (int i = Layers.Count - 1; i >= 0; i--)
             {
-                InitializeLabels(regions, args, layer);
+                InitializeLabels(regions, args, Layers[i]);
             }
 
             // First draw all the vector content
@@ -811,7 +812,7 @@ namespace DotSpatial.Controls
         public void InvalidateLayers()
         {
             if (Layers == null) return;
-            foreach (ILayer layer in base.Layers)
+            foreach (ILayer layer in Layers)
             {
                 layer.Invalidate();
             }

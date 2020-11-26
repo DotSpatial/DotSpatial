@@ -28,6 +28,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - The possibility to draw linestrings which are inside a geometry collection (#1061)
 - The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
 - Default mouse cursor button in layout insert toolbar
+- A function to get a reprojected clone of a featureset
 - Auto display children of MapGroup is now an option of the MapFrame
 
 ### Changed
@@ -150,4 +151,11 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Shape File Saves with Wrong DataTypes (#1005)
 - Calculation of translation param in InRamImageData.GetBitmap is defective (#1203)
 - MapImageLayer not drawn correctly on print (#1137)
+- MapRasterLayer not drawn correctly on print
 - Create Categories for symbology is inconsistent with large datasets (#1242)
+- Geographic projections now have a Name property
+- Drawing order of labels is given precedence from top to bottom layer (#1226)
+- DotSpatial Projection with GridShift is Extremely Slow for NAD27 (#1333)
+- Potential Bug in RasterBoundsExt class CellsContainingExtent(...) method (#1332)
+- Potential bug in EnvelopeExt (and ExtentExt) class Reproportion(...) method (#1326)
+- Bug in AzimuthalEquidistant class (#1342)

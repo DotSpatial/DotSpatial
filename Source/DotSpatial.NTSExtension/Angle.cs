@@ -237,7 +237,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>Double, the Tan of the Angle</returns>
         public static double Tan(Angle value)
         {
-            return Math.Sin(value.Radians);
+            return Math.Tan(value.Radians);
         }
 
         /// <summary>
