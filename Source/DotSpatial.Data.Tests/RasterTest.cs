@@ -18,7 +18,6 @@ namespace DotSpatial.Data.Tests
     public class RasterTest
     {
         #region Methods
-
         /// <summary>
         /// Checks whether a raster created with GdalRasterProvider can be opened after closing.
         /// </summary>
@@ -111,7 +110,6 @@ namespace DotSpatial.Data.Tests
             savedSourceGrid.Close();
             File.Delete(SavedGridName);
         }
-
         #endregion
     }
 }
