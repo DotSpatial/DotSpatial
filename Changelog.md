@@ -31,6 +31,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - A function to get a reprojected clone of a featureset
 - Tests for the OgrDataReader.
 - Tests for GpsBabel parser via the OgrDataReader if GpsBabel.exe is installed and in the windows path. Ignored otherwise.
+- Auto display children of MapGroup is now an option of the MapFrame
 
 ### Changed
 - Switched to VS2017 and C#7
